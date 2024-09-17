@@ -4,9 +4,9 @@
       <div class="portlet-title">
         <div *ngIf="!httpRequestLoader.isLoading">
           <div class="page-toolbar col-xs-12 col-sm-5 col-lg-6 pull-right" style="padding: 0px 4px 8px 0px;">
-            <div class="btn-group pull-right width">
+            <div class="search-and-filter">
               <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled"
-                (click)="addDeal()" style="padding-left: 11px;">
+                (click)="addDeal()">
                 <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                   <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
                       aria-hidden="true"></i>{{DEAL_CONSTANTS?.registerADeal}}</span>
@@ -25,6 +25,90 @@
                     </button>
                   </div>
                 </div>
+              </div>
+              <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Filter"
+                *ngIf="listView" (click)="toggleFilterOption()">
+                <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+              </span>
+              <div class="" style="margin-left: 4px;">
+                <a data-placement="bottom" (click)="showDeals()" class="btn btn-xs  l-g-view" data-toggle="tooltip"
+                  title="Refresh">
+                  <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- -------------------- Apply Filters Box-------------------- -->
+        <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="portlet light">
+              <div class="portlet-title">
+                <div class="caption" translate>Apply Filters</div>
+                <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <div class="form-group" style="text-align: -webkit-right;">
+                  <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" type="button"
+                    (click)="validateDateFilters()">
+                    <span class="btn Btn-Green transition txt_pd-top3">Filter</span>
+                  </button>
+                </div>
+              </div>
+              <!--Filter Options-->
+              <div class="portlet-body clearfix">
+                <app-response-message class="pg8" [customResponse]="filterResponse"
+                  *ngIf="filterResponse.isVisible"></app-response-message>
+                <form class="form-horizontal form-bordered form-label-stripped">
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <!--From Date-->
+                    <div class="form-group">
+                      <label class="control-label col-sm-5">From Date</label>
+                      <div class="col-sm-7">
+                        <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
+                      </div>
+                    </div>
+                    <!--Status-->
+                    <div class="form-group">
+                      <label class="control-label col-sm-5">Status</label>
+                      <div class="col-sm-7">
+                        <p class="mt--10px" *ngIf="statusLoader">
+                          <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading
+                            Status...</strong>
+                        </p>
+                        <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully"
+                          [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter"
+                          [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedStatus($event)">
+                        </app-searchable-dropdown>
+                        <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
+                          <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <!--To Date-->
+                    <div class="form-group">
+                      <label class="control-label col-sm-5">To Date</label>
+                      <div class="col-sm-7">
+                        <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
+                      </div>
+                    </div>
+
+                    <!--Added For-->
+                    <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
+                      <label class="control-label col-sm-5">Added For</label>
+                      <div class="col-sm-7">
+                        <app-searchable-dropdown [searchableDropDownDto]="registeredForCompaniesSearchableDropDownDto"
+                          [id]="vendorCompanyIdFilter" [disableDropDown]="false"
+                          (searchableDropdownEventEmitter)="getSelectedRegisteredForCompanyId($event)">
+                        </app-searchable-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -158,7 +242,7 @@
           <!-- --------------------Pagination0-------------------- -->
           <div *ngIf="!httpRequestLoader.isLoading" class="pg8 pos_mrg_top8">
             <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
-              (notifyParentDropDown)="listDeals($event)"></app-pagination>
+              (notifyParentDropDown)="listDealsForPartner($event)"></app-pagination>
           </div>
           <!-- End of 24 -->
           <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading"
@@ -181,12 +265,10 @@
   </div>
 </div>
 
-
-
 <section *ngIf="showDealForm">
-  <div class="selectedContactId != undefined ? '' : 'page-content'" style="padding-top: 10px; padding-bottom: 10px;">
+  <div class="selectedContact.id != undefined ? '' : 'page-content'" style="padding-top: 10px; padding-bottom: 10px;">
     <div>
-      <a (click)="closeDealForm()" class="pull-right close-circle mrg1">        
+      <a (click)="closeDealForm()" class="pull-right close-circle mrg1">
         <i class="fa fa-times" aria-hidden="true"></i>
       </a>
       <a class="pull-right close-circle" *ngIf="actionType === 'edit'" data-rel="fancybox-button"
@@ -199,15 +281,16 @@
       </a>
 
     </div>
-    <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" [selectedContactId]="selectedContactId"
-      [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
+    <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
+      [selectedContact]="selectedContact" [isOrgAdmin]="isOrgAdmin"
+      (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
   </div>
 </section>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
   [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
 
-<app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
+<app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="selectedDeal"
   [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
   [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments($event)"
   (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">

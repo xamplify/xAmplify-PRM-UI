@@ -14,7 +14,6 @@ import { DealsService } from 'app/deals/services/deals.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'app/core/services/user.service';
 import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
-import { first } from 'rxjs/operator/first';
 declare var $: any, swal: any;
 
 @Component({
@@ -29,9 +28,9 @@ export class ContactDetailsComponent implements OnInit {
   @Input() public selectedCompanyId:number;
   @Input() isTeamMemberPartnerList: boolean;
   @Input() contacts: User[];
-  // @Input() pagination: Pagination;
   @Input() selectedContactListId: any;
 
+  title: string = 'Contact Journey'
   highlightLetter:string = '';
   selectedCompanyContactId: any;
   isCompanyContact: boolean;

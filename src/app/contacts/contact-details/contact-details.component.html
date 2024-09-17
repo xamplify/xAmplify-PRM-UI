@@ -125,7 +125,7 @@
           <div class="portlet light">
             <div class="portlet-title tabbable-line">
               <div class="caption caption-md col-xs-12">
-                <span class="caption-subject font-blue-madison bold">Leads</span>
+                <span class="caption-subject font-blue-madison bold">{{title}}</span>
               </div>
             </div>
             <div class="portlet-body clearfix">
@@ -149,13 +149,13 @@
                   </div>
                 </div>
                 <div id="deals1" class="tab-pane fade pt-top" *ngIf="showDealsTab">
-                  <app-custom-manage-deals [selectedContactId]="contactId"></app-custom-manage-deals>
+                  <app-custom-manage-deals [selectedContact]="selectedContact"></app-custom-manage-deals>
                 </div>
                 <div id="campaigns1" class="tab-pane fade pt-top">
-                  cdxzxcsdfedscdsc
+                  campaingns listed here
                 </div>
                 <div id="form1" class="tab-pane fade pt-top">
-                  dcsddcscde
+                  forms listed here
                 </div>
               </div>
               <!-- END -->

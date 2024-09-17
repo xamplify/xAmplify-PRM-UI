@@ -45,7 +45,7 @@ export class AddDealComponent implements OnInit {
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
   @Input() public hideAttachLeadButton: boolean;
-  @Input() public selectedContactId: number;
+  @Input() public selectedContact: any;
   @Output() notifySubmitSuccess = new EventEmitter();
 
   preview = false;
@@ -1006,7 +1006,7 @@ export class AddDealComponent implements OnInit {
         this.opportunityTypeIdError = false;
       }
 
-      if (this.selectedContactId && this.selectedContactId > 0) {
+      if (this.selectedContact.id && this.selectedContact.id > 0) {
         if (fieldId === 'leadAttachment') {
           this.leadAttachmentError = !(this.leadId != undefined && this.leadId > 0);
         }

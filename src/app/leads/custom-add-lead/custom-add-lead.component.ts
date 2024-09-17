@@ -301,10 +301,11 @@ export class CustomAddLeadComponent implements OnInit {
         this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
         this.getActiveCRMDetails();
       }
-    } else if (this.isConvertingContactToLead) {
-      this.setDefaultLeadData(this.selectedContact);
     } else {
       this.getCampaignInfoForAddLead();
+    }
+    if (this.isConvertingContactToLead) {
+      this.setDefaultLeadData(this.selectedContact);
     }
   }
 
