@@ -293,5 +293,10 @@ export class LandingPageService {
         const url = this.URL + "/unpublish-welcome-page?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callPutMethod(url,landingPage);
     } 
+
+    welcomePageDeletebById( id: number): Observable<any> {   
+        const url =this.URL +"welcomePageDelete/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callDeleteMethod(url);
+    }
     
 }

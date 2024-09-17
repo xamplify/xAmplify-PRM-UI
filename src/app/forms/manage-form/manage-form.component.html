@@ -1,5 +1,5 @@
-<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin() || (isVendorJourney || isMasterLandingPage)">
-    <div class="page-bar" *ngIf=" !(isVendorJourney || isMasterLandingPage)">
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin() || (isVendorJourney || isMasterLandingPage || isWelcomePage)">
+    <div class="page-bar" *ngIf=" !(isVendorJourney || isMasterLandingPage||isWelcomePage)">
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -48,7 +48,7 @@
                     <app-category-folder-view-util [moduleType]="exportObject"
                         (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
-                <div class="" style="border-bottom: none;margin-bottom:0px !important" *ngIf = "!(isVendorJourney || isMasterLandingPage)">
+                <div class="" style="border-bottom: none;margin-bottom:0px !important" *ngIf = "!(isVendorJourney || isMasterLandingPage ||isWelcomePage)">
                     <div class="row">
                         <div class="page-toolbar"
                             *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
@@ -248,7 +248,7 @@
                                                         <div class="clickicons"></div>
                                                     </a>
                                                     <a class="mMobileDisable custom-icon"
-                                                        *ngIf="((!pagination.campaignForm && !pagination.landingPageForm  && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm) || (isVendorJourney || isMasterLandingPage)) && (deleteAndEditAccess || loggedInUserId==form.userId)"
+                                                        *ngIf="((!pagination.campaignForm && !pagination.landingPageForm  && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm) || (isVendorJourney || isMasterLandingPage || isWelcomePage)) && (deleteAndEditAccess || loggedInUserId==form.userId)"
                                                         data-toggle="tooltip" data-placement="top" title="Edit"
                                                         (click)="edit(form.id)">
                                                         <i class="fa fa-pencil-square-o mDisableColor IconCustomization"
@@ -508,7 +508,7 @@
         </div>
     </div>
     <app-scroll-top></app-scroll-top>
-    <app-preview-popup #previewPopUpComponent [isVendorJourney]="isVendorJourney" [isMasterLandingPage]="isMasterLandingPage"></app-preview-popup>
+    <app-preview-popup #previewPopUpComponent [isVendorJourney]="isVendorJourney" [isMasterLandingPage]="isMasterLandingPage" [isWelcomePage]="isWelcomePage"></app-preview-popup>
 
     <div class="col-xs-12 p5" *ngIf="statusCode==403">
         <div class="alert alert-danger">

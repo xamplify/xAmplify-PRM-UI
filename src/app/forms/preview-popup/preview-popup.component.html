@@ -1,6 +1,6 @@
 <div style="padding-top:6px;margin-bottom: -5px;">
     <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService?.isShowForms) 
-        && !isVendorJourney && !isMasterLandingPage"
+        && !isVendorJourney && !isMasterLandingPage && !isWelcomePage"
         class="button_blue show-forms-btn bgcolor-unset px-0" id="right" style="border-radius: 5px" (click)="showForms()">
         <span class="btn btn-primary transition">{{buttonText}}</span>
     </button>
