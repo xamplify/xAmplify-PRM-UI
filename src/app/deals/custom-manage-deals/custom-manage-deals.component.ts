@@ -57,11 +57,19 @@ export class CustomManageDealsComponent implements OnInit {
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public pagerService: PagerService, public dealsService: DealsService) {
+    this.loggedInUserId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    } else {
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
    
   }
 
   ngOnInit() {
-    this.loggedInUserId = this.authenticationService.getUserId();
     this.showDeals();
   }
 
