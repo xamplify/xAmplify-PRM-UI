@@ -12,6 +12,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { PagerService } from 'app/core/services/pager.service';
 import { Properties } from 'app/common/models/properties';
 import { DealsService } from 'app/deals/services/deals.service';
+import { Roles } from 'app/core/models/roles';
 
 declare var swal: any, $: any, videojs: any;
 
@@ -24,12 +25,8 @@ declare var swal: any, $: any, videojs: any;
 export class CustomManageLeadsComponent implements OnInit {
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   @Input() listView: boolean = false;
-  @Input() isPartnerVersion: boolean;
-  @Input() isVendorVersion: boolean;
-  @Input() isOrgAdmin: boolean = false;
-  @Input() isVendor: boolean = false;
-  @Input() selectedContact: any;
   @Input() public isConvertingContactToLead: boolean = false;
+  @Input() selectedContact: any;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() closeCustomLeadAndDealForm = new EventEmitter();
   @Output() viewOrEditCustomLeadForm = new EventEmitter();
@@ -53,6 +50,12 @@ export class CustomManageLeadsComponent implements OnInit {
   leadsSortOption: SortOption = new SortOption();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   customResponse: CustomResponse = new CustomResponse();
+  isPartnerVersion: boolean = true;
+  isVendorVersion: boolean;
+  isOrgAdmin: boolean = false;
+  isVendor: boolean = false;
+  roleName: Roles = new Roles();
+  prm: boolean;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, public leadsService: LeadsService,
     public pagerService: PagerService, public properties: Properties) {
@@ -65,10 +68,46 @@ export class CustomManageLeadsComponent implements OnInit {
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = false;
     }
+    this.init();
   }
 
   ngOnInit() {
     this.showLeads();
+  }
+
+  init() {
+    const roles = this.authenticationService.getRoles();
+    if (roles !== undefined) {
+      if (this.authenticationService.loggedInUserRole != "Team Member") {
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+          roles.indexOf(this.roleName.allRole) > -1 ||
+          roles.indexOf(this.roleName.vendorRole) > -1 ||
+          roles.indexOf(this.roleName.vendorTierRole) > -1 ||
+          roles.indexOf(this.roleName.marketingRole) > -1 ||
+          roles.indexOf(this.roleName.prmRole) > -1) {
+          this.isVendor = true;
+        }
+        if (roles.indexOf(this.roleName.prmRole) > -1) {
+          this.prm = true;
+        }
+        /** User Guide */
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+          this.isOrgAdmin = true;
+        }
+      } else {
+        if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
+          this.isOrgAdmin = true;
+        }
+        if (this.authenticationService.superiorRole.includes("Prm")) {
+          this.prm = true;
+        }
+        if (this.authenticationService.superiorRole.includes("Vendor") ||
+          this.authenticationService.superiorRole.includes("OrgAdmin") || this.authenticationService.superiorRole.includes("Marketing") ||
+          this.authenticationService.superiorRole.includes("Prm")) {
+          this.isVendor = true;
+        }
+      }
+    }
   }
 
   showRegisterDealButton(lead): boolean {

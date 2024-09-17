@@ -141,9 +141,8 @@
               <div class="tab-content tab-bg">
                 <div *ngIf="showLeadsTab" id="leads1" class="tab-pane fade in active pt-5 integration-profile">
                   <div class="row m0 pt10">
-                    <app-custom-manage-leads [listView]="listView" [isPartnerVersion]="'true'" [isVendorVersion]="'false'" [isOrgAdmin]="'true'" 
-                    [isVendor]="'false'" (viewOrEditCustomLeadForm)="viewOrEditCustomLeadForm()" [selectedContact]="selectedContact"
-                       (closeCustomLeadAndDealForm)="closeLeadForm()" (notifySubmitSuccess)="showSubmitSuccess()"
+                    <app-custom-manage-leads [listView]="listView" (viewOrEditCustomLeadForm)="viewOrEditCustomLeadForm()"
+                     [selectedContact]="selectedContact" (closeCustomLeadAndDealForm)="closeLeadForm()" (notifySubmitSuccess)="showSubmitSuccess()"
                        [isConvertingContactToLead]="isConvertingContactToLead"></app-custom-manage-leads>
                   </div>
                 </div>
