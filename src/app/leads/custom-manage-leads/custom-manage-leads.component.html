@@ -31,7 +31,117 @@
             </div>
           </div>
         </div>
+        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+          style="margin-left: 5px !important;" title="Filter" *ngIf="listView" (click)="toggleFilterOption()">
+          <i aria-hidden="true" class="fa fa-filter p10"></i>
+        </span>
+        <div class="filter-btn">
+          <a data-placement="bottom" (click)="showLeads()"
+             class="btn btn-xs  l-g-view" data-toggle="tooltip" title="Refresh">
+             <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
+          </a>
+       </div>
 
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption" translate>Apply Filters</div>
+          <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+          <div class="form-group" style="text-align: -webkit-right;">
+            <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" type="button" (click)="validateDateFilters()">
+              <span class="btn Btn-Green transition txt_pd-top3">Filter</span>
+            </button>
+          </div>
+        </div>
+        <!--Filter Options-->
+        <div class="portlet-body clearfix">
+          <app-response-message class="pg8" [customResponse]="filterResponse"
+            *ngIf="filterResponse.isVisible"></app-response-message>
+          <form class="form-horizontal form-bordered form-label-stripped">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <!--From Date-->
+              <div class="form-group">
+                <label class="control-label col-sm-5">From Date</label>
+                <div class="col-sm-7">
+                  <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
+                </div>
+              </div>
+              <!--Added By User-->
+              <!-- <div class="form-group">
+                      <label class="control-label col-sm-5">{{LEAD_CONSTANTS.addedBy}}</label>
+                      <div class="col-sm-7">
+                        <p class="mt--10px" *ngIf="registeredByUsersLoader">
+                          <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS.addedBy}}...</strong>
+                        </p>
+                        <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully" [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
+                          [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
+                        </app-searchable-dropdown>
+                        <p class="required" *ngIf="!registeredByUsersLoader && !isRegisteredByUsersLoadedSuccessfully">
+                          <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                        </p>
+                      </div>
+                    </div> -->
+              <!--Status-->
+              <div class="form-group">
+                <label class="control-label col-sm-5">Status</label>
+                <div class="col-sm-7">
+                  <p class="mt--10px" *ngIf="statusLoader">
+                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading
+                      {{LEAD_CONSTANTS.addedBy}}...</strong>
+                  </p>
+                  <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully"
+                    [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter" [disableDropDown]="false"
+                    (searchableDropdownEventEmitter)="getSelectedStatus($event)">
+                  </app-searchable-dropdown>
+                  <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
+                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <!--To Date-->
+              <div class="form-group">
+                <label class="control-label col-sm-5">To Date</label>
+                <div class="col-sm-7">
+                  <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
+                </div>
+              </div>
+              <!--Added By Company-->
+              <!-- <div class="form-group" *ngIf="isVendorVersion">
+                      <label class="control-label col-sm-5">{{LEAD_CONSTANTS?.addedBy}} Company</label>
+                      <div class="col-sm-7">
+                        <p class="mt--10px" *ngIf="registeredByCompanyLoader">
+                          <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
+                        </p>
+                        <app-searchable-dropdown *ngIf="!registeredByCompanyLoader && isRegisteredByCompaniesLoadedSuccessfully" [searchableDropDownDto]="registeredByCompaniesSearchableDropDownDto" [id]="selectedRegisteredByCompanyId"
+                          [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByCompanyId($event)">
+                        </app-searchable-dropdown>
+                        <p class="required" *ngIf="!registeredByCompanyLoader && !isRegisteredByCompaniesLoadedSuccessfully">
+                          <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                        </p>
+                      </div>
+                    </div> -->
+              <!--Added For-->
+              <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
+                <label class="control-label col-sm-5">Added For</label>
+                <div class="col-sm-7">
+                  <app-searchable-dropdown *ngIf="!registeredForCompaniesLoader"
+                    [searchableDropDownDto]="registeredForCompaniesSearchableDropDownDto" [id]="vendorCompanyIdFilter"
+                    [disableDropDown]="false"
+                    (searchableDropdownEventEmitter)="getSelectedRegisteredForCompanyId($event)">
+                  </app-searchable-dropdown>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

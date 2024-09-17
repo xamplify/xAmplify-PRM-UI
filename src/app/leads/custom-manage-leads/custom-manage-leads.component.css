@@ -1,3 +1,7 @@
 .btn-add-lead{
     display: inline-flex !important;
 }
+.filter-btn{
+    padding-left: 2px;
+    display: flex;
+}

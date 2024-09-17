@@ -22,8 +22,7 @@
     </ul>
   </div>
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-    <app-response-message [customResponse]="customResponse"
-							*ngIf="customResponse.isVisible"></app-response-message>
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
     <div class="profile-sidebar">
       <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet light profile-sidebar-portlet">
@@ -35,24 +34,25 @@
           <div class="profile_info">
             <div *ngIf="contactName != undefined && contactName != ''">
               <i class="fa fa-user mr_6 icons_colors" aria-hidden="true"></i>
-              <span data-toggle="tooltip"
-                data-placement="bottom" title="{{contactName || ''}}">
+              <span data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
                 {{contactName | slice:0:10}} <span *ngIf="contactName != undefined && contactName?.length>10">..</span>
               </span>
               <!-- <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i> -->
             </div>
             <span class="email-id">
-              <p data-toggle="tooltip" data-placement="bottom"  title="{{selectedContact?.emailId}}">
-                <i class="fa fa-envelope mr_6 icons_colors"></i>{{selectedContact?.emailId | slice:0:12}}<span *ngIf="selectedContact?.emailId?.length>12">..</span> 
+              <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.emailId}}">
+                <i class="fa fa-envelope mr_6 icons_colors"></i>{{selectedContact?.emailId | slice:0:12}}<span
+                  *ngIf="selectedContact?.emailId?.length>12">..</span>
               </p>
               <button class="copy-btn" #textEmail value="{{selectedContact?.emailId}}" (click)="copyEmail(textEmail)">
-                <i *ngIf="emailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!emailCopied" class="fa fa-clone ml_6" aria-hidden="true"></i></button>
+                <i *ngIf="emailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!emailCopied"
+                  class="fa fa-clone ml_6" aria-hidden="true"></i></button>
             </span>
-            <span *ngIf="selectedContact?.mobileNumber != undefined" class="email-id">
+            <span *ngIf="selectedContact?.mobileNumber != undefined && selectedContact?.mobileNumber != ''" class="email-id">
               <p><i class="fa fa-phone mr_6 icons_colors"></i>{{selectedContact.mobileNumber}}</p>
               <button class="copy-btn" #textMobile value="{{selectedContact?.mobileNumber}}" (click)="copyMobileNumber(textMobile)">
-                <i *ngIf="mobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!mobileNumberCopied" class="fa fa-clone ml_6"
-                  aria-hidden="true"></i></button>
+                <i *ngIf="mobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!mobileNumberCopied"
+                  class="fa fa-clone ml_6" aria-hidden="true"></i></button>
             </span>
           </div>
           <div class="btn-edit">
@@ -71,14 +71,15 @@
           <ul id="accountDetailsDropdown" class="nav collapse in">
             <li><i class="fas fa-building"></i>
               <div class="user_details">
-              <span class="address_title">Company</span>
-              <p *ngIf="selectedContact?.contactCompany != undefined" class="mb0">{{selectedContact?.contactCompany}}</p>
+                <span class="address_title">Company</span>
+                <p *ngIf="selectedContact?.contactCompany != undefined" class="mb0">{{selectedContact?.contactCompany}}
+                </p>
               </div>
             </li>
             <li><i class="fas fa-briefcase"></i>
               <div class="user_details">
-              <span class="address_title">Job Title</span>
-              <p *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</p>
+                <span class="address_title">Job Title</span>
+                <p *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</p>
               </div>
             </li>
             <li><i class="fas fa-map-marker-alt"></i>
@@ -89,26 +90,26 @@
             </li>
             <li><i class="fas fa-city"></i>
               <div class="user_details">
-              <span class="address_title">City</span>
-              <p *ngIf="selectedContact?.city != undefined" class="mb0">{{selectedContact?.city}}</p>
+                <span class="address_title">City</span>
+                <p *ngIf="selectedContact?.city != undefined" class="mb0">{{selectedContact?.city}}</p>
               </div>
             </li>
             <li><i class="fas fa-map"></i>
               <div class="user_details">
-              <span class="address_title">State/Province</span>
-              <p *ngIf="selectedContact?.state != undefined" class="mb0">{{selectedContact?.state}}</p>
+                <span class="address_title">State/Province</span>
+                <p *ngIf="selectedContact?.state != undefined" class="mb0">{{selectedContact?.state}}</p>
               </div>
             </li>
             <li><i class="fas fa-mail-bulk"></i>
               <div class="user_details">
-              <span class="address_title"> Postal Code</span>
-              <p *ngIf="selectedContact?.zipCode != undefined" class="mb0">{{selectedContact?.zipCode}}</p>
+                <span class="address_title"> Postal Code</span>
+                <p *ngIf="selectedContact?.zipCode != undefined" class="mb0">{{selectedContact?.zipCode}}</p>
               </div>
             </li>
             <li><i class="fas fa-globe"></i>
               <div class="user_details">
-              <span class="address_title"> Country</span>
-              <p *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</p>
+                <span class="address_title"> Country</span>
+                <p *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</p>
               </div>
             </li>
           </ul>
@@ -141,9 +142,10 @@
               <div class="tab-content tab-bg">
                 <div *ngIf="showLeadsTab" id="leads1" class="tab-pane fade in active pt-5 integration-profile">
                   <div class="row m0 pt10">
-                    <app-custom-manage-leads [listView]="listView" (viewOrEditCustomLeadForm)="viewOrEditCustomLeadForm()"
-                     [selectedContact]="selectedContact" (closeCustomLeadAndDealForm)="closeLeadForm()" (notifySubmitSuccess)="showSubmitSuccess()"
-                       [isConvertingContactToLead]="isConvertingContactToLead"></app-custom-manage-leads>
+                    <app-custom-manage-leads [listView]="listView"
+                      (viewOrEditCustomLeadForm)="viewOrEditCustomLeadForm()" [selectedContact]="selectedContact"
+                      (closeCustomLeadAndDealForm)="closeLeadForm()" (notifySubmitSuccess)="showSubmitSuccess()"
+                      [isConvertingContactToLead]="isConvertingContactToLead"></app-custom-manage-leads>
                   </div>
                 </div>
                 <div id="deals1" class="tab-pane fade pt-top" *ngIf="showDealsTab">
@@ -167,9 +169,8 @@
 </div>
 
 <div *ngIf="contactService.isContactModalPopup && updateContactUser">
-  <app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList"
-    [gdprInput]="gdprInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
-    [isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId"
-    [isCompanyContact]="isCompanyContact"
+  <app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [gdprInput]="gdprInput"
+    [totalUsers]="contacts" [contactDetails]="contactAllDetails" [isUpdateUser]="isUpdateUser"
+    [selectedCompanyId]="selectedCompanyContactId" [isCompanyContact]="isCompanyContact"
     (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>

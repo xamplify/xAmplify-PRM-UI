@@ -13,6 +13,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { Properties } from 'app/common/models/properties';
 import { DealsService } from 'app/deals/services/deals.service';
 import { Roles } from 'app/core/models/roles';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
 declare var swal: any, $: any, videojs: any;
 
@@ -56,6 +57,19 @@ export class CustomManageLeadsComponent implements OnInit {
   isVendor: boolean = false;
   roleName: Roles = new Roles();
   prm: boolean;
+  filterResponse: CustomResponse = new CustomResponse();
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  registeredForCompaniesLoader = true;
+  registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusFilter: any;
+  filterMode: boolean = false;
+  vendorCompanyIdFilter = 0;
+  stageNamesForFilterDropDown: any;
+  vendorList: any;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, public leadsService: LeadsService,
     public pagerService: PagerService, public properties: Properties) {
@@ -298,6 +312,192 @@ export class CustomManageLeadsComponent implements OnInit {
     this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
     this.showDealForm = false;
     this.showLeads();
+  }
+
+  getSelectedIndex(index: number) {
+    this.selectedFilterIndex = index;
+    this.referenceService.setTeamMemberFilterForPagination(this.leadsPagination, index);
+    this.listLeads(this.leadsPagination);
+  }
+
+  toggleFilterOption() {
+    this.showFilterOption = !this.showFilterOption;
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.statusFilter = "";
+    this.vendorCompanyIdFilter = 0;
+    if (!this.showFilterOption) {
+      this.leadsPagination.fromDateFilterString = "";
+      this.leadsPagination.toDateFilterString = "";
+      this.leadsPagination.stageFilter = "";
+      this.leadsPagination.vendorCompanyId = 0;
+      this.filterResponse.isVisible = false;
+      if (this.filterMode) {
+        this.leadsPagination.pageIndex = 1;
+        this.listLeads(this.leadsPagination);
+        this.filterMode = false;
+      }
+    } else {
+      this.getStageNamesForFilter();
+      this.companyNamesForFilter();
+      this.filterMode = false;
+    }
+  }
+
+  closeFilterOption() {
+    this.showFilterOption = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.statusFilter = "";
+    this.vendorCompanyIdFilter = 0;
+    this.leadsPagination.fromDateFilterString = "";
+    this.leadsPagination.toDateFilterString = "";
+    this.leadsPagination.stageFilter = "";
+    this.leadsPagination.vendorCompanyId = 0;
+    this.filterResponse.isVisible = false;
+    if (this.filterMode) {
+      this.leadsPagination.pageIndex = 1;
+      this.listLeads(this.leadsPagination);
+      this.filterMode = false;
+    }
+  }
+
+  validateDateFilters() {
+    let isInvalidStatusFilter = this.statusFilter == undefined || this.statusFilter == "";
+    let isValidStatusFilter = this.statusFilter != undefined && this.statusFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isInvalidCompanyIdFilter = this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == 0;
+    let isValidCompanyIdFilter = this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter > 0;
+    if (isInvalidStatusFilter && isEmptyFromDateFilter && isEmptyToDateFilter && isInvalidCompanyIdFilter) {
+      this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else {
+      let validDates = false;
+      if (isEmptyFromDateFilter && isEmptyToDateFilter) {
+        validDates = true;
+      } else if (isValidFromDateFilter && isEmptyToDateFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
+        var toDate = Date.parse(this.toDateFilter);
+        var fromDate = Date.parse(this.fromDateFilter);
+        if (fromDate <= toDate) {
+          validDates = true;
+          this.leadsPagination.pageIndex = 1;
+          this.leadsPagination.maxResults = 12;
+          this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+          this.leadsPagination.toDateFilterString = this.toDateFilter;
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }
+      }
+
+      if (validDates) {
+        this.filterStatus(isValidStatusFilter);
+        this.filterVendorCompanyId(isValidCompanyIdFilter);
+        this.leadsPagination.pageIndex = 1;
+        this.leadsPagination.maxResults = 12;
+        this.filterMode = true;
+        this.filterResponse.isVisible = false;
+        this.listLeads(this.leadsPagination);
+      }
+
+    }
+  }
+
+  private filterStatus(isValidStatusFilter: boolean) {
+    if (isValidStatusFilter) {
+      this.leadsPagination.stageFilter = this.statusFilter;
+    } else {
+      this.leadsPagination.stageFilter = "";
+    }
+  }
+
+  private filterVendorCompanyId(isValidCompanyIdFilter) {
+    if (isValidCompanyIdFilter) {
+      this.leadsPagination.vendorCompanyId = this.vendorCompanyIdFilter;
+    } else {
+      this.leadsPagination.vendorCompanyId = 0;
+    }
+  }
+
+  getSelectedStatus(event: any) {
+    if (event != null) {
+      this.statusFilter = event['id'];
+    } else {
+      this.statusFilter = "";
+    }
+  }
+
+  getSelectedRegisteredForCompanyId(event: any) {
+    if (event != null) {
+      this.vendorCompanyIdFilter = event['id'];
+    } else {
+      this.vendorCompanyIdFilter = 0;
+    }
+  }
+
+  addSearchableStatus(response: any) {
+    this.stageNamesForFilterDropDown = response;
+    let dtos = [];
+    $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+      let id = value;
+      let name = value;
+      let dto = {};
+      dto['id'] = id;
+      dto['name'] = name;
+      dtos.push(dto);
+    });
+    this.statusSearchableDropDownDto.data = dtos;
+    this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.statusLoader = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
+
+  getStageNamesForFilter() {
+    this.leadsService.getStageNamesForVendor(this.loggedInUserId)
+      .subscribe(
+        response => {
+          this.fromDateFilter;
+          this.addSearchableStatus(response);
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+          this.isStatusLoadedSuccessfully = false;
+        },
+        () => { }
+      );
+  }
+
+  companyNamesForFilter() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getVendorList(this.loggedInUserId)
+      .subscribe(
+        response => {
+          this.vendorList = response.data;
+          let dtos = [];
+          $.each(this.vendorList, function (index: number, vendor: any) {
+            let id = vendor.companyId;
+            let name = vendor.companyName;
+            let dto = {};
+            dto['id'] = id;
+            dto['name'] = name;
+            dtos.push(dto);
+          });
+          this.registeredForCompaniesSearchableDropDownDto.data = dtos;
+          this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Added For";
+          this.registeredForCompaniesLoader = false;
+          this.referenceService.loading(this.httpRequestLoader, false);
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+          this.registeredForCompaniesLoader = false;
+        },
+        () => { }
+      );
   }
 
 }

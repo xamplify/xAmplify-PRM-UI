@@ -138,12 +138,14 @@ export class ContactDetailsComponent implements OnInit {
             this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
             this.selectedContact = event;
             this.selectedContact.id = this.contactId;
-            this.setContactNameToDisplay();
           }
           this.isLoading = false;
         },
         error => {
           this.isLoading = false;
+        },
+        () => {
+          this.setContactNameToDisplay();
         }
       )
     } catch (error) {
@@ -253,6 +255,9 @@ export class ContactDetailsComponent implements OnInit {
     }
     if (isValidLastName) {
       this.contactName += isValidFirstName ? ` ${lastName}` : lastName;
+    }
+    if (!isValidFirstName && !isValidLastName) {
+      this.contactName = '';
     }
   }
 
