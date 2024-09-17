@@ -1008,7 +1008,7 @@ export class AddDealComponent implements OnInit {
 
       if (this.selectedContactId && this.selectedContactId > 0) {
         if (fieldId === 'leadAttachment') {
-          this.leadAttachmentError = !(this.contact != undefined && this.contact != null) //!(this.leadId && this.leadId > 0);
+          this.leadAttachmentError = !(this.leadId != undefined && this.leadId > 0);
         }
       } else {
         this.leadAttachmentError = false;
@@ -1121,9 +1121,8 @@ export class AddDealComponent implements OnInit {
     else
       this.createdForPipelineStageIdError = true;
 
-    if (this.selectedContactId && this.selectedContactId > 0) {
-      this.leadAttachmentError = !(this.contact != undefined && this.contact != null);
-    } else {
+    /** XNFR-675 **/
+    if (this.actionType != 'add') {
       this.leadAttachmentError = false;
     }
 
