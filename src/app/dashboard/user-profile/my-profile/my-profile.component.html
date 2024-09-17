@@ -548,7 +548,7 @@
                                             </a>
                                         </li>
                                         <!--XNFR-679 Custom Fields-->
-                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
                                             [ngClass]="{'active-tab': activeTabName == customFieldsMenuHeader}"
                                             style="border-bottom: none !important;">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == customFieldsMenuHeader}"
@@ -2181,8 +2181,7 @@
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
                                                                 <button class="button_blue bgcolor-unset pd_lft2"
                                                                     (click)="addCategory()">
-                                                                    <span
-                                                                        class="btn btn-primary transition txt_pd-top3">Create
+                                                                    <span class="btn btn-primary transition txt_pd-top3">Create
                                                                         a Folder</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
