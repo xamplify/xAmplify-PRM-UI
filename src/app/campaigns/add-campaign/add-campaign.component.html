@@ -364,7 +364,7 @@
                                                 <div class="col-sm-8">
                                                     <select class="form-control" name="campaign.email"
                                                         [(ngModel)]="campaign.email" style="width: 100%"
-                                                        (change)="setFromName()">
+                                                        (change)="setFromName();validateForm()">
                                                         <option *ngFor="let teamMember of teamMemberEmailIds"
                                                             [ngValue]="teamMember.emailId">
                                                             {{teamMember.emailId}}

@@ -248,7 +248,7 @@
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
                                     <ng-template [ngTemplateOutlet]="formIcon"
-                                    *ngIf="!vendorJourney||  (vendorJourney && !landingPage?.defaultLandingPage)"
+                                    *ngIf="!vendorJourney||  (vendorJourney && !landingPage?.defaultLandingPage) || (welcomePages && !landingPage?.defaultLandingPage)"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
                                     <ng-template [ngTemplateOutlet]="analyticsIcon"
