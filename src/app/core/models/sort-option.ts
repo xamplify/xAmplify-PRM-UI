@@ -445,7 +445,14 @@ export class SortOption {
 		{ 'name': 'Integration Type (DESC)', 'value': 'type-DESC' },
 		{ 'name': 'Created Time (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
-	]
+	];
+
+	customFieldsDropDownOptions = [
+		{ 'name': 'Name(A-Z)', 'value': 'fieldName-ASC' },
+		{ 'name': 'Name(Z-A)', 'value': 'fieldName-DESC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+	];
 
 
 	public selectedSortedOption: any = this.sortByDropDown[0];
@@ -495,7 +502,6 @@ export class SortOption {
 
 	public selectedPartnerJourneyWorkflowDropDownOption = this.partnerJourneyWorkflowsDropDownOptions[this.partnerJourneyWorkflowsDropDownOptions.length-1];
 
-
 	public damSortOptionForPartner: any = this.damSortDropDownOptionsForPartner[this.damSortDropDownOptionsForPartner.length-1]; 
 
 	/*****XNFR-454*****/
@@ -511,6 +517,10 @@ export class SortOption {
 	selectedCustomLinksDropDownOption = this.customLinksCompaniesDropDown[this.customLinksCompaniesDropDown.length-1];
 
 	selectedIntegrationDetailsDropDownOption = this.integrationDetailsDropDown[0];
+
+	/***XNFR-679***/
+	public selectedCustomFieldsSortDropDownOption: any = this.customFieldsDropDownOptions[this.customFieldsDropDownOptions.length-1];
+
 
 
 }
