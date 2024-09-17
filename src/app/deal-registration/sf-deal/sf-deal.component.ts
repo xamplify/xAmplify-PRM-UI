@@ -266,10 +266,10 @@ export class SfDealComponent implements OnInit {
           for (let column of this.form.formLabelDTOs) {
             let addActionType = this.actionType === 'add';
             if (column.labelId === 'Company' && addActionType) {
-              if (this.selectedContact.companyName != undefined) {
-                column.value = this.selectedContact.companyName;
-              } else {
+              if (this.selectedContact.contactCompany != undefined) {
                 column.value = this.selectedContact.contactCompany;
+              } else {
+                column.value = this.selectedContact.companyName;
               }
             } else if (column.labelId === 'Email') {
               if (addActionType) {

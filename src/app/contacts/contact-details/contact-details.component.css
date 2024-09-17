@@ -39,7 +39,7 @@ padding: 0px !important;
     font-weight: 600;
 }
 .profile_info p {
-    margin: 5px 0;
+    margin: 3px 0;
     font-size: 14px;
     color: #555;
     font-weight: 500;
@@ -148,7 +148,7 @@ border-bottom:none;
 .btn-edit{
     position: relative;
     top: -16px;
-    right: 4px;
+    right: -6px;
 }
 .edit-contact{
     background-color: #0276ff;

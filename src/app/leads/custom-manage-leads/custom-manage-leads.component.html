@@ -3,12 +3,6 @@
   <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
   </app-list-loader>
   <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
-    <!-- <div class="col-xs-6 col-sm-6 col-lg-5 p0 mleads">
-      <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">{{titleHeading}} Leads</h4>
-      <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
-        *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany"
-        (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-    </div> -->
     <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
       <div class="btn-group pull-right btn-add-lead" style="width: max-content;">
         <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
@@ -36,11 +30,6 @@
               </button>
             </div>
           </div>
-          <!-- <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-            style="margin-left: 5px !important;" title="Filter" *ngIf="listView"
-            (click)="toggleFilterOption()">
-            <i  aria-hidden="true" class="fa fa-filter p10"></i>
-          </span> -->
         </div>
 
       </div>

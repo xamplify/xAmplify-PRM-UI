@@ -255,4 +255,10 @@ export class CustomManageLeadsComponent implements OnInit {
     this.getAllFilteredResultsLeads(this.leadsPagination);
   }
 
+  showSubmitDealSuccess() {
+    this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    this.showDealForm = false;
+    this.showLeads();
+  }
+
 }
