@@ -141,7 +141,8 @@
                   </div>
                   <div *ngIf="companyService.isCompanyModalPopUp">
                     <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType"
-                      [companyId]="companyId" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
+                      [companyId]="companyId" [customFieldsRequestDto]="customFieldsRequestDto" 
+                      (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
                   </div>
                   <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0 pos_mrg_top8'>
                     <app-list-loader

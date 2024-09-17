@@ -151,6 +151,19 @@
                 <div class="textCss"></div>
               </div>
             </div>
+
+            <!-- ------------Custom Fields------------ -->
+            <div class="form-group mrg0" *ngIf="!isPartner">
+              <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
+              <div class="form-group col-xs-10 col-sm-10 px0 mrg0" id="customFields">
+                <ng-container *ngFor="let customField of customFieldsRequestDto">
+                  <input type="text" style="border: none !important; margin-bottom: 30px;" class="form-control placeholder-bg-color"
+                    [(ngModel)]="customField.fieldValue" [ngModelOptions]="{standalone: true}"
+                    [placeholder]="customField.fieldName" maxlength="100">
+                </ng-container>
+                <div class="textCss"></div>
+              </div>
+            </div>
           </form>
         </div>
       </div>

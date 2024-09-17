@@ -20,4 +20,10 @@ export class CustomFieldService {
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 
+  findCustomFieldsData() {
+    let userId = this.authenticationService.getUserId();
+    let finalUrl = this.CUSTOM_FIELD_PREFIX_URL + '/by-user/' + userId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token
+    return this.authenticationService.callGetMethod(finalUrl);
+  }
+
 }

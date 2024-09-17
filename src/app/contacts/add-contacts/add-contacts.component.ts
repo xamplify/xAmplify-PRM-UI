@@ -31,6 +31,8 @@ import { DashboardService } from 'app/dashboard/dashboard.service';
 import { ParsedCsvDto } from '../models/parsed-csv-dto';
 import { CsvRowDto } from '../models/csv-row-dto';
 import { DefaultContactsCsvColumnHeaderDto } from '../models/default-contacts-csv-column-header-dto';
+import { CustomFieldService } from 'app/dashboard/user-profile/services/custom-field.service';
+import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
 declare var swal:any, $:any, Papa: any;
 
 @Component({
@@ -254,12 +256,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     isResetButtonClicked = false;
     isColumnMapped = false;
     isValidEmailAddressMapped = false;
+    customFieldsRequestDto : any = new CustomFieldsRequestDto();
     /*****XNFR-671*******/
         constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService,
-        public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public integrationService: IntegrationService, private dashBoardService: DashboardService) {
+        public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public integrationService: IntegrationService, private dashBoardService: DashboardService, 
+        private customFieldService : CustomFieldService) {
         this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = (this.countryNames.countries[0]);
@@ -1252,16 +1256,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
 
     oneAtTimeSaveAfterGotPermition() {
-
         if (this.assignLeads) {
             this.userUserListWrapper = this.getUserUserListWrapperObj(this.newUsers, this.model.contactListName, this.isPartner, true,
                 "CONTACT", "MANUAL", this.alias, false);
+            this.userUserListWrapper.userList.customFields = this.customFieldsRequestDto;
             this.saveAssignedLeadsList();
         } else {
-
             this.loading = true;
             this.userUserListWrapper = this.getUserUserListWrapperObj(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
                 "CONTACT", "MANUAL", this.alias, false);
+            this.userUserListWrapper.userList.customFields = this.customFieldsRequestDto;
             this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                     data => {
@@ -3376,7 +3380,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     addContactModalOpen() {
         this.resetResponse();
-        this.contactService.isContactModalPopup = true;
+        this.findCustomFieldsData();
     }
 
     addContactModalClose() {
@@ -5619,6 +5623,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedAddContactsOption = 13;
         this.disableOtherFuctionality = true;
         this.socialContact.contacts = this.socialContactUsers;
+    }
+
+    findCustomFieldsData() {
+        this.loading = true;
+        this.customFieldService.findCustomFieldsData().subscribe(data => {
+            this.loading = false;
+            this.customFieldsRequestDto = data;
+            this.contactService.isContactModalPopup = true;
+        }, (error: any) => {
+            this.loading = false;
+        });
     }
 
 

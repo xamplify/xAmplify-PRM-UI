@@ -40,6 +40,7 @@ export class AddCompanyComponent implements OnInit {
   ngxloading: boolean = false;
   isCompanyNameValid: boolean = false;
   isCompanyEmailValid : boolean = true;
+  @Input() public customFieldsRequestDto : any;
   constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService, public referenceService: ReferenceService,) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -96,6 +97,7 @@ export class AddCompanyComponent implements OnInit {
     this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.addCompany.userId = this.loggedInUserId;
+    this.addCompany.customFields = this.customFieldsRequestDto;
     this.companyService.saveCompany(this.addCompany).subscribe(
       (response: any) => {
         this.ngxloading = false;

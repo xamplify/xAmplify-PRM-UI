@@ -35,6 +35,8 @@ import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
+import { CustomFieldService } from 'app/dashboard/user-profile/services/custom-field.service';
+import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -276,11 +278,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+	customFieldsRequestDto : any = new CustomFieldsRequestDto();
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch) {
+		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch, private customFieldService : CustomFieldService) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
@@ -789,6 +792,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
 			"CONTACT", "MANUAL", null, false);
 		this.userUserListWrapper.userList.id = this.contactListId;
+		this.userUserListWrapper.userList.customFields = this.customFieldsRequestDto;
 		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				(data: any) => {
@@ -2783,7 +2787,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
 		this.contactAllDetails = null;
-		this.contactService.isContactModalPopup = true;
+		this.findCustomFieldsData();
 	}
 
 	addContactModalClose() {
@@ -4246,5 +4250,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error(error, "editContactComponent", "downloadListUserListCsv()");
 		}
 	}
+
+	findCustomFieldsData() {
+        this.loading = true;
+        this.customFieldService.findCustomFieldsData().subscribe(data => {
+            this.loading = false;
+            this.customFieldsRequestDto = data;
+            this.contactService.isContactModalPopup = true;
+        }, (error: any) => {
+            this.loading = false;
+        });
+    }
 
 }

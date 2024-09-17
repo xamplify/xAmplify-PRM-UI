@@ -1066,7 +1066,7 @@
 </div>
 <!-- MODALS -->
 <div *ngIf="contactService.isContactModalPopup">
-	<app-add-contact-modal [gdprInput]="parentInput" (notifyParent)="addRow($event)"></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" (notifyParent)="addRow($event)" [customFieldsRequestDto]="customFieldsRequestDto"></app-add-contact-modal>
 </div>
 <div id="zohoId">
 	<div class="modal right" id="zohoShowLoginPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

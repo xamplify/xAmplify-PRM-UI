@@ -11,6 +11,7 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
 
 declare var $: any;
 
@@ -64,7 +65,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     validationResponse : CustomResponse = new CustomResponse();
     partners: User[] = [];
     isWebsiteNotValid : boolean = false;
-    
+    @Input() customFieldsRequestDto : CustomFieldsRequestDto[];
     
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {

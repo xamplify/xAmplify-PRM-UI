@@ -1,3 +1,5 @@
+import { CustomFieldsRequestDto } from "app/dashboard/models/custom-field-request-dto";
+
 export class ContactList {
     name = "";
     createdDate: string;
@@ -40,4 +42,5 @@ export class ContactList {
     companyList:boolean;
     editList = false;
     isDownload : boolean = false;
+    customFields : CustomFieldsRequestDto[];
 }

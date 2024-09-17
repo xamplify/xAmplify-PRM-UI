@@ -15,6 +15,8 @@ import { UtilService } from 'app/core/services/util.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ContactService } from 'app/contacts/services/contact.service';
+import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
+import { CustomFieldService } from 'app/dashboard/user-profile/services/custom-field.service';
 
 declare var  $:any, swal: any;
 @Component({
@@ -43,8 +45,11 @@ customResponse: CustomResponse = new CustomResponse();
   /*** XBI-2228 ***/
   mergeTagForGuide = "add_a_company";
   /*** XBI-2228 ***/
-  constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption
-    ) { this.loggedInUserId = this.authenticationService.getUserId();}
+  customFieldsRequestDto : any = new CustomFieldsRequestDto();
+  constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, 
+    public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption,
+    private customFieldService : CustomFieldService) 
+    { this.loggedInUserId = this.authenticationService.getUserId();}
 
   ngOnInit() {
     this.showCompanies();
@@ -59,9 +64,9 @@ customResponse: CustomResponse = new CustomResponse();
     this.referenceService.goToRouter("/home/contacts/company/"+id);
   }
   addCompanyModalOpen(){
-    this.companyService.isCompanyModalPopUp = true;
     this.actionType = "add";
     this.companyId = 0;
+    this.findCustomFieldsData();
   }
   closeCompanyModal (event: any) {
 		if (event === "0") {
@@ -246,6 +251,17 @@ customResponse: CustomResponse = new CustomResponse();
       }
     );
     }
+
+    findCustomFieldsData() {
+      this.pageLoader = true;
+      this.customFieldService.findCustomFieldsData().subscribe(data => {
+          this.pageLoader = false;
+          this.customFieldsRequestDto = data;
+          this.companyService.isCompanyModalPopUp = true;
+      }, (error: any) => {
+          this.pageLoader = false;
+      });
+  }
 
   }
 
