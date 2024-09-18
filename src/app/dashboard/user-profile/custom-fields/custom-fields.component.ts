@@ -9,6 +9,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { CustomFieldService } from '../services/custom-field.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
+import { CustomField } from '../models/custom-field';
 @Component({
   selector: 'app-custom-fields',
   templateUrl: './custom-fields.component.html',
@@ -20,6 +21,9 @@ export class CustomFieldsComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   customFields:Array<any> = new Array<any>();
   pagination:Pagination = new Pagination();
+  customField:CustomField = new CustomField();
+  submitButtonText = "Save";
+  addLoader: HttpRequestLoader = new HttpRequestLoader();
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public sortOption:SortOption,
     public pagerService:PagerService,public properties:Properties,public customFieldService:CustomFieldService,public utilService:UtilService) { }
 
@@ -72,6 +76,28 @@ export class CustomFieldsComponent implements OnInit {
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedCustomFieldsSortDropDownOption, pagination);
     this.findPaginatedCustomFields(pagination);
+  }
+
+  openAddModalPopUp(){
+    
+  }
+
+  goToManage(){
+    this.customField = new CustomField();
+    this.referenceService.stopLoader(this.addLoader);
+    this.referenceService.stopLoader(this.httpRequestLoader);
+    this.customResponse = new CustomResponse();
+    this.referenceService.hideDiv("add-custom-field");
+    this.referenceService.showDiv("manage-custom-fields");
+    this.referenceService.goToTop();
+  }
+
+  saveOrUpdate(){
+
+  }
+
+  validateForm(){
+
   }
 
 

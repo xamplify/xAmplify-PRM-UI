@@ -3827,6 +3827,10 @@ copySelectedElement(inputElement:any,id:string){
   isValidCustomFieldName(input:string){
     return this.regularExpressions.CUSTOM_FIELD_NAME_PATTERN.test(input);
   }
+
+  showDiv(divId:string){
+    $('#'+divId).show(500);
+  }
   
 }
 
