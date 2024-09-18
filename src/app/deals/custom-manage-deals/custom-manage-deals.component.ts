@@ -282,8 +282,6 @@ export class CustomManageDealsComponent implements OnInit {
   }
 
   toggleFilterOption() {
-    this.stageNamesForVendor();
-    this.getVendorCompanies();
     this.showFilterOption = !this.showFilterOption;
     this.fromDateFilter = "";
     this.toDateFilter = "";
@@ -311,8 +309,8 @@ export class CustomManageDealsComponent implements OnInit {
       }
     } else {
       this.filterMode = false;
-      this.stageNamesForVendor();
-      this.getVendorCompanies();
+      this.getStageNamesForFilter();
+      this.getVendorCompaniesForFilter();
     }
   }
 
@@ -397,7 +395,7 @@ export class CustomManageDealsComponent implements OnInit {
     }
   }
 
-  stageNamesForVendor() {
+  getStageNamesForFilter() {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.statusLoader = true;
     this.dealsService.getStageNamesForVendor(this.loggedInUserId)
@@ -415,7 +413,7 @@ export class CustomManageDealsComponent implements OnInit {
       );
   }
 
-  getVendorCompanies() {
+  getVendorCompaniesForFilter() {
     this.leadsService.getVendorList(this.loggedInUserId)
       .subscribe(
         response => {
