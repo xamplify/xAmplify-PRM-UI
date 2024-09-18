@@ -362,8 +362,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	welcomePages: boolean =false;
 	welcomePagesAccess:boolean = false;
 	/**XNFR-679***/
-	customFieldsMenuHeader = MY_PROFILE_MENU_CONSTANTS.CUSTOM_FIELDS;
-	isCustomFieldsOptionClicked = false;
+	flexiFieldsMenuHeader = MY_PROFILE_MENU_CONSTANTS.FLEXI_FIELDS;
+	isFlexiFieldsOptionClicked = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2172,22 +2172,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.welcomePages;
 		}
 		/*****XNFR-628******/
-		else if (this.activeTabName == this.customFieldsMenuHeader) {
-			this.activateCustomFieldsMenuHeader();
+		else if (this.activeTabName == this.flexiFieldsMenuHeader) {
+			this.activateFlexiFieldsMenuHeader();
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
 
 	/***XNFR-679***/
-	private activateCustomFieldsMenuHeader() {
+	private activateFlexiFieldsMenuHeader() {
 		this.startNgxLoader();
-		this.isCustomFieldsOptionClicked = false;
+		this.isFlexiFieldsOptionClicked = false;
 		let self = this;
 		setTimeout(() => {
-			self.isCustomFieldsOptionClicked = true;
+			self.isFlexiFieldsOptionClicked = true;
 			self.stopNgxLoader();
 		}, 500);
-		this.activeTabHeader = this.customFieldsMenuHeader;
+		this.activeTabHeader = this.flexiFieldsMenuHeader;
 	}
 
 	/*****XNFR-628******/

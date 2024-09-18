@@ -376,7 +376,7 @@
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
                                             activeTabName == properties?.addDomainsText ? 'show':'',
                                             activeTabName == 'masterLandingPageCategories' ? 'show':'',
-                                            activeTabName == customFieldsMenuHeader ? 'show':'' ]">
+                                            activeTabName == flexiFieldsMenuHeader ? 'show':'' ]">
                                         Admin
                                         <a data-toggle="collapse" style="float: right;" href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
                                             <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
@@ -547,13 +547,13 @@
                                                     [ngTemplateOutletContext]="{'moduleName':properties?.addDomainsText}"></ng-template>
                                             </a>
                                         </li>
-                                        <!--XNFR-679 Custom Fields-->
+                                        <!--XNFR-679 Flexi Fields-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
-                                            [ngClass]="{'active-tab': activeTabName == customFieldsMenuHeader}"
+                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}"
                                             style="border-bottom: none !important;">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == customFieldsMenuHeader}"
-                                                (click)="activateTab(customFieldsMenuHeader);clearCustomResponse()">{{customFieldsMenuHeader}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':customFieldsMenuHeader}"></ng-template>
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
+                                                (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':flexiFieldsMenuHeader}"></ng-template>
                                             </a>
                                         </li>
                                         
@@ -1463,7 +1463,7 @@
                                                         <span
                                                             style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
                                                             <a (click)="salesforceSettings()" data-toggle="tooltip"
-                                                                data-placement="top" title="Refresh Custom Fields"><i
+                                                                data-placement="top" title="Refresh Flexi Fields"><i
                                                                     class="fa fa-refresh"
                                                                     style="font-size: 15px !important;"></i> Reload</a>
                                                         </span>
@@ -1584,7 +1584,7 @@
                                                         <span
                                                             style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
                                                             <a (click)="hubspotSettings()" data-toggle="tooltip"
-                                                                data-placement="top" title="Refresh Custom Fields"><i
+                                                                data-placement="top" title="Refresh Flexi Fields"><i
                                                                     class="fa fa-refresh"
                                                                     style="font-size: 15px !important;"></i> Reload</a>
                                                         </span>
@@ -3297,8 +3297,8 @@
                                         <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></app-campaign-analytics-settings>
                                         <!--XNFR-628 Chat GPT-->
                                         <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
-                                        <!--XNFR-679 Custom Fields-->
-                                        <app-custom-fields *ngIf="isCustomFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == customFieldsMenuHeader}"></app-custom-fields>
+                                        <!--XNFR-679 Flexi Fields-->
+                                        <app-custom-fields *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-custom-fields>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
                                     </div>
                                 </div>
