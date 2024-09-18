@@ -92,13 +92,14 @@
   </app-response-message>
   <div class="tab-content" *ngIf="!addLoader?.isLoading"></div>
     <form role="form" aria-labelledby="add-custom-field-form">
-      <div class="form-group" [attr.class]="customField?.fieldNameLabelClass">
+      <div [attr.class]="errorFieldNames.indexOf(fieldName)>-1  ? errorLabelClass:customField?.fieldNameLabelClass">
         <label class="control-label">Field Name</label>
         <span class="required">*</span>
         <input type="text" maxlength="255" placeholder="Enter Field Name" [(ngModel)]="customField.fieldName"
           [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" />
-        <span class="required"
-          *ngIf="customField?.dupliateNameErrorMessage?.length>0">{{customField?.dupliateNameErrorMessage}}</span>
+          <ng-container *ngFor="let errorResponse of errorResponses">
+            <span class="required"  *ngIf="errorResponse.field==fieldName">{{errorResponse.message}}</span>
+          </ng-container>
       </div>
       <div id="right">
         <button type="button" [disabled]="!customField.isValidForm" class="button_blue bgcolor-unset" (click)="saveOrUpdate()">

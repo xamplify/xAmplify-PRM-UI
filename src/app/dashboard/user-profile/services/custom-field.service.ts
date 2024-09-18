@@ -28,7 +28,6 @@ export class CustomFieldService {
 
   saveOrUpdateCustomField(customField:CustomField,isAdd:boolean){
     customField.loggedInUserId = this.authenticationService.getUserId();
-    alert(this.CUSTOM_FIELD_URL + this.authenticationService.access_token);
     return this.authenticationService.callPostMethod(this.CUSTOM_FIELD_URL + this.authenticationService.access_token,customField);
 
 

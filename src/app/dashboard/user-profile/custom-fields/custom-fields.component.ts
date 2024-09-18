@@ -11,6 +11,8 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
 import { CustomField } from '../models/custom-field';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { ErrorResponse } from 'app/util/models/error-response';
+import { CUSTOM_FIELD_LABELS } from 'app/constants/custom-field-lables.constants';
 @Component({
   selector: 'app-custom-fields',
   templateUrl: './custom-fields.component.html',
@@ -23,9 +25,15 @@ export class CustomFieldsComponent implements OnInit {
   customFields:Array<any> = new Array<any>();
   pagination:Pagination = new Pagination();
   customField:CustomField = new CustomField();
-  submitButtonText = "Save";
+  submitButtonText = XAMPLIFY_CONSTANTS.save;
   addLoader: HttpRequestLoader = new HttpRequestLoader();
   isAdd: boolean;
+  errorResponses:Array<ErrorResponse> = new Array<ErrorResponse>(); 
+  errorFieldNames: Array<string> = new Array<string>();
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
+  successLabelClass = XAMPLIFY_CONSTANTS.successLabelClass;
+  errorLabelClass = XAMPLIFY_CONSTANTS.errorLabelClass;
+  fieldName = CUSTOM_FIELD_LABELS.fieldName;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public sortOption:SortOption,
     public pagerService:PagerService,public properties:Properties,public customFieldService:CustomFieldService,public utilService:UtilService) { }
 
@@ -86,17 +94,32 @@ export class CustomFieldsComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.referenceService.hideDiv("manage-custom-fields");
     this.referenceService.showDiv("add-custom-field")
-    this.submitButtonText = "Save";
+    this.submitButtonText = XAMPLIFY_CONSTANTS.save;
   }
 
   validateForm(){
     let isValidFieldName = this.referenceService.isValidText(this.customField.fieldName);
     this.customField.isValidForm = isValidFieldName;
-    this.customField.fieldNameLabelClass =  isValidFieldName ? XAMPLIFY_CONSTANTS.successLabelClass :XAMPLIFY_CONSTANTS.errorLabelClass;
+    this.errorFieldNames = this.referenceService.filterArrayList(this.errorFieldNames,this.fieldName);
+    this.customField.fieldNameLabelClass =  isValidFieldName ? this.successLabelClass :this.errorLabelClass;
+    console.log(this.errorResponses);
+    let new_updated_data =
+    this.errorResponses.map((errorResponse:ErrorResponse) => {
+        if (errorResponse.field == this.fieldName) {
+            return {
+                ...errorResponse,
+                message: "Anthony",
+            };
+        }
+        return errorResponse;
+    });
+    console.log(new_updated_data);
   }
 
   goToManage(){
     this.customField = new CustomField();
+    this.errorResponses = [];
+    this.errorFieldNames = [];
     this.referenceService.stopLoader(this.addLoader);
     this.referenceService.stopLoader(this.httpRequestLoader);
     this.customResponse = new CustomResponse();
@@ -106,19 +129,25 @@ export class CustomFieldsComponent implements OnInit {
   }
 
   saveOrUpdate(){
+    this.referenceService.startLoader(this.addLoader);
     this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
     this.customField.dupliateNameErrorMessage = "";
-    this.referenceService.startLoader(this.addLoader);
     this.customFieldService.saveOrUpdateCustomField(this.customField,this.isAdd).subscribe(
       response => {
-        if (response.statusCode == 200) {
+        let statusCode = response.statusCode;
+        let data = response.data;
+        if (statusCode==200) {
           this.goToManage();
           let message = this.isAdd ? 'created' : 'updated';
           this.customResponse = new CustomResponse('SUCCESS', 'Custom Field is  ' + message + ' successfully', true);
           this.pagination = new Pagination();
           this.sortOption = new SortOption();
           this.findPaginatedCustomFields(this.pagination);
+        }else{
+          this.errorResponses = data['errorMessages'];
+			    this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
+          this.referenceService.stopLoader(this.addLoader);
         }
       }, error => {
         let statusCode = JSON.parse(error['status']);
