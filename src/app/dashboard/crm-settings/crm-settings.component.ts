@@ -69,6 +69,10 @@ export class CrmSettingsComponent implements OnInit {
   twoColumnLayout = XAMPLIFY_CONSTANTS.twoColumnLayout;
   isVendorAndPartnerLeadsRegisterDealToggleVisible: boolean = false;
   isSelfLeadsRegisterDealToggleVisible: boolean = false;
+  leadPipelineTooltipTitle:string;
+  leadPipelineStageTooltipTitle:string;
+  dealPipelineTooltipTitle:string;
+  dealPipelineStageTooltipTitle:string;
   
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties, public leadSerivce: LeadsService) {
@@ -135,19 +139,35 @@ export class CrmSettingsComponent implements OnInit {
   private setTitles() {
     let partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
     let partnersMergeTag = this.properties.partnersMergeTag;
-    this.showDealPipeLineCRMIntegrationMessage = this.properties.showDealPipeLineCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showDealPipeLineStageCRMIntegrationMessage = this.properties.showDealPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showLeadPipeLineCRMIntegrationMessage = this.properties.showLeadPipeLineCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showLeadPipeLineStageCRMIntegrationMessage = this.properties.showLeadPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    if (this.authenticationService.module.isMarketingCompany) {
+      this.showDealPipeLineCRMIntegrationMessage = this.properties.showDealPipeLineCRMIntegrationMessageForMarketing;
+      this.showDealPipeLineStageCRMIntegrationMessage = this.properties.showDealPipeLineStageCRMIntegrationMessageForMarketing;
+      this.showLeadPipeLineCRMIntegrationMessage = this.properties.showLeadPipeLineCRMIntegrationMessageForMarketing;
+      this.showLeadPipeLineStageCRMIntegrationMessage = this.properties.showLeadPipeLineStageCRMIntegrationMessageForMarketing;
+      this.leadPipelineTooltipTitle = this.properties.leadPipelineTooltipTitleForMarketing;
+      this.leadPipelineStageTooltipTitle = this.properties.leadPipelineStageTooltipTitleForMarketing;
+      this.dealPipelineTooltipTitle = this.properties.dealPipelineTooltipTitleForMarketing;
+      this.dealPipelineStageTooltipTitle = this.properties.dealPipelineStageTooltipTitleForMarketing;
+    } else {
+      this.showDealPipeLineCRMIntegrationMessage = this.properties.showDealPipeLineCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+      this.showDealPipeLineStageCRMIntegrationMessage = this.properties.showDealPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+      this.showLeadPipeLineCRMIntegrationMessage = this.properties.showLeadPipeLineCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+      this.showLeadPipeLineStageCRMIntegrationMessage = this.properties.showLeadPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+      this.leadPipelineTooltipTitle = this.properties.leadPipelineTooltipTitle;
+      this.leadPipelineStageTooltipTitle = this.properties.leadPipelineStageTooltipTitle;
+      this.dealPipelineTooltipTitle = this.properties.dealPipelineTooltipTitle;
+      this.dealPipelineStageTooltipTitle = this.properties.dealPipelineStageTooltipTitle;
+    }
     this.showRegisterDealToPartnerOffMessage = this.properties.showRegisterDealOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
     this.showRegisterDealToPartnerOnMessage = this.properties.showRegisterDealOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showRegisterDealForPartnerLeadsOffMessage = this.properties.showRegisterDealForPartnerLeadsOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showRegisterDealForPartnerLeadsOnMessage = this.properties.showRegisterDealForPartnerLeadsOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showRegisterDealToSelfLeadsOffMessage = this.properties.showRegisterDealToSelfLeadsOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showRegisterDealToSelfLeadsOnMessage = this.properties.showRegisterDealToSelfLeadsOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealForPartnerLeadsOffMessage = this.properties.showRegisterDealForPartnerLeadsOffMessage;
+    this.showRegisterDealForPartnerLeadsOnMessage = this.properties.showRegisterDealForPartnerLeadsOnMessage;
+    this.showRegisterDealToSelfLeadsOffMessage = this.properties.showRegisterDealToSelfLeadsOffMessage;
+    this.showRegisterDealToSelfLeadsOnMessage = this.properties.showRegisterDealToSelfLeadsOnMessage;
   }
 
   updateCRMSettings() {
+    this.ngxLoading = true;
     this.integrationDetails.showLeadPipeline = this.showLeadPipeline;
     this.integrationDetails.showLeadPipelineStage = this.showLeadPipelineStage;
     this.integrationDetails.showDealPipeline = this.showDealPipeline;
@@ -176,10 +196,12 @@ export class CrmSettingsComponent implements OnInit {
           this.customResponse = new CustomResponse('ERROR', data.message, true);
           this.notifySubmitSuccess.emit(this.customResponse);
         }
+        this.ngxLoading = false;
       },
       error => {
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         this.notifySubmitSuccess.emit(this.customResponse);
+        this.ngxLoading = false;
       })
   }
 

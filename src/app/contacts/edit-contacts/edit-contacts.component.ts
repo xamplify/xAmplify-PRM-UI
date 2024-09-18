@@ -2838,7 +2838,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 	saveAs(showGDPR: boolean) {
 		if (this.selectedContactForSave.length === 0 && this.isPartner) {
-			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + (this.checkingContactTypeName).toLowerCase() + " to create the group", true);
+			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + (this.authenticationService.partnerModule.customName) + " to create the group", true);
 		} else if (this.selectedContactForSave.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + (this.checkingContactTypeName).toLowerCase() + " to create the list", true);
 		} else {

@@ -24,6 +24,7 @@ import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ParterService } from 'app/partners/services/parter.service';
 import { Roles } from 'app/core/models/roles';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $: any, swal: any;
 @Component({
@@ -452,6 +453,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
     if (this.isLoggedInThroughVanityUrl) {
+      this.referenceService.isWelcomePageLoading = true;
       this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
     } else {
       this.getUserData(emailId, isLoggedInAsAdmin);
@@ -499,7 +501,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.utilService.setUserInfoIntoLocalStorage(emailId, response);
     let self = this;
     setTimeout(function () {
-      self.router.navigate(['home/dashboard/'])
+      
+      const currentUser = localStorage.getItem( 'currentUser' );
+      let isWelcomePageEnabled = JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+      let routingLink = isWelcomePageEnabled? 'welcome-page':'home/dashboard/';
+
+      self.router.navigate([routingLink])
         .then(() => {
           window.location.reload();
         })

@@ -18,6 +18,7 @@ import { HttpRequestLoader } from '../models/http-request-loader';
 })
 export class NotificationsComponent implements OnInit {
     @Input('isTopNavBar') isTopNavBar = false;
+    @Input('isWelcomePage') isWelcomePage = false;
     notifications = [];
     pager: any = {};
     pagedItems: any[];

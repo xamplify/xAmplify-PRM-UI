@@ -150,19 +150,23 @@
                 <section *ngIf="modulesDisplayType?.isGridView &&  !httpRequestLoader?.isLoading">
                     <div class="row p10" style="padding: 0px 3px 0px 3px;">
                         <div class=" col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"
-                        [ngClass]="{'col-lg-3': !(vendorJourney || isLandingPages || isMasterLandingPages), 'col-lg-4': (vendorJourney || isLandingPages || isMasterLandingPages)}"
+                        [ngClass]="{'col-lg-3': !(vendorJourney || isLandingPages || isMasterLandingPages || welcomePages), 'col-lg-4': (vendorJourney || isLandingPages || isMasterLandingPages ||welcomePages)}"
                             *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
-                                <ng-container *ngIf="!isPartnerLandingPage">
+                                <ng-container *ngIf="!isPartnerLandingPage ">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
-                                    <span class="ribbon1" *ngIf="!landingPage.coBranded && (!(vendorJourney || isMasterLandingPages) || ((vendorJourney || isMasterLandingPages) &&!landingPage.defaultLandingPage)) "><span>Regular</span></span>
-                                    <span class="ribbon1" *ngIf="!landingPage.coBranded && ((vendorJourney || isMasterLandingPages)&& landingPage.defaultLandingPage) "><span>Default</span></span>
+                                    <span class="ribbon1" *ngIf="!landingPage.coBranded && (!(vendorJourney || isMasterLandingPages || !welcomePages) || ((vendorJourney || isMasterLandingPages) &&!landingPage.defaultLandingPage)) "><span>Regular</span></span>
+                                    <span class="ribbon1" *ngIf="!landingPage.coBranded && ((vendorJourney || isMasterLandingPages || welcomePages)&& landingPage.defaultLandingPage) "><span>Default</span></span>
                                 </ng-container>
                                 <div class="ribbon tab-ribbon" *ngIf = "vendorJourney">
                                     <span
                                         *ngIf="landingPage?.published && !landingPage?.publishingOrWhiteLabelingInProgress">Published</span>
                                     <span
                                         *ngIf="landingPage?.publishingOrWhiteLabelingInProgress">Processing</span>
+                                </div>
+                                <div class="activeribbon tab-ribbon" *ngIf = " welcomePages">
+                                    <span
+                                        *ngIf="landingPage?.published && !landingPage?.publishingOrWhiteLabelingInProgress">Active</span>
                                 </div>
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
                                     alt="No Image Found">
@@ -222,8 +226,11 @@
                                 <!---Icons-->
                                 <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu">
                                     <!--Share Icon-->
-                                    <ng-template *ngIf="vendorJourney && !landingPage?.defaultLandingPage " [ngTemplateOutlet]="shareIcon"
-                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>                            
+                                    <ng-template *ngIf="vendorJourney && !landingPage?.defaultLandingPage ||((welcomePages && !landingPage?.defaultLandingPage && !landingPage?.published)) " [ngTemplateOutlet]="shareIcon"
+                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--unshare Icon-->
+                                    <ng-template *ngIf="((welcomePages && !landingPage?.defaultLandingPage && landingPage?.published)) " [ngTemplateOutlet]="unshareIcon"
+                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Copy Icon-->
                                     <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="copyIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
@@ -241,11 +248,11 @@
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
                                     <ng-template [ngTemplateOutlet]="formIcon"
-                                    *ngIf="!vendorJourney||  (vendorJourney && !landingPage?.defaultLandingPage)"
+                                    *ngIf="!vendorJourney||  (vendorJourney && !landingPage?.defaultLandingPage) || (welcomePages && !landingPage?.defaultLandingPage)"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
                                     <ng-template [ngTemplateOutlet]="analyticsIcon"
-                                    *ngIf = " !(vendorJourney || isMasterLandingPages)||(vendorJourney &&  !landingPage?.defaultLandingPage) || (isMasterLandingPages && !landingPage?.defaultLandingPage)"
+                                    *ngIf = " !(vendorJourney || isMasterLandingPages || welcomePages)||(vendorJourney &&  !landingPage?.defaultLandingPage) || (isMasterLandingPages && !landingPage?.defaultLandingPage) ||(welcomePages && !landingPage?.defaultLandingPage)"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Delete Icon-->
                                     <ng-template [ngTemplateOutlet]="deleteIcon"
@@ -333,10 +340,10 @@
                 <div>
                     <ul class="mix-filter" style="margin-top: 2px;"
                         *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
-                        <li class="filter" (click)="showAllLandingPages('All',0)" *ngIf="!isMasterLandingPages && !vendorJourney && !isLandingPages"
+                        <li class="filter" (click)="showAllLandingPages('All',0)" *ngIf="!isMasterLandingPages && !vendorJourney && !isLandingPages && !welcomePages"
                             [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All
                         </li>
-                        <ng-container *ngIf="!isPartnerLandingPage && !isMasterLandingPages && !vendorJourney && !isLandingPages">
+                        <ng-container *ngIf="!isPartnerLandingPage && !isMasterLandingPages && !vendorJourney && !isLandingPages && !welcomePages">
                             <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)"
                                 [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)</li>
                             <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)"
@@ -370,7 +377,7 @@
                 *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView"
                 style="padding-right: 22px;padding-left: 5px;">
                 <div class="btn-group pull-right" style="display: flex;">
-                    <div class="ml_10" *ngIf = "!(vendorJourney || isMasterLandingPages || isLandingPages)">
+                    <div class="ml_10" *ngIf = "!(vendorJourney || isMasterLandingPages || isLandingPages || welcomePages)">
                         <div class="group-dropdown">
                             <button
                                 [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
@@ -564,6 +571,18 @@
         <i class="fa fa-share" aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
+    <a class="Iconhover custom-grid-icon" *ngIf="!landingPage.publishingOrWhiteLabelingInProgress && !isPartnerLandingPage && (welcomePages )" data-toggle="tooltip"
+    data-placement="top" title="Activate" (click)="publishWelcomePage(landingPage.id)">
+    <i class="fa fa-power-off" aria-hidden="true"></i>
+    <div class="clickicons"></div>
+</a>
+</ng-template>
+<ng-template #unshareIcon let-landingPage="landingPage"> 
+    <a class="Iconhover custom-grid-icon" *ngIf="!landingPage.publishingOrWhiteLabelingInProgress && !isPartnerLandingPage && (welcomePages )" data-toggle="tooltip"
+    data-placement="top" title="Deactivate" (click)="unPublishWelcomePage(landingPage.id)">
+    <i class="fa fa-undo" aria-hidden="true"></i>
+    <div class="clickicons"></div>
+</a>
 </ng-template>
 <!--XNFR-432-->
 <app-copy-modal-popup #copyModalPopupComponent

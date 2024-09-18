@@ -5,6 +5,7 @@ import { Pagination } from '../models/pagination';
 import { CropperSettings} from 'ng2-img-cropper';
 import { PagerService } from './pager.service';
 import { ActivatedRoute } from '@angular/router';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $:any;
 @Injectable()
@@ -143,7 +144,8 @@ export class UtilService {
                 'campaignAccessDto':data.campaignAccessDto,
                 'logedInCustomerCompanyNeme':data.companyName,
 				'source':data.source,
-                'secondAdmin': data.secondAdmin
+                'secondAdmin': data.secondAdmin,
+                'isWelcomePageEnabled':JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey],
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);

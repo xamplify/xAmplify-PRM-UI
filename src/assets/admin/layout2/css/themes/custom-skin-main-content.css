@@ -2500,3 +2500,6 @@ button.filter.btn-hvr-text.emailtemplate-selected{
   .border_0 {
     padding-top: 14px!important;
   }
+  a.whiteSpace {
+    color: var(--title-heading--text) !important;
+}

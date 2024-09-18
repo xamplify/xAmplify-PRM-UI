@@ -1,5 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
@@ -94,6 +95,7 @@ export class LoginAsPartnerComponent implements OnInit {
 
   logoutAsPartnerOrTeamMember(){
     this.utilService.addLoginAsLoader();
+    this.referenceService.isWelcomePageLoading = true;
     if(this.isLoggedInAsTeamMember){
       this.logoutAsTeamMember();
     }else{
@@ -161,7 +163,10 @@ export class LoginAsPartnerComponent implements OnInit {
     this.utilService.setUserInfoIntoLocalStorage(emailId, data);
     let self = this;
     setTimeout(function () {
-      self.router.navigate(['home/dashboard/'])
+      const currentUser = localStorage.getItem( 'currentUser' );
+      let isWelcomePageEnabled = JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+      let routingLink = isWelcomePageEnabled? 'welcome-page':'home/dashboard/';
+      self.router.navigate([routingLink])
         .then(() => {
           window.location.reload();
         });

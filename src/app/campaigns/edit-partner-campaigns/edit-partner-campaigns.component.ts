@@ -374,6 +374,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             this.campaign.fromName = $.trim(userProfile.firstName);
         else
             this.campaign.fromName = $.trim(userProfile.emailId);
+        /**XNFR-664****/
+        this.campaign.fromEmailUserId = userProfile.userId;
         this.setEmailIdAsFromName();
     }
 
@@ -383,19 +385,23 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
         .subscribe(
         data => {
           let self = this;
-          $.each(data,function(index,value){
+          $.each(data,function(index:number,value:any){
               self.teamMemberEmailIds.push(data[index]);
           });
           if(!this.campaign.nurtureCampaign){
               let teamMember = this.teamMemberEmailIds.filter((teamMember)=> teamMember.id ==this.loggedInUserId)[0];
               this.campaign.email = teamMember.emailId;
               this.campaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
+              this.campaign.fromEmailUserId = teamMember.id;
               this.setEmailIdAsFromName();
           }else{
               let existingTeamMemberEmailIds =  this.teamMemberEmailIds.map(function(a) {return a.emailId;});
               if(existingTeamMemberEmailIds.indexOf(this.campaign.email)<0){
                   this.setLoggedInUserEmailId();
-              }
+              }else{
+                let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.campaign.email)[0];
+                this.campaign.fromEmailUserId = teamMember.id;
+            }
           }
         },
         error => console.log( error ),
@@ -406,6 +412,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     setFromName(){
         let user = this.teamMemberEmailIds.filter((teamMember)=> teamMember.emailId == this.campaign.email)[0];
         this.campaign.fromName = $.trim(user.firstName+" "+user.lastName);
+        /**XNFR-664**/
+        this.campaign.fromEmailUserId = user.id;
         this.setEmailIdAsFromName();
     }
 
@@ -1581,25 +1589,28 @@ appendValueToSubjectLine(event:any){
 
     openEmailTemplateInNewTab(campaign:any){
         if(this.campaign.nurtureCampaign){
-            this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+            this.referenceService.previewCampaignEmailTemplateWithFromEmailUserIdInNewTab(campaign.campaignId,this.campaign.fromEmailUserId);
         }else{
-            this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
+            /**XNFR-664**/
+            this.referenceService.previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaign.campaignId,this.campaign.fromEmailUserId);
         }
     }
 
     openAutoResponseEmailTemplateInNewTab(reply:any){
         if(this.campaign.nurtureCampaign){
-            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+            this.referenceService.previewEditNurtureCampaignAutoReplyEmailTemplateInNewTabByFromEmailUserId(reply.id,this.campaign.fromEmailUserId);
         }else{
-            this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+            /**XNFR-664***/
+            this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id,this.campaign.fromEmailUserId);
         }
     }
 
     openAutoResponseWebsiteLinkTemplateInNewTab(url:any){
         if(this.campaign.nurtureCampaign){
-            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(url.id);
+            this.referenceService.previewEditNurtureCampaignCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id,this.campaign.fromEmailUserId);
         }else{
-            this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
+            /**XNFR-664***/
+            this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id,this.campaign.fromEmailUserId);
         }
     }
 
@@ -1620,9 +1631,10 @@ downloadAsImage(campaign:any){
                     let param: any = {
                         'campaignId': campaign.campaignId,
                         'loggedInUserId': this.loggedInUserId,
-                        'downloadType': 'png'
+                        'downloadType': 'png',
+                        'fromEmailUserId':campaign.fromEmailUserId
                     };
-                    let completeUrl = this.authenticationService.REST_URL + "campaign/download?access_token=" + this.authenticationService.access_token;
+                    let completeUrl = this.authenticationService.REST_URL + "campaign/download/fromEmailUserId?access_token=" + this.authenticationService.access_token;
                     this.referenceService.post(param, completeUrl);
                     this.partnerTemplateLoader = false;
                 }else{

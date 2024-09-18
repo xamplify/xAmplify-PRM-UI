@@ -1,0 +1,111 @@
+.xamplify-company-logo-thumbnail-wrapper {
+    background-color: var(--top-bg-color);
+  }
+  
+  .xamplify-welcome-page-top {
+    box-shadow: 0px 1px 10px 0px rgba(50, 50, 50, 0.2);
+    background: var(--top-bg-color);
+  }
+  
+  .xamplify-btn-group button {
+    background-color: var(--top-buton-color);
+    border: 1px solid var(--top-button-border-color);
+    color: var(--top-button-value-color);
+  }
+  
+  .xamplify-btn-group button:hover {
+    background-color: var(--top-buton-color);
+    border: 1px solid var(--top-button-border-color);
+  }
+  
+  .xamplify-dropdown-user>.xamplify-dropdown-toggle {
+    color: var(--top-button-value-color);
+  }
+  
+  a.xamplify-dropdown-toggle.circlebg-color-bell-v,
+  a.xamplify-dropdown-toggle.circlebg-none-v {
+    background-color: var(--top-buton-color);
+    border: 1px solid var(--top-button-border-color);
+    color: var(--top-button-value-color);
+  }
+  
+  .xamplify-dropdown-menu {
+    background-color: var(--div-bg-color);
+    border: 1px solid var(--border-color);
+  }
+  
+  .xamplify-dropdown .xamplify-dropdown-menu:before {
+    border-bottom: 7px solid var(--top-button-border-color);
+    border-bottom-color: var(--border-color);
+  }
+  
+  .xamplify-dropdown-menu li>a {
+    color: var(--text-color);
+  }
+  
+  .xamplify-dropdown-user .xamplify-dropdown-menu>li>a {
+    border-bottom: 1px solid var(--top-button-border-color);
+  }
+  
+  /* .xamplify-dropdown .xamplify-dropdown-toggle.circlebg-color-bell-v:hover, */
+  .xamplify-dropdown-user .xamplify-dropdown-menu>li>a:hover {
+    background: var(--page-content);
+    color: var(--text-color);
+  }
+  
+  .xamplify-dropdown-user .xamplify-dropdown-toggle>img {
+    background-color: var(--top-bg-color);
+  }
+  
+  /* a.xamplify-dropdown-toggle.circlebg-none-v {
+    border: 1px solid var(--top-button-border-color);
+    color: var(--top-button-value-color);
+    background-color: var(--top-bg-color);
+  } */
+  .xamplify-badge {
+    color: var(--top-button-value-color);
+  }
+  
+  .xamplify-alert-info {
+    background-color: #1a1f4a;
+    color: var(--top-button-value-color);
+  }
+  
+  /*** Tharak Nav-bar *****/
+  .horizontal-navbar .navbar-navs .link li a,
+  .horizontal-navbar .navbar-navs .link li .arrow {
+    color: var(--menu-text);
+  }
+  
+  .horizontal-navbar .navbar-navs .link li a:active,
+  .horizontal-navbar .navbar-navs .link li a:hover,
+  .horizontal-navbar .navbar-navs .link li .arrow:hover {
+    color: var(--menu-text-hover);
+  }
+  
+  /*logout btn  */
+  .xAmplify-btn-danger {
+    background-color: #d9534f;
+    border: 1px solid #d43f3a;
+    color: var(--top-button-value-color);
+  }
+  
+  /*** notification dropdown ***/
+  .xamplify-notify-view,
+  .xamplify-external,
+  .xamplify-dropdown-list>li a .xamplify-time {
+    background: var(--div-bg-color);
+    color: var(--text-color);
+  }
+  
+  .xamplify-dropdown-menu .xamplify-dropdown-list>li>a {
+    background-color: var(--page-content);
+    color: var(--text-color);
+  }
+  
+  li.divider-bottom {
+    border-bottom: 1px solid var(--top-button-border-color);
+  }
+  .xamplify-active {
+    color: var(--module-select-color) !important;
+  }

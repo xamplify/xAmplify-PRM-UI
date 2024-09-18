@@ -37,6 +37,7 @@ export class VendorJourneyComponent implements OnInit {
   selectedFrom:any;
   importedObject:any={};
   categoryDropDownOptions=[];
+  welcomePages:boolean = false;
   constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
@@ -44,13 +45,14 @@ export class VendorJourneyComponent implements OnInit {
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
     this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
-   
+    this.welcomePages = this.moduleType == "Welcome Pages";
   }
 
   editVendorLandingPage(event){
     this.vendorDefaultTemplate = event;
     this.landingPageService.vendorJourney = this.vendorJourney;
     this.landingPageService.isMasterLandingPages = this.isMasterLandingPages;
+    this.landingPageService.welcomePages = this.welcomePages;
     this.landingPageService.id = this.vendorDefaultTemplate.id;
     this.mergeTagsInput['page'] = true;
     this.editVendorPage = true;
@@ -67,9 +69,12 @@ export class VendorJourneyComponent implements OnInit {
     this.isLandingPages = false;
     this.isViewAnalytics = false;
     this.isMasterLandingPages = false;
+    this.welcomePages = false;
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
     this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
+    this.welcomePages = this.moduleType == "Welcome Pages";
+
     this.isFormAnalytics = false;
     this.isManageForms = false;
     this.isEditVendorOrMasterForm = false;

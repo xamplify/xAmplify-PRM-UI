@@ -1,1 +1,2 @@
-<app-top-navigation-bar-util></app-top-navigation-bar-util>
+<app-top-navigation-bar-util *ngIf = "!referenceService?.isWelcomePageLoading && !pageLoading" [model]="model"></app-top-navigation-bar-util>
+<div *ngIf= "displayPage && !referenceService?.isWelcomePageLoading && !pageLoading" class="xamplify-welcome-page-div-top" [innerHTML]="htmlContent"></div>

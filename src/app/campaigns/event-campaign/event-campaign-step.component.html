@@ -1,8 +1,7 @@
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"
-					translate>Home</a>
+			<li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right" aria-hidden="true"></i>
 			</li>
 			<li *ngIf="!eventRouterPage"><a [routerLink]="['/home/campaigns/select']" translate>Select Campaign</a>
@@ -22,21 +21,20 @@
 			<li *ngIf="reDistributeEvent || reDistributeEventManage; else other" translate>Redistribute Event Campaign
 			</li>
 			<ng-template #other>
-				<li translate>Event Campaign</li>
+				<li>Event Campaign</li>
 			</ng-template>
 		</ul>
 		<div id="folder-margin-xamp">
 			<button class="button_blue bgcolor-unset pos_pd_top_rgt1 btn_for_only_themes" id="right" style="margin-top: 0px;"
-				(click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition ">Create
-					a
-					Folder</span></button>
+				(click)="openCreateFolderPopup()"><span class="btn btn-primary transition ">{{XAMPLIFY_CONSTANTS?.createFolder}}</span>
+			</button>
 		</div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
 	<div class="folder-custom-response">
-		<app-response-message [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
-		</app-response-message>
+		<app-response-message [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible"></app-response-message>
 	</div>
+	<app-response-message [customResponse]="crmErrorMessage" *ngIf="crmErrorMessage.isVisible"></app-response-message>
 	<div [hidden]="loader">
 		<div [hidden]="isEditPartnerTemplate" id="event-tabs">
 			<ngx-loading [show]="completeLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -1509,7 +1507,7 @@
 														</span>
 													</ng-container>
 													<ng-container *ngIf="authenticationService.isOnlyPartner()">
-														<span *ngIf="!isPartnerUserList">Contact List(s)</span>
+														<span *ngIf="!isPartnerUserList" style="padding-left: 32px;">Contact List(s)</span>
 													</ng-container>
 													<ng-container
 														*ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">
@@ -1603,7 +1601,7 @@
 														(click)="resetTabs('templates')"><span
 															class="btn btn-primary transition txt_pd-top3">Change</span></button>
 													<a *ngIf="reDistributeEvent || reDistributeEventManage"
-														class="btn btn-primary btn-sm redistibute_edit_icon"
+														class="btn btn-primary btn-sm redistibute_edit_icon" style="float: left;"
 														(click)="editPartnerTemplate()"><i
 															class="fa fa-edit"></i>Edit</a>
 												</td>
@@ -1872,7 +1870,7 @@
 																								<a data-toggle="tooltip"
 																									data-placement="top"
 																									title=""
-																									(click)="$event.stopPropagation();openAutoResponseEmailTemplateInNewTab(reply)"
+																									(click)="$event.stopPropagation();openAutoResponseEmailTemplateInNewTab(reply,reply.emailTemplate)"
 																									data-original-title="Preview">
 																									<i class="fa fa-external-link-square preview-edit-color tooltip-cls"
 																										aria-hidden="true"></i>
@@ -1986,7 +1984,7 @@
 																							<a data-toggle="tooltip"
 																								data-placement="top"
 																								title=""
-																								(click)="$event.stopPropagation(); openAutoResponseEmailTemplateInNewTab(reply)"
+																								(click)="$event.stopPropagation(); openAutoResponseEmailTemplateInNewTab(reply,emailTemplate)"
 																								data-original-title="Preview">
 																								<i class="fa fa-external-link-square preview-edit-color tooltip-cls"
 																									aria-hidden="true"></i>

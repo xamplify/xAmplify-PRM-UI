@@ -469,6 +469,21 @@ span.filterActiveBg i {
   .mb_pl0{
     padding-left: 0px!important;
   }
+  .flex_unset{
+    flex: unset!important;
+    display: block!important;
+  }
+  .mb_width100{
+   width: 100%;
+  }
+  .mb_width26{
+    width: 24%;
+    margin: 10px 0px;
+  }
+  .mb_width74{
+  width: 74%;
+   margin: 10px 0px;
+  }
 }
 .button_placement{
   left : 0px !important;

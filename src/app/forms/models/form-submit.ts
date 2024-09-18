@@ -10,4 +10,6 @@ export class FormSubmit {
     vendorJourney: boolean = false;
     masterLandingPage:boolean = false;
     partnerMasterLandingPageId:number;
+    vendorLandingPageId:number;
+    searchKey:string;
 }

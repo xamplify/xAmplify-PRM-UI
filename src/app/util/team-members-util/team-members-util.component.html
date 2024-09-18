@@ -72,18 +72,18 @@
       <!--List Of Team members---->
       <div class="portlet light remove_cardBgcolor">
         <div class="portlet-title">
-          <div class="row" style="display:flex;align-items: center;">
-            <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3">
+          <div class="row flex_unset" style="display:flex;align-items: center;">
+            <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3 mb_width100">
               <div class="caption mg-top7">Team Members
               </div>
             </div>
-            <div class="col-lg-4 col-md-3 col-sm-5 col-xs-4  moveButtonsCu button_placement"
+            <div class="col-lg-4 col-md-3 col-sm-4 col-xs-4  moveButtonsCu button_placement mb_width26"
               style="padding-right: 10px;">
               <div class="row">
                 <div class="clearfix" *ngIf="isTeamMemberModule &&!isNavigatedFromSuperAdminScreen">
                   <section class="clearfix">
                     <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                      <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
+                      <div class="col-xs-6 col-sm-6 col-lg-4 hidden-xs pull-right" style="padding:0px">
                         <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button bgcolor-unset position-relative"
                             [disabled]="isLoggedInAsTeamMember" [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''">
                           <span class="btn Btn-Green">Upload a CSV</span>
@@ -91,7 +91,7 @@
                             id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
                         </button>
                       </div>
-                      <div class="col-xs-12 col-sm-4 pull-right">
+                      <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
                         <button class="btn-xs btn-block rounded-0 button_blue bgcolor-unset" style="padding:1px;"
                           (click)="!isLoggedInAsTeamMember && goToAddTeamMemberDiv()" [disabled]="isLoggedInAsTeamMember" [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''">
                           <span class="btn btn-primary transition primary_btn_width team_blue_btn_text">Add</span>
@@ -103,7 +103,7 @@
               </div>
               <!-- close inner row-->
             </div>
-            <div class="col-lg-5 col-md-5 col-xs-12 col-sm-4 pull-right mb_pl0"
+            <div class="col-lg-5 col-md-5 col-xs-12 col-sm-5 pull-right mb_pl0 mb_width74"
               style="display: flex;justify-content: flex-end ;">
               <div class="tools zero-padding-margin" style="margin-top: -2px;">
                 <div class="inputs zero-padding-display-inline" *ngIf="!isCollapsed">

@@ -16,6 +16,7 @@ import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { ThemePropertiesDto } from "app/dashboard/models/theme-properties-dto";
 import { CompanyThemeActivate } from "app/dashboard/models/company-theme-activate";
 import { ThemeDto } from "app/dashboard/models/theme-dto";
+import { XAMPLIFY_CONSTANTS } from "app/constants/xamplify-default.constants";
 
 
 declare var $: any;
@@ -39,6 +40,8 @@ export class HomeComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number;
   serverImageHostUrl = "";
+  /**XNFR-669**/
+  isWelcomePageEnabled:boolean;
   constructor(
     private titleService: Title,
     public referenceService: ReferenceService,
@@ -308,6 +311,8 @@ export class HomeComponent implements OnInit {
       this.userId = this.currentUser['userId'];
       this.token = this.currentUser['accessToken'];
       const roleNames = this.currentUser['roles'];
+      this.isWelcomePageEnabled = this.currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+      this.referenceService.isHarizontalNavigationBar = this.isWelcomePageEnabled;
       if (
         this.referenceService.defaulgVideoMethodCalled === false &&
         (roleNames.length > 1 && this.authenticationService.hasCompany())

@@ -49,8 +49,6 @@
 					class="btn btn-primary transition text_pd-top1">Update</span></button>
 		</div>
 	</div>
-
-
 </div>
 <div>
 	<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -81,49 +79,49 @@
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
-		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
-			*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
-			<div style="text-align: center;">
-				<label class="control-label">Upload Background Image</label>
-				<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage()">
-					<span *ngIf="(squareDataForBgImage | json) === '{}'">
-						<img [src]="uploadImagePath + themeDTO?.backgroundImagePath" class="profile-image img-grid" alt=""
-							style="object-fit: cover; width: 100%;">
-					</span>
-					<a class="" (click)="uploadImage()">
-						<i class="fa fa-camera icon" aria-hidden="true" data-toggle="tooltip" data-placement="right"
-							title="upload 16:9 ratio image!"
-							style="font-size:25px;padding-top:10px;left: 10px !important;bottom: 10px !important;"></i></a>
-				</div>
-				<div class="p10">
-					<span class="conectColor" (click)="resetPreviewImage()">Reset Preview Image</span>
-				</div>
+	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
+		*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
+		<div style="text-align: center;">
+			<label class="control-label">Upload Background Image</label>
+			<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage()">
+				<span *ngIf="(squareDataForBgImage | json) === '{}'">
+					<img [src]="uploadImagePath + themeDTO?.backgroundImagePath" class="profile-image img-grid" alt=""
+						style="object-fit: cover; width: 100%;">
+				</span>
+				<a class="" (click)="uploadImage()">
+					<i class="fa fa-camera icon" aria-hidden="true" data-toggle="tooltip" data-placement="right"
+						title="upload 16:9 ratio image!"
+						style="font-size:25px;padding-top:10px;left: 10px !important;bottom: 10px !important;"></i></a>
+			</div>
+			<div class="p10">
+				<span class="conectColor" (click)="resetPreviewImage()">Reset Preview Image</span>
 			</div>
 		</div>
-		<div class="col-xs-12 col-md-8 col-lg-8 p0 mt5"
-			*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
-			<div style="text-align: center;">
-				<label class="control-label"></label>
-				<div class="profile-image-wrapper upload-imgheight">
-					<ol class="pt10 text_alligns">
-						<li translate>
-							Click on Create a New API Key, enter the name and select the production environment.
-						</li>
-						<li translate>
-							Copy the API key and Secret Code, insert in above respective fields.
-						</li>
-					</ol>
-				</div>
+	</div>
+	<div class="col-xs-12 col-md-8 col-lg-8 p0 mt5"
+		*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
+		<div style="text-align: center;">
+			<label class="control-label"></label>
+			<div class="profile-image-wrapper upload-imgheight">
+				<ol class="pt10 text_alligns">
+					<li translate>
+						Click on Create a New API Key, enter the name and select the production environment.
+					</li>
+					<li translate>
+						Copy the API key and Secret Code, insert in above respective fields.
+					</li>
+				</ol>
 			</div>
 		</div>
-	
+	</div>
+
 	<div class="page-breadcrumb" *ngIf="themeDTO?.parentThemeName == 'LIGHT' || themeDTO?.parentThemeName == 'DARK'">
 		<ul class="nav nav-pills" style="border-bottom: 2px solid #2b5ec4;">
 			<li [ngClass]="{'active theme_activation_bg': activeTabName == 'header' || activeTabName == '' }"><a
 					class="text-white"
 					[ngClass]="{'active-tab-anchor-text': activeTabName == 'header' || activeTabName == ''}"
 					(click)="activeTabNav('header');clearCustomResponse()" selected="true">Header</a></li>
-			<li [ngClass]="{'active theme_activation_bg': activeTabName == 'leftmenu'}"><a class="text-white"
+			<li *ngIf="!referenceService.isHarizontalNavigationBar" [ngClass]="{'active theme_activation_bg': activeTabName == 'leftmenu'}"><a class="text-white"
 					[ngClass]="{'active-tab-anchor-text': activeTabName == 'leftmenu'}"
 					(click)="activeTabNav('leftmenu');clearCustomResponse()">Left
 					Menu</a></li>
@@ -218,6 +216,34 @@
 								<div *ngIf="btnName.hasError('required')" style="padding-left: 7px;">
 									<p class="danger" translate>Color is Required.</p>
 								</div>
+								<!-- Harizontal Nav Bar-->
+								<!-- Text color-->
+								 <div *ngIf="referenceService.isHarizontalNavigationBar">
+								<div class="col-md-12 col-lg-12">
+									<div class="form-group">
+										<label>Menu Bar Text Color</label> <input class="form-control"
+											[value]="harizontalMenuTextColor" [(ngModel)]="harizontalMenuTextColor"
+											style="padding-left: 40px;"
+											(input)="checkValidColorCode(harizontalMenuTextColor,'harizontalMenuTextColor')"
+											maxlength="7" harizontalMenuColor="harizontalMenuColor"
+											#harizontalMenuColor="ngModel" id="harizontalMenuColor" required /> <span
+											class="input-group-addon color-pick"
+											[(colorPicker)]="headerForm.buttonSecondaryTextColor"
+											[style.background]="headerForm.buttonSecondaryTextColor" [cpWidth]="'200px'"
+											[cpHeight]="'265px'"
+											(colorPickerChange)="changeControllerColor($event,headerForm,'harizontalMenuTextColor')"
+											[cpPosition]="'top'" readonly></span>
+									</div>
+								</div>
+								<div *ngIf="harizontalMenuColor.hasError('required')"
+									style="padding-left: 7px;">
+									<p class="danger" translate>Color is Required.</p>
+								</div>
+								</div>
+								<!-- Text color-->
+								<ng-template [ngTemplateOutlet]="harizontalNavigationBar"
+									*ngIf="referenceService.isHarizontalNavigationBar"></ng-template>
+								<!--Harixontal Nav Bar-->
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 layout-cu-paddings cardleft-paddingzero">
 								<div class="bg-color-for-card1">
@@ -818,6 +844,32 @@
 				<div class="tab-pane" [ngClass]="{'active': activeTabName == 'buttonCustomization'}">
 					<div class="col-md-12 col-lg-12">
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg-color-for-secondcard">
+							<!-- Text color-->
+							 <div *ngIf="referenceService.isHarizontalNavigationBar">
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+									<label>Menu Bar Text Color</label> <input class="form-control"
+										[value]="harizontalMenuTextColor" [(ngModel)]="harizontalMenuTextColor"
+										style="padding-left: 40px;"
+										(input)="checkValidColorCode(harizontalMenuTextColor,'harizontalMenuTextColor')"
+										maxlength="7" harizontalMenuColor="harizontalMenuColor"
+										#harizontalMenuColor="ngModel" id="harizontalMenuColor" required /> <span
+										class="input-group-addon color-pick"
+										[(colorPicker)]="headerForm.buttonSecondaryTextColor"
+										[style.background]="headerForm.buttonSecondaryTextColor" [cpWidth]="'200px'"
+										[cpHeight]="'265px'"
+										(colorPickerChange)="changeControllerColor($event,headerForm,'harizontalMenuTextColor')"
+										[cpPosition]="'bottom'" readonly></span>
+								</div>
+							</div>
+							<div *ngIf="harizontalMenuColor.hasError('required')"
+								style="padding-left: 7px;">
+								<p class="danger" translate>Color is Required.</p>
+							</div>
+							</div>
+							<!-- Text color-->
+							<ng-template [ngTemplateOutlet]="harizontalNavigationBar"
+								*ngIf="referenceService.isHarizontalNavigationBar"></ng-template>
 							<div class="col-md-12 col-lg-12">
 								<div class="form-group">
 									<label>Button Background Color</label> <input class="form-control"
@@ -970,18 +1022,22 @@
 									<label class="previewButton">Preview Button</label>
 								</div>
 								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-								<button class="btn-alignment-theme pull-right custom-primary-button">Primary
-									Button</button>
+									<button class="btn-alignment-theme pull-right custom-primary-button">Primary
+										Button</button>
 								</div>
 							</div>
 							<div class="bg-color-for-secondcard1">
-								<img alt="Button Primary" class="gif-img-cu" *ngIf="themeDTO?.parentThemeName === 'GLASSMORPHISMDARK'"
+								<img alt="Button Primary" class="gif-img-cu"
+									*ngIf="themeDTO?.parentThemeName === 'GLASSMORPHISMDARK'"
 									src="/assets/images/theme/btn-preview-images/Glassomorphism_Dark_btn_preview.gif">
-								<img alt="Button Primary" class="gif-img-cu" *ngIf="themeDTO?.parentThemeName === 'GLASSMORPHISMLIGHT'"
+								<img alt="Button Primary" class="gif-img-cu"
+									*ngIf="themeDTO?.parentThemeName === 'GLASSMORPHISMLIGHT'"
 									src="/assets/images/theme/btn-preview-images/Glassomorphism_Light_btn_preview.gif">
-								<img alt="Button Primary" class="gif-img-cu" *ngIf="themeDTO?.parentThemeName === 'NEUMORPHISMLIGHT'"
+								<img alt="Button Primary" class="gif-img-cu"
+									*ngIf="themeDTO?.parentThemeName === 'NEUMORPHISMLIGHT'"
 									src="/assets/images/theme/btn-preview-images/Neumorphism_Light_btn_preview.gif">
-								<img alt="Button Primary" class="gif-img-cu" *ngIf="themeDTO?.parentThemeName === 'NEUMORPHISMDARK'"
+								<img alt="Button Primary" class="gif-img-cu"
+									*ngIf="themeDTO?.parentThemeName === 'NEUMORPHISMDARK'"
 									src="/assets/images/theme/btn-preview-images/Neumorphism_Dark_btn_preview.gif">
 							</div>
 						</div>
@@ -994,3 +1050,42 @@
 
 <app-image-upload-cropper [aspectRatio]="aspectRatio" [resizeToWidth]="resizeToWidth" *ngIf="isShowUploadScreen"
 	(bgImage)="backgroundImage($event)"></app-image-upload-cropper>
+
+<ng-template #harizontalNavigationBar>
+	<!-- Select color-->
+	<div class="col-md-12 col-lg-12">
+		<div class="form-group">
+			<label>Menu Bar Selected Color</label> <input class="form-control"
+				[value]="harizontalMenuSelectColor" [(ngModel)]="harizontalMenuSelectColor" style="padding-left: 40px;"
+				(input)="checkValidColorCode(harizontalMenuSelectColor,'harizontalMenuSelectColor')" maxlength="7"
+				harizontalMenuSelect="harizontalMenuSelect" #harizontalMenuSelect="ngModel" id="harizontalMenuSelect"
+				required /> <span class="input-group-addon color-pick" [(colorPicker)]="headerForm.divBgColor"
+				[style.background]="headerForm.divBgColor" [cpWidth]="'200px'" [cpHeight]="'265px'"
+				(colorPickerChange)="changeControllerColor($event,headerForm,'harizontalMenuSelectColor')"
+				[cpPosition]="'top'" readonly></span>
+		</div>
+	</div>
+	<div *ngIf="harizontalMenuSelect.hasError('required')" style="padding-left: 7px;">
+		<p class="danger" translate>Color is Required.</p>
+	</div>
+	<!--Select color-->
+	<!-- hover color-->
+	<div class="col-md-12 col-lg-12">
+		<div class="form-group">
+			<label>Menu Bar Text Hover Color</label> <input class="form-control"
+				[value]="harizontalMenuTextHoverColor" [(ngModel)]="harizontalMenuTextHoverColor"
+				style="padding-left: 40px;"
+				(input)="checkValidColorCode(harizontalMenuTextHoverColor,'harizontalMenuTextHoverColor')" maxlength="7"
+				harizontalMenuTextHover="harizontalMenuTextHover" #harizontalMenuTextHover="ngModel"
+				id="harizontalMenuTextHover" required /> <span class="input-group-addon color-pick"
+				[(colorPicker)]="headerForm.iconHoverColor" [style.background]="headerForm.iconHoverColor"
+				[cpWidth]="'200px'" [cpHeight]="'265px'"
+				(colorPickerChange)="changeControllerColor($event,headerForm,'harizontalMenuTextHoverColor')"
+				[cpPosition]="'top'" readonly></span>
+		</div>
+	</div>
+	<div *ngIf="harizontalMenuTextHover.hasError('required')" style="padding-left: 7px;">
+		<p class="danger" translate>Color is Required.</p>
+	</div>
+	<!--hover color-->
+</ng-template>

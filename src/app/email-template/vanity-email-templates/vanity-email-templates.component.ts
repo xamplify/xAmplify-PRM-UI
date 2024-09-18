@@ -36,6 +36,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
       this.referenceService.loading(this.httpRequestLoader, true);
       pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       pagination.userId = this.authenticationService.getUserId();
+      pagination.isAdmin = this.authenticationService.module.isAdmin;
       pagination.maxResults = 24;
       this.vanityURLService.getVanityEmailTemplates(pagination).subscribe(result => {
         const data = result.data;

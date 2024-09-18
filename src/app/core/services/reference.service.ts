@@ -154,6 +154,9 @@ export class ReferenceService {
   website:String="";
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
+  isWelcomePageLoading: boolean = false;
+  isHarizontalNavigationBar:boolean = false;
+  isFromLogin:boolean  = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3380,6 +3383,19 @@ export class ReferenceService {
     });
     return arr;
   }
+
+  removeAnItemFromArray(arr:any,itemToRemove:any){
+    arr = $.grep(arr, function(value:any) {
+      return value != itemToRemove;
+    });
+    return arr;
+  }
+
+  removeMultipleItemsFromArray(array:any,itemsToRemove:any){
+    return array.filter(v => { 
+    	return !itemsToRemove.includes(v); 
+    });
+  }
   
   iterateNamesAndGetErrorMessage(response:any){
     let names = "";
@@ -3540,7 +3556,7 @@ clearHeadScriptFiles(){
   private setTitle() {
     let iconPath = localStorage.getItem("appIcon");
     let completeIconPath = "";
-    if (iconPath) {
+    if (iconPath !== "null" && iconPath != null && iconPath != "") {
       completeIconPath = this.authenticationService.MEDIA_URL + iconPath;
     } else {
       completeIconPath += this.authenticationService.APP_URL + "favicon.ico";
@@ -3574,74 +3590,126 @@ decodePathVariable(value:any){
 }
 
 previewEmailTemplateInNewTab(id:any){
-  this.openWindowInNewTab("/pv/t/"+this.encodePathVariable(id));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/t/"+encodedURLString);
+}
+/***XNFR-664*****/
+previewUnLaunchedCampaignEmailTemplateUsingFromEmailUserIdInNewTab(id:any,fromEmailUserId:any){
+  let encodedEmailId = this.getEncodedUri(this.encodePathVariable(id));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/ulctp/"+encodedEmailId+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewEventCampaignEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/evt/"+this.encodePathVariable(id));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/evt/"+encodedURLString);
 }
 previewEditRedistributedEventCampaignTemplatePreview(campaignId: any) {
-  this.openWindowInNewTab("/pv/edevt/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/edevt/"+encodedURLString);
 }
 
-previewWorkflowEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/wt/"+this.encodePathVariable(id));
+previewWorkflowEmailTemplateInNewTab(id:number,fromEmailUserId:number){
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/wt/"+encodedURLString+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/ct/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/ct/"+encodedURLString);
+}
+
+previewCampaignEmailTemplateWithFromEmailUserIdInNewTab(campaignId:number,fromEmailUserId:number){
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/ctfe/"+encodedCampaignURLString+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/sct/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/sct/"+encodedURLString);
+}
+
+previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaignId:number,fromEmailUserId:number){
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/sctfe/"+encodedCampaignURLString+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/sect/"+this.encodePathVariable(campaignId));
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/sect/"+encodedCampaignURLString);
 }
 
 previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){
-  this.openWindowInNewTab("/pv/cwaret/"+this.encodePathVariable(replyId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(replyId));
+  this.openWindowInNewTab("/pv/cwaret/"+encodedIdURLString);
 }
+
+previewEditNurtureCampaignAutoReplyEmailTemplateInNewTabByFromEmailUserId(replyId:number,fromEmailUserId:number){
+  let encodedReplyIdString = this.getEncodedUri(this.encodePathVariable(replyId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/cwaretfe/"+encodedReplyIdString+"/"+encodedIdFromEmailIdURLString);
+}
+
 
 previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number){
-  this.openWindowInNewTab("/pv/cwarwlt/"+this.encodePathVariable(urlId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(urlId));
+  this.openWindowInNewTab("/pv/cwarwlt/"+encodedIdURLString);
 }
 
-previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
-  this.openWindowInNewTab("/pv/scwaret/"+this.encodePathVariable(vendorCampaignWorkflowId));
+previewEditNurtureCampaignCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number,fromEmailUserId:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(urlId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/cwarwltfe/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
 }
 
-previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
-  this.openWindowInNewTab("/pv/scwarwlt/"+this.encodePathVariable(vendorCampaignWorkflowId));
+previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number,fromEmailUserId:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(vendorCampaignWorkflowId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/scwaret/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
+}
+
+previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number,fromEmailUserId:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(vendorCampaignWorkflowId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/scwarwlt/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
 }
 
 previewPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/lp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/lp/"+encodedIdURLString);
 }
 
 previewPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/plp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/plp/"+encodedIdURLString);
 }
 
 previewVendorJourneyPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/vjplp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vjplp/"+encodedIdURLString);
 }
 
 previewMasterPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/mplp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/mplp/"+encodedIdURLString);
 }
 
 previewAssetPdfInNewTab(id:number){
-  this.openWindowInNewTab("/pv/v/pdf/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/v/pdf/"+encodedIdURLString);
 }
 
 previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(learningTrackContentMappingId:number){
-  this.openWindowInNewTab("/pv/ptp/pdf/"+this.encodePathVariable(learningTrackContentMappingId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(learningTrackContentMappingId));
+  this.openWindowInNewTab("/pv/ptp/pdf/"+encodedIdURLString);
 }
 /***XNFR-496***/
 previewVanityEmailTemplateInNewTab(id:any){
-  this.openWindowInNewTab("/pv/vt/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vt/"+encodedIdURLString);
 }
 
 openWindowInNewTab(url:string){
@@ -3743,6 +3811,17 @@ copySelectedElement(inputElement:any,id:string){
   inputElement.setSelectionRange(0, 0);
   $('#'+id).show(600);
 }
+
+  findDuplicateArrayElements(array:any) {
+    var recipientsArray = array.sort();
+    var duplicateElements = [];
+    for (var i = 0; i < recipientsArray.length - 1; i++) {
+      if (recipientsArray[i + 1] == recipientsArray[i]) {
+        duplicateElements.push(recipientsArray[i]);
+      }
+    }
+    return duplicateElements;
+  }
   
 }
 

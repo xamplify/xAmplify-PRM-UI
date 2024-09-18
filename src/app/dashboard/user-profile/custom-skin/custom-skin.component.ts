@@ -59,6 +59,9 @@ export class CustomSkinComponent implements OnInit {
   headerBVColor: string;
   headerBColor: string;
   headerBIconColor: string;
+  harizontalMenuTextColor:string;
+  harizontalMenuSelectColor:string;
+  harizontalMenuTextHoverColor:string;
   /*******Header Color*************/
   /*******Main_Content******** */
   mainBgColor: string;
@@ -224,6 +227,7 @@ export class CustomSkinComponent implements OnInit {
     } else if (this.activeTabName == "buttonCustomization") {
       this.form.moduleTypeString = this.moduleStatusList[5];
       this.buttonCustomizationForm.moduleTypeString = "FOOTER";
+      this.headerForm.moduleTypeString = "TOP_NAVIGATION_BAR";
     }
   }
   showFooterChange() {
@@ -263,6 +267,12 @@ export class CustomSkinComponent implements OnInit {
       this.headerForm.buttonColor = colorCode; this.isValidButtonColor = true;
     } else if (type === "headerBIconColor") {
       this.headerForm.iconColor = colorCode; this.isValidIconColor = true;
+    } else if (type === "harizontalMenuTextColor") {
+      this.headerForm.buttonSecondaryTextColor = colorCode; this.isValidHeaderTextColor = true;
+    } else if (type === "harizontalMenuSelectColor") {
+      this.headerForm.divBgColor = colorCode;this.isValidDivBgColor = true;
+    } else if (type === "harizontalMenuTextHoverColor") {
+      this.headerForm.iconHoverColor = colorCode;this.isValidIconColor = true
     }
     /******Top_Naviagtion_Bar****************/
     /*********Main_Content*************/
@@ -378,6 +388,12 @@ export class CustomSkinComponent implements OnInit {
         // this.validMessage = "Please Change the color ,it was already exsits"
       } else if (this.mainDivColor === this.iconHoverColor) {
         this.isValid = true;
+      } else if( this.harizontalMenuTextColor === this.headerBgColor){
+        this.isValid = true;
+      } else if( (this.harizontalMenuTextColor === this.harizontalMenuSelectColor) || (this.harizontalMenuSelectColor === this.headerBgColor)) {
+        this.isValid = true;
+      } else if(this.harizontalMenuTextHoverColor === this.headerBgColor) {
+        this.isValid = true;
       }
       else {
         this.isValid = false;
@@ -388,7 +404,14 @@ export class CustomSkinComponent implements OnInit {
         this.isValid = true;
       } else if (this.customIconColor === this.customIconHoverColor) {
         this.isValid = true;
-      } else {
+      } else if( this.harizontalMenuTextColor === this.headerBgColor){
+        this.isValid = true;
+      } else if( (this.harizontalMenuTextColor === this.harizontalMenuSelectColor) || (this.harizontalMenuSelectColor === this.headerBgColor)) {
+        this.isValid = true;
+      } else if(this.harizontalMenuTextHoverColor === this.headerBgColor) {
+        this.isValid = true;
+      }
+      else {
         this.isValid = false;
         this.validMessage = "";
       }
@@ -413,6 +436,10 @@ export class CustomSkinComponent implements OnInit {
       this.headerForm.buttonColor = ""; this.isValidButtonColor = true;
     } else if (type === "headerBIconColor") {
       this.headerForm.iconColor = ""; this.isValidIconColor = true;
+    } else if (type === "harizontalMenuTextColor") {
+      this.headerForm.buttonSecondaryTextColor = ""; this.isValidHeaderTextColor = true;
+    } else if(type == "harizontalMenuSelectColor") {
+      this.headerForm.divBgColor = ""; this.isValidDivBgColor = true;
     }
     /*********Main_Content*************/
     else if (type === "mainBgColor") {
@@ -505,6 +532,10 @@ export class CustomSkinComponent implements OnInit {
         this.headerBColor = event; this.headerForm.buttonColor = event; this.isValidButtonColor = true;
       } else if (type === "headerBIconColor") {
         this.headerBIconColor = event; this.headerForm.iconColor = event; this.isValidIconColor = true;
+      } else if( type === "harizontalMenuTextColor") {
+        this.harizontalMenuTextColor = event; this.headerForm.buttonSecondaryTextColor = event; this.isValidHeaderTextColor = true;
+      } else if(type === "harizontalMenuSelectColor") {
+        this.harizontalMenuSelectColor = event; this.headerForm.divBgColor = event; this.isValidDivBgColor = true;
       }
       /************Header Form ************** */
       /*********Main_Content*************/
@@ -666,6 +697,9 @@ export class CustomSkinComponent implements OnInit {
           this.headerBBorderColor = this.headerForm.buttonBorderColor;
           this.headerBVColor = this.headerForm.buttonValueColor;
           this.headerBIconColor = this.headerForm.iconColor;
+          this.harizontalMenuTextColor = this.headerForm.buttonSecondaryTextColor;
+          this.harizontalMenuSelectColor = this.headerForm.divBgColor;
+          this.harizontalMenuTextHoverColor = this.headerForm.iconHoverColor;
           /*******Left menu colors */
           this.leftBgColor = this.leftSideForm.backgroundColor;
           this.leftBorderColor = this.leftSideForm.buttonBorderColor;
@@ -755,6 +789,7 @@ export class CustomSkinComponent implements OnInit {
     this.mainContentForm.moduleTypeString = this.mainModuleName
     if (this.activeTabName == 'buttonCustomization') {
       this.themePropertiesListWrapper.propertiesList.push(this.buttonCustomizationForm)
+      this.themePropertiesListWrapper.propertiesList.push(this.headerForm);
     } else {
       this.themePropertiesListWrapper.propertiesList.push(this.headerForm);
       this.themePropertiesListWrapper.propertiesList.push(this.leftSideForm);
@@ -880,6 +915,7 @@ export class CustomSkinComponent implements OnInit {
     this.buttonCustomizationForm.themeId = this.themeId;
     if (this.activeTabName == 'buttonCustomization') {
       this.updateThemedto.themesProperties.push(this.buttonCustomizationForm)
+      this.updateThemedto.themesProperties.push(this.headerForm);
     } else {
       this.updateThemedto.themesProperties.push(this.headerForm);
       this.updateThemedto.themesProperties.push(this.leftSideForm);

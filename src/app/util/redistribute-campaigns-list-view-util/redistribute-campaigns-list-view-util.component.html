@@ -137,6 +137,8 @@
                       *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched"
                       src="assets/images/survey.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                       alt="{{campaign.campaignType}} Campaign">
+                    <h6 class="green-banner ccss" *ngIf="campaign?.oneClickLaunch">
+											{{properties?.oneClickLaunch}}</h6>
                   </td>
                   <td>
                     <h5 class="moreipsis mobile-left mt5 mb5" data-toggle="tooltip" data-placement="top"
@@ -261,6 +263,10 @@
                       data-toggle="tooltip" title="{{campaign.campaignName}}">
                       <b>Campaign Name:</b> {{campaign.campaignName}}
                     </h4>
+                    <div class="aligntowbtns">
+                      <span class="green-banner LableSpaceings"
+                        *ngIf="campaign?.oneClickLaunch">{{properties?.oneClickLaunch}}</span>
+                    </div>
                     <h6 data-placement="top" data-toggle="tooltip" [title]="campaign.createdBy"
                       class="xamplify-ellipsis GridViewCotent"> <b>By:</b>
                       {{campaign.createdBy}}

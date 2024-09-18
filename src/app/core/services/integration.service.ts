@@ -219,4 +219,10 @@ export class IntegrationService {
         return this.authenticationService.callGetMethod(url);
       
       }
+
+    getCrmCustomDropdowns(parentLabelId: string, selectedValue: string) {
+        return this._http.get(this.authenticationService.REST_URL + `crm/custom/choices/${parentLabelId}/${selectedValue}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

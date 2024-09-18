@@ -34,6 +34,7 @@ import { MdfService } from 'app/mdf/services/mdf.service';
 import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 
 declare var $,swal: any;
@@ -591,7 +592,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             'roles': data.roles,
                             'campaignAccessDto': data.campaignAccessDto,
                             'logedInCustomerCompanyNeme': JSON.parse(currentUser)['companyName'],
-							'source':data.source	
+							'source':data.source,
+                            'isWelcomePageEnabled':JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
                         };
                         localStorage.clear();
                         if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles) {
@@ -658,10 +660,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.authenticationService.user.hasCompany = true;
                             self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
-                            self.router.navigate(["/home/dashboard/welcome"]);
+                            const currentUser = localStorage.getItem('currentUser');
+                            if(JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]){
+                                self.router.navigate(["/welcome-page"]);
+                            }else{
+                                self.router.navigate(["/home/dashboard/welcome"]);
+                            }
                             self.processor.set(self.processor);
                             self.saveVideoBrandLog();
-                            const currentUser = localStorage.getItem('currentUser');
                             let companyName = JSON.parse(currentUser)['companyName'];
                             if(companyName==null || companyName==undefined || companyName==""){
                                 companyName = self.companyProfile.companyName;
@@ -676,7 +682,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                                 'roles': JSON.parse(currentUser)['roles'],
                                 'campaignAccessDto':JSON.parse(currentUser)['campaignAccessDto'],
                                 'logedInCustomerCompanyNeme':companyName,
-								'source':JSON.parse(currentUser)['source']                         
+								'source':JSON.parse(currentUser)['source']  ,
+                                'isWelcomePageEnabled':JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
   							};
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
@@ -1561,14 +1568,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                       this.companyProfile.lastName = user.lastName;
                       this.setCompanyProfileViewData(data.companyProfile.companyName);
                         if(roleIds.indexOf(13)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already vendor and has company profile.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has vendor role and has company profile.So account cannot be created", true );
                             this.addBlur();
                         }else if(roleIds.indexOf(18)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already vendor tier-1 and has company profile.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has marketing role and has company profile.So account cannot be created", true );
                             this.addBlur();
                         }
                         else if(roleIds.indexOf(2)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already an orgadmin.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has an orgadmin role.So account cannot be created", true );
                             this.addBlur();
                         }
                         else if(roleIds.length==2&&roleIds.indexOf(3)>-1 && roleIds.indexOf(12)>-1){
