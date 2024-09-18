@@ -6,25 +6,27 @@ import { SortOption } from 'app/core/models/sort-option';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { CustomFieldService } from '../services/custom-field.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
-import { CustomField } from '../models/custom-field';
+import { FlexiFieldService } from './../services/flexi-field.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { CUSTOM_FIELD_LABELS } from 'app/constants/custom-field-lables.constants';
+import { FlexiField } from '../models/flexi-field';
+
 @Component({
-  selector: 'app-custom-fields',
-  templateUrl: './custom-fields.component.html',
-  styleUrls: ['./custom-fields.component.css'],
+  selector: 'app-flexi-field',
+  templateUrl: './flexi-field.component.html',
+  styleUrls: ['./flexi-field.component.css'],
   providers:[SortOption,HttpRequestLoader,Properties]
 })
-export class CustomFieldsComponent implements OnInit {
+export class FlexiFieldComponent implements OnInit {
+
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse: CustomResponse = new CustomResponse();
   customFields:Array<any> = new Array<any>();
   pagination:Pagination = new Pagination();
-  customField:CustomField = new CustomField();
+  customField:FlexiField = new FlexiField();
   submitButtonText = XAMPLIFY_CONSTANTS.save;
   addLoader: HttpRequestLoader = new HttpRequestLoader();
   isAdd: boolean;
@@ -35,7 +37,7 @@ export class CustomFieldsComponent implements OnInit {
   errorLabelClass = XAMPLIFY_CONSTANTS.errorLabelClass;
   fieldName = CUSTOM_FIELD_LABELS.fieldName;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public sortOption:SortOption,
-    public pagerService:PagerService,public properties:Properties,public customFieldService:CustomFieldService,public utilService:UtilService) { }
+    public pagerService:PagerService,public properties:Properties,public flexiFieldService:FlexiFieldService,public utilService:UtilService) { }
 
   ngOnInit() {
     this.findPaginatedCustomFields(this.pagination);
@@ -45,7 +47,7 @@ export class CustomFieldsComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.customResponse = new CustomResponse();
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.customFieldService.findPaginatedCustomFields(pagination).subscribe(
+    this.flexiFieldService.findPaginatedCustomFields(pagination).subscribe(
       response=>{
         const data = response.data;
         let isSuccess = response.statusCode === 200;
@@ -90,7 +92,7 @@ export class CustomFieldsComponent implements OnInit {
 
   goToAddCustomFieldDiv(){
     this.isAdd = true;
-    this.customField = new CustomField();
+    this.customField = new FlexiField();
     this.customResponse = new CustomResponse();
     this.referenceService.hideDiv("manage-custom-fields");
     this.referenceService.showDiv("add-custom-field")
@@ -117,7 +119,7 @@ export class CustomFieldsComponent implements OnInit {
   }
 
   goToManage(){
-    this.customField = new CustomField();
+    this.customField = new FlexiField();
     this.errorResponses = [];
     this.errorFieldNames = [];
     this.referenceService.stopLoader(this.addLoader);
@@ -133,7 +135,7 @@ export class CustomFieldsComponent implements OnInit {
     this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
     this.customField.dupliateNameErrorMessage = "";
-    this.customFieldService.saveOrUpdateCustomField(this.customField,this.isAdd).subscribe(
+    this.flexiFieldService.saveOrUpdateCustomField(this.customField,this.isAdd).subscribe(
       response => {
         let statusCode = response.statusCode;
         let data = response.data;
@@ -165,8 +167,5 @@ export class CustomFieldsComponent implements OnInit {
       }
     );
   }
-
-
-
 
 }
