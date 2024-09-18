@@ -45,13 +45,13 @@
                   *ngIf="selectedContact?.emailId?.length>12">..</span>
               </p>
               <button class="copy-btn" #textEmail value="{{selectedContact?.emailId}}" (click)="copyEmail(textEmail)">
-                <i *ngIf="emailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!emailCopied"
+                <i *ngIf="isEmailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isEmailCopied"
                   class="fa fa-clone ml_6" aria-hidden="true"></i></button>
             </span>
             <span *ngIf="selectedContact?.mobileNumber != undefined && selectedContact?.mobileNumber != ''" class="email-id">
               <p><i class="fa fa-phone mr_6 icons_colors"></i>{{selectedContact.mobileNumber}}</p>
               <button class="copy-btn" #textMobile value="{{selectedContact?.mobileNumber}}" (click)="copyMobileNumber(textMobile)">
-                <i *ngIf="mobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!mobileNumberCopied"
+                <i *ngIf="isMobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isMobileNumberCopied"
                   class="fa fa-clone ml_6" aria-hidden="true"></i></button>
             </span>
           </div>

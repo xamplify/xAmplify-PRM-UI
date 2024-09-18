@@ -64,8 +64,8 @@ export class ContactDetailsComponent implements OnInit {
   isLoadingList: boolean = false;
   pagination: Pagination = new Pagination();
   contactName: string = '';
-  emailCopied:boolean = false;
-  mobileNumberCopied:boolean = false;
+  isEmailCopied:boolean = false;
+  isMobileNumberCopied:boolean = false;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -261,20 +261,20 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   copyEmail(inputValue: HTMLElement) {
-    this.emailCopied = true;
+    this.isEmailCopied = true;
     this.copyToClipBoard(inputValue);
 
     setTimeout(() => {
-      this.emailCopied = false;
+      this.isEmailCopied = false;
     }, 2000)
   }
 
   copyMobileNumber(inputValue: HTMLElement) {
-    this.mobileNumberCopied = true;
+    this.isMobileNumberCopied = true;
     this.copyToClipBoard(inputValue);
 
     setTimeout(() => {
-      this.mobileNumberCopied = false;
+      this.isMobileNumberCopied = false;
     }, 2000)
   }
 

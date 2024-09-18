@@ -72,21 +72,6 @@
                   <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
                 </div>
               </div>
-              <!--Added By User-->
-              <!-- <div class="form-group">
-                      <label class="control-label col-sm-5">{{LEAD_CONSTANTS.addedBy}}</label>
-                      <div class="col-sm-7">
-                        <p class="mt--10px" *ngIf="registeredByUsersLoader">
-                          <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS.addedBy}}...</strong>
-                        </p>
-                        <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully" [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
-                          [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
-                        </app-searchable-dropdown>
-                        <p class="required" *ngIf="!registeredByUsersLoader && !isRegisteredByUsersLoadedSuccessfully">
-                          <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
-                        </p>
-                      </div>
-                    </div> -->
               <!--Status-->
               <div class="form-group">
                 <label class="control-label col-sm-5">Status</label>
@@ -113,21 +98,6 @@
                   <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
                 </div>
               </div>
-              <!--Added By Company-->
-              <!-- <div class="form-group" *ngIf="isVendorVersion">
-                      <label class="control-label col-sm-5">{{LEAD_CONSTANTS?.addedBy}} Company</label>
-                      <div class="col-sm-7">
-                        <p class="mt--10px" *ngIf="registeredByCompanyLoader">
-                          <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
-                        </p>
-                        <app-searchable-dropdown *ngIf="!registeredByCompanyLoader && isRegisteredByCompaniesLoadedSuccessfully" [searchableDropDownDto]="registeredByCompaniesSearchableDropDownDto" [id]="selectedRegisteredByCompanyId"
-                          [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByCompanyId($event)">
-                        </app-searchable-dropdown>
-                        <p class="required" *ngIf="!registeredByCompanyLoader && !isRegisteredByCompaniesLoadedSuccessfully">
-                          <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
-                        </p>
-                      </div>
-                    </div> -->
               <!--Added For-->
               <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
                 <label class="control-label col-sm-5">Added For</label>
