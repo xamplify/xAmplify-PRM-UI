@@ -35,8 +35,8 @@ import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
-import { CustomFieldService } from 'app/dashboard/user-profile/services/custom-field.service';
 import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
+import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -283,7 +283,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch, private customFieldService : CustomFieldService) {
+		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch, private flexiFieldService : FlexiFieldService) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
@@ -2787,7 +2787,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
 		this.contactAllDetails = null;
-		this.findCustomFieldsData();
+		//this.findCustomFieldsData();
 	}
 
 	addContactModalClose() {
@@ -4253,7 +4253,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	findCustomFieldsData() {
         this.loading = true;
-        this.customFieldService.findCustomFieldsData().subscribe(data => {
+        this.flexiFieldService.findCustomFieldsData().subscribe(data => {
             this.loading = false;
             this.customFieldsRequestDto = data;
             this.contactService.isContactModalPopup = true;

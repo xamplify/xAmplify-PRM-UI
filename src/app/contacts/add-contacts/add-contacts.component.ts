@@ -31,8 +31,9 @@ import { DashboardService } from 'app/dashboard/dashboard.service';
 import { ParsedCsvDto } from '../models/parsed-csv-dto';
 import { CsvRowDto } from '../models/csv-row-dto';
 import { DefaultContactsCsvColumnHeaderDto } from '../models/default-contacts-csv-column-header-dto';
-import { CustomFieldService } from 'app/dashboard/user-profile/services/custom-field.service';
 import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
+import { FlexiFieldService } from './../../dashboard/user-profile/flexi-fields/services/flexi-field.service';
+
 declare var swal:any, $:any, Papa: any;
 
 @Component({
@@ -263,7 +264,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService,
         public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public integrationService: IntegrationService, private dashBoardService: DashboardService, 
-        private customFieldService : CustomFieldService) {
+        private flexiFieldService : FlexiFieldService) {
         this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = (this.countryNames.countries[0]);
@@ -5627,7 +5628,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     findCustomFieldsData() {
         this.loading = true;
-        this.customFieldService.findCustomFieldsData().subscribe(data => {
+        this.flexiFieldService.findCustomFieldsData().subscribe(data => {
             this.loading = false;
             this.customFieldsRequestDto = data;
             this.contactService.isContactModalPopup = true;

@@ -3298,7 +3298,7 @@
                                         <!--XNFR-628 Chat GPT-->
                                         <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
                                         <!--XNFR-679 Flexi Fields-->
-                                        <app-custom-fields *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-custom-fields>
+                                        <app-flexi-field *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-flexi-field>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
                                     </div>
                                 </div>

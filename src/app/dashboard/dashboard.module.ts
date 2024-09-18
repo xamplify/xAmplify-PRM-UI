@@ -1,4 +1,3 @@
-import { FlexiFieldService } from './user-profile/flexi-fields/services/flexi-field.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -114,7 +113,8 @@ import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.
 import { MarketPlaceCategoriesComponent } from './market-place-categories/market-place-categories.component';
 import { ChatGptIntegrationSettingsComponent } from './chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { ChatGptSettingsService } from './chat-gpt-settings.service';
-FlexiFieldService
+import { FlexiFieldComponent } from './user-profile/flexi-fields/manage-flexi-fields/flexi-field.component';
+import { FlexiFieldService } from './user-profile/flexi-fields/services/flexi-field.service';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -197,10 +197,11 @@ FlexiFieldService
         CampaignAnalyticsSettingsComponent,
         CrmFormSettingsComponent,
         MarketPlaceCategoriesComponent,
-        ChatGptIntegrationSettingsComponent
+        ChatGptIntegrationSettingsComponent,
+        FlexiFieldComponent
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
-        SuperAdminServiceService,MyProfileService,ChatGptSettingsService]
+        SuperAdminServiceService,MyProfileService,ChatGptSettingsService,FlexiFieldService]
 })
 export class DashboardModule { }

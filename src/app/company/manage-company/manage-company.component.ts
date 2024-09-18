@@ -16,7 +16,7 @@ import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
-import { CustomFieldService } from 'app/dashboard/user-profile/services/custom-field.service';
+import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
 
 declare var  $:any, swal: any;
 @Component({
@@ -47,8 +47,8 @@ customResponse: CustomResponse = new CustomResponse();
   /*** XBI-2228 ***/
   customFieldsRequestDto : any = new CustomFieldsRequestDto();
   constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, 
-    public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption,
-    private customFieldService : CustomFieldService) 
+    public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger,
+     public utilService: UtilService, public sortOption: SortOption,public flexiFieldService:FlexiFieldService) 
     { this.loggedInUserId = this.authenticationService.getUserId();}
 
   ngOnInit() {
@@ -254,7 +254,7 @@ customResponse: CustomResponse = new CustomResponse();
 
     findCustomFieldsData() {
       this.pageLoader = true;
-      this.customFieldService.findCustomFieldsData().subscribe(data => {
+      this.flexiFieldService.findCustomFieldsData().subscribe(data => {
           this.pageLoader = false;
           this.customFieldsRequestDto = data;
           this.companyService.isCompanyModalPopUp = true;

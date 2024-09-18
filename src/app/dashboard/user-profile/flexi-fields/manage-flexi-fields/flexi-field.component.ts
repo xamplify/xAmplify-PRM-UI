@@ -11,8 +11,8 @@ import { UtilService } from 'app/core/services/util.service';
 import { FlexiFieldService } from './../services/flexi-field.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { ErrorResponse } from 'app/util/models/error-response';
-import { CUSTOM_FIELD_LABELS } from 'app/constants/custom-field-lables.constants';
 import { FlexiField } from '../models/flexi-field';
+import { FLEXI_FIELD_LABELS } from './../../../../constants/flexi-field-lables.constants';
 
 @Component({
   selector: 'app-flexi-field',
@@ -35,7 +35,7 @@ export class FlexiFieldComponent implements OnInit {
   readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   successLabelClass = XAMPLIFY_CONSTANTS.successLabelClass;
   errorLabelClass = XAMPLIFY_CONSTANTS.errorLabelClass;
-  fieldName = CUSTOM_FIELD_LABELS.fieldName;
+  fieldName = FLEXI_FIELD_LABELS.fieldName;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public sortOption:SortOption,
     public pagerService:PagerService,public properties:Properties,public flexiFieldService:FlexiFieldService,public utilService:UtilService) { }
 
