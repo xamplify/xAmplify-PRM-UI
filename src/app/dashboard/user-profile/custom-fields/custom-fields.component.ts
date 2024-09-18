@@ -10,6 +10,7 @@ import { CustomFieldService } from '../services/custom-field.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
 import { CustomField } from '../models/custom-field';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 @Component({
   selector: 'app-custom-fields',
   templateUrl: './custom-fields.component.html',
@@ -24,6 +25,7 @@ export class CustomFieldsComponent implements OnInit {
   customField:CustomField = new CustomField();
   submitButtonText = "Save";
   addLoader: HttpRequestLoader = new HttpRequestLoader();
+  isAdd: boolean;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public sortOption:SortOption,
     public pagerService:PagerService,public properties:Properties,public customFieldService:CustomFieldService,public utilService:UtilService) { }
 
@@ -78,8 +80,19 @@ export class CustomFieldsComponent implements OnInit {
     this.findPaginatedCustomFields(pagination);
   }
 
-  openAddModalPopUp(){
-    
+  goToAddCustomFieldDiv(){
+    this.isAdd = true;
+    this.customField = new CustomField();
+    this.customResponse = new CustomResponse();
+    this.referenceService.hideDiv("manage-custom-fields");
+    this.referenceService.showDiv("add-custom-field")
+    this.submitButtonText = "Save";
+  }
+
+  validateForm(){
+    let isValidFieldName = this.referenceService.isValidText(this.customField.fieldName);
+    this.customField.isValidForm = isValidFieldName;
+    this.customField.fieldNameLabelClass =  isValidFieldName ? XAMPLIFY_CONSTANTS.successLabelClass :XAMPLIFY_CONSTANTS.errorLabelClass;
   }
 
   goToManage(){
@@ -93,12 +106,38 @@ export class CustomFieldsComponent implements OnInit {
   }
 
   saveOrUpdate(){
-
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
+    this.customField.dupliateNameErrorMessage = "";
+    this.referenceService.startLoader(this.addLoader);
+    this.customFieldService.saveOrUpdateCustomField(this.customField,this.isAdd).subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.goToManage();
+          let message = this.isAdd ? 'created' : 'updated';
+          this.customResponse = new CustomResponse('SUCCESS', 'Custom Field is  ' + message + ' successfully', true);
+          this.pagination = new Pagination();
+          this.sortOption = new SortOption();
+          this.findPaginatedCustomFields(this.pagination);
+        }
+      }, error => {
+        let statusCode = JSON.parse(error['status']);
+         if(statusCode==400 || statusCode == 409){
+          let errorResponse = JSON.parse(error['_body']);
+          let message = errorResponse['message'];
+          if("Already Exists"==message){
+            this.customField.dupliateNameErrorMessage = message;
+          }else{
+            this.customResponse = new CustomResponse('ERROR', message, true);
+          }
+        }else {
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        }
+      }
+    );
   }
 
-  validateForm(){
 
-  }
 
 
 }

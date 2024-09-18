@@ -3409,6 +3409,10 @@ export class ReferenceService {
     return $.trim(input);
   }
 
+  isValidText(input:any){
+    return input!=undefined &&  $.trim(input).length > 0;
+  }
+
 
   getRouterParameter(parameter:string){
     return this.route.snapshot.params[parameter];
