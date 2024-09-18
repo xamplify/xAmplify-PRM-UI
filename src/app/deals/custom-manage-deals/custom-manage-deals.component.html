@@ -1,6 +1,7 @@
 <div class="row" *ngIf="showContactDeals" style="padding-top: 10px;">
   <div class="col-md-12">
     <div class="remove_cardBgcolor padding_0" id="header">
+      <app-response-message [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible"></app-response-message>
       <div class="portlet-title">
         <div *ngIf="!httpRequestLoader.isLoading">
           <div class="page-toolbar col-xs-12 col-sm-5 col-lg-6 pull-right" style="padding: 0px 4px 8px 0px;">
