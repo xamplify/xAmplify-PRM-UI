@@ -307,7 +307,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
               confirmButtonText: 'Yes, delete it!'
 
           }).then(function () {
-              self.deleteById(landingPage);
+            if(self.welcomePages){
+                self.welcomePageDelete(landingPage);
+            }else{
+                self.deleteById(landingPage);
+            }
           }, function (dismiss: any) {
               console.log('you clicked on option' + dismiss);
           });
@@ -660,6 +664,40 @@ copy(landingPage:any){
         }  
         window.location.reload();       
         this.ngxloading = false;
+    }
+
+    welcomePageDelete(landingPage: LandingPage) {
+        this.customResponse = new CustomResponse();
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.referenceService.goToTop();
+        this.landingPageService.welcomePageDeletebById(landingPage.id)
+            .subscribe(
+                (response: any) => {
+                    if(response.access){
+                        if (response.statusCode == 200) {
+                            let message = landingPage.name + " deleted successfully";
+                            this.customResponse = new CustomResponse('SUCCESS', message, true);
+                            this.findLandingPagesWithPageIndexOne();
+                        } else {
+                            let pageNames = "";
+                            $.each(response.data, function (index:number, value:any) {
+                                pageNames += (index + 1) + ". " + value + "\n\n";
+                            });
+                            let message = response.message + "\n\n" + pageNames;
+                            this.customResponse = new CustomResponse('ERROR', message, true);
+                            this.referenceService.loading(this.httpRequestLoader, false);
+                        }
+                    }else{
+                        this.authenticationService.forceToLogout();
+                    }
+                   
+  
+                },
+                (error: string) => {
+                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+                    this.customResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+                }
+            );
     }
 }
 
