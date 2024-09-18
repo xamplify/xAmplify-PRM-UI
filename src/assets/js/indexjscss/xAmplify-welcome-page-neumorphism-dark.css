@@ -13,7 +13,7 @@ a.xamplify-dropdown-toggle.circlebg-none-v
 .xamplify-external,.xamplify-notify-view {
   background: #2c2f33 !important;
 }
-.horizontal-navbar .navbar-navs .link li a{
+.horizontal-navbar .navbar-navs .link li a,.horizontal-navbar .navbar-navs .link li .arrow {
     color: #fff;
 }
 .horizontal-navbar .navbar-navs .link li a:active,.horizontal-navbar .navbar-navs .link li a:hover{
