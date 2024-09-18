@@ -32,7 +32,7 @@ export class FlexiFieldService {
   }
 
   deleteFlexiField(flexiFieldId:number){
-    return this.authenticationService.callDeleteMethod(this.FLEXI_FIELD_URL + '/id/'+flexiFieldId+"/loggedInUserId/"+this.authenticationService.getUserId()+this.authenticationService.access_token);
+    return this.authenticationService.callDeleteMethod(this.FLEXI_FIELD_PREFIX_URL + '/id/'+flexiFieldId+"/loggedInUserId/"+this.authenticationService.getUserId()+this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
 
   }
 

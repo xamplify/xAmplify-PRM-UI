@@ -37,7 +37,7 @@ export class FlexiFieldComponent implements OnInit {
   errorLabelClass = XAMPLIFY_CONSTANTS.errorLabelClass;
   fieldName = FLEXI_FIELD_LABELS.fieldName;
   isDeleteOptionClicked: boolean;
-  selectedFieldId: number;
+  selectedFieldId = 0;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public sortOption:SortOption,
     public pagerService:PagerService,public properties:Properties,public flexiFieldService:FlexiFieldService,public utilService:UtilService) { }
 
@@ -176,6 +176,7 @@ export class FlexiFieldComponent implements OnInit {
           let message = this.referenceService.showHttpErrorMessage(error);
           this.customResponse = new CustomResponse('ERROR', message, true);
           this.resetDeleteOptions();
+          this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
     }else{
