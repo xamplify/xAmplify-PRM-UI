@@ -85,8 +85,15 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    getAvailableNames( userId: number ) {
-        return this.http.get( this.URL + "/listAvailableNames/" + userId + "?access_token=" + this.authenticationService.access_token, "" )
+    getAvailableNames( userId: number, isWelcomePage:boolean) {
+        let url;
+        if(isWelcomePage){
+            url = this.URL + "/listAvailableNamesForWelcomePage/";
+        }else{
+            url = this.URL + "/listAvailableNames/";
+
+        }
+        return this.http.get( url + userId + "?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

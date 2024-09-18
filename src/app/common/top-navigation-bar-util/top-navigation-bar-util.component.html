@@ -54,7 +54,7 @@
                 <i class='fa fa-times' (click)="closeSidebar()"></i>
               </div>
               <!--  -->
-              <ul class="link">
+              <ul class="link" *ngIf="authenticationService?.user?.hasCompany">
                 <li>
 <!--                   <a (click)="naviagteToWelcomePage('/welcome-page')" [ngClass]="isWelcomePageActive? 'xamplify-active':''">Home</a> -->
                   <a (click)="naviagteToWelcomePage('/welcome-page')" [ngClass]="isWelcomePageActive? 'xamplify-active':'moduleTextColor'">

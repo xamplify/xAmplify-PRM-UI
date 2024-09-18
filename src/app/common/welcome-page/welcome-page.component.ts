@@ -82,7 +82,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
         }
         }  
     }, 3000);
-
+    this.referenceService.homeRouter='/welcome-page';
   }
 
   getActiveThemeData(vanityLoginDto: VanityLoginDto) {
