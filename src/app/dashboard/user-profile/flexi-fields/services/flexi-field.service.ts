@@ -14,22 +14,25 @@ export class FlexiFieldService {
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService) { }
 
-  findPaginatedCustomFields(pagination:Pagination){
+  findPaginatedFlexiFields(pagination:Pagination){
     let userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
     let findAllUrl = this.FLEXI_FIELD_PREFIX_URL+'/paginated'+'/userId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 
-  findCustomFieldsData() {
+  findFlexiFieldsData() {
     let userId = this.authenticationService.getUserId();
     return this.authenticationService.callGetMethod(this.FLEXI_FIELD_PREFIX_URL + '/by-user/' + userId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
   }
 
-  saveOrUpdateCustomField(customField:FlexiField,isAdd:boolean){
-    customField.loggedInUserId = this.authenticationService.getUserId();
-    return this.authenticationService.callPostMethod(this.FLEXI_FIELD_URL + this.authenticationService.access_token,customField);
+  saveOrUpdateFlexiField(flexiField:FlexiField,isAdd:boolean){
+    flexiField.loggedInUserId = this.authenticationService.getUserId();
+    return this.authenticationService.callPostMethod(this.FLEXI_FIELD_URL + this.authenticationService.access_token,flexiField);
+  }
 
+  deleteFlexiField(flexiFieldId:number){
+    return this.authenticationService.callDeleteMethod(this.FLEXI_FIELD_URL + '/id/'+flexiFieldId+"/loggedInUserId/"+this.authenticationService.getUserId()+this.authenticationService.access_token);
 
   }
 

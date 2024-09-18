@@ -1,11 +1,12 @@
 <!--Manage Custom Fields-->
 <div class="portlet light" id="manage-custom-fields">
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <!--Search & Filter-->
   <div class="portlet-title">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12">
         <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10 mt--5">
-          <button class="button_blue bgcolor-unset pd_lft2" (click)="goToAddCustomFieldDiv()">
+          <button class="button_blue bgcolor-unset pd_lft2" (click)="goToAddFlexiFieldDiv()">
           <span class="btn btn-primary transition txt_pd-top3">Add</span></button>
       </div>
       <!--Header-->
@@ -50,25 +51,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let customField of pagination?.pagedItems ;let i =index" id="custom-field-{{customField.id}}">
+            <tr *ngFor="let flexiField of pagination?.pagedItems ;let i =index" id="custom-field-{{flexiField.id}}">
               <td>
-                <h4 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{customField?.fieldName}}">
-                  <span>{{customField?.fieldName}}</span>
+                <h4 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{flexiField?.fieldName}}">
+                  <span>{{flexiField?.fieldName}}</span>
                 </h4>
                 <h6 class="moreipsis">
-                  <span translate>Created By <strong>{{customField?.createdBy}}</strong></span>
+                  <span translate>Created By <strong>{{flexiField?.createdBy}}</strong></span>
                 </h6>
               </td>
               <td class="text-center">
-                <app-display-date-and-time [dateAndTimeUTCString]="customField?.createdTimeInString"></app-display-date-and-time>
+                <app-display-date-and-time [dateAndTimeUTCString]="flexiField?.createdTimeInString"></app-display-date-and-time>
               </td>
               <td>
                 <div class="actions-block override-actions float-none">
-                  <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit" (click)="findById(customField.id)">
+                  <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit" (click)="findById(flexiField.id)">
                     <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
                     <div class="clickicons"></div>
                   </a>
-                  <a id="template-delete" class="custom-icon" (click)="confirmDeleteAlert(customField)" data-toggle="tooltip"
+                  <a id="template-delete" class="custom-icon" (click)="confirmDeleteAlert(flexiField)" data-toggle="tooltip"
                     data-placement="top" title="Delete">
                     <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                     <div class="del-icon"></div>
@@ -88,24 +89,27 @@
 
 <!--Add Custom Field-->
 <div class="portlet-body clearfix" id="add-custom-field" style="display: none;">
-  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible">
-  </app-response-message>
-  <div class="tab-content" *ngIf="!addLoader?.isLoading"></div>
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+  <app-list-loader *ngIf="addLoader?.isLoading"></app-list-loader>
+  <div class="tab-content" *ngIf="!addLoader?.isLoading">
     <form role="form" aria-labelledby="add-custom-field-form">
-      <div [attr.class]="errorFieldNames.indexOf(fieldName)>-1  ? errorLabelClass:customField?.fieldNameLabelClass">
+      <div [attr.class]="errorFieldNames.indexOf(fieldName)>-1  ? errorLabelClass:flexiField?.fieldNameLabelClass">
         <label class="control-label">Field Name</label>
         <span class="required">*</span>
-        <input type="text" maxlength="255" placeholder="Enter Field Name" [(ngModel)]="customField.fieldName"
+        <input type="text" maxlength="255" placeholder="Enter Field Name" [(ngModel)]="flexiField.fieldName"
           [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" />
           <ng-container *ngFor="let errorResponse of errorResponses">
             <span class="required"  *ngIf="errorResponse.field==fieldName">{{errorResponse.message}}</span>
           </ng-container>
       </div>
       <div id="right">
-        <button type="button" [disabled]="!customField.isValidForm" class="button_blue bgcolor-unset" (click)="saveOrUpdate()">
+        <button type="button" [disabled]="!flexiField.isValidForm" class="button_blue bgcolor-unset" (click)="saveOrUpdate()">
           <span class="btn btn-primary transition txt_pd-top3">{{submitButtonText}}</span>
         </button>
         <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="goToManage()" translate>Cancel</button>
       </div>
     </form>
   </div>
+  </div>
+  <!--Delete-->
+  <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" (notifyComponent)="delete($event)"></app-confirm-sweet-alert-util>

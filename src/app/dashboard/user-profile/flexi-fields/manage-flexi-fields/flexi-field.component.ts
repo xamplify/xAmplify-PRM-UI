@@ -24,9 +24,9 @@ export class FlexiFieldComponent implements OnInit {
 
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse: CustomResponse = new CustomResponse();
-  customFields:Array<any> = new Array<any>();
+  flexiFields:Array<any> = new Array<any>();
   pagination:Pagination = new Pagination();
-  customField:FlexiField = new FlexiField();
+  flexiField:FlexiField = new FlexiField();
   submitButtonText = XAMPLIFY_CONSTANTS.save;
   addLoader: HttpRequestLoader = new HttpRequestLoader();
   isAdd: boolean;
@@ -36,18 +36,19 @@ export class FlexiFieldComponent implements OnInit {
   successLabelClass = XAMPLIFY_CONSTANTS.successLabelClass;
   errorLabelClass = XAMPLIFY_CONSTANTS.errorLabelClass;
   fieldName = FLEXI_FIELD_LABELS.fieldName;
+  isDeleteOptionClicked: boolean;
+  selectedFieldId: number;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public sortOption:SortOption,
     public pagerService:PagerService,public properties:Properties,public flexiFieldService:FlexiFieldService,public utilService:UtilService) { }
 
   ngOnInit() {
-    this.findPaginatedCustomFields(this.pagination);
+    this.findPaginatedFlexiFields(this.pagination);
   }
 
-  findPaginatedCustomFields(pagination:Pagination){
+  findPaginatedFlexiFields(pagination:Pagination){
     this.referenceService.scrollSmoothToTop();
-    this.customResponse = new CustomResponse();
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.flexiFieldService.findPaginatedCustomFields(pagination).subscribe(
+    this.flexiFieldService.findPaginatedFlexiFields(pagination).subscribe(
       response=>{
         const data = response.data;
         let isSuccess = response.statusCode === 200;
@@ -70,7 +71,7 @@ export class FlexiFieldComponent implements OnInit {
 
   navigateBetweenPageNumbers(event: any) {
     this.pagination.pageIndex = event.page;
-    this.findPaginatedCustomFields(this.pagination);
+    this.findPaginatedFlexiFields(this.pagination);
   }
 
   search() {
@@ -87,12 +88,12 @@ export class FlexiFieldComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedCustomFieldsSortDropDownOption, pagination);
-    this.findPaginatedCustomFields(pagination);
+    this.findPaginatedFlexiFields(pagination);
   }
 
-  goToAddCustomFieldDiv(){
+  goToAddFlexiFieldDiv(){
     this.isAdd = true;
-    this.customField = new FlexiField();
+    this.flexiField = new FlexiField();
     this.customResponse = new CustomResponse();
     this.referenceService.hideDiv("manage-custom-fields");
     this.referenceService.showDiv("add-custom-field")
@@ -100,26 +101,14 @@ export class FlexiFieldComponent implements OnInit {
   }
 
   validateForm(){
-    let isValidFieldName = this.referenceService.isValidText(this.customField.fieldName);
-    this.customField.isValidForm = isValidFieldName;
+    let isValidFieldName = this.referenceService.isValidText(this.flexiField.fieldName);
+    this.flexiField.isValidForm = isValidFieldName;
     this.errorFieldNames = this.referenceService.filterArrayList(this.errorFieldNames,this.fieldName);
-    this.customField.fieldNameLabelClass =  isValidFieldName ? this.successLabelClass :this.errorLabelClass;
-    console.log(this.errorResponses);
-    let new_updated_data =
-    this.errorResponses.map((errorResponse:ErrorResponse) => {
-        if (errorResponse.field == this.fieldName) {
-            return {
-                ...errorResponse,
-                message: "Anthony",
-            };
-        }
-        return errorResponse;
-    });
-    console.log(new_updated_data);
+    this.flexiField.fieldNameLabelClass =  isValidFieldName ? this.successLabelClass :this.errorLabelClass;
   }
 
   goToManage(){
-    this.customField = new FlexiField();
+    this.flexiField = new FlexiField();
     this.errorResponses = [];
     this.errorFieldNames = [];
     this.referenceService.stopLoader(this.addLoader);
@@ -134,8 +123,8 @@ export class FlexiFieldComponent implements OnInit {
     this.referenceService.startLoader(this.addLoader);
     this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
-    this.customField.dupliateNameErrorMessage = "";
-    this.flexiFieldService.saveOrUpdateCustomField(this.customField,this.isAdd).subscribe(
+    this.flexiField.dupliateNameErrorMessage = "";
+    this.flexiFieldService.saveOrUpdateFlexiField(this.flexiField,this.isAdd).subscribe(
       response => {
         let statusCode = response.statusCode;
         let data = response.data;
@@ -145,7 +134,7 @@ export class FlexiFieldComponent implements OnInit {
           this.customResponse = new CustomResponse('SUCCESS', 'Custom Field is  ' + message + ' successfully', true);
           this.pagination = new Pagination();
           this.sortOption = new SortOption();
-          this.findPaginatedCustomFields(this.pagination);
+          this.findPaginatedFlexiFields(this.pagination);
         }else{
           this.errorResponses = data['errorMessages'];
 			    this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
@@ -157,15 +146,53 @@ export class FlexiFieldComponent implements OnInit {
           let errorResponse = JSON.parse(error['_body']);
           let message = errorResponse['message'];
           if("Already Exists"==message){
-            this.customField.dupliateNameErrorMessage = message;
+            this.flexiField.dupliateNameErrorMessage = message;
           }else{
             this.customResponse = new CustomResponse('ERROR', message, true);
           }
         }else {
           this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         }
+        this.referenceService.stopLoader(this.addLoader);
       }
     );
+  }
+
+  showConfirmSweetAlert(id:number){
+    this.isDeleteOptionClicked = true;
+    this.selectedFieldId = id;
+  }
+
+  delete(event:any){
+    this.customResponse = new CustomResponse();
+    if(event){
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.flexiFieldService.deleteFlexiField(this.selectedFieldId).subscribe(
+        response=>{
+          this.resetDeleteOptions();
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          this.refreshList();
+        },error=>{
+          let message = this.referenceService.showHttpErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', message, true);
+          this.resetDeleteOptions();
+        }
+      );
+    }else{
+      this.resetDeleteOptions();
+    }
+   
+  }
+  refreshList() {
+    this.referenceService.scrollSmoothToTop();
+    this.pagination.pageIndex = 1;
+    this.pagination.searchKey = "";
+    this.findPaginatedFlexiFields(this.pagination);
+  }
+
+  resetDeleteOptions(){
+    this.isDeleteOptionClicked = false;
+    this.selectedFieldId = 0;
   }
 
 }

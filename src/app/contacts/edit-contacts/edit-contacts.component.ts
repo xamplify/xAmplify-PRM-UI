@@ -4253,7 +4253,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	findCustomFieldsData() {
         this.loading = true;
-        this.flexiFieldService.findCustomFieldsData().subscribe(data => {
+        this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
             this.loading = false;
             this.customFieldsRequestDto = data;
             this.contactService.isContactModalPopup = true;

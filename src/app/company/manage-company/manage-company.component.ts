@@ -254,7 +254,7 @@ customResponse: CustomResponse = new CustomResponse();
 
     findCustomFieldsData() {
       this.pageLoader = true;
-      this.flexiFieldService.findCustomFieldsData().subscribe(data => {
+      this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
           this.pageLoader = false;
           this.customFieldsRequestDto = data;
           this.companyService.isCompanyModalPopUp = true;
