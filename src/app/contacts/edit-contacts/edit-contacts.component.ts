@@ -35,7 +35,7 @@ import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
-import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
+import { FlexiFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
 import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
@@ -278,7 +278,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
-	customFieldsRequestDto : any = new CustomFieldsRequestDto();
+	customFieldsRequestDto : any = new FlexiFieldsRequestDto();
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,

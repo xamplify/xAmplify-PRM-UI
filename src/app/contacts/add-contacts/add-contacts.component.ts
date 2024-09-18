@@ -31,7 +31,7 @@ import { DashboardService } from 'app/dashboard/dashboard.service';
 import { ParsedCsvDto } from '../models/parsed-csv-dto';
 import { CsvRowDto } from '../models/csv-row-dto';
 import { DefaultContactsCsvColumnHeaderDto } from '../models/default-contacts-csv-column-header-dto';
-import { CustomFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
+import { FlexiFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
 import { FlexiFieldService } from './../../dashboard/user-profile/flexi-fields/services/flexi-field.service';
 
 declare var swal:any, $:any, Papa: any;
@@ -257,7 +257,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     isResetButtonClicked = false;
     isColumnMapped = false;
     isValidEmailAddressMapped = false;
-    customFieldsRequestDto : any = new CustomFieldsRequestDto();
+    customFieldsRequestDto : any = new FlexiFieldsRequestDto();
     /*****XNFR-671*******/
         constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
