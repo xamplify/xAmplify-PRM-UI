@@ -482,7 +482,7 @@ copy(landingPage:any){
 
   findExistingPageNames(landingPage:any){
     this.ngxloading = true;
-    this.landingPageService.getAvailableNames(this.loggedInUserId).subscribe(
+    this.landingPageService.getAvailableNames(this.loggedInUserId, this.welcomePages).subscribe(
       (data: any) => {
           let pageNames = data;
           this.copyModalPopupComponent.openModalPopup(landingPage.id,landingPage.name,"Page",pageNames);
