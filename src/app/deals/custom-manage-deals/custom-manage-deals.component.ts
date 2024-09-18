@@ -12,6 +12,8 @@ import { PagerService } from 'app/core/services/pager.service';
 import { DealsService } from '../services/deals.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { LeadsService } from 'app/leads/services/leads.service';
+import { Roles } from 'app/core/models/roles';
+import { IntegrationService } from 'app/core/services/integration.service';
 
 declare var swal: any, $: any;
 
@@ -26,9 +28,7 @@ export class CustomManageDealsComponent implements OnInit {
 
   @Input() selectedContact: any;
 
-
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-  //deal: Deal;
   updateCurrentStage: boolean = false;
   showDealForm: boolean = false;
   actionType: string = "add";
@@ -41,42 +41,38 @@ export class CustomManageDealsComponent implements OnInit {
   isVendorVersion = false;
   isPartnerVersion = true;
   dealsPagination: Pagination = new Pagination();
-
   showFilterOption: boolean = false;
   textAreaDisable: boolean;
-  isOrgAdmin = false;
+  isOrgAdmin: boolean = false;
   showContactDeals: boolean = false;
-
-  listView = true;
-  selectedTabIndex = 1;
-  //titleHeading:string = "";
+  listView: boolean = true;
+  selectedTabIndex: number = 1;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-  // selectedPartnerCompanyId = 0;
   selectedFilterIndex: number = 1;
-
-  //handle this
-  isRegisterDealEnabled = true;
+  isRegisterDealEnabled: boolean = true;
   isDealFromContact: boolean = false;
-
   registeredByUsersLoader = true;
   fromDateFilter: any = "";
   toDateFilter: any = "";
   statusFilter: any;
   vendorCompanyIdFilter: any;
-  selectedRegisteredByCompanyId = 0;
-  selectedRegisteredByUserId = 0;
+  selectedRegisteredByCompanyId: number = 0;
+  selectedRegisteredByUserId: number = 0;
   stageNamesForFilterDropDown: any;
   filterResponse: CustomResponse = new CustomResponse();
   filterMode: any = false;
-  statusLoader = false;
+  statusLoader: boolean = false;
   statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
-  registeredForCompaniesLoader = true;
+  registeredForCompaniesLoader: boolean = true;
   registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   vendorList = new Array();
   isStatusLoadedSuccessfully: boolean = true;
+  roleName: Roles = new Roles();
+  companyId: number = 0;
+  enableLeads: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
-    public pagerService: PagerService, public dealsService: DealsService, public leadsService: LeadsService) {
+    public pagerService: PagerService, public dealsService: DealsService, public leadsService: LeadsService, public integrationService: IntegrationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -87,10 +83,46 @@ export class CustomManageDealsComponent implements OnInit {
       this.vanityLoginDto.vanityUrlFilter = false;
     }
     this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.init();
   }
 
   ngOnInit() {
     this.showDeals();
+  }
+
+
+  init() {
+    const roles = this.authenticationService.getRoles();
+    if (roles !== undefined) {
+      if (this.authenticationService.loggedInUserRole != "Team Member") {
+        if (
+          roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+          roles.indexOf(this.roleName.allRole) > -1 ||
+          roles.indexOf(this.roleName.vendorRole) > -1 || 
+          roles.indexOf(this.roleName.vendorTierRole) > -1 ||
+          roles.indexOf(this.roleName.marketingRole) > -1 ||
+          roles.indexOf(this.roleName.prmRole) > -1) {
+        }
+
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+          this.isOrgAdmin = true;
+        }
+      } else {
+        if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
+          this.isOrgAdmin = true;
+        }
+      }
+    }
+
+    if (this.authenticationService.vanityURLEnabled) {
+      this.integrationService.getVendorRegisterDealValue(this.loggedInUserId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+        data => {
+          if (data.statusCode == 200) {
+            this.isRegisterDealEnabled = data.data;
+          }
+        }
+      )
+    }
   }
 
   showDeals() {
@@ -129,7 +161,6 @@ export class CustomManageDealsComponent implements OnInit {
         () => { }
       );
   }
-
 
   viewDeal(deal: Deal) {
     this.showContactDeals = false;
