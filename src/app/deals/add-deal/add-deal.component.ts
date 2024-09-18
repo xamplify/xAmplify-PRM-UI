@@ -46,6 +46,7 @@ export class AddDealComponent implements OnInit {
   @Input() public isOrgAdmin: boolean;
   @Input() public hideAttachLeadButton: boolean;
   @Input() public selectedContact: any;
+  @Input() public isDealFromContact: boolean = false;
   @Output() notifySubmitSuccess = new EventEmitter();
 
   preview = false;
@@ -1006,7 +1007,7 @@ export class AddDealComponent implements OnInit {
         this.opportunityTypeIdError = false;
       }
 
-      if (this.selectedContact.id && this.selectedContact.id > 0) {
+      if (this.isDealFromContact) {
         if (fieldId === 'leadAttachment') {
           this.leadAttachmentError = !(this.leadId != undefined && this.leadId > 0);
         }
@@ -1122,7 +1123,9 @@ export class AddDealComponent implements OnInit {
       this.createdForPipelineStageIdError = true;
 
     /** XNFR-675 **/
-    if (this.actionType != 'add') {
+    if (!this.isDealFromContact) {
+      this.leadAttachmentError = false;
+    } else if (this.actionType != 'add') {
       this.leadAttachmentError = false;
     }
 

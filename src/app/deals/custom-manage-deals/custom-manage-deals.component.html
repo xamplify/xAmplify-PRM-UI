@@ -267,7 +267,7 @@
 </div>
 
 <section *ngIf="showDealForm">
-  <div class="selectedContact.id != undefined ? '' : 'page-content'" style="padding-top: 10px; padding-bottom: 10px;">
+  <div class="selectedContact?.id != undefined ? '' : 'page-content'" style="padding-top: 10px; padding-bottom: 10px;">
     <div>
       <a (click)="closeDealForm()" class="pull-right close-circle mrg1">
         <i class="fa fa-times" aria-hidden="true"></i>
@@ -283,7 +283,7 @@
 
     </div>
     <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
-      [selectedContact]="selectedContact" [isOrgAdmin]="isOrgAdmin"
+      [selectedContact]="selectedContact" [isOrgAdmin]="isOrgAdmin" [isDealFromContact] = "isDealFromContact"
       (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
   </div>
 </section>
