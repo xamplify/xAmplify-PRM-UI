@@ -3631,11 +3631,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			if (RouterUrlConstants.contacts.includes(this.module)) {
+			if (RouterUrlConstants.contacts.includes(this.module) && !this.isCompanyBreadCrumb) {
 				this.selectedContactListId = this.refService.decodePathVariable(this.route.snapshot.params['userListId']);
 				this.contactListId = this.selectedContactListId;
 				this.showEdit = true;
 				this.setValuesToRequiredInputs();
+			} else {
+				this.selectedContactListName = this.contactListName;
 			}
 			this.currentContactType = "all_contacts";
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
@@ -3643,8 +3645,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 			if (this.router.url.includes('home/contacts')) {
 				this.checkSyncStatus();
-			} else {
-				this.selectedContactListName = this.contactListName;
 			}
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();

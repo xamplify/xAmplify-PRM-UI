@@ -145,6 +145,7 @@ export class ContactDetailsComponent implements OnInit {
         },
         () => {
           this.setContactNameToDisplay();
+          this.referenceService.goToTop();
         }
       )
     } catch (error) {

@@ -300,10 +300,14 @@
         (notifyParentDropDown)="listLeads($event)"></app-pagination>
     </div>
     <!-- End of 24 -->
-    <div *ngIf="!httpRequestLoader.isLoading && leadsPagination.totalRecords==0" class="alert alert-info">
+    <div *ngIf="!httpRequestLoader.isLoading && leadsPagination?.totalRecords==0" class="alert alert-info">
       <strong translate>No Leads Found.</strong>
     </div>
   </section>
+  <div *ngIf="listView && !httpRequestLoader?.isLoading && leadsSortOption?.totalRecords==0"
+    class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
+    <strong>No Leads Found.</strong>
+  </div>
 </div>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="commentModalPopUpClose($event)">

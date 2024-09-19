@@ -247,6 +247,7 @@ export class CustomManageLeadsComponent implements OnInit {
     this.leadsService.listLeadsForPartner(pagination).subscribe(
       response => {
         pagination.totalRecords = response.totalRecords;
+        this.leadsSortOption.totalRecords = response.totalRecords;
         this.leadsPagination = this.pagerService.getPagedItems(pagination, response.data);
         this.referenceService.loading(this.httpRequestLoader, false);
       },

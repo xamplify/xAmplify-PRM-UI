@@ -1,5 +1,5 @@
 <!-- BEGIN PAGE CONTENT-->
-<div [ngClass]="module === 'contacts' ? 'page-content':''">
+<div [ngClass]="(module === 'contacts' && !isCompanyBreadCrumb) ? 'page-content':''">
 <div class="page-bar" style="height:48px;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home" aria-hidden="true"></i>
