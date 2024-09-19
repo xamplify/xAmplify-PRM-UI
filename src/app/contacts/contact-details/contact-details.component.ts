@@ -100,9 +100,12 @@ export class ContactDetailsComponent implements OnInit {
 
   setHighlightLetter() {
     const firstName = this.selectedContact.firstName;
+    const lastName = this.selectedContact.lastName;
     const emailId = this.selectedContact.emailId;
     if (this.referenceService.checkIsValidString(firstName)) {
       this.highlightLetter = this.referenceService.getFirstLetter(firstName);
+    } else if (this.referenceService.checkIsValidString(lastName)) {
+      this.highlightLetter = this.referenceService.getFirstLetter(lastName);
     } else if (this.referenceService.checkIsValidString(emailId)) {
       this.highlightLetter = this.referenceService.getFirstLetter(emailId);
     }
@@ -145,6 +148,7 @@ export class ContactDetailsComponent implements OnInit {
         },
         () => {
           this.setContactNameToDisplay();
+          this.setHighlightLetter();
           this.referenceService.goToTop();
         }
       )
@@ -250,14 +254,12 @@ export class ContactDetailsComponent implements OnInit {
     let lastName = this.selectedContact.lastName;
     let isValidFirstName = this.referenceService.checkIsValidString(firstName);
     let isValidLastName = this.referenceService.checkIsValidString(lastName);
+    this.contactName = '';
     if (isValidFirstName) {
       this.contactName = firstName;
     }
     if (isValidLastName) {
       this.contactName += isValidFirstName ? ` ${lastName}` : lastName;
-    }
-    if (!isValidFirstName && !isValidLastName) {
-      this.contactName = '';
     }
   }
 
