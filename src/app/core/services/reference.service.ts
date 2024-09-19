@@ -3835,6 +3835,13 @@ copySelectedElement(inputElement:any,id:string){
   showDiv(divId:string){
     $('#'+divId).show(500);
   }
+
+  showUIError(methodName:string){
+    return this.showSweetAlertErrorMessage("Error In "+methodName+"(). Please Contact Admin");
+   
+
+ }
+
   
 }
 

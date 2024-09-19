@@ -418,6 +418,7 @@ export class Properties {
 
 	customFieldsMissingErrorMessage = "Warning!! Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your "+this.partnersMergeTag+" will not be pushed into Salesforce."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
+	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin"
 
 	}
 

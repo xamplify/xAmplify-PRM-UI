@@ -218,4 +218,9 @@ export class UtilService {
         
     }
 
+    showUIError(methodName:string){
+       return "Error In "+methodName+"(). Please Contact Admin;";
+
+    }
+
 }
