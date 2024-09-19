@@ -26,9 +26,17 @@ export class FlexiFieldService {
     return this.authenticationService.callGetMethod(this.FLEXI_FIELD_PREFIX_URL + '/by-user/' + userId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
   }
 
+  findFlexiFieldById(id:number){
+    return this.authenticationService.callGetMethod(this.FLEXI_FIELD_PREFIX_URL + '/id/' + id +'/loggedInUserId/'+this.authenticationService.getUserId()+this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
+  }
+
   saveOrUpdateFlexiField(flexiField:FlexiField,isAdd:boolean){
     flexiField.loggedInUserId = this.authenticationService.getUserId();
-    return this.authenticationService.callPostMethod(this.FLEXI_FIELD_URL + this.authenticationService.access_token,flexiField);
+    if(isAdd){
+      return this.authenticationService.callPostMethod(this.FLEXI_FIELD_URL + this.authenticationService.access_token,flexiField);
+    }else{
+      return this.authenticationService.callPutMethod(this.FLEXI_FIELD_PREFIX_URL + '/'+flexiField.id+this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token,flexiField);
+    }
   }
 
   deleteFlexiField(flexiFieldId:number){
