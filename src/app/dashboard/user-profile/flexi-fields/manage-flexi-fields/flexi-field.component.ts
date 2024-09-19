@@ -132,8 +132,8 @@ export class FlexiFieldComponent implements OnInit {
         let data = response.data;
         if (statusCode==200) {
           this.goToManage();
-          let message = this.isAdd ? 'created' : 'updated';
-          this.customResponse = new CustomResponse('SUCCESS', 'Flexi Field is  ' + message + ' successfully', true);
+          let message = this.isAdd ? 'added' : 'updated';
+          this.customResponse = new CustomResponse('SUCCESS', 'Flexi field   ' + message + ' successfully', true);
           this.pagination = new Pagination();
           this.sortOption = new SortOption();
           this.findPaginatedFlexiFields(this.pagination);
