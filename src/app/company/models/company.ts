@@ -1,5 +1,3 @@
-import { FlexiFieldsRequestDto } from "app/dashboard/models/custom-field-request-dto";
-
 export class Company {
     name: string;
     address: string;
@@ -21,5 +19,4 @@ export class Company {
     companyId: number;
     contactCount: string;
     companyListName: string;
-    customFields : FlexiFieldsRequestDto[];
 }

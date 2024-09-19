@@ -15,8 +15,6 @@ import { UtilService } from 'app/core/services/util.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ContactService } from 'app/contacts/services/contact.service';
-import { FlexiFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
-import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
 
 declare var  $:any, swal: any;
 @Component({
@@ -45,10 +43,9 @@ customResponse: CustomResponse = new CustomResponse();
   /*** XBI-2228 ***/
   mergeTagForGuide = "add_a_company";
   /*** XBI-2228 ***/
-  customFieldsRequestDto : any = new FlexiFieldsRequestDto();
   constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, 
     public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger,
-     public utilService: UtilService, public sortOption: SortOption,public flexiFieldService:FlexiFieldService) 
+     public utilService: UtilService, public sortOption: SortOption) 
     { this.loggedInUserId = this.authenticationService.getUserId();}
 
   ngOnInit() {
@@ -66,7 +63,7 @@ customResponse: CustomResponse = new CustomResponse();
   addCompanyModalOpen(){
     this.actionType = "add";
     this.companyId = 0;
-    this.findCustomFieldsData();
+    this.companyService.isCompanyModalPopUp = true;
   }
   closeCompanyModal (event: any) {
 		if (event === "0") {
@@ -251,17 +248,6 @@ customResponse: CustomResponse = new CustomResponse();
       }
     );
     }
-
-    findCustomFieldsData() {
-      this.pageLoader = true;
-      this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-          this.pageLoader = false;
-          this.customFieldsRequestDto = data;
-          this.companyService.isCompanyModalPopUp = true;
-      }, (error: any) => {
-          this.pageLoader = false;
-      });
-  }
 
   }
 

@@ -342,18 +342,18 @@
               </div>
             </div>
 
-            <!-- ------------Custom Fields------------ -->
-            <div class="form-group mrg0" *ngIf="!isPartner">
-              <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
-              <div class="col-xs-10 col-sm-10 p0 px_0" id="customFields">
-                <ng-container *ngFor="let customField of customFieldsRequestDto">
-                  <input type="text" style="border: none !important; margin-bottom: 15px;" class="form-control"
-                    [(ngModel)]="customField.fieldValue" [ngModelOptions]="{standalone: true}"
-                    [placeholder]="customField.fieldName" maxlength="20">
-                </ng-container>
-                <div class="textCss"></div>
+            <!-- ------------XNFR-680 Flexi Fields------------ -->
+            <ng-container *ngIf="isContactModule && flexiFieldsRequestAndResponseDto?.length > 0">
+              <div class="form-group mrg0" *ngFor="let flexiField of flexiFieldsRequestAndResponseDto">
+                <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
+                <div class="col-xs-10 col-sm-10 p0 px_0" id="flexiFields">
+                  <input type="text" style="border: none !important; margin-top: 15px;" class="form-control"
+                    [(ngModel)]="flexiField.fieldValue" [ngModelOptions]="{standalone: true}" [placeholder]="flexiField.fieldName"
+                    maxlength="20">
+                  <div class="textCss"></div>
+                </div>
               </div>
-            </div>
+            </ng-container>
           </form>
         </div>
       </div>

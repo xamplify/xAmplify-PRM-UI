@@ -11,7 +11,8 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
-import { FlexiFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
+import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $: any;
 
@@ -65,8 +66,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     validationResponse : CustomResponse = new CustomResponse();
     partners: User[] = [];
     isWebsiteNotValid : boolean = false;
-    @Input() customFieldsRequestDto : FlexiFieldsRequestDto[];
-    
+    /***** XNFR-680 *****/
+    @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
+    isContactModule : boolean = false;
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
@@ -75,7 +77,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         if ( this.router.url.includes( 'home/contacts' ) ) {
           this.isPartner = false;
           // this.module = "contacts";
-          this.checkingContactTypeName = "Contact"
+          this.checkingContactTypeName = XAMPLIFY_CONSTANTS.contact;
       } else if( this.router.url.includes( 'home/assignleads' ) ){
           this.isPartner = false;
           this.isAssignLeads = true;
@@ -238,14 +240,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         
     }
 
-contactCompanyChecking( event:any ) {
-        if (this.checkingContactTypeName == 'Contact' ) 
-        {
+    contactCompanyChecking(event: any) {
+        if (this.checkIsContactType()) {
             this.isCompanyDetails = true;
-        } else if  (this.isPartner && (this.addContactuser.contactCompany != null 
-             && this.addContactuser.contactCompany !='' && this.addContactuser.contactCompany.trim().length>0 )){
-                this.isCompanyDetails = true;
-            }        
+        } else if (this.isPartner && (this.addContactuser.contactCompany != null
+            && this.addContactuser.contactCompany != '' && this.addContactuser.contactCompany.trim().length > 0)) {
+            this.isCompanyDetails = true;
+        }
         else {
             this.isCompanyDetails = false;
         }
@@ -344,12 +345,19 @@ contactCompanyChecking( event:any ) {
         if(this.isTeamMemberPartnerList==undefined){
             this.isTeamMemberPartnerList = false;
         }
+        let isContactType = this.checkIsContactType();
+        this.isContactModule = isContactType || (isContactType && this.isUpdateUser);
         $( '#addContactModal' ).modal( 'show' );
         
        } catch ( error ) {
            console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
        }
     }
+    
+    private checkIsContactType() {
+        return this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact;
+    }
+
     /**********XNFR-85************ */
     findTeamMemberGroups(){
         if(this.isPartner){
@@ -465,7 +473,7 @@ contactCompanyChecking( event:any ) {
     }
 
     searchableDropdownEventReceiver(event: any) {
-        if(this.checkingContactTypeName == 'Contact'){
+        if(this.checkIsContactType()){
             if(event != null){
                 this.addContactuser.contactCompanyId = event['id'];
                 this.addContactuser.contactCompany = event['name'];

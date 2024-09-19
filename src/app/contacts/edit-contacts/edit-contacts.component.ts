@@ -35,7 +35,7 @@ import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
-import { FlexiFieldsRequestDto } from 'app/dashboard/models/custom-field-request-dto';
+import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
@@ -278,7 +278,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
-	customFieldsRequestDto : any = new FlexiFieldsRequestDto();
+	/***** XNFR-680 *****/
+	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -792,7 +793,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
 			"CONTACT", "MANUAL", null, false);
 		this.userUserListWrapper.userList.id = this.contactListId;
-		this.userUserListWrapper.userList.customFields = this.customFieldsRequestDto;
+		this.userUserListWrapper.userList.flexiFields = this.flexiFieldsRequestAndResponseDto;
 		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				(data: any) => {
@@ -1239,6 +1240,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		else {
 			this.contactService.isContactModalPopup = false;
+			this.flexiFieldsRequestAndResponseDto = [];
 		}
 	}
 
@@ -2787,7 +2789,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
 		this.contactAllDetails = null;
-		//this.findCustomFieldsData();
+		this.findFlexiFieldsData();
 	}
 
 	addContactModalClose() {
@@ -4251,15 +4253,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	findCustomFieldsData() {
-        this.loading = true;
-        this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-            this.loading = false;
-            this.customFieldsRequestDto = data;
-            this.contactService.isContactModalPopup = true;
-        }, (error: any) => {
-            this.loading = false;
-        });
-    }
+	/***** XNFR-680 *****/
+	findFlexiFieldsData() {
+		this.loading = true;
+		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+			this.loading = false;
+			this.flexiFieldsRequestAndResponseDto = data;
+			this.contactService.isContactModalPopup = true;
+		}, (error: any) => {
+			this.refService.showSweetAlertServerErrorMessage();
+			this.loading = false;
+		});
+	}
 
 }

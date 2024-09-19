@@ -7,6 +7,7 @@ export const XAMPLIFY_CONSTANTS = {
     errorLabelClass:'form-group has-error has-feedback',
     successLabelClass:'form-group has-success has-feedback',
     save:'Save',
-    update:'Update'
+    update:'Update',
+    contact: 'Contact'
 
 }

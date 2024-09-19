@@ -1,4 +1,4 @@
-import { FlexiFieldsRequestDto } from "app/dashboard/models/custom-field-request-dto";
+import { FlexiFieldsRequestAndResponseDto } from "app/dashboard/models/flexi-fields-request-and-response-dto";
 
 export class ContactList {
     name = "";
@@ -42,5 +42,5 @@ export class ContactList {
     companyList:boolean;
     editList = false;
     isDownload : boolean = false;
-    customFields : FlexiFieldsRequestDto[];
+    flexiFields : FlexiFieldsRequestAndResponseDto[];
 }
