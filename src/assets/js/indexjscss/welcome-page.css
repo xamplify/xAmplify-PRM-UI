@@ -34,10 +34,13 @@ body {
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 2px;
-  position: relative;
-  z-index: 9998;
 }
-
+@media (min-width: 1100px) {
+  .xamplify-welcome-page-logo{
+    position: relative;
+    z-index: 3333;
+  }
+}
 .xamplify-company-logo-thumbnail-wrapper {
   float: left;
   width: 150px;
@@ -694,9 +697,11 @@ position: relative;
   .xamplify-welcome-page-div-top{
     margin-top: 67px;
   }
-  /* .page-header-fixed .page-container {
-    margin-top: 48px;
-  } */
+  @media (min-width: 768px) {
+    .page-header-fixed .page-container {
+      margin-top: 68px!important;
+    }
+    }
 
   .xamplify-active{
     color: #0276ff !important;
