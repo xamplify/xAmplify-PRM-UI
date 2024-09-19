@@ -931,7 +931,7 @@ input.email_subject.form-control:focus {
   padding: 15px;
   text-align: right;
 }
-.xamplify-modal-footer>.btn,.xamplify-modal-footer>button>.btn {
+.xamplify-modal-footer>.btn,.xamplify-modal-footer>button>.btn , .xamplify_btn-login{
   display: inline-block;
   font-size: 14px;
   padding: 6px 14px;
@@ -1039,4 +1039,32 @@ line-height: 1;
     position: fixed;
     width: 100%;
 }
+}
+/* Related to Unauthorized page */
+.xamplify_loader {
+  background-color: #fff;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.xamplify_loader .text-center {
+  text-align: center;
+}
+.xamplify_loader p {
+  margin: 0 0 10px;
+}
+
+.xamplify_btn-login{
+  color: #fff;
+    background-color: #89c4f4;
+    border-color: #72b8f2;
+}
+.xamplify_btn-login:hover{
+  background-color: #68b4f1;
+  border-color: #43a1ed;
 }
