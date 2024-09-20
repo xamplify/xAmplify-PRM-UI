@@ -48,11 +48,10 @@
         <span class="caption-subject font-blue-madison bold">{{emailNotificationSettingsTextDto?.headerText}}</span>
       </div>
     </div>
-    <h4 class="bold-font-weight">{{emailNotificationSettingsTextDto?.text1}}
-    </h4>
-    <label class="bold-font">{{emailNotificationSettingsTextDto?.text2}}.</label>
+    <h4 class="bold-font-weight">{{emailNotificationSettingsTextDto?.notificationToggle}}</h4>
+    <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfo}}.</label>
     <div>
-      <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.text3}}
+      <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.notificationPreference}}
         <br><br>
         <switch class="switchbtns" [status]="notificationSettingOption" [onText]="callActionSwitch.onTextValue"
           [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"

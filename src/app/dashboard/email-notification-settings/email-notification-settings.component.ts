@@ -60,67 +60,67 @@ export class EmailNotificationSettingsComponent implements OnInit {
 
   private setPartnerInvitationText() {
     this.partnerInvitationTextDto.headerText = this.customModulePartnerName + " Invitation";
-    this.partnerInvitationTextDto.text1 = "Turn Email notifications on or off";
-    this.partnerInvitationTextDto.text2 = "You have the ability to control email notifications to newly onboarded " + this.customModulePartnerName + ".";
-    this.partnerInvitationTextDto.text3 = "Send signup email notifications to your newly onboarded " + this.customModulePartnerName + ":";
+    this.partnerInvitationTextDto.notificationToggle = "Turn Email notifications on or off";
+    this.partnerInvitationTextDto.notificationControlInfo = "You have the ability to control email notifications to newly onboarded " + this.customModulePartnerName + ".";
+    this.partnerInvitationTextDto.notificationPreference = "Send signup email notifications to your newly onboarded " + this.customModulePartnerName + ":";
   }
 
   private setPlaybookNotificationText() {
     let playBookHeaderText = "Play Book";
-    let playBookText2Suffix = "play books";
-    let playBookText3Suffix = "a play book";
+    let playBooksSuffixText = "play books";
+    let playBookSuffixText = "a play book";
     this.playbookPublishedTextDto.headerText = this.getHeaderText(playBookHeaderText);
-    this.playbookPublishedTextDto.text1 = this.getText1(playBookHeaderText);
-    this.playbookPublishedTextDto.text2 = this.getText2(playBookText2Suffix);
-    this.playbookPublishedTextDto.text3 = this.getText3(playBookText3Suffix);
+    this.playbookPublishedTextDto.notificationToggle = this.getNotificationToggleText(playBookHeaderText);
+    this.playbookPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(playBooksSuffixText);
+    this.playbookPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(playBookSuffixText);
   }
 
   private setTrackNotificationText() {
     let trackHeaderText = "Track";
-    let trackText2Suffix = "tracks";
-    let trackText3Suffix = "a track";
+    let tracksSuffixText = "tracks";
+    let trackSuffixText = "a track";
     this.trackPublishedTextDto.headerText = this.getHeaderText(trackHeaderText);
-    this.trackPublishedTextDto.text1 = this.getText1(trackHeaderText);
-    this.trackPublishedTextDto.text2 = this.getText2(trackText2Suffix);
-    this.trackPublishedTextDto.text3 = this.getText3(trackText3Suffix);
+    this.trackPublishedTextDto.notificationToggle = this.getNotificationToggleText(trackHeaderText);
+    this.trackPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(tracksSuffixText);
+    this.trackPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(trackSuffixText);
   }
 
   private setAssetNotificationText() {
     let assetHeaderText = "Asset";
-    let assetText2Suffix = "assets";
-    let assetText3Suffix = "an asset";
-
+    let assetsSuffixText = "assets";
+    let assetSuffixText = "an asset";
     this.assetPublishedTextDto.headerText = this.getHeaderText(assetHeaderText);
-    this.assetPublishedTextDto.text1 = this.getText1(assetHeaderText);
-    this.assetPublishedTextDto.text2 = this.getText2(assetText2Suffix);
-    this.assetPublishedTextDto.text3 = this.getText3(assetText3Suffix);
+    this.assetPublishedTextDto.notificationToggle = this.getNotificationToggleText(assetHeaderText);
+    this.assetPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(assetsSuffixText);
+    this.assetPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(assetSuffixText);
+    this.assetPublishedTextDto.controlEmailNotificationTextForVendorCompany = 
   }
 
   /****XNFR-571****/
   private setDashboardButtonsNotificationText() {
     let headerText = this.properties.dashboardButton;
-    let text2Suffix = "dashboard buttons";
-    let text3Suffix = "a dashboard button";
+    let dashboardButtonsSuffixText = "dashboard buttons";
+    let dashboardButtonSuffixText = "a dashboard button";
     this.dashboardButtonsPublishedTextDto.headerText = this.getHeaderText(headerText);
-    this.dashboardButtonsPublishedTextDto.text1 = this.getText1(headerText);
-    this.dashboardButtonsPublishedTextDto.text2 = this.getText2(text2Suffix);
-    this.dashboardButtonsPublishedTextDto.text3 = this.getText3(text3Suffix);
+    this.dashboardButtonsPublishedTextDto.notificationToggle = this.getNotificationToggleText(headerText);
+    this.dashboardButtonsPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(dashboardButtonsSuffixText);
+    this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText);
   }
 
   getHeaderText(headerTextPrefix:string){
     return headerTextPrefix+" Notifications";
   }
 
-  getText1(text1Suffix:string){
-    return  "Turn Published "+text1Suffix+" Email notifications on or off";
+  getNotificationToggleText(turnOnOrOffTextSuffix:string){
+    return  "Turn Published "+turnOnOrOffTextSuffix+" Email notifications on or off";
   }
 
-  getText2(text2Suffix:string){
-    return "You have the ability to control email notifications to your "+this.customModulePartnerName+" about published "+text2Suffix+".";
+  getNotificationControlInfoText(controlEmailNotificationTextSuffix:string){
+    return "You have the ability to control email notifications to your "+this.customModulePartnerName+" about published "+controlEmailNotificationTextSuffix+".";
   }
 
-  getText3(text3Suffix:string){
-    return "Send email notifications to your "+this.customModulePartnerName+" when "+text3Suffix+" is published:";
+  getNotificationPreferenceText(sendEmailNotificationTextSuffix:string){
+    return "Send email notifications to your "+this.customModulePartnerName+" when "+sendEmailNotificationTextSuffix+" is published:";
   }
 
   findEmailNotificationSettings(){
