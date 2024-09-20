@@ -21,6 +21,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var swal, $, videojs: any;
 
 
@@ -145,6 +146,9 @@ export class ManageDealsComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    if (this.referenceService.isCreated) {
+      this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    }
     this.mergeTagForUserGuide();
   }
   /** User GUide **/
@@ -177,6 +181,11 @@ export class ManageDealsComponent implements OnInit {
             this.authenticationService.superiorRole = response.data.superiorRole;            
           }
         });
+  }
+
+  //XNFR-681
+  ngOnDestroy() {
+    this.referenceService.isCreated = false;
   }
 
   init() {
@@ -678,10 +687,12 @@ export class ManageDealsComponent implements OnInit {
   searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
   addDeal() {   
+    let url = RouterUrlConstants.home + RouterUrlConstants.addDeal;
     this.showDealForm = true;
     this.actionType = "add";
     this.dealId = 0;
-    this.dealsResponse.isVisible = false;    
+    this.dealsResponse.isVisible = false;   
+    this.referenceService.goToRouter(url); 
   }
 
   viewDeal(deal: Deal) {

@@ -73,6 +73,9 @@ export class CrmSettingsComponent implements OnInit {
   leadPipelineStageTooltipTitle:string;
   dealPipelineTooltipTitle:string;
   dealPipelineStageTooltipTitle:string;
+  //XNFR-681
+  leadTitle:string = '';
+  dealTitle:string = '';
   
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties, public leadSerivce: LeadsService) {
@@ -107,6 +110,9 @@ export class CrmSettingsComponent implements OnInit {
     this.dealBySelfLead = this.integrationDetails.dealBySelfLeadEnabled;
     this.leadFormColumnLayout = this.integrationDetails.leadFormColumnLayout;
     this.dealFormColumnLayout = this.integrationDetails.dealFormColumnLayout;
+    this.leadTitle = this.integrationDetails.leadTitle;
+    this.dealTitle = this.integrationDetails.dealTitle;
+
 
     this.setLeadFormLayoutPreviewImage();
     this.setDealFormLayoutPreviewImage();
@@ -185,6 +191,9 @@ export class CrmSettingsComponent implements OnInit {
     if (this.integrationDetails.showDealPipeline) {
       this.integrationDetails.dealPipelineId = 0;
     }
+    //XNFR-681
+    this.integrationDetails.leadTitle = $.trim(this.leadTitle);
+    this.integrationDetails.dealTitle = $.trim(this.dealTitle);
     this.integrationService.updateCRMSettings(this.integrationType.toLowerCase(),this.loggedInUserId,this.integrationDetails)
       .subscribe(data => {
         if (data.statusCode == 200) {
