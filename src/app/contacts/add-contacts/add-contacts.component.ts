@@ -1240,6 +1240,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.newUsers[i].mobileNumber = "";
                     }
                 }
+                this.newUsers[i].flexiFields = this.flexiFieldsRequestAndResponseDto;
             }
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
@@ -1266,7 +1267,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.loading = true;
             this.userUserListWrapper = this.getUserUserListWrapperObj(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
                 "CONTACT", "MANUAL", this.alias, false);
-            this.userUserListWrapper.userList.flexiFields = this.flexiFieldsRequestAndResponseDto;
             this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                     data => {

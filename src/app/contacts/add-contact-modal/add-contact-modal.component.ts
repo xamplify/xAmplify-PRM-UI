@@ -345,8 +345,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         if(this.isTeamMemberPartnerList==undefined){
             this.isTeamMemberPartnerList = false;
         }
-        let isContactType = this.checkIsContactType();
-        this.isContactModule = isContactType || (isContactType && this.isUpdateUser);
+        this.isContactModule = this.checkIsContactType();
         $( '#addContactModal' ).modal( 'show' );
         
        } catch ( error ) {

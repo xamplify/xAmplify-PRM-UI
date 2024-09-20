@@ -14,10 +14,10 @@ export class FlexiFieldService {
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService) { }
 
-  findPaginatedFlexiFields(pagination:Pagination){
+  findPaginatedFlexiFields(pagination: Pagination) {
     let userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    let findAllUrl = this.FLEXI_FIELD_PREFIX_URL+'/paginated'+'/userId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+    let findAllUrl = this.FLEXI_FIELD_PREFIX_URL + '/paginated' + '/userId/' + userId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token + pageableUrl;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 
@@ -26,24 +26,26 @@ export class FlexiFieldService {
     return this.authenticationService.callGetMethod(this.FLEXI_FIELD_PREFIX_URL + '/by-user/' + userId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
   }
 
-  findFlexiFieldById(id:number){
-    return this.authenticationService.callGetMethod(this.FLEXI_FIELD_PREFIX_URL + '/id/' + id +'/loggedInUserId/'+this.authenticationService.getUserId()+this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
+  findFlexiFieldById(id: number) {
+    return this.authenticationService.callGetMethod(this.FLEXI_FIELD_PREFIX_URL + '/id/' + id + '/loggedInUserId/' + this.authenticationService.getUserId() + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
   }
 
-  saveOrUpdateFlexiField(flexiField:FlexiField,isAdd:boolean){
+  saveOrUpdateFlexiField(flexiField: FlexiField, isAdd: boolean) {
     flexiField.loggedInUserId = this.authenticationService.getUserId();
-    if(isAdd){
-      return this.authenticationService.callPostMethod(this.FLEXI_FIELD_URL + this.authenticationService.access_token,flexiField);
-    }else{
-      return this.authenticationService.callPutMethod(this.FLEXI_FIELD_PREFIX_URL + '/'+flexiField.id+this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token,flexiField);
+    if (isAdd) {
+      return this.authenticationService.callPostMethod(this.FLEXI_FIELD_URL + this.authenticationService.access_token, flexiField);
+    } else {
+      return this.authenticationService.callPutMethod(this.FLEXI_FIELD_PREFIX_URL + '/' + flexiField.id + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token, flexiField);
     }
   }
 
-  deleteFlexiField(flexiFieldId:number){
-    return this.authenticationService.callDeleteMethod(this.FLEXI_FIELD_PREFIX_URL + '/id/'+flexiFieldId+"/loggedInUserId/"+this.authenticationService.getUserId()+this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
+  deleteFlexiField(flexiFieldId: number) {
+    return this.authenticationService.callDeleteMethod(this.FLEXI_FIELD_PREFIX_URL + '/id/' + flexiFieldId + "/loggedInUserId/" + this.authenticationService.getUserId() + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
 
   }
 
-   
+  findFlexiFieldsBySelectedUserId(selectedUserId: number, userListId: number) {
+    return this.authenticationService.callGetMethod(this.FLEXI_FIELD_PREFIX_URL + '/by-selectedUserId/' + selectedUserId + '/' + userListId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
+  }
 
 }

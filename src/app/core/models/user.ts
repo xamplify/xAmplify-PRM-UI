@@ -79,5 +79,5 @@ export class User {
     website: string;
     isValidEmailIdPattern = false;
     isWelcomePageEnabled:boolean;
-    flexiFields : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
+    flexiFields : Array<FlexiFieldsRequestAndResponseDto>= new Array<FlexiFieldsRequestAndResponseDto>();
 }

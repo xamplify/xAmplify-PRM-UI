@@ -732,6 +732,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.users[i].mobileNumber = "";
 					}
 				}
+				this.users[i].flexiFields = this.flexiFieldsRequestAndResponseDto;
 			}
 
 			if (this.isPartner) {
@@ -793,7 +794,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
 			"CONTACT", "MANUAL", null, false);
 		this.userUserListWrapper.userList.id = this.contactListId;
-		this.userUserListWrapper.userList.flexiFields = this.flexiFieldsRequestAndResponseDto;
 		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				(data: any) => {
@@ -2789,7 +2789,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
 		this.contactAllDetails = null;
-		this.findFlexiFieldsData();
+		this.callFlexiFieldsDataApi();
+	}
+
+	private callFlexiFieldsDataApi() {
+		if (this.isContactModule()) {
+			this.findFlexiFieldsData();
+		} else {
+			this.contactService.isContactModalPopup = true;
+		}
+	}
+
+	private isContactModule() {
+		return this.module == 'contacts';
 	}
 
 	addContactModalClose() {
@@ -3158,6 +3170,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactService.isContactModalPopup = true;
 		this.isCompanyContact = this.manageCompanies;
 		this.selectedCompanyContactId = this.selectedCompanyId;
+		this.findFlexiFieldsBySelectedUserId(contactDetails);
 	}
 
 	updateContactModalClose() {
@@ -3183,6 +3196,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 
 			this.editUser.user = event;
+			this.editUser.user.flexiFields = this.flexiFieldsRequestAndResponseDto;
 			this.addContactModalClose();
 			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser)
 				.subscribe(
@@ -4264,6 +4278,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.refService.showSweetAlertServerErrorMessage();
 			this.loading = false;
 		});
+	}
+
+	/***** XNFR-680 *****/
+	findFlexiFieldsBySelectedUserId(contactDetails) {
+		let checkIsEditContact = this.isContactModule() && !this.isFormList && (contactDetails.isShowDetails || this.contactService.isContactModalPopup);
+		if (checkIsEditContact) {
+			this.loading = true;
+			this.flexiFieldService.findFlexiFieldsBySelectedUserId(contactDetails.id, this.contactListId).subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.flexiFieldsRequestAndResponseDto = data.data.flexiFields
+						contactDetails.flexiFields = this.flexiFieldsRequestAndResponseDto;
+					}
+					this.loading = false;
+				}, (error: any) => {
+					this.refService.showSweetAlertServerErrorMessage();
+					this.loading = false;
+				});
+		}
 	}
 
 }

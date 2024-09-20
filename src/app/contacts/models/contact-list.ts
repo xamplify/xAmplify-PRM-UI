@@ -42,5 +42,4 @@ export class ContactList {
     companyList:boolean;
     editList = false;
     isDownload : boolean = false;
-    flexiFields : FlexiFieldsRequestAndResponseDto[];
 }
