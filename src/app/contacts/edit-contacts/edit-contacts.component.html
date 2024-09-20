@@ -861,6 +861,14 @@
 																								style="padding-right: 4px;"></i>{{user.mobileNumber}}</a>
 																					</td>
 																				</tr>
+
+																				<!----- XNFR-680 Flexi Fields ----->
+																				<tr *ngFor="let flexiField of user.flexiFields" class="bg-unset flex-none">
+																					<td class='pt10 pb10 bold mr_10' translate>{{flexiField.fieldName}} : </td>
+																					<td align="center" class="pt10 pb10">
+																						{{flexiField.fieldValue}}
+																					</td>
+																				</tr>
 																			</tbody>
 																		</table>
 																	</td>
@@ -1088,7 +1096,7 @@
 																</td>
 																<td align="center" *ngIf="gdprStatus || isPartner">
 																	<button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
-																		(click)="contact.isShowDetails = !contact.isShowDetails; findFlexiFieldsBySelectedUserId(contact)">
+																		(click)="contact.isShowDetails = !contact.isShowDetails">
 																		<span *ngIf="!contact.isShowDetails" translate>More</span>
 																		<span *ngIf="contact.isShowDetails" translate>Less</span>
 																	</button>
@@ -1669,6 +1677,16 @@
 																			Limit : </td>
 																		<td align="center" class="pt10 pb10">
 																			{{allcontacts.contactsLimit}}
+																		</td>
+																	</tr>
+																</ng-container>
+
+																<!----- XNFR-680 Flexi Fields ----->
+																<ng-container>
+																	<tr *ngFor="let flexiField of allcontacts.flexiFields" class="bg-unset flex-none">
+																		<td class='pt10 pb10 bold mr_10' translate>{{flexiField.fieldName}} : </td>
+																		<td align="center" class="pt10 pb10">
+																			{{flexiField.fieldValue}}
 																		</td>
 																	</tr>
 																</ng-container>

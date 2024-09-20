@@ -69,26 +69,23 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     /***** XNFR-680 *****/
     @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
     isContactModule : boolean = false;
-    constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
-                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
+    constructor(public countryNames: CountryNames, public regularExpressions: RegularExpressions, public router: Router,
+        public contactService: ContactService, public videoFileService: VideoFileService, public referenceService: ReferenceService, 
+        public logger: XtremandLogger, public authenticationService: AuthenticationService) {
         this.notifyParent = new EventEmitter();
-
-
-        if ( this.router.url.includes( 'home/contacts' ) ) {
-          this.isPartner = false;
-          // this.module = "contacts";
-          this.checkingContactTypeName = XAMPLIFY_CONSTANTS.contact;
-      } else if( this.router.url.includes( 'home/assignleads' ) ){
-          this.isPartner = false;
-          this.isAssignLeads = true;
-          this.checkingContactTypeName = "Lead"
-      }
-      else {
-          this.isPartner = true;
-          this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
-        
-      }
-      this.contactDetails
+        if (this.router.url.includes('home/contacts')) {
+            this.isPartner = false;
+            // this.module = "contacts";
+            this.checkingContactTypeName = XAMPLIFY_CONSTANTS.contact;
+        } else if (this.router.url.includes('home/assignleads')) {
+            this.isPartner = false;
+            this.isAssignLeads = true;
+            this.checkingContactTypeName = "Lead"
+        }
+        else {
+            this.isPartner = true;
+            this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
+        }
     }
 
     addContactModalClose() {
@@ -99,6 +96,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         $( '.modal-backdrop fade in' ).remove();
         $( ".modal-backdrop in" ).css( "display", "none" );
         this.contactService.isContactModalPopup = false;
+        this.flexiFieldsRequestAndResponseDto = [];
     }
 
     validateEmail( emailId: string ) {
@@ -227,6 +225,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 this.isValidLegalOptions = true;
                 $( '#addContactModal' ).modal( 'hide' );
                 this.contactService.isContactModalPopup = false;
+                if (this.checkIsContactType() && this.addContactuser.flexiFields.length == 0) {
+                    this.addContactuser.flexiFields = this.flexiFieldsRequestAndResponseDto;
+                }
                 this.notifyParent.emit( this.addContactuser );
             }else{
                 this.isValidLegalOptions = false;
@@ -277,80 +278,83 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     
 
     ngOnInit() {
-       try{
-        this.addContactuser.country = this.countryNames.countries[0];
-        this.addContactuser.contactCompanyId = this.selectedCompanyId;
-        if ( this.isUpdateUser ) {
-            this.checkingForEmail = true;
-            this.addContactuser.userId = this.contactDetails.id;
-            this.addContactuser.firstName = this.contactDetails.firstName;
-            this.addContactuser.lastName = this.contactDetails.lastName;
-            this.addContactuser.contactCompanyId = this.contactDetails.contactCompanyId;
-            this.addContactuser.contactCompany = this.contactDetails.contactCompany;
-            this.addContactuser.jobTitle = this.contactDetails.jobTitle;
-            this.addContactuser.emailId = this.contactDetails.emailId;
-            this.editingEmailId = this.contactDetails.emailId;
-            this.addContactuser.vertical = this.contactDetails.vertical;
-            this.addContactuser.region = this.contactDetails.region;
-            this.addContactuser.partnerType = this.contactDetails.partnerType;
-            this.addContactuser.category = this.contactDetails.category;
-            this.addContactuser.address = this.contactDetails.address;
-            this.addContactuser.city = this.contactDetails.city;
-            this.addContactuser.state = this.contactDetails.state;
-            this.addContactuser.zipCode = this.contactDetails.zipCode;
-            if(this.countryNames.countries.indexOf(this.contactDetails.country) !== -1){
-                this.addContactuser.country = this.contactDetails.country;
-            }
-            this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
-            this.addContactuser.legalBasis = this.contactDetails.legalBasis;
-            this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
-            this.addContactuser.accountName = this.contactDetails.accountName;
-            this.addContactuser.accountSubType = this.contactDetails.accountSubType;
-            this.addContactuser.accountOwner = this.contactDetails.accountOwner;
-            this.addContactuser.companyDomain = this.contactDetails.companyDomain;
-            this.addContactuser.territory = this.contactDetails.territory;
-            this.addContactuser.website = this.contactDetails.website;
-            this.validLimit = this.contactDetails.contactsLimit>0;
-            this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
-            if ( this.isPartner){
-            this.addContactuser.displayContactCompany = this.contactDetails.displayContactCompany;
-            this.addContactuser.companyNameStatus = this.contactDetails.companyNameStatus;
-            }
-            
-            if ( this.isPartner || this.isAssignLeads ) {
-                if ( this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
-                    this.isCompanyDetails = true;
-                } else {
-                    this.isCompanyDetails = false;
-                }
-                /*******XNFR-85*******/
-                this.findTeamMemberGroups();
-                
-            }
-        }
-        if ( this.addContactuser.country == undefined ) {
+        try {
+            this.isContactModule = this.checkIsContactType();
             this.addContactuser.country = this.countryNames.countries[0];
+            this.addContactuser.contactCompanyId = this.selectedCompanyId;
+            if (this.isUpdateUser) {
+                this.checkingForEmail = true;
+                this.addContactuser.userId = this.contactDetails.id;
+                this.addContactuser.firstName = this.contactDetails.firstName;
+                this.addContactuser.lastName = this.contactDetails.lastName;
+                this.addContactuser.contactCompanyId = this.contactDetails.contactCompanyId;
+                this.addContactuser.contactCompany = this.contactDetails.contactCompany;
+                this.addContactuser.jobTitle = this.contactDetails.jobTitle;
+                this.addContactuser.emailId = this.contactDetails.emailId;
+                this.editingEmailId = this.contactDetails.emailId;
+                this.addContactuser.vertical = this.contactDetails.vertical;
+                this.addContactuser.region = this.contactDetails.region;
+                this.addContactuser.partnerType = this.contactDetails.partnerType;
+                this.addContactuser.category = this.contactDetails.category;
+                this.addContactuser.address = this.contactDetails.address;
+                this.addContactuser.city = this.contactDetails.city;
+                this.addContactuser.state = this.contactDetails.state;
+                this.addContactuser.zipCode = this.contactDetails.zipCode;
+                if (this.countryNames.countries.indexOf(this.contactDetails.country) !== -1) {
+                    this.addContactuser.country = this.contactDetails.country;
+                }
+                this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
+                this.addContactuser.legalBasis = this.contactDetails.legalBasis;
+                this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
+                this.addContactuser.accountName = this.contactDetails.accountName;
+                this.addContactuser.accountSubType = this.contactDetails.accountSubType;
+                this.addContactuser.accountOwner = this.contactDetails.accountOwner;
+                this.addContactuser.companyDomain = this.contactDetails.companyDomain;
+                this.addContactuser.territory = this.contactDetails.territory;
+                this.addContactuser.website = this.contactDetails.website;
+                this.validLimit = this.contactDetails.contactsLimit > 0;
+                this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
+                if (this.isContactModule) {
+                    this.addContactuser.flexiFields = this.contactDetails.flexiFields;
+                }
+                if (this.isPartner) {
+                    this.addContactuser.displayContactCompany = this.contactDetails.displayContactCompany;
+                    this.addContactuser.companyNameStatus = this.contactDetails.companyNameStatus;
+                }
+
+                if (this.isPartner || this.isAssignLeads) {
+                    if (this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
+                        this.isCompanyDetails = true;
+                    } else {
+                        this.isCompanyDetails = false;
+                    }
+                    /*******XNFR-85*******/
+                    this.findTeamMemberGroups();
+
+                }
+            }
+            if (this.addContactuser.country == undefined) {
+                this.addContactuser.country = this.countryNames.countries[0];
+            }
+            /**************Show Legal Basis Content*******************/
+            this.fields = { text: 'name', value: 'id' };
+            if (this.gdprInput != undefined) {
+                this.legalBasisOptions = this.gdprInput.legalBasisOptions;
+                this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
+                this.gdprStatus = this.gdprInput.gdprStatus;
+            }
+            if (this.router.url.includes('home/contacts')) {
+                this.getActiveCompanies();
+            }
+            /*****XNFR-98*****/
+            if (this.isTeamMemberPartnerList == undefined) {
+                this.isTeamMemberPartnerList = false;
+            }
+            $('#addContactModal').modal('show');
+
+        } catch (error) {
+            console.error(error, "addcontactOneAttimeModalComponent()", "ngOnInit()");
         }
-        /**************Show Legal Basis Content*******************/
-        this.fields = { text: 'name', value: 'id' };
-        if(this.gdprInput!=undefined){
-            this.legalBasisOptions = this.gdprInput.legalBasisOptions;
-            this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
-            this.gdprStatus = this.gdprInput.gdprStatus;
-        }
-        if ( this.router.url.includes( 'home/contacts' ) ){
-            this.getActiveCompanies();
-        }
-        /*****XNFR-98*****/
-        if(this.isTeamMemberPartnerList==undefined){
-            this.isTeamMemberPartnerList = false;
-        }
-        this.isContactModule = this.checkIsContactType();
-        $( '#addContactModal' ).modal( 'show' );
-        
-       } catch ( error ) {
-           console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
-       }
     }
     
     private checkIsContactType() {

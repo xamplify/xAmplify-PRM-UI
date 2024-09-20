@@ -41,11 +41,6 @@ export class FlexiFieldService {
 
   deleteFlexiField(flexiFieldId: number) {
     return this.authenticationService.callDeleteMethod(this.FLEXI_FIELD_PREFIX_URL + '/id/' + flexiFieldId + "/loggedInUserId/" + this.authenticationService.getUserId() + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
-
-  }
-
-  findFlexiFieldsBySelectedUserId(selectedUserId: number, userListId: number) {
-    return this.authenticationService.callGetMethod(this.FLEXI_FIELD_PREFIX_URL + '/by-selectedUserId/' + selectedUserId + '/' + userListId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
   }
 
 }

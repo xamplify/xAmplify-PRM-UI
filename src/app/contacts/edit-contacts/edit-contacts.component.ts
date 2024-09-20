@@ -2806,7 +2806,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	addContactModalClose() {
 		$('#addContactModal').modal('toggle');
-		$("#addContactModal .close").click()
+		$("#addContactModal .close").click();
+		this.flexiFieldsRequestAndResponseDto = [];
 	}
 
 
@@ -3167,10 +3168,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.updateContactUser = true;
 		this.isUpdateUser = true;
 		this.contactAllDetails = contactDetails;
-		this.contactService.isContactModalPopup = true;
 		this.isCompanyContact = this.manageCompanies;
 		this.selectedCompanyContactId = this.selectedCompanyId;
-		this.findFlexiFieldsBySelectedUserId(contactDetails);
+		if (contactDetails.flexiFields.length == 0) {
+			this.callFlexiFieldsDataApi();
+		} else {
+			this.contactService.isContactModalPopup = true;
+		}
 	}
 
 	updateContactModalClose() {
@@ -3196,7 +3200,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 
 			this.editUser.user = event;
-			this.editUser.user.flexiFields = this.flexiFieldsRequestAndResponseDto;
 			this.addContactModalClose();
 			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser)
 				.subscribe(
@@ -4278,25 +4281,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.refService.showSweetAlertServerErrorMessage();
 			this.loading = false;
 		});
-	}
-
-	/***** XNFR-680 *****/
-	findFlexiFieldsBySelectedUserId(contactDetails) {
-		let checkIsEditContact = this.isContactModule() && !this.isFormList && (contactDetails.isShowDetails || this.contactService.isContactModalPopup);
-		if (checkIsEditContact) {
-			this.loading = true;
-			this.flexiFieldService.findFlexiFieldsBySelectedUserId(contactDetails.id, this.contactListId).subscribe(
-				data => {
-					if (data.statusCode == 200) {
-						this.flexiFieldsRequestAndResponseDto = data.data.flexiFields
-						contactDetails.flexiFields = this.flexiFieldsRequestAndResponseDto;
-					}
-					this.loading = false;
-				}, (error: any) => {
-					this.refService.showSweetAlertServerErrorMessage();
-					this.loading = false;
-				});
-		}
 	}
 
 }
