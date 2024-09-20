@@ -60,5 +60,17 @@
         </switch>
       </h5>
     </div>
+    <!--Email Notification Settings For Vendor Company---->
+    <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfoForVendorCompany}}.</label>
+    <div>
+      <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.notificationPreferenceForVendorCompany}}
+        <br><br>
+        <switch class="switchbtns" [status]="notificationSettingOption" [onText]="callActionSwitch.onTextValue"
+          [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+          (statusChange)="changeOption(moduleType,$event)">
+        </switch>
+      </h5>
+    </div>
   </div>
 </ng-template>

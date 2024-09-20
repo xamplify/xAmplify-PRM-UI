@@ -71,8 +71,8 @@ export class EmailNotificationSettingsComponent implements OnInit {
     let playBookSuffixText = "a play book";
     this.playbookPublishedTextDto.headerText = this.getHeaderText(playBookHeaderText);
     this.playbookPublishedTextDto.notificationToggle = this.getNotificationToggleText(playBookHeaderText);
-    this.playbookPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(playBooksSuffixText);
-    this.playbookPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(playBookSuffixText);
+    this.playbookPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(playBooksSuffixText,true);
+    this.playbookPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(playBookSuffixText,true);
   }
 
   private setTrackNotificationText() {
@@ -81,8 +81,8 @@ export class EmailNotificationSettingsComponent implements OnInit {
     let trackSuffixText = "a track";
     this.trackPublishedTextDto.headerText = this.getHeaderText(trackHeaderText);
     this.trackPublishedTextDto.notificationToggle = this.getNotificationToggleText(trackHeaderText);
-    this.trackPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(tracksSuffixText);
-    this.trackPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(trackSuffixText);
+    this.trackPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(tracksSuffixText,true);
+    this.trackPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(trackSuffixText,true);
   }
 
   private setAssetNotificationText() {
@@ -91,9 +91,11 @@ export class EmailNotificationSettingsComponent implements OnInit {
     let assetSuffixText = "an asset";
     this.assetPublishedTextDto.headerText = this.getHeaderText(assetHeaderText);
     this.assetPublishedTextDto.notificationToggle = this.getNotificationToggleText(assetHeaderText);
-    this.assetPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(assetsSuffixText);
-    this.assetPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(assetSuffixText);
-    this.assetPublishedTextDto.controlEmailNotificationTextForVendorCompany = 
+    this.assetPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(assetsSuffixText,true);
+    this.assetPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(assetSuffixText,true);
+    this.assetPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(assetsSuffixText,false);
+    this.assetPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(assetsSuffixText,false);
+
   }
 
   /****XNFR-571****/
@@ -103,8 +105,8 @@ export class EmailNotificationSettingsComponent implements OnInit {
     let dashboardButtonSuffixText = "a dashboard button";
     this.dashboardButtonsPublishedTextDto.headerText = this.getHeaderText(headerText);
     this.dashboardButtonsPublishedTextDto.notificationToggle = this.getNotificationToggleText(headerText);
-    this.dashboardButtonsPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(dashboardButtonsSuffixText);
-    this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText);
+    this.dashboardButtonsPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(dashboardButtonsSuffixText,true);
+    this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText,true);
   }
 
   getHeaderText(headerTextPrefix:string){
@@ -115,12 +117,18 @@ export class EmailNotificationSettingsComponent implements OnInit {
     return  "Turn Published "+turnOnOrOffTextSuffix+" Email notifications on or off";
   }
 
-  getNotificationControlInfoText(controlEmailNotificationTextSuffix:string){
-    return "You have the ability to control email notifications to your "+this.customModulePartnerName+" about published "+controlEmailNotificationTextSuffix+".";
+  getNotificationControlInfoText(controlEmailNotificationTextSuffix:string,textForPartnerFlag:boolean){
+    let suffixText = textForPartnerFlag ? this.customModulePartnerName : "team members and yourself ";
+    return "You have the ability to control email notifications to your "+suffixText+" about published "+controlEmailNotificationTextSuffix+".";
   }
 
-  getNotificationPreferenceText(sendEmailNotificationTextSuffix:string){
-    return "Send email notifications to your "+this.customModulePartnerName+" when "+sendEmailNotificationTextSuffix+" is published:";
+  getNotificationPreferenceText(sendEmailNotificationTextSuffix:string,textForPartnerFlag:boolean){
+    let suffixText = this.getSuffixText(textForPartnerFlag);
+    return "Send email notifications to your "+suffixText+" when "+sendEmailNotificationTextSuffix+" is published:";
+  }
+
+  private getSuffixText(textForPartnerFlag: boolean) {
+    return textForPartnerFlag ? this.customModulePartnerName : "team members and yourself";
   }
 
   findEmailNotificationSettings(){

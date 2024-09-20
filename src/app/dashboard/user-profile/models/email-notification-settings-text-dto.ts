@@ -4,6 +4,6 @@ export class EmailNotificationSettingsTextDto {
     notificationControlInfo=""
     notificationPreference = "";
     /**Turn On/Off Email Notification Settings For Vendor Company***/
-    controlEmailNotificationTextForVendorCompany = "";
-    sendEmailNotificationTextForVendorCompany = "";
+    notificationControlInfoForVendorCompany = "";
+    notificationPreferenceForVendorCompany = "";
 }
