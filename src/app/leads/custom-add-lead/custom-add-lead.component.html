@@ -5,10 +5,31 @@
   });
   webshims.polyfill('forms forms-ext');
 </script>
-<div class="" id="del-profile-div">
+<div [ngClass]=" isThroughAddUrl ? 'page-content' :'' " id="del-profile-div">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div *ngIf="isThroughAddUrl" class="page-bar" style="height:48px">
+    <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
+      <div class="col-xs-12 col-sm-5 col-lg-6">
+        <ul class="page-breadcrumb pbc-m3">
+          <li *ngIf="!authenticationService.isSuperAdmin()">
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isFromManageLeads">
+            <a (click)="goBackToManageLeads()" translate>Leads
+            </a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li>
+            <a>Add</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <div class="portlet-title">
-    <div class="caption header-padding"  [ngClass]="isLeadForDivCenterAligned ? 'text-center':''" >{{leadFormTitle}}</div>
+    <div class="caption header-padding" [ngClass]="isLeadForDivCenterAligned ? 'text-center':''">{{leadFormTitle}}</div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
