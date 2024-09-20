@@ -49,28 +49,39 @@
       </div>
     </div>
     <h4 class="bold-font-weight">{{emailNotificationSettingsTextDto?.notificationToggle}}</h4>
-    <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfo}}.</label>
-    <div>
-      <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.notificationPreference}}
-        <br><br>
-        <switch class="switchbtns" [status]="notificationSettingOption" [onText]="callActionSwitch.onTextValue"
-          [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-          (statusChange)="changeOption(moduleType,$event)">
-        </switch>
-      </h5>
+
+    <!--Email Notification Settings For Partner Company-->
+    <div class="portlet light">
+      <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfo}}.</label>
+      <div>
+        <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.notificationPreference}}
+          <br><br>
+          <switch class="switchbtns" [status]="notificationSettingOption" [onText]="callActionSwitch.onTextValue"
+            [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+            (statusChange)="changeOption(moduleType,$event)">
+          </switch>
+        </h5>
+      </div>
     </div>
+
+
     <!--Email Notification Settings For Vendor Company---->
-    <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfoForVendorCompany}}.</label>
-    <div>
-      <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.notificationPreferenceForVendorCompany}}
-        <br><br>
-        <switch class="switchbtns" [status]="notificationSettingOption" [onText]="callActionSwitch.onTextValue"
-          [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-          (statusChange)="changeOption(moduleType,$event)">
-        </switch>
-      </h5>
-    </div>
+    <ng-container *ngIf="moduleType!=1">
+      <div class="portlet light">
+        <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfoForVendorCompany}}</label>
+        <div>
+          <h5 class="bold-font-weight h5-custom-font">
+            {{emailNotificationSettingsTextDto?.notificationPreferenceForVendorCompany}}
+            <br><br>
+            <switch class="switchbtns" [status]="notificationSettingOption" [onText]="callActionSwitch.onTextValue"
+              [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+              (statusChange)="changeOption(moduleType,$event)">
+            </switch>
+          </h5>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </ng-template>

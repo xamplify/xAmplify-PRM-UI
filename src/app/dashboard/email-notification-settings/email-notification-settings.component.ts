@@ -73,6 +73,8 @@ export class EmailNotificationSettingsComponent implements OnInit {
     this.playbookPublishedTextDto.notificationToggle = this.getNotificationToggleText(playBookHeaderText);
     this.playbookPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(playBooksSuffixText,true);
     this.playbookPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(playBookSuffixText,true);
+    this.playbookPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(playBookSuffixText,false);
+    this.playbookPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(playBookSuffixText,false);
   }
 
   private setTrackNotificationText() {
@@ -83,6 +85,8 @@ export class EmailNotificationSettingsComponent implements OnInit {
     this.trackPublishedTextDto.notificationToggle = this.getNotificationToggleText(trackHeaderText);
     this.trackPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(tracksSuffixText,true);
     this.trackPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(trackSuffixText,true);
+    this.trackPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(trackSuffixText,false);
+    this.trackPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(trackSuffixText,false);
   }
 
   private setAssetNotificationText() {
@@ -107,6 +111,9 @@ export class EmailNotificationSettingsComponent implements OnInit {
     this.dashboardButtonsPublishedTextDto.notificationToggle = this.getNotificationToggleText(headerText);
     this.dashboardButtonsPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(dashboardButtonsSuffixText,true);
     this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText,true);
+    this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText,true);
+    this.dashboardButtonsPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(dashboardButtonSuffixText,false);
+    this.dashboardButtonsPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(dashboardButtonSuffixText,false);
   }
 
   getHeaderText(headerTextPrefix:string){
