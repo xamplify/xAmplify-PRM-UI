@@ -447,6 +447,12 @@ export class SortOption {
 		{ 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
 	]
 
+	customFieldsDropDown = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name(A-Z)', 'value': 'customFields-ASC' },
+		{ 'name': 'Name(Z-A)', 'value': 'customFields-DESC' },
+	];
+
 
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -512,5 +518,7 @@ export class SortOption {
 
 	selectedIntegrationDetailsDropDownOption = this.integrationDetailsDropDown[0];
 
+	/***XNFR-662****/
+    public selectedCustomFieldsDropDownOption = this.customFieldsDropDown[0];
 
 }

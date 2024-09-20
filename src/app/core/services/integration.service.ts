@@ -8,7 +8,6 @@ import { Observable } from "rxjs/Observable";
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import { SocialContact } from "app/contacts/models/social-contact";
 import { CustomFieldsDto } from "app/dashboard/models/custom-fields-dto";
-import { Pagination } from "../models/pagination";
 
 @Injectable()
 export class IntegrationService {
@@ -222,29 +221,23 @@ export class IntegrationService {
       
       }
 
-      saveCustomFields(request: any) {
-        return this._http.post(this.authenticationService.REST_URL + "/customFields/save?access_token=" + this.authenticationService.access_token, request)
-            .map(this.extractData)
-            .catch(this.handleError);
-        
+    saveCustomFields(request: any) {
+        let url = this.authenticationService.REST_URL + "/customFields/save?access_token=" + this.authenticationService.access_token
+        return this.authenticationService.callPostMethod(url, request);
     }
     syncCustomFieldsForm(request: any) {
-        return this._http.post(this.authenticationService.REST_URL + "/customFields/sync?access_token=" + this.authenticationService.access_token, request)
-            .map(this.extractData)
-            .catch(this.handleError);
-        
+        let url = this.authenticationService.REST_URL + "/customFields/sync?access_token=" + this.authenticationService.access_token
+        return this.authenticationService.callPostMethod(url, request);
     }
 
-    getLeadCustomFields(pagination: Pagination) {
-        return this.authenticationService.callPostMethod(this.authenticationService.REST_URL + `/customFields/list?access_token=${this.authenticationService.access_token}`, pagination);
-        // return this._http.post(this.authenticationService.REST_URL + `/customFields/${loggedInUserId}?access_token=${this.authenticationService.access_token}`, pagination)
-        //   .map(this.extractData)
-        //   .catch(this.handleError);
-      }
+    getCustomFields() {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.authenticationService.REST_URL + `/customFields/${loggedInUserId}?access_token=${this.authenticationService.access_token}`
+        return this.authenticationService.callGetMethod(url);
+    }
 
-      deleteCustomField(customfield: CustomFieldsDto, loggedInUserId:any) {
-        return this._http.post(this.authenticationService.REST_URL + `/customFields/delete/${loggedInUserId}?access_token=${this.authenticationService.access_token}`, customfield)
-       .map(this.extractData)
-       .catch(this.handleError);
-     }
+    deleteCustomField(customFieldId: number, loggedInUserId: any) {
+        let url = this.authenticationService.REST_URL + `/customFields/delete/${loggedInUserId}/${customFieldId}?access_token=${this.authenticationService.access_token}`
+        return this.authenticationService.callDeleteMethod(url);
+    }
 }

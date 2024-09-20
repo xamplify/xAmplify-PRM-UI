@@ -11,31 +11,62 @@ import { CustomFieldsDto } from '../models/custom-fields-dto';
 })
 export class AddCustomFieldsComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
-  customFields = new CustomFields;
+  @Output() notifySubmitSuccess = new EventEmitter<any>();
+  customField = new CustomFields;
   customFieldsDtos = new CustomFieldsDto;
   ngxloading: boolean = false;
   loggedInUserId: number;
+  options: any;
+  isValid: boolean = true;
+  errorMessage = '';
 
 
-  constructor(private integrationService: IntegrationService, private authenticationService: AuthenticationService) { 
-    this.loggedInUserId = this.authenticationService.getUserId();
+  constructor(private integrationService: IntegrationService, private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
-    if(this.customFields.objectType === undefined){
-      this.customFields.objectType = null;
+    this.loggedInUserId = this.authenticationService.getUserId();
+    if(this.customField.objectType === undefined){
+      this.customField.objectType = null;
       this.customFieldsDtos.type = null;
+    }
+  }
+
+  addOption() {
+    this.options = {};
+    this.customFieldsDtos.options.push(this.options);
+  }
+  delete(divIndex: number) {
+    this.customFieldsDtos.options.splice(divIndex, 1);
+  }
+  validateAndSubmit() {
+    this.isValid = true;  
+    if (this.customFieldsDtos.type === null) {
+      this.isValid = false;
+      this.errorMessage = 'Please select the type.';
+    }
+    if (this.customFieldsDtos.label.trim().length == 0) {
+      this.isValid = false;
+      this.errorMessage = 'Please fill label.';
+    }
+    if (this.customField.objectType === null) {
+      this.isValid = false;
+      this.errorMessage = 'Please select object type.';
+    }
+
+    if (this.isValid) {
+     this.saveCustomField();
     }
   }
 
   saveCustomField(){
       this.ngxloading = true;
-      this.customFields.loggedInUserId = this.loggedInUserId;
-      this.customFields.selectedFields.push(this.customFieldsDtos);
-      this.integrationService.saveCustomFields(this.customFields).subscribe(
+      this.customField.loggedInUserId = this.loggedInUserId;
+      this.customField.selectedFields.push(this.customFieldsDtos);
+      this.integrationService.saveCustomFields(this.customField).subscribe(
           response=>{
             if(response.statusCode == 200){
-              this.notifyCloseCustomField();
+              this.notifySubmitSuccess.emit();
             }
             this.ngxloading = false;
           },error=>{
@@ -46,6 +77,5 @@ export class AddCustomFieldsComponent implements OnInit {
   notifyCloseCustomField(){
   this.closeEvent.emit("0");
   }
-
 
 }

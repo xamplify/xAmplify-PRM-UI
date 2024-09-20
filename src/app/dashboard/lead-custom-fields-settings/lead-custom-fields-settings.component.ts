@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LeadsService } from 'app/leads/services/leads.service';
-import { LeadCustomFieldDto } from 'app/leads/models/lead-custom-field';
 import { PaginationComponent } from 'app/common/pagination/pagination.component';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -10,9 +9,6 @@ import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { CustomFields } from '../models/custom-fields';
-import { Pagination } from 'app/core/models/pagination';
-import { PagerService } from 'app/core/services/pager.service';
-import { SortOption } from 'app/core/models/sort-option';
 declare var $: any, swal: any;
 
 @Component({
@@ -22,12 +18,9 @@ declare var $: any, swal: any;
   providers: [LeadsService]
 })
 export class LeadCustomFieldsSettingsComponent implements OnInit {
-  @Input() integrationType: String;
-  @Input() opportunityType :any;
   @Output() closeEvent = new EventEmitter<any>();
   @Output() notifySubmitSuccess = new EventEmitter<any>();
-    loggedInUserId: any;
-	pagination: Pagination = new Pagination();
+  loggedInUserId: any;
 	customResponse: CustomResponse = new CustomResponse();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	loading: boolean = false;
@@ -37,7 +30,6 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 	sfCustomFieldsResponse: any;
 	sfcfMasterCBClicked: boolean = false;
 	isOnlyPartner: boolean = false;
-	isPartnerTeamMember: boolean = false;
 	requiredCfIds = [];
 	paginatedSelectedIds = [];
 	sfcfPager: any = {};
@@ -61,39 +53,35 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 	isSortApplied: boolean = false;
 	isFilterApplied: boolean = false;
 	isCustomFieldsModelPopUp: boolean = false;
-  isAddCustomFieldsModelPopUp: boolean = false;
+    isAddCustomFieldsModelPopUp: boolean = false;
 	isCustomFieldsOrderModelPopUp: boolean = false;
 	customFieldsList: any;
 	selectedCustomFields: Array<CustomFieldsDto> = new Array<CustomFieldsDto>();
 	showHeaderTextArea: boolean = false;
 	dealHeader = '';
-  customFields = new CustomFields;
+    customFields = new CustomFields;
 
-	// sortOptions = [
-	// 	{ 'name': 'Sort by', 'value': '' },
-	// 	{ 'name': 'Field name (A-Z)', 'value': 'asc' },
-	// 	{ 'name': 'Field name (Z-A)', 'value': 'desc' },
-	// ];
+	sortOptions = [
+		{ 'name': 'Sort by', 'value': '' },
+		{ 'name': 'Field name (A-Z)', 'value': 'asc' },
+		{ 'name': 'Field name (Z-A)', 'value': 'desc' },
+	];
 
-	// public sortOption: any = this.sortOptions[0].value;
-	
-	
+	public sortOption: any = this.sortOptions[0].value;
 
-  constructor(private leadService: LeadsService, public pagerService: PagerService, public referenceService: ReferenceService,public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public authenticationService: AuthenticationService, public integrationService: IntegrationService, public sortOption: SortOption) { 
-        this.pageNumber = this.paginationComponent.numberPerPage[0];
-		this.loggedInUserId = this.authenticationService.getUserId();
-		this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
+  constructor(public referenceService: ReferenceService,public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public authenticationService: AuthenticationService, public integrationService: IntegrationService) { 
   }
 
   ngOnInit() {
-	this.listCustomFields(this.pagination);
+	    this.pageNumber = this.paginationComponent.numberPerPage[0];
+		this.loggedInUserId = this.authenticationService.getUserId();
+        this.listCustomFields();
   }
-  
-	listSalesforceCustomFields(opportunityType: any) {
+	listCustomFields() {
 		this.ngxloading = true;
 		let self = this;
 		this.customFieldsDtosLoader = true;
-		self.integrationService.getLeadCustomFields(this.pagination)
+		self.integrationService.getCustomFields()
 			.subscribe(
 				data => {
 					this.ngxloading = false;
@@ -136,11 +124,11 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 					this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
 					$.each(this.sfCustomFieldsResponse, function (_index: number, customFiledDto: any) {
 						if (customFiledDto.selected) {
-							  self.selectedCustomFieldsDtos.push(customFiledDto);
+							self.selectedCustomFieldsDtos.push(customFiledDto);
 						}
 						if (customFiledDto.order >= 1) {
 							self.selectedCustomFieldsDtos.sort((a, b) => {
-								if (a['order'] === null) return 1;  
+								if (a['order'] === null) return 1;
 								if (b['order'] === null) return -1;
 								return a['order'] - b['order'];
 							});
@@ -156,29 +144,29 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
 				return;
 			}
-			// if (this.sortOption !== undefined){ 
-			// 	if (this.sortOption === 'asc') {
-			// 		this.sfCustomFieldsResponse.sort((a, b) => a.label.localeCompare(b.label));
-			// 	} else if (this.sortOption === 'desc') {
-			// 		this.sfCustomFieldsResponse.sort((a, b) => b.label.localeCompare(a.label));
-			// 	} else if (this.sortOption === '') {
-			// 		this.sfCustomFieldsResponse.sort((a, b) => {
-			// 			if (a.canUnselect && !b.canUnselect) {
-			// 				return 1;
-			// 			} else if (!a.canUnselect && b.canUnselect) {
-			// 				return -1;
-			// 			}
+			if (this.sortOption !== undefined) {
+				if (this.sortOption === 'asc') {
+					this.sfCustomFieldsResponse.sort((a, b) => a.label.localeCompare(b.label));
+				} else if (this.sortOption === 'desc') {
+					this.sfCustomFieldsResponse.sort((a, b) => b.label.localeCompare(a.label));
+				} else if (this.sortOption === '') {
+					this.sfCustomFieldsResponse.sort((a, b) => {
+						if (a.canUnselect && !b.canUnselect) {
+							return 1;
+						} else if (!a.canUnselect && b.canUnselect) {
+							return -1;
+						}
 
-			// 			if (!a.selected && b.selected) {
-			// 				return 1;
-			// 			} else if (a.selected && !b.selected) {
-			// 				return -1;
-			// 			}
+						if (!a.selected && b.selected) {
+							return 1;
+						} else if (a.selected && !b.selected) {
+							return -1;
+						}
 
-			// 			return a.label.localeCompare(b.label);
-			// 		});
-			// 	}
-			// }
+						return a.label.localeCompare(b.label);
+					});
+				}
+			}
 			this.referenceService.goToTop();
 			if (this.searchKey !== undefined && this.searchKey !== '') {
 				this.FilteredCustomFields = this.sfCustomFieldsResponse.filter(customField =>
@@ -245,7 +233,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 						this.notifySubmitSuccess.emit(this.customFieldsResponse);
 						this.isFilterApplied = false;
 						this.isSortApplied = false;
-						this.listSalesforceCustomFields(this.opportunityType);
+						this.listCustomFields();
 					}
 				},
 				error => {
@@ -254,11 +242,12 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 				() => { }
 			);
 	}
+
 	closeSfSettings() {
 		this.closeEvent.emit();
 	}
 
-	selectCf(sfCustomField: any, event: any) {
+	selectCf(sfCustomField: any) {
 		let cfName = sfCustomField.name;
 		let isChecked = $('#' + cfName).is(':checked');
 		if (isChecked) {
@@ -270,28 +259,78 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 				this.paginatedSelectedIds.push(cfName);
 			}
 			sfCustomField.selected = true;
-			this.isHeaderCheckBoxChecked =  true;
 		} else {
 			this.selectedCustomFieldsDtos.splice(this.selectedCustomFieldsDtos.indexOf(sfCustomField), 1);
 			let indexInSelectedIds = this.selectedCfIds.indexOf(cfName);
 			if (indexInSelectedIds !== -1) {
 				this.selectedCfIds.splice(indexInSelectedIds, 1);
-			}			
+			}
+
 			let indexInPaginatedIds = this.paginatedSelectedIds.indexOf(cfName);
 			if (indexInPaginatedIds !== -1) {
 				this.paginatedSelectedIds.splice(indexInPaginatedIds, 1);
 			}
-			this.isHeaderCheckBoxChecked =  false;	
+
 			sfCustomField.selected = false;
 			sfCustomField.required = false;
 		}
-		event.stopPropagation();
-		// this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
+		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
 	}
 
-	checkAll(event: any) {
-		// this.selectedCfIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('customFields-tr', 'custom-fields-table', 'sfcf', this.selectedCfIds, this.pagination, event);
-		if (event.target.checked) {
+	checkIParentFieldisUnChecked(sfCustomField: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				let hasParentLabel = this.sfcfPagedItems.some(field => field.name === sfParentName);
+				if (sfCustomField.canUnselect) {
+					if (hasParentLabel || !(sfParentfield.canUnselect)) {
+						sfParentfield.selected = false;
+						sfParentfield.canUnselect = true;
+						this.checkIParentFieldisUnChecked(sfParentfield);
+					}
+				} else {
+					let cfParentName = sfCustomField.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfCustomField.selected = true;
+					sfCustomField.canUnselect = false;
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+				}
+			}
+		}
+	}
+
+
+	setParentFieldSelected(sfCustomField: any, isChildChecked: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				if (isChildChecked) {
+					let cfName = sfParentfield.name;
+					if (this.selectedCfIds.indexOf(cfName) == -1) {
+						this.selectedCfIds.push(cfName);
+						this.selectedCustomFieldsDtos.push(sfParentfield);
+					}
+					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+						this.paginatedSelectedIds.push(cfName);
+					}
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
+				} else {
+					let cfParentName = sfParentfield.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfParentfield.canUnselect = true;
+					sfParentfield.selected = true;
+				}
+			}
+		}
+	}
+
+	checkAll(ev: any) {
+		if (ev.target.checked) {
 			$('[name="sfcf[]"]').prop('checked', true);
 			let self = this;
 			$('[name="sfcf[]"]:checked').each(function () {
@@ -329,17 +368,17 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 					value.selected = false;
 					self.selectedCustomFieldsDtos.splice(self.selectedCustomFieldsDtos.indexOf(value), 1);
 					if (value.controllerName != null && value.controllerName != undefined) {
+						self.checkIParentFieldisUnChecked(value);
 					}
 				}
 			});
 			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
 		}
-		event.stopPropagation();
+		ev.stopPropagation();
 	}
 	toggleSettings(sfCustomField){
 		sfCustomField.showSettings = !sfCustomField.showSettings;
 	}
-		
 
 	searchFieldsKeyPress(keyCode: any) {
 		if (keyCode === 13) {
@@ -353,27 +392,17 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 
 	getAllFilteredResultsFields() {
 		this.isFilterApplied = true;
-		// if (this.integrationType.toLowerCase() === 'salesforce') {
-			this.listSalesforceCustomFields(this.opportunityType);
-		// }
+		this.listCustomFields();
 	}
 
 	clearFieldSearch() {
 		this.searchKey = '';
-		// if (this.integrationType.toLowerCase() === 'salesforce') {
-			this.listSalesforceCustomFields(this.opportunityType);
-		// } else {
-			// this.listExternalCustomFields();
-		// }
+		this.listCustomFields();
 	}
 
 	sortFieldsByOption() {
 		this.isSortApplied = true;
-		// if (this.integrationType.toLowerCase() === 'salesforce') {
-			this.listSalesforceCustomFields(this.opportunityType);
-		// } else {
-			// this.listExternalCustomFields();
-		// }
+		this.listCustomFields();
 	}
 
 	addCustomFielsdModalOpen(customfield: any){
@@ -385,64 +414,22 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 	closeCustomFielsModal(event: any) {
 		if (event === "0") {
 			this.isCustomFieldsModelPopUp = false;
+		}	
+  }
+		addCustomFielsdOrderModalOpen(){
+			this.isCustomFieldsOrderModelPopUp = true;
+			this.customFieldsList = this.selectedCustomFieldsDtos;
 		}
-	}
-	addCustomFielsdOrderModalOpen() {
-		this.isCustomFieldsOrderModelPopUp = true;
-		this.customFieldsList = this.selectedCustomFieldsDtos;
+
+		closeCustomFielsOrderModal(event: any) {
+			if (event === "0") {
+				this.isCustomFieldsOrderModelPopUp = false;
+			}	
 	}
 
-	closeCustomFielsOrderModal(event: any) {
-		if (event === "0") {
-			this.isCustomFieldsOrderModelPopUp = false;
-		}
-	}
-	toggleHeaderSettings() {
+	toggleHeaderSettings(){
 		this.showHeaderTextArea = !this.showHeaderTextArea;
 	}
-
-	listCustomFields(pagination: Pagination) {
-		this.ngxloading = true;
-		let self = this;
-		this.pagination.userId = this.loggedInUserId;
-		self.integrationService.getLeadCustomFields(this.pagination).subscribe(
-			(response: any) => {
-				this.ngxloading = false;
-				this.sfCustomFieldsResponse = response.data.list;
-				this.sortOption.totalRecords = response.data.totalRecords;
-				pagination.totalRecords = response.data.totalRecords;
-				this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-				self.selectedCfIds = [];
-				$.each(this.sfCustomFieldsResponse, function (_index: number, customField) {
-					if (customField.selected) {
-						self.selectedCfIds.push(customField.name);
-					}
-
-					if (customField.required) {
-						self.requiredCfIds.push(customField.name);
-						if (!customField.selected) {
-							self.selectedCfIds.push(customField.name);
-						}
-						if (!customField.canUnselect) {
-							self.canNotUnSelectIds.push(customField.name)
-						}
-					}
-				});
-			},
-			error => {
-				this.ngxloading = false;
-			},
-			() => {
-				this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
-				$.each(this.sfCustomFieldsResponse, function (_index: number, customFiledDto: any) {
-					if (customFiledDto.selected) {
-						self.selectedCustomFieldsDtos.push(customFiledDto);
-					}
-				});
-			}
-		);
-	}
-
 
   addCustomFieldsdModalOpen(){
     this.isAddCustomFieldsModelPopUp = true;
@@ -451,16 +438,21 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
   closeAddCustomFieldsModal(event: any) {
     if (event === "0") {
       this.isAddCustomFieldsModelPopUp = false;
-      this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-      this.listSalesforceCustomFields("LEAD");
+      this.listCustomFields();
     }
   }
 
-  confirmDelete(customfield : CustomFieldsDto) {
+  showCustomFieldSubmitSuccess(){
+	this.isAddCustomFieldsModelPopUp = false;
+	this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+	this.listCustomFields();
+  }
+
+  confirmDelete(customFieldId : number) {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
-			text: "This Custom Field will be deleted from your Custom Fields.",
+			text: "This Custom Field and Data associated to this field will be deleted.",
 			type: 'warning',
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
@@ -468,30 +460,25 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 			confirmButtonText: 'Yes, delete it!'
 
 		}).then(function () {
-			self.deleteCustomField(customfield);
+			self.deleteCustomField(customFieldId);
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
 		});
 	}
 
-  deleteCustomField(customfield : CustomFieldsDto){
-    this.ngxloading = true;
-    this.integrationService.deleteCustomField(customfield, this.loggedInUserId).subscribe(
-        response=>{
-          if(response.statusCode == 200){
-            this.customResponse = new CustomResponse('SUCCESS', "Deleted Successfully", true);
-            this.listSalesforceCustomFields("LEAD");
-          }
-          this.ngxloading = false;
-        },error=>{
-          this.ngxloading = false;
-        });  
-  }
-
-  setCustomFieldsPage(event: any) {
-    this.pagination.pageIndex = event.page;
-    this.listCustomFields(this.pagination);
-  }
+	deleteCustomField(customFieldId: number) {
+		this.ngxloading = true;
+		this.integrationService.deleteCustomField(customFieldId, this.loggedInUserId).subscribe(
+			response => {
+				if (response.statusCode == 200) {
+					this.customResponse = new CustomResponse('SUCCESS', "Deleted Successfully", true);
+					this.listCustomFields();
+				}
+				this.ngxloading = false;
+			}, error => {
+				this.ngxloading = false;
+			});
+	}
 
 }
 
