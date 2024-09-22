@@ -8,7 +8,6 @@ import {CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { EmailNotificationSettingsDto } from '../user-profile/models/email-notification-settings-dto';
 import { EmailNotificationSettingsTextDto } from '../user-profile/models/email-notification-settings-text-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-VanityURLService
 
 @Component({
   selector: 'app-email-notification-settings',
@@ -26,9 +25,9 @@ export class EmailNotificationSettingsComponent implements OnInit {
  trackPublishedTextDto:EmailNotificationSettingsTextDto = new EmailNotificationSettingsTextDto();
  playbookPublishedTextDto:EmailNotificationSettingsTextDto = new EmailNotificationSettingsTextDto();
  dashboardButtonsPublishedTextDto:EmailNotificationSettingsTextDto = new EmailNotificationSettingsTextDto();
-
  isVanityLogin = false;
  customModulePartnerName = "";
+ isLocalHost = false;
  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
   public dashboardService:DashboardService,public callActionSwitch: CallActionSwitch,public vanityUrlService:VanityURLService) {
    this.isVanityLogin =  this.vanityUrlService.isVanityURLEnabled();
@@ -36,6 +35,7 @@ export class EmailNotificationSettingsComponent implements OnInit {
   
  ngOnInit() {
    this.loading  = true;
+   this.isLocalHost = this.authenticationService.isLocalHost();
    this.customResponse = new CustomResponse();
    this.customModulePartnerName = this.authenticationService.getPartnerModuleCustomName();
 
