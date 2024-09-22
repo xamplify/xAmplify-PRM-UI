@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +13,7 @@ import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { Properties } from 'app/common/models/properties';
 
 
-declare var $;
+declare var $:any;
 @Component({
   selector: 'app-module-access',
   templateUrl: './module-access.component.html',
@@ -53,6 +53,10 @@ export class ModuleAccessComponent implements OnInit {
   companyProfileNameError = false;
   companyProfileNameErrorMessage = "";
   companyProfileName = "";
+  @Input() isNavigatedFromMyProfileSection = false;
+  @Input() companyIdFromMyProfileSection = 0;
+  @Input() companyProfileNameFromMyProfileSection = "";
+  @Input() userAliasFromMyProfileSection = "";
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,public properties:Properties) { }
   ngOnInit() {
@@ -68,15 +72,21 @@ export class ModuleAccessComponent implements OnInit {
         this.companyLoader = false;
       }
     }else{
-      this.companyId = this.route.snapshot.params['alias'];
-      this.userAlias = this.route.snapshot.params['userAlias'];
-      this.companyProfilename = this.route.snapshot.params['companyProfileName'];
-      this.getCompanyAndUserDetails();
-      this.getModuleAccessByCompanyId();
-      this.getDnsConfiguredDetails();
-      this.getSpfConfiguredDetails();
-      this.findMaximumAdminsLimitDetails();
-      this.headerName = "Module Access";
+      if(this.isNavigatedFromMyProfileSection){
+        this.companyId = 1157;
+        this.userAlias = 56712213;
+        this.companyProfilename = "demo";
+      }else{
+        this.companyId = this.route.snapshot.params['alias'];
+        this.userAlias = this.route.snapshot.params['userAlias'];
+        this.companyProfilename = this.route.snapshot.params['companyProfileName'];
+      }
+        this.getCompanyAndUserDetails();
+        this.getModuleAccessByCompanyId();
+        this.getDnsConfiguredDetails();
+        this.getSpfConfiguredDetails();
+        this.findMaximumAdminsLimitDetails();
+        this.headerName = "Module Access";
     }
    
   }
@@ -173,10 +183,10 @@ export class ModuleAccessComponent implements OnInit {
 
   getCompanyAndUserDetails() {
     this.dashboardService.getCompanyDetailsAndUserId(this.companyId, this.userAlias).subscribe(result => {
-      this.companyLoader = false;
       this.companyAndUserDetails = result;
       this.companyProfileName = this.companyAndUserDetails.companyProfileName;
       this.roleId = result.roleId;
+      this.companyLoader = false;
     }, error => {
       this.companyLoader = false;
       this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);

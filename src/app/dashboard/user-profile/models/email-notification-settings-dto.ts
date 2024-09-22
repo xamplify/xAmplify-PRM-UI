@@ -1,15 +1,20 @@
 export class EmailNotificationSettingsDto {
     notifyPartners:boolean = false;
 	assetPublishedEmailNotification:boolean = false;
-	assetPublishedEmailNotificationToVendorCompany:boolean  = false;
+	assetPublishVendorEmailNotification:boolean  = false;
+
 	trackPublishedEmailNotification:boolean = false;
-	trackPublishedEmailNotificationToVendorCompany:boolean = false;
+	trackPublishVendorEmailNotification:boolean = false;
+	
 	playbookPublishedEmailNotification:boolean = false;
-	playbookPublishedEmailNotificationToVendorCompany:boolean = false;
+	playbookPublishVendorEmailNotification:boolean = false;
+
 	dashboardButtonsEmailNotification:boolean = false;
-	dashboardButtonsEmailNotificationToVendorCompany:boolean = false;
+	dashboardButtonPublishVendorEmailNotification:boolean = false;
+
 	dashboardBannersEmailNotification:boolean = false;
 	dashboardBannersEmailNotificationToVendorCompany:boolean = false;
+
 	newsAndAnnouncementsEmailNotification:boolean = false;
 	newsAndAnnouncementsEmailNotificationToVendorCompany:boolean = false;
 }

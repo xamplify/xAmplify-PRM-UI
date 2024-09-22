@@ -97,8 +97,8 @@ export class EmailNotificationSettingsComponent implements OnInit {
     this.assetPublishedTextDto.notificationToggle = this.getNotificationToggleText(assetHeaderText);
     this.assetPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(assetsSuffixText,true);
     this.assetPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(assetSuffixText,true);
-    this.assetPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(assetsSuffixText,false);
-    this.assetPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(assetsSuffixText,false);
+    this.assetPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(assetSuffixText,false);
+    this.assetPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(assetSuffixText,false);
 
   }
 
@@ -146,6 +146,7 @@ export class EmailNotificationSettingsComponent implements OnInit {
         this.loading = false;
       },error=>{
         this.loading = false;
+        this.emailNotificationSettingsDto = new EmailNotificationSettingsDto();
       }
     );
   }
@@ -166,17 +167,36 @@ export class EmailNotificationSettingsComponent implements OnInit {
     );
   }
 
-  changeOption(moduleType:number,event:any){
-    if(moduleType==1){
-      this.emailNotificationSettingsDto.notifyPartners = event;
-    }else if(moduleType==2){
-      this.emailNotificationSettingsDto.assetPublishedEmailNotification = event;
-    }else if(moduleType==3){
-      this.emailNotificationSettingsDto.trackPublishedEmailNotification = event;
-    }else if(moduleType==4){
-      this.emailNotificationSettingsDto.playbookPublishedEmailNotification = event;
-    }else if(moduleType==5){
-      this.emailNotificationSettingsDto.dashboardButtonsEmailNotification = event;
+  private notificationMappings = {
+    partner: {
+      1: 'notifyPartners',
+      2: 'assetPublishedEmailNotification',
+      3: 'trackPublishedEmailNotification',
+      4: 'playbookPublishedEmailNotification',
+      5: 'dashboardButtonsEmailNotification',
+    },
+    vendor: {
+      2: 'assetPublishVendorEmailNotification',
+      3: 'trackPublishVendorEmailNotification',
+      4: 'playbookPublishVendorEmailNotification',
+      5: 'dashboardButtonPublishVendorEmailNotification',
+    },
+  };
+
+  updateEmailNotificationSettingForPartner(moduleType: number, event: any) {
+    this.updateEmailNotificationSetting('partner', moduleType, event);
+  }
+  
+  updateEmailNotificationSettingForVendor(moduleType: number, event: any) {
+    this.updateEmailNotificationSetting('vendor', moduleType, event);
+  }
+
+  private updateEmailNotificationSetting(role: 'partner' | 'vendor', moduleType: number, event: any) {
+    const mapping = this.notificationMappings[role];
+    if (mapping) {
+      this.emailNotificationSettingsDto[mapping[moduleType]] = event || false;
+    } else {
+      console.error(`Invalid role: ${role}`);
     }
   }
 
