@@ -1443,6 +1443,11 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.http.post(url, vanityUrlPostDto).map(this.extractData).catch(this.handleError);
     }
 
+    getVendorCompaniesDropdownList() {
+        const url = this.superAdminUrl + 'findAllVendorCompanyNames?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
   
     
 }

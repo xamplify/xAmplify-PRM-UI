@@ -4,21 +4,19 @@
   <div class="collapsible-content">
     <div class="content-inner">
       <div>
-        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
-        </ngx-loading>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
          <div class="portlet light">
            <div class="portlet-title mb10">
             <div class="row">
               <div class="col-xs-12  col-sm-12 col-md-12 col-lg-12">
                 <!--Searchable DropDown-->
                 <div class="col-xs-12  col-sm-12 col-md-4 col-lg-4">
-                  <div *ngIf="!isSearchableDropdownHidden"  [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                  <div *ngIf="!isSearchableDropdownHidden">
                     <p class="mt--10px" *ngIf="dropdownDataLoading">
                       <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
                     </p>
-                      <app-searchable-dropdown *ngIf="!dropdownDataLoading" [searchableDropDownDto]="companiesSearchableDropDownDto" [id]="selectedCompanyId"
-                      [disableDropDown]="false" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)">
-                      </app-searchable-dropdown>
+                      <app-multi-select-dropdown *ngIf="!dropdownDataLoading" [dropdownList]="companiesSearchableDropDownDto.data"
+                        [displayText]="'Select Company'" [singleSelection]="true" (multiSelectDropdownSingleSelectionEventEmitter)="searchableDropdownEventReceiver($event)"></app-multi-select-dropdown>
                   </div>
                 </div>
                 <!--Sort Drop Down-->

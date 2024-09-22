@@ -39,19 +39,19 @@
 						  <app-user-info [userInfo]="companyAndUserDetails">
 						  </app-user-info>
 						</td>
-						<td>{{companyAndUserDetails.companyName}}</td>
-						<td>{{companyAndUserDetails.userStatus}}</td>
+						<td>{{companyAndUserDetails?.companyName}}</td>
+						<td>{{companyAndUserDetails?.userStatus}}</td>
 						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateReg"> </app-timestamp>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails?.dateReg"> </app-timestamp>
 						</td>
 						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateLastLogin"> </app-timestamp>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails?.dateLastLogin"> </app-timestamp>
 						</td>
 						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.updatedTime"> </app-timestamp>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails?.updatedTime"> </app-timestamp>
 						</td>
 						<td class='text-center'>
-							{{companyAndUserDetails.roleName}}
+							{{companyAndUserDetails?.roleName}}
 						  </td>
 					  </tr>
 					</ng-container>
@@ -431,19 +431,19 @@
 						  <app-user-info [userInfo]="companyAndUserDetails">
 						  </app-user-info>
 						</td>
-						<td>{{companyAndUserDetails.companyName}}</td>
-						<td>{{companyAndUserDetails.userStatus}}</td>
+						<td>{{companyAndUserDetails?.companyName}}</td>
+						<td>{{companyAndUserDetails?.userStatus}}</td>
 						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateReg"> </app-timestamp>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails?.dateReg"> </app-timestamp>
 						</td>
 						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateLastLogin"> </app-timestamp>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails?.dateLastLogin"> </app-timestamp>
 						</td>
 						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.updatedTime"> </app-timestamp>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails?.updatedTime"> </app-timestamp>
 						</td>
 						<td class='text-center'>
-							{{companyAndUserDetails.roleName}}
+							{{companyAndUserDetails?.roleName}}
 						  </td>
 					  </tr>
 					</ng-container>
