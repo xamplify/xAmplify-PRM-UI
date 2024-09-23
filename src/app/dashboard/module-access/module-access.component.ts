@@ -76,7 +76,6 @@ export class ModuleAccessComponent implements OnInit {
       }
     }else{
       if(this.isNavigatedFromMyProfileSection){
-        alert("Navigated From My Profile");
         this.getCompanyIdAndUserAliasAndCompanyProfileName();
       }else{
         this.companyId = this.route.snapshot.params['alias'];
@@ -250,7 +249,12 @@ export class ModuleAccessComponent implements OnInit {
           this.addDefaultMdfForm();
         }else{
           this.showSuccessMessage();
-          this.findMaximumAdminsLimitDetails();
+          if(!this.isNavigatedFromMyProfileSection){
+            this.findMaximumAdminsLimitDetails();
+          }else{
+            this.showMessageAndLogout();
+          }
+          
         }
       }
     }
@@ -275,7 +279,17 @@ export class ModuleAccessComponent implements OnInit {
     }, _error => {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('ERROR', "Something went wrong while adding default mdf form.", true);
+    },()=>{
+      this.showMessageAndLogout();
     });
+  }
+
+  private showMessageAndLogout() {
+    this.referenceService.showSweetAlertProcessingLoader("Settings have been updated.");
+    setTimeout(() => {
+      this.authenticationService.logout();
+      this.referenceService.closeSweetAlert();
+    }, 3000);
   }
 
   setModulesByRole(){
