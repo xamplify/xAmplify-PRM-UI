@@ -29,6 +29,7 @@ import { MenuItem } from 'app/core/models/menu-item';
 import { UserService } from 'app/core/services/user.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { Module } from 'app/core/models/module';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $:any, CKEDITOR:any;
 
@@ -364,20 +365,8 @@ private beforeAdd(tag: any) {
   }
   ngOnInit() {
     try {
-      this.getDashboardType();
-      this.getUnreadNotificationsCount();
-      this.getRoles();
-      this.isAddedByVendor();
-      this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
-      this.getVendorRegisterDealValue();
-      this.getReferVendorOption();
 
-      this.findMenuItems();
-      this.getMergeTagByPath();
-      this.isWelcomePageActive =this.router.url.includes('/welcome-page');
-      this.model = this.refService.topNavBarUserDetails;
-
- 
+      this.checkWelcomePageRequired();
     } catch (error) { this.logger.error('error' + error); }
   }
   getReferVendorOption() {
@@ -1134,5 +1123,36 @@ private beforeAdd(tag: any) {
   }else{
     this.router.navigate([path]);
   }
+  }
+
+  checkWelcomePageRequired(){
+    let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
+    
+    let  isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+    this.authenticationService.vanityWelcomePageRequired(currentUser.userName).subscribe(
+      data => {
+        if(isWelcomePageEnabled = data.data){
+          this.getDashboardType();
+          this.getUnreadNotificationsCount();
+          this.getRoles();
+          this.isAddedByVendor();
+          this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
+          this.getVendorRegisterDealValue();
+          this.getReferVendorOption();
+    
+          this.findMenuItems();
+          this.getMergeTagByPath();
+          this.isWelcomePageActive =this.router.url.includes('/welcome-page');
+          this.model = this.refService.topNavBarUserDetails;
+        }else{
+          currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = data.data;
+          localStorage.setItem('currentUser',JSON.stringify(currentUser));
+          window.location.reload();       
+        }
+
+      },
+      error => this.logger.log(error),
+      () => this.logger.log('Finished')
+    );
   }
 }
