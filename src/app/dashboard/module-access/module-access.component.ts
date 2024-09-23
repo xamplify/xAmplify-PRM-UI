@@ -55,9 +55,6 @@ export class ModuleAccessComponent implements OnInit {
   companyProfileNameErrorMessage = "";
   companyProfileName = "";
   @Input() isNavigatedFromMyProfileSection = false;
-  @Input() companyIdFromMyProfileSection = 0;
-  @Input() companyProfileNameFromMyProfileSection = "";
-  @Input() userAliasFromMyProfileSection = "";
   myProfileLoader = false;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
