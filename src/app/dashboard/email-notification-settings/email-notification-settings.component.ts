@@ -27,7 +27,6 @@ export class EmailNotificationSettingsComponent implements OnInit {
  dashboardButtonsPublishedTextDto:EmailNotificationSettingsTextDto = new EmailNotificationSettingsTextDto();
  isVanityLogin = false;
  customModulePartnerName = "";
- isLocalHost = false;
  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
   public dashboardService:DashboardService,public callActionSwitch: CallActionSwitch,public vanityUrlService:VanityURLService) {
    this.isVanityLogin =  this.vanityUrlService.isVanityURLEnabled();
@@ -35,7 +34,6 @@ export class EmailNotificationSettingsComponent implements OnInit {
   
  ngOnInit() {
    this.loading  = true;
-   this.isLocalHost = this.authenticationService.isLocalHost();
    this.customResponse = new CustomResponse();
    this.customModulePartnerName = this.authenticationService.getPartnerModuleCustomName();
 
