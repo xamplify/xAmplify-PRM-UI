@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { ReferenceService } from 'app/core/services/reference.service';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { ActivatedRoute } from '@angular/router';
-declare var swal: any, $: any;
+declare var $: any;
 @Component({
   selector: 'app-send-test-email',
   templateUrl: './send-test-email.component.html',
@@ -20,6 +20,7 @@ export class SendTestEmailComponent implements OnInit {
   @Input() templateName: string = "";
   @Input() fromEmail = "";
   @Input() fromName = "";
+  @Input() fromEmailUserId = 0;
   @Input() campaignSendTestEmail = false;
   @Input() campaign: any;
   email = "";
@@ -161,7 +162,11 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   previewEmailTemplate() {
-    this.referenceService.previewEmailTemplateInNewTab(this.id);
+    if (this.fromEmailUserId!=undefined && this.fromEmailUserId>0) {
+      this.referenceService.previewUnLaunchedCampaignEmailTemplateUsingFromEmailUserIdInNewTab(this.id,this.fromEmailUserId);
+    } else {
+      this.referenceService.previewEmailTemplateInNewTab(this.id);
+    }
   }
 
 }
