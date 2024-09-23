@@ -1448,6 +1448,13 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callGetMethod(url);
     }
 
+    getCompanyIdAndUserAliasAndCompanyProfileName() {
+        let loggedInUserId = this.authenticationService.getUserId();
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/getCompanyIdAndUserAliasAndCompanyProfileName/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
   
     
 }

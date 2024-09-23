@@ -361,6 +361,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/** XNFR-669 **/
 	welcomePages: boolean =false;
 	welcomePagesAccess:boolean = false;
+	isUpdateModuleOptionClicked = false;
+	updateModulesMenuHeader = MY_PROFILE_MENU_CONSTANTS.UPDATE_MODULES;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2166,9 +2168,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.welcomePages;
+		}else if(this.activeTabName==this.updateModulesMenuHeader){
+			this.activateUpdateModulesMenuHeader();
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
+	private activateUpdateModulesMenuHeader() {
+		this.startNgxLoader();
+		this.isUpdateModuleOptionClicked = false;
+		let self = this;
+		setTimeout(() => {
+			self.isUpdateModuleOptionClicked = true;
+			self.stopNgxLoader();
+		}, 500);
+		this.activeTabHeader = this.updateModulesMenuHeader;
+	}
+
 	/*****XNFR-628******/
 	updateChatGptSettingsOption(option:boolean){
 		this.isChatGptSettingsOptionClicked = option;

@@ -1,3 +1,4 @@
+import { XtremandLogger } from './../../error-pages/xtremand-logger.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
@@ -57,8 +58,10 @@ export class ModuleAccessComponent implements OnInit {
   @Input() companyIdFromMyProfileSection = 0;
   @Input() companyProfileNameFromMyProfileSection = "";
   @Input() userAliasFromMyProfileSection = "";
+  myProfileLoader = false;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
-    public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,public properties:Properties) { }
+    public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
+    public properties:Properties,public xtremandLogger:XtremandLogger) { }
   ngOnInit() {
     this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
     if(this.isDashboardStats){
@@ -73,22 +76,41 @@ export class ModuleAccessComponent implements OnInit {
       }
     }else{
       if(this.isNavigatedFromMyProfileSection){
-        this.companyId = 1157;
-        this.userAlias = 56712213;
-        this.companyProfilename = "demo";
+        alert("Navigated From My Profile");
+        this.getCompanyIdAndUserAliasAndCompanyProfileName();
       }else{
         this.companyId = this.route.snapshot.params['alias'];
         this.userAlias = this.route.snapshot.params['userAlias'];
         this.companyProfilename = this.route.snapshot.params['companyProfileName'];
+        this.getAllData();
       }
-        this.getCompanyAndUserDetails();
-        this.getModuleAccessByCompanyId();
-        this.getDnsConfiguredDetails();
-        this.getSpfConfiguredDetails();
-        this.findMaximumAdminsLimitDetails();
-        this.headerName = "Module Access";
+        
     }
    
+  }
+
+  private getAllData() {
+    this.getCompanyAndUserDetails();
+    this.getModuleAccessByCompanyId();
+    this.getDnsConfiguredDetails();
+    this.getSpfConfiguredDetails();
+    this.findMaximumAdminsLimitDetails();
+    this.headerName = "Module Access";
+  }
+
+  getCompanyIdAndUserAliasAndCompanyProfileName() {
+    this.myProfileLoader = true;
+    this.dashboardService.getCompanyIdAndUserAliasAndCompanyProfileName().subscribe(result => {
+      let data = result.data;
+      this.companyId = data.companyId;
+      this.userAlias = data.alias;
+      this.companyProfilename = data.companyProfileName;
+    }, error => {
+      this.xtremandLogger.error(error);
+    }, () => {
+      this.myProfileLoader = false;
+      this.getAllData();
+    });
   }
 
   

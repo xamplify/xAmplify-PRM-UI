@@ -548,6 +548,14 @@
                                                     [ngTemplateOutletContext]="{'moduleName':properties?.addDomainsText}"></ng-template>
                                             </a>
                                         </li>
+                                        <!--Module Access-->
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.updateModulesFromMyProfile" [ngClass]="{'active-tab': activeTabName == updateModulesMenuHeader}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == updateModulesMenuHeader}" (click)="activateTab(updateModulesMenuHeader);clearCustomResponse()">
+                                                {{updateModulesMenuHeader}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':updateModulesMenuHeader}"></ng-template>
+                                            </a>
+                                         </li>
+
                                     </ul>
                                 </ng-container>
                             </ul>
@@ -3289,7 +3297,7 @@
                                         <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></app-campaign-analytics-settings>
                                         <!--XNFR-628 Chat GPT-->
                                         <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
-                                        <!-- <app-module-access [isNavigatedFromMyProfileSection]="true"></app-module-access> -->
+                                        <app-module-access *ngIf="isUpdateModuleOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == updateModulesMenuHeader}" [isNavigatedFromMyProfileSection]="true"></app-module-access>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
                                     </div>
                                 </div>
