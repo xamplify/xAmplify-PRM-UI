@@ -549,7 +549,7 @@
                                             </a>
                                         </li>
                                         <!--Module Access-->
-                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.updateModulesFromMyProfile" [ngClass]="{'active-tab': activeTabName == updateModulesMenuHeader}">
+                                        <li *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.updateModulesFromMyProfile" [ngClass]="{'active-tab': activeTabName == updateModulesMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == updateModulesMenuHeader}" (click)="activateTab(updateModulesMenuHeader);clearCustomResponse()">
                                                 {{updateModulesMenuHeader}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':updateModulesMenuHeader}"></ng-template>
