@@ -935,11 +935,13 @@ export class ContactService {
             .catch(this.handleError);
     }
 
+    /***XNFR-553***/
     findContactByUserIdAndUserListId(userId:any, userListId:any) {
         let url = this.contactsUrl + "findUserByUserIdAndUserListId/"+userId+"/"+userListId+"?access_token="+this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
+    /***XNFR-553***/
     findUserListDetials(userListId:any, isFromCompanyModule:boolean) {
         let url = this.contactsUrl + "findUserListDetails/"+userListId+"/"+isFromCompanyModule+"?access_token="+this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);

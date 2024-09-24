@@ -3636,6 +3636,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		try {
+			/***XNFR-553***/
 			if (RouterUrlConstants.contacts.includes(this.module)) {
 				this.selectedContactListId = this.refService.decodePathVariable(this.route.snapshot.params['userListId']);
 				this.contactListId = this.selectedContactListId;
@@ -3644,6 +3645,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			} else {
 				this.selectedContactListName = this.contactListName;
 			}
+			/***XNFR-553***/
 			this.currentContactType = "all_contacts";
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
@@ -4268,6 +4270,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	/***XNFR-553***/
 	showContactDetails(contact) {
 		let encodedUserListId = this.refService.encodePathVariable(contact.userListId);
 		let encodeUserId = this.refService.encodePathVariable(contact.id);
@@ -4319,4 +4322,5 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.uploadedUserId = data.uploadedUserId;
 		this.contactService.publicList = data.publicList;
 	}
+	/***XNFR-553***/
 }
