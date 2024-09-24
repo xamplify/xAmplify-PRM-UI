@@ -55,6 +55,7 @@ export class CustomAddLeadComponent implements OnInit {
   @Output() notifyClose = new EventEmitter();
   @Output() notifyOtherComponent = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
+  @Input() public isConvertingContactToLead: boolean = false;
 
   preview = false;
   edit = false;
@@ -319,6 +320,9 @@ export class CustomAddLeadComponent implements OnInit {
       }
     } else {
       this.getCampaignInfoForAddLead();
+    }
+    if (this.isConvertingContactToLead) {
+      this.setDefaultLeadData(this.selectedContact);
     }
   }
 
