@@ -22,6 +22,8 @@ declare var swal, $, videojs: any;
 })
 export class SelectLeadComponent implements OnInit {  
   @Input() public dealToLead: any;
+  @Input() public selectedContact: any;
+
   @Output() notifyClose = new EventEmitter();
   @Output() notifyLeadSelected = new EventEmitter();
   @Output() notifyShowLeadForm = new EventEmitter();
@@ -111,6 +113,9 @@ export class SelectLeadComponent implements OnInit {
     pagination.filterKey = "not-converted";
     pagination.showLeadsForAttachingLead = true;
     pagination.vendorCompanyId = this.dealToLead.createdForCompanyId;
+    if (this.selectedContact.id != undefined && this.selectedContact.id > 0) {
+      pagination.contactId = this.selectedContact.id;
+    }
     if (this.vanityLoginDto.vanityUrlFilter) {
       pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName      

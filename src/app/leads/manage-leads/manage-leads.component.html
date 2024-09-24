@@ -325,6 +325,11 @@
                 </div>  
 
                 <!-- -------------------- List View for Leads-------------------- -->
+                 <!-- <app-custom-manage-leads [listView]="listView" [leadsSortOption]="leadsSortOption" [httpRequestLoader]="httpRequestLoader" 
+                 [leadsPagination]="leadsPagination" [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion"
+                 [isOrgAdmin]="isOrgAdmin" [isVendor]="isVendor" [actionType]="actionType" (viewCustomLeadForm)="viewCustomLeadForm($event)"
+                 (editCustomLeadForm)="editCustomLeadForm($event)" (notifySetLeadsPage)="setLeadsPage($event)"
+                 (closeCustomLeadAndDealForm)="closeCustomForm()" (notifyListLeads)="listLeads($event)"></app-custom-manage-leads> -->
                 <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
                   <div class="table-responsive pos_pd_top6" [hidden]="httpRequestLoader.isLoading">
@@ -760,6 +765,8 @@
   (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyUnReadChatCount)="resetUnReadChatCount()"
   (notifyManageLeadsComponentToHidePopup)="resetValues()" [isVendorVersion]="isVendorVersion"
   [isOrgAdmin]="isOrgAdmin"></app-add-lead> -->
+
+
 
   <section *ngIf="showLeadForm">
     <div class="page-content">

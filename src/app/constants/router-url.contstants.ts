@@ -1,18 +1,24 @@
 export const RouterUrlConstants = {
-    home: '/home/',
-    dam: 'dam/',
-    dashboard: 'dashboard/',
+    home : '/home/',
+    dam  : 'dam/',
+    dashboard  : 'dashboard/',
+    contacts: 'contacts/',
     damPartnerCompanyAnalytics: 'partner-companies/',
     damPartnerAnalytics: 'partner-analytics/',
     quickLinks: 'quick-links',
-    superAdmin: 'superAdmin/',
-    myProfile: 'myProfile/',
-    chatGptSettings: 'chatGPTSettings/',
+    superAdmin:'superAdmin/',
+    myProfile:'myProfile/',
+    chatGptSettings:'chatGPTSettings/',
+    editContacts: 'edit/',
+    userListId: ':userListId',
+    details: 'details/',
+    id: ':id',
+    company: 'company/',
+    manage: 'manage',
     addLead: 'leads/add',
     manageLeads: 'leads/manage',
     addDeal: 'deal/add',
     manageDeals: 'deal/manage',
     addLeadFromHome: 'leads/d/add',
-    addDealFromHome: 'deal/d/add'
-    
+    addDealFromHome: 'deal/d/add'  
 }
