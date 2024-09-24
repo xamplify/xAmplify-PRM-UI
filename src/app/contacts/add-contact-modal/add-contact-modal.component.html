@@ -343,19 +343,7 @@
             </div>
 
             <!-- ------------XNFR-680 Flexi Fields------------ -->
-            <ng-container *ngIf="isContactModule">
-              <div class="form-group mrg0" *ngFor="let flexiField of addContactuser.flexiFields">
-                <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
-                <div class="col-xs-10 col-sm-10 p0 px_0" id="flexiFields">
-                  <input type="text" style="border: none !important; margin-top: 15px;" class="form-control"
-                    [(ngModel)]="flexiField.fieldValue" [ngModelOptions]="{standalone: true}" [placeholder]="flexiField.fieldName"
-                    maxlength="20">
-                  <div class="textCss"></div>
-                </div>
-              </div>
-            </ng-container>
-            
-            <ng-container *ngIf="isContactModule && flexiFieldsRequestAndResponseDto?.length > 0">
+            <ng-container *ngIf="checkIsContactType() && flexiFieldsRequestAndResponseDto?.length > 0">
               <div class="form-group mrg0" *ngFor="let flexiField of flexiFieldsRequestAndResponseDto">
                 <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
                 <div class="col-xs-10 col-sm-10 p0 px_0" id="flexiFields">

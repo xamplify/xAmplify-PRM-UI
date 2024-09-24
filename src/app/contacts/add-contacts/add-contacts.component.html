@@ -673,6 +673,12 @@
 																		style="padding-right: 4px;"></i>{{newContact?.mobileNumber}}</a>
 															</td>
 														</tr>
+
+														<!----- XNFR-680 Flexi Fields ----->
+														<tr class="border-bottom" *ngFor="let flexiField of flexiFieldsRequestAndResponseDto">
+															<td class='pt10 pb10' translate>{{flexiField.fieldName}}:</td>
+															<td class='pt10 pb10'>{{flexiField.fieldValue}}</td>
+														</tr>
 													</tbody>
 												</table>
 											</td>
@@ -943,6 +949,12 @@
 																			{{user?.mobileNumber}}
 																			</a>
 																		</td>
+																	</tr>
+
+																	<!----- XNFR-680 Flexi Fields ----->
+																	<tr *ngFor="let flexiField of user.flexiFields">
+																		<td class='bold'>{{flexiField.fieldName}}</td>
+																		<td>{{flexiField.fieldValue}}</td>
 																	</tr>
 																</tbody>
 															</table>

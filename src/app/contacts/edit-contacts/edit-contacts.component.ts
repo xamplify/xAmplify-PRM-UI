@@ -441,8 +441,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					let headersRow = self.fileUtil
 						.getHeaderArray(csvRecordsArray);
 					let headers = headersRow[0].split(',');
-
-					if ((!self.isPartner && headers.length == 11)) {
+					let headersLength = 11 + self.flexiFieldsRequestAndResponseDto.length;
+					if ((!self.isPartner && headers.length == headersLength)) {
 						if (self.validateContactsCsvHeaders(headers)) {
 							var csvResult = Papa.parse(contents);
 							var allTextLines = csvResult.data;
@@ -462,6 +462,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 									user.mobileNumber = allTextLines[i][10].trim();
 									user.legalBasis = self.selectedLegalBasisOptions;
 									/*user.description = allTextLines[i][9];*/
+									self.mapFlexiFieldsToUser(headers, self, allTextLines, i, user);
 									self.users.push(user);
 									self.csvContacts.push(user);
 								}
@@ -1237,10 +1238,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.users.push(event);
 			this.saveContacts(this.contactListId);
 			this.addContactuser = new User();
-		}
-		else {
+		} else {
 			this.contactService.isContactModalPopup = false;
-			this.flexiFieldsRequestAndResponseDto = [];
+			this.resetFlexiFieldValues();
 		}
 	}
 
@@ -2165,6 +2165,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.filePrevew = false;
 		this.uploadCsvUsingFile = false;
 		this.isShowUsers = true;
+		this.resetFlexiFieldValues();
 	}
 
 	checkAll(ev: any, contacts: User[]) {
@@ -2674,6 +2675,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.id = this.selectedContactListId;
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
+			this.contactListObject.editList = true;
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
@@ -2789,25 +2791,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
 		this.contactAllDetails = null;
-		this.callFlexiFieldsDataApi();
-	}
-
-	private callFlexiFieldsDataApi() {
-		if (this.isContactModule()) {
-			this.findFlexiFieldsData();
-		} else {
-			this.contactService.isContactModalPopup = true;
-		}
-	}
-
-	private isContactModule() {
-		return this.module == 'contacts';
+		this.contactService.isContactModalPopup = true;
 	}
 
 	addContactModalClose() {
 		$('#addContactModal').modal('toggle');
 		$("#addContactModal .close").click();
-		this.flexiFieldsRequestAndResponseDto = [];
 	}
 
 
@@ -3136,8 +3125,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		if (this.isPartner) {
 			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+		} else if (this.isContactModule()) {
+			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-contact-csv/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
 		} else {
-			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
+			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST_EMPTY.csv";
 		}
 	}
 
@@ -3170,11 +3161,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactAllDetails = contactDetails;
 		this.isCompanyContact = this.manageCompanies;
 		this.selectedCompanyContactId = this.selectedCompanyId;
-		if (contactDetails.flexiFields.length == 0) {
-			this.callFlexiFieldsDataApi();
-		} else {
-			this.contactService.isContactModalPopup = true;
-		}
+		this.mapFlexiFieldsForEditContact(contactDetails);
+		this.contactService.isContactModalPopup = true;
 	}
 
 	updateContactModalClose() {
@@ -3651,6 +3639,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 			if (this.router.url.includes('home/contacts')) {
 				this.checkSyncStatus();
+				this.findFlexiFieldsData();
 			}
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
@@ -4270,17 +4259,58 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	private isContactModule() {
+		return this.module == 'contacts';
+	}
+
 	/***** XNFR-680 *****/
 	findFlexiFieldsData() {
 		this.loading = true;
 		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
 			this.loading = false;
 			this.flexiFieldsRequestAndResponseDto = data;
-			this.contactService.isContactModalPopup = true;
 		}, (error: any) => {
 			this.refService.showSweetAlertServerErrorMessage();
 			this.loading = false;
 		});
 	}
 
+	/***** XNFR-680 *****/
+	private mapFlexiFieldsToUser(headers: any, self: this, allTextLines: any, i: number, user: User) {
+		if (this.isContactModule()) {
+			if (headers.length > 11) {
+				self.flexiFieldsRequestAndResponseDto.forEach((flexiField, index) => {
+					const fieldName = allTextLines[0][11 + index];
+					if (fieldName == flexiField.fieldName.toUpperCase()) {
+						flexiField.fieldValue = allTextLines[i][11 + index].trim();
+					}
+				});
+				user.flexiFields = [...self.flexiFieldsRequestAndResponseDto];
+			}
+		}
+	}
+
+	/***** XNFR-680 *****/
+	private mapFlexiFieldsForEditContact(contactDetails: any) {
+		if (this.isContactModule()) {
+			this.resetFlexiFieldValues();
+			if (contactDetails.flexiFields.length > 0) {
+				contactDetails.flexiFields.forEach((flexiField) => {
+					let userFieldName = flexiField.fieldName;
+					this.flexiFieldsRequestAndResponseDto.forEach((dtoFlexiField) => {
+						if (userFieldName == dtoFlexiField.fieldName) {
+							dtoFlexiField.fieldValue = flexiField.fieldValue;
+						}
+					});
+				});
+			}
+		}
+	}
+
+	/***** XNFR-680 *****/
+	private resetFlexiFieldValues() {
+		if (this.isContactModule()) {
+			this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+		}
+	}
 }

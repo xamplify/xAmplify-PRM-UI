@@ -68,7 +68,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     isWebsiteNotValid : boolean = false;
     /***** XNFR-680 *****/
     @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
-    isContactModule : boolean = false;
     constructor(public countryNames: CountryNames, public regularExpressions: RegularExpressions, public router: Router,
         public contactService: ContactService, public videoFileService: VideoFileService, public referenceService: ReferenceService, 
         public logger: XtremandLogger, public authenticationService: AuthenticationService) {
@@ -96,7 +95,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         $( '.modal-backdrop fade in' ).remove();
         $( ".modal-backdrop in" ).css( "display", "none" );
         this.contactService.isContactModalPopup = false;
-        this.flexiFieldsRequestAndResponseDto = [];
     }
 
     validateEmail( emailId: string ) {
@@ -196,10 +194,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 		}
 	}
     
-    closeAndEmitData(){
+    closeAndEmitData() {
         this.addContactModalClose();
-        this.addContactuser.country = this.addContactuser.country == this.countryNames.countries[0] ? '':this.addContactuser.country
-        this.notifyParent.emit( this.addContactuser );
+        this.addContactuser.country = this.addContactuser.country == this.countryNames.countries[0] ? '' : this.addContactuser.country
+        if (this.checkIsContactType()) {
+            this.addContactuser.flexiFields = this.flexiFieldsRequestAndResponseDto;
+        }
+        this.notifyParent.emit(this.addContactuser);
     }
 
     addEditContactRow() {
@@ -225,7 +226,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 this.isValidLegalOptions = true;
                 $( '#addContactModal' ).modal( 'hide' );
                 this.contactService.isContactModalPopup = false;
-                if (this.checkIsContactType() && this.addContactuser.flexiFields.length == 0) {
+                if (this.checkIsContactType()) {
                     this.addContactuser.flexiFields = this.flexiFieldsRequestAndResponseDto;
                 }
                 this.notifyParent.emit( this.addContactuser );
@@ -279,7 +280,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     ngOnInit() {
         try {
-            this.isContactModule = this.checkIsContactType();
             this.addContactuser.country = this.countryNames.countries[0];
             this.addContactuser.contactCompanyId = this.selectedCompanyId;
             if (this.isUpdateUser) {
@@ -314,7 +314,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 this.addContactuser.website = this.contactDetails.website;
                 this.validLimit = this.contactDetails.contactsLimit > 0;
                 this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
-                if (this.isContactModule) {
+                if (this.checkIsContactType()) {
                     this.addContactuser.flexiFields = this.contactDetails.flexiFields;
                 }
                 if (this.isPartner) {

@@ -449,7 +449,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     private validateHeadersAndReadRows(headers: any, self: this, contents: any) {
-        self.isXamplifyCsvFormatUploaded = headers.length == 11 && self.validateHeaders(headers);
+        let headersLength = 11 + this.flexiFieldsRequestAndResponseDto.length;
+        self.isXamplifyCsvFormatUploaded = headers.length == headersLength && self.validateHeaders(headers);
         let isLocalHost = self.authenticationService.isLocalHost();
         let isQADomain = self.authenticationService.isQADomain();
         let allowedEmailIds = ['csravan@stratapps.com','red@stratapps.com','bob@xtremand.com'];
@@ -475,6 +476,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     user.zipCode = allTextLines[i][8].trim();
                     user.country = allTextLines[i][9].trim();
                     user.mobileNumber = allTextLines[i][10].trim();
+                    this.mapFlexiFieldsToUser(headers, allTextLines, i, user);
                     self.contacts.push(user);
                 }
             }
@@ -1791,6 +1793,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedLegalBasisOptions = [];
         this.isValidLegalOptions = true;
         this.resetCustomUploadCsvFields();
+        this.resetFlexiFieldValues();
     }
 
     /***XNFR-671****/
@@ -3381,7 +3384,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     addContactModalOpen() {
         this.resetResponse();
-        this.findFlexiFieldsData();
+        this.contactService.isContactModalPopup = true;
     }
 
     addContactModalClose() {
@@ -3450,6 +3453,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.socialContactImage();
             if(this.router.url.includes('home/contacts')){
 				this.checkSyncStatus();
+                this.findFlexiFieldsData();
 			}
             if (!this.assignLeads) {
                 this.loadContactListsNames();
@@ -3624,12 +3628,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     downloadEmptyCsv() {
-        window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
+        if (this.isContactModule()) {
+            window.location.href = this.authenticationService.REST_URL + "userlists/download-default-contact-csv/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        } else {
+            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
+        }
     }
 
     ngOnDestroy() {
     }
-
 
     private callDestroyMethod() {
         this.sharedPartnerDetails = [];
@@ -5626,17 +5633,42 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.socialContact.contacts = this.socialContactUsers;
     }
 
+    private isContactModule() {
+		return this.module == 'contacts';
+	}
+
     /***** XNFR-680 *****/
     findFlexiFieldsData() {
         this.loading = true;
         this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
             this.flexiFieldsRequestAndResponseDto = data;
-            this.contactService.isContactModalPopup = true;
             this.loading = false;
         }, (error: any) => {
             this.referenceService.showSweetAlertServerErrorMessage();
             this.loading = false;
         });
+    }
+
+    /***** XNFR-680 *****/
+    private mapFlexiFieldsToUser(headers: any, allTextLines: any, i: number, user: User) {
+        if (this.isContactModule()) {
+            if (headers.length > 11) {
+                this.flexiFieldsRequestAndResponseDto.forEach((flexiField, index) => {
+                    const fieldName = allTextLines[0][11 + index];
+                    if (fieldName == flexiField.fieldName.toUpperCase()) {
+                        flexiField.fieldValue = allTextLines[i][11 + index].trim();
+                    }
+                });
+                user.flexiFields = [...this.flexiFieldsRequestAndResponseDto];
+            }
+        }
+    }
+
+    /***** XNFR-680 *****/
+    private resetFlexiFieldValues() {
+        if (this.isContactModule()) {
+            this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+        }
     }
 
 }
