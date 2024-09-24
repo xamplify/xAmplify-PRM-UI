@@ -644,6 +644,7 @@ export class AddDealComponent implements OnInit {
       this.createdForStages = [];
       this.activeCRMDetails.showDealPipeline = false;
       this.activeCRMDetails.showDealPipelineStage = false;
+      this.showCreatedByPipelineAndStage = false;
       this.resetDealTitle();
     }
   }
@@ -1702,7 +1703,6 @@ export class AddDealComponent implements OnInit {
     this.leadId = leadId;
     this.attachLeadText = "Change Lead";
     this.showDetachLeadButton = true;
-    this.validateField('leadAttachment',false);
     this.getLead(this.leadId);
   }
 
