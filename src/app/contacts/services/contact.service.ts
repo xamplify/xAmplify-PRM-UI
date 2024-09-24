@@ -940,8 +940,8 @@ export class ContactService {
         return this.authenticationService.callGetMethod(url);
     }
 
-    findUserListDetials(userListId:any) {
-        let url = this.contactsUrl + "findUserListDetails/"+userListId+"?access_token="+this.authenticationService.access_token;
+    findUserListDetials(userListId:any, isFromCompanyModule:boolean) {
+        let url = this.contactsUrl + "findUserListDetails/"+userListId+"/"+isFromCompanyModule+"?access_token="+this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

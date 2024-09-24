@@ -11,9 +11,10 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { LeadsService } from 'app/leads/services/leads.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { DealsService } from 'app/deals/services/deals.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'app/core/services/user.service';
 import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var $: any, swal: any;
 
 @Component({
@@ -66,10 +67,12 @@ export class ContactDetailsComponent implements OnInit {
   contactName: string = '';
   isEmailCopied:boolean = false;
   isMobileNumberCopied:boolean = false;
+  isFromCompanyModule:boolean = false;
+  companyRouter = RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
-    public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService ) {
+    public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -88,6 +91,9 @@ export class ContactDetailsComponent implements OnInit {
   ngOnInit() {
     this.selectedContactListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
     this.contactId = this.referenceService.decodePathVariable(this.route.snapshot.params['id']);
+    if (this.router.url.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
+      this.isFromCompanyModule = true;
+    }
     this.getContact();
     this.referenceService.goToTop();
     this.checkTermsAndConditionStatus();
@@ -214,7 +220,6 @@ export class ContactDetailsComponent implements OnInit {
 					(error: any) => {
 						this.isLoading = false;
 					}
-					// () => this.xtremandLogger.info('Finished getGdprSettings()')
 				);
 		}
 
@@ -234,7 +239,6 @@ export class ContactDetailsComponent implements OnInit {
 					(error: any) => {
 						this.isLoading = false;
 					}
-					// () => this.xtremandLogger.info('Finished getLegalBasisOptions()')
 				);
 		}
 
@@ -242,11 +246,15 @@ export class ContactDetailsComponent implements OnInit {
 
   backToEditContacts() {
     let encodedURL = this.referenceService.encodePathVariable(this.selectedContactListId);
-    this.referenceService.goToRouter("/home/contacts/edit/"+encodedURL);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+    }
   }
 
   backToManageContacts() {
-    this.referenceService.goToRouter("/home/contacts/manage");
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
   }
 
   setContactNameToDisplay() {

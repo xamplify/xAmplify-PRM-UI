@@ -1,19 +1,19 @@
 <!-- BEGIN PAGE CONTENT-->
-<div [ngClass]="(module === 'contacts' && !isCompanyBreadCrumb) ? 'page-content':''">
+<div [ngClass]="(module === 'contacts') ? 'page-content':''">
 <div class="page-bar" style="height:48px;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home" aria-hidden="true"></i>
 			<a [routerLink]="refService?.homeRouter" translate>Home</a>
 			<i class="fa fa-angle-right" aria-hidden="true"></i>
 		</li>
-		<li *ngIf="!isCompanyBreadCrumb">
+		<li *ngIf="!isFromCompanyModule">
 			<a (click)="refresh()" translate> Manage
 				<span
 					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</a>
 		</li>
-		<li *ngIf="isCompanyBreadCrumb">
+		<li *ngIf="isFromCompanyModule">
 			<a translate [routerLink]="companyRouter"> Manage Companies
 			</a>
 		</li>

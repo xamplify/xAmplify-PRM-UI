@@ -5,9 +5,12 @@
         <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-      <li>
+      <li *ngIf="!isFromCompanyModule">
         <a (click)="backToManageContacts()" translate> Manage Contacts
         </a>
+      </li>
+      <li *ngIf="isFromCompanyModule">
+        <a translate [routerLink]="companyRouter">Manage Companies</a>
       </li>
       <li>
         <a (click)="backToEditContacts()" translate>

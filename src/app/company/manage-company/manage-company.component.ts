@@ -15,6 +15,7 @@ import { UtilService } from 'app/core/services/util.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ContactService } from 'app/contacts/services/contact.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var  $:any, swal: any;
 @Component({
@@ -56,7 +57,9 @@ customResponse: CustomResponse = new CustomResponse();
     this.getCounts();
   }
   navigateToAddContactsPage(id:number){
-    this.referenceService.goToRouter("/home/contacts/company/"+id);
+    let encodedId = this.referenceService.encodePathVariable(id);
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedId);
+    // this.referenceService.goToRouter("/home/contacts/company/edit/"+id);
   }
   addCompanyModalOpen(){
     this.companyService.isCompanyModalPopUp = true;

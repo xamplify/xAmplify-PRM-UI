@@ -280,6 +280,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 	selectedContact: any;
 	showContactDetailsTab: boolean = false;
+	isFromCompanyModule: boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -350,6 +351,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		const currentUser = localStorage.getItem('currentUser');
 		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
 		this.companyId = campaginAccessDto.companyId;
+		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
+			this.isFromCompanyModule = true;
+			this.manageCompanies = true;
+		}
 	}
 
 	onChangeAllContactUsers(event: Pagination) {
@@ -839,7 +844,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							//this.getContactsAssocialteCampaigns();
 							this.contactService.addUserSuccessMessage = true;
 							this.goBackToManageList();
-							if (this.isCompanyBreadCrumb) {
+							if (this.isFromCompanyModule) {
 								this.goBackToCompaniesList();
 							}
 						} else if (data.statusCode == 418) {
@@ -1082,7 +1087,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							}
 							this.contactService.addUserSuccessMessage = true;
 							this.goBackToManageList();
-							if (this.isCompanyBreadCrumb) {
+							if (this.isFromCompanyModule) {
 								this.goBackToCompaniesList();
 							}
 						} else if (data.statusCode == 418) {
@@ -1131,7 +1136,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
-								if (this.isCompanyBreadCrumb) {
+								if (this.isFromCompanyModule) {
 									this.goBackToCompaniesList();
 								}
 							} else if (data.statusCode == 201) {
@@ -1965,7 +1970,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							}
 							this.contactService.addUserSuccessMessage = true;
 							this.goBackToManageList();
-							if (this.isCompanyBreadCrumb) {
+							if (this.isFromCompanyModule) {
 								this.goBackToCompaniesList();
 							}
 						} else if (data.statusCode == 418) {
@@ -2545,7 +2550,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								//this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
-								if (this.isCompanyBreadCrumb) {
+								if (this.isFromCompanyModule) {
 									this.goBackToCompaniesList();
 								}
 							}
@@ -3631,7 +3636,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			if (RouterUrlConstants.contacts.includes(this.module) && !this.isCompanyBreadCrumb) {
+			if (RouterUrlConstants.contacts.includes(this.module)) {
 				this.selectedContactListId = this.refService.decodePathVariable(this.route.snapshot.params['userListId']);
 				this.contactListId = this.selectedContactListId;
 				this.showEdit = true;
@@ -4266,32 +4271,52 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showContactDetails(contact) {
 		let encodedUserListId = this.refService.encodePathVariable(contact.userListId);
 		let encodeUserId = this.refService.encodePathVariable(contact.id);
-		this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+		if (this.isFromCompanyModule) {
+			this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+		} else {
+			this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+		}
 	}
 
 	setValuesToRequiredInputs() {
 		this.loading = true;
-		this.contactService.findUserListDetials(this.selectedContactListId).subscribe(
+		this.contactService.findUserListDetials(this.selectedContactListId, this.isFromCompanyModule).subscribe(
 			result => {
 				if (result.statusCode == 200) {
 					let data = result.data;
 					this.selectedContactListName = data.name;
+					this.contactListName = this.selectedContactListName;
 					this.isDefaultPartnerList = data.isDefaultPartnerList;
-					this.isDefaultContactList = data.isDefaultContactList;
 					this.isSynchronizationList = data.synchronisedList;
-					this.isFormList = data.isFormList;
-					this.isPartnerUserList = data.isPartnerUserList;
-					this.masterContactListSync = data.isMasterContactListSync;
 					this.isTeamMemberPartnerList = data.teamMemberPartnerList;
 					this.selectedCompanyId = data.associatedCompanyId;
-					this.manageCompanies = data.companyList;
+					if (this.isFromCompanyModule) {
+						this.setCompanyModuleFields(data);
+					} else {
+						this.setContactModuleFields(data);
+					}
 				}
 				this.loading = false;
 			},
 			error => {
 				this.loading = false;
+				swal("Oops! Something went wrong", "Please try after sometime", "error");
 			}
 		)
 	}
 
+
+	private setContactModuleFields(data: any) {
+		this.manageCompanies = data.companyList;
+		this.masterContactListSync = data.isMasterContactListSync;
+		this.isDefaultContactList = data.isDefaultContactList;
+		this.isFormList = data.isFormList;
+		this.isPartnerUserList = data.isPartnerUserList;
+	}
+
+	private setCompanyModuleFields(data: any) {
+		this.companyName = data.companyName;
+		this.uploadedUserId = data.uploadedUserId;
+		this.contactService.publicList = data.publicList;
+	}
 }

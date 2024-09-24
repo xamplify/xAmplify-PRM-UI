@@ -12,6 +12,8 @@ export const RouterUrlConstants = {
     editContacts: 'edit/',
     userListId: ':userListId',
     details: 'details/',
-    id: ':id'
+    id: ':id',
+    company: 'company/',
+    manage: 'manage'
    
 }
