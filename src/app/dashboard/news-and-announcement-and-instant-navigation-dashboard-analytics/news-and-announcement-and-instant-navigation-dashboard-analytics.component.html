@@ -62,8 +62,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
-                            access:authenticationService?.module?.damAccess,
-                            title: authenticationService?.module?.damAccess ?'Click here to view asset analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.damAccess && instantNavigationLink?.published,
+                            title: authenticationService?.module?.damAccess && instantNavigationLink?.published
+                             ?'Click here to view asset analytics': authenticationService?.module?.damAccess && !instantNavigationLink?.published ? 'Not yet published'
+                             :'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Asset / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
@@ -80,8 +82,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
-                            access:authenticationService?.module?.lmsAccess,
-                            title: authenticationService?.module?.lmsAccess ?'Click here to view track analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.lmsAccess &&  instantNavigationLink?.published ,
+                            title: authenticationService?.module?.lmsAccess && instantNavigationLink?.published
+                             ?'Click here to view track analytics': authenticationService?.module?.lmsAccess && !instantNavigationLink?.published ? 'Not yet published':
+                              'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Track / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
@@ -98,8 +102,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
-                            access:authenticationService?.module?.playbookAccess,
-                            title: authenticationService?.module?.playbookAccess ?'Click here to view play book analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.playbookAccess && instantNavigationLink?.published,
+                            title: authenticationService?.module?.playbookAccess &&  instantNavigationLink?.published ?
+                            'Click here to view play book analytics':  authenticationService?.module?.playbookAccess &&  !instantNavigationLink?.published ?'Not yet published'
+                            :'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Play Book / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
