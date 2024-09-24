@@ -332,7 +332,7 @@
 
 
 <!-- Select Lead Model-->
-<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
+<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead" [selectedContact]="selectedContact"
   (notifyLeadSelected)="leadSelected($event)"></app-select-lead>
 
 

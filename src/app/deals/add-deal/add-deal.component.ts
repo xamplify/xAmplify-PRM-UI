@@ -47,6 +47,8 @@ export class AddDealComponent implements OnInit {
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
   @Input() public hideAttachLeadButton: boolean;
+  @Input() public selectedContact: any;
+  @Input() public isDealFromContact: boolean = false;
   @Output() notifySubmitSuccess = new EventEmitter();
 
   preview = false;
@@ -1700,6 +1702,7 @@ export class AddDealComponent implements OnInit {
     this.leadId = leadId;
     this.attachLeadText = "Change Lead";
     this.showDetachLeadButton = true;
+    this.validateField('leadAttachment',false);
     this.getLead(this.leadId);
   }
 

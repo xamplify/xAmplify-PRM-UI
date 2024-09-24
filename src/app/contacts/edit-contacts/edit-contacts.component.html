@@ -1,18 +1,19 @@
 <!-- BEGIN PAGE CONTENT-->
+<div [ngClass]="(module === 'contacts') ? 'page-content':''">
 <div class="page-bar" style="height:48px;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home" aria-hidden="true"></i>
 			<a [routerLink]="refService?.homeRouter" translate>Home</a>
 			<i class="fa fa-angle-right" aria-hidden="true"></i>
 		</li>
-		<li *ngIf="!isCompanyBreadCrumb">
+		<li *ngIf="!isFromCompanyModule">
 			<a (click)="refresh()" translate> Manage
 				<span
 					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</a>
 		</li>
-		<li *ngIf="isCompanyBreadCrumb">
+		<li *ngIf="isFromCompanyModule">
 			<a translate [routerLink]="companyRouter"> Manage Companies
 			</a>
 		</li>
@@ -58,9 +59,14 @@
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</span>
 		</li>
+		<li *ngIf="showContactDetailsTab">
+			<a translate>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>Contact Details
+			</a>
+		</li>
 	</ul>
 </div>
-<div class="clearfix" id="manageContacts">
+<div class="clearfix" id="manageContacts" *ngIf="!showContactDetailsTab">
 	<div class="col-xs-12">
 		<div class="row">
 			<div>
@@ -937,7 +943,7 @@
 														<ng-container *ngIf="selectedAddContactsOption == 0">
 															<ng-container
 																*ngFor="let newContact of users; let i = index">
-																<tr class='row_{{i}}'
+																<tr class="pointer" id='row_{{i}}'
 																	style="background-color: #73c5be;">
 																	<td align="center" class="checkBox_shadow"><input
 																			type="checkbox"
@@ -990,7 +996,7 @@
 														</ng-container>
 														<ng-container
 															*ngFor="let contact of pagination.pagedItems;let i = index">
-															<tr class='row_{{i}}'>
+															<tr class="pointer" id='row_{{i}}'>
 																<td class='text-center'
 																	*ngIf="!isCampaignDraftContactList "><input
 																		type="checkbox"
@@ -1470,7 +1476,7 @@
 										<tbody>
 											<ng-container
 												*ngFor="let allcontacts of contactsByType.contacts;let i = index">
-												<tr class='row_{{i}}'>
+												<tr class="pointer" id='row_{{i}}'>
 													<td *ngIf="contactsByType.selectedCategory == 'invalid'"
 														align="center"><input type="checkbox"
 															[checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
@@ -1997,3 +2003,9 @@
 	[hasLmsAccess]="authenticationService?.module?.lmsAccess && checkingContactTypeName!='Contact'"
 	[hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'">
 </app-share-unpublished-content>
+
+<app-contact-details *ngIf="showContactDetailsTab" [selectedContact]="selectedContact"
+	[manageCompanies]="manageCompanies" [selectedCompanyId]="selectedCompanyId"
+	[isTeamMemberPartnerList]="isTeamMemberPartnerList"
+	[selectedContactListId]="selectedContactListId"></app-contact-details>
+</div>
