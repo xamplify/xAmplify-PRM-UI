@@ -590,7 +590,7 @@ private beforeAdd(tag: any) {
       self.router.navigate([url]).then(() => {
         // Reload the page (optional, Angular should handle route changes without a full reload)
         if(isWelcomePage){
-          //self.location.replaceState(url);
+          self.location.replaceState(url);
           window.location.reload();
           console.log("aksjndkn")
           self.referenceService.isWelcomePageLoading = true;
