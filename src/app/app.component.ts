@@ -34,12 +34,23 @@ export class AppComponent implements OnInit, AfterViewInit {
   numberOfOnlineUsers: number;
   isLocalHost = false;
   isChatGptIconDisplayed = false;
+  previousUrl:string='';
 constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
   public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService,
    private router: Router,private utilService:UtilService) {
     this.isLocalHost = this.authenticationService.isLocalHost();
     this.addLoaderForAuthGuardService();
 		this.addLoaderForLazyLoadingModules(router);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // Check if the user is navigating back from '/welcome-page'
+        if (this.previousUrl === '/welcome-page' && event.url !== '/welcome-page') {
+          window.location.reload(); // Reload the page
+        }
+        // Update the previous URL after navigation
+        this.previousUrl = event.url;
+      }
+    });
     }
 
     addLoaderForAuthGuardService(){
