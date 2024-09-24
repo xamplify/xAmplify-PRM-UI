@@ -59,7 +59,6 @@ customResponse: CustomResponse = new CustomResponse();
   navigateToAddContactsPage(id:number){
     let encodedId = this.referenceService.encodePathVariable(id);
     this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedId);
-    // this.referenceService.goToRouter("/home/contacts/company/edit/"+id);
   }
   addCompanyModalOpen(){
     this.companyService.isCompanyModalPopUp = true;
