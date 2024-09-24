@@ -125,6 +125,7 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
   displayedMoreItems: any[] = [];
   itemsToShow: number = 3;
   isWelcomePageActive:boolean = false;
+  helpGuidesUrl:boolean = false;
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -589,9 +590,11 @@ private beforeAdd(tag: any) {
       self.router.navigate([url]).then(() => {
         // Reload the page (optional, Angular should handle route changes without a full reload)
         if(isWelcomePage){
+          //self.location.replaceState(url);
           window.location.reload();
+          console.log("aksjndkn")
           self.referenceService.isWelcomePageLoading = true;
-        }
+        }  
       });
       self.authenticationService.module.topNavBarLoader = false;
     }, 500);
@@ -604,6 +607,7 @@ private beforeAdd(tag: any) {
         this.router.navigate([url]).then(() => {
           // Reload the page (optional, Angular should handle route changes without a full reload)
           if(isWelcomePage){
+            this.location.replaceState(url);
             window.location.reload();
             this.referenceService.isWelcomePageLoading = true;
           }
@@ -628,6 +632,7 @@ private beforeAdd(tag: any) {
     let isWelcomePage = this.router.url.includes('/welcome-page')
         this.router.navigate(["/home/leads/manage"]).then(() => {
           if(isWelcomePage){
+            this.location.replaceState("/home/leads/manage");
             window.location.reload();
           }
         });
@@ -639,6 +644,7 @@ private beforeAdd(tag: any) {
     let isWelcomePage = this.router.url.includes('/welcome-page')
         this.router.navigate(["/home/deal/manage"]).then(() => {
           if(isWelcomePage){
+            this.location.replaceState("/home/leads/manage");
             window.location.reload();
           }
         });
@@ -1096,6 +1102,7 @@ private beforeAdd(tag: any) {
     // Use the Angular Router to navigate
     this.router.navigate([path]).then(() => {
       // Reload the page (optional, Angular should handle route changes without a full reload)
+      this.location.replaceState(path);
       window.location.reload();
     });
   }else{
@@ -1118,6 +1125,7 @@ private beforeAdd(tag: any) {
     if(this.router.url.includes('/welcome-page')){
       this.referenceService.isWelcomePageLoading = true;
     this.router.navigate([path]).then(() => {
+      this.location.replaceState(path);
       window.location.reload();
     });
   }else{
@@ -1131,12 +1139,13 @@ private beforeAdd(tag: any) {
     let  isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
     this.authenticationService.vanityWelcomePageRequired(currentUser.userName).subscribe(
       data => {
-        if(isWelcomePageEnabled = data.data){
+        if(isWelcomePageEnabled == data.data){
           this.getDashboardType();
           this.getUnreadNotificationsCount();
           this.getRoles();
           this.isAddedByVendor();
           this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
+          this.helpGuidesUrl = this.router.url.includes('home/help');
           this.getVendorRegisterDealValue();
           this.getReferVendorOption();
     
@@ -1147,7 +1156,10 @@ private beforeAdd(tag: any) {
         }else{
           currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = data.data;
           localStorage.setItem('currentUser',JSON.stringify(currentUser));
-          window.location.reload();       
+          this.router.navigate(['/home/dashboard']).then(() => {
+            this.location.replaceState('/home/dashboard');
+            window.location.reload();
+          });
         }
 
       },
