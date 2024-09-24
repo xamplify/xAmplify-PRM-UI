@@ -4644,8 +4644,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.dashBoardService.activateThemeForCompany(theme).subscribe(
 			(data: any) => {
 				this.ngxloading = false;
-				location.reload();
-				this.router.navigateByUrl(this.referenceService.homeRouter);
+				let self =this
+				setTimeout(() => {
+					location.reload();
+					self.router.navigateByUrl(this.referenceService.homeRouter);
+				}, 500);
 			},
 			error => {
 				this.referenceService.scrollSmoothToTop();
