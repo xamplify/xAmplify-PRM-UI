@@ -58,4 +58,5 @@ export class ColumnInfo {
     hideFieldInfo: boolean = false;
     private = false;
     formLookUpDefaultFieldType: any;
+    isDropDownLoading : boolean = false;
 }

@@ -15,6 +15,10 @@
           </select>
           <img class="layout-css" src="{{leadFormLayoutPreviewImagePath}}" alt="No Image Found">
         </div>
+        <div class="form-group">
+          <label>Lead Form Title</label>
+          <input [(ngModel)]="leadTitle" class="form-control mb10" maxlength="250">
+        </div>
         <div class="form-group mb0">
           <label>Lead Form Description</label>
           <textarea [(ngModel)]="leadDescription" rows="4" cols="4" class="form-control mb10" maxlength="500"></textarea>
@@ -29,7 +33,7 @@
                   <div class="form-group mb0 mr-20">
                     <span class="lead-label">Show Lead Pipeline</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title="Enabling this option will allow your partner to view the select pipeline option in the lead registration form"></i>
+                    title="{{leadPipelineTooltipTitle}}"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showLeadPipeline" (customUiSwitchEventEmitter)="onChangeLeadPipelines($event)"
                 [isSwitchOptionDisabled]="!showLeadPipelineStage"></app-custom-ui-switch>
@@ -40,7 +44,7 @@
                   <div class="form-group mb0 mr-20">
                     <span class="lead-label">Show Lead Stage</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title="Enabling this option will allow your partner to view the select stage option in the lead registration form"></i>
+                    title="{{leadPipelineStageTooltipTitle}}"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showLeadPipelineStage" (customUiSwitchEventEmitter)="onChangeLeadPipelineStage($event)">
                   </app-custom-ui-switch>
@@ -97,6 +101,12 @@
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mb-15">
         <div class="form-group mb0">
+          <label>Deal Form Title</label>
+          <input [(ngModel)]="dealTitle" class="form-control mb10" maxlength="250">
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mb-15">
+        <div class="form-group mb0">
           <label>Deal Form Description</label>
           <textarea [(ngModel)]="dealDescription" rows="4" cols="4" class="form-control mb10" maxlength="500"></textarea>
       </div>
@@ -111,7 +121,7 @@
                   <div class="form-group mb0 mr-20">
                     <span class="lead-label">Show Deal Pipeline</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title="Enabling this option will allow your partner to view the select pipeline option in the deal registration form"></i>
+                    title="{{dealPipelineTooltipTitle}}"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showDealPipeline" (customUiSwitchEventEmitter)="onChangeDealPipelines($event)"
                   [isSwitchOptionDisabled]="!showDealPipelineStage"></app-custom-ui-switch>
@@ -123,7 +133,7 @@
                   <div class="form-group mb0 mr-20">
                     <span class="lead-label">Show Deal Stage</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title="Enabling this option will allow your partner to view the select stage option in the deal registration form"></i>
+                    title="{{dealPipelineStageTooltipTitle}}"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showDealPipelineStage" (customUiSwitchEventEmitter)="onChangeDealPipelineStage($event)"></app-custom-ui-switch>
                 </div>

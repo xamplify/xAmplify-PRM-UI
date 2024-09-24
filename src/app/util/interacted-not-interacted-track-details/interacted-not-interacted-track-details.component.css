@@ -30,7 +30,9 @@
     .ml15m {
         margin-left: 0px !important;
     }
- 
+    .scrolladjustment{
+        overflow-x: scroll!important;
+    }
 }
 .tableHeightScroll{   
     height: 332px !important;

@@ -48,7 +48,9 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     @Input() learningTrackId: number = 0;
     /*******XNFR-423*****/
     countryNames = [];
-
+    @Input() isVendorJourney:boolean = false;
+    @Input() isMasterLandingPage:boolean = false;
+    @Input() isWelcomePage:boolean = false;
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
         public router: Router, private vanityUrlService: VanityURLService, public sanitizer: DomSanitizer) {

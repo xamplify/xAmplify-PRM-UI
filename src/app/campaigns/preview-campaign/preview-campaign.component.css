@@ -89,6 +89,9 @@ fieldset img {
   .mb_border_none{
   border:none!important;
   }
+  .modal-dialog.popup_width{
+    width: 96% !important;
+  }
 }
 :host /deep/.video-js .vjs-big-play-button {
   top: 51px !important;

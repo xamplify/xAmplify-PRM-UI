@@ -85,8 +85,15 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    getAvailableNames( userId: number ) {
-        return this.http.get( this.URL + "/listAvailableNames/" + userId + "?access_token=" + this.authenticationService.access_token, "" )
+    getAvailableNames( userId: number, isWelcomePage:boolean) {
+        let url;
+        if(isWelcomePage){
+            url = this.URL + "/listAvailableNamesForWelcomePage/";
+        }else{
+            url = this.URL + "/listAvailableNames/";
+
+        }
+        return this.http.get( url + userId + "?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -276,16 +283,27 @@ export class LandingPageService {
 
     updateWelcomePage(landingPage:LandingPage) {
         landingPage.userId = this.authenticationService.getUserId();
-        return this.http.post(this.URL +"/update-welcome-page?access_token=" + this.authenticationService.access_token, landingPage)
-            .map(this.extractData)
-            .catch(this.handleError);
+        const url = this.URL +"/activate-welcome-page?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,landingPage);
+
     } 
     
     getActiveWelcomePageByVanity( landingPageHtmlDto:any) {
-        landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
-        landingPageHtmlDto['vanityCompnayProfileName'] = this.authenticationService.companyProfileName;
-            return this.http.post( this.URL + "/getActiveWelcomePageByVanity?access_token=" + this.authenticationService.access_token , landingPageHtmlDto )
-            .map( this.extractData )
-            .catch( this.handleError );
+        let vanityUrlFilter  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        let vanityCompnayProfileName = this.authenticationService.companyProfileName;
+        const url = this.URL + "/getActiveWelcomePageByVanity?vanityUrlFilter=" + vanityUrlFilter + "&vanityCompnayProfileName=" + vanityCompnayProfileName + "&access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
     }
+
+    unPublishWelcomePage(landingPage:LandingPage) {
+        landingPage.userId = this.authenticationService.getUserId();
+        const url = this.URL + "/unpublish-welcome-page?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,landingPage);
+    } 
+
+    welcomePageDeletebById( id: number): Observable<any> {   
+        const url =this.URL +"welcomePageDelete/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callDeleteMethod(url);
+    }
+    
 }

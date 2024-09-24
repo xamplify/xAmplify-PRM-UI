@@ -4,7 +4,7 @@ export const RouterUrlConstants = {
     dashboard  : 'dashboard/',
     contacts: 'contacts/',
     damPartnerCompanyAnalytics: 'partner-companies/',
-    damPartnerAnalytics:'partner-analytics/',
+    damPartnerAnalytics: 'partner-analytics/',
     quickLinks: 'quick-links',
     superAdmin:'superAdmin/',
     myProfile:'myProfile/',
@@ -14,6 +14,11 @@ export const RouterUrlConstants = {
     details: 'details/',
     id: ':id',
     company: 'company/',
-    manage: 'manage'
-   
+    manage: 'manage',
+    addLead: 'leads/add',
+    manageLeads: 'leads/manage',
+    addDeal: 'deal/add',
+    manageDeals: 'deal/manage',
+    addLeadFromHome: 'leads/d/add',
+    addDealFromHome: 'deal/d/add'  
 }

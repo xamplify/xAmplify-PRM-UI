@@ -20,6 +20,7 @@ import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { Properties } from 'app/common/models/properties';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -137,6 +138,9 @@ export class ManageLeadsComponent implements OnInit {
   ngOnInit() {
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    if (this.referenceService.isCreated) {
+      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    }
     this.mergeTagForUserGuide();
   }
 
@@ -234,6 +238,11 @@ export class ManageLeadsComponent implements OnInit {
       });
     });
    
+  }
+
+  //XNFR-681
+  ngOnDestroy() {
+    this.referenceService.isCreated = false;
   }
 
   showVendor() {
@@ -633,9 +642,11 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   addLead() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.addLead;
     this.showLeadForm = true;
     this.actionType = "add";
     this.leadId = 0;
+    this.referenceService.goToRouter(url);
   }
 
   resetValues() {

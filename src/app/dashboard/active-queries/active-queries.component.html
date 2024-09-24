@@ -35,6 +35,7 @@
                               <th class="text-center" scope="row" translate>Ip</th>
                               <th class="text-center" scope="row" translate>Accessed From</th>
                               <th class="text-center" scope="row" translate>Start Time</th>
+                              <th class="text-center" scope="row" translate>Status</th>
                               <th class="text-center" scope="row" translate>Used In</th>
                               <th class="text-center"  scope="row" translate>Query</th>
                               <th class="text-center" scope="row" translate>Copy</th>
@@ -50,6 +51,8 @@
                                  <td class="text-center">
                                     <app-display-date-and-time [dateAndTimeUTCString]="activeQuery?.queryStartedOnInUTCString"></app-display-date-and-time>
                                  </td>
+                                 <td class="text-center">{{activeQuery?.status}}</td>
+
                                  <td class="text-center">{{activeQuery?.queryUsedIn}}
                                     <br>
                                     <span class="success" id="copied-query-{{i}}" style="display: none;">

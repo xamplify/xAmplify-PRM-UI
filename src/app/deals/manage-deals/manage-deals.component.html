@@ -361,6 +361,9 @@
                                 <span *ngIf="isVendorVersion"><b>Deal Id:</b> {{deal.referenceId}}</span>
                               </div>
                               <div>
+                                <span *ngIf="isVendorVersion"><b>CRM Id:</b> {{deal.crmId}}</span>
+                              </div>
+                              <div>
                                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
                                   <span style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="deal.createdForCompanyName?.length>30">...</span>

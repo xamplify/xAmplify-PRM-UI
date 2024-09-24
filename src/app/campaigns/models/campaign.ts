@@ -119,4 +119,7 @@ export class Campaign {
     leadTicketTypeId: number = 0;
     dealTicketTypeId: number = 0;
 
+    /**XNFR-664***/
+    fromEmailUserId = 0;
+
 }

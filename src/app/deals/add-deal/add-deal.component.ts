@@ -26,6 +26,8 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Router } from "@angular/router";
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var $: any, swal: any;
 
 
@@ -160,11 +162,15 @@ export class AddDealComponent implements OnInit {
   hideDealDetailsForSelfDeal:boolean = false;
   hideDealForInEditSelfDeal:boolean = false;
   isDealForAndContactInfoDivCenterAligned = false;
+  isCRMIdCopiedToClipboard: boolean = false;
+  //XNFR-681
+  isThroughAddUrl : boolean = false;
+  isFromManageDeals : boolean = false;
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
-    public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
+    public utilService: UtilService, private leadsService: LeadsService, public userService: UserService,private router: Router, private integrationService: IntegrationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -176,6 +182,7 @@ export class AddDealComponent implements OnInit {
   }
 
   ngOnInit() {
+    let currentUrl = this.router.url;
     this.utilService.getJSONLocation().subscribe(response => console.log(response));
     if(this.vanityLoginDto.vanityUrlFilter){
       this.isDealDetailsTabDisplayed = this.actionType!="add";
@@ -190,7 +197,7 @@ export class AddDealComponent implements OnInit {
     if (this.actionType === "add") {
       this.showCommentActions = true;
       this.showAttachLeadButton = true;
-      if(this.hideAttachLeadButton){
+      if (this.hideAttachLeadButton) {
         this.showAttachLeadButton = false;
       }
       this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
@@ -216,11 +223,31 @@ export class AddDealComponent implements OnInit {
       if (this.dealId > 0) {
         this.getDeal(this.dealId);
       }
+    } else if (currentUrl.includes(RouterUrlConstants.addDeal)) {
+      this.isFromManageDeals = true;
+      this.setDeafultValuesForDeal();
+    } else if (currentUrl.includes(RouterUrlConstants.addDealFromHome)) {
+      this.setDeafultValuesForDeal();
     }
     this.getVendorList();
 
     /***XNFR-623***/
     this.loadComments();
+  }
+
+  setDeafultValuesForDeal() {
+    this.actionType = "add";
+    this.isThroughAddUrl = true;
+    this.showCommentActions = true;
+    this.showAttachLeadButton = true;
+    if (this.hideAttachLeadButton) {
+      this.showAttachLeadButton = false;
+    }
+    this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.dealFormTitle = "";
+      this.setCreatedForCompanyId();
+    }
   }
 
   /***XNFR-623***/
@@ -615,6 +642,9 @@ export class AddDealComponent implements OnInit {
       this.deal.createdForPipelineId = 0;
       this.createdForPipelines = [];
       this.createdForStages = [];
+      this.activeCRMDetails.showDealPipeline = false;
+      this.activeCRMDetails.showDealPipelineStage = false;
+      this.resetDealTitle();
     }
   }
 
@@ -827,6 +857,10 @@ export class AddDealComponent implements OnInit {
           this.deal.properties.forEach(p => p.isSaved = true);
           if (data.statusCode == 200) {
             this.notifySubmitSuccess.emit();
+            if(this.isThroughAddUrl){
+              this.referenceService.isCreated = true;
+              this.goBackToManageDeals();
+            }
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
           }
@@ -1283,6 +1317,7 @@ export class AddDealComponent implements OnInit {
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
             /***Added By Sravan On 08/08/2024****/
+            this.setDealTitle();
             if(!this.preview){
               let showDealPipeline = this.activeCRMDetails['showDealPipeline'];
               let showDealPipelineStage = this.activeCRMDetails['showDealPipelineStage'];
@@ -1336,6 +1371,11 @@ export class AddDealComponent implements OnInit {
             if ("ZOHO" == this.activeCRMDetails.createdForActiveCRMType && this.leadId !== undefined && this.leadId > 0) {
               this.isZohoLeadAttachedWithoutSelectingDealFor = true;
             }
+            if (this.actionType == "edit" && (this.isOrgAdmin || this.isMarketingCompany)) {
+              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled;
+            }
+          } else {
+            this.resetDealTitle();
           }
         },
         error => {
@@ -1774,6 +1814,15 @@ export class AddDealComponent implements OnInit {
     this.isCopiedToClipboard = true;
   }
 
+  copyCRMId(inputElement: any) {
+    inputElement.select();
+    $('#copy-crm-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-crm-id').show(500);
+    this.isCRMIdCopiedToClipboard = true;
+  }
+
   getConvertMappingLayout(layoutId:string) {
     this.isLoading = true;
     this.integrationService.getLeadConvertMappingLayoutId(this.deal.createdForCompanyId,layoutId)
@@ -1804,6 +1853,26 @@ export class AddDealComponent implements OnInit {
         }
       }
     )
+  }
+
+  goBackToManageDeals() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.manageDeals;
+    this.referenceService.goToRouter(url);
+  }
+
+  setDealTitle() {
+    if (this.actionType === "add") {
+      let dealTitle = this.activeCRMDetails.dealTitle;
+      if (dealTitle != undefined) {
+        this.dealFormTitle = dealTitle;
+      } else {
+        this.dealFormTitle = "";
+      }
+    }
+  }
+
+  resetDealTitle() {
+    this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
   }
 
 }

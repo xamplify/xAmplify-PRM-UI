@@ -30,6 +30,8 @@ import { CommentDealAndLeadDto } from 'app/deals/models/comment-deal-and-lead-dt
 import { EnvService } from 'app/env.service';
 import { RegionNames } from 'app/common/models/region-names';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Router } from "@angular/router";
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
@@ -215,11 +217,15 @@ export class CustomAddLeadComponent implements OnInit {
   hasNoStates: boolean = false;
 
   isLeadForDivCenterAligned = false;
+  isCRMIdCopiedToClipboard: boolean = false;
+  //XNFR-681
+  isThroughAddUrl : boolean = false;
+  isFromManageLeads : boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
-     public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService,public regions: RegionNames) {
+     public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService, private router: Router,public regions: RegionNames) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -232,6 +238,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   ngOnInit() {
     this.referenceService.scrollSmoothToTop();
+    let currentUrl = this.router.url;
     if(this.vanityLoginDto.vanityUrlFilter){
       this.isLeadDetailsTabDisplayed = this.actionType!="add";
     }
@@ -242,6 +249,15 @@ export class CustomAddLeadComponent implements OnInit {
     } else if (this.actionType === "edit") {
       this.loadDataForEditLead();
     } else if (this.actionType === "add") {
+      this.loadDataForAddLead();
+    } else if (currentUrl.includes(RouterUrlConstants.addLead)) {
+      this.actionType = "add"
+      this.isThroughAddUrl = true;
+      this.isFromManageLeads = true;
+      this.loadDataForAddLead();
+    } else if (currentUrl.includes(RouterUrlConstants.addLeadFromHome)) {
+      this.actionType = "add"
+      this.isThroughAddUrl = true;
       this.loadDataForAddLead();
     }
     if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
@@ -288,6 +304,7 @@ export class CustomAddLeadComponent implements OnInit {
   private loadDataForAddLead() {
     this.leadFormTitle = LEAD_CONSTANTS.registerALead;
     if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadFormTitle = "";
       this.setCreatedForCompanyId();
       if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         $('#leadFormModel').modal('show');
@@ -543,6 +560,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
       this.getActiveCRMDetails();
     } else {
+      this.resetLeadTitle();
       this.resetPipelines();
       this.resetLeadPipeLineVariables();
       this.activeCRMDetails.hasCreatedForPipeline = false;
@@ -898,6 +916,10 @@ export class CustomAddLeadComponent implements OnInit {
           if (data.statusCode == 200) {
             this.notifySubmitSuccess.emit(data.data);
             this.closeLeadModal();
+            if (this.isThroughAddUrl) {
+              this.referenceService.isCreated = true;
+              this.goBackToManageLeads();
+            }
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
           }
@@ -1376,19 +1398,21 @@ export class CustomAddLeadComponent implements OnInit {
   private findActiveCRMDetailsAndCustomFormVariable(response: any) {
     if (response.statusCode == 200) {
       this.activeCRMDetails = response.data;
+      this.setLeadTitle();
       let isSalesforceAsActiveCRM = "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType;
       if (isSalesforceAsActiveCRM) {
         this.showCustomForm = true;
       } else {
         this.showDefaultForm = true;
-       
+
       }
+    } else {
+      this.resetLeadTitle();
     }
     this.ngxloading = false;
     this.isLoading = false;
   }
 
- 
   getActiveCRMPipeline() {
     let self = this;
     let halopsaTicketTypeId = 0;
@@ -1746,6 +1770,15 @@ export class CustomAddLeadComponent implements OnInit {
     this.isCopiedToClipboard = true;
   }
 
+  copyCRMId(inputElement: any) {
+    inputElement.select();
+    $('#copy-crm-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-crm-id').show(500);
+    this.isCRMIdCopiedToClipboard = true;
+  }
+
   checkCustomLeadFormValid(event: any) {
     this.sfDealComponent.isDealRegistrationFormInvalid = event;
   }
@@ -1799,5 +1832,26 @@ export class CustomAddLeadComponent implements OnInit {
     });
   }
 
+  goBackToManageLeads() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.manageLeads;
+    this.referenceService.goToRouter(url);
+  }
+
+  //XNFR-681
+  setLeadTitle() {
+    if (this.actionType === "add") {
+      let leadTitle = this.activeCRMDetails.leadTitle;
+      if (leadTitle != undefined) {
+        this.leadFormTitle = leadTitle;
+      } else {
+        this.leadFormTitle = "";
+      }
+    }
+  }
+
+  //XNFR-681
+  resetLeadTitle() {
+    this.leadFormTitle = LEAD_CONSTANTS.registerALead;
+  }
 
 }

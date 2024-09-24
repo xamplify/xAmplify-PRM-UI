@@ -119,8 +119,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         let addDealTemplate = "ADD_DEAL" == emailTemplateType;
         let updateLeadTemplate = "LEAD_UPDATE" == emailTemplateType;
         let updateDealTemplate = "DEAL_UPDATE" == emailTemplateType;
+        let formCompleted = "FORM_COMPLETED" == emailTemplateType;
+
         let requiredTags = [];
-        if (addLeadTemplate || updateLeadTemplate) {
+        if (addLeadTemplate || updateLeadTemplate ) {
           requiredTags = [
             '{{partnerModuleCustomName}}',
             '{{partnerName}}',
@@ -142,6 +144,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             '{{dealStage}}',
             '{{dealComment}}',
           ];
+        }else if(formCompleted){
+          requiredTags = [
+            '{{formName}}',
+          ];
         }
         if (!self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages) {
           if (!emailTemplate.subject.trim()) {
@@ -152,7 +158,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             swal("", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error");
             return false;
           }
-          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate || updateLeadTemplate || updateDealTemplate) && jsonContent.indexOf('{{customerFullName}}') < 0) {
+          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate || updateLeadTemplate || updateDealTemplate || formCompleted ) && jsonContent.indexOf('{{customerFullName}}') < 0) {
             swal("", "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag.", "error");
             return false;
           }
@@ -204,11 +210,15 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             swal("", "Whoops! We are unable to save this template because you deleted '{{senderCompanyName}}' tag.", "error");
             return false;
           }
+          if ("FORM_COMPLETED" == emailTemplate['typeInString']  && jsonContent.indexOf("{{formTable}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{formTable}}' tag.", "error");
+            return false;
+          }
           if (jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0) {
             swal("", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error");
             return false;
           }
-          if (addDealTemplate || addLeadTemplate || updateLeadTemplate || updateDealTemplate ) {
+          if (addDealTemplate || addLeadTemplate || updateLeadTemplate || updateDealTemplate || formCompleted ) {
             for (let tag of requiredTags) {
               if (jsonContent.indexOf(tag) < 0) {
                 swal("", `Whoops! We are unable to save this template because you deleted '${tag}' tag.`, "error");
@@ -226,7 +236,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             return false;
           }
 
-          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType || "DEAL_UPDATE" == emailTemplateType)) {
+          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType || "DEAL_UPDATE" == emailTemplateType || "ADD_SELF_LEAD" == emailTemplateType  || "UPDATE_SELF_LEAD" == emailTemplateType || "UPDATE_SELF_DEAL" == emailTemplateType  || "ADD_DEAL_CREATED" == emailTemplateType )) {
             swal("", "Whoops! We are unable to save this template because you deleted 'Button' tag.", "error");
             return false;
           }
@@ -347,7 +357,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Social Status Content', value: '{{socialStatusContent}}' },
         ];
       }
-      if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType){
+      if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType  ){
         mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
         { name: 'Partner Name', value: '{{partnerName}}' },
@@ -371,6 +381,24 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
           { name: 'Deal Comment', value: '{{dealComment}}' },
         ];
       }
+        if("FORM_COMPLETED"==emailTemplateType){
+          mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+            { name: 'Form Name', value: '{{formName}}' },
+            { name: 'Form Table', value: '{{formTable}}' },
+            { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+  
+          ];
+      }
+      // if("ADD_LEAD_CREATED"==emailTemplateType ){
+      //   mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+      //   { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
+      //   { name: 'Partner Name', value: '{{partnerName}}' },
+      //   { name: 'Partner Company', value: '{{partnerCompany}}' },
+      //   { name: 'Lead Name', value: '{{leadName}}' },
+      //   { name: 'Lead Stage', value: '{{leadStage}}' },
+      //   { name: 'Lead Comment', value: '{{leadComment}}' },
+      //   ];
+      // }
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
       var beeConfig = {
@@ -484,7 +512,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
           self.loggedInUserId = this.authenticationService.getUserId();
       }
       if (!this.loggedInAsSuperAdmin) {
-          landingPageService.getAvailableNames(self.loggedInUserId).subscribe(
+          landingPageService.getAvailableNames(self.loggedInUserId, false).subscribe(
               (data: any) => { names = data; },
               error => {
                 //  this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error);
@@ -612,7 +640,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
 
                           buttons.append(self.createButton('Save As', function () {
                               self.clickedButtonName = "SAVE_AS";
-                              self.saveLandingPage(false);
+                              self.saveLandingPage(true);
                           })).append(self.createButton('Update', function () {
                               let selectedPageType = $('#pageType option:selected').val();
                               if (self.landingPage.type == selectedPageType || selectedPageType == undefined) {
@@ -711,7 +739,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                                   } else if (value.toLocaleLowerCase() == landingPage.name.toLocaleLowerCase()) {
                                       $('#templateNameSpanError').empty();
                                       $('#save,#save-as,#save-and-redirect,#update,#update-and-close').attr('disabled', 'disabled');
-                                      $('#update').removeAttr('disabled');
+                                      $('#update,#update-and-close').removeAttr('disabled');
                                   }
                                   else {
                                       $('#templateNameSpanError').empty();

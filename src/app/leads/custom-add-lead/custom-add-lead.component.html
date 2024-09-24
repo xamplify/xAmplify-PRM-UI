@@ -5,10 +5,31 @@
   });
   webshims.polyfill('forms forms-ext');
 </script>
-<div class="" id="del-profile-div">
+<div [ngClass]=" isThroughAddUrl ? 'page-content' :'' " id="del-profile-div">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div *ngIf="isThroughAddUrl" class="page-bar" style="height:48px">
+    <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
+      <div class="col-xs-12 col-sm-5 col-lg-6">
+        <ul class="page-breadcrumb pbc-m3">
+          <li *ngIf="!authenticationService.isSuperAdmin()">
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isFromManageLeads">
+            <a (click)="goBackToManageLeads()" translate>Leads
+            </a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li>
+            <a>Add</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <div class="portlet-title">
-    <div class="caption header-padding"  [ngClass]="isLeadForDivCenterAligned ? 'text-center':''" >{{leadFormTitle}}</div>
+    <div class="caption header-padding" [ngClass]="isLeadForDivCenterAligned ? 'text-center':''">{{leadFormTitle}}</div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
@@ -80,6 +101,27 @@
                           <span class="success">
                             <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Lead Id copied successfully<i
                                 class="fa fa-check" aria-hidden="true"></i></strong>
+                          </span>
+                        </div>
+                      </div>
+                      <!--CRM ID-->
+                      <div [ngStyle]="{ 'margin-bottom': isCRMIdCopiedToClipboard ? '2px' : '20px' }"
+                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
+                        <div> <label class="control-label">CRM ID</label></div>
+                        <div style="display:flex; height:35px;">
+                          <input type="text" maxlength="100" name="crmId" class="form-control" [(ngModel)]="lead.crmId"
+                            [ngModelOptions]="{standalone: true}" readonly="readonly" #crmIdInput>
+                          <div>
+                            <a class="button_blue lead_copy_id_btn_blue" (click)="copyCRMId(crmIdInput)">
+                              <span class="btn btn-primary transition copy_link btn_primary_lead_copy_id" data-toggle="tooltip"
+                                data-placement="top" title="Copy CRM ID"><i class="fa fa-copy"></i></span>
+                            </a>
+                          </div>
+                        </div>
+                        <div>
+                          <span class="success">
+                            <strong id="copy-crm-id" *ngIf="isCRMIdCopiedToClipboard">CRM Id copied successfully<i class="fa fa-check"
+                                aria-hidden="true"></i></strong>
                           </span>
                         </div>
                       </div>

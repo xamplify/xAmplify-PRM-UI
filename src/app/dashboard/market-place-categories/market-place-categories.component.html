@@ -83,7 +83,7 @@
                     <td>
                         <div class="actions-block override-actions">
                           <a *ngIf="category.defaultCategory" [class.disabled]="category.defaultCategory"  class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit">
-                                <i class="fa fa-pencil-square-o IconCustomization"></i>
+                                <i class="fa fa-pencil-square-o IconCustomization disabled"></i>
                                 <div class="clickicons"></div>
                             </a>
                             <a *ngIf="!category.defaultCategory"  class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
@@ -94,7 +94,7 @@
                              <a  *ngIf="category.defaultCategory" [class.disabled]="category.defaultCategory" class="custom-icon" id="template-delete"
                                  data-toggle="tooltip" data-placement="top"
                                 title="Delete">
-                                <i class="fa fa-trash-o trashIconCustomization"></i>
+                                <i class="fa fa-trash-o trashIconCustomization disabled"></i>
                                 <div class="del-icon"></div>
                             </a>
                             <a  *ngIf="!category.defaultCategory" class="custom-icon" id="template-delete"

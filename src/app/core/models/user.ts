@@ -76,5 +76,7 @@ export class User {
     companyDomain : string;
     accountOwner : string;
     website: string;
-    isVanityWelcomePageRequired:boolean;
+    isValidEmailIdPattern = false;
+    isWelcomePageEnabled:boolean;
+
 }

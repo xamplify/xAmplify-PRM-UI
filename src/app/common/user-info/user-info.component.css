@@ -57,3 +57,6 @@ b, strong {
     float: inline-start;
   }
 }
+p.lead_camp_mobile_no {
+  margin: 19px 0 10px;
+}

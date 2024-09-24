@@ -1,4 +1,4 @@
-<div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError"
+<div class="page-bar m10 bg-none" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError"
   style="border:none !important;padding-bottom: 8px;">
   <app-response-message class="pg8 col-lg-12 col-md-12 col-sm-12 col-xs-12 p0" [customResponse]="leadsResponse"
     *ngIf="leadsResponse.isVisible"></app-response-message>
@@ -136,14 +136,14 @@
               </div>
               <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;" data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">{{lead.campaignName | slice:0:30}}
                     <span *ngIf="lead.campaignName?.length>30">...</span>
                   </span>
                 </h5>
               </div>
               <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;" data-toggle="tooltip" data-placement="bottom" title="{{lead.parentCampaignName}}">{{lead.parentCampaignName | slice:0:30}}
                     <span *ngIf="lead.parentCampaignName?.length>30">...</span>
                   </span>
                 </h5>
@@ -151,7 +151,7 @@
               <div *ngIf="isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0"
                 style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;" data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">{{lead.campaignName | slice:0:30}}
                     <span *ngIf="lead.campaignName?.length>30">...</span>
                   </span>
                 </h5>
@@ -159,6 +159,12 @@
               <div *ngIf="isVendorVersion" style="margin-left: 60px;">
                 <h5 class="m0"><strong>Lead Id:</strong>
                   <span>{{lead.referenceId}}
+                  </span>
+                </h5>
+              </div>
+              <div *ngIf="isVendorVersion" style="margin-left: 60px;">
+                <h5 class="m0"><strong>CRM Id:</strong>
+                  <span>{{lead.crmId}}
                   </span>
                 </h5>
               </div>

@@ -488,8 +488,11 @@ export class CrmFormSettingsComponent {
 				} else {
 					let cfParentName = sfCustomField.controllerName;
 					$('#' + cfParentName).prop('checked', true);
-					sfParentfield.canUnselect = true;
-					sfParentfield.selected = true;
+					let isOtherChildSelected = this.checkIfOtherChildFieldsSelected(cfParentName);
+					if (!isOtherChildSelected) {
+						sfParentfield.canUnselect = true;
+						sfParentfield.selected = true;
+					}
 				}
 
 				if (sfParentfield.controllerName != null && sfParentfield.controllerName != undefined) {
@@ -504,6 +507,16 @@ export class CrmFormSettingsComponent {
 			}
 		}
 	}
+
+	checkIfOtherChildFieldsSelected(cfParentName: any): boolean {
+		let sfChildFields = this.sfCustomFieldsResponse.filter(field => field.controllerName === cfParentName);
+		for (let sfChildfield of sfChildFields) {
+			if (sfChildfield.selected) {
+				return true;
+			}
+		}
+	}
+	
 
 	checkIfhasParentField(sfCustomField: any, isChecked: any) {
 		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {

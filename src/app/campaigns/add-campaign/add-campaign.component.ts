@@ -1,3 +1,4 @@
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Component, OnInit,ViewChild,Renderer, OnDestroy } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -252,7 +253,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   hideConfigurePipelineCrms = ['SALESFORCE'];
   loggedInUserCompanyId: number;
   isDealLayoutSelected:boolean = false;
-
+  crmErrorMessage:CustomResponse = new CustomResponse();
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -332,7 +334,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.recipientsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
                 this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length - 1];
                 this.getValidUsersCount();
-
             }
             /****XNFR-125****/
             this.selectedPartnershipId = this.campaign.partnershipId;
@@ -564,7 +565,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     findCampaignDetailsData(){
-        
         this.campaignService.findCampaignDetailsData().subscribe(
             response=>{
                 this.isMultipleCrmsActivated = false;
@@ -757,6 +757,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     /*****Pages*****/
 
     private findCampaignPipeLines() {
+        this.crmErrorMessage = new CustomResponse();
         this.listCampaignPipelines();
         if (this.activeCRMDetails.activeCRM && "SALESFORCE" === this.activeCRMDetails.type) {
             this.integrationService.checkSfCustomFields(this.authenticationService.getUserId())
@@ -764,21 +765,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 (data) => {
                     let cfResponse = data;
                     if (cfResponse.statusCode === 400) {
-                        swal(
-                            "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
-                            "",
-                            "error"
-                        );
+                        this.crmErrorMessage = new CustomResponse('ERROR',this.authenticationService.getCustomFieldsMissingErrorMessage(),true);
                     } else if (cfResponse.statusCode === 401 &&
                         cfResponse.message === "Expired Refresh Token") {
-                        swal(
-                            "Your Salesforce Integration was expired. Please re-configure.",
-                            "",
-                            "error"
-                        );
+                        this.crmErrorMessage = new CustomResponse('ERROR',this.properties.salesforceIntegrationExpiredMessage,true);
                     }
                 },
                 (error) => {
+                    this.crmErrorMessage = new CustomResponse();
                     this.xtremandLogger.error(
                         error,
                         "Error in salesforce checkIntegrations()"
@@ -960,11 +954,15 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.id == this.loggedInUserId)[0];
             this.campaign.email = teamMember.emailId;
             this.campaign.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
+            this.campaign.fromEmailUserId = teamMember.id;
             this.setEmailIdAsFromName();
         } else {
             let existingTeamMemberEmailIds = this.teamMemberEmailIds.map(function (a) { return a.emailId; });
             if (existingTeamMemberEmailIds.indexOf(this.campaign.email) < 0) {
                 this.setLoggedInUserEmailId();
+            }else{
+                let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.campaign.email)[0];
+                this.campaign.fromEmailUserId = teamMember.id;
             }
         }
     }
@@ -972,6 +970,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     setFromName() {
         let user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.campaign.email)[0];
         this.campaign.fromName = $.trim(user.firstName + " " + user.lastName);
+        this.campaign.fromEmailUserId = user.id;
         this.setEmailIdAsFromName();
     }
 
@@ -987,6 +986,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         else {
             this.campaign.fromName = $.trim(userProfile.emailId);
         }
+        /**XNFR-664****/
+        this.campaign.fromEmailUserId = userProfile.userId;
         this.setEmailIdAsFromName();
     }
 
@@ -1573,9 +1574,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
     previewEmailTemplate(emailTemplate:any,isAutoResponseTemplate:boolean){
         if(isAutoResponseTemplate){
-            this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id);
+            this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id,this.campaign.fromEmailUserId);
         }else{
-            this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
+            this.referenceService.previewUnLaunchedCampaignEmailTemplateUsingFromEmailUserIdInNewTab(emailTemplate.id,this.campaign.fromEmailUserId);
         }
     }
 
