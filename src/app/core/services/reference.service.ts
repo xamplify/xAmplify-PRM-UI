@@ -3792,7 +3792,6 @@ preivewAssetForPartnerOnNewHost(id: any) {
     let router = '';
     const navigateToDamPartnerView = () => {
         router = `${RouterUrlConstants.home}${RouterUrlConstants.dam}${RouterUrlConstants.damPartnerView}${RouterUrlConstants.view}${quickLink.id}${viewType}`;
-        console.log(router);
     };
 
     const handleAssetPreview = () => {
