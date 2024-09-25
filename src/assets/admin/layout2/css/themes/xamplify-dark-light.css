@@ -2611,3 +2611,11 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
   background-color: #22313a !important;
 }
 .img-wrap{border: 1px solid #2f4857 !important;}
+/* folder view grid */
+.grid-box.folder-height {
+  margin: 2px 0px;
+  border-radius: 0px 15px 15px 15px !important;
+}
+.folder-cheight{
+  background-color: #2b3c46 !important;
+}
