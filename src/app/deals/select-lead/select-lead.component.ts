@@ -113,9 +113,6 @@ export class SelectLeadComponent implements OnInit {
     pagination.filterKey = "not-converted";
     pagination.showLeadsForAttachingLead = true;
     pagination.vendorCompanyId = this.dealToLead.createdForCompanyId;
-    if (this.selectedContact.id != undefined && this.selectedContact.id > 0) {
-      pagination.contactId = this.selectedContact.id;
-    }
     if (this.vanityLoginDto.vanityUrlFilter) {
       pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName      
