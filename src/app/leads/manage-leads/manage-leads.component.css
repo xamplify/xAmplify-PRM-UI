@@ -127,6 +127,11 @@ i.fa.fa-check-circle-o.check-icons{
   .select-width {
     width: 100% !important;
   }
+    .leads_btn {
+      width: 100%!important;
+      display: inline-flex;
+      flex-wrap: wrap;
+    }
 }
 .select-width {
   width: 196px;
