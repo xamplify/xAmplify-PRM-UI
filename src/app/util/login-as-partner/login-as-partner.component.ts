@@ -93,12 +93,17 @@ export class LoginAsPartnerComponent implements OnInit {
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(vendorAdminCompanyUserEmailId, true);
   }
 
-  logoutAsPartnerOrTeamMember(){
+  logoutAsPartnerOrTeamMember() {
+    let isCreateCampaignUrl = this.router.url.indexOf("/campaigns/create/email") > -1;
+    if (isCreateCampaignUrl) {
+      this.authenticationService.module.logoutButtonClicked = isCreateCampaignUrl;
+      this.referenceService.goToDashboard();
+    }
     this.utilService.addLoginAsLoader();
     this.referenceService.isWelcomePageLoading = true;
-    if(this.isLoggedInAsTeamMember){
+    if (this.isLoggedInAsTeamMember) {
       this.logoutAsTeamMember();
-    }else{
+    } else {
       this.logoutAsPartner();
     }
   }

@@ -3585,7 +3585,7 @@ padding-top:7px!important;
 }
 /* edit contact dropdown */
 .e-input-group, .e-input-group.e-control-wrapper, .e-float-input, .e-float-input.e-input-group, .e-float-input.e-control-wrapper, .e-float-input.e-input-group.e-control-wrapper {
-  color: #ffff!important;
+  color: #333!important;
 }
 .e-input-group:not(.e-disabled) .e-input-group-icon:hover, .e-input-group.e-control-wrapper:not(.e-disabled) .e-input-group-icon:hover {
   color:#ffff!important;
@@ -4050,6 +4050,9 @@ div.scrolled{
 @media (max-width: 991px) {
   .page-container,.page-header.navbar .page-top {
       background: none;
+  }
+  .pricing{
+  background: none!important;
   }
 }
 button.swal2-confirm.styled {
