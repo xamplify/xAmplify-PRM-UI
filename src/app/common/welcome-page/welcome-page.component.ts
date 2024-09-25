@@ -71,7 +71,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
     if(!this.router.url.includes('/welcome-page')){
       setTimeout(() => {
       this.pageLoading = false;
-      }, 2000);
+      },1000);
     }
     setTimeout(() => {
       if(this.router.url.includes('/welcome-page')){

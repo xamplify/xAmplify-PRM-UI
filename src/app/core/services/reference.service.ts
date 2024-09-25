@@ -3847,6 +3847,15 @@ copySelectedElement(inputElement:any,id:string){
   $('#'+id).show(600);
 }
 
+/*XNFR-553*/
+checkIsValidString(inputString:any) {
+  return inputString != undefined && inputString != null && this.getTrimmedData(inputString).length > 0;
+}
+/*XNFR-553*/
+getFirstLetter(inputString:any) {
+  return inputString.length > 0 ? inputString.slice(0,1) : '*';
+}
+
   findDuplicateArrayElements(array:any) {
     var recipientsArray = array.sort();
     var duplicateElements = [];

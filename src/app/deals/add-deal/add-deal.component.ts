@@ -47,6 +47,8 @@ export class AddDealComponent implements OnInit {
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
   @Input() public hideAttachLeadButton: boolean;
+  @Input() public selectedContact: any;
+  @Input() public isDealFromContact: boolean = false;
   @Output() notifySubmitSuccess = new EventEmitter();
 
   preview = false;
@@ -642,6 +644,7 @@ export class AddDealComponent implements OnInit {
       this.createdForStages = [];
       this.activeCRMDetails.showDealPipeline = false;
       this.activeCRMDetails.showDealPipelineStage = false;
+      this.showCreatedByPipelineAndStage = false;
       this.resetDealTitle();
     }
   }
@@ -1368,6 +1371,9 @@ export class AddDealComponent implements OnInit {
             }
             if ("ZOHO" == this.activeCRMDetails.createdForActiveCRMType && this.leadId !== undefined && this.leadId > 0) {
               this.isZohoLeadAttachedWithoutSelectingDealFor = true;
+            }
+            if (this.actionType == "edit" && (this.isOrgAdmin || this.isMarketingCompany)) {
+              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled;
             }
           } else {
             this.resetDealTitle();
