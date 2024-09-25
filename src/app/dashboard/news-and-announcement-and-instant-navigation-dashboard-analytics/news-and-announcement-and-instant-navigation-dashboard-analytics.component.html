@@ -123,9 +123,15 @@
     </div>
 </div>
 <ng-template #instantNavigationLinkNgTemplateIcon let-instantNavigationLink="instantNavigationLink" let-access="access" let-title="title">
-    <div [ngClass]="access ? 'col mt10':'disabled-div col mt10'" title="{{title}}">
+    <div *ngIf="!isPartnerLoggedInThroughVanityUrl" [ngClass]="access ? 'col mt10':'disabled-div col mt10'" title="{{title}}">
         <a [ngClass]="!access? 'disabled-div':''" (click)="access && navigate(instantNavigationLink)">
-            <i class="fa fa-link" [ngClass]="!access ?'disabled':''"></i>
+            <i class="fa fa-line-chart" [ngClass]="!access ?'disabled':''"></i>
+        </a>
+    </div>
+    
+     <div class="col mt10" title="Preview">
+        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(instantNavigationLink)">
+            <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
     </div>
 </ng-template>

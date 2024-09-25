@@ -3774,27 +3774,15 @@ preivewAssetForPartnerOnNewHost(id: any) {
 		this.navigateToRouterByViewTypes(url, categoryId, viewType, folderViewType, folderListView);
   }
 
-  navigateToQuickLinksAnalytics(quickLink:any,isPartnerLoggedInThroughVanityUrl:boolean,vendorCompanyId:number){
+  navigateToQuickLinksAnalytics(quickLink:any){
     let router = "";
     let viewType = "/"+this.getListOrGridViewType();
     if(quickLink.type=="Asset"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "/home/dam/sharedp/view/"+quickLink.damPartnerId+viewType;
-      }else{
-        router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
-      }
+      router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
     }else if(quickLink.type=="Track"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "home/tracks/tb/"+vendorCompanyId+"/"+quickLink.slug+viewType;
-      }else{
-        router = "/home/tracks/analytics/"+quickLink.id+viewType;
-      }
+      router = "/home/tracks/analytics/"+quickLink.id+viewType;
     }else if(quickLink.type=="Play Book"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "home/playbook/pb/"+vendorCompanyId+"/"+quickLink.slug+viewType;
-      }else{
-        router = "/home/playbook/analytics/"+quickLink.id+viewType;
-      }
+      router = "/home/playbook/analytics/"+quickLink.id+viewType;
     }
     this.goToRouter(router);
   }
