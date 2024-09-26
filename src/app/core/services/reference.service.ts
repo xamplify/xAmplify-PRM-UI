@@ -3871,6 +3871,8 @@ getFirstLetter(inputString:any) {
     }
     return duplicateElements;
   }
+
+ 
   
 }
 

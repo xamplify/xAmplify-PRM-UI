@@ -447,6 +447,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
   loginAs(teamMember: TeamMember) {
     this.utilService.addLoginAsLoader();
+    this.utilService.reloadAppInAllTabs();
     this.loginAsTeamMember(teamMember.emailId, false);
 
   }
@@ -516,6 +517,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   logoutAsTeamMember() {
     this.utilService.addLoginAsLoader();
+    this.utilService.reloadAppInAllTabs();
     let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
     this.loginAsTeamMember(adminEmailId, true);
   }

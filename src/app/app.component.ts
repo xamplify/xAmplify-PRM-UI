@@ -35,9 +35,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   isLocalHost = false;
   isChatGptIconDisplayed = false;
   previousUrl:string='';
-constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
+
+
+  constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
   public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService,
    private router: Router,private utilService:UtilService) {
+    // Listen for changes in localStorage
+    window.addEventListener('storage', this.storageEventListener.bind(this));
     this.isLocalHost = this.authenticationService.isLocalHost();
     this.addLoaderForAuthGuardService();
 		this.addLoaderForLazyLoadingModules(router);
@@ -51,6 +55,20 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
         this.previousUrl = event.url;
       }
     });
+    }
+
+    storageEventListener(event: StorageEvent) {
+      // Check if the 'reloadApp' key was modified
+      if (event.key === 'reloadApp') {
+        // Reload the page
+        alert("Reloading Page");
+        window.location.reload();
+      }
+    }
+  
+    // To trigger reload manually, you can call this function
+    triggerReload() {
+      this.utilService.reloadAppInAllTabs();
     }
 
     addLoaderForAuthGuardService(){
@@ -117,12 +135,14 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     
     ngOnInit() {
+      
         this.versionCheckService.initVersionCheck();
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
         };
         this.router.events.subscribe((evt) => {
             if (evt instanceof NavigationEnd) {
+              console.log("In App Componenet");
                 this.router.navigated = false;
                 let currentUrl = evt.url;
                 this.isChatGptIconDisplayed = currentUrl.indexOf("/home/")>-1;
