@@ -3228,3 +3228,13 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization{padding: 7px !import
   color: green;
 }
 i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place{margin-left: 1px !important;}
+
+.line_height {
+  line-height: 1.1 !important;
+  padding-left: 3px;
+}
+.tittle-name{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 9px;
+}

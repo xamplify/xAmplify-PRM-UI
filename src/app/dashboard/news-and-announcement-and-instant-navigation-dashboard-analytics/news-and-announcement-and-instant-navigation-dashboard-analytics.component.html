@@ -43,8 +43,8 @@
                 <div class="float-right" (click)="viewAllQuickLinks()"><a>View All</a></div>
             </div>
             <div class="portlet-body pt0">
-                <div class="inline-flex border-end pointer" *ngFor="let instantNavigationLink of instantNavigationLinks" (click)="preview(instantNavigationLink)">
-                    <div class="col w430 text-overflow">
+                <div class="inline-flex border-end " *ngFor="let instantNavigationLink of instantNavigationLinks" >
+                    <div class="col w430 text-overflow pointer" (click)="preview(instantNavigationLink)">
                         <h5 class="line-height m0 text-overflow">
                          <span data-toggle="tooltip" data-placement="bottom"  title="{{instantNavigationLink?.title}}">{{instantNavigationLink?.title}}</span>
                          </h5>
@@ -124,7 +124,7 @@
 </div>
 <ng-template #instantNavigationLinkNgTemplateIcon let-instantNavigationLink="instantNavigationLink" let-access="access" let-title="title">
     <div *ngIf="!isPartnerLoggedInThroughVanityUrl" [ngClass]="access ? 'col mt10':'disabled-div col mt10'" title="{{title}}">
-        <a [ngClass]="!access? 'disabled-div':''" (click)="access && navigate(instantNavigationLink)">
+        <a [ngClass]="!access? 'disabled-div':''" (click)="$event.stopPropagation();access && navigate(instantNavigationLink)">
             <i class="fa fa-line-chart" [ngClass]="!access ?'disabled':''"></i>
         </a>
     </div>
