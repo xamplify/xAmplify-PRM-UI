@@ -340,12 +340,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 			url = url+"partners/";
 			this.referenceService.goToRouter(url+"manage");
 		}else if(this.previousRouterAlias=="p"){
-			if(this.navigatedFrom=="a"){
-				this.referenceService.goToRouter(manageCampaignsUrl);
-			}else if(this.navigatedFrom=="b"){
-				this.referenceService.goToRouter(manageCampaignsUrl);
-				//this.referenceService.goToRouter(campaignAnalyticsUrl);
-			}
+			this.referenceService.goToRouter(manageCampaignsUrl);
 		}else if(this.previousRouterAlias=="c"){
 			if(this.navigatedFrom=="a"){
 				this.referenceService.goToRouter(manageCampaignsUrl);
