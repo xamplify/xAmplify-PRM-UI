@@ -205,6 +205,10 @@
                                         <app-timestamp [isOnlyDate]="true"
                                             [dateAndTime]="landingPage.displayTime"></app-timestamp>
                                     </h6>
+                                    <h6 *ngIf="vendorJourney || isMasterLandingPages || welcomePages" class="GridViewCotent"> <b>Updated On:</b>
+                                        <app-timestamp [isOnlyDate]="true"
+                                            [dateAndTime]="landingPage.updatedTime"></app-timestamp>
+                                    </h6>
                                     <h6 *ngIf="isPartnerLandingPage" class="GridViewCotent"><b>Shared On:</b>
                                         <app-timestamp [isOnlyDate]="true"
                                             [dateAndTime]="landingPage.displayTime"></app-timestamp>

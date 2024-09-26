@@ -65,6 +65,7 @@ export class LoginAsPartnerComponent implements OnInit {
   loginAsPartner(){
     this.utilService.addLoginAsLoader();
     setTimeout(() => {
+      this.utilService.reloadAppInAllTabs()
       this.sendEmailNotificationToPartner();
     }, 2000);
     
@@ -100,6 +101,7 @@ export class LoginAsPartnerComponent implements OnInit {
       this.referenceService.goToDashboard();
     }
     this.utilService.addLoginAsLoader();
+    this.utilService.reloadAppInAllTabs()
     this.referenceService.isWelcomePageLoading = true;
     if (this.isLoggedInAsTeamMember) {
       this.logoutAsTeamMember();
@@ -180,6 +182,7 @@ export class LoginAsPartnerComponent implements OnInit {
 
  
 loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
+  this.utilService.reloadAppInAllTabs();
   if (this.isLoggedInThroughVanityUrl) {
     this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
   } else {

@@ -203,6 +203,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
                       $.each(data.landingPages, function (index, landingPage) {
                           landingPage.displayTime = new Date(landingPage.createdDateInString);
                       });
+                      $.each(data.landingPages, function (index, landingPage) {
+                          landingPage.updatedTime = new Date(landingPage.updatedDateInString);
+                      });
                       pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                   }
                   this.referenceService.loading(this.httpRequestLoader, false);

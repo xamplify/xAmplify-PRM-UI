@@ -841,10 +841,10 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.name = this.name;
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
-  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages || this.welcomePages;
+  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
   this.landingPage.previousLandingPageId = this.id;
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
-  if(this.landingPage.hasVendorJourney){
+  if(this.landingPage.hasVendorJourney || this.welcomePages){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
     this.landingPage.type = LandingPageType.PUBLIC;
   }
@@ -920,8 +920,8 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
-  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages || this.welcomePages;
-  if(this.landingPage.hasVendorJourney){
+  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  if(this.landingPage.hasVendorJourney || this.welcomePages){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
   }
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);

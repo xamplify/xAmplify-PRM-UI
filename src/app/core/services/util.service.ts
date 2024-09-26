@@ -218,4 +218,9 @@ export class UtilService {
         
     }
 
+    reloadAppInAllTabs() {
+        // Set a timestamp to notify all tabs
+        localStorage.setItem('reloadApp', new Date().toISOString());
+      }
+
 }
