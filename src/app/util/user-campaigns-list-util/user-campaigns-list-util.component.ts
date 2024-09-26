@@ -315,7 +315,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 		}else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.referenceService.encodePathVariable(this.analyticsCampaignId)+"/"+this.referenceService.getEncodedUri(campaignAnalytics.campaignTitle));
 		}else{
-			this.referenceService.goToRouter(url);
+			this.referenceService.goToRouter(url+"/"+this.referenceService.getEncodedUri(campaignAnalytics.campaignTitle));
 		}
 		
 	}

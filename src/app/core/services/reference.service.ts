@@ -3791,12 +3791,16 @@ preivewAssetForPartnerOnNewHost(id: any) {
   handleQuickLinkPreview(quickLink: any, isPartnerLoggedInThroughVanityUrl: boolean, vendorCompanyId: number) {
     const viewType = `/${this.getListOrGridViewType()}`;
     let router = '';
+    let id = quickLink.id;
+    if(isPartnerLoggedInThroughVanityUrl){
+      id = quickLink.damPartnerId;
+    }
     const navigateToDamPartnerView = () => {
-        router = `${RouterUrlConstants.home}${RouterUrlConstants.dam}${RouterUrlConstants.damPartnerView}${RouterUrlConstants.view}${quickLink.id}${viewType}`;
+        router = `${RouterUrlConstants.home}${RouterUrlConstants.dam}${RouterUrlConstants.damPartnerView}${RouterUrlConstants.view}${id}${viewType}`;
     };
 
     const handleAssetPreview = () => {
-        if (this.isVideo(quickLink.assetType)) {
+      if (this.isVideo(quickLink.assetType)) {
             const videoUrl = `/home/dam/previewVideo/${quickLink.videoId}/${quickLink.id}`;
             this.navigateToRouterByViewTypes(videoUrl, 0, undefined, undefined, undefined);
         } else if (quickLink.beeTemplate) {
