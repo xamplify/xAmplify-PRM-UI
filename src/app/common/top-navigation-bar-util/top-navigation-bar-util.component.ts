@@ -366,7 +366,6 @@ private beforeAdd(tag: any) {
   }
   ngOnInit() {
     try {
-
       this.checkWelcomePageRequired();
     } catch (error) { this.logger.error('error' + error); }
   }
@@ -1137,7 +1136,7 @@ private beforeAdd(tag: any) {
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
     
     let  isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
-    this.authenticationService.vanityWelcomePageRequired(currentUser.userName).subscribe(
+    this.authenticationService.vanityWelcomePageRequired(currentUser.userId).subscribe(
       data => {
         if(isWelcomePageEnabled == data.data){
           this.getDashboardType();
@@ -1157,6 +1156,7 @@ private beforeAdd(tag: any) {
           currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = data.data;
           localStorage.setItem('currentUser',JSON.stringify(currentUser));
           this.router.navigate(['/home/dashboard']).then(() => {
+            this.referenceService.isWelcomePageLoading = true;
             this.location.replaceState('/home/dashboard');
             window.location.reload();
           });
