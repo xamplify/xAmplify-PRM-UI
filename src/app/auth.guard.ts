@@ -55,6 +55,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.authenticationService.user.campaignAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
             this.authenticationService.user.secondAdmin = JSON.parse( currentUser )['secondAdmin'];
+            this.referenceService.isUserProfileLoading = true;
             this.getUserByUserName(userName);
             if(url.includes('home/error')){ 
                 this.router.navigateByUrl('/home/dashboard') 
@@ -112,10 +113,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             data => {
               this.authenticationService.user = data;
               this.authenticationService.userProfile = data;
+              this.referenceService.isUserProfileLoading = false;
             },
             error => {
                 console.log( error );
-            
+                this.referenceService.isUserProfileLoading = false;            
             },
             () => { }
             );

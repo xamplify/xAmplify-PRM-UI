@@ -2,7 +2,7 @@
 <app-welcome-page *ngIf="isWelcomePageEnabled && !referenceService?.isWelcomePageLoading" [model]="referenceService?.topNavBarUserDetails" ></app-welcome-page>
 <div class="page-container">
   <app-leftsidebar *ngIf="showLeftMenu && !isWelcomePageEnabled"></app-leftsidebar>
-  <div *ngIf= "!referenceService?.isWelcomePageLoading" class="page-content-wrapper">
+  <div *ngIf= "!referenceService?.isWelcomePageLoading && !referenceService?.isUserProfileLoading" class="page-content-wrapper">
     <router-outlet></router-outlet>
   </div>
 
