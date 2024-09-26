@@ -130,7 +130,7 @@
     </div>
     
      <div class="col mt10" title="Preview">
-        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(instantNavigationLink)">
+        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();preview(instantNavigationLink)">
             <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
     </div>
