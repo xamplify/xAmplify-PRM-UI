@@ -416,7 +416,7 @@ export class Properties {
 	remapHeadersMessage = " to remap the headers";
 	resetMessage = " to reset to the original state.";
 
-	customFieldsMissingErrorMessage = "Warning!! Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your "+this.partnersMergeTag+" will not be pushed into Salesforce."
+	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
 
 	}

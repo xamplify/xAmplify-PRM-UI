@@ -10,6 +10,7 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { GeoLocationAnalyticsType } from '../../util/geo-location-analytics-type.enum';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 
 declare var $:any;
@@ -35,7 +36,8 @@ export class ShowLandingPageComponent implements OnInit {
     isMasterLandingPage: boolean = false;
     isFromMasterLandingPage:boolean = false;
   constructor(private route: ActivatedRoute,private landingPageService:LandingPageService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
-          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService) {
+          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService,
+          public referenceService:ReferenceService) {
           }
 
   ngOnInit() {   
@@ -47,6 +49,7 @@ export class ShowLandingPageComponent implements OnInit {
       this.vanityURLService.checkVanityURLDetails();
     }
       this.alias = this.route.snapshot.params['alias'];
+      this.referenceService.clearHeadScriptFiles();
       if(this.router.url.includes("/showCampaignLandingPage/") || this.router.url.includes("/scp/")){
           this.getHtmlBodyCampaignLandingPageAlias(this.alias);
       }else if(this.router.url.includes("/clpl/")){
