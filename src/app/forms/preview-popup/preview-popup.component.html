@@ -24,9 +24,9 @@
                             <div class="portlet-title">
                                 <div class="inputs mMargin tab_formsearch" id="right">
                                     <div id="left" class="mPadSort">
-                                        <select class="form-control" [(ngModel)]="sortOption.formsSortOption"
+                                        <select class="form-control" [(ngModel)]="sortOption.previewFormsSortOption"
                                             (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                                            <option *ngFor="let option of sortOption.manageFormsSortOptions"
+                                            <option *ngFor="let option of sortOption.previewPopUpFormsSortOptions"
                                                 [ngValue]="option">
                                                 {{option.name}}
                                             </option>

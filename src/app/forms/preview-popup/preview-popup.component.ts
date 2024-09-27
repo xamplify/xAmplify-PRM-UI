@@ -120,7 +120,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
 
     /*************************Sort********************** */
     sortBy(text: any) {
-        this.sortOption.formsSortOption = text;
+        this.sortOption.previewFormsSortOption = text;
         this.getAllFilteredResults(this.pagination);
     }
 
@@ -144,7 +144,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     getAllFilteredResults(pagination: Pagination) {
         this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.sortOption.searchKey;
-        this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
+        this.pagination = this.utilService.sortOptionValues(this.sortOption.previewFormsSortOption, this.pagination);
         this.listForms(this.pagination);
     }
 
