@@ -138,6 +138,7 @@ export class ManageLeadsComponent implements OnInit {
   ngOnInit() {
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.checkOppourtunityAcess();
     if (this.referenceService.isCreated) {
       this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
     }
@@ -1516,6 +1517,25 @@ export class ManageLeadsComponent implements OnInit {
     this.showDealForm = false;
     this.closeLeadModal();
   }
+
+  checkOppourtunityAcess() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.checkIfHasOppourtunityAcess(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          let hasAuthorization = result.data;
+          if (!hasAuthorization) {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
 
   
 }

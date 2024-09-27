@@ -254,11 +254,15 @@ export class CustomAddLeadComponent implements OnInit {
       this.actionType = "add"
       this.isThroughAddUrl = true;
       this.isFromManageLeads = true;
-      this.loadDataForAddLead();
+      this.checkIfHasAcessForAddLead();
     } else if (currentUrl.includes(RouterUrlConstants.addLeadFromHome)) {
-      this.actionType = "add"
-      this.isThroughAddUrl = true;
-      this.loadDataForAddLead();
+      if (this.authenticationService.isPartnershipOnlyWithPrm) {
+        this.actionType = "add"
+        this.isThroughAddUrl = true;
+        this.loadDataForAddLead();
+      } else {
+        this.referenceService.goToAccessDeniedPage();
+      }
     }
     if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
       this.disableCreatedFor = true;
@@ -1852,6 +1856,31 @@ export class CustomAddLeadComponent implements OnInit {
   //XNFR-681
   resetLeadTitle() {
     this.leadFormTitle = LEAD_CONSTANTS.registerALead;
+  }
+
+  checkIfHasAcessForAddLead() {
+    this.ngxloading = true;
+    this.isLoading = true;
+    this.leadsService.checkIfHasAcessForAddLeadOrDeal(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          let hasAuthorization = result.data;
+          if (hasAuthorization) {
+            this.loadDataForAddLead();
+          } else {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          this.httpRequestLoader.isServerError = true;
+          this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
+        },
+        () => { }
+      );
   }
 
 }
