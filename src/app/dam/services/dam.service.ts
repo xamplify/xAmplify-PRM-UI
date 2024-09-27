@@ -336,6 +336,20 @@ export class DamService {
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 
+  checkUrlAccess(){
+    let  userId = this.authenticationService.getUserId();
+    let companyProfileName = this.authenticationService.getSubDomain();
+    let url = "";
+    if(companyProfileName.length>0){
+      url = this.DAM_PREFIX_URL+"/subDomain/"+companyProfileName+"/checkUrlAccess/"+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    }else{
+      url = this.DAM_PREFIX_URL+"/checkUrlAccess/"+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    }
+    alert(url);
+    return this.authenticationService.callGetMethod(url);
+
+  }
+
 
 
 

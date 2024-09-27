@@ -272,6 +272,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.vendorPagesEnabled = data.vendorPagesEnabled;
 		module.chatGptIntegrationEnabled = data.chatGptIntegrationEnabled;
 		module.updateModulesFromMyProfile = data.updateModulesFromMyProfile;
+
+		/**XNFR-698**/
+		module.isMyVendorsOptionDisplayed = data.myVendorsOptionDisplayed;
 	}
 
 	setContentMenu(data: any, module: any) {
