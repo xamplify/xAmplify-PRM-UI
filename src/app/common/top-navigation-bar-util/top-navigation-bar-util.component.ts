@@ -787,7 +787,7 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.showSupportSettingOption = data.showSupportSettingOption;
 					let loginAsPartnerOptionEnabledForVendor = data.loginAsPartnerOptionEnabledForVendor;
 					if(this.isLoggedInAsPartner && !loginAsPartnerOptionEnabledForVendor){
-						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account. We are redirecting you to the login page.");
+						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account or the application has been opened in multiple tabs.So We are redirecting you to the login page.");
 						setTimeout(() => {
 							this.authenticationService.logout();
 						}, 7000);
@@ -796,10 +796,7 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					//XNFR-276
           this.menuItems = data.menuItems;
-/*           this.displayedItems = this.menuItems.slice(0, 4);
-          console.log(this.displayedItems)
-          this.displayedMoreItems = this.menuItems.slice(4, this.menuItems.length)
-          console.log(this.displayedMoreItems) */
+
 
 				},
 				error => {
@@ -865,7 +862,7 @@ private beforeAdd(tag: any) {
 		module.notifyPartners = data.notifyPartners;
 		module.isMarketingTeamMember = roleDisplayDto.marketingTeamMember;
 		module.isMarektingAndPartner = roleDisplayDto.marketingAndPartner;
-    	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
+    module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
 		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
 		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
 		module.isOrgAdminCompany = roleDisplayDto.orgAdmin || roleDisplayDto.orgAdminTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember;
@@ -876,6 +873,9 @@ private beforeAdd(tag: any) {
 		/****XNFR-583****/
 		module.vendorPagesEnabled = data.vendorPagesEnabled;
 		module.chatGptIntegrationEnabled = data.chatGptIntegrationEnabled;
+
+    /**XNFR-698**/
+		module.isMyVendorsOptionDisplayed = data.myVendorsOptionDisplayed;
 	}
 
 	setContentMenu(data: any, module: any) {
