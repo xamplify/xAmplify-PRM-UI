@@ -268,11 +268,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
         },
         error => this.logger.errorPage(error),
         () => {
-          if (this.vanityLoginDto.vanityUrlFilter) {
-            this.vendorCount = 1;
-          } else {
-            this.getVendorCount();
-          }
+          this.getVendorCount();
         }
       );
   }

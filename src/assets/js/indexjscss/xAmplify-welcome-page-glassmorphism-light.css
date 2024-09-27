@@ -34,4 +34,24 @@ span.xamplify-submenu-flex>a.moduleTextColor,
   .horizontal-navbar .navbar-navs .link li .arrow {
     color: #000000 !important;
   }
-
+  @media (max-width: 767px) {
+    .xamplify-welcome-page-header.navbar {
+        height: 126px!important;
+    }
+    .xamplify-welcome-page-top-menu {
+        border-bottom: 1px solid rgb(255 255 255 / 35%) !important;
+        background: #af9a9a59 !important;
+    }
+  }
+  @media (max-width: 1024px) {
+    .horizontal-navbar .navbar-navs .nav-link {
+        background-color: #af9a9a59 !important;
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+        border-right: 1px solid rgb(255 255 255 / 35%) !important;
+        box-shadow: none !important;
+    }
+    .horizontal-navbar .navbar-navs .link li .sub-menu-bar {
+        background-color: #ddd !important;
+    }
+  }

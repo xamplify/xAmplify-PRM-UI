@@ -3238,3 +3238,18 @@ i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place{margin-left: 1px !imp
   text-overflow: ellipsis;
   padding-top: 9px;
 }
+/* quick links icons */
+.quicklinks_icons {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+a.quicklinks_icons:hover {
+  background-color: #5bb2f5;
+  color: #fff;
+}

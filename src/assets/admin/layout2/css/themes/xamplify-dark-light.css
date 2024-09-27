@@ -1723,7 +1723,7 @@ i.IconCustomization {
   border: 1px solid #fff !important;
   color: #fff !important;
 }
-i.IconCustomization:hover {
+i.IconCustomization:hover,.quicklinks_icons:hover {
   border: 1px solid #fff !important;
   background: #fff !important;
   color: #22313a !important;
@@ -2618,4 +2618,10 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
 }
 .folder-cheight{
   background-color: #2b3c46 !important;
+}
+/* quicklinks */
+.quicklinks_icons{
+  background-color: unset!important;
+  border: 1px solid #fff !important;
+  color: #fff !important;
 }

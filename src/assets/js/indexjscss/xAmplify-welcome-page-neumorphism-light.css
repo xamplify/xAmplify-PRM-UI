@@ -64,3 +64,24 @@ a.xamplify-dropdown-toggle.circlebg-none-v {
   box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
     background: linear-gradient(225deg, #d8dde1, #fff) !important;
 }
+@media (max-width: 767px) {
+  .xamplify-welcome-page-header.navbar {
+      height: 126px!important;
+  }
+  .xamplify-welcome-page-top-menu {
+    background: #f0f5fa !important;
+    box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
+    border-bottom: 1px solid #d0d5db;
+  }
+}
+@media (max-width: 1024px) {
+  .horizontal-navbar .navbar-navs .nav-link {
+    background-color: #f0f5fa !important;
+    color: #000!important;
+    box-shadow: inset -5px -5px 10px #d6dadf, inset 5px 5px 10px #fff !important;
+  }
+  .horizontal-navbar .navbar-navs .link li .arrow, .horizontal-navbar .navbar-navs .link li a {
+    color: #000!important;
+}
+
+}
