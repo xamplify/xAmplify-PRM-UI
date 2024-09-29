@@ -118,6 +118,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             error => {
                 console.log( error );
                 this.referenceService.isUserProfileLoading = false;                
+
             },
             () => { }
             );
