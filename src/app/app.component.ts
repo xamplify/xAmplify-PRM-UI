@@ -61,7 +61,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       // Check if the 'reloadApp' key was modified
       if (event.key === 'reloadApp') {
         // Reload the page
-        alert("Reloading Page");
         window.location.reload();
       }
     }
@@ -142,7 +141,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         };
         this.router.events.subscribe((evt) => {
             if (evt instanceof NavigationEnd) {
-              console.log("In App Componenet");
                 this.router.navigated = false;
                 let currentUrl = evt.url;
                 this.isChatGptIconDisplayed = currentUrl.indexOf("/home/")>-1;
