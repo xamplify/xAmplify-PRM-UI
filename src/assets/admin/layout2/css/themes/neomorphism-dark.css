@@ -4292,3 +4292,14 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 18px !important
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place{margin-left: 0px !important;}
 .neo{margin-left:65px !important;}
+/* quick links */
+.quicklinks_icons{
+  border:none!important;
+  color: #fff !important;
+  background-color: #414246!important;
+}
+.quicklinks_icons:hover{
+ background-color: #56585c !important;
+}
+
+   

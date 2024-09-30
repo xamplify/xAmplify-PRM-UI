@@ -135,6 +135,12 @@ export class SortOption {
 		{ 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' }
 	];
 
+	previewPopUpFormsSortOptions = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name (A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' }
+	];
+
 	partnerLandingPageSortOptions = [
 		{ 'name': 'Name (A-Z)', 'value': 'name-ASC' },
 		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' },
@@ -457,6 +463,7 @@ export class SortOption {
 	public leadCampaignSortOption: any = this.leadCampaignsSortDropDown[0];
 	public campaignPartnersRemoveAccessDefaultSortOption: any = this.campaignPartnersRemoveAccessSortDropDown[0];
 	public formsSortOption: any = this.manageFormsSortOptions[0];
+	public previewFormsSortOption: any = this.previewPopUpFormsSortOptions[0];
 	public partnerLandingPageSortOption: any = this.partnerLandingPageSortOptions[0];
 	public marketPlaceCategoriesSortOption: any = this.marketPlaceCategoriesSortOptions[0];
 	public selectedDemoRequestSortOption:  any = this.demoRequestSortOptions[7];

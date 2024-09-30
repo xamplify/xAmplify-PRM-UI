@@ -163,6 +163,8 @@ export class AddDealComponent implements OnInit {
   hideDealForInEditSelfDeal:boolean = false;
   isDealForAndContactInfoDivCenterAligned = false;
   isCRMIdCopiedToClipboard: boolean = false;
+  halopsaTicketTypeId:number = 0;
+  halopsaTicketTypes: any;
   //XNFR-681
   isThroughAddUrl : boolean = false;
   isFromManageDeals : boolean = false;
@@ -213,7 +215,7 @@ export class AddDealComponent implements OnInit {
     } else if (this.actionType === "view") {
       this.preview = true;
       this.showAttachLeadButton = false;
-      this.dealFormTitle = "Deal Details";
+      this.dealFormTitle = "View Deal";
       if (this.dealId > 0) {
         this.getDeal(this.dealId);
       }
@@ -225,9 +227,14 @@ export class AddDealComponent implements OnInit {
       }
     } else if (currentUrl.includes(RouterUrlConstants.addDeal)) {
       this.isFromManageDeals = true;
+      this.checkIfHasAcessForAddDeal();
       this.setDeafultValuesForDeal();
     } else if (currentUrl.includes(RouterUrlConstants.addDealFromHome)) {
-      this.setDeafultValuesForDeal();
+      if (this.authenticationService.isPartnershipOnlyWithPrm) {
+        this.setDeafultValuesForDeal();
+      } else {
+        this.referenceService.goToAccessDeniedPage();
+      }
     }
     this.getVendorList();
 
@@ -645,6 +652,7 @@ export class AddDealComponent implements OnInit {
       this.activeCRMDetails.showDealPipeline = false;
       this.activeCRMDetails.showDealPipelineStage = false;
       this.showCreatedByPipelineAndStage = false;
+      this.showOpportunityTypes = false;
       this.resetDealTitle();
     }
   }
@@ -1758,6 +1766,10 @@ export class AddDealComponent implements OnInit {
         if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType) {
           this.hasCampaignPipeline = false;
         }
+        this.activeCRMDetails.showDealPipeline = false;
+        this.activeCRMDetails.showDealPipelineStage = false;
+        this.showCustomForm = false;
+        this.showDefaultForm = false;
       } else {
         this.holdTicketTypeId = this.deal.haloPSATickettypeId;
       }
@@ -1784,8 +1796,6 @@ export class AddDealComponent implements OnInit {
     }
   }
 
-  halopsaTicketTypeId:number = 0;
-  halopsaTicketTypes: any;
   getHaloPSATicketTypes(companyId:number, integrationType: string) {
     this.isLoading = true;
     this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'DEAL').subscribe(data => {
@@ -1875,6 +1885,30 @@ export class AddDealComponent implements OnInit {
     this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
   }
 
+  checkIfHasAcessForAddDeal() {
+    this.ngxloading = true;
+    this.isLoading = true;
+    this.leadsService.checkIfHasAcessForAddLeadOrDeal(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          let hasAuthorization = result.data;
+          if (hasAuthorization) {
+            this.setDeafultValuesForDeal();
+          } else {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          this.httpRequestLoader.isServerError = true;
+          this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
+        },
+        () => { }
+      );
+  }
 }
 
 

@@ -187,7 +187,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.showSupportSettingOption = data.showSupportSettingOption;
 					let loginAsPartnerOptionEnabledForVendor = data.loginAsPartnerOptionEnabledForVendor;
 					if(this.isLoggedInAsPartner && !loginAsPartnerOptionEnabledForVendor){
-						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account. We are redirecting you to the login page.");
+						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account or the application has been opened in multiple tabs.So We are redirecting you to the login page.");
 						setTimeout(() => {
 							this.authenticationService.logout();
 						}, 7000);
@@ -272,6 +272,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.vendorPagesEnabled = data.vendorPagesEnabled;
 		module.chatGptIntegrationEnabled = data.chatGptIntegrationEnabled;
 		module.updateModulesFromMyProfile = data.updateModulesFromMyProfile;
+
+		/**XNFR-698**/
+		module.isMyVendorsOptionDisplayed = data.myVendorsOptionDisplayed;
 	}
 
 	setContentMenu(data: any, module: any) {

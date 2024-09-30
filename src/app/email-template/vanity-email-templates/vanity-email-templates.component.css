@@ -12,6 +12,7 @@
 }
 .grid-box {
   padding-bottom: 0px !important;
+  border: 1px solid #d0d5db;
 }
 .sidePaddingsAbjustment {
   padding: 0px 5px !important;

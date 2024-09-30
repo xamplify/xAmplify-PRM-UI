@@ -137,5 +137,7 @@ export class Module {
     chatGptIntegrationEnabled = false;
     updateModulesFromMyProfile = false;
 
+    isMyVendorsOptionDisplayed = false;
+
 
 }

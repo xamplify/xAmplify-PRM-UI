@@ -240,16 +240,14 @@
                 </a>
                 <div class="border-bt"></div>
               </li>
-              <!-- Guides Help Icon-->
-              <li
-                *ngIf="myVendorsLoader &&authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                <a><img src="assets/images/loading.gif">Loading My Vendors...</a>
+              <!-- My Vendors XNFR-698-->
+              <li *ngIf="myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                <a><img src="assets/images/loading.gif" alt="No Image Found">Loading My Vendors...</a>
               </li>
-              <li
-                *ngIf="!myVendorsLoader && authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                <a (click)="goToRouter('/home/dashboard/vendors')" translate>
-                  <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
-                <div class="border-bt"></div>
+              <li  *ngIf="!myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                  <a (click)="goToRouter('/home/dashboard/vendors')" translate>
+                    <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
+                  <div class="border-bt"></div>
               </li>
               <!--XBI-1917-->
               <ng-container

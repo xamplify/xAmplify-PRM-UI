@@ -408,6 +408,15 @@ export class Properties {
 	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
 
 
+	partnerText = "Interactions and Non-interactions on distinct tracks based on progress";
+	vendorText = "Partner interactions and non-interactions on distinct tracks based on progress";
+	publishedTrackCountText = "Count of Tracks published to the partner";
+	publishedPlaybookCountText = "Count of Playbook published to the partner";
+	vendorTeamMemberTrackText = "Count of Tracks Published by Team Members";
+	venodrTeamMemberPlaybookText = "Count of Playbook Published by Team Members";
+
+
+	
 	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
 	mapCsvHeaderMessage = " to map your headers to the expected format.";
 	duplicateColumnsMappedErrorMessage = "Duplicate columns have been mapped. Please ensure to check for the specified errors.";
@@ -416,7 +425,7 @@ export class Properties {
 	remapHeadersMessage = " to remap the headers";
 	resetMessage = " to reset to the original state.";
 
-	customFieldsMissingErrorMessage = "Warning!! Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your "+this.partnersMergeTag+" will not be pushed into Salesforce."
+	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
 
 	}

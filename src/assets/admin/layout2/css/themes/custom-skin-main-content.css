@@ -2503,3 +2503,14 @@ button.filter.btn-hvr-text.emailtemplate-selected{
   a.whiteSpace {
     color: var(--title-heading--text) !important;
 }
+/* quicklinks */
+.quicklinks_icons{
+background-color: unset!important;
+border: 1px solid var(--icon-border-color) !important;
+color: var(--icon-color) !important;
+}
+.quicklinks_icons:hover{
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
+  color: var(--div-bg-color) !important;
+}

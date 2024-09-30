@@ -377,4 +377,19 @@ export class LeadsService {
     return this.authenticationService.callGetMethod(url);
   }
 
+  checkIfHasAcessForAddLeadOrDeal(vendorCompanyProfileName: string, loggedInUserId: number) {
+    let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? loggedInUserId : 0;
+    let vendorCompanyRequestParam = vendorCompanyProfileName != undefined ? "&vendorCompanyProfileName=" + vendorCompanyProfileName : "&vendorCompanyProfileName =''";
+    let url = this.authenticationService.REST_URL + "lead/checkIfHasAcessForAddLeadOrDeal" + this.ACCESS_TOKEN_SUFFIX_URL + "&userId=" + loggedInUserIdRequestParam + vendorCompanyRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  checkIfHasOppourtunityAcess(vendorCompanyProfileName: string, loggedInUserId: number) {
+    let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? loggedInUserId : 0;
+    let vendorCompanyRequestParam = vendorCompanyProfileName != undefined ? "&vendorCompanyProfileName=" + vendorCompanyProfileName : "&vendorCompanyProfileName =''";
+    let url = this.authenticationService.REST_URL + "lead/checkIfHasOpporunityAcess" + this.ACCESS_TOKEN_SUFFIX_URL + "&userId=" + loggedInUserIdRequestParam + vendorCompanyRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+
 }

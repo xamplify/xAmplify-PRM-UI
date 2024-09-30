@@ -333,11 +333,7 @@ private beforeAdd(tag: any) {
         },
         error => this.logger.errorPage(error),
         () => {
-          if (this.vanityLoginDto.vanityUrlFilter) {
-            this.vendorCount = 1;
-          } else {
-            this.getVendorCount();
-          }
+          this.getVendorCount();
         }
       );
   }
@@ -366,7 +362,6 @@ private beforeAdd(tag: any) {
   }
   ngOnInit() {
     try {
-
       this.checkWelcomePageRequired();
     } catch (error) { this.logger.error('error' + error); }
   }
@@ -792,7 +787,7 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.showSupportSettingOption = data.showSupportSettingOption;
 					let loginAsPartnerOptionEnabledForVendor = data.loginAsPartnerOptionEnabledForVendor;
 					if(this.isLoggedInAsPartner && !loginAsPartnerOptionEnabledForVendor){
-						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account. We are redirecting you to the login page.");
+						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account or the application has been opened in multiple tabs.So We are redirecting you to the login page.");
 						setTimeout(() => {
 							this.authenticationService.logout();
 						}, 7000);
@@ -801,10 +796,7 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					//XNFR-276
           this.menuItems = data.menuItems;
-/*           this.displayedItems = this.menuItems.slice(0, 4);
-          console.log(this.displayedItems)
-          this.displayedMoreItems = this.menuItems.slice(4, this.menuItems.length)
-          console.log(this.displayedMoreItems) */
+
 
 				},
 				error => {
@@ -870,7 +862,7 @@ private beforeAdd(tag: any) {
 		module.notifyPartners = data.notifyPartners;
 		module.isMarketingTeamMember = roleDisplayDto.marketingTeamMember;
 		module.isMarektingAndPartner = roleDisplayDto.marketingAndPartner;
-    	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
+    module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
 		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
 		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
 		module.isOrgAdminCompany = roleDisplayDto.orgAdmin || roleDisplayDto.orgAdminTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember;
@@ -881,6 +873,9 @@ private beforeAdd(tag: any) {
 		/****XNFR-583****/
 		module.vendorPagesEnabled = data.vendorPagesEnabled;
 		module.chatGptIntegrationEnabled = data.chatGptIntegrationEnabled;
+
+    /**XNFR-698**/
+		module.isMyVendorsOptionDisplayed = data.myVendorsOptionDisplayed;
 	}
 
 	setContentMenu(data: any, module: any) {
@@ -1137,7 +1132,7 @@ private beforeAdd(tag: any) {
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
     
     let  isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
-    this.authenticationService.vanityWelcomePageRequired(currentUser.userName).subscribe(
+    this.authenticationService.vanityWelcomePageRequired(currentUser.userId).subscribe(
       data => {
         if(isWelcomePageEnabled == data.data){
           this.getDashboardType();
@@ -1157,6 +1152,7 @@ private beforeAdd(tag: any) {
           currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = data.data;
           localStorage.setItem('currentUser',JSON.stringify(currentUser));
           this.router.navigate(['/home/dashboard']).then(() => {
+            this.referenceService.isWelcomePageLoading = true;
             this.location.replaceState('/home/dashboard');
             window.location.reload();
           });

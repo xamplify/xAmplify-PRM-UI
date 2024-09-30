@@ -4146,3 +4146,9 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
   i.fa.fa-eye{padding-left: 2px;}
   .bg-none{background: none !important;}
   .neo{margin-left:65px !important;}
+  /* quicklinks */
+.quicklinks_icons{
+  background: rgb(146 151 179 / 17%) !important;
+  border: 1px solid #ffffff17 !important;
+  color: #fff !important;
+}

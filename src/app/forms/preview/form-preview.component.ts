@@ -385,7 +385,6 @@ export class FormPreviewComponent implements OnInit {
       formSubmit.vendorJourney = this.vendorJourney;
       formSubmit.masterLandingPage = this.masterLandingPage;
       formSubmit.partnerMasterLandingPageId = this.masterLandingPageId;
-      formSubmit.vanityUrlFilter = this.authenticationService.vanityURLEnabled;
       this.formService.submitForm(formSubmit, formType)
         .subscribe(
           (response: any) => {

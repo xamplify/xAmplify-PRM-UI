@@ -1,6 +1,6 @@
 <!-- BEGIN PAGE CONTENT-->
 <div [ngClass]="(module === 'contacts') ? 'page-content':''">
-<div class="page-bar" style="height:48px;">
+<div class="page-bar mb-height_auto" style="height:48px;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home" aria-hidden="true"></i>
 			<a [routerLink]="refService?.homeRouter" translate>Home</a>
@@ -1309,7 +1309,7 @@
 										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 											style="float: left; cursor: pointer; " data-toggle="modal"
 											data-target="#filterModal">
-											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+											<i class="fa fa-filter ml-16" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 												style="color: #0095da; font-size: 30px; margin-top: 10px; margin-left: 40px;"></i>
 										</div>

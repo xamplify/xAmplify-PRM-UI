@@ -39,7 +39,7 @@
              <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
              <ng-container *ngIf="!customResponse?.isVisible">
                 <div class="inline-flex border-end" *ngFor="let quickLink of quickLinks">
-                    <div class="col w430 text-overflow">
+                    <div class="col w430 text-overflow pointer" (click)="preview(quickLink)">
                         <h5 class="line-height m0 text-overflow">
                         <span data-toggle="tooltip" data-placement="bottom"  title="{{quickLink?.title}}">{{quickLink?.title}}</span>
                         </h5>
@@ -127,13 +127,13 @@
   </div>
   
 <ng-template #quickLinkNgTemplateIcon let-quickLink="quickLink" let-access="access" let-title="title">
-    <div *ngIf="!isPartnerLoggedInThroughVanityUrl" [ngClass]="access ? 'col mt10':'disabled-div col mt10'" title="{{title}}">
-        <a [ngClass]="!access? 'disabled-div':''" (click)="access && navigateToAnalytics(quickLink)">
+    <div *ngIf="!isPartnerLoggedInThroughVanityUrl" [ngClass]="access ? 'col mt10':'disabled-div col mt10'" data-toggle="tooltip" data-placement="top" title="{{title}}">
+        <a class="quicklinks_icons" [ngClass]="!access? 'disabled-div':''" (click)="$event.stopPropagation();access && navigateToAnalytics(quickLink)">
             <i class="fa fa-line-chart" [ngClass]="!access ?'disabled':''"></i>
         </a>
     </div>
      <div class="col mt10" title="Preview">
-        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(quickLink)">
+        <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();preview(quickLink)">
             <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
     </div>
