@@ -1472,31 +1472,15 @@ export class ManageLeadsComponent implements OnInit {
 		}
   }
 
-  showRegisterDealButton(lead: any): boolean {
-    if (this.canRegisterSelfLead(lead)) {
-      return true;
+  showRegisterDealButton(lead):boolean {
+    let showRegisterDeal = false;
+    if (lead.selfLead && lead.dealBySelfLead && (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
+      showRegisterDeal = true;
+    } else if (((((lead.dealByVendor && this.isVendor || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
+      && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED'))) {
+      showRegisterDeal = true;
     }
-    if (this.canVendorOrPartnerRegisterDeal(lead)) {
-      return true;
-    }
-    return false;
-  }
-
-  private canRegisterSelfLead(lead: any): boolean {
-    return lead.selfLead &&
-      lead.dealBySelfLead &&
-      (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) &&
-      lead.associatedDealId === undefined;
-  }
-
-  private canVendorOrPartnerRegisterDeal(lead: any): boolean {
-    let canVendorRegisterDeal = (lead.dealByVendor && this.isVendorVersion && (this.isVendor || this.prm));
-    let canPartnerRegisterDeal = lead.canRegisterDeal && lead.dealByPartner;
-    let isLeadCanConvertToDeal = lead.enableRegisterDealButton && !lead.leadApprovalOrRejection
-      && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED';
-
-    return (((canVendorRegisterDeal || canPartnerRegisterDeal) && !lead.isSelfLead) && lead.associatedDealId == undefined)
-      && isLeadCanConvertToDeal;
+    return showRegisterDeal;
   }
 
   viewCustomLeadForm(event :Lead) {
