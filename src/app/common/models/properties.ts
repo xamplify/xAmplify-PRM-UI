@@ -408,6 +408,15 @@ export class Properties {
 	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
 
 
+	partnerText = "Interactions and Non-interactions on distinct tracks based on progress";
+	vendorText = "Partner interactions and non-interactions on distinct tracks based on progress";
+	publishedTrackCountText = "Count of Tracks published to the partner";
+	publishedPlaybookCountText = "Count of Playbook published to the partner";
+	vendorTeamMemberTrackText = "Count of Tracks Published by Team Members";
+	venodrTeamMemberPlaybookText = "Count of Playbook Published by Team Members";
+
+
+	
 	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
 	mapCsvHeaderMessage = " to map your headers to the expected format.";
 	duplicateColumnsMappedErrorMessage = "Duplicate columns have been mapped. Please ensure to check for the specified errors.";
