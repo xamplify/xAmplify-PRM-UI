@@ -308,6 +308,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+	activeCrmType: any;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2693,6 +2694,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
+		this.getActiveCrmType();
 	}
 
 
@@ -4845,6 +4847,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				},
 				() => this.xtremandLogger.info("download partner List completed")
 			);
+	}
+
+	getActiveCrmType() {
+		this.loading = true;
+		this.contactService.getActiveCrmType(this.loggedInUserId)
+			.subscribe(
+				result => {
+					this.activeCrmType = result.data;
+					this.loading = false;
+				},
+				(error: any) => {
+					this.loading = false;
+				},
+			);
+
 	}
 
 

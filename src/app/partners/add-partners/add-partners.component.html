@@ -1195,9 +1195,9 @@
 
     <!-- Modal -->
     <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
-        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput"
-            [totalUsers]="contactService.allPartners" [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser"
-            [partnerListId]="partnerListId" (notifyParent)="addRow($event)"></app-add-contact-modal>
+        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"
+            [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser" [partnerListId]="partnerListId"
+            (notifyParent)="addRow($event)" [activeCrmType]="activeCrmType"></app-add-contact-modal>
     </div>
 
     <div *ngIf="contactService.isContactModalPopup && updatePartnerUser">
