@@ -28,15 +28,17 @@
               <!--Email-->
               <div class="form-group col-xs-10 col-sm-10 mrg0" *ngIf="!isUpdateUser" id="major-field-width">
                 <div class="flex">
-                  <input type="email" style="border: none !important" class="form-control padding-mobile placeholder-bg-color"
+                  <input type="email"
+                    [ngClass]="isSalesforceAsActiveCRM ? 'form-control padding-mobile placeholder-bg-color custom-email':'form-control padding-mobile placeholder-bg-color email-input'"
                     id="email1" (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)"
-                    [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Email *"
+                    [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Email"
                     autocomplete="off" aria-autocomplete="none" maxlength="250">
                   <button *ngIf="isSalesforceAsActiveCRM" class="btn btn-primary customAlign" [disabled]="!isValidEmail"
-                    (click)="fetchUserDetailsFromSalesForce(addContactuser.emailId)" type="button">Verify<i
+                    data-toggle="tooltip" data-placement="bottom" title="Click here to fetch details"
+                    (click)="fetchUserDetailsFromSalesForce(addContactuser.emailId)" type="button">Next<i
                       class="fa fa-arrow-right ml5" aria-hidden="true"></i></button>
                 </div>
-                <div class="textCss"></div>
+                <div *ngIf="!isSalesforceAsActiveCRM" class="textCss"></div>
                 <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email
                   address</span>
                 <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>

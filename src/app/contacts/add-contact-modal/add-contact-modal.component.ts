@@ -547,6 +547,14 @@ contactCompanyChecking( event:any ) {
         this.addContactuser.contactCompany = contactData.contactCompany;
         this.addContactuser.accountId = contactData.accountId;
         this.contactCompanyChecking(contactData.contactCompany);
+        this.addContactuser.firstName = contactData.firstName;
+        this.addContactuser.lastName = contactData.lastName;
+        this.addContactuser.jobTitle = contactData.jobTitle;
+        this.addContactuser.address = contactData.address;
+        this.addContactuser.city = contactData.city;
+        this.addContactuser.state = contactData.state;
+        this.addContactuser.zipCode = contactData.zipCode;
+        this.addContactuser.mobileNumber = contactData.mobileNumber;
     }
 
     resetContactDetails() {

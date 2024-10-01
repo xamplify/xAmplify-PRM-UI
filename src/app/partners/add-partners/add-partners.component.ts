@@ -1878,6 +1878,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialPartners.territory = '';
 			this.socialPartners.companyDomain = '';
 			this.socialPartners.accountOwner = '';
+			this.socialPartners.accountId = '';
 			this.socialPartners.address = '';
 			this.socialPartners.country = '';
 			this.socialPartners.city = '';
@@ -1948,6 +1949,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 										socialContact.accountOwner = this.getGoogleConatacts.contacts[i].accountOwner;
 										socialContact.company = this.getGoogleConatacts.contacts[i].company;
 										socialContact.title = this.getGoogleConatacts.contacts[i].title;
+										socialContact.accountId = this.getGoogleConatacts.contacts[i].accountId;
 									}
 									this.socialPartnerUsers.push(socialContact);
 								}
@@ -3097,7 +3099,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				"companyDomain": user.companyDomain,
 				"accountOwner": user.accountOwner,
 				"website": user.website,
-				"region": user.region
+				"region": user.region,
+				"accountId": user.accountId
 			}
 			this.allselectedUsers.push(object);
 		} else {
