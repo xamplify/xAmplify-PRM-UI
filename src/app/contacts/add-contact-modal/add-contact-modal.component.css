@@ -119,3 +119,17 @@
   #custom-width{width: 88.9%;}
 }
 
+.blur-content {
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.customAlign {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
+

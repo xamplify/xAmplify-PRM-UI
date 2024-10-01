@@ -33,7 +33,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     @Output() notifyParent: EventEmitter<any>;
     addContactuser: User = new User();
     validEmailPatternSuccess = true;
-    emailNotValid: boolean;
+    emailNotValid: boolean = false;
     checkingForEmail: boolean;
     editingEmailId = '';
     isEmailExist: boolean = false;
@@ -67,6 +67,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     //XNFR-697
     @Input() activeCrmType: any;
     loggedInUserId: number;
+    canBlurDiv : boolean = false;
+    isSalesforceAsActiveCRM = false;
+    previousEmailIds:any = [];
+    isValidEmail : boolean = false;
     
     
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
@@ -86,7 +90,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
       else {
           this.isPartner = true;
           this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
-        
       }
       this.contactDetails
     }
@@ -103,12 +106,26 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     validateEmail( emailId: string ) {
         const lowerCaseEmail = emailId.toLowerCase();
-        if ( this.validateEmailAddress( emailId ) ) {
+        if (this.validateEmailAddress(emailId)) {
             this.checkingForEmail = true;
             this.validEmailPatternSuccess = true;
-        }
-        else {
+            this.isValidEmail = true;
+            if (this.isSalesforceAsActiveCRM) {
+                if (this.previousEmailIds.length > 1 && this.previousEmailIds.indexOf(emailId) !== -1) {
+                    this.resetContactDetails();
+                    this.canBlurDiv = true;
+                    this.previousEmailIds.push(emailId);
+                } else {
+                    this.previousEmailIds.push(emailId);
+                }
+            }
+        } else {
             this.checkingForEmail = false;
+            this.isValidEmail = false;
+            if (this.isSalesforceAsActiveCRM) {
+                this.resetContactDetails();
+                this.canBlurDiv = true;
+            }
         }
 
         if ( lowerCaseEmail != this.editingEmailId && this.totalUsers ) {
@@ -133,9 +150,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         if (this.validateEmailAddress(emailId)) {
             this.validEmailPatternSuccess = true;
             this.emailNotValid = true;
-            if (this.activeCrmType == "salesforce" && this.emailNotValid) {
-                this.fetchUserDetailsFromSalesForce(emailId);
-            }
         } else {
             this.validEmailPatternSuccess = false;
             this.emailNotValid = false;
@@ -351,6 +365,11 @@ contactCompanyChecking( event:any ) {
                 this.isTeamMemberPartnerList = false;
             }
             $('#addContactModal').modal('show');
+            //XNFR-697
+            this.isSalesforceAsActiveCRM = this.isPartner && (this.activeCrmType == "salesforce");
+            if (!(this.addContactuser.emailId !== undefined)) {
+                this.canBlurDiv = this.isSalesforceAsActiveCRM && !this.isUpdateUser;
+            }
 
         } catch (error) {
             console.error(error, "addcontactOneAttimeModalComponent()", "ngOnInit()");
@@ -503,10 +522,12 @@ contactCompanyChecking( event:any ) {
                     if (contactData != undefined) {
                         this.setContactInfoFromSalesForce(contactData);
                     }
+                    this.canBlurDiv = false;
                 },
                 (error: any) => {
                     swal.close();
                     this.loading = false;
+                    this.canBlurDiv = false;
                 },
             );
 
@@ -523,6 +544,33 @@ contactCompanyChecking( event:any ) {
         if (this.countryNames.countries.indexOf(contactData.country) !== -1) {
             this.addContactuser.country = contactData.country;
         }
+        this.addContactuser.contactCompany = contactData.contactCompany;
+        this.addContactuser.accountId = contactData.accountId;
+        this.contactCompanyChecking(contactData.contactCompany);
+    }
+
+    resetContactDetails() {
+        this.addContactuser.firstName = "";
+        this.addContactuser.lastName = "";
+        this.addContactuser.contactCompany = "";
+        this.addContactuser.jobTitle = "";
+        this.addContactuser.vertical = "";
+        this.addContactuser.region = "";
+        this.addContactuser.partnerType = "";
+        this.addContactuser.category = "";
+        this.addContactuser.address = "";
+        this.addContactuser.city = "";
+        this.addContactuser.state = "";
+        this.addContactuser.zipCode = "";
+        this.addContactuser.country = this.countryNames.countries[0];
+        this.addContactuser.mobileNumber = "";
+        this.addContactuser.legalBasis = [];
+        this.addContactuser.accountName = "";
+        this.addContactuser.accountSubType = "";
+        this.addContactuser.accountOwner = "";
+        this.addContactuser.companyDomain = "";
+        this.addContactuser.territory = "";
+        this.addContactuser.website = "";
     }
 
 }
