@@ -4718,6 +4718,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
+			this.socialPartners.contacts = this.socialPartnerUsers;
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 13;
 			console.log("Social Contact Users for HaloPSA::" + this.socialPartnerUsers);
