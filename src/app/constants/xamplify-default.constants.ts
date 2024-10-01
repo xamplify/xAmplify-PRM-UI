@@ -8,6 +8,6 @@ export const XAMPLIFY_CONSTANTS = {
     successLabelClass:'form-group has-success has-feedback',
     save:'Save',
     update:'Update',
-    contact: 'Contact'
-
+    contact: 'Contact',
+    pageSize: 12
 }

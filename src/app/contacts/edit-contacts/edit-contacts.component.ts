@@ -278,8 +278,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
-	/***** XNFR-680 *****/
-	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
+	/***** XNFR-671 *****/
+	csvRows: any[];
+	isXamplifyCsvFormatUploaded = false;
+	isUploadCsvOptionEnabled: boolean = false;
+	flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
+	/***** XNFR-671 *****/
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -441,10 +445,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					let headersRow = self.fileUtil
 						.getHeaderArray(csvRecordsArray);
 					let headers = headersRow[0].split(',');
-					let headersLength = 11 + self.flexiFieldsRequestAndResponseDto.length;
-					if ((!self.isPartner && headers.length == headersLength)) {
-						if (self.validateContactsCsvHeaders(headers)) {
-							var csvResult = Papa.parse(contents);
+					var csvResult = Papa.parse(contents);
+					self.csvRows = csvResult.data;
+					self.isUploadCsvOptionEnabled = self.isContactModule();
+					let headersLength = 11+self.flexiFieldsRequestAndResponseDto.length;
+					self.isXamplifyCsvFormatUploaded = !self.isPartner && headers.length == headersLength && self.validateContactsCsvHeaders(headers);
+					if (self.isXamplifyCsvFormatUploaded) {
+						if (!self.isContactModule()) {
 							var allTextLines = csvResult.data;
 							for (var i = 1; i < allTextLines.length; i++) {
 								if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
@@ -462,41 +469,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 									user.mobileNumber = allTextLines[i][10].trim();
 									user.legalBasis = self.selectedLegalBasisOptions;
 									/*user.description = allTextLines[i][9];*/
-									self.mapFlexiFieldsToUser(headers, self, allTextLines, i, user);
 									self.users.push(user);
 									self.csvContacts.push(user);
 								}
-
 							}
-
-							if (allTextLines.length == 2) {
+							self.handleFilePreview(allTextLines, self);
+						} else {
+							if (self.csvRows.length == 2 || self.csvRows.length == 1) {
 								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
-								self.removeCsv();
-							} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
-								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
 								self.removeCsv();
 							} else {
 								if (!self.uploadCsvUsingFile && !self.filePrevew) {
 									self.uploadCsvUsingFile = true;
 									self.filePrevew = true;
-									self.setCsvPage(1);
 								} else {
 									self.customResponse = new CustomResponse('ERROR', "File Already Added.", true);
 									self.uploader.queue.length = 1;
 								}
 							}
-
-						} else {
-							self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-							self.removeCsv();
-							self.uploader.queue.length = 0;
 						}
-
 					} else if ((self.isPartner && headers.length == 21)) {
 						if (self.validatePartnerCsvHeaders(headers)) {
-							var csvResult = Papa.parse(contents);
 							var allTextLines = csvResult.data;
-
 							for (var i = 1; i < allTextLines.length; i++) {
 								if (allTextLines[i][8] && allTextLines[i][8].trim().length > 0) {
 									let user = new User();
@@ -526,33 +520,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 									self.csvContacts.push(user);
 								}
 							}
-
-							if (allTextLines.length == 2) {
-								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
-								self.removeCsv();
-							} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
-								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
-								self.removeCsv();
-							} else {
-								if (!self.uploadCsvUsingFile && !self.filePrevew) {
-									self.uploadCsvUsingFile = true;
-									self.filePrevew = true;
-									self.setCsvPage(1);
-								} else {
-									self.customResponse = new CustomResponse('ERROR', "File already added.", true);
-									self.uploader.queue.length = 1;
-								}
-							}
-
+							self.handleFilePreview(allTextLines, self);
 						} else {
-							self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+							self.invaildCsvErrorMessage(self);
+						}
+					} else if (self.isUploadCsvOptionEnabled) {
+						if (self.csvRows.length == 2) {
+							self.customResponse = new CustomResponse('ERROR', "No records found.", true);
 							self.removeCsv();
-							self.uploader.queue.length = 0;
+						} else {
+							if (!self.uploadCsvUsingFile && !self.filePrevew) {
+								self.uploadCsvUsingFile = true;
+								self.filePrevew = true;
+							} else {
+								self.customResponse = new CustomResponse('ERROR', "File Already Added.", true);
+								self.uploader.queue.length = 1;
+							}
 						}
 					} else {
-						self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-						self.removeCsv();
-						self.uploader.queue.length = 0;
+						self.invaildCsvErrorMessage(self);
 					}
 				}
 				this.isCsvFileLsitLoading = false;
@@ -562,6 +548,29 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "readingCsvFile()");
+		}
+	}
+
+	private invaildCsvErrorMessage(self: this) {
+		self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+		self.uploader.queue.length = 0;
+		self.removeCsv();
+	}
+
+	private handleFilePreview(allTextLines: any, self: this) {
+		if (allTextLines.length == 2) {
+			self.customResponse = new CustomResponse('ERROR', 'No records found.', true);
+			self.removeCsv();
+		} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
+			self.customResponse = new CustomResponse('ERROR', 'EmailId is mandatory.', true);
+			self.removeCsv();
+		} else if (!self.uploadCsvUsingFile && !self.filePrevew) {
+			self.uploadCsvUsingFile = true;
+			self.filePrevew = true;
+			self.setCsvPage(1);
+		} else {
+			self.customResponse = new CustomResponse('ERROR', 'File Already Added.', true);
+			self.uploader.queue.length = 1;
 		}
 	}
 
@@ -601,7 +610,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.removeDoubleQuotes(headers[7]) == "STATE" &&
 			this.removeDoubleQuotes(headers[8]) == "ZIP CODE" &&
 			this.removeDoubleQuotes(headers[9]) == "COUNTRY" &&
-			this.removeDoubleQuotes(headers[10]) == "MOBILE NUMBER");
+			this.removeDoubleQuotes(headers[10]) == "MOBILE NUMBER" &&
+			this.validateFlexiFieldHeaders(headers));
 	}
 
 	removeDoubleQuotes(input: string) {
@@ -1013,6 +1023,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				} else {
 					this.inValidCsvContacts = true;
 				}
+			} else {
+				this.customResponse = new CustomResponse('ERROR', this.properties.contactsCsvHeadersMisMatchMessage, true);
+				this.xtremandLogger.error("editContactComponent updateCsvContactList() Contacts Null Error");
 			}
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "UpdatingListFromCSV()");
@@ -1240,7 +1253,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.addContactuser = new User();
 		} else {
 			this.contactService.isContactModalPopup = false;
-			this.resetFlexiFieldValues();
+			this.resetCustomUploadCsvFields();
 		}
 	}
 
@@ -1264,6 +1277,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.csvContacts = [];
 		this.uploadCsvUsingFile = false;
 		$("#sample_editable_1").show();
+		this.resetCustomUploadCsvFields();
 	}
 
 	copyFromClipboard() {
@@ -2140,7 +2154,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		if (this.selectedAddContactsOption == 1) {
 			this.updateContactListFromClipBoard(this.contactListId);
-					}
+		}
 
 		if (this.selectedAddContactsOption == 2) {
 			this.updateCsvContactList(this.contactListId);
@@ -2165,7 +2179,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.filePrevew = false;
 		this.uploadCsvUsingFile = false;
 		this.isShowUsers = true;
-		this.resetFlexiFieldValues();
+		this.resetCustomUploadCsvFields();
 	}
 
 	checkAll(ev: any, contacts: User[]) {
@@ -4263,7 +4277,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		return this.module == 'contacts';
 	}
 
-	/***** XNFR-680 *****/
+	/***** XNFR-671 *****/
 	findFlexiFieldsData() {
 		this.loading = true;
 		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
@@ -4275,17 +4289,27 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	/***** XNFR-671 *****/
+	validateFlexiFieldHeaders(headers: any) {
+		return this.flexiFieldsRequestAndResponseDto.every((flexiFields, index) => {
+			const headerValue = this.removeDoubleQuotes(headers[11 + index]);
+			return headerValue === flexiFields.fieldName.toUpperCase();
+		});
+	}
+
 	/***** XNFR-680 *****/
-	private mapFlexiFieldsToUser(headers: any, self: this, allTextLines: any, i: number, user: User) {
+	private mapFlexiFieldsToUser(headers: any, allTextLines: any, i: number, user: User) {
 		if (this.isContactModule()) {
 			if (headers.length > 11) {
-				self.flexiFieldsRequestAndResponseDto.forEach((flexiField, index) => {
-					const fieldName = allTextLines[0][11 + index];
-					if (fieldName == flexiField.fieldName.toUpperCase()) {
-						flexiField.fieldValue = allTextLines[i][11 + index].trim();
+				this.flexiFieldsRequestAndResponseDto.forEach((flexiField, index) => {
+					let flexiFieldsUserDto = new FlexiFieldsRequestAndResponseDto();
+					let headerColumn = this.removeDoubleQuotes(headers[11 + index]);
+					flexiFieldsUserDto.fieldName = flexiField.fieldName;
+					if (headerColumn == flexiField.fieldName.toUpperCase()) {
+						flexiFieldsUserDto.fieldValue = allTextLines[i][11 + index].trim();
 					}
+					user.flexiFields.push(flexiFieldsUserDto);
 				});
-				user.flexiFields = [...self.flexiFieldsRequestAndResponseDto];
 			}
 		}
 	}
@@ -4293,7 +4317,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/***** XNFR-680 *****/
 	private mapFlexiFieldsForEditContact(contactDetails: any) {
 		if (this.isContactModule()) {
-			this.resetFlexiFieldValues();
+			this.resetCustomUploadCsvFields();
 			if (contactDetails.flexiFields.length > 0) {
 				contactDetails.flexiFields.forEach((flexiField) => {
 					let userFieldName = flexiField.fieldName;
@@ -4307,10 +4331,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	/***** XNFR-680 *****/
-	private resetFlexiFieldValues() {
-		if (this.isContactModule()) {
-			this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
-		}
-	}
+	/***** XNFR-671 *****/
+    private resetCustomUploadCsvFields() {
+        this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+        this.isUploadCsvOptionEnabled = false;
+        this.csvRows = [];
+        this.users = [];
+    }
+
+    /***** XNFR-671 *****/
+    saveCsvMappedColumns(contacts: User[]) {
+        this.users = contacts;
+    }
+
 }

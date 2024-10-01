@@ -861,12 +861,6 @@
 																								style="padding-right: 4px;"></i>{{user.mobileNumber}}</a>
 																					</td>
 																				</tr>
-
-																				<!----- XNFR-680 Flexi Fields ----->
-																				<tr *ngFor="let flexiField of user.flexiFields" style="border-bottom: 1px solid #dcdcdc">
-																					<td class='pt10 pb10' translate>{{flexiField.fieldName}}:</td>
-																					<td class='pt10 pb10'>{{flexiField.fieldValue}}</td>
-																				</tr>
 																			</tbody>
 																		</table>
 																	</td>
@@ -898,6 +892,14 @@
 											<!-- END EXAMPLE TABLE PORTLET-->
 										</div>
 									</div>
+
+									<!----- XNFR-671 Custom CSV Mapped Option ----->
+									<div *ngIf="isUploadCsvOptionEnabled">
+										<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
+											[isXamplifyCsvFormatUploaded]="isXamplifyCsvFormatUploaded" (notifyParent)="saveCsvMappedColumns($event)">
+										</app-custom-csv-mapping>
+									</div>
+
 									<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 									<div class="clearfix">
 										<div class="col-xs-12 p0" style="">
