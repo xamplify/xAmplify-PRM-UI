@@ -288,7 +288,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const isSuperAdmin =  roles.indexOf(this.roles.superAdminRole)>-1;
         const isMarketing = roles.indexOf(this.roles.marketingRole)>-1;
         let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
-        let isVanityLogin = this.vanityUrlService.isVanityURLEnabled();
+        this.vanityUrlService.isVanityURLEnabled();
         if(isSuperAdmin){
             this.router.navigate( ['/home/dashboard/admin-report'] );
             return true;
@@ -311,17 +311,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return true;
         }else if(urlType==this.damUrl){
             /**XNFR-694**/
-            this.authenticationService.module.authGuardLoading = true;
-            this.urlAuthGuardService.checkDamUrlAccess(url).subscribe(
-                response => {
-                    this.authenticationService.module.authGuardLoading = false;
-                    return true;
-                }, error => {
-                    if (this.referenceService.isAccessDeniedStatusCode(error)) {
-                        this.router.navigate(['/access-denied']);
-                    }
-                    this.authenticationService.module.authGuardLoading = false;
-                });
+            this.authorizeDamUrlAccess(url);
         } else if(urlType==this.leadsUrl){
             return true;
         } else if(urlType==this.dealsUrl){
@@ -388,6 +378,31 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
         }
       }catch(error){console.log('error'+error); }
+    }
+
+    /***XNFR-694****/
+    private authorizeDamUrlAccess(url: string) {
+        this.setAuthGuardLoading(true);
+        this.urlAuthGuardService.authorizeDamUrlAccess(url).subscribe(
+            (_response: any) => {
+                this.setAuthGuardLoading(false);
+                return true;
+            }, error => {
+                this.handleAccessDenied(error);
+                this.setAuthGuardLoading(false);
+            });
+    }
+
+    /***XNFR-694****/
+    setAuthGuardLoading(loading: boolean): void {
+        this.authenticationService.module.authGuardLoading = loading;
+    }
+    
+    /***XNFR-694****/
+    handleAccessDenied(error: any): void {
+        if (this.referenceService.isAccessDeniedStatusCode(error)) {
+            this.referenceService.goToAccessDeniedPage();
+        }
     }
 
     checkVendorAccessUrls(url:string,urlType:string):boolean{

@@ -11,13 +11,13 @@ export class UrlAuthGuardService {
   private DAM_URL = this.authenticationService.REST_URL + RouterUrlConstants.dam;
   private ACCESS_TOKEN_PARAMETER = XAMPLIFY_CONSTANTS.ACCESS_TOKEN_SUFFIX_URL;
   private userId = this.authenticationService.getUserId();
-  private checkDamModuleAccessURL = "/checkDamModuleAccess/loggedInUserId/";
+  private checkDamModuleAccessURL = "/authorizeDamUrlAccess/loggedInUserId/";
 
   constructor(private authenticationService:AuthenticationService) {
 
    }
 
-  checkDamUrlAccess(currentUrl:string){
+  authorizeDamUrlAccess(currentUrl:string){
     let domainName = this.authenticationService.getSubDomain();
     let url = "";
     if(domainName.length>0){
