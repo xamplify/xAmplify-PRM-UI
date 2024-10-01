@@ -1,9 +1,12 @@
+import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { AuthenticationService } from './core/services/authentication.service';
 import { Roles } from './core/models/roles';
 import { ReferenceService } from './core/services/reference.service';
 import {UtilService} from './core/services/util.service';
+import { VanityURLService } from './vanity-url/services/vanity.url.service';
+
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
     roles: Roles = new Roles();
@@ -33,7 +36,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     userGuideUrl = 'help';
     /*******XNFR-83*******/
     agencyUrl = 'agency';
-    constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
+    constructor( private authenticationService: AuthenticationService, 
+        private router: Router,private referenceService:ReferenceService,public utilService:UtilService,private vanityUrlService:VanityURLService,
+        private urlAuthGuardService:UrlAuthGuardService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
         return this.checkLogin( url );
@@ -282,13 +287,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;
         const isSuperAdmin =  roles.indexOf(this.roles.superAdminRole)>-1;
         const isMarketing = roles.indexOf(this.roles.marketingRole)>-1;
+        let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+        let isVanityLogin = this.vanityUrlService.isVanityURLEnabled();
         if(isSuperAdmin){
             this.router.navigate( ['/home/dashboard/admin-report'] );
             return true;
         }
         if(urlType==this.formBaseUrl){
             let hasFormAccess = false;
-            let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
             if(campaignAccessDto!=undefined){
                 hasFormAccess = campaignAccessDto.formBuilder;
             }
@@ -304,7 +310,18 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }else if(urlType==this.mdfUrl){
             return true;
         }else if(urlType==this.damUrl){
-            return true;
+            /**XNFR-694**/
+            this.authenticationService.module.authGuardLoading = true;
+            this.urlAuthGuardService.checkDamUrlAccess(url).subscribe(
+                response => {
+                    this.authenticationService.module.authGuardLoading = false;
+                    return true;
+                }, error => {
+                    if (this.referenceService.isAccessDeniedStatusCode(error)) {
+                        this.router.navigate(['/access-denied']);
+                    }
+                    this.authenticationService.module.authGuardLoading = false;
+                });
         } else if(urlType==this.leadsUrl){
             return true;
         } else if(urlType==this.dealsUrl){

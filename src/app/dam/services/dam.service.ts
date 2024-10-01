@@ -345,7 +345,6 @@ export class DamService {
     }else{
       url = this.DAM_PREFIX_URL+"/checkUrlAccess/"+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     }
-    alert(url);
     return this.authenticationService.callGetMethod(url);
 
   }

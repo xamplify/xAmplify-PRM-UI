@@ -3872,7 +3872,11 @@ getFirstLetter(inputString:any) {
     return duplicateElements;
   }
 
- 
+  isAccessDeniedStatusCode(error: any) {
+    let statusCode = JSON.parse(error["status"]);
+    return statusCode==403;
+  }
+
   
 }
 

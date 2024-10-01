@@ -139,5 +139,7 @@ export class Module {
 
     isMyVendorsOptionDisplayed = false;
 
+    authGuardLoading = false;
+
 
 }
