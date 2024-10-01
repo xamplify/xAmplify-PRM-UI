@@ -940,7 +940,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     }
                 }
             } else {
-                this.removeCompanyNameError();
+                if (value.length >50){
+                    this.setCompanyNameError("Company Name cannot be more than 50 characters long.");
+                }else{
+                    this.removeCompanyNameError();
+                }  
             }
         } else {
             this.companyNameErrorMessage = "";

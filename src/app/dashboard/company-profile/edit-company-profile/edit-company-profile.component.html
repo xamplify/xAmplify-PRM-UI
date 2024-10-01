@@ -466,10 +466,9 @@
 													<label class="control-label" translate>Company Name <font><b
 																style="color: #f55d7a !important">*</b></font></label>
 													<input type="text" id="companyName" name="companyName"
-														placeholder="Company Name" maxlength="25" class="form-control"
+														placeholder="Company Name" class="form-control"
 														[(ngModel)]="companyProfile.companyName"
-														(input)="validateEmptySpace('companyName')"
-														(blur)="validateNames(companyProfile.companyName)" autocomplete="off" /> <span
+														(input)="validateEmptySpace('companyName');validateNames(companyProfile.companyName)" autocomplete="off" /> <span
 														*ngIf="companyNameError"
 														style="color: #f55d7a">{{companyNameErrorMessage}}</span>
 												</div>
