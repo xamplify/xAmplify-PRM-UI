@@ -3560,7 +3560,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					let data = result.data;
 					this.selectedContactListName = data.name;
 					this.contactListName = this.selectedContactListName;
-					this.isDefaultPartnerList = data.isDefaultPartnerList;
+					this.isDefaultPartnerList = data.defaultPartnerList;
 					this.isSynchronizationList = data.synchronisedList;
 					this.isTeamMemberPartnerList = data.teamMemberPartnerList;
 					this.selectedCompanyId = data.associatedCompanyId;
@@ -3583,8 +3583,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	private setContactModuleFields(data: any) {
 		this.manageCompanies = data.companyList;
 		this.masterContactListSync = data.isMasterContactListSync;
-		this.isDefaultContactList = data.isDefaultContactList;
-		this.isFormList = data.isFormList;
+		this.isDefaultContactList = data.defaultContactList;
+		this.isFormList = data.formList;
 		this.isPartnerUserList = data.isPartnerUserList;
 	}
 

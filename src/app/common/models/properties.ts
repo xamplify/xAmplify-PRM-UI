@@ -406,7 +406,8 @@ export class Properties {
 	leadPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the lead registration form";
 	dealPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the deal registration form";
 	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
-
+	editLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Edit' the Lead";
+	deleteLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Delete' the Lead";
 
 	partnerText = "Interactions and Non-interactions on distinct tracks based on progress";
 	vendorText = "Partner interactions and non-interactions on distinct tracks based on progress";
