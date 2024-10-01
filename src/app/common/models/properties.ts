@@ -411,10 +411,10 @@ export class Properties {
 
 	partnerText = "Interactions and Non-interactions on distinct tracks based on progress";
 	vendorText = "Partner interactions and non-interactions on distinct tracks based on progress";
-	publishedTrackCountText = "Count of Tracks published to the partner";
-	publishedPlaybookCountText = "Count of Playbook published to the partner";
+	publishedTrackCountText = "Count of Tracks Published to the Partner";
+	publishedPlaybookCountText = "Count of Playbooks Published to the Partner";
 	vendorTeamMemberTrackText = "Count of Tracks Published by Team Members";
-	venodrTeamMemberPlaybookText = "Count of Playbook Published by Team Members";
+	venodrTeamMemberPlaybookText = "Count of Playbooks Published by Team Members";
 
 
 	
