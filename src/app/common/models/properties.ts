@@ -406,7 +406,8 @@ export class Properties {
 	leadPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the lead registration form";
 	dealPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the deal registration form";
 	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
-
+	editLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Edit' the Lead";
+	deleteLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Delete' the Lead";
 
 	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
 	mapCsvHeaderMessage = " to map your headers to the expected format.";
