@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
-import { ReferenceService } from './reference.service';
-import { Router } from '@angular/router';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { AuthorizeUrlDto } from '../models/authorize-url-dto';
 RouterUrlConstants
 
 @Injectable()
@@ -17,16 +16,24 @@ export class UrlAuthGuardService {
 
    }
 
-  authorizeDamUrlAccess(currentUrl:string){
-    let domainName = this.authenticationService.getSubDomain();
-    let url = "";
-    if(domainName.length>0){
-      url = this.DAM_URL+this.checkDamModuleAccessURL+"subDomain/"+domainName+"/loggedInUserId/"+this.userId+this.ACCESS_TOKEN_PARAMETER+this.authenticationService.access_token;;
-    }else{
-      url = this.DAM_URL+this.checkDamModuleAccessURL+"loggedInUserId/"+this.userId+this.ACCESS_TOKEN_PARAMETER+this.authenticationService.access_token;;
-    }
-    return this.authenticationService.callGetMethod(url);
 
+  authorizeDamUrlAccess(currentUrl:string){
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('subDomain', this.authenticationService.getSubDomain());
+    let angularRouterUrl = this.getAngularRouterUrlForPathVariable(currentUrl);
+    let url = this.DAM_URL+this.checkDamModuleAccessURL+"users/"+this.userId+"/routerUrls/"+angularRouterUrl+this.ACCESS_TOKEN_PARAMETER+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethodWithQueryParameters(url,params)
+    
+  }
+
+  getAngularRouterUrlForPathVariable(currentUrl: string): string {
+    const routes = ["upload", "design", "modules", "add", "manage", "shared"];
+    for (const route of routes) {
+      if (currentUrl.includes(route)) {
+        return route;
+      }
+    }
+    return "";
   }
 
 }
