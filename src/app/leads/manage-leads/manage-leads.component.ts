@@ -1496,7 +1496,7 @@ export class ManageLeadsComponent implements OnInit {
     let canLeadConvertToDeal = lead.enableRegisterDealButton && !lead.leadApprovalOrRejection
       && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED';
 
-    return (((canVendorRegisterDeal || canPartnerRegisterDeal) && !lead.isSelfLead) && lead.associatedDealId == undefined)
+    return (((canVendorRegisterDeal || canPartnerRegisterDeal) && !lead.selfLead) && lead.associatedDealId == undefined)
       && canLeadConvertToDeal;
   }
 
