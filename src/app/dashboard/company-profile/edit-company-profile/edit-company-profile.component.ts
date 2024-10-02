@@ -1416,7 +1416,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     validateTwitter() {
         if ($.trim(this.companyProfile.twitterLink).length > 0) {
-            if (!this.companyProfile.twitterLink.includes('twitter.com') ) {
+            if (!(this.companyProfile.twitterLink.includes('twitter.com') || this.companyProfile.twitterLink.includes('x.com'))) {
                 this.addTwitterError();
                 this.twitterLinkErrorMessage = "Invalid Twiiter Url";
             } else {
