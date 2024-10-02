@@ -947,4 +947,16 @@ export class ContactService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    getActiveCrmType(loggedInUserId: number) {
+        let url = this.authenticationService.REST_URL + "active/crm/type/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getContactDetalisFromSalesforce(loggedInUserId: number, emailId: string) {
+        let emailIdRequestParam = emailId != undefined ? "&emailId=" + emailId : "&emailId =''";
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? "&id=" + loggedInUserId : "&id=0";
+        let url = this.authenticationService.REST_URL + "salesforce/getContactDetails" + "?access_token=" + this.authenticationService.access_token + loggedInUserIdRequestParam + emailIdRequestParam;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 }

@@ -308,6 +308,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+	activeCrmType: any;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -1877,6 +1878,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialPartners.territory = '';
 			this.socialPartners.companyDomain = '';
 			this.socialPartners.accountOwner = '';
+			this.socialPartners.accountId = '';
 			this.socialPartners.address = '';
 			this.socialPartners.country = '';
 			this.socialPartners.city = '';
@@ -1947,6 +1949,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 										socialContact.accountOwner = this.getGoogleConatacts.contacts[i].accountOwner;
 										socialContact.company = this.getGoogleConatacts.contacts[i].company;
 										socialContact.title = this.getGoogleConatacts.contacts[i].title;
+										socialContact.accountId = this.getGoogleConatacts.contacts[i].accountId;
 									}
 									this.socialPartnerUsers.push(socialContact);
 								}
@@ -2693,6 +2696,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
+		this.getActiveCrmType();
 	}
 
 
@@ -3095,7 +3099,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				"companyDomain": user.companyDomain,
 				"accountOwner": user.accountOwner,
 				"website": user.website,
-				"region": user.region
+				"region": user.region,
+				"accountId": user.accountId
 			}
 			this.allselectedUsers.push(object);
 		} else {
@@ -4846,6 +4851,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				},
 				() => this.xtremandLogger.info("download partner List completed")
 			);
+	}
+
+	getActiveCrmType() {
+		this.loading = true;
+		this.contactService.getActiveCrmType(this.loggedInUserId)
+			.subscribe(
+				result => {
+					this.activeCrmType = result.data;
+					this.loading = false;
+				},
+				(error: any) => {
+					this.loading = false;
+				},
+			);
+
 	}
 
 

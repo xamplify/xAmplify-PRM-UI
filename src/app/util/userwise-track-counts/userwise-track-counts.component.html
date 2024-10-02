@@ -13,8 +13,13 @@
         </div>
       </span>
     </div>
-    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="tooltipText" *ngIf="authenticationService.isVendor()" [ngStyle]="getIconStyle()"></i>
-    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="partnerTeamMemberText" *ngIf="authenticationService.isPartner() || isVendorVersion" [ngStyle]="getIconStyle()"></i>
+    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="tooltipText" *ngIf="authenticationService.module.isOrgAdmin ||
+    authenticationService.module.isVendor || authenticationService.module.isMarketing || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||
+    authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || authenticationService.module.isVendorTierTeamMember || authenticationService.module.isVendorTierAndPartner ||
+    authenticationService.module.isVendorTierAndPartnerTeamMember || authenticationService.module.isMarketingTeamMember || authenticationService.module.isMarektingAndPartner ||
+    authenticationService.module.isMarketingAndPartnerTeamMember" [ngStyle]="getIconStyle()"></i>
+    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="partnerTeamMemberText" *ngIf="authenticationService.module.isOnlyPartner || isVendorVersion" [ngStyle]="getIconStyle()"></i>
+    <!-- <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="teamMemberTooltip" *ngIf="authenticationService.isPartner()" [ngStyle]="getIconStyle()"></i> -->
     <div class="panel-body">
       <div class="scroll table-responsive {{scrollClass}}">
         <table class="table">

@@ -38,7 +38,7 @@ export class UserwiseTrackCountsComponent implements OnInit {
   scrollClass: any;
 
   isOnlyPartner: boolean = true;
-  isVendorRole: boolean = false;
+  isOrgAdminVersion: boolean = false;
 
 
   constructor(public authenticationService: AuthenticationService,

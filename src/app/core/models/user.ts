@@ -78,5 +78,6 @@ export class User {
     website: string;
     isValidEmailIdPattern = false;
     isWelcomePageEnabled:boolean;
+    accountId : string;
 
 }
