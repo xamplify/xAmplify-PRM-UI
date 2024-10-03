@@ -746,7 +746,7 @@ private beforeAdd(tag: any) {
 					this.menuItem.team = data.team;
 
 					this.setAuthenticationServiceVariables(module,data);
-
+          
 					const roles = this.authenticationService.getRoles();
 					this.authenticationService.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
 					module.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
@@ -1128,7 +1128,10 @@ private beforeAdd(tag: any) {
   }
   }
 
-  checkWelcomePageRequired(){
+
+
+
+   checkWelcomePageRequired(){
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
     
     let  isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
@@ -1148,6 +1151,10 @@ private beforeAdd(tag: any) {
           this.getMergeTagByPath();
           this.isWelcomePageActive =this.router.url.includes('/welcome-page');
           this.model = this.refService.topNavBarUserDetails;
+          if(this.isLoggedInAsPartner || this.isLoggedInAsTeamMember) {
+            $('.page-header-fixed .page-container').attr('style', 'margin-top: 110px !important');
+            $('.xamplify-welcome-page-div-top').attr('style', 'margin-top: 90px !important');
+          }
         }else{
           currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = data.data;
           localStorage.setItem('currentUser',JSON.stringify(currentUser));
@@ -1162,5 +1169,5 @@ private beforeAdd(tag: any) {
       error => this.logger.log(error),
       () => this.logger.log('Finished')
     );
-  }
+  } 
 }
