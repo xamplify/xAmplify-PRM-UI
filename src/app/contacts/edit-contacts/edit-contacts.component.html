@@ -667,7 +667,7 @@
 										<div class="col-xs-12">
 											<!-- BEGIN EXAMPLE TABLE PORTLET-->
 											<div
-												*ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading">
+												*ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading && !isUploadCsvOptionEnabled">
 												<app-list-loader></app-list-loader>
 											</div>
 											<div class="portlet" *ngIf="users?.length != 0">

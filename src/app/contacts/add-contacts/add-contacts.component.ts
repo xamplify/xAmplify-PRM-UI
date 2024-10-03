@@ -450,47 +450,42 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         // let isNewOptionEnabledForLocalHost = userName=="demo.test.xamplify@gmail.com" && isLocalHost && this.isContactModule();
         // let isNewOptionEnabledForQA = isQADomain && allowedEmailIds.indexOf(userName)>-1;
         // let isUploadCsvOptionEnabled = isNewOptionEnabledForLocalHost || isNewOptionEnabledForQA;
-        if (this.isXamplifyCsvFormatUploaded) {
-            if (!this.isContactModule()) {
-                var allTextLines = csvResult.data;
-                this.paginationType = "csvContacts";
-                for (var i = 1; i < allTextLines.length; i++) {
-                    if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
-                        let user = new User();
-                        user.emailId = allTextLines[i][4].trim();
-                        user.firstName = allTextLines[i][0].trim();
-                        user.lastName = allTextLines[i][1].trim();
-                        user.contactCompany = allTextLines[i][2].trim();
-                        user.jobTitle = allTextLines[i][3].trim();
-                        user.address = allTextLines[i][5].trim();
-                        user.city = allTextLines[i][6].trim();
-                        user.state = allTextLines[i][7].trim();
-                        user.zipCode = allTextLines[i][8].trim();
-                        user.country = allTextLines[i][9].trim();
-                        user.mobileNumber = allTextLines[i][10].trim();
-                        self.contacts.push(user);
-                    }
+        if (self.isXamplifyCsvFormatUploaded && !self.isContactModule()) {
+            var allTextLines = csvResult.data;
+            this.paginationType = "csvContacts";
+            for (var i = 1; i < allTextLines.length; i++) {
+                if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
+                    let user = new User();
+                    user.emailId = allTextLines[i][4].trim();
+                    user.firstName = allTextLines[i][0].trim();
+                    user.lastName = allTextLines[i][1].trim();
+                    user.contactCompany = allTextLines[i][2].trim();
+                    user.jobTitle = allTextLines[i][3].trim();
+                    user.address = allTextLines[i][5].trim();
+                    user.city = allTextLines[i][6].trim();
+                    user.state = allTextLines[i][7].trim();
+                    user.zipCode = allTextLines[i][8].trim();
+                    user.country = allTextLines[i][9].trim();
+                    user.mobileNumber = allTextLines[i][10].trim();
+                    self.contacts.push(user);
                 }
-                self.setPage(1);
-                self.isListLoader = false;
-                if (allTextLines.length == 2) {
-                    self.customResponse = new CustomResponse('ERROR', "No records found.", true);
-                    self.cancelContacts();
-                } else if (allTextLines.length > 2 && self.contacts.length === 0) {
-                    self.isValidLegalOptions = true;
-                    self.customResponse = new CustomResponse('ERROR', "Email Address is mandatory.", true);
-                    self.cancelContacts();
-                } else if (self.contacts.length === 0) {
-                    self.isValidLegalOptions = true;
-                    self.customResponse = new CustomResponse('ERROR', "No contacts found.", true);
-                }
-            } else {
-                this.noRecordsFoundErrorMessage(self);
-                self.isListLoader = false;
+            }
+            self.setPage(1);
+            self.isListLoader = false;
+            if (allTextLines.length == 2) {
+                self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+                self.cancelContacts();
+            } else if (allTextLines.length > 2 && self.contacts.length === 0) {
+                self.isValidLegalOptions = true;
+                self.customResponse = new CustomResponse('ERROR', "Email Address is mandatory.", true);
+                self.cancelContacts();
+            } else if (self.contacts.length === 0) {
+                self.isValidLegalOptions = true;
+                self.customResponse = new CustomResponse('ERROR', "No contacts found.", true);
             }
         } else if (this.isUploadCsvOptionEnabled) {
             /***** XNFR-671 *****/
-            this.noRecordsFoundErrorMessage(self);
+            self.noRecordsFoundErrorMessage(self);
             self.isListLoader = false;
             /***** XNFR-671 *****/
         } else {
@@ -1188,8 +1183,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     }
                     if (this.validCsvContacts == true && this.invalidPatternEmails.length == 0) {
                         for (var i = 0; i < this.contacts.length; i++) {
-                            this.contacts[i].emailId = this.convertToLowerCase(this.contacts[i].emailId);
-
                             if (this.contacts[i].country === "Select Country") {
                                 this.contacts[i].country = null;
                             }

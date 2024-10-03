@@ -37,6 +37,7 @@ import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-c
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
 import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -450,44 +451,29 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					self.isUploadCsvOptionEnabled = self.isContactModule();
 					let headersLength = 11+self.flexiFieldsRequestAndResponseDto.length;
 					self.isXamplifyCsvFormatUploaded = !self.isPartner && headers.length == headersLength && self.validateContactsCsvHeaders(headers);
-					if (self.isXamplifyCsvFormatUploaded) {
-						if (!self.isContactModule()) {
-							var allTextLines = csvResult.data;
-							for (var i = 1; i < allTextLines.length; i++) {
-								if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
-									let user = new User();
-									user.emailId = allTextLines[i][4].trim();
-									user.firstName = allTextLines[i][0].trim();
-									user.lastName = allTextLines[i][1].trim();
-									user.contactCompany = allTextLines[i][2].trim();
-									user.jobTitle = allTextLines[i][3].trim();
-									user.address = allTextLines[i][5].trim();
-									user.city = allTextLines[i][6].trim();
-									user.state = allTextLines[i][7].trim();
-									user.zipCode = allTextLines[i][8].trim();
-									user.country = allTextLines[i][9].trim();
-									user.mobileNumber = allTextLines[i][10].trim();
-									user.legalBasis = self.selectedLegalBasisOptions;
-									/*user.description = allTextLines[i][9];*/
-									self.users.push(user);
-									self.csvContacts.push(user);
-								}
-							}
-							self.handleFilePreview(allTextLines, self);
-						} else {
-							if (self.csvRows.length == 2 || self.csvRows.length == 1) {
-								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
-								self.removeCsv();
-							} else {
-								if (!self.uploadCsvUsingFile && !self.filePrevew) {
-									self.uploadCsvUsingFile = true;
-									self.filePrevew = true;
-								} else {
-									self.customResponse = new CustomResponse('ERROR', "File Already Added.", true);
-									self.uploader.queue.length = 1;
-								}
+					if (self.isXamplifyCsvFormatUploaded && !self.isContactModule()) {
+						var allTextLines = csvResult.data;
+						for (var i = 1; i < allTextLines.length; i++) {
+							if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
+								let user = new User();
+								user.emailId = allTextLines[i][4].trim();
+								user.firstName = allTextLines[i][0].trim();
+								user.lastName = allTextLines[i][1].trim();
+								user.contactCompany = allTextLines[i][2].trim();
+								user.jobTitle = allTextLines[i][3].trim();
+								user.address = allTextLines[i][5].trim();
+								user.city = allTextLines[i][6].trim();
+								user.state = allTextLines[i][7].trim();
+								user.zipCode = allTextLines[i][8].trim();
+								user.country = allTextLines[i][9].trim();
+								user.mobileNumber = allTextLines[i][10].trim();
+								user.legalBasis = self.selectedLegalBasisOptions;
+								/*user.description = allTextLines[i][9];*/
+								self.users.push(user);
+								self.csvContacts.push(user);
 							}
 						}
+						self.handleFilePreview(allTextLines, self);
 					} else if ((self.isPartner && headers.length == 21)) {
 						if (self.validatePartnerCsvHeaders(headers)) {
 							var allTextLines = csvResult.data;
@@ -3453,13 +3439,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"City": this.contactsByType.listOfAllContacts[i].city,
 				"Country": this.contactsByType.listOfAllContacts[i].country,
 				"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
-				//"Notes": this.contactsByType.listOfAllContacts[i].description
 			}
 			if (this.contactsByType.selectedCategory === 'excluded') {
 				object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 			}
 			if (this.contactsByType.selectedCategory === 'unsubscribed') {
 				object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+			}
+			if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
+				this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
+					let dto = this.contactsByType.listOfAllContacts[i].flexiFields.find(dto => dto.fieldName == flexiField.fieldName);
+					object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
+				});
 			}
 			this.downloadDataList.push(object);
 		}
@@ -3493,10 +3484,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.currentContactType = '';
 			// this.resetListContacts();
 			// this.resetResponse();
-			this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
 			this.contactsByType.pagination.searchKey = this.searchKey;
 			this.contactsByType.pagination.criterias = this.criterias;
-			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+			this.contactsByType.pagination.maxResults = this.contactsByType.allContactsCount;
+			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
 			this.contactListObject = new ContactList;
 			this.contactListObject.contactType = this.contactsByType.selectedCategory;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
@@ -4298,23 +4289,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	/***** XNFR-680 *****/
-	private mapFlexiFieldsToUser(headers: any, allTextLines: any, i: number, user: User) {
-		if (this.isContactModule()) {
-			if (headers.length > 11) {
-				this.flexiFieldsRequestAndResponseDto.forEach((flexiField, index) => {
-					let flexiFieldsUserDto = new FlexiFieldsRequestAndResponseDto();
-					let headerColumn = this.removeDoubleQuotes(headers[11 + index]);
-					flexiFieldsUserDto.fieldName = flexiField.fieldName;
-					if (headerColumn == flexiField.fieldName.toUpperCase()) {
-						flexiFieldsUserDto.fieldValue = allTextLines[i][11 + index].trim();
-					}
-					user.flexiFields.push(flexiFieldsUserDto);
-				});
-			}
-		}
-	}
-
-	/***** XNFR-680 *****/
 	private mapFlexiFieldsForEditContact(contactDetails: any) {
 		if (this.isContactModule()) {
 			this.resetCustomUploadCsvFields();
@@ -4340,8 +4314,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
     /***** XNFR-671 *****/
-    saveCsvMappedColumns(contacts: User[]) {
-        this.users = contacts;
+    saveCsvMappedColumns(newUsers: User[]) {
+        this.users = newUsers;
     }
 
 }

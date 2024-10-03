@@ -68,6 +68,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     const headersLength = this.customCsvHeaders.length;
     for (var i = 1; i < this.csvRows.length; i++) {
       let rows = this.csvRows[i];
+      this.addEmptyToRows(rows, csvHeaders);
       let parsedCsvDto = new ParsedCsvDto();
       parsedCsvDto.expanded = false;
       let emptyValues = [];
@@ -81,6 +82,13 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       this.loadUserDtoPagination();
     }
     this.isListLoader = false;
+  }
+
+  private addEmptyToRows(rows: any, csvHeaders: any) {
+    let diff = csvHeaders.length - rows.length;
+    for (let i = 0; i < diff; i++) {
+      rows.push("");
+    }
   }
 
   /***** XNFR-671 *****/
@@ -296,6 +304,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
         this.paginationType = "customCsvContacts";
         this.setPage(1);
         this.contacts = [];
+        this.notifyParent.emit(this.contacts);
         this.isListLoader = false;
       } catch (error) {
         this.isListLoader = false;
