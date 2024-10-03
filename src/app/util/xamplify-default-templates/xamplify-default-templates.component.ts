@@ -921,6 +921,7 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  this.landingPage.welcomePages = this.welcomePages;
   if(this.landingPage.hasVendorJourney || this.welcomePages){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
   }
