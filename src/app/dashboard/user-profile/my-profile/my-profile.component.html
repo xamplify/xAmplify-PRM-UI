@@ -1208,7 +1208,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <a (click)="configSalesforce()"
+                                                                <a (click)="showSalesforceInstanceModelPopup()"
                                                                     class="btn btn-block btn-primary text-uppercase"
                                                                     *ngIf="sfRibbonText == 'configure'"
                                                                     translate>configure</a>
@@ -3833,3 +3833,7 @@
 <ng-template #activeIcon let-moduleName="moduleName">
     <i *ngIf="activeTabName == moduleName" class="fa fa-check-circle-o success display-inline"></i>
 </ng-template>
+<!-- XNFR-677 -->
+<app-confirm-unpublish-tracks-or-playbooks-model-popup *ngIf="showModelPopupForSalesforce" [isFromIntegration]="'true'"
+    (cancelEmitter)="closeModelPopup()" (eventOutput)="getSalesforceRedirectUrl($event)">
+</app-confirm-unpublish-tracks-or-playbooks-model-popup>
