@@ -281,6 +281,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	selectedContact: any;
 	showContactDetailsTab: boolean = false;
 	isFromCompanyModule: boolean = false;
+	activeCrmType: any;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -2945,6 +2946,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
 		}
+		this.getActiveCrmType();
 	}
 
 
@@ -3594,4 +3596,20 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactService.publicList = data.publicList;
 	}
 	/***XNFR-553***/
+
+	//XNFR-705
+	getActiveCrmType() {
+		this.loading = true;
+		this.contactService.getActiveCrmType(this.loggedInUserId)
+			.subscribe(
+				result => {
+					this.activeCrmType = result.data;
+					this.loading = false;
+				},
+				(error: any) => {
+					this.loading = false;
+				},
+			);
+
+	}
 }
