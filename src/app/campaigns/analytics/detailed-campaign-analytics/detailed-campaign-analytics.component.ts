@@ -205,6 +205,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
   @Input() campaignId = 0;
   @Input() hidePageContent = false;
   @Input() campaignTitle:any;
+  canPartnerEditLead: boolean = true;
   constructor(private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -976,6 +977,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         this.dealButtonText = "Update Lead";
         this.leadActionType = "edit";
         this.leadId = data.id;
+        this.canPartnerEditLead = data.partnerEditLead;
       }      
     })
 
