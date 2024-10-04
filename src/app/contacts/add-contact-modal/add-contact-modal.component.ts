@@ -523,6 +523,9 @@ contactCompanyChecking( event:any ) {
                         this.setContactInfoFromSalesForce(contactData);
                     }
                     this.canBlurDiv = false;
+                    if (response.statusCode == 401) {
+                        this.referenceService.showSweetAlertErrorMessage('Your Salesforce Integration was expired. Please re-configure.');
+                    }
                 },
                 (error: any) => {
                     swal.close();
