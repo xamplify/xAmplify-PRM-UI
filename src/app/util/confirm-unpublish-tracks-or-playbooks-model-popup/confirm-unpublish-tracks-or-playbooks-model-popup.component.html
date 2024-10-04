@@ -46,12 +46,12 @@
                     <h4 class="modal-title">Please select your Salesforce instance</h4>
                 </div>
                 <div class="form-check pointer mt10">
-                    <input class="pointer radioButton_shadow" type="radio" name="rdaction" value="{{XAMPLIFY_CONSTANTS?.sandbox}}"
-                        [(ngModel)]="instanceType">
-                    <label class="option-color">{{XAMPLIFY_CONSTANTS?.sandbox}}</label><br>
                     <input class="pointer radioButton_shadow" type="radio" name="rdaction" value="{{XAMPLIFY_CONSTANTS?.production}}"
                         [(ngModel)]="instanceType">
                     <label class="option-color">{{XAMPLIFY_CONSTANTS?.production}}</label><br>
+                    <input class="pointer radioButton_shadow" type="radio" name="rdaction" value="{{XAMPLIFY_CONSTANTS?.sandbox}}"
+                        [(ngModel)]="instanceType">
+                    <label class="option-color">{{XAMPLIFY_CONSTANTS?.sandbox}}</label><br>
                 </div>
             </div>
             <div class="modal-footer p-10">
