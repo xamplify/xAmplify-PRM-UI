@@ -5315,6 +5315,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     private resetCustomUploadCsvFields() {
         this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
         this.isUploadCsvOptionEnabled = false;
+        this.isXamplifyCsvFormatUploaded = false;
         this.csvRows = [];
         this.contacts = [];
     }

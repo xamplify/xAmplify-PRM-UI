@@ -667,7 +667,7 @@
 										<div class="col-xs-12">
 											<!-- BEGIN EXAMPLE TABLE PORTLET-->
 											<div
-												*ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading && !isUploadCsvOptionEnabled">
+												*ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading">
 												<app-list-loader></app-list-loader>
 											</div>
 											<div class="portlet" *ngIf="users?.length != 0">
@@ -676,7 +676,7 @@
 														<i class="fa fa-edit" aria-hidden="true"></i>File Preview
 													</div>
 												</div>
-												<div class="portlet-body">
+												<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled">
 													<table class="table tgrid" id="sample_editable_2"
 														aria-describedby="">
 														<thead>

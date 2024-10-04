@@ -4306,16 +4306,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	/***** XNFR-671 *****/
-    private resetCustomUploadCsvFields() {
-        this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
-        this.isUploadCsvOptionEnabled = false;
-        this.csvRows = [];
-        this.users = [];
-    }
+	private resetCustomUploadCsvFields() {
+		this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+		this.isUploadCsvOptionEnabled = false;
+		this.isXamplifyCsvFormatUploaded = false;
+		this.csvRows = [];
+		this.users = [];
+	}
 
-    /***** XNFR-671 *****/
-    saveCsvMappedColumns(newUsers: User[]) {
-        this.users = newUsers;
-    }
+	/***** XNFR-671 *****/
+	saveCsvMappedColumns(newUsers: User[]) {
+		this.users = newUsers;
+	}
 
 }
