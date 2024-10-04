@@ -4,5 +4,7 @@ export const XAMPLIFY_CONSTANTS = {
     twoColumnLayout:'TWO_COLUMN_LAYOUT',
     createFolder:'Create a Folder',
     welcomePageEnabledKey:'isWelcomePageEnabled',
-    currentUser:'currentUser'
+    currentUser:'currentUser',
+    sandbox:'Sandbox',
+    production:'Production'
 }

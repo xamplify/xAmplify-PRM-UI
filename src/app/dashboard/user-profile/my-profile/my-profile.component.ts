@@ -363,6 +363,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	welcomePagesAccess:boolean = false;
 	isUpdateModuleOptionClicked = false;
 	updateModulesMenuHeader = MY_PROFILE_MENU_CONSTANTS.UPDATE_MODULES;
+	/**XNFR-677**/
+	showModelPopupForSalesforce:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -3286,7 +3288,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				confirmButtonText: 'Yes'
 
 			}).then(function () {
-				self.configSalesforce();
+				/**XNFR-677**/
+				self.showSalesforceInstanceModelPopup();
 			}, function (dismiss: any) {
 				console.log('you clicked on option' + dismiss);
 			});
@@ -4947,5 +4950,33 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			default:
 				return '';
 		}
+	}
+
+	/**XNFR-677**/
+	showSalesforceInstanceModelPopup() {
+		this.showModelPopupForSalesforce = true;
+	}
+
+	closeModelPopup() {
+		$('#unpublished-modal').modal('hide');
+		$('input[name="rdaction"]').prop('checked', false);
+		this.showModelPopupForSalesforce = false;
+	}
+
+	getSalesforceRedirectUrl(event) {
+		this.ngxloading = true;
+		this.integrationService.getSalesforceRedirectUrl(event).subscribe(
+			data => {
+				$('#unpublished-modal').modal('hide');
+				$('input[name="rdaction"]').prop('checked', false);
+				this.sfRedirectURL = data.data;
+				this.configSalesforce();
+				this.ngxloading = false;
+			},
+			error => {
+				this.ngxloading = false;
+				this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try again', true);
+			}
+		)
 	}
 }
