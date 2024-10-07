@@ -310,9 +310,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 }
             } else if (urlType == this.mdfUrl) {
                 return true;
-            } else if (urlType == this.damUrl || url.indexOf('select-modules')>-1) {
+            } else if (urlType == this.damUrl || url.indexOf('select-modules')>-1 || url.indexOf("/content/")>-1) {
                 /**XNFR-694**/
-                this.authorizeDamUrlAccess(url);
+                this.authorizeUrlAccess(url);
             } else if (urlType == this.leadsUrl) {
                 return true;
             } else if (urlType == this.dealsUrl) {
@@ -386,9 +386,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     /***XNFR-694****/
-    private authorizeDamUrlAccess(url: string) {
+    private authorizeUrlAccess(url: string) {
         this.setAuthGuardLoading(true);
-        this.urlAuthGuardService.authorizeDamUrlAccess(url).subscribe(
+        this.urlAuthGuardService.authorizeUrlAccess(url).subscribe(
             (_response: any) => {
                 this.setAuthGuardLoading(false);
                 return true;

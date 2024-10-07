@@ -21,7 +21,7 @@ export class UrlAuthGuardService {
     let isDamRouterUrl = routerUrl.includes("/home/dam") || routerUrl.includes("/home/select-modules");
     let moduleId =  0;
     if(isDamRouterUrl){
-      moduleId = this.roles.emailTemplateId;
+      moduleId = this.roles.damId;
     }
     const routes = ["upload", "design", "modules", "add", "manage", "shared","select"];
     let componentUrlName = this.getComponentUrlName(routerUrl,routes,"dam");
