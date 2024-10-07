@@ -23,8 +23,8 @@ export class UrlAuthGuardService {
     if(isDamRouterUrl){
       moduleId = this.roles.damId;
     }
-    const routes = ["upload", "design", "modules", "add", "manage", "shared","select"];
-    let componentUrlName = this.getComponentUrlName(routerUrl,routes,"dam");
+    const damModuleRoutes = ["upload", "design", "modules", "add", "manage", "shared","select","partner-companies","partner-analytics","vda"];
+    let componentUrlName = this.getComponentUrlName(routerUrl,damModuleRoutes,"dam");
     let url = this.AUTH_URL+"url/modules/"+moduleId+"/users/"+this.userId+"/routerUrls/"+componentUrlName+this.ACCESS_TOKEN_PARAMETER+this.authenticationService.access_token;
     let subDomain = this.authenticationService.getSubDomain();
     if(subDomain.length>0){
@@ -34,27 +34,7 @@ export class UrlAuthGuardService {
 
    }
 
-
-  authorizeDamUrlAccess(currentUrl:string){
-    let angularRouterUrl = this.getAngularRouterUrlForPathVariable(currentUrl);
-    let url = this.DAM_URL+this.checkDamModuleAccessURL+"users/"+this.userId+"/routerUrls/"+angularRouterUrl+this.ACCESS_TOKEN_PARAMETER+this.authenticationService.access_token;
-    let subDomain = this.authenticationService.getSubDomain();
-    if(subDomain.length>0){
-      url+="&subDomain="+subDomain;
-    }
-    return this.authenticationService.callGetMethod(url);
-    
-  }
-
-  getAngularRouterUrlForPathVariable(currentUrl: string): string {
-    const routes = ["upload", "design", "modules", "add", "manage", "shared","select"];
-    for (const route of routes) {
-      if (currentUrl.includes(route)) {
-        return route;
-      }
-    }
-    return "dam";
-  }
+ 
 
   getComponentUrlName(currentUrl:string,routes:any,defaultUrl:string){
     for (const route of routes) {
