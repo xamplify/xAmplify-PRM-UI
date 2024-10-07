@@ -387,7 +387,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
     }
     
-    private checkIsContactType() {
+    public checkIsContactType() {
         return this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact;
     }
 
