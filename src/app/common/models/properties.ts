@@ -425,9 +425,11 @@ export class Properties {
 	contactsCsvHeaderMatchedMessage = "The CSV headers have been successfully matched with the default format";
 	remapHeadersMessage = " to remap the headers";
 	resetMessage = " to reset to the original state.";
+	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
 
 	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
+	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin"
 
 	}
 

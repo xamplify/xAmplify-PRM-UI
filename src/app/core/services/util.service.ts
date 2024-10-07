@@ -218,9 +218,16 @@ export class UtilService {
         
     }
 
+
+    showUIError(methodName:string){
+       return "Error In "+methodName+"(). Please Contact Admin;";
+
+    }
+
     reloadAppInAllTabs() {
         // Set a timestamp to notify all tabs
         localStorage.setItem('reloadApp', new Date().toISOString());
       }
+
 
 }

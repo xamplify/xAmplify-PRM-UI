@@ -27,7 +27,11 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { Subject } from 'rxjs';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
+import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
+import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+
 
 declare var $: any, swal: any;
 
@@ -247,10 +251,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	isregistered: boolean = false;
 	/*****XNFR-342*****/
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
+	/***** XNFR-671 *****/
+	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public route: ActivatedRoute) {
+		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -1903,6 +1909,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					if (this.contactsByType.selectedCategory === 'invalid') {
 						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
 					}
+					if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
+						this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
+							let dto = this.contactsByType.listOfAllContacts[i].flexiFields.find(dto => dto.fieldName == flexiField.fieldName);
+							object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
+						});
+					}
 					this.downloadDataList.push(object);
 				} else {
 					let object = {
@@ -1926,6 +1938,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					}
 					if (this.contactsByType.selectedCategory === 'invalid') {
 						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
+					}
+					if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
+						this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
+							let dto = this.contactsByType.listOfAllContacts[i].flexiFields.find(dto => dto.fieldName == flexiField.fieldName);
+							object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
+						});
 					}
 					this.downloadDataList.push(object);
 				}
@@ -2492,6 +2510,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			if (this.checkingContactTypeName == "Contact") {
 				this.pagination.filterBy = 'MY-CONTACTS';
+				this.findFlexiFieldsData();
 			}
 			this.loadContactLists(this.pagination);
 			this.contactsCount();
@@ -2536,7 +2555,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.successMessage = false;
 			this.contactService.deleteUserSucessMessage = false;
 			this.contactService.addUserSuccessMessage = false;
-
+			this.flexiFieldsRequestAndResponseDto = [];
 			swal.close();
 			$('#filterModal').modal('hide');
 		} catch (error) {
@@ -2954,6 +2973,18 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			self.syncContactsInMasterContactList();
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	/***** XNFR-671 *****/
+	findFlexiFieldsData() {
+		this.loading = true;
+		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+			this.flexiFieldsRequestAndResponseDto = data;
+			this.loading = false;
+		}, (error: any) => {
+			this.referenceService.showSweetAlertServerErrorMessage();
+			this.loading = false;
 		});
 	}
 

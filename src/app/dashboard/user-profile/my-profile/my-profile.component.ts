@@ -361,6 +361,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/** XNFR-669 **/
 	welcomePages: boolean =false;
 	welcomePagesAccess:boolean = false;
+	/**XNFR-679***/
+	flexiFieldsMenuHeader = MY_PROFILE_MENU_CONSTANTS.FLEXI_FIELDS;
+	isFlexiFieldsOptionClicked = false;
 	isUpdateModuleOptionClicked = false;
 	updateModulesMenuHeader = MY_PROFILE_MENU_CONSTANTS.UPDATE_MODULES;
 	/**XNFR-677**/
@@ -2160,7 +2163,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.stopNgxLoader();
 			}, 500);
 			this.activeTabHeader = this.chatGptSettingsMenuHeader;
-		}/**XNFR-669****/
+		}
+		/**XNFR-669****/
 		else if (this.activeTabName == "welcomePages") {
 			this.ngxloading = true;
 			this.welcomePages = false;
@@ -2173,8 +2177,25 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}else if(this.activeTabName==this.updateModulesMenuHeader){
 			this.activateUpdateModulesMenuHeader();
 		}
+		/*****XNFR-628******/
+		else if (this.activeTabName == this.flexiFieldsMenuHeader) {
+			this.activateFlexiFieldsMenuHeader();
+		}
 		this.referenceService.scrollSmoothToTop();
 	}
+
+	/***XNFR-679***/
+	private activateFlexiFieldsMenuHeader() {
+		this.startNgxLoader();
+		this.isFlexiFieldsOptionClicked = false;
+		let self = this;
+		setTimeout(() => {
+			self.isFlexiFieldsOptionClicked = true;
+			self.stopNgxLoader();
+		}, 500);
+		this.activeTabHeader = this.flexiFieldsMenuHeader;
+  }
+
 	private activateUpdateModulesMenuHeader() {
 		this.startNgxLoader();
 		this.isUpdateModuleOptionClicked = false;
@@ -2190,6 +2211,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateChatGptSettingsOption(option:boolean){
 		this.isChatGptSettingsOptionClicked = option;
 	}
+
 
 	startNgxLoader(){
 		this.ngxloading = true;

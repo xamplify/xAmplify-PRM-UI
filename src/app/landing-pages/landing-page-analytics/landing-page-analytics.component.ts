@@ -309,6 +309,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     listBarChartAnalytics(pagination:Pagination,timePeriod:string,filterValue:any){
         this.referenceService.loading( pagination.loader, true );
         pagination.partnerId = this.partnerId;
+        pagination.vendorPages = this.landingPageAnalyticsPostDto.vendorPages;
         this.landingPageService.listBarChartAnalytics(pagination,timePeriod,filterValue,this.landingPageAnalyticsPostDto.analyticsTypeString).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;
