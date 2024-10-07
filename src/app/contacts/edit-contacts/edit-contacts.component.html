@@ -1096,7 +1096,9 @@
 																		</a>
 																		<!--XNFR-342---->
 																		<ng-container
-																			*ngIf="!assignLeads && !sharedLeads && !isSynchronizationList">
+																			*ngIf="!assignLeads && !sharedLeads && !isSynchronizationList && (authenticationService?.module?.isCampaign ||
+																			authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
+																			|| authenticationService?.module?.playbookAccess)">
 																			<a class="custom-icon" data-toggle="tooltip"
 																				data-placement="top"
 																				(click)="openUnPublishedContentModalPopUp(contact)"

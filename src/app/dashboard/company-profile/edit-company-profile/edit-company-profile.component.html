@@ -69,9 +69,11 @@
 											<h4    data-toggle="tooltip" data-placement="bottom" [title]="authenticationService.user.firstName+authenticationService.user.lastName"
 												class="control-label company-text-wrap">
 												{{authenticationService.user.firstName | slice:0:15}}<span
-													*ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;{{authenticationService.user.lastName
-												| slice:0:10}}<span
-													*ngIf="authenticationService.user.lastName?.length>10">..</span>
+													*ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;
+													<!--XBI-3164-->
+													<ng-container
+														*ngIf="authenticationService?.user?.lastName!=undefined && authenticationService?.user?.lastName?.length>0">{{authenticationService.user.lastName
+														| slice:0:10}}<span *ngIf="authenticationService.user.lastName?.length>10">..</span></ng-container>
 											</h4>
 											<h5 class="responsive-screen-wordwrap">
 												{{authenticationService.user.emailId}}</h5>
