@@ -438,8 +438,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     private validateHeadersAndReadRows(headers: any, self: this, contents: any) {
-        var csvResult = Papa.parse(contents);
-        self.csvRows = csvResult.data;
         self.isUploadCsvOptionEnabled = self.isContactModule();
         let headersLength = 11+this.flexiFieldsRequestAndResponseDto.length;
         self.isXamplifyCsvFormatUploaded = headers.length == headersLength && self.validateHeaders(headers);
@@ -451,6 +449,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         // let isNewOptionEnabledForQA = isQADomain && allowedEmailIds.indexOf(userName)>-1;
         // let isUploadCsvOptionEnabled = isNewOptionEnabledForLocalHost || isNewOptionEnabledForQA;
         if (self.isXamplifyCsvFormatUploaded && !self.isContactModule()) {
+            var csvResult = Papa.parse(contents);
             var allTextLines = csvResult.data;
             this.paginationType = "csvContacts";
             for (var i = 1; i < allTextLines.length; i++) {
@@ -485,6 +484,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
         } else if (this.isUploadCsvOptionEnabled) {
             /***** XNFR-671 *****/
+            var csvResult = Papa.parse(contents);
+            self.csvRows = csvResult.data;
             self.noRecordsFoundErrorMessage(self);
             self.isListLoader = false;
             /***** XNFR-671 *****/

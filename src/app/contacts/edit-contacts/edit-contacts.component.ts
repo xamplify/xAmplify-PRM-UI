@@ -440,18 +440,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				var self = this;
 				reader.onload = function (e: any) {
 					var contents = e.target.result;
-
 					let csvData = reader.result;
 					let csvRecordsArray = csvData.split(/\r|\n/);
-					let headersRow = self.fileUtil
-						.getHeaderArray(csvRecordsArray);
+					let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
 					let headers = headersRow[0].split(',');
-					var csvResult = Papa.parse(contents);
-					self.csvRows = csvResult.data;
 					self.isUploadCsvOptionEnabled = self.isContactModule();
 					let headersLength = 11+self.flexiFieldsRequestAndResponseDto.length;
 					self.isXamplifyCsvFormatUploaded = !self.isPartner && headers.length == headersLength && self.validateContactsCsvHeaders(headers);
 					if (self.isXamplifyCsvFormatUploaded && !self.isContactModule()) {
+						var csvResult = Papa.parse(contents);
 						var allTextLines = csvResult.data;
 						for (var i = 1; i < allTextLines.length; i++) {
 							if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
@@ -476,6 +473,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						self.handleFilePreview(allTextLines, self);
 					} else if ((self.isPartner && headers.length == 21)) {
 						if (self.validatePartnerCsvHeaders(headers)) {
+							var csvResult = Papa.parse(contents);
 							var allTextLines = csvResult.data;
 							for (var i = 1; i < allTextLines.length; i++) {
 								if (allTextLines[i][8] && allTextLines[i][8].trim().length > 0) {
@@ -511,6 +509,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							self.invaildCsvErrorMessage(self);
 						}
 					} else if (self.isUploadCsvOptionEnabled) {
+						var csvResult = Papa.parse(contents);
+						self.csvRows = csvResult.data;
 						if (self.csvRows.length == 2) {
 							self.customResponse = new CustomResponse('ERROR', "No records found.", true);
 							self.removeCsv();
