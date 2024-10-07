@@ -1487,7 +1487,7 @@ export class ManageLeadsComponent implements OnInit {
     return lead.selfLead &&
       lead.dealBySelfLead &&
       (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) &&
-      lead.associatedDealId === undefined;
+      lead.associatedDealId == undefined;
   }
 
   private canVendorOrPartnerRegisterDeal(lead: any): boolean {
