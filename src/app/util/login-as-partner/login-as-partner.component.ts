@@ -65,6 +65,7 @@ export class LoginAsPartnerComponent implements OnInit {
   loginAsPartner(){
     this.utilService.addLoginAsLoader();
     setTimeout(() => {
+      this.utilService.reloadAppInAllTabs()
       this.sendEmailNotificationToPartner();
     }, 2000);
     
@@ -93,12 +94,18 @@ export class LoginAsPartnerComponent implements OnInit {
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(vendorAdminCompanyUserEmailId, true);
   }
 
-  logoutAsPartnerOrTeamMember(){
+  logoutAsPartnerOrTeamMember() {
+    let isCreateCampaignUrl = this.router.url.indexOf("/campaigns/create/email") > -1;
+    if (isCreateCampaignUrl) {
+      this.authenticationService.module.logoutButtonClicked = isCreateCampaignUrl;
+      this.referenceService.goToDashboard();
+    }
     this.utilService.addLoginAsLoader();
+    this.utilService.reloadAppInAllTabs()
     this.referenceService.isWelcomePageLoading = true;
-    if(this.isLoggedInAsTeamMember){
+    if (this.isLoggedInAsTeamMember) {
       this.logoutAsTeamMember();
-    }else{
+    } else {
       this.logoutAsPartner();
     }
   }
@@ -175,6 +182,7 @@ export class LoginAsPartnerComponent implements OnInit {
 
  
 loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
+  this.utilService.reloadAppInAllTabs();
   if (this.isLoggedInThroughVanityUrl) {
     this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
   } else {

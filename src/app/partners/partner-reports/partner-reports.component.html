@@ -277,6 +277,7 @@
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
             *ngIf="customResponse.isVisible"></app-response-message>
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+            <div class="table-responsive">
             <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
               <thead>
                 <tr>
@@ -307,6 +308,7 @@
                 </tr>
               </tbody>
             </table>
+          </div>
           </div>
           <app-pagination class="pg8" [pagination]="inActivePartnersPagination" [type]="'userInteraction'"
             (notifyParentDropDown)="inActivePartnerDropDownList($event)"

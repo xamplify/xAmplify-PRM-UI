@@ -136,14 +136,14 @@
               </div>
               <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;" data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">{{lead.campaignName | slice:0:30}}
                     <span *ngIf="lead.campaignName?.length>30">...</span>
                   </span>
                 </h5>
               </div>
               <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;" data-toggle="tooltip" data-placement="bottom" title="{{lead.parentCampaignName}}">{{lead.parentCampaignName | slice:0:30}}
                     <span *ngIf="lead.parentCampaignName?.length>30">...</span>
                   </span>
                 </h5>
@@ -151,7 +151,7 @@
               <div *ngIf="isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0"
                 style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;" data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">{{lead.campaignName | slice:0:30}}
                     <span *ngIf="lead.campaignName?.length>30">...</span>
                   </span>
                 </h5>
@@ -252,7 +252,7 @@
                 </a>
                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                   <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
-                    *ngIf="lead.canUpdate  && lead.enableRegisterDealButton" (click)="(lead?.leadApprovalStatusType !== 'REJECTED' && !lead?.associatedCampaignDeleted) ? editLead(lead) : ''"
+                    *ngIf="lead.canUpdate  && lead.enableRegisterDealButton && lead.partnerEditLead" (click)="(lead?.leadApprovalStatusType !== 'REJECTED' && !lead?.associatedCampaignDeleted) ? editLead(lead) : ''"
                     title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'You can not edit a rejected lead' : (lead?.associatedCampaignDeleted ? 'You can not edit a lead for a deleted campaign' : 'Edit Lead')}}"
                     id="lead">
                     <i [ngClass]="(lead?.leadApprovalStatusType == 'REJECTED' || lead?.associatedCampaignDeleted) ? 'fa fa-edit mr5 IconCustomization disabled gray':'fa fa-edit mr5 IconCustomization'"
@@ -260,7 +260,7 @@
                     <div class="clickicons"></div>
                   </a>
                   <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
-                    *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)" title="Delete Lead" id="lead">
+                    *ngIf="lead.canUpdate && lead.partnerDeleteLead" (click)="confirmDeleteLead(lead)" title="Delete Lead" id="lead">
                     <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                     <div class="del-icon"></div>
                   </a>

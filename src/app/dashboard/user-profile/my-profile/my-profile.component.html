@@ -485,7 +485,7 @@
                                             </ng-container>
                                              <!--Welcome-pages-->
                                              <ng-container
-                                             *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                             *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember || authenticationService.module.isPrmTeamMember || authenticationService?.module?.isMarketingTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin() || authenticationService.module.isPrm || authenticationService?.module?.isMarketing)">
                                              <li [ngClass]="{'active-tab': activeTabName == 'welcomePages'}">
                                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'welcomePages'}"
                                                      (click)="activateTab('welcomePages');clearCustomResponse()">
@@ -557,6 +557,14 @@
                                             </a>
                                         </li>
                                         
+                                        <!--Module Access-->
+                                        <li *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.updateModulesFromMyProfile" [ngClass]="{'active-tab': activeTabName == updateModulesMenuHeader}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == updateModulesMenuHeader}" (click)="activateTab(updateModulesMenuHeader);clearCustomResponse()">
+                                                {{updateModulesMenuHeader}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':updateModulesMenuHeader}"></ng-template>
+                                            </a>
+                                         </li>
+
                                     </ul>
                                 </ng-container>
                             </ul>
@@ -1209,7 +1217,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <a (click)="configSalesforce()"
+                                                                <a (click)="showSalesforceInstanceModelPopup()"
                                                                     class="btn btn-block btn-primary text-uppercase"
                                                                     *ngIf="sfRibbonText == 'configure'"
                                                                     translate>configure</a>
@@ -3299,6 +3307,7 @@
                                         <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
                                         <!--XNFR-679 Flexi Fields-->
                                         <app-flexi-field *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-flexi-field>
+                                        <app-module-access *ngIf="isUpdateModuleOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == updateModulesMenuHeader}" [isNavigatedFromMyProfileSection]="true"></app-module-access>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
                                     </div>
                                 </div>
@@ -3834,3 +3843,7 @@
 <ng-template #activeIcon let-moduleName="moduleName">
     <i *ngIf="activeTabName == moduleName" class="fa fa-check-circle-o success display-inline"></i>
 </ng-template>
+<!-- XNFR-677 -->
+<app-confirm-unpublish-tracks-or-playbooks-model-popup *ngIf="showModelPopupForSalesforce" [isFromIntegration]="'true'"
+    (cancelEmitter)="closeModelPopup()" (eventOutput)="getSalesforceRedirectUrl($event)">
+</app-confirm-unpublish-tracks-or-playbooks-model-popup>

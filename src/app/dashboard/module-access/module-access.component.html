@@ -1,457 +1,468 @@
-<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
-	<div class="page-bar">
-		<ul class="page-breadcrumb">
-			<li>
-				<i class="fa fa-home" aria-hidden="true"></i>
-				<a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
-				<i class="fa fa-angle-right" aria-hidden="true"></i>
-			</li>
-			<li>
-				{{headerName}}
-			</li>
-		</ul>
-		<a class="close-circle mr5 mt5" [routerLink]="['/home/dashboard/admin-report']">
-			<i class="fa fa-times" aria-hidden="true"></i>
-		</a>
-	</div>
-	<div class="portlet light" *ngIf="!isDashboardStats">
-		<div class="portlet-body clearfix">
-			<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-			<app-dashboard-loader *ngIf="companyLoader"></app-dashboard-loader>
-			<!--Company Details-->
-			<div class="table-responsive" *ngIf="!companyLoader">
-				<table class='table tgrid' aria-describedby="company-details-table">
-				  <thead>
-					<tr>
-					  <th style="width: 20%;" scope="row">NAME</th>
-					  <th scope="row">COMPANY</th>
-					  <th scope="row">STATUS</th>
-					  <th class='text-center' scope="row">REGISTRATION DATE</th>
-					  <th class='text-center' scope="row">LAST LOGIN</th>
-					  <th class='text-center' scope="row">UPDATED TIME</th>
-					  <th class='text-center' scope="row">Role</th>
-					</tr>
-				  </thead>
-				  <tbody>
-					<ng-container>
-					  <tr>
-						<td>
-						  <app-user-info [userInfo]="companyAndUserDetails">
-						  </app-user-info>
-						</td>
-						<td>{{companyAndUserDetails.companyName}}</td>
-						<td>{{companyAndUserDetails.userStatus}}</td>
-						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateReg"> </app-timestamp>
-						</td>
-						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateLastLogin"> </app-timestamp>
-						</td>
-						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.updatedTime"> </app-timestamp>
-						</td>
-						<td class='text-center'>
-							{{companyAndUserDetails.roleName}}
-						  </td>
-					  </tr>
-					</ng-container>
-				  </tbody>
-				</table>
-			</div>
-			<!--Company Profile Name-->
-			<app-dashboard-loader *ngIf="companyProfileLoader || companyLoader"></app-dashboard-loader>
-			<div class="table-responsive" *ngIf="!companyProfileLoader && !companyLoader">
-			  <table class='table tgrid' aria-describedby="">
-				  <thead>
-					  <tr>
-						  <th style="width: 20%;" scope="row">Company Profile Name</th>
-						  <th scope="row">
-							  <input class="form-control lowercase-text" type="text" maxlength="250" (input)="validateCompanyProfileName()"  [(ngModel)]="companyProfileName" [ngModelOptions]="{standalone: true}">
-							  <span class="required" *ngIf="companyProfileNameError">{{companyProfileNameErrorMessage}}</span>	
-							</th>
-							  <th scope="row">
-								  <button [disabled]="companyProfileNameError" class="btn btn-primary" (click)="!companyProfileNameError && updateCompanyProfileName()">Update</button>
-							  </th>
-						  </tr>
-				  </thead>
-			  </table>
-			</div>
-			<!--DNS-->
-			<app-dashboard-loader *ngIf="dnsLoader"></app-dashboard-loader>
-			<div class="table-responsive" *ngIf="!dnsLoader">
-				<div *ngIf="dnsError" class="alert alert-danger">
-					<strong>{{dnsErrorMessage}}</strong>
-				</div>
-			<table *ngIf="!dnsError" class='table tgrid' aria-describedby="dns-congiruation-table">
-				<thead>
-					<tr>
-						<th style="width: 20%;" scope="row">DNS Configuration</th>
-						<th scope="row">
-							<input class="checkBox_shadow" type="checkbox" [(ngModel)]="dnsConfigured"
-							[ngModelOptions]="{standalone: true}"></th>
-							<th scope="row">
-								<button class="btn btn-primary" (click)="updateDnsConfiguration()">Update</button>
-							</th>
+<div [ngClass]="!isNavigatedFromMyProfileSection ? 'page-content':''" [class.ml0]="authenticationService.isSuperAdmin()">
+	<app-modal-popup-loader *ngIf="myProfileLoader"></app-modal-popup-loader>
+
+	<ng-container *ngIf="!myProfileLoader">
+		<!--Header-->
+		<div class="page-bar" *ngIf="!isNavigatedFromMyProfileSection">
+			<ul class="page-breadcrumb">
+				<li>
+					<i class="fa fa-home" aria-hidden="true"></i>
+					<a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+					<i class="fa fa-angle-right" aria-hidden="true"></i>
+				</li>
+				<li>
+					{{headerName}}
+				</li>
+			</ul>
+			<a class="close-circle mr5 mt5" [routerLink]="['/home/dashboard/admin-report']">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</a>
+		</div>
+
+		<!--Modules & Other Options-->
+		<div class="portlet light" *ngIf="!isDashboardStats">
+			<div class="portlet-body clearfix">
+				<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+				<app-dashboard-loader *ngIf="companyLoader"></app-dashboard-loader>
+				<!--Company Details-->
+				<div class="table-responsive" *ngIf="!companyLoader && !isNavigatedFromMyProfileSection">
+					<table class='table tgrid' aria-describedby="company-details-table">
+					<thead>
+						<tr>
+						<th style="width: 20%;" scope="row">NAME</th>
+						<th scope="row">COMPANY</th>
+						<th scope="row">STATUS</th>
+						<th class='text-center' scope="row">REGISTRATION DATE</th>
+						<th class='text-center' scope="row">LAST LOGIN</th>
+						<th class='text-center' scope="row">UPDATED TIME</th>
+						<th class='text-center' scope="row">Role</th>
 						</tr>
-				</thead>
-			</table>
-			</div>
-			<!--SPF-->
-			<app-dashboard-loader *ngIf="spfLoader"></app-dashboard-loader>
-			<div class="table-responsive" *ngIf="!spfLoader">
-				<div *ngIf="spfError" class="alert alert-danger">
-					<strong>{{spfErrorMessage}}</strong>
-				</div>
-			<table *ngIf="!spfError" class='table tgrid' aria-describedby="spf-table">
-				<thead>
-					<tr>
-						<th style="width: 20%;" scope="row">SPF</th>
-						<th scope="row">
-							<input class="checkBox_shadow" type="checkbox" [(ngModel)]="spfConfigured"
-							[ngModelOptions]="{standalone: true}"></th>
-							<th scope="row">
-								<button class="btn btn-primary" (click)="updateSpf()">Update</button>
-							</th>
+					</thead>
+					<tbody>
+						<ng-container>
+						<tr>
+							<td>
+							<app-user-info [userInfo]="companyAndUserDetails">
+							</app-user-info>
+							</td>
+							<td>{{companyAndUserDetails?.companyName}}</td>
+							<td>{{companyAndUserDetails?.userStatus}}</td>
+							<td class='text-center'>
+							<app-timestamp [dateAndTime]="companyAndUserDetails?.dateReg"> </app-timestamp>
+							</td>
+							<td class='text-center'>
+							<app-timestamp [dateAndTime]="companyAndUserDetails?.dateLastLogin"> </app-timestamp>
+							</td>
+							<td class='text-center'>
+							<app-timestamp [dateAndTime]="companyAndUserDetails?.updatedTime"> </app-timestamp>
+							</td>
+							<td class='text-center'>
+								{{companyAndUserDetails?.roleName}}
+							</td>
 						</tr>
-				</thead>
-			</table>
-			</div>
-			
-			<!--Download Partner Contacts-->
-			<div class="table-responsive">
-			  <table  class='table tgrid' aria-describedby="">
-				  <thead>
-					  <tr>
-						  <th scope="row">Download Contacts Of Your {{authenticationService.partnerModule.customName}}</th>
-							  <th scope="row">
-								  <button class="btn btn-info" title="Click Here To Download" (click)="downloadContacts()">
-									<i class="fa fa-download" aria-hidden="true"></i>
-								  </button>
-							  </th>
-						  </tr>
-						  <tr>
-							<th scope="row">Download Contacts Count Of Your {{authenticationService.partnerModule.customName}}</th>
+						</ng-container>
+					</tbody>
+					</table>
+				</div>
+				<!--Company Profile Name-->
+				<app-dashboard-loader *ngIf="companyProfileLoader || companyLoader"></app-dashboard-loader>
+				<div class="table-responsive" *ngIf="!companyProfileLoader && !companyLoader && !isNavigatedFromMyProfileSection">
+				<table class='table tgrid' aria-describedby="">
+					<thead>
+						<tr>
+							<th style="width: 20%;" scope="row">Company Profile Name</th>
+							<th scope="row">
+								<input class="form-control lowercase-text" type="text" maxlength="250" (input)="validateCompanyProfileName()"  [(ngModel)]="companyProfileName" [ngModelOptions]="{standalone: true}">
+								<span class="required" *ngIf="companyProfileNameError">{{companyProfileNameErrorMessage}}</span>	
+								</th>
 								<th scope="row">
-									<button class="btn btn-info" title="Click Here To Download" (click)="downloadContactsCount()">
-									  <i class="fa fa-download" aria-hidden="true"></i>
+									<button [disabled]="companyProfileNameError" class="btn btn-primary" (click)="!companyProfileNameError && updateCompanyProfileName()">Update</button>
+								</th>
+							</tr>
+					</thead>
+				</table>
+				</div>
+				<!--DNS-->
+				<app-dashboard-loader *ngIf="dnsLoader"></app-dashboard-loader>
+				<div class="table-responsive" *ngIf="!dnsLoader">
+					<div *ngIf="dnsError" class="alert alert-danger">
+						<strong>{{dnsErrorMessage}}</strong>
+					</div>
+				<table *ngIf="!dnsError" class='table tgrid' aria-describedby="dns-congiruation-table">
+					<thead>
+						<tr>
+							<th style="width: 20%;" scope="row">DNS Configuration</th>
+							<th scope="row">
+								<input class="checkBox_shadow" type="checkbox" [(ngModel)]="dnsConfigured"
+								[ngModelOptions]="{standalone: true}"></th>
+								<th scope="row">
+									<button class="btn btn-primary" (click)="updateDnsConfiguration()">Update</button>
+								</th>
+							</tr>
+					</thead>
+				</table>
+				</div>
+				<!--SPF-->
+				<app-dashboard-loader *ngIf="spfLoader"></app-dashboard-loader>
+				<div class="table-responsive" *ngIf="!spfLoader">
+					<div *ngIf="spfError" class="alert alert-danger">
+						<strong>{{spfErrorMessage}}</strong>
+					</div>
+				<table *ngIf="!spfError" class='table tgrid' aria-describedby="spf-table">
+					<thead>
+						<tr>
+							<th style="width: 20%;" scope="row">SPF</th>
+							<th scope="row">
+								<input class="checkBox_shadow" type="checkbox" [(ngModel)]="spfConfigured"
+								[ngModelOptions]="{standalone: true}"></th>
+								<th scope="row">
+									<button class="btn btn-primary" (click)="updateSpf()">Update</button>
+								</th>
+							</tr>
+					</thead>
+				</table>
+				</div>
+				<!--Download Partner Contacts-->
+				
+				<div class="table-responsive" *ngIf="!isNavigatedFromMyProfileSection">
+				<table  class='table tgrid' aria-describedby="">
+					<thead>
+						<tr>
+							<th scope="row">Download Contacts Of Your {{authenticationService.partnerModule.customName}}</th>
+								<th scope="row">
+									<button class="btn btn-info" title="Click Here To Download" (click)="downloadContacts()">
+										<i class="fa fa-download" aria-hidden="true"></i>
 									</button>
 								</th>
 							</tr>
-				  </thead>
-			  </table>
-			</div>
-			<!---Module Access-->		
-			<fieldset style="margin: 20px 2px;" id="module-access-table">
-				<legend>Module Access</legend>
-				<app-modal-popup-loader *ngIf="moduleLoader"></app-modal-popup-loader>
-				<div *ngIf="!moduleLoader"  class="table-responsive" style="overflow-x: inherit; padding:15px;">
-					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-					<table class='table tgrid table-hover' aria-describedby="Module-Table">
-						<thead>
 							<tr>
-								<th scope="row">Module Name</th>
-								<th scope="row">Access</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">Role<br>
-								</th>
-								<td>
-									<strong *ngIf="roleId ==13">Vendor</strong>
-									<strong *ngIf="roleId ==18">Marketing</strong>
-									<strong *ngIf="roleId ==2">Org Admin</strong>
-									<strong *ngIf="roleId ==20">Prm</strong>
-							</tr>
-							<!-- XNFR-139 -->
-							<tr>
-								<th scope="col">Maximum Admins
-									<a *ngIf="!ngxLoading">
-										<span>
-											<strong>
-												<span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span>
-											</strong>
-										</span>
-									</a>
-								</th>
-								<td style="width: 50%;">
-									<select class="form-control" id="maxAdmins-Edit" [(ngModel)]="campaignAccess.maxAdmins" (change)="setMaxAdmins()">
-										<option value="2" [selected]="campaignAccess.maxAdmins ==2">2</option>
-										<option value="3" [selected]="campaignAccess.maxAdmins ==3">3</option>
-										<option value="4" [selected]="campaignAccess.maxAdmins ==4">4</option>
-										<option value="5" [selected]="campaignAccess.maxAdmins ==5">5</option>
-									</select>
-								</td>	
-							</tr>
-							<ng-container *ngIf="roleId!=20">
-								<tr>
-									<th scope="row">Sales Enablement (View In Browser In Create Campaign)</th>
-									<td><input class="checkBox_shadow" type="checkbox"
-											[(ngModel)]="campaignAccess.salesEnablement"
-											[ngModelOptions]="{standalone: true}"></td>
+								<th scope="row">Download Contacts Count Of Your {{authenticationService.partnerModule.customName}}</th>
+									<th scope="row">
+										<button class="btn btn-info" title="Click Here To Download" (click)="downloadContactsCount()">
+										<i class="fa fa-download" aria-hidden="true"></i>
+										</button>
+									</th>
 								</tr>
+					</thead>
+				</table>
+				</div>
+				<!---Module Access-->		
+				<fieldset style="margin: 20px 2px;" id="module-access-table">
+					<legend>Module Access</legend>
+					<app-modal-popup-loader *ngIf="moduleLoader"></app-modal-popup-loader>
+					<div *ngIf="!moduleLoader"  class="table-responsive" style="overflow-x: inherit; padding:15px;">
+						<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+						<table class='table tgrid table-hover' aria-describedby="Module-Table">
+							<thead>
 								<tr>
-									<th scope="row">Data Share</th>
-									<td><input class="checkBox_shadow" type="checkbox"
-											[(ngModel)]="campaignAccess.dataShare"
-											[ngModelOptions]="{standalone: true}"></td>
+									<th scope="row">Module Name</th>
+									<th scope="row">Access</th>
 								</tr>
+							</thead>
+							<tbody>
 								<tr>
-								<th scope="row">Email Campaign</th>
-								<td><input class="checkBox_shadow" type="checkbox"
-										[(ngModel)]="campaignAccess.emailCampaign"
-										[ngModelOptions]="{standalone: true}"></td>
-								</tr>
-								<tr>
-									<th scope="row">Video Campaign</th>
-									<td><input class="checkBox_shadow" type="checkbox"
-											[(ngModel)]="campaignAccess.videoCampaign"
-											[ngModelOptions]="{standalone: true}"></td>
-								</tr>
-								<tr>
-									<th scope="row">Social Campaign</th>
-									<td><input class="checkBox_shadow" type="checkbox"
-											[(ngModel)]="campaignAccess.socialCampaign"
-											[ngModelOptions]="{standalone: true}"></td>
-								</tr>
-								<tr>
-									<th scope="row">Event Campaign</th>
-									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"
-											[ngModelOptions]="{standalone: true}"></td>
-								</tr>
-								<tr>
-									<th scope="row">Survey Campaign</th>
-									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.survey"
-											[ngModelOptions]="{standalone: true}"></td>
-								</tr>
-								<tr>
-									<th scope="row">Form Builder</th>
-									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.formBuilder"
-											[ngModelOptions]="{standalone: true}"></td>
-								</tr>
-								<tr>
-									<th scope="row">Page</th>
-									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPage"
-											[ngModelOptions]="{standalone: true}"></td>
-								</tr>
-								<tr>
-									<th scope="row">Page Campaign</th>
-									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
-											[ngModelOptions]="{standalone: true}"></td>
-								</tr>
-								
-								<!---XNFR-125---->
-								<tr *ngIf="campaignAccess.shareLeads">
-									<th scope="row">One-Click Launch</th>
+									<th scope="row">Role<br>
+									</th>
 									<td>
-										<ng-template [ngTemplateOutlet]="scheduleCampaignsInfo"></ng-template>
-										<input class="checkBox_shadow" type="checkbox" id="one-click-launch-e" [(ngModel)]="campaignAccess.oneClickLaunch"
-											[ngModelOptions]="{standalone: true}" (click)="findScheduledCampaignsCount()">
-									</td>
+										<strong *ngIf="roleId ==13">Vendor</strong>
+										<strong *ngIf="roleId ==18">Marketing</strong>
+										<strong *ngIf="roleId ==2">Org Admin</strong>
+										<strong *ngIf="roleId ==20">Prm</strong>
 								</tr>
+								<!-- XNFR-139 -->
 								<tr>
-									<th scope="col">Partner Template Opened Tracking Analytics</th>
+									<th scope="col">Maximum Admins
+										<a *ngIf="!ngxLoading">
+											<span>
+												<strong>
+													<span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span>
+												</strong>
+											</span>
+										</a>
+									</th>
+									<td style="width: 50%;">
+										<select class="form-control" id="maxAdmins-Edit" [(ngModel)]="campaignAccess.maxAdmins" (change)="setMaxAdmins()">
+											<option value="2" [selected]="campaignAccess.maxAdmins ==2">2</option>
+											<option value="3" [selected]="campaignAccess.maxAdmins ==3">3</option>
+											<option value="4" [selected]="campaignAccess.maxAdmins ==4">4</option>
+											<option value="5" [selected]="campaignAccess.maxAdmins ==5">5</option>
+										</select>
+									</td>	
+								</tr>
+								<ng-container *ngIf="roleId!=20">
+									<tr>
+										<th scope="row">Sales Enablement (View In Browser In Create Campaign)</th>
+										<td><input class="checkBox_shadow" type="checkbox"
+												[(ngModel)]="campaignAccess.salesEnablement"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">Data Share</th>
+										<td><input class="checkBox_shadow" type="checkbox"
+												[(ngModel)]="campaignAccess.dataShare"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+									<th scope="row">Email Campaign</th>
 									<td><input class="checkBox_shadow" type="checkbox"
-										[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
-										[ngModelOptions]="{standalone: true}"></td>
-								</tr>
+											[(ngModel)]="campaignAccess.emailCampaign"
+											[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">Video Campaign</th>
+										<td><input class="checkBox_shadow" type="checkbox"
+												[(ngModel)]="campaignAccess.videoCampaign"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">Social Campaign</th>
+										<td><input class="checkBox_shadow" type="checkbox"
+												[(ngModel)]="campaignAccess.socialCampaign"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">Event Campaign</th>
+										<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">Survey Campaign</th>
+										<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.survey"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">Form Builder</th>
+										<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.formBuilder"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">Page</th>
+										<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPage"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">Page Campaign</th>
+										<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
+												[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									
+									<!---XNFR-125---->
+									<tr *ngIf="campaignAccess.shareLeads">
+										<th scope="row">One-Click Launch</th>
+										<td>
+											<ng-template [ngTemplateOutlet]="scheduleCampaignsInfo"></ng-template>
+											<input class="checkBox_shadow" type="checkbox" id="one-click-launch-e" [(ngModel)]="campaignAccess.oneClickLaunch"
+												[ngModelOptions]="{standalone: true}" (click)="findScheduledCampaignsCount()">
+										</td>
+									</tr>
+									<tr>
+										<th scope="col">Partner Template Opened Tracking Analytics</th>
+										<td><input class="checkBox_shadow" type="checkbox"
+											[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
+											[ngModelOptions]="{standalone: true}"></td>
+									</tr>
+									<tr>
+										<th scope="row">SSO Enabled</th>
+										<td class="pt0">
+											<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
+										</td>
+									</tr>
+									<!--Refer Vendor-->
+									<tr>
+										<th scope="row">{{properties?.inviteAVendor}}</th>
+										<td class="pt0">
+											<app-custom-ui-switch [customSwitch]="campaignAccess.referVendor" (customUiSwitchEventEmitter)="setReferVendorValue($event)"></app-custom-ui-switch>
+										</td>
+									</tr>
+								</ng-container>
 								<tr>
-									<th scope="row">SSO Enabled</th>
-									<td class="pt0">
-										<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
+									<th scope="row">Share Leads</th>
+									<td>
+									<ng-template *ngIf="showOneClickLaunchErrorMessage" [ngTemplateOutlet]="scheduleCampaignsInfo"></ng-template>
+									<input class="checkBox_shadow" type="checkbox" id="share-leads-e" [(ngModel)]="campaignAccess.shareLeads"
+										[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
 									</td>
 								</tr>
-								<!--Refer Vendor-->
+								<!--Leads (Opportunities)-->
 								<tr>
-									<th scope="row">{{properties?.inviteAVendor}}</th>
-									<td class="pt0">
-										<app-custom-ui-switch [customSwitch]="campaignAccess.referVendor" (customUiSwitchEventEmitter)="setReferVendorValue($event)"></app-custom-ui-switch>
+									<th scope="row">Leads (Opportunities)</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.leads"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<!--Login As Team Member-->
+								<tr>
+									<th scope="row">Login As Team Member</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Vanity URL</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">MDF</th>
+									<td>
+										<p *ngIf="companyAndUserDetails?.defaultMdfFormAvaible" style="color: green;">
+											<i class="fa fa-check" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
+										</p>
+
+										<p *ngIf="!companyAndUserDetails?.defaultMdfFormAvaible" style="color: red;">
+											<i class="fa fa-close" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
+										</p>
+
+										<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.mdf"
+											[ngModelOptions]="{standalone: true}">
 									</td>
 								</tr>
-							</ng-container>
-							<tr>
-								<th scope="row">Share Leads</th>
-								<td>
-								<ng-template *ngIf="showOneClickLaunchErrorMessage" [ngTemplateOutlet]="scheduleCampaignsInfo"></ng-template>
-								<input class="checkBox_shadow" type="checkbox" id="share-leads-e" [(ngModel)]="campaignAccess.shareLeads"
-									[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
-								</td>
-							</tr>
-							<!--Leads (Opportunities)-->
-							<tr>
-								<th scope="row">Leads (Opportunities)</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.leads"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<!--Login As Team Member-->
-							<tr>
-								<th scope="row">Login As Team Member</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Vanity URL</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">MDF</th>
-								<td>
-									<p *ngIf="companyAndUserDetails?.defaultMdfFormAvaible" style="color: green;">
-										<i class="fa fa-check" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
-									</p>
+								<tr>
+									<th scope="row">Social Feeds</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Dashboard Type</th>
+									<td>
+										<select  class="form-control" id="dashboardType" (change)="selectDashboardType()">
+											<option value="DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DASHBOARD'">Dashboard</option>
+											<option value="ADVANCED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='ADVANCED_DASHBOARD'">Advanced Dashboard</option>
+											<option value="DETAILED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DETAILED_DASHBOARD'">Detailed Dashboard ( Dashboard + Detailed Dashboard)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">DAM</th>
+									<td>
+									<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.dam" id="damCheckBox"
+											[ngModelOptions]="{standalone: true}" (click)="updateLmsAndPlaybooks()"></td>
+								</tr>
+								<ng-container *ngIf="campaignAccess?.dam">
+								<tr>
+									<th scope="row">LMS</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.lms"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">PlayBooks</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.playbooks"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								</ng-container>
+								<tr>
+									<th scope="row">Exclude Users/Domains</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Chat Support</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<!--XNFR-134-->
+								<tr>
+									<th scope="row">Custom Skin Settings</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<!-- XNFR-224 -->
+								<tr *ngIf="!marketing">
+									<th scope="row">Login As Partner</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<!-- XNFR-256 -->
+								<tr>
+									<th scope="row">Microsoft SSO</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.microsoftSSO"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+						
+								<!-- XNFR-255 -->
+								<tr *ngIf="!marketing">
+									<th scope="row">Share White Labeled Content</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<!--XNFR-381-->
+								<tr *ngIf="!marketing">
+									<th scope="row">Create Workflow (Partner Journey)</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.createWorkflow"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<!--XNFR-522-->
+								<tr>
+									<th scope="row">Vendor Journey</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.vendorJourney"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<!--XNFR-595-->
+								<tr>
+									<th scope="row">Payment Overdue</th>
+									<td class="pt0">
+										<app-custom-ui-switch [customSwitch]="campaignAccess.paymentOverDue" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+									</td>
+								</tr>
+								<!--XNFR-669-->
+								<tr>
+									<th scope="row">Welcome Pages</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.welcomePages"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<button *ngIf="!moduleLoader" type="button" (click)="updateModuleAccess()" class="btn Btn-Green pull-right">Update</button>
+				</fieldset>
+			</div>
+		</div>
 
-									<p *ngIf="!companyAndUserDetails?.defaultMdfFormAvaible" style="color: red;">
-										<i class="fa fa-close" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
-									</p>
-
-									<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.mdf"
-										[ngModelOptions]="{standalone: true}">
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">Social Feeds</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Dashboard Type</th>
-								<td>
-									<select  class="form-control" id="dashboardType" (change)="selectDashboardType()">
-										<option value="DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DASHBOARD'">Dashboard</option>
-										<option value="ADVANCED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='ADVANCED_DASHBOARD'">Advanced Dashboard</option>
-										<option value="DETAILED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DETAILED_DASHBOARD'">Detailed Dashboard ( Dashboard + Detailed Dashboard)</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">DAM</th>
-								<td>
-								<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.dam" id="damCheckBox"
-										[ngModelOptions]="{standalone: true}" (click)="updateLmsAndPlaybooks()"></td>
-							</tr>
-							<ng-container *ngIf="campaignAccess?.dam">
-							<tr>
-								<th scope="row">LMS</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.lms"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">PlayBooks</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.playbooks"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							</ng-container>
-							<tr>
-								<th scope="row">Exclude Users/Domains</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Chat Support</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<!--XNFR-134-->
-							<tr>
-								<th scope="row">Custom Skin Settings</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<!-- XNFR-224 -->
-							<tr *ngIf="!marketing">
-								<th scope="row">Login As Partner</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<!-- XNFR-256 -->
-							<tr>
-								<th scope="row">Microsoft SSO</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.microsoftSSO"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-					
-							<!-- XNFR-255 -->
-							<tr *ngIf="!marketing">
-								<th scope="row">Share White Labeled Content</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<!--XNFR-381-->
-							<tr *ngIf="!marketing">
-								<th scope="row">Create Workflow (Partner Journey)</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.createWorkflow"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<!--XNFR-522-->
-							<tr>
-								<th scope="row">Vendor Journey</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.vendorJourney"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<!--XNFR-595-->
-							<tr>
-								<th scope="row">Payment Overdue</th>
-								<td class="pt0">
-									<app-custom-ui-switch [customSwitch]="campaignAccess.paymentOverDue" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
-								</td>
-							</tr>
-							<!--XNFR-669-->
-							<tr>
-								<th scope="row">Welcome Pages</th>
-								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.welcomePages"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-						</tbody>
+		<!--Dashboard Analytics-->
+		<div *ngIf="isDashboardStats">
+			<app-dashboard-loader *ngIf="companyLoader"></app-dashboard-loader>
+				<div class="table-responsive" *ngIf="!companyLoader && userAlias">
+					<table class='table tgrid' aria-describedby="company-details-table">
+					<thead>
+						<tr>
+						<th style="width: 20%;" scope="row">NAME</th>
+						<th scope="row">COMPANY</th>
+						<th scope="row">STATUS</th>
+						<th class='text-center' scope="row">REGISTRATION DATE</th>
+						<th class='text-center' scope="row">LAST LOGIN</th>
+						<th class='text-center' scope="row">UPDATED TIME</th>
+						<th class='text-center' scope="row">Role</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container>
+						<tr>
+							<td>
+							<app-user-info [userInfo]="companyAndUserDetails">
+							</app-user-info>
+							</td>
+							<td>{{companyAndUserDetails?.companyName}}</td>
+							<td>{{companyAndUserDetails?.userStatus}}</td>
+							<td class='text-center'>
+							<app-timestamp [dateAndTime]="companyAndUserDetails?.dateReg"> </app-timestamp>
+							</td>
+							<td class='text-center'>
+							<app-timestamp [dateAndTime]="companyAndUserDetails?.dateLastLogin"> </app-timestamp>
+							</td>
+							<td class='text-center'>
+							<app-timestamp [dateAndTime]="companyAndUserDetails?.updatedTime"> </app-timestamp>
+							</td>
+							<td class='text-center'>
+								{{companyAndUserDetails?.roleName}}
+							</td>
+						</tr>
+						</ng-container>
+					</tbody>
 					</table>
 				</div>
-				<button *ngIf="!moduleLoader" type="button" (click)="updateModuleAccess()" class="btn Btn-Green pull-right">Update</button>
-			</fieldset>
+			<app-dashboard-stats></app-dashboard-stats>
 		</div>
-	</div>
-	<div *ngIf="isDashboardStats">
-		<app-dashboard-loader *ngIf="companyLoader"></app-dashboard-loader>
-			<div class="table-responsive" *ngIf="!companyLoader && userAlias">
-				<table class='table tgrid' aria-describedby="company-details-table">
-				  <thead>
-					<tr>
-					  <th style="width: 20%;" scope="row">NAME</th>
-					  <th scope="row">COMPANY</th>
-					  <th scope="row">STATUS</th>
-					  <th class='text-center' scope="row">REGISTRATION DATE</th>
-					  <th class='text-center' scope="row">LAST LOGIN</th>
-					  <th class='text-center' scope="row">UPDATED TIME</th>
-					  <th class='text-center' scope="row">Role</th>
-					</tr>
-				  </thead>
-				  <tbody>
-					<ng-container>
-					  <tr>
-						<td>
-						  <app-user-info [userInfo]="companyAndUserDetails">
-						  </app-user-info>
-						</td>
-						<td>{{companyAndUserDetails.companyName}}</td>
-						<td>{{companyAndUserDetails.userStatus}}</td>
-						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateReg"> </app-timestamp>
-						</td>
-						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateLastLogin"> </app-timestamp>
-						</td>
-						<td class='text-center'>
-						  <app-timestamp [dateAndTime]="companyAndUserDetails.updatedTime"> </app-timestamp>
-						</td>
-						<td class='text-center'>
-							{{companyAndUserDetails.roleName}}
-						  </td>
-					  </tr>
-					</ng-container>
-				  </tbody>
-				</table>
-			</div>
-		<app-dashboard-stats></app-dashboard-stats>
-	</div>
+	</ng-container>
+
+
 </div>
 <ng-template #scheduleCampaignsInfo>
 	<p class="required" *ngIf="scheduledCampaignsCount>0">

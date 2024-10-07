@@ -406,8 +406,18 @@ export class Properties {
 	leadPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the lead registration form";
 	dealPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the deal registration form";
 	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
+	editLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Edit' the Lead";
+	deleteLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Delete' the Lead";
+
+	partnerText = "Interactions and Non-interactions on distinct tracks based on progress";
+	vendorText = "Partner interactions and non-interactions on distinct tracks based on progress";
+	publishedTrackCountText = "Count of Tracks Published to the Partner";
+	publishedPlaybookCountText = "Count of Playbooks Published to the Partner";
+	vendorTeamMemberTrackText = "Count of Tracks Published by Team Members";
+	venodrTeamMemberPlaybookText = "Count of Playbooks Published by Team Members";
 
 
+	
 	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
 	mapCsvHeaderMessage = " to map your headers to the expected format.";
 	duplicateColumnsMappedErrorMessage = "Duplicate columns have been mapped. Please ensure to check for the specified errors.";
@@ -417,7 +427,7 @@ export class Properties {
 	resetMessage = " to reset to the original state.";
 	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
 
-	customFieldsMissingErrorMessage = "Warning!! Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your "+this.partnersMergeTag+" will not be pushed into Salesforce."
+	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
 	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin"
 

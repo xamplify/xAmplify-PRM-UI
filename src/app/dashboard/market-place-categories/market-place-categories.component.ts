@@ -69,19 +69,25 @@ export class MarketPlaceCategoriesComponent implements OnInit {
         );
   }
  
- getCategoryById(selectedCategory : MarketPlaceCategory){
+  getCategoryById(selectedCategory: MarketPlaceCategory, actionType: string) {
     this.selectedMarketPlaceCategory = new MarketPlaceCategory();
-    this.isAddCategory = false;
-   // this.selectedMarketPlaceCategory = selectedCategory;
+    // this.selectedMarketPlaceCategory = selectedCategory;
     this.marketPlaceCategory = new MarketPlaceCategory();
-    this.marketPlaceCategory.id = selectedCategory.id;
     this.marketPlaceCategory.name = selectedCategory.name
     this.marketPlaceCategory.description = selectedCategory.description;
-    this.categoryModalTitle = 'Update Category Details';
-	this.categoyButtonSubmitText = "Update";
-	$('#addCategoryModalPopup').modal('show');
- 
- }
+    if (actionType == 'copy') {
+      this.marketPlaceCategory.name += "_copy";
+      this.isAddCategory = true;
+      this.categoryModalTitle = 'Copy Category Details';
+      this.categoyButtonSubmitText = "Save";
+    } else {
+      this.isAddCategory = false;
+      this.categoryModalTitle = 'Update Category Details';
+      this.categoyButtonSubmitText = "Update";
+      this.marketPlaceCategory.id = selectedCategory.id;
+    }
+    $('#addCategoryModalPopup').modal('show');
+  }
  
  confirmDeleteCategory(id:number){
     try {

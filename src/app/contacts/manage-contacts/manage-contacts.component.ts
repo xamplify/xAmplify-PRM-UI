@@ -30,6 +30,8 @@ import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-c
 import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+
 
 declare var $: any, swal: any;
 
@@ -894,21 +896,26 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number,
 		isPartnerUserList: boolean, isDefaultPartnerList: boolean, isDefaultContactList: boolean, isSynchronizationList: boolean, isFormList: boolean, isTeamMemberPartnerList: boolean, isCompanyList: boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
-		this.uploadedUserId = uploadUserId;
-		this.isPartnerUserList = isPartnerUserList;
-		this.selectedContactListId = contactSelectedListId;
-		this.selectedContactListName = contactListName;
-		this.isDefaultPartnerList = isDefaultPartnerList;
-		this.isSynchronizationList = isSynchronizationList;
-		this.isTeamMemberPartnerList = isTeamMemberPartnerList;
-		this.showAll = false;
-		this.showEdit = true;
-		this.isFormList = isFormList;
-		this.isCompanyList = isCompanyList;
-		this.selectedAssociatedCompany = selectedAssociatedCompany;
-		this.selectedCompanyId = selectedAssociatedCompanyId;
-		this.isDefaultContactList = isDefaultContactList;
-		$("#pagination").hide();
+		if (this.module == 'contacts') {
+			let encodedURL = this.referenceService.encodePathVariable(contactSelectedListId);
+			this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts + encodedURL);
+		} else {
+			this.uploadedUserId = uploadUserId;
+			this.isPartnerUserList = isPartnerUserList;
+			this.selectedContactListId = contactSelectedListId;
+			this.selectedContactListName = contactListName;
+			this.isDefaultPartnerList = isDefaultPartnerList;
+			this.isSynchronizationList = isSynchronizationList;
+			this.isTeamMemberPartnerList = isTeamMemberPartnerList;
+			this.showAll = false;
+			this.showEdit = true;
+			this.isFormList = isFormList;
+			this.isCompanyList = isCompanyList;
+			this.selectedAssociatedCompany = selectedAssociatedCompany;
+			this.selectedCompanyId = selectedAssociatedCompanyId;
+			this.isDefaultContactList = isDefaultContactList;
+			$("#pagination").hide();
+		}
 	}
 
 	setListType(publicList: boolean, contactType: string, assignedToPartner: boolean) {

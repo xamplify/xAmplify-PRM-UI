@@ -13,7 +13,7 @@ a.xamplify-dropdown-toggle.circlebg-none-v
 .xamplify-external,.xamplify-notify-view {
   background: #2c2f33 !important;
 }
-.horizontal-navbar .navbar-navs .link li a{
+.horizontal-navbar .navbar-navs .link li a,.horizontal-navbar .navbar-navs .link li .arrow {
     color: #fff;
 }
 .horizontal-navbar .navbar-navs .link li a:active,.horizontal-navbar .navbar-navs .link li a:hover{
@@ -45,4 +45,20 @@ a.xamplify-dropdown-toggle.circlebg-none-v
   background-color: #2c2f33 !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
   border-bottom: 1px solid #191b1e;
+}
+@media (max-width: 767px) {
+  .xamplify-welcome-page-header.navbar {
+      height: 126px!important;
+  }
+  .xamplify-welcome-page-top-menu {
+    background: #2c2f33 !important;
+    box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0 #000, -6.223021507263184px -6.223021507263184px 18.669065475463867px 0 #3b4451;
+
+  }
+}
+@media (max-width: 1024px) {
+  .horizontal-navbar .navbar-navs .nav-link {
+    box-shadow: inset 5px 5px 10px #000, inset -5px -5px 10px #34495b87 !important;
+    background-color: #2c2f33 !important;
+  }
 }

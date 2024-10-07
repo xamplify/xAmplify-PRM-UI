@@ -80,4 +80,6 @@ export class User {
     isValidEmailIdPattern = false;
     isWelcomePageEnabled:boolean;
     flexiFields : Array<FlexiFieldsRequestAndResponseDto>= new Array<FlexiFieldsRequestAndResponseDto>();
+    accountId : string;
+
 }

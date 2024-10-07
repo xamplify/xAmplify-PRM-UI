@@ -22,6 +22,8 @@ declare var swal, $, videojs: any;
 })
 export class SelectLeadComponent implements OnInit {  
   @Input() public dealToLead: any;
+  @Input() public selectedContact: any;
+
   @Output() notifyClose = new EventEmitter();
   @Output() notifyLeadSelected = new EventEmitter();
   @Output() notifyShowLeadForm = new EventEmitter();

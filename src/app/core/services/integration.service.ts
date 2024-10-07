@@ -225,4 +225,10 @@ export class IntegrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    /**XNFR-677**/
+    getSalesforceRedirectUrl(instanceType:any) {
+        let url = this.authenticationService.REST_URL + "salesforce/redirect-url/"+instanceType+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
 }

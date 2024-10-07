@@ -43,7 +43,7 @@
             <span></span>
             <span></span>
           </div>
-          <div class="navbar-navs" *ngIf="!loading">
+          <div class="navbar-navs" *ngIf="!loading && !helpGuidesUrl">
             <i class='fa fa-bars' (click)="openSidebar()"></i>
             <div class="nav-link">
               <!-- logo -->
@@ -54,7 +54,7 @@
                 <i class='fa fa-times' (click)="closeSidebar()"></i>
               </div>
               <!--  -->
-              <ul class="link">
+              <ul class="link" *ngIf="authenticationService?.user?.hasCompany">
                 <li>
 <!--                   <a (click)="naviagteToWelcomePage('/welcome-page')" [ngClass]="isWelcomePageActive? 'xamplify-active':''">Home</a> -->
                   <a (click)="naviagteToWelcomePage('/welcome-page')" [ngClass]="isWelcomePageActive? 'xamplify-active':'moduleTextColor'">
@@ -88,11 +88,11 @@
                   </li>
                 </ng-container>
                 <!-- End Show 3 modules-->
-                <li>
+                <li *ngIf = "menuItems.length>4">
                   <a class = "moduleTextColor">More</a>
                   <i class='fa fa-chevron-down htmlcss-arrow arrow '></i>
                   <ul class="htmlCss-sub-menu sub-menu-bar">
-                    <ng-container *ngFor="let menu of displayedMoreItems">
+                    <ng-container *ngFor="let menu of menuItems | slice:4">
                       <li *ngIf="!menu.showSubMenu" >
                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                           <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
@@ -167,7 +167,7 @@
                 </ul> -->
               </li>
               <li id="logoutButton" style="text-align:center;"><a
-                routerLink="/home/dashboard/notifications"><span class="bold">View All</span></a></li>
+                (click)="navigateToGivenPath('/home/dashboard/notifications')"><span class="bold">View All</span></a></li>
             </ul>
 
           </div>
@@ -240,16 +240,14 @@
                 </a>
                 <div class="border-bt"></div>
               </li>
-              <!-- Guides Help Icon-->
-              <li
-                *ngIf="myVendorsLoader &&authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                <a><img src="assets/images/loading.gif">Loading My Vendors...</a>
+              <!-- My Vendors XNFR-698-->
+              <li *ngIf="myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                <a><img src="assets/images/loading.gif" alt="No Image Found">Loading My Vendors...</a>
               </li>
-              <li
-                *ngIf="!myVendorsLoader && authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                <a (click)="goToRouter('/home/dashboard/vendors')" translate>
-                  <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
-                <div class="border-bt"></div>
+              <li  *ngIf="!myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                  <a (click)="goToRouter('/home/dashboard/vendors')" translate>
+                    <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
+                  <div class="border-bt"></div>
               </li>
               <!--XBI-1917-->
               <ng-container
@@ -345,7 +343,7 @@
                </div>
                <div *ngIf="isValidationMessage">
                   <div *ngIf="customResponse.responseType != null">
-                     <div class="alert alert-dismissible m0" role="alert" [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
+                     <div class="xamplify-invite-alert alert-dismissible m0" role="alert" [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
                          'alert-danger': customResponse.responseType == 'ERROR',
                          'alert-info': customResponse.responseType == 'INFO'}">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"

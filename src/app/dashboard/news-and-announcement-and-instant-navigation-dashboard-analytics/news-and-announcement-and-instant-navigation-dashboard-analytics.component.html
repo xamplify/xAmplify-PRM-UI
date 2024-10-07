@@ -40,11 +40,11 @@
                     <i class="fa fa-link" aria-hidden="false"></i>
                     <h4 class="caption-subject header-css">{{properties?.instantNavigation}}</h4>
                 </div>
-                <div class="float-right" (click)="viewAllQuickLinks()"><a>View All</a></div>
+                <div class="float-right link_view" (click)="viewAllQuickLinks()"><a>View All</a></div>
             </div>
             <div class="portlet-body pt0">
-                <div class="inline-flex border-end" *ngFor="let instantNavigationLink of instantNavigationLinks">
-                    <div class="col w430 text-overflow">
+                <div class="inline-flex border-end " *ngFor="let instantNavigationLink of instantNavigationLinks" >
+                    <div class="col w430 text-overflow pointer" (click)="preview(instantNavigationLink)">
                         <h5 class="line-height m0 text-overflow">
                          <span data-toggle="tooltip" data-placement="bottom"  title="{{instantNavigationLink?.title}}">{{instantNavigationLink?.title}}</span>
                          </h5>
@@ -62,8 +62,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
-                            access:authenticationService?.module?.damAccess,
-                            title: authenticationService?.module?.damAccess ?'Click here to view asset analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.damAccess && instantNavigationLink?.published,
+                            title: authenticationService?.module?.damAccess && instantNavigationLink?.published
+                             ?'Click here to view asset analytics': authenticationService?.module?.damAccess && !instantNavigationLink?.published ? 'Not yet published'
+                             :'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Asset / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
@@ -80,8 +82,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
-                            access:authenticationService?.module?.lmsAccess,
-                            title: authenticationService?.module?.lmsAccess ?'Click here to view track analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.lmsAccess &&  instantNavigationLink?.published ,
+                            title: authenticationService?.module?.lmsAccess && instantNavigationLink?.published
+                             ?'Click here to view track analytics': authenticationService?.module?.lmsAccess && !instantNavigationLink?.published ? 'Not yet published':
+                              'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Track / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
@@ -98,8 +102,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
-                            access:authenticationService?.module?.playbookAccess,
-                            title: authenticationService?.module?.playbookAccess ?'Click here to view play book analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.playbookAccess && instantNavigationLink?.published,
+                            title: authenticationService?.module?.playbookAccess &&  instantNavigationLink?.published ?
+                            'Click here to view play book analytics':  authenticationService?.module?.playbookAccess &&  !instantNavigationLink?.published ?'Not yet published'
+                            :'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Play Book / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
@@ -117,9 +123,15 @@
     </div>
 </div>
 <ng-template #instantNavigationLinkNgTemplateIcon let-instantNavigationLink="instantNavigationLink" let-access="access" let-title="title">
-    <div [ngClass]="access ? 'col mt10':'disabled-div col mt10'" title="{{title}}">
-        <a [ngClass]="!access? 'disabled-div':''" (click)="access && navigate(instantNavigationLink)">
-            <i class="fa fa-link" [ngClass]="!access ?'disabled':''"></i>
+    <div *ngIf="!isPartnerLoggedInThroughVanityUrl" [ngClass]="access ? 'col mt10':'disabled-div col mt10'" data-toggle="tooltip" data-placement="top" title="{{title}}">
+        <a class="quicklinks_icons" [ngClass]="!access? 'disabled-div':''" (click)="$event.stopPropagation();access && navigate(instantNavigationLink)">
+            <i class="fa fa-line-chart" [ngClass]="!access ?'disabled':''"></i>
+        </a>
+    </div>
+    
+     <div class="col mt10" title="Preview">
+        <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();preview(instantNavigationLink)">
+            <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
     </div>
 </ng-template>

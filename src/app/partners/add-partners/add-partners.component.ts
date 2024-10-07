@@ -308,6 +308,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+	activeCrmType: any;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -1191,399 +1192,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			&& isMobileNumberMatched && isAccountSubTypeMatched && isAccountOwnerMatched
 			&& isCompanyDomainMatched && isTerritoryMatched && isWebsiteMatched && isAccountNameMatched);
 	}
-
-	copyFromClipboard() {
-		this.resetResponse();
-		this.fileTypeError = false;
-		this.clipboardTextareaText = "";
-		this.paginationType = "csvPartners";
-		this.disableOtherFuctionality = true;
-		$("button#cancel_button").prop('disabled', false);
-		$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-		$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
-		$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		this.clipBoard = true;
-		$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-		$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-		$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-		$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-		$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-		$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-		$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-	}
-
-	clipboardShowPreview() {
-		var selectedDropDown = $("select.opts:visible option:selected ").val();
-		var splitValue;
-		if (this.clipboardTextareaText == undefined) {
-			swal("value can't be null");
-		}
-		if (selectedDropDown == "DEFAULT") {
-			swal("<span style='font-weight: 100;font-family: Open Sans;font-size: 16px;'>Please Select the Delimiter Type</span>");
-			return false;
-		}
-		else {
-			if (selectedDropDown == "CommaSeperated")
-				splitValue = ",";
-			else if (selectedDropDown == "TabSeperated")
-				splitValue = "\t";
-		}
-		this.xtremandLogger.info("selectedDropDown:" + selectedDropDown);
-		this.xtremandLogger.info(splitValue);
-		var startTime = new Date();
-		$("#clipBoardValidationMessage").html('');
-		var self = this;
-
-		var allTextLines = this.clipboardTextareaText.split("\n");
-		this.xtremandLogger.info("allTextLines: " + allTextLines);
-		this.xtremandLogger.info("allTextLines Length: " + allTextLines.length);
-		var isValidData: boolean = true;
-		if (this.clipboardTextareaText === "") {
-			//$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>");
-			self.customResponse = new CustomResponse('ERROR', "Please enter the valid data.", true);
-			isValidData = false;
-		}
-
-		if (this.clipboardTextareaText != "") {
-			let isEmailError = false;
-			let isWebsiteError = false;
-			let emailError = ''
-			let websiteError = ''
-			for (var i = 0; i < allTextLines.length; i++) {
-				var data = allTextLines[i].split(splitValue);
-				if (!this.validateEmailAddress(data[8])) {
-					isEmailError = true;
-					//$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[4] + "</h4>");
-					emailError = emailError + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[8] + "\n";
-					isValidData = false;
-				}
-
-				if (data[9] != undefined) {
-					if (!this.validateWebsite(data[9]) && data[9].length > 0) {
-						isWebsiteError = true;
-						websiteError = websiteError + "Website URL is not valid for Row:" + (i + 1) + " -- Entered Website URL : " + data[9] + "\n";
-						isValidData = false;
-					}
-				}
-				if (isEmailError) {
-					self.customResponse = new CustomResponse('ERROR', emailError, true);
-				}
-				if (isWebsiteError) {
-					self.customResponse = new CustomResponse('ERROR', websiteError, true);
-				}
-				this.newPartnerUser.length = 0;
-			}
-		}
-		if (isValidData) {
-			$("button#sample_editable_1_new").prop('disabled', false);
-			for (var i = 0; i < allTextLines.length; i++) {
-				var data = allTextLines[i].split(splitValue);
-				let user = new User();
-				switch (data.length) {
-					case 1:
-						user.firstName = data[0];
-						break;
-					case 2:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						break;
-					case 3:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						break;
-					case 4:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						break;
-					case 5:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						break;
-					case 6:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						break;
-					case 7:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						break;
-					case 8:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						break;
-					case 9:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						break;
-					case 10:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						break;
-					case 11:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						break;
-					case 12:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						break;
-					case 13:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						break;
-					case 14:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						break;
-					case 15:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						break;
-
-					case 16:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						break;
-
-					case 17:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						break;
-					case 18:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						user.state = data[17];
-						break;
-					case 19:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
-						break;
-
-					case 20:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
-						user.country = data[19];
-						break;
-
-					case 21:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
-						user.country = data[19];
-						user.mobileNumber = data[20];
-						break;
-				}
-				this.xtremandLogger.info(user);
-				self.newPartnerUser.push(user);
-			}
-			this.selectedAddPartnerOption = 4;
-			this.setSocialPage(1);
-			var endTime = new Date();
-			// $("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>");
-			// $("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>");
-			// $("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Total Number of records Found: <b>" + allTextLines.length + "</b></h5>");
-			let processMessage = '';
-			processMessage = "Processing started at: " + startTime + "\nProcessing Finished at:" + endTime + "\nTotal Number of records Found: " + allTextLines.length;
-			self.customResponse = new CustomResponse('SUCCESS', processMessage, true);
-		} else {
-			$("button#sample_editable_1_new").prop('disabled', true);
-			$("#clipBoardValidationMessage").show();
-		}
-		this.xtremandLogger.info(this.newPartnerUser);
-	}
-
-
+	
 	deleteUserShowAlert(contactId: number) {
 		let self = this;
 		swal({
@@ -2269,6 +1878,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialPartners.territory = '';
 			this.socialPartners.companyDomain = '';
 			this.socialPartners.accountOwner = '';
+			this.socialPartners.accountId = '';
 			this.socialPartners.address = '';
 			this.socialPartners.country = '';
 			this.socialPartners.city = '';
@@ -2339,6 +1949,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 										socialContact.accountOwner = this.getGoogleConatacts.contacts[i].accountOwner;
 										socialContact.company = this.getGoogleConatacts.contacts[i].company;
 										socialContact.title = this.getGoogleConatacts.contacts[i].title;
+										socialContact.accountId = this.getGoogleConatacts.contacts[i].accountId;
 									}
 									this.socialPartnerUsers.push(socialContact);
 								}
@@ -3085,6 +2696,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
+		this.getActiveCrmType();
 	}
 
 
@@ -3487,7 +3099,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				"companyDomain": user.companyDomain,
 				"accountOwner": user.accountOwner,
 				"website": user.website,
-				"region": user.region
+				"region": user.region,
+				"accountId": user.accountId
 			}
 			this.allselectedUsers.push(object);
 		} else {
@@ -5110,6 +4723,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
+			this.socialPartners.contacts = this.socialPartnerUsers;
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 13;
 			console.log("Social Contact Users for HaloPSA::" + this.socialPartnerUsers);
@@ -5237,6 +4851,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				},
 				() => this.xtremandLogger.info("download partner List completed")
 			);
+	}
+
+	getActiveCrmType() {
+		this.loading = true;
+		this.contactService.getActiveCrmType(this.loggedInUserId)
+			.subscribe(
+				result => {
+					this.activeCrmType = result.data;
+					this.loading = false;
+				},
+				(error: any) => {
+					this.loading = false;
+				},
+			);
+
 	}
 
 

@@ -935,4 +935,28 @@ export class ContactService {
             .catch(this.handleError);
     }
 
+    /***XNFR-553***/
+    findContactByUserIdAndUserListId(userId:any, userListId:any) {
+        let url = this.contactsUrl + "findUserByUserIdAndUserListId/"+userId+"/"+userListId+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /***XNFR-553***/
+    findUserListDetials(userListId:any, isFromCompanyModule:boolean) {
+        let url = this.contactsUrl + "findUserListDetails/"+userListId+"/"+isFromCompanyModule+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getActiveCrmType(loggedInUserId: number) {
+        let url = this.authenticationService.REST_URL + "active/crm/type/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getContactDetalisFromSalesforce(loggedInUserId: number, emailId: string) {
+        let emailIdRequestParam = emailId != undefined ? "&emailId=" + emailId : "&emailId =''";
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? "&id=" + loggedInUserId : "&id=0";
+        let url = this.authenticationService.REST_URL + "salesforce/getContactDetails" + "?access_token=" + this.authenticationService.access_token + loggedInUserIdRequestParam + emailIdRequestParam;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 }

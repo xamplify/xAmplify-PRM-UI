@@ -34,6 +34,7 @@ export class ListAllUsersComponent implements OnInit {
 	selectedCompanyId = 0;
 	dropdownDataLoading = true;
     isSearchableDropdownHidden = false;
+	selectedCompanyIds = [];
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,

@@ -364,6 +364,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**XNFR-679***/
 	flexiFieldsMenuHeader = MY_PROFILE_MENU_CONSTANTS.FLEXI_FIELDS;
 	isFlexiFieldsOptionClicked = false;
+	isUpdateModuleOptionClicked = false;
+	updateModulesMenuHeader = MY_PROFILE_MENU_CONSTANTS.UPDATE_MODULES;
+	/**XNFR-677**/
+	showModelPopupForSalesforce:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2170,6 +2174,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.welcomePages;
+		}else if(this.activeTabName==this.updateModulesMenuHeader){
+			this.activateUpdateModulesMenuHeader();
 		}
 		/*****XNFR-628******/
 		else if (this.activeTabName == this.flexiFieldsMenuHeader) {
@@ -2188,6 +2194,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			self.stopNgxLoader();
 		}, 500);
 		this.activeTabHeader = this.flexiFieldsMenuHeader;
+  }
+
+	private activateUpdateModulesMenuHeader() {
+		this.startNgxLoader();
+		this.isUpdateModuleOptionClicked = false;
+		let self = this;
+		setTimeout(() => {
+			self.isUpdateModuleOptionClicked = true;
+			self.stopNgxLoader();
+		}, 500);
+		this.activeTabHeader = this.updateModulesMenuHeader;
 	}
 
 	/*****XNFR-628******/
@@ -3293,7 +3310,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				confirmButtonText: 'Yes'
 
 			}).then(function () {
-				self.configSalesforce();
+				/**XNFR-677**/
+				self.showSalesforceInstanceModelPopup();
 			}, function (dismiss: any) {
 				console.log('you clicked on option' + dismiss);
 			});
@@ -4651,8 +4669,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.dashBoardService.activateThemeForCompany(theme).subscribe(
 			(data: any) => {
 				this.ngxloading = false;
-				location.reload();
-				this.router.navigateByUrl(this.referenceService.homeRouter);
+				let self =this
+				setTimeout(() => {
+					location.reload();
+					self.router.navigateByUrl(this.referenceService.homeRouter);
+				}, 500);
 			},
 			error => {
 				this.referenceService.scrollSmoothToTop();
@@ -4951,5 +4972,33 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			default:
 				return '';
 		}
+	}
+
+	/**XNFR-677**/
+	showSalesforceInstanceModelPopup() {
+		this.showModelPopupForSalesforce = true;
+	}
+
+	closeModelPopup() {
+		$('#unpublished-modal').modal('hide');
+		$('input[name="rdaction"]').prop('checked', false);
+		this.showModelPopupForSalesforce = false;
+	}
+
+	getSalesforceRedirectUrl(event) {
+		this.ngxloading = true;
+		this.integrationService.getSalesforceRedirectUrl(event).subscribe(
+			data => {
+				$('#unpublished-modal').modal('hide');
+				$('input[name="rdaction"]').prop('checked', false);
+				this.sfRedirectURL = data.data;
+				this.configSalesforce();
+				this.ngxloading = false;
+			},
+			error => {
+				this.ngxloading = false;
+				this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try again', true);
+			}
+		)
 	}
 }

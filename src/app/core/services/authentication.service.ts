@@ -1439,11 +1439,10 @@ logoutByUserId(){
   return this.callGetMethod(url);
 }
 
-vanityWelcomePageRequired(userName) {
+vanityWelcomePageRequired(userId) {
   this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-  return this.http.post(this.REST_URL + 'v_url/vanityWelcomePageRequired?userName=' + userName + '&access_token=' + this.access_token, this.dashboardAnalyticsDto)
-    .map((res: Response) => { return res.json(); })
-    .catch((error: any) => { return error; });
+  let url = this.REST_URL + 'v_url/vanityWelcomePageRequired?userId=' + userId +'&vanityUrlFilter='+this.dashboardAnalyticsDto.vanityUrlFilter +'&vendorCompanyProfileName='+this.dashboardAnalyticsDto.vendorCompanyProfileName +'&access_token=' + this.access_token;
+  return this.callGetMethod(url);
 } 
 
   getCustomFieldsMissingErrorMessage(){

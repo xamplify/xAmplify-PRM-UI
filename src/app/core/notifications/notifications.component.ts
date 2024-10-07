@@ -80,7 +80,14 @@ export class NotificationsComponent implements OnInit {
             this.markAsRead(notification);
         }
         this.referenceService.campaignType ='REGULAR'; // get the campaign type dynamically to show the analytics loader correctly
-        this.router.navigate(['/home/' + notification.targetUrl]);
+        if(this.router.url.includes('/welcome-page')){
+            this.referenceService.isWelcomePageLoading = true;
+          this.router.navigate(['/home/' + notification.targetUrl]).then(() => {
+            window.location.reload();
+          });
+        }else{
+            this.router.navigate(['/home/' + notification.targetUrl]);
+        }
     }
     setPage(event: any) {
         this.pagination.pageIndex = event.page;

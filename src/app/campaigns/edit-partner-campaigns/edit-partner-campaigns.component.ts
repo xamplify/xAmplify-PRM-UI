@@ -1631,9 +1631,10 @@ downloadAsImage(campaign:any){
                     let param: any = {
                         'campaignId': campaign.campaignId,
                         'loggedInUserId': this.loggedInUserId,
-                        'downloadType': 'png'
+                        'downloadType': 'png',
+                        'fromEmailUserId':campaign.fromEmailUserId
                     };
-                    let completeUrl = this.authenticationService.REST_URL + "campaign/download?access_token=" + this.authenticationService.access_token;
+                    let completeUrl = this.authenticationService.REST_URL + "campaign/download/fromEmailUserId?access_token=" + this.authenticationService.access_token;
                     this.referenceService.post(param, completeUrl);
                     this.partnerTemplateLoader = false;
                 }else{

@@ -157,6 +157,7 @@ export class ReferenceService {
   isWelcomePageLoading: boolean = false;
   isHarizontalNavigationBar:boolean = false;
   isFromLogin:boolean  = false;
+  isUserProfileLoading = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3560,7 +3561,7 @@ clearHeadScriptFiles(){
   private setTitle() {
     let iconPath = localStorage.getItem("appIcon");
     let completeIconPath = "";
-    if (iconPath) {
+    if (iconPath !== "null" && iconPath != null && iconPath != "") {
       completeIconPath = this.authenticationService.MEDIA_URL + iconPath;
     } else {
       completeIconPath += this.authenticationService.APP_URL + "favicon.ico";
@@ -3778,30 +3779,69 @@ preivewAssetForPartnerOnNewHost(id: any) {
 		this.navigateToRouterByViewTypes(url, categoryId, viewType, folderViewType, folderListView);
   }
 
-  navigateToQuickLinksAnalytics(quickLink:any,isPartnerLoggedInThroughVanityUrl:boolean,vendorCompanyId:number){
+  navigateToQuickLinksAnalytics(quickLink:any){
     let router = "";
     let viewType = "/"+this.getListOrGridViewType();
     if(quickLink.type=="Asset"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "/home/dam/sharedp/view/"+quickLink.damPartnerId+viewType;
-      }else{
-        router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
-      }
+      router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
     }else if(quickLink.type=="Track"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "home/tracks/tb/"+vendorCompanyId+"/"+quickLink.slug+viewType;
-      }else{
-        router = "/home/tracks/analytics/"+quickLink.id+viewType;
-      }
+      router = "/home/tracks/analytics/"+quickLink.id+viewType;
     }else if(quickLink.type=="Play Book"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "home/playbook/pb/"+vendorCompanyId+"/"+quickLink.slug+viewType;
-      }else{
-        router = "/home/playbook/analytics/"+quickLink.id+viewType;
-      }
+      router = "/home/playbook/analytics/"+quickLink.id+viewType;
     }
     this.goToRouter(router);
   }
+
+  handleQuickLinkPreview(quickLink: any, isPartnerLoggedInThroughVanityUrl: boolean, vendorCompanyId: number) {
+    const viewType = `/${this.getListOrGridViewType()}`;
+    let router = '';
+    let id = quickLink.id;
+    if(isPartnerLoggedInThroughVanityUrl){
+      id = quickLink.damPartnerId;
+    }
+    const navigateToDamPartnerView = () => {
+        router = `${RouterUrlConstants.home}${RouterUrlConstants.dam}${RouterUrlConstants.damPartnerView}${RouterUrlConstants.view}${id}${viewType}`;
+    };
+
+    const handleAssetPreview = () => {
+      if (this.isVideo(quickLink.assetType)) {
+            const videoUrl = `/home/dam/previewVideo/${quickLink.videoId}/${quickLink.id}`;
+            this.navigateToRouterByViewTypes(videoUrl, 0, undefined, undefined, undefined);
+        } else if (quickLink.beeTemplate) {
+            this.previewAssetPdfInNewTab(quickLink.id);
+        } else {
+            this.preivewAssetOnNewHost(quickLink.id);
+        }
+    };
+
+    const handleOtherTypes = () => {
+        switch (quickLink.type) {
+            case 'Track':
+                router = `home/tracks/tb/${vendorCompanyId}/${quickLink.slug}${viewType}`;
+                break;
+            case 'Play Book':
+                router = `home/playbook/pb/${vendorCompanyId}/${quickLink.slug}${viewType}`;
+                break;
+        }
+    };
+
+    if (quickLink.type === 'Asset') {
+        if (isPartnerLoggedInThroughVanityUrl) {
+            navigateToDamPartnerView();
+        } else {
+            handleAssetPreview();
+        }
+    } else {
+        handleOtherTypes();
+    }
+
+    if (router) {
+        this.goToRouter(router);
+    }
+}
+
+ 
+  
 
   isNumber(value:any){
     return typeof value === 'number';
@@ -3816,6 +3856,15 @@ copySelectedElement(inputElement:any,id:string){
   $('#'+id).show(600);
 }
 
+/*XNFR-553*/
+checkIsValidString(inputString:any) {
+  return inputString != undefined && inputString != null && this.getTrimmedData(inputString).length > 0;
+}
+/*XNFR-553*/
+getFirstLetter(inputString:any) {
+  return inputString.length > 0 ? inputString.slice(0,1) : '*';
+}
+
   findDuplicateArrayElements(array:any) {
     var recipientsArray = array.sort();
     var duplicateElements = [];
@@ -3826,7 +3875,7 @@ copySelectedElement(inputElement:any,id:string){
     }
     return duplicateElements;
   }
-
+  
   /*XNFR-679*/
   isValidCustomFieldName(input:string){
     return this.regularExpressions.CUSTOM_FIELD_NAME_PATTERN.test(input);
@@ -3841,7 +3890,6 @@ copySelectedElement(inputElement:any,id:string){
    
 
  }
-
   
 }
 

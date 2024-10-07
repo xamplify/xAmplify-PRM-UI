@@ -11,7 +11,10 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import flatpickr from 'flatpickr';
+
 declare var $:any;
+
 @Component({
   selector: 'app-welcome-page',
   styleUrls: ['./welcome-page.component.css'],
@@ -55,25 +58,37 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
  
   ngOnInit() {
     this.pageLoading = true;
+    this.removeFlatpickrInstances();
     this.getActiveThemeData(this.vanityLoginDto);
     if(this.router.url.includes('/welcome-page')){
         this.referenceService.clearHeadScriptFiles();
+        if (this.vanityURLService.isVanityURLEnabled()) {
+          this.vanityURLService.checkVanityURLDetails();
+        }
     }
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
     $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
-    this.pageLoading = false;
   }
    
   ngAfterViewInit(){
-    if(this.router.url.includes('/welcome-page')){
-      this.getHtmlBodyAlias();
-      this.displayPage = true;
-      if(this.referenceService.isWelcomePageLoading && this.referenceService.isFromLogin){
-        this.referenceService.isWelcomePageLoading = false;
-        this.referenceService.isFromLogin = false;
-      }
-      }  
+    
+    if(!this.router.url.includes('/welcome-page')){
+      setTimeout(() => {
+      this.pageLoading = false;
+      },1000);
+    }
+    setTimeout(() => {
+      if(this.router.url.includes('/welcome-page')){
+        this.getHtmlBodyAlias();
+        this.displayPage = true;
+        if(this.referenceService.isWelcomePageLoading && this.referenceService.isFromLogin){
+          this.referenceService.isWelcomePageLoading = false;
+          this.referenceService.isFromLogin = false;
+        }
+        }  
+    }, 2000);
+    this.referenceService.homeRouter='/welcome-page';
   }
 
   getActiveThemeData(vanityLoginDto: VanityLoginDto) {
@@ -248,6 +263,7 @@ getHtmlBodyAlias(){
        (response: any) => {
                 this.htmlString = this.vanityURLService.sanitizeHtmlWithImportant(response.message)
                 this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(this.htmlString);
+                this.pageLoading = false;
        },
        (error: string) => {
         this.xtremandLogger
@@ -291,6 +307,17 @@ getVideoDefaultSettings() {
   } catch (error) {
     this.xtremandLogger.error("error" + error);
   }
+}
+
+private removeFlatpickrInstances(): void {
+  // Using jQuery ($) to select elements and destroy Flatpickr instances
+  $('.flatpickr-input').each(function () {
+    const instance = ($(this) as any)[0]._flatpickr;
+    if (instance) {
+      instance.destroy();
+    }
+  });
+
 }
 
 }

@@ -16,14 +16,17 @@ import { ResubscribeContactModalComponent } from '../contacts/resubscribe-contac
 import { AddCompanyContactsComponent } from 'app/contacts/add-company-contacts/add-company-contacts.component';
 import { HalopsaauthenticationpopupComponent } from 'app/contacts/halopsaauthenticationpopup/halopsaauthenticationpopup.component';
 import { CustomCsvMappingComponent } from 'app/contacts/custom-csv-mapping/custom-csv-mapping.component';
+import { ContactDetailsComponent } from 'app/contacts/contact-details/contact-details.component';
+import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom-manage-leads.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
         declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent,
-        UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent,CustomCsvMappingComponent],
+        UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent, ContactDetailsComponent, CustomCsvMappingComponent],
         exports: [FormsModule, CommonModule, RouterModule, AddContactsComponent,ManageContactsComponent,EditContactsComponent,
-                  SocialContactsCallbackComponent, AddContactModalComponent, UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,
-                  HalopsaauthenticationpopupComponent,CustomCsvMappingComponent],
+                  SocialContactsCallbackComponent, AddContactModalComponent, UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent, 
+                  HalopsaauthenticationpopupComponent, ContactDetailsComponent, CustomCsvMappingComponent],
+
         providers: [SocialPagerService],
 })
 

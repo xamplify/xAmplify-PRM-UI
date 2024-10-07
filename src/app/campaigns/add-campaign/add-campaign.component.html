@@ -364,7 +364,7 @@
                                                 <div class="col-sm-8">
                                                     <select class="form-control" name="campaign.email"
                                                         [(ngModel)]="campaign.email" style="width: 100%"
-                                                        (change)="setFromName()">
+                                                        (change)="setFromName();validateForm()">
                                                         <option *ngFor="let teamMember of teamMemberEmailIds"
                                                             [ngValue]="teamMember.emailId">
                                                             {{teamMember.emailId}}
@@ -2104,12 +2104,12 @@
     (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
 <!--Preview  Email Template-->
 <app-send-test-email *ngIf="isPreviewEmailTemplateButtonClicked" [id]="selectedEmailTemplateIdForPreview"
-    [isPreviewEmailTemplate]="isPreviewEmailTemplateButtonClicked" [fromEmail]="campaign?.email" [templateName]="selectedEmailTemplateNameForPreview"
+    [isPreviewEmailTemplate]="isPreviewEmailTemplateButtonClicked" [fromEmailUserId]="campaign?.fromEmailUserId" [fromEmail]="campaign?.email" [templateName]="selectedEmailTemplateNameForPreview"
     (sendTestEmailComponentEventEmitter)="previewEmailTemplateModalPopupEventReceiver()"></app-send-test-email>
 <!--Send Test Email-->
 <app-send-test-email *ngIf="isSendTestEmailOptionClicked" [id]="emailTemplateIdForSendTestEmail"
     [isPreviewEmailTemplate]="false" [templateName]="emailTemplateNameForSendTestEmail"
-    [subject]="campaign?.subjectLine" [fromEmail]="campaign?.email" [fromName]="campaign?.fromName"
+    [subject]="campaign?.subjectLine" [fromEmailUserId]="campaign?.fromEmailUserId" [fromEmail]="campaign?.email" [fromName]="campaign?.fromName"
     [campaignSendTestEmail]="true" [campaign]="campaign"
     (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 

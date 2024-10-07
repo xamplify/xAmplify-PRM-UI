@@ -759,7 +759,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     private findCampaignPipeLines() {
         this.crmErrorMessage = new CustomResponse();
         this.listCampaignPipelines();
-        if (this.activeCRMDetails.activeCRM && "SALESFORCE" === this.activeCRMDetails.type) {
+        if (this.activeCRMDetails.activeCRM && "SALESFORCE" === this.activeCRMDetails.type && !this.isPageCampaign) {
             this.integrationService.checkSfCustomFields(this.authenticationService.getUserId())
             .subscribe(
                 (data) => {

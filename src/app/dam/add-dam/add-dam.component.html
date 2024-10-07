@@ -114,7 +114,7 @@
                         </div>
                      </div>
                      <!--White Labeled--->
-                     <div class="col-lg-12 col-md-12">
+                     <div class="col-lg-12 col-md-12" *ngIf="hasShareWhiteLabeledContentAccess">
                         <div class="form-group col-md-6 col-lg-6">
                            <label>White Labeled</label>
                            <app-custom-ui-switch [customSwitch]="damPostDto?.shareAsWhiteLabeledAsset"
@@ -126,8 +126,8 @@
                            </span>
                         </div>
                      </div>
-                      <!--Added To Quick Links--->
-                      <div class="col-lg-12 col-md-12" *ngIf="!isPartnerView">
+                      <!--XNFR-578 && XBI-3235-->
+                      <div class="col-lg-12 col-md-12" *ngIf="!isPartnerView && !authenticationService?.module?.isMarketingCompany">
                         <div class="form-group col-md-6 col-lg-6">
                            <label>Add To Quick Links</label>
                            <app-custom-ui-switch [customSwitch]="damPostDto?.addedToQuickLinks"

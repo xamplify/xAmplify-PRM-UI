@@ -52,6 +52,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.customFields.options = this.customField.options.map(option => new PicklistValues(option.label, option.value));
     this.customFields.picklistValues = this.customField.picklistValues;
     this.customFields.defaultChoiceLabel = this.customField.defaultChoiceLabel;
+    this.customFields.referenceTo = this.customField.referenceTo;
     if (this.customField.nonInteractive) {
       this.customFields.private = this.customField.private;
     }

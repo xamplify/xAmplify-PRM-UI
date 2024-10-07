@@ -29,6 +29,7 @@ import { MenuItem } from 'app/core/models/menu-item';
 import { UserService } from 'app/core/services/user.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { Module } from 'app/core/models/module';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $:any, CKEDITOR:any;
 
@@ -124,6 +125,7 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
   displayedMoreItems: any[] = [];
   itemsToShow: number = 3;
   isWelcomePageActive:boolean = false;
+  helpGuidesUrl:boolean = false;
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -331,11 +333,7 @@ private beforeAdd(tag: any) {
         },
         error => this.logger.errorPage(error),
         () => {
-          if (this.vanityLoginDto.vanityUrlFilter) {
-            this.vendorCount = 1;
-          } else {
-            this.getVendorCount();
-          }
+          this.getVendorCount();
         }
       );
   }
@@ -364,20 +362,7 @@ private beforeAdd(tag: any) {
   }
   ngOnInit() {
     try {
-      this.getDashboardType();
-      this.getUnreadNotificationsCount();
-      this.getRoles();
-      this.isAddedByVendor();
-      this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
-      this.getVendorRegisterDealValue();
-      this.getReferVendorOption();
-
-      this.findMenuItems();
-      this.getMergeTagByPath();
-      this.isWelcomePageActive =this.router.url.includes('/welcome-page');
-      this.model = this.refService.topNavBarUserDetails;
-
- 
+      this.checkWelcomePageRequired();
     } catch (error) { this.logger.error('error' + error); }
   }
   getReferVendorOption() {
@@ -600,9 +585,11 @@ private beforeAdd(tag: any) {
       self.router.navigate([url]).then(() => {
         // Reload the page (optional, Angular should handle route changes without a full reload)
         if(isWelcomePage){
+          self.location.replaceState(url);
           window.location.reload();
+          console.log("aksjndkn")
           self.referenceService.isWelcomePageLoading = true;
-        }
+        }  
       });
       self.authenticationService.module.topNavBarLoader = false;
     }, 500);
@@ -615,6 +602,7 @@ private beforeAdd(tag: any) {
         this.router.navigate([url]).then(() => {
           // Reload the page (optional, Angular should handle route changes without a full reload)
           if(isWelcomePage){
+            this.location.replaceState(url);
             window.location.reload();
             this.referenceService.isWelcomePageLoading = true;
           }
@@ -639,6 +627,7 @@ private beforeAdd(tag: any) {
     let isWelcomePage = this.router.url.includes('/welcome-page')
         this.router.navigate(["/home/leads/manage"]).then(() => {
           if(isWelcomePage){
+            this.location.replaceState("/home/leads/manage");
             window.location.reload();
           }
         });
@@ -650,6 +639,7 @@ private beforeAdd(tag: any) {
     let isWelcomePage = this.router.url.includes('/welcome-page')
         this.router.navigate(["/home/deal/manage"]).then(() => {
           if(isWelcomePage){
+            this.location.replaceState("/home/leads/manage");
             window.location.reload();
           }
         });
@@ -756,7 +746,7 @@ private beforeAdd(tag: any) {
 					this.menuItem.team = data.team;
 
 					this.setAuthenticationServiceVariables(module,data);
-
+          
 					const roles = this.authenticationService.getRoles();
 					this.authenticationService.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
 					module.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
@@ -797,7 +787,7 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.showSupportSettingOption = data.showSupportSettingOption;
 					let loginAsPartnerOptionEnabledForVendor = data.loginAsPartnerOptionEnabledForVendor;
 					if(this.isLoggedInAsPartner && !loginAsPartnerOptionEnabledForVendor){
-						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account. We are redirecting you to the login page.");
+						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account or the application has been opened in multiple tabs.So We are redirecting you to the login page.");
 						setTimeout(() => {
 							this.authenticationService.logout();
 						}, 7000);
@@ -806,10 +796,7 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					//XNFR-276
           this.menuItems = data.menuItems;
-          this.displayedItems = this.menuItems.slice(0, 4);
-          console.log(this.displayedItems)
-          this.displayedMoreItems = this.menuItems.slice(4, this.menuItems.length)
-          console.log(this.displayedMoreItems)
+
 
 				},
 				error => {
@@ -875,7 +862,7 @@ private beforeAdd(tag: any) {
 		module.notifyPartners = data.notifyPartners;
 		module.isMarketingTeamMember = roleDisplayDto.marketingTeamMember;
 		module.isMarektingAndPartner = roleDisplayDto.marketingAndPartner;
-    	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
+    module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
 		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
 		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
 		module.isOrgAdminCompany = roleDisplayDto.orgAdmin || roleDisplayDto.orgAdminTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember;
@@ -886,6 +873,9 @@ private beforeAdd(tag: any) {
 		/****XNFR-583****/
 		module.vendorPagesEnabled = data.vendorPagesEnabled;
 		module.chatGptIntegrationEnabled = data.chatGptIntegrationEnabled;
+
+    /**XNFR-698**/
+		module.isMyVendorsOptionDisplayed = data.myVendorsOptionDisplayed;
 	}
 
 	setContentMenu(data: any, module: any) {
@@ -1107,6 +1097,7 @@ private beforeAdd(tag: any) {
     // Use the Angular Router to navigate
     this.router.navigate([path]).then(() => {
       // Reload the page (optional, Angular should handle route changes without a full reload)
+      this.location.replaceState(path);
       window.location.reload();
     });
   }else{
@@ -1125,4 +1116,58 @@ private beforeAdd(tag: any) {
     });
   }
   
+  navigateToGivenPath(path:any){
+    if(this.router.url.includes('/welcome-page')){
+      this.referenceService.isWelcomePageLoading = true;
+    this.router.navigate([path]).then(() => {
+      this.location.replaceState(path);
+      window.location.reload();
+    });
+  }else{
+    this.router.navigate([path]);
+  }
+  }
+
+
+
+
+   checkWelcomePageRequired(){
+    let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
+    
+    let  isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+    this.authenticationService.vanityWelcomePageRequired(currentUser.userId).subscribe(
+      data => {
+        if(isWelcomePageEnabled == data.data){
+          this.getDashboardType();
+          this.getUnreadNotificationsCount();
+          this.getRoles();
+          this.isAddedByVendor();
+          this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
+          this.helpGuidesUrl = this.router.url.includes('home/help');
+          this.getVendorRegisterDealValue();
+          this.getReferVendorOption();
+    
+          this.findMenuItems();
+          this.getMergeTagByPath();
+          this.isWelcomePageActive =this.router.url.includes('/welcome-page');
+          this.model = this.refService.topNavBarUserDetails;
+          if(this.isLoggedInAsPartner || this.isLoggedInAsTeamMember) {
+            $('.page-header-fixed .page-container').attr('style', 'margin-top: 110px !important');
+            $('.xamplify-welcome-page-div-top').attr('style', 'margin-top: 90px !important');
+          }
+        }else{
+          currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = data.data;
+          localStorage.setItem('currentUser',JSON.stringify(currentUser));
+          this.router.navigate(['/home/dashboard']).then(() => {
+            this.referenceService.isWelcomePageLoading = true;
+            this.location.replaceState('/home/dashboard');
+            window.location.reload();
+          });
+        }
+
+      },
+      error => this.logger.log(error),
+      () => this.logger.log('Finished')
+    );
+  } 
 }

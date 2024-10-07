@@ -203,6 +203,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
                       $.each(data.landingPages, function (index, landingPage) {
                           landingPage.displayTime = new Date(landingPage.createdDateInString);
                       });
+                      $.each(data.landingPages, function (index, landingPage) {
+                          landingPage.updatedTime = new Date(landingPage.updatedDateInString);
+                      });
                       pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                   }
                   this.referenceService.loading(this.httpRequestLoader, false);
@@ -307,7 +310,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
               confirmButtonText: 'Yes, delete it!'
 
           }).then(function () {
-              self.deleteById(landingPage);
+            if(self.welcomePages){
+                self.welcomePageDelete(landingPage);
+            }else{
+                self.deleteById(landingPage);
+            }
           }, function (dismiss: any) {
               console.log('you clicked on option' + dismiss);
           });
@@ -402,7 +409,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
   goToFormAnalytics(id: number) {
-    if(this.isMasterLandingPages || this.vendorJourney){
+    if(this.isMasterLandingPages || this.vendorJourney || this.welcomePages){
         this.isFormAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
@@ -417,7 +424,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.router.navigate(['/home/forms/partner/lf/' + alias]);
   }
   goToLandingPageAnalytics(id: number) {
-    if(this.vendorJourney || this.isMasterLandingPages){
+    if(this.vendorJourney || this.isMasterLandingPages || this.welcomePages){
         this.viewAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
@@ -478,7 +485,7 @@ copy(landingPage:any){
 
   findExistingPageNames(landingPage:any){
     this.ngxloading = true;
-    this.landingPageService.getAvailableNames(this.loggedInUserId).subscribe(
+    this.landingPageService.getAvailableNames(this.loggedInUserId, this.welcomePages).subscribe(
       (data: any) => {
           let pageNames = data;
           this.copyModalPopupComponent.openModalPopup(landingPage.id,landingPage.name,"Page",pageNames);
@@ -603,20 +610,20 @@ copy(landingPage:any){
         let landingPage = new LandingPage();
         landingPage.id = landingPageId;
             this.ngxloading = true;
-            let self = this;
             this.landingPageService.updateWelcomePage(landingPage).subscribe(
               (response) => {
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-                this.findLandingPagesWithPageIndexOne();
-                  self.ngxloading = false;
+                  this.ngxloading = false;
               },
               error => {
                 this.ngxloading = false;
                 this.logger.errorPage(error);
               }, ()=>{
-                this.hardReload()
+                this.updateWelcomePageActiveKeyValueOrFinsLandingPages(true);
               });
     }
+
+
 
     unPublishWelcomePage(landingPageId:number){
         this.customResponse = new CustomResponse();
@@ -628,41 +635,72 @@ copy(landingPage:any){
             this.landingPageService.unPublishWelcomePage(landingPage).subscribe(
               (response) => {
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-                this.findLandingPagesWithPageIndexOne();
                 self.ngxloading = false;
               },
               error => {
                 this.ngxloading = false;
                 this.logger.errorPage(error);
               }, ()=>{
-                this.hardReload()
+                this.updateWelcomePageActiveKeyValueOrFinsLandingPages(false);
+
               });
     }
 
-    hardReload(){
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.ngxloading = true;
+    private updateWelcomePageActiveKeyValueOrFinsLandingPages(isWelcomePageActivated:boolean) {
+        if (this.authenticationService.vanityURLEnabled) {
+            this.updateWelcomePageActiveKeyAndReload(isWelcomePageActivated);
+        } else {
+            this.findLandingPagesWithPageIndexOne();
+        }
+    }
+    updateWelcomePageActiveKeyAndReload(isWelcomePageActivated:boolean){
+        let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
+        currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = isWelcomePageActivated;
+        //try to set only the welcomePageEnabledKey value insted of the whole 'currentUser'
+        localStorage.setItem('currentUser',JSON.stringify(currentUser)) ;
 
-        this.authenticationService.vanityWelcomePageRequired(currentUser['userName']).subscribe(
-            (res)=>{
-                currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = res.data;
-                localStorage.setItem('currentUser',JSON.stringify(currentUser)) ;
-                if(currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]){
-                    //this.router.navigate(['/welcome-page']);
-                    this.location.replaceState('/welcome-page');
-                }else{
-                    //this.router.navigate(['/home/dashboard']);
-                    this.location.replaceState('/home/dashboard');
-                }  
-                window.location.reload();       
-                this.ngxloading = false;
-                
-              
-            },error => {
-                this.ngxloading = false;
-                this.logger.errorPage(error);
-              }
-        )
+        this.ngxloading = true;
+        if(currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]){
+            this.location.replaceState('/welcome-page');
+        }else{
+            this.location.replaceState('/home/dashboard');
+        }  
+        window.location.reload();       
+        this.ngxloading = false;
+    }
+
+    welcomePageDelete(landingPage: LandingPage) {
+        this.customResponse = new CustomResponse();
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.referenceService.goToTop();
+        this.landingPageService.welcomePageDeletebById(landingPage.id)
+            .subscribe(
+                (response: any) => {
+                    if(response.access){
+                        if (response.statusCode == 200) {
+                            let message = landingPage.name + " deleted successfully";
+                            this.customResponse = new CustomResponse('SUCCESS', message, true);
+                            this.findLandingPagesWithPageIndexOne();
+                        } else {
+                            let pageNames = "";
+                            $.each(response.data, function (index:number, value:any) {
+                                pageNames += (index + 1) + ". " + value + "\n\n";
+                            });
+                            let message = response.message + "\n\n" + pageNames;
+                            this.customResponse = new CustomResponse('ERROR', message, true);
+                            this.referenceService.loading(this.httpRequestLoader, false);
+                        }
+                    }else{
+                        this.authenticationService.forceToLogout();
+                    }
+                   
+  
+                },
+                (error: string) => {
+                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+                    this.customResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+                }
+            );
     }
 }
 

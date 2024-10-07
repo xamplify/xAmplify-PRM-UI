@@ -34,6 +34,7 @@ import { MdfService } from 'app/mdf/services/mdf.service';
 import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 
 declare var $,swal: any;
@@ -591,7 +592,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             'roles': data.roles,
                             'campaignAccessDto': data.campaignAccessDto,
                             'logedInCustomerCompanyNeme': JSON.parse(currentUser)['companyName'],
-							'source':data.source	
+							'source':data.source,
+                            'isWelcomePageEnabled':JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
                         };
                         localStorage.clear();
                         if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles) {
@@ -658,10 +660,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.authenticationService.user.hasCompany = true;
                             self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
-                            self.router.navigate(["/home/dashboard/welcome"]);
+                            const currentUser = localStorage.getItem('currentUser');
+                            if(JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]){
+                                self.router.navigate(["/welcome-page"]);
+                            }else{
+                                self.router.navigate(["/home/dashboard/welcome"]);
+                            }
                             self.processor.set(self.processor);
                             self.saveVideoBrandLog();
-                            const currentUser = localStorage.getItem('currentUser');
                             let companyName = JSON.parse(currentUser)['companyName'];
                             if(companyName==null || companyName==undefined || companyName==""){
                                 companyName = self.companyProfile.companyName;
@@ -676,7 +682,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                                 'roles': JSON.parse(currentUser)['roles'],
                                 'campaignAccessDto':JSON.parse(currentUser)['campaignAccessDto'],
                                 'logedInCustomerCompanyNeme':companyName,
-								'source':JSON.parse(currentUser)['source']                         
+								'source':JSON.parse(currentUser)['source']  ,
+                                'isWelcomePageEnabled':JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
   							};
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
@@ -933,7 +940,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     }
                 }
             } else {
-                this.removeCompanyNameError();
+                if (value.length >50){
+                    this.setCompanyNameError("Company Name cannot be more than 50 characters long.");
+                }else{
+                    this.removeCompanyNameError();
+                }  
             }
         } else {
             this.companyNameErrorMessage = "";
@@ -1405,9 +1416,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     validateTwitter() {
         if ($.trim(this.companyProfile.twitterLink).length > 0) {
-            if (!this.companyProfile.twitterLink.includes('twitter.com') ) {
+            if (!(this.companyProfile.twitterLink.includes('twitter.com') || this.isValidTwitterLink(this.companyProfile.twitterLink))) {
                 this.addTwitterError();
-                this.twitterLinkErrorMessage = "Invalid Twiiter Url";
+                this.twitterLinkErrorMessage = "Invalid Twitter Url";
             } else {
                 this.removeTwitterError();
             }
@@ -1979,6 +1990,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     setReferVendorValue(event:boolean){
         this.campaignAccess.referVendor = event;
+    }
+    isValidTwitterLink(twitterLink: any) {
+        const  regex =  /^(https?:\/\/)?(www\.)?x\.com(\/.*)?$/;
+        return regex.test(twitterLink);
     }
   
 }

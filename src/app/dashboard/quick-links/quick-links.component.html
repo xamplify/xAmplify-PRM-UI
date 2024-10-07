@@ -39,7 +39,7 @@
              <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
              <ng-container *ngIf="!customResponse?.isVisible">
                 <div class="inline-flex border-end" *ngFor="let quickLink of quickLinks">
-                    <div class="col w430 text-overflow">
+                    <div class="col w430 text-overflow pointer" (click)="preview(quickLink)">
                         <h5 class="line-height m0 text-overflow">
                         <span data-toggle="tooltip" data-placement="bottom"  title="{{quickLink?.title}}">{{quickLink?.title}}</span>
                         </h5>
@@ -57,8 +57,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{quickLink:quickLink,
-                            access:authenticationService?.module?.damAccess,
-                            title: authenticationService?.module?.damAccess ?'Click here to view asset analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.damAccess && quickLink?.published,
+                            title: authenticationService?.module?.damAccess && quickLink?.published
+                             ?'Click here to view asset analytics': authenticationService?.module?.damAccess && !quickLink?.published ? 'Not yet published'
+                             :'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Asset / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
@@ -75,8 +77,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{quickLink:quickLink,
-                            access:authenticationService?.module?.lmsAccess,
-                            title: authenticationService?.module?.lmsAccess ?'Click here to view track analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.lmsAccess && quickLink?.published,
+                            title: authenticationService?.module?.lmsAccess && quickLink?.published
+                             ?'Click here to view track analytics': authenticationService?.module?.lmsAccess && !quickLink?.published ? 'Not yet published':
+                              'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Track / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
@@ -93,8 +97,10 @@
                         <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
                             [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{quickLink:quickLink,
-                            access:authenticationService?.module?.playbookAccess,
-                            title: authenticationService?.module?.playbookAccess ?'Click here to view play book analytics':'You do not have permission to view the analytics'}">
+                            access:authenticationService?.module?.playbookAccess && quickLink?.published,
+                            title: authenticationService?.module?.playbookAccess &&  quickLink?.published ?
+                            'Click here to view play book analytics':  authenticationService?.module?.playbookAccess &&  !quickLink?.published ?'Not yet published'
+                            :'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Play Book / Partner View-->
                         <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
@@ -119,10 +125,16 @@
    </div>
   </div>
   </div>
-  <ng-template #quickLinkNgTemplateIcon let-quickLink="quickLink" let-access="access" let-title="title">
-   <div [ngClass]="access ? 'col mt10':'disabled-div col mt10'" title="{{title}}">
-       <a [ngClass]="!access? 'disabled-div':''" (click)="access && navigate(quickLink)">
-           <i class="fa fa-link" [ngClass]="!access ?'disabled':''"></i>
-       </a>
-   </div>
+  
+<ng-template #quickLinkNgTemplateIcon let-quickLink="quickLink" let-access="access" let-title="title">
+    <div *ngIf="!isPartnerLoggedInThroughVanityUrl" [ngClass]="access ? 'col mt10':'disabled-div col mt10'" data-toggle="tooltip" data-placement="top" title="{{title}}">
+        <a class="quicklinks_icons" [ngClass]="!access? 'disabled-div':''" (click)="$event.stopPropagation();access && navigateToAnalytics(quickLink)">
+            <i class="fa fa-line-chart" [ngClass]="!access ?'disabled':''"></i>
+        </a>
+    </div>
+     <div class="col mt10" title="Preview">
+        <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();preview(quickLink)">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+        </a>
+    </div>
 </ng-template>

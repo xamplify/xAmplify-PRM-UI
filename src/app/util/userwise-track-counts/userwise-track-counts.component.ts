@@ -8,12 +8,13 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
+import { Properties } from '../../common/models/properties';
 
 @Component({
   selector: 'app-userwise-track-counts',
   templateUrl: './userwise-track-counts.component.html',
   styleUrls: ['./userwise-track-counts.component.css'],
-  providers: [SortOption]
+  providers: [SortOption, Properties]
 })
 export class UserwiseTrackCountsComponent implements OnInit {
   @Input() partnerCompanyId: any;
@@ -36,16 +37,33 @@ export class UserwiseTrackCountsComponent implements OnInit {
   pagination: Pagination = new Pagination();
   scrollClass: any;
 
+  isOnlyPartner: boolean = true;
+  isOrgAdminVersion: boolean = false;
+
+
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
-    public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
+    public xtremandLogger: XtremandLogger, public sortOption: SortOption, private properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
+  tooltipText: string;
+  teamMemberTooltip: string;
+  partnerTeamMemberText: string;
+
   ngOnInit() {
+    this.tooltipText = this.type.toLowerCase() === 'track' ? this.properties.publishedTrackCountText : this.properties.publishedPlaybookCountText;
+    this.teamMemberTooltip = this.type.toLowerCase() === 'track' ? this.properties.vendorTeamMemberTrackText : this.properties.venodrTeamMemberPlaybookText;
+    this.partnerTeamMemberText = this.type.toLowerCase() === 'track' ? this.properties.vendorTeamMemberTrackText : this.properties.venodrTeamMemberPlaybookText;
   }
 
+  getIconStyle(){
+    return this.type.toLowerCase() === 'track' 
+    ? { 'padding-left': '120px', 'margin-top': '-27px', 'float': 'left' } 
+    : { 'padding-left': '150px' ,'margin-top': '-27px','float': 'left' };
+  }
+  
   ngOnChanges() {
     this.pagination.pageIndex = 1;
     this.getUserWiseTrackCounts(this.pagination);

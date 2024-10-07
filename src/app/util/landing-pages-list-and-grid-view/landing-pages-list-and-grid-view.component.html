@@ -205,6 +205,10 @@
                                         <app-timestamp [isOnlyDate]="true"
                                             [dateAndTime]="landingPage.displayTime"></app-timestamp>
                                     </h6>
+                                    <h6 *ngIf="vendorJourney || isMasterLandingPages || welcomePages" class="GridViewCotent"> <b>Updated On:</b>
+                                        <app-timestamp [isOnlyDate]="true"
+                                            [dateAndTime]="landingPage.updatedTime"></app-timestamp>
+                                    </h6>
                                     <h6 *ngIf="isPartnerLandingPage" class="GridViewCotent"><b>Shared On:</b>
                                         <app-timestamp [isOnlyDate]="true"
                                             [dateAndTime]="landingPage.displayTime"></app-timestamp>
@@ -248,11 +252,11 @@
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
                                     <ng-template [ngTemplateOutlet]="formIcon"
-                                    *ngIf="!vendorJourney||  (vendorJourney && !landingPage?.defaultLandingPage)"
+                                    *ngIf="!vendorJourney||  (vendorJourney && !landingPage?.defaultLandingPage) || (welcomePages && !landingPage?.defaultLandingPage)"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
                                     <ng-template [ngTemplateOutlet]="analyticsIcon"
-                                    *ngIf = " !(vendorJourney || isMasterLandingPages)||(vendorJourney &&  !landingPage?.defaultLandingPage) || (isMasterLandingPages && !landingPage?.defaultLandingPage)"
+                                    *ngIf = " !(vendorJourney || isMasterLandingPages || welcomePages)||(vendorJourney &&  !landingPage?.defaultLandingPage) || (isMasterLandingPages && !landingPage?.defaultLandingPage) ||(welcomePages && !landingPage?.defaultLandingPage)"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Delete Icon-->
                                     <ng-template [ngTemplateOutlet]="deleteIcon"

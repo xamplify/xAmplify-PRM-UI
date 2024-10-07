@@ -21,6 +21,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var swal, $, videojs: any;
 
 
@@ -145,6 +146,10 @@ export class ManageDealsComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.checkOppourtunityAcess();
+    if (this.referenceService.isCreated) {
+      this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    }
     this.mergeTagForUserGuide();
   }
   /** User GUide **/
@@ -179,6 +184,11 @@ export class ManageDealsComponent implements OnInit {
         });
   }
 
+  //XNFR-681
+  ngOnDestroy() {
+    this.referenceService.isCreated = false;
+  }
+
   init() {
     const roles = this.authenticationService.getRoles();
     if (roles !== undefined) {
@@ -210,7 +220,8 @@ export class ManageDealsComponent implements OnInit {
         /** User Guide */
       } else {
         if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
-        && !this.authenticationService.superiorRole.includes("Marketing") && this.authenticationService.superiorRole.includes("Partner")) {
+        && !this.authenticationService.superiorRole.includes("Marketing") && !this.authenticationService.superiorRole.includes("Prm")
+        && this.authenticationService.superiorRole.includes("Partner")) {
           this.isOnlyPartner = true;
         }
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
@@ -678,10 +689,12 @@ export class ManageDealsComponent implements OnInit {
   searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
   addDeal() {   
+    let url = RouterUrlConstants.home + RouterUrlConstants.addDeal;
     this.showDealForm = true;
     this.actionType = "add";
     this.dealId = 0;
-    this.dealsResponse.isVisible = false;    
+    this.dealsResponse.isVisible = false;   
+    this.referenceService.goToRouter(url); 
   }
 
   viewDeal(deal: Deal) {
@@ -1519,6 +1532,24 @@ export class ManageDealsComponent implements OnInit {
       this.selectedPartnerCompanyName = "";
       this.showCampaignDeals = true;
     }
+  }
+
+  checkOppourtunityAcess() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.checkIfHasOppourtunityAcess(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          let hasAuthorization = result.data;
+          if (!hasAuthorization) {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
 }

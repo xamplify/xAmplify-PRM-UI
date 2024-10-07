@@ -30,7 +30,7 @@
               <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
               <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
               <ng-container *ngIf="!httpRequestLoader.isLoading && !customResponse.isVisible">
-              <div>
+              <div class="table-responsive">
                 <table class='table tgrid table-condensed table-bordered' *ngIf="pagination.pagedItems?.length>0" id="user-list-users" aria-describedby="userListUsersTableDescription">
                   <thead>
                     <tr>

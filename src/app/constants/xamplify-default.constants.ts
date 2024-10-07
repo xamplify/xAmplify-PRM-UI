@@ -9,5 +9,8 @@ export const XAMPLIFY_CONSTANTS = {
     save:'Save',
     update:'Update',
     contact: 'Contact',
-    pageSize: 12
+    pageSize: 12,
+    currentUser:'currentUser',
+    sandbox:'Sandbox',
+    production:'Production'
 }
