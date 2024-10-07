@@ -3410,6 +3410,10 @@ export class ReferenceService {
     return $.trim(input);
   }
 
+  isValidText(input:any){
+    return input!=undefined &&  $.trim(input).length > 0;
+  }
+
 
   getRouterParameter(parameter:string){
     return this.route.snapshot.params[parameter];
@@ -3871,8 +3875,21 @@ getFirstLetter(inputString:any) {
     }
     return duplicateElements;
   }
+  
+  /*XNFR-679*/
+  isValidCustomFieldName(input:string){
+    return this.regularExpressions.CUSTOM_FIELD_NAME_PATTERN.test(input);
+  }
 
- 
+  showDiv(divId:string){
+    $('#'+divId).show(500);
+  }
+
+  showUIError(methodName:string){
+    return this.showSweetAlertErrorMessage("Error In "+methodName+"(). Please Contact Admin");
+   
+
+ }
   
 }
 

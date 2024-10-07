@@ -1,3 +1,5 @@
+import { FlexiFieldsRequestAndResponseDto } from "app/dashboard/models/flexi-fields-request-and-response-dto";
+
 export class ContactList {
     name = "";
     createdDate: string;
