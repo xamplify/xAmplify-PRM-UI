@@ -348,7 +348,7 @@
                           <tr>
                             <td>
                               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
-                              <div style="margin-left: 60px;">
+                              <div style="margin-left: 60px;"  data-toggle="tooltip" data-placement="bottom" title="{{lead.createdForCompanyName}}">
                                 <h5 class="m0" *ngIf="isPartnerVersion"><strong>Added For:</strong>
                                   <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
