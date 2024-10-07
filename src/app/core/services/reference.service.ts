@@ -2681,6 +2681,11 @@ export class ReferenceService {
     this.router.navigate(["/home/dashboard"]);
   }
 
+  goToServerErrorPage() {
+    this.router.navigate(["/500"]);
+  }
+
+
   filterSelectedColumnsFromArrayList(list: any, columnName: string) {
     return list.map(function (e: any) {
       return e[columnName];
@@ -3872,9 +3877,9 @@ getFirstLetter(inputString:any) {
     return duplicateElements;
   }
 
-  isAccessDeniedStatusCode(error: any) {
+  getStatusCode(error: any) {
     let statusCode = JSON.parse(error["status"]);
-    return statusCode==403;
+    return statusCode;
   }
 
   

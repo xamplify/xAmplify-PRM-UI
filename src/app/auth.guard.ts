@@ -81,7 +81,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                         this.goToAccessDenied(url);
                     }
                 }
-                else if (url.includes("/home/select-modules") || url.includes("/home/help")) {
+                else if (url.includes("/home/help")) {
                     return true;
                 } else if (url.indexOf("/dashboard") < 0) {
                     return this.secureUrlByRole(url);
@@ -310,7 +310,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 }
             } else if (urlType == this.mdfUrl) {
                 return true;
-            } else if (urlType == this.damUrl) {
+            } else if (urlType == this.damUrl || url.indexOf('select-modules')>-1) {
                 /**XNFR-694**/
                 this.authorizeDamUrlAccess(url);
             } else if (urlType == this.leadsUrl) {
@@ -369,14 +369,18 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 return this.checkPartnerAccessUrls(url, urlType)
             }
             else {
-                const hasRole = (roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.companyPartnerRole) > -1
-                    || roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(role) > -1);
-
-                if (url.indexOf("/" + urlType + "/") > -1 && this.authenticationService.user.hasCompany && hasRole) {
+                if (url.indexOf("select-modules") < 0) {
+                    const hasRole = (roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.companyPartnerRole) > -1
+                        || roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(role) > -1);
+                    if (url.indexOf("/" + urlType + "/") > -1 && this.authenticationService.user.hasCompany && hasRole) {
+                        return true;
+                    } else {
+                        return this.goToAccessDenied(url);
+                    }
+                }else{
                     return true;
-                } else {
-                    return this.goToAccessDenied(url);
                 }
+                
             }
         } catch (error) { console.log('error' + error); }
     }
@@ -401,8 +405,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
     /***XNFR-694****/
     handleAccessDenied(error: any): void {
-        if (this.referenceService.isAccessDeniedStatusCode(error)) {
+        let stautsCode = this.referenceService.getStatusCode(error);
+        if (stautsCode==403) {
             this.referenceService.goToAccessDeniedPage();
+        }else if(stautsCode==404){
+            this.referenceService.goToPageNotFound();
+        }else if(stautsCode==500){
+            this.referenceService.goToServerErrorPage();
         }
     }
 
@@ -440,7 +449,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         } catch (error) { console.log('error' + error); }
     }
 
-    goToAccessDenied(url): boolean {
+    goToAccessDenied(url:string): boolean {
         if (!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember())) {
             this.router.navigate(['/access-denied']);
             return false;
