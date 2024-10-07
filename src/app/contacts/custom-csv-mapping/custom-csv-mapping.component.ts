@@ -511,7 +511,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-671 *****/
   removeContact(index: number) {
-    this.contacts = this.referenceService.removeArrayItemByIndex(this.contacts, index);
+    this.contacts.splice(index, 1);
     $('#mapped-csv-column-row' + index).remove();
     $('#expanded-table-row' + index).remove();
     let emailAddress = this.contacts.map(function (contact) { return contact.emailId });
