@@ -1115,6 +1115,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedContactListIds.length = 0;
         this.disableOtherFuctionality = false;
         this.paginationType = "";
+        this.resetResponse();
         if (this.selectedAddContactsOption != 2) {
             this.customResponse = new CustomResponse();
         }

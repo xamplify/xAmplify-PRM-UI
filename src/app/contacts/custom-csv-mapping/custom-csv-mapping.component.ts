@@ -23,6 +23,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   @Input() flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto>;
   @Input() isXamplifyCsvFormatUploaded: boolean = false;
   @Output() notifyParent: EventEmitter<any>;
+  @Output() anotherNotifyParent: EventEmitter<any>;
 
   /***** XNFR-671 *****/
   xAmplifyDefaultCsvHeaders = ['First Name', 'Last Name', 'Company', 'Job Title', 'Email Id', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Mobile Number'];
@@ -43,7 +44,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-671 *****/
 
   constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
-    public xtremandLogger: XtremandLogger) { this.notifyParent = new EventEmitter(); }
+    public xtremandLogger: XtremandLogger) { this.notifyParent = new EventEmitter(); this.anotherNotifyParent = new EventEmitter(); }
 
   ngOnInit() {
     this.loadParsedCsvDtoPagination();
@@ -441,7 +442,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addCompanyNames(companyRows: any[][], user: User, i: number) {
     if (companyRows != undefined && companyRows.length > 0) {
       let companyNames = companyRows[0];
-      user.companyName = companyNames[i];
+      user.contactCompany = companyNames[i];
     }
   }
 
@@ -507,15 +508,40 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-671 *****/
   validateEmailAddressPattern(user: User) {
     user.isValidEmailIdPattern = this.referenceService.validateEmailId(user.emailId);
+    this.showSuccessMessage();
   }
 
   /***** XNFR-671 *****/
   removeContact(index: number) {
-    this.contacts.splice(index, 1);
+    this.isListLoader = true;
+    this.contacts = this.referenceService.removeArrayItemByIndex(this.contacts, index);
     $('#mapped-csv-column-row' + index).remove();
     $('#expanded-table-row' + index).remove();
+    this.setPage(1);
     let emailAddress = this.contacts.map(function (contact) { return contact.emailId });
     console.log(emailAddress);
+    this.showSuccessMessage();
+    this.cancelContacts();
+    this.isListLoader = false;
+  }
+
+  /***** XNFR-671 *****/
+  showSuccessMessage() {
+    if (this.contacts.every(contact => contact.isValidEmailIdPattern)) {
+      this.isValidEmailAddressMapped = true;
+    } else {
+      this.isValidEmailAddressMapped = false;
+    }
+  }
+
+  /***** XNFR-671 *****/
+  cancelContacts() {
+    if (this.contacts.length == 0) {
+      this.resetCustomUploadCsvFields();
+      this.anotherNotifyParent.emit();
+    } else {
+      this.notifyParent.emit(this.contacts);
+    }
   }
 
   setPage(page: number) {
