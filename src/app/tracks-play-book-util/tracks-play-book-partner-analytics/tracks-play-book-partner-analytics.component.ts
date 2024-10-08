@@ -228,10 +228,11 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
 
   viewAnalytics(partner: any, selectedIndex: number) {
     this.selectedPartnerId = partner.id;
+     /**XBI-3223**/
+    this.detailedAnalyticsSortOption.searchKey = "";
+    this.detailedAnalyticsPagination.searchKey = "";
     this.getPartnerDetailedAnalytics(this.detailedAnalyticsPagination);
     $('#analytics-list').modal('show');
-    /**XBI-3223**/
-    this.detailedAnalyticsSortOption.searchKey = "";
 
   }
 

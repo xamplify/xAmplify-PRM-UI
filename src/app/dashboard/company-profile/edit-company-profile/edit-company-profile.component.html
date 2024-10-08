@@ -66,7 +66,7 @@
 										<h5 style="margin-top: -55px; font-weight: 400; margin-bottom: 3em;">complete
 										</h5>
 										<ng-container *ngIf="!isFromAdminPanel">
-											<h4    data-toggle="tooltip" data-placement="bottom" [title]="authenticationService.user.firstName+authenticationService.user.lastName"
+											<h4   data-toggle="tooltip" data-placement="bottom" title="{{displayName}}"
 												class="control-label company-text-wrap">
 												{{authenticationService.user.firstName | slice:0:15}}<span
 													*ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;

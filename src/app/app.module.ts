@@ -78,9 +78,7 @@ import { LinkedinService } from './social/services/linkedin.service';
 import { DatePipe } from '@angular/common';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
-
-
-
+import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
@@ -116,7 +114,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService, ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
-        VanityURLService,LinkedinService,DatePipe],
+        VanityURLService,LinkedinService,DatePipe,UrlAuthGuardService],
     bootstrap: [AppComponent]
 
 })

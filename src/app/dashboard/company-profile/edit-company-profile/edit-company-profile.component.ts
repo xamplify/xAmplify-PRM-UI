@@ -35,6 +35,7 @@ import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { unescape } from 'querystring';
 
 
 declare var $,swal: any;
@@ -211,6 +212,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     supportEmailIdError = false;
     supportEmailIdErrorMessage = "";
 
+    displayName = "";
+
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -382,6 +385,15 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     
     ngOnInit() {
         this.isLocalHost = this.authenticationService.isLocalHost();
+        let firstName = this.authenticationService.user.firstName;
+        let lastName = this.authenticationService.user.lastName;
+        if(firstName==undefined){
+            firstName = "";
+        }
+        if(lastName==undefined){
+            lastName = "";
+        }
+        this.displayName = firstName+" "+lastName;
         this.geoLocation();
         if(!this.isFromAdminPanel){
             this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;

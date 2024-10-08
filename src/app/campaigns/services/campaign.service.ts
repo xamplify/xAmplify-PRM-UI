@@ -209,9 +209,9 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    getCampaignHighLevelAnalytics(campaignId: number, userId: number) {
+    getCampaignHighLevelAnalytics(campaignId: number, userId: number, loggedInUserId:number) {
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        return this.http.get(this.URL + 'campaign/' + campaignId + '/' + userId + '/highlevel-analytics/?access_token=' + this.authenticationService.access_token)
+        return this.http.get(this.URL + 'campaign/' + campaignId + '/' + userId + '/' + loggedInUserId + '/highlevel-analytics/?access_token=' + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
