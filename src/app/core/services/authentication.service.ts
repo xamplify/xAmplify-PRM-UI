@@ -1201,6 +1201,12 @@ isWelcomePageEnabled = false;
       .catch(this.handleError);
   }
 
+  public callGetMethodWithQueryParameters(url:string,params:any){
+    return this.http.get(url, { search: params })
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   public callPostMethod(url: string, requestDto: any) {
     return this.http.post(url, requestDto)
       .map(this.extractData)

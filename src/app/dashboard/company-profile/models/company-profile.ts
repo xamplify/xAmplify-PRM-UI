@@ -48,4 +48,6 @@ export class CompanyProfile {
     
     addedAdminCompanyId : number;
     supportEmailId = "";
+
+    customDomain = "";
 }
