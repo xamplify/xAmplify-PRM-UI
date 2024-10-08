@@ -112,6 +112,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
     }
 
+
     getUserByUserName(userName: string) {
         try {
             this.authenticationService.getUserByUserName(userName)
@@ -128,6 +129,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                     () => { }
                 );
         } catch (error) { console.log('error' + error); }
+
     }
 
     secureUrlByRole(url: string): boolean {

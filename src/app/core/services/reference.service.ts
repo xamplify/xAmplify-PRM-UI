@@ -158,6 +158,7 @@ export class ReferenceService {
   isHarizontalNavigationBar:boolean = false;
   isFromLogin:boolean  = false;
   isUserProfileLoading = false;
+
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
