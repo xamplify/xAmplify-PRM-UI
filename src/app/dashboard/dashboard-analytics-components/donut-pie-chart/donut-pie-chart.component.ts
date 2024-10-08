@@ -42,6 +42,7 @@ export class DonutPieChartComponent implements OnInit {
   @Input() vanityUrlFilter: boolean = false;
   @Input() vendorCompanyProfileName: string = '';
 
+ isOrgadminPartner : boolean = true; 
   headerText: string;
   chartColors: string[];
   colClass: string;

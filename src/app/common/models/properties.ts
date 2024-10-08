@@ -415,7 +415,8 @@ export class Properties {
 	publishedPlaybookCountText = "Count of Playbooks Published to the Partner";
 	vendorTeamMemberTrackText = "Count of Tracks Published by Team Members";
 	venodrTeamMemberPlaybookText = "Count of Playbooks Published by Team Members";
-
+	partnerTeamMemberTrackText = "Count of Tracks Received by Team Members";
+	partnerTeamMemberPlaybookText = "Count of Playbooks Received by Team Members";
 
 	
 	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";

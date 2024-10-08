@@ -959,7 +959,7 @@
         </span>
         <!--******************Deal Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService?.enableLeads">
-          <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+          <div class="row rowPaddingCustomize4">
             <app-partner-journey-deal-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
