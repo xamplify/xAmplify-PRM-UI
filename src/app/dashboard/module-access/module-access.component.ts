@@ -12,6 +12,7 @@ import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { Properties } from 'app/common/models/properties';
+import { ModuleCustomName } from '../models/module-custom-name';
 
 
 declare var $:any;
@@ -56,34 +57,41 @@ export class ModuleAccessComponent implements OnInit {
   companyProfileName = "";
   @Input() isNavigatedFromMyProfileSection = false;
   myProfileLoader = false;
+  /***Partner Module Custom Label***/
+  partnerModuleCustomLabelLoader = false;
+  disablePartnerModuleCustomLabelUpdateButton: boolean;
+  partnerModuleCustomLabelErrorMessage = "";
+  moduleCustomName: ModuleCustomName = new ModuleCustomName();
+
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
     public properties:Properties,public xtremandLogger:XtremandLogger) { }
-  ngOnInit() {
-    this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
-    if(this.isDashboardStats){
-      this.headerName = "Dashboard Stats";
-      this.authenticationService.selectedVendorId = this.route.snapshot.params['userId'];
-      this.companyId = this.route.snapshot.params['companyId'];
-      this.userAlias = this.route.snapshot.params['userAlias'];
-      if(this.userAlias!=undefined){
-        this.getCompanyAndUserDetails();
-      }else{
-        this.companyLoader = false;
-      }
-    }else{
-      if(this.isNavigatedFromMyProfileSection){
-        this.getCompanyIdAndUserAliasAndCompanyProfileName();
-      }else{
-        this.companyId = this.route.snapshot.params['alias'];
+
+    ngOnInit() {
+      this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
+      if(this.isDashboardStats){
+        this.headerName = "Dashboard Stats";
+        this.authenticationService.selectedVendorId = this.route.snapshot.params['userId'];
+        this.companyId = this.route.snapshot.params['companyId'];
         this.userAlias = this.route.snapshot.params['userAlias'];
-        this.companyProfilename = this.route.snapshot.params['companyProfileName'];
-        this.getAllData();
+        if(this.userAlias!=undefined){
+          this.getCompanyAndUserDetails();
+        }else{
+          this.companyLoader = false;
+        }
+      }else{
+        if(this.isNavigatedFromMyProfileSection){
+          this.getCompanyIdAndUserAliasAndCompanyProfileName();
+        }else{
+          this.companyId = this.route.snapshot.params['alias'];
+          this.userAlias = this.route.snapshot.params['userAlias'];
+          this.companyProfilename = this.route.snapshot.params['companyProfileName'];
+          this.getAllData();
+        }
+          
       }
-        
+    
     }
-   
-  }
 
   private getAllData() {
     this.getCompanyAndUserDetails();
@@ -91,8 +99,57 @@ export class ModuleAccessComponent implements OnInit {
     this.getDnsConfiguredDetails();
     this.getSpfConfiguredDetails();
     this.findMaximumAdminsLimitDetails();
+    this.findPartnerModuleCustomLabelByCompanyId();
     this.headerName = "Module Access";
   }
+
+  findPartnerModuleCustomLabelByCompanyId(){
+    this.partnerModuleCustomLabelLoader = true;
+    this.dashboardService.findPartnerModuleByCompanyId(this.companyId).
+    subscribe(
+      response=>{
+        this.moduleCustomName = response.data;
+        this.partnerModuleCustomLabelLoader = false;
+      },error=>{
+        this.xtremandLogger.errorPage(error);
+      }
+
+    );
+  }
+
+  validatePartnerModuleCustomLabel(moduleCustomName:ModuleCustomName){
+    this.disablePartnerModuleCustomLabelUpdateButton = false;
+    this.partnerModuleCustomLabelErrorMessage = "";
+    let partnerModuleCustomLabel = $.trim(moduleCustomName.customName);
+    if(partnerModuleCustomLabel.length>0){
+      let isValidName = this.regularExpressions.ALPHABETS_PATTERN.test(partnerModuleCustomLabel);
+      if(isValidName){
+        this.disablePartnerModuleCustomLabelUpdateButton = false;
+      }else{
+        this.disablePartnerModuleCustomLabelUpdateButton = true;
+        this.partnerModuleCustomLabelErrorMessage = "Invalid name";
+      }
+    }else{
+      this.disablePartnerModuleCustomLabelUpdateButton = true;
+      this.partnerModuleCustomLabelErrorMessage = "Please enter name";
+    }
+    
+  }
+
+  updatePartnerModuleCustomLabel(){
+    this.partnerModuleCustomLabelLoader = true;
+    this.dashboardService.updateModuleName(this.moduleCustomName)
+    .subscribe(
+        response=>{
+          this.referenceService.showSweetAlertSuccessMessage(response.message);
+          this.partnerModuleCustomLabelLoader = false;
+        },_error=>{
+          this.stopLoaderWithErrorMessage('Unable to update Partner Module Custom Label.');
+          this.partnerModuleCustomLabelLoader = false;
+        }
+    );
+  }
+
 
   getCompanyIdAndUserAliasAndCompanyProfileName() {
     this.myProfileLoader = true;

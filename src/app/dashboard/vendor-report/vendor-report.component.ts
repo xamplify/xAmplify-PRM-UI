@@ -240,12 +240,6 @@ export class VendorReportComponent implements OnInit {
         }
     }
 
-    editModuleNames(report: any) {
-        if (report && report.companyId && report.companyProfileName) {
-            this.referenceService.goToRouter('/home/dashboard/edit-module-names/' + report.companyId);
-        }
-    }
-
    navigateToDashboardStats(report:any){
     let companyProfileName = report['companyProfileName'];
     if(companyProfileName!=undefined){
