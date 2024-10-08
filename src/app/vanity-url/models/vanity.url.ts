@@ -35,4 +35,6 @@ export class VanityURL{
     showVendorSSO:boolean = false;
     vendorSSOName:string = "SSO";
     vendorSSOType:string = "oauth";
+    /**XNFR-709***/
+    companyProfileName = "";
 }

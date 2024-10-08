@@ -1451,4 +1451,8 @@ vanityWelcomePageRequired(userId) {
     return this.properties.customFieldsMissingErrorMessage.replace(partnersMergeTag, partnerModuleCustomName);
   }
 
+  getCompanyProfileNameByCustomDomain(customDomain:string){
+    
+  }
+
 }

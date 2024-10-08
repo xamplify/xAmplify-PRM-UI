@@ -176,10 +176,7 @@ export class VanityURLService {
       const url = this.authenticationService.REST_URL + "v_url/customLogInTemplateId/" + id +"/loggedInUserId/"+ loggedInUserId;
       return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
-  // getLoginStyleByCompanyId(companyprofileName:any){
-  //   const url = this.authenticationService.REST_URL + "v_url/customLoginStyle/companyProfile/"+ companyprofileName;
-  //     return this.http.get(url).map(this.extractData).catch(this.handleError);
-  // }
+ 
   getActiveLoginTemplate(companyProfileName:number){
     const url = this.authenticationService.REST_URL + "v_url/active/loginTemplate/"+ companyProfileName;
       return this.http.get(url).map(this.extractData).catch(this.handleError);
@@ -209,26 +206,54 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
    let url = window.location.hostname;
     let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && 
     this.envService.CLIENT_URL.indexOf('localhost')>-1;
-    if(isLocalHost){
-      let domainName = this.envService.domainName;
-      if(domainName!="" && domainName!=window.location.hostname){
-        url = this.envService.domainName+".xamplify.com";
-      }
-    }
+    url = this.setUrlForLocalHost(isLocalHost, url);
     if (!url.includes("192.168") && !url.includes("172.16")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
-        this.authenticationService.vanityURLEnabled = true;
-        this.authenticationService.companyProfileName = domainName[0];
-        this.authenticationService.setDomainUrl();
-        if (!this.authenticationService.vanityURLUserRoles) {
-          let currentUser = localStorage.getItem('currentUser');
-          if (currentUser) {
-            const parsedObject = JSON.parse(currentUser);
-            this.authenticationService.vanityURLUserRoles = parsedObject.roles;
-          }
+        console.log(url);
+        if(url.includes("xamplify.co") || url.includes("xamplify.io")){
+          this.authenticationService.companyProfileName = domainName[0];
+        }else{
+          let subDomain  = this.getCustomDomain(url);
+          console.log(url+" is custom domain And Sub Domain : "+subDomain);
+          this.authenticationService.companyProfileName = subDomain;
         }
+        this.setVanityVariables();
         return true;
+       
+      }
+    }
+  }
+
+  private getCustomDomain(url:string) {
+    var textBeforeLogin = url.replace(/\/login$/, "");
+    textBeforeLogin = textBeforeLogin.replace(/https?:\/\/|\/$/g, "");
+    return textBeforeLogin;
+  }
+
+  private setUrlForLocalHost(isLocalHost: boolean, url: string) {
+    if (isLocalHost) {
+      let domainName = this.envService.domainName;
+      if (domainName != "" && domainName != window.location.hostname) {
+        var dotCount = (domainName.match(/\./g) || []).length;
+        if (dotCount == 0) {
+          url = this.envService.domainName + ".xamplify.co";
+        } else {
+          url = "https://"+this.envService.domainName+"/login";
+        }
+      }
+    }
+    return url;
+  }
+
+  private setVanityVariables() {
+    this.authenticationService.vanityURLEnabled = true;
+    this.authenticationService.setDomainUrl();
+    if (!this.authenticationService.vanityURLUserRoles) {
+      let currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        const parsedObject = JSON.parse(currentUser);
+        this.authenticationService.vanityURLUserRoles = parsedObject.roles;
       }
     }
   }

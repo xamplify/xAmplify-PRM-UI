@@ -328,6 +328,7 @@ bgIMage2:any;
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
             this.vanityURLEnabled = result.enableVanityURL;
+            this.authenticationService.companyProfileName = result.companyProfileName;
             this.authenticationService.vendorCompanyId = result.companyId;
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
