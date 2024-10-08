@@ -2681,6 +2681,11 @@ export class ReferenceService {
     this.router.navigate(["/home/dashboard"]);
   }
 
+  goToServerErrorPage() {
+    this.router.navigate(["/500"]);
+  }
+
+
   filterSelectedColumnsFromArrayList(list: any, columnName: string) {
     return list.map(function (e: any) {
       return e[columnName];
@@ -3881,6 +3886,13 @@ getFirstLetter(inputString:any) {
     return this.regularExpressions.CUSTOM_FIELD_NAME_PATTERN.test(input);
   }
 
+
+  getStatusCode(error: any) {
+    let statusCode = JSON.parse(error["status"]);
+    return statusCode;
+  }
+
+
   showDiv(divId:string){
     $('#'+divId).show(500);
   }
@@ -3890,6 +3902,7 @@ getFirstLetter(inputString:any) {
    
 
  }
+
   
 }
 
