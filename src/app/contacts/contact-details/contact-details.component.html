@@ -244,7 +244,7 @@
               </div>
               <div class="icon-label">Note</div>
             </div>
-            <div class="icon-item">
+            <div class="icon-item" (click)="showModalPopup()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Create a Email">
                 <i class="glyphicon glyphicon-envelope"></i>
               </div>
@@ -454,3 +454,7 @@
     [selectedCompanyId]="selectedCompanyContactId" [isCompanyContact]="isCompanyContact"
     (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>
+
+<app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
+  [userEmailId]="selectedContact.emailId" (notifySubmitSuccess)="showSubmitSuccessStatus($event)"
+  (notifyClose)="closeModalPopup()"></app-add-email-modal-popup>

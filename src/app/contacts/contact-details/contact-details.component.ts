@@ -50,7 +50,7 @@ export class ContactDetailsComponent implements OnInit {
   showLeadsTab: boolean;
   listView:boolean = true;
   showLeadForm: boolean;
-  actionType: string;
+  actionType: string = 'add';
   leadId: number;
   isConvertingContactToLead: boolean = true;
 
@@ -69,6 +69,7 @@ export class ContactDetailsComponent implements OnInit {
   isMobileNumberCopied:boolean = false;
   isFromCompanyModule:boolean = false;
   companyRouter = RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage;
+  showEmailModalPopup: boolean = false;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -297,6 +298,19 @@ export class ContactDetailsComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+  }
+
+  showModalPopup() {
+    this.showEmailModalPopup = true;
+  }
+
+  showSubmitSuccessStatus(event) {
+    this.customResponse = new CustomResponse('SUCCESS', event, true);
+    this.closeModalPopup();
+  }
+
+  closeModalPopup() {
+    this.showEmailModalPopup = false;
   }
   
 }

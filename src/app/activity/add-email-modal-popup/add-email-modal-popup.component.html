@@ -1,3 +1,56 @@
-<p>
-  add-email-modal-popup works!
-</p>
+<div class="modal fade right" id="addEmailModalPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="my-container">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeEmailModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Send Email</h4>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="!isValidationMessage">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible left">
+            <a (click)="isError = false" class="close" data-dismiss="alert" aria-label="close"></a>
+            Please complete the required fields.
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
+            <input type="text" id="toEmailId" [(ngModel)]="emailActivity.toEmailId" [ngModelOptions]="{standalone: true}"
+             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
+          </div>
+          <div class="form-group">
+            <label for="subjectLine">Email subject <span class="text-danger">*</span></label>
+            <input type="text" id="subjectLine" [(ngModel)]="emailActivity.subject" [ngModelOptions]="{standalone: true}"
+             placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" />
+          </div>
+          <div class="form-group">
+            <label for="subjectLine">Message <span class="text-danger">*</span></label>
+            <ckeditor name="body" [(ngModel)]="emailActivity.body" [ngModelOptions]="{standalone: true}"></ckeditor>
+          </div>
+        </div>
+        <div *ngIf="isValidationMessage">
+          <div *ngIf="customResponse.responseType != null">
+            <div class="alert alert-dismissible m0" role="alert" [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
+                         'alert-danger': customResponse.responseType == 'ERROR',
+                         'alert-info': customResponse.responseType == 'INFO'}">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                (click)="customResponse.responseType = null; closeEmailModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 style="padding-top: 6px;">
+                <span class="text" id='responseMessage' [innerHTML]="customResponse.responseMessage"></span>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border: none" *ngIf="!isValidationMessage">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="button bgcolor-unset"
+          (click)="sendEmailToUser()"><span class="btn Btn-Green transition txt_pd-top3">Send</span></button>
+      </div>
+    </div>
+  </div>
+</div>
