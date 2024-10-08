@@ -588,7 +588,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
 	        	userId = this.loggedInUserId ;
 	        }
 	        
-	        this.campaignService.getCampaignHighLevelAnalytics(campaignId, userId)
+	        this.campaignService.getCampaignHighLevelAnalytics(campaignId, userId, this.loggedInUserId)
 	          .subscribe(
 	            response => {
 	            	this.campaignReport.emailSentCount = response.data.totalEmailsSent;
@@ -971,6 +971,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         this.dealButtonText = "Register Lead";
         this.leadActionType = "add";
         this.leadId = 0;
+        this.canPartnerEditLead = true;
         //this.isDeal = false;
       } else {
        // this.leadData = data;
