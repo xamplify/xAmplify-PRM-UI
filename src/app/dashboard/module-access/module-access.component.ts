@@ -13,7 +13,9 @@ import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { Properties } from 'app/common/models/properties';
 import { ModuleCustomName } from '../models/module-custom-name';
-
+import { SuperAdminServiceService } from '../super-admin-service.service';
+import { CustomDomainDto } from '../models/custom-domain-dto';
+import { runInThisContext } from 'vm';
 
 declare var $:any;
 @Component({
@@ -63,9 +65,15 @@ export class ModuleAccessComponent implements OnInit {
   partnerModuleCustomLabelErrorMessage = "";
   moduleCustomName: ModuleCustomName = new ModuleCustomName();
 
+  /**XNFR-709***/
+  customDomainLoader = false;
+  customDomainErrorMessage = "";
+  customDomainApiError = false;
+  customDomainDto:CustomDomainDto = new CustomDomainDto();
+
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
-    public properties:Properties,public xtremandLogger:XtremandLogger) { }
+    public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminServiceService) { }
 
     ngOnInit() {
       this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
@@ -100,7 +108,50 @@ export class ModuleAccessComponent implements OnInit {
     this.getSpfConfiguredDetails();
     this.findMaximumAdminsLimitDetails();
     this.findPartnerModuleCustomLabelByCompanyId();
+    this.getCustomDomain();
     this.headerName = "Module Access";
+  }
+  
+  /**XNFR-709***/
+  getCustomDomain(){
+    this.customDomainLoader = true;
+    this.superAdminService.getCustomDomain(this.companyId).subscribe(
+      response=>{
+        this.customDomainDto.customDomain = response.data;
+        this.customDomainLoader = false;
+        this.customDomainApiError = false;
+      },error=>{
+        this.customDomainApiError = true;
+        this.customDomainLoader = false;
+      }
+    )
+  }
+
+  /**XNFR-709***/
+  updateCustomDomain(){
+    this.customDomainLoader = true;
+    this.validateCustomDomain();
+    if(this.customDomainErrorMessage.length==0){
+      this.customDomainDto.companyId = this.companyId;
+      this.superAdminService.updateCustomDomain(this.customDomainDto).subscribe(
+        response=>{
+          this.referenceService.showSweetAlertSuccessMessage("Custom Domain Updated Successfully");
+          this.customDomainLoader = false;
+        },error=>{
+          let errorMessage = this.referenceService.getApiErrorMessage(error);
+          this.referenceService.showSweetAlertErrorMessage(errorMessage);
+          this.customDomainLoader = false;
+
+        });
+    }
+   
+  }
+
+  /**XNFR-709***/
+  validateCustomDomain(){
+    let trimmedCustomDomain = this.referenceService.getTrimmedData(this.customDomainDto.customDomain);
+    this.customDomainErrorMessage = trimmedCustomDomain.length==0 ? 'Please Enter Custom Domain':'';
+    this.customDomainLoader = false;
   }
 
   findPartnerModuleCustomLabelByCompanyId(){

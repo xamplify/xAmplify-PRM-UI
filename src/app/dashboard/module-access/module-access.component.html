@@ -72,18 +72,45 @@
 							<tr>
 								<th style="width: 20%;" scope="row">Company Profile Name</th>
 								<th scope="row">
-									<input class="form-control lowercase-text" type="text" maxlength="250" (input)="validateCompanyProfileName()"  [(ngModel)]="companyProfileName" [ngModelOptions]="{standalone: true}">
-									<span class="required" *ngIf="companyProfileNameError">{{companyProfileNameErrorMessage}}</span>	
-									</th>
-									<th scope="row">
-										<button [disabled]="companyProfileNameError" class="btn btn-primary" (click)="!companyProfileNameError && updateCompanyProfileName()">Update</button>
-									</th>
-								</tr>
+									<input class="form-control lowercase-text" type="text" maxlength="250" (input)="validateCompanyProfileName()"
+										[(ngModel)]="companyProfileName" [ngModelOptions]="{standalone: true}">
+									<span class="required" *ngIf="companyProfileNameError">{{companyProfileNameErrorMessage}}</span>
+								</th>
+								<th scope="row">
+									<button class="btn btn-primary" (click)="!companyProfileNameError && updateCompanyProfileName()">Update</button>
+								</th>
+							</tr>
 						</thead>
 					</table>
 				</div>
 
-				<!--PartnerModuleCustomLabel-->
+				<!--Custom Domain XNFR-709-->
+				<app-modal-popup-loader *ngIf="customDomainLoader"></app-modal-popup-loader>
+				<div class="table-responsive" *ngIf="!customDomainLoader">
+					<table class='table tgrid' aria-describedby="">
+						<thead>
+							<tr>
+								<th style="width: 20%;" scope="row">Enter Custom Domain</th>
+								<ng-container *ngIf="customDomainApiError">
+									<div class="alert alert-danger mt10"><strong>Unable To Get Custom Domain.</strong></div>
+								</ng-container>
+								<ng-container *ngIf="!customDomainApiError">
+									<th scope="row">
+										<input class="form-control lowercase-text" [(ngModel)]="customDomainDto.customDomain" (input)="validateCustomDomain()"
+											[ngModelOptions]="{standalone: true}">
+										<span class="required"
+											*ngIf="customDomainErrorMessage?.length>0">{{customDomainErrorMessage}}</span>
+									</th>
+									<th scope="row">
+										<button class="btn btn-primary" (click)="updateCustomDomain()">Update</button>
+									</th>
+								</ng-container>
+							</tr>
+						</thead>
+					</table>
+				</div>
+
+				<!--Partner ModuleCustomLabel-->
 				<app-modal-popup-loader *ngIf="partnerModuleCustomLabelLoader"></app-modal-popup-loader>
 				<div class="table-responsive" *ngIf="!partnerModuleCustomLabelLoader">
 					<table class='table tgrid' aria-describedby="">
