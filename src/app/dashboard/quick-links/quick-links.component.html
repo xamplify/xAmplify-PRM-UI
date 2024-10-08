@@ -127,7 +127,7 @@
   </div>
   
 <ng-template #quickLinkNgTemplateIcon let-quickLink="quickLink" let-access="access" let-title="title">
-    <div *ngIf="!isPartnerLoggedInThroughVanityUrl" [ngClass]="access ? 'col mt10':'disabled-div col mt10'" data-toggle="tooltip" data-placement="top" title="{{title}}">
+    <div *ngIf="!isPartnerLoggedInThroughVanityUrl && !authenticationService?.module?.isMarketingCompany" [ngClass]="access ? 'col mt10':'disabled-div col mt10'" data-toggle="tooltip" data-placement="top" title="{{title}}">
         <a class="quicklinks_icons" [ngClass]="!access? 'disabled-div':''" (click)="$event.stopPropagation();access && navigateToAnalytics(quickLink)">
             <i class="fa fa-line-chart" [ngClass]="!access ?'disabled':''"></i>
         </a>
