@@ -628,7 +628,7 @@
 														<i class="fa fa-edit" aria-hidden="true"></i>File Preview
 													</div>
 												</div>
-												<div class="portlet-body">
+												<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled">
 													<table class="table tgrid" id="sample_editable_2"
 														aria-describedby="">
 														<thead>
@@ -844,6 +844,15 @@
 											<!-- END EXAMPLE TABLE PORTLET-->
 										</div>
 									</div>
+
+									<!----- XNFR-671 Custom CSV Mapped Option ----->
+									<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
+										<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
+											[isXamplifyCsvFormatUploaded]="isXamplifyCsvFormatUploaded" (notifyParent)="saveCsvMappedColumns($event)" 
+											(anotherNotifyParent)="cancelContacts()">
+										</app-custom-csv-mapping>
+									</div>
+
 									<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 									<div class="clearfix">
 										<div class="col-xs-12 p0" style="">
@@ -1039,13 +1048,10 @@
 																	</h5>
 																</td>
 																<td align="center" *ngIf="gdprStatus || isPartner">
-																	<button class="border-btn-small lightgray-btn"
-																		id='more_less_button_{{i}}'
-																		(click)="contact.isShowDetails = ! contact.isShowDetails">
-																		<span *ngIf="!contact.isShowDetails"
-																			translate>More</span> <span
-																			*ngIf="contact.isShowDetails"
-																			translate>Less</span>
+																	<button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
+																		(click)="contact.isShowDetails = !contact.isShowDetails">
+																		<span *ngIf="!contact.isShowDetails" translate>More</span>
+																		<span *ngIf="contact.isShowDetails" translate>Less</span>
 																	</button>
 																</td>
 																<td align="center"
@@ -1096,7 +1102,9 @@
 																		</a>
 																		<!--XNFR-342---->
 																		<ng-container
-																			*ngIf="!assignLeads && !sharedLeads && !isSynchronizationList">
+																			*ngIf="!assignLeads && !sharedLeads && !isSynchronizationList && (authenticationService?.module?.isCampaign ||
+																			authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
+																			|| authenticationService?.module?.playbookAccess)">
 																			<a class="custom-icon" data-toggle="tooltip"
 																				data-placement="top"
 																				(click)="openUnPublishedContentModalPopUp(contact)"
@@ -1187,6 +1195,12 @@
 																					translate>Contacts Limit : </td>
 																				<td align="center" class="pt10 pb10">
 																					{{contact.contactsLimit}}
+																			</tr>
+
+																			<!----- XNFR-680 Flexi Fields ----->
+																			<tr *ngFor="let flexiField of contact.flexiFields" class="bg-unset flex-none">
+																				<td class='pt10 pb10 bold mr_10' *ngIf='flexiField.fieldValue != ""' translate>{{flexiField.fieldName}}:</td>
+																				<td align="center" class="pt10 pb10">{{flexiField.fieldValue}}</td>
 																			</tr>
 																		</tbody>
 																	</table>
@@ -1619,6 +1633,14 @@
 																		</td>
 																	</tr>
 																</ng-container>
+
+																<!----- XNFR-680 Flexi Fields ----->
+																<ng-container>
+																	<tr *ngFor="let flexiField of allcontacts.flexiFields" class="bg-unset flex-none">
+																		<td class='pt10 pb10 bold' *ngIf='flexiField.fieldValue != ""' translate>{{flexiField.fieldName}} : </td>
+																		<td align="center" class="pt10 pb10">{{flexiField.fieldValue}} </td>
+																	</tr>
+																</ng-container>
 															</tbody>
 														</table>
 													</td>
@@ -1645,7 +1667,8 @@
 	<div *ngIf="contactService.isContactModalPopup && !updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser]="false"
-			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId"
+			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId" 
+			[flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto" [activeCrmType]="activeCrmType"
 			(notifyParent)="addRow($event)"></app-add-contact-modal>
 	</div>
 
@@ -1653,7 +1676,7 @@
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
 			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId"
-			[isCompanyContact]="isCompanyContact"
+			[isCompanyContact]="isCompanyContact" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
 			(notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 	</div>
 	<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"

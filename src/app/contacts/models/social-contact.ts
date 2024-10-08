@@ -43,5 +43,6 @@ export class SocialContact{
 	territory : string="";
 	companyDomain : string="";
 	accountOwner : string="";
+    accountId : string = "";
     
 }

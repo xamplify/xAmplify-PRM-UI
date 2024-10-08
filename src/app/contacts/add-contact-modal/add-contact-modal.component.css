@@ -119,3 +119,26 @@
   #custom-width{width: 88.9%;}
 }
 
+.blur-content {
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.customAlign {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  padding: 7px 13px;
+  font-size: 13px;
+}
+.btn[disabled]{
+  opacity: 0.5!important;
+}
+
+.email-input {
+  border: none !important
+}
+
+.custom-email {
+  width: 90%;
+}

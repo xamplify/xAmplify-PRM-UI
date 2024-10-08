@@ -76,6 +76,11 @@ export class CrmSettingsComponent implements OnInit {
   //XNFR-681
   leadTitle:string = '';
   dealTitle:string = '';
+  /**XNFR-693**/
+  partnerEditLead:boolean;
+  partnerDeleteLead:boolean;
+  editLeadOptionForPartnerToggleTooltipTitle:string;
+  deleteLeadOptionForPartnerToggleTooltipTitle:string;
   
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties, public leadSerivce: LeadsService) {
@@ -99,6 +104,19 @@ export class CrmSettingsComponent implements OnInit {
       }
     ];
     this.setTitles();
+    this.assignValuesToLocalVariables();
+    this.setLeadFormLayoutPreviewImage();
+    this.setDealFormLayoutPreviewImage();
+    this.getLeadPipelines();
+    this.getDealPipelines();
+    if (!this.showLeadPipeline && !this.showDealPipeline 
+      && (this.integrationDetails.leadPipelineId == undefined || this.integrationDetails.leadPipelineId <= 0)
+      && (this.integrationDetails.dealPipelineId == undefined || this.integrationDetails.dealPipelineId <= 0)) {
+      this.pipelineResponse = new CustomResponse('ERROR', 'Something went wrong. Please unlink and configure your account.', true);
+    }
+  }
+
+  private assignValuesToLocalVariables() {
     this.showLeadPipeline = this.integrationDetails.showLeadPipeline;
     this.showLeadPipelineStage = this.integrationDetails.showLeadPipelineStage;
     this.showDealPipeline = this.integrationDetails.showDealPipeline;
@@ -112,18 +130,8 @@ export class CrmSettingsComponent implements OnInit {
     this.dealFormColumnLayout = this.integrationDetails.dealFormColumnLayout;
     this.leadTitle = this.integrationDetails.leadTitle;
     this.dealTitle = this.integrationDetails.dealTitle;
-
-
-    this.setLeadFormLayoutPreviewImage();
-    this.setDealFormLayoutPreviewImage();
-
-    this.getLeadPipelines();
-    this.getDealPipelines();
-    if (!this.showLeadPipeline && !this.showDealPipeline 
-      && (this.integrationDetails.leadPipelineId == undefined || this.integrationDetails.leadPipelineId <= 0)
-      && (this.integrationDetails.dealPipelineId == undefined || this.integrationDetails.dealPipelineId <= 0)) {
-      this.pipelineResponse = new CustomResponse('ERROR', 'Something went wrong. Please unlink and configure your account.', true);
-    }
+    this.partnerEditLead = this.integrationDetails.partnerEditLead;
+    this.partnerDeleteLead = this.integrationDetails.partnerDeleteLead;
   }
 
   private setLeadFormLayoutPreviewImage() {
@@ -170,10 +178,34 @@ export class CrmSettingsComponent implements OnInit {
     this.showRegisterDealForPartnerLeadsOnMessage = this.properties.showRegisterDealForPartnerLeadsOnMessage;
     this.showRegisterDealToSelfLeadsOffMessage = this.properties.showRegisterDealToSelfLeadsOffMessage;
     this.showRegisterDealToSelfLeadsOnMessage = this.properties.showRegisterDealToSelfLeadsOnMessage;
+    this.editLeadOptionForPartnerToggleTooltipTitle = this.properties.editLeadOptionForPartnerToggleTooltipTitle;
+    this.deleteLeadOptionForPartnerToggleTooltipTitle = this.properties.deleteLeadOptionForPartnerToggleTooltipTitle;
   }
 
-  updateCRMSettings() {
+  updateIntegrationSettings() {
     this.ngxLoading = true;
+    this.reAssignIntegrationSettingsValues();
+    this.integrationService.updateCRMSettings(this.integrationType.toLowerCase(),this.loggedInUserId,this.integrationDetails)
+      .subscribe(data => {
+        if (data.statusCode == 200) {
+          this.referenceService.goToTop();
+          this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+          this.notifySubmitSuccess.emit(this.customResponse);
+        } else {
+          this.referenceService.goToTop();
+          this.customResponse = new CustomResponse('ERROR', data.message, true);
+          this.notifySubmitSuccess.emit(this.customResponse);
+        }
+        this.ngxLoading = false;
+      },
+      error => {
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.notifySubmitSuccess.emit(this.customResponse);
+        this.ngxLoading = false;
+      })
+  }
+
+  private reAssignIntegrationSettingsValues() {
     this.integrationDetails.showLeadPipeline = this.showLeadPipeline;
     this.integrationDetails.showLeadPipelineStage = this.showLeadPipelineStage;
     this.integrationDetails.showDealPipeline = this.showDealPipeline;
@@ -194,24 +226,9 @@ export class CrmSettingsComponent implements OnInit {
     //XNFR-681
     this.integrationDetails.leadTitle = $.trim(this.leadTitle);
     this.integrationDetails.dealTitle = $.trim(this.dealTitle);
-    this.integrationService.updateCRMSettings(this.integrationType.toLowerCase(),this.loggedInUserId,this.integrationDetails)
-      .subscribe(data => {
-        if (data.statusCode == 200) {
-          this.referenceService.goToTop();
-          this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-          this.notifySubmitSuccess.emit(this.customResponse);
-        } else {
-          this.referenceService.goToTop();
-          this.customResponse = new CustomResponse('ERROR', data.message, true);
-          this.notifySubmitSuccess.emit(this.customResponse);
-        }
-        this.ngxLoading = false;
-      },
-      error => {
-        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-        this.notifySubmitSuccess.emit(this.customResponse);
-        this.ngxLoading = false;
-      })
+    /**XNFR-693**/
+    this.integrationDetails.partnerEditLead = this.partnerEditLead;
+    this.integrationDetails.partnerDeleteLead = this.partnerDeleteLead;
   }
 
   onChangeLeadPipelines(showLeadPipeline) {
@@ -423,6 +440,14 @@ export class CrmSettingsComponent implements OnInit {
   onChangeDealFormType(dealFormColumnLayout) {
     this.dealFormColumnLayout = dealFormColumnLayout;
     this.setDealFormLayoutPreviewImage();
+  }
+
+  onChangePartnerEditLead(partnerEditLead) {
+    this.partnerEditLead = partnerEditLead;
+  }
+
+  onChangePartnerDeleteLead(partnerDeleteLead) {
+    this.partnerDeleteLead = partnerDeleteLead;
   }
 
 }

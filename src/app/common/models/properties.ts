@@ -406,15 +406,17 @@ export class Properties {
 	leadPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the lead registration form";
 	dealPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the deal registration form";
 	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
-
+	editLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Edit' the Lead";
+	deleteLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Delete' the Lead";
 
 	partnerText = "Interactions and Non-interactions on distinct tracks based on progress";
 	vendorText = "Partner interactions and non-interactions on distinct tracks based on progress";
-	publishedTrackCountText = "Count of Tracks published to the partner";
-	publishedPlaybookCountText = "Count of Playbook published to the partner";
+	publishedTrackCountText = "Count of Tracks Published to the Partner";
+	publishedPlaybookCountText = "Count of Playbooks Published to the Partner";
 	vendorTeamMemberTrackText = "Count of Tracks Published by Team Members";
-	venodrTeamMemberPlaybookText = "Count of Playbook Published by Team Members";
-
+	venodrTeamMemberPlaybookText = "Count of Playbooks Published by Team Members";
+	partnerTeamMemberTrackText = "Count of Tracks Received by Team Members";
+	partnerTeamMemberPlaybookText = "Count of Playbooks Received by Team Members";
 
 	
 	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
@@ -424,9 +426,11 @@ export class Properties {
 	contactsCsvHeaderMatchedMessage = "The CSV headers have been successfully matched with the default format";
 	remapHeadersMessage = " to remap the headers";
 	resetMessage = " to reset to the original state.";
+	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
 
 	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
+	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin"
 
 	}
 

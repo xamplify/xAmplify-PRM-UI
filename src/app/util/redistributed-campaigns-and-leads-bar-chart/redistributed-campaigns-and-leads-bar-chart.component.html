@@ -5,7 +5,7 @@
       <div class="portlet-title minheight-zero-px pjCardTitlebg" [hidden]="chartLoader">
         <div class="caption pjCardTitleCenterAlignment1 panel-bg">
           <span class="caption-subject font-red-sunglo uppercase" *ngIf="chartId=='top10LeadsAndDealsBarChart' || chartId=='redistributeCampaignsAndLeadsCountBarChart' || chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'" translate> Top 10 {{ headerText }}</span>
-          <span class="caption-subject font-red-sunglo uppercase" *ngIf="chartId=='allRedistributeCampaignsAndLeadsCountBarChart' || chartId=='allLeadsAndDealsBarChart' || statusCode==404"  translate> {{ headerText }}</span>
+          <span class="caption-subject font-red-sunglo uppercase" *ngIf="chartId=='allRedistributeCampaignsAndLeadsCountBarChart' || chartId=='allLeadsAndDealsBarChart' || statusCode==404 || chartId=='partnerJourneyLeadsAndDealsBarChart' || chartId=='partnerJourneyredistributeCampaignsAndLeadsBarChart'"  translate> {{ headerText }}</span>
         </div>
         <div [hidden]=" !(hasLeadsAndDealsAccess || authenticationService?.module?.opportunitiesAccessAsPartner) ">
           <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">

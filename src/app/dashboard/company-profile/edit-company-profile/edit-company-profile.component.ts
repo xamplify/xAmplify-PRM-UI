@@ -940,7 +940,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     }
                 }
             } else {
-                this.removeCompanyNameError();
+                if (value.length >50){
+                    this.setCompanyNameError("Company Name cannot be more than 50 characters long.");
+                }else{
+                    this.removeCompanyNameError();
+                }  
             }
         } else {
             this.companyNameErrorMessage = "";
@@ -1412,9 +1416,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     validateTwitter() {
         if ($.trim(this.companyProfile.twitterLink).length > 0) {
-            if (!this.companyProfile.twitterLink.includes('twitter.com') ) {
+            if (!(this.companyProfile.twitterLink.includes('twitter.com') || this.isValidTwitterLink(this.companyProfile.twitterLink))) {
                 this.addTwitterError();
-                this.twitterLinkErrorMessage = "Invalid Twiiter Url";
+                this.twitterLinkErrorMessage = "Invalid Twitter Url";
             } else {
                 this.removeTwitterError();
             }
@@ -1986,6 +1990,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     setReferVendorValue(event:boolean){
         this.campaignAccess.referVendor = event;
+    }
+    isValidTwitterLink(twitterLink: any) {
+        const  regex =  /^(https?:\/\/)?(www\.)?x\.com(\/.*)?$/;
+        return regex.test(twitterLink);
     }
   
 }

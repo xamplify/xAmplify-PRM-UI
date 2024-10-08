@@ -35,6 +35,9 @@ import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
+import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
+import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
@@ -278,14 +281,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+	/***** XNFR-671 *****/
+	csvRows: any[];
+	isXamplifyCsvFormatUploaded = false;
+	isUploadCsvOptionEnabled: boolean = false;
+	flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
+	/***** XNFR-671 *****/
 	selectedContact: any;
 	showContactDetailsTab: boolean = false;
 	isFromCompanyModule: boolean = false;
+	activeCrmType: any;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute) {
+		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, private flexiFieldService : FlexiFieldService) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
@@ -440,67 +450,41 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				var self = this;
 				reader.onload = function (e: any) {
 					var contents = e.target.result;
-
 					let csvData = reader.result;
 					let csvRecordsArray = csvData.split(/\r|\n/);
-					let headersRow = self.fileUtil
-						.getHeaderArray(csvRecordsArray);
+					let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
 					let headers = headersRow[0].split(',');
-
-					if ((!self.isPartner && headers.length == 11)) {
-						if (self.validateContactsCsvHeaders(headers)) {
-							var csvResult = Papa.parse(contents);
-							var allTextLines = csvResult.data;
-							for (var i = 1; i < allTextLines.length; i++) {
-								if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
-									let user = new User();
-									user.emailId = allTextLines[i][4].trim();
-									user.firstName = allTextLines[i][0].trim();
-									user.lastName = allTextLines[i][1].trim();
-									user.contactCompany = allTextLines[i][2].trim();
-									user.jobTitle = allTextLines[i][3].trim();
-									user.address = allTextLines[i][5].trim();
-									user.city = allTextLines[i][6].trim();
-									user.state = allTextLines[i][7].trim();
-									user.zipCode = allTextLines[i][8].trim();
-									user.country = allTextLines[i][9].trim();
-									user.mobileNumber = allTextLines[i][10].trim();
-									user.legalBasis = self.selectedLegalBasisOptions;
-									/*user.description = allTextLines[i][9];*/
-									self.users.push(user);
-									self.csvContacts.push(user);
-								}
-
+					self.isUploadCsvOptionEnabled = self.isContactModule();
+					let headersLength = 11+self.flexiFieldsRequestAndResponseDto.length;
+					self.isXamplifyCsvFormatUploaded = !self.isPartner && headers.length == headersLength && self.validateContactsCsvHeaders(headers);
+					if (self.isXamplifyCsvFormatUploaded && !self.isContactModule()) {
+						var csvResult = Papa.parse(contents);
+						var allTextLines = csvResult.data;
+						for (var i = 1; i < allTextLines.length; i++) {
+							if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
+								let user = new User();
+								user.emailId = allTextLines[i][4].trim();
+								user.firstName = allTextLines[i][0].trim();
+								user.lastName = allTextLines[i][1].trim();
+								user.contactCompany = allTextLines[i][2].trim();
+								user.jobTitle = allTextLines[i][3].trim();
+								user.address = allTextLines[i][5].trim();
+								user.city = allTextLines[i][6].trim();
+								user.state = allTextLines[i][7].trim();
+								user.zipCode = allTextLines[i][8].trim();
+								user.country = allTextLines[i][9].trim();
+								user.mobileNumber = allTextLines[i][10].trim();
+								user.legalBasis = self.selectedLegalBasisOptions;
+								/*user.description = allTextLines[i][9];*/
+								self.users.push(user);
+								self.csvContacts.push(user);
 							}
-
-							if (allTextLines.length == 2) {
-								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
-								self.removeCsv();
-							} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
-								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
-								self.removeCsv();
-							} else {
-								if (!self.uploadCsvUsingFile && !self.filePrevew) {
-									self.uploadCsvUsingFile = true;
-									self.filePrevew = true;
-									self.setCsvPage(1);
-								} else {
-									self.customResponse = new CustomResponse('ERROR', "File Already Added.", true);
-									self.uploader.queue.length = 1;
-								}
-							}
-
-						} else {
-							self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-							self.removeCsv();
-							self.uploader.queue.length = 0;
 						}
-
+						self.handleFilePreview(allTextLines, self);
 					} else if ((self.isPartner && headers.length == 21)) {
 						if (self.validatePartnerCsvHeaders(headers)) {
 							var csvResult = Papa.parse(contents);
 							var allTextLines = csvResult.data;
-
 							for (var i = 1; i < allTextLines.length; i++) {
 								if (allTextLines[i][8] && allTextLines[i][8].trim().length > 0) {
 									let user = new User();
@@ -530,33 +514,27 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 									self.csvContacts.push(user);
 								}
 							}
-
-							if (allTextLines.length == 2) {
-								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
-								self.removeCsv();
-							} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
-								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
-								self.removeCsv();
-							} else {
-								if (!self.uploadCsvUsingFile && !self.filePrevew) {
-									self.uploadCsvUsingFile = true;
-									self.filePrevew = true;
-									self.setCsvPage(1);
-								} else {
-									self.customResponse = new CustomResponse('ERROR', "File already added.", true);
-									self.uploader.queue.length = 1;
-								}
-							}
-
+							self.handleFilePreview(allTextLines, self);
 						} else {
-							self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+							self.invaildCsvErrorMessage(self);
+						}
+					} else if (self.isUploadCsvOptionEnabled) {
+						var csvResult = Papa.parse(contents);
+						self.csvRows = csvResult.data;
+						if (self.csvRows.length == 2) {
+							self.customResponse = new CustomResponse('ERROR', "No records found.", true);
 							self.removeCsv();
-							self.uploader.queue.length = 0;
+						} else {
+							if (!self.uploadCsvUsingFile && !self.filePrevew) {
+								self.uploadCsvUsingFile = true;
+								self.filePrevew = true;
+							} else {
+								self.customResponse = new CustomResponse('ERROR', "File Already Added.", true);
+								self.uploader.queue.length = 1;
+							}
 						}
 					} else {
-						self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-						self.removeCsv();
-						self.uploader.queue.length = 0;
+						self.invaildCsvErrorMessage(self);
 					}
 				}
 				this.isCsvFileLsitLoading = false;
@@ -566,6 +544,29 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "readingCsvFile()");
+		}
+	}
+
+	private invaildCsvErrorMessage(self: this) {
+		self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+		self.uploader.queue.length = 0;
+		self.removeCsv();
+	}
+
+	private handleFilePreview(allTextLines: any, self: this) {
+		if (allTextLines.length == 2) {
+			self.customResponse = new CustomResponse('ERROR', 'No records found.', true);
+			self.removeCsv();
+		} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
+			self.customResponse = new CustomResponse('ERROR', 'EmailId is mandatory.', true);
+			self.removeCsv();
+		} else if (!self.uploadCsvUsingFile && !self.filePrevew) {
+			self.uploadCsvUsingFile = true;
+			self.filePrevew = true;
+			self.setCsvPage(1);
+		} else {
+			self.customResponse = new CustomResponse('ERROR', 'File Already Added.', true);
+			self.uploader.queue.length = 1;
 		}
 	}
 
@@ -605,7 +606,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.removeDoubleQuotes(headers[7]) == "STATE" &&
 			this.removeDoubleQuotes(headers[8]) == "ZIP CODE" &&
 			this.removeDoubleQuotes(headers[9]) == "COUNTRY" &&
-			this.removeDoubleQuotes(headers[10]) == "MOBILE NUMBER");
+			this.removeDoubleQuotes(headers[10]) == "MOBILE NUMBER" &&
+			this.validateFlexiFieldHeaders(headers));
 	}
 
 	removeDoubleQuotes(input: string) {
@@ -735,6 +737,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.users[i].mobileNumber = "";
 					}
 				}
+				this.users[i].flexiFields = this.flexiFieldsRequestAndResponseDto;
 			}
 
 			if (this.isPartner) {
@@ -1014,6 +1017,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				} else {
 					this.inValidCsvContacts = true;
 				}
+			} else {
+				this.customResponse = new CustomResponse('ERROR', this.properties.contactsCsvHeadersMisMatchMessage, true);
+				this.xtremandLogger.error("editContactComponent updateCsvContactList() Contacts Null Error");
 			}
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "UpdatingListFromCSV()");
@@ -1239,9 +1245,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.users.push(event);
 			this.saveContacts(this.contactListId);
 			this.addContactuser = new User();
-		}
-		else {
+		} else {
 			this.contactService.isContactModalPopup = false;
+			this.resetCustomUploadCsvFields();
 		}
 	}
 
@@ -1265,6 +1271,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.csvContacts = [];
 		this.uploadCsvUsingFile = false;
 		$("#sample_editable_1").show();
+		this.resetCustomUploadCsvFields();
 	}
 
 	validateWebsite(website: string) {
@@ -1445,6 +1452,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.filePrevew = false;
 		this.uploadCsvUsingFile = false;
 		this.isShowUsers = true;
+		this.resetCustomUploadCsvFields();
 	}
 
 	checkAll(ev: any, contacts: User[]) {
@@ -1959,6 +1967,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.id = this.selectedContactListId;
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
+			this.contactListObject.editList = true;
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
@@ -2073,7 +2082,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	addContactModalClose() {
 		$('#addContactModal').modal('toggle');
-		$("#addContactModal .close").click()
+		$("#addContactModal .close").click();
 	}
 
 
@@ -2402,8 +2411,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		if (this.isPartner) {
 			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+		} else if (this.isContactModule()) {
+			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-contact-csv/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
 		} else {
-			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
+			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST_EMPTY.csv";
 		}
 	}
 
@@ -2434,9 +2445,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.updateContactUser = true;
 		this.isUpdateUser = true;
 		this.contactAllDetails = contactDetails;
-		this.contactService.isContactModalPopup = true;
 		this.isCompanyContact = this.manageCompanies;
 		this.selectedCompanyContactId = this.selectedCompanyId;
+		this.mapFlexiFieldsForEditContact(contactDetails);
+		this.contactService.isContactModalPopup = true;
 	}
 
 	updateContactModalClose() {
@@ -2713,13 +2725,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"City": this.contactsByType.listOfAllContacts[i].city,
 				"Country": this.contactsByType.listOfAllContacts[i].country,
 				"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
-				//"Notes": this.contactsByType.listOfAllContacts[i].description
 			}
 			if (this.contactsByType.selectedCategory === 'excluded') {
 				object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 			}
 			if (this.contactsByType.selectedCategory === 'unsubscribed') {
 				object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+			}
+			if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
+				this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
+					let dto = this.contactsByType.listOfAllContacts[i].flexiFields.find(dto => dto.fieldName == flexiField.fieldName);
+					object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
+				});
 			}
 			this.downloadDataList.push(object);
 		}
@@ -2753,10 +2770,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.currentContactType = '';
 			// this.resetListContacts();
 			// this.resetResponse();
-			this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
 			this.contactsByType.pagination.searchKey = this.searchKey;
 			this.contactsByType.pagination.criterias = this.criterias;
-			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+			this.contactsByType.pagination.maxResults = this.contactsByType.allContactsCount;
+			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
 			this.contactListObject = new ContactList;
 			this.contactListObject.contactType = this.contactsByType.selectedCategory;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
@@ -2923,6 +2940,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 			if (this.router.url.includes('home/contacts')) {
 				this.checkSyncStatus();
+				this.findFlexiFieldsData();
 			}
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
@@ -2945,6 +2963,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
 		}
+		this.getActiveCrmType();
 	}
 
 
@@ -3541,6 +3560,62 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	private isContactModule() {
+		return this.module == 'contacts';
+	}
+
+	/***** XNFR-671 *****/
+	findFlexiFieldsData() {
+		this.loading = true;
+		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+			this.loading = false;
+			this.flexiFieldsRequestAndResponseDto = data;
+		}, (error: any) => {
+			this.refService.showSweetAlertServerErrorMessage();
+			this.loading = false;
+		});
+	}
+
+	/***** XNFR-671 *****/
+	validateFlexiFieldHeaders(headers: any) {
+		return this.flexiFieldsRequestAndResponseDto.every((flexiFields, index) => {
+			const headerValue = this.removeDoubleQuotes(headers[11 + index]);
+			return headerValue === flexiFields.fieldName.toUpperCase();
+		});
+	}
+
+	/***** XNFR-680 *****/
+	private mapFlexiFieldsForEditContact(contactDetails: any) {
+		if (this.isContactModule()) {
+			this.resetCustomUploadCsvFields();
+			if (contactDetails.flexiFields.length > 0) {
+				contactDetails.flexiFields.forEach((flexiField) => {
+					let userFieldName = flexiField.fieldName;
+					this.flexiFieldsRequestAndResponseDto.forEach((dtoFlexiField) => {
+						if (userFieldName == dtoFlexiField.fieldName) {
+							dtoFlexiField.fieldValue = flexiField.fieldValue;
+						}
+					});
+				});
+			}
+		}
+	}
+
+	/***** XNFR-671 *****/
+	private resetCustomUploadCsvFields() {
+		this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+		this.isUploadCsvOptionEnabled = false;
+		this.isXamplifyCsvFormatUploaded = false;
+		this.csvRows = [];
+		this.users = [];
+	}
+
+	/***** XNFR-671 *****/
+	saveCsvMappedColumns(newUsers: User[]) {
+		this.users = newUsers;
+	}
+
+
 	/***XNFR-553***/
 	showContactDetails(contact) {
 		let encodedUserListId = this.refService.encodePathVariable(contact.userListId);
@@ -3560,10 +3635,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					let data = result.data;
 					this.selectedContactListName = data.name;
 					this.contactListName = this.selectedContactListName;
-					this.isDefaultPartnerList = data.isDefaultPartnerList;
+					this.isDefaultPartnerList = data.defaultPartnerList;
 					this.isSynchronizationList = data.synchronisedList;
 					this.isTeamMemberPartnerList = data.teamMemberPartnerList;
 					this.selectedCompanyId = data.associatedCompanyId;
+					this.uploadedUserId = data.uploadedUserId;
 					if (this.isFromCompanyModule) {
 						this.setCompanyModuleFields(data);
 					} else {
@@ -3583,15 +3659,31 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	private setContactModuleFields(data: any) {
 		this.manageCompanies = data.companyList;
 		this.masterContactListSync = data.isMasterContactListSync;
-		this.isDefaultContactList = data.isDefaultContactList;
-		this.isFormList = data.isFormList;
+		this.isDefaultContactList = data.defaultContactList;
+		this.isFormList = data.formList;
 		this.isPartnerUserList = data.isPartnerUserList;
 	}
 
 	private setCompanyModuleFields(data: any) {
 		this.companyName = data.companyName;
-		this.uploadedUserId = data.uploadedUserId;
 		this.contactService.publicList = data.publicList;
 	}
 	/***XNFR-553***/
+
+	//XNFR-705
+	getActiveCrmType() {
+		this.loading = true;
+		this.contactService.getActiveCrmType(this.loggedInUserId)
+			.subscribe(
+				result => {
+					this.activeCrmType = result.data;
+					this.loading = false;
+				},
+				(error: any) => {
+					this.loading = false;
+				},
+			);
+
+	}
+
 }
