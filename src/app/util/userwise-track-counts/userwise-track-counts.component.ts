@@ -51,11 +51,14 @@ export class UserwiseTrackCountsComponent implements OnInit {
   tooltipText: string;
   teamMemberTooltip: string;
   partnerTeamMemberText: string;
+  vendorTeamMemberText: string;
+  isPartnerTeamMember: boolean = true;
 
   ngOnInit() {
     this.tooltipText = this.type.toLowerCase() === 'track' ? this.properties.publishedTrackCountText : this.properties.publishedPlaybookCountText;
     this.teamMemberTooltip = this.type.toLowerCase() === 'track' ? this.properties.vendorTeamMemberTrackText : this.properties.venodrTeamMemberPlaybookText;
     this.partnerTeamMemberText = this.type.toLowerCase() === 'track' ? this.properties.vendorTeamMemberTrackText : this.properties.venodrTeamMemberPlaybookText;
+    this.vendorTeamMemberText = this.type.toLowerCase() === 'track' ? this.properties.partnerTeamMemberTrackText : this.properties.partnerTeamMemberPlaybookText;
   }
 
   getIconStyle(){
