@@ -23,7 +23,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   @Input() flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto>;
   @Input() isXamplifyCsvFormatUploaded: boolean = false;
   @Output() notifyParent: EventEmitter<any>;
-  @Output() anotherNotifyParent: EventEmitter<any>;
+  @Output() notifyParentCancel: EventEmitter<any>;
 
   /***** XNFR-671 *****/
   xAmplifyDefaultCsvHeaders = ['First Name', 'Last Name', 'Company', 'Job Title', 'Email Id', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Mobile Number'];
@@ -44,7 +44,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-671 *****/
 
   constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
-    public xtremandLogger: XtremandLogger) { this.notifyParent = new EventEmitter(); this.anotherNotifyParent = new EventEmitter(); }
+    public xtremandLogger: XtremandLogger) { this.notifyParent = new EventEmitter(); this.notifyParentCancel = new EventEmitter(); }
 
   ngOnInit() {
     this.loadParsedCsvDtoPagination();
@@ -538,7 +538,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   cancelContacts() {
     if (this.contacts.length == 0) {
       this.resetCustomUploadCsvFields();
-      this.anotherNotifyParent.emit();
+      this.notifyParentCancel.emit();
     } else {
       this.notifyParent.emit(this.contacts);
     }
