@@ -99,8 +99,11 @@ export class LandingPageService {
     }
 
     getById( id: number ): Observable<any> {
-        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
-        return this.http.get( this.URL + "getById/" + id + "/"+vanityUrlFilter+"?access_token=" + this.authenticationService.access_token, "" )
+        let isVanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        let landingPageId = "landingPageId="+id;
+        let vanityUrlFilter = "&vanityUrlFilter="+isVanityUrlFilter;
+        let companyProfileName = isVanityUrlFilter?"&vanityCompanyProfileName="+this.authenticationService.companyProfileName:"";
+        return this.http.get( this.URL + "getById?"+landingPageId+vanityUrlFilter+companyProfileName +"&access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -305,5 +308,16 @@ export class LandingPageService {
         const url =this.URL +"welcomePageDelete/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callDeleteMethod(url);
     }
-    
+
+    getVendorCompaniesByLandingPageId( landingPageId:number) {
+        const url = this.URL + "/getVendorCompaniesByLandingPageId/" + landingPageId +"?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+
+    getVendorCompaniesByAlias( alias:string) {
+        const url = this.authenticationService.REST_URL + "/getVendorCompaniesByAlias/" + alias ;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 }

@@ -755,7 +755,7 @@ private beforeAdd(tag: any) {
 					module.isPrm = roles.indexOf(this.roleName.prmRole) > -1;
 					module.isMarketing = roles.indexOf(this.roleName.marketingRole) > -1;
 					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
-					this.addZendeskScript(data);
+					//this.addZendeskScript(data);
 					/*****XNFR-84 **********/
 					if(data.moduleNames!=undefined && data.moduleNames.length>0 && data.moduleNames!=null){
 						this.authenticationService.moduleNames = data.moduleNames;
@@ -920,7 +920,7 @@ private beforeAdd(tag: any) {
 
 	
 
-	addZendeskScript(data:any){
+/* 	addZendeskScript(data:any){
 		let chatSupport = data.chatSupport;
 		let chatSupportAccessAsPartner = data.chatSupportAccessAsPartner;
 		if(chatSupport || chatSupportAccessAsPartner){
@@ -938,7 +938,7 @@ private beforeAdd(tag: any) {
 			this.authenticationService.removeZenDeskScript();
 			
 		}
-	}	
+	}	 */
 
 	ngDoCheck() {
 		if (window.innerWidth > 990) {
