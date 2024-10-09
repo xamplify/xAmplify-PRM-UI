@@ -918,7 +918,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                     } else {
                         this.loading = false;
-                        this.customResponse = new CustomResponse('ERROR', "'" + this.invalidPatternEmails + "'" + " are not valid email id(s) please remove", true);
+                        this.customResponse = new CustomResponse('ERROR', "We found invalid email id(s) please remove... " + this.invalidPatternEmails, true);
                     }
                 } else {
                     this.customResponse = new CustomResponse('ERROR', this.properties.contactsCsvHeadersMisMatchMessage, true);

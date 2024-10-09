@@ -1452,6 +1452,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.filePrevew = false;
 		this.uploadCsvUsingFile = false;
 		this.isShowUsers = true;
+		this.inValidCsvContacts = false;
 		this.resetCustomUploadCsvFields();
 	}
 
