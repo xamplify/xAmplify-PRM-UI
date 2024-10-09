@@ -422,7 +422,7 @@ export class Properties {
 	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
 	mapCsvHeaderMessage = " to map your headers to the expected format.";
 	duplicateColumnsMappedErrorMessage = "Duplicate columns have been mapped. Please ensure to check for the specified errors.";
-	emailAddressMandatoryMessage = "Email Address mapping is mandatory.";
+	emailAddressMandatoryMessage = "Email id mapping is mandatory.";
 	contactsCsvHeaderMatchedMessage = "The CSV headers have been successfully matched with the default format";
 	remapHeadersMessage = " to remap the headers";
 	resetMessage = " to reset to the original state.";
