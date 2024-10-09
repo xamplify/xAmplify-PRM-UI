@@ -1,10 +1,9 @@
 import { Injectable, Inject } from "@angular/core";
-import { Http, Response, RequestOptions, Headers, ResponseContentType } from "@angular/http";
+import { Http, Response } from "@angular/http";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Observable } from "rxjs/Observable";
 import { VanityURL } from "../models/vanity.url";
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
-import { DashboardButton } from "../models/dashboard.button";
 import { Pagination } from "app/core/models/pagination";
 import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
 import { Title, DOCUMENT } from "@angular/platform-browser";
@@ -218,13 +217,15 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
           console.log(url+" is the url And Custom Domain : "+subDomain);
           this.authenticationService.getCompanyProfileNameByCustomDomain(subDomain+".").subscribe(
             response=>{
-              if(response!=""){
-                this.authenticationService.companyProfileName = response;
+              let statusCode = response.statusCode;
+              if(statusCode == 200){
+                this.authenticationService.companyProfileName = response.data;
                 this.setVanityVariables(subDomain);
               }else{
+                this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
                 this.router.navigate( ['/vanity-domain-error'] );
-                return;
               }
+            
             },error=>{
               this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
             });
