@@ -432,5 +432,6 @@ export class Properties {
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
 	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin"
 
+	socialVanityCallBackErrorMessage = "We are unable to process request. Please contact admin for details.";
 	}
 
