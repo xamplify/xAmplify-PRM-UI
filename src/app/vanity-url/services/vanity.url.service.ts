@@ -210,17 +210,26 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     if (!url.includes("192.168") && !url.includes("172.16")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
-        console.log(url);
         if(url.includes("xamplify.co") || url.includes("xamplify.io")){
           this.authenticationService.companyProfileName = domainName[0];
+          this.setVanityVariables(this.authenticationService.companyProfileName);
         }else{
           let subDomain  = this.getCustomDomain(url);
-          console.log(url+" is custom domain And Sub Domain : "+subDomain);
-          this.authenticationService.companyProfileName = subDomain;
+          console.log(url+" is the url And Custom Domain : "+subDomain);
+          this.authenticationService.getCompanyProfileNameByCustomDomain(subDomain+".").subscribe(
+            response=>{
+              if(response!=""){
+                this.authenticationService.companyProfileName = response;
+                this.setVanityVariables(subDomain);
+              }else{
+                this.router.navigate( ['/vanity-domain-error'] );
+                return;
+              }
+            },error=>{
+              this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
+            });
         }
-        this.setVanityVariables();
         return true;
-       
       }
     }
   }
@@ -246,9 +255,13 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     return url;
   }
 
-  private setVanityVariables() {
+  private setVanityVariables(companyProfileNameOrDomain:string) {
     this.authenticationService.vanityURLEnabled = true;
-    this.authenticationService.setDomainUrl();
+    if(companyProfileNameOrDomain.includes('.')){
+      this.authenticationService.setCustomDomainUrl(companyProfileNameOrDomain);
+    }else{
+      this.authenticationService.setDomainUrl();
+    }
     if (!this.authenticationService.vanityURLUserRoles) {
       let currentUser = localStorage.getItem('currentUser');
       if (currentUser) {
