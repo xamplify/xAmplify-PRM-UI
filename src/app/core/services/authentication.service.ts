@@ -1251,6 +1251,15 @@ isWelcomePageEnabled = false;
     }
   }
 
+  setCustomDomainUrl(customDomain:string) {
+    if (this.vanityURLEnabled) {
+      this.DOMAIN_URL = "https://"+customDomain+"/";
+    } else {
+      this.DOMAIN_URL = this.APP_URL;
+    }
+    this.xtremandLogger.info("Custom Domain Url To Access Across The Application : "+this.DOMAIN_URL);
+  }
+
   stopLoaders() {
     this.module.contentLoader = false;
     this.leftSideMenuLoader = false;
@@ -1455,6 +1464,11 @@ vanityWelcomePageRequired(userId) {
     let partnersMergeTag = this.properties.partnersMergeTag;
     let partnerModuleCustomName = this.getPartnerModuleCustomName();
     return this.properties.customFieldsMissingErrorMessage.replace(partnersMergeTag, partnerModuleCustomName);
+  }
+
+  getCompanyProfileNameByCustomDomain(customDomain:string){
+    let url = this.REST_URL + 'v_url/getCompanyProfileNameByCustomDomain/' + customDomain;
+    return this.callGetMethod(url);
   }
 
 }
