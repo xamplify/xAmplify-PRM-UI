@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -30,11 +31,18 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   publishedPartnerIds:Array<Number> = new Array<Number>();
   @Input() vendorJourney:boolean = false;
   @Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
+  showTickMark = false;
   constructor(public referenceService:ReferenceService,public contactService:ContactService,public properties:Properties,
-    public pagerService:PagerService,private authenticationService:AuthenticationService) { }
+    public pagerService:PagerService,private authenticationService:AuthenticationService,private router:Router) { }
 
   ngOnInit() {
     $('#userListUsersPreviewPopup').modal('show');
+    let currentUrl = this.router.url;
+    if(currentUrl.includes("/dam/edit")){
+      this.showTickMark = false;
+    }else{
+      this.showTickMark = true;
+    }
     if(this.userListId!=undefined && this.userListId>0){
       let isValidInputId = this.inputId!=undefined && this.inputId>0;
       let isAssets = this.moduleName=="dam";
