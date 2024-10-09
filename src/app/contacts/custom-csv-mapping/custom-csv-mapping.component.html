@@ -131,7 +131,7 @@
       </tbody>
     </table>
     <!--XNFR-671-->
-    <span class="success">
+    <span class="success" *ngIf="isColumnMapped">
       <strong>Total Records : {{contacts?.length}}</strong>
     </span>
   </div>
@@ -190,7 +190,7 @@
       </tbody>
     </table>
     <!--XNFR-671-->
-    <span class="success">
+    <span class="success" *ngIf="!isColumnMapped">
       <strong>Total Records :
         <ng-container>{{parsedCsvDtos?.length}}</ng-container>
       </strong>
