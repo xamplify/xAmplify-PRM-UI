@@ -314,7 +314,6 @@ bgIMage2:any;
         if (this.vanityURLService.isVanityURLEnabled()) {
           this.route.queryParams.filter(params => params.error)
           .subscribe(params => {
-            console.log(params);
             if (params.error === "verr1") {
               this.showVanityLoginErrorMessage();
             } else if (params.error === "server_error_message") {
@@ -328,6 +327,8 @@ bgIMage2:any;
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
             this.vanityURLEnabled = result.enableVanityURL;
+            this.authenticationService.companyProfileName = result.companyProfileName;
+            this.xtremandLogger.info("Company Profile Name : "+this.authenticationService.companyProfileName);
             this.authenticationService.vendorCompanyId = result.companyId;
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
