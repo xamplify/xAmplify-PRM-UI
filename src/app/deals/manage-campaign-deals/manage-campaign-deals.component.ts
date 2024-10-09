@@ -29,6 +29,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   @Input() public fromAnalytics : boolean = false;
   @Input() public showTeamMemberFilter : boolean = false;
   @Input() public isDataShare : boolean = false;
+  @Input() public isOneClickLaunchCampaign:boolean = false;
 
   @Output() viewCampaignDealForm = new EventEmitter<any>();
   @Output() editCampaignDealForm = new EventEmitter<any>();
@@ -101,6 +102,7 @@ export class ManageCampaignDealsComponent implements OnInit {
     if (this.filterKey != undefined && this.filterKey !== "") {
       pagination.filterKey = this.filterKey;
     }
+    pagination.oneClickLaunch = this.isOneClickLaunchCampaign;
     this.dealsService.listCampaignLeads(pagination)
     .subscribe(
         response => {            
