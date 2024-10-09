@@ -143,15 +143,15 @@ export class ModuleAccessComponent implements OnInit {
           this.customDomainLoader = false;
 
         });
+    }else{
+      this.customDomainLoader = false;
     }
-   
   }
 
   /**XNFR-709***/
   validateCustomDomain(){
     let trimmedCustomDomain = this.referenceService.getTrimmedData(this.customDomainDto.customDomain);
     this.customDomainErrorMessage = trimmedCustomDomain.length==0 ? 'Please Enter Custom Domain':'';
-    this.customDomainLoader = false;
   }
 
   findPartnerModuleCustomLabelByCompanyId(){
