@@ -96,7 +96,6 @@ export class ForgotPasswordComponent implements OnInit {
     ngOnInit() {
         try {
             $('.forget-form').show();
-            // this.forgotPasswordForm.reset();
             this.mainLoader = true;
             if(this.vanityURLService.isVanityURLEnabled()){
                 this.checkVanityURlDetails();
