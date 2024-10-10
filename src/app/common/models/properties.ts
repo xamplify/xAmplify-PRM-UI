@@ -433,5 +433,8 @@ export class Properties {
 	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin"
 
 	socialVanityCallBackErrorMessage = "We are unable to process request. Please contact admin for details.";
+
+	NO_DATA_RETRIVED_FROM_SALESFORCE = "No data retrieved from Salesforce. Please ensure all required fields are filled in.";
+
 	}
 
