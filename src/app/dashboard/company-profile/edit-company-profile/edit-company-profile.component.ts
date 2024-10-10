@@ -387,37 +387,37 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.isLocalHost = this.authenticationService.isLocalHost();
         let firstName = this.authenticationService.user.firstName;
         let lastName = this.authenticationService.user.lastName;
-        if(firstName==undefined){
+        if (firstName == undefined) {
             firstName = "";
         }
-        if(lastName==undefined){
+        if (lastName == undefined) {
             lastName = "";
         }
-        this.displayName = firstName+" "+lastName;
+        this.displayName = firstName + " " + lastName;
         this.geoLocation();
-        if(!this.isFromAdminPanel){
-            this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
+        if (!this.isFromAdminPanel) {
+            this.upadatedUserId = this.authenticationService.isSuperAdmin() ? this.authenticationService.selectedVendorId : this.loggedInUserId;
             this.getCompanyProfileByUserId(this.upadatedUserId);
             if (this.authenticationService.user.hasCompany) {
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
-            }else{
-				if(this.authenticationService.isPartner()|| this.authenticationService.isOnlyUser()){
-            			this.getPartnerDetails();
-            	}
+            } else {
+                if (this.authenticationService.isPartner() || this.authenticationService.isOnlyUser()) {
+                    this.getPartnerDetails();
+                }
             }
-            
+
             if (this.authenticationService.vanityURLEnabled && this.authenticationService.checkSamlSettingsUserRoles()) {
                 this.setVendorLogoTooltipText();
             }
         }
-       // this.getAllCompanyNames();
+        this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
-        if(!this.companyLogoImageUrlPath){
-          this.squareData = {};
+        if (!this.companyLogoImageUrlPath) {
+            this.squareData = {};
         }
 
-        if(!this.companyBgImagePath){
+        if (!this.companyBgImagePath) {
             this.squareDataForBgImage = {};
         }
     }
