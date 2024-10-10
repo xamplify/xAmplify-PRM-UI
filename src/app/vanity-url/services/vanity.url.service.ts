@@ -215,20 +215,25 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
         }else{
           let subDomain  = this.getCustomDomain(url);
           console.log(url+" is the url And Custom Domain : "+subDomain);
-          this.authenticationService.getCompanyProfileNameByCustomDomain(subDomain+".").subscribe(
-            response=>{
-              let statusCode = response.statusCode;
-              if(statusCode == 200){
-                this.authenticationService.companyProfileName = response.data;
-                this.setVanityVariables(subDomain);
-              }else{
+          let companyProfileName = this.authenticationService.companyProfileName;
+          if(companyProfileName==undefined || companyProfileName==""){
+            this.authenticationService.getCompanyProfileNameByCustomDomain(subDomain+".").subscribe(
+              response=>{
+                let statusCode = response.statusCode;
+                if(statusCode == 200){
+                  this.authenticationService.companyProfileName = response.data;
+                  this.setVanityVariables(subDomain);
+                }else{
+                  this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
+                  this.router.navigate( ['/vanity-domain-error'] );
+                }
+              
+              },error=>{
                 this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
-                this.router.navigate( ['/vanity-domain-error'] );
-              }
-            
-            },error=>{
-              this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
-            });
+              });
+          }else{
+            console.log("API is not needed to get the company profile name");
+          }
         }
         return true;
       }
@@ -324,7 +329,9 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
       this.titleService.setTitle(this.authenticationService.v_companyName);
     }
     if(this.authenticationService.v_companyFavIconPath) {
-      this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
+      if(this.isVanityURLEnabled()){
+        this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
+      }
     }
   }
 

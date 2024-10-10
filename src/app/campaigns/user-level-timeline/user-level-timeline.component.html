@@ -24,7 +24,7 @@
                   <div class="row mb10" style="margin-left: 30px;">
                      <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
                      <ng-container *ngIf="!disabled">
-                        <span *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
+                        <span *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL' && canPartnerEditLead">
                            <button style="position: absolute; left: 350px; margin-top: 7px;"
                               (click)="showDealRegistrationForm()" class="button bgcolor-unset btn_border"><span
                                  class="btn Btn-Green transition text_pd-top1">{{dealButtonText}}</span></button>

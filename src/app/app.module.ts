@@ -79,13 +79,15 @@ import { DatePipe } from '@angular/common';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
+import { MarketplaceUtilComponent } from './util/marketplace-util/marketplace-util.component';
+
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
         , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
-        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent, 
+        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent, MarketplaceUtilComponent,
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,

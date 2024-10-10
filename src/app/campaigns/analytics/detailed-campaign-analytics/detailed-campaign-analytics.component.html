@@ -1797,7 +1797,7 @@
                [fromAnalytics]="!isNavigatedThroughAnalytics" [showTeamMemberFilter]="campaign.channelCampaign"
                [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
                (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)"
-               (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showDealComments($event)">
+               (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showDealComments($event)" [isOneClickLaunchCampaign]="campaign.oneClickLaunch">
             </app-manage-campaign-deals>
          </div>
       </div>
