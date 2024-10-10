@@ -222,7 +222,7 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
                 let statusCode = response.statusCode;
                 if(statusCode == 200){
                   this.authenticationService.companyProfileName = response.data;
-                  this.setVanityVariables(subDomain);
+                  this.setVanityVariables(this.authenticationService.companyProfileName);
                 }else{
                   this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
                   this.router.navigate( ['/vanity-domain-error'] );
