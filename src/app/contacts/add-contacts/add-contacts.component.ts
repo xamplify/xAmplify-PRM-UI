@@ -4961,23 +4961,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     /***** XNFR-671 *****/
-	private mapFlexiFieldsToUser(headers: any, allTextLines: any, i: number, user: User) {
-		if (this.isContactModule()) {
-			if (headers.length > 11) {
-				this.flexiFieldsRequestAndResponseDto.forEach((flexiField, index) => {
-					let flexiFieldsUserDto = new FlexiFieldsRequestAndResponseDto();
-					let headerColumn = this.removeDoubleQuotes(headers[11 + index]);
-					flexiFieldsUserDto.fieldName = flexiField.fieldName;
-					if (headerColumn == flexiField.fieldName.toUpperCase()) {
-						flexiFieldsUserDto.fieldValue = allTextLines[i][11 + index].trim();
-					}
-					user.flexiFields.push(flexiFieldsUserDto);
-				});
-			}
-		}
-	}
-
-    /***** XNFR-671 *****/
     private resetCustomUploadCsvFields() {
         this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
         this.isUploadCsvOptionEnabled = false;

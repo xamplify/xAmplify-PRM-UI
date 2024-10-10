@@ -2988,5 +2988,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		});
 	}
 
+	isContactsByTypeAllVaildUnsubscribed() {
+		return (this.isContactModule() && (this.contactsByType.selectedCategory == 'all' 
+			|| this.contactsByType.selectedCategory == 'valid' || this.contactsByType.selectedCategory == 'unsubscribed'));
+	}
+
+	isContactModule() {
+		return (this.module == 'contacts');
+	}
 
 }
