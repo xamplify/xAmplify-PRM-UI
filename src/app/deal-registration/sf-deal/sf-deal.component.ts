@@ -681,12 +681,13 @@ export class SfDealComponent implements OnInit {
     columnInfo.divClass = "success";
     if (columnInfo.labelType == 'lookup' && columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
       if (columnInfo.value == 0 && columnInfo.required) {
-        columnInfo.errorMessage = "Please select "+ columnInfo.labelName;
+        columnInfo.errorMessage = "Please select " + columnInfo.labelName;
         columnInfo.divClass = "error";
         this.isInvalidLookupField = true;
       } else {
         this.isInvalidLookupField = false;
-      }      
+        this.setSelectedChoiceIdForLookUp(columnInfo);
+      }
     } else if (!columnInfo.required && columnInfo.labelType == 'lookup') {
       this.isInvalidLookupField = false;
     }
@@ -823,6 +824,17 @@ export class SfDealComponent implements OnInit {
         }
       }
     });
+  }
+
+  //XNFR-710
+  setSelectedChoiceIdForLookUp(columnInfo: any): any {
+    let selectedChoiceId = columnInfo.value;
+    if (columnInfo.lookupDropDownChoices != null && columnInfo.lookupDropDownChoices != undefined) {
+      let selectedChoice = columnInfo.lookupDropDownChoices.filter(choice => choice.id === selectedChoiceId);
+      for (let choice of selectedChoice) {
+        columnInfo.selectedChoiceValue = choice.name;
+      }
+    }
   }
 
 }

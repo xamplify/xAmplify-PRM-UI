@@ -262,10 +262,15 @@
       <!---- XNFR-528 ---->
       <!-- ---------------------------Searchable DropDown For Lookup----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='lookup'">
-        <span [class.disabled]="isVendor || isPreview || (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany))">
+        <span *ngIf="!isPreview" [class.disabled]="isVendor || (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany))">
           <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDtoForLookupField(columnInfo)"
           [(account)]="columnInfo.value" [disableDropDown]="false" 
-          (searchableDropdownEventEmitter)="onItemSelect($event)"></app-searchable-dropdown></span>
+          (searchableDropdownEventEmitter)="onItemSelect($event)"></app-searchable-dropdown>
+        </span>
+        <span *ngIf="isPreview">
+          <input type="text" [disabled]="isPreview || isVendor" class="form-control" id="{{columnInfo.labelId}}"
+            [(ngModel)]="columnInfo.selectedChoiceValue">
+        </span>
       </ng-container>
   </div>
 </ng-container>

@@ -1230,8 +1230,10 @@ export class AddDealComponent implements OnInit {
               const event = new Date(formLabel.value);
               sfCfData.dateTimeIsoValue = event.toISOString();
             }
-          }
-          else {
+          } else if (formLabel.labelType === 'lookup') {
+            sfCfData.value = formLabel.value;
+            sfCfData.selectedChoiceValue = formLabel.selectedChoiceValue;
+          } else {
             sfCfData.value = formLabel.value;
           }
           sfCfDataList.push(sfCfData);
