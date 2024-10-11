@@ -436,5 +436,7 @@ export class Properties {
 
 	NO_DATA_RETRIVED_FROM_SALESFORCE = "No data retrieved from Salesforce. Please ensure all required fields are filled in.";
 
+	UNABLE_TO_PROCESS_REQUEST = "We're currently unable to process this request. Please try again later.";
+	
 	}
 
