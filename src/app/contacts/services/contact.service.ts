@@ -48,6 +48,7 @@ export class ContactService {
     url = this.authenticationService.REST_URL + "admin/";
     companyUrl = this.authenticationService.REST_URL + "companies/"
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
+    contactsSchedulerUrl = this.authenticationService.SCHEDULER_URL+"userlists/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
@@ -268,8 +269,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        //var url = this.contactsUrl + "save-userlist?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token + "&userListName="+ contactListName + "&isPartnerUserList="+isPartner ;
-        var url = this.contactsUrl + "save-userlist/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        var url = this.contactsSchedulerUrl + "save-userlist/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         this.logger.info(userUserListWrapper);
         return this._http.post(url, options, requestoptions)
             .map((response: any) => response.json())
@@ -285,8 +285,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + "save-assign-leads-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
-
+        var url = this.contactsSchedulerUrl + "save-assign-leads-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this._http.post(url, options, requestoptions)
             .map((response: any) => response.json())
             .catch(this.handleError);
@@ -301,9 +300,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-
-        var url = this.contactsUrl + "/save-as-share-leads/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
-
+        var url = this.contactsSchedulerUrl + "/save-as-share-leads/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this._http.post(url, options, requestoptions)
             .map((response: any) => response.json())
             .catch(this.handleError);
@@ -318,7 +315,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsSchedulerUrl + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
         return this._http.post(url, options, requestoptions)
             .map(this.extractData)
             .catch(this.handleError);
