@@ -920,14 +920,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				},
 				(error: any) => {
-					let body: string = error['_body'];
-					body = body.substring(1, body.length - 1);
-					if (error._body.includes('Please launch or delete those campaigns first')) {
-						this.customResponse = new CustomResponse('ERROR', error._body, true);
-					} else if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-						this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body), true);
-					} else {
-						this.xtremandLogger.errorPage(error);
+					let status = error['status'];
+					if(status==0){
+						this.referenceService.showSweetAlertErrorMessage(this.properties.UNABLE_TO_PROCESS_REQUEST);
+					}else{
+						let body: string = error['_body'];
+						if(body!=undefined){
+							body = body.substring(1, body.length - 1);
+							if (error._body.includes('Please launch or delete those campaigns first')) {
+								this.customResponse = new CustomResponse('ERROR', error._body, true);
+							} else if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+								this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body), true);
+							} else {
+								this.xtremandLogger.errorPage(error);
+							}
+						}
 					}
 					this.xtremandLogger.error(error);
 					this.loading = false;
