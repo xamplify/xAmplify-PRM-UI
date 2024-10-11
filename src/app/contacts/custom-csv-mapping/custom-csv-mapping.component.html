@@ -3,18 +3,17 @@
   <div class="table-responsive" *ngIf="!isListLoader">
     <div class="alert alert-success inline-text" *ngIf="isColumnMapped && isValidEmailAddressMapped">
       <i class="fa fa-check-circle i-20px"></i>
-      <strong class="ml5">
-        {{properties?.contactsCsvHeaderMatchedMessage}}. You can still <a (click)="openArrageHeadersModalPopUp()">click
-          here</a> {{properties?.remapHeadersMessage}} or
-        <a (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
+      <strong class="ml5">{{properties?.contactsCsvHeaderMatchedMessage}}. You can still
+        <a (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}} or
+        <a (click)="!isDefaultColumnMatchedWithMappedColumn() && resetMappedColumns()">click here</a>
+        {{properties?.resetMessage}}
       </strong>
     </div>
     <div class="alert alert-danger inline-text" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
       <i class="fa fa-exclamation-triangle i-20px"></i>
-      <strong class="ml5">
-        We found invalid data for the email address. Please update or
+      <strong class="ml5">We found invalid data for the email address. Please update or
         <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}}
-        or <a class="required" (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
+         or <a class="required" (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
       </strong>
     </div>
     <table class="table tgrid" *ngIf="isColumnMapped">
@@ -263,7 +262,7 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="!mappingLoader && resetMappedColumns()">Reset</button>
+        <button type="button" class="btn btn-danger" [disabled]="isDefaultColumnMatchedWithMappedColumn()" (click)="!mappingLoader && resetMappedColumns()">Reset</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" [disabled]="duplicateMappedColumns?.length>0"
           (click)="duplicateMappedColumns?.length==0 && saveMappedColumns()">Submit</button>

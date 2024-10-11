@@ -1619,45 +1619,31 @@
                                                       </tr>
                                                       <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
                                                          <td class='pt10 pb10 bold mr_10' translate>Job Title : </td>
-                                                         <td class='pt10 pb10' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:14}}
-                                                            <span *ngIf="contact?.jobTitle?.length>14">..</span>
-                                                         </td>
+                                                         <td class='pt10 pb10' title="{{contact.jobTitle}}">{{contact.jobTitle}}</td>
                                                       </tr>
                                                       <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
                                                          <td class='pt10 pb10 bold mr_10' translate>Address : </td>
-                                                         <td class='pt10 pb10' title="{{contact.address}}">{{contact.address | slice:0:14}}
-                                                            <span *ngIf="contact?.address?.length>14">..</span>
-                                                         </td>
+                                                         <td class='pt10 pb10' title="{{contact.address}}">{{contact.address}}</td>
                                                       </tr>
                                                       <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
                                                          <td class='pt10 pb10 bold mr_10' translate>City : </td>
-                                                         <td class='pt10 pb10' title="{{contact.city}}">{{contact.city | slice:0:14}}
-                                                            <span *ngIf="contact?.city?.length>14">..</span>
-                                                         </td>
+                                                         <td class='pt10 pb10' title="{{contact.city}}">{{contact.city}}</td>
                                                       </tr>
                                                       <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
                                                          <td class='pt10 pb10 bold mr_10' translate>State : </td>
-                                                         <td class='pt10 pb10' title="{{contact.state}}">{{contact.state | slice:0:14}}
-                                                            <span *ngIf="contact?.state?.length>14">..</span>
-                                                         </td>
+                                                         <td class='pt10 pb10' title="{{contact.state}}">{{contact.state}}</td>
                                                       </tr>
                                                       <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
                                                          <td class='pt10 pb10 bold mr_10' translate>Zip Code : </td>
-                                                         <td class='pt10 pb10' title="{{contact.zipCode}}">{{contact.zipCode | slice:0:14}}
-                                                            <span *ngIf="contact?.zipCode?.length>14">..</span>
-                                                         </td>
+                                                         <td class='pt10 pb10' title="{{contact.zipCode}}">{{contact.zipCode}}</td>
                                                       </tr>
                                                       <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
                                                          <td class='pt10 pb10 bold mr_10' translate>Country : </td>
-                                                         <td class='pt10 pb10' title="{{contact.country}}">{{contact.country | slice:0:14}}
-                                                            <span *ngIf="contact?.country?.length>14">..</span>
-                                                         </td>
+                                                         <td class='pt10 pb10' title="{{contact.country}}">{{contact.country}}</td>
                                                       </tr>
                                                       <tr class="bg-unset flex-none" *ngFor="let flexiField of contact?.flexiFields">
                                                          <td class='pt10 pb10 bold mr_10' translate>{{flexiField.fieldName}} : </td>
-                                                         <td class='pt10 pb10' title="{{flexiField.fieldValue}}">{{flexiField.fieldValue | slice:0:14}}
-                                                            <span *ngIf="flexiField?.fieldValue?.length>14">..</span>
-                                                         </td>
+                                                         <td class='pt10 pb10' title="{{flexiField.fieldValue}}">{{flexiField.fieldValue}}</td>
                                                       </tr>
                                                    </tbody>
                                                 </table>
