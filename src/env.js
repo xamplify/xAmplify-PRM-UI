@@ -4,6 +4,7 @@
 	window.__env.domainName = "";
 	
 	/*************Local*******************************/
+
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; 
 	window.__env.SERVER_URL = 'http://localhost:8090/'; 
 	window.__env.SCHEDULER_URL = 'http://localhost:9090/'; 
@@ -16,7 +17,6 @@
 	//window.__env.SCHEDULER_URL = 'https://qascheduler.xamp.io/'; 
 	// window.__env.imagesHost = "https://aravindu.com/vod/images/";
 	// window.__env.PREVIEW_HOST = "https://assets.xamplify.co/";
-
 
 	/********************Production************************/
 	// window.__env.CLIENT_URL = 'https://xamplify.io/'; 
