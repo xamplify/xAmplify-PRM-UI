@@ -244,6 +244,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     /***** XNFR-671 *****/
     csvRows: any[];
+    isNoResultFound: boolean = false;
     isXamplifyCsvFormatUploaded = false;
     isUploadCsvOptionEnabled: boolean = false;
     flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
@@ -499,6 +500,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     private noRecordsFoundErrorMessage(self: this) {
         if (this.csvRows.length == 2) {
             self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+            self.isNoResultFound = true;
             self.cancelContacts();
         }
     }
@@ -1115,9 +1117,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedContactListIds.length = 0;
         this.disableOtherFuctionality = false;
         this.paginationType = "";
-        this.resetResponse();
-        if (this.selectedAddContactsOption != 2) {
-            this.customResponse = new CustomResponse();
+        if(!this.isNoResultFound) {
+            this.resetResponse();
         }
         this.pager = [];
         this.pagedItems = [];
@@ -4963,6 +4964,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /***** XNFR-671 *****/
     private resetCustomUploadCsvFields() {
         this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+        this.isNoResultFound = false;
         this.isUploadCsvOptionEnabled = false;
         this.isXamplifyCsvFormatUploaded = false;
         this.csvRows = [];
