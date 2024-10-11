@@ -1015,7 +1015,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.customResponse = new CustomResponse('ERROR', "Please remove duplicate email ids " + this.duplicateEmailIds, true);
 					this.duplicateEmailIds = [];
 				} else {
-					this.inValidCsvContacts = true;
+					this.customResponse = new CustomResponse('ERROR', "We found invalid email id(s) please remove... " + this.invalidPatternEmails, true);
+					this.invalidPatternEmails = [];
 				}
 			} else {
 				this.customResponse = new CustomResponse('ERROR', this.properties.contactsCsvHeadersMisMatchMessage, true);

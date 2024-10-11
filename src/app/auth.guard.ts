@@ -206,7 +206,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if (url.indexOf(this.mdfUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.mdfUrl);
             }
-            if (url.indexOf(this.damUrl) > -1 || url.indexOf('select-modules')>-1) {
+            if (url.indexOf(this.damUrl) > -1 || url.indexOf('select-modules')>-1 || url.indexOf("/content/")>-1) {
                 return this.authorizeUrl(roles, url, this.damUrl);
             }
             if (url.indexOf(this.leadsUrl) > -1) {
@@ -314,8 +314,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 return true;
             } else if (urlType == this.damUrl || url.indexOf('select-modules')>-1 || url.indexOf("/content/")>-1) {
                 /**XNFR-694**/
-                return true;
-                //this.authorizeUrlAccess(url);
+                if(this.authenticationService.isLocalHost()){
+                    this.authorizeUrlAccess(url);
+                }else{
+                    return true;
+                }
             } else if (urlType == this.leadsUrl) {
                 return true;
             } else if (urlType == this.dealsUrl) {

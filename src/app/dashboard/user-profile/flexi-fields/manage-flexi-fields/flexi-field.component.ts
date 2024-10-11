@@ -133,6 +133,7 @@ export class FlexiFieldComponent implements OnInit {
     this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
     this.flexiField.dupliateNameErrorMessage = "";
+    this.flexiField.fieldName = this.flexiField.fieldName.trim();
     this.flexiFieldService.saveOrUpdateFlexiField(this.flexiField,this.isAdd).subscribe(
       response => {
         let statusCode = response.statusCode;

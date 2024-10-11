@@ -1448,7 +1448,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				text: message,
 				allowOutsideClick: false,
 				showConfirmButton: false,
-				imageUrl: 'assets/images/loader.gif'
+				imageUrl: 'assets/images/loader.gif',
+				allowEscapeKey: false
 			});
 			this.contactService.socialProviderName = 'google';
 			this.socialPartners.socialNetwork = "GOOGLE";
@@ -2754,27 +2755,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('#settingSocialNetworkPartner').modal('hide');
 		$("body>#settingSocialNetworkPartner").remove();
 		$('body').removeClass('modal-backdrop in');
-
-		// if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
-		//    let self = this;
-		//     swal( {
-		//         title: 'Are you sure?',
-		//         text: "You have unsaved data",
-		//         type: 'warning',
-		//         showCancelButton: true,
-		//         confirmButtonColor: '#54a7e9',
-		//         cancelButtonColor: '#999',
-		//         confirmButtonText: 'Yes, Save it!',
-		//         cancelButtonText: "No"
-
-		//     }).then( function() {
-		//         self.saveContacts();
-		//     }, function( dismiss ) {
-		//         if ( dismiss === 'No' ) {
-		//             self.selectedAddPartnerOption = 5;
-		//         }
-		//     })
-		// }
 		if (this.selectedAddPartnerOption == 5) {
 			swal.close();
 		}
@@ -3640,101 +3620,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.sendCampaignComponent.openPopUp(this.partnerListId, contact, "Partner");
 	}
 
-
-	/*openCampaignsPopupForNewlyAddedPartners() {
-		this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.partnerListId, this.newUserDetails, "Partner");
-	}*/
-
-	/**********************Sravan************************ */
-	/*checkingZohoContactsAuthentication() {
-		try {
-
-			if(this.loggedInThroughVanityUrl){
-				this.referenceService.showSweetAlertInfoMessage();
-			}else{
-				if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
-					this.contactService.checkingZohoAuthentication(this.isPartner)
-						.subscribe(
-						( data: any ) => {
-							this.storeLogin = data;
-							if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-								this.getZohoContactsUsingOAuth2();
-							} else{
-								localStorage.setItem( "userAlias", data.userAlias )
-								localStorage.setItem( "isPartner", data.isPartner );
-								window.location.href = "" + data.redirectUrl;
-							}
-						},
-						( error: any ) => {
-						   this.referenceService.showSweetAlertServerErrorMessage();
-
-						},
-						() => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
-						)
-				}
-			}
-
-
-		} catch ( error ) {
-			this.xtremandLogger.error( error, "addPartnerComponent", "zoho authentication cheking" );
-		}
-	}
-
-	getZohoContactsUsingOAuth2(){
-		this.socialPartners.socialNetwork = "ZOHO";
-		this.socialPartners.contactType = this.contactType;
-		this.socialPartners.contactType = "CONTACT";
-		swal( {
-			text: 'Retrieving partners from zoho...! Please Wait...It\'s processing',
-			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
-		});
-		this.contactService.getZohoAutherizedContacts(this.socialPartners)
-				.subscribe(
-				data => {
-					this.getGoogleConatacts = data;
-					this.zohoImageBlur = false;
-					this.zohoImageNormal = true;
-					if ( !this.getGoogleConatacts.contacts ) {
-						this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
-						this.selectedAddPartnerOption = 5;
-						$("button#cancel_button").prop('disabled', false);
-					} else {
-						for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
-							let socialContact = new SocialContact();
-							socialContact.id = i;
-							if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-								socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
-								socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
-								socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
-								this.socialPartnerUsers.push( socialContact );
-							}
-							this.showFilePreview();
-							$( "#myModal .close" ).click()
-							$( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-							$( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-							$( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px' );
-							$( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-							$( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-							$( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-							$( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-							$( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-						}
-					}
-					this.selectedAddPartnerOption = 6;
-					this.setSocialPage( 1 );
-					swal.close();
-				},
-				( error: any ) => {
-					swal.close();
-					this.xtremandLogger.error( error );
-					this.xtremandLogger.errorPage( error );
-				},
-				() => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
-				);
-
-	}*/
-
-
 	checkingZohoContactsAuthentication() {
 		try {
 			this.selectedAddPartnerOption = 6;
@@ -3822,7 +3707,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactType = "CONTACT";
 		swal({
 			text: 'Retrieving contacts from zoho...! Please Wait...It\'s processing',
-			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
+			allowEscapeKey: false,
+			
 		});
 
 		this.contactService.getZohoAutherizedContacts(this.socialPartners)
@@ -3876,7 +3763,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactType = "LEAD";
 		swal({
 			text: 'Retrieving leads from zoho...! Please Wait...It\'s processing',
-			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
+			allowEscapeKey: false
 		});
 
 		this.contactService.getZohoAutherizedLeads(this.socialPartners)

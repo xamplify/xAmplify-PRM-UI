@@ -5,7 +5,8 @@
 
   <!---Partner Invitation-->
   <ng-template [ngTemplateOutlet]="notificationOptionTemplateOutlet" [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:partnerInvitationTextDto,
-      notificationSettingOption:emailNotificationSettingsDto?.notifyPartners,moduleType:1}">
+      notificationSettingOption:emailNotificationSettingsDto?.notifyPartners,moduleType:1,
+      vendorCompanyEmailNotificationSettingOption:emailNotificationSettingsDto?.partnerOnBoardVendorEmailNotification}">
   </ng-template>
 
   <!---Assets-->
@@ -68,7 +69,7 @@
 
 
     <!--XNFR-688 Email Notification Settings For Vendor Company---->
-    <ng-container *ngIf="moduleType!=1">
+    <ng-container>
       <div class="portlet light">
         <label class="bold-font">{{emailNotificationSettingsTextDto?.notificationControlInfoForVendorCompany}}</label>
         <div>

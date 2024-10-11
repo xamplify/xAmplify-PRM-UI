@@ -61,6 +61,8 @@ export class EmailNotificationSettingsComponent implements OnInit {
     this.partnerInvitationTextDto.notificationToggle = "Turn Email notifications on or off";
     this.partnerInvitationTextDto.notificationControlInfo = "You have the ability to control email notifications to newly onboarded " + this.customModulePartnerName + ".";
     this.partnerInvitationTextDto.notificationPreference = "Send signup email notifications to your newly onboarded " + this.customModulePartnerName + ":";
+    this.partnerInvitationTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(this.customModulePartnerName,false,false);
+    this.partnerInvitationTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(this.customModulePartnerName,false,false);
   }
 
   private setPlaybookNotificationText() {
@@ -69,10 +71,10 @@ export class EmailNotificationSettingsComponent implements OnInit {
     let playBookSuffixText = "a play book";
     this.playbookPublishedTextDto.headerText = this.getHeaderText(playBookHeaderText);
     this.playbookPublishedTextDto.notificationToggle = this.getNotificationToggleText(playBookHeaderText);
-    this.playbookPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(playBooksSuffixText,true);
-    this.playbookPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(playBookSuffixText,true);
-    this.playbookPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(playBookSuffixText,false);
-    this.playbookPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(playBookSuffixText,false);
+    this.playbookPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(playBooksSuffixText,true,true);
+    this.playbookPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(playBookSuffixText,true,true);
+    this.playbookPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(playBookSuffixText,false,true);
+    this.playbookPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(playBookSuffixText,false,true);
   }
 
   private setTrackNotificationText() {
@@ -81,10 +83,10 @@ export class EmailNotificationSettingsComponent implements OnInit {
     let trackSuffixText = "a track";
     this.trackPublishedTextDto.headerText = this.getHeaderText(trackHeaderText);
     this.trackPublishedTextDto.notificationToggle = this.getNotificationToggleText(trackHeaderText);
-    this.trackPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(tracksSuffixText,true);
-    this.trackPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(trackSuffixText,true);
-    this.trackPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(trackSuffixText,false);
-    this.trackPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(trackSuffixText,false);
+    this.trackPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(tracksSuffixText,true,true);
+    this.trackPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(trackSuffixText,true,true);
+    this.trackPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(trackSuffixText,false,true);
+    this.trackPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(trackSuffixText,false,true);
   }
 
   private setAssetNotificationText() {
@@ -93,10 +95,10 @@ export class EmailNotificationSettingsComponent implements OnInit {
     let assetSuffixText = "an asset";
     this.assetPublishedTextDto.headerText = this.getHeaderText(assetHeaderText);
     this.assetPublishedTextDto.notificationToggle = this.getNotificationToggleText(assetHeaderText);
-    this.assetPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(assetsSuffixText,true);
-    this.assetPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(assetSuffixText,true);
-    this.assetPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(assetSuffixText,false);
-    this.assetPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(assetSuffixText,false);
+    this.assetPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(assetsSuffixText,true,true);
+    this.assetPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(assetSuffixText,true,true);
+    this.assetPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(assetSuffixText,false,true);
+    this.assetPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(assetSuffixText,false,true);
 
   }
 
@@ -107,11 +109,11 @@ export class EmailNotificationSettingsComponent implements OnInit {
     let dashboardButtonSuffixText = "a dashboard button";
     this.dashboardButtonsPublishedTextDto.headerText = this.getHeaderText(headerText);
     this.dashboardButtonsPublishedTextDto.notificationToggle = this.getNotificationToggleText(headerText);
-    this.dashboardButtonsPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(dashboardButtonsSuffixText,true);
-    this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText,true);
-    this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText,true);
-    this.dashboardButtonsPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(dashboardButtonSuffixText,false);
-    this.dashboardButtonsPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(dashboardButtonSuffixText,false);
+    this.dashboardButtonsPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(dashboardButtonsSuffixText,true,true);
+    this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText,true,true);
+    this.dashboardButtonsPublishedTextDto.notificationPreference = this.getNotificationPreferenceText(dashboardButtonSuffixText,true,true);
+    this.dashboardButtonsPublishedTextDto.notificationControlInfoForVendorCompany = this.getNotificationControlInfoText(dashboardButtonSuffixText,false,true);
+    this.dashboardButtonsPublishedTextDto.notificationPreferenceForVendorCompany = this.getNotificationPreferenceText(dashboardButtonSuffixText,false,true);
   }
 
   getHeaderText(headerTextPrefix:string){
@@ -122,14 +124,16 @@ export class EmailNotificationSettingsComponent implements OnInit {
     return  "Turn Published "+turnOnOrOffTextSuffix+" Email notifications on or off";
   }
 
-  getNotificationControlInfoText(controlEmailNotificationTextSuffix:string,textForPartnerFlag:boolean){
+  getNotificationControlInfoText(controlEmailNotificationTextSuffix:string,textForPartnerFlag:boolean,isTextAboutPublishing:boolean){
     let suffixText = textForPartnerFlag ? this.customModulePartnerName : "team members and yourself ";
-    return "You have the ability to control email notifications to your "+suffixText+" about published "+controlEmailNotificationTextSuffix+".";
+    let endText = isTextAboutPublishing ? " published":"onboarded";
+    return "You have the ability to control email notifications to your "+suffixText+" about "+endText+" "+controlEmailNotificationTextSuffix+".";
   }
 
-  getNotificationPreferenceText(sendEmailNotificationTextSuffix:string,textForPartnerFlag:boolean){
+  getNotificationPreferenceText(sendEmailNotificationTextSuffix:string,textForPartnerFlag:boolean,isTextAboutPublishing:boolean){
     let suffixText = this.getSuffixText(textForPartnerFlag);
-    return "Send email notifications to your "+suffixText+" when "+sendEmailNotificationTextSuffix+" is published:";
+    let endText = isTextAboutPublishing ? " is published:":" onboarded:";
+    return "Send email notifications to your "+suffixText+" when "+sendEmailNotificationTextSuffix+endText;
   }
 
   private getSuffixText(textForPartnerFlag: boolean) {
@@ -174,6 +178,7 @@ export class EmailNotificationSettingsComponent implements OnInit {
       5: 'dashboardButtonsEmailNotification',
     },
     vendor: {
+      1:'partnerOnBoardVendorEmailNotification',
       2: 'assetPublishVendorEmailNotification',
       3: 'trackPublishVendorEmailNotification',
       4: 'playbookPublishVendorEmailNotification',
