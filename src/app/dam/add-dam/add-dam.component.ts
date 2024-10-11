@@ -175,40 +175,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.damService.getById(this.assetId, this.isPartnerView).subscribe(
       (result: any) => {
         if (result.statusCode === 200) {
-          let dam = result.data;
-          if (dam != undefined) {
-            this.jsonBody = dam.jsonBody;
-            this.beeContainerInput["jsonBody"] = this.jsonBody;
-            this.damPostDto.name = dam.assetName;
-            this.damPostDto.description = dam.description;
-            if(dam.whiteLabeledAssetSharedWithPartners!=undefined){
-              this.damPostDto.shareAsWhiteLabeledAsset = dam.whiteLabeledAssetSharedWithPartners;
-            }
-            this.damPostDto.addedToQuickLinks = dam.addedToQuickLinks;
-            this.name = dam.assetName;
-            this.validForm = true;
-            this.isValidName = true;
-            this.isValidDescription = true;
-            this.nameErrorMessage = "";
-            this.description = dam.description;
-            this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
-            this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
-            this.beeContainerInput["vendorCompanyLogoPath"] =
-            this.vendorCompanyLogoPath;
-            this.beeContainerInput["partnerCompanyLogoPath"] =
-              this.partnerCompanyLogoPath;
-            if (dam.tagIds == undefined) {
-              this.damPostDto.tagIds = new Array<number>();
-            } else {
-              this.damPostDto.tagIds = dam.tagIds;
-            }
-            this.damPostDto.categoryId = dam.categoryId;
-            this.selectedCategoryId = dam.categoryId;
-          } else {
-            this.goToManageSectionWithError();
-          }
-          
-        } else {
+          this.setDamProperties(result);
+        }else if(result.statusCode==403){
+          this.referenceService.goToAccessDeniedPage();
+        }else {
           this.referenceService.goToPageNotFound();
         }
       },
@@ -221,6 +191,41 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.listCategories();
       }
     );
+  }
+
+  private setDamProperties(result: any) {
+    let dam = result.data;
+    if (dam != undefined) {
+      this.jsonBody = dam.jsonBody;
+      this.beeContainerInput["jsonBody"] = this.jsonBody;
+      this.damPostDto.name = dam.assetName;
+      this.damPostDto.description = dam.description;
+      if (dam.whiteLabeledAssetSharedWithPartners != undefined) {
+        this.damPostDto.shareAsWhiteLabeledAsset = dam.whiteLabeledAssetSharedWithPartners;
+      }
+      this.damPostDto.addedToQuickLinks = dam.addedToQuickLinks;
+      this.name = dam.assetName;
+      this.validForm = true;
+      this.isValidName = true;
+      this.isValidDescription = true;
+      this.nameErrorMessage = "";
+      this.description = dam.description;
+      this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
+      this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
+      this.beeContainerInput["vendorCompanyLogoPath"] =
+        this.vendorCompanyLogoPath;
+      this.beeContainerInput["partnerCompanyLogoPath"] =
+        this.partnerCompanyLogoPath;
+      if (dam.tagIds == undefined) {
+        this.damPostDto.tagIds = new Array<number>();
+      } else {
+        this.damPostDto.tagIds = dam.tagIds;
+      }
+      this.damPostDto.categoryId = dam.categoryId;
+      this.selectedCategoryId = dam.categoryId;
+    } else {
+      this.goToManageSectionWithError();
+    }
   }
 
   readBeeTemplateData(event: any) {

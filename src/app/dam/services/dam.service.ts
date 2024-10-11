@@ -84,7 +84,7 @@ export class DamService {
 
   getById(id: number, isPartnerView: boolean) {
     let url = isPartnerView ? 'getPublishedAssetById' : 'getById';
-    return this.http.get(this.URL + url + "/" + id + "?access_token=" + this.authenticationService.access_token)
+    return this.http.get(this.URL + url + "/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }

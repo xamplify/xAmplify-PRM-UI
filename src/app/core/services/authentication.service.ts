@@ -46,6 +46,7 @@ export class AuthenticationService {
   DOMAIN_URL = "";
   SERVER_URL: any;
   REST_URL: string;
+  SCHEDULER_URL:string;
   MEDIA_URL: string;
   SHARE_URL: string;
   MARKETO_URL: string;
@@ -175,6 +176,7 @@ isWelcomePageEnabled = false;
     this.APP_URL = this.envService.CLIENT_URL;
     this.DOMAIN_URL = this.APP_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
+    this.SCHEDULER_URL = this.envService.SCHEDULER_URL+'xtremand-rest/';
     if (this.SERVER_URL.indexOf('localhost') > -1) {
       this.MEDIA_URL = 'http://localhost:8000/';
     } else {
