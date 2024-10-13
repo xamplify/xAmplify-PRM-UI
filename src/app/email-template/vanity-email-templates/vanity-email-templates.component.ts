@@ -64,6 +64,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
           if(data.vanityEmailTemplates.length == 0 && (this.pagination.searchKey == '' || this.pagination.searchKey == "") && this.pagination.filterKey == "DEFAULT"){
             this.isZeroDefaultsTemplates = true;
             this.showAllVanityTemplates("CUSTOM" ,1);
+            return;
           }
           pagination.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, data.vanityEmailTemplates);
