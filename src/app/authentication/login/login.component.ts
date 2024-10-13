@@ -87,8 +87,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     
     if (this.authenticationService.showVanityURLError1) {
       this.showVanityLoginErrorMessage();
+      this.authenticationService.showVanityURLError1 = false;
     } else if (this.authenticationService.showSomethingWentWrongMessageForSSO) {
       this.setCustomeResponse("ERROR", this.properties.socialVanityCallBackErrorMessage);
+      this.authenticationService.showSomethingWentWrongMessageForSSO = false;
     }
     "https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled ? this.signInText = "Sign In to Sandbox" :this.signInText = "Sign In";
   }
