@@ -49,6 +49,8 @@ export class CreateMdfRequestComponent implements OnInit {
   duplicateTitle = false;
   initLoader = false;
   statusCode = 200;
+  /***XNFR-423***/
+  countryNames = [];
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties,private formService:FormService) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -87,9 +89,23 @@ export class CreateMdfRequestComponent implements OnInit {
       () => {
         if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
           this.getTilesInfo();
+           /****XNFR-423****/
+          this.getCountryNames();
         }
       }
     );
+  }
+  /****XNFR-423****/
+  getCountryNames() {
+    this.loading = true;
+    this.authenticationService.getCountryNames().
+      subscribe(
+        response => {
+          this.countryNames = this.authenticationService.addCountryNamesToList(response.data, this.countryNames);
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+        });
   }
 
 
