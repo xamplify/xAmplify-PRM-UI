@@ -540,8 +540,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                     this.canBlurDiv = false;
                     if (response.statusCode == 401) {
                         this.referenceService.showSweetAlertErrorMessage('Your Salesforce Integration was expired. Please re-configure.');
-                    }else if(response.statusCode=404){
-                        this.validationResponse = new CustomResponse('ERROR',this.properties.NO_DATA_RETRIVED_FROM_SALESFORCE,true);
                     }
                     swal.close();
                 },
