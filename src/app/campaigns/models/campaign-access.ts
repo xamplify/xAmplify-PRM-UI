@@ -52,5 +52,7 @@ export class CampaignAccess {
   referVendor = false;
 /****XNFR-669****/
   welcomePages:boolean = false;
+/****XNFR-712****/
+vendorMarketplace:boolean = false;
 
 }

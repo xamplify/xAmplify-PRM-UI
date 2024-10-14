@@ -81,6 +81,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Output() isFormAnalytics = new EventEmitter();
   @Input() welcomePages = false;
   @ViewChild("partnerCompanyAndGroupsComponent") partnerCompanyAndGroupsComponent:PartnerCompanyAndGroupsComponent;
+  /*  XNFR-712 */
+  @Input()isPartnerJourneyPages = false;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -113,7 +115,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 }
 
   private sefDefaultViewType() {
-    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages){
+    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages
+        ||this.isPartnerJourneyPages
+    ){
         this.viewType = 'g';
     }else if (this.folderListViewCategoryId != undefined) {
         this.categoryId = this.folderListViewCategoryId;
@@ -186,6 +190,12 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         this.pagination.companyId = this.loggedInUserCompanyId;
         this.pagination.welcomePages = true;
 
+      }else if(this.isPartnerJourneyPages){
+        this.pagination.source = "PARTNER_JOURNEY_PAGE";
+        this.pagination.defaultLandingPage = false;
+        this.pagination.loginAsUserId = this.loggedInUserId;
+        this.pagination.companyId = this.loggedInUserCompanyId;
+        this.pagination.partnerJourneyPages = true;
       }else{
         this.pagination.source = "MANUAL";
       }
@@ -326,7 +336,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   editLandingPage(id: number) {
-    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages){
+    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages
+        || this.isPartnerJourneyPages
+    ){
         this.landingPageService.getById(id).subscribe(
             (data: any) => {
                 this.vendorLandingPage.emit(data.data);
@@ -348,7 +360,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.customResponse = new CustomResponse();
       this.referenceService.loading(this.httpRequestLoader, true);
       this.referenceService.goToTop();
-      this.landingPageService.deletebById(landingPage.id,(this.vendorJourney || this.isMasterLandingPages))
+      this.landingPageService.deletebById(landingPage.id,(this.vendorJourney || this.isMasterLandingPages ||this.isPartnerJourneyPages))
           .subscribe(
               (response: any) => {
                   if(response.access){
@@ -409,7 +421,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
   goToFormAnalytics(id: number) {
-    if(this.isMasterLandingPages || this.vendorJourney || this.welcomePages){
+    if(this.isMasterLandingPages || this.vendorJourney || this.welcomePages || this.isPartnerJourneyPages){
         this.isFormAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
@@ -424,7 +436,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.router.navigate(['/home/forms/partner/lf/' + alias]);
   }
   goToLandingPageAnalytics(id: number) {
-    if(this.vendorJourney || this.isMasterLandingPages || this.welcomePages){
+    if(this.vendorJourney || this.isMasterLandingPages || this.welcomePages || this.isPartnerJourneyPages){
         this.viewAnalytics.emit(id);
     }else{
       if(this.categoryId>0){

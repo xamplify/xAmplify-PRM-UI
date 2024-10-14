@@ -368,6 +368,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateModulesMenuHeader = MY_PROFILE_MENU_CONSTANTS.UPDATE_MODULES;
 	/**XNFR-677**/
 	showModelPopupForSalesforce:boolean = false;
+	/**XNFR-712**/
+	isPartnerJourneyPages:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2180,6 +2182,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		/*****XNFR-628******/
 		else if (this.activeTabName == this.flexiFieldsMenuHeader) {
 			this.activateFlexiFieldsMenuHeader();
+		}
+		/*****XNFR-712******/
+		else if (this.activeTabName == "partnerJourneyPages") {
+			this.ngxloading = true;
+			this.isPartnerJourneyPages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isPartnerJourneyPages = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.partnerJourneyPages;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}

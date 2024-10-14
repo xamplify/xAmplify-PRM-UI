@@ -371,6 +371,7 @@
                                             activeTabName == 'landingPages' ? 'show':'',
                                             activeTabName == 'masterLandingPages' ? 'show':'',
                                             activeTabName == 'welcomePages' ? 'show':'',
+                                            activeTabName == 'partnerJourneyPages' ? 'show':'',
                                             activeTabName == 'categories' ? 'show':'',
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
@@ -485,7 +486,7 @@
                                             </ng-container>
                                              <!--Welcome-pages-->
                                              <ng-container
-                                             *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember || authenticationService.module.isPrmTeamMember || authenticationService?.module?.isMarketingTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin() || authenticationService.module.isPrm || authenticationService?.module?.isMarketing)">
+                                             *ngIf="(authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)">
                                              <li [ngClass]="{'active-tab': activeTabName == 'welcomePages'}">
                                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'welcomePages'}"
                                                      (click)="activateTab('welcomePages');clearCustomResponse()">
@@ -495,6 +496,19 @@
                                                  </a>
                                              </li>
                                          </ng-container>
+                                        <!--Partner Journey Pages-->
+                                         <ng-container
+                                         *ngIf="(authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember &&  authenticationService?.module?.adminOrSuperVisor))">
+                                         <li [ngClass]="{'active-tab': activeTabName == 'partnerJourneyPages'}">
+                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'partnerJourneyPages'}"
+                                                 (click)="activateTab('partnerJourneyPages');clearCustomResponse()">
+                                                 {{properties.partnerJourneyPages}}
+                                                 <ng-template [ngTemplateOutlet]="activeIcon"
+                                                     [ngTemplateOutletContext]="{'moduleName':'partnerJourneyPages'}"></ng-template>
+                                             </a>
+                                         </li>
+                                     </ng-container>
+
                                         </ng-container>
                                         <!--Folders-->
                                         <li *ngIf="authenticationService.folders"
@@ -3291,6 +3305,13 @@
                                             <app-vendor-journey *ngIf="welcomePages"
                                                 [loggedInUserCompanyId]="loggedInUserCompanyId"
                                                 [moduleType]="properties.welcomePages"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
+                                        </div>
+                                        <!-- Partner Journey Pages -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'partnerJourneyPages'}">
+                                            <app-vendor-journey *ngIf="isPartnerJourneyPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                [moduleType]="properties.partnerJourneyPages"
                                                 (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
                                                 (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
                                         </div>

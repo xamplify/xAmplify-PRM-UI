@@ -201,6 +201,8 @@ export class Properties {
 	masterLandingPages = "Marketplace Pages"
 	masterLandingPageCategories = "Marketplace Categories"
 	welcomePages = "Welcome Pages"
+	/*****XNFR-712******/
+	partnerJourneyPages = "Partner Journey Pages";
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
 

@@ -38,6 +38,8 @@ export class VendorJourneyComponent implements OnInit {
   importedObject:any={};
   categoryDropDownOptions=[];
   welcomePages:boolean = false;
+  /**XNFR-712****/
+  isPartnerJourneyPages:boolean = false;
   constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
@@ -46,6 +48,7 @@ export class VendorJourneyComponent implements OnInit {
     this.isLandingPages = this.moduleType == "Vendor Pages";
     this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
     this.welcomePages = this.moduleType == "Welcome Pages";
+    this.isPartnerJourneyPages = this.moduleType == "Partner Journey Pages";
   }
 
   editVendorLandingPage(event){
@@ -53,6 +56,7 @@ export class VendorJourneyComponent implements OnInit {
     this.landingPageService.vendorJourney = this.vendorJourney;
     this.landingPageService.isMasterLandingPages = this.isMasterLandingPages;
     this.landingPageService.welcomePages = this.welcomePages;
+    this.landingPageService.isPartnerJourneyPages = this.isPartnerJourneyPages;
     this.landingPageService.id = this.vendorDefaultTemplate.id;
     this.mergeTagsInput['page'] = true;
     this.editVendorPage = true;
@@ -63,6 +67,7 @@ export class VendorJourneyComponent implements OnInit {
     this.editVendorPage = false;
     this.vendorDefaultTemplate = new LandingPage() ;
     this.landingPageService.vendorJourney = false;
+    this.landingPageService.isPartnerJourneyPages = false;
     this.landingPageService.id = 0;
     this.mergeTagsInput['page'] = false;
     this.vendorJourney = false;
@@ -74,6 +79,7 @@ export class VendorJourneyComponent implements OnInit {
     this.isLandingPages = this.moduleType == "Vendor Pages";
     this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
     this.welcomePages = this.moduleType == "Welcome Pages";
+    this.isPartnerJourneyPages = this.moduleType == "Partner Journey Pages"
 
     this.isFormAnalytics = false;
     this.isManageForms = false;

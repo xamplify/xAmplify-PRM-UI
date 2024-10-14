@@ -26,6 +26,7 @@ export class LandingPageService {
     vendorJourney:boolean = false;
     isMasterLandingPages:boolean = false;
     welcomePages:boolean = false;
+    isPartnerJourneyPages:boolean = false;
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
