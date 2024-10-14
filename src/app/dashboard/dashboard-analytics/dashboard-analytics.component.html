@@ -281,14 +281,12 @@
             </div>
 
             <!---PRM Dashboard -->
+            <!---Only PRM Company || Partnership Only With Prm || Logged In As Partner Of PRM-->
             <ng-container
-                *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+                *ngIf="(authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                 <!----Show PRM Content--------->
-                <app-show-prm-content [hideRowClass]="false"
-                    *ngIf="!authenticationService?.module.isOnlyPartner && !authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && 
-                    (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
-                    authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner)">
+                <app-show-prm-content [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
+                    authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
                 </app-show-prm-content>
                 <!--Top 4 Assets--------------->
                 <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" (newItemEvent)="setManageDam($event)"

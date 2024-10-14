@@ -562,4 +562,10 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     }
   }
 
+  isDefaultColumnMatchedWithMappedColumn(): boolean {
+    return (this.defaultContactsCsvColumnHeaderDtos.every(dto =>
+      dto.defaultColumn.toUpperCase().replace(" ", "") == dto.mappedColumn.replace(" ", "")
+    ) && this.isXamplifyCsvFormatUploaded);
+  }
+
 }

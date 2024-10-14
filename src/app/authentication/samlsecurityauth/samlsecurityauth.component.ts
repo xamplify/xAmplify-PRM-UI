@@ -21,14 +21,13 @@ export class SamlsecurityauthComponent implements OnInit {
   moduleToRedirect: any;
   constructor(public authenticationService: AuthenticationService, public processor: Processor,
     public activatedRoute: ActivatedRoute, public router: Router, public xtremandLogger: XtremandLogger,
-    public userService: UserService, private vanityURLService: VanityURLService) { }
+    public userService: UserService, private vanityURLService: VanityURLService,public referenceService:ReferenceService) { }
 
   ngOnInit() {
     try {
       this.processor.set(this.processor)
       this.alias = this.activatedRoute.snapshot.params['alias'];
       this.moduleToRedirect = this.activatedRoute.snapshot.params['moduleToRedirect'];
-      console.log(this.alias);
       this.checkAuthenticationSamlSecurity();
     }
     catch (error) { this.xtremandLogger.error('error in verifyemail' + error); }
@@ -41,7 +40,6 @@ export class SamlsecurityauthComponent implements OnInit {
         console.log(result);
       } else {
         console.log(result);
-        // this.getUserNameDetails(result);
         this.getSamlSecurityUserName(result);
       }
     }, (error: any) => {
@@ -81,6 +79,8 @@ export class SamlsecurityauthComponent implements OnInit {
         } else {
           this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
         }
+        localStorage.setItem('appIcon',result.companyFavIconPath);
+        this.referenceService.setFavIcon();
         this.authenticationService.getVanityURLUserRoles(this.userName, this.authenticationService.access_token).subscribe(result => {
           this.authenticationService.vanityURLUserRoles = result.data;
           this.getUserNameDetailsByUserName();

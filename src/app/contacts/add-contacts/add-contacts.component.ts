@@ -804,13 +804,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                     },
                     (error: any) => {
-                        this.loading = false;
-                        if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                            this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                        } else {
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        this.xtremandLogger.error(error);
+                        this.handleContactListError(error);
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
                 )
@@ -849,13 +843,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     }
                 },
                 (error: any) => {
-                    this.loading = false;
-                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                    } else {
-                        this.xtremandLogger.errorPage(error);
-                    }
-                    this.xtremandLogger.error(error);
+                  this.handleContactListError(error);                           
                 },
                 () => this.xtremandLogger.info("addcontactComponent saveAssignedLeadsList() finished")
             )
@@ -981,13 +969,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                     },
                     (error: any) => {
-                        if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                            this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                        } else {
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        this.xtremandLogger.error(error);
-                        this.loading = false;
+                        this.handleContactListError(error); 
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveCsvContactList() finished")
                 )
@@ -1497,13 +1479,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                     },
                     (error: any) => {
-                        this.loading = false;
-                        if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                            this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                        } else {
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        this.xtremandLogger.error(error);
+                        this.handleContactListError(error); 
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
                 )
@@ -1577,13 +1553,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                     },
                     (error: any) => {
-                        this.loading = false;
-                        if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                            this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                        } else {
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        this.xtremandLogger.error(error);
+                        this.handleContactListError(error); 
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
                 )
@@ -1928,13 +1898,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     },
 
                     (error: any) => {
-                        this.loading = false;
-                        if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                            this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                        } else {
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        this.xtremandLogger.error(error);
+                        this.handleContactListError(error); 
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveZohoContact() finished")
                 )
@@ -2002,13 +1966,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     },
 
                     (error: any) => {
-                        this.loading = false;
-                        if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                            this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                        } else {
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        this.xtremandLogger.error(error);
+                        this.handleContactListError(error); 
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveZohoContactUsers() finished")
                 )
@@ -2431,13 +2389,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                     },
                     (error: any) => {
-                        this.loading = false;
-                        if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                            this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                        } else {
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        this.xtremandLogger.error(error);
+                        this.handleContactListError(error); 
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveZohoContactUsers() finished")
                 )
@@ -2506,13 +2458,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                     },
                     (error: any) => {
-                        this.loading = false;
-                        if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                            this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                        } else {
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        this.xtremandLogger.error(error);
+                        this.handleContactListError(error); 
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveSalesforceContacts() finished")
                 )
@@ -4827,16 +4773,26 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     }
                 },
                 (error: any) => {
-                    this.loading = false;
-                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
-                    } else {
-                        this.xtremandLogger.errorPage(error);
-                    }
-                    this.xtremandLogger.error(error);
+                    this.handleContactListError(error);
                 },
                 () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
             )
+    }
+
+    private handleContactListError(error: any) {
+        let status = error['status'];
+        if (status == 0) {
+            this.referenceService.showSweetAlertErrorMessage(this.properties.UNABLE_TO_PROCESS_REQUEST);
+            this.loading = false;
+        } else {
+            this.loading = false;
+            if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+            } else {
+                this.xtremandLogger.errorPage(error);
+            }
+        }
+        this.xtremandLogger.error(error);
     }
 
     checkingHaloPSAContactsAuthentication() {

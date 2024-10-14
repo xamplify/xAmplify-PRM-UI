@@ -857,6 +857,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 				},
 				(error: any) => {
+					this.loading = false;
 					let status = error['status'];
 					if(status==0){
 						this.refService.showSweetAlertErrorMessage(this.properties.UNABLE_TO_PROCESS_REQUEST);
@@ -871,7 +872,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							this.xtremandLogger.errorPage(error);
 						}
 					}
-					this.loading = false;
 					this.xtremandLogger.error(error);
 				},
 				() => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
