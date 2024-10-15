@@ -474,10 +474,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             self.isListLoader = false;
             if (allTextLines.length == 2) {
                 self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+                self.isNoResultFound = true;
                 self.cancelContacts();
             } else if (allTextLines.length > 2 && self.contacts.length === 0) {
                 self.isValidLegalOptions = true;
                 self.customResponse = new CustomResponse('ERROR', "Email Address is mandatory.", true);
+                self.isNoResultFound = true;
                 self.cancelContacts();
             } else if (self.contacts.length === 0) {
                 self.isValidLegalOptions = true;
@@ -493,6 +495,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
             self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
             self.isListLoader = false;
+            self.isNoResultFound = true;
             self.cancelContacts();
         }
     }
