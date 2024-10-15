@@ -623,8 +623,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                             .filter(member=>member.partnerId == logoDetails.partnerId)[0].categoryIds;
                           }
                         }
-                        if((self.vendorLogoDetails.length == 0 || self.vendorLogoDetails == null  ||(self.vendorLogoDetails != null && self.vendorLogoDetails.length != 0 && self.vendorLogoDetails.every(logo=>!logo.selected)))){
-                          swal("", "Whoops! We're unable to save this page because you havn't selected the vendor detail. You'll need to select vendor detail by clicking the Vendor Logos button", "error");
+                        if((self.vendorLogoDetails.length == 0 || self.vendorLogoDetails == null  ||(self.vendorLogoDetails != null && self.vendorLogoDetails.length != 0 && self.vendorLogoDetails.every(logo=>(!logo.selected || (logo.selected && logo.categoryIds != null && logo.categoryIds.length==0)))))){
+                          swal("", "Whoops! We're unable to save this page because you haven't selected the vendor details. Click on the ‘Pick Your Vendors’ button to choose vendors.", "error");
                           return false;
                         }
                       }
