@@ -55,6 +55,20 @@ export class MultiSelectDropdownComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     this.selectedItems = [];
+    if (changes.displayText) {
+      this.updateDropdownValue(changes.displayText.currentValue);
+    }
+  }
+
+  updateDropdownValue(displayText: string) {
+    this.dropdownSettings = {
+      singleSelection: this.singleSelection,
+      text: displayText,
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableSearchFilter: true,
+      classes: "myclass custom-class"
+    };
   }
 
 }
