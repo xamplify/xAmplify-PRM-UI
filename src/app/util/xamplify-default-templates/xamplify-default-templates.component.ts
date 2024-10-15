@@ -222,43 +222,38 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         const requiredTags = requiredTagsMap[emailTemplateType] || [];
     
         const validationChecks = [
-            {
-                condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages,
-                checks: [
-                    { condition: () => !$.trim(emailTemplate.subject), message: "Whoops! We are unable to save this template because subject line is empty." },
-                    { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
-                    { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN", "ADD_LEAD", "ADD_DEAL", "LEAD_UPDATE", "DEAL_UPDATE", "FORM_COMPLETED", "ADD_SELF_LEAD", "ADD_SELF_DEAL", "UPDATE_SELF_LEAD", "UPDATE_SELF_DEAL", "PRM_ADD_LEAD", "PRM_UPDATED"].includes(emailTemplateType) && !jsonContent.includes('{{customerFullName}}'), message: "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag." },
-                    { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
-                    { condition: () => emailTemplateType === "TRACK_PUBLISH" && !jsonContent.includes("{{trackTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag." },
-                    { condition: () => emailTemplateType === "PLAYBOOK_PUBLISH" && !jsonContent.includes("{{playbookTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{playbookTitle}}' tag." },
-                    { condition: () => emailTemplateType === "ASSET_PUBLISH" && !jsonContent.includes("{{assetName}}"), message: "Whoops! We are unable to save this template because you deleted '{{assetName}}' tag." },
-                    { condition: () => emailTemplateType === "SHARE_LEAD" && !jsonContent.includes("{{shareLeadListName}}"), message: "Whoops! We are unable to save this template because you deleted '{{shareLeadListName}}' tag." },
-                    { condition: () => emailTemplateType === "ONE_CLICK_LAUNCH" && !jsonContent.includes("{{campaignName}}"), message: "Whoops! We are unable to save this template because you deleted '{{campaignName}}' tag." },
-                    { condition: () => emailTemplateType === "ONE_CLICK_LAUNCH" && !jsonContent.includes("{{campaignType}}"), message: "Whoops! We are unable to save this template because you deleted '{{campaignType}}' tag." },
-                    { condition: () => emailTemplateType === "PAGE_CAMPAIGN_PARTNER" && !jsonContent.includes("{{pageName}}"), message: "Whoops! We are unable to save this template because you deleted '{{pageName}}' tag." },
-                    { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH"].includes(emailTemplateType) && !jsonContent.includes("{{publishedDate}}"), message: "Whoops! We are unable to save this template because you deleted '{{publishedDate}}' tag." },
-                    { condition: () => ["ASSET_PUBLISH", "SHARE_LEAD", "PAGE_CAMPAIGN_PARTNER"].includes(emailTemplateType) && !jsonContent.includes("{{sharedDate}}"), message: "Whoops! We are unable to save this template because you deleted '{{sharedDate}}' tag." },
-                    { condition: () => ["SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN"].includes(emailTemplateType) && !jsonContent.includes("{{socialStatusContent}}"), message: "Whoops! We are unable to save this template because you deleted '{{socialStatusContent}}' tag." },
-                    { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN"].includes(emailTemplateType) && !jsonContent.includes('{{senderCompanyName}}'), message: "Whoops! We are unable to save this template because you deleted '{{senderCompanyName}}' tag." },
-                    { condition: () => emailTemplateType === "FORM_COMPLETED" && !jsonContent.includes("{{formTable}}"), message: "Whoops! We are unable to save this template because you deleted '{{formTable}}' tag." },
-                    { condition: () => jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
-                    ...requiredTags.map(tag => ({
-                        condition: () => !jsonContent.includes(tag),
-                        message: `Whoops! We are unable to save this template because you deleted '${tag}' tag.`
-                    })),
-                    { condition: () => jsonContent.indexOf("<<LoginLink>>") < 0 && emailTemplateType === "JOIN_MY_TEAM", message: "Whoops! We are unable to save this template because you deleted 'LoginLink' tag." },
-                    { condition: () => jsonContent.indexOf("<login_url>") < 0 && emailTemplateType === "JOIN_VENDOR_COMPANY", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
-                    { condition: () => jsonContent.indexOf("pageLink") < 0 && ["SOCIAL_CAMPAIGN", "PAGE_CAMPAIGN_CONTACT", "ADD_DEAL", "DEAL_UPDATE"].includes(emailTemplateType), message: "Whoops! We are unable to save this template because you deleted 'Button' tag." },
-                    {
-                        condition: () => emailTemplateType === "FORGOT_PASSWORD",
-                        checks: [
-                            { condition: () => jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
-                            { condition: () => (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length < 2, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
-                        ]
-                    },
-                    { condition: () => emailTemplateType === "ACCOUNT_ACTIVATION" && jsonContent.indexOf('<VerifyEmailLink>') < 0, message: "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag." },
-                ]
-            },
+          {
+            condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages,
+            checks: [
+              { condition: () => !$.trim(emailTemplate.subject), message: "Whoops! We are unable to save this template because subject line is empty." },
+              { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
+              { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN", "ADD_LEAD", "ADD_DEAL", "LEAD_UPDATE", "DEAL_UPDATE", "FORM_COMPLETED", "ADD_SELF_LEAD", "ADD_SELF_DEAL", "UPDATE_SELF_LEAD", "UPDATE_SELF_DEAL", "PRM_ADD_LEAD", "PRM_UPDATED"].includes(emailTemplateType) && !jsonContent.includes('{{customerFullName}}'), message: "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
+              { condition: () => emailTemplateType === "TRACK_PUBLISH" && !jsonContent.includes("{{trackTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag." },
+              { condition: () => emailTemplateType === "PLAYBOOK_PUBLISH" && !jsonContent.includes("{{playbookTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{playbookTitle}}' tag." },
+              { condition: () => emailTemplateType === "ASSET_PUBLISH" && !jsonContent.includes("{{assetName}}"), message: "Whoops! We are unable to save this template because you deleted '{{assetName}}' tag." },
+              { condition: () => emailTemplateType === "SHARE_LEAD" && !jsonContent.includes("{{shareLeadListName}}"), message: "Whoops! We are unable to save this template because you deleted '{{shareLeadListName}}' tag." },
+              { condition: () => emailTemplateType === "ONE_CLICK_LAUNCH" && !jsonContent.includes("{{campaignName}}"), message: "Whoops! We are unable to save this template because you deleted '{{campaignName}}' tag." },
+              { condition: () => emailTemplateType === "ONE_CLICK_LAUNCH" && !jsonContent.includes("{{campaignType}}"), message: "Whoops! We are unable to save this template because you deleted '{{campaignType}}' tag." },
+              { condition: () => emailTemplateType === "PAGE_CAMPAIGN_PARTNER" && !jsonContent.includes("{{pageName}}"), message: "Whoops! We are unable to save this template because you deleted '{{pageName}}' tag." },
+              { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH"].includes(emailTemplateType) && !jsonContent.includes("{{publishedDate}}"), message: "Whoops! We are unable to save this template because you deleted '{{publishedDate}}' tag." },
+              { condition: () => ["ASSET_PUBLISH", "SHARE_LEAD", "PAGE_CAMPAIGN_PARTNER"].includes(emailTemplateType) && !jsonContent.includes("{{sharedDate}}"), message: "Whoops! We are unable to save this template because you deleted '{{sharedDate}}' tag." },
+              { condition: () => ["SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN"].includes(emailTemplateType) && !jsonContent.includes("{{socialStatusContent}}"), message: "Whoops! We are unable to save this template because you deleted '{{socialStatusContent}}' tag." },
+              { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN"].includes(emailTemplateType) && !jsonContent.includes('{{senderCompanyName}}'), message: "Whoops! We are unable to save this template because you deleted '{{senderCompanyName}}' tag." },
+              { condition: () => emailTemplateType === "FORM_COMPLETED" && !jsonContent.includes("{{formTable}}"), message: "Whoops! We are unable to save this template because you deleted '{{formTable}}' tag." },
+              { condition: () => jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
+              ...requiredTags.map(tag => ({
+                condition: () => !jsonContent.includes(tag),
+                message: `Whoops! We are unable to save this template because you deleted '${tag}' tag.`
+              })),
+              { condition: () => jsonContent.indexOf("<<LoginLink>>") < 0 && emailTemplateType === "JOIN_MY_TEAM", message: "Whoops! We are unable to save this template because you deleted 'LoginLink' tag." },
+              { condition: () => jsonContent.indexOf("<login_url>") < 0 && emailTemplateType === "JOIN_VENDOR_COMPANY", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
+              { condition: () => jsonContent.indexOf("pageLink") < 0 && ["SOCIAL_CAMPAIGN", "PAGE_CAMPAIGN_CONTACT", "ADD_DEAL", "DEAL_UPDATE"].includes(emailTemplateType), message: "Whoops! We are unable to save this template because you deleted 'Button' tag." },
+              { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
+              { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length < 2, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
+              { condition: () => emailTemplateType === "ACCOUNT_ACTIVATION" && jsonContent.indexOf('<VerifyEmailLink>') < 0, message: "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag." },
+            ]
+          },
         ];
     
         for (let group of validationChecks) {
