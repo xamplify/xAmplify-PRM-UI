@@ -168,6 +168,12 @@
                   </span>
                 </h5>
               </div>
+              <div *ngIf="isVendorVersion && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 60px;">
+                <h5 class="m0"><strong>Deal Reg Status:</strong>
+                  <span>{{lead.sfcfDealRegStatusForVersa}}
+                  </span>
+                </h5>
+              </div>
             </td>
             <td class="mAlignment" style="width: 23%;">
               <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
