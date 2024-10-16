@@ -72,13 +72,23 @@ export class DamAnalyticsComponent implements OnInit {
     if(this.vendorView){
       let encodedDamId =  this.referenceService.decodePathVariable(this.route.snapshot.params['damId']);
       this.damId = parseInt(encodedDamId);
-      let encodedPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
-      this.partnerId = parseInt(encodedPartnerId);
-      this.getTilesInfo();
+      this.validateDamId(this.damId);
     }else{
       this.checkDamPartnerId();
     }
-   
+  }
+
+  validateDamId(damId: any) {
+    this.damService.validateDamId(damId).subscribe(
+      _response=>{
+        let encodedPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
+        this.partnerId = parseInt(encodedPartnerId);
+        this.getTilesInfo();
+      },error=>{
+        this.xtremandLogger.errorPage(error);
+      }
+    );
+    
   }
 
   checkDamPartnerId(){
