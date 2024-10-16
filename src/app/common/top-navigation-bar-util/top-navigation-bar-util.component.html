@@ -66,14 +66,14 @@
                   <li *ngIf="!menu.showSubMenu">
                     <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                       <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
-                      {{menu.customName}}
+                      {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span>
                     </a>
                   </li>
                   <li *ngIf="menu.showSubMenu" >
                 
                     <a href="javascript:;" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                       <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                      {{menu.customName}}
+                      {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span>
                     </a>
                     <i class='fa fa-chevron-down js-arrow arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
                     <ul class="js-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">
@@ -96,14 +96,14 @@
                       <li *ngIf="!menu.showSubMenu" >
                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                           <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
-                          {{menu.customName}}
+                          {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span>
                         </a>
                       </li>
                       <li class="more" *ngIf="menu.showSubMenu">
                     
                         <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                           <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                          {{menu.customName}}</a>
+                          {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span></a>
                           <i class='fa fa-chevron-right arrow more-arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
                         </span>
                         <!-- <i class='fa fa-chevron-down js-arrow arrow'></i> -->
@@ -200,7 +200,7 @@
               *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                 <a (click)="goToRouter('/home/social/update-status')" translate>
                   <i class="fa fa-share " aria-hidden="true"></i>
-                  Update Status
+                  Update Status<span class="beta_social_icon_welcome_page">(Beta)</span>
                 </a>
                 <div class="border-bt"></div>
               </li>
@@ -212,7 +212,7 @@
   || authenticationService.module.isVendorTier
   || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                 <a (click)="goToRouter('/home/social/manage/all')" translate> <i class="fa fa-cog"
-                    aria-hidden="true"></i> Social Accounts</a>
+                    aria-hidden="true"></i> Social Accounts<span class="beta_social_icon_welcome_page">(Beta)</span></a>
                 <div class="border-bt"></div>
               </li>
 

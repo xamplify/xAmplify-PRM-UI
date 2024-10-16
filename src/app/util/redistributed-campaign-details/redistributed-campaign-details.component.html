@@ -35,7 +35,9 @@
               <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td *ngIf="isTeamMemberAnalytics"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></td>
               <td>{{item?.campaignName}}</td>
-              <td>{{item?.campaignType}}</td>
+              <td>{{item?.campaignType}}
+                <span *ngIf="item?.campaignType?.toLowerCase() == 'social'" class="beta_social_icon">(Beta)</span>
+              </td>
               <td>{{item?.campaignScheduleType}}</td>
               <td>
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.launchDateInUTC">

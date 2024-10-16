@@ -19,7 +19,7 @@
                                 </h4>
                             </div>
                             <div class="pricing-footer">
-                                <h4 id="notification-text">{{dto.name | translate}} <span *ngIf="dto.name == 'Social'" class="beta_social_icon_for_buttons">(Beta)</span></h4> 
+                                <h4 id="notification-text">{{dto.name | translate}} <span *ngIf="dto.name?.toLowerCase() == 'social'" class="beta_social_icon_for_buttons">(Beta)</span></h4> 
                                 <div id="notifications">{{dto.count}}</div>
                             </div>
                         </div>
