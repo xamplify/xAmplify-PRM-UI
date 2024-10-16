@@ -361,6 +361,7 @@ setCampaignReportResponse(response: string, responseMessage: string) {
 
 onSelectionChangeCampaignReportOption(userCampaignReportOption: string) {
     this.userCampaignReport.campaignReportOption = userCampaignReportOption;
+    this.setLaunchedCampaignsChild(this.userCampaignReport);
 }
 
 
