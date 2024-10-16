@@ -160,7 +160,34 @@ export class ChatComponent implements OnInit {
           
     }
 
+    getCommentParts(comment: string): { beforeUrl: string; url: string; afterUrl: string } {
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      const match = comment.match(urlRegex);
+      
+      if (match && match.length > 0) {
+        const url = match[0]; // First URL found
+        const parts = comment.split(url);
+        return {
+          beforeUrl: parts[0],  // Text before the URL
+          url: url,              // The URL itself
+          afterUrl: parts[1] || '' // Text after the URL (if any)
+        };
+      }
+  
+      return {
+        beforeUrl: comment,  // No URL, the whole comment is just plain text
+        url: '',
+        afterUrl: ''
+      };
+    }
+
+    containsTextAndUrl(comment: string): boolean {
+      const urlPattern = /https?:\/\/[^\s]+/; // Regex to match URLs
+      return urlPattern.test(comment) && comment.trim().includes(' ');
+  }
+    
     urlInNewTab(url: string) {
+      url = url.trim();
       if (url && !url.startsWith('http') && !url.startsWith('https') && !url.startsWith('file') && !url.startsWith('mailto') && !url.startsWith('gopher')) {
         url = window.location.origin + url;  // Prepend base URL if relative
       }
@@ -182,14 +209,17 @@ export class ChatComponent implements OnInit {
     }
     
     isValidUrl(url: string): boolean {
-      const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      url = url.trim(); // Trim whitespace from the URL
+
+      const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
         '((([a-z0-9][a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}|' + // domain name
         'localhost|' + // localhost
         '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|' + // IP address
         '\\[?[a-f0-9]*:[a-f0-9:]+\\])' + // IPv6
-        '(\\:\\d+)?(\\/[-a-z0-9%_.~+]*)*'+ // port and path
-        '(\\?[;&a-z0-9%_.~+=-]*)?'+ // query string
-        '(\\#[-a-z0-9_]*)?$','i'); // fragment locator
-      return !!pattern.test(url);
+        '(\\:\\d+)?(\\/[-a-z0-9%_.~+!*\'();:@&=+$,/?#]*)*' + // port and path (including special characters)
+        '(\\?[;&a-z0-9%_.~+=-]*)?' + // query string
+        '(\\#[-a-z0-9_]*)?$', 'i'); // fragment locator
+    
+      return !!pattern.test(url); // Validate the trimmed URL
     }
   }
