@@ -3939,7 +3939,7 @@ li.active a.text-white.active-tab-anchor-text{
 .mrg_lft6{
   margin-left: 6px !important;
 }
-.mix-filter li.contact-filter-selected {
+.mix-filter li.contact-filter-selected,.mix-filter li.vanity-template-selected {
   border: 0px solid #ececec !important;
   background: #0276FF !important;
   box-shadow: none !important;
