@@ -353,3 +353,10 @@ background: green;
     cursor: pointer;
     pointer-events: none;
 }
+.error-message {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+    margin-left: 290px;
+    font-weight: 500;
+  }

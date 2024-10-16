@@ -11,7 +11,7 @@
           [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
       <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a
           [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
-      <li class="breadcrumb-font-color" style="color: #888">Social Accounts</li>
+      <li class="breadcrumb-font-color" style="color: #888">Social Accounts <span class="beta_social_icon_for_breadcrumbs">(Beta)</span></li>
     </ul>
   </div>
   <div class="row" style="display: flex;" [class.disabled]="authenticationService.isSuperAdmin()">
@@ -19,10 +19,10 @@
       <div class="portlet-body">
         <div class="portlet light remove_cardBgcolor">
           <div class="portlet-title">
-            <h4 class="pull-left pd_lft20" translate>Manage Accounts</h4>
+            <h4 class="pull-left pd_lft20" translate>Manage Accounts<span class="beta_social_icon">(Beta)</span></h4>
             <button class="button_blue btn-sm pull-right bgcolor-unset pd_rgt20" data-toggle="modal"
               data-target="#connectAccountsModal" translate><span class="btn btn-primary transition txt_pd-top3">Connect
-                Accounts</span></button>
+                Accounts<span class="beta_social_icon_for_buttons">(Beta)</span></span></button>
           </div>
           <div class="portlet-body">
             <div class="row">

@@ -127,7 +127,7 @@
           <tr>
             <td style="width: 36%;">
               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
-              <div style="margin-left: 60px;">
+              <div style="margin-left: 60px;" data-toggle="tooltip" data-placement="bottom" title="{{lead.createdForCompanyName}}">
                 <h5 *ngIf="isPartnerVersion"><strong>Added For:</strong>
                   <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
                     <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
@@ -165,6 +165,12 @@
               <div *ngIf="isVendorVersion" style="margin-left: 60px;">
                 <h5 class="m0"><strong>CRM Id:</strong>
                   <span>{{lead.crmId}}
+                  </span>
+                </h5>
+              </div>
+              <div *ngIf="isVendorVersion && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 60px;">
+                <h5 class="m0"><strong>Deal Reg Status:</strong>
+                  <span>{{lead.sfcfDealRegStatusForVersa}}
                   </span>
                 </h5>
               </div>

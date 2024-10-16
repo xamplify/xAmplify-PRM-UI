@@ -17,7 +17,9 @@
           <div class="number NumberFontDecrease">{{dto.count}}</div>
           <div
             [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font TextFontDecrease':'desc default-name-font TextFontDecrease'">
-            {{dto.moduleName | translate}}</div>
+            {{dto.moduleName | translate}}
+            <span *ngIf="dto.moduleId == 6" class="beta_social_icon_for_buttons">(Beta)</span>
+          </div>
         </div>
         <span class="morePadding">
           <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view

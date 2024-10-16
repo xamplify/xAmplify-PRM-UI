@@ -539,8 +539,7 @@
                                         </ng-container>
                                         <!--Adding Domains XNFR-454-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
-                                            [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
-                                            style="border-bottom: none !important;">
+                                            [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
                                                 (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
@@ -549,8 +548,7 @@
                                         </li>
                                         <!--XNFR-679 Flexi Fields-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
-                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}"
-                                            style="border-bottom: none !important;">
+                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
                                                 (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':flexiFieldsMenuHeader}"></ng-template>

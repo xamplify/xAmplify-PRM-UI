@@ -45,7 +45,17 @@
                 </button>
                 <p class="comment-color" style="width: 100%;color: #60686d;" innerHTML="{{c?.comment}}"></p>
             </div>
-            <p *ngIf="c?.activityType == undefined" class="comment-color" innerHTML="{{c?.comment}}"></p>
+            <p *ngIf="c?.activityType == undefined" class="comment-color">
+                <ng-container *ngIf="isValidUrl(c?.comment); else textContent">
+                    <a (click)="urlInNewTab(c?.comment)" style="cursor: pointer;">{{c?.comment}}</a>
+                </ng-container>
+                <ng-template #textContent> {{ c?.comment }}</ng-template>
+            </p>
+            <!-- <div class="error-message" *ngIf="!showError">No URL provided</div> -->
+           <div *ngIf="!isValidUrl(c?.comment) && c?.comment && isLikelyUrl(c?.comment)" class="error-message">
+                Invalid URL. Please enter a valid one.
+              </div>
+         
         </li>
     </ul>
 </div>

@@ -26,6 +26,7 @@ export class ChatComponent implements OnInit {
   commentList: DealComments[] = [];
   isError = true;
   comment: DealComments;
+  showError: boolean = false;
   constructor(private logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private dealService: DealsService, private leadService: LeadsService) { }
 
@@ -148,4 +149,47 @@ export class ChatComponent implements OnInit {
       
     }
 
-}
+    isPreviewFromAssetPopup: boolean = false;
+    assetPreview(assetDetails: any, isFromPopup: boolean) {
+      this.isPreviewFromAssetPopup = isFromPopup;
+      let isBeeTemplate = assetDetails.beeTemplate;
+        if(isBeeTemplate){
+          let url = assetDetails.url;
+          this.openWindowInNewTab(url);
+        }
+          
+    }
+
+    urlInNewTab(url: string) {
+      if (url && !url.startsWith('http') && !url.startsWith('https') && !url.startsWith('file') && !url.startsWith('mailto') && !url.startsWith('gopher')) {
+        url = window.location.origin + url;  // Prepend base URL if relative
+      }
+      if (this.isValidUrl(url)) {
+      this.openWindowInNewTab(url);
+      } else{
+      this.showError = true;
+    }
+  }
+   
+  
+    openWindowInNewTab(url:string){
+      console.log('Opening URL:', url);
+      window.open(url,"_blank");
+    }
+
+    isLikelyUrl(comment: string): boolean{
+      return comment.startsWith('http') || comment.includes('.');
+    }
+    
+    isValidUrl(url: string): boolean {
+      const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        '((([a-z0-9][a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}|' + // domain name
+        'localhost|' + // localhost
+        '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|' + // IP address
+        '\\[?[a-f0-9]*:[a-f0-9:]+\\])' + // IPv6
+        '(\\:\\d+)?(\\/[-a-z0-9%_.~+]*)*'+ // port and path
+        '(\\?[;&a-z0-9%_.~+=-]*)?'+ // query string
+        '(\\#[-a-z0-9_]*)?$','i'); // fragment locator
+      return !!pattern.test(url);
+    }
+  }

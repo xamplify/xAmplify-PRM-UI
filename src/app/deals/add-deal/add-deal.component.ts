@@ -1381,7 +1381,7 @@ export class AddDealComponent implements OnInit {
               this.isZohoLeadAttachedWithoutSelectingDealFor = true;
             }
             if (this.actionType == "edit" && (this.isOrgAdmin || this.isMarketingCompany)) {
-              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled;
+              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled && (this.deal.associatedLeadId == undefined || this.deal.associatedLeadId == 0);
             }
           } else {
             this.resetDealTitle();

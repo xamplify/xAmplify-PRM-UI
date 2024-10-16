@@ -6,7 +6,7 @@
             <div class="single category">
                 <!--Feeds Shared By Vendor-->
                 <ng-container *ngIf="showVendorFeeds">
-                    <h4 aria-expanded="false" class="social-feeds">VENDOR FEEDS</h4>
+                    <h4 aria-expanded="false" class="social-feeds">VENDOR FEEDS<span class="beta_social_icon">(Beta)</span></h4>
                     <div class="heading-top heading-top-border">
                         <a (click)="goToAllCustomFeeds('p', 0)" class="social-feeds-text-color">
                             All Shared Feeds
@@ -35,7 +35,7 @@
                 <!--All Feeds---->
                 <ng-container *ngIf="showFeeds">
                     <hr>
-                    <h4 aria-expanded="false" class="social-feeds">YOUR FEEDS</h4>
+                    <h4 aria-expanded="false" class="social-feeds">YOUR FEEDS<span class="beta_social_icon">(Beta)</span></h4>
                     <div class="heading-top heading-top-border">
                         <a (click)="goToAllCustomFeeds('v', 0)" class="social-feeds-text-color">
                             All Feeds <i class="circled-number IconCustomization fontStyleNormal"
@@ -60,7 +60,7 @@
                     <br>
                     <hr>
                     <!----Rss Feeds----->
-                    <h4 aria-expanded="false" class="social-feeds">RSS FEEDS </h4>
+                    <h4 aria-expanded="false" class="social-feeds">RSS FEEDS <span class="beta_social_icon">(Beta)</span></h4>
                     <div class="box" *ngIf="rssService.collectionsResponse?.statusCode === 8101">
                         <div class="row">
                             <div class="col-md-12" style="text-align: center;padding-top:11px;">
@@ -73,7 +73,7 @@
                             </div>
                             <div class="col-md-12"
                                 style="text-align: center;padding-top:19px;    padding-bottom: 12px;">
-                                <a [routerLink]="['/home/rss/discover']">CREATE YOUR FIRST FEED</a>
+                                <a [routerLink]="['/home/rss/discover']">CREATE YOUR FIRST FEED<span class="beta_social_icon">(Beta)</span></a>
                             </div>
                         </div>
                     </div>

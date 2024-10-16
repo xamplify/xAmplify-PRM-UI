@@ -5,7 +5,7 @@
       <i class="fa fa-check-circle i-20px"></i>
       <strong class="ml5">{{properties?.contactsCsvHeaderMatchedMessage}}. You can still
         <a (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}} or
-        <a (click)="!isDefaultColumnMatchedWithMappedColumn() && resetMappedColumns()">click here</a>
+        <a (click)="resetMappedColumns()">click here</a>
         {{properties?.resetMessage}}
       </strong>
     </div>
@@ -249,11 +249,10 @@
                     class="required">*</span>
                 </td>
                 <td class="text-center">
-                  <app-multi-select-dropdown
-                    *ngIf="(customCsvHeaders!=undefined && customCsvHeaders.length>0) || isResetButtonClicked"
-                    [dropdownList]="customCsvHeaders" [displayText]="'--Map a column--'" [singleSelection]="true"
-                    [selectedItems]="defaultContactsCsvColumnHeaderDto.selectedItems"
-                    (multiSelectDropdownSingleSelectionEventEmitter)="selectedMappedColumn($event,defaultContactsCsvColumnHeaderDto)">
+                  <app-multi-select-dropdown *ngIf="(customCsvHeaders!=undefined && customCsvHeaders.length>0) || isResetButtonClicked"
+                    [dropdownList]="customCsvHeaders" [singleSelection]="true"
+                    (multiSelectDropdownSingleSelectionEventEmitter)="selectedMappedColumn($event, defaultContactsCsvColumnHeaderDto)"
+                    [displayText]="defaultContactsCsvColumnHeaderDto.mappedColumn || '--Map a column--'">
                   </app-multi-select-dropdown>
                 </td>
               </tr>
@@ -262,10 +261,10 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" [disabled]="isDefaultColumnMatchedWithMappedColumn()" (click)="!mappingLoader && resetMappedColumns()">Reset</button>
+        <button type="button" class="btn btn-danger" (click)="!mappingLoader && resetMappedColumns()">Reset</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" [disabled]="duplicateMappedColumns?.length>0"
-          (click)="duplicateMappedColumns?.length==0 && saveMappedColumns()">Submit</button>
+          (click)="duplicateMappedColumns?.length==0 && saveMappedColumns(true)">Submit</button>
       </div>
     </div>
   </div>
