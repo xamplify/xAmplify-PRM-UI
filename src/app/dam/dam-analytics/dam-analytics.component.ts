@@ -106,20 +106,7 @@ export class DamAnalyticsComponent implements OnInit {
 		});
   }
 
-  checkDamAndPartnerId(){
-    this.referenceService.goToTop();
-    this.damService.checkDamIdAndPartnerId(this.damId,this.partnerId).
-      subscribe((result: any) => {
-			if (result.statusCode === 200) {
-        this.getTilesInfo();
-			}else{
-        this.referenceService.goToPageNotFound();
-      }
-		}, error => {
-			this.xtremandLogger.log(error);
-			this.xtremandLogger.errorPage(error);
-		});
-  }
+ 
 
   getTilesInfo(){
     this.tilesLoader = true;
