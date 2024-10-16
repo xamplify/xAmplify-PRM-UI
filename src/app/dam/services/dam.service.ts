@@ -206,7 +206,7 @@ export class DamService {
   }
 
   getSharedAssetDetailsById(id: number) {
-   return this.utilGetMethod("getSharedAssetDetailsById/" + id);
+   return this.utilGetMethod("getSharedAssetDetailsById/" + id+"/"+this.authenticationService.getUserId());
   }
 
   previewAssetById(id:number){
