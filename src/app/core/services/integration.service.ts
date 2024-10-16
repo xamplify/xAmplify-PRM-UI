@@ -231,4 +231,16 @@ export class IntegrationService {
         let url = this.authenticationService.REST_URL + "salesforce/redirect-url/"+instanceType+"?access_token="+this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
+
+    //XNFR-710
+    getFormLabelsValues(dealId: any, opportunityType: any, createdForCompanyId: any) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? loggedInUserId : 0;
+        let dealIdRequestParam = dealId != undefined && dealId > 0 ? dealId : 0;
+        let opportunityTypeRequestParam = opportunityType != undefined ? "&opportunityType=" + opportunityType : "&opportunityType =''";
+        let companyIdRequestParam = createdForCompanyId != undefined && createdForCompanyId > 0 ? createdForCompanyId : 0;
+        let url = this.authenticationService.REST_URL + "crm/view/opportunites?access_token="+this.authenticationService.access_token + "&loggedInUserId=" + loggedInUserIdRequestParam
+            + opportunityTypeRequestParam + "&opportunityId=" + dealIdRequestParam + "&companyId=" + companyIdRequestParam;
+        return this.authenticationService.callGetMethod(url);
+    }
 }
