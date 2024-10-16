@@ -85,7 +85,7 @@
                        campaignType != 'VIDEO' &&
                        campaignType != 'LANDINGPAGE'
                        ">
-                              {{ campaignType }} CAMPAIGN ({{
+                              {{ campaignType }} CAMPAIGN <span *ngIf="campaignType == 'SOCIAL'" class="beta_social_icon">(Beta)</span>({{
                               authenticationService?.partnerModule?.customName
                               }})
                            </div>

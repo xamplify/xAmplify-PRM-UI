@@ -19,7 +19,9 @@
             <li *ngIf="!menu.showSubMenu" [ngClass]="{'active': menu.mergeTag === mergeTag}">
               <a (click)="startLoader()" [routerLink]="menu.angularPath">
                 <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                <span class="title">{{menu.customName}}</span>
+                <span class="title">{{menu.customName}}
+                  <span *ngIf="menu.moduleId == 15"class="beta_social_icon">(Beta)</span>
+                </span>
                 <span class="selected"></span>
               </a>
               <div class="border-bt"></div>
