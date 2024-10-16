@@ -264,7 +264,7 @@
         <button type="button" class="btn btn-danger" (click)="!mappingLoader && resetMappedColumns()">Reset</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" [disabled]="duplicateMappedColumns?.length>0"
-          (click)="duplicateMappedColumns?.length==0 && saveMappedColumns()">Submit</button>
+          (click)="duplicateMappedColumns?.length==0 && saveMappedColumns(true)">Submit</button>
       </div>
     </div>
   </div>

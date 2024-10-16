@@ -53,6 +53,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   parsedCsvDtos: Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
   defaultContactsCsvColumnHeaderDtos: Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
   duplicateColumnsMappedErrorResponse: CustomResponse = new CustomResponse();
+  emptyHeadersIndex = [];
   /***** XNFR-671 *****/
 
   constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
@@ -137,7 +138,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
         })
       }
     }
-    this.saveMappedColumns();
+    this.saveMappedColumns(false);
   }
 
   /***** XNFR-671 *****/
@@ -161,24 +162,30 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addCsvHeadersToMultiSelectDropDown(headers: any, self: this) {
     $.each(headers, function (index: number, header: any) {
       let updatedHeader = self.removeDoubleQuotes(header);
-      let customCsvHeader = {};
-      customCsvHeader['id'] = index;
-      customCsvHeader['itemName'] = updatedHeader;
-      self.customCsvHeaders.push(customCsvHeader);
+      if (updatedHeader.length > 0) {
+        let customCsvHeader = {};
+        customCsvHeader['id'] = index;
+        customCsvHeader['itemName'] = updatedHeader;
+        self.customCsvHeaders.push(customCsvHeader);
+      } else {
+        self.emptyHeadersIndex.push(index);
+      }
     });
   }
 
   /***** XNFR-671 *****/
   private iterateDTOAndCsvRows(rows: any, i: number, self: this, parsedCsvDto: ParsedCsvDto) {
     $.each(rows, function (index: number, value: any) {
-      let csvRowDto = new CsvRowDto();
-      let rowIndex = "R" + (index + 1);
-      let columnIndex = "C" + i;
-      let rowAndColumnIndex = rowIndex + ":" + columnIndex;
-      csvRowDto.rowAndColumnInfo = rowAndColumnIndex;
-      csvRowDto.value = $.trim(value);
-      csvRowDto.columnHeader = $.trim(self.customCsvHeaders[index]['itemName']);
-      parsedCsvDto.csvRows.push(csvRowDto);
+      if (!self.emptyHeadersIndex.includes(index)) {
+        let csvRowDto = new CsvRowDto();
+        let rowIndex = "R" + (index + 1);
+        let columnIndex = "C" + i;
+        let rowAndColumnIndex = rowIndex + ":" + columnIndex;
+        csvRowDto.rowAndColumnInfo = rowAndColumnIndex;
+        csvRowDto.value = $.trim(value);
+        csvRowDto.columnHeader = $.trim(self.customCsvHeaders[index]['itemName']);
+        parsedCsvDto.csvRows.push(csvRowDto);
+      }
     });
   }
 
@@ -243,7 +250,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-671 *****/
-  saveMappedColumns() {
+  saveMappedColumns(isSubmitButtonClicked: boolean) {
     this.mappingLoader = true;
     this.contacts = [];
     this.duplicateColumnsMappedErrorResponse = new CustomResponse();
@@ -279,6 +286,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
             }
             this.iterateAndAddToUsers(rowsLength, firstNameRows, lastNameRows, companyRows, jobTitleRows,
               emailIdRows, addressRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, flexiFieldRows, this.contacts);
+            this.removeEmptyEmailIdsFromContactsDto();
             let invalidEmailIds = this.contacts.filter(function (contact) {
               return contact.isValidEmailIdPattern == false
             }).map(function (dto) {
@@ -288,7 +296,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
             this.paginationType = "csvContacts";
             self.setPage(1);
             this.isColumnMapped = true;
-            if(!this.isResetButtonClicked) {
+            if(isSubmitButtonClicked) {
               this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
             }
             this.notifyParent.emit(this.contacts);
@@ -306,6 +314,10 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       this.mappingLoader = false;
       this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR', 'Unable to map columns.Please try after sometime.', true);
     }
+  }
+
+  removeEmptyEmailIdsFromContactsDto() {
+    this.contacts = this.contacts.filter(user => user.emailId.length > 0);
   }
 
   /***** XNFR-671 *****/
