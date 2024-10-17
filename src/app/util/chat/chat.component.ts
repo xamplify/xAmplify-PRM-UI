@@ -162,23 +162,25 @@ export class ChatComponent implements OnInit {
 
     getCommentParts(comment: string): { beforeUrl: string; url: string; afterUrl: string } {
       const urlRegex = /(https?:\/\/[^\s]+)/g;
-      const match = comment.match(urlRegex);
-      
-      if (match && match.length > 0) {
+    const cleanComment = comment.replace(/<[^>]*>/g, ''); // Remove any HTML tags
+    const match = cleanComment.match(urlRegex);
+    
+    if (match && match.length > 0) {
         const url = match[0]; // First URL found
-        const parts = comment.split(url);
+        const parts = cleanComment.split(url);
         return {
-          beforeUrl: parts[0],  // Text before the URL
-          url: url,              // The URL itself
-          afterUrl: parts[1] || '' // Text after the URL (if any)
+            beforeUrl: parts[0],  // Text before the URL
+            url: url,              // The URL itself
+            afterUrl: parts[1] || '' // Text after the URL (if any)
         };
-      }
-  
-      return {
-        beforeUrl: comment,  // No URL, the whole comment is just plain text
+    }
+
+    return {
+        beforeUrl: cleanComment,  // No URL, the whole comment is just plain text
         url: '',
         afterUrl: ''
-      };
+    };
+
     }
 
     containsTextAndUrl(comment: string): boolean {

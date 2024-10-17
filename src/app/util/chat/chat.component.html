@@ -57,20 +57,23 @@
                     {{c?.activityType == 'COMMENT_UPDATED' ? 'Comment Updated' : ''}}
                 </button>
                 <!-- <p class="comment-color" style="width: 100%;color: #60686d;" innerHTML="{{c?.comment}}"></p> -->
-                <p *ngIf="c?.activityType == undefined" class="comment-color" style="width: 100%;color: #60686d;">
-                    <ng-container *ngIf="getCommentParts(c?.comment) as parts">
-                      <!-- Text before the URL -->
-                      <span>{{ parts.beforeUrl }}</span>
-                  
-                      <!-- The URL itself wrapped in an anchor tag -->
-                      <ng-container *ngIf="parts.url">
-                        <a (click)="urlInNewTab(parts.url)" style="cursor: pointer;">{{ parts.url }}</a>
-                      </ng-container>
-                  
-                      <!-- Text after the URL -->
-                      <span>{{ parts.afterUrl }}</span>
+                <p class="comment-color" style="width: 100%; color: #60686d;">
+                  {{ c.stage }} 
+                  <br>
+                  <ng-container *ngIf="getCommentParts(c?.comment) as parts">
+                    <!-- Text before the URL -->
+                    <span>{{ parts.beforeUrl }}</span>
+                
+                    <!-- The URL itself wrapped in an anchor tag -->
+                    <ng-container *ngIf="parts.url">
+                      <a (click)="urlInNewTab(parts.url)" style="cursor: pointer;">{{ parts.url }}</a>
                     </ng-container>
-                  </p>
+                
+                    <!-- Text after the URL -->
+                    <span>{{ parts.afterUrl }}</span>
+                  </ng-container>
+                </p>
+              
             </div>
             <p *ngIf="c?.activityType == undefined" class="comment-color">
                 <ng-container *ngIf="getCommentParts(c?.comment) as parts">
