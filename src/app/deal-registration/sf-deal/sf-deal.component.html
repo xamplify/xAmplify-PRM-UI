@@ -43,6 +43,12 @@
                   <ng-template  [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
                 </ng-container>
               </div>
+              <!--Preview-->
+              <div *ngIf="isPreview && isSalesForceEnabledAsActiveCRM">
+                <ng-container *ngFor="let columnInfo of formLabels;let i = index">
+                  <ng-template [ngTemplateOutlet]="formFieldsValues" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                </ng-container>
+              </div>
             </div>
           </div>
         </div>
@@ -262,12 +268,115 @@
       <!---- XNFR-528 ---->
       <!-- ---------------------------Searchable DropDown For Lookup----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='lookup'">
-        <span [class.disabled]="isVendor || isPreview || (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany))">
+        <span *ngIf="!isPreview" [class.disabled]="isVendor || (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany))">
           <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDtoForLookupField(columnInfo)"
           [(account)]="columnInfo.value" [disableDropDown]="false" 
-          (searchableDropdownEventEmitter)="onItemSelect($event)"></app-searchable-dropdown></span>
+          (searchableDropdownEventEmitter)="onItemSelect($event)"></app-searchable-dropdown>
+        </span>
+        <span *ngIf="isPreview">
+          <input type="text" [disabled]="isPreview" class="form-control" id="{{columnInfo.labelId}}"
+            [(ngModel)]="columnInfo.selectedChoiceValue">
+        </span>
       </ng-container>
   </div>
 </ng-container>
+</ng-template>
+
+<ng-template #formFieldsValues let-columnInfo="columnInfo">
+  <ng-container *ngIf="!columnInfo?.hideFieldInfo">
+    <div *ngIf="!isLoading" class="{{formGroupClass}}">
+      <label class="{{formLabelGroupClass}}">{{columnInfo?.displayName}}
+        <span class="required" *ngIf="columnInfo?.required">*</span>
+      </label>
+      <ng-container
+        *ngIf="columnInfo.labelType=='select' || columnInfo.labelType=='multiselect'
+                    || columnInfo.labelType=='phone' || columnInfo.labelType=='url' || columnInfo.labelType=='text' || columnInfo.labelType=='email'">
+        <input type="{{columnInfo.labelType}}" [disabled]="isPreview" class="form-control"
+          placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value">
+      </ng-container>
+      <!-- ---------------------------Date----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='date'">
+        <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false" [(dataField)]="columnInfo.value"
+          [class.disabled]="isPreview" (input)="validateField(columnInfo)"></app-flatpickr>
+        <span class="required" *ngIf="columnInfo.divClass=='error'">Please select the closed date</span>
+      </ng-container>
+
+      <!-- ---------------------------Time----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='time'">
+        <input type="{{columnInfo.labelType}}" [disabled]="isPreview || isVendor" class="form-control"
+          placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value"
+          (input)="validateField(columnInfo)">
+        <span class="required" *ngIf="columnInfo.divClass=='error'">Please enter the time</span>
+      </ng-container>
+
+      <!-- ---------------------------DateTme----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='datetime'">
+        <app-flatpickr [type]="'dateTime'" [dateFormat]="'Y-m-d H:i'" [enableTime]="true"
+          [(dataField)]="columnInfo.value" [class.disabled]="isVendor || isPreview" (input)="validateField(columnInfo)">
+        </app-flatpickr>
+        <span class=" required" *ngIf="columnInfo.divClass=='error'">Please select the datetime</span>
+      </ng-container>
+
+      <!-- ---------------------------GeoLocation----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='geolocation'">
+        <input type="number" [disabled]="isPreview || isVendor" class="form-control"
+          placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" step="any"
+          (input)="validateField(columnInfo)">
+        <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
+      </ng-container>
+
+      <!-- ---------------------------Currency----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='currency'">
+        <input type="text" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency"
+          [(ngModel)]="columnInfo.value" [ngModelOptions]="{standalone: true}" id="{{columnInfo.labelId}}"
+          (input)="validateField(columnInfo)" (ngModelChange)="validateField(columnInfo)"
+          [disabled]="isVendor || isPreview">
+      </ng-container>
+
+      <!-- ---------------------------Text Area----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='textarea'">
+        <textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control"
+          placeholder="{{columnInfo.placeHolder}}" maxlength="{{columnInfo.labelLength}}"
+          (input)="validateField(columnInfo)" [disabled]="isVendor || isPreview"></textarea>
+        <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
+      </ng-container>
+      <!--------------------------------Radio------------------------------------------->
+      <ng-container *ngIf="columnInfo.labelType=='radio'">
+        <div class="radiobtn-card">
+          <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-check radiobtn">
+              <label class="form-check-label radioAlignmant">
+                <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
+                  (click)="columnInfo.value = radioButton.labelId" (change)="validateField(columnInfo)"
+                  [checked]="radioButton.labelId === columnInfo.value || radioButton.labelId=== columnInfo.selectedValue"
+                  [disabled]="isVendor || isPreview">
+                {{radioButton.name}}
+              </label>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <!-- ---------------------------Check Box----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+        <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" [checked]="columnInfo.value==='true'"
+                class="form-check-input" (click)="updateCheckBoxModel(columnInfo, $event)"
+                [disabled]="isVendor || isPreview">
+              {{checkBox.name}}
+            </label>
+          </div>
+          <br>
+        </ng-container>
+      </ng-container>
+      <!-- ---------------------------Searchable DropDown For Lookup----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='lookup'">
+        <input type="text" [disabled]="isPreview" class="form-control" id="{{columnInfo.labelId}}"
+          [(ngModel)]="columnInfo.selectedChoiceValue">
+      </ng-container>
+    </div>
+  </ng-container>
 </ng-template>
 
