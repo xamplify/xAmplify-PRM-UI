@@ -205,7 +205,7 @@ export class ChatComponent implements OnInit {
     }
 
     isLikelyUrl(comment: string): boolean{
-      return comment.startsWith('http') || comment.includes('.');
+      return comment.startsWith('http');
     }
     
     isValidUrl(url: string): boolean {

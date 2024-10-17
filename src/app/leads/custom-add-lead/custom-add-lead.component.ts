@@ -242,7 +242,6 @@ export class CustomAddLeadComponent implements OnInit {
     if(this.vanityLoginDto.vanityUrlFilter){
       this.isLeadDetailsTabDisplayed = this.actionType!="add";
     }
-    this.getDefaultLeadCustomFields();
     this.resetLeadData();
     if (this.actionType === "view") {
       this.loadDataForViewLead();
@@ -319,7 +318,6 @@ export class CustomAddLeadComponent implements OnInit {
       this.showAttachLeadPopUp = true;
       if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
         this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
-        this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
         this.getActiveCRMDetails();
       }
     } else {
@@ -385,7 +383,6 @@ export class CustomAddLeadComponent implements OnInit {
               this.getCreatedForCompanyIdByCampaignId();
               this.getContactInfo();
             } else {
-              this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
               this.getActiveCRMDetails();
             }
           }
@@ -468,7 +465,6 @@ export class CustomAddLeadComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (data.statusCode == 200) {
               self.lead.createdForCompanyId = data.data;
-              this.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
               this.getActiveCRMDetails();
             }
           },
@@ -561,7 +557,6 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.lead.createdForCompanyId > 0) {
       let vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
       this.vendorCompanyName = vendorCompany.companyName + "'s";
-      this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
       this.getActiveCRMDetails();
     } else {
       this.resetLeadTitle();
@@ -571,7 +566,6 @@ export class CustomAddLeadComponent implements OnInit {
       this.activeCRMDetails.hasCreatedByPipeline = false;
       this.showTicketTypesDropdown = false;
       this.resetLeadDetails();
-      this.getDefaultLeadCustomFields();
       this.vendorCompanyName = '';
     }
   }
@@ -737,11 +731,6 @@ export class CustomAddLeadComponent implements OnInit {
           self.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
-            if (!self.isVendorVersion) {
-              self.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
-            } else {
-              self.getDefaultLeadCustomFields();
-            }
             if (self.lead.industry == null || self.lead.industry == undefined || self.lead.industry == '') {
               self.lead.industry = self.industries[0];
             }
@@ -1279,8 +1268,10 @@ export class CustomAddLeadComponent implements OnInit {
               const event = new Date(formLabel.value);
               sfCfData.dateTimeIsoValue = event.toISOString();
             }
-          }
-          else {
+          } else if (formLabel.labelType === 'lookup') {
+            sfCfData.value = formLabel.value;
+            sfCfData.selectedChoiceValue = formLabel.selectedChoiceValue;
+          } else {
             sfCfData.value = formLabel.value;
           }
           sfCfDataList.push(sfCfData);
@@ -1407,8 +1398,9 @@ export class CustomAddLeadComponent implements OnInit {
       if (isSalesforceAsActiveCRM) {
         this.showCustomForm = true;
       } else {
+        this.getDefaultLeadCustomFields();
+        this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
         this.showDefaultForm = true;
-
       }
     } else {
       this.resetLeadTitle();

@@ -74,6 +74,9 @@ export class SfDealComponent implements OnInit {
   formGroupClass: string;
   formLabelGroupClass: string;
   isInvalidLookupField: boolean = false;
+  //XNFR-710
+  isSalesForceEnabledAsActiveCRM : boolean = false;
+  formLabels: any;
 
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
@@ -133,16 +136,26 @@ export class SfDealComponent implements OnInit {
       let isCreatedByActiveTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdByActiveCRMType;
       let isCreatedForActiveCRMTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdForActiveCRMType;
       let isCreatedForActiveCRMTypeNotZOHO = "ZOHO" !== this.activeCRM.createdForActiveCRMType;
+
       if (isCreatedByActiveTypeNotHALOPSA && isCreatedForActiveCRMTypeNotHALOPSA && isCreatedForActiveCRMTypeNotZOHO) {
         this.setTicketTypeIdAsZero();
         this.addLoader();
-        this.getActiveCRMCustomForm();
+        //XNFR-710
+        if ("SALESFORCE" === this.activeCRM.createdForActiveCRMType && this.isPreview && !("CONNECTWISE" === this.activeCRM.createdByActiveCRMType)) {
+          this.isSalesForceEnabledAsActiveCRM = true;
+          this.getFormLablesValues();
+        } else {
+          this.getActiveCRMCustomForm();
+        }
       }
     }
+
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
+
   }
+
   /***Added By Sravan 08/08/2024****/
   private updateFormAlignments() {
     if (this.isPreview) {
@@ -681,12 +694,13 @@ export class SfDealComponent implements OnInit {
     columnInfo.divClass = "success";
     if (columnInfo.labelType == 'lookup' && columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
       if (columnInfo.value == 0 && columnInfo.required) {
-        columnInfo.errorMessage = "Please select "+ columnInfo.labelName;
+        columnInfo.errorMessage = "Please select " + columnInfo.labelName;
         columnInfo.divClass = "error";
         this.isInvalidLookupField = true;
       } else {
         this.isInvalidLookupField = false;
-      }      
+        this.setSelectedChoiceIdForLookUp(columnInfo);
+      }
     } else if (!columnInfo.required && columnInfo.labelType == 'lookup') {
       this.isInvalidLookupField = false;
     }
@@ -822,6 +836,39 @@ export class SfDealComponent implements OnInit {
           this.setChildDropDownType(column, parentLabelType);
         }
       }
+    });
+  }
+
+  //XNFR-710
+  setSelectedChoiceIdForLookUp(columnInfo: any): any {
+    let selectedChoiceId = columnInfo.value;
+    if (columnInfo.lookupDropDownChoices != null && columnInfo.lookupDropDownChoices != undefined && !columnInfo.hideFieldInfo) {
+      let selectedChoice = columnInfo.lookupDropDownChoices.filter(choice => choice.id === selectedChoiceId);
+      for (let choice of selectedChoice) {
+        columnInfo.selectedChoiceValue = choice.name;
+      }
+    }
+  }
+
+  getFormLablesValues() {
+    this.integrationService.getFormLabelsValues(this.dealId, this.opportunityType, this.createdForCompanyId).subscribe(result => {
+      this.showSFFormError = false;
+      this.removeLoader();
+      if (result.statusCode == 200) {
+        this.formLabels = result.data;
+        this.formLabels.forEach((columnInfo: ColumnInfo) => {
+          if (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany)) {
+            columnInfo.value = columnInfo.defaultChoiceLabel;
+            if (columnInfo.private) {
+              columnInfo.hideFieldInfo = true;
+            }
+          }
+        });
+      }
+    }, error => {
+      this.removeLoader();
+      this.showSFFormError = true;
+      this.sfFormError = this.referenceService.getApiErrorMessage(error);
     });
   }
 
