@@ -24,7 +24,20 @@
                         aria-hidden="true"></i>
                     {{c?.activityType == 'LEAD_APPROVED'?'Approved':'Rejected'}}
                 </button><!--xnfr-426-->
-                <p class="comment-color" style="width: 100%;color: #60686d;" innerHTML="{{c?.comment}}"></p>
+                <p *ngIf="c?.activityType == undefined" class="comment-color">
+                    <ng-container *ngIf="getCommentParts(c?.comment) as parts">
+                      <!-- Text before the URL -->
+                      <span>{{ parts.beforeUrl }}</span>
+                  
+                      <!-- The URL itself wrapped in an anchor tag -->
+                      <ng-container *ngIf="parts.url">
+                        <a (click)="urlInNewTab(parts.url)" style="cursor: pointer;">{{ parts.url }}</a>
+                      </ng-container>
+                  
+                      <!-- Text after the URL -->
+                      <span>{{ parts.afterUrl }}</span>
+                    </ng-container>
+                  </p>
             </div>
             <!-- [ngStyle]="{'color': (c?.activityType == 'STAGE_UPDATED')? '#06c306' : '#f71111'}" -->
             <div [ngStyle]="{'color': (c?.activityType == 'LEAD_CREATED' || c?.activityType == 'DEAL_CREATED')? '#06c306' : '#5b9bd1'}"
@@ -43,19 +56,41 @@
                     {{c?.activityType == 'LEAD_CREATED' ? 'Lead Created' : ''}}
                     {{c?.activityType == 'COMMENT_UPDATED' ? 'Comment Updated' : ''}}
                 </button>
-                <p class="comment-color" style="width: 100%;color: #60686d;" innerHTML="{{c?.comment}}"></p>
+                <!-- <p class="comment-color" style="width: 100%;color: #60686d;" innerHTML="{{c?.comment}}"></p> -->
+                <p *ngIf="c?.activityType == undefined" class="comment-color" style="width: 100%;color: #60686d;">
+                    <ng-container *ngIf="getCommentParts(c?.comment) as parts">
+                      <!-- Text before the URL -->
+                      <span>{{ parts.beforeUrl }}</span>
+                  
+                      <!-- The URL itself wrapped in an anchor tag -->
+                      <ng-container *ngIf="parts.url">
+                        <a (click)="urlInNewTab(parts.url)" style="cursor: pointer;">{{ parts.url }}</a>
+                      </ng-container>
+                  
+                      <!-- Text after the URL -->
+                      <span>{{ parts.afterUrl }}</span>
+                    </ng-container>
+                  </p>
             </div>
             <p *ngIf="c?.activityType == undefined" class="comment-color">
-                <ng-container *ngIf="isValidUrl(c?.comment); else textContent">
-                    <a (click)="urlInNewTab(c?.comment)" style="cursor: pointer;">{{c?.comment}}</a>
+                <ng-container *ngIf="getCommentParts(c?.comment) as parts">
+                  <!-- Text before the URL -->
+                  <span>{{ parts.beforeUrl }}</span>
+              
+                  <!-- The URL itself wrapped in an anchor tag -->
+                  <ng-container *ngIf="parts.url">
+                    <a (click)="urlInNewTab(parts.url)" style="cursor: pointer;">{{ parts.url }}</a>
+                  </ng-container>
+              
+                  <!-- Text after the URL -->
+                  <span>{{ parts.afterUrl }}</span>
                 </ng-container>
-                <ng-template #textContent> {{ c?.comment }}</ng-template>
-            </p>
-            <!-- <div class="error-message" *ngIf="!showError">No URL provided</div> -->
-           <div *ngIf="!isValidUrl(c?.comment) && c?.comment && isLikelyUrl(c?.comment)" class="error-message">
-                Invalid URL. Please enter a valid one.
+              </p>
+              
+              <!-- Error message for invalid URL -->
+              <div *ngIf="!isValidUrl(c?.comment.trim()) && c?.comment && isLikelyUrl(c?.comment) && !containsTextAndUrl(c?.comment)" class="error-message">
+                Invalid URL
               </div>
-         
         </li>
     </ul>
 </div>

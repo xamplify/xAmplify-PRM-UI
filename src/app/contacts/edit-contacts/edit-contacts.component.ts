@@ -1170,6 +1170,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 								this.contactsCount(this.selectedContactListId);
 								this.selectedContactListIds.length = 0;
+								this.selectedContactForSave.length = 0;
 								this.loading = false;
 							}
 						} else {
@@ -3431,6 +3432,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.loading = false;
 					this.customResponse = new CustomResponse('SUCCESS', "Your Contact(s) has been deleted successfully ", true);
 					this.selectedContactListIds = [];
+					this.selectedContactForSave = [];
 					this.isHeaderCheckBoxChecked = false;
 					this.checkingLoadContactsCount = true
 					this.editContactListLoadAllUsers(this.contactListId, this.pagination);

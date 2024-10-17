@@ -1113,3 +1113,11 @@ line-height: 1;
     transform: rotate(360deg);
   }
 }
+
+/* Beta stamp for Social Accounts - welcome pages */
+.beta_social_icon_welcome_page {
+  font-size: 12px;
+  margin-left: 2px;
+  color: #888;
+  vertical-align: super;
+}

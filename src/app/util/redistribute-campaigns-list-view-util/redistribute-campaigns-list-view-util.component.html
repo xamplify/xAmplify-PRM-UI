@@ -21,7 +21,7 @@
             <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType"
               *ngIf="campaignAccess.videoCampaign">Video</li>
             <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType"
-              *ngIf="campaignAccess.socialCampaign">Social
+              *ngIf="campaignAccess.socialCampaign">Social <span class="beta_social_icon_for_buttons">(Beta)</span>
             </li>
             <li class="filter" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType"
               *ngIf="campaignAccess.eventCampaign">Event</li>

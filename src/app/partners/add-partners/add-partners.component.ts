@@ -3568,6 +3568,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							this.customResponse = new CustomResponse('SUCCESS', message, true);
 							this.loadPartnerList(this.pagination);
 							this.editContactComponent.selectedContactListIds.length = 0;
+							this.editContactComponent.selectedContactForSave.length = 0;
 						} else {
 							this.authenticationService.forceToLogout();
 						}

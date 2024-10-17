@@ -85,7 +85,7 @@
                        campaignType != 'VIDEO' &&
                        campaignType != 'LANDINGPAGE'
                        ">
-                              {{ campaignType }} CAMPAIGN <span *ngIf="campaignType == 'SOCIAL'" class="beta_social_icon">(Beta)</span>({{
+                              {{ campaignType }} CAMPAIGN <span *ngIf="campaignType?.toLowerCase() == 'social'" class="beta_social_icon">(Beta)</span>({{
                               authenticationService?.partnerModule?.customName
                               }})
                            </div>
@@ -97,7 +97,7 @@
                            <div class="camp-title" *ngIf="
                        !campaign.channelCampaign && campaignType != 'LANDINGPAGE'
                        ">
-                              {{ campaignType }} CAMPAIGN
+                              {{ campaignType }} CAMPAIGN <span *ngIf="campaignType?.toLowerCase() == 'social'" class="beta_social_icon">(Beta)</span>
                            </div>
                            <div class="camp-title" *ngIf="
                        !campaign.channelCampaign && campaignType == 'LANDINGPAGE'
@@ -847,7 +847,7 @@
                         <div class="portlet light" style="margin: 10px -5px 5px -5px">
                            <div class="portlet-title">
                               <div class="caption">
-                                 <span class="caption-subject font-red-sunglo">Social Status</span>
+                                 <span class="caption-subject font-red-sunglo">Social Status<span class="beta_social_icon">(Beta)</span></span>
                               </div>
                            </div>
                            <div class="portlet-body clearfix">
