@@ -52,18 +52,16 @@ export class ManageDamComponent implements OnInit {
 
 	ngOnInit() { 
 		this.isPartnerView = this.router.url.indexOf('/shared')>-1;
-		if(this.router.url.indexOf('/editVideo')>-1){	
+		if(this.router.url.indexOf('/editVideo')>-1 || this.router.url.indexOf('/previewVideo')>-1){	
           /***XNFR-694****/  	
-          this.validateVideoId(this.videoId);
-		} else if(this.router.url.indexOf('/previewVideo')>-1){
-		 this.getVideo(this.videoId, this.damId, 'playVideo');
+          this.validateVideoId(this.videoId,'editVideo');
 		}
         this.getRoleByUserId();
 	}
-    validateVideoId(videoId: number) {
+    validateVideoId(videoId: number,routerIndex:string) {
         this.damService.validateVideoId(videoId).subscribe(
             _response => {
-                this.getVideo(this.videoId, this.damId, 'editVideo');
+                this.getVideo(this.videoId, this.damId, routerIndex);
             }, error => {
                 this.xtremandLogger.errorPage(error);
             }
