@@ -16,7 +16,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 
 @Injectable()
 export class DamService {
-  
+   
  
   URL = this.authenticationService.REST_URL + "dam/";
   playbooksUrl = this.authenticationService.REST_URL+"playbooks/";
@@ -355,6 +355,13 @@ export class DamService {
     let url = this.DAM_PREFIX_URL+'/validateDamId/damId/'+damId+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
+
+  validateVideoId(videoId: number) {
+    let userId = this.authenticationService.getUserId();
+    let url = this.DAM_PREFIX_URL+'/validateVideoId/videoId/'+videoId+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+}
+
 
 
 }
