@@ -30,7 +30,7 @@ import { CommentDealAndLeadDto } from 'app/deals/models/comment-deal-and-lead-dt
 import { EnvService } from 'app/env.service';
 import { RegionNames } from 'app/common/models/region-names';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var $: any;
 @Component({
@@ -56,6 +56,8 @@ export class CustomAddLeadComponent implements OnInit {
   @Output() notifyOtherComponent = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
   @Input() public isConvertingContactToLead: boolean = false;
+  /**XNFR-553**/
+  @Input() public isFromCompanyModule:boolean = false;
 
   preview = false;
   edit = false;
@@ -225,7 +227,8 @@ export class CustomAddLeadComponent implements OnInit {
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
-     public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService, private router: Router,public regions: RegionNames) {
+     public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService, private router: Router,public regions: RegionNames,
+    public route: ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -1852,6 +1855,27 @@ export class CustomAddLeadComponent implements OnInit {
   //XNFR-681
   resetLeadTitle() {
     this.leadFormTitle = LEAD_CONSTANTS.registerALead;
+  }
+
+  goBackToContactDetailsPage() {
+    this.notifyClose.emit();
+  }
+
+  goBackToManageContacts() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+  }
+
+  goBackToEditContacts() {
+    let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+    }
+  }
+
+  goBackToManageCompanies() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
   }
 
 }

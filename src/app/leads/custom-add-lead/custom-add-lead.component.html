@@ -5,9 +5,9 @@
   });
   webshims.polyfill('forms forms-ext');
 </script>
-<div [ngClass]=" isThroughAddUrl ? 'page-content' :'' " id="del-profile-div">
+<div [ngClass]=" (isThroughAddUrl || isConvertingContactToLead) ? 'page-content' :'' " id="del-profile-div">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div *ngIf="isThroughAddUrl" class="page-bar" style="height:48px">
+  <div *ngIf="isThroughAddUrl || isConvertingContactToLead" class="page-bar" style="height:48px">
     <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
       <div class="col-xs-12 col-sm-5 col-lg-6">
         <ul class="page-breadcrumb pbc-m3">
@@ -21,14 +21,39 @@
             </a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li>
+          <li *ngIf="!isConvertingContactToLead">
             <a>Add</a>
+          </li>
+          <li *ngIf="isConvertingContactToLead && !isFromCompanyModule">
+            <a (click)="goBackToManageContacts()">Manage contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead && isFromCompanyModule">
+            <a (click)="goBackToManageCompanies()">Manage Companies</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead">
+            <a (click)="goBackToEditContacts()">Edit contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead">
+            <a (click)="goBackToContactDetailsPage()">Contact Details</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead && actionType == 'add'">
+            <a>Add Lead</a>
+          </li>
+          <li *ngIf="isConvertingContactToLead && actionType == 'edit'">
+            <a>Edit Lead</a>
+          </li>
+          <li *ngIf="isConvertingContactToLead && actionType == 'view'">
+            <a>View Lead</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="portlet-title">
+  <div class="portlet-title" *ngIf="!isConvertingContactToLead">
     <div class="caption header-padding" [ngClass]="isLeadForDivCenterAligned ? 'text-center':''">{{leadFormTitle}}</div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
