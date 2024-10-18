@@ -189,7 +189,6 @@ export const routes: Routes = [
 	{ path: 'pv/p/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/ptp/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{path:'welcome-page',component:WelcomePageComponent,canActivate: [AuthGuard], data: { preload: true }},
-	{ path: 'mp/mppv/:id', component: MarketplaceUtilComponent },	
 	{ path: 'mp/mps/:alias', component: MarketplaceUtilComponent },	
 
 	{ path: '404', component: PageNotFoundComponent },
