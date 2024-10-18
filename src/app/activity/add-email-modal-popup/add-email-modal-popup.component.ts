@@ -1,22 +1,23 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
-import { EmailActivitySevice } from '../services/email-activity-service';
+import { EmailActivityService } from '../services/email-activity-service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { EmailActivity } from '../models/email-activity-dto';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-declare var $:any;
+declare var $:any, CKEDITOR:any;
 
 @Component({
   selector: 'app-add-email-modal-popup',
   templateUrl: './add-email-modal-popup.component.html',
   styleUrls: ['./add-email-modal-popup.component.css'],
-  providers: [EmailActivitySevice]
+  providers: [EmailActivityService]
 })
 export class AddEmailModalPopupComponent implements OnInit {
 
   @Input() userId:any;
   @Input() actionType:string;
   @Input() userEmailId:string;
+  @Input() emailActivityId:number;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
 
@@ -29,7 +30,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   loggedInUserId: number;
   isValidEmail: boolean;
 
-  constructor(public emailActivityService: EmailActivitySevice, public referenceService: ReferenceService,
+  constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService) {
       this.loggedInUserId = this.authenticationService.getUserId();
      }
@@ -38,10 +39,15 @@ export class AddEmailModalPopupComponent implements OnInit {
     this.emailActivity.loggedInUserId = this.loggedInUserId;
     this.emailActivity.userId = this.userId;
     if (this.actionType == 'add') {
+      this.isPreview = false;
       this.emailActivity.toEmailId = this.userEmailId;
+      CKEDITOR.config.height = '300px';
+      CKEDITOR.config.baseFloatZIndex = 1E5;
       $('#addEmailModalPopup').modal('show');
-    } else {
+    } else if (this.actionType == 'view') {
       this.isPreview = true;
+      this.fetchEmailActivityById();
+      $('#addEmailModalPopup').modal('show');
     }
   }
 
@@ -60,16 +66,34 @@ export class AddEmailModalPopupComponent implements OnInit {
   }
 
   closeEmailModal() {
+    this.isPreview = false;
+    this.actionType = '';
     $('#addEmailModalPopup').modal('hide');
     this.notifyClose.emit();
   }
 
   validateEmail() {
-    if (this.emailActivity.body.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
+    if (this.emailActivity.body != undefined && this.emailActivity.subject != undefined 
+      && this.emailActivity.body.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
       this.isValidEmail = true;
     } else {
       this.isValidEmail = false;
     }
+  }
+
+  fetchEmailActivityById() {
+    this.ngxLoading = true;
+    this.emailActivityService.fetchEmailActivityById(this.emailActivityId).subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          this.emailActivity = data.data;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        
+        this.ngxLoading = false;
+      }
+    )
   }
   
 }
