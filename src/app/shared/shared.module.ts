@@ -35,6 +35,7 @@ import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom
 import { CustomManageDealsComponent } from 'app/deals/custom-manage-deals/custom-manage-deals.component';
 import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
 import { CKEditorModule } from "ng2-ckeditor";
+import { EmailActivityComponent } from 'app/activity/email-activity/email-activity.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
@@ -44,7 +45,7 @@ import { CKEditorModule } from "ng2-ckeditor";
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
-                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent ],
+                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent ],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -53,7 +54,7 @@ import { CKEditorModule } from "ng2-ckeditor";
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent, 
-                CustomManageDealsComponent, AddEmailModalPopupComponent],
+                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent],
         providers: [FormService],
 })
 

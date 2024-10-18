@@ -4,5 +4,6 @@ export class EmailActivity {
     subject:string;
     body:string;
     toEmailId:string;
-    fromEmailId:string;
+    senderEmailId:string;
+    contactId:number;
 }

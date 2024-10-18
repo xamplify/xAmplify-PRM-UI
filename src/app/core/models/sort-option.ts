@@ -445,7 +445,15 @@ export class SortOption {
 		{ 'name': 'Integration Type (DESC)', 'value': 'type-DESC' },
 		{ 'name': 'Created Time (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
-	]
+	];
+
+	/**XNFR-553**/
+	emailActivityDropDownOptions = [
+		{ 'name': 'Subject(Z-A)', 'value': 'subject-DESC' },
+		{ 'name': 'Subject(A-Z)', 'value': 'subject-ASC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+	];
 
 
 	public selectedSortedOption: any = this.sortByDropDown[0];
@@ -511,6 +519,9 @@ export class SortOption {
 	selectedCustomLinksDropDownOption = this.customLinksCompaniesDropDown[this.customLinksCompaniesDropDown.length-1];
 
 	selectedIntegrationDetailsDropDownOption = this.integrationDetailsDropDown[0];
+
+	/**XNFR-553**/
+	emailActivityDropDownOption = this.emailActivityDropDownOptions[this.emailActivityDropDownOptions.length-1];
 
 
 }
