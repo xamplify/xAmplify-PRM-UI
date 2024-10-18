@@ -6,9 +6,9 @@
   webshims.polyfill('forms forms-ext');
 </script>
 
-<div [ngClass]=" isThroughAddUrl ? 'page-content' :'' " id="del-profile-div">
+<div [ngClass]=" (isThroughAddUrl || isDealFromContact) ? 'page-content' :'' " id="del-profile-div">
    <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div *ngIf="isThroughAddUrl" class="page-bar" style="height:48px">
+  <div *ngIf="isThroughAddUrl || isDealFromContact" class="page-bar" style="height:48px">
     <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
       <div class="col-xs-12 col-sm-5 col-lg-6">
         <ul class="page-breadcrumb pbc-m3">
@@ -22,14 +22,39 @@
             </a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li>
+          <li *ngIf="!isDealFromContact">
             <a>Add</a>
+          </li>
+          <li *ngIf="isDealFromContact && !isFromCompanyModule">
+            <a (click)="goBackToManageContacts()">Manage contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromCompanyModule">
+            <a (click)="goBackToManageCompanies()">Manage Companies</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact">
+            <a (click)="goBackToEditContacts()">Edit contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact">
+            <a (click)="goBackToContactDetailsPage()">Contact Details</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'add'">
+            <a>Add Deal</a>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'edit'">
+            <a>Edit Deal</a>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'view'">
+            <a>View Deal</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="portlet-title">
+  <div class="portlet-title" *ngIf="!isDealFromContact">
     <div class="caption deal-title-css" [ngClass]="isDealForAndContactInfoDivCenterAligned ? 'text-center':''">
       {{dealFormTitle}}
     </div>

@@ -50,6 +50,9 @@ export class AddDealComponent implements OnInit {
   @Input() public selectedContact: any;
   @Input() public isDealFromContact: boolean = false;
   @Output() notifySubmitSuccess = new EventEmitter();
+  /**XNFR-553**/
+  @Input() isFromCompanyModule:boolean = false;
+  @Output() notifyClose = new EventEmitter();
 
   preview = false;
   edit = false;
@@ -1873,6 +1876,27 @@ export class AddDealComponent implements OnInit {
 
   resetDealTitle() {
     this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
+  }
+
+  goBackToContactDetailsPage() {
+    this.notifyClose.emit();
+  }
+
+  goBackToManageContacts() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+  }
+
+  goBackToEditContacts() {
+    let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+    }
+  }
+
+  goBackToManageCompanies() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
   }
 
 }
