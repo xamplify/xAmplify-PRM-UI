@@ -66,14 +66,14 @@
                   <li *ngIf="!menu.showSubMenu">
                     <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                       <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
-                      {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span>
+                      {{menu.customName}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup>
                     </a>
                   </li>
                   <li *ngIf="menu.showSubMenu" >
                 
                     <a href="javascript:;" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                       <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                      {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span>
+                      {{menu.customName}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup>
                     </a>
                     <i class='fa fa-chevron-down js-arrow arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
                     <ul class="js-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">

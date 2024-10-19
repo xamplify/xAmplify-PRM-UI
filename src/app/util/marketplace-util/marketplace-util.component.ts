@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Processor } from 'app/core/models/processor';
@@ -10,6 +10,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { TracksPlayBookUtilService } from 'app/tracks-play-book-util/services/tracks-play-book-util.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
+declare var $: any;
 
 @Component({
   selector: 'app-marketplace-util',
@@ -35,29 +36,28 @@ export class MarketplaceUtilComponent implements OnInit {
     private utilService: UtilService,
     public deviceService: Ng2DeviceService,
     private vanityURLService: VanityURLService,
-    public referenceService: ReferenceService
+    public referenceService: ReferenceService,
+    private elementRef: ElementRef
   ) {}
 
   ngOnInit() {
     this.alias = this.route.snapshot.params['alias'];
     this.landingPageId = this.route.snapshot.params['id'];
-
-    if (this.router.url.includes('/mppv/')) {
-      this.getVendorCompaniesByLandingPageId();
-    } else {
-      this.getVendorCompaniesByAlias();
-    }
-
-    // Initialize the filtered categories
+    this.getVendorCompaniesByAlias();
     this.getFilteredCompanies();
   }
 
+  ngAfterViewChecked() {
+      this.setParentIframeHeight();
+  }
   showContent(section: string) {
     this.activeCategory = section;
+
   }
 
   showAllCategories() {
     this.activeCategory = 'All Categories';
+
   }
 
   getFilteredCompanies() {
@@ -72,18 +72,6 @@ export class MarketplaceUtilComponent implements OnInit {
       .filter(category => category.companies.length > 0);
   }
 
-  getVendorCompaniesByLandingPageId() {
-    this.landingPageService.getVendorCompaniesByLandingPageId(this.landingPageId).subscribe(
-      response => {
-        this.categories = response.data;
-        this.getFilteredCompanies();
-      },
-      error => {
-        // Handle error
-      }
-    );
-  }
-
   getVendorCompaniesByAlias() {
     this.landingPageService.getVendorCompaniesByAlias(this.alias).subscribe(
       response => {
@@ -91,14 +79,22 @@ export class MarketplaceUtilComponent implements OnInit {
         this.getFilteredCompanies();
       },
       error => {
-        // Handle error
+        this.categories = [];
+      },()=>{
+        this.setParentIframeHeight();
       }
     );
   }
 
   navigateToParent(event: Event): void {
-    event.preventDefault(); // Prevent the default link behavior
-    const newUrl = (event.target as HTMLAnchorElement).href; // Get the href value
-    window.parent.location.href = newUrl; // Change the parent's URL
+    event.preventDefault(); 
+    const newUrl = (event.target as HTMLAnchorElement).href; 
+    window.parent.location.href = newUrl;
   }
+
+  setParentIframeHeight() {
+    const componentHeight = this.elementRef.nativeElement.offsetHeight;
+    (window.parent as any).$('#frame-full-height').height(componentHeight +20);
+  }
+
 }

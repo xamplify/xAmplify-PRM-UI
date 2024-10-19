@@ -86,5 +86,8 @@
 	/******Video Player******/
 	window.__env.loadLatestVideoJsFiles = true;
 	window.__env.loadLatestPipeLineApi = true;
+	
+	/***Contacts***/
+	window.__env.isContactsVersion2ApiEnabled = true;
 
 }(this));

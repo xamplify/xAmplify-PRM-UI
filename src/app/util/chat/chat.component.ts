@@ -162,27 +162,29 @@ export class ChatComponent implements OnInit {
 
     getCommentParts(comment: string): { beforeUrl: string; url: string; afterUrl: string } {
       const urlRegex = /(https?:\/\/[^\s]+)/g;
-      const match = comment.match(urlRegex);
-      
-      if (match && match.length > 0) {
+    const match = comment.match(urlRegex);
+    console.log('data',comment)
+    
+    if (match && match.length > 0) {
         const url = match[0]; // First URL found
         const parts = comment.split(url);
         return {
-          beforeUrl: parts[0],  // Text before the URL
-          url: url,              // The URL itself
-          afterUrl: parts[1] || '' // Text after the URL (if any)
+            beforeUrl: parts[0],  // Text before the URL
+            url: url,              // The URL itself
+            afterUrl: parts[1] || '' // Text after the URL (if any)
         };
-      }
-  
-      return {
+    }
+
+    return {
         beforeUrl: comment,  // No URL, the whole comment is just plain text
         url: '',
         afterUrl: ''
-      };
+    };
+
     }
 
     containsTextAndUrl(comment: string): boolean {
-      const urlPattern = /https?:\/\/[^\s]+/; // Regex to match URLs
+       const urlPattern = /(https?:\/\/[^\s]+)/g; // Regex to match URLs
       return urlPattern.test(comment) && comment.trim().includes(' ');
   }
     
@@ -221,5 +223,30 @@ export class ChatComponent implements OnInit {
         '(\\#[-a-z0-9_]*)?$', 'i'); // fragment locator
     
       return !!pattern.test(url); // Validate the trimmed URL
+    }
+
+    getCommentValid(commentData :string){
+      let com='';
+      const urlRegex = /((https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)/g;
+      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+      let commentsList = commentData.split(' ');
+      let urlSet = new Set(); 
+      commentsList.forEach((ele:any) =>{
+        if (ele.match(emailRegex)) {
+          // If it's an email address, just add it as plain text
+          com += ele + ' ';
+        } else if(ele.match(urlRegex)){
+          let normalizedUrl = ele.startsWith('http') ? ele : 'http://' + ele;
+
+          // If it's a URL and hasn't been added yet, add it
+          if (!urlSet.has(normalizedUrl)) {
+            com += `<a href="${normalizedUrl}" target="_blank"> ${ele}</a> `;
+            urlSet.add(normalizedUrl); // Mark this normalized URL as added
+          }
+        }else{
+          com= com+ele+' '
+        }
+      });
+      return com.trim();
     }
   }

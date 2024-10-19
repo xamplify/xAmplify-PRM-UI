@@ -47,20 +47,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   //xnfr-256
   SERVER_URL: any;
   APP_URL: any;
-  vanitySocialProviders = [];
+  vanitySSOProviderList = [];
   isStyleOne:boolean = false;
   loginStyleId:number;
   /*** XNFR-416 ***/
   isBgColor:boolean;
   teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
   isPleaseWaitButtonDisplayed = false;
-  //showOauthSSO: boolean = false;
   orLoginWithText: boolean = false;
-  //vanityOauthSSOProviders = [];
   vendorSSOProvider: { name: string; iconName: string; value: string; };
   showVendorSSO: boolean;
   showLoginWithCredentials: boolean = false;
   hideCloseButton: boolean = false;
+  /** XNFR-721 **/
+  vanityMicrosoftSSOProvider: any;
 
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
@@ -388,20 +388,21 @@ bgIMage2:any;
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
             localStorage.setItem('appIcon',result.companyFavIconPath);
-            this.vanityURLService.setVanityURLTitleAndFavIcon();
-            if (result.showMicrosoftSSO) {
-              this.orLoginWithText = result.showMicrosoftSSO;
-              this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft-icon", "value": "microsoft" });
-            }            
+            this.vanityURLService.setVanityURLTitleAndFavIcon();         
 
             if (result.showVendorSSO) {
               this.showVendorSSO = result.showVendorSSO;
               if (result.vendorSSOType === "oauth") {
-                this.vanitySocialProviders.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" });
+                this.vanitySSOProviderList.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" });
               } else if (result.vendorSSOType === "saml") {
-                this.vanitySocialProviders.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "samlsso" });
+                this.vanitySSOProviderList.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "samlsso" });
               }              
             }
+
+            if (result.showMicrosoftSSO) {
+              this.orLoginWithText = result.showMicrosoftSSO;
+              this.vanityMicrosoftSSOProvider = { "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" };
+            } 
             
           }, error => {
             console.log(error);
