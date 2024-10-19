@@ -64,7 +64,7 @@
           </div>
           <!--  -->
           <div class="icon-group">
-            <div class="icon-item">
+            <div class="icon-item" (click)="openAddNoteModalPopup()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Create a Note">
                 <i class="glyphicon glyphicon-pencil"></i>
               </div>
@@ -212,7 +212,7 @@
                   <!-- end -->
                 </div>
                 <div *ngIf="showNotesTab" id="note1" class="tab-pane fade pt-top">
-                  xsxszxsdddrfsd
+                  <app-note [contactId]="contactId"></app-note>
                 </div>
                 <div *ngIf="showEmailTab" id="email1" class="tab-pane fade pt-top">
                   <app-email-activity [contactId]="contactId"></app-email-activity>
@@ -341,3 +341,7 @@
 <app-add-deal *ngIf="showDealForm" [dealId]="dealId" [actionType]="actionType" [selectedContact]="selectedContact"
   [isDealFromContact]="true" (notifySubmitSuccess)="showDealSubmitSuccess()" [isFromCompanyModule]="isFromCompanyModule"
   (notifyClose)="closeDealForm()"></app-add-deal>
+
+<app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [selectedContact]="selectedContact" 
+(notifySuccess)="showNoteCutomResponse($event)" (notifyClose)="closeAddNoteModalPopup()"></app-add-note-modal-popup>
+

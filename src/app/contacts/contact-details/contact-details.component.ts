@@ -88,6 +88,9 @@ export class ContactDetailsComponent implements OnInit {
   dealId: any;
   showDealForm: boolean = false;
 
+  /** note **/
+  showAddNoteModalPopup:boolean = false;
+
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
@@ -440,6 +443,21 @@ export class ContactDetailsComponent implements OnInit {
 
   closeDealForm() {
     this.showDealForm = false;
+  }
+
+  openAddNoteModalPopup() {
+    this.showAddNoteModalPopup = true;
+  }
+
+  showNoteCutomResponse(event: any) {
+    this.showNotesTab = false;
+    this.showActivityTab = true;
+    this.customResponse = new CustomResponse('SUCCESS', 'Note Submitted Successfully', true);
+    this.closeAddNoteModalPopup();
+  }
+  
+  closeAddNoteModalPopup() {
+    this.showAddNoteModalPopup = false;
   }
   
 }

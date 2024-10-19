@@ -1,3 +1,43 @@
-<p>
-  add-note-modal-popup works!
-</p>
+<div class="modal fade right" id="addNoteModalPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="my-container">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeNoteModalPopup()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Add a Note</h4>
+      </div>
+
+      <div class="modal-body">
+        <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+        <div class="form-group">
+          <label for="subjectLine">Title <span class="text-danger">*</span></label>
+          <input type="text" id="subjectLine" [(ngModel)]="note.title" [ngModelOptions]="{standalone: true}"
+            placeholder="Enter Title" class="form-control" name="subjectLine" maxlength="200" />
+        </div>
+
+        <div class="form-group">
+          <label for="subjectLine">Visbility <span class="text-danger">*</span></label>
+          <span>
+              <switch class="switchbtns" [(status)]="note.publicNotes" [onText]="'Public'" [offText]="'Private'"
+                [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offPrivateColor"
+                [size]="callActionSwitch.size" (statusChange)="publicVsPrivateNoteStatusChange($event)">
+              </switch>
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="subjectLine">Write here <span class="text-danger">*</span></label>
+          <ckeditor name="content" [(ngModel)]="note.content" [ngModelOptions]="{standalone: true}"></ckeditor>
+        </div>
+      </div>
+      <div class="modal-footer" style="border: none">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeNoteModalPopup()" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="button bgcolor-unset" (click)="save()"><span
+            class="btn Btn-Green transition txt_pd-top3">Save</span></button>
+      </div>
+    </div>
+  </div>
+</div>

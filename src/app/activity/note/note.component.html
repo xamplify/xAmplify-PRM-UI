@@ -1,0 +1,62 @@
+<div class="inputs display row" align="right">
+  <div class="col-xs-12 col-sm-12 col-lg-12 mb10">
+    <div class="page-toolbar">
+      <div class="btn-group pull-right">
+        <div class="inputs float-right" style="display: inline-flex;">
+          <!-- <div class="float-left">
+            <select class="form-control" [(ngModel)]="sortOption.noteDropDownOption"
+              (ngModelChange)="sortBy($event)" id="select-dropdown">
+              <option *ngFor="let option of sortOption.noteDropDownOptions" [ngValue]="option">
+                {{option.name}}
+              </option>
+            </select>
+          </div> -->
+          <div>
+            <div class="ml5">
+              <input type="text" autocomplete="off" id="sort-text" class="form-control"
+                [(ngModel)]="noteSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                (keydown.enter)="noteSortOption()">
+              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="noteSortOption.searchKey"
+                (click)="noteSortOption.searchKey='';clearSearch();"></button>
+              <button type="submit" class="search-box-item-click" (click)="searchNoteActivities();"><i
+                  class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="notePagination?.totalRecords>0 && !httpRequestLoader?.isLoading">
+  <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+  <div class="activity_card mb10" *ngFor="let note of notePagination?.pagedItems">
+    <div class="activity-header">
+      <span class="activity-title">{{note.title}}</span>
+      <span class="activity-date"><i class="fa fa-clock icon"></i>{{note.createdTime}}</span>
+    </div>
+    <div class="activity-header" *ngIf="note.visibility == 'PUBLIC'">
+      <span class="activity-date"><i class="fa fa-edit icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
+    </div>
+    <div class="activity-body">
+      <i class="fa fa-comment icon"></i>{{note.content}}
+    </div>
+    <div class="activity-body">
+      <i class="fa fa-comment icon"></i>{{note.visibility}}
+    </div>
+    <div class="activity-footer">
+      <a ><span>edit</span></a>
+    </div>
+  </div>
+  <!-- --------------------Pagination0-------------------- -->
+  <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
+    <app-pagination [pagination]="notePagination" (notifyParent)="setnotePage($event)"
+      (notifyParentDropDown)="fetchAllNoteActivities($event)"></app-pagination>
+  </div>
+</div>
+<div *ngIf="!httpRequestLoader.isLoading && notePagination.totalRecords==0" class="alert alert-info">
+  <strong translate>No Data Found.</strong>
+</div>
+
