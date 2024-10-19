@@ -18,6 +18,8 @@ import 'rxjs/add/observable/throw';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 import { UtilService } from 'app/core/services/util.service';
+import { ContactsRequestDto } from '../models/contacts-request-dto';
+import { EnvService } from 'app/env.service';
 
 @Injectable()
 export class ContactService {
@@ -49,6 +51,7 @@ export class ContactService {
     companyUrl = this.authenticationService.REST_URL + "companies/"
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
     contactsSchedulerUrl = this.authenticationService.SCHEDULER_URL+"userlists/";
+    contactsV2Url = this.authenticationService.SCHEDULER_URL+"contacts/v2/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
@@ -57,7 +60,9 @@ export class ContactService {
     isUnsubscribeContactModalPopup: boolean = false;
     isresubscribeContactModalPopup: boolean = false;
 
-    constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private utilService: UtilService) {
+
+    constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, 
+        private utilService: UtilService,private envService:EnvService) {
     }
 
 
@@ -261,19 +266,36 @@ export class ContactService {
     }
 
     saveContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
-        var requestoptions = new RequestOptions({
-            body: userUserListWrapper,
-        })
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var options = {
-            headers: headers
-        };
-        var url = this.contactsSchedulerUrl + "save-userlist/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
-        this.logger.info(userUserListWrapper);
-        return this._http.post(url, options, requestoptions)
-            .map((response: any) => response.json())
-            .catch(this.handleError);
+        /**XNFR-713***/
+        if(this.envService.isContactsVersion2ApiEnabled && userUserListWrapper.isUploadCsvOptionUsed){
+            this.logger.info("Contacts V2 Api Executed");
+            let contactsRequestDto = new ContactsRequestDto();
+            let userList = userUserListWrapper.userList;
+            contactsRequestDto.socialNetwork = userList.socialNetwork;
+            contactsRequestDto.contactListName = userList.name;
+            contactsRequestDto.contactType = userList.contactType;
+            contactsRequestDto.externalListId = userList.externalListId;
+            contactsRequestDto.publicList = userList.publicList;
+            contactsRequestDto.users = userUserListWrapper.users;
+            contactsRequestDto.loggedInUserId = this.authenticationService.getUserId();
+            let url = this.contactsV2Url + "save?access_token=" + this.authenticationService.access_token;
+            return this.authenticationService.callPostMethod(url,contactsRequestDto);
+        }else{
+            this.logger.info("Contacts V1 Api Executed");
+            var requestoptions = new RequestOptions({
+                body: userUserListWrapper,
+            })
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            var options = {
+                headers: headers
+            };
+            var url = this.contactsSchedulerUrl + "save-userlist/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+            return this._http.post(url, options, requestoptions)
+                .map((response: any) => response.json())
+                .catch(this.handleError);
+        }
+        
     }
 
     saveAssignedLeadsList(userUserListWrapper: UserUserListWrapper): Observable<any> {

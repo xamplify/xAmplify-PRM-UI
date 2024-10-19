@@ -76,6 +76,7 @@ export class EnvService {
   xamplifyCustomerSupportContactNumber= "";
 
   loadLatestPipeLineApi = true;
+  isContactsVersion2ApiEnabled = false;
 
   constructor() {
   }
