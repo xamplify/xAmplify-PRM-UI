@@ -130,8 +130,8 @@ export class SfDealComponent implements OnInit {
         classes: "myclass custom-class"
       };
     }
-    let isValidCreatedForComapnyId = this.createdForCompanyId != undefined && this.createdForCompanyId > 0;
-    if (isValidCreatedForComapnyId) {
+    let isValidCreatedForCompanyId = this.createdForCompanyId != undefined && this.createdForCompanyId > 0;
+    if (isValidCreatedForCompanyId) {
       this.setDealIdAsZero();
       let isCreatedByActiveTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdByActiveCRMType;
       let isCreatedForActiveCRMTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdForActiveCRMType;
