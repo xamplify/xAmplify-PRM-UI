@@ -804,10 +804,10 @@
 										<i class="fa fa-edit" style="font-size: 19px;"></i>File	Preview
 									</div>
 								</div>
-								<div class="portlet-body">
+								<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled">
 									<app-list-loader *ngIf="isListLoader"></app-list-loader>
 									<!--xAmplify CSV Format-->
-									<div class="table-responsive" *ngIf="(selectedAddContactsOption==1 || isXamplifyCsvFormatUploaded) && !isUploadCsvOptionEnabled && !isListLoader">
+									<div class="table-responsive" *ngIf="(selectedAddContactsOption==1 || isXamplifyCsvFormatUploaded) && !isListLoader">
 										<table class="table tgrid">
 											<thead>
 												<tr>
@@ -886,7 +886,7 @@
 											</tbody>
 										</table>
 										<!--XNFR-671-->
-										<span class="success" *ngIf="!isUploadCsvOptionEnabled">
+										<span class="success">
 											<strong>Total Records : {{contacts?.length}}</strong>
 										</span>
 									</div>
@@ -908,18 +908,18 @@
 										</li>
 									</ul>
 								</div>
+
+								<!----- XNFR-671 Custom CSV Mapped Option ----->
+								<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
+									<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
+										#customCsvMapping (notifyParent)="saveCsvMappedColumns($event)" (notifyParentCancel)="cancelContacts()"
+										(notifyParentSave)="saveUploadCsvContactList()" (notifyParentCustomResponse)="csvCustomResponse()">
+									</app-custom-csv-mapping>
+								</div>
 							</div>
 						</div>
 					</div>
 					<!--End Of CSV Preview-->
-
-					<!----- XNFR-671 Custom CSV Mapped Option ----->
-					<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
-						<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
-							[isXamplifyCsvFormatUploaded]="isXamplifyCsvFormatUploaded" (notifyParent)="saveCsvMappedColumns($event)" 
-							(notifyParentCancel)="cancelContacts()">
-						</app-custom-csv-mapping>
-					</div>
 
 					<!-- END PAGE CONTENT -->
 					<div class="panel panel-success mt10 notes_box pos_mrg_top16" style="border-radius: 10px;">
@@ -1464,3 +1464,4 @@
 </div>
 
 <app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)"></app-share-leads>
+

@@ -430,7 +430,10 @@ export class Properties {
 	flexiFieldDisplayText = "You have the ability to add flexible fields, which will be displayed in your contact form.";
 	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
-	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin"
+	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin";
+	selectAnOptionToSaveListMessage = "Select an option to save the list.";
+	ignoreInvalidAndEmptyEmailIdsMessage = "Ignore invalid email id(s) and empty records";
+	editInvalidAndIgnoreEmptyEmailIdsMessage = "Edit invalid email id(s) and ignore empty records";
 
 	socialVanityCallBackErrorMessage = "We are unable to process request. Please contact admin for details.";
 

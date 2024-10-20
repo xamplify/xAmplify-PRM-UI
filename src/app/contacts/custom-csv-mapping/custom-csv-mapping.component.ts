@@ -21,9 +21,10 @@ declare var swal: any, $: any;
 export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   @Input() csvRows: any[];
   @Input() flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto>;
-  @Input() isXamplifyCsvFormatUploaded: boolean = false;
   @Output() notifyParent: EventEmitter<any>;
   @Output() notifyParentCancel: EventEmitter<any>;
+  @Output() notifyParentSave : EventEmitter<any>;
+  @Output() notifyParentCustomResponse : EventEmitter<any>;
 
   /***** XNFR-671 *****/
   xAmplifyDefaultCsvHeaders = ['First Name', 'Last Name', 'Company', 'Job Title', 'Email Id', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Mobile Number'];
@@ -41,6 +42,8 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   flexiFields = [];
   pager: any = {};
   pagedItems: any[];
+  csvPager: any = {};
+  csvPagedItems: any[];
   contacts: User[];
   isListLoader: boolean = false;
   mappingLoader: boolean = false;
@@ -55,9 +58,23 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   duplicateColumnsMappedErrorResponse: CustomResponse = new CustomResponse();
   emptyHeadersIndex = [];
   /***** XNFR-671 *****/
+  uploadCustomCsvHeaders = [];
+  validUsersCount: number = 0;
+  inValidUsersCount: number = 0;
+  emptyUsersCount: number = 0;
+  selectedOption: string = "";
+  csvContacts: User[];
+  invalidUsers: User[];
+  invalidPatternEmails = [];
+  csvCustomResponse = new CustomResponse();
 
   constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
-    public xtremandLogger: XtremandLogger) { this.notifyParent = new EventEmitter(); this.notifyParentCancel = new EventEmitter(); }
+    public xtremandLogger: XtremandLogger) { 
+      this.notifyParent = new EventEmitter(); 
+      this.notifyParentCancel = new EventEmitter(); 
+      this.notifyParentSave = new EventEmitter(); 
+      this.notifyParentCustomResponse = new EventEmitter(); 
+    }
 
   ngOnInit() {
     this.loadParsedCsvDtoPagination();
@@ -105,37 +122,37 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-671 *****/
   private loadUserDtoPagination() {
+    const columnMappings = [
+      { names: this.firstNames, index: 0 },
+      { names: this.lastNames, index: 1 },
+      { names: this.companies, index: 2 },
+      { names: this.jobTitles, index: 3 },
+      { names: this.emailIds, index: 4 },
+      { names: this.addresses, index: 5 },
+      { names: this.cities, index: 6 },
+      { names: this.states, index: 7 },
+      { names: this.zipCodes, index: 8 },
+      { names: this.countries, index: 9 },
+      { names: this.mobileNumbers, index: 10 }
+    ];
+
     for (let i = 0; i < this.customCsvHeaders.length; i++) {
       const headerColumn = this.customCsvHeaders[i].itemName.trim().toLowerCase();
-      if (this.firstNames.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[0]);
-      } else if (this.lastNames.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[1]);
-      } else if (this.companies.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[2]);
-      } else if (this.jobTitles.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[3]);
-      } else if (this.emailIds.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[4]);
-      } else if (this.addresses.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[5]);
-      } else if (this.cities.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[6]);
-      } else if (this.states.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[7]);
-      } else if (this.zipCodes.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[8]);
-      } else if (this.countries.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[9]);
-      } else if (this.mobileNumbers.some(name => headerColumn.includes(name.toLowerCase()))) {
-        this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[10]);
-      } else if (this.flexiFields.some(name => headerColumn.includes(name.toLowerCase()))) {
+      // Check for standard column mappings
+      for (const { names, index } of columnMappings) {
+        if (names.some(name => headerColumn.includes(name.toLowerCase())) && this.defaultContactsCsvColumnHeaderDtos[index].mappedColumn.length == 0) {
+          this.selectedMappedColumn(this.customCsvHeaders[i], this.defaultContactsCsvColumnHeaderDtos[index]);
+          break; // Exit the loop once a match is found
+        }
+      }
+      // Check for flexi fields
+      if (this.flexiFields.some(name => headerColumn.includes(name.toLowerCase()))) {
         this.defaultContactsCsvColumnHeaderDtos.forEach((dto) => {
           const defaultHeader = dto.defaultColumn.trim().toLowerCase();
-          if (headerColumn == defaultHeader) {
+          if (headerColumn == defaultHeader && dto.mappedColumn.length == 0) {
             this.selectedMappedColumn(this.customCsvHeaders[i], dto);
           }
-        })
+        });
       }
     }
     this.saveMappedColumns(false);
@@ -160,6 +177,10 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-671 *****/
   private addCsvHeadersToMultiSelectDropDown(headers: any, self: this) {
+    let uploadCustomCsvHeader = {};
+    uploadCustomCsvHeader['id'] = -1;
+    uploadCustomCsvHeader['itemName'] = '-- Map a column --';
+    this.uploadCustomCsvHeaders.push(uploadCustomCsvHeader);
     $.each(headers, function (index: number, header: any) {
       let updatedHeader = self.removeDoubleQuotes(header);
       if (updatedHeader.length > 0) {
@@ -167,6 +188,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
         customCsvHeader['id'] = index;
         customCsvHeader['itemName'] = updatedHeader;
         self.customCsvHeaders.push(customCsvHeader);
+        self.uploadCustomCsvHeaders.push(customCsvHeader);
       } else {
         self.emptyHeadersIndex.push(index);
       }
@@ -241,7 +263,9 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-671 *****/
   selectedMappedColumn(event: any, defaultContactsCsvColumnHeaderDto: DefaultContactsCsvColumnHeaderDto) {
-    if (event != undefined) {
+    if (event['itemName'] == '-- Map a column --') {
+      defaultContactsCsvColumnHeaderDto.mappedColumn = "";
+    } else if (event != undefined) {
       defaultContactsCsvColumnHeaderDto.mappedColumn = event['itemName'];
     } else {
       defaultContactsCsvColumnHeaderDto.mappedColumn = "";
@@ -286,7 +310,6 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
             }
             this.iterateAndAddToUsers(rowsLength, firstNameRows, lastNameRows, companyRows, jobTitleRows,
               emailIdRows, addressRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, flexiFieldRows, this.contacts);
-            this.removeEmptyEmailIdsFromContactsDto();
             let invalidEmailIds = this.contacts.filter(function (contact) {
               return contact.isValidEmailIdPattern == false
             }).map(function (dto) {
@@ -314,10 +337,6 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       this.mappingLoader = false;
       this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR', 'Unable to map columns.Please try after sometime.', true);
     }
-  }
-
-  removeEmptyEmailIdsFromContactsDto() {
-    this.contacts = this.contacts.filter(user => user.emailId.length > 0);
   }
 
   /***** XNFR-671 *****/
@@ -401,6 +420,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       this.addMobileNumbers(mobileNumberRows, user, i);
       /****Flexi-Fields****/
       this.addFlexiFields(flexiFieldRows, user, i);
+      user.id = i+1;
       mappedContactUsers.push(user);
     }
   }
@@ -558,6 +578,14 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.contacts = [];
     this.isValidEmailAddressMapped = false;
     this.flexiFields = [];
+    this.validUsersCount = 0;
+    this.inValidUsersCount = 0;
+    this.emptyUsersCount = 0;
+    this.selectedOption = "";
+    this.csvContacts = [];
+    this.invalidUsers = [];
+    this.invalidPatternEmails = [];
+    this.csvCustomResponse = new CustomResponse();
     this.referenceService.goToTop();
   }
 
@@ -610,6 +638,11 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     }
   }
 
+  setInvalidUsersPage(page: number) {
+    this.csvPager = this.socialPagerService.getPager(this.invalidUsers.length, page, XAMPLIFY_CONSTANTS.pageSize);
+    this.csvPagedItems = this.invalidUsers.slice(this.csvPager.startIndex, this.csvPager.endIndex + 1);
+  }
+
   removeDoubleQuotes(input: string) {
     if (input != undefined) {
       return input.trim().replace('"', '').replace('"', '');
@@ -618,4 +651,131 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     }
   }
 
+  removeEmptyEmailIdsFromContactsDto() {
+    this.contacts = this.contacts.filter(user => user.emailId.length > 0);
+  }
+
+  /***** XNFR-718 *****/
+  saveCustomUploadCsvContactList() {
+    const emailCounts = this.contacts.reduce((acc, user) => {
+      if (user.emailId.length == 0) {
+        acc.empty++;
+      } else if (this.referenceService.validateEmailId(user.emailId)) {
+        acc.valid++;
+      } else {
+        acc.invalid++;
+      }
+      return acc;
+    }, { valid: 0, invalid: 0, empty: 0 });
+    this.validUsersCount = emailCounts.valid;
+    this.inValidUsersCount = emailCounts.invalid;
+    this.emptyUsersCount = emailCounts.empty;
+    if (this.contacts.length == this.validUsersCount) {
+      this.notifyParent.emit(this.contacts);
+      this.notifyParentSave.emit();
+    } else {
+      this.referenceService.openModalPopup("Custom_Csv_Modal_Popup");
+    }
+  }
+
+  /***** XNFR-718 *****/
+  CloseCustomCsvModelPopup() {
+    this.selectedOption = "";
+    this.referenceService.closeModalPopup("Custom_Csv_Modal_Popup");
+  }
+
+  /***** XNFR-718 *****/
+  saveCustomCsvContacts() {
+    this.csvContacts = this.contacts.filter(user => this.referenceService.validateEmailId(user.emailId));
+    this.CloseCustomCsvModelPopup();
+    if (this.csvContacts.length == 0) {
+      this.notifyParentCustomResponse.emit();
+    } else {
+      this.contacts = this.contacts.filter(user => this.referenceService.validateEmailId(user.emailId));
+      this.notifyParent.emit(this.contacts);
+      this.notifyParentSave.emit();
+    }
+  }
+
+  /***** XNFR-718 *****/
+  updateCustomCsvContacts() {
+    let self = this;
+    this.invalidUsers = [];
+    this.mappingLoader = true;
+    $.each(self.contacts, function (index: number, user: any) {
+      if (!user.isValidEmailIdPattern) {
+        let invalidUser = new User();
+        invalidUser.id = user.id;
+        invalidUser.emailId = user.emailId;
+        invalidUser.isValidEmailIdPattern = user.isValidEmailIdPattern;
+        self.invalidUsers.push(invalidUser);
+      }
+    });
+    this.invalidUsers = this.invalidUsers.filter(user => user.emailId.length > 0);
+    this.inValidUsersCount = this.invalidUsers.length;
+    this.setInvalidUsersPage(1);
+    this.CloseCustomCsvModelPopup();
+    this.referenceService.openModalPopup("invalid_Users_Model_Popup");
+    this.mappingLoader = false;
+  }
+
+  /***** XNFR-718 *****/
+  closeInvalidUsersModalPopup() {
+    this.invalidUsers = [];
+    this.selectedOption = "";
+    this.csvCustomResponse = new CustomResponse();
+    this.referenceService.closeModalPopup("invalid_Users_Model_Popup");
+  }
+
+  /***** XNFR-718 *****/
+  saveInvalidUsers() {
+    let self = this;
+    this.isListLoader = true;
+    this.mappingLoader = true;
+    $.each(self.invalidUsers, function (index: number, invalidUser: any) {
+      if (!invalidUser.isValidEmailIdPattern) {
+        self.invalidPatternEmails.push(invalidUser.emailId);
+      }
+    });
+
+    if (this.invalidPatternEmails.length == 0) {
+      $.each(self.contacts, function (index: number, user: any) {
+        $.each(self.invalidUsers, function (id: number, invalidUser: any) {
+          if (user.id == invalidUser.id) {
+            user.emailId = invalidUser.emailId;
+            user.isValidEmailIdPattern = invalidUser.isValidEmailIdPattern;
+          }
+        });
+      });
+      this.removeEmptyEmailIdsFromContactsDto();
+      this.setPage(1);
+      this.notifyParent.emit(this.contacts);
+      this.closeInvalidUsersModalPopup();
+      this.showSuccessMessage();
+    } else {
+      this.csvCustomResponse = new CustomResponse('ERROR', "We found invalid email id(s) please remove... " + this.invalidPatternEmails, true);
+      this.invalidPatternEmails = [];
+    }
+    this.isListLoader = false;
+    this.mappingLoader = false;
+  }
+
+  /***** XNFR-718 *****/
+  removeInvalidUser(index: number, user: User) {
+    this.isListLoader = true;
+    this.mappingLoader = true;
+    this.contacts = this.contacts.filter((contact) => contact.id != user.id);
+    this.invalidUsers.splice(index, 1);
+
+    this.setInvalidUsersPage(1);
+    this.setPage(1);
+    this.showSuccessMessage();
+    if (this.contacts.length == 0) {
+      this.closeInvalidUsersModalPopup();
+    }
+    this.cancelContacts();
+    this.isListLoader = false;
+    this.mappingLoader = false;
+  }
+  
 }

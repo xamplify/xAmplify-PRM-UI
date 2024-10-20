@@ -622,13 +622,13 @@
 												*ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading">
 												<app-list-loader></app-list-loader>
 											</div>
-											<div class="portlet" *ngIf="users?.length != 0">
+											<div class="portlet">
 												<div class="portlet-title">
 													<div class="caption" translate>
 														<i class="fa fa-edit" aria-hidden="true"></i>File Preview
 													</div>
 												</div>
-												<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled">
+												<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled && users?.length != 0">
 													<table class="table tgrid" id="sample_editable_2"
 														aria-describedby="">
 														<thead>
@@ -820,6 +820,11 @@
 															</ng-container>
 														</tbody>
 													</table>
+													<div>
+														<span class="success">
+															<strong>Total Records : {{users?.length}}</strong>
+														</span>
+													</div>
 													<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
 														<li [ngClass]="{disabled:pager.currentPage === 1}"><a
 																(click)="setCsvPage(1)" translate>First</a></li>
@@ -840,17 +845,17 @@
 														</li>
 													</ul>
 												</div>
+
+												<!----- XNFR-671 Custom CSV Mapped Option ----->
+												<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
+													<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
+														#customCsvMapping (notifyParent)="saveCsvMappedColumns($event)" (notifyParentCancel)="cancelContacts()"
+														(notifyParentSave)="updateCsvContactList(contactListId)" (notifyParentCustomResponse)="csvCustomResponse()">
+													</app-custom-csv-mapping>
+												</div>
 											</div>
 											<!-- END EXAMPLE TABLE PORTLET-->
 										</div>
-									</div>
-
-									<!----- XNFR-671 Custom CSV Mapped Option ----->
-									<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
-										<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
-											[isXamplifyCsvFormatUploaded]="isXamplifyCsvFormatUploaded" (notifyParent)="saveCsvMappedColumns($event)" 
-											(notifyParentCancel)="cancelContacts()">
-										</app-custom-csv-mapping>
 									</div>
 
 									<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>

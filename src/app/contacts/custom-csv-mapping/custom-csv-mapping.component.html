@@ -13,7 +13,7 @@
       <i class="fa fa-exclamation-triangle i-20px"></i>
       <strong class="ml5">We found invalid data for the email address. Please update or
         <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}}
-         or <a class="required" (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
+        or <a class="required" (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
       </strong>
     </div>
     <table class="table tgrid" *ngIf="isColumnMapped">
@@ -49,7 +49,8 @@
             </td>
             <td class="text-center">
               <div class="actions-block override-actions">
-                <a (click)="removeContact(i)"><i class="fa fa-trash-o"></i></a>
+                <a class="custom-icon" data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="removeContact(i)">
+                  <i class="fa fa-trash-o trashIconCustomization"></i></a>
               </div>
             </td>
           </tr>
@@ -250,9 +251,9 @@
                 </td>
                 <td class="text-center">
                   <app-multi-select-dropdown *ngIf="(customCsvHeaders!=undefined && customCsvHeaders.length>0) || isResetButtonClicked"
-                    [dropdownList]="customCsvHeaders" [singleSelection]="true"
+                    [dropdownList]="uploadCustomCsvHeaders" [singleSelection]="true"
                     (multiSelectDropdownSingleSelectionEventEmitter)="selectedMappedColumn($event, defaultContactsCsvColumnHeaderDto)"
-                    [displayText]="defaultContactsCsvColumnHeaderDto.mappedColumn || '--Map a column--'">
+                    [displayText]="defaultContactsCsvColumnHeaderDto.mappedColumn || uploadCustomCsvHeaders[0].itemName">
                   </app-multi-select-dropdown>
                 </td>
               </tr>
@@ -265,6 +266,120 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" [disabled]="duplicateMappedColumns?.length>0"
           (click)="duplicateMappedColumns?.length==0 && saveMappedColumns(true)">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom-Csv-Modal-popup -->
+<div class="modal fade" id="Custom_Csv_Modal_Popup" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-copy" role="document">
+    <div class="modal-content" style="width: 80%; top: 100px; left: 60px">
+      <div class="modal-header">
+        <h4 class="modal-title f-w-600" translate>
+          We found {{inValidUsersCount}} invalid email id(s), {{emptyUsersCount}} empty records in the
+          email id column.
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <h4 class="modal-title f-w-600" translate>{{properties.selectAnOptionToSaveListMessage}}</h4>
+        </div>
+        <div class="form-group" style="margin-top: 15px;">
+          <input class="pointer radioButton_shadow" type="radio" [(ngModel)]="selectedOption" value="save"
+            name="rdaction">
+          <label class="option-color">{{properties.ignoreInvalidAndEmptyEmailIdsMessage}}</label><br>
+          <input class="pointer radioButton_shadow" type="radio" [(ngModel)]="selectedOption" value="update"
+            name="rdaction">
+          <label class="option-color">{{properties.editInvalidAndIgnoreEmptyEmailIdsMessage}}</label><br>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal"
+          (click)="CloseCustomCsvModelPopup()" translate>Cancel</button>
+        <button type="button" [disabled]="selectedOption != 'save'" class="button_blue bgcolor-unset"
+          [hidden]="selectedOption == 'update'" (click)="saveCustomCsvContacts()" translate>
+          <span class="btn btn-primary transition txt_pd-top3">Save</span>
+        </button>
+        <button type="button" *ngIf="selectedOption == 'update'" class="button_blue bgcolor-unset"
+          (click)="updateCustomCsvContacts()" translate>
+          <span class="btn btn-primary transition txt_pd-top3">Update</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Invalid-Users-Model-Popup -->
+<div class="modal fade right" id="invalid_Users_Model_Popup" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-css" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" (click)="closeInvalidUsersModalPopup()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title size-font" translate>We found {{ inValidUsersCount }} invalid email address(s)
+        </h4>
+      </div>
+      <div class="modal-body">
+        <ngx-loading [show]="mappingLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <app-modal-popup-loader *ngIf="mappingLoader"></app-modal-popup-loader>
+        <app-response-message [customResponse]="csvCustomResponse" *ngIf="csvCustomResponse.isVisible"
+          [showCloseIcon]="true"></app-response-message>
+        <table class='table tgrid table-hover table-sm' *ngIf="!isListLoader">
+          <tbody>
+            <ng-container *ngFor="let user of csvPagedItems;let i=index">
+              <tr id="invalid-user-column-row{{i}}">
+                <td class="text-center" [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
+                  <input type="text" class="form-control" [(ngModel)]="user.emailId"
+                    [ngModelOptions]="{standalone: true}" (input)="validateEmailAddressPattern(user)">
+                </td>
+                <td class="text-center">
+                  <a class="custom-icon" data-toggle="tooltip" data-placement="bottom" title="Delete"
+                    (click)="removeInvalidUser(i, user)"><i class="fa fa-trash-o trashIconCustomization"></i></a>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div *ngIf="invalidUsers?.length == 0" class="alert alert-info">
+          <strong translate>No results found</strong>
+        </div>
+        <div>
+          <span class="success">
+            <strong>Total Records :
+              <ng-container>{{invalidUsers?.length}}</ng-container>
+            </strong>
+          </span>
+        </div>
+
+        <ul *ngIf="csvPager?.pages && csvPager?.pages?.length" class="pagination">
+          <li [ngClass]="{disabled:csvPager.currentPage == 1}">
+            <a (click)="csvPager.currentPage != 1 && setInvalidUsersPage(1)" translate>First</a>
+          </li>
+          <li [ngClass]="{disabled:csvPager.currentPage == 1}">
+            <a (click)="csvPager.currentPage != 1 && setInvalidUsersPage(csvPager.currentPage - 1)"
+              translate>Previous</a>
+          </li>
+          <li *ngFor="let page of csvPager.pages" [ngClass]="{active:csvPager.currentPage == page}">
+            <a (click)="setInvalidUsersPage(page)">{{page}}</a>
+          </li>
+          <li [ngClass]="{disabled:csvPager.currentPage == csvPager.totalPages}">
+            <a (click)="csvPager.currentPage != csvPager.totalPages && setInvalidUsersPage(csvPager.currentPage + 1)"
+              translate>Next</a>
+          </li>
+          <li [ngClass]="{disabled:csvPager.currentPage == csvPager.totalPages}">
+            <a (click)="csvPager.currentPage != csvPager.totalPages && setInvalidUsersPage(csvPager.totalPages)"
+              translate>Last</a>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"
+          (click)="closeInvalidUsersModalPopup()">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="invalidUsers?.length == 0"
+          (click)="saveInvalidUsers()">Submit</button>
       </div>
     </div>
   </div>
