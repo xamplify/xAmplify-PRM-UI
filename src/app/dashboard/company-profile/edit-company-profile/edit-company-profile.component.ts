@@ -411,7 +411,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.setVendorLogoTooltipText();
             }
         }
-        this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
         if (!this.companyLogoImageUrlPath) {
             this.squareData = {};
