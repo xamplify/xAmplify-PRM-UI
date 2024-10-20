@@ -691,7 +691,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactOption = contactOption;
 		if (this.termsAndConditionStatus) {
 			$('#tcModal').modal('show');
-			this.refService.closeSweetAlert();
 		} else {
 			this.saveContactsWithPermission();
 		}
@@ -967,31 +966,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						if (this.isCompanyDetails) {
 							this.askForPermission('CsvContacts');
 						} else {
-							this.refService.closeSweetAlert();
 							this.customResponse = new CustomResponse('ERROR', "Company Details is required", true);
 						}
 
 					} else {
-						this.refService.closeSweetAlert();
 						this.customResponse = new CustomResponse('ERROR', "You are not allowed add teamMember(s) or yourself as a partner", true);
 					}
 
 				} else if (this.isEmailExist) {
-					this.refService.closeSweetAlert();
 					this.customResponse = new CustomResponse('ERROR', "These email(s) are already added " + this.existedEmailIds, true);
 				}
 				else if (isDuplicate) {
-					this.refService.closeSweetAlert();
 					this.customResponse = new CustomResponse('ERROR', "Please remove duplicate email ids " + this.duplicateEmailIds, true);
 					this.duplicateEmailIds = [];
 				} else {
-					this.refService.closeSweetAlert();
 					this.customResponse = new CustomResponse('ERROR', "We found invalid email id(s) please remove... " + this.invalidPatternEmails, true);
 					this.invalidPatternEmails = [];
 				}
 			} else {
 				this.customResponse = new CustomResponse('ERROR', this.properties.contactsCsvHeadersMisMatchMessage, true);
-				this.refService.closeSweetAlert();
 				this.xtremandLogger.error("editContactComponent updateCsvContactList() Contacts Null Error");
 			}
 		} catch (error) {
@@ -1035,7 +1028,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	updateListFromCsvWithPermission() {
-		this.refService.closeSweetAlert();
 		/**XNFR-713*****/
 		this.userUserListWrapper.isUploadCsvOptionUsed = false;
 		this.loading = true;
@@ -1446,10 +1438,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		if (this.selectedAddContactsOption == 2) {
 			if(this.module = 'contacts'){
-				this.refService.showSweetAlertProcessingLoader("We are validating contact list");
-				setTimeout(() => {
-					this.updateCsvContactList(this.contactListId);
-				}, 500);
+				this.updateCsvContactList(this.contactListId);
 			}else{
 				this.updateCsvContactList(this.contactListId);
 			}
