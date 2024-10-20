@@ -15,5 +15,7 @@ export class ContactsRequestDto {
 
     loggedInUserId = 0;
 
+    userListId = 0;
+
 
 }

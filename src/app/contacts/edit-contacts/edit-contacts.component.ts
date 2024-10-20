@@ -932,10 +932,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.users[i].country = null;
 					}
 
-					// this.validateEmail(this.users[i].emailId);
-
-
-
 					let userDetails = {
 						"emailId": this.users[i].emailId,
 						"firstName": this.users[i].firstName,
@@ -975,12 +971,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								this.users[i].country = null;
 							}
 						}
-
-						/* for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
-							 this.teamMembersList.push( this.orgAdminsList[i] );
-						 }*/
 						this.teamMembersList.push(this.authenticationService.user.emailId);
-
 						let emails = []
 						for (let i = 0; i < this.users.length; i++) {
 							emails.push(this.users[i].emailId);
@@ -1033,14 +1024,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	updateListFromCsvWithPermission() {
+		/**XNFR-713*****/
+		this.userUserListWrapper.isUploadCsvOptionUsed = false;
 		this.loading = true;
 		if (this.selectedLegalBasisOptions != undefined && this.selectedLegalBasisOptions.length > 0) {
 			this.setLegalBasisOptions(this.users);
 		}
-		this.xtremandLogger.info("update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify(this.users));
 		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
 			"CONTACT", "MANUAL", null, false);
 		this.userUserListWrapper.userList.id = this.contactListId;
+		/**XNFR-713*****/
+		this.userUserListWrapper.isUploadCsvOptionUsed = true;
 		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				data => {
@@ -1052,9 +1046,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						$("tr.new_row").each(function () {
 							$(this).remove();
 						});
-
-
-
 						this.users = [];
 						this.selectedAddContactsOption = 8;
 						this.uploadCsvUsingFile = false;
@@ -1547,10 +1538,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			this.contactService.loadUsersOfContactLists(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
-					this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify(data));
 					this.contacts = data.listOfUsers;
 					this.setLegalBasisOptionString(this.contacts);
-					//this.contactService.allPartners = data.listOfUsers;
 					this.totalRecords = data.totalRecords;
 					/*if (this.checkingLoadContactsCount == true) {
 						this.contactsByType.allContactsCount = data.allcontacts;

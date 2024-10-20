@@ -329,18 +329,32 @@ export class ContactService {
     }
 
     updateContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
-        var requestoptions = new RequestOptions({
-            body: userUserListWrapper,
-        })
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var options = {
-            headers: headers
-        };
-        var url = this.contactsSchedulerUrl + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
-        return this._http.post(url, options, requestoptions)
-            .map(this.extractData)
-            .catch(this.handleError);
+        /**XNFR-713***/
+        if(this.envService.isContactsVersion2ApiEnabled && userUserListWrapper.isUploadCsvOptionUsed){
+            this.logger.info("Contacts V2 Api Executed");
+            let contactsRequestDto = new ContactsRequestDto();
+            let userList = userUserListWrapper.userList;
+            contactsRequestDto.users = userUserListWrapper.users;
+            contactsRequestDto.loggedInUserId = this.authenticationService.getUserId();
+            contactsRequestDto.userListId = userList.id;
+            let url = this.contactsV2Url + "update?access_token=" + this.authenticationService.access_token;
+            return this.authenticationService.callPutMethod(url,contactsRequestDto);
+        }else{
+            this.logger.info("Contacts V1 Api Executed");
+            var requestoptions = new RequestOptions({
+                body: userUserListWrapper,
+            })
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            var options = {
+                headers: headers
+            };
+            var url = this.contactsSchedulerUrl + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
+            return this._http.post(url, options, requestoptions)
+                .map(this.extractData)
+                .catch(this.handleError);
+    
+        }
     }
 
     updateContactListUser(contactListId: number, editUser: EditUser): Observable<any> {
