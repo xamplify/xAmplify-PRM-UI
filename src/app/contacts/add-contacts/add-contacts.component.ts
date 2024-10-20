@@ -592,6 +592,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactOption = contactOption;
         if (this.termsAndConditionStatus) {
             $('#tcModal').modal('show');
+            this.referenceService.closeSweetAlert();
         } else {
             this.saveContactsWithPermission();
         }
@@ -892,17 +893,20 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             if (this.assignLeads) {
                                 this.contactListObject.publicList = true;
                             }
-
                             this.askForPermission('csvContacts');
-
                         } else {
+                            this.referenceService.closeSweetAlert();
+                            this.loading = false;
                             this.customResponse = new CustomResponse('ERROR', "please remove duplicate email id(s) " + "'" + this.duplicateEmailIds + "'", true);
                         }
                     } else {
+                        this.referenceService.closeSweetAlert();
                         this.loading = false;
                         this.customResponse = new CustomResponse('ERROR', "We found invalid email id(s) please remove... " + this.invalidPatternEmails, true);
                     }
                 } else {
+                    this.referenceService.closeSweetAlert();
+                    this.loading = false;
                     this.customResponse = new CustomResponse('ERROR', this.properties.contactsCsvHeadersMisMatchMessage, true);
                     this.xtremandLogger.error("AddContactComponent saveCsvContactList() Contacts Null Error");
                 }
@@ -912,14 +916,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     this.contactListNameError = true;
                 }
                 this.loading = false;
+                this.referenceService.closeSweetAlert();
                 this.xtremandLogger.error("AddContactComponent saveCsvContactList() ContactListName Error");
             }
         } catch (error) {
+            this.referenceService.closeSweetAlert();
             this.xtremandLogger.error(error, "addcontactComponent saveCSVContact()")
         }
     }
 
     saveCsvContactsWithPermission() {
+        this.referenceService.closeSweetAlert();
         this.userUserListWrapper.isUploadCsvOptionUsed = false;
         if (this.assignLeads) {
             this.setLegalBasisOptions(this.contacts);
@@ -1000,9 +1007,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if (this.selectedAddContactsOption == 0) {
                 this.saveContactList();
             }
-
             if (this.selectedAddContactsOption == 2) {
-                this.saveCsvContactList();
+                this.referenceService.showSweetAlertProcessingLoader("We are validating contact list");
+                setTimeout(() => {
+                    this.saveCsvContactList();
+                }, 500);
+                
             }
             if (this.selectedAddContactsOption == 3) {
                 if (this.allselectedUsers.length == 0) {
