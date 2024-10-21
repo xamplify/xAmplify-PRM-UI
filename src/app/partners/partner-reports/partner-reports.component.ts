@@ -89,6 +89,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isActivePartnerDiv = false;
     isRedistributePartnersDiv = false;
     isApprovePartnersDiv = false;
+    PendingSignupPartnersCount: number = 0;
+    companyProfileIncompletePartnersCount:number = 0;
+    PendingSignupAndCompanyProfilePartnersLoader= false;
+    isIncompleteCompanyProfileDiv = false;
+    isSingUpPendingDiv = false;
+    incompleteCompanyProfileAndPendingSingupPagination: Pagination = new Pagination();
+    companyProfileIncompletePartnersList :any= [];
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -265,6 +272,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     activePartnerSearch(keyCode: any) { if (keyCode === 13) { this.searchActivePartnerAnalytics(); } }
     inActivePartnersSearch(keyCode: any) { if (keyCode === 13) { this.searchInActivePartnerAnalytics(); } }
     searchPartnerCampaignKeyPress(keyCode: any, value: string) { if (keyCode === 13) { this.searchPartnerCampaigns(value); } }
+    inCompleteCompanyProfileSignupPendingPartnersSearch(keyCode: any) { if (keyCode === 13) { this.searchCompanyProfileIncompleteAndSignupPendingPartnerAnalytics(); } }
+
 
 
     goToActivePartnersDiv() {
@@ -280,6 +289,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isActivePartnerDiv = true;
         this.isRedistributePartnersDiv = false;
         this.isApprovePartnersDiv = false;
+        this.isIncompleteCompanyProfileDiv = false;
+
 
         this.getActivePartnerReports();
         this.loadCountryData();
@@ -304,6 +315,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isActivePartnerDiv = false;
         this.isRedistributePartnersDiv = false;
         this.isApprovePartnersDiv = false;
+        this.isIncompleteCompanyProfileDiv = false;
+
         
         this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
@@ -320,6 +333,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isActivePartnerDiv = false;
         this.isRedistributePartnersDiv = true;
         this.isApprovePartnersDiv = false;
+        this.isIncompleteCompanyProfileDiv = false;
 
     }
 
@@ -439,6 +453,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isActivePartnerDiv = false;
         this.isRedistributePartnersDiv = false;
         this.isApprovePartnersDiv = false;
+        this.isIncompleteCompanyProfileDiv = false;
 
         this.inActivePartnersPagination.pageIndex = 1;
         this.inActivePartnersPagination.maxResults = 12;
@@ -456,6 +471,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isActivePartnerDiv = false;
         this.isRedistributePartnersDiv = false;
         this.isApprovePartnersDiv = true;
+        this.isIncompleteCompanyProfileDiv = false;
 
         this.approvePartnersPagination.maxResults = 12;
         this.getApprovePartnerReports(this.approvePartnersPagination);
@@ -726,6 +742,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.findThroughCampaignsCount();
                 this.findInActivePartnersCount();
                 this.findApprovePartnersCount();
+                this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
             if(tabIndex != undefined){
                 if(tabIndex == 1){
                 this.goToInActivePartnersDiv()
@@ -921,6 +938,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     inActivePartnersCountLoader = false;
     findInActivePartnersCount() {
+
         this.inActivePartnersCountLoader = true;
         this.parterService.findInActivePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
             (data: any) => {
@@ -944,6 +962,20 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.xtremandLogger.error(error);
                 this.approvePartnersCountLoader = false;
+            });
+    }
+
+    findPendingSignupAndCompanyProfileIncompletePartnersCount() {
+        this.PendingSignupAndCompanyProfilePartnersLoader = true;
+        this.parterService.findPendingSignupAndCompanyProfilePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
+            (data: any) => {
+                this.PendingSignupPartnersCount = data.PendingSignupPartnersCount;
+                this.companyProfileIncompletePartnersCount = data.CompanyProfileIncompletePartnersCount;
+                this.PendingSignupAndCompanyProfilePartnersLoader = false;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.PendingSignupAndCompanyProfilePartnersLoader = false;
             });
     }
 
@@ -992,4 +1024,84 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.selectedCampaignType = "";
           } 
       }
+      
+    goToIncompleteCompanyProfilePartnersDiv() {
+        this.selectedTabIndex = 6;
+        this.sortOption = new SortOption();
+        this.httpRequestLoader = new HttpRequestLoader();
+        this.isThroughPartnerDiv = false;
+        this.isInactivePartnersDiv = false;
+        this.isActivePartnerDiv = false;
+        this.isRedistributePartnersDiv = false;
+        this.isApprovePartnersDiv = false;
+        this.isIncompleteCompanyProfileDiv = true;
+        this.isSingUpPendingDiv = false;
+        this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
+
+        this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
+        this.incompleteCompanyProfileAndPendingSingupPagination.maxResults = 12;
+        this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'PendingCompanyProfile';
+        this.incompleteCompanyProfileAndPendingSingupPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+        this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
+    }
+    goToSignupPendingPartnersDiv() {
+        this.selectedTabIndex = 7;
+        this.sortOption = new SortOption();
+        this.httpRequestLoader = new HttpRequestLoader();
+        this.isThroughPartnerDiv = false;
+        this.isInactivePartnersDiv = false;
+        this.isActivePartnerDiv = false;
+        this.isRedistributePartnersDiv = false;
+        this.isApprovePartnersDiv = false;
+        this.isIncompleteCompanyProfileDiv = false;
+        this.isSingUpPendingDiv = true;
+        this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
+
+        this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
+        this.incompleteCompanyProfileAndPendingSingupPagination.maxResults = 12;
+        this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'PendingSignup';
+        this.incompleteCompanyProfileAndPendingSingupPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+        this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
+    }
+    CompanyProfileIncompleteAndSignupPendingList(event) {
+        this.incompleteCompanyProfileAndPendingSingupPagination = event;
+        this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
+    }
+    setCompanyProfileIncompleteAndSignupPendingPartnesPage(event: any) {
+        try {
+            this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = event.page;
+            this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
+        } catch (error) {
+            this.referenseService.showError(error, "setincompleteCompanyProfileAndPendingSingupPaginationPartnesPage", "partner-reports.component.ts")
+        }
+    }
+    searchCompanyProfileIncompleteAndSignupPendingPartnerAnalytics() {
+        this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
+        this.incompleteCompanyProfileAndPendingSingupPagination.searchKey = this.inActivePartnersSearchKey;
+        this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
+    }
+    getCompanyProfileIncompleteAndSignupPendingReports(pagination: Pagination) {
+        this.referenseService.loading(this.httpRequestLoader, true);
+        pagination.userId = this.loggedInUserId;
+        if (this.authenticationService.isSuperAdmin()) {
+            pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
+        }
+        this.parterService.getCompanyProfileIncomplete(pagination).subscribe(
+            (response: any) => {
+                pagination.totalRecords = response.totalRecords;
+                if (response.list.length === 0) {
+                    this.customResponse = new CustomResponse('INFO', 'No records found', true);
+                }
+
+                for (var i in response.approvePartnerList) {
+                    response.list[i].contactCompany = response.list[i].partnerCompanyName;
+                }
+                pagination = this.pagerService.getPagedItems(pagination, response.list);
+                this.referenseService.loading(this.httpRequestLoader, false);
+            },
+            (error: any) => {
+                this.xtremandLogger.errorPage(error)
+            });
+    }
+
 }

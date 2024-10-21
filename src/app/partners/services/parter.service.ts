@@ -57,6 +57,12 @@ export class ParterService {
             .catch(this.handleError);
     }
 
+    getCompanyProfileIncomplete(pagination: Pagination) {
+        const url = this.URL + 'partner/companyProfileIncomplete-partners?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+
     partnerUserInteractionReports(userId: number, pagination: Pagination): Observable<any> {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/campaigns?access_token=' + this.authenticationService.access_token +
@@ -194,7 +200,9 @@ export class ParterService {
         return this.callApiForDashBoard("findApprovePartnersCount", userId, applyFilter);
     }
 
-
+    findPendingSignupAndCompanyProfilePartnersCount(userId: number, applyFilter: boolean) {
+        return this.callApiForDashBoard("findPendingSignupAndCompanyProfilePartnersCount", userId, applyFilter);
+    }
     callApiForDashBoard(urlPrefix: string, userId: number, applyFilter: boolean) {
         const url = this.URL + 'partner/' + urlPrefix + '?access_token=' + this.authenticationService.access_token +
             '&userId=' + userId + "&applyFilter=" + applyFilter;
