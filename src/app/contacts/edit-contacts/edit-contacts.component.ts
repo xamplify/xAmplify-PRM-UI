@@ -1050,7 +1050,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.userUserListWrapper.userList.id = this.contactListId;
 		/**XNFR-713*****/
 		this.userUserListWrapper.isUploadCsvOptionUsed = true;
-		this.userUserListWrapper.isContactsModule = true;
+		this.userUserListWrapper.isContactsModule = this.isContactModule();
 		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				data => {
