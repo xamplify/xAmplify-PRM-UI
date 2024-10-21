@@ -322,7 +322,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.contactsSchedulerUrl + "/save-as-share-leads/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + "/save-as-share-leads/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this._http.post(url, options, requestoptions)
             .map((response: any) => response.json())
             .catch(this.handleError);
