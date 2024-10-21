@@ -66,6 +66,118 @@
               </a>
             </div>
 
+            <!--InActive Partner Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
+            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth"
+              (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''">
+              <a [className]="inActivePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft' : 'dashboard-stat dashboard-stat-lighter blue-soft disable-tile-pj'"
+                [class.greay]="1!=selectedTabIndex">
+                <div class="visual">
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                    [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 1"
+                    aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{inActivePartnersCount}}</div>
+                  <div class="desc" data-toggle="tooltip" data-placement="top"
+                    title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
+                    Inactive
+                    {{authenticationService?.partnerModule?.customName | slice:0:10}}
+                    <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
+                  </div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a [className]="inActivePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
+                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''"> Detailed view
+                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                </span>
+              </a>
+            </div>
+
+            <!--companyProfileIncomplete Count-->
+            <app-box-loader [countLoader]=5 *ngIf="PendingSignupAndCompanyProfilePartnersLoader"></app-box-loader>
+            <div *ngIf="!PendingSignupAndCompanyProfilePartnersLoader"
+              class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
+              <a [className]="companyProfileIncompletePartnersCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
+                [class.greay]="6!=selectedTabIndex"
+                (click)="companyProfileIncompletePartnersCount>0 ?  goToIncompleteCompanyProfilePartnersDiv() : ''">
+                <div class="visual">
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                    [ngStyle]="{'color': 6===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 6"
+                    aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{companyProfileIncompletePartnersCount}}</div>
+                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top"
+                    title=" Company Profile Incomplete">
+                    Company Profile Incomplete
+                  </div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a [className]="companyProfileIncompletePartnersCount > 0 ? 'more' : 'more disable-tile-pj' "
+                    (click)="companyProfileIncompletePartnersCount > 0 ?  goToIncompleteCompanyProfilePartnersDiv() : ''"> Detailed
+                    view
+                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                </span>
+              </a>
+            </div>
+                    <!--PendingSignup Count-->
+                    <app-box-loader [countLoader]=5 *ngIf="PendingSignupAndCompanyProfilePartnersLoader"></app-box-loader>
+                    <div *ngIf="!PendingSignupAndCompanyProfilePartnersLoader"
+                      class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth"
+                      (click)="PendingSignupPartnersCount>0 ? goToSignupPendingPartnersDiv() : ''">
+                      <a [className]="PendingSignupPartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter red-soft' : 'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
+                        [class.greay]="7!=selectedTabIndex">
+                        <div class="visual">
+                          <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                            [ngStyle]="{'color': 7===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 7"
+                            aria-hidden="true"></i>
+                        </div>
+                        <div class="details">
+                          <div class="number">{{PendingSignupPartnersCount}}</div>
+                          <div class="desc" data-toggle="tooltip" data-placement="top"
+                            title="Signup {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Signup
+                            {{authenticationService?.partnerModule?.customName | slice:0:10}}
+                            <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
+                          </div>
+                        </div>
+                        <span id="permhref" class="morePadding">
+                          <a [className]="PendingSignupPartnersCount>0 ? 'more' : 'more disable-tile-pj'"
+                            (click)="PendingSignupPartnersCount>0 ?  goToSignupPendingPartnersDiv() : ''"> Detailed view
+                            <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                        </span>
+                      </a>
+                    </div>
+
+                    <!--Through Partner Campaigns Count-->
+                    <app-box-loader [countLoader]=5
+                      *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
+                    <div
+                      *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+                      class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
+                      <a [className]="throughPartnerCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
+                        [class.greay]="3!=selectedTabIndex" (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
+                        <div class="visual">
+                          <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                            [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
+                            aria-hidden="true"></i>
+                        </div>
+                        <div class="details">
+                          <div class="number">{{throughPartnerCampaignsCount}}</div>
+                          <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top"
+                            title="{{throughPartnerCampaignsTabName}}">
+                            {{throughPartnerCampaignsTabName | slice:0:20}}
+                            <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
+                          </div>
+                        </div>
+                        <span id="permhref" class="morePadding">
+                          <a [className]="throughPartnerCampaignsCount > 0 ? 'more' : 'more disable-tile-pj' "
+                            (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''"> Detailed view
+                            <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                        </span>
+                      </a>
+                    </div>
+
             <!--Redistributed Campaigns Count-->
             <app-box-loader [countLoader]=5
               *ngIf="redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
@@ -96,65 +208,6 @@
               </a>
             </div>
 
-            <!--Through Partner Campaigns Count-->
-            <app-box-loader [countLoader]=5
-              *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
-            <div
-              *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
-              class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
-              <a [className]="throughPartnerCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
-                [class.greay]="3!=selectedTabIndex"
-                (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                    [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
-                    aria-hidden="true"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top"
-                    title="{{throughPartnerCampaignsTabName}}">
-                    {{throughPartnerCampaignsTabName | slice:0:20}}
-                    <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
-                  </div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a [className]="throughPartnerCampaignsCount > 0 ? 'more' : 'more disable-tile-pj' "
-                    (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
-            </div>
-
-            <!--InActive Partner Campaigns Count-->
-            <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!inActivePartnersCountLoader"
-              class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth"
-              (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''">
-              <a [className]="inActivePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft' : 'dashboard-stat dashboard-stat-lighter blue-soft disable-tile-pj'"
-                [class.greay]="1!=selectedTabIndex">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                    [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 1"
-                    aria-hidden="true"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc" data-toggle="tooltip" data-placement="top"
-                    title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
-                    Inactive
-                    {{authenticationService?.partnerModule?.customName | slice:0:10}}
-                    <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
-                  </div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a [className]="inActivePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
-            </div>
-
             <!--Active Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
             <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth"
@@ -181,63 +234,6 @@
                 </span>
               </a>
             </div>
-
-            <app-box-loader [countLoader]=5 *ngIf="PendingSignupAndCompanyProfilePartnersLoader"></app-box-loader>
-            <div *ngIf="!PendingSignupAndCompanyProfilePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth"
-              (click)="PendingSignupPartnersCount>0 ? goToSignupPendingPartnersDiv() : ''">
-              <a [className]="PendingSignupPartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter red-soft' : 'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
-                [class.greay]="7!=selectedTabIndex">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                    [ngStyle]="{'color': 7===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 7"
-                    aria-hidden="true"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{PendingSignupPartnersCount}}</div>
-                  <div class="desc" data-toggle="tooltip" data-placement="top"
-                    title="Pending Signup {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Pending Signup
-                    {{authenticationService?.partnerModule?.customName | slice:0:10}}
-                    <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
-                  </div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a [className]="PendingSignupPartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="PendingSignupPartnersCount>0 ?  goToSignupPendingPartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
-            </div>
-
-            <app-box-loader [countLoader]=5
-              *ngIf="PendingSignupAndCompanyProfilePartnersLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
-            <div
-              *ngIf="!PendingSignupAndCompanyProfilePartnersLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
-              class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
-              <a [className]="companyProfileIncompletePartnersCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
-                [class.greay]="6!=selectedTabIndex"
-                (click)="companyProfileIncompletePartnersCount>0 ?  goToIncompleteCompanyProfilePartnersDiv() : ''">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                    [ngStyle]="{'color': 6===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 6"
-                    aria-hidden="true"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{companyProfileIncompletePartnersCount}}</div>
-                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top"
-                    title=" Company Profile Incomplete">
-                    Company Profile Incomplete
-                    <!-- <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span> -->
-                  </div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a [className]="companyProfileIncompletePartnersCount > 0 ? 'more' : 'more disable-tile-pj' "
-                    (click)="companyProfileIncompletePartnersCount > 0 ?  goToIncompleteCompanyProfilePartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
-            </div>
-
-
           </div>
         </div>
       </div>
@@ -768,6 +764,7 @@
     </div>
   </div>
 
+
   <div *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv ">
     <div class="row">
       <div class="">
@@ -775,7 +772,7 @@
           <div class="portlet-title">
             <div class="caption">
               <span class="caption-subject font-red-sunglo uppercase">
-                {{ isSingUpPendingDiv ? 'SignUp Pending' : 'Incomplete Company Profile' }}
+                {{ isSingUpPendingDiv ? 'SignUp' : 'Incomplete Company Profile' }}
                 {{ authenticationService?.partnerModule?.customName }}s </span>
             </div>
             <div class="inputs" style="float: right">
@@ -819,7 +816,7 @@
                       <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                       <h4 *ngIf="!item.time"><strong>-</strong></h4>
                     </td>
-                    <td class="mAlign" (click)="sendPartnerReminder(item)">
+                    <td class="mAlign" (click)="sendmail(item)">
                       <div class="actions-block float-none">
                         <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
                           <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>

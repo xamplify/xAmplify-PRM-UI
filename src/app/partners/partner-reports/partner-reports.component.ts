@@ -290,6 +290,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isRedistributePartnersDiv = false;
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
+        this.isSingUpPendingDiv = false;
 
 
         this.getActivePartnerReports();
@@ -316,6 +317,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isRedistributePartnersDiv = false;
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
+        this.isSingUpPendingDiv = false;
 
         
         this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
@@ -334,6 +336,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isRedistributePartnersDiv = true;
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
+        this.isSingUpPendingDiv = false;
 
     }
 
@@ -454,6 +457,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isRedistributePartnersDiv = false;
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
+        this.isSingUpPendingDiv = false;
+        this.inActivePartnersSearchKey = "";
 
         this.inActivePartnersPagination.pageIndex = 1;
         this.inActivePartnersPagination.maxResults = 12;
@@ -472,6 +477,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isRedistributePartnersDiv = false;
         this.isApprovePartnersDiv = true;
         this.isIncompleteCompanyProfileDiv = false;
+        this.isSingUpPendingDiv = false;
 
         this.approvePartnersPagination.maxResults = 12;
         this.getApprovePartnerReports(this.approvePartnersPagination);
@@ -519,6 +525,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.inactivePartnerList);
                 this.referenseService.loading(this.httpRequestLoader, false);
+                this.inActivePartnersPagination.searchKey = "";
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
@@ -854,6 +861,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.inActivePartnersCountLoader = true;
         this.approvePartnersCountLoader = true;
         this.throughPartnerCampaignsCountLoader = true;
+        this.PendingSignupAndCompanyProfilePartnersLoader = true;
         this.selectedPartnerCompanyIds = [];
         if(this.selectedTabIndex==0){
             this.loadAllCharts = true;
@@ -868,6 +876,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         self.findThroughCampaignsCount();
         self.findInActivePartnersCount();
         self.findApprovePartnersCount();
+        self.findPendingSignupAndCompanyProfileIncompletePartnersCount();
         if(self.selectedTabIndex==0){
             self.reloadWithFilter = true;
             self.getPartnersRedistributedCampaignsData();
@@ -966,6 +975,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
     findPendingSignupAndCompanyProfileIncompletePartnersCount() {
+        if(!this.authenticationService.isTeamMember()){
+            this.applyFilter = false;
+        }
         this.PendingSignupAndCompanyProfilePartnersLoader = true;
         this.parterService.findPendingSignupAndCompanyProfilePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
             (data: any) => {
@@ -1024,7 +1036,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.selectedCampaignType = "";
           } 
       }
-      
+
     goToIncompleteCompanyProfilePartnersDiv() {
         this.selectedTabIndex = 6;
         this.sortOption = new SortOption();
@@ -1036,6 +1048,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = true;
         this.isSingUpPendingDiv = false;
+        this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
 
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
@@ -1055,11 +1068,15 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = true;
+        this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
+        if(!this.authenticationService.isTeamMember()){
+            this.applyFilter = false;
+        }
 
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
         this.incompleteCompanyProfileAndPendingSingupPagination.maxResults = 12;
-        this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'PendingSignup';
+        this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'pSignUp';
         this.incompleteCompanyProfileAndPendingSingupPagination.partnerTeamMemberGroupFilter = this.applyFilter;
         this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
     }
@@ -1098,10 +1115,41 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.list);
                 this.referenseService.loading(this.httpRequestLoader, false);
+                this.incompleteCompanyProfileAndPendingSingupPagination.searchKey = "";
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
             });
+    }
+
+    sendmail(item: any) {
+        this.pagination.partnerId = item.partnerId
+        this.pagination.userId = this.authenticationService.getUserId();
+        this.pagination.vanityUrlFilter = this.authenticationService.vanityURLEnabled;
+        this.referenseService.loading(this.httpRequestLoader, true);
+        this.parterService.mailSend(this.pagination).subscribe(
+            data => {
+                if (data.access) {
+                    this.referenseService.loading(this.httpRequestLoader, false);
+                    if (data.statusCode == 200) {
+                        this.customResponse = new CustomResponse('SUCCESS', 'Email sent successfully.', true);
+                    } else if (data.statusCode == 400) {
+                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                    }
+                    this.referenseService.goToTop();
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            },
+            (error: any) => {
+                this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
+                this.xtremandLogger.error(error);
+                this.referenseService.loading(this.httpRequestLoader, false);
+            },
+            () => this.xtremandLogger.log(" Partner-reports component Mail send method successfull")
+        );
+    } catch(error) {
+        this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
 
 }
