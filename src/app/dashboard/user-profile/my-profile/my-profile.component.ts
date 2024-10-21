@@ -5001,4 +5001,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		)
 	}
+
+	isLocalHostDev() {
+        let allowedEmailIds = ['clakshman@stratapps.com'];
+        let userName = this.authenticationService.getUserName();
+        return this.authenticationService.isLocalHost() && allowedEmailIds.indexOf(userName) > -1;
+    }
 }

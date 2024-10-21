@@ -3000,7 +3000,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	isLocalHost() {
-		return this.authenticationService.isLocalHost();
+		let allowedEmailIds = ['clakshman@stratapps.com'];
+		let userName = this.authenticationService.getUserName();
+		return this.authenticationService.isLocalHost() && allowedEmailIds.indexOf(userName) > -1;
 	}
 
 }
