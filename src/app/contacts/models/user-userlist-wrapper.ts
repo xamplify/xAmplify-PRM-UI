@@ -5,4 +5,5 @@ export class UserUserListWrapper {
     users: User[];
     userList: ContactList;
     isUploadCsvOptionUsed = false;
+    isContactsModule = false;
 }

@@ -330,7 +330,7 @@ export class ContactService {
 
     updateContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
         /**XNFR-713***/
-        if(this.envService.isContactsVersion2ApiEnabled && userUserListWrapper.isUploadCsvOptionUsed){
+        if(this.envService.isContactsVersion2ApiEnabled && userUserListWrapper.isUploadCsvOptionUsed && userUserListWrapper.isContactsModule){
             this.logger.info("Contacts V2 Api Executed");
             let contactsRequestDto = new ContactsRequestDto();
             let userList = userUserListWrapper.userList;

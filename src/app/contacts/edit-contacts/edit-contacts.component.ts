@@ -1039,6 +1039,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	updateListFromCsvWithPermission() {
 		/**XNFR-713*****/
 		this.userUserListWrapper.isUploadCsvOptionUsed = false;
+		this.userUserListWrapper.isContactsModule = false;
+
 		this.loading = true;
 		if (this.selectedLegalBasisOptions != undefined && this.selectedLegalBasisOptions.length > 0) {
 			this.setLegalBasisOptions(this.users);
@@ -1048,6 +1050,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.userUserListWrapper.userList.id = this.contactListId;
 		/**XNFR-713*****/
 		this.userUserListWrapper.isUploadCsvOptionUsed = true;
+		this.userUserListWrapper.isContactsModule = true;
 		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				data => {
