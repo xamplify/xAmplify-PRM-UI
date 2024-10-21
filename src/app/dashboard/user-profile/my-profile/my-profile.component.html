@@ -547,7 +547,7 @@
                                             </a>
                                         </li>
                                         <!--XNFR-679 Flexi Fields-->
-                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact && (authenticationService?.isLocalHost() || authenticationService?.isQADomain())"
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact && authenticationService?.isLocalHost()"
                                             [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
                                                 (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader}}
