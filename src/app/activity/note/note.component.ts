@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
@@ -19,6 +19,9 @@ export class NoteComponent implements OnInit {
 
 
   @Input() contactId:number;
+  @Input() reloadTab: boolean;
+  @Output() notifySuccess = new EventEmitter();
+  @Output() notifyDeleteSuccess = new EventEmitter();
  
   loggedInUserId: number;
   notePagination: Pagination = new Pagination();
@@ -28,16 +31,23 @@ export class NoteComponent implements OnInit {
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   noteSortOption: SortOption = new SortOption();
   totalRecords: any;
+  showNoteModalPopup: boolean = false;
+  note: any;
+  ngxLoading:boolean = false;
 
   constructor(public noteService: NoteService, public authenticationService: AuthenticationService,
-    public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) { }
+    public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {
+      this.loggedInUserId = this.authenticationService.getUserId();
+     }
 
 
   ngOnInit() {
-    this.loggedInUserId = this.authenticationService.getUserId();
     this.showAllNoteActivities();
   }
 
+  ngOnChanges() {
+    this.showAllNoteActivities();
+  }
 
   showAllNoteActivities() {
     this.resetNoteActivityPagination();
@@ -96,6 +106,35 @@ export class NoteComponent implements OnInit {
   setnotePage(event: any){
     this.notePagination.pageIndex = event.page;
     this.fetchAllNoteActivities(this.notePagination);
+  }
+
+  showEditNoteTab(note:any) {
+    this.note = note;
+    this.showNoteModalPopup = true;
+  }
+
+  closeNoteModalPopup() {
+    this.showNoteModalPopup = false;
+  }
+
+  showNoteCutomResponse(event) {
+    this.showNoteModalPopup = false;
+    this.notifySuccess.emit(event);
+  }
+
+  deleteNote(note:any) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.noteService.deleteNote(note.id, this.loggedInUserId).subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          this.showAllNoteActivities();
+          this.notifyDeleteSuccess.emit(data.message);
+        }
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }, error => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    )
   }
 
 }

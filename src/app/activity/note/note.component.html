@@ -27,10 +27,9 @@
     </div>
   </div>
 </div>
-
+<app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
 <div *ngIf="notePagination?.totalRecords>0 && !httpRequestLoader?.isLoading">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <div class="activity_card mb10" *ngFor="let note of notePagination?.pagedItems">
     <div class="activity-header">
@@ -38,7 +37,7 @@
       <span class="activity-date"><i class="fa fa-clock icon"></i>{{note.createdTime}}</span>
     </div>
     <div class="activity-header" *ngIf="note.visibility == 'PUBLIC'">
-      <span class="activity-date"><i class="fa fa-edit icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
+      <span class="activity-date"><i class="fa fa-user icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
     </div>
     <div class="activity-body">
       <i class="fa fa-comment icon"></i>{{note.content}}
@@ -47,7 +46,8 @@
       <i class="fa fa-comment icon"></i>{{note.visibility}}
     </div>
     <div class="activity-footer">
-      <a ><span>edit</span></a>
+      <a (click)="showEditNoteTab(note)"><span>edit</span></a>
+      <a (click)="deleteNote(note)"><span>delete</span></a>
     </div>
   </div>
   <!-- --------------------Pagination0-------------------- -->
@@ -60,3 +60,5 @@
   <strong translate>No Data Found.</strong>
 </div>
 
+<app-add-note-modal-popup *ngIf="showNoteModalPopup" [editNote]="note" [isReloadTab]="reloadTab" [actionType]="'edit'"
+  (notifyClose)="closeNoteModalPopup()" (notifySuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>

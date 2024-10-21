@@ -34,7 +34,7 @@
       <app-response-message [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible"></app-response-message>
       <div class="portlet-title">
         <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
-          <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
+          <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 pull-right m_mb8">
             <div class="search-and-filter">
               <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled"
                 (click)="addDeal()">

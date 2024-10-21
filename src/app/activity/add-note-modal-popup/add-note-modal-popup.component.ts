@@ -18,6 +18,8 @@ export class AddNoteModalPopupComponent implements OnInit {
 
   @Input() selectedContact: any;
   @Input() actionType: any;
+  @Input() editNote:NoteDTO;
+  @Input() isReloadTab:boolean;
   @Output() notifySuccess= new EventEmitter();
   @Output() notifyClose= new EventEmitter();
 
@@ -25,6 +27,9 @@ export class AddNoteModalPopupComponent implements OnInit {
   note: NoteDTO = new NoteDTO();
   loggedInUserId: number;
   customResponse: CustomResponse = new CustomResponse();
+  publicNotes: boolean = false;
+  ngxLoading:boolean = false;
+  edit: boolean = false;
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public noteService: NoteService, public callActionSwitch: CallActionSwitch) {
@@ -32,10 +37,13 @@ export class AddNoteModalPopupComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.note.loggedInUserId = this.loggedInUserId;
     this.callActionSwitch.size = 'normal';
-    this.note.publicNotes = false;
     this.referenceService.openModalPopup('addNoteModalPopup');
+    if (this.actionType == 'edit') {
+      this.edit = true;
+      this.note = this.editNote;
+      this.publicNotes = this.editNote.visibility == 'PUBLIC';
+    }
   }
 
   closeNoteModalPopup(){
@@ -44,9 +52,11 @@ export class AddNoteModalPopupComponent implements OnInit {
   }
 
   save() {
+    this.ngxLoading = true;
     this.note.associationType = 'CONTACT';
     this.note.contactId = this.selectedContact.id;
-    if (this.note.publicNotes) {
+    this.note.loggedInUserId = this.loggedInUserId;
+    if (this.publicNotes) {
       this.note.visibility = 'PUBLIC';
     } else {
       this.note.visibility = 'PRIVATE';
@@ -58,16 +68,40 @@ export class AddNoteModalPopupComponent implements OnInit {
         let data = response.data;
         if (statusCode == 200) {
           this.closeNoteModalPopup();
-          this.notifySuccess.emit();
+          this.notifySuccess.emit(!this.isReloadTab);
         } else {
           this.closeNoteModalPopup();
         }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
       }
     );
    }
 
    publicVsPrivateNoteStatusChange(event: any) {
     this.note.publicNotes = event;
+   }
+
+   updateNote() {
+    this.ngxLoading = true;
+    if (this.publicNotes) {
+      this.note.visibility = 'PUBLIC';
+    } else {
+      this.note.visibility = 'PRIVATE';
+    }
+    this.note.loggedInUserId = this.loggedInUserId;
+    this.noteService.updateNote(this.note).subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          this.closeNoteModalPopup();
+          this.notifySuccess.emit(!this.isReloadTab);
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
    }
    
 }

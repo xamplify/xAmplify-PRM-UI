@@ -18,6 +18,7 @@ import { UtilService } from 'app/core/services/util.service';
 export class EmailActivityComponent implements OnInit {
 
   @Input() contactId:number;
+  @Input() reloadTab: boolean;
 
   emailActivities = [];
   emailActivityId: number = 0;
@@ -33,10 +34,15 @@ export class EmailActivityComponent implements OnInit {
   emailSortOption: SortOption = new SortOption();
 
   constructor(public emailActivityService: EmailActivityService, public authenticationService: AuthenticationService,
-    public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) { }
+    public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {
+      this.loggedInUserId = this.authenticationService.getUserId();
+     }
 
   ngOnInit() {
-    this.loggedInUserId = this.authenticationService.getUserId();
+    this.showAllEmailActivities();
+  }
+
+  ngOnChanges() {
     this.showAllEmailActivities();
   }
 

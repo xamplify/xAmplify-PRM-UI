@@ -90,6 +90,8 @@ export class ContactDetailsComponent implements OnInit {
 
   /** note **/
   showAddNoteModalPopup:boolean = false;
+  isReloadEmailActivityTab:boolean;
+  isReloadNoteTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -117,6 +119,7 @@ export class ContactDetailsComponent implements OnInit {
       this.isFromCompanyModule = true;
     }
     this.getContact();
+    this.showActivityTab = true;
     this.referenceService.goToTop();
     this.checkTermsAndConditionStatus();
     this.getLegalBasisOptions();
@@ -334,10 +337,9 @@ export class ContactDetailsComponent implements OnInit {
     this.showEmailModalPopup = true;
   }
 
-  showSubmitSuccessStatus(event) {
-    this.showEmailTab = false;
-    this.showActivityTab = true;
-    this.customResponse = new CustomResponse('SUCCESS', event, true);
+  showEmailSubmitSuccessStatus(event) {
+    this.isReloadEmailActivityTab = event;
+    this.customResponse = new CustomResponse('SUCCESS', 'Email send successfully.', true);
     this.closeModalPopup();
   }
 
@@ -450,14 +452,23 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   showNoteCutomResponse(event: any) {
-    this.showNotesTab = false;
-    this.showActivityTab = true;
+    this.isReloadNoteTab = event;
     this.customResponse = new CustomResponse('SUCCESS', 'Note Submitted Successfully', true);
+    this.closeAddNoteModalPopup();
+  }
+
+  showNoteUpdateCutomResponse(event: any) {
+    this.isReloadNoteTab = event;
+    this.customResponse = new CustomResponse('SUCCESS', 'Note Updated Successfully', true);
     this.closeAddNoteModalPopup();
   }
   
   closeAddNoteModalPopup() {
     this.showAddNoteModalPopup = false;
+  }
+
+  showNoteDeleteSuccessStatus(event) {
+    this.customResponse = new CustomResponse('SUCCESS', event, true);
   }
   
 }

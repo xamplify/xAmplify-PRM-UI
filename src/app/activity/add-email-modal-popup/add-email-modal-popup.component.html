@@ -1,12 +1,12 @@
 <div class="modal fade right" id="addEmailModalPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   data-backdrop="static" data-keyboard="false">
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="modal-content">
       <div class="modal-header">
         <a class="close-circle" (click)="closeEmailModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
-        <h4 class="modal-title left" id="myModalLabel">Send Email</h4>
+        <h4 class="modal-title left" id="myModalLabel">{{ isPreview ? 'View':'Send'}} Email</h4>
       </div>
       <div class="modal-body">
         <div *ngIf="!isValidationMessage">
@@ -31,8 +31,9 @@
           </div>
           <div class="form-group">
             <label for="subjectLine">Message <span class="text-danger">*</span></label>
-            <ckeditor name="body" [(ngModel)]="emailActivity.body" (change)="validateEmail()"
+            <ckeditor *ngIf="!isPreview" name="body" [(ngModel)]="emailActivity.body" (change)="validateEmail()"
             [ngModelOptions]="{standalone: true}" [config]="{ readOnly: isPreview }"></ckeditor>
+            <div class="email-body" *ngIf="isPreview" [innerHTML]="emailActivity.body"></div>
           </div>
         </div>
         <div *ngIf="isValidationMessage">
@@ -53,7 +54,7 @@
       </div>
       <div class="modal-footer" style="border: none" *ngIf="!isValidationMessage">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Cancel</button>
-        <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="!isValidEmail && ngxLoading"
+        <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="!isValidEmail"
           (click)="sendEmailToUser()"><span class="btn Btn-Green transition txt_pd-top3">Send</span></button>
       </div>
     </div>

@@ -18,6 +18,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   @Input() actionType:string;
   @Input() userEmailId:string;
   @Input() emailActivityId:number;
+  @Input() isReloadEmailActivityTab:boolean;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
 
@@ -28,7 +29,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   isPreview:boolean = false;
   ngxLoading:boolean = false;
   loggedInUserId: number;
-  isValidEmail: boolean;
+  isValidEmail: boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService) {
@@ -57,7 +58,7 @@ export class AddEmailModalPopupComponent implements OnInit {
       data => {
         this.ngxLoading = false;
         $('#addEmailModalPopup').modal('hide');
-        this.notifySubmitSuccess.emit(data.message);
+        this.notifySubmitSuccess.emit(!this.isReloadEmailActivityTab);
       }, error => {
         this.ngxLoading = false;
         this.closeEmailModal();
@@ -90,7 +91,6 @@ export class AddEmailModalPopupComponent implements OnInit {
         }
         this.ngxLoading = false;
       }, error => {
-        
         this.ngxLoading = false;
       }
     )

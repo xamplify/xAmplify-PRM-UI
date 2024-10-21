@@ -212,10 +212,11 @@
                   <!-- end -->
                 </div>
                 <div *ngIf="showNotesTab" id="note1" class="tab-pane fade pt-top">
-                  <app-note [contactId]="contactId"></app-note>
+                  <app-note [contactId]="contactId" [reloadTab]="isReloadNoteTab" (notifySuccess)="showNoteUpdateCutomResponse($event)"
+                    (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-note>
                 </div>
                 <div *ngIf="showEmailTab" id="email1" class="tab-pane fade pt-top">
-                  <app-email-activity [contactId]="contactId"></app-email-activity>
+                  <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab"></app-email-activity>
                 </div>
                 <div *ngIf="showFormsTab" id="form1" class="tab-pane fade pt-top">
                   dcsddcscde
@@ -325,8 +326,8 @@
 </div>
 
 <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
-  [userEmailId]="selectedContact.emailId" [emailActivityId]="emailActivityId" (notifySubmitSuccess)="showSubmitSuccessStatus($event)"
-  (notifyClose)="closeModalPopup()"></app-add-email-modal-popup>
+  [userEmailId]="selectedContact.emailId" [emailActivityId]="emailActivityId" (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"
+  (notifyClose)="closeModalPopup()" [isReloadEmailActivityTab]="isReloadEmailActivityTab"></app-add-email-modal-popup>
 
 <app-custom-manage-leads *ngIf="viewLeads" [listView]="true" [isConvertingContactToLead]="true" [isFromCompanyModule]="isFromCompanyModule"
   [selectedContact]="selectedContact" (notifyClose)="closeViewMoreLeadsTab()"></app-custom-manage-leads>

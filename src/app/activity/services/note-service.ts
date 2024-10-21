@@ -29,5 +29,15 @@ export class NoteService{
         let url = this.URL + "/fetch-all-notes/" + notePagination.userId + "/" + notePagination.contactId + this.ACCESS_TOKEN_URL + pageableUrl;
         return this.authenticationService.callGetMethod(url);
     }
+
+    updateNote(note:NoteDTO) {
+        let url = this.URL + '/' + note.id + this.ACCESS_TOKEN_URL;
+        return this.authenticationService.callPutMethod(url, note);
+    }
+
+    deleteNote(noteId:number, loggedInUserId:number) {
+        let url = this.URL + '/delete/' + noteId + '/loggedInUserId/' + loggedInUserId + this.ACCESS_TOKEN_URL;
+        return this.authenticationService.callDeleteMethod(url);
+    }
     
 }
