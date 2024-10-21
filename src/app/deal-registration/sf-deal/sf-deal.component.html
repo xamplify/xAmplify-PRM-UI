@@ -356,7 +356,15 @@
           </ng-container>
         </div>
       </ng-container>
-
+      
+      <!-- ---------------------------Percentage----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='percent'">
+        <input type="text" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}"
+          [(ngModel)]="columnInfo.value" (input)="validateField(columnInfo)" (keypress)="numberOnly($event)"
+          maxlength="{{columnInfo.labelLength}}" [disabled]="isVendor || isPreview">
+        <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
+      </ng-container>
+      
       <!-- ---------------------------Check Box----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='checkbox'">
         <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">

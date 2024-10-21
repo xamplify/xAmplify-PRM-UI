@@ -61,4 +61,5 @@ export class ColumnInfo {
     isDropDownLoading: boolean = false;
     //XNFR-710
     selectedChoiceValue: any;
+    formLabelDefaultFieldType : any;
 }

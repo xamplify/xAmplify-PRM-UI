@@ -863,6 +863,11 @@ export class SfDealComponent implements OnInit {
               columnInfo.hideFieldInfo = true;
             }
           }
+
+          if (columnInfo.formLabelDefaultFieldType === "LEAD_ID" || columnInfo.formLabelDefaultFieldType === "DEAL_ID") {
+            columnInfo.hideFieldInfo = true;
+          }
+
         });
       }
     }, error => {
