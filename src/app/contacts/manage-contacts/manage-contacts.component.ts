@@ -2978,14 +2978,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	/***** XNFR-671 *****/
 	findFlexiFieldsData() {
-		this.loading = true;
-		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-			this.flexiFieldsRequestAndResponseDto = data;
-			this.loading = false;
-		}, (error: any) => {
-			this.referenceService.showSweetAlertServerErrorMessage();
-			this.loading = false;
-		});
+		if (this.isLocalHost()) {
+			this.loading = true;
+			this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+				this.flexiFieldsRequestAndResponseDto = data;
+				this.loading = false;
+			}, (error: any) => {
+				this.referenceService.showSweetAlertServerErrorMessage();
+				this.loading = false;
+			});
+		}
 	}
 
 	isContactsByTypeAllVaildUnsubscribed() {
@@ -2995,6 +2997,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	isContactModule() {
 		return (this.module == 'contacts');
+	}
+
+	isLocalHost() {
+		return this.authenticationService.isLocalHost();
 	}
 
 }

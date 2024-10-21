@@ -457,7 +457,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					let csvRecordsArray = csvData.split(/\r|\n/);
 					let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
 					let headers = headersRow[0].split(',');
-					self.isUploadCsvOptionEnabled = self.isContactModule() && (self.isLocalHost() || self.isQADomain());
+					self.isUploadCsvOptionEnabled = self.isContactModule() && self.isLocalHost();
 					self.isXamplifyCsvFormatUploaded = !self.isPartner && headers.length == 11 && self.validateContactsCsvHeaders(headers);
 					if (self.isXamplifyCsvFormatUploaded && !self.isUploadCsvOptionEnabled) {
 						var csvResult = Papa.parse(contents);
@@ -1449,7 +1449,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.updateContactList(this.contactListId);
 		}
 		if (this.selectedAddContactsOption == 2) {
-			if (this.isContactModule() && (this.isLocalHost() || this.isQADomain())) {
+			if (this.isContactModule() && this.isLocalHost()) {
 				this.customCsvMapping.saveCustomUploadCsvContactList();
 			} else {
 				this.updateCsvContactList(this.contactListId);
@@ -2433,7 +2433,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		if (this.isPartner) {
 			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
-		} else if (this.isContactModule()) {
+		} else if (this.isContactModule() && this.isLocalHost()) {
 			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-contact-csv/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
 		} else {
 			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST_EMPTY.csv";
@@ -3589,19 +3589,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***** XNFR-671 *****/
 	findFlexiFieldsData() {
-		this.loading = true;
-		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-			this.loading = false;
-			this.flexiFieldsRequestAndResponseDto = data;
-		}, (error: any) => {
-			this.refService.showSweetAlertServerErrorMessage();
-			this.loading = false;
-		});
+		if (this.isLocalHost()) {
+			this.loading = true;
+			this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+				this.loading = false;
+				this.flexiFieldsRequestAndResponseDto = data;
+			}, (error: any) => {
+				this.refService.showSweetAlertServerErrorMessage();
+				this.loading = false;
+			});
+		}
 	}
 
 	/***** XNFR-680 *****/
 	private mapFlexiFieldsForEditContact(contactDetails: any) {
-		if (this.isContactModule()) {
+		if (this.isContactModule() && this.isLocalHost()) {
 			this.resetCustomUploadCsvFields();
 			if (contactDetails.flexiFields.length > 0) {
 				contactDetails.flexiFields.forEach((flexiField) => {
@@ -3618,7 +3620,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***** XNFR-671 *****/
 	private resetCustomUploadCsvFields() {
-		this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+		if (this.isLocalHost()) {
+			this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+		}
 		this.isUploadCsvOptionEnabled = false;
 		this.isXamplifyCsvFormatUploaded = false;
 		this.csvRows = [];
@@ -3705,10 +3709,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/***** XNFR-718 *****/
 	csvCustomResponse() {
 		this.customResponse = new CustomResponse('ERROR', "We couldn't find any valid email id(s) in the records. Please ensure that the email id(s) are correctly formatted and try again.", true);
-	}
-
-	isQADomain() {
-		return this.authenticationService.isQADomain();
 	}
 
 	isLocalHost() {
