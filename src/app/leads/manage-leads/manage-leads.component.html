@@ -400,7 +400,7 @@
                             </td>
                             <td>
                               <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
-                                title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
+                                title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:20}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
                               <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"
