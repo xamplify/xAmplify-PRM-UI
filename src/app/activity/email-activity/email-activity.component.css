@@ -20,12 +20,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 9px;
+    margin-top: 8px;
     color: #555;
   } 
   .activity-footer {
     text-align: right;
-    margin-top: 8px;
+    margin: 5px 0px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+
   }
   .activity-footer a {
     color: #578ebe;
@@ -34,7 +38,7 @@
     text-transform: capitalize;
   }
   .icon {
-   font-size: 14px;
+   font-size: 13px;
     margin-right: 4px;
   }
   .alert {
@@ -44,9 +48,9 @@
     border-radius: 4px;
   }
   /*  */
-  .mr22{
-    margin-right:22px;
-  }
   .mr3{
     margin-right: 3px;
+  }
+  a :hover {
+    text-decoration-line: underline;
   }

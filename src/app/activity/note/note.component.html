@@ -42,20 +42,19 @@
       <span class="activity-date"><i class="fa fa-clock icon"></i>{{note.createdTime}}</span>
     </div>
     <div class="activity-body" *ngIf="note.visibility == 'PUBLIC'">
-      <span class="activity-date"><i class="fa fa-user icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
+      <span class=""><i class="fas fa-user icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
     </div>
     <div class="activity-body">
       <i class="fa fa-comment icon"></i>
       <span>{{note.content | slice:0:100}}<a *ngIf="note.content.length>100" (click)="viewNote(note)">
         <span>..View More</span></a></span>
     </div>
-    <div class="activity-body ml_20">
-      <!-- <i class="fa fa-comment icon"></i> -->
-      <span [ngClass]="note.visibility=='PUBLIC'?'view-banner' : 'view-banner orange-lable-cu1'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
-    </div>
     <div class="activity-footer">
-      <a (click)="showEditNoteTab(note)"><span class="mr10">edit</span></a>
+      <span [ngClass]="note.visibility=='PUBLIC'?'view-banner ml_20' : 'view-banner orange-lable-cu1 ml_20'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
+      <span>
+        <a (click)="showEditNoteTab(note)"><span class="mr10">edit</span></a>
       <a (click)="showDeleteConformationAlert(note)"><span>delete</span></a>
+      </span>
     </div>
   </div>
   <!-- --------------------Pagination0-------------------- -->

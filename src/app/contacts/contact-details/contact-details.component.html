@@ -38,7 +38,7 @@
             </div>
             <div class="profile_info">
               <div *ngIf="contactName != undefined && contactName != ''">
-                <i class="fa fa-user mr_6 icons_colors" aria-hidden="true"></i>
+                <i class="fas fa-user mr_6 icons_colors" aria-hidden="true"></i>
                 <span data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
                   {{contactName | slice:0:10}} <span *ngIf="contactName != undefined && contactName?.length>10">..</span>
                 </span>
@@ -103,44 +103,44 @@
               <li><i class="fas fa-building"></i>
                 <div class="user_details">
                   <span class="address_title">Company:</span>
-                  <p *ngIf="selectedContact?.contactCompany != undefined" class="mb0">{{selectedContact?.contactCompany}}
+                  <p *ngIf="selectedContact?.contactCompany != undefined" class="mb0 pt5">{{selectedContact?.contactCompany}}
                   </p>
                 </div>
               </li>
               <li><i class="fas fa-briefcase"></i>
                 <div class="user_details">
                   <span class="address_title">Job Title:</span>
-                  <p *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</p>
+                  <p *ngIf="selectedContact?.jobTitle != undefined" class="mb0 pt5">{{selectedContact?.jobTitle}}</p>
                 </div>
               </li>
               <li><i class="fas fa-map-marker-alt"></i>
                 <div class="user_details">
                   <span class="address_title">Address:</span>
-                  <p *ngIf="selectedContact?.address != undefined" class="mb0">{{selectedContact?.address}}</p>
+                  <p *ngIf="selectedContact?.address != undefined" class="mb0 pt5">{{selectedContact?.address}}</p>
                 </div>
               </li>
               <li><i class="fas fa-city"></i>
                 <div class="user_details">
                   <span class="address_title">City:</span>
-                  <p *ngIf="selectedContact?.city != undefined" class="mb0">{{selectedContact?.city}}</p>
+                  <p *ngIf="selectedContact?.city != undefined" class="mb0 pt5">{{selectedContact?.city}}</p>
                 </div>
               </li>
               <li><i class="fas fa-map"></i>
                 <div class="user_details">
                   <span class="address_title">State/Province:</span>
-                  <p *ngIf="selectedContact?.state != undefined" class="mb0">{{selectedContact?.state}}</p>
+                  <p *ngIf="selectedContact?.state != undefined" class="mb0 pt5">{{selectedContact?.state}}</p>
                 </div>
               </li>
               <li><i class="fas fa-mail-bulk"></i>
                 <div class="user_details">
                   <span class="address_title"> Postal Code:</span>
-                  <p *ngIf="selectedContact?.zipCode != undefined" class="mb0">{{selectedContact?.zipCode}}</p>
+                  <p *ngIf="selectedContact?.zipCode != undefined" class="mb0 pt5">{{selectedContact?.zipCode}}</p>
                 </div>
               </li>
               <li><i class="fas fa-globe"></i>
                 <div class="user_details">
                   <span class="address_title"> Country:</span>
-                  <p *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</p>
+                  <p *ngIf="selectedContact?.country != undefined" class="mb0 pt5">{{selectedContact?.country}}</p>
                 </div>
               </li>
             </ul>
@@ -252,7 +252,7 @@
             <div class="panel-body" *ngIf="contactLeads.length > 0">
               <div class="activity_card mb10" *ngFor="let lead of contactLeads">
                 <div>
-                  <i class="fa fa-user mr5" aria-hidden="true"> </i>
+                  <i class="fas fa-user mr5" aria-hidden="true"> </i>
                   <a (click)="viewLead(lead)">
                     <span class="activity-title">{{lead.firstName != null ? lead.firstName:''}} {{lead.lastName}}</span>
                   </a>
@@ -277,7 +277,7 @@
         <div class="panel-default panel-dropdown">
           <div class="panel-headings">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="collapsed">
                 Deals ({{dealsCount}})
               </a>
               <a (click)="addDeal()" class="add-btn"><span>+ Add</span></a>
@@ -289,7 +289,7 @@
             <div class="panel-body" *ngIf="contactDeals.length > 0">
               <div class="activity_card mb10" *ngFor="let deal of contactDeals">
                 <div>
-                  <i class="fa fa-user mr5" aria-hidden="true"> </i>
+                  <i class="fas fa-user mr5" aria-hidden="true"> </i>
                   <a (click)="viewDeal(deal)">
                     <span class="activity-title">{{deal.title}}</span>
                   </a>

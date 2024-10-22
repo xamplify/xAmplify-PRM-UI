@@ -19,12 +19,14 @@
   .activity-body {
     display: flex;
     align-items: baseline;
-    margin-top: 10px;
+    margin-top: 8px;
     color: #555;
   } 
   .activity-footer {
-    text-align: right;
-    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px 4px 0px;
   }
   .activity-footer a {
     color: #578ebe;
@@ -32,6 +34,7 @@
     font-weight: 600;
   }
   .icon {
+    font-size: 13px;
     padding-right: 5px;
   }
   .alert {

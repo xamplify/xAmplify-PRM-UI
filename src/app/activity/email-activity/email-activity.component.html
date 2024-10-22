@@ -1,6 +1,10 @@
 <div class="inputs display row" align="right">
   <div class="col-xs-12 col-sm-12 col-lg-12 mb10">
     <div class="page-toolbar">
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Refresh"
+        data-original-title="Refresh" (click)="showAllEmailActivities()">
+        <i aria-hidden="true" class="fa fa-refresh"></i>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">
@@ -34,18 +38,14 @@
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <div class="activity_card mb10" *ngFor="let emailActivity of emailActivityPagination?.pagedItems">
     <div class="activity-header">
-      <span><label class="mr22 activity-title">From:</label><i class="fa fa-user icon"></i>{{emailActivity.senderEmailId}} </span>
-      <!-- <span class="activity-title">Status: {{emailActivity.status}}</span> -->
+      <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">From:</label>{{emailActivity.senderEmailId}} </span>
       <span class="activity-date"><i class="fa fa-clock icon"></i>{{emailActivity.createdTime}}</span>
     </div>
-    <!-- <div class="activity-body">
-      <i class="fa fa-envelope icon"></i>{{emailActivity.senderEmailId}}
-    </div> -->
     <div class="activity-body">
-      <span><label class="mr3 activity-title">Subject:</label> <i class="fa fa-comment icon"></i>{{emailActivity.subject}}</span>
-      <span class="activity-title">Status: <span [ngClass]="emailActivity.status=='OPENED'?'view-banner' : 'view-banner published'" >{{emailActivity.status}}</span></span>
+      <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Subject:</label>{{emailActivity.subject}}</span>
     </div>
     <div class="activity-footer">
+      <span class="activity-title">Status: <span [ngClass]="emailActivity.status=='OPENED'?'view-banner' : 'view-banner published'" >{{emailActivity.status}}</span></span>
       <a (click)="viewEmail(emailActivity.id)"><span>View details</span></a>
     </div>
   </div>
