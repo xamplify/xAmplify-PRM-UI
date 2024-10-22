@@ -147,11 +147,11 @@
                               <li (click)="navigateToDashboardType(dashboardType)">
                                  <a>
                                     <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-                                    <ng-container *ngIf="dashboardType=='Welcome'">
+                                    <ng-container *ngIf="dashboardType=='Welcome'" translate>
                                        Welcome
                                     </ng-container>
                                     <ng-container *ngIf="dashboardType!='Welcome'">
-                                       {{dashboardType}}
+                                       {{dashboardType | translate}}
                                     </ng-container>
                                  </a>
                                  <div class="border-bt"></div>
@@ -161,7 +161,7 @@
                         <!-- Guides Help Icon-->
                         <li
                            *ngIf="!authenticationService.isOnlyUser() && authenticationService.user.hasCompany && userId!=1">
-                           <a href="{{guideHomeUrl}}" target="_blank">
+                           <a href="{{guideHomeUrl}}" target="_blank" translate>
                               <i class="fa fa-question-circle-o" style="font-size: 15px;"
                                  aria-hidden="true"></i>&nbsp;Help
                            </a>
@@ -172,8 +172,8 @@
                            <a><img src="assets/images/loading.gif" alt="No Image Found">Loading My Vendors...</a>
                         </li>
                         <li  *ngIf="!myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
-                           <a (click)="goToRouter('/home/dashboard/vendors')" translate>
-                              <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
+                           <a (click)="goToRouter('/home/dashboard/vendors')">
+                              <i class="fa fa-users" aria-hidden="true"></i><span translate>My Vendors</span> ({{vendorCount}})</a>
                            <div class="border-bt"></div>
                         </li>
                         <!--XBI-1917-->
@@ -183,7 +183,7 @@
                            <li>
                               <a (click)="navigateAndOpenAddLeadsModalPopUp()">
                                  <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                 {{LEAD_CONSTANTS?.registerLeads}}
+                                 {{LEAD_CONSTANTS?.registerLeads | translate}}
                               </a>
                               <div class="border-bt"></div>
                            </li>
@@ -191,7 +191,7 @@
                            <li *ngIf="isRegisterDealEnabled">
                               <a (click)=" navigateAndOpenAddDealsModalPopUp()">
                                  <i class="fa fa-tags" aria-hidden="true"></i>
-                                 {{DEAL_CONSTANTS?.registerDeals}}
+                                 {{DEAL_CONSTANTS?.registerDeals | translate}}
                               </a>
                               <div class="border-bt"></div>
                            </li>

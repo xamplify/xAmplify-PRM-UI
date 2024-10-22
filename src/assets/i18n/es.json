@@ -20,7 +20,7 @@
 	"Email Stats":"Estadísticas de correo electrónico",
 	"Team Members": "Miembros del equipo",
 	"Detailed view": "Vista detallada",
-	"Campaigns that have been shared with you (Vendor Activity)": "Campañas que se han compartido con usted (Actividad del proveedor)",
+	"Campaigns that have been shared with you(Vendor Activity)": "Campañas que se han compartido con usted (Actividad del proveedor)",
 	"Video": "Vídeo",
 	"Email": "Correo electrónico",
 	"Social": "Social",
@@ -615,7 +615,7 @@
 	"Uploaded":"Subida",
 	"Email Co-Branding":"Marca compartida por correo electrónico",
 	"Video Co-Branding":"Video de marca compartida",
-	"Partner":"Compañera",
+	"Partner":"Pareja",
 	"DRAFT":"SEQUÍA",
 	"By:":"Por:",
 	"Folder:":"Carpeta:",
@@ -742,14 +742,37 @@
 	"END TIME":"HORA DE FINALIZACIÓN",
 	"VIDEO SKIPPED DURATION":"VIDEO SALTADO DURACIÓN",
 	"Recipients who have watched video":"Destinatarias que han visto video",
-	"DATE and TIME":"Fecha y hora"
+	"DATE and TIME":"Fecha y hora",
+	"Onboarding Partner" : "Socio de incorporación",
+	"Manage Partner"  : "Administrar socio",
+	"Add Share Leads" : "Agregar clientes potenciales compartidos",
+	"Manage Share Leads" :"Administrar clientes potenciales compartidos",
+	"Shared Leads" : "Clientes potenciales compartidos",
+	"Social Feeds" : "Feeds sociales",
+	"Manage Leads" : "Administrar clientes potenciales",
+	"Manage Deals" : "Administrar ofertas",
+	"MDF" : "MDF",
+	"Configuration" : "Configuración",
+	"Companies" : "Empresas",
+	"Invite A vendor" : "Invitar a un proveedor",
+	"Share Leads" : "Compartir clientes potenciales",
+	"Survey" : "Encuesta",
+	"Add, segment, manage, and edit the members of your Strategic Network." : "Agrega, segmenta, administra y edita los miembros de tu Red Estratégica.",
+	"Upload your content and you'll soon be ready for primetime." : "Sube tu contenido y pronto estarás listo para el horario estelar.",
+	"Design beautiful, responsive email  templates that communicate effectively." : "Diseñe plantillas de correo electrónico hermosas y responsivas que se comuniquen de manera efectiva.",
+	"Easily automate your audience's digital journey." : "Automatice fácilmente el viaje digital de su audiencia.",
+	"Add team members to make content and campaign management a group effort" : "Agregue miembros al equipo para hacer que la gestión de contenido y campañas sea un esfuerzo grupal",
+	"Up your social game and coordinate your message across all of your social media accounts." : "Mejore su juego social y coordine su mensaje en todas sus cuentas de redes sociales.",
+	"Campaigns that have been shared with you (Vendor Activity)" : "Campañas que se han compartido contigo (Actividad del proveedor)",
+	"Manage, monitor, and measure various aspects of your campaigns." : "Gestione, supervise y mida diversos aspectos de sus campañas.",
+	"Add a Deal" : "Agregar una oferta",
+	"Add a Lead" : "Agregar un cliente potencial",
+	"My Vendors" : "Mis proveedores",
+	"Add Deals" : "Agregar ofertas",
+	"Add Leads" : "Agregar clientes potenciales",
+	"Advanced Dashboard" : "Panel avanzado",
+	"Help" : "Ayuda",
+	"Add contacts" : "Agregar contactos",
+	"The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.": "La instancia xAmplify Sandbox es ideal para diseñar, cargar, actualizar y probar de forma segura todos los módulos de la plataforma. El tipo de instancia xAmplify Sandbox solo se puede utilizar para pruebas o pruebas de aceptación del usuario.",
+	"Do you want to set this as your default screen?" : "¿Quieres configurar esto como tu pantalla predeterminada?"
 }
-
-
-
-
-
-
-
-
-	

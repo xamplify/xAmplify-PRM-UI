@@ -371,7 +371,7 @@
 <ng-template #referVendorTemplate>
      <button [ngClass]="authenticationService?.isTop?'customskin':''"
         (click)="openRequestAsVendorModal()" class=""
-        style="border-radius: 7px 0px 0px 7px;" translate>{{properties?.inviteAVendor}}</button>
+        style="border-radius: 7px 0px 0px 7px;" translate>{{properties?.inviteAVendor | translate }}</button>
      <button [ngClass]="authenticationService?.isTop?'customskin':''"
         [routerLink]="['/home/dashboard/vendor-request']" class="xamplify-mr5"
         style="border-radius: 0px 7px 7px 0px;">
