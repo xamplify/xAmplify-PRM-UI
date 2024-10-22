@@ -378,7 +378,7 @@
 														!assignLeads)) && !sharedLeads" (click)="hasAccess()" translate>Export To Excel</a>
 												</li>
 												<li><a id="download_empy_csv" (click)="downloadEmptyCsv()"
-														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
+														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !isTeamMemberPartnerList"
 														translate>Download CSV Template</a>
 												</li>
 												<li [ngClass]="{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"

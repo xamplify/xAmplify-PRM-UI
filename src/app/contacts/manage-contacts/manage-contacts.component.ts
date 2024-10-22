@@ -2492,7 +2492,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					this.socialContact.contactListId = JSON.parse(localStorage.getItem('selectedContactListId'));
 					this.socialContact.contactType = localStorage.getItem('contactType');
 					this.socialContact.alias = localStorage.getItem('alias');
-					this.syncronizeContactList(this.socialContact);
+					// this.syncronizeContactList(this.socialContact);
 					localStorage.removeItem("currentPage");
 					localStorage.removeItem("currentModule");
 					localStorage.removeItem("selectedContactListId");
