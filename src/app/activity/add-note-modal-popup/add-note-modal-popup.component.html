@@ -7,7 +7,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <a class="close-circle" (click)="closeNoteModalPopup()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
-        <h4 class="modal-title left" id="myModalLabel">Add a Note</h4>
+        <h4 class="modal-title left" id="myModalLabel">{{title}} Note</h4>
       </div>
 
       <div class="modal-body">
@@ -15,13 +15,13 @@
         <div class="form-group">
           <label for="subjectLine">Title <span class="text-danger">*</span></label>
           <input type="text" id="subjectLine" [(ngModel)]="note.title" [ngModelOptions]="{standalone: true}"
-            placeholder="Enter Title" class="form-control" name="subjectLine" maxlength="200" />
+            placeholder="Enter Title" class="form-control" name="subjectLine" maxlength="200" [disabled]="isPreview"/>
         </div>
 
         <div class="form-group">
           <label for="subjectLine">Visbility <span class="text-danger">*</span></label>
           <span>
-              <switch class="switchbtns" [(status)]="publicNotes" [onText]="'Public'" [offText]="'Private'"
+              <switch class="switchbtns" [(status)]="publicNotes" [onText]="'Public'" [offText]="'Private'" [disabled]="isPreview"
                 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offPrivateColor"
                 [size]="callActionSwitch.size" (statusChange)="publicVsPrivateNoteStatusChange($event)">
               </switch>
@@ -31,14 +31,14 @@
         <div class="form-group">
           <label for="subjectLine">Write here <span class="text-danger">*</span></label>
           <!-- <ckeditor name="content" [(ngModel)]="note.content" [ngModelOptions]="{standalone: true}"></ckeditor> -->
-           <textarea [(ngModel)]="note.content" ></textarea>
+           <textarea [(ngModel)]="note.content" [disabled]="isPreview"></textarea>
         </div>
       </div>
       <div class="modal-footer" style="border: none">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeNoteModalPopup()" data-dismiss="modal">Cancel</button>
-        <button *ngIf="!edit" type="submit" class="button bgcolor-unset" (click)="save()"><span
+        <button *ngIf="!isEdit && !isPreview" type="submit" class="button bgcolor-unset" (click)="save()"><span
             class="btn Btn-Green transition txt_pd-top3">Save</span></button>
-        <button *ngIf="edit" type="submit" class="button bgcolor-unset" (click)="updateNote()"><span
+        <button *ngIf="isEdit && !isPreview" type="submit" class="button bgcolor-unset" (click)="updateNote()"><span
             class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>

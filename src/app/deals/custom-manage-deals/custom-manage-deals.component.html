@@ -298,7 +298,7 @@
 
 <app-add-deal *ngIf="showDealForm" [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
   [selectedContact]="selectedContact" [isOrgAdmin]="isOrgAdmin" [isDealFromContact]="isDealFromContact"
-  (notifySubmitSuccess)="showSubmitDealSuccess()" (notifyClose)="closeDealForm()"></app-add-deal>
+  (notifySubmitSuccess)="showSubmitDealSuccess()" (notifyClose)="closeDealForm()" [isFromContactAllDealsTab]="'true'"></app-add-deal>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
   [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>

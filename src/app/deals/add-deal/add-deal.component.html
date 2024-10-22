@@ -10,7 +10,7 @@
    <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div *ngIf="isThroughAddUrl || isDealFromContact" class="page-bar" style="height:48px">
     <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
-      <div class="col-xs-12 col-sm-5 col-lg-6">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
         <ul class="page-breadcrumb pbc-m3">
           <li *ngIf="!authenticationService.isSuperAdmin()">
             <i class="fa fa-home" aria-hidden="true"></i>
@@ -26,7 +26,7 @@
             <a>Add</a>
           </li>
           <li *ngIf="isDealFromContact && !isFromCompanyModule">
-            <a (click)="goBackToManageContacts()">Manage contacts</a>
+            <a (click)="goBackToManageContacts()">Manage Contacts</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
           <li *ngIf="isDealFromContact && isFromCompanyModule">
@@ -34,11 +34,19 @@
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
           <li *ngIf="isDealFromContact">
-            <a (click)="goBackToEditContacts()">Edit contacts</a>
+            <a (click)="goBackToEditContacts()">Edit Contacts</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
           <li *ngIf="isDealFromContact">
             <a (click)="goBackToContactDetailsPage()">Contact Details</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromContactAllLeadsTab">
+            <a (click)="goBackToContactDetailsAllLeadsPage()">All Leads</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromContactAllDealsTab">
+            <a (click)="goBackToContactDetailsAllLeadsPage()">All Deals</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
           <li *ngIf="isDealFromContact && actionType == 'add'">

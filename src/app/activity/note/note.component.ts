@@ -34,6 +34,7 @@ export class NoteComponent implements OnInit {
   showNoteModalPopup: boolean = false;
   note: any;
   ngxLoading:boolean = false;
+  actionType: string;
 
   constructor(public noteService: NoteService, public authenticationService: AuthenticationService,
     public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {
@@ -109,6 +110,7 @@ export class NoteComponent implements OnInit {
   }
 
   showEditNoteTab(note:any) {
+    this.actionType = 'edit';
     this.note = note;
     this.showNoteModalPopup = true;
   }
@@ -135,6 +137,12 @@ export class NoteComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
       }
     )
+  }
+
+  viewNote(note:any) {
+    this.actionType = 'view';
+    this.note = note;
+    this.showNoteModalPopup = true;
   }
 
 }

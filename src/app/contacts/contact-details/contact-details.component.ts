@@ -376,6 +376,7 @@ export class ContactDetailsComponent implements OnInit {
   closeViewMoreLeadsTab() {
     this.viewLeads = false;
     this.fetchLeadsAndCount();
+    this.fetchDealsAndCount();
   }
 
   viewLead(lead:any) {

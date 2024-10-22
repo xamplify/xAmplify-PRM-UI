@@ -58,6 +58,7 @@ export class CustomAddLeadComponent implements OnInit {
   @Input() public isConvertingContactToLead: boolean = false;
   /**XNFR-553**/
   @Input() public isFromCompanyModule:boolean = false;
+  @Input() public isFromContactAllLeadsTab:boolean = false;
 
   preview = false;
   edit = false;
@@ -1857,8 +1858,15 @@ export class CustomAddLeadComponent implements OnInit {
     this.leadFormTitle = LEAD_CONSTANTS.registerALead;
   }
 
-  goBackToContactDetailsPage() {
+  /**XNFR-553**/
+  goBackToContactDetailsAllLeadsPage() {
     this.notifyClose.emit();
+  }
+
+  goBackToContactDetailsPage() {
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+		let encodeUserId = this.referenceService.encodePathVariable(this.selectedContact.id);
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
   }
 
   goBackToManageContacts() {

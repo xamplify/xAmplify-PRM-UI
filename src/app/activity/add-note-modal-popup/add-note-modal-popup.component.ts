@@ -29,7 +29,9 @@ export class AddNoteModalPopupComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   publicNotes: boolean = false;
   ngxLoading:boolean = false;
-  edit: boolean = false;
+  isEdit: boolean = false;
+  isPreview: boolean = false;
+  title:string = 'Add';
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public noteService: NoteService, public callActionSwitch: CallActionSwitch) {
@@ -40,7 +42,13 @@ export class AddNoteModalPopupComponent implements OnInit {
     this.callActionSwitch.size = 'normal';
     this.referenceService.openModalPopup('addNoteModalPopup');
     if (this.actionType == 'edit') {
-      this.edit = true;
+      this.isEdit = true;
+      this.title = 'Edit';
+      this.note = this.editNote;
+      this.publicNotes = this.editNote.visibility == 'PUBLIC';
+    } else if (this.actionType == 'view') {
+      this.isPreview = true;
+      this.title = 'View';
       this.note = this.editNote;
       this.publicNotes = this.editNote.visibility == 'PUBLIC';
     }
