@@ -9,6 +9,8 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { NoteService } from '../services/note-service';
 
+declare var swal:any;
+
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -143,6 +145,23 @@ export class NoteComponent implements OnInit {
     this.actionType = 'view';
     this.note = note;
     this.showNoteModalPopup = true;
+  }
+
+  showDeleteConformationAlert(note) {
+    const self = this;
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, the note can not be recovered.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes'
+    }).then(function () {
+      self.deleteNote(note);
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    })
   }
 
 }

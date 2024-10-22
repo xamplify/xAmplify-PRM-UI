@@ -1,6 +1,10 @@
 <div class="inputs display row" align="right">
   <div class="col-xs-12 col-sm-12 col-lg-12 mb10">
     <div class="page-toolbar">
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Refresh"
+        data-original-title="Refresh" (click)="showAllNoteActivities()">
+        <i aria-hidden="true" class="fa fa-refresh"></i>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <!-- <div class="float-left">
@@ -33,7 +37,8 @@
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <div class="activity_card mb10" *ngFor="let note of notePagination?.pagedItems">
     <div class="activity-header">
-      <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(note)">{{note.title}}</a></span>
+      <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(note)">
+        <span>{{note.title}}</span></a></span>
       <span class="activity-date"><i class="fa fa-clock icon"></i>{{note.createdTime}}</span>
     </div>
     <div class="activity-body" *ngIf="note.visibility == 'PUBLIC'">
@@ -41,7 +46,8 @@
     </div>
     <div class="activity-body">
       <i class="fa fa-comment icon"></i>
-      <span>{{note.content | slice:0:100}}<a *ngIf="note.content.length>100" (click)="viewNote(note)">..View More</a></span>
+      <span>{{note.content | slice:0:100}}<a *ngIf="note.content.length>100" (click)="viewNote(note)">
+        <span>..View More</span></a></span>
     </div>
     <div class="activity-body ml_20">
       <!-- <i class="fa fa-comment icon"></i> -->
@@ -49,7 +55,7 @@
     </div>
     <div class="activity-footer">
       <a (click)="showEditNoteTab(note)"><span class="mr10">edit</span></a>
-      <a (click)="deleteNote(note)"><span>delete</span></a>
+      <a (click)="showDeleteConformationAlert(note)"><span>delete</span></a>
     </div>
   </div>
   <!-- --------------------Pagination0-------------------- -->
