@@ -29,7 +29,7 @@ padding:0px!important;
 }
 .profile-leftsidebar{
     padding: 0px !important;
-    background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
 }
 .profile_header {
     display: flex;
@@ -46,7 +46,7 @@ padding:0px!important;
     justify-content: center;
     font-size: 20px;
     font-weight: bold;
-    margin-right: 15px;
+    margin-right: 11px;
 }
 .profile_info span {
     margin: 0px 0px 5px 0px;
@@ -55,7 +55,7 @@ padding:0px!important;
     font-weight: 600;
 }
 .profile_info p {
-    margin: 5px 0;
+    margin: 2px 0;
     font-size: 14px;
     color: #555;
     font-weight: 500;
@@ -67,23 +67,24 @@ padding:0px!important;
    font-size: 16px;
     margin: 0 0 10px 0;
     padding: 10px 15px;
-    background-color: #e8edf2;
+    background-color: #f5f8fa;
+    border: 1px solid #ddd;
     border-radius: 8px;
 }
 .lead_details ul {
     list-style-type: none;
     padding: 0;
-    margin: 5px;
+    margin: 5px 0px;
 }
 .lead_details li {
     font-size: 14px;
     color: #555;
     display: flex;
-    padding: 10px;
+    padding: 10px 0px;
 }
 .lead_details li i {
     margin-right: 10px;
-    color: #999;
+    color: #7d7a7a;
 }
 .user_details{
     position: relative;
@@ -94,7 +95,7 @@ padding:0px!important;
     font-weight: 600;
 }
 .mr_6{
-    margin-right: 3px;
+    margin-right: 5px;
 }
 .ml_6{
     margin-left:3px;
@@ -111,7 +112,7 @@ padding:0px!important;
     cursor: pointer;
 }
 .icons_colors{
- color: #8d8d8d;
+ color: #666;
 }
 .fa-user,.fa-envelope ,.fa-phone{
     font-size: 13px; 
@@ -127,7 +128,7 @@ border-bottom:none;
     flex-shrink: 100000;
     width: 100%;
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     white-space: normal;
@@ -189,15 +190,16 @@ border-bottom:none;
     overflow: visible;
     flex-grow: 1;
     width: 100%;
-    height: 100%;
+    height: calc(-52px + 100vh);
   }
   .asidebar{
-    background-color: #f7f7f7;
+    /* background-color: #f7f7f7; */
+    border-left: 1px solid#ddd;
     border-radius: 0px 8px 8px 0px;
     flex-basis: 25%;
     max-height: 100vh;
     max-width: 500px;
-    overflow-y: visible;
+    overflow-y: auto;
     position: relative;
     transition: flex 200ms cubic-bezier(0.16, 0.84, 0.44, 1), min-width 200ms cubic-bezier(0.16, 0.84, 0.44, 1);
     width: unset;
@@ -246,7 +248,7 @@ border-bottom:none;
   /* activity card */
   .activity_card {
     border: 1px solid #ddd;
-    padding: 15px;
+    padding: 10px;
     border-radius: 4px;
     background-color: #f9f9f9;
   }
@@ -262,7 +264,7 @@ border-bottom:none;
     font-size: 12px;
   }
   .activity-body {
-    margin-top: 10px;
+    margin-top: 8px;
     color: #555;
   } 
   .activity-footer {
@@ -335,3 +337,10 @@ border-bottom:none;
   a :hover {
     text-decoration-line: underline;
   }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.contact_jounrey>.contact_bgcolor{
+  background-color: #f5f8fa;
+}

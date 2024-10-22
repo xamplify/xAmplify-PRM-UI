@@ -2,20 +2,23 @@
     border: 1px solid #ddd;
     padding: 10px 15px 10px 15px;
     border-radius: 4px;
-    background-color: #f9f9f9;
+    background-color: #fff;
 }
 .activity-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   .activity-title {
     font-weight: bold;
   }
   .activity-date {
-    color: #999;
+    color: #666;
     font-size: 12px;
   }
   .activity-body {
+    display: flex;
+    align-items: baseline;
     margin-top: 10px;
     color: #555;
   } 
@@ -24,16 +27,23 @@
     margin-top: 5px;
   }
   .activity-footer a {
-    text-decoration: none;
-   color: #578ebe;
+    color: #578ebe;
+    text-transform: capitalize;
+    font-weight: 600;
   }
   .icon {
-    padding-right: 3px;
-    font-size: 10px;
+    padding-right: 5px;
   }
   .alert {
     padding: 15px;
     margin-bottom: 0px;
     border: 1px solid transparent;
     border-radius: 4px;
+  }
+  .fa-lock{
+    font-size: 12px;
+    margin-right: 2px;
+  }
+  .ml_20{
+    margin-left: 20px;
   }

@@ -2,38 +2,51 @@
     border: 1px solid #ddd;
     padding: 10px 15px 10px 15px;
     border-radius: 4px;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
 }
 .activity-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   .activity-title {
-    font-weight: bold;
+    font-weight: 600;
   }
   .activity-date {
-    color: #999;
+    color: #666;
     font-size: 12px;
   }
   .activity-body {
-    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 9px;
     color: #555;
   } 
   .activity-footer {
     text-align: right;
-    margin-top: 5px;
+    margin-top: 8px;
   }
   .activity-footer a {
-    text-decoration: none;
-   color: #578ebe;
+    color: #578ebe;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: capitalize;
   }
   .icon {
-    padding-right: 3px;
-    font-size: 10px;
+   font-size: 14px;
+    margin-right: 4px;
   }
   .alert {
     padding: 15px;
     margin-bottom: 0px;
     border: 1px solid transparent;
     border-radius: 4px;
+  }
+  /*  */
+  .mr22{
+    margin-right:22px;
+  }
+  .mr3{
+    margin-right: 3px;
   }
