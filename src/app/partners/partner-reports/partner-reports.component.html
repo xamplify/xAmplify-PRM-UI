@@ -80,8 +80,8 @@
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
                   <div class="desc" data-toggle="tooltip" data-placement="top"
-                    title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
-                    Inactive
+                    title="Dormant {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
+                    Dormant
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -308,7 +308,7 @@
         <div class="portlet light" style="padding: 10px !important;">
           <div class="portlet-title">
             <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">Inactive
+              <span class="caption-subject font-red-sunglo uppercase">Dormant
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
             <div class="inputs" style="float: right">
