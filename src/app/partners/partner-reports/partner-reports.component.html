@@ -136,9 +136,7 @@
                         <div class="details">
                           <div class="number">{{PendingSignupPartnersCount}}</div>
                           <div class="desc" data-toggle="tooltip" data-placement="top"
-                            title="Signup {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Signup
-                            {{authenticationService?.partnerModule?.customName | slice:0:10}}
-                            <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
+                            title="Pending Signup" style="font-size: 13px">Pending Signup
                           </div>
                         </div>
                         <span id="permhref" class="morePadding">
@@ -772,8 +770,8 @@
           <div class="portlet-title">
             <div class="caption">
               <span class="caption-subject font-red-sunglo uppercase">
-                {{ isSingUpPendingDiv ? 'SignUp' : 'Incomplete Company Profile' }}
-                {{ authenticationService?.partnerModule?.customName }}s </span>
+                {{ isSingUpPendingDiv ? 'Pending SignUp' : 'Incomplete Company Profile' }}
+                {{ isSingUpPendingDiv ? '' : authenticationService?.partnerModule?.customName }} </span>
             </div>
             <div class="inputs" style="float: right">
               <div class="portlet-input input-inline">
