@@ -83,6 +83,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @ViewChild("partnerCompanyAndGroupsComponent") partnerCompanyAndGroupsComponent:PartnerCompanyAndGroupsComponent;
   /*  XNFR-712 */
   @Input()isPartnerJourneyPages = false;
+  showSharePartnerPagePopup= false;
+  selectedVendorCompanyIds=[];
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -537,6 +539,9 @@ copy(landingPage:any){
         this.selectedLandingPageId = landingPageId;
             this.ngxloading = true;
             let self = this;
+            if(this.isPartnerJourneyPages){
+                this.openSharePartnerPagePopup(landingPageId);
+            }else{
             this.landingPageService.getLandingPageSharedDetails(landingPageId).subscribe(
               (response) => {
                 self.landingPageSharedDetails = response.data;
@@ -552,6 +557,7 @@ copy(landingPage:any){
                 this.ngxloading = false;
                 this.logger.errorPage(error);
               });
+            }
     }
     closeShareListPopup(event:any) {
         this.showShareListPopup = false;
@@ -714,5 +720,40 @@ copy(landingPage:any){
                 }
             );
     }
+
+    openSharePartnerPagePopup(landingPageId: any) {
+        this.customResponse = new CustomResponse();
+        this.selectedLandingPageId = landingPageId;
+
+        this.landingPageService.getPartnerJourneyPageSharedDetails(landingPageId).subscribe(
+            (response) => {
+                this.landingPageSharedDetails = response.data;
+
+                this.selectedVendorCompanyIds = this.selectedVendorCompanyIds && this.selectedVendorCompanyIds.length > 0 
+                ? this.selectedVendorCompanyIds 
+                : [];
+                this.ngxloading = false;
+                this.showSharePartnerPagePopup = true;
+                $("#sharePartnerPagePopup").modal("show");
+            },
+            error => {
+                this.ngxloading = false;
+                this.logger.errorPage(error);
+            });
+
+    }
+
+    closeSharePartnerPagePopup(event:any) {
+        this.showSharePartnerPagePopup = false;
+        $("#sharePartnerPagePopup").modal("hide");
+        this.ngxloading = false;
+        this.listLandingPages(this.pagination);
+        if(event != undefined && event != null && event != ""){
+            this.customResponse = new CustomResponse('SUCCESS', event, true);
+        }
+
+    }
+
+    
 }
 

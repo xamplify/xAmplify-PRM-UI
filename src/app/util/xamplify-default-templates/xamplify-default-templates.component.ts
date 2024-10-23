@@ -41,6 +41,8 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   @Input() openInNewTabChecked: boolean = false;
   @Output() landingPageOpenInNewTabChecked = new EventEmitter();
   @Input() welcomePages:boolean = false;
+  @Input() isPartnerJourneyPages:boolean = false;
+  
   clickedButtonName = "";
   isAdd: boolean;
   name = "";
@@ -65,13 +67,13 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,
     private landingPageService: LandingPageService) {
     this.loggedInUserId = this.authenticationService.getUserId();
-    if(landingPageService.vendorJourney || landingPageService.isMasterLandingPages || landingPageService.welcomePages){
+    if(landingPageService.vendorJourney || landingPageService.isMasterLandingPages || landingPageService.welcomePages ||landingPageService.isPartnerJourneyPages ){
       this.findPageDataAndLoadBeeContainer(landingPageService, authenticationService);
     }
    }
 
   ngOnInit() {
-    if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages){
+    if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages && !this.isPartnerJourneyPages){
       this.editTemplate();
     }
   }
@@ -149,7 +151,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             '{{formName}}',
           ];
         }
-        if (!self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages) {
+        if (!self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages) {
           if (!emailTemplate.subject.trim()) {
             swal("", "Whoops! We are unable to save this template because subject line is empty", "error");
             return false;
@@ -539,7 +541,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   this.landingPage.categoryId = landingPage.categoryId;
                   this.landingPage.openLinksInNewTab = landingPage.openLinksInNewTab;
                   if(landingPage.sourceInString == 'VENDOR_JOURNEY' || landingPage.sourceInString == 'MASTER_PARTNER_PAGE'
-                    ||landingPage.sourceInString == 'WELCOME_PAGE' ){
+                    ||landingPage.sourceInString == 'WELCOME_PAGE' || landingPage.sourceInString == 'PARTNER_JOURNEY_PAGE'){
                     this.landingPage.sourceInString = landingPage.sourceInString;
                   }
                   this.openInNewTabChecked = this.landingPage.openLinksInNewTab;
@@ -606,7 +608,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                           var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                               .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200" autocomplete="off"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                           let dropDown = '';
-                          if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages) {
+                          if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages) {
                               /**********Public/Private************** */
                               dropDown += '<div class="form-group">';
                               dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
@@ -676,7 +678,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                                   '<span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                           if (!self.loggedInAsSuperAdmin) {
                               let dropDown = '';
-                              if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages) {
+                              if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages) {
                                   dropDown += '<div class="form-group">';
                                   dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
                                   dropDown += '<select class="form-control" id="pageType">';
@@ -841,15 +843,15 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.name = this.name;
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
-  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages ;
   this.landingPage.previousLandingPageId = this.id;
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
-  if(this.landingPage.hasVendorJourney || this.welcomePages){
+  if(this.landingPage.hasVendorJourney || this.welcomePages || this.isPartnerJourneyPages ){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
     this.landingPage.type = LandingPageType.PUBLIC;
   }
   if (!this.loggedInAsSuperAdmin) {
-      if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages){
+      if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages && !this.isPartnerJourneyPages){
         this.landingPage.type = $('#pageType option:selected').val();
       }
       this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
@@ -922,7 +924,8 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
   this.landingPage.welcomePages = this.welcomePages;
-  if(this.landingPage.hasVendorJourney || this.welcomePages){
+  this.landingPage.partnerJourneyPages = this.isPartnerJourneyPages;
+  if(this.landingPage.hasVendorJourney || this.welcomePages || this.isPartnerJourneyPages){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
   }
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
