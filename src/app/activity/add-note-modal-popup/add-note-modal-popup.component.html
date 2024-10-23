@@ -14,7 +14,7 @@
         <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
         <div class="form-group">
           <label for="subjectLine">Title <span class="text-danger">*</span></label>
-          <input type="text" id="subjectLine" [(ngModel)]="note.title" [ngModelOptions]="{standalone: true}"
+          <input type="text" id="subjectLine" [(ngModel)]="note.title" [ngModelOptions]="{standalone: true}" (input)="validateNote()"
             placeholder="Enter Title" class="form-control" name="subjectLine" maxlength="200" [disabled]="isPreview"/>
         </div>
 
@@ -31,15 +31,15 @@
         <div class="form-group">
           <label for="subjectLine">Write here <span class="text-danger">*</span></label>
           <!-- <ckeditor name="content" [(ngModel)]="note.content" [ngModelOptions]="{standalone: true}"></ckeditor> -->
-           <textarea [(ngModel)]="note.content" [disabled]="isPreview"></textarea>
+           <textarea class="form-control" style="height: 200px;" [(ngModel)]="note.content" (input)="validateNote()" [disabled]="isPreview"></textarea>
         </div>
       </div>
       <div class="modal-footer" style="border: none">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeNoteModalPopup()" data-dismiss="modal">Cancel</button>
-        <button *ngIf="!isEdit && !isPreview" type="submit" class="button bgcolor-unset" (click)="save()"><span
-            class="btn Btn-Green transition txt_pd-top3">Save</span></button>
-        <button *ngIf="isEdit && !isPreview" type="submit" class="button bgcolor-unset" (click)="updateNote()"><span
-            class="btn Btn-Green transition txt_pd-top3">Update</span></button>
+        <button *ngIf="!isEdit && !isPreview" type="submit" class="button bgcolor-unset" (click)="save()"
+          [disabled]="!isValidNote"><span class="btn Btn-Green transition txt_pd-top3">Save</span></button>
+        <button *ngIf="isEdit && !isPreview" type="submit" class="button bgcolor-unset" (click)="updateNote()"
+          [disabled]="!isValidNote"><span class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>
   </div>

@@ -190,14 +190,14 @@ border-bottom:none;
     overflow: visible;
     flex-grow: 1;
     width: 100%;
-    height: calc(-52px + 100vh);
+    /* height: calc(-52px + 100vh); */
   }
   .asidebar{
     /* background-color: #f7f7f7; */
     border-left: 1px solid#ddd;
     border-radius: 0px 8px 8px 0px;
     flex-basis: 25%;
-    max-height: 100vh;
+    /* max-height: 100vh; */
     max-width: 500px;
     overflow-y: auto;
     position: relative;
@@ -343,4 +343,7 @@ border-bottom:none;
 }
 .contact_jounrey>.contact_bgcolor{
   background-color: #f5f8fa;
+}
+.profile_info span.anonymous-text {
+  color: darkgray;
 }

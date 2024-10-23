@@ -32,6 +32,7 @@ export class AddNoteModalPopupComponent implements OnInit {
   isEdit: boolean = false;
   isPreview: boolean = false;
   title:string = 'Add';
+  isValidNote: boolean = false;
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public noteService: NoteService, public callActionSwitch: CallActionSwitch) {
@@ -111,5 +112,14 @@ export class AddNoteModalPopupComponent implements OnInit {
       }
     )
    }
+
+   validateNote() {
+    if (this.note.title != undefined && this.note.content != undefined 
+      && this.note.title.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.note.content.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
+      this.isValidNote = true;
+    } else {
+      this.isValidNote = false;
+    }
+  }
    
 }

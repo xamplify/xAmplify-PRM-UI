@@ -339,7 +339,7 @@ export class ContactDetailsComponent implements OnInit {
 
   showEmailSubmitSuccessStatus(event) {
     this.isReloadEmailActivityTab = event;
-    this.customResponse = new CustomResponse('SUCCESS', 'Email send successfully.', true);
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
     this.closeModalPopup();
   }
 
@@ -358,7 +358,7 @@ export class ContactDetailsComponent implements OnInit {
           this.leadsCount = data.totalRecords;
           this.contactLeads = data.list;
         } else {
-          this.leadsResponse = new CustomResponse('Error', "Failed to fetch leads", true);
+          this.leadsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
         this.referenceService.loading(this.leadsLoader, false);
       }, error => {
@@ -393,7 +393,7 @@ export class ContactDetailsComponent implements OnInit {
   showLeadSubmitSuccess(event) {
     this.showLeadForm = false;
     this.fetchLeadsAndCount();
-    this.customResponse = new CustomResponse('SUCCESS', 'Lead Submitted Successfully', true);
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.leadSubmittedSuccessResponseMessage, true);
   }
 
   fetchDealsAndCount() {
@@ -407,7 +407,7 @@ export class ContactDetailsComponent implements OnInit {
           this.dealsCount = data.totalRecords;
           this.contactDeals = data.list;
         } else {
-          this.dealsResponse = new CustomResponse('Error', "Failed to fetch deals", true);
+          this.dealsResponse = new CustomResponse('Error', this.properties.failedToFetchDealsResponseMessage, true);
         }
         this.referenceService.loading(this.dealsLoader, false);
       }, error => {
@@ -441,7 +441,7 @@ export class ContactDetailsComponent implements OnInit {
   showDealSubmitSuccess(event) {
     this.showDealForm = false;
     this.fetchDealsAndCount();
-    this.customResponse = new CustomResponse('SUCCESS', 'Deal Submitted Successfully', true);
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.dealSubmittedSuccessResponseMessage, true);
   }
 
   closeDealForm() {
@@ -454,13 +454,13 @@ export class ContactDetailsComponent implements OnInit {
 
   showNoteCutomResponse(event: any) {
     this.isReloadNoteTab = event;
-    this.customResponse = new CustomResponse('SUCCESS', 'Note Submitted Successfully', true);
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.noteSubmittedSuccessResponseMessage, true);
     this.closeAddNoteModalPopup();
   }
 
   showNoteUpdateCutomResponse(event: any) {
     this.isReloadNoteTab = event;
-    this.customResponse = new CustomResponse('SUCCESS', 'Note Updated Successfully', true);
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.noteUpdatedSuccessResponseMessage, true);
     this.closeAddNoteModalPopup();
   }
   

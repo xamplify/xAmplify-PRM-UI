@@ -274,6 +274,6 @@ a.disabled {
 /* Sudha Sri(24-07-2024) */
 .dashboard-stat{border-radius: 10px !important;}
 /**XNFR-553**/
-.text-underline :hover{
+.text-line :hover{
   text-decoration-line: underline;
 }

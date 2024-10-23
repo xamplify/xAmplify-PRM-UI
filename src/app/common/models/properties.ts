@@ -419,5 +419,14 @@ export class Properties {
 	customFieldsMissingErrorMessage = "Warning!! Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your "+this.partnersMergeTag+" will not be pushed into Salesforce."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
 
+	/**XNFR-553**/
+	noteSubmittedSuccessResponseMessage = "Note Submitted Successfully";
+	noteUpdatedSuccessResponseMessage = "Note Updated Successfully";
+	emailSendSuccessResponseMessage = "Email sent successfully";
+	failedToFetchLeadsResponseMessage = "Failed to fetch leads";
+	leadSubmittedSuccessResponseMessage = "Lead Submitted Successfully";
+	failedToFetchDealsResponseMessage = "Failed to fetch deals";
+	dealSubmittedSuccessResponseMessage = "Deal Submitted Successfully";
+
 	}
 

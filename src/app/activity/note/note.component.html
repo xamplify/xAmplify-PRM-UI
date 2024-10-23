@@ -50,7 +50,7 @@
         <span>..View More</span></a></span>
     </div>
     <div class="activity-footer">
-      <span [ngClass]="note.visibility=='PUBLIC'?'view-banner ml_20' : 'view-banner orange-lable-cu1 ml_20'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
+      <span [ngClass]="note.visibility=='PUBLIC'?'view-banner' : 'view-banner orange-lable-cu1'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
       <span>
         <a (click)="showEditNoteTab(note)"><span class="mr10">edit</span></a>
       <a (click)="showDeleteConformationAlert(note)"><span>delete</span></a>
