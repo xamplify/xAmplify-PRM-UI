@@ -321,4 +321,15 @@ export class LandingPageService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    sharePartnerJourneyLandingPageToPartners(shareLeadsDTO: any) {
+        return this.http.post(this.URL + "sharePartnerJourneyPageToVendors?access_token=" + this.authenticationService.access_token, shareLeadsDTO)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getPartnerJourneyPageSharedDetails( landingPageId: number ) {
+        return this.http.get( this.URL + "findVendorCompanyIdsByLandingPageId/" + landingPageId + "?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 }

@@ -39,4 +39,6 @@ export class LandingPage {
     publishingOrWhiteLabelingInProgress:boolean = false;
     /*XNFR-667*/
     welcomePages:boolean = false;
+    /*XNFR-712*/
+    partnerJourneyPages:boolean = false;
 }
