@@ -858,7 +858,6 @@ export class SfDealComponent implements OnInit {
         this.formLabels = result.data;
         this.formLabels.forEach((columnInfo: ColumnInfo) => {
           if (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany)) {
-            columnInfo.value = columnInfo.defaultChoiceLabel;
             if (columnInfo.private) {
               columnInfo.hideFieldInfo = true;
             }
