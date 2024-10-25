@@ -593,14 +593,14 @@ bgIMage2:any;
             let supportEmailId = response.data.supportEmailId;
             let errorMessage = '';
             if (companyProfileName == 'versa-networks') {
-              errorMessage += 'We are sorry you are unable to access the '+ companyName +' Partner Portal.';
+              errorMessage += `We are sorry you are unable to access the ${companyName} Partner Portal.`;
               if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
-                errorMessage += ' Please email us at "' + supportEmailId + '" and include the error message. -Thank you.';
+                errorMessage += ` Please email us at <a href="mailto:${supportEmailId}">${supportEmailId}</a> and include the error message.\nThank you.`;
               }
             } else {
-              errorMessage += 'You are not associated to ' + companyName + '.';
+              errorMessage += `You are not associated to ${companyName}.`;
               if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
-                errorMessage += ' Please contact "' + supportEmailId +'" ';
+                errorMessage += ` Please contact <a href="mailto:${supportEmailId}">${supportEmailId}</a>`;
               }
             }
             this.setCustomeResponse("ERROR", errorMessage);
@@ -624,6 +624,7 @@ bgIMage2:any;
 
   closeLoginWithCredentialsForm() {
     this.hideCloseButton = false;
+    this.customResponse.isVisible = false;
     this.showLoginWithCredentials = false;
   }
   
