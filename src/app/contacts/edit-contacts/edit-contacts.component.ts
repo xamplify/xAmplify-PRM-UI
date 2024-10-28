@@ -281,6 +281,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	selectedContact: any;
 	showContactDetailsTab: boolean = false;
 	isFromCompanyModule: boolean = false;
+	isContactModule: boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -299,21 +300,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.isPartner = false;
 			this.assignLeads = false;
 			this.sharedLeads = true;
+			this.isContactModule = false;
 			this.checkingContactTypeName = "Shared Lead"
 			this.module = 'sharedleads';
 		} else if (currentUrl.includes('home/assignleads')) {
 			this.isPartner = false;
 			this.assignLeads = true;
 			this.showAddOptions = true;
+			this.isContactModule = false;
 			this.checkingContactTypeName = "Lead"
 			this.module = 'leads';
 		} else if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
+			this.isContactModule = true;
 			this.checkingContactTypeName = "Contact";
 			this.showAddOptions = true;
 			this.module = 'contacts';
 		} else {
 			this.isPartner = true;
+			this.isContactModule = false;
 			if (this.sourceType != "ALLBOUND") {
 				this.showAddOptions = true;
 			} else {
