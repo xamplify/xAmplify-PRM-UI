@@ -24,7 +24,7 @@
   </ng-template>
 
   <!---Play Book-->
-  <ng-template *ngIf="authenticationService?.module?.lmsAccess" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
+  <ng-template *ngIf="authenticationService?.module?.playbookAccess" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
     [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:playbookPublishedTextDto,
     notificationSettingOption:emailNotificationSettingsDto?.playbookPublishedEmailNotification,moduleType:4,
     vendorCompanyEmailNotificationSettingOption:emailNotificationSettingsDto?.playbookPublishVendorEmailNotification}">
@@ -46,7 +46,7 @@
 </div>
 
 <ng-template #notificationOptionTemplateOutlet let-emailNotificationSettingsTextDto="emailNotificationSettingsTextDto"
-  let-notificationSettingOption="notificationSettingOption" let-moduleType="moduleType" 
+  let-notificationSettingOption="notificationSettingOption" let-moduleType="moduleType"
   let-vendorCompanyEmailNotificationSettingOption="vendorCompanyEmailNotificationSettingOption">
   <div class="portlet light">
     <div class="portlet-title tabbable-line bt-zero-px mh-zero-px">

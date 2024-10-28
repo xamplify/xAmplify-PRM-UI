@@ -25,9 +25,9 @@
        <li class="mt10 uppercase-text" *ngIf="isLocalHost">
         <button class="btn btn-primary" (click)="openUpdateCompanyProfileNameModalPopup()"><span>Find Details By UserId / CompanyId</span></button>
       </li>
-      <!--Upgrade Partner Account-->
+      <!--Upgrade Account-->
       <li class="mt10 uppercase-text">
-        <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Partner Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
+        <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
       </li>
       <!--Create An Account-->
       <li class="mt10 uppercase-text">
@@ -66,7 +66,7 @@
   <div>
     <button class="btn btn-success full-width uppercase-text" (click)="expandOrCollpase()"><span>Expand / Collapse All</span></button>
     <!--List All Users-->
-    <app-list-all-users></app-list-all-users> 
+    <app-list-all-users></app-list-all-users>
      <!---Vendor Report-->
      <app-vendor-report></app-vendor-report>
     <!--Processing User Lists-->
@@ -110,7 +110,7 @@
 <!--Vanity Url Login-->
   <div *ngIf="isVanityUrlEnabled">
      <!--List All Users For Logged In Vendor Vanity-->
-     <app-list-all-users></app-list-all-users> 
+     <app-list-all-users></app-list-all-users>
      <!--List All Partners For Logged In Vendor Vanity-->
      <app-list-all-users [showPartners]="true"></app-list-all-users>
   </div>
@@ -240,9 +240,10 @@
                   <tr>
                     <td>{{companyInfo?.companyName}}</td>
                     <td class="text-center">{{companyInfo?.companyProfileName}}</td>
-                    <td [className]="companyInfo?.companyType=='Partner' && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
+                    <td [className]="(companyInfo?.companyType=='Partner'||companyInfo?.companyType=='Vendor') && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
                       <strong>{{companyInfo?.companyType}}</strong></td>
-                    <td class="text-center" *ngIf="upgradeAccountStatusCode==200"> 
+                    <td class="text-center" *ngIf="upgradeAccountStatusCode==200">
+                      <!--Upgrading Partner Account-->
                       <select id="upgrade-account-type" class="form-control" *ngIf="companyInfo?.companyType=='Partner'" (change)="upgradeAccountType()">
                         <option value="0">--Please Select Option--</option>
                         <option value="20">PRM</option>
@@ -250,13 +251,18 @@
                         <option value="13">Vendor</option>
                         <option value="2">Org Admin</option>
                       </select>
-                      <strong class="required" *ngIf="companyInfo?.companyType!='Partner'">Upgrade Option Available Only For Partner Accounts.</strong>
+                      <!--Upgrading Vendor To OrgAdmin-->
+                      <select id="upgrade-account-type" class="form-control" *ngIf="companyInfo?.companyType=='Vendor'" (change)="upgradeAccountType()">
+                        <option value="0">--Please Select Option--</option>
+                        <option value="2">Org Admin</option>
+                      </select>
+                      <strong class="required" *ngIf="companyInfo?.companyType!='Partner' && companyInfo?.companyType!='Vendor' ">Upgrade Option Available Only For Partner / Vendor Accounts.</strong>
                     </td>
                   </tr>
                 </tbody>
               </table>
           </div>
-          
+
           <!----Admins And Team Members----->
           <div class="table-responsive" *ngIf="adminsAndTeamMembers?.length>0">
             <table class="table tgrid table-bordered"  aria-describedby="">
