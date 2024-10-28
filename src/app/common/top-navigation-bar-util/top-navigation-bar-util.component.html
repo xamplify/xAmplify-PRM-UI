@@ -197,7 +197,7 @@
                 <div class="border-bt"></div>
               </li>
               <li
-              *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
+              *ngIf="authenticationService?.module?.socialShareOptionEnabled && authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                 <a (click)="goToRouter('/home/social/update-status')" translate>
                   <i class="fa fa-share " aria-hidden="true"></i>
                   Update Status<span class="beta_social_icon_welcome_page">(Beta)</span>
@@ -210,7 +210,7 @@
   || authenticationService.module.isVendor
   || authenticationService.module.isPrm
   || authenticationService.module.isVendorTier
-  || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
+  || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && authenticationService?.module?.socialShareOptionEnabled">
                 <a (click)="goToRouter('/home/social/manage/all')" translate> <i class="fa fa-cog"
                     aria-hidden="true"></i> Social Accounts<span class="beta_social_icon_welcome_page">(Beta)</span></a>
                 <div class="border-bt"></div>

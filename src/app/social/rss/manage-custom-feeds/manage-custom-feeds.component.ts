@@ -8,7 +8,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { ActionsDescription } from '../../../common/models/actions-description';
 import { SocialService } from '../../services/social.service';
-import { SocialStatus } from 'app/social/models/social-status';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
 
 declare var swal: any, $: any;

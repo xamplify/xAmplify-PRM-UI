@@ -369,6 +369,11 @@
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
+									<th scope="row">Social Share</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialShareOptionEnabled"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
 									<th scope="row">Dashboard Type</th>
 									<td>
 										<select  class="form-control" id="dashboardType" (change)="selectDashboardType()">

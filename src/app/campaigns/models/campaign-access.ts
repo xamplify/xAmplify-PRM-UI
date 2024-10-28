@@ -52,5 +52,6 @@ export class CampaignAccess {
   referVendor = false;
 /****XNFR-669****/
   welcomePages:boolean = false;
+  socialShareOptionEnabled:boolean = false;
 
 }

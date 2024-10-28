@@ -1,4 +1,4 @@
-<div class="page-content">
+<div class="page-content" *ngIf="authenticationService?.module?.socialFeedsAccess || authenticationService?.module?.socialFeedsAccessAsPartner">
 	<div class="page-bar border_only_glass">
 		<ul class="page-breadcrumb">
 			<li>
@@ -460,4 +460,8 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div lass="page-content" *ngIf="!authenticationService?.module?.socialFeedsAccess && !authenticationService?.module?.socialFeedsAccessAsPartner">
+	<app-access-denied-util></app-access-denied-util>
 </div>
