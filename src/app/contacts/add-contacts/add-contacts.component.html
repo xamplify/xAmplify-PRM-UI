@@ -821,8 +821,8 @@
 												<ng-container *ngFor="let user of pagedItems;let i=index">
 													<tr id="csv-contact-row-{{i}}">
 														<td>{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
-														<td>{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
-														<td>{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
+														<td class="text-center">{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
+														<td class="text-center">{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
 														<td class="text-center">
 															<button class="lightgray-btn" id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
 																<span *ngIf="!user.isShowDetails">More</span>

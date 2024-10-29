@@ -247,16 +247,16 @@
                                  </h5>
                               </a>
                               <br>
-                              <div class="d-flex">
-                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="openEmailTemplateInNewTab(campaign)">
+                              <div class="d-flex mb-flex-wrap">
+                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn email-temp-mb10 ml-5" (click)="openEmailTemplateInNewTab(campaign)">
                                     <span class="btn btn-primary transition prev-btn"><i class="fa fa-eye"></i> Preview</span> 
                                  </button>
                                  <!--XNFR-541-->
-                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn ml-5" (click)="downloadAsImage(campaign)">
+                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn ml-5 email-temp-mb10" (click)="downloadAsImage(campaign)">
                                     <span class="btn btn-primary transition prev-btn"><i class="fa fa-picture-o"></i> Download</span> 
                                  </button> 
                                  <!--XNFR-541-->
-                                 <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset email-tempbtn" style="margin-right: 6px"
+                                 <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset email-tempbtn email-temp-mb10" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()">
                                     <span  class="btn btn-primary transition prev-btn"><i class="fa fa-edit"></i> Edit
                                     </span>

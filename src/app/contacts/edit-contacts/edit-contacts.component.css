@@ -130,6 +130,9 @@ a.disabled {
   .mb_btn{
     padding: 6px 10px!important;
   }
+  .ml_16{
+   margin-left: 16px!important;
+  }
 }
 @media (max-width: 425px) {
   .pr15 {

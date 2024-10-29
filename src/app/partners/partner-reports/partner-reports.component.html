@@ -333,8 +333,8 @@
                 <tr>
                   <th class="center-aligned" style="width:50%" scope="col">
                     {{authenticationService?.partnerModule?.customName}}</th>
-                  <th class="hidden-xs" style="text-align: left;" scope="col">LAST REMINDER SENT</th>
-                  <th style="text-align: left" class="mAlign" scope="col">Actions</th>
+                  <th class="hidden-xs text-center" scope="col">LAST REMINDER SENT</th>
+                  <th class="mAlign text-center" scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -343,11 +343,11 @@
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
                     </app-user-info>
                   </td>
-                  <td class="hidden-xs">
+                  <td class="hidden-xs text-center">
                     <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                     <h4 *ngIf="!item.time"><strong>-</strong></h4>
                   </td>
-                  <td class="mAlign" (click)="sendPartnerReminder(item)">
+                  <td class="mAlign text-center" (click)="sendPartnerReminder(item)">
                     <div class="actions-block float-none">
                       <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
                         <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
@@ -810,11 +810,11 @@
                       <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
                       </app-user-info>
                     </td>
-                    <td class="hidden-xs">
+                    <td class="hidden-xs text-center">
                       <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                       <h4 *ngIf="!item.time"><strong>-</strong></h4>
                     </td>
-                    <td class="mAlign" (click)="sendmail(item)">
+                    <td class="mAlign text-center" (click)="sendmail(item)">
                       <div class="actions-block float-none">
                         <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
                           <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>

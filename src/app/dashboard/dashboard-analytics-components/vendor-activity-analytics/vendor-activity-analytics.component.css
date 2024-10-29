@@ -116,3 +116,8 @@
   border-bottom: solid 1px #ddd;
   border-radius: 3px 3px 0px 0px;
 }
+@media only screen and (max-width:1024px){
+  .camp_card_effect.camp-card1 {
+    margin-bottom: 20px;
+  } 
+}
