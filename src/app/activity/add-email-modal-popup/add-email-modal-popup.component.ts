@@ -4,13 +4,14 @@ import { EmailActivityService } from '../services/email-activity-service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { EmailActivity } from '../models/email-activity-dto';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Properties } from 'app/common/models/properties';
 declare var $:any, CKEDITOR:any;
 
 @Component({
   selector: 'app-add-email-modal-popup',
   templateUrl: './add-email-modal-popup.component.html',
   styleUrls: ['./add-email-modal-popup.component.css'],
-  providers: [EmailActivityService]
+  providers: [EmailActivityService, Properties]
 })
 export class AddEmailModalPopupComponent implements OnInit {
 
@@ -24,31 +25,32 @@ export class AddEmailModalPopupComponent implements OnInit {
 
   emailActivity:EmailActivity = new EmailActivity();
   customResponse:CustomResponse = new CustomResponse();
-  isValidationMessage:boolean = false;
-  isError:boolean = false;
   isPreview:boolean = false;
   ngxLoading:boolean = false;
-  loggedInUserId: number;
   isValidEmail: boolean = false;
+  testToEmailId: string;
+  testEmailLoading: boolean = false;
+  isValidTestEmailId: boolean = false;
+  isTestMail: boolean = false;
+  ckeConfig = {};
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
-    public authenticationService: AuthenticationService) {
-      this.loggedInUserId = this.authenticationService.getUserId();
-     }
+    public authenticationService: AuthenticationService, public properties:Properties) {}
 
   ngOnInit() {
-    this.emailActivity.loggedInUserId = this.loggedInUserId;
     this.emailActivity.userId = this.userId;
+    this.ckeConfig = this.properties.ckEditorConfig;
     if (this.actionType == 'add') {
       this.isPreview = false;
       this.emailActivity.toEmailId = this.userEmailId;
-      CKEDITOR.config.height = '300px';
-      CKEDITOR.config.baseFloatZIndex = 1E5;
-      $('#addEmailModalPopup').modal('show');
+      this.emailActivity.senderEmailId = this.authenticationService.getUserName();
+      // $('#addEmailModalPopup').modal('show');
+      this.referenceService.openModalPopup('addEmailModalPopup');
     } else if (this.actionType == 'view') {
       this.isPreview = true;
       this.fetchEmailActivityById();
-      $('#addEmailModalPopup').modal('show');
+      // $('#addEmailModalPopup').modal('show');
+      this.referenceService.openModalPopup('addEmailModalPopup');
     }
   }
 
@@ -69,13 +71,14 @@ export class AddEmailModalPopupComponent implements OnInit {
   closeEmailModal() {
     this.isPreview = false;
     this.actionType = '';
-    $('#addEmailModalPopup').modal('hide');
+    // $('#addEmailModalPopup').modal('hide');
+    this.referenceService.closeModalPopup('addEmailModalPopup');
     this.notifyClose.emit();
   }
 
   validateEmail() {
-    if (this.emailActivity.body != undefined && this.emailActivity.subject != undefined 
-      && this.emailActivity.body.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
+    if (this.referenceService.validateCkEditorDescription(this.emailActivity.body) &&
+      this.emailActivity.subject != undefined && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
       this.isValidEmail = true;
     } else {
       this.isValidEmail = false;
@@ -94,6 +97,41 @@ export class AddEmailModalPopupComponent implements OnInit {
         this.ngxLoading = false;
       }
     )
+  }
+
+  sendTestEmailToUser() {
+    this.isTestMail = true;
+  }
+
+  showTestMailSubmittedStatus() {
+    this.isTestMail = false;
+    this.referenceService.showSweetAlertSuccessMessage(this.properties.emailSendSuccessResponseMessage);
+  }
+
+  closeTestMailPopup() {
+    this.isTestMail = false;
+  }
+
+  sendTestEmail() {
+    this.testEmailLoading = true;
+    this.emailActivity.toEmailId = this.testToEmailId;
+    this.emailActivityService.sendTestEmailToUser(this.emailActivity).subscribe(
+      data => {
+        this.emailActivity.toEmailId = this.userEmailId;
+        this.showTestMailSubmittedStatus();
+        this.testEmailLoading = false;
+      }, error => {
+        this.testEmailLoading = false;
+      }
+    )
+  }
+
+  validateTestEmailId() {
+    if (this.referenceService.validateEmailId(this.testToEmailId)) {
+      this.isValidTestEmailId = true;
+    } else {
+      this.isValidTestEmailId = false;
+    }
   }
   
 }

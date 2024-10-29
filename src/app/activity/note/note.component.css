@@ -53,3 +53,14 @@
   a :hover {
     text-decoration-line: underline;
   }
+  .delete-bg-color {
+    background-color: #fa3131;
+  }
+  .fa-trash-o {
+    font-size: 12px;
+    margin-right: 2px;
+  }
+  .fa-edit {
+    font-size: 12px;
+    margin-right: 2px;
+  }

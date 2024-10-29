@@ -7,14 +7,6 @@
       </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
-          <!-- <div class="float-left">
-            <select class="form-control" [(ngModel)]="sortOption.noteDropDownOption"
-              (ngModelChange)="sortBy($event)" id="select-dropdown">
-              <option *ngFor="let option of sortOption.noteDropDownOptions" [ngValue]="option">
-                {{option.name}}
-              </option>
-            </select>
-          </div> -->
           <div>
             <div class="ml5">
               <input type="text" autocomplete="off" id="sort-text" class="form-control"
@@ -52,8 +44,26 @@
     <div class="activity-footer">
       <span [ngClass]="note.visibility=='PUBLIC'?'view-banner' : 'view-banner orange-lable-cu1'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
       <span>
+        <!--1st version-->
         <a (click)="showEditNoteTab(note)"><span class="mr10">edit</span></a>
       <a (click)="showDeleteConformationAlert(note)"><span>delete</span></a>
+
+      <!--2nd version-->
+      <!-- <button type="submit" class="button bgcolor-unset m0 p0" (click)="showEditNoteTab(note)">
+        <span class="view-banner"><i class="fa fa-edit"></i>EDIT</span></button>
+      <button type="submit" class="button bgcolor-unset m0 p0" (click)="showDeleteConformationAlert(note)">
+        <span class="view-banner delete-bg-color"><i class="fa fa-trash-o"></i>DELETE</span></button> -->
+
+        <!--3rd version-->
+        <!-- <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
+        (click)="showEditNoteTab(note)" data-toggle="tooltip" data-placement="bottom" title="Edit Note" id="note">
+          <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+        <a class="custom-icon" data-rel="fancybox-button" (click)="showDeleteConformationAlert(note)" data-toggle="tooltip" data-placement="bottom" title="Delete Note" id="note">
+          <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+          <div class="del-icon"></div>
+        </a> -->
       </span>
     </div>
   </div>
@@ -67,5 +77,5 @@
   <strong translate>No Data Found.</strong>
 </div>
 
-<app-add-note-modal-popup *ngIf="showNoteModalPopup" [editNote]="note" [isReloadTab]="reloadTab" [actionType]="actionType"
+<app-add-note-modal-popup *ngIf="showNoteModalPopup" [noteId]="noteId" [isReloadTab]="reloadTab" [actionType]="actionType"
   (notifyClose)="closeNoteModalPopup()" (notifySuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>

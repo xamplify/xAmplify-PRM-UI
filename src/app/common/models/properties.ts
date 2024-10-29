@@ -428,5 +428,10 @@ export class Properties {
 	failedToFetchDealsResponseMessage = "Failed to fetch deals";
 	dealSubmittedSuccessResponseMessage = "Deal Submitted Successfully";
 
+	ckEditorConfig = {
+		height:'300px',
+		baseFloatZIndex:1E5
+	}
+
 	}
 

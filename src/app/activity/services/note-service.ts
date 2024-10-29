@@ -15,29 +15,33 @@ export class NoteService{
 
     }
 
-    saveOrUpdateNote(noteDTO: NoteDTO, isAdd : boolean){
-        if (isAdd) {
-            let url :string = this.URL + this.ACCESS_TOKEN_URL; 
-            return this.authenticationService.callPostMethod(url, noteDTO);
-        } else {
-            
-        }
+    saveNote(noteDTO: NoteDTO) {
+        noteDTO.loggedInUserId = this.authenticationService.getUserId();
+        let url: string = this.URL + this.ACCESS_TOKEN_URL;
+        return this.authenticationService.callPostMethod(url, noteDTO);
     }
 
     getPaginatedNotes(notePagination:Pagination) {
+        notePagination.userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(notePagination);
         let url = this.URL + "/fetch-all-notes/" + notePagination.userId + "/" + notePagination.contactId + this.ACCESS_TOKEN_URL + pageableUrl;
         return this.authenticationService.callGetMethod(url);
     }
 
     updateNote(note:NoteDTO) {
+        note.loggedInUserId = this.authenticationService.getUserId();
         let url = this.URL + '/' + note.id + this.ACCESS_TOKEN_URL;
         return this.authenticationService.callPutMethod(url, note);
     }
 
-    deleteNote(noteId:number, loggedInUserId:number) {
-        let url = this.URL + '/delete/' + noteId + '/loggedInUserId/' + loggedInUserId + this.ACCESS_TOKEN_URL;
+    deleteNote(noteId:number) {
+        let url = this.URL + '/delete/' + noteId + '/loggedInUserId/' + this.authenticationService.getUserId() + this.ACCESS_TOKEN_URL;
         return this.authenticationService.callDeleteMethod(url);
+    }
+
+    fetchNoteById(noteId:number) {
+        let url = this.URL + '/getById/' + noteId + this.ACCESS_TOKEN_URL;
+        return this.authenticationService.callGetMethod(url);
     }
     
 }

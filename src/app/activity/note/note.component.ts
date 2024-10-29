@@ -25,23 +25,19 @@ export class NoteComponent implements OnInit {
   @Output() notifySuccess = new EventEmitter();
   @Output() notifyDeleteSuccess = new EventEmitter();
  
-  loggedInUserId: number;
   notePagination: Pagination = new Pagination();
   selectedFilterIndex: number = 1;
   showFilterOption: boolean = false;
   customResponse: CustomResponse = new CustomResponse();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   noteSortOption: SortOption = new SortOption();
-  totalRecords: any;
   showNoteModalPopup: boolean = false;
-  note: any;
+  noteId: any;
   ngxLoading:boolean = false;
   actionType: string;
 
   constructor(public noteService: NoteService, public authenticationService: AuthenticationService,
-    public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {
-      this.loggedInUserId = this.authenticationService.getUserId();
-     }
+    public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {}
 
 
   ngOnInit() {
@@ -58,8 +54,7 @@ export class NoteComponent implements OnInit {
   }
 
   resetNoteActivityPagination() {
-    this.notePagination.maxResults = 12;
-    this.notePagination = new Pagination;
+    this.notePagination = new Pagination();
     this.notePagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showFilterOption = false;
   }
@@ -68,7 +63,6 @@ export class NoteComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     notePagination.contactId = this.contactId;
-    notePagination.userId = this.loggedInUserId;
     this.noteService.getPaginatedNotes(notePagination).subscribe(
       response => {
         const data = response.data;
@@ -77,7 +71,6 @@ export class NoteComponent implements OnInit {
           notePagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
           notePagination = this.pagerService.getPagedItems(notePagination, data.list);
-          this.totalRecords =  data.totalRecord;
         }else{
           this.customResponse = new CustomResponse('ERROR',"Unable to load note activities",true);
         }
@@ -93,7 +86,6 @@ export class NoteComponent implements OnInit {
   getAllFilteredNoteActivityResults() {
     this.notePagination.pageIndex = 1;
     this.notePagination.searchKey = this.noteSortOption.searchKey;
-    // this.notePagination = this.utilService.sortOptionValues(this.sortOption.emailActivityDropDownOption, this.notePagination);
     this.fetchAllNoteActivities(this.notePagination);
   }
 
@@ -113,7 +105,7 @@ export class NoteComponent implements OnInit {
 
   showEditNoteTab(note:any) {
     this.actionType = 'edit';
-    this.note = note;
+    this.noteId = note.id;
     this.showNoteModalPopup = true;
   }
 
@@ -128,7 +120,7 @@ export class NoteComponent implements OnInit {
 
   deleteNote(note:any) {
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.noteService.deleteNote(note.id, this.loggedInUserId).subscribe(
+    this.noteService.deleteNote(note.id).subscribe(
       data => {
         if (data.statusCode == 200) {
           this.showAllNoteActivities();
@@ -143,7 +135,7 @@ export class NoteComponent implements OnInit {
 
   viewNote(note:any) {
     this.actionType = 'view';
-    this.note = note;
+    this.noteId = note.id;
     this.showNoteModalPopup = true;
   }
 

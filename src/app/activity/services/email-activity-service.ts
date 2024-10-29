@@ -13,6 +13,7 @@ export class EmailActivityService {
     constructor(private http: Http, private authenticationService: AuthenticationService, private referenceService: ReferenceService) {}
 
     sendEmailToUser(emailActivity:EmailActivity) {
+        emailActivity.loggedInUserId = this.authenticationService.getUserId();
         let url = this.URL + this.ACCESS_TOKEN_URL;
         return this.authenticationService.callPostMethod(url, emailActivity);
     }
@@ -26,5 +27,11 @@ export class EmailActivityService {
     fetchEmailActivityById(emailActivityId:any) {
         let url = this.URL + "/fetch-email-activity/" + emailActivityId + this.ACCESS_TOKEN_URL;
         return this.authenticationService.callGetMethod(url);
+    }
+
+    sendTestEmailToUser(emailActivity:EmailActivity) {
+        emailActivity.loggedInUserId = this.authenticationService.getUserId();
+        let url = this.URL + "/sendTestMail" + this.ACCESS_TOKEN_URL;
+        return this.authenticationService.callPostMethod(url, emailActivity);
     }
 }

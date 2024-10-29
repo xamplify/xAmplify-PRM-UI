@@ -55,7 +55,7 @@ export class ModuleAnalyticsComponent implements OnInit {
       },
       error => this.xtremandLogger.log(error),
       () => {
-        if (this.authenticationService.module.showAddLeadsAndDealsOptionInTheDashboard && this.authenticationService.vanityURLEnabled) {
+        if (this.authenticationService.module.showAddLeadsAndDealsOptionInTheDashboard) {
           this.getVendorRegisterDealValue();
         }
        }
@@ -117,7 +117,8 @@ export class ModuleAnalyticsComponent implements OnInit {
 
   getVendorRegisterDealValue() {
     this.ngxLoading = true;
-    this.integrationService.getVendorRegisterDealValue(this.authenticationService.getUserId(), this.authenticationService.companyProfileName).subscribe(
+    let vendorCompanyName = (this.authenticationService.companyProfileName != undefined && this.authenticationService.companyProfileName != "") ? this.authenticationService.companyProfileName : ' ';
+    this.integrationService.getVendorRegisterDealValue(this.authenticationService.getUserId(), vendorCompanyName).subscribe(
       data => {
         if (data.statusCode == 200) {
           this.isRegisterDealEnabled = data.data

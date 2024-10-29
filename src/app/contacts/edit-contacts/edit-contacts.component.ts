@@ -4295,6 +4295,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.isSynchronizationList = data.synchronisedList;
 					this.isTeamMemberPartnerList = data.teamMemberPartnerList;
 					this.selectedCompanyId = data.associatedCompanyId;
+					this.companyName = data.companyName;
 					if (this.isFromCompanyModule) {
 						this.setCompanyModuleFields(data);
 					} else {
@@ -4320,7 +4321,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	private setCompanyModuleFields(data: any) {
-		this.companyName = data.companyName;
 		this.uploadedUserId = data.uploadedUserId;
 		this.contactService.publicList = data.publicList;
 	}
