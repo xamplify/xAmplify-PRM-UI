@@ -197,7 +197,7 @@
 </ng-container>
 
 <!-- ---------------------Upgrade Account------------------ -->
-<div class="modal fade right" id="upgrade-account-modal" data-backdrop="static">
+<div class="modal fade right" id="upgrade-account-modal" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog full-width">
     <div class="modal-content">
       <div class="modal-header">
@@ -206,16 +206,19 @@
           <table class='table tgrid table-bordered' aria-describedby="">
             <thead>
               <tr>
-                <th style="width: 10%;" scope="row">Enter Email</th>
-                <th scope="row" style="width: 50%;">
+                <th scope="row">Enter Email</th>
+                <th scope="row">
                   <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId"
                    [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
                   <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
                 </th>
-                  <th scope="row" class="inline-flex">
-                    <button [disabled]="upgradeAccountLoader" class="btn btn-primary" (click)="findCompanyInfo()">Search</button>
-                    <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
-                  </th>
+                </tr>
+                <tr>
+                  <th></th>
+                    <th scope="row">
+                      <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
+                      <button [disabled]="upgradeAccountLoader" class="btn btn-primary float-right" (click)="findCompanyInfo()">Search</button>
+                    </th>
                 </tr>
             </thead>
           </table>
@@ -279,6 +282,9 @@
                 <th class="text-center">
                   <i class="fa fa-lock" aria-hidden="true"></i><br>Status
                 </th>
+                <th class="text-center">
+                  <i class="fa fa-lock" aria-hidden="true"></i><br>Preview Roles
+                </th>
               </thead>
               <tbody>
                 <tr *ngFor="let adminOrTeamMember of adminsAndTeamMembers;let i=index">
@@ -310,7 +316,12 @@
                       <i class="fa fa-times required" aria-hidden="true"></i>
                     </div>
                   </td>
-                  <!---Enabled/Disabled---->
+                  <!---Preview Roles---->
+                  <td class="text-center">
+                    <div class="actions-block float-none pointer">
+                      <a (click)="findRoleIdsAndNames(adminOrTeamMember)"><i  class="fa fa-eye" aria-hidden="true"></i></a>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>

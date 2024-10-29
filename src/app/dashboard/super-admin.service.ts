@@ -5,7 +5,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { CustomDomainDto } from './models/custom-domain-dto';
 
 @Injectable()
-export class SuperAdminServiceService {
+export class SuperAdminService {
+    
   superAdminUrl =  this.authenticationService.REST_URL+RouterUrlConstants.superAdmin;
   constructor(private authenticationService:AuthenticationService) { }
 
@@ -39,6 +40,11 @@ getCustomDomain(companyId:string){
 updateCustomDomain(customDomainDto:CustomDomainDto){
     const url = this.authenticationService.REST_URL + 'superadmin/updateCustomDomain?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url,customDomainDto);
+}
+
+findRoleIdsAndNames(selectedTeamMemberUserId: any) {
+    const url = this.authenticationService.REST_URL + 'superadmin/findRoleIdsAndNames'+'/'+selectedTeamMemberUserId+'?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
 }
 
 }
