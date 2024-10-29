@@ -4,7 +4,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { Properties } from 'app/common/models/properties';
-import { SuperAdminServiceService } from '../super-admin-service.service';
+import { SuperAdminService } from '../super-admin.service';
 
 @Component({
   selector: 'app-update-email-address',
@@ -23,7 +23,7 @@ export class UpdateEmailAddressComponent implements OnInit {
   isCampaignEmailAddressUpdatedSuccessfully = false;
   isAccessTokenRemoved = false;
   statusCode = 0;
-  constructor(public referenceService:ReferenceService,public superAdminService:SuperAdminServiceService,public properties:Properties) { }
+  constructor(public referenceService:ReferenceService,public superAdminService:SuperAdminService,public properties:Properties) { }
 
   ngOnInit() {
   }
