@@ -2492,7 +2492,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					this.socialContact.contactListId = JSON.parse(localStorage.getItem('selectedContactListId'));
 					this.socialContact.contactType = localStorage.getItem('contactType');
 					this.socialContact.alias = localStorage.getItem('alias');
-					this.syncronizeContactList(this.socialContact);
+					// this.syncronizeContactList(this.socialContact);
 					localStorage.removeItem("currentPage");
 					localStorage.removeItem("currentModule");
 					localStorage.removeItem("selectedContactListId");
@@ -2978,15 +2978,31 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	/***** XNFR-671 *****/
 	findFlexiFieldsData() {
-		this.loading = true;
-		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-			this.flexiFieldsRequestAndResponseDto = data;
-			this.loading = false;
-		}, (error: any) => {
-			this.referenceService.showSweetAlertServerErrorMessage();
-			this.loading = false;
-		});
+		if (this.isLocalHost()) {
+			this.loading = true;
+			this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+				this.flexiFieldsRequestAndResponseDto = data;
+				this.loading = false;
+			}, (error: any) => {
+				this.referenceService.showSweetAlertServerErrorMessage();
+				this.loading = false;
+			});
+		}
 	}
 
+	isContactsByTypeAllVaildUnsubscribed() {
+		return (this.isContactModule() && (this.contactsByType.selectedCategory == 'all' 
+			|| this.contactsByType.selectedCategory == 'valid' || this.contactsByType.selectedCategory == 'unsubscribed'));
+	}
+
+	isContactModule() {
+		return (this.module == 'contacts');
+	}
+
+	isLocalHost() {
+		let allowedEmailIds = ['clakshman@stratapps.com'];
+		let userName = this.authenticationService.getUserName();
+		return this.authenticationService.isLocalHost() && allowedEmailIds.indexOf(userName) > -1;
+	}
 
 }

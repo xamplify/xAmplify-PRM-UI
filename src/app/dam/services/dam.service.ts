@@ -16,6 +16,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 
 @Injectable()
 export class DamService {
+   
  
   URL = this.authenticationService.REST_URL + "dam/";
   playbooksUrl = this.authenticationService.REST_URL+"playbooks/";
@@ -84,7 +85,7 @@ export class DamService {
 
   getById(id: number, isPartnerView: boolean) {
     let url = isPartnerView ? 'getPublishedAssetById' : 'getById';
-    return this.http.get(this.URL + url + "/" + id + "?access_token=" + this.authenticationService.access_token)
+    return this.http.get(this.URL + url + "/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -153,7 +154,7 @@ export class DamService {
   }
 
   checkDamPartnerId(damPartnerId:number){
-    return this.http.get(this.URL  + "checkDamPartnerId/"+damPartnerId+"?access_token=" + this.authenticationService.access_token)
+    return this.http.get(this.URL  + "checkDamPartnerId/"+damPartnerId+"/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -205,7 +206,7 @@ export class DamService {
   }
 
   getSharedAssetDetailsById(id: number) {
-   return this.utilGetMethod("getSharedAssetDetailsById/" + id);
+   return this.utilGetMethod("getSharedAssetDetailsById/" + id+"/"+this.authenticationService.getUserId());
   }
 
   previewAssetById(id:number){
@@ -349,6 +350,17 @@ export class DamService {
 
   }
 
+  validateDamId(damId: any) {
+    let  userId = this.authenticationService.getUserId();
+    let url = this.DAM_PREFIX_URL+'/validateDamId/damId/'+damId+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  validateVideoId(videoId: number) {
+    let userId = this.authenticationService.getUserId();
+    let url = this.DAM_PREFIX_URL+'/validateVideoId/videoId/'+videoId+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+}
 
 
 

@@ -13,6 +13,7 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { FlexiField } from '../models/flexi-field';
 import { FLEXI_FIELD_LABELS } from './../../../../constants/flexi-field-lables.constants';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 @Component({
   selector: 'app-flexi-field',
@@ -40,6 +41,7 @@ export class FlexiFieldComponent implements OnInit {
   selectedFieldId = 0;
   ADD_CUSTOM_FIELD_DIV = "add-custom-field";
   MANAGE_CUSTOM_FIELD_DIV = "manage-custom-fields";
+  parameterDto = new SweetAlertParameterDto();
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public sortOption:SortOption,
     public pagerService:PagerService,public properties:Properties,public flexiFieldService:FlexiFieldService,public utilService:UtilService) { }
 
@@ -56,7 +58,7 @@ export class FlexiFieldComponent implements OnInit {
         let isSuccess = response.statusCode === 200;
         if(isSuccess){
           pagination.totalRecords = data.totalRecords;
-          this.sortOption.totalRecords = data.totalRecords
+          this.sortOption.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, data.list);
         }else{
           this.customResponse = new CustomResponse('ERROR',"Unable to get custom fields.",true);
@@ -73,6 +75,11 @@ export class FlexiFieldComponent implements OnInit {
 
   navigateBetweenPageNumbers(event: any) {
     this.pagination.pageIndex = event.page;
+    this.findPaginatedFlexiFields(this.pagination);
+  }
+
+  findPaginatedCustomFields(event: any) {
+    this.pagination.maxResults = event.maxResults;
     this.findPaginatedFlexiFields(this.pagination);
   }
 
@@ -126,6 +133,7 @@ export class FlexiFieldComponent implements OnInit {
     this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
     this.flexiField.dupliateNameErrorMessage = "";
+    this.flexiField.fieldName = this.flexiField.fieldName.trim();
     this.flexiFieldService.saveOrUpdateFlexiField(this.flexiField,this.isAdd).subscribe(
       response => {
         let statusCode = response.statusCode;
@@ -206,6 +214,7 @@ export class FlexiFieldComponent implements OnInit {
   showConfirmSweetAlert(id:number){
     this.isDeleteOptionClicked = true;
     this.selectedFieldId = id;
+    this.parameterDto.text = "All the flexi field associated data will be removed permanently. You won't be able to undo this action!";
   }
 
   delete(event:any){

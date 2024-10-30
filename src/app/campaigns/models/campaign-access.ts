@@ -53,6 +53,7 @@ export class CampaignAccess {
 /****XNFR-669****/
   welcomePages:boolean = false;
 /****XNFR-712****/
-vendorMarketplace:boolean = false;
+  vendorMarketplace:boolean = false;
+  socialShareOptionEnabled:boolean = false;
 
 }

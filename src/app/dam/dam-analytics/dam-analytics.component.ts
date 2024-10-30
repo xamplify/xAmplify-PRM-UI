@@ -72,13 +72,23 @@ export class DamAnalyticsComponent implements OnInit {
     if(this.vendorView){
       let encodedDamId =  this.referenceService.decodePathVariable(this.route.snapshot.params['damId']);
       this.damId = parseInt(encodedDamId);
-      let encodedPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
-      this.partnerId = parseInt(encodedPartnerId);
-      this.getTilesInfo();
+      this.validateDamId(this.damId);
     }else{
       this.checkDamPartnerId();
     }
-   
+  }
+
+  validateDamId(damId: any) {
+    this.damService.validateDamId(damId).subscribe(
+      _response=>{
+        let encodedPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
+        this.partnerId = parseInt(encodedPartnerId);
+        this.getTilesInfo();
+      },error=>{
+        this.xtremandLogger.errorPage(error);
+      }
+    );
+    
   }
 
   checkDamPartnerId(){
@@ -96,20 +106,7 @@ export class DamAnalyticsComponent implements OnInit {
 		});
   }
 
-  checkDamAndPartnerId(){
-    this.referenceService.goToTop();
-    this.damService.checkDamIdAndPartnerId(this.damId,this.partnerId).
-      subscribe((result: any) => {
-			if (result.statusCode === 200) {
-        this.getTilesInfo();
-			}else{
-        this.referenceService.goToPageNotFound();
-      }
-		}, error => {
-			this.xtremandLogger.log(error);
-			this.xtremandLogger.errorPage(error);
-		});
-  }
+ 
 
   getTilesInfo(){
     this.tilesLoader = true;

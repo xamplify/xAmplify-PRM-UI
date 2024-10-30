@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Processor } from 'app/core/models/processor';
@@ -43,14 +44,7 @@ export class MarketplaceUtilComponent implements OnInit {
   ngOnInit() {
     this.alias = this.route.snapshot.params['alias'];
     this.landingPageId = this.route.snapshot.params['id'];
-
-    if (this.router.url.includes('/mppv/')) {
-      this.getVendorCompaniesByLandingPageId();
-    } else {
-      this.getVendorCompaniesByAlias();
-    }
-
-    // Initialize the filtered categories
+    this.getVendorCompaniesByAlias();
     this.getFilteredCompanies();
   }
 
@@ -77,18 +71,6 @@ export class MarketplaceUtilComponent implements OnInit {
         )
       }))
       .filter(category => category.companies.length > 0);
-  }
-
-  getVendorCompaniesByLandingPageId() {
-    this.landingPageService.getVendorCompaniesByLandingPageId(this.landingPageId).subscribe(
-      response => {
-        this.categories = response.data;
-        this.getFilteredCompanies();
-      },
-      error => {
-        // Handle error
-      }
-    );
   }
 
   getVendorCompaniesByAlias() {

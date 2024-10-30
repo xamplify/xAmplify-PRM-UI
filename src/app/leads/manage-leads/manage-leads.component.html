@@ -391,10 +391,16 @@
                                   </span>
                                 </h5>
                               </div>
+                              <div *ngIf="isVendorVersion && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 61px;" class="neo">
+                                <h5 class="mt5"><strong>Deal Reg Status:</strong>
+                                  <span>{{lead.sfcfDealRegStatusForVersa}}
+                                  </span>
+                                </h5>
+                              </div>
                             </td>
                             <td>
                               <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
-                                title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
+                                title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:20}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
                               <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"

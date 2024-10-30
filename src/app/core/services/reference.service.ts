@@ -3559,12 +3559,12 @@ clearHeadScriptFiles(){
 }
 
   private setTitleAndFavIcon() {
-    this.setTitle();
     this.setFavIcon();
+    this.setTitle();
     
   }
 
-  private setTitle() {
+  public setFavIcon() {
     let iconPath = localStorage.getItem("appIcon");
     let completeIconPath = "";
     if (iconPath !== "null" && iconPath != null && iconPath != "") {
@@ -3575,7 +3575,7 @@ clearHeadScriptFiles(){
     $("#xamplify-index-head").append('<link rel="icon" type="image/x-icon" href="' + completeIconPath + '" id="appFavicon">');
   }
 
-  private setFavIcon() {
+  private setTitle() {
     let companyName = localStorage.getItem("companyName");
     if (companyName) {
       $("#xamplify-index-head").append('<title>' + companyName + '</title>');

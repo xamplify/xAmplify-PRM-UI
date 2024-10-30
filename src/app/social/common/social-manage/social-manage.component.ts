@@ -29,7 +29,6 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             .subscribe(
             result => {
                 this.socialConnections = result;
-
                 this.socialConnections.forEach(data => {
                     let socialConnection = new SocialConnection();
                     socialConnection.id = data.id;

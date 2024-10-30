@@ -426,16 +426,24 @@ export class Properties {
 	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
 	mapCsvHeaderMessage = " to map your headers to the expected format.";
 	duplicateColumnsMappedErrorMessage = "Duplicate columns have been mapped. Please ensure to check for the specified errors.";
-	emailAddressMandatoryMessage = "Email Address mapping is mandatory.";
+	emailAddressMandatoryMessage = "Email id mapping is mandatory.";
 	contactsCsvHeaderMatchedMessage = "The CSV headers have been successfully matched with the default format";
 	remapHeadersMessage = " to remap the headers";
 	resetMessage = " to reset to the original state.";
 	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
-
+	flexiFieldDisplayText = "You have the ability to add flexible fields, which will be displayed in your contact form.";
 	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
-	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin"
+	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin";
+	selectAnOptionToSaveListMessage = "Select an option to save the list.";
+	ignoreInvalidAndEmptyEmailIdsMessage = "Ignore invalid email id(s) and empty records";
+	editInvalidAndIgnoreEmptyEmailIdsMessage = "Edit invalid email id(s) and ignore empty records";
 
 	socialVanityCallBackErrorMessage = "We are unable to process request. Please contact admin for details.";
+
+	NO_DATA_RETRIVED_FROM_SALESFORCE = "No data retrieved from Salesforce. Please ensure all required fields are filled in.";
+
+	UNABLE_TO_PROCESS_REQUEST = "We're currently unable to process this request. Please try again later.";
+	
 	}
 

@@ -13,6 +13,8 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Properties } from 'app/common/models/properties';
+
 
 declare var $: any, swal: any;
 
@@ -20,7 +22,7 @@ declare var $: any, swal: any;
     selector: 'app-add-contact-modal',
     templateUrl: './add-contact-modal.component.html',
     styleUrls: ['./add-contact-modal.component.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [CountryNames, RegularExpressions]
+    providers: [CountryNames, RegularExpressions,Properties]
 })
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
     @Input() contactDetails: any;
@@ -78,7 +80,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
-                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
+                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
+                 public logger: XtremandLogger,public authenticationService: AuthenticationService,public properties:Properties ) {
         this.notifyParent = new EventEmitter();
 
 
@@ -467,6 +470,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
     ngOnDestroy(){
         this.addContactModalClose();
+        swal.close();
     }
     
     contactCompanyChanged(updatedContactCompany : any){
@@ -522,31 +526,31 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     //XNFR-697
     fetchUserDetailsFromSalesForce(emailId: string) {
-        let message = 'Retrieving details from your salesforce account...! Please Wait...It\'s processing'
-        swal({
-            text: message,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            imageUrl: 'assets/images/loader.gif'
-        });
+        this.validationResponse = new CustomResponse();
+        let message = 'Retrieving details from your salesforce account...It\'s processing'
+        this.referenceService.showSweetAlertProceesor(message);
         this.contactService.getContactDetalisFromSalesforce(this.loggedInUserId, emailId)
             .subscribe(
                 response => {
-                    swal.close();
                     this.loading = false;
                     let contactData = response.data;
                     if (contactData != undefined) {
                         this.setContactInfoFromSalesForce(contactData);
                     }
+                    swal.close();
                     this.canBlurDiv = false;
                     if (response.statusCode == 401) {
                         this.referenceService.showSweetAlertErrorMessage('Your Salesforce Integration was expired. Please re-configure.');
+                    } else if (response.statusCode == 404) {
+                        this.resetContactDetails();
+                        this.validationResponse = new CustomResponse('ERROR', this.properties.NO_DATA_RETRIVED_FROM_SALESFORCE, true);
                     }
                 },
                 (error: any) => {
                     swal.close();
                     this.loading = false;
                     this.canBlurDiv = false;
+                    this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
                 },
             );
 

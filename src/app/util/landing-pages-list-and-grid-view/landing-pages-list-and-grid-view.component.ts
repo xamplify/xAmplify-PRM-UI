@@ -310,7 +310,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /***********Preview Page*********************/
   showPreview(landingPage: LandingPage) {
     if(this.isPartnerLandingPage){
-        this.referenceService.previewPartnerPageInNewTab(landingPage.partnerLandingPageId);
+        /**XBI-2420***/
+        this.referenceService.openWindowInNewTab(landingPage.aliasUrl);
     }else if(this.isLandingPages){
         this.referenceService.previewVendorJourneyPartnerPageInNewTab(landingPage.vendorJourneyId);
     }else if(this.isMasterLandingPages){

@@ -378,7 +378,7 @@
 														!assignLeads)) && !sharedLeads" (click)="hasAccess()" translate>Export To Excel</a>
 												</li>
 												<li><a id="download_empy_csv" (click)="downloadEmptyCsv()"
-														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
+														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !isTeamMemberPartnerList"
 														translate>Download CSV Template</a>
 												</li>
 												<li [ngClass]="{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
@@ -622,13 +622,13 @@
 												*ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading">
 												<app-list-loader></app-list-loader>
 											</div>
-											<div class="portlet" *ngIf="users?.length != 0">
+											<div class="portlet">
 												<div class="portlet-title">
 													<div class="caption" translate>
 														<i class="fa fa-edit" aria-hidden="true"></i>File Preview
 													</div>
 												</div>
-												<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled">
+												<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled && users?.length != 0">
 													<table class="table tgrid" id="sample_editable_2"
 														aria-describedby="">
 														<thead>
@@ -713,7 +713,7 @@
 																				<tr style="border-bottom: 1px solid #dcdcdc"
 																					*ngIf="isPartner">
 																					<td class='pt10 pb10' translate>
-																						Comapny Domain:</td>
+																						Company Domain:</td>
 																					<td class='pt10 pb10'>
 																						{{user.companyDomain}}</td>
 																				</tr>
@@ -820,6 +820,11 @@
 															</ng-container>
 														</tbody>
 													</table>
+													<div>
+														<span class="success">
+															<strong>Total Records : {{users?.length}}</strong>
+														</span>
+													</div>
 													<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
 														<li [ngClass]="{disabled:pager.currentPage === 1}"><a
 																(click)="setCsvPage(1)" translate>First</a></li>
@@ -840,17 +845,17 @@
 														</li>
 													</ul>
 												</div>
+
+												<!----- XNFR-671 Custom CSV Mapped Option ----->
+												<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
+													<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
+														#customCsvMapping (notifyParent)="saveCsvMappedColumns($event)" (notifyParentCancel)="cancelContacts()"
+														(notifyParentSave)="updateCsvContactList(contactListId)" (notifyParentCustomResponse)="csvCustomResponse()">
+													</app-custom-csv-mapping>
+												</div>
 											</div>
 											<!-- END EXAMPLE TABLE PORTLET-->
 										</div>
-									</div>
-
-									<!----- XNFR-671 Custom CSV Mapped Option ----->
-									<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
-										<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
-											[isXamplifyCsvFormatUploaded]="isXamplifyCsvFormatUploaded" (notifyParent)="saveCsvMappedColumns($event)" 
-											(notifyParentCancel)="cancelContacts()">
-										</app-custom-csv-mapping>
 									</div>
 
 									<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -1162,7 +1167,7 @@
 
 																			<tr *ngIf="isPartner">
 																				<td class='pt10 pb10 bold mr_10' translate>
-																					Comapny Domain:</td>
+																					Company Domain:</td>
 																				<td class='pt10 pb10'>
 																					{{contact.companyDomain}}</td>
 																			</tr>
@@ -1323,7 +1328,7 @@
 										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 											style="float: left; cursor: pointer; " data-toggle="modal"
 											data-target="#filterModal">
-											<i class="fa fa-filter ml-16" aria-hidden="true" data-toggle="tooltip"
+											<i class="fa fa-filter ml_16" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 												style="color: #0095da; font-size: 30px; margin-top: 10px; margin-left: 40px;"></i>
 										</div>
@@ -1558,9 +1563,9 @@
 														</button>
 													</td>
 
-													<td class="hidden-xs"
+													<td class="hidden-xs text-center"
 														*ngIf="contactsByType.selectedCategory == 'unsubscribed'">
-														<h5 class='mb0 ellipsis' data-toggle="tooltip"
+														<h5 class='mb0 ellipsis fl-unset' data-toggle="tooltip"
 															data-placement="bottom"
 															title="{{allcontacts.unsubscribedReason}}">
 															{{allcontacts.unsubscribedReason | slice:0:25}}

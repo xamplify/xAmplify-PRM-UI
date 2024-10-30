@@ -309,20 +309,20 @@
 											[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
 											[ngModelOptions]="{standalone: true}"></td>
 									</tr>
-									<tr>
-										<th scope="row">SSO Enabled</th>
-										<td class="pt0">
-											<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
-										</td>
-									</tr>
 									<!--Refer Vendor-->
 									<tr>
-										<th scope="row">{{properties?.inviteAVendor}}</th>
+										<th scope="row">{{properties?.inviteAVendor}} {{properties?.inviteAVendor}} (Option Applicable For Vanity Url)</th>
 										<td class="pt0">
 											<app-custom-ui-switch [customSwitch]="campaignAccess.referVendor" (customUiSwitchEventEmitter)="setReferVendorValue($event)"></app-custom-ui-switch>
 										</td>
 									</tr>
 								</ng-container>
+								<tr>
+									<th scope="row">SSO Enabled</th>
+									<td class="pt0">
+										<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
+									</td>
+								</tr>
 								<tr>
 									<th scope="row">Share Leads</th>
 									<td>
@@ -366,6 +366,11 @@
 								<tr>
 									<th scope="row">Social Feeds</th>
 									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Social Share</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialShareOptionEnabled"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>

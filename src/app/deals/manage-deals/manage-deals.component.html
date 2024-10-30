@@ -363,7 +363,7 @@
                               <div>
                                 <span *ngIf="isVendorVersion"><b>CRM Id:</b> {{deal.crmId}}</span>
                               </div>
-                              <div>
+                              <div data-toggle="tooltip" data-placement="bottom" title="{{deal.createdForCompanyName}}">
                                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
                                   <span style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="deal.createdForCompanyName?.length>30">...</span>

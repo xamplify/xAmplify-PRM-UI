@@ -460,7 +460,11 @@ export class SortOption {
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
 	];
 
-
+	emailTemplatesDropDown = [
+        { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+        { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+    ]; 
+	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
 	public dealsPartnerSortOption: any = this.dealPartnersSortDropDown[0];
@@ -481,6 +485,7 @@ export class SortOption {
 	public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
 	public publishedPartnerAnalyticsSortOption: any = this.publishedPartnerAnalyticsDropDown[4];
 	public mdfVendorsSortOption: any = this.mdfVendorsSortDropDownOptions[5];
+	public vanityEmailTemplates = this.emailTemplatesDropDown[0]; 
 	public userLevelCampaignAnalyticsSortOption: any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length - 1];
 	public damSortOption: any = this.damSortDropDownOptions[this.damSortDropDownOptions.length-1];
 	public publishedDamSortOption: any = this.publishedDamSortDropDownOptions[this.publishedDamSortDropDownOptions.length - 1];

@@ -267,6 +267,9 @@
     .my-10{
       margin:10px 0px;
     }
+    .edit_label{
+      white-space: normal;
+    }
   }
   .align-item-left{
     float: left;

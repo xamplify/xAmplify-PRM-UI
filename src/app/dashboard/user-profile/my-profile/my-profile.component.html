@@ -450,7 +450,7 @@
                                         <!--Vendor Journey-->
                                         <ng-container>
                                             <ng-container
-                                                *ngIf="vendorJourneyAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                                *ngIf="vendorJourneyAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember || authenticationService?.module.isPrmTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin() || authenticationService?.module.isPrm)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
                                                         (click)="activateTab('vendorJourney');clearCustomResponse()">
@@ -581,8 +581,7 @@
                                         </ng-container>
                                         <!--Adding Domains XNFR-454-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
-                                            [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
-                                            style="border-bottom: none !important;">
+                                            [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
                                                 (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
@@ -590,9 +589,8 @@
                                             </a>
                                         </li>
                                         <!--XNFR-679 Flexi Fields-->
-                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
-                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}"
-                                            style="border-bottom: none !important;">
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact && isLocalHostDev()"
+                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
                                                 (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':flexiFieldsMenuHeader}"></ng-template>

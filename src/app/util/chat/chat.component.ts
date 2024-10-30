@@ -26,6 +26,7 @@ export class ChatComponent implements OnInit {
   commentList: DealComments[] = [];
   isError = true;
   comment: DealComments;
+  showError: boolean = false;
   constructor(private logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private dealService: DealsService, private leadService: LeadsService) { }
 
@@ -148,4 +149,104 @@ export class ChatComponent implements OnInit {
       
     }
 
-}
+    isPreviewFromAssetPopup: boolean = false;
+    assetPreview(assetDetails: any, isFromPopup: boolean) {
+      this.isPreviewFromAssetPopup = isFromPopup;
+      let isBeeTemplate = assetDetails.beeTemplate;
+        if(isBeeTemplate){
+          let url = assetDetails.url;
+          this.openWindowInNewTab(url);
+        }
+          
+    }
+
+    getCommentParts(comment: string): { beforeUrl: string; url: string; afterUrl: string } {
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const match = comment.match(urlRegex);
+    console.log('data',comment)
+    
+    if (match && match.length > 0) {
+        const url = match[0]; // First URL found
+        const parts = comment.split(url);
+        return {
+            beforeUrl: parts[0],  // Text before the URL
+            url: url,              // The URL itself
+            afterUrl: parts[1] || '' // Text after the URL (if any)
+        };
+    }
+
+    return {
+        beforeUrl: comment,  // No URL, the whole comment is just plain text
+        url: '',
+        afterUrl: ''
+    };
+
+    }
+
+    containsTextAndUrl(comment: string): boolean {
+       const urlPattern = /(https?:\/\/[^\s]+)/g; // Regex to match URLs
+      return urlPattern.test(comment) && comment.trim().includes(' ');
+  }
+    
+    urlInNewTab(url: string) {
+      url = url.trim();
+      if (url && !url.startsWith('http') && !url.startsWith('https') && !url.startsWith('file') && !url.startsWith('mailto') && !url.startsWith('gopher')) {
+        url = window.location.origin + url;  // Prepend base URL if relative
+      }
+      if (this.isValidUrl(url)) {
+      this.openWindowInNewTab(url);
+      } else{
+      this.showError = true;
+    }
+  }
+   
+  
+    openWindowInNewTab(url:string){
+      console.log('Opening URL:', url);
+      window.open(url,"_blank");
+    }
+
+    isLikelyUrl(comment: string): boolean{
+      return comment.startsWith('http');
+    }
+    
+    isValidUrl(url: string): boolean {
+      url = url.trim(); // Trim whitespace from the URL
+
+      const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+        '((([a-z0-9][a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}|' + // domain name
+        'localhost|' + // localhost
+        '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|' + // IP address
+        '\\[?[a-f0-9]*:[a-f0-9:]+\\])' + // IPv6
+        '(\\:\\d+)?(\\/[-a-z0-9%_.~+!*\'();:@&=+$,/?#]*)*' + // port and path (including special characters)
+        '(\\?[;&a-z0-9%_.~+=-]*)?' + // query string
+        '(\\#[-a-z0-9_]*)?$', 'i'); // fragment locator
+    
+      return !!pattern.test(url); // Validate the trimmed URL
+    }
+
+    getCommentValid(commentData :string){
+      let com='';
+      const urlRegex = /((https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^\s]*)?)/g;
+      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+      let commentsList = commentData.split(' ');
+      let urlSet = new Set(); 
+      commentsList.forEach((ele:any) =>{
+        if (ele.match(emailRegex)) {
+          // If it's an email address, just add it as plain text
+          com += ele + ' ';
+        } else if(ele.match(urlRegex)){
+          let normalizedUrl = ele.startsWith('http') ? ele : 'http://' + ele;
+
+          // If it's a URL and hasn't been added yet, add it
+          if (!urlSet.has(normalizedUrl)) {
+            com += `<a href="${normalizedUrl}" target="_blank"> ${ele}</a> `;
+            urlSet.add(normalizedUrl); // Mark this normalized URL as added
+          }
+        }else{
+          com= com+ele+' '
+        }
+      });
+      return com.trim();
+    }
+  }

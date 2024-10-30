@@ -138,7 +138,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
 					this.menuItem.socialFeeds = data.rssFeeds;
 					this.menuItem.socialFeedsAccessAsPartner = data.rssFeedsAccessAsPartner;
+
 					module.hasSocialStatusRole = data.socialShare;
+					/**XNFR-726***/
+					module.socialShareOptionEnabled = data.socialShare;
+					module.socialFeedsAccess = data.rssFeeds;
+					module.socialFeedsAccessAsPartner = data.rssFeedsAccessAsPartner;
+					/**XNFR-726***/
 
 					this.menuItem.mdf = data.mdf;
 					this.menuItem.mdfAccessAsPartner = data.mdfAccessAsPartner;

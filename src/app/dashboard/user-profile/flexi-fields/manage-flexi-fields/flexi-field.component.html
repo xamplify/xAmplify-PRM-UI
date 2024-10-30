@@ -1,4 +1,5 @@
 <!--Manage Custom Fields-->
+<div class="alert alert-info">{{properties.flexiFieldDisplayText}}</div>
 <div class="portlet light" id="manage-custom-fields">
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <!--Search & Filter-->
@@ -112,4 +113,4 @@
   </div>
   </div>
   <!--Delete-->
-  <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" (notifyComponent)="delete($event)"></app-confirm-sweet-alert-util>
+  <app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" [parameterDto]="parameterDto" (notifyComponent)="delete($event)"></app-confirm-sweet-alert-util>

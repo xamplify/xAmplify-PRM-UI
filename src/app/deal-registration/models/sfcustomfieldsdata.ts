@@ -3,4 +3,5 @@ export class SfCustomFieldsDataDTO{
     value:string = "";
     type:string;
     dateTimeIsoValue:string
+    selectedChoiceValue:string = "";
 }

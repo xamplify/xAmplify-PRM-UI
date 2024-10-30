@@ -308,12 +308,6 @@ export class LandingPageService {
         return this.authenticationService.callDeleteMethod(url);
     }
 
-    getVendorCompaniesByLandingPageId( landingPageId:number) {
-        const url = this.URL + "/getVendorCompaniesByLandingPageId/" + landingPageId +"?access_token=" + this.authenticationService.access_token;
-        return this.authenticationService.callGetMethod(url);
-    }
-
-
     getVendorCompaniesByAlias( alias:string) {
         const url = this.authenticationService.REST_URL + "/getVendorCompaniesByAlias/" + alias ;
         return this.authenticationService.callGetMethod(url);

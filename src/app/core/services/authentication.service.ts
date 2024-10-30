@@ -46,6 +46,7 @@ export class AuthenticationService {
   DOMAIN_URL = "";
   SERVER_URL: any;
   REST_URL: string;
+  SCHEDULER_URL:string;
   MEDIA_URL: string;
   SHARE_URL: string;
   MARKETO_URL: string;
@@ -168,13 +169,13 @@ export class AuthenticationService {
   showVanityURLError1 = false;
 /***** XNFR-669*********** */
 isWelcomePageEnabled = false;
-  showSomethingWentWrongMessageForSSO: boolean = false;
   
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
     this.DOMAIN_URL = this.APP_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
+    this.SCHEDULER_URL = this.envService.SCHEDULER_URL+'xtremand-rest/';
     if (this.SERVER_URL.indexOf('localhost') > -1) {
       this.MEDIA_URL = 'http://localhost:8000/';
     } else {
