@@ -11,7 +11,7 @@
   </div>
   <div class="tileContent">
     <div *ngFor="let category of filteredCategories" class="category-section" [attr.id]="category.name">
-      <ng-container *ngIf="activeCategory === 'All Categories' || activeCategory === category.name ">
+      <div *ngIf="activeCategory === 'All Categories' || activeCategory === category.name ">
       <div class="category">{{ category.name }}</div>
       <div>
         <div class="row">
@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-    </ng-container>
+    </div>
     </div>
     <div *ngIf="filteredCategories.length === 0" class="no-data-global no-data">No Data Found</div>
   </div>

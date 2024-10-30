@@ -371,6 +371,9 @@
                                             activeTabName == 'landingPages' ? 'show':'',
                                             activeTabName == 'masterLandingPages' ? 'show':'',
                                             activeTabName == 'welcomePages' ? 'show':'',
+                                            activeTabName == 'partnerJourneyPages' ? 'show':'',
+                                            activeTabName == 'vendorPartnerJourneyPages' ? 'show':'',
+                                            activeTabName == 'vendorMarketplacePages' ? 'show':'',   
                                             activeTabName == 'categories' ? 'show':'',
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
@@ -485,7 +488,7 @@
                                             </ng-container>
                                              <!--Welcome-pages-->
                                              <ng-container
-                                             *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember || authenticationService.module.isPrmTeamMember || authenticationService?.module?.isMarketingTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin() || authenticationService.module.isPrm || authenticationService?.module?.isMarketing)">
+                                             *ngIf="(authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)">
                                              <li [ngClass]="{'active-tab': activeTabName == 'welcomePages'}">
                                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'welcomePages'}"
                                                      (click)="activateTab('welcomePages');clearCustomResponse()">
@@ -495,7 +498,46 @@
                                                  </a>
                                              </li>
                                          </ng-container>
+                                        <!--Partner Journey Pages-->
+                                         <ng-container
+                                         *ngIf="(authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember &&  authenticationService?.module?.adminOrSuperVisor))">
+                                         <li [ngClass]="{'active-tab': activeTabName == 'partnerJourneyPages'}">
+                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'partnerJourneyPages'}"
+                                                 (click)="activateTab('partnerJourneyPages');clearCustomResponse()">
+                                                 {{properties.partnerJourneyPages}}
+                                                 <ng-template [ngTemplateOutlet]="activeIcon"
+                                                     [ngTemplateOutletContext]="{'moduleName':'partnerJourneyPages'}"></ng-template>
+                                             </a>
+                                         </li>
+                                     </ng-container>
+                                            <!--Vendor Partner Journey Pages-->
+                                            <ng-container
+                                                *ngIf="vendorMarketplace && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                                <li [ngClass]="{'active-tab': activeTabName == 'vendorPartnerJourneyPages'}">
+                                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorPartnerJourneyPages'}"
+                                                        (click)="activateTab('vendorPartnerJourneyPages');clearCustomResponse()">
+                                                        {{properties.vendorPartnerJourneyPages}}
+                                                        <ng-template [ngTemplateOutlet]="activeIcon"
+                                                            [ngTemplateOutletContext]="{'moduleName':'vendorPartnerJourneyPages'}"></ng-template>
+                                                    </a>
+                                                </li>
+                                            </ng-container>
+                                            <!--Vendor Marketplace Pages-->                                            
+                                            <ng-container
+                                            *ngIf="vendorMarketplace && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                            <li [ngClass]="{'active-tab': activeTabName == 'vendorMarketplacePages'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorMarketplacePages'}"
+                                                    (click)="activateTab('vendorMarketplacePages');clearCustomResponse()">
+                                                    {{properties.vendorMarketplacePages}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'vendorMarketplacePages'}"></ng-template>
+                                                </a>
+                                            </li>
                                         </ng-container>
+
+                                        </ng-container>
+
+                                        
                                         <!--Folders-->
                                         <li *ngIf="authenticationService.folders"
                                             [ngClass]="{'active-tab': activeTabName == 'categories'}">
@@ -3292,6 +3334,30 @@
                                                 (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
                                                 (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
                                         </div>
+                                        <!-- Partner Journey Pages -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'partnerJourneyPages'}">
+                                            <app-vendor-journey *ngIf="isPartnerJourneyPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                [moduleType]="properties.partnerJourneyPages"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
+                                        </div>
+                                        <!-- Vendor Partner Journey Pages -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorPartnerJourneyPages'}">
+                                            <app-vendor-journey *ngIf="isVendorPartnerJourneyPages"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"
+                                                [moduleType]="properties.vendorPartnerJourneyPages"></app-vendor-journey>
+                                        </div>
+                                        <!--Master Landing Pages -->
+                                        <div class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'vendorMarketplacePages'}">
+                                            <app-vendor-journey *ngIf="isVendorMarketplacePages"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"
+                                                [moduleType]="properties.vendorMarketplacePages"></app-vendor-journey>
+                                        </div>                                        
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>

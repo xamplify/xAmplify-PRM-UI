@@ -23,6 +23,8 @@ export class AddVendorLogosComponent implements OnInit {
 	dropdownSettings={};
 	selectedItems = [];
 	@Input() dropdownList;
+	@Input() isVendorMarketplace:boolean = false;
+	
 	marketPlaceCategoryResponse:CustomResponse = new CustomResponse();
 	constructor(public authenticationService: AuthenticationService) { }
 

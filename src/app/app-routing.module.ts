@@ -191,6 +191,9 @@ export const routes: Routes = [
 	{path:'welcome-page',component:WelcomePageComponent,canActivate: [AuthGuard], data: { preload: true }},
 	{ path: 'mp/mps/:alias', component: MarketplaceUtilComponent },	
 
+	{ path: 'pjpl/:alias', component: ShowLandingPageComponent },
+	{ path: 'pjpf/:alias', component: FormPreviewComponent },
+
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },

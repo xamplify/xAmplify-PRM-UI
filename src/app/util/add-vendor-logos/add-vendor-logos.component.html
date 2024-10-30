@@ -4,7 +4,7 @@
 			class="btn btn-primary transition">Pick Your Vendors</span></button>
 </div>
 
-<div class="modal fade right" id="add-vendor-logo-popup" tabindex="-1" role="dialog" data-backdrop="static"
+<div class="modal fade right" id="add-vendor-logo-popup" role="dialog" data-backdrop="static"
 	data-keyboard="false">
 	<div class="modal-dialog modal-css" role="document" style="width: 75% !important;">
 		<div class="modal-content">
@@ -16,7 +16,7 @@
 			</div>
 			<app-response-message class="pg8" [customResponse]="marketPlaceCategoryResponse" *ngIf="marketPlaceCategoryResponse.isVisible">
 			</app-response-message>
-			<div class="modal-body" *ngIf = "!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember">
+			<div class="modal-body" *ngIf = "(!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember) || isVendorMarketplace">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
@@ -57,7 +57,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="modal-body" *ngIf = "authenticationService?.module?.isAnyAdminOrSupervisor">
+			<div class="modal-body" *ngIf = "authenticationService?.module?.isAnyAdminOrSupervisor && !isVendorMarketplace">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
