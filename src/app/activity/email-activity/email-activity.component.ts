@@ -28,15 +28,12 @@ export class EmailActivityComponent implements OnInit {
   emailActivityPagination: Pagination = new Pagination();
   showFilterOption: boolean = false;
   selectedFilterIndex: number = 1;
-  loggedInUserId: any;
   customResponse: CustomResponse = new CustomResponse();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   emailSortOption: SortOption = new SortOption();
 
   constructor(public emailActivityService: EmailActivityService, public authenticationService: AuthenticationService,
-    public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {
-      this.loggedInUserId = this.authenticationService.getUserId();
-     }
+    public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {}
 
   ngOnInit() {
     this.showAllEmailActivities();
@@ -55,14 +52,12 @@ export class EmailActivityComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     emailActivityPagination.contactId = this.contactId;
-    emailActivityPagination.userId = this.loggedInUserId;
     this.emailActivityService.fetchAllEmailActivities(emailActivityPagination).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode === 200;
         if(isSuccess){
           emailActivityPagination.totalRecords = data.totalRecords;
-          this.sortOption.totalRecords = data.totalRecords;
           emailActivityPagination = this.pagerService.getPagedItems(emailActivityPagination, data.list);
         }else{
           this.customResponse = new CustomResponse('ERROR',"Unable to get email activities",true);

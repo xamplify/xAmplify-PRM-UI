@@ -11,7 +11,7 @@
             <div class="ml5">
               <input type="text" autocomplete="off" id="sort-text" class="form-control"
                 [(ngModel)]="noteSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                (keydown.enter)="noteSortOption()">
+                (keypress)="noteActivityEventHandler($event.keyCode)">
               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="noteSortOption.searchKey"
                 (click)="noteSortOption.searchKey='';clearSearch();"></button>
               <button type="submit" class="search-box-item-click" (click)="searchNoteActivities();"><i

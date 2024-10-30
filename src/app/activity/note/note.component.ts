@@ -156,4 +156,10 @@ export class NoteComponent implements OnInit {
     })
   }
 
+  noteActivityEventHandler(keyCode: any) {
+    if (keyCode === 13) {
+      this.searchNoteActivities();
+    }
+  }
+
 }

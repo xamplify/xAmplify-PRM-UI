@@ -19,7 +19,7 @@
             <div class="ml5">
               <input type="text" autocomplete="off" id="sort-text" class="form-control"
                 [(ngModel)]="emailSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                (keydown.enter)="emailSortOption()">
+                (keypress)="emailActivityEventHandler($event.keyCode)">
               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="emailSortOption.searchKey"
                 (click)="emailSortOption.searchKey='';clearSearch();"></button>
               <button type="submit" class="search-box-item-click" (click)="searchEmailActivities();"><i
