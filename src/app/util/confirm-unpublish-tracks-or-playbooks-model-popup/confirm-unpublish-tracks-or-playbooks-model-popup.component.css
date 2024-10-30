@@ -1,3 +1,22 @@
 .warning-text{
     color:red;
 }
+/**XNFR-677**/
+@media only screen and (min-width: 768px) {
+    .popup-width{
+        width: 37% !important;
+        top: 35% !important;
+        left: 40% !important;
+        transform: translate(-65px, -40px) !important;
+        position: absolute
+    }
+}
+.mt10 {
+    margin-top: 10px;
+}
+.p-10 {
+    padding: 10px !important;
+}
+.br{
+    border-radius: 5px 5px 0px 0px;
+}

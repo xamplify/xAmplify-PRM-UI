@@ -269,7 +269,7 @@ th {
 .campaign-type-selected,
 ul.alt-row-style1 li:hover,
 .filter.form-selected,
-.filter.landing-page-selected,.mix-filter li.contact-filter-selected{ 
+.filter.landing-page-selected,.mix-filter li.contact-filter-selected,.mix-filter li.vanity-template-selected{ 
    background-color: #0276FF !important;
   color:#fff !important;
 } 
@@ -3585,7 +3585,7 @@ padding-top:7px!important;
 }
 /* edit contact dropdown */
 .e-input-group, .e-input-group.e-control-wrapper, .e-float-input, .e-float-input.e-input-group, .e-float-input.e-control-wrapper, .e-float-input.e-input-group.e-control-wrapper {
-  color: #ffff!important;
+  color: #333!important;
 }
 .e-input-group:not(.e-disabled) .e-input-group-icon:hover, .e-input-group.e-control-wrapper:not(.e-disabled) .e-input-group-icon:hover {
   color:#ffff!important;
@@ -4051,6 +4051,9 @@ div.scrolled{
   .page-container,.page-header.navbar .page-top {
       background: none;
   }
+  .pricing{
+  background: none!important;
+  }
 }
 button.swal2-confirm.styled {
   background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
@@ -4431,3 +4434,15 @@ i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place {
 }
 .bg-none{background: none !important;}
 .neo{margin-left:65px !important;}
+/* quick links */
+.quicklinks_icons{
+background: rgb(0 0 0 / 31%) !important;
+color: #fff !important;
+border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.quicklinks_icons:hover{
+  background: rgb(255 253 253 / 57%) !important;
+}
+.quicklinks_icons>i.fa.fa-eye{
+  padding-left: 0px!important;
+}

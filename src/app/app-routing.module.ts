@@ -48,6 +48,7 @@ import { PreviewEmailTemplateComponent } from './util/preview-email-template/pre
 import { PreviewPageComponent } from './util/preview-page/preview-page.component';
 import { PreviewAssetPdfComponent } from './common/preview-asset-pdf/preview-asset-pdf.component';
 import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
+import { MarketplaceUtilComponent } from './util/marketplace-util/marketplace-util.component';
 
 
 export const routes: Routes = [
@@ -188,9 +189,15 @@ export const routes: Routes = [
 	{ path: 'pv/p/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/ptp/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{path:'welcome-page',component:WelcomePageComponent,canActivate: [AuthGuard], data: { preload: true }},
+	{ path: 'mp/mps/:alias', component: MarketplaceUtilComponent },	
+
+	{ path: 'pjpl/:alias', component: ShowLandingPageComponent },
+	{ path: 'pjpf/:alias', component: FormPreviewComponent },
+
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },
+
 ];
 
 @NgModule({

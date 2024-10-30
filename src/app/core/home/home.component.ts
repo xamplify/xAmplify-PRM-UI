@@ -541,24 +541,30 @@ export class HomeComponent implements OnInit {
   getDisplayViewType() {
     let companyProfileName = this.authenticationService.companyProfileName;
     if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.loader = true;
       this.userService.getDisplayViewType(this.authenticationService.getUserId(), this.authenticationService.companyProfileName)
         .subscribe(
           data => {
             if (data.statusCode == 200) {
               localStorage.setItem('defaultDisplayType', data.data);
             }
+            this.loader = false;
           }, error => {
             localStorage.setItem('defaultDisplayType', 'LIST');
+            this.loader = false;
           });
     } else {
+      this.loader = true;
       this.userService.getModulesDisplayDefaultView(this.authenticationService.getUserId())
         .subscribe(
           data => {
             if (data.statusCode == 200) {
               localStorage.setItem('defaultDisplayType', data.data);
             }
+            this.loader = false;
           }, error => {
             localStorage.setItem('defaultDisplayType', 'LIST');
+            this.loader = false;
           });
     }
   }

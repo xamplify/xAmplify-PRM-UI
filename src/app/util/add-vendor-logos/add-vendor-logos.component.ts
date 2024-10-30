@@ -23,6 +23,8 @@ export class AddVendorLogosComponent implements OnInit {
 	dropdownSettings={};
 	selectedItems = [];
 	@Input() dropdownList;
+	@Input() isVendorMarketplace:boolean = false;
+	
 	marketPlaceCategoryResponse:CustomResponse = new CustomResponse();
 	constructor(public authenticationService: AuthenticationService) { }
 
@@ -49,7 +51,7 @@ export class AddVendorLogosComponent implements OnInit {
 		this.marketPlaceCategoryResponse = new CustomResponse();
 		if ( ((this.authenticationService.module.isTeamMember && !this.authenticationService.module.isAnyAdminOrSupervisor) &&  (this.vendorLogoDetails.every(logo=>!logo.selected || (logo.selected && logo.categoryIds!= null && logo.categoryIds.length>0))))
 		 || (this.authenticationService.module.isAnyAdminOrSupervisor && (this.sharedVendorLogoDetails.every(logo=>logo.teamMembers.every(member=>!member.selected 
-		||(member.selected && member.categoryIds != null && member.categoryIds.length>0)))))){
+		||(member.selected && member.categoryIds != null)))))){
 			this.notifyComponent.emit();
 			$('#' + this.modalPopupId).modal('hide');				
 		}else{

@@ -206,7 +206,7 @@ th {
 ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
-.mix-filter li.contact-filter-selected {
+.mix-filter li.contact-filter-selected,.mix-filter li.vanity-template-selected {
   background-color: #22313a !important;
 }
 
@@ -1723,7 +1723,7 @@ i.IconCustomization {
   border: 1px solid #fff !important;
   color: #fff !important;
 }
-i.IconCustomization:hover {
+i.IconCustomization:hover,.quicklinks_icons:hover {
   border: 1px solid #fff !important;
   background: #fff !important;
   color: #22313a !important;
@@ -2611,3 +2611,17 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
   background-color: #22313a !important;
 }
 .img-wrap{border: 1px solid #2f4857 !important;}
+/* folder view grid */
+.grid-box.folder-height {
+  margin: 2px 0px;
+  border-radius: 0px 15px 15px 15px !important;
+}
+.folder-cheight{
+  background-color: #2b3c46 !important;
+}
+/* quicklinks */
+.quicklinks_icons{
+  background-color: unset!important;
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}

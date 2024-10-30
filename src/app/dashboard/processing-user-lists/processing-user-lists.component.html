@@ -43,7 +43,8 @@
                      <tr>
                        <th scope="col">List Name</th>
                        <th class='text-center' scope="col">Company Name</th>
-                       <th class='text-center' scope="col">Count</th>
+                       <th class='text-center' scope="col">Uploaded Count</th>
+                       <th class='text-center' scope="col">Uploaded Percentage</th>
                        <th class='text-center' scope="col">Uploaded On</th>
                        <th class='text-center' scope="col">Download Csv</th>
                        <th class='text-center' scope="col">Status</th>
@@ -55,7 +56,8 @@
                        <tr>
                          <td>{{userList?.userListName}}</td>
                          <td class="text-center">{{userList?.companyName}}</td>
-                         <td class="text-center">{{userList?.usersCount}}</td>
+                         <td class="text-center">{{userList?.usersCount}} / {{userList?.totalCount}}</td>
+                         <td class="text-center"><strong class="success">{{userList?.uploadedPercentage}}</strong></td>
                          <td class="text-center">
                             <app-display-date-and-time [dateAndTimeUTCString]="userList?.updatedTimeInUTCString"></app-display-date-and-time>
                          </td>
@@ -72,19 +74,8 @@
                                 <i title="Uploading Completed" *ngIf="!userList?.uploadInProgress" class="fa fa-check active-status"></i>
                               </td>
                             </tr>
-                            <tr>
-                              <td>Zero Bounce Validation</td>
-                              <td>
-                                <i title="Zero Bounce Validation In Progress" *ngIf="userList?.zeroBounceEmailValidationInProgress" class="fa fa-spinner active-status"></i>
-                                <i title="Zero Bounce Validation Completed" *ngIf="!userList?.zeroBounceEmailValidationInProgress" class="fa fa-check active-status"></i>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Processing Time Limit Reached</td>
-                              <td>
-                                <i  *ngIf="userList?.processingTimeLimitReached" class="fa fa-check inactive-status"></i>
-                                <i  *ngIf="!userList?.processingTimeLimitReached" class="fa fa-times active-status"></i>
-                              </td>
+                            <tr *ngIf="userList?.processingTimeLimitReached">
+                              <td class="required">Processing Time Limit Reached.</td>
                             </tr>
                           </table>
                          </td>

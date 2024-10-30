@@ -1,0 +1,40 @@
+<div class="flexbody">
+  <div class="menu">
+    <input type="text" class="searchField" [(ngModel)]="searchTerm" placeholder="Search" (keyup)="getFilteredCompanies()">
+    <h3>Categories</h3>
+    <ul>
+      <li class="category-button" [class.active]="activeCategory === 'All Categories'" (click)="showAllCategories()">All Categories</li>
+      <li *ngFor="let category of categories" class="category-button" [class.active]="activeCategory === category.name" (click)="showContent(category.name)">
+        {{ category.name }}
+      </li>
+    </ul>
+  </div>
+  <div class="tileContent">
+    <div *ngFor="let category of filteredCategories" class="category-section" [attr.id]="category.name">
+      <div *ngIf="activeCategory === 'All Categories' || activeCategory === category.name ">
+      <div class="category">{{ category.name }}</div>
+      <div>
+        <div class="row">
+          <div *ngFor="let company of category.companies" class="col-xs-12 col-sm-4 columnClass">
+            <div class="card">
+              <a class="img-card"  [href]="company.link"   target="_top" >
+                <img [src]="company.image">
+              </a>
+              <div class="card-content">
+                <h4 class="card-title">
+                  <a   [href]="company.link"  target="_top" >{{ company.name }}</a>
+                </h4>
+                <div class="company-text"  style="-webkit-box-orient:vertical">{{ company.description }}</div>
+              </div>
+              <div class="card-read-more">
+                <a [href]="company.link"  target="_top" class="btn btn-link btn-block">Know More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div *ngIf="filteredCategories.length === 0" class="no-data-global no-data">No Data Found</div>
+  </div>
+</div>

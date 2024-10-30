@@ -146,6 +146,7 @@ export class ManageDealsComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.checkOppourtunityAcess();
     if (this.referenceService.isCreated) {
       this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
     }
@@ -219,7 +220,8 @@ export class ManageDealsComponent implements OnInit {
         /** User Guide */
       } else {
         if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
-        && !this.authenticationService.superiorRole.includes("Marketing") && this.authenticationService.superiorRole.includes("Partner")) {
+        && !this.authenticationService.superiorRole.includes("Marketing") && !this.authenticationService.superiorRole.includes("Prm")
+        && this.authenticationService.superiorRole.includes("Partner")) {
           this.isOnlyPartner = true;
         }
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
@@ -1536,6 +1538,24 @@ export class ManageDealsComponent implements OnInit {
       this.selectedPartnerCompanyName = "";
       this.showCampaignDeals = true;
     }
+  }
+
+  checkOppourtunityAcess() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.checkIfHasOppourtunityAcess(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          let hasAuthorization = result.data;
+          if (!hasAuthorization) {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
 }

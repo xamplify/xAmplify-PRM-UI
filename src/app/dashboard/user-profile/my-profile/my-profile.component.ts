@@ -361,8 +361,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/** XNFR-669 **/
 	welcomePages: boolean =false;
 	welcomePagesAccess:boolean = false;
+	/**XNFR-679***/
+	flexiFieldsMenuHeader = MY_PROFILE_MENU_CONSTANTS.FLEXI_FIELDS;
+	isFlexiFieldsOptionClicked = false;
 	isUpdateModuleOptionClicked = false;
 	updateModulesMenuHeader = MY_PROFILE_MENU_CONSTANTS.UPDATE_MODULES;
+	/**XNFR-677**/
+	showModelPopupForSalesforce:boolean = false;
+	/**XNFR-712**/
+	isPartnerJourneyPages:boolean = false;
+	isVendorPartnerJourneyPages:boolean = false;
+	vendorMarketplace:boolean = false;
+	isVendorMarketplacePages:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -691,6 +701,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.vendorJourneyAccess = result.vendorJourney;
 			this.masterLandingPageOrVendorPages = result.masterLandingPageOrVendorPages;
 			this.welcomePagesAccess = result.welcomePages;
+			this.vendorMarketplace = result.vendorMarketplace;
 			this.ngxloading = false;
 		}, _error => {
 			this.ngxloading = false;
@@ -2158,7 +2169,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.stopNgxLoader();
 			}, 500);
 			this.activeTabHeader = this.chatGptSettingsMenuHeader;
-		}/**XNFR-669****/
+		}
+		/**XNFR-669****/
 		else if (this.activeTabName == "welcomePages") {
 			this.ngxloading = true;
 			this.welcomePages = false;
@@ -2171,8 +2183,54 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}else if(this.activeTabName==this.updateModulesMenuHeader){
 			this.activateUpdateModulesMenuHeader();
 		}
+		/*****XNFR-628******/
+		else if (this.activeTabName == this.flexiFieldsMenuHeader) {
+			this.activateFlexiFieldsMenuHeader();
+		}
+		/*****XNFR-712******/
+		else if (this.activeTabName == "partnerJourneyPages") {
+			this.ngxloading = true;
+			this.isPartnerJourneyPages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isPartnerJourneyPages = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.partnerJourneyPages;
+		}else if (this.activeTabName == "vendorPartnerJourneyPages") {
+			this.ngxloading = true;
+			this.isVendorPartnerJourneyPages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isVendorPartnerJourneyPages = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.vendorMarketplacePages;
+		}else if (this.activeTabName == "vendorMarketplacePages") {
+			this.ngxloading = true;
+			this.isVendorMarketplacePages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isVendorMarketplacePages = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.vendorMarketplacePages;
+		}
 		this.referenceService.scrollSmoothToTop();
 	}
+
+	/***XNFR-679***/
+	private activateFlexiFieldsMenuHeader() {
+		this.startNgxLoader();
+		this.isFlexiFieldsOptionClicked = false;
+		let self = this;
+		setTimeout(() => {
+			self.isFlexiFieldsOptionClicked = true;
+			self.stopNgxLoader();
+		}, 500);
+		this.activeTabHeader = this.flexiFieldsMenuHeader;
+  }
+
 	private activateUpdateModulesMenuHeader() {
 		this.startNgxLoader();
 		this.isUpdateModuleOptionClicked = false;
@@ -2188,6 +2246,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateChatGptSettingsOption(option:boolean){
 		this.isChatGptSettingsOptionClicked = option;
 	}
+
 
 	startNgxLoader(){
 		this.ngxloading = true;
@@ -3286,7 +3345,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				confirmButtonText: 'Yes'
 
 			}).then(function () {
-				self.configSalesforce();
+				/**XNFR-677**/
+				self.showSalesforceInstanceModelPopup();
 			}, function (dismiss: any) {
 				console.log('you clicked on option' + dismiss);
 			});
@@ -4948,4 +5008,38 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				return '';
 		}
 	}
+
+	/**XNFR-677**/
+	showSalesforceInstanceModelPopup() {
+		this.showModelPopupForSalesforce = true;
+	}
+
+	closeModelPopup() {
+		$('#unpublished-modal').modal('hide');
+		$('input[name="rdaction"]').prop('checked', false);
+		this.showModelPopupForSalesforce = false;
+	}
+
+	getSalesforceRedirectUrl(event) {
+		this.ngxloading = true;
+		this.integrationService.getSalesforceRedirectUrl(event).subscribe(
+			data => {
+				$('#unpublished-modal').modal('hide');
+				$('input[name="rdaction"]').prop('checked', false);
+				this.sfRedirectURL = data.data;
+				this.configSalesforce();
+				this.ngxloading = false;
+			},
+			error => {
+				this.ngxloading = false;
+				this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try again', true);
+			}
+		)
+	}
+
+	isLocalHostDev() {
+        let allowedEmailIds = ['clakshman@stratapps.com'];
+        let userName = this.authenticationService.getUserName();
+        return this.authenticationService.isLocalHost() && allowedEmailIds.indexOf(userName) > -1;
+    }
 }

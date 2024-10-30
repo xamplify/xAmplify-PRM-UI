@@ -78,8 +78,8 @@ import { LinkedinService } from './social/services/linkedin.service';
 import { DatePipe } from '@angular/common';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
-
-
+import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
+import { MarketplaceUtilComponent } from './util/marketplace-util/marketplace-util.component';
 
 
 @NgModule({
@@ -87,7 +87,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
         , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
-        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent,  
+        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent, MarketplaceUtilComponent,
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
@@ -116,7 +116,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService, ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
-        VanityURLService,LinkedinService,DatePipe],
+        VanityURLService,LinkedinService,DatePipe,UrlAuthGuardService],
     bootstrap: [AppComponent]
 
 })

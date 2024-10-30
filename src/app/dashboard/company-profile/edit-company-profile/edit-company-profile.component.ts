@@ -35,6 +35,7 @@ import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { unescape } from 'querystring';
 
 
 declare var $,swal: any;
@@ -211,6 +212,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     supportEmailIdError = false;
     supportEmailIdErrorMessage = "";
 
+    displayName = "";
+
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -382,30 +385,38 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     
     ngOnInit() {
         this.isLocalHost = this.authenticationService.isLocalHost();
+        let firstName = this.authenticationService.user.firstName;
+        let lastName = this.authenticationService.user.lastName;
+        if (firstName == undefined) {
+            firstName = "";
+        }
+        if (lastName == undefined) {
+            lastName = "";
+        }
+        this.displayName = firstName + " " + lastName;
         this.geoLocation();
-        if(!this.isFromAdminPanel){
-            this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
+        if (!this.isFromAdminPanel) {
+            this.upadatedUserId = this.authenticationService.isSuperAdmin() ? this.authenticationService.selectedVendorId : this.loggedInUserId;
             this.getCompanyProfileByUserId(this.upadatedUserId);
             if (this.authenticationService.user.hasCompany) {
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
-            }else{
-				if(this.authenticationService.isPartner()|| this.authenticationService.isOnlyUser()){
-            			this.getPartnerDetails();
-            	}
+            } else {
+                if (this.authenticationService.isPartner() || this.authenticationService.isOnlyUser()) {
+                    this.getPartnerDetails();
+                }
             }
-            
+
             if (this.authenticationService.vanityURLEnabled && this.authenticationService.checkSamlSettingsUserRoles()) {
                 this.setVendorLogoTooltipText();
             }
         }
-       // this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
-        if(!this.companyLogoImageUrlPath){
-          this.squareData = {};
+        if (!this.companyLogoImageUrlPath) {
+            this.squareData = {};
         }
 
-        if(!this.companyBgImagePath){
+        if (!this.companyBgImagePath) {
             this.squareDataForBgImage = {};
         }
     }
@@ -940,7 +951,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     }
                 }
             } else {
-                this.removeCompanyNameError();
+                if (value.length >50){
+                    this.setCompanyNameError("Company Name cannot be more than 50 characters long.");
+                }else{
+                    this.removeCompanyNameError();
+                }  
             }
         } else {
             this.companyNameErrorMessage = "";
@@ -1412,9 +1427,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     validateTwitter() {
         if ($.trim(this.companyProfile.twitterLink).length > 0) {
-            if (!this.companyProfile.twitterLink.includes('twitter.com') ) {
+            if (!(this.companyProfile.twitterLink.includes('twitter.com') || this.isValidTwitterLink(this.companyProfile.twitterLink))) {
                 this.addTwitterError();
-                this.twitterLinkErrorMessage = "Invalid Twiiter Url";
+                this.twitterLinkErrorMessage = "Invalid Twitter Url";
             } else {
                 this.removeTwitterError();
             }
@@ -1986,6 +2001,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     setReferVendorValue(event:boolean){
         this.campaignAccess.referVendor = event;
+    }
+    isValidTwitterLink(twitterLink: any) {
+        const  regex =  /^(https?:\/\/)?(www\.)?x\.com(\/.*)?$/;
+        return regex.test(twitterLink);
     }
   
 }

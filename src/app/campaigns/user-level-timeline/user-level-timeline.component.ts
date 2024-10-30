@@ -54,6 +54,7 @@ export class UserLevelTimelineComponent implements OnInit {
   roleName: Roles = new Roles();
   isOrgAdmin: boolean = false;
   campaignTitle = "";
+  canPartnerEditLead:boolean = true;
   constructor(private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -194,11 +195,13 @@ export class UserLevelTimelineComponent implements OnInit {
         this.leadActionType = "add";
         this.leadId = 0;
         //this.isDeal = false;
+        this.canPartnerEditLead = true;
       } else {
        // this.leadData = data;
         this.dealButtonText = "Update Lead";
         this.leadActionType = "edit";
         this.leadId = data.id;
+        this.canPartnerEditLead = data.partnerEditLead;
       }      
     })
 

@@ -138,6 +138,7 @@ export class ManageLeadsComponent implements OnInit {
   ngOnInit() {
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.checkOppourtunityAcess();
     if (this.referenceService.isCreated) {
       this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
     }
@@ -1471,15 +1472,32 @@ export class ManageLeadsComponent implements OnInit {
 		}
   }
 
-  showRegisterDealButton(lead):boolean {
+  showRegisterDealButton(lead: any): boolean {
     let showRegisterDeal = false;
-    if (lead.selfLead && lead.dealBySelfLead && (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
+    if (this.canRegisterSelfLead(lead)) {
       showRegisterDeal = true;
-    } else if (((((lead.dealByVendor && this.isVendor || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
-      && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED'))) {
+    }
+    else if (this.canVendorOrPartnerRegisterDeal(lead)) {
       showRegisterDeal = true;
     }
     return showRegisterDeal;
+  }
+
+  private canRegisterSelfLead(lead: any): boolean {
+    return lead.selfLead &&
+      lead.dealBySelfLead &&
+      (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) &&
+      lead.associatedDealId == undefined;
+  }
+
+  private canVendorOrPartnerRegisterDeal(lead: any): boolean {
+    let canVendorRegisterDeal = (lead.dealByVendor && this.isVendorVersion && (this.isVendor || this.prm));
+    let canPartnerRegisterDeal = lead.canRegisterDeal && lead.dealByPartner;
+    let canLeadConvertToDeal = lead.enableRegisterDealButton && !lead.leadApprovalOrRejection
+      && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED';
+
+    return (((canVendorRegisterDeal || canPartnerRegisterDeal) && !lead.selfLead) && lead.associatedDealId == undefined)
+      && canLeadConvertToDeal;
   }
 
   viewCustomLeadForm(event :Lead) {
@@ -1500,6 +1518,25 @@ export class ManageLeadsComponent implements OnInit {
     this.showDealForm = false;
     this.closeLeadModal();
   }
+
+  checkOppourtunityAcess() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.checkIfHasOppourtunityAcess(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          let hasAuthorization = result.data;
+          if (!hasAuthorization) {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
 
   
 }

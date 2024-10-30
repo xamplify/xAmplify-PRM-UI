@@ -44,7 +44,7 @@
 								Video</li>
 							<li class="filter" (click)="filterCampaigns('social')"
 								[class.active]="'social' == campaignType" *ngIf="campaignAccess.socialCampaign"
-								translate>Social
+								translate>Social <span class="beta_social_icon_for_buttons">(Beta)</span>
 							</li>
 							<li class="filter" (click)="filterCampaigns('event')"
 								[class.active]="'event' == campaignType" *ngIf="campaignAccess.eventCampaign" translate>

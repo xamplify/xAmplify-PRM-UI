@@ -44,8 +44,10 @@ customResponse: CustomResponse = new CustomResponse();
   /*** XBI-2228 ***/
   mergeTagForGuide = "add_a_company";
   /*** XBI-2228 ***/
-  constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption
-    ) { this.loggedInUserId = this.authenticationService.getUserId();}
+  constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, 
+    public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger,
+     public utilService: UtilService, public sortOption: SortOption) 
+    { this.loggedInUserId = this.authenticationService.getUserId();}
 
   ngOnInit() {
     this.showCompanies();
@@ -61,9 +63,9 @@ customResponse: CustomResponse = new CustomResponse();
     this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedId);
   }
   addCompanyModalOpen(){
-    this.companyService.isCompanyModalPopUp = true;
     this.actionType = "add";
     this.companyId = 0;
+    this.companyService.isCompanyModalPopUp = true;
   }
   closeCompanyModal (event: any) {
 		if (event === "0") {

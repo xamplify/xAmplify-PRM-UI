@@ -31,7 +31,7 @@
                                 <li class="filter" (click)="filterCampaigns('SOCIAL',3)"
                                     [class.campaign-type-selected]="3 == selectedCampaignTypeIndex"
                                     *ngIf="campaignAccess.socialCampaign  || authenticationService?.module?.deletedPartner">
-                                    Social</li>
+                                    Social<span class="beta_social_icon_for_buttons">(Beta)</span></li>
                                 <li class="filter" (click)="filterCampaigns('EVENT',4)"
                                     [class.campaign-type-selected]="4 == selectedCampaignTypeIndex"
                                     *ngIf="campaignAccess.eventCampaign  || authenticationService?.module?.deletedPartner">Event
@@ -1229,8 +1229,8 @@
                                 <img src="assets/images/processing.gif" alt="Processing">
                             </ng-container>
                             </div>
-                            <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent active-campaigns-all-btns-oneinline" data-placement="bottom" data-toggle="tooltip" title="{{campaign.campaignName}}">
-                                <b>Campaign Name:</b> {{campaign.campaignName}}
+                            <h4 class="tittle-name GridViewCotent gridViewTextAlignmnent active-campaigns-all-btns-oneinline" data-placement="bottom" data-toggle="tooltip" title="{{campaign.campaignName}}">
+                                <b>Campaign Name:</b> <span class="line_height">{{campaign.campaignName |slice:0:50}}</span><span *ngIf="campaign?.campaignName?.length >50">...</span>
                             </h4>
                                 <div class="aligntowbtns">
                                 <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">

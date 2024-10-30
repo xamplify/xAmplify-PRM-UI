@@ -1,5 +1,7 @@
 export class EmailNotificationSettingsDto {
     notifyPartners:boolean = false;
+	partnerOnBoardVendorEmailNotification = false;
+	
 	assetPublishedEmailNotification:boolean = false;
 	assetPublishVendorEmailNotification:boolean  = false;
 

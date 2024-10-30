@@ -206,6 +206,12 @@ img.Selected-email-template-imgcu {
   .tab_sub {
     margin-left: 0px !important;
   }
+  .mb-flex-wrap{
+    flex-wrap: wrap;
+  }
+  .email-temp-mb10{
+    margin-bottom: 10px;
+  }
 }
 
 @media only screen and (min-width:768px) and (max-width: 1024px) {

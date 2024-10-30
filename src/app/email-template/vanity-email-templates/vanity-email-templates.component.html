@@ -1,4 +1,55 @@
 <app-grid-loader  *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+<div class="row" *ngIf="!httpRequestLoader.isLoading">
+<div class="col-xs-12 col-sm-6 col-lg-6">
+  <div>
+    <ul class="mix-filter">
+      <div [ngClass]="{disabled:isZeroDefaultsTemplates}" *ngIf="isZeroDefaultsTemplates"></div>
+      <ng-container>
+        <li class="filter" [class.disabled]="isZeroDefaultsTemplates" [attr.data-toggle]="isZeroDefaultsTemplates? 'tooltip' : null" [attr.title]="isZeroDefaultsTemplates? 'No default templates available.' : null"
+        (click)="!isZeroDefaultsTemplates && showAllVanityTemplates('DEFAULT', 0)"
+        [class.vanity-template-selected]="0 == selectedTypeIndex" translate>DEFAULT</li>
+        <li class="filter" (click)=" showAllVanityTemplates('CUSTOM', 1)"
+        [class.vanity-template-selected]="1 == selectedTypeIndex"  translate>CUSTOM</li>
+      </ng-container>
+</ul>
+  </div>
+</div>
+<div class="col-xs-12 col-sm-6 col-lg-6">
+  <div class="page-toolbar">
+    <div class="pull-right">
+      <div class="inputs float-right" style="display: inline-flex;">
+        <div class="portlet-input input-inline" id="search-div">
+          <div class="input-icon right" id="icon">
+          <div class="pb3 float-left search_sort_shadows">
+              <select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
+                [(ngModel)]="vanityEmailSortOption.vanityEmailTemplates"
+                (ngModelChange)="sortEmailTemplates($event)"
+                style="position: relative; right: -3px;">
+                <option *ngFor="let option of vanityEmailSortOption.emailTemplatesDropDown"
+                  [ngValue]="option">{{option.name}}</option>
+              </select>
+            </div>
+        
+
+        <div class="portlet-input input-inline ml5" id="search-div">
+          <div class="input-icon right" id="icon">
+            <input type="text" id="sort-text" class="form-control"
+              [(ngModel)]="vanityEmailSortOption.searchKey"
+              [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="searchVanityEventHandler($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="vanityEmailSortOption.searchKey"
+              (click)="vanityEmailSortOption.searchKey=''; searchVanityEmailTemp();"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchVanityEmailTemp()">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
 <div class="row fullRowCuPaddings" *ngIf="!httpRequestLoader.isLoading">
   <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment"
     *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
@@ -6,8 +57,8 @@
       <img class="email-template-preview" *ngIf="emailTemplate.imagePath" src="{{emailTemplate.imagePath}}"
         alt="Image Not Found">
       <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top"
-        title="{{emailTemplate.name}}">
-        {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+        title="{{selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.subject}}">
+        {{(selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.subject) | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
       </h4>
       <div class="bar gridIconCustomization">
         <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
@@ -24,4 +75,13 @@
     </div>
   </div>
 </div>
+
+<!---Pagination-->
+<div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
+  <strong>No Data Found.</strong>
+</div>
+<div *ngIf="pagination?.pagedItems.length !== 0" [hidden]="httpRequestLoader.isLoading">
+  <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="getVanityEmailTemplates($event)"></app-pagination>
+</div>
+<!---Pagination-->
 <app-email-template-preview-util #emailTemplatePreviewPopupComponent></app-email-template-preview-util>

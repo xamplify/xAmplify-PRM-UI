@@ -163,7 +163,7 @@
                         (click)="downloadDeals(dealsPagination)">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled"
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled &&  !this.authenticationService.module.isPrmTeamMember"
                         (click)="addDeal()" style="padding-left: 11px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                           <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
@@ -171,7 +171,7 @@
                         </button>
                       </a>
 
-                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && (activeCRMDetails?.type == 'CONNECTWISE' || activeCRMDetails?.type == 'HALOPSA'))"
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && (activeCRMDetails?.type == 'CONNECTWISE' || activeCRMDetails?.type == 'HALOPSA' || this.authenticationService.module.isPrmTeamMember))"
 
                         (click)="syncLeadsWithActiveCRM()">
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
@@ -363,7 +363,7 @@
                               <div>
                                 <span *ngIf="isVendorVersion"><b>CRM Id:</b> {{deal.crmId}}</span>
                               </div>
-                              <div>
+                              <div data-toggle="tooltip" data-placement="bottom" title="{{deal.createdForCompanyName}}">
                                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
                                   <span style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="deal.createdForCompanyName?.length>30">...</span>
@@ -777,8 +777,8 @@
         style="margin: 0px -10px;padding-top: 7px;padding-left: 5px;">
         <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
           style="font-size:18px"></span>
-        <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default"
-          style="margin-top: -62px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
+        <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default edit-deal-notify"
+          style="background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
       </a>
 
     </div>

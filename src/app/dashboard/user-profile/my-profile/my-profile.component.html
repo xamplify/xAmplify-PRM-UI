@@ -42,14 +42,13 @@
                                 <img class="profile-image shadow-inset" alt=""
                                     *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
                                 <ng-template #Other><img alt="" class="profile-image" [src]="userProfileImage"
-                                        [width]="circleCropperSettings.croppedWidth"
-                                        [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)">
+                                        [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight"
+                                        (error)="errorHandler($event)">
                                 </ng-template>
                             </ng-container>
                             <ng-template #showImage><img alt="" [src]="userProfileImage" class="profile-image"
-                                    [width]="circleCropperSettings.croppedWidth"
-                                    [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)"
-                                    (click)="imageUpload('imageSelect')"></ng-template>
+                                    [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight"
+                                    (error)="errorHandler($event)" (click)="imageUpload('imageSelect')"></ng-template>
                             <div id="imageSelect" class="upload-btn-wrapper" (click)="fileChangeEvent()">
                                 <i class="fa fa-camera" aria-hidden="true"></i>
                             </div>
@@ -72,8 +71,8 @@
                             </div>
                             <div *ngIf="authenticationService?.module?.upgradeToMarketing"
                                 class="profile-usertitle-job">
-                                <button class="btn btn-info" *ngIf="!isUpgradedRequestSubmitted"
-                                    (click)="upgrade()">Request To Upgrade Your Account</button>
+                                <button class="btn btn-info" *ngIf="!isUpgradedRequestSubmitted" (click)="upgrade()">Request To Upgrade Your
+                                    Account</button>
                                 <button disabled class="btn btn-primary" *ngIf="isUpgradedRequestSubmitted">Upgrade
                                     Request Submitted</button>
                             </div>
@@ -361,7 +360,8 @@
                                     </ul>
                                     <!--------------Admin----------------------->
                                     <div class="my-profile-header-text neumorphismDark admin_tab_alignment neg_mrg_left1"
-                                        [ngClass]="[activeTabName == properties?.dashboardButtons ? 'show':'',
+                                        [ngClass]="[
+                                            activeTabName == properties?.dashboardButtons ? 'show':'',
                                             activeTabName == properties?.newsAndAnnouncements ? 'show':'',
                                             activeTabName == properties?.dashboardBanners ? 'show':'',
                                             activeTabName == 'templates' ? 'show':'',
@@ -371,14 +371,17 @@
                                             activeTabName == 'landingPages' ? 'show':'',
                                             activeTabName == 'masterLandingPages' ? 'show':'',
                                             activeTabName == 'welcomePages' ? 'show':'',
+                                            activeTabName == 'partnerJourneyPages' ? 'show':'',
+                                            activeTabName == 'vendorPartnerJourneyPages' ? 'show':'',
+                                            activeTabName == 'vendorMarketplacePages' ? 'show':'',   
                                             activeTabName == 'categories' ? 'show':'',
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
                                             activeTabName == properties?.addDomainsText ? 'show':'',
-                                            activeTabName == 'masterLandingPageCategories' ? 'show':'']">
+                                            activeTabName == 'masterLandingPageCategories' ? 'show':'',
+                                            activeTabName == flexiFieldsMenuHeader ? 'show':'' ]">
                                         Admin
-                                        <a data-toggle="collapse" style="float: right;"
-                                            href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
+                                        <a data-toggle="collapse" style="float: right;" href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
                                             <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -447,7 +450,7 @@
                                         <!--Vendor Journey-->
                                         <ng-container>
                                             <ng-container
-                                                *ngIf="vendorJourneyAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                                *ngIf="vendorJourneyAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember || authenticationService?.module.isPrmTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin() || authenticationService?.module.isPrm)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
                                                         (click)="activateTab('vendorJourney');clearCustomResponse()">
@@ -483,9 +486,9 @@
                                                     </a>
                                                 </li>
                                             </ng-container>
-                                             <!--Welcom-pages-->
+                                             <!--Welcome-pages-->
                                              <ng-container
-                                             *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember || authenticationService.module.isPrmTeamMember || authenticationService?.module?.isMarketingTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin() || authenticationService.module.isPrm || authenticationService?.module?.isMarketing)">
+                                             *ngIf="(authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)">
                                              <li [ngClass]="{'active-tab': activeTabName == 'welcomePages'}">
                                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'welcomePages'}"
                                                      (click)="activateTab('welcomePages');clearCustomResponse()">
@@ -495,7 +498,46 @@
                                                  </a>
                                              </li>
                                          </ng-container>
+                                        <!--Partner Journey Pages-->
+                                         <ng-container
+                                         *ngIf="(authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember &&  authenticationService?.module?.adminOrSuperVisor))">
+                                         <li [ngClass]="{'active-tab': activeTabName == 'partnerJourneyPages'}">
+                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'partnerJourneyPages'}"
+                                                 (click)="activateTab('partnerJourneyPages');clearCustomResponse()">
+                                                 {{properties.partnerJourneyPages}}
+                                                 <ng-template [ngTemplateOutlet]="activeIcon"
+                                                     [ngTemplateOutletContext]="{'moduleName':'partnerJourneyPages'}"></ng-template>
+                                             </a>
+                                         </li>
+                                     </ng-container>
+                                            <!--Vendor Partner Journey Pages-->
+                                            <ng-container
+                                                *ngIf="vendorMarketplace && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                                <li [ngClass]="{'active-tab': activeTabName == 'vendorPartnerJourneyPages'}">
+                                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorPartnerJourneyPages'}"
+                                                        (click)="activateTab('vendorPartnerJourneyPages');clearCustomResponse()">
+                                                        {{properties.vendorPartnerJourneyPages}}
+                                                        <ng-template [ngTemplateOutlet]="activeIcon"
+                                                            [ngTemplateOutletContext]="{'moduleName':'vendorPartnerJourneyPages'}"></ng-template>
+                                                    </a>
+                                                </li>
+                                            </ng-container>
+                                            <!--Vendor Marketplace Pages-->                                            
+                                            <ng-container
+                                            *ngIf="vendorMarketplace && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                            <li [ngClass]="{'active-tab': activeTabName == 'vendorMarketplacePages'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorMarketplacePages'}"
+                                                    (click)="activateTab('vendorMarketplacePages');clearCustomResponse()">
+                                                    {{properties.vendorMarketplacePages}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'vendorMarketplacePages'}"></ng-template>
+                                                </a>
+                                            </li>
                                         </ng-container>
+
+                                        </ng-container>
+
+                                        
                                         <!--Folders-->
                                         <li *ngIf="authenticationService.folders"
                                             [ngClass]="{'active-tab': activeTabName == 'categories'}">
@@ -537,17 +579,24 @@
                                                 </a>
                                             </li>
                                         </ng-container>
-                                        <!-- Adding masterLandingPageCategories  end -->
                                         <!--Adding Domains XNFR-454-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
-                                            [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
-                                            style="border-bottom: none !important;">
+                                            [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
                                                 (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':properties?.addDomainsText}"></ng-template>
                                             </a>
                                         </li>
+                                        <!--XNFR-679 Flexi Fields-->
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact && isLocalHostDev()"
+                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
+                                                (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':flexiFieldsMenuHeader}"></ng-template>
+                                            </a>
+                                        </li>
+                                        
                                         <!--Module Access-->
                                         <li *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.updateModulesFromMyProfile" [ngClass]="{'active-tab': activeTabName == updateModulesMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == updateModulesMenuHeader}" (click)="activateTab(updateModulesMenuHeader);clearCustomResponse()">
@@ -1208,7 +1257,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <a (click)="configSalesforce()"
+                                                                <a (click)="showSalesforceInstanceModelPopup()"
                                                                     class="btn btn-block btn-primary text-uppercase"
                                                                     *ngIf="sfRibbonText == 'configure'"
                                                                     translate>configure</a>
@@ -1462,7 +1511,7 @@
                                                         <span
                                                             style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
                                                             <a (click)="salesforceSettings()" data-toggle="tooltip"
-                                                                data-placement="top" title="Refresh Custom Fields"><i
+                                                                data-placement="top" title="Refresh Flexi Fields"><i
                                                                     class="fa fa-refresh"
                                                                     style="font-size: 15px !important;"></i> Reload</a>
                                                         </span>
@@ -1583,7 +1632,7 @@
                                                         <span
                                                             style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
                                                             <a (click)="hubspotSettings()" data-toggle="tooltip"
-                                                                data-placement="top" title="Refresh Custom Fields"><i
+                                                                data-placement="top" title="Refresh Flexi Fields"><i
                                                                     class="fa fa-refresh"
                                                                     style="font-size: 15px !important;"></i> Reload</a>
                                                         </span>
@@ -2180,8 +2229,7 @@
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
                                                                 <button class="button_blue bgcolor-unset pd_lft2"
                                                                     (click)="addCategory()">
-                                                                    <span
-                                                                        class="btn btn-primary transition txt_pd-top3">Create
+                                                                    <span class="btn btn-primary transition txt_pd-top3">Create
                                                                         a Folder</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
@@ -3286,6 +3334,30 @@
                                                 (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
                                                 (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
                                         </div>
+                                        <!-- Partner Journey Pages -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'partnerJourneyPages'}">
+                                            <app-vendor-journey *ngIf="isPartnerJourneyPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                [moduleType]="properties.partnerJourneyPages"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
+                                        </div>
+                                        <!-- Vendor Partner Journey Pages -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorPartnerJourneyPages'}">
+                                            <app-vendor-journey *ngIf="isVendorPartnerJourneyPages"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"
+                                                [moduleType]="properties.vendorPartnerJourneyPages"></app-vendor-journey>
+                                        </div>
+                                        <!--Master Landing Pages -->
+                                        <div class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'vendorMarketplacePages'}">
+                                            <app-vendor-journey *ngIf="isVendorMarketplacePages"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"
+                                                [moduleType]="properties.vendorMarketplacePages"></app-vendor-journey>
+                                        </div>                                        
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>
@@ -3297,6 +3369,8 @@
                                         <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></app-campaign-analytics-settings>
                                         <!--XNFR-628 Chat GPT-->
                                         <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
+                                        <!--XNFR-679 Flexi Fields-->
+                                        <app-flexi-field *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-flexi-field>
                                         <app-module-access *ngIf="isUpdateModuleOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == updateModulesMenuHeader}" [isNavigatedFromMyProfileSection]="true"></app-module-access>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
                                     </div>
@@ -3833,3 +3907,7 @@
 <ng-template #activeIcon let-moduleName="moduleName">
     <i *ngIf="activeTabName == moduleName" class="fa fa-check-circle-o success display-inline"></i>
 </ng-template>
+<!-- XNFR-677 -->
+<app-confirm-unpublish-tracks-or-playbooks-model-popup *ngIf="showModelPopupForSalesforce" [isFromIntegration]="'true'"
+    (cancelEmitter)="closeModelPopup()" (eventOutput)="getSalesforceRedirectUrl($event)">
+</app-confirm-unpublish-tracks-or-playbooks-model-popup>

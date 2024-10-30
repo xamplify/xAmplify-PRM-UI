@@ -147,6 +147,10 @@ export class SocialCallbackComponent implements OnInit {
                         },
                         error => {
                             this.error = error;
+                            if (providerName === "oauthsso") {
+                                this.authenticationService.showVanityURLError1 = true;
+                                this.router.navigate(['/login']);
+                            }
                         },
                         () => console.log('login() Complete'));
             });

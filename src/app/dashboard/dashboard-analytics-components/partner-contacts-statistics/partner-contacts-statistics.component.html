@@ -3,8 +3,7 @@
     <div class="portlet light" style="margin-bottom: 20px;">
       <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
         <div class="caption">
-          <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName}} Contacts
-            Statistics</span>
+          <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName | translate}} <span translate>Contacts Statistics</span></span>
         </div>
       </div>
       <div class="portlet-body clearfix">
@@ -29,7 +28,7 @@
                       <h3 class="number">
                         -
                       </h3>
-                      <p class="partners-text">Total</p>
+                      <p class="partners-text" translate>Total</p>
                     </div>
                   </div>
                 </div>
@@ -45,7 +44,7 @@
                         -
                       </h3>
 
-                      <p class="partners-text">Available</p>
+                      <p class="partners-text" translate>Available</p>
                     </div>
                   </div>
                 </div>
@@ -61,7 +60,7 @@
                         {{partnerContactsAnalyticsCount?.usedContacts}}
                       </h3>
 
-                      <p class="partners-text">Used</p>
+                      <p class="partners-text" translate>Used</p>
                     </div>
                   </div>
                 </div>
@@ -75,7 +74,7 @@
             <div [hidden]="treeMapLoader.isLoading" *ngIf="treeMapData?.length < 1"
               style="max-width: 100%;text-align: center;">
               <div class="alert alert-info">
-                <strong>No Data Found</strong>
+                <strong translate>No Data Found</strong>
               </div>
             </div>
             <div [hidden]="treeMapLoader.isLoading" id="minimized-contacts-treemap"

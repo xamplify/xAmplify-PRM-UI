@@ -68,10 +68,10 @@
                      <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                   </li>
                   <li class="btnShare" class="topnav-button-css"
-                     *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
+                     *ngIf="authenticationService?.module?.socialShareOptionEnabled &&  authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                      <button class="btn btn custom btn_custom_bg" [ngClass]="authenticationService?.isTop?'customskin':''"
                         [routerLink]="['/home/social/update-status']" style="border-radius: 7px;">
-                        <span class="hidden-xs" translate>Update Status</span>
+                        <span class="hidden-xs" translate>Update Status <span class="beta_social_icon_for_buttons">(Beta)</span></span>
                         <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''" button
                            data-toggle="tooltip" aria-hidden="true"></i>
                      </button>
@@ -135,9 +135,10 @@
                             || authenticationService.module.isVendor
                             || authenticationService.module.isPrm
                             || authenticationService.module.isVendorTier
-                            || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
-                           <a (click)="goToRouter('/home/social/manage/all')" translate> <i class="fa fa-cog"
-                                 aria-hidden="true"></i> Social Accounts</a>
+                            || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && authenticationService?.module?.socialShareOptionEnabled">
+                           <a (click)="goToRouter('/home/social/manage/all')" translate>
+                              <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts <span class="beta_social_icon">(Beta)</span>
+                           </a>
                            <div class="border-bt"></div>
                         </li>
 
@@ -147,11 +148,11 @@
                               <li (click)="navigateToDashboardType(dashboardType)">
                                  <a>
                                     <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-                                    <ng-container *ngIf="dashboardType=='Welcome'">
-                                       Welcome
+                                    <ng-container *ngIf="dashboardType=='Welcome'" translate>
+                                       <span translate>Welcome</span>
                                     </ng-container>
                                     <ng-container *ngIf="dashboardType!='Welcome'">
-                                       {{dashboardType}}
+                                       {{dashboardType | translate}}
                                     </ng-container>
                                  </a>
                                  <div class="border-bt"></div>
@@ -161,21 +162,19 @@
                         <!-- Guides Help Icon-->
                         <li
                            *ngIf="!authenticationService.isOnlyUser() && authenticationService.user.hasCompany && userId!=1">
-                           <a href="{{guideHomeUrl}}" target="_blank">
+                           <a href="{{guideHomeUrl}}" target="_blank" translate>
                               <i class="fa fa-question-circle-o" style="font-size: 15px;"
                                  aria-hidden="true"></i>&nbsp;Help
                            </a>
                            <div class="border-bt"></div>
                         </li>
-                        <!-- Guides Help Icon-->
-                        <li
-                           *ngIf="myVendorsLoader &&authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                           <a><img src="assets/images/loading.gif">Loading My Vendors...</a>
+                        <!-- My Vendors XNFR-698-->
+                        <li *ngIf="myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                           <a><img src="assets/images/loading.gif" alt="No Image Found">Loading My Vendors...</a>
                         </li>
-                        <li
-                           *ngIf="!myVendorsLoader && authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                           <a (click)="goToRouter('/home/dashboard/vendors')" translate>
-                              <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
+                        <li  *ngIf="!myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                           <a (click)="goToRouter('/home/dashboard/vendors')">
+                              <i class="fa fa-users" aria-hidden="true"></i><span translate>My Vendors</span> ({{vendorCount}})</a>
                            <div class="border-bt"></div>
                         </li>
                         <!--XBI-1917-->
@@ -185,7 +184,7 @@
                            <li>
                               <a (click)="navigateAndOpenAddLeadsModalPopUp()">
                                  <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                 {{LEAD_CONSTANTS?.registerLeads}}
+                                 {{LEAD_CONSTANTS?.registerLeads | translate}}
                               </a>
                               <div class="border-bt"></div>
                            </li>
@@ -193,7 +192,7 @@
                            <li *ngIf="isRegisterDealEnabled">
                               <a (click)=" navigateAndOpenAddDealsModalPopUp()">
                                  <i class="fa fa-tags" aria-hidden="true"></i>
-                                 {{DEAL_CONSTANTS?.registerDeals}}
+                                 {{DEAL_CONSTANTS?.registerDeals | translate}}
                               </a>
                               <div class="border-bt"></div>
                            </li>

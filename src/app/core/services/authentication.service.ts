@@ -46,6 +46,7 @@ export class AuthenticationService {
   DOMAIN_URL = "";
   SERVER_URL: any;
   REST_URL: string;
+  SCHEDULER_URL:string;
   MEDIA_URL: string;
   SHARE_URL: string;
   MARKETO_URL: string;
@@ -168,11 +169,13 @@ export class AuthenticationService {
   showVanityURLError1 = false;
 /***** XNFR-669*********** */
 isWelcomePageEnabled = false;
+  
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
     this.DOMAIN_URL = this.APP_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
+    this.SCHEDULER_URL = this.envService.SCHEDULER_URL+'xtremand-rest/';
     if (this.SERVER_URL.indexOf('localhost') > -1) {
       this.MEDIA_URL = 'http://localhost:8000/';
     } else {
@@ -1201,6 +1204,12 @@ isWelcomePageEnabled = false;
       .catch(this.handleError);
   }
 
+  public callGetMethodWithQueryParameters(url:string,params:any){
+    return this.http.get(url, { search: params })
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   public callPostMethod(url: string, requestDto: any) {
     return this.http.post(url, requestDto)
       .map(this.extractData)
@@ -1243,6 +1252,15 @@ isWelcomePageEnabled = false;
     } else {
       this.DOMAIN_URL = this.APP_URL;
     }
+  }
+
+  setCustomDomainUrl(customDomain:string) {
+    if (this.vanityURLEnabled) {
+      this.DOMAIN_URL = "https://"+customDomain+"/";
+    } else {
+      this.DOMAIN_URL = this.APP_URL;
+    }
+    this.xtremandLogger.info("Custom Domain Url To Access Across The Application : "+this.DOMAIN_URL);
   }
 
   stopLoaders() {
@@ -1439,17 +1457,21 @@ logoutByUserId(){
   return this.callGetMethod(url);
 }
 
-vanityWelcomePageRequired(userName) {
+vanityWelcomePageRequired(userId) {
   this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-  return this.http.post(this.REST_URL + 'v_url/vanityWelcomePageRequired?userName=' + userName + '&access_token=' + this.access_token, this.dashboardAnalyticsDto)
-    .map((res: Response) => { return res.json(); })
-    .catch((error: any) => { return error; });
+  let url = this.REST_URL + 'v_url/vanityWelcomePageRequired?userId=' + userId +'&vanityUrlFilter='+this.dashboardAnalyticsDto.vanityUrlFilter +'&vendorCompanyProfileName='+this.dashboardAnalyticsDto.vendorCompanyProfileName +'&access_token=' + this.access_token;
+  return this.callGetMethod(url);
 } 
 
   getCustomFieldsMissingErrorMessage(){
     let partnersMergeTag = this.properties.partnersMergeTag;
     let partnerModuleCustomName = this.getPartnerModuleCustomName();
     return this.properties.customFieldsMissingErrorMessage.replace(partnersMergeTag, partnerModuleCustomName);
+  }
+
+  getCompanyProfileNameByCustomDomain(customDomain:string){
+    let url = this.REST_URL + 'v_url/getCompanyProfileNameByCustomDomain/' + customDomain;
+    return this.callGetMethod(url);
   }
 
 }

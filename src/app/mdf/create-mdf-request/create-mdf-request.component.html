@@ -213,6 +213,12 @@
                                                 {{dropDownValue.name}}</option>
                                           </select>
                                        </ng-container>
+                                       <!--Country-->
+                                       <ng-container *ngIf="columnInfo.labelType=='country'">
+                                          <select class="form-control" [(ngModel)]="columnInfo.value" [ngModelOptions]="{standalone: true}">
+                                             <option *ngFor="let countryName of countryNames">{{countryName}} </option>     
+                                          </select>
+                                        </ng-container>
                                     </div>
                                  </div>
                               </div>

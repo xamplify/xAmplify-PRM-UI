@@ -64,11 +64,12 @@
                               *ngIf="campaignAccess.videoCampaign || authenticationService?.module?.deletedPartner"
                               translate>
                               Video</li>
+                             
                            <li class="filter" (click)="filterCampaigns('SOCIAL',3)"
                               [class.campaign-type-selected]="3 == selectedCampaignTypeIndex"
                               *ngIf="campaignAccess.socialCampaign || authenticationService?.module?.deletedPartner"
                               translate>
-                              Social</li>
+                              Social  <span class="beta_social_icon_for_buttons">(Beta)</span></li>
                            <li class="filter" (click)="filterCampaigns('EVENT',4)"
                               [class.campaign-type-selected]="4 == selectedCampaignTypeIndex"
                               *ngIf="campaignAccess.eventCampaign || authenticationService?.module?.deletedPartner"

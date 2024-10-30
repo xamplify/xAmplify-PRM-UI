@@ -12,6 +12,7 @@
 }
 .grid-box {
   padding-bottom: 0px !important;
+  border: 1px solid #d0d5db;
 }
 .sidePaddingsAbjustment {
   padding: 0px 5px !important;
@@ -30,6 +31,16 @@
     font-size: 10px !important;
   }
 }
+.vanity-template-selected {
+  background-color: #0276ff;
+  color: #fff;
+}
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
 @media only screen and (min-width: 300px) and (max-width: 600px) {  
   .grid-box img{
     height: auto;

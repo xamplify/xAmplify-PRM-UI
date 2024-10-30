@@ -20,5 +20,9 @@ export const RouterUrlConstants = {
     addDeal: 'deal/add',
     manageDeals: 'deal/manage',
     addLeadFromHome: 'leads/d/add',
-    addDealFromHome: 'deal/d/add'  
+    addDealFromHome: 'deal/d/add',
+    damPartnerView:'sharedp/',
+    view:'view/',
+    authorize:'authorize/'
+
 }

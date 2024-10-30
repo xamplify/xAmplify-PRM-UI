@@ -9,6 +9,8 @@ import { VideoFileService } from 'app/videos/services/video-file.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileEventEmitter } from '../models/video-file-event-emitter';
 import { Properties } from 'app/common/models/properties';
+import { DamService } from '../services/dam.service';
+
 
 @Component({
 	selector: 'app-manage-dam',
@@ -35,7 +37,7 @@ export class ManageDamComponent implements OnInit {
 
 	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, 
 		private router: Router,private route: ActivatedRoute, public videoFileService: VideoFileService,
-         public userService: UserService,public properties:Properties) {
+         public userService: UserService,public properties:Properties,private damService:DamService) {
 		/****XNFR-169****/
         this.viewType = this.route.snapshot.params['viewType'];
         this.categoryId = this.route.snapshot.params['categoryId'];
@@ -50,13 +52,21 @@ export class ManageDamComponent implements OnInit {
 
 	ngOnInit() { 
 		this.isPartnerView = this.router.url.indexOf('/shared')>-1;
-		if(this.router.url.indexOf('/editVideo')>-1){		
-		 this.getVideo(this.videoId, this.damId, 'editVideo');		
-		} else if(this.router.url.indexOf('/previewVideo')>-1){
-		 this.getVideo(this.videoId, this.damId, 'playVideo');
+		if(this.router.url.indexOf('/editVideo')>-1 || this.router.url.indexOf('/previewVideo')>-1){	
+          /***XNFR-694****/  	
+          this.validateVideoId(this.videoId,'editVideo');
 		}
         this.getRoleByUserId();
 	}
+    validateVideoId(videoId: number,routerIndex:string) {
+        this.damService.validateVideoId(videoId).subscribe(
+            _response => {
+                this.getVideo(this.videoId, this.damId, routerIndex);
+            }, error => {
+                this.xtremandLogger.errorPage(error);
+            }
+        )
+    }
 	
 	  getDefaultVideoSettings() {
         this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });

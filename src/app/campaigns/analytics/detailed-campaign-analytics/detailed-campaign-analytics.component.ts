@@ -205,6 +205,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
   @Input() campaignId = 0;
   @Input() hidePageContent = false;
   @Input() campaignTitle:any;
+  canPartnerEditLead: boolean = true;
   constructor(private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -587,7 +588,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
 	        	userId = this.loggedInUserId ;
 	        }
 	        
-	        this.campaignService.getCampaignHighLevelAnalytics(campaignId, userId)
+	        this.campaignService.getCampaignHighLevelAnalytics(campaignId, userId, this.loggedInUserId)
 	          .subscribe(
 	            response => {
 	            	this.campaignReport.emailSentCount = response.data.totalEmailsSent;
@@ -970,12 +971,14 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         this.dealButtonText = "Register Lead";
         this.leadActionType = "add";
         this.leadId = 0;
+        this.canPartnerEditLead = true;
         //this.isDeal = false;
       } else {
        // this.leadData = data;
         this.dealButtonText = "Update Lead";
         this.leadActionType = "edit";
         this.leadId = data.id;
+        this.canPartnerEditLead = data.partnerEditLead;
       }      
     })
 

@@ -433,6 +433,11 @@ input:checked + .slider:before {
   background-color: #eee;
   border-radius: 50%;
 }
+.profile-content {
+display: flex;
+flex-direction: column;
+overflow: unset !important;
+}
 
 /* On mouse-over, add a grey background color */
 .container-checkbox-xamplify:hover input ~ .checkmark {

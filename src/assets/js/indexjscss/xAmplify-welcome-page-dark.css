@@ -119,3 +119,14 @@ color: #fff;
 h1, h2, h3, h4, h5, h6 {
     color: #fff;
 }
+@media (max-width: 767px) {
+    .xamplify-welcome-page-top-menu {
+     background: #2b3c46 !important;
+    }
+    .xamplify-welcome-page-top {
+     background: #22313a !important;
+    }
+    .xamplify-company-logo-thumbnail-wrapper {
+        background: #22313a !important;
+    }
+}

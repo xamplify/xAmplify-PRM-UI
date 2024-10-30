@@ -58,5 +58,8 @@ export class ColumnInfo {
     hideFieldInfo: boolean = false;
     private = false;
     formLookUpDefaultFieldType: any;
-    isDropDownLoading : boolean = false;
+    isDropDownLoading: boolean = false;
+    //XNFR-710
+    selectedChoiceValue: any;
+    formLabelDefaultFieldType : any;
 }

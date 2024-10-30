@@ -1,6 +1,6 @@
 <!-- BEGIN PAGE CONTENT-->
 <div [ngClass]="(module === 'contacts') ? 'page-content':''">
-<div class="page-bar" style="height:48px;">
+<div class="page-bar mb-height_auto" style="height:48px;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home" aria-hidden="true"></i>
 			<a [routerLink]="refService?.homeRouter" translate>Home</a>
@@ -378,7 +378,7 @@
 														!assignLeads)) && !sharedLeads" (click)="hasAccess()" translate>Export To Excel</a>
 												</li>
 												<li><a id="download_empy_csv" (click)="downloadEmptyCsv()"
-														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
+														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !isTeamMemberPartnerList"
 														translate>Download CSV Template</a>
 												</li>
 												<li [ngClass]="{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
@@ -507,20 +507,7 @@
 														</button>
 													</div>
 													<ng-container *ngIf="!refService.isMobileScreenSize()">
-														<div class="btn-group p-top2"
-															*ngIf="!isSynchronizationList && !isFormList ">
-															<button id="copyFrom_clipboard" class="button bgcolor-unset"
-																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)||  (contactsCompanyListSync  && !this.isPartnerUserList))"
-																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
-																translate>
-																<span class="btn Btn-Green transition txt_pd-top3 btn-copy">Copy
-																	List From
-																	ClipBoard<i class="fa fa-clipboard"
-																		aria-hidden="true"
-																		style="font-size: 12px; margin-left: 5px;"></i></span>
-															</button>
-														</div>
-														<div class="btn-group mt"
+														<div class="btn-group mt buttonalign"
 															*ngIf="!isSynchronizationList && !isFormList ">
 															<div class="fileUpload marg-lft" id="upload_csv"
 																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)|| (contactsCompanyListSync  && !this.isPartnerUserList))"
@@ -628,47 +615,6 @@
 											</div>
 										</div>
 									</div>
-									<div class="row" *ngIf="clickBoard">
-										<div class="col-sm-12" style="padding-left:0px">
-											<h3 class="col-xs-12" translate>Copy from text -- paste below</h3>
-											<div class="col-sm-9 form-group">
-												<div class="col-sm-3" style="padding-left: 0px;">
-													<select class="col-sm-2 options form-control">
-														<option selected value="DEFAULT" translate>Delimiter Type
-														</option>
-														<option value="CommaSeperated" translate>Comma Separated
-														</option>
-														<option value="TabSeperated" translate>Tab Separated</option>
-													</select>
-												</div>
-												<button class=" col-sm-2 btn button bgcolor-unset p0" type="button"
-													(click)="clipboardShowPreview()" translate><span
-														class="btn Btn-Green transition verify_text">VERIFY
-														DATA</span></button>
-											</div>
-											<div class="col-sm-9">
-												<textarea *ngIf="!isPartner" class="textareaNumber"
-													[(ngModel)]="clipboardTextareaText"
-													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
-													[ngModelOptions]="{standalone: true}"
-													style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
-													required="required">
-					  </textarea>
-												<textarea *ngIf="isPartner" id="copyFromclipTextArea"
-													class="textareaNumber" [(ngModel)]="clipboardTextareaText"
-													data-toggle="tooltip" data-placement="bottom"
-													title="please fill out this form"
-													placeholder="FirstName,LastName,AccountName,AccountOwner,AccountSubType,Company,CompanyDomain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,AccountName,AccountOwner,AccountSubType,Company,CompanyDomain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,AccountName,AccountOwner,AccountSubType,Company,CompanyDomain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
-													[ngModelOptions]="{standalone: true}"
-													style="height: 150px;font-size: 11px;line-height: 1.4;min-width: 100%;max-width: 200%;width: 130%;"
-													required="required">
-					  </textarea>
-											</div>
-											<div class="col-sm-3">
-												<span id="clipBoardValidationMessage"></span>
-											</div>
-										</div>
-									</div>
 									<div class="row" id="file_preview" *ngIf="filePrevew">
 										<div class="col-xs-12">
 											<!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -676,13 +622,13 @@
 												*ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading">
 												<app-list-loader></app-list-loader>
 											</div>
-											<div class="portlet" *ngIf="users?.length != 0">
+											<div class="portlet">
 												<div class="portlet-title">
 													<div class="caption" translate>
 														<i class="fa fa-edit" aria-hidden="true"></i>File Preview
 													</div>
 												</div>
-												<div class="portlet-body">
+												<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled && users?.length != 0">
 													<table class="table tgrid" id="sample_editable_2"
 														aria-describedby="">
 														<thead>
@@ -767,7 +713,7 @@
 																				<tr style="border-bottom: 1px solid #dcdcdc"
 																					*ngIf="isPartner">
 																					<td class='pt10 pb10' translate>
-																						Comapny Domain:</td>
+																						Company Domain:</td>
 																					<td class='pt10 pb10'>
 																						{{user.companyDomain}}</td>
 																				</tr>
@@ -874,6 +820,11 @@
 															</ng-container>
 														</tbody>
 													</table>
+													<div>
+														<span class="success">
+															<strong>Total Records : {{users?.length}}</strong>
+														</span>
+													</div>
 													<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
 														<li [ngClass]="{disabled:pager.currentPage === 1}"><a
 																(click)="setCsvPage(1)" translate>First</a></li>
@@ -894,10 +845,19 @@
 														</li>
 													</ul>
 												</div>
+
+												<!----- XNFR-671 Custom CSV Mapped Option ----->
+												<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
+													<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
+														#customCsvMapping (notifyParent)="saveCsvMappedColumns($event)" (notifyParentCancel)="cancelContacts()"
+														(notifyParentSave)="updateCsvContactList(contactListId)" (notifyParentCustomResponse)="csvCustomResponse()">
+													</app-custom-csv-mapping>
+												</div>
 											</div>
 											<!-- END EXAMPLE TABLE PORTLET-->
 										</div>
 									</div>
+
 									<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 									<div class="clearfix">
 										<div class="col-xs-12 p0" style="">
@@ -1093,13 +1053,10 @@
 																	</h5>
 																</td>
 																<td align="center" *ngIf="gdprStatus || isPartner">
-																	<button class="border-btn-small lightgray-btn"
-																		id='more_less_button_{{i}}'
-																		(click)="contact.isShowDetails = ! contact.isShowDetails">
-																		<span *ngIf="!contact.isShowDetails"
-																			translate>More</span> <span
-																			*ngIf="contact.isShowDetails"
-																			translate>Less</span>
+																	<button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
+																		(click)="contact.isShowDetails = !contact.isShowDetails">
+																		<span *ngIf="!contact.isShowDetails" translate>More</span>
+																		<span *ngIf="contact.isShowDetails" translate>Less</span>
 																	</button>
 																</td>
 																<td align="center"
@@ -1150,7 +1107,9 @@
 																		</a>
 																		<!--XNFR-342---->
 																		<ng-container
-																			*ngIf="!assignLeads && !sharedLeads && !isSynchronizationList">
+																			*ngIf="!assignLeads && !sharedLeads && !isSynchronizationList && (authenticationService?.module?.isCampaign ||
+																			authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
+																			|| authenticationService?.module?.playbookAccess)">
 																			<a class="custom-icon" data-toggle="tooltip"
 																				data-placement="top"
 																				(click)="openUnPublishedContentModalPopUp(contact)"
@@ -1208,7 +1167,7 @@
 
 																			<tr *ngIf="isPartner">
 																				<td class='pt10 pb10 bold mr_10' translate>
-																					Comapny Domain:</td>
+																					Company Domain:</td>
 																				<td class='pt10 pb10'>
 																					{{contact.companyDomain}}</td>
 																			</tr>
@@ -1241,6 +1200,12 @@
 																					translate>Contacts Limit : </td>
 																				<td align="center" class="pt10 pb10">
 																					{{contact.contactsLimit}}
+																			</tr>
+
+																			<!----- XNFR-680 Flexi Fields ----->
+																			<tr *ngFor="let flexiField of contact.flexiFields" class="bg-unset flex-none">
+																				<td class='pt10 pb10 bold mr_10' *ngIf='flexiField.fieldValue != ""' translate>{{flexiField.fieldName}}:</td>
+																				<td align="center" class="pt10 pb10">{{flexiField.fieldValue}}</td>
 																			</tr>
 																		</tbody>
 																	</table>
@@ -1363,7 +1328,7 @@
 										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 											style="float: left; cursor: pointer; " data-toggle="modal"
 											data-target="#filterModal">
-											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+											<i class="fa fa-filter ml_16" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 												style="color: #0095da; font-size: 30px; margin-top: 10px; margin-left: 40px;"></i>
 										</div>
@@ -1598,9 +1563,9 @@
 														</button>
 													</td>
 
-													<td class="hidden-xs"
+													<td class="hidden-xs text-center"
 														*ngIf="contactsByType.selectedCategory == 'unsubscribed'">
-														<h5 class='mb0 ellipsis' data-toggle="tooltip"
+														<h5 class='mb0 ellipsis fl-unset' data-toggle="tooltip"
 															data-placement="bottom"
 															title="{{allcontacts.unsubscribedReason}}">
 															{{allcontacts.unsubscribedReason | slice:0:25}}
@@ -1673,6 +1638,14 @@
 																		</td>
 																	</tr>
 																</ng-container>
+
+																<!----- XNFR-680 Flexi Fields ----->
+																<ng-container>
+																	<tr *ngFor="let flexiField of allcontacts.flexiFields" class="bg-unset flex-none">
+																		<td class='pt10 pb10 bold' *ngIf='flexiField.fieldValue != ""' translate>{{flexiField.fieldName}} : </td>
+																		<td align="center" class="pt10 pb10">{{flexiField.fieldValue}} </td>
+																	</tr>
+																</ng-container>
 															</tbody>
 														</table>
 													</td>
@@ -1699,7 +1672,8 @@
 	<div *ngIf="contactService.isContactModalPopup && !updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser]="false"
-			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId"
+			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId" 
+			[flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto" [activeCrmType]="activeCrmType"
 			(notifyParent)="addRow($event)"></app-add-contact-modal>
 	</div>
 
@@ -1707,7 +1681,7 @@
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
 			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId"
-			[isCompanyContact]="isCompanyContact"
+			[isCompanyContact]="isCompanyContact" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
 			(notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 	</div>
 	<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"

@@ -34,6 +34,7 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   searchKey: string = "";
   pagination: Pagination = new Pagination();
 
+
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,

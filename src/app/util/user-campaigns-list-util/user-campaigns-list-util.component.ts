@@ -315,7 +315,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 		}else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.referenceService.encodePathVariable(this.analyticsCampaignId)+"/"+this.referenceService.getEncodedUri(campaignAnalytics.campaignTitle));
 		}else{
-			this.referenceService.goToRouter(url);
+			this.referenceService.goToRouter(url+"/"+this.referenceService.getEncodedUri(campaignAnalytics.campaignTitle));
 		}
 		
 	}
@@ -340,12 +340,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 			url = url+"partners/";
 			this.referenceService.goToRouter(url+"manage");
 		}else if(this.previousRouterAlias=="p"){
-			if(this.navigatedFrom=="a"){
-				this.referenceService.goToRouter(manageCampaignsUrl);
-			}else if(this.navigatedFrom=="b"){
-				this.referenceService.goToRouter(manageCampaignsUrl);
-				//this.referenceService.goToRouter(campaignAnalyticsUrl);
-			}
+			this.referenceService.goToRouter(manageCampaignsUrl);
 		}else if(this.previousRouterAlias=="c"){
 			if(this.navigatedFrom=="a"){
 				this.referenceService.goToRouter(manageCampaignsUrl);

@@ -74,6 +74,15 @@ export class FormPreviewComponent implements OnInit {
   /*****XNFR-583****/
   isFromMasterLandingPage:boolean = false;
   masterLandingPageId:number;
+
+  
+  /*****XNFR-712****/
+  isPartnerJourneyPage:boolean =false;
+  isVendorMarketplacePage:boolean = false;
+
+  isFromVendorMarketplacePage:boolean = false;
+  vendorMarketplacePageId:number;
+
   resolved(captchaResponse: string) {
     if(captchaResponse){
       this.formService.validateCaptcha(captchaResponse).subscribe(
@@ -90,6 +99,7 @@ export class FormPreviewComponent implements OnInit {
       this.captchaValue.emit(this.enableButton);
     }
   }
+
   constructor(private route: ActivatedRoute, public envService: EnvService, private referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private formService: FormService,
     private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router, private socialService: SocialService,
@@ -125,6 +135,10 @@ export class FormPreviewComponent implements OnInit {
     if(this.router.url.includes("/mlpf/")){
       this.masterLandingPage = true;
     }
+    if(this.router.url.includes("/pjpf/")){
+      this.isPartnerJourneyPage = true;
+    }
+
   let loggedInUser = localStorage.getItem('currentUser');
     if (loggedInUser !== undefined && loggedInUser !== null) {
       let userJSON = JSON.parse(loggedInUser);
@@ -148,7 +162,7 @@ export class FormPreviewComponent implements OnInit {
 
   getFormFieldsByAlias(alias: string) {
     this.ngxLoading = true;
-    this.formService.getByAlias(alias, this.vendorJourney)
+    this.formService.getByAlias(alias, this.vendorJourney, this.isPartnerJourneyPage)
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {
@@ -385,7 +399,6 @@ export class FormPreviewComponent implements OnInit {
       formSubmit.vendorJourney = this.vendorJourney;
       formSubmit.masterLandingPage = this.masterLandingPage;
       formSubmit.partnerMasterLandingPageId = this.masterLandingPageId;
-      formSubmit.vanityUrlFilter = this.authenticationService.vanityURLEnabled;
       this.formService.submitForm(formSubmit, formType)
         .subscribe(
           (response: any) => {

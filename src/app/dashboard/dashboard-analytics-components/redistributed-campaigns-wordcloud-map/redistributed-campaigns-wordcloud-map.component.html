@@ -4,7 +4,8 @@
         <div class="portlet light" style="margin-bottom: 20px;">
             <div class="portlet-title" style="min-height: 0px;">
                 <div class="caption">
-                    <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName}} Based Redistributed Campaign Statistics</span>
+                    <span class="caption-subject">{{authenticationService?.partnerModule?.customName | translate }}
+                        <span translate>Based Redistributed Campaign Statistics</span></span>
                 </div>
             </div>
             <div class="portlet-body">
@@ -16,7 +17,7 @@
                   </ng-container>
                   <div [hidden]="loader" *ngIf="wordCloudData?.length < 1" style="max-width: 100%;text-align: center;">
                     <div class="alert alert-info">
-                         <strong>No Data Found</strong>
+                         <strong translate>No Data Found</strong>
                      </div>
                 </div>
                 <div [hidden]="loader" id="partner-redistributed-wordcolud-map"></div>

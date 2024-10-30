@@ -50,12 +50,15 @@
                         <span  data-toggle="tooltip" data-placement="bottom"
                         [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">{{user.emailId}}
                       </span>
-                      <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success" title="Published">
-                        <i class="fa fa-check"></i>
-                      </span>
-                      <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)<0" class="required" title="Not Published" >
-                        <i class="fa fa-exclamation-circle"></i>
-                      </span>
+                      <!--XBI-2880-->
+                      <ng-container *ngIf="showTickMark">
+                        <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success" title="Published">
+                          <i class="fa fa-check"></i>
+                        </span>
+                        <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)<0" class="required" title="Not Published" >
+                          <i class="fa fa-exclamation-circle"></i>
+                        </span>
+                      </ng-container>
                       </td>
                       <td>
                         {{user?.firstName}}

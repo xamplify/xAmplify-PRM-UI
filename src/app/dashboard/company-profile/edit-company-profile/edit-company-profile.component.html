@@ -66,12 +66,14 @@
 										<h5 style="margin-top: -55px; font-weight: 400; margin-bottom: 3em;">complete
 										</h5>
 										<ng-container *ngIf="!isFromAdminPanel">
-											<h4    data-toggle="tooltip" data-placement="bottom" [title]="authenticationService.user.firstName+authenticationService.user.lastName"
-												class="control-label">
+											<h4   data-toggle="tooltip" data-placement="bottom" title="{{displayName}}"
+												class="control-label company-text-wrap">
 												{{authenticationService.user.firstName | slice:0:15}}<span
-													*ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;{{authenticationService.user.lastName
-												| slice:0:10}}<span
-													*ngIf="authenticationService.user.lastName?.length>10">..</span>
+													*ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;
+													<!--XBI-3164-->
+													<ng-container
+														*ngIf="authenticationService?.user?.lastName!=undefined && authenticationService?.user?.lastName?.length>0">{{authenticationService.user.lastName
+														| slice:0:10}}<span *ngIf="authenticationService.user.lastName?.length>10">..</span></ng-container>
 											</h4>
 											<h5 class="responsive-screen-wordwrap">
 												{{authenticationService.user.emailId}}</h5>
@@ -110,7 +112,7 @@
 													[src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath"
 													(error)="errorHandler($event)"> </ng-template>
 											<a class="btn btn-primary1 profile-pic" (click)="fileChangeEvent()"
-												data-toggle="tooltip" data-placement="top"
+												data-toggle="tooltip" data-placement="right"
 												title="upload 2:1 ratio logo !">
 												&nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
 													style="font-size:25px;padding-top:10px"></i></a>
@@ -139,7 +141,7 @@
 														[src]="authenticationService.MEDIA_URL + companyFavIconPath"
 														(error)="errorHandler($event)" alt=""> </ng-template>
 												<a class="btn btn-primary1 profile-pic margin-61" data-toggle="tooltip"
-													data-placement="top">
+													data-placement="right">
 													&nbsp;&nbsp;
 													<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px"
 														aria-hidden="true"></i></a>
@@ -265,20 +267,20 @@
 														<th scope="col">Partner Template Opened Tracking Analytics</th>
 														<td><input type="checkbox" [(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
-													<tr>
-														<th scope="row">SSO Enabled</th>
-														<td class="pt0">
-															<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
-														</td>
-													</tr>
 													<!--Refer Vendor-->
 													<tr>
-														<th scope="row">{{properties?.inviteAVendor}}</th>
+														<th scope="row">{{properties?.inviteAVendor}} (Option Applicable For Vanity Url)</th>
 														<td class="pt0">
 															<app-custom-ui-switch [customSwitch]="campaignAccess.referVendor" (customUiSwitchEventEmitter)="setReferVendorValue($event)"></app-custom-ui-switch>
 														</td>
 													</tr>
 												</ng-container>
+												<tr>
+													<th scope="row">SSO Enabled</th>
+													<td class="pt0">
+														<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
+													</td>
+												</tr>
 												<tr>
 													<th scope="col">Share Leads</th>
 													<td>
@@ -316,7 +318,11 @@
 													<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
-
+												<tr>
+													<th scope="row">Social Share</th>
+													<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialShareOptionEnabled"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
 												<tr>
 													<th scope="col">DAM</th>
 													<td><input type="checkbox" [(ngModel)]="campaignAccess.dam"
@@ -466,10 +472,9 @@
 													<label class="control-label" translate>Company Name <font><b
 																style="color: #f55d7a !important">*</b></font></label>
 													<input type="text" id="companyName" name="companyName"
-														placeholder="Company Name" maxlength="25" class="form-control"
+														placeholder="Company Name" class="form-control"
 														[(ngModel)]="companyProfile.companyName"
-														(input)="validateEmptySpace('companyName')"
-														(blur)="validateNames(companyProfile.companyName)" autocomplete="off" /> <span
+														(input)="validateEmptySpace('companyName');validateNames(companyProfile.companyName)" autocomplete="off" /> <span
 														*ngIf="companyNameError"
 														style="color: #f55d7a">{{companyNameErrorMessage}}</span>
 												</div>
@@ -647,7 +652,7 @@
 												<div class="panel-heading  panel-header" data-toggle="collapse"
 													href="#collapse2" (click)="refService.scrollSmoothToBottom()">
 													<h4 class="panel-title f-w-500" translate>
-														Social Accounts <i class="fa fa-caret-down pull-right"
+														Social Accounts<span class="beta_social_icon">(Beta)</span> <i class="fa fa-caret-down pull-right"
 															aria-hidden="true"></i>
 													</h4>
 												</div>

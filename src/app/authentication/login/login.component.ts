@@ -47,20 +47,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   //xnfr-256
   SERVER_URL: any;
   APP_URL: any;
-  vanitySocialProviders = [];
+  vanitySSOProviderList = [];
   isStyleOne:boolean = false;
   loginStyleId:number;
   /*** XNFR-416 ***/
   isBgColor:boolean;
   teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
   isPleaseWaitButtonDisplayed = false;
-  //showOauthSSO: boolean = false;
   orLoginWithText: boolean = false;
-  //vanityOauthSSOProviders = [];
   vendorSSOProvider: { name: string; iconName: string; value: string; };
   showVendorSSO: boolean;
   showLoginWithCredentials: boolean = false;
   hideCloseButton: boolean = false;
+  /** XNFR-721 **/
+  vanityMicrosoftSSOProvider: any;
 
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
@@ -87,8 +87,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     
     if (this.authenticationService.showVanityURLError1) {
       this.showVanityLoginErrorMessage();
+      this.authenticationService.showVanityURLError1 = false;
     }
-
     "https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled ? this.signInText = "Sign In to Sandbox" :this.signInText = "Sign In";
   }
 
@@ -314,7 +314,6 @@ bgIMage2:any;
         if (this.vanityURLService.isVanityURLEnabled()) {
           this.route.queryParams.filter(params => params.error)
           .subscribe(params => {
-            console.log(params);
             if (params.error === "verr1") {
               this.showVanityLoginErrorMessage();
             } else if (params.error === "server_error_message") {
@@ -328,6 +327,8 @@ bgIMage2:any;
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
             this.vanityURLEnabled = result.enableVanityURL;
+            this.authenticationService.companyProfileName = result.companyProfileName;
+            this.xtremandLogger.info("Company Profile Name : "+this.authenticationService.companyProfileName);
             this.authenticationService.vendorCompanyId = result.companyId;
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
@@ -384,20 +385,21 @@ bgIMage2:any;
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
             localStorage.setItem('appIcon',result.companyFavIconPath);
-            this.vanityURLService.setVanityURLTitleAndFavIcon();
-            if (result.showMicrosoftSSO) {
-              this.orLoginWithText = result.showMicrosoftSSO;
-              this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft-icon", "value": "microsoft" });
-            }            
+            this.vanityURLService.setVanityURLTitleAndFavIcon();         
 
             if (result.showVendorSSO) {
               this.showVendorSSO = result.showVendorSSO;
               if (result.vendorSSOType === "oauth") {
-                this.vanitySocialProviders.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" });
+                this.vanitySSOProviderList.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" });
               } else if (result.vendorSSOType === "saml") {
-                this.vanitySocialProviders.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "samlsso" });
+                this.vanitySSOProviderList.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "samlsso" });
               }              
             }
+
+            if (result.showMicrosoftSSO) {
+              this.orLoginWithText = result.showMicrosoftSSO;
+              this.vanityMicrosoftSSOProvider = { "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" };
+            } 
             
           }, error => {
             console.log(error);
@@ -589,9 +591,17 @@ bgIMage2:any;
           if (response.statusCode == 200) {
             let companyName = response.data.companyName;
             let supportEmailId = response.data.supportEmailId;
-            let errorMessage = 'You are not associated to ' + companyName + '.';
-            if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
-              errorMessage += ' Please contact ' + supportEmailId;
+            let errorMessage = '';
+            if (companyProfileName == 'versa-networks') {
+              errorMessage += `We are sorry you are unable to access the ${companyName} Partner Portal.`;
+              if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
+                errorMessage += ` Please email us at <a href="mailto:${supportEmailId}">${supportEmailId}</a> and include the error message.\nThank you.`;
+              }
+            } else {
+              errorMessage += `You are not associated to ${companyName}.`;
+              if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
+                errorMessage += ` Please contact <a href="mailto:${supportEmailId}">${supportEmailId}</a>`;
+              }
             }
             this.setCustomeResponse("ERROR", errorMessage);
           } else {
@@ -614,6 +624,7 @@ bgIMage2:any;
 
   closeLoginWithCredentialsForm() {
     this.hideCloseButton = false;
+    this.customResponse.isVisible = false;
     this.showLoginWithCredentials = false;
   }
   

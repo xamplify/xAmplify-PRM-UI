@@ -16,20 +16,22 @@
 				<!-- XNFR-334--->
 				<div *ngIf="hideCloseButton && authenticationService?.vanityURLEnabled" style="margin-bottom: 24px;">
 					<a type="submit" (click)="closeLoginWithCredentialsForm()" style="float: right;"
-						data-toggle="tooltip" data-placement="bottom" title="Close"> X </a>
+						data-toggle="tooltip" data-placement="left" title="Close"> X </a>
 				</div>
-				<ng-container *ngIf="vanitySocialProviders?.length && !showLoginWithCredentials">
+				<ng-container *ngIf="vanitySSOProviderList?.length && !showLoginWithCredentials">
 					<app-response-message [customResponse]="customResponse"
 						*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
 					<h3 class="form-title text-white">Sign In Options</h3>
-					<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;"
-						type="submit" (click)="showLoginWithCredentialsForm()">
-						<span alt="" class="login-credentials-icon"></span>Login with Credentials </button>
-						<ng-template [ngTemplateOutlet]="showVanitySocialProviders"
-						*ngIf="vanitySocialProviders?.length && authenticationService?.vanityURLEnabled"></ng-template>
+					<ng-template [ngTemplateOutlet]="showVanitySSOProviderList"
+						*ngIf="vanitySSOProviderList?.length && authenticationService?.vanityURLEnabled">
+					</ng-template>
+					<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;" type="submit"
+						(click)="showLoginWithCredentialsForm()">
+						<span alt="" class="login-credentials-icon"></span>Login with Credentials
+					</button>
 				</ng-container>
 
-				<ng-container *ngIf="!vanitySocialProviders?.length">
+				<ng-container *ngIf="!vanitySSOProviderList?.length">
 					<ng-template [ngTemplateOutlet]="ShowLoginWithCredentialsUI"></ng-template>
 					<div class="row solid-wb" style="margin-top: 28px;"></div>
 				</ng-container>
@@ -41,6 +43,10 @@
 
 				<ng-template [ngTemplateOutlet]="showSocialProviders"
 					*ngIf="!authenticationService.vanityURLEnabled"></ng-template>
+
+				<ng-template [ngTemplateOutlet]="showMicrosoftSSOProvider"
+					*ngIf="authenticationService.vanityURLEnabled && vanityMicrosoftSSOProvider && (showLoginWithCredentials || !vanitySSOProviderList?.length)">
+				</ng-template>
 
 				<div class="text-center mt10" *ngIf="authenticationService.companyProfileName == 'versa-networks'">
 					<label class="check">Don’t have an account yet?
@@ -74,20 +80,22 @@
 						<div *ngIf="hideCloseButton && authenticationService?.vanityURLEnabled"
 							style="margin-bottom: 24px;">
 							<a type="submit" (click)="closeLoginWithCredentialsForm()" style="float: right;"
-								data-toggle="tooltip" data-placement="bottom" title="Close"> X </a>
+								data-toggle="tooltip" data-placement="left" title="Close"> X </a>
 						</div>
-						<ng-container *ngIf="vanitySocialProviders?.length && !showLoginWithCredentials">
+						<ng-container *ngIf="vanitySSOProviderList?.length && !showLoginWithCredentials">
 							<app-response-message [customResponse]="customResponse"
 								*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
 							<h3 class="form-title text-white">Sign In Options</h3>
+							<ng-template [ngTemplateOutlet]="showVanitySSOProviderList"
+								*ngIf="vanitySSOProviderList?.length && authenticationService?.vanityURLEnabled">
+							</ng-template>
 							<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;"
 								type="submit" (click)="showLoginWithCredentialsForm()">
-								<span alt="" class="login-credentials-icon"></span>Login with Credentials </button>
-							<ng-template [ngTemplateOutlet]="showVanitySocialProviders"
-								*ngIf="vanitySocialProviders?.length && authenticationService?.vanityURLEnabled"></ng-template>
+								<span alt="" class="login-credentials-icon"></span>Login with Credentials 
+							</button>
 						</ng-container>
 
-						<ng-container *ngIf="!vanitySocialProviders?.length">
+						<ng-container *ngIf="!vanitySSOProviderList?.length">
 							<ng-template [ngTemplateOutlet]="ShowLoginWithCredentialsUI"></ng-template>
 							<div class="row solid-wb" style="margin-top: 28px;"></div>
 						</ng-container>
@@ -99,6 +107,10 @@
 
 						<ng-template [ngTemplateOutlet]="showSocialProviders"
 							*ngIf="!authenticationService.vanityURLEnabled"></ng-template>
+
+						<ng-template [ngTemplateOutlet]="showMicrosoftSSOProvider"
+							*ngIf="authenticationService.vanityURLEnabled && vanityMicrosoftSSOProvider && (showLoginWithCredentials || !vanitySSOProviderList?.length)">
+						</ng-template>
 
 						<div class="text-center mt10"
 							*ngIf="authenticationService.companyProfileName == 'versa-networks'">
@@ -195,14 +207,29 @@
 	</div>
 </ng-template>
 
-<ng-template #showVanitySocialProviders>
+<ng-template #showMicrosoftSSOProvider>
+	<div class="login-options login-form m5">
+		<h4>Or login with</h4>
+		<ul class="social-icons">
+			<ng-container>
+				<li *ngIf="vanityMicrosoftSSOProvider">
+					<a class="" title="{{vanityMicrosoftSSOProvider.name}}" (click)="loginUsingSocialAccounts(vanityMicrosoftSSOProvider)">
+						<span class="img-child {{vanityMicrosoftSSOProvider.iconName}}"></span>
+					</a>
+				</li>
+			</ng-container>
+		</ul>
+	</div>
+</ng-template>
+
+<ng-template #showVanitySSOProviderList>
 	<div class="login-options login-form">
-		<ng-container *ngFor="let socialProvider of vanitySocialProviders">
+		<ng-container *ngFor="let socialProvider of vanitySSOProviderList">
 			<div *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
 				<button class="login_with_credentials {{socialProvider.value}}" type="submit"
 					(click)="loginUsingSocialAccounts(socialProvider)">
 					<span alt="" class="social_icons {{socialProvider.iconName}}"></span>
-					{{socialProvider.name == 'Microsoft' ? 'Login with Microsoft' : socialProvider.name}} </button>
+					{{socialProvider.name}} </button>
 			</div>
 		</ng-container>
 	</div>

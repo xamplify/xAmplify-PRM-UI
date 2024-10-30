@@ -43,7 +43,7 @@
             <span></span>
             <span></span>
           </div>
-          <div class="navbar-navs" *ngIf="!loading">
+          <div class="navbar-navs" *ngIf="!loading && !helpGuidesUrl">
             <i class='fa fa-bars' (click)="openSidebar()"></i>
             <div class="nav-link">
               <!-- logo -->
@@ -66,14 +66,14 @@
                   <li *ngIf="!menu.showSubMenu">
                     <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                       <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
-                      {{menu.customName}}
+                      {{menu.customName}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup>
                     </a>
                   </li>
                   <li *ngIf="menu.showSubMenu" >
                 
                     <a href="javascript:;" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                       <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                      {{menu.customName}}
+                      {{menu.customName}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup>
                     </a>
                     <i class='fa fa-chevron-down js-arrow arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
                     <ul class="js-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">
@@ -96,14 +96,14 @@
                       <li *ngIf="!menu.showSubMenu" >
                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                           <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
-                          {{menu.customName}}
+                          {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span>
                         </a>
                       </li>
                       <li class="more" *ngIf="menu.showSubMenu">
                     
                         <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                           <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                          {{menu.customName}}</a>
+                          {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span></a>
                           <i class='fa fa-chevron-right arrow more-arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
                         </span>
                         <!-- <i class='fa fa-chevron-down js-arrow arrow'></i> -->
@@ -197,10 +197,10 @@
                 <div class="border-bt"></div>
               </li>
               <li
-              *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
+              *ngIf="authenticationService?.module?.socialShareOptionEnabled && authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                 <a (click)="goToRouter('/home/social/update-status')" translate>
                   <i class="fa fa-share " aria-hidden="true"></i>
-                  Update Status
+                  Update Status<span class="beta_social_icon_welcome_page">(Beta)</span>
                 </a>
                 <div class="border-bt"></div>
               </li>
@@ -210,9 +210,9 @@
   || authenticationService.module.isVendor
   || authenticationService.module.isPrm
   || authenticationService.module.isVendorTier
-  || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
+  || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && authenticationService?.module?.socialShareOptionEnabled">
                 <a (click)="goToRouter('/home/social/manage/all')" translate> <i class="fa fa-cog"
-                    aria-hidden="true"></i> Social Accounts</a>
+                    aria-hidden="true"></i> Social Accounts<span class="beta_social_icon_welcome_page">(Beta)</span></a>
                 <div class="border-bt"></div>
               </li>
 
@@ -223,7 +223,7 @@
                     <a>
                       <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                       <ng-container *ngIf="dashboardType=='Welcome'">
-                        Welcome
+                        <span translate>Welcome</span>
                       </ng-container>
                       <ng-container *ngIf="dashboardType!='Welcome'">
                         {{dashboardType}}
@@ -240,16 +240,14 @@
                 </a>
                 <div class="border-bt"></div>
               </li>
-              <!-- Guides Help Icon-->
-              <li
-                *ngIf="myVendorsLoader &&authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                <a><img src="assets/images/loading.gif">Loading My Vendors...</a>
+              <!-- My Vendors XNFR-698-->
+              <li *ngIf="myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                <a><img src="assets/images/loading.gif" alt="No Image Found">Loading My Vendors...</a>
               </li>
-              <li
-                *ngIf="!myVendorsLoader && authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                <a (click)="goToRouter('/home/dashboard/vendors')" translate>
-                  <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
-                <div class="border-bt"></div>
+              <li  *ngIf="!myVendorsLoader && authenticationService?.user?.hasCompany && authenticationService?.module?.isMyVendorsOptionDisplayed">
+                  <a (click)="goToRouter('/home/dashboard/vendors')" translate>
+                    <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
+                  <div class="border-bt"></div>
               </li>
               <!--XBI-1917-->
               <ng-container
@@ -373,7 +371,7 @@
 <ng-template #referVendorTemplate>
      <button [ngClass]="authenticationService?.isTop?'customskin':''"
         (click)="openRequestAsVendorModal()" class=""
-        style="border-radius: 7px 0px 0px 7px;" translate>{{properties?.inviteAVendor}}</button>
+        style="border-radius: 7px 0px 0px 7px;" translate>{{properties?.inviteAVendor | translate }}</button>
      <button [ngClass]="authenticationService?.isTop?'customskin':''"
         [routerLink]="['/home/dashboard/vendor-request']" class="xamplify-mr5"
         style="border-radius: 0px 7px 7px 0px;">

@@ -137,5 +137,14 @@ export class Module {
     chatGptIntegrationEnabled = false;
     updateModulesFromMyProfile = false;
 
+    isMyVendorsOptionDisplayed = false;
+
+    authGuardLoading = false;
+    /**XNFR-726***/
+    socialShareOptionEnabled = false;
+
+    socialFeedsAccess = false;
+    socialFeedsAccessAsPartner = false;
+
 
 }

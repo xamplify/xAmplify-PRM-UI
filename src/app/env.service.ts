@@ -13,6 +13,7 @@ export class EnvService {
     /*********************QA**********************/
      CLIENT_URL= 'https://xamplify.co/'; //socail ubuntu client app server
      SERVER_URL='https://aravindu.com/'; // social ubuntu backend prodution testing
+     SCHEDULER_URL = "https://qascheduler.xamp.io/";
      imagesHost = "https://aravindu.com/vod/images/";
      PREVIEW_HOST = "https://assets.xamplify.io/";
 
@@ -75,6 +76,7 @@ export class EnvService {
   xamplifyCustomerSupportContactNumber= "";
 
   loadLatestPipeLineApi = true;
+  isContactsVersion2ApiEnabled = false;
 
   constructor() {
   }

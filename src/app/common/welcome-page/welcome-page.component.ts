@@ -11,7 +11,10 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import flatpickr from 'flatpickr';
+
 declare var $:any;
+
 @Component({
   selector: 'app-welcome-page',
   styleUrls: ['./welcome-page.component.css'],
@@ -55,6 +58,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
  
   ngOnInit() {
     this.pageLoading = true;
+    this.removeFlatpickrInstances();
     this.getActiveThemeData(this.vanityLoginDto);
     if(this.router.url.includes('/welcome-page')){
         this.referenceService.clearHeadScriptFiles();
@@ -68,14 +72,14 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
   }
    
   ngAfterViewInit(){
+    
     if(!this.router.url.includes('/welcome-page')){
       setTimeout(() => {
       this.pageLoading = false;
-      }, 2000);
+      },1000);
     }
     setTimeout(() => {
       if(this.router.url.includes('/welcome-page')){
-        this.pageLoading = false;
         this.getHtmlBodyAlias();
         this.displayPage = true;
         if(this.referenceService.isWelcomePageLoading && this.referenceService.isFromLogin){
@@ -83,7 +87,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
           this.referenceService.isFromLogin = false;
         }
         }  
-    }, 5000);
+    }, 2000);
     this.referenceService.homeRouter='/welcome-page';
   }
 
@@ -259,6 +263,7 @@ getHtmlBodyAlias(){
        (response: any) => {
                 this.htmlString = this.vanityURLService.sanitizeHtmlWithImportant(response.message)
                 this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(this.htmlString);
+                this.pageLoading = false;
        },
        (error: string) => {
         this.xtremandLogger
@@ -302,6 +307,17 @@ getVideoDefaultSettings() {
   } catch (error) {
     this.xtremandLogger.error("error" + error);
   }
+}
+
+private removeFlatpickrInstances(): void {
+  // Using jQuery ($) to select elements and destroy Flatpickr instances
+  $('.flatpickr-input').each(function () {
+    const instance = ($(this) as any)[0]._flatpickr;
+    if (instance) {
+      instance.destroy();
+    }
+  });
+
 }
 
 }
