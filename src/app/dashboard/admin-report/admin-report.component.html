@@ -202,29 +202,27 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title text-center">Upgrade Account</h4>
-        <div class="table-responsive">
-          <table class='table tgrid table-bordered' aria-describedby="">
-            <thead>
-              <tr>
-                <th scope="row">Enter Email</th>
-                <th scope="row">
-                  <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId"
-                   [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
-                  <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
-                </th>
-                </tr>
-                <tr>
-                  <th></th>
-                    <th scope="row">
-                      <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
-                      <button [disabled]="upgradeAccountLoader" class="btn btn-primary float-right" (click)="findCompanyInfo()">Search</button>
-                    </th>
-                </tr>
-            </thead>
-          </table>
-        </div>
       </div>
       <div class="modal-body">
+        <table class='table tgrid table-bordered' aria-describedby="">
+          <thead>
+            <tr>
+              <th scope="row">Enter Email</th>
+              <th scope="row">
+                <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId"
+                 [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
+                <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
+              </th>
+              </tr>
+              <tr>
+                <th></th>
+                  <th scope="row">
+                    <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
+                    <button [disabled]="upgradeAccountLoader" class="btn btn-primary float-right" (click)="findCompanyInfo()">Search</button>
+                  </th>
+              </tr>
+          </thead>
+        </table>
         <app-response-message [showCloseIcon]="false" [customResponse]="upgradeAccountResponse" *ngIf="upgradeAccountResponse?.isVisible"></app-response-message>
         <app-modal-popup-loader *ngIf="upgradeAccountLoader"></app-modal-popup-loader>
         <div *ngIf="!upgradeAccountLoader && (upgradeAccountStatusCode==200 || upgradeAccountStatusCode==400)">
@@ -271,7 +269,7 @@
             <table class="table tgrid table-bordered"  aria-describedby="">
               <thead>
                 <th>
-                  <h4  translate>
+                  <h4>
                     <img src="../../../assets/images/user-permission.png" alt="No Image Found">
                     Admins & Team Members {{adminAndTeamMembers?.length}}
                 </h4>
@@ -283,7 +281,7 @@
                   <i class="fa fa-lock" aria-hidden="true"></i><br>Status
                 </th>
                 <th class="text-center">
-                  <i class="fa fa-lock" aria-hidden="true"></i><br>Preview Roles
+                  <i class="fa fa-eye" aria-hidden="true"></i><br>Preview Roles
                 </th>
               </thead>
               <tbody>
@@ -311,15 +309,9 @@
                       <i class="fa fa-check active-status" aria-hidden="true"></i>
                     </div>
                   </td>
-                  <td class="text-center" *ngIf="adminOrTeamMember?.status=='DECLINE'" title="This team member is inactive">
+                  <td class="text-center" *ngIf="adminOrTeamMember?.status=='DECLINE'" title="This team member account is declined by admin.">
                     <div class="actions-block float-none">
                       <i class="fa fa-times required" aria-hidden="true"></i>
-                    </div>
-                  </td>
-                  <!---Preview Roles---->
-                  <td class="text-center">
-                    <div class="actions-block float-none pointer">
-                      <a (click)="findRoleIdsAndNames(adminOrTeamMember)"><i  class="fa fa-eye" aria-hidden="true"></i></a>
                     </div>
                   </td>
                 </tr>
@@ -348,3 +340,8 @@
     </button>
   </li>
 </ng-template>
+
+  <!-- Group Preview Popup -->
+  <app-team-member-group-preview-popup *ngIf="isPreviewRolesButtonClicked" [modulesFromUpgradeAccountModal]="modules"
+    (previewGroupPopupEventEmitter)="isPreviewRolesButtonClicked=false"></app-team-member-group-preview-popup>
+  <!-- End of  Group Preview Popup -->

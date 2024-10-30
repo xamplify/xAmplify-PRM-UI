@@ -79,6 +79,8 @@ export class AdminReportComponent implements OnInit {
     @ViewChild('integrationDetailsComponent') integrationDetailsComponent:IntegrationDetailsComponent;
     readonly SUPER_ADMIN_MODULE_CONTSTANTS = SUPER_ADMIN_MODULE_CONTSTANTS;
     modules:Array<any> = new Array<any>();
+    isPreviewRolesButtonClicked = false;
+    teamMemberGroupId = 0;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , 
     public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router,public superAdminService:SuperAdminService) {
@@ -243,17 +245,5 @@ export class AdminReportComponent implements OnInit {
         
     }
 
-    findRoleIdsAndNames(adminOrTeamMember:any){
-        this.loading = true;
-        let selectedTeamMemberUserId = adminOrTeamMember['teamMemberUserId'];
-        this.superAdminService.findRoleIdsAndNames(selectedTeamMemberUserId).subscribe(
-            response => {
-                this.modules = response.map;
-                this.loading = false;
-            }, error => {
-                this.loading = false;
-                this.referenceService.showSweetAlertServerErrorMessage();
-            });
-    }
 
 }
