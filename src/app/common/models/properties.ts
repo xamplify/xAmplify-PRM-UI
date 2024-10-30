@@ -203,6 +203,8 @@ export class Properties {
 	welcomePages = "Welcome Pages"
 	/*****XNFR-712******/
 	partnerJourneyPages = "Partner Journey Pages";
+	vendorPartnerJourneyPages = "Vendor Partner Journey Pages"
+	vendorMarketplacePages = "Vendor Marketplace Pages"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
 

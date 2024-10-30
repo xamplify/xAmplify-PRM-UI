@@ -192,6 +192,9 @@ export const routes: Routes = [
 	{ path: 'mp/mppv/:id', component: MarketplaceUtilComponent },	
 	{ path: 'mp/mps/:alias', component: MarketplaceUtilComponent },	
 
+	{ path: 'pjpl/:alias', component: ShowLandingPageComponent },
+	{ path: 'pjpf/:alias', component: FormPreviewComponent },
+
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },

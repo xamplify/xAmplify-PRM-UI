@@ -149,4 +149,6 @@ export class Pagination {
 	isAdmin: boolean = false;
 
 	partnerJourneyPages:boolean = false;
+
+	vendorMarketplacePages:boolean = false;
 }

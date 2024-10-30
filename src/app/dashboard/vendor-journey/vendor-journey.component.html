@@ -8,7 +8,9 @@
 <app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics && !isManageForms && !isFormAnalytics && !isEditVendorOrMasterForm"
   [vendorJourney]='vendorJourney'
   [isLandingPages] ='isLandingPages' 
+  [isVendorPartnerJourneyPages] = "isVendorPartnerJourneyPages"
   [isMasterLandingPages] = 'isMasterLandingPages' 
+  [isVendorMarketplacePages] = 'isVendorMarketplacePages'
   [welcomePages] = 'welcomePages' 
   [isPartnerJourneyPages] = 'isPartnerJourneyPages'
   [loggedInUserCompanyId]="loggedInUserCompanyId" 
@@ -19,7 +21,7 @@
     <div class="page-bar mWidth" style="border:none !important;">
       <app-preview-popup #previewPopUpComponent></app-preview-popup>
       <app-merge-tags [input]="mergeTagsInput"></app-merge-tags>
-      <app-add-vendor-logos *ngIf = "isMasterLandingPages" [vendorLogoDetails] = "vendorLogoDetails"
+      <app-add-vendor-logos *ngIf = "isMasterLandingPages || isVendorMarketplacePages" [vendorLogoDetails] = "vendorLogoDetails" [isVendorMarketplace] = 'isVendorMarketplacePages'
       [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput" [dropdownList] = "categoryDropDownOptions"></app-add-vendor-logos>
       <div>
         <button class="button_blue bgcolor-unset" (click)="checkOrUncheckOpenLinksInNewTabOption()"
@@ -33,6 +35,7 @@
     </div>
     <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
       <app-xamplify-default-templates *ngIf="editVendorPage" [vendorJourney]='vendorJourney' [isMasterLandingPages] = 'isMasterLandingPages' [welcomePages] = 'welcomePages'
+      [isVendorMarketplacePages] = 'isVendorMarketplacePages'
         [landingPage]='vendorDefaultTemplate' [openInNewTabChecked] = "openInNewTabChecked"  [loggedInUserCompanyId]= 'loggedInUserCompanyId' [vendorLogoDetails]="vendorLogoDetails" 
         [sharedVendorLogoDetails] = "sharedVendorLogoDetails" (redirect)="resetVendorJourney()"
         [isPartnerJourneyPages] = 'isPartnerJourneyPages'

@@ -95,14 +95,14 @@ export class VendorCompanyModelPopupComponent implements OnInit {
 		  let shareLandingPageDTO = {
 			  "loggedInUserId": this.loggedInUserId,
 			  "vendorJourneyLandingPageId": this.input,
-			  "companyPartnerIds": this.selectedCompanyIds
+			  "vendorCompanyIds": this.selectedCompanyIds
 		  }
 		  
 	  	this.shareLandingPageToPartners(shareLandingPageDTO);
 		}
 
 		shareLandingPageToPartners(shareLandingPageDTO : any){
-			this.landingPageService.shareVendorJourneyLandingPageToPartners(shareLandingPageDTO).subscribe((data: any) => {
+			this.landingPageService.sharePartnerJourneyLandingPageToPartners(shareLandingPageDTO).subscribe((data: any) => {
 				this.referenceService.scrollToModalBodyTopByClass();
 				if (data.access) {
 					if (data.statusCode == 200) {

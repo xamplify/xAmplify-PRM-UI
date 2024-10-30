@@ -370,6 +370,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showModelPopupForSalesforce:boolean = false;
 	/**XNFR-712**/
 	isPartnerJourneyPages:boolean = false;
+	isVendorPartnerJourneyPages:boolean = false;
+	vendorMarketplace:boolean = false;
+	isVendorMarketplacePages:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -698,6 +701,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.vendorJourneyAccess = result.vendorJourney;
 			this.masterLandingPageOrVendorPages = result.masterLandingPageOrVendorPages;
 			this.welcomePagesAccess = result.welcomePages;
+			this.vendorMarketplace = result.vendorMarketplace;
 			this.ngxloading = false;
 		}, _error => {
 			this.ngxloading = false;
@@ -2193,6 +2197,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.partnerJourneyPages;
+		}else if (this.activeTabName == "vendorPartnerJourneyPages") {
+			this.ngxloading = true;
+			this.isVendorPartnerJourneyPages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isVendorPartnerJourneyPages = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.vendorMarketplacePages;
+		}else if (this.activeTabName == "vendorMarketplacePages") {
+			this.ngxloading = true;
+			this.isVendorMarketplacePages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isVendorMarketplacePages = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.vendorMarketplacePages;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
