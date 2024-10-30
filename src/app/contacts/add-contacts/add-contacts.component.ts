@@ -437,7 +437,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     private validateHeadersAndReadRows(headers: any, self: this, contents: any) {
-        self.isUploadCsvOptionEnabled = self.isContactModule() && self.isLocalHost();
+        self.isUploadCsvOptionEnabled = self.isContactModule();
         self.isXamplifyCsvFormatUploaded = headers.length == 11 && self.validateHeaders(headers);
         if (self.isXamplifyCsvFormatUploaded && !self.isUploadCsvOptionEnabled) {
             var csvResult = Papa.parse(contents);
@@ -1009,7 +1009,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.saveContactList();
             }
             if (this.selectedAddContactsOption == 2) {
-                if (this.isContactModule() && this.isLocalHost()) {
+                if (this.isContactModule()) {
                     this.customCsvMapping.saveCustomUploadCsvContactList();
                 } else {
                     this.saveUploadCsvContactList();
@@ -2859,7 +2859,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     downloadEmptyCsv() {
-        if (this.isContactModule() && this.isLocalHost()) {
+        if (this.isContactModule()) {
             window.location.href = this.authenticationService.REST_URL + "userlists/download-default-contact-csv/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         } else {
             window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
@@ -4859,23 +4859,19 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     /***** XNFR-671 *****/
     findFlexiFieldsData() {
-        if (this.isLocalHost()) {
-            this.loading = true;
-            this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-                this.flexiFieldsRequestAndResponseDto = data;
-                this.loading = false;
-            }, (error: any) => {
-                this.referenceService.showSweetAlertServerErrorMessage();
-                this.loading = false;
-            });
-        }
+        this.loading = true;
+        this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+            this.flexiFieldsRequestAndResponseDto = data;
+            this.loading = false;
+        }, (error: any) => {
+            this.referenceService.showSweetAlertServerErrorMessage();
+            this.loading = false;
+        });
     }
 
     /***** XNFR-671 *****/
     private resetCustomUploadCsvFields() {
-        if (this.isLocalHost()) {
-            this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
-        }
+        this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
         this.isNoResultFound = false;
         this.isUploadCsvOptionEnabled = false;
         this.isXamplifyCsvFormatUploaded = false;
@@ -4892,12 +4888,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /***** XNFR-718 *****/
     csvCustomResponse() {
         this.customResponse = new CustomResponse('ERROR', "We couldn't find any valid email id(s) in the records. Please ensure that the email id(s) are correctly formatted and try again.", true);
-    }
-
-    isLocalHost() {
-        let allowedEmailIds = ['clakshman@stratapps.com'];
-        let userName = this.authenticationService.getUserName();
-        return this.authenticationService.isLocalHost() && allowedEmailIds.indexOf(userName) > -1;
     }
 
 }
