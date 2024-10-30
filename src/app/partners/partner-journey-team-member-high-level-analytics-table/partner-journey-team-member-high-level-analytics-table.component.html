@@ -1,8 +1,15 @@
 <div class="col-sm-12 col-md-12 col-lg-12 ml15m">
   <div class="panel panel-info panel-bgMain panel-card br-10">
-    <div class="panel-heading panel-heading-custom panel-bg" id="pj-team-member-details-div">
+    <div class="panel-heading panel-heading-custom panel-bg search_download_align" id="pj-team-member-details-div">
       <h3 class="panel-title mt7">Team Member Details</h3>
-      <span class="pull-right mt25m">
+      <div style="display:flex;">
+      <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" style="margin: -1px 3px 0px 3px;"
+       *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember ||
+        authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember|| authenticationService. module.isPrm || authenticationService.module.isPrmTeamMember ||
+        authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember"
+        (click)="downloadTeamMemberListCsv()" [disabled]="pagination.totalRecords==0">
+        <i aria-hidden="true" class="fas fa-file-export p10" data-toggle="tooltip" title="Export Team Members List to Excel"></i>
+        </button>
         <div class="input-icon right" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
@@ -12,7 +19,7 @@
           <button type="submit" class="search-box-item-click" (click)="search()">
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
-      </span>
+      </div>
     </div>
     <div *ngIf="customResponse.isVisible" class="m10">
       <div style="padding: 7px 10px;"
@@ -37,7 +44,7 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="false" [isPartnerEntityTeamInfo]="true" [userInfo]="item"></app-user-info></a></td>
               <!-- <td> <span>{{item.emailId}}</span></td> -->
               <!-- <td> <span>{{item.firstName}}</span> <span>{{item.lastName}}</span></td> -->
               <td> <span>{{item.status}}</span></td>

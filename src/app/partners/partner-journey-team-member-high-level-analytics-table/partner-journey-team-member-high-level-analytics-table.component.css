@@ -44,3 +44,9 @@
     background-color: #008fd5;
     border: 1px solid #3575b5;
 }
+.search_download_align{
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px !important;
+}

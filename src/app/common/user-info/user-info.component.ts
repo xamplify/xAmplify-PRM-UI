@@ -20,6 +20,7 @@ export class UserInfoComponent implements OnInit {
     @Input() hideJobTitle:boolean;
     @Input() hideCompanyName:boolean;
     @Input() hideEmptyBar:boolean = false;
+    @Input() isPartnerEntityTeamInfo: boolean = false;
     backgroudColor: any;
     highlightLetter: string = "*";
     constructor() { }
