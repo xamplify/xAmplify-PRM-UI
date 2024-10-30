@@ -2889,23 +2889,16 @@ button.unlink-button {
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
-.tiles-card{
-  color: #ffffff!important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+/*** XNFR-725 ***/
+.xamplify-cursor-pointer.pa-Card.tiles-card,
+.disabled-event-pj.pa-Card.tiles-card
+{
+  color: #ffffff;
 }
-.tiles-card:hover{
-  color: #fff !important;
-  background: rgb(146 151 179 / 8%) !important;
-  transform: scale(1.04);
-  transition: all 0.3s ease;
+.pa-Card.tiles-card > p.pa-text {
+  color: #ffffff;
 }
-p.pa-text{
-  color: #ffffff!important;
-}
-.tiles-card:hover p{
-  color: #ffffff !important;
-  background-color: rgb(146 151 179 / 0%) !important;
-}
+/*** XNFR-725 ***/
 .pjCardTitlebg {
   background-color: rgb(146 151 179 / 8%) !important;
   border-radius: 10px 10px 0px 0px !important;

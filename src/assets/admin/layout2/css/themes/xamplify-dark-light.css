@@ -1969,162 +1969,23 @@ li.divider-bottom {
 }
 
 /* XNFR-316 start*/
-.pa-Card {
+/* .pa-Card {
   border: 1px solid #2f4857 !important;
-}
+} */
 
 /* XNFR-316 End*/
 /* partner analytics  */
-.pa-CardOne {
-  color: #ffffff !important;
+/*** XNFR-725 ***/
+.xamplify-cursor-pointer.pa-Card.tiles-card,
+.disabled-event-pj.pa-Card.tiles-card
+{
+  color: #ffffff;
 }
-p.pa-TextOne {
-  color: #ffffff !important;
+.pa-Card.tiles-card > p.pa-text {
+  color: #ffffff;
 }
-.pa-CardOne:hover {
-  background-color: #22313a !important;
-}
-.pa-CardOne {
-  background-color: #22313a42 !important;
-}
-.pa-CardOne:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardTwo {
-  color: #ffffff !important;
-}
-p.pa-TextTwo {
-  color: #ffffff !important;
-}
-.pa-CardTwo:hover {
-  background-color: #22313a !important;
-}
-.pa-CardTwo {
-  background-color: #22313a42 !important;
-}
-.pa-CardTwo:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardThree, p.pa-TextTwelv, .pa-CardTwelve {
-  color: #ffffff !important;
-}
-p.pa-TextThree {
-  color: #ffffff !important;
-}
-.pa-CardThree:hover, .pa-CardTwelve:hover {
-  background-color: #22313a !important;
-}
-.pa-CardThree, .pa-CardTwelve {
-  background-color: #22313a42 !important;
-}
-.pa-CardThree:hover p, .pa-CardTwelve:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardFour {
-  color: #ffffff !important;
-}
-p.pa-TextFour {
-  color: #ffffff !important;
-}
-.pa-CardFour:hover {
-  background-color: #22313a !important;
-}
-.pa-CardFour {
-  background-color: #22313a42 !important;
-}
-.pa-CardFour:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardFive {
-  color: #ffffff !important;
-}
-p.pa-TextFive {
-  color: #ffffff !important;
-}
-.pa-CardFive:hover {
-  background-color: #22313a !important;
-}
-.pa-CardFive {
-  background-color: #22313a42 !important;
-}
-.pa-CardFive:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardSix {
-  color: #ffffff !important;
-}
-p.pa-TextSix {
-  color: #ffffff !important;
-}
-.pa-CardSix:hover {
-  background-color: #22313a !important;
-}
-.pa-CardSix {
-  background-color: #22313a42 !important;
-}
-.pa-CardSix:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardSeven {
-  color: #ffffff !important;
-}
-p.pa-TextSeven {
-  color: #ffffff !important;
-}
-.pa-CardSeven:hover {
-  background-color: #22313a !important;
-}
-.pa-CardSeven {
-  background-color: #22313a42 !important;
-}
-.pa-CardSeven:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardEight {
-  color: #ffffff !important;
-}
-p.pa-TextEight {
-  color: #ffffff !important;
-}
-.pa-CardEight:hover {
-  background-color: #22313a !important;
-}
-.pa-CardEight {
-  background-color: #22313a42 !important;
-}
-.pa-CardEight:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardNine {
-  color: #ffffff !important;
-}
-p.pa-TextNine {
-  color: #ffffff !important;
-}
-.pa-CardNine:hover {
-  background-color: #22313a !important;
-}
-.pa-CardNine {
-  background-color: #22313a42 !important;
-}
-.pa-CardNine:hover p {
-  background-color: #22313a !important;
-}
-.pa-CardTen {
-  color: #ffffff !important;
-}
-p.pa-TextTen {
-  color: #ffffff !important;
-}
-.pa-CardTen:hover {
-  background-color: #22313a !important;
-}
-.pa-CardTen {
-  background-color: #22313a42 !important;
-}
-.pa-CardTen:hover p {
-  background-color: #22313a !important;
-}
+/*** XNFR-725 ***/
+
 i.IconopenedCount {
   border: 1px solid #fff !important;
   color: #fff !important;

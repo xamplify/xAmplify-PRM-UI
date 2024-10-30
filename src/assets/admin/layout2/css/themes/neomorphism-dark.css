@@ -3208,25 +3208,22 @@ button.unlink-button {
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
-.tiles-card{
-  color: #ffffff!important;
+/*** XNFR-725 ***/
+.xamplify-cursor-pointer.pa-Card.tiles-card,
+.disabled-event-pj.pa-Card.tiles-card
+{
   border: 1px solid #191b1e !important;
- box-shadow: inset 1px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  box-shadow: inset 1px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  color: #ffffff;
 }
-.tiles-card:hover{
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-  color: #fff !important;
-  background:#2b2f33!important;
-  transform: scale(1.04);
-  transition: all 0.3s ease;
+.xamplify-cursor-pointer.pa-Card.tiles-card:hover,
+.disabled-event-pj.pa-Card.tiles-card:hover {
+  box-shadow: inset 0px 0px 0px #000, inset 0px 0px 0px #3b4451 !important;
 }
-p.pa-text{
-  color: #ffffff!important;
+.pa-Card.tiles-card > p.pa-text {
+  color: #ffffff;
 }
-.tiles-card:hover p{
-  color: #ffffff!important;
-  background-color:#2b2f33!important;
-}
+/*** XNFR-725 ***/
 .pjCardTitlebg {
   background-color: #2c2f33 !important;
   box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
