@@ -2978,16 +2978,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	/***** XNFR-671 *****/
 	findFlexiFieldsData() {
-		if (this.isLocalHost()) {
-			this.loading = true;
-			this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-				this.flexiFieldsRequestAndResponseDto = data;
-				this.loading = false;
-			}, (error: any) => {
-				this.referenceService.showSweetAlertServerErrorMessage();
-				this.loading = false;
-			});
-		}
+		this.loading = true;
+		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+			this.flexiFieldsRequestAndResponseDto = data;
+			this.loading = false;
+		}, (error: any) => {
+			this.referenceService.showSweetAlertServerErrorMessage();
+			this.loading = false;
+		});
 	}
 
 	isContactsByTypeAllVaildUnsubscribed() {
@@ -2997,12 +2995,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	isContactModule() {
 		return (this.module == 'contacts');
-	}
-
-	isLocalHost() {
-		let allowedEmailIds = ['clakshman@stratapps.com'];
-		let userName = this.authenticationService.getUserName();
-		return this.authenticationService.isLocalHost() && allowedEmailIds.indexOf(userName) > -1;
 	}
 
 }
