@@ -1,0 +1,68 @@
+<div class="modal fade right" id="addEmailModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+  <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeEmailModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">{{ isPreview ? 'View':'Send'}} Email</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="form-group" *ngIf="!isPreview">
+            <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
+            <input type="text" id="toEmailId" [(ngModel)]="emailActivity.toEmailId" [ngModelOptions]="{standalone: true}"
+             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" [disabled]="!isTestMail" />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">From <span class="text-danger">*</span></label>
+            <input type="text" id="toEmailId" [(ngModel)]="emailActivity.senderEmailId" [ngModelOptions]="{standalone: true}"
+             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
+          </div>
+          <div class="form-group">
+            <label for="subjectLine">Email subject <span class="text-danger">*</span></label>
+            <input type="text" id="subjectLine" [(ngModel)]="emailActivity.subject" [ngModelOptions]="{standalone: true}" [disabled]="isPreview"
+             placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" (input)="validateEmail()" />
+          </div>
+          <div class="form-group">
+            <label for="subjectLine">Message <span class="text-danger">*</span></label>
+            <ckeditor *ngIf="!isPreview" name="body" [(ngModel)]="emailActivity.body" (change)="validateEmail()"
+            [ngModelOptions]="{standalone: true}" [config]="ckeConfig"></ckeditor>
+            <div class="email-body" *ngIf="isPreview" [innerHTML]="emailActivity.body"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border: none">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Cancel</button>
+        <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="!isValidEmail"
+          (click)="sendTestEmailToUser()"><span class="btn Btn-Green transition txt_pd-top3">Send Test Mail</span></button>
+        <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="!isValidEmail"
+          (click)="sendEmailToUser()"><span class="btn Btn-Green transition txt_pd-top3">Send Mail</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isTestMail" class="modal-dialog popup-width modal-copy" role="document">
+    <ngx-loading [show]="testEmailLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content mSweetalertWid popup-cu-widthalign">
+      <div class="modal-header alert-info br">
+        <h4 class="modal-title f-w-600" id="" translate="">Send Test Mail</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <h4 class="modal-title">Please Enter Test Email Id</h4>
+        </div>
+        <div class="form-check pointer mt10">
+          <label class="option-color">Email Id<span class="text-danger">*</span></label>
+          <input class="form-control" name="rdaction" (input)="validateTestEmailId()" [(ngModel)]="testToEmailId">
+        </div>
+      </div>
+      <div class="modal-footer p-10">
+        <button class="btn Btn-Gray" type="button" name="cancel" (click)="closeTestMailPopup()">Cancel</button>
+        <button class="btn Btn-Green" type="button" name="ok" [disabled]="!isValidTestEmailId"
+          (click)="sendTestEmail()">Send Test Mail</button>
+      </div>
+    </div>
+  </div>
+</div>

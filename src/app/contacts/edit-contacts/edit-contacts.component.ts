@@ -293,6 +293,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	selectedContact: any;
 	showContactDetailsTab: boolean = false;
 	isFromCompanyModule: boolean = false;
+	isContactModule: boolean = false;
 	activeCrmType: any;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -312,21 +313,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.isPartner = false;
 			this.assignLeads = false;
 			this.sharedLeads = true;
+			this.isContactModule = false;
 			this.checkingContactTypeName = "Shared Lead"
 			this.module = 'sharedleads';
 		} else if (currentUrl.includes('home/assignleads')) {
 			this.isPartner = false;
 			this.assignLeads = true;
 			this.showAddOptions = true;
+			this.isContactModule = false;
 			this.checkingContactTypeName = "Lead"
 			this.module = 'leads';
 		} else if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
+			this.isContactModule = true;
 			this.checkingContactTypeName = "Contact";
 			this.showAddOptions = true;
 			this.module = 'contacts';
 		} else {
 			this.isPartner = true;
+			this.isContactModule = false;
 			if (this.sourceType != "ALLBOUND") {
 				this.showAddOptions = true;
 			} else {
@@ -3659,7 +3664,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.isSynchronizationList = data.synchronisedList;
 					this.isTeamMemberPartnerList = data.teamMemberPartnerList;
 					this.selectedCompanyId = data.associatedCompanyId;
-					this.uploadedUserId = data.uploadedUserId;
+					this.companyName = data.companyName;
 					if (this.isFromCompanyModule) {
 						this.setCompanyModuleFields(data);
 					} else {
@@ -3685,7 +3690,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	private setCompanyModuleFields(data: any) {
-		this.companyName = data.companyName;
+		this.uploadedUserId = data.uploadedUserId;
 		this.contactService.publicList = data.publicList;
 	}
 	/***XNFR-553***/

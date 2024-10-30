@@ -968,7 +968,7 @@
 																		value="{{contact.id}}" id="{{contact.id}}"
 																		(click)="highlightRow(contact.id,$event)" />
 																</td>
-																<td *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'text-line':''" *ngIf="isPartner">
 																	<app-user-info [isPartnerEntityInfo]="true"
 																		[isPartnerInfo]="true" [userInfo]="contact">
 																	</app-user-info>
@@ -1004,28 +1004,28 @@
 																		</span>
 																	</ng-container>
 																</td>
-																<td class="white-space-transform" *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.vertical | slice:0:14}}
 																	<span *ngIf="contact.vertical?.length>14">..</span>
 																</td>
-																<td class="white-space-transform" *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.region | slice:0:14}}
 																	<span *ngIf="contact.region?.length>14">..</span>
 																</td>
-																<td class="white-space-transform" *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.partnerType | slice:0:14}}
 																	<span
 																		*ngIf="contact.partnerType?.length>14">..</span>
 																</td>
-																<td class="white-space-transform" *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.category | slice:0:14}}
 																	<span *ngIf="contact.category?.length>14">..</span>
 																</td>
-																<td *ngIf="!isPartner">
+																<td [ngClass]="isContactModule?'text-line':''" *ngIf="!isPartner" (click)="isContactModule?showContactDetails(contact):''">
 																	<app-user-info [isContactCompanyInfo]="true"
 																		[userInfo]="contact"> </app-user-info>
 																</td>
-																<td class="hidden-xs" *ngIf="!isPartner">
+																<td [ngClass]="isContactModule?'hidden-xs text-line':'hidden-xs'" (click)="isContactModule?showContactDetails(contact):''" *ngIf="!isPartner">
 																	<h5 class='mb0 ellipsis' data-toggle="tooltip"
 																		data-placement="bottom"
 																		title="{{contact.jobTitle}}">{{contact.jobTitle
@@ -1034,7 +1034,7 @@
 																			*ngIf="contact.jobTitle?.length>25">...</span>
 																	</h5>
 																</td>
-																<td align="center" class="hidden-xs">
+																<td align="center" [ngClass]="isContactModule?'hidden-xs text-line':'hidden-xs'" (click)="isContactModule?showContactDetails(contact):''">
 																	<h5 *ngIf="contact?.address" class='mb0'>
 																		{{contact.address | slice:0:30}}
 																		<span

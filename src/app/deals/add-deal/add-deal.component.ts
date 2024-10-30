@@ -50,6 +50,11 @@ export class AddDealComponent implements OnInit {
   @Input() public selectedContact: any;
   @Input() public isDealFromContact: boolean = false;
   @Output() notifySubmitSuccess = new EventEmitter();
+  /**XNFR-553**/
+  @Input() isFromCompanyModule:boolean = false;
+  @Input() public isFromContactAllLeadsTab:boolean = false;
+  @Input() public isFromContactAllDealsTab:boolean = false;
+  @Output() notifyClose = new EventEmitter();
 
   preview = false;
   edit = false;
@@ -1887,6 +1892,35 @@ export class AddDealComponent implements OnInit {
     this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
   }
 
+
+  /**XNFR-553**/
+  goBackToContactDetailsAllLeadsPage() {
+    this.notifyClose.emit();
+  }
+
+  goBackToManageContacts() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+  }
+
+  goBackToEditContacts() {
+    let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+    }
+  }
+
+  goBackToManageCompanies() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
+  }
+
+  goBackToContactDetailsPage() {
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+		let encodeUserId = this.referenceService.encodePathVariable(this.selectedContact.id);
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+  }
+
   checkIfHasAcessForAddDeal() {
     this.ngxloading = true;
     this.isLoading = true;
@@ -1911,6 +1945,7 @@ export class AddDealComponent implements OnInit {
         () => { }
       );
   }
+
 }
 
 

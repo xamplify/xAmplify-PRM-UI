@@ -443,7 +443,20 @@ export class Properties {
 
 	NO_DATA_RETRIVED_FROM_SALESFORCE = "No data retrieved from Salesforce. Please ensure all required fields are filled in.";
 
+	/**XNFR-553**/
+	noteSubmittedSuccessResponseMessage = "Note Submitted Successfully";
+	noteUpdatedSuccessResponseMessage = "Note Updated Successfully";
+	emailSendSuccessResponseMessage = "Email sent successfully";
+	failedToFetchLeadsResponseMessage = "Failed to fetch leads";
+	leadSubmittedSuccessResponseMessage = "Lead Submitted Successfully";
+	failedToFetchDealsResponseMessage = "Failed to fetch deals";
+	dealSubmittedSuccessResponseMessage = "Deal Submitted Successfully";
+
+	ckEditorConfig = {
+		height:'300px',
+		baseFloatZIndex:1E5
+	}
+
 	UNABLE_TO_PROCESS_REQUEST = "We're currently unable to process this request. Please try again later.";
-	
 	}
 

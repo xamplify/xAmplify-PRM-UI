@@ -453,6 +453,14 @@ export class SortOption {
 		{ 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
 	];
 
+	/**XNFR-553**/
+	emailActivityDropDownOptions = [
+		{ 'name': 'Subject(Z-A)', 'value': 'subject-DESC' },
+		{ 'name': 'Subject(A-Z)', 'value': 'subject-ASC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+	];
+
 	customFieldsDropDownOptions = [
 		{ 'name': 'Name(A-Z)', 'value': 'fieldName-ASC' },
 		{ 'name': 'Name(Z-A)', 'value': 'fieldName-DESC' },
@@ -529,6 +537,9 @@ export class SortOption {
 	selectedCustomLinksDropDownOption = this.customLinksCompaniesDropDown[this.customLinksCompaniesDropDown.length-1];
 
 	selectedIntegrationDetailsDropDownOption = this.integrationDetailsDropDown[0];
+
+	/**XNFR-553**/
+	emailActivityDropDownOption = this.emailActivityDropDownOptions[this.emailActivityDropDownOptions.length-1];
 
 	/***XNFR-679***/
 	public selectedCustomFieldsSortDropDownOption: any = this.customFieldsDropDownOptions[this.customFieldsDropDownOptions.length-1];

@@ -91,6 +91,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.viewType = this.route.snapshot.params["viewType"];
     this.categoryId = this.route.snapshot.params["categoryId"];
     this.folderViewType = this.route.snapshot.params["folderViewType"];
+    this.ckeConfig = this.properties.ckEditorConfig;
   }
 
     ngOnInit() {

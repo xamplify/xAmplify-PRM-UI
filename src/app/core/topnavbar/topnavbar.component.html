@@ -235,7 +235,7 @@
    <!-- END HEADER -->
    <div class="clearfix"></div>
    <!--Requesting vendor modal-->
-   <div class="modal fade right" id="requestForVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+   <div class="modal fade right" id="requestForVendor" role="dialog" aria-labelledby="myModalLabel"
       data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog" role="document">
          <div class="my-container">
@@ -272,7 +272,7 @@
                   <div class="form-group" *ngIf="isShowCKeditor">
                      <label for="subjectLine">Message <span class="text-danger">*</span></label>
                      <ckeditor name="body" [(ngModel)]="vendoorInvitation.message" [ngModelOptions]="{standalone: true}"
-                        (input)="validateVendoorInvitation()"></ckeditor>
+                        (input)="validateVendoorInvitation()" [config]="ckeConfig"></ckeditor>
                   </div>
                </div>
                <div *ngIf="isValidationMessage">

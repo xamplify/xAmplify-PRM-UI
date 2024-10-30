@@ -14,6 +14,7 @@ import { Properties } from 'app/common/models/properties';
 import { DealsService } from 'app/deals/services/deals.service';
 import { Roles } from 'app/core/models/roles';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var swal: any, $: any, videojs: any;
 
@@ -34,6 +35,9 @@ export class CustomManageLeadsComponent implements OnInit {
   @Output() editCustomLeadForm = new EventEmitter();
   @Output() notifyListLeads = new EventEmitter();
   @Output() notifySetLeadsPage = new EventEmitter();
+  /**XNFR-553**/
+  @Output() notifyClose = new EventEmitter();
+  @Input() public isFromCompanyModule: boolean = false;
   showDealForm: boolean;
   leadId: number;
   leadApprovalStatusType: string;
@@ -87,6 +91,7 @@ export class CustomManageLeadsComponent implements OnInit {
 
   ngOnInit() {
     this.showLeads();
+    this.referenceService.goToTop();
   }
 
   init() {
@@ -150,14 +155,12 @@ export class CustomManageLeadsComponent implements OnInit {
   closeApprovalStatusModelPopup() {
     this.leadApprovalStatusType = null;
     this.updateCurrentStage = false;
-    // this.showLeads();
   }
 
   viewLead(lead: Lead) {
     this.showLeadForm = true;
     this.actionType = "view";
     this.leadId = lead.id;
-    // this.viewOrEditCustomLeadForm.emit();
   }
 
 
@@ -165,7 +168,6 @@ export class CustomManageLeadsComponent implements OnInit {
     this.showLeadForm = true;
     this.actionType = "edit";
     this.leadId = lead.id;
-    // this.viewOrEditCustomLeadForm.emit();
   }
 
   confirmDeleteLead(lead: Lead) {
@@ -220,13 +222,10 @@ export class CustomManageLeadsComponent implements OnInit {
 
   closeDealForm() {
     this.showDealForm = false;
-    // this.showLeads();
   }
 
   closeLeadForm() {
     this.showLeadForm = false;
-    this.closeCustomLeadAndDealForm.emit();
-    // this.showLeads();
   }
 
   commentModalPopUpClose(event: any) {
@@ -499,6 +498,23 @@ export class CustomManageLeadsComponent implements OnInit {
         },
         () => { }
       );
+  }
+
+  goBackToEditContacts() {
+    let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+  }
+
+  goBackToManageContacts() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+  }
+
+  goBackToContactDetailsPage() {
+    this.notifyClose.emit();
+  }
+
+  goBackToManageCompanies() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
   }
 
 }
