@@ -2741,23 +2741,47 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		this.downloadDataList.length = 0;
 		for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
-
-			var object = {
-				"First Name": this.contactsByType.listOfAllContacts[i].firstName,
-				"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
-				"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
-				"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
-				"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
-				"Address": this.contactsByType.listOfAllContacts[i].address,
-				"City": this.contactsByType.listOfAllContacts[i].city,
-				"Country": this.contactsByType.listOfAllContacts[i].country,
-				"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+			if (this.isPartner) {
+				var parentObject = {
+					"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+					"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+					"Account Name": this.contactsByType.listOfAllContacts[i].accountName,
+					"Account Owner": this.contactsByType.listOfAllContacts[i].accountOwner,
+					"Company Domain": this.contactsByType.listOfAllContacts[i].companyDomain,
+					"Account Sub Type": this.contactsByType.listOfAllContacts[i].accountSubType,
+					"Website": this.contactsByType.listOfAllContacts[i].website,
+					"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+					"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+					"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+					"Address": this.contactsByType.listOfAllContacts[i].address,
+					"City": this.contactsByType.listOfAllContacts[i].city,
+					"Country": this.contactsByType.listOfAllContacts[i].country,
+					"Territory": this.contactsByType.listOfAllContacts[i].territory,
+					"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+				}
+			} else {
+				var object = {
+					"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+					"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+					"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+					"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+					"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+					"Address": this.contactsByType.listOfAllContacts[i].address,
+					"City": this.contactsByType.listOfAllContacts[i].city,
+					"Country": this.contactsByType.listOfAllContacts[i].country,
+					"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+				}
 			}
+
 			if (this.contactsByType.selectedCategory === 'excluded') {
 				object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 			}
 			if (this.contactsByType.selectedCategory === 'unsubscribed') {
-				object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+				if (this.isPartner) {
+					parentObject["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+				} else {
+					object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+				}
 			}
 			if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
 				this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
@@ -2765,7 +2789,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
 				});
 			}
-			this.downloadDataList.push(object);
+
+			if (this.isPartner) {
+				this.downloadDataList.push(parentObject);
+			} else {
+				this.downloadDataList.push(object);
+			}
 		}
 		if (this.contactsByType.listOfAllContacts.length === 0) {
 			var object = {
@@ -2785,7 +2814,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (this.contactsByType.selectedCategory === 'unsubscribed') {
 				object["Unsubscribed Reason"] = null;
 			}
-			this.downloadDataList.push(object);
+
+			if (this.isPartner) {
+				this.downloadDataList.push(parentObject);
+			} else {
+				this.downloadDataList.push(object);
+			}
 		}
 
 		this.refService.isDownloadCsvFile = true;
