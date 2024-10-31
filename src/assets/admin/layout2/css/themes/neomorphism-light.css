@@ -4428,3 +4428,9 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important;}
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 .neo{margin-left:65px !important;}
+  /* contact-journey */
+  .activity_card,.lead_details h3{
+    background: #f0f5fa !important;
+    border: 1px solid #d0d5db !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}

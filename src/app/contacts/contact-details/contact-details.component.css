@@ -120,9 +120,9 @@ padding:0px!important;
 .lead_details li:last-child{
 border-bottom:none;
 }
-.lead_details h3:last-child {
+/* .lead_details h3:last-child {
 border-bottom:none;
-}
+} */
 .profile-content {
     min-width: 500px;
     flex-shrink: 100000;
