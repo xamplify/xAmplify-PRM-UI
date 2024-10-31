@@ -458,5 +458,13 @@ export class Properties {
 	}
 
 	UNABLE_TO_PROCESS_REQUEST = "We're currently unable to process this request. Please try again later.";
+	
+	activePartnerTileDescription = "Partners who have interacted with Content, Redistributed Campaigns, Created Leads or Deals.";
+	signupPartnertileDescription = "Partners who have not yet completed the sign-up process.";
+	companyProfileIncompletepartnertileDescription = "Partners who have not yet completed the company profile.";
+	dormantpartnertileDescription = "Partners who have not yet interacted with the Content, Redistributed Campaigns, Created Leads or Deals.";
+	activePartnerTileDescriptionForPrm = "Partners who have interacted with Content, Created Leads or Deals.";
+	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
+
 	}
 
