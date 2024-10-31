@@ -58,10 +58,18 @@
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
                 </div>
-                <span id="permhref" class="morePadding">
+                <span id="permhref" class="morePadding"
+                  title="{{authenticationService?.module.isPrm ? properties?.activePartnerTileDescriptionForPrm : properties?.activePartnerTileDescription}}">
                   <a [className]="activePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                    (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''">
+                    {{ authenticationService?.module.isPrm ? (properties?.activePartnerTileDescriptionForPrm | slice:0:22) :
+                    (properties?.activePartnerTileDescription | slice:0:22) }}
+                    <span
+                      *ngIf="!authenticationService?.module.isPrm && properties?.activePartnerTileDescription?.length > 22">...</span>
+                    <span
+                      *ngIf="authenticationService?.module.isPrm && properties?.activePartnerTileDescriptionForPrm?.length > 22">...</span>
+                    <!-- <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i> -->
+                  </a>
                 </span>
               </a>
             </div>
@@ -86,10 +94,17 @@
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
                 </div>
-                <span id="permhref" class="morePadding">
+                <span id="permhref" class="morePadding"
+                  title="{{authenticationService?.module.isPrm ? properties?.dormantPartnertileDescriptionForPrm : properties?.dormantpartnertileDescription}}">
                   <a [className]="inActivePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''">
+                    {{authenticationService?.module.isPrm ? (properties?.dormantPartnertileDescriptionForPrm | slice:0:22 ): (properties?.dormantpartnertileDescription | slice:0:22)}}
+                    <span
+                      *ngIf="!authenticationService?.module.isPrm && properties?.dormantpartnertileDescription?.length > 22">...</span>
+                    <span
+                      *ngIf="authenticationService?.module.isPrm && properties?.dormantPartnertileDescriptionForPrm?.length > 22">...</span>
+                    <!-- <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i> -->
+                  </a>
                 </span>
               </a>
             </div>
@@ -113,11 +128,13 @@
                     Company Profile Incomplete
                   </div>
                 </div>
-                <span id="permhref" class="morePadding">
+                <span id="permhref" class="morePadding" title="{{properties?.companyProfileIncompletepartnertileDescription}}">
                   <a [className]="companyProfileIncompletePartnersCount > 0 ? 'more' : 'more disable-tile-pj' "
-                    (click)="companyProfileIncompletePartnersCount > 0 ?  goToIncompleteCompanyProfilePartnersDiv() : ''"> Detailed
-                    view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                    (click)="companyProfileIncompletePartnersCount > 0 ?  goToIncompletecompanyProfilePartnersDiv() : ''">
+                    {{properties?.companyProfileIncompletepartnertileDescription | slice:0:22}}
+                    <span *ngIf="properties?.companyProfileIncompletepartnertileDescription?.length>18">...</span>
+                    <!-- <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i> -->
+                  </a>
                 </span>
               </a>
             </div>
@@ -139,10 +156,13 @@
                             title="Pending Signup" style="font-size: 13px">Pending Signup
                           </div>
                         </div>
-                        <span id="permhref" class="morePadding">
+                        <span id="permhref" class="morePadding" title="{{properties?.signupPartnertileDescription}}">
                           <a [className]="PendingSignupPartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                            (click)="PendingSignupPartnersCount>0 ?  goToSignupPendingPartnersDiv() : ''"> Detailed view
-                            <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                            (click)="PendingSignupPartnersCount>0 ?  goToSignupPendingPartnersDiv() : ''">
+                            {{properties?.signupPartnertileDescription | slice:0:22}}
+                            <span *ngIf="properties?.signupPartnertileDescription?.length>22">...</span>
+                            <!-- <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i> -->
+                          </a>
                         </span>
                       </a>
                     </div>
@@ -306,7 +326,7 @@
         <div class="portlet light" style="padding: 10px !important;">
           <div class="portlet-title">
             <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">Dormant
+              <span class="caption-subject font-red-sunglo uppercase"> Dormant
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
             <div class="inputs" style="float: right">
@@ -323,42 +343,46 @@
               </div>
             </div>
           </div>
+          <div class="alert alert-info">List Of
+            {{authenticationService?.module.isPrm ? properties?.dormantPartnertileDescriptionForPrm
+            :properties?.dormantpartnertileDescription}}
+          </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
             *ngIf="customResponse.isVisible"></app-response-message>
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
             <div class="table-responsive">
-            <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
-              <thead>
-                <tr>
-                  <th class="center-aligned" style="width:50%" scope="col">
-                    {{authenticationService?.partnerModule?.customName}}</th>
-                  <th class="hidden-xs text-center" scope="col">LAST REMINDER SENT</th>
-                  <th class="mAlign text-center" scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
-                  <td>
-                    <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
-                    </app-user-info>
-                  </td>
-                  <td class="hidden-xs text-center">
-                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
-                    <h4 *ngIf="!item.time"><strong>-</strong></h4>
-                  </td>
-                  <td class="mAlign text-center" (click)="sendPartnerReminder(item)">
-                    <div class="actions-block float-none">
-                      <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
-                        <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
-                        <div class="clickicons"></div>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
+                <thead>
+                  <tr>
+                    <th class="center-aligned" style="width:50%" scope="col">
+                      {{authenticationService?.partnerModule?.customName}}</th>
+                    <th class="hidden-xs text-center" scope="col">LAST REMINDER SENT</th>
+                    <th class="mAlign text-center" scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
+                    <td>
+                      <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
+                      </app-user-info>
+                    </td>
+                    <td class="hidden-xs text-center">
+                      <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
+                      <h4 *ngIf="!item.time"><strong>-</strong></h4>
+                    </td>
+                    <td class="mAlign text-center" (click)="sendPartnerReminder(item)">
+                      <div class="actions-block float-none">
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
+                          <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <app-pagination class="pg8" [pagination]="inActivePartnersPagination" [type]="'userInteraction'"
             (notifyParentDropDown)="inActivePartnerDropDownList($event)"
@@ -788,6 +812,11 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="alert alert-info">
+            <span *ngIf="isIncompleteCompanyProfileDiv">List Of {{properties?.companyProfileIncompletepartnertileDescription}}</span>
+            <span *ngIf="isSingUpPendingDiv">List Of {{properties?.signupPartnertileDescription}}</span>
+
           </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
