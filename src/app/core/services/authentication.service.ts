@@ -1388,17 +1388,23 @@ getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
   return this.callGetMethod(URL);
 }
 
-getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean, isMasterLandingPages:boolean){
+getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean, isMasterLandingPages:boolean,
+  isPartnerJourneyPage:boolean, isVendoeMarketPlacePage:boolean
+){
   let userId = this.getUserId();
   let URL_PREFIX = "";
-  if(isPartnerLandingPagePreview || vendorJourney){
+  let vendorOrPartnerJourneyVar ="";
+  let partnerOrVendorMarketplace = "";
+  if(isPartnerLandingPagePreview || vendorJourney || isPartnerJourneyPage){
     URL_PREFIX = this.REST_URL+"landing-page/partner/";
-  }else if(isMasterLandingPages){
+    vendorOrPartnerJourneyVar = vendorJourney? "&vendorJourney=true":isPartnerJourneyPage? "&partnerJourneyPage=true":"";
+  }else if(isMasterLandingPages ||isVendoeMarketPlacePage ){
     URL_PREFIX = this.REST_URL+"landing-page/master/";
+    partnerOrVendorMarketplace =isMasterLandingPages? "&masterLandingPage=true":isVendoeMarketPlacePage? "&vendoeMarketPlacePage=true":"";
   }else{
     URL_PREFIX = this.REST_URL+"landing-page/";
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&masterLandingPage="+isMasterLandingPages+"&access_token="+this.access_token;
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+vendorOrPartnerJourneyVar+partnerOrVendorMarketplace+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 

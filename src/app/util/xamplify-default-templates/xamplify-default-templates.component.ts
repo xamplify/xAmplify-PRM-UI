@@ -225,7 +225,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
     
         const validationChecks = [
           {
-            condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages,
+            condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages && !self.isVendorMarketplacePages,
             checks: [
               { condition: () => !$.trim(emailTemplate.subject), message: "Whoops! We are unable to save this template because subject line is empty." },
               { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },

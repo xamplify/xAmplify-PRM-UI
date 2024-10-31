@@ -138,6 +138,14 @@ export class FormPreviewComponent implements OnInit {
     if(this.router.url.includes("/pjpf/")){
       this.isPartnerJourneyPage = true;
     }
+    if(this.router.url.includes("/vmpf/")){
+      this.isVendorMarketplacePage = true;
+    }
+    if(this.router.url.includes("/vmppjf/")){
+      this.isPartnerJourneyPage = true;
+      this.isFromVendorMarketplacePage = true;
+      this.vendorMarketplacePageId =  this.route.snapshot.params['landingPageId'];
+    }
 
   let loggedInUser = localStorage.getItem('currentUser');
     if (loggedInUser !== undefined && loggedInUser !== null) {
@@ -399,6 +407,9 @@ export class FormPreviewComponent implements OnInit {
       formSubmit.vendorJourney = this.vendorJourney;
       formSubmit.masterLandingPage = this.masterLandingPage;
       formSubmit.partnerMasterLandingPageId = this.masterLandingPageId;
+      formSubmit.partnerJourneyPage = this.isPartnerJourneyPage;
+      formSubmit.vendorMarketplacePage = this.isVendorMarketplacePage;
+      formSubmit.vendoeMarketplacePageId = this.vendorMarketplacePageId;
       this.formService.submitForm(formSubmit, formType)
         .subscribe(
           (response: any) => {

@@ -71,6 +71,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     @Output() formAnalytics: EventEmitter<any> = new EventEmitter();
     campaignTitle = "";
     @Input() isWelcomePage:boolean = false;
+    @Input() isPartnerJourneyPages:boolean = false;
+    @Input() isVendorMarketplacePages:boolean = false;
+    
+
 
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -110,12 +114,14 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.selectedFormTypeIndex = 0;
         this.getRoleByUserId();
         this.pagination.filterKey = "All";
-        if(this.isVendorJourney || this.isMasterLandingPage ||this.isWelcomePage){
+        if(this.isVendorJourney || this.isMasterLandingPage ||this.isWelcomePage || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
             this.landingPageId = this.vendorLandingPageId;
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.landingPageForm = true;
             this.pagination.vendorJourney = this.isVendorJourney;
             this.pagination.masterLandingPage = this.isMasterLandingPage;
+            this.pagination.partnerJourneyPage = this.isPartnerJourneyPages;
+            this.pagination.vendorMarketplacePage = this.isVendorMarketplacePages;
             this.pagination.welcomePages = this.isWelcomePage;
             if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
                 this.modulesDisplayType.isListView = true;
@@ -341,7 +347,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                     if (data.statusCode === 200) {
                         this.formService.form = data.data;
                         let categoryId = this.route.snapshot.params['categoryId'];
-                        if(this.isVendorJourney || this.isMasterLandingPage || this.isWelcomePage){
+                        if(this.isVendorJourney || this.isMasterLandingPage || this.isWelcomePage || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
                             this.vendorJourneyOrMasterLandingPageEdit.emit(data.data);
                             return;
                         }
@@ -398,7 +404,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     }
 
     goToAnalytics(form: Form) {
-        if(this.isMasterLandingPage || this.isVendorJourney || this.isWelcomePage){
+        if(this.isMasterLandingPage || this.isVendorJourney || this.isWelcomePage || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
             let data ={
                 "formAlias":form.alias,
                 "partnerLandingPageId":this.landingPageId,

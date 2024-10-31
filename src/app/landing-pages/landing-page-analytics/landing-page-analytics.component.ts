@@ -56,6 +56,8 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     @Input() vendorPageAlias;
     @Input() masterLandingPages= false;
     @Input() welcomePages= false;
+    @Input() isPartnerJourneyPages= false;
+    @Input() isVendorMarketplacePages= false;
     
     campaignTitle = "";
     barChartViewPopUpSortValue:any;
@@ -74,7 +76,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
         this.landingPageAlias = this.route.snapshot.params['alias'];
         this.partnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
         let categoryId = this.route.snapshot.params['categoryId'];
-        if(this.vendorJourney || this.masterLandingPages || this.welcomePages){
+        if(this.vendorJourney || this.masterLandingPages || this.welcomePages || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
             this.landingPageId = this.vendorLandingPageId;
         }
         if(this.vendorPages){

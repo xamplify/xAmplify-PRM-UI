@@ -27,6 +27,7 @@ export class MarketplaceUtilComponent implements OnInit {
   categories: any[] = [];
   filteredCategories: any[] = [];
 
+  isMasterLandingPage: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private landingPageService: LandingPageService,
@@ -38,14 +39,15 @@ export class MarketplaceUtilComponent implements OnInit {
     public deviceService: Ng2DeviceService,
     private vanityURLService: VanityURLService,
     public referenceService: ReferenceService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {}
 
   ngOnInit() {
     this.alias = this.route.snapshot.params['alias'];
     this.landingPageId = this.route.snapshot.params['id'];
+
+    this.isMasterLandingPage = this.router.url.includes("/mps/")
     this.getVendorCompaniesByAlias();
-    this.getFilteredCompanies();
   }
 
   ngAfterViewChecked() {
@@ -74,7 +76,7 @@ export class MarketplaceUtilComponent implements OnInit {
   }
 
   getVendorCompaniesByAlias() {
-    this.landingPageService.getVendorCompaniesByAlias(this.alias).subscribe(
+    this.landingPageService.getVendorCompaniesByAlias(this.alias, this.isMasterLandingPage).subscribe(
       response => {
         this.categories = response.data;
         this.getFilteredCompanies();

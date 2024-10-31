@@ -488,7 +488,8 @@
                                             </ng-container>
                                              <!--Welcome-pages-->
                                              <ng-container
-                                             *ngIf="(authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)">
+                                             *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                            </ng-container>
                                              <li [ngClass]="{'active-tab': activeTabName == 'welcomePages'}">
                                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'welcomePages'}"
                                                      (click)="activateTab('welcomePages');clearCustomResponse()">

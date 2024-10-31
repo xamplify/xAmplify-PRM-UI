@@ -148,7 +148,7 @@ export class Pagination {
 	contactId:number;
 	isAdmin: boolean = false;
 
-	partnerJourneyPages:boolean = false;
+	partnerJourneyPage:boolean = false;
 
-	vendorMarketplacePages:boolean = false;
+	vendorMarketplacePage:boolean = false;
 }

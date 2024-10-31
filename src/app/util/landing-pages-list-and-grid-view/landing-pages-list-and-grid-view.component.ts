@@ -201,17 +201,17 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         this.pagination.defaultLandingPage = false;
         this.pagination.loginAsUserId = this.loggedInUserId;
         this.pagination.companyId = this.loggedInUserCompanyId;
-        this.pagination.partnerJourneyPages = true;
+        this.pagination.partnerJourneyPage = true;
       }else if(this.isVendorMarketplacePages){
         this.pagination.source = "VENDOR_MARKETPLACE_PAGE";
         this.pagination.defaultLandingPage = false;
         this.pagination.loginAsUserId = this.loggedInUserId;
         this.pagination.companyId = this.loggedInUserCompanyId;
-        this.pagination.vendorMarketplacePages = true;
+        this.pagination.vendorMarketplacePage = true;
       }else{
         this.pagination.source = "MANUAL";
       }
-      if(this.vendorJourney && !this.isLandingPages){
+      if((this.vendorJourney || this.isPartnerJourneyPages) && !this.isLandingPages){
         this.pagination.vendorJourneyOnly = true;
       }
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
@@ -316,6 +316,10 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         this.referenceService.previewVendorJourneyPartnerPageInNewTab(landingPage.vendorJourneyId);
     }else if(this.isMasterLandingPages){
         this.referenceService.previewMasterPartnerPageInNewTab(landingPage.id);
+    }else if(this.isVendorPartnerJourneyPages){
+        this.referenceService.previewPartnerJourneyVendorPageInNewTab(landingPage.vendorJourneyId)
+    }else if(this.isVendorMarketplacePages){
+        this.referenceService.previewVendorMarketplacePageInNewTab(landingPage.id);
     }
     else{
         this.referenceService.previewPageInNewTab(landingPage.id);

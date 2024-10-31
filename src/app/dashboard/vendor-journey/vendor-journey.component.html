@@ -44,11 +44,13 @@
   </div>
 </div>
 <app-landing-page-analytics *ngIf = "isViewAnalytics" [vendorJourney] = 'vendorJourney' [masterLandingPages]='isMasterLandingPages' [vendorLandingPageId] = "selectedLandingPageId"
-[vendorPageAlias] = "selectedVendorPageAlias" [vendorPages] = 'isLandingPages' [welcomePages] ='welcomePages'>
+[vendorPageAlias] = "selectedVendorPageAlias" [vendorPages] = 'isLandingPages' [welcomePages] ='welcomePages' [isPartnerJourneyPages] = "isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages">
 </app-landing-page-analytics>
 <app-add-form-util *ngIf = "isEditVendorOrMasterForm" [isMdfForm]="false" [selectedForm]="selectedFrom"  [isCopyForm]="false"
 [isVendorOrMasterLandingPage] = "true" (goBack) = "goToManageForms()"></app-add-form-util>
-<app-manage-form *ngIf = "isManageForms" [isVendorJourney]="vendorJourney" [isMasterLandingPage] = "isMasterLandingPages" [isWelcomePage]="welcomePages"  [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"
+<app-manage-form *ngIf = "isManageForms" [isVendorJourney]="vendorJourney" [isMasterLandingPage] = "isMasterLandingPages" [isWelcomePage]="welcomePages"  
+[isPartnerJourneyPages] = "isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages"
+[vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"
 (formAnalytics)="goToFormAnalytics($event)"></app-manage-form>
-<app-form-analytics-util *ngIf = "isFormAnalytics && (isMasterLandingPages ||welcomePages ) " [importedObject]="importedObject" ></app-form-analytics-util>
+<app-form-analytics-util *ngIf = "isFormAnalytics && (isMasterLandingPages ||welcomePages || isPartnerJourneyPages || isVendorMarketplacePages ) " [importedObject]="importedObject" ></app-form-analytics-util>
 <app-vendor-journey-form-analytics *ngIf = "isFormAnalytics && vendorJourney" [importedObject]="importedObject" ></app-vendor-journey-form-analytics>

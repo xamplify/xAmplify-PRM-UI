@@ -308,8 +308,8 @@ export class LandingPageService {
         return this.authenticationService.callDeleteMethod(url);
     }
 
-    getVendorCompaniesByAlias( alias:string) {
-        const url = this.authenticationService.REST_URL + "/getVendorCompaniesByAlias/" + alias ;
+    getVendorCompaniesByAlias( alias:string, isMasterLandingPage) {
+        const url = this.authenticationService.REST_URL + "/getVendorCompaniesByAlias/" + alias+"/"+isMasterLandingPage ;
         return this.authenticationService.callGetMethod(url);
     }
 

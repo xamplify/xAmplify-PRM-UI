@@ -3708,6 +3708,16 @@ previewMasterPartnerPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/mplp/"+encodedIdURLString);
 }
 
+previewPartnerJourneyVendorPageInNewTab(id:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/pjplp/"+encodedIdURLString);
+}
+
+previewVendorMarketplacePageInNewTab(id:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vmplp/"+encodedIdURLString);
+}
+
 previewAssetPdfInNewTab(id:number){
   let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
   this.openWindowInNewTab("/pv/v/pdf/"+encodedIdURLString);

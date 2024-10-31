@@ -198,13 +198,13 @@ export class Properties {
 
 	vendorJourney = "Vendor Journey";
 	landingPages = "Vendor Pages";
-	masterLandingPages = "Marketplace Pages"
+	masterLandingPages = "Partner Landscape"
 	masterLandingPageCategories = "Marketplace Categories"
 	welcomePages = "Welcome Pages"
 	/*****XNFR-712******/
 	partnerJourneyPages = "Partner Journey Pages";
-	vendorPartnerJourneyPages = "Vendor Partner Journey Pages"
-	vendorMarketplacePages = "Vendor Marketplace Pages"
+	vendorPartnerJourneyPages = "Partner Pages"
+	vendorMarketplacePages = "Vendor Landscape"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
 

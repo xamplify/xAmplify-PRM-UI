@@ -2205,7 +2205,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isVendorPartnerJourneyPages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.vendorMarketplacePages;
+			this.activeTabHeader = this.properties.vendorPartnerJourneyPages;
 		}else if (this.activeTabName == "vendorMarketplacePages") {
 			this.ngxloading = true;
 			this.isVendorMarketplacePages = false;

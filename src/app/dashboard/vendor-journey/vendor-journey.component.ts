@@ -49,11 +49,11 @@ export class VendorJourneyComponent implements OnInit {
     this.resetVendorJourney();
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
-    this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
+    this.isMasterLandingPages = this.moduleType == "Partner Landscape";
     this.welcomePages = this.moduleType == "Welcome Pages";
     this.isPartnerJourneyPages = this.moduleType == "Partner Journey Pages";
-    this.isVendorPartnerJourneyPages = this.moduleType == "Vendor Partner Journey Pages";
-    this.isVendorMarketplacePages = this.moduleType == "Vendor Marketplace Pages";
+    this.isVendorPartnerJourneyPages = this.moduleType == "Partner Pages";
+    this.isVendorMarketplacePages = this.moduleType == "Vendor Landscape";
   }
 
   editVendorLandingPage(event){
@@ -88,11 +88,11 @@ export class VendorJourneyComponent implements OnInit {
     this.isVendorPartnerJourneyPages =false;
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
-    this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
+    this.isMasterLandingPages = this.moduleType == "Partner Landscape";
     this.welcomePages = this.moduleType == "Welcome Pages";
     this.isPartnerJourneyPages = this.moduleType == "Partner Journey Pages"
-    this.isVendorPartnerJourneyPages = this.moduleType == "Vendor Partner Journey Pages";
-    this.isVendorMarketplacePages = this.moduleType == "Vendor Marketplace Pages";
+    this.isVendorPartnerJourneyPages = this.moduleType == "Partner Pages";
+    this.isVendorMarketplacePages = this.moduleType == "Vendor Landscape";
     this.isFormAnalytics = false;
     this.isManageForms = false;
     this.isEditVendorOrMasterForm = false;
