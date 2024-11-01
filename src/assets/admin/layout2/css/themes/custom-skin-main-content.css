@@ -2332,3 +2332,60 @@ color: var(--icon-color) !important;
   background: var(--icon-hover-color) !important;
   color: var(--div-bg-color) !important;
 }
+/* contact-jounery */
+.profile-leftsidebar {
+  background-color: var(--page-content) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+.asidebar {
+  background-color: var(--page-content) !important;
+  border-left: 1px solid var(--border-color) !important;
+}
+.edit_contact {
+  border-bottom: 1.4px var(--border-color) dashed !important;
+}
+.lead_details h3 {
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.lead_details h3,
+.address_title,
+.profile_info p,
+.profile_info span,
+.lead_details li,
+.icon-label,
+.activity-date,
+.activity-body {
+  color: var(--title-heading--text) !important;
+}
+.icons_colors,
+.lead_details li i {
+  color: var(--icon-color) !important;
+}
+.fa_edit {
+  background-color: var(--div-bg-color) !important;
+  color: var(--icon-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.activity_card {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.panel-title>a.add-btn {
+  color: #578ebe !important;
+}
+.icon-btns,
+i.fa.fa-edit.ml_6 {
+  background-color: unset !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
+}
+.icon-btns:hover,
+i.fa.fa-edit.ml_6:hover {
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
+  color: var(--div-bg-color) !important;
+}
+.icon-btns i {
+  color: unset !important;
+}

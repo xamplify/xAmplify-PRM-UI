@@ -2486,3 +2486,46 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
   border: 1px solid #fff !important;
   color: #fff !important;
 }
+/* contact-journey */
+.profile-leftsidebar{
+  background-color: #22313a!important;
+  border-right: 1px solid #2f4857 !important;
+  }
+  .activity_card{
+    background-color: #22313a!important;
+    border: 1px solid #2f4857 !important;
+  }
+  .asidebar{
+    background-color: #22313a!important;
+    border-left: 1px solid #2f4857 !important;
+  }
+  .icons_colors{
+    color: #bcbcbc!important;
+  }
+  .profile_info span{
+    color:#ffff!important;
+  }
+  .profile_info p{
+    color:#ffff!important;
+  }
+  .lead_details h3{
+    background-color: #2b3c46!important;
+    border: 1px solid #2f4857 !important;
+  }
+  .lead_details li i,.lead_details li,.activity-date,.address_title,.icon-label,.activity-body,.panel-headings,.activity-date{
+    color: #fff!important;
+  }
+  .fa_edit{
+    background-color: #5e5e5e!important;
+    border: 1px solid #383838!important;
+  }
+  .panel-headings>.panel-title a{
+    color: #fff!important;
+  }
+  .panel-title> a.add-btn {
+    color: #578ebe!important;
+  }
+  i.fa.fa-edit.ml_6 {
+    color:#333!important;
+  }
+  
