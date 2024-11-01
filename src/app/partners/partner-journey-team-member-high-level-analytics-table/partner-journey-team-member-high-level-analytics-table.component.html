@@ -6,7 +6,7 @@
       <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" style="margin: -1px 3px 0px 3px;"
        *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember ||
         authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember|| authenticationService. module.isPrm || authenticationService.module.isPrmTeamMember ||
-        authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember"
+        authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService?.module?.isAnyAdminOrSupervisor"
         (click)="downloadTeamMemberListCsv()" [disabled]="pagination.totalRecords==0">
         <i aria-hidden="true" class="fas fa-file-export p10" data-toggle="tooltip" title="Export Team Members List to Excel"></i>
         </button>
