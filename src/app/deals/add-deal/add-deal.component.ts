@@ -173,6 +173,7 @@ export class AddDealComponent implements OnInit {
   //XNFR-681
   isThroughAddUrl : boolean = false;
   isFromManageDeals : boolean = false;
+  attachLeadError: boolean = false;
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -385,7 +386,11 @@ export class AddDealComponent implements OnInit {
         error => {
           this.httpRequestLoader.isServerError = true;
         },
-        () => { }
+        () => {
+          if (this.isDealFromContact) {
+            this.validateField("attachLead", false);
+          }
+         }
       );
   }
 
@@ -1053,6 +1058,13 @@ export class AddDealComponent implements OnInit {
         this.opportunityTypeId = successClass;
         this.opportunityTypeIdError = false;
       }
+      if (fieldId == "attachLead") {
+        if (this.deal.associatedLeadId > 0) {
+          this.attachLeadError = false;
+        } else {
+          this.attachLeadError = true;
+        }
+      }
     }
     this.setFieldErrorStates();
   }
@@ -1085,7 +1097,7 @@ export class AddDealComponent implements OnInit {
 
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
       && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
-      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
+      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError && !this.attachLeadError) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -1158,6 +1170,16 @@ export class AddDealComponent implements OnInit {
       this.createdForPipelineStageIdError = false
     else
       this.createdForPipelineStageIdError = true;
+
+    /**************** Contact To Deal *********************/
+    if (this.isDealFromContact) {
+      if (this.deal.associatedLeadId > 0) 
+        this.attachLeadError = false;
+      else 
+        this.attachLeadError = true;
+    } else {
+      this.attachLeadError = false;
+    }
 
     this.propertiesQuestions.forEach(property => {
       this.validateQuestion(property);
@@ -1800,6 +1822,9 @@ export class AddDealComponent implements OnInit {
       } else {
         this.isCampaignTicketTypeSelected = false;
       }
+    }
+    if (this.isDealFromContact) {
+      this.setFieldErrorStates();
     }
   }
 

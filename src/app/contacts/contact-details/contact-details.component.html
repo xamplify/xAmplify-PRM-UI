@@ -40,7 +40,7 @@
               <div>
                 <i class="fas fa-user mr_6 icons_colors" aria-hidden="true"></i>
                 <span *ngIf="contactName != undefined && contactName != ''" data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
-                  {{contactName | slice:0:10}} <span *ngIf="contactName != undefined && contactName?.length>10">..</span>
+                  {{contactName | slice:0:9}}<span *ngIf="contactName != undefined && contactName?.length>9">..</span>
                 </span>
                 <span *ngIf="contactName == undefined || contactName == ''" class="anonymous-text">Anonymous</span>
                 <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
@@ -184,7 +184,7 @@
                       Lorem Ipsum is simply dummy text of the printing...
                     </div>
                     <div class="activity-footer">
-                      <a href="#">View details</a>
+                      <a>View details</a>
                     </div>
                   </div>
                   <div class="activity_card mb10">
@@ -196,7 +196,7 @@
                       Lorem Ipsum is simply dummy text of the printing...
                     </div>
                     <div class="activity-footer">
-                      <a href="#">View details</a>
+                      <a>View details</a>
                     </div>
                   </div>
                   <div class="activity_card mb10">
@@ -208,7 +208,7 @@
                       Lorem Ipsum is simply dummy text of the printing...
                     </div>
                     <div class="activity-footer">
-                      <a href="#">View details</a>
+                      <a>View details</a>
                     </div>
                   </div>
                   <!-- end -->

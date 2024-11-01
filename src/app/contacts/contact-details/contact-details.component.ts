@@ -440,6 +440,7 @@ export class ContactDetailsComponent implements OnInit {
 
   showDealSubmitSuccess(event) {
     this.showDealForm = false;
+    this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
     this.customResponse = new CustomResponse('SUCCESS', this.properties.dealSubmittedSuccessResponseMessage, true);
   }
