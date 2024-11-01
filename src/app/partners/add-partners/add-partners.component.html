@@ -1824,49 +1824,40 @@
                                         </switch>
                                     </td>
                                     <!--- (XNFR-85) ----->
-                                    <td *ngIf="authenticationService?.module?.adminOrSuperVisor"
-                                        id="team-member-group-error-count-{{i}}">
+                                    <td *ngIf="authenticationService?.module?.adminOrSuperVisor" id="team-member-group-error-count-{{i}}">
                                         <div class="input-group">
-                                            <select id="partner-tm-group-{{i}}"
-                                                class="form-control decressOptionfont borderColorsCU"
-                                                [(ngModel)]="partner.teamMemberGroupId"
-                                                (ngModelChange)="getTeamMembersByGroupId(partner,i)">
-                                                <option *ngFor="let teamMemberGroup of teamMemberGroups"
-                                                    [ngValue]="teamMemberGroup.id">
+                                            <select id="partner-tm-group-{{i}}" class="form-control decressOptionfont borderColorsCU"
+                                                [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembersByGroupId(partner,i)">
+                                                <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                                                     {{teamMemberGroup?.name}}
-                                                    ({{teamMemberGroup?.teamMembersCount}})</option>
+                                                    {{ teamMemberGroup?.name !== '--Please Select--' ? '(' + teamMemberGroup.teamMembersCount + ')' : '' }}
+                                                </option>
                                             </select> <span class="input-group-btn">
-                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info"
-                                                    type="button" tabindex="-1"
+                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="previewModules(partner.teamMemberGroupId)">
-                                                    <i title="Preview Modules" data-toggle="tooltip"
-                                                        data-placement="top" class="fa fa-eye white"
+                                                    <i title="Preview Modules" data-toggle="tooltip" data-placement="top" class="fa fa-eye white"
                                                         aria-hidden="true"></i>
                                                 </button>
                                             </span> <span class="input-group-btn">
-                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info"
-                                                    type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
-                                                    <i title="Select Team Members" data-toggle="tooltip"
-                                                        data-placement="top" class="my-icon fa"
-                                                        [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
-                                                        aria-hidden="true"></i>
+                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
+                                                    (click)="getTeamMembers(partner,i)">
+                                                    <i title="Select Team Members" data-toggle="tooltip" data-placement="top" class="my-icon fa"
+                                                        [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
                                                 </button>
                                             </span>
-                                        </div> <span class="active-status"
-                                            *ngIf="partner?.selectedTeamMemberIds?.length>0"> <strong>Selected
-                                                Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong> <a
-                                                *ngIf="newPartnerUser?.length>1" (click)="applyForAll(partner)">
+                                        </div> <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0"> <strong>Selected
+                                                Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong> <a *ngIf="newPartnerUser?.length>1"
+                                                (click)="applyForAll(partner)">
                                                 <strong><i class="fa fa-check"></i>Apply For All</strong>
                                             </a>
                                         </span>
                                     </td>
-                                </tr>
-                                <!---XNFR-131-->
-                                <tr *ngIf="partner?.expand">
-                                    <td colspan="5" class="bgc-lg"><app-partner-team-member-group-team-members
-                                            [currentPartner]="currentPartner"
-                                            (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
-                                    </td>
+                                    </tr>
+                                    <!---XNFR-131-->
+                                    <tr *ngIf="partner?.expand">
+                                        <td colspan="5" class="bgc-lg"><app-partner-team-member-group-team-members [currentPartner]="currentPartner"
+                                                (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+                                        </td>
                                 </tr>
                             </ng-container>
                         </tbody>

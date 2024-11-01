@@ -1982,33 +1982,28 @@
 										</switch>
 									</td>
 									<!--- (XNFR-85) ----->
-									<td *ngIf="authenticationService?.module?.adminOrSuperVisor"
-										id="edit-team-member-group-error-count-{{i}}">
+									<td *ngIf="authenticationService?.module?.adminOrSuperVisor" id="edit-team-member-group-error-count-{{i}}">
 										<div class="input-group">
-											<select id="edit-partner-tm-group-{{i}}"
-												[disabled]="partner?.selectedTeamMemberIds?.length > 0"
+											<select id="edit-partner-tm-group-{{i}}" [disabled]="partner?.selectedTeamMemberIds?.length > 0"
 												class="form-control" [(ngModel)]="partner.teamMemberGroupId"
 												(ngModelChange)="getTeamMembersByGroupId(partner,i)">
-												<option *ngFor="let teamMemberGroup of teamMemberGroups"
-													[ngValue]="teamMemberGroup.id">
-													{{teamMemberGroup?.name}} ({{teamMemberGroup?.teamMembersCount}})
+												<option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+													{{teamMemberGroup?.name}}{{ teamMemberGroup?.name !== '--Please Select--' ? '(' +
+													teamMemberGroup.teamMembersCount + ')' : '' }}
 												</option>
 											</select>
 											<span class="input-group-btn">
-												<button data-toggle="tooltip" data-placement="bottom"
-													title="Preview Modules" [disabled]="partner.teamMemberGroupId==0"
-													class="btn btn-info" type="button" tabindex="-1"
+												<button data-toggle="tooltip" data-placement="bottom" title="Preview Modules"
+													[disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
 													(click)="previewModules(partner.teamMemberGroupId)">
 													<i class="fa fa-eye white" aria-hidden="true"></i>
 												</button>
 											</span>
 											<span class="input-group-btn">
-												<button data-toggle="tooltip" data-placement="bottom"
-													title="Select Team Members"
-													[disabled]="partner.teamMemberGroupId==0" class="btn btn-info"
-													type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
-													<i class="fa"
-														[ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
+												<button data-toggle="tooltip" data-placement="bottom" title="Select Team Members"
+													[disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
+													(click)="getTeamMembers(partner,i)">
+													<i class="fa" [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
 														aria-hidden="true"></i>
 												</button>
 											</span>
