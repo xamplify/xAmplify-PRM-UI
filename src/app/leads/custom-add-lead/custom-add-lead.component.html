@@ -73,7 +73,7 @@
           <div [ngClass]="isLeadForDivCenterAligned ? ' col-md-6 col-md-offset-3' :'col-sm-6 col-xs-12 px-10 pl0 mb_pr0'">
             <!--Lead Details-->
             <div class="panel-group" role="tablist" aria-multiselectable="true"
-              *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))
+              *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin)))
                        && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion && actionType != 'add'))">
               <div class="panel panel-default deal-bgcolor" *ngIf="isLeadDetailsTabDisplayed">
                 <div class="panel-heading deal-bgcolor">
