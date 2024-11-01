@@ -304,7 +304,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	selectedUser: User = null;
 	/*****XNFR-342*****/
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
-	isLocalHost = false;
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
@@ -317,7 +316,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public campaignService: CampaignService, public integrationService: IntegrationService,
 		private utilService: UtilService) {
-		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		//Added for Vanity URL

@@ -308,7 +308,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	customLoginTemplateResponse: CustomResponse = new CustomResponse();
 	// XNFR-403
 	connectwiseRibbonText: string;
-	isLocalHost = false;
 
 	/* -- XNFR-415 -- */
 	DefaultDashBoardForPartnersEnum = DefaultDashBoardForPartners;
@@ -381,7 +380,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
 		public landingPageService: LandingPageService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
-		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.isProduction = this.authenticationService.isProductionDomain();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
