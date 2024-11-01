@@ -785,12 +785,16 @@ copy(landingPage:any){
         if(!this.folderListView){
           this.referenceService.goToTop();
         }
-
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
           this.pagination.source = "PARTNER_JOURNEY_PAGE";
           this.pagination.defaultLandingPage = false;
           this.pagination.companyId = this.loggedInUserCompanyId;
           this.pagination.searchKey = this.sortOption.searchKey;
           let self = this;
+          this.pagination.vendorPartnerJourneyPage = true;
 
         this.landingPageService.findVendorPartnerJourneyLandingPages(pagination).subscribe(
             (response: any) => {

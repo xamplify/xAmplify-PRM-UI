@@ -151,4 +151,6 @@ export class Pagination {
 	partnerJourneyPage:boolean = false;
 
 	vendorMarketplacePage:boolean = false;
+
+	vendorPartnerJourneyPage:boolean = false;
 }
