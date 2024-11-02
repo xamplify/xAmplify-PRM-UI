@@ -58,17 +58,12 @@
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
                 </div>
-                <span id="permhref" class="morePadding"
-                  title="{{authenticationService?.module.isPrm ? properties?.activePartnerTileDescriptionForPrm : properties?.activePartnerTileDescription}}">
-                  <a [className]="activePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''">
-                    {{ authenticationService?.module.isPrm ? (properties?.activePartnerTileDescriptionForPrm | slice:0:22) :
-                    (properties?.activePartnerTileDescription | slice:0:22) }}
-                    <span
-                      *ngIf="!authenticationService?.module.isPrm && properties?.activePartnerTileDescription?.length > 22">...</span>
-                    <span
-                      *ngIf="authenticationService?.module.isPrm && properties?.activePartnerTileDescriptionForPrm?.length > 22">...</span>
-                    <!-- <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i> -->
+                <span id="permhref" class="morePadding">
+                  <a [className]="activePartnersCount > 0 ? 'more' : 'more disable-tile-pj'" 
+                     (click)="activePartnersCount > 0 ? goToActivePartnersDiv() : ''">Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" 
+                       title="{{authenticationService?.module.isPrm ? properties?.activePartnerTileDescriptionForPrm : properties?.activePartnerTileDescription}}"></i>
                   </a>
                 </span>
               </a>
@@ -94,16 +89,12 @@
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
                 </div>
-                <span id="permhref" class="morePadding"
-                  title="{{authenticationService?.module.isPrm ? properties?.dormantPartnertileDescriptionForPrm : properties?.dormantpartnertileDescription}}">
+                <span id="permhref" class="morePadding">
                   <a [className]="inActivePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''">
-                    {{authenticationService?.module.isPrm ? (properties?.dormantPartnertileDescriptionForPrm | slice:0:22 ): (properties?.dormantpartnertileDescription | slice:0:22)}}
-                    <span
-                      *ngIf="!authenticationService?.module.isPrm && properties?.dormantpartnertileDescription?.length > 22">...</span>
-                    <span
-                      *ngIf="authenticationService?.module.isPrm && properties?.dormantPartnertileDescriptionForPrm?.length > 22">...</span>
-                    <!-- <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i> -->
+                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''"> Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true"
+                      title="{{authenticationService?.module.isPrm ? properties?.dormantPartnertileDescriptionForPrm : properties?.dormantpartnertileDescription}}"></i>
                   </a>
                 </span>
               </a>
@@ -128,12 +119,13 @@
                     Company Profile Incomplete
                   </div>
                 </div>
-                <span id="permhref" class="morePadding" title="{{properties?.companyProfileIncompletepartnertileDescription}}">
+                <span id="permhref" class="morePadding">
                   <a [className]="companyProfileIncompletePartnersCount > 0 ? 'more' : 'more disable-tile-pj' "
                     (click)="companyProfileIncompletePartnersCount > 0 ?  goToIncompletecompanyProfilePartnersDiv() : ''">
-                    {{properties?.companyProfileIncompletepartnertileDescription | slice:0:22}}
-                    <span *ngIf="properties?.companyProfileIncompletepartnertileDescription?.length>18">...</span>
-                    <!-- <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i> -->
+                    Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true"
+                      title="{{properties?.companyProfileIncompletepartnertileDescription}}"></i>
                   </a>
                 </span>
               </a>
@@ -156,12 +148,12 @@
                             title="Pending Signup" style="font-size: 13px">Pending Signup
                           </div>
                         </div>
-                        <span id="permhref" class="morePadding" title="{{properties?.signupPartnertileDescription}}">
+                        <span id="permhref" class="morePadding">
                           <a [className]="PendingSignupPartnersCount>0 ? 'more' : 'more disable-tile-pj'"
                             (click)="PendingSignupPartnersCount>0 ?  goToSignupPendingPartnersDiv() : ''">
-                            {{properties?.signupPartnertileDescription | slice:0:22}}
-                            <span *ngIf="properties?.signupPartnertileDescription?.length>22">...</span>
-                            <!-- <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i> -->
+                            Detailed view
+                            <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                            <i class="fa fa-info-circle" aria-hidden="true" title="{{properties?.signupPartnertileDescription}}"></i>
                           </a>
                         </span>
                       </a>
@@ -191,7 +183,9 @@
                         <span id="permhref" class="morePadding">
                           <a [className]="throughPartnerCampaignsCount > 0 ? 'more' : 'more disable-tile-pj' "
                             (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''"> Detailed view
-                            <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                            <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                            <i class="fa fa-info-circle" aria-hidden="true" title="Total Through Campaigns by All Partner Companies"></i>
+                          </a>
                         </span>
                       </a>
                     </div>
@@ -220,8 +214,10 @@
                 </div>
                 <span id="permhref" class="morePadding">
                   <a [className]="redistributedCampaignsCount > 0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''"> Detailed view <i
-                      class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                    (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''"> Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" title="Total Campaigns Redistributed by All Partner Companies"></i>
+                    </a>
                 </span>
               </a>
             </div>
@@ -248,7 +244,9 @@
                 <span id="permhref" class="morePadding">
                   <a [className]="approvePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
                     (click)="approvePartnersCount>0 ? goToApprovePartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" title="Total Approve Partners"></i>
+                  </a>
                 </span>
               </a>
             </div>
