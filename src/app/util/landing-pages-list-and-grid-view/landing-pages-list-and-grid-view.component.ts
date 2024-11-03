@@ -85,6 +85,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Input()isPartnerJourneyPages = false;
   showSharePartnerPagePopup= false;
   selectedVendorCompanyIds=[];
+  selectedVendorCompanyIdAndStatuses=[];
   @Input() isVendorPartnerJourneyPages = false;
   @Input() isVendorMarketplacePages = false;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
@@ -753,10 +754,11 @@ copy(landingPage:any){
 
         this.landingPageService.getPartnerJourneyPageSharedDetails(landingPageId).subscribe(
             (response) => {
-                self.selectedVendorCompanyIds = response.data;
-
-                self.selectedVendorCompanyIds = self.selectedVendorCompanyIds && self.selectedVendorCompanyIds.length > 0 
-                ? self.selectedVendorCompanyIds 
+                self.selectedVendorCompanyIdAndStatuses = response.data;
+                self.selectedVendorCompanyIdAndStatuses = self.selectedVendorCompanyIdAndStatuses && self.selectedVendorCompanyIdAndStatuses.length > 0 
+                ? self.selectedVendorCompanyIdAndStatuses:[];
+                self.selectedVendorCompanyIds = self.selectedVendorCompanyIdAndStatuses && self.selectedVendorCompanyIdAndStatuses.length > 0 
+                ? self.selectedVendorCompanyIdAndStatuses.map(id=>id.vendorCompanyId) 
                 : [];
                 this.ngxloading = false;
                 this.showSharePartnerPagePopup = true;

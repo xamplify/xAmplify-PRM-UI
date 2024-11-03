@@ -24,7 +24,7 @@ export class AddVendorLogosComponent implements OnInit {
 	selectedItems = [];
 	@Input() dropdownList;
 	@Input() isVendorMarketplace:boolean = false;
-	
+	moduleLable:string;
 	marketPlaceCategoryResponse:CustomResponse = new CustomResponse();
 	constructor(public authenticationService: AuthenticationService) { }
 
@@ -37,6 +37,7 @@ export class AddVendorLogosComponent implements OnInit {
 		if (this.hideButton) {
 			this.showMergeTagsPopUp();
 		}
+		this.moduleLable=this.isVendorMarketplace?"Pick Your Partners":"Pick Your Vendors"
 	}
 
 	ngOnDestroy() {

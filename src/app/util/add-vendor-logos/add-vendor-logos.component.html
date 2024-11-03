@@ -1,7 +1,7 @@
 <div>
 	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0"
 		style="padding-top: 6px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
-			class="btn btn-primary transition">Pick Your Vendors</span></button>
+			class="btn btn-primary transition">{{moduleLable}}</span></button>
 </div>
 
 <div class="modal fade right" id="add-vendor-logo-popup" role="dialog" data-backdrop="static"
@@ -12,7 +12,7 @@
 				<button type="button" class="close-circle" (click)="hideModal()">
 					<i class="fa fa-times" aria-hidden="true"></i>
 				</button>
-				<h4 class="modal-title text-center" translate>Pick Your Vendors</h4>
+				<h4 class="modal-title text-center" translate>{{moduleLable}}</h4>
 			</div>
 			<app-response-message class="pg8" [customResponse]="marketPlaceCategoryResponse" *ngIf="marketPlaceCategoryResponse.isVisible">
 			</app-response-message>

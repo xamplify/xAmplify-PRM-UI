@@ -153,4 +153,6 @@ export class Pagination {
 	vendorMarketplacePage:boolean = false;
 
 	vendorPartnerJourneyPage:boolean = false;
+
+	vendorMarketplacePageAnalytics:boolean = false;
 }

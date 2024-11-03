@@ -29,6 +29,8 @@ export class VendorCompanyModelPopupComponent implements OnInit {
 	responseMessage="";
 	dropdownSettings={};
 	@Input() selectedCompanyIds= [];
+	@Input() selectedVendorCompanyIdAndStatuses= [];
+	
 	marketPlaceCategoryResponse:CustomResponse = new CustomResponse();
 
   	pagination:Pagination= new Pagination();
@@ -122,6 +124,12 @@ export class VendorCompanyModelPopupComponent implements OnInit {
 		closePopupEmit(message) {
 			this.closePopup.emit(message);
 		}
-
+		getCompanyStatus(companyId: number) {
+			let status = "N/A";
+		   if (this.selectedVendorCompanyIdAndStatuses != null &&  this.selectedVendorCompanyIdAndStatuses.some(e => e.vendorCompanyId ===  companyId)) {
+			   status = this.selectedVendorCompanyIdAndStatuses.filter(e => e.vendorCompanyId === companyId)[0].status;
+		   } 
+		   return status;
+	   }
   
 }

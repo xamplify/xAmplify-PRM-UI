@@ -5,5 +5,5 @@ export class LandingPageShareDto{
     partnerGroupSelected = false;
     partnerIdAndPartnerStatus = [];
     partnerGroupPartnerIdAndPartnerStatus = [];
-
+    vendorCompnayIdAndstatus=[];
 }

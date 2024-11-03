@@ -409,7 +409,7 @@ export class FormPreviewComponent implements OnInit {
       formSubmit.partnerMasterLandingPageId = this.masterLandingPageId;
       formSubmit.partnerJourneyPage = this.isPartnerJourneyPage;
       formSubmit.vendorMarketplacePage = this.isVendorMarketplacePage;
-      formSubmit.vendoeMarketplacePageId = this.vendorMarketplacePageId;
+      formSubmit.vendorMarketplacePageId = this.vendorMarketplacePageId;
       this.formService.submitForm(formSubmit, formType)
         .subscribe(
           (response: any) => {

@@ -56,6 +56,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
     @Input() isMasterLandingPage: boolean;
     @Input() isMasterLandingPageAnalytics:boolean;
     formSubmitDto = new FormSubmit;
+    @Input() isPartnerJourneyPage: boolean;
+    @Input() isVendorMarketplacePage: boolean;
+    @Input() isVendorMarketplacePageAnalytics:boolean;
 
     constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
@@ -117,6 +120,13 @@ export class FormAnalyticsUtilComponent implements OnInit {
             pagination.masterLandingPageAnalytics = true;
             pagination.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
             pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+        }else  if(this.isPartnerJourneyPage ){
+            pagination.partnerJourneyPage = true;
+            pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+        }else if(this.isVendorMarketplacePageAnalytics){
+            pagination.vendorMarketplacePageAnalytics = true;
+            pagination.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
+            pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
         }
         this.formService.getFormAnalytics(pagination, this.alias, false).subscribe(
             (response: any) => {
@@ -139,7 +149,6 @@ export class FormAnalyticsUtilComponent implements OnInit {
                     this.formDataRows = data.submittedData;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, this.formDataRows);
-                    console.log(data)
                 } else {
                     this.referenceService.goToPageNotFound();
                 }

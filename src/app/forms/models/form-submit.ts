@@ -15,5 +15,5 @@ export class FormSubmit {
 
     partnerJourneyPage:boolean=false;
     vendorMarketplacePage:boolean =false;
-    vendoeMarketplacePageId:number;
+    vendorMarketplacePageId:number;
 }

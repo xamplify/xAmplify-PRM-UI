@@ -633,5 +633,5 @@ data-backdrop="static" data-keyboard="false">
 
 <app-vendor-company-model-popup *ngIf="showSharePartnerPagePopup" 
 [loggedInUserCompanyId] = "loggedInUserCompanyId" [loggedInUserId]="loggedInUserId" [input]="selectedLandingPageId" 
-[selectedCompanyIds] = "selectedVendorCompanyIds" (closePopup)=closeSharePartnerPagePopup($event)></app-vendor-company-model-popup>
+[selectedCompanyIds] = "selectedVendorCompanyIds" [selectedVendorCompanyIdAndStatuses]="selectedVendorCompanyIdAndStatuses" (closePopup)=closeSharePartnerPagePopup($event)></app-vendor-company-model-popup>
 <app-scroll-top></app-scroll-top>

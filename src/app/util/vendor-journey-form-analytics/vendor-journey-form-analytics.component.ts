@@ -52,13 +52,19 @@ export class VendorJourneyFormAnalyticsComponent implements OnInit {
   @Input() isMasterLandingPage: boolean;
   @Input() isMasterLandingPageAnalytics:boolean;
   @Input() masterLandingPageId:number;
+
+  @Input() isPartnerJourneyPage: boolean;
+  @Input() isVendorMarketplacePage: boolean;
+  @Input() isVendorMarketplacePageAnalytics:boolean;
+  @Input() vendorMarketplacePageId:number;
+
   analyticsObject:any={};
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
       public authenticationService: AuthenticationService, public formService: FormService,
       public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
       public logger: XtremandLogger, public callActionSwitch: CallActionSwitch, public properties: Properties,
-      private campaignService: CampaignService
+      
   ) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.pagination.userId = this.loggedInUserId;
@@ -68,14 +74,10 @@ export class VendorJourneyFormAnalyticsComponent implements OnInit {
       let objectLength = Object.keys(this.importedObject).length;
       if (objectLength > 0) {
           this.alias = this.importedObject['formAlias'];
-          //this.partnerLandingPageAlias = this.importedObject['partnerLandingPageAlias'];
-          //this.formId = this.importedObject['formId'];
-          //this.partnerId = this.importedObject['partnerId'];
-          //this.title = this.importedObject['title'];
           
         this.formAnalyticsDownload = true;
           
-        if(this.isMasterLandingPageAnalytics){
+        if(this.isMasterLandingPageAnalytics || this.isVendorMarketplacePageAnalytics){
             this.listPageAnalyticsSubmittedData(this.pagination);
         }else{
             this.listSubmittedData(this.pagination);
@@ -88,6 +90,8 @@ export class VendorJourneyFormAnalyticsComponent implements OnInit {
   listSubmittedData(pagination: Pagination) {
     pagination.searchKey = this.searchKey;
     this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.vendorJourney = this.isVendorJourney;
+    pagination.partnerJourneyPage = this.isPartnerJourneyPage;
     this.formService.getVendorJourneyFormAnalytics(pagination, this.alias).subscribe(
         (response: any) => {
             const data = response.data;
@@ -112,7 +116,7 @@ search() {
 }
 
 viewLandingPageFormAnalytics(landingPage:any,selectedIndex:number){
-  if(this.isMasterLandingPageAnalytics){
+  if(this.isMasterLandingPageAnalytics || this.isVendorMarketplacePageAnalytics){
     this.analyticsObject['formAlias'] = landingPage.vendorFormAlias;
     this.analyticsObject['masterLandingPageId'] = this.masterLandingPageId;
     this.analyticsObject['vendorLandingPageId'] = landingPage.vendorLandingPageId;
