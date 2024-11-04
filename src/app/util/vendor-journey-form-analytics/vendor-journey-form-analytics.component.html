@@ -36,8 +36,8 @@
                 </span> <span class="gridHeader" translate>Landing Page Name</span></th>
 				<th class="text-center" id="border-bottom" translate>Created
 					By</th>
-				<th class="text-center" *ngIf="!(isMasterLandingPageAnalytics)" id="border-bottom" translate>Partner Company</th>
-				<th class="text-center" *ngIf="isMasterLandingPageAnalytics" id="border-bottom" translate>Vendor Company</th>
+				<th class="text-center" *ngIf="!(isMasterLandingPageAnalytics || isPartnerJourneyPage )" id="border-bottom" translate>Partner Company</th>
+				<th class="text-center" *ngIf="isMasterLandingPageAnalytics || isPartnerJourneyPage" id="border-bottom" translate>Vendor Company</th>
             </tr>
           </thead>
           <tbody>
@@ -81,7 +81,7 @@
 					<ng-container *ngIf="landingPage.expanded">
 						<ng-container>
 							<app-form-analytics-util [importedObject]="analyticsObject"
-								[isVendorJourney]="true"></app-form-analytics-util>
+								[isVendorJourney]="isVendorJourney" [isPartnerJourneyPage] = "isPartnerJourneyPage"></app-form-analytics-util>
 						</ng-container>
 					</ng-container>
 				</td>
