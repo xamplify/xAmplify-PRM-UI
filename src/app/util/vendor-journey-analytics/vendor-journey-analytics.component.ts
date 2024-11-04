@@ -61,6 +61,7 @@ export class VendorJourneyAnalyticsComponent implements OnInit {
   @Input() isPartnerJourneyPages:boolean = false;
   @Input() isVendorMarketplacePages:boolean = false;
 
+  moduleLabel:string=""
   constructor(public referenceService: ReferenceService,
       public httpRequestLoader: HttpRequestLoader, public pagerService:
           PagerService, public authenticationService: AuthenticationService,
@@ -103,6 +104,7 @@ export class VendorJourneyAnalyticsComponent implements OnInit {
           if(this.isMasterLandingPages || this.isVendorMarketplacePages){
             this.exportObject['landingPageId']= this.vendorLandingPageId;
           }
+          this.moduleLabel = this.isMasterLandingPages?"Vendor Page Analytics":this.isVendorMarketplacePages?"Partner Page Analytics":"";
       }
   }
 

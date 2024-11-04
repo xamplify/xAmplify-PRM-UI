@@ -500,7 +500,7 @@
                                          </ng-container>
                                         <!--Partner Journey Pages-->
                                          <ng-container
-                                         *ngIf="(authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember &&  authenticationService?.module?.adminOrSuperVisor))">
+                                         *ngIf="partnerJourneyPageEnabled && (authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember &&  authenticationService?.module?.adminOrSuperVisor))">
                                          <li [ngClass]="{'active-tab': activeTabName == 'partnerJourneyPages'}">
                                              <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'partnerJourneyPages'}"
                                                  (click)="activateTab('partnerJourneyPages');clearCustomResponse()">
