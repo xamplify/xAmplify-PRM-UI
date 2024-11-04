@@ -219,6 +219,7 @@ export class Properties {
 	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated successfully";
 	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted successfully";
 	VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT = "Error while Updating Email Template";
+	DUPLICATE_SUBJECT_ERROR_TEXT="The subject name has already been assigned to another template.";
 
 	reAuthenticateMessage = 'Please unlink  and reconnect your account.';
 

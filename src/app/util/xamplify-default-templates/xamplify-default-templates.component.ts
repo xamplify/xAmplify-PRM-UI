@@ -15,7 +15,7 @@ import { ModulesDisplayType } from '../models/modules-display-type';
 import { Observable } from 'rxjs';
 import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
 import { LandingPageType } from 'app/landing-pages/models/landing-page-type.enum';
-
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 declare var BeePlugin,swal,$:any;
 
 @Component({
@@ -64,8 +64,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   modulesDisplayType = new ModulesDisplayType();
   updateAndRedirectClicked = false;
   categoryId: number = 0;
+  vanitySubjectLines: string[] = [];
+  isSubjectDuplicate: boolean = false;
 
-  constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,
+  constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,private logger: XtremandLogger,
     private landingPageService: LandingPageService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if(landingPageService.vendorJourney || landingPageService.isMasterLandingPages || landingPageService.welcomePages ||landingPageService.isPartnerJourneyPages || landingPageService.isVendorMarketplacePages ){
@@ -76,8 +78,42 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   ngOnInit() {
     if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages && !this.isPartnerJourneyPages && !this.isVendorMarketplacePages){
       this.editTemplate();
+      this.getAllTemplatesDuplicates();
     }
   }
+  getAllTemplatesDuplicates() {
+    this.vanityUrlService.getAllTemplatesDuplicates()
+    .subscribe(
+        response => {
+            this.vanitySubjectLines = response.data;
+        },
+        error => { this.logger.errorPage(error) },
+        () => { this.logger.info("Completed getAllTemplatesDuplicates()") }
+    );
+}
+checkForDuplicates(newSubject: string, existingName: string, id:number) {
+  const normalizedNewSubject = newSubject.trim().toLowerCase();
+  const normalizedExistingName = existingName.trim().toLowerCase();
+
+  if (normalizedNewSubject === normalizedExistingName) {
+    this.isSubjectDuplicate = false;
+  }else{
+    const trimmedSubjects = this.vanitySubjectLines.map(item => 
+      item[1].trim().toLowerCase()
+  );
+  this.vanitySubjectLines.forEach((subject : any) => {
+    if(id === subject[0] && subject[1].trim().toLowerCase() === normalizedNewSubject){
+      this.isSubjectDuplicate = false;
+    }else{
+      if(subject[1].trim().toLowerCase() === normalizedNewSubject){
+        this.isSubjectDuplicate = true;
+      }
+    }
+  
+  })
+  }
+  return this.isSubjectDuplicate;
+}
 
   editTemplate(){
    let self = this;
@@ -119,7 +155,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         emailTemplate.userId = self.loggedInUserId;
         const emailTemplateType = emailTemplate.typeInString;
     
-        const requiredTagsMap = {
+         const requiredTagsMap = {
             "ADD_LEAD": [
                 '{{partnerModuleCustomName}}',
                 '{{partnerName}}',
@@ -135,7 +171,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
                 '{{partnerCompany}}',
                 '{{leadName}}',
                 '{{leadCompany}}',
-                '{{dealDescription}}',
+                '{{dealName}}',
                 '{{dealAmount}}',
                 '{{dealStage}}',
                 '{{dealComment}}',
@@ -166,7 +202,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
                 '{{createdByCompanyName}}',
                 '{{leadName}}',
                 '{{leadCompany}}',
-                '{{dealDescription}}',
+                '{{dealName}}',
                 '{{dealAmount}}',
                 '{{dealStage}}',
                 '{{dealComment}}',
@@ -177,7 +213,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
                 '{{createdByCompanyName}}',
                 '{{leadName}}',
                 '{{leadCompany}}',
-                '{{dealDescription}}',
+                '{{dealName}}',
                 '{{dealAmount}}',
                 '{{dealStage}}',
                 '{{dealComment}}',
@@ -214,7 +250,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
                 '{{partnerCompany}}',
                 '{{leadName}}',
                 '{{leadCompany}}',
-                '{{dealDescription}}',
+                '{{dealName}}',
                 '{{dealAmount}}',
                 '{{dealStage}}',
                 '{{dealComment}}',
@@ -365,7 +401,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       { name: 'Social Status Content', value: '{{socialStatusContent}}' },
       ];
     }
-    if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType)
+    if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType) {
       mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
       { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
       { name: 'Partner Name', value: '{{partnerName}}' },
@@ -375,6 +411,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       { name: 'Lead Stage', value: '{{leadStage}}' },
       { name: 'Lead Comment', value: '{{leadComment}}' },
       ];
+    }
     if("ADD_DEAL"==emailTemplateType || "DEAL_UPDATE"==emailTemplateType){
       mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
@@ -382,7 +419,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Partner Company', value: '{{partnerCompany}}' },
         { name: 'Lead Name', value: '{{leadName}}' },
         { name: 'Lead Company', value: '{{leadCompany}}'},
-        { name: 'Deal Name', value: '{{dealDescription}}' },
+        { name: 'Deal Name', value: '{{dealName}}' },
         { name: 'Deal Amount', value: '{{dealAmount}}' },
         { name: 'Deal Stage', value: '{{dealStage}}' },
         { name: 'Deal Comment', value: '{{dealComment}}' },
@@ -423,13 +460,14 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Created By Company', value: '{{createdByCompanyName}}' },
         { name: 'Lead Name', value: '{{leadName}}' },
         { name: 'Lead Company', value: '{{leadCompany}}'},
-        { name: 'Deal Name', value: '{{dealDescription}}' },
+        { name: 'Deal Name', value: '{{dealName}}' },
         { name: 'Deal Amount', value: '{{dealAmount}}' },
         { name: 'Deal Stage', value: '{{dealStage}}' },
         { name: 'Company Name', value: '{{companyName}}' },
         { name: 'Deal Comment', value: '{{dealComment}}' },
         ];
     }
+
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
       var beeConfig = {
@@ -500,6 +538,19 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
     this.loading = true;
     this.customResponse = new CustomResponse();
     this.replaceToDefaultLogos(emailTemplate);
+    this.customResponse = new CustomResponse('', '', false);
+    const existingName = emailTemplate.name;
+    const newSubject = emailTemplate.subject;
+    this.checkForDuplicates(newSubject, existingName, emailTemplate.id);
+    if (this.isSubjectDuplicate) {
+      this.loading = false;
+      this.customResponse = new CustomResponse('ERROR', this.properties.DUPLICATE_SUBJECT_ERROR_TEXT, true);
+      this.isSubjectDuplicate = false;
+      return;
+     } 
+     else {
+      this.customResponse = new CustomResponse('', '', false);
+    }
     this.vanityUrlService.saveOrUpdateEmailTemplate(emailTemplate).subscribe(result => {
       this.referenceService.goToTop();
       this.loading = false;
