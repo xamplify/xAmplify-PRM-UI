@@ -79,17 +79,23 @@
             </div>
             <div class="col-lg-4 col-md-3 col-sm-4 col-xs-4  moveButtonsCu button_placement mb_width26"
               style="padding-right: 10px;">
-              <div class="row">
+              <div class="row mr-21">
                 <div class="clearfix" *ngIf="isTeamMemberModule &&!isNavigatedFromSuperAdminScreen">
                   <section class="clearfix">
                     <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                      <div class="col-xs-6 col-sm-6 col-lg-4 hidden-xs pull-right" style="padding:0px">
+                      <div class="col-xs-6 col-sm-6 col-lg-5 hidden-xs pull-right downloadteam" style="padding:0px">
                         <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button bgcolor-unset position-relative"
                             [disabled]="isLoggedInAsTeamMember" [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''">
                           <span class="btn Btn-Green">Upload a CSV</span>
                           <input *ngIf="!isLoggedInAsTeamMember" type="file" title="" class="file-upload" #fileImportInput name="File Upload"
                             id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
                         </button>
+                        <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view ml10" data-toggle="tooltip"
+                        title="Download TeamMembers Csv Template" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
+                        && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
+                        && !authenticationService?.module?.deletedPartner && !isCollapsed ">
+                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+                      </span>
                       </div>
                       <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
                         <button class="btn-xs btn-block rounded-0 button_blue bgcolor-unset" style="padding:1px;"
@@ -124,13 +130,12 @@
                   style="margin-left: -10px !important" title="Refresh" (click)="refreshList()">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
                 </span>
-                <!-- Download TeamMembers Csv -->
-                <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
-                  title="Download TeamMembers Csv" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
-                  && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
-                  && !authenticationService?.module?.deletedPartner && !isCollapsed ">
-                  <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
-                </span>
+                <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
+												data-toggle="tooltip"
+												title="Export to Excel"
+												(click)="downloadTeamMemberCsv()">
+												<i aria-hidden="true" class="fas fa-file-export p10"></i>
+											</button>
                 <span
                   *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
                   class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" title="Filter">

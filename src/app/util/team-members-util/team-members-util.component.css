@@ -551,3 +551,10 @@ span.filterActiveBg i {
   background-color: #0276ff;
   color: #fff;
 }
+.downloadteam{
+  display: flex;
+  align-items: center;
+}
+.mr-21{
+  margin-right: 20px;
+}
