@@ -466,6 +466,6 @@ export class Properties {
 	dormantpartnertileDescription = "Partners who have not yet interacted with the Content, Redistributed Campaigns, Created Leads or Deals.";
 	activePartnerTileDescriptionForPrm = "Partners who have interacted with Content, Created Leads or Deals.";
 	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
-
+	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
 	}
 
