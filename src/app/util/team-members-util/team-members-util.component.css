@@ -484,6 +484,12 @@ span.filterActiveBg i {
   width: 74%;
    margin: 10px 0px;
   }
+  .mr-21{
+    margin-right: 0px!important;
+  }
+  .neg_mt10{
+    margin-top: -10px!important;
+  }  
 }
 .button_placement{
   left : 0px !important;
@@ -557,4 +563,9 @@ span.filterActiveBg i {
 }
 .mr-21{
   margin-right: 20px;
+}
+@media only screen and (min-width:768px) and (max-width: 1198px) {
+  .team_header{
+    width: 120px;
+  }
 }
