@@ -580,7 +580,7 @@
                                             </li>
                                         </ng-container>
                                         <!--Adding Domains XNFR-454-->
-                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && !(authenticationService?.companyProfileName === 'versa-networks' && authenticationService?.module?.loggedInThroughVendorVanityUrl)"
                                             [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
                                                 (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}
