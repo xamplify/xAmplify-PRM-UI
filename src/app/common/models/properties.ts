@@ -199,7 +199,7 @@ export class Properties {
 	vendorJourney = "Vendor Journey";
 	landingPages = "Vendor Pages";
 	masterLandingPages = "Partner Landscape"
-	masterLandingPageCategories = "Marketplace Categories"
+	masterLandingPageCategories = "Landscape Categories"
 	welcomePages = "Welcome Pages"
 	/*****XNFR-712******/
 	partnerJourneyPages = "Partner Journey Pages";
