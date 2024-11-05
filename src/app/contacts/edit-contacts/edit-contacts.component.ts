@@ -295,6 +295,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isFromCompanyModule: boolean = false;
 	isContactModule: boolean = false;
 	activeCrmType: any;
+	isLocalhostOrQADomain: boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -3020,6 +3021,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			/********Check Gdpr Settings******************/
 			this.checkTermsAndConditionStatus();
 			this.contactService.deleteUserSucessMessage = false;
+			this.checkLocalhostOrQADomain();
 		}
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
@@ -3673,7 +3675,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***XNFR-553***/
 	showContactDetails(contact) {
-		let encodedUserListId = this.refService.encodePathVariable(contact.userListId);
+		let encodedUserListId = this.refService.encodePathVariable(this.selectedContactListId);
 		let encodeUserId = this.refService.encodePathVariable(contact.id);
 		if (this.isFromCompanyModule) {
 			this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
@@ -3744,6 +3746,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/***** XNFR-718 *****/
 	csvCustomResponse() {
 		this.customResponse = new CustomResponse('ERROR', "We couldn't find any valid email id(s) in the records. Please ensure that the email id(s) are correctly formatted and try again.", true);
+	}
+
+	checkLocalhostOrQADomain() {
+		this.isLocalhostOrQADomain = this.authenticationService.isLocalHost() && this.authenticationService.isQADomain();
 	}
 
 }
