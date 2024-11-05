@@ -13,7 +13,7 @@
                 [dragulaModel]='menuItems'>
                 <li class="list-group-item cursor-move" *ngFor="let menu of menuItems">
                     <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                    <span style="margin-left: 10px;">{{menu.customName}}<span *ngIf="menu.moduleId == 15" class="beta_social_icon">(Beta)</span></span>
+                    <span style="margin-left: 10px;">{{menu.customName}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup></span>
                     <i class="fa fa-arrows pull-right drap-arrow-cu" aria-hidden="true"></i>
                 </li>
             </ul>

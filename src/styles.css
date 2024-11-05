@@ -3253,24 +3253,6 @@ a.quicklinks_icons:hover {
   background-color: #5bb2f5;
   color: #fff;
 }
-/* Beta stamp for Social Accounts */
-.beta_social_icon {
-  font-size: 12px;
-  margin-left: 2px;
-  color: #888;
-  vertical-align: super;
+.detailedarrow,.float_unset{
+  float: unset !important;
 }
-
-.beta_social_icon_for_buttons {
-  font-size: 10px;
-  margin-left: 1px;
-  color: #c0bdbd;
-  vertical-align: super;
-}
-
-.beta_social_icon_for_breadcrumbs {
-  font-size: 10px;
-  margin-left: 1px;
-  color: #808680;
-}
-.detailedarrow{float: unset !important;}

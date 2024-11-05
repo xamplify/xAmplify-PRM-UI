@@ -11,7 +11,7 @@
                 <li *ngIf="location.includes('/social/update-status')" class="breadcrumb-font-color"
                     style="color: #808680;">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    Update Status <span class="beta_social_icon_for_breadcrumbs">(Beta)</span>
+                    Update Status <sup>(Beta)</sup>
                 </li>
                 <ng-container *ngIf="!showNavigationBreadCrumbToPartner && !location.includes('/social/update-status')">
                     <li>
@@ -20,7 +20,7 @@
                     </li>
                     <li class="breadcrumb-font-color" style="color: #808680;">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        Create Social Campaign <span class="beta_social_icon_for_breadcrumbs">(Beta)</span>
+                        Create Social Campaign <sup>(Beta)</sup>
                     </li>
                 </ng-container>
                 <ng-container *ngIf="showNavigationBreadCrumbToPartner">
@@ -30,7 +30,7 @@
                     </li>
                     <li class="breadcrumb-font-color" style="color: #808680;">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        Redistribute Social Campaign <span class="beta_social_icon_for_breadcrumbs">(Beta)</span>
+                        Redistribute Social Campaign <sup>(Beta)</sup>
                     </li>
                 </ng-container>
             </ul>
@@ -45,7 +45,7 @@
                 <div class="col-sm-12 dashboard-stat2 pt0" [ngClass]="{'disabled': isEditSocialStatus}">
                         <h6 class="caption-subject font-red-sunglo bold mt0">
                             <span class="uppercase">SOCIAL ACCOUNTS</span>
-                            <span class="beta_social_icon">(Beta)</span>
+                            <sup>(Beta)</sup>
                             <span *ngIf="socialCampaign?.channelCampaign">(OPTIONAL)</span>
                         </h6> 
                     <!---XNFR-222-->
@@ -113,7 +113,7 @@
                             <div class="text-center mt10">
                                 <button class="button_blue bgcolor-unset btn-sm" data-target="#manageAccountsModal" data-toggle="modal">
                                     <span class="btn btn-primary transition neg_mrg_top4">Manage
-                                        Accounts <span class="beta_social_icon_for_buttons">(Beta)</span></span>
+                                        Accounts <sup>(Beta)</sup></span>
                                 </button>
                             </div>
                         </ng-container>
@@ -1130,7 +1130,7 @@
                     <i class="fa fa-times"></i>
                 </a>
                 <h4 id="manageAccountsModalLabel" class="modal-title caption-subject font-red-sunglo">Manage Accounts
-                    <span class="beta_social_icon">(Beta)</span>
+                    <sup>(Beta)</sup>
                 </h4>
             </div>
             <div class="modal-body">

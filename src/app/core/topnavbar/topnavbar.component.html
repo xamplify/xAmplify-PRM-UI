@@ -71,7 +71,7 @@
                      *ngIf="authenticationService?.module?.socialShareOptionEnabled &&  authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                      <button class="btn btn custom btn_custom_bg" [ngClass]="authenticationService?.isTop?'customskin':''"
                         [routerLink]="['/home/social/update-status']" style="border-radius: 7px;">
-                        <span class="hidden-xs" translate>Update Status <span class="beta_social_icon_for_buttons">(Beta)</span></span>
+                        <span class="hidden-xs hidden-tabview" translate>Update Status <sup>(Beta)</sup></span>
                         <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''" button
                            data-toggle="tooltip" aria-hidden="true"></i>
                      </button>
@@ -137,7 +137,7 @@
                             || authenticationService.module.isVendorTier
                             || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && authenticationService?.module?.socialShareOptionEnabled">
                            <a (click)="goToRouter('/home/social/manage/all')" translate>
-                              <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts <span class="beta_social_icon">(Beta)</span>
+                              <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts <sup>(Beta)</sup>
                            </a>
                            <div class="border-bt"></div>
                         </li>

@@ -2389,3 +2389,9 @@ i.fa.fa-edit.ml_6:hover {
 .icon-btns i {
   color: unset !important;
 }
+/* charts related css */
+g.highcharts-axis-labels.highcharts-xaxis-labels text,text.highcharts-subtitle,
+text.highcharts-axis-title,g.highcharts-axis-labels.highcharts-yaxis-labels text,text.highcharts-title
+,g.highcharts-axis-labels.highcharts-coloraxis-labels text{
+  fill: var(---text-color) !important;
+}

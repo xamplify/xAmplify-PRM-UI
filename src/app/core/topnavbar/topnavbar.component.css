@@ -327,9 +327,6 @@ li.divider-bottom {
   .LogedAsBoxTop{margin-top: 22px !important;}
 
 }
-
-
-
 @media (min-width: 990px) and (max-width: 1019px)  { 
   .topnav-button-css {
     margin-right: 3px;
@@ -338,4 +335,9 @@ li.divider-bottom {
     font-size: 11px;
   }
   .LogedAsBoxTop{margin-top: 22px !important;}
+}
+@media (min-width: 768px) and (max-width: 819px) {
+.hidden-tabview{
+  display: none;
+}
 }
