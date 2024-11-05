@@ -800,5 +800,19 @@
 	"Active Partner Companies" : "Empresas asociadas activas",
 	"InActive Partner Companies" : "Empresas asociadas inactivas",
 	"Launched Campaigns" : "Campañas lanzadas",
-	"Total Users" : "Total de usuarios"
+	"Total Users" : "Total de usuarios",
+	"Onboarding" : "Incorporación",
+	"Domain Whitelisting" : "Lista blanca de dominios",
+	"How would you like to add your Partner ?" : "¿Cómo le gustaría agregar a su socio?",
+	"Import" : "Importar",
+	"from the cloud:" : "desde la nube:",
+	"CSV Template" : "Plantilla CSV",
+	"Group of" : "grupo de",
+	"Account Name:" : "Nombre de cuenta:",
+	"Account Sub Type:" : "Subtipo de cuenta:",
+	"Account Owner:" : "Titular de la cuenta:",
+	"Company Domain:" : "Dominio de la empresa:",
+	"Territory:" : "Territorio :",
+	"Contacts Limit:" : "Límite de contactos:",
+	"Total Records :" : "Total de registros:"
 }

@@ -800,7 +800,21 @@
 	"Active Partner Companies" : "アクティブパートナー企業",
 	"InActive Partner Companies" : "非アクティブなパートナー企業",
 	"Launched Campaigns" : "開始されたキャンペーン",
-	"Total Users" : "総ユーザー数"
+	"Total Users" : "総ユーザー数",
+	"Onboarding" : "オンボーディング",
+	"Domain Whitelisting" : "ドメインのホワイトリスト登録",
+	"How would you like to add your Partner ?" : "パートナーをどのように追加しますか?",
+	"Import" : "輸入",
+	"from the cloud:" : "ドピュイ・ル・ヌー:",
+	"CSV Template" : "CSVテンプレート",
+	"Group of" : "のグループ",
+	"Account Name:" : "アカウント名：",
+	"Account Sub Type:" : "アカウントのサブタイプ:",
+	"Account Owner:": "アカウント所有者:",
+	"Company Domain:" : "会社ドメイン:",
+	"Territory:" : "領土 :",
+	"Contacts Limit:" : "連絡先の制限 :",
+	"Total Records :" : "合計レコード数:"
 }
 
 
