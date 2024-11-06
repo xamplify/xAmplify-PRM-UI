@@ -1775,7 +1775,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               this.errorUploadCropper = true;
               this.showCropper = false;
               this.refService.showSweetAlertErrorMessage("Uploaded File Type :"+file.type+" is not supported");
-              this.isLoading = true;
+              this.isLoading = false;
             }       
             this.closeModal(); 
         } else{
