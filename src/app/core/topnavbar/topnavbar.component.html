@@ -67,7 +67,7 @@
                      &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                      <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                   </li>
-                  <li class="btnShare" class="topnav-button-css"
+                  <li style="display: none;" class="btnShare" class="topnav-button-css"
                      *ngIf="authenticationService?.module?.socialShareOptionEnabled &&  authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                      <button class="btn btn custom btn_custom_bg" [ngClass]="authenticationService?.isTop?'customskin':''"
                         [routerLink]="['/home/social/update-status']" style="border-radius: 7px;">
@@ -128,7 +128,7 @@
                            </a>
                            <div class="border-bt"></div>
                         </li>
-                        <li
+                        <li style="display: none;"
                            *ngIf="(refService.hasAllAccess()
                             || authenticationService.module.hasSocialStatusRole
                             || authenticationService.module.isOrgAdmin
