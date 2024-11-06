@@ -3753,7 +3753,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	checkLocalhostOrQADomain() {
-		this.isLocalhostOrQADomain = this.authenticationService.isLocalHost() && this.authenticationService.isQADomain();
+		this.isLocalhostOrQADomain = (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain());
 	}
 
 }
