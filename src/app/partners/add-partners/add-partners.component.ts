@@ -2624,7 +2624,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		else if (tempZohoAuth == 'yes') {
 			this.zohoShowModal();
-			this.checkingZohoPopupValues();
+			// this.checkingZohoPopupValues();
 			tempZohoAuth = 'no';
 			this.contactService.vanitySocialProviderName = "nothing";
 		}

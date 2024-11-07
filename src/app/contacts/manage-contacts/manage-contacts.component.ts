@@ -253,7 +253,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	/***** XNFR-671 *****/
 	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
-	isProductionDomain: boolean;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
@@ -387,7 +386,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.companyId = campaginAccessDto.companyId;
 		}
 
-		this.isProductionDomain = this.authenticationService.isProductionDomain();
 	}
 
 	contactListNameLength(title: string) {
@@ -3041,16 +3039,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	/***** XNFR-671 *****/
 	findFlexiFieldsData() {
-		if (!this.isProductionDomain) {
-			this.loading = true;
-			this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-				this.flexiFieldsRequestAndResponseDto = data;
-				this.loading = false;
-			}, (error: any) => {
-				this.referenceService.showSweetAlertServerErrorMessage();
-				this.loading = false;
-			});
-		}
+		this.loading = true;
+		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+			this.flexiFieldsRequestAndResponseDto = data;
+			this.loading = false;
+		}, (error: any) => {
+			this.referenceService.showSweetAlertServerErrorMessage();
+			this.loading = false;
+		});
 	}
 
 	isContactsByTypeAllVaildUnsubscribed() {

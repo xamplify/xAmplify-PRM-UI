@@ -331,7 +331,7 @@
           <tbody>
             <ng-container *ngFor="let user of csvPagedItems;let i=index">
               <tr id="invalid-user-column-row{{i}}">
-                <td class="text-center" [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
+                <td class="text-center" [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'" style="width: 90%;">
                   <input type="text" class="form-control" [(ngModel)]="user.emailId"
                     [ngModelOptions]="{standalone: true}" (input)="validateEmailAddressPattern(user)">
                 </td>
