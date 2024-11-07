@@ -20,7 +20,7 @@
               <a (click)="startLoader()" [routerLink]="menu.angularPath">
                 <i [className]="menu.angularIcon" aria-hidden="true"></i>
                 <span class="title">{{menu.customName | translate }}
-                  <span *ngIf="menu.moduleId == 15"class="beta_social_icon">(Beta)</span>
+                  <sup *ngIf="menu.moduleId == 15">(Beta)</sup>
                 </span>
                 <span class="selected"></span>
               </a>

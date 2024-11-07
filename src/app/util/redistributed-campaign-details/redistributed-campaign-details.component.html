@@ -36,7 +36,7 @@
               <td *ngIf="isTeamMemberAnalytics"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></td>
               <td>{{item?.campaignName}}</td>
               <td>{{item?.campaignType}}
-                <span *ngIf="item?.campaignType?.toLowerCase() == 'social'" class="beta_social_icon">(Beta)</span>
+                <sup *ngIf="item?.campaignType?.toLowerCase() == 'social'">(Beta)</sup>
               </td>
               <td>{{item?.campaignScheduleType}}</td>
               <td>

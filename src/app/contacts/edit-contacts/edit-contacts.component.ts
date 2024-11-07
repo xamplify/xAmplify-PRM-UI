@@ -295,6 +295,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isFromCompanyModule: boolean = false;
 	isContactModule: boolean = false;
 	activeCrmType: any;
+	isLocalhostOrQADomain: boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -462,7 +463,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					let csvRecordsArray = csvData.split(/\r|\n/);
 					let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
 					let headers = headersRow[0].split(',');
-					self.isUploadCsvOptionEnabled = self.isContactModuleType();
+					self.isUploadCsvOptionEnabled = self.isContactModuleType() && self.isLocalhostOrQADomain;
 					self.isXamplifyCsvFormatUploaded = !self.isPartner && headers.length == 11 && self.validateContactsCsvHeaders(headers);
 					if (self.isXamplifyCsvFormatUploaded && !self.isUploadCsvOptionEnabled) {
 						var csvResult = Papa.parse(contents);
@@ -1454,7 +1455,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.updateContactList(this.contactListId);
 		}
 		if (this.selectedAddContactsOption == 2) {
-			if (this.isContactModuleType()) {
+			if (this.isContactModuleType() && this.isLocalhostOrQADomain) {
 				this.customCsvMapping.saveCustomUploadCsvContactList();
 			} else {
 				this.updateCsvContactList(this.contactListId);
@@ -2438,7 +2439,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		if (this.isPartner) {
 			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
-		} else if (this.isContactModuleType()) {
+		} else if (this.isContactModuleType() && this.isLocalhostOrQADomain) {
 			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-contact-csv/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
 		} else {
 			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST_EMPTY.csv";
@@ -3020,6 +3021,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			/********Check Gdpr Settings******************/
 			this.checkTermsAndConditionStatus();
 			this.contactService.deleteUserSucessMessage = false;
+			this.checkLocalhostOrQADomain();
 		}
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
@@ -3628,19 +3630,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***** XNFR-671 *****/
 	findFlexiFieldsData() {
-		this.loading = true;
-		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-			this.loading = false;
-			this.flexiFieldsRequestAndResponseDto = data;
-		}, (error: any) => {
-			this.refService.showSweetAlertServerErrorMessage();
-			this.loading = false;
-		});
+		if (this.isLocalhostOrQADomain) {
+			this.loading = true;
+			this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+				this.loading = false;
+				this.flexiFieldsRequestAndResponseDto = data;
+			}, (error: any) => {
+				this.refService.showSweetAlertServerErrorMessage();
+				this.loading = false;
+			});
+		}
 	}
 
 	/***** XNFR-680 *****/
 	private mapFlexiFieldsForEditContact(contactDetails: any) {
-		if (this.isContactModuleType()) {
+		if (this.isContactModuleType() && this.isLocalhostOrQADomain) {
 			this.resetCustomUploadCsvFields();
 			if (contactDetails.flexiFields.length > 0) {
 				contactDetails.flexiFields.forEach((flexiField) => {
@@ -3657,7 +3661,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***** XNFR-671 *****/
 	private resetCustomUploadCsvFields() {
-		this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+		if (this.isLocalhostOrQADomain) {
+			this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+		}
 		this.isUploadCsvOptionEnabled = false;
 		this.isXamplifyCsvFormatUploaded = false;
 		this.csvRows = [];
@@ -3673,7 +3679,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***XNFR-553***/
 	showContactDetails(contact) {
-		let encodedUserListId = this.refService.encodePathVariable(contact.userListId);
+		let encodedUserListId = this.refService.encodePathVariable(this.selectedContactListId);
 		let encodeUserId = this.refService.encodePathVariable(contact.id);
 		if (this.isFromCompanyModule) {
 			this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
@@ -3744,6 +3750,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/***** XNFR-718 *****/
 	csvCustomResponse() {
 		this.customResponse = new CustomResponse('ERROR', "We couldn't find any valid email id(s) in the records. Please ensure that the email id(s) are correctly formatted and try again.", true);
+	}
+
+	checkLocalhostOrQADomain() {
+		this.isLocalhostOrQADomain = (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain());
 	}
 
 }

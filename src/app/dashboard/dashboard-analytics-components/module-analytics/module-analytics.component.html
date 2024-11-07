@@ -18,7 +18,7 @@
           <div
             [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font TextFontDecrease':'desc default-name-font TextFontDecrease'">
             {{dto.moduleName | translate}}
-            <span *ngIf="dto.moduleId == 6" class="beta_social_icon_for_buttons">(Beta)</span>
+            <sup *ngIf="dto.moduleId == 6">(Beta)</sup>
           </div>
         </div>
         <span class="morePadding">

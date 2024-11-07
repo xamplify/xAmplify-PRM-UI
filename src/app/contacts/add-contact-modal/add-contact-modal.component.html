@@ -174,7 +174,8 @@
                       [(ngModel)]="addContactuser.teamMemberGroupId" [ngModelOptions]="{standalone: true}"
                       placeholder="Select Team Member Group">
                       <option *ngFor="let teamMemberGroup of teamMemberGroups" [value]="teamMemberGroup.id">
-                        {{teamMemberGroup.name}} ({{teamMemberGroup?.teamMembersCount}})</option>
+                        {{ teamMemberGroup.name !== '--Please Select--' ?  teamMemberGroup.name +'(' + teamMemberGroup?.teamMembersCount + ')' : teamMemberGroup.name }}</option>
+                      <!-- </option> -->
                     </select>
                     <p *ngIf="addContactuser?.selectedTeamMembersCount>0 && !isTeamMemberPartnerList"
                       class="active-status">

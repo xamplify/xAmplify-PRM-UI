@@ -44,14 +44,13 @@
         <ul class="page-breadcrumb">
             <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"
                     translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i></li>
-            <li><a translate>Onboarding
-                    {{authenticationService?.partnerModule?.customName}}</a></li>
+            <li><a translate><span translate>Onboarding</span> {{authenticationService?.partnerModule?.customName}}</a></li>
         </ul>
         <div id="download-partners-csv" class="hidden-xs dwnload-csv_btn " style="padding-right: 3px;padding-top:2px;">
             <a (click)="downloadEmptyCsv()">
                 <button type="button" class="button p-rgt_p-top bgcolor-unset" download
                     [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-                    <span class="btn Btn-Green transition">Download CSV Template <i class="fa fa-download icon_color"
+                    <span class="btn Btn-Green transition" translate>Download CSV Template <i class="fa fa-download icon_color"
                             aria-hidden="true" style="margin-left: 5px"></i></span>
                 </button>
             </a>
@@ -70,8 +69,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 pr10">
                         <div class="portlet light add-options">
-                            <div class="portlet-title" translate>How would you like to
-                                add your {{authenticationService?.partnerModule?.customName}}?</div>
+                            <div class="portlet-title" translate>How would you like to add your Partner ?</div>
                             <div class="portlet-body">
                                 <div class="row mrg-right0">
                                     <div class="col-xs-12 col-sm-6 col-md-12 SideParddings1 cards_align">
@@ -90,8 +88,7 @@
                                                 [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
                                                 <span class="buttonSPan" style="z-index: 0;" translate>
                                                     <i class="fa fa-file-excel-o cct IconTopMargin"
-                                                        aria-hidden="true"></i>Upload a
-                                                    CSV</span>
+                                                        aria-hidden="true"></i>Upload a CSV</span>
                                                 <input type="file" ng2FileSelect [uploader]="uploader" title=" "
                                                     (click)="input.value = null;resetResponse();"
                                                     (change)="fileChange(input)" accept=".csv" #input
@@ -118,9 +115,8 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 pl10">
                         <div class="portlet light cloud-services" style="padding-bottom: 42px !important;">
-                            <div class="portlet-title" translate>Import
-                                {{authenticationService?.partnerModule?.customName}} from the
-                                cloud:
+                            <div class="portlet-title"><span translate>Import</span>
+                                {{authenticationService?.partnerModule?.customName | translate}} <span translate>from the cloud:</span>
                                 <!-- <a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
                                         class="fa fa-chevron-down" aria-hidden="true"
                                         style="display: contents !important; font-size: 15px !important"></i></a> -->
@@ -568,14 +564,12 @@
                                                     <tbody>
 
                                                         <tr>
-                                                            <td class='pt10 pb10 pr10 bold' translate>Account Name:
-                                                            </td>
+                                                            <td class='pt10 pb10 pr10 bold' translate>Account Name: </td>
                                                             <td class='pt10 pb10'>{{user.accountName}}</td>
                                                         </tr>
 
                                                         <tr>
-                                                            <td class='pt10 pb10 pr10 bold' translate>Account Sub Type:
-                                                            </td>
+                                                            <td class='pt10 pb10 pr10 bold' translate>Account Sub Type: </td>
                                                             <td class='pt10 pb10'>{{user.accountSubType}}</td>
                                                         </tr>
                                                         <tr>
@@ -598,7 +592,7 @@
                                                                 {{user.title}}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class='pt10 pb10 bold' translate>Phone:</td>
+                                                            <td class='pt10 pb10 bold' translate>Phone: </td>
                                                             <td class='pt10 pb10'>
                                                                 <!-- <div *ngIf="user?.mobilePhone" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
                                                                         <int-phone-prefix [(ngModel)]="user.mobilePhone" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
@@ -870,7 +864,7 @@
                     <div class="portlet-title" style="border-bottom: none !important;">
                         <div class="caption" style="padding-top: 11px !important;" translate>
                             <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>
-                            Group of {{authenticationService?.partnerModule?.customName}}
+                            <span translate>Group of</span> {{authenticationService?.partnerModule?.customName}}
                         </div>
                         <div class="inputs" align="right" style="float: right; padding: 4px;display:flex;"
                             *ngIf="!referenceService.isMobileScreenSize()">
@@ -1095,33 +1089,27 @@
                                                             <tbody class="px-13">
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
-                                                                        Name:
-                                                                    </td>
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account Name:</td>
                                                                     <td class='pt10 pb10'>{{contact.accountName}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
-                                                                        Sub Type:
-                                                                    </td>
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account Sub Type:</td>
                                                                     <td class='pt10 pb10'>{{contact.accountSubType}}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Account Owner:
-                                                                    </td>
+                                                                    <td class='pt10 pb10 bold' translate>Account Owner:</td>
                                                                     <td class='pt10 pb10'>{{contact.accountOwner}}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Company Domain:
-                                                                    </td>
+                                                                    <td class='pt10 pb10 bold' translate>Company Domain:</td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{contact.companyDomain}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Website : </td>
+                                                                    <td class='pt10 pb10 bold' translate>Website:</td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{contact.website}}</td>
                                                                 </tr>
@@ -1147,26 +1135,24 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Territory : </td>
+                                                                    <td class='pt10 pb10 bold' translate>Territory:</td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{contact.territory}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Category: </td>
+                                                                    <td class='pt10 pb10 bold' translate>Category:</td>
                                                                     <td class='pt10 pb10'>{{contact.category}}</td>
                                                                 </tr>
                                                                 
                                                                 <tr class="bg-unset flex-none" *ngIf="gdprStatus">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Legal
-                                                                        Basis :</td>
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Legal Basis :</td>
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.legalBasisString}}</td>
                                                                 </tr>
                                                                 <tr class="bg-unset flex-none"
                                                                     *ngIf="authenticationService.contactsCount">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Contacts
-                                                                        Limit:</td>
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Contacts Limit:</td>
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.contactsLimit}}</td>
                                                                 </tr>

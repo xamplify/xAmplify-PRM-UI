@@ -568,8 +568,8 @@
                                         </li>
                                         <!--  Adding masterLandingPageCategories  -->
                                         <ng-container
-                                            *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)
-                                            && !authenticationService.module.loggedInThroughOwnVanityUrl">
+                                            *ngIf="(masterLandingPageOrVendorPages && (authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)
+                                                                                    && !authenticationService.module.loggedInThroughOwnVanityUrl) || (vendorMarketplace && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin()))">
                                             <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPageCategories'}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPageCategories'}"
                                                     (click)="activateTab('masterLandingPageCategories');clearCustomResponse()">
@@ -589,7 +589,7 @@
                                             </a>
                                         </li>
                                         <!--XNFR-679 Flexi Fields-->
-                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact && !authenticationService.isProductionDomain()"
                                             [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
                                                 (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader}}

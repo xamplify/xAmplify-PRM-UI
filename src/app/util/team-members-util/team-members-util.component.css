@@ -165,7 +165,7 @@ hr {
 .file-upload {
   position: absolute;
   top: 0;
-  width: 162px;
+  width: 110px;
   height: 38px;
   right: 15px;
   opacity: 0;
@@ -568,4 +568,13 @@ span.filterActiveBg i {
   .team_header{
     width: 120px;
   }
+}
+.border_btn{
+  border-left: 1px solid #1ca6f3;
+}
+.team-member-icon{
+border-radius:7px 0px 0px 7px !important;
+}
+.team_downlaod{
+border-radius: 7px;
 }

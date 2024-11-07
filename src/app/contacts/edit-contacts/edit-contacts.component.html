@@ -1021,11 +1021,11 @@
 																	{{contact.category | slice:0:14}}
 																	<span *ngIf="contact.category?.length>14">..</span>
 																</td>
-																<td [ngClass]="isContactModule?'text-line':''" *ngIf="!isPartner" (click)="isContactModule?showContactDetails(contact):''">
+																<td [ngClass]="(isContactModule && isLocalhostOrQADomain)?'text-line':''" *ngIf="!isPartner" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''">
 																	<app-user-info [isContactCompanyInfo]="true"
 																		[userInfo]="contact"> </app-user-info>
 																</td>
-																<td [ngClass]="isContactModule?'hidden-xs text-line':'hidden-xs'" (click)="isContactModule?showContactDetails(contact):''" *ngIf="!isPartner">
+																<td [ngClass]="(isContactModule && isLocalhostOrQADomain)?'hidden-xs text-line':'hidden-xs'" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''" *ngIf="!isPartner">
 																	<h5 class='mb0 ellipsis' data-toggle="tooltip"
 																		data-placement="bottom"
 																		title="{{contact.jobTitle}}">{{contact.jobTitle
@@ -1034,7 +1034,7 @@
 																			*ngIf="contact.jobTitle?.length>25">...</span>
 																	</h5>
 																</td>
-																<td align="center" [ngClass]="isContactModule?'hidden-xs text-line':'hidden-xs'" (click)="isContactModule?showContactDetails(contact):''">
+																<td align="center" [ngClass]="(isContactModule && isLocalhostOrQADomain)?'hidden-xs text-line':'hidden-xs'" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''">
 																	<h5 *ngIf="contact?.address" class='mb0'>
 																		{{contact.address | slice:0:30}}
 																		<span

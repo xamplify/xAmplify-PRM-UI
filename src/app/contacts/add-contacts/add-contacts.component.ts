@@ -251,6 +251,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     isUploadCsvOptionEnabled: boolean = false;
     flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
     @ViewChild('customCsvMapping') customCsvMapping: CustomCsvMappingComponent;
+    isProductionDomain: boolean = false;
     /***** XNFR-671 *****/
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
@@ -318,7 +319,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         if (campaginAccessDto != undefined) {
             this.companyId = campaginAccessDto.companyId;
         }
-
+        this.isProductionDomain = this.authenticationService.isProductionDomain();
     }
 
     validateContactName(contactName: string) {
@@ -437,7 +438,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     private validateHeadersAndReadRows(headers: any, self: this, contents: any) {
-        self.isUploadCsvOptionEnabled = self.isContactModule();
+        self.isUploadCsvOptionEnabled = self.isContactModule() && !this.isProductionDomain;
         self.isXamplifyCsvFormatUploaded = headers.length == 11 && self.validateHeaders(headers);
         if (self.isXamplifyCsvFormatUploaded && !self.isUploadCsvOptionEnabled) {
             var csvResult = Papa.parse(contents);
@@ -1009,7 +1010,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.saveContactList();
             }
             if (this.selectedAddContactsOption == 2) {
-                if (this.isContactModule()) {
+                if (this.isContactModule() && !this.isProductionDomain) {
                     this.customCsvMapping.saveCustomUploadCsvContactList();
                 } else {
                     this.saveUploadCsvContactList();
@@ -2859,7 +2860,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     downloadEmptyCsv() {
-        if (this.isContactModule()) {
+        if (this.isContactModule() && !this.isProductionDomain) {
             window.location.href = this.authenticationService.REST_URL + "userlists/download-default-contact-csv/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         } else {
             window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
@@ -4859,19 +4860,23 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     /***** XNFR-671 *****/
     findFlexiFieldsData() {
-        this.loading = true;
-        this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-            this.flexiFieldsRequestAndResponseDto = data;
-            this.loading = false;
-        }, (error: any) => {
-            this.referenceService.showSweetAlertServerErrorMessage();
-            this.loading = false;
-        });
+        if (!this.isProductionDomain) {
+            this.loading = true;
+            this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+                this.flexiFieldsRequestAndResponseDto = data;
+                this.loading = false;
+            }, (error: any) => {
+                this.referenceService.showSweetAlertServerErrorMessage();
+                this.loading = false;
+            });
+        }
     }
 
     /***** XNFR-671 *****/
     private resetCustomUploadCsvFields() {
-        this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+        if (!this.isProductionDomain) {
+            this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
+        }
         this.isNoResultFound = false;
         this.isUploadCsvOptionEnabled = false;
         this.isXamplifyCsvFormatUploaded = false;

@@ -116,7 +116,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         Highcharts.chart('campaign-type-chart', {
             chart: { type: 'bar',backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff" },
             xAxis: {
-                categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
+                categories: ['VIDEO CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
                 lineWidth: 0,
                 minorTickLength: 0,
                 tickLength: 0,
@@ -165,7 +165,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             (data: any) => {
                 const campaignData = [];
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
-                campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
+               // campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SURVEY);
