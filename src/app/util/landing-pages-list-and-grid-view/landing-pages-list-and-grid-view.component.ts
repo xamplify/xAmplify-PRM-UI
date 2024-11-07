@@ -287,7 +287,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /************Page************** */
   setPage(event: any) {
       this.pagination.pageIndex = event.page;
+    if(this.isLandingPages){
+        this.findPartnerVendorJourneyLandingPages(this.pagination);
+    }else if(this.isVendorPartnerJourneyPages){
+        this.findVendorPartnerJourneyLandingPages(this.pagination);
+    }else{
       this.listLandingPages(this.pagination);
+    }
   }
 
   getAllFilteredResults(pagination: Pagination) {
