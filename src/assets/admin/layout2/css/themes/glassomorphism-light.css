@@ -1147,8 +1147,8 @@ input#copy-link {
 }
 .c-btn {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background-color: #22313a !important;
-  color: white !important;
+  background-color: rgb(255 253 253 / 35%) !important;
+  color: #000 !important;
 }
 .list-area {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
