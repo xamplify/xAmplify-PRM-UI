@@ -41,6 +41,7 @@
 	"Create Campaign": "Créer une campagne",
 	"Redistribute Campaign": "Campagne de redistribution",
 	"Company Name": "Nom de la compagnie",
+	"Company Name:": "Nom de la compagnie:",
 	"Company Profile Name": "Nom du profil de l'entreprise",
 	"Company Email": "Courriel de l'entreprise",
 	"Tag Line": "Slogan",
@@ -814,6 +815,11 @@
 	"Company Domain:" : "Domaine de l'entreprise:",
 	"Territory:" : "Territoire :",
 	"Contacts Limit:" : "Limite de contacts : ",
-	"Total Records :" : "Nombre total d'enregistrements :"
+	"Total Records :" : "Nombre total d'enregistrements :",
+	"Manage" : "Gérer",
+	"Groups" : "Groupes",
+	"Your" : "Ton",
+	"Group Name:" : "Nom du groupe:",
+	"Group Name" : "Nom du groupe"
 
 }

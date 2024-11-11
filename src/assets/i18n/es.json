@@ -40,6 +40,7 @@
 	"Manage Campaigns": "Administrar campañas",
 	"Create Campaign": "Crear campaña",
 	"Redistribute Campaign": "Redistribuir Campaña",
+	"Company Name:": "nombre de empresa:",
 	"Company Name": "nombre de empresa",
 	"Company Profile Name": "Nombre del perfil de la empresa",
 	"Company Email": "Email de la empresa",
@@ -120,7 +121,7 @@
 	"Folder":"Carpeta",
 	"Created On":"Creado en",
 	"Items Count":"Recuento de artículos",
-	"Created By":"Creado por",
+	"Created By:":"Creado por",
 	"No Folders Found":"No se encontraron carpetas",
 	"Analytics": "Analítica",
 	"Add partners": "Agregar socios",
@@ -814,5 +815,10 @@
 	"Company Domain:" : "Dominio de la empresa:",
 	"Territory:" : "Territorio :",
 	"Contacts Limit:" : "Límite de contactos:",
-	"Total Records :" : "Total de registros:"
+	"Total Records :" : "Total de registros:",
+	"Manage" : "Administrar",
+	"Groups" : "Grupos",
+	"Your" : "Su",
+	"Group Name:" : "Nombre del grupo:",
+	"Group Name" : "Nombre del grupo"
 }

@@ -41,6 +41,7 @@
 	"Create Campaign": "キャンペーンを作成",
 	"Redistribute Campaign": "キャンペーンの再配布",
 	"Company Name": "会社名",
+	"Company Name:": "会社名:",
 	"Company Profile Name": "会社プロファイル名",
 	"Company Email": "会社のメール",
 	"Tag Line": "タグライン",
@@ -814,7 +815,12 @@
 	"Company Domain:" : "会社ドメイン:",
 	"Territory:" : "領土 :",
 	"Contacts Limit:" : "連絡先の制限 :",
-	"Total Records :" : "合計レコード数:"
+	"Total Records :" : "合計レコード数:",
+	"Manage": "管理",
+	"Groups": "グループ",
+	"Your": "あなたの",
+	"Group Name:" : "グループ名:",
+	"Group Name" : "グループ名"
 }
 
 
