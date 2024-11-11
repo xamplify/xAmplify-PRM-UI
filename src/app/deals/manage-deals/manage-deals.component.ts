@@ -1439,7 +1439,7 @@ export class ManageDealsComponent implements OnInit {
 
   stageUpdateResponse(event:any){
     this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
-
+    this.referenceService.scrollSmoothToTop();
   }
 
   
