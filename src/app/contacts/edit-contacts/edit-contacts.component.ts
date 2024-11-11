@@ -3697,6 +3697,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.isTeamMemberPartnerList = data.teamMemberPartnerList;
 					this.selectedCompanyId = data.associatedCompanyId;
 					this.companyName = data.companyName;
+					this.uploadedUserId = data.uploadedUserId;
 					if (this.isFromCompanyModule) {
 						this.setCompanyModuleFields(data);
 					} else {
@@ -3722,7 +3723,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	private setCompanyModuleFields(data: any) {
-		this.uploadedUserId = data.uploadedUserId;
 		this.contactService.publicList = data.publicList;
 	}
 	/***XNFR-553***/
