@@ -1412,6 +1412,14 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callGetMethod(findAllUrl);
     }
 
+    findUniversalSearch(pagination:Pagination){
+        let userId = this.authenticationService.getUserId();
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let domainName = this.authenticationService.companyProfileName;
+        let findAllUrl = this.dashboardAnalytics+'findUniversalSearch/domainName/'+domainName+'/userId/'+userId+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
     findAllIntegrations(pagination:Pagination){
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         let companyId = pagination.companyId;

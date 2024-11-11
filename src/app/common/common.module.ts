@@ -192,6 +192,7 @@ import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4
 import { CopyTextComponent } from './copy-text/copy-text.component';
 import { VendorCompanyModelPopupComponent } from './vendor-company-model-popup/vendor-company-model-popup.component';
 import { AccessDeniedUtilComponent } from './access-denied-util/access-denied-util.component';
+import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/universal-search-bar.component';
 
 
 
@@ -234,7 +235,7 @@ import { AccessDeniedUtilComponent } from './access-denied-util/access-denied-ut
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
 		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
+		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent
 	],
 
 
@@ -272,7 +273,7 @@ import { AccessDeniedUtilComponent } from './access-denied-util/access-denied-ut
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
 		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent
+		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent
 
 	]
 

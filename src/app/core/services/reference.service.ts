@@ -158,7 +158,7 @@ export class ReferenceService {
   isHarizontalNavigationBar:boolean = false;
   isFromLogin:boolean  = false;
   isUserProfileLoading = false;
-
+  universalSearchKey:string = "";
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
