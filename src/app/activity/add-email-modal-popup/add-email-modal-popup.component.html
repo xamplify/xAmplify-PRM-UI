@@ -21,6 +21,26 @@
              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
           </div>
           <div class="form-group">
+            <label for="exampleInputEmail1">CC</label>
+            <tag-input [(ngModel)]='ccEmailIds' #tagInput name="emails" #email="ngModel"
+               [errorMessages]="errorMessages" [validators]="validators"
+               [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
+               [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
+               [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
+               [onTextChangeDebounce]="40" required>
+            </tag-input>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">BCC</label>
+            <tag-input [(ngModel)]='bccEmailIds' #tagInput name="emails" #email="ngModel"
+               [errorMessages]="errorMessages" [validators]="validators"
+               [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
+               [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
+               [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
+               [onTextChangeDebounce]="40" required>
+            </tag-input>
+          </div>
+          <div class="form-group">
             <label for="subjectLine">Email subject <span class="text-danger">*</span></label>
             <input type="text" id="subjectLine" [(ngModel)]="emailActivity.subject" [ngModelOptions]="{standalone: true}" [disabled]="isPreview"
              placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" (input)="validateEmail()" />

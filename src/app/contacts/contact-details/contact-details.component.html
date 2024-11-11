@@ -1,4 +1,4 @@
-<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals">
+<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !viewCampaigns">
   <div class="page-bar" style="height:48px;">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i>
@@ -279,7 +279,7 @@
           <div class="panel-headings">
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                Deals ({{dealsCount}})
+                Deals({{dealsCount}})
               </a>
               <a (click)="addDeal()" class="add-btn"><span>+ Add</span></a>
             </h4>
@@ -315,6 +315,42 @@
             </div>
             <div class="panel-body" *ngIf="!(contactDeals.length > 0) && !dealsLoader.isLoading">
               No deals associated with this contact.
+            </div>
+          </div>
+        </div>
+        <!-- Accordion Item 3 -->
+        <div class="panel-default panel-dropdown">
+          <div class="panel-headings">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                Campaigns({{campaignsCount}})
+              </a>
+            </h4>
+          </div>
+          <div id="collapse3" class="panel-collapse collapse in">
+            <app-response-message [customResponse]="campaignsResponse" *ngIf="campaignsResponse.isVisible"></app-response-message>
+            <app-dropdown-loader *ngIf="campaignsLoader.isLoading" [text]="'campaigns'"></app-dropdown-loader>
+            <div class="panel-body" *ngIf="contactCampaigns.length > 0">
+              <div class="activity_card mb10" *ngFor="let campaign of contactCampaigns">
+                <div>
+                  <i class="fas fa-bullhorn mr5" aria-hidden="true"> </i>
+                  <a (click)="viewCampaignTimeLine(campaign)">
+                    <span class="activity-title">{{campaign.campaignName}}</span>
+                  </a>
+                </div>
+                <div class="activity-body">
+                  <label class="mb0 f-w-600"> Type:</label> {{campaign.campaignType}}
+                </div>
+                <div *ngIf="campaign.campaignName!=undefined" class="activity-body">
+                  <label class="mb0 f-w-600"> Launched Time:</label> {{campaign.launchTime}}
+                </div>
+              </div>
+              <div class="activity-footer">
+                <a (click)="viewMoreCampaigns()"><span class="f-w-600">View More</span></a>
+              </div>
+            </div>
+            <div class="panel-body" *ngIf="!(contactCampaigns.length > 0) && !campaignsLoader?.isLoading">
+              No Campaign associated with this contact.
             </div>
           </div>
         </div>

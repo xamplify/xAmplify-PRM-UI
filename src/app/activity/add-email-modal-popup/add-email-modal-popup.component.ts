@@ -5,6 +5,10 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { EmailActivity } from '../models/email-activity-dto';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Properties } from 'app/common/models/properties';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { TagInputComponent as SourceTagInput } from 'ngx-chips';
+import { tap } from 'rxjs/operators';
 declare var $:any, CKEDITOR:any;
 
 @Component({
@@ -33,6 +37,13 @@ export class AddEmailModalPopupComponent implements OnInit {
   isValidTestEmailId: boolean = false;
   isTestMail: boolean = false;
   ckeConfig = {};
+  public validators = [this.must_be_email.bind(this)];
+  addFirstAttemptFailed: boolean = false;
+  public errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
+  public onAddedFunc = this.beforeAdd.bind(this);
+  tagInput: SourceTagInput;
+  ccEmailIds = [];
+  bccEmailIds = [];
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties) {}
@@ -44,18 +55,18 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.isPreview = false;
       this.emailActivity.toEmailId = this.userEmailId;
       this.emailActivity.senderEmailId = this.authenticationService.getUserName();
-      // $('#addEmailModalPopup').modal('show');
       this.referenceService.openModalPopup('addEmailModalPopup');
     } else if (this.actionType == 'view') {
       this.isPreview = true;
       this.fetchEmailActivityById();
-      // $('#addEmailModalPopup').modal('show');
       this.referenceService.openModalPopup('addEmailModalPopup');
     }
   }
 
   sendEmailToUser() {
     this.ngxLoading = true;
+    this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+    this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
     this.emailActivityService.sendEmailToUser(this.emailActivity).subscribe(
       data => {
         this.ngxLoading = false;
@@ -67,6 +78,10 @@ export class AddEmailModalPopupComponent implements OnInit {
       }
     )
   }
+
+  private extractEmailIds(emailList: any[]): string[] {
+    return emailList.map(email => email.value);
+}
 
   closeEmailModal() {
     this.isPreview = false;
@@ -115,6 +130,8 @@ export class AddEmailModalPopupComponent implements OnInit {
   sendTestEmail() {
     this.testEmailLoading = true;
     this.emailActivity.toEmailId = this.testToEmailId;
+    this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+    this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
     this.emailActivityService.sendTestEmailToUser(this.emailActivity).subscribe(
       data => {
         this.emailActivity.toEmailId = this.userEmailId;
@@ -132,6 +149,33 @@ export class AddEmailModalPopupComponent implements OnInit {
     } else {
       this.isValidTestEmailId = false;
     }
+  }
+
+  private must_be_email(control: FormControl) {
+    if (this.addFirstAttemptFailed && !this.validateCCorBCCEmail(control.value)) {
+      return { "must_be_email": true };
+    }
+    return null;
+  }
+
+  private validateCCorBCCEmail(text: string) {
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return (text && EMAIL_REGEXP.test(text));
+  }
+
+  private beforeAdd(tag: any) {
+    let isPaste = false;
+    if (tag['value']) { isPaste = true; tag = tag.value; }
+    if (!this.validateCCorBCCEmail(tag)) {
+      if (!this.addFirstAttemptFailed) {
+        this.addFirstAttemptFailed = true;
+        if (!isPaste) { this.tagInput.setInputValue(tag); }
+      }
+      if (isPaste) { return Observable.throw(this.errorMessages['must_be_email']); }
+      else { return Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag)))); }
+    }
+    this.addFirstAttemptFailed = false;
+    return Observable.of(tag);
   }
   
 }

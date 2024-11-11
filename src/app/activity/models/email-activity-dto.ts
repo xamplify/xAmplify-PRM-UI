@@ -6,4 +6,6 @@ export class EmailActivity {
     toEmailId:string;
     senderEmailId:string;
     contactId:number;
+    ccEmailIds = [];
+    bccEmailIds = [];
 }

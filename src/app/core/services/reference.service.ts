@@ -3589,6 +3589,11 @@ encodePathVariable(input:any){
   return encodedPathVariable;
 }
 
+/**XNFR-735**/
+encodePathVariableInNewTab(input:any) {
+  return this.getEncodedUri(this.encodePathVariable(input));
+}
+
 decodePathVariable(value:any){
   let finalValue:any;
   try{
