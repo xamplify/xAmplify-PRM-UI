@@ -434,6 +434,8 @@ export class Properties {
 	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
 	flexiFieldDisplayText = "You have the ability to add flexible fields, which will be displayed in your contact form.";
 	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
+	uploadCsvSaveOptionNote = "Note: By using the save option you can save the list with valid email id(s).";
+	
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
 	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin";
 	selectAnOptionToSaveListMessage = "Select an option to save the list.";

@@ -14,6 +14,7 @@
       <strong class="ml5">We found invalid data for the email address. Please update or
         <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}}
         or <a class="required" (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
+        <br><span>{{properties?.uploadCsvSaveOptionNote}}</span>
       </strong>
     </div>
     <table class="table tgrid" *ngIf="isColumnMapped">
