@@ -1124,13 +1124,11 @@
 																		</ng-container>
 																		<!--XNFR-342---->
 																		<a class="custom-icon"
-																			*ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList"
-																			data-toggle="tooltip"
-																			data-placement="bottom"
-																			title="Campaign Analytics"
-																			(click)="goToCampaigns(contact)">
-																			<i class="fa fa-line-chart IconCustomization"
-																				aria-hidden="true"></i>
+																			*ngIf="(authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads 
+																				&& (!sharedLeads) && !isSynchronizationList) || (isContactModule && authenticationService.module.isCampaign && (authenticationService?.module?.isPrmAndPartner 
+																				|| authenticationService?.module?.isPrmAndPartnerTeamMember))"
+																			data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+																			<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
 																			<div class="clickicons"></div>
 																		</a>
 																	</div>

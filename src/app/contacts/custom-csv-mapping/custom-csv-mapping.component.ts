@@ -198,7 +198,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-671 *****/
   private iterateDTOAndCsvRows(rows: any, i: number, self: this, parsedCsvDto: ParsedCsvDto) {
     $.each(rows, function (index: number, value: any) {
-      if (!self.emptyHeadersIndex.includes(index)) {
+      if (!self.emptyHeadersIndex.includes(index) && self.customCsvHeaders.length > index) {
         let csvRowDto = new CsvRowDto();
         let rowIndex = "R" + (index + 1);
         let columnIndex = "C" + i;

@@ -2658,7 +2658,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
         else if (tempZohoAuth == 'yes' && !this.isPartner) {
             this.zohoShowModal();
-            this.checkingZohoPopupValues();
             this.contactService.vanitySocialProviderName = "nothing";
         }
         else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
