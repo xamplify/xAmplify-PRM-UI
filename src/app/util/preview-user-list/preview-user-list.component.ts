@@ -122,4 +122,28 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   this.findUsersByUserListId(this.pagination);
 
  }
+
+ publishDashboardButton(user:any){
+  let isDashboardButtonPublishedSuccessfully = false;
+  this.referenceService.showSweetAlertProcessingLoader("We are publishing dashboard button");
+  this.authenticationService.publishDashboardButtonToPartnerCompany(user.userListId,user.userId,this.inputId).
+  subscribe(
+    response=>{
+      let statusCode = response.statusCode;
+      let message = response.message;
+      if(statusCode==200){
+        this.referenceService.showSweetAlertSuccessMessage(message);
+        isDashboardButtonPublishedSuccessfully = true;
+      }else{
+        this.referenceService.showSweetAlertErrorMessage(message);
+        isDashboardButtonPublishedSuccessfully = false;
+      }
+    },error=>{
+      this.referenceService.showSweetAlertServerErrorMessage();
+    },()=>{
+      if(isDashboardButtonPublishedSuccessfully){
+        this.findPublishedPartnerIdsByUserListIdAndId();
+      }
+    });
+ }
 }

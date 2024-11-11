@@ -1480,4 +1480,10 @@ vanityWelcomePageRequired(userId) {
     return this.callGetMethod(url);
   }
 
+  publishDashboardButtonToPartnerCompany(userListId:number,partnerUserId:number,dashboardButtonId:number){
+    let userId = this.getUserId();
+    let url = this.REST_URL + "dashboardButtons/publish/userListId/"+userListId+"/partnerUserId/"+partnerUserId+"/dashboardButtonId/"+dashboardButtonId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
 }

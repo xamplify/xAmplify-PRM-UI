@@ -55,9 +55,14 @@
                         <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success" title="Published">
                           <i class="fa fa-check"></i>
                         </span>
-                        <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)<0" class="required" title="Not Published" >
-                          <i class="fa fa-exclamation-circle"></i>
-                        </span>
+                        <ng-container *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)<0">
+                          <span class="required" title="Not Published" >
+                            <i class="fa fa-exclamation-circle"></i>
+                          </span>
+                          <span *ngIf="moduleName=='Dashboard Buttons'" title="Click here to publish">
+                            <a  (click)="publishDashboardButton(user)"><i  class="fa fa-share"></i></a>
+                          </span>
+                        </ng-container>
                       </ng-container>
                       </td>
                       <td>
