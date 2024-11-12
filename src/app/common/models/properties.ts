@@ -469,5 +469,6 @@ export class Properties {
 	activePartnerTileDescriptionForPrm = "Partners who have interacted with Content, Created Leads or Deals.";
 	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
 	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
+	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
 	}
 

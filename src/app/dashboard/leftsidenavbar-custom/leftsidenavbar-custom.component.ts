@@ -5,11 +5,13 @@ import { DashboardService } from '../dashboard.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DragulaService } from 'ng2-dragula';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { Properties } from 'app/common/models/properties';
 declare var swal : any;
 @Component({
   selector: 'app-leftsidenavbar-custom',
   templateUrl: './leftsidenavbar-custom.component.html',
-  styleUrls: ['./leftsidenavbar-custom.component.css']
+  styleUrls: ['./leftsidenavbar-custom.component.css'],
+  providers: [Properties],
 })
 export class LeftsidenavbarCustomComponent implements OnInit {
   public menuItems: Array<any> = [];
@@ -17,8 +19,8 @@ export class LeftsidenavbarCustomComponent implements OnInit {
   ngxloading: boolean;
   menuItems1: any;
   leftMenuCustomResponse: CustomResponse = new CustomResponse();
-  constructor(public authenticationService: AuthenticationService, public utilService: UtilService, private dashBoardService: DashboardService, public referenceService: ReferenceService
-    , private dragulaService: DragulaService) {
+  constructor(public authenticationService: AuthenticationService, public utilService: UtilService, private dashBoardService: DashboardService, public properties: Properties, public referenceService: ReferenceService
+    , private dragulaService: DragulaService,) {
       dragulaService.setOptions('leftSideMenuDragula', {})
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value);

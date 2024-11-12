@@ -1,8 +1,7 @@
 <div class="my-container">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <app-response-message [customResponse]="leftMenuCustomResponse"></app-response-message>
-    <p class="contentwrap-dr">Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag &
-        Drop you can set your Custom Left Menu.</p>
+    <p class="contentwrap-dr">{{properties?.customLeftMenuText | translate }}</p>
 
 </div>
 
@@ -13,14 +12,14 @@
                 [dragulaModel]='menuItems'>
                 <li class="list-group-item cursor-move" *ngFor="let menu of menuItems">
                     <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                    <span style="margin-left: 10px;">{{menu.customName}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup></span>
+                    <span style="margin-left: 10px;">{{menu.customName | translate}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup></span>
                     <i class="fa fa-arrows pull-right drap-arrow-cu" aria-hidden="true"></i>
                 </li>
             </ul>
         </div>
     </div>
     <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 dragdrop-gif-cu">
-        <h4 class="boltext-dr">Demo - Customize Left Menu</h4>
+        <h4 class="boltext-dr" translate>Demo - Customize Left Menu</h4>
         <img *ngIf="!authenticationService.isDarkForCharts" src="/assets/images/customize-left-menu/light.gif"
             alt="Customize Left Menu" class="draganddrop-image-cu">
         <img *ngIf="authenticationService.isDarkForCharts" src="/assets/images/customize-left-menu/dark.gif"
