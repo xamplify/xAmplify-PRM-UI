@@ -2105,6 +2105,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
 		this.contactAllDetails = null;
+		this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
 		this.contactService.isContactModalPopup = true;
 	}
 
