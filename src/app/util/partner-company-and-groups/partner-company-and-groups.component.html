@@ -51,7 +51,6 @@
           <!--Team Member Filter-->
           <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 p0">
             <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany"
-              [selectedIndex]="selectedFilterIndex"
               (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
           </div>
           <!--Search Bar-->
