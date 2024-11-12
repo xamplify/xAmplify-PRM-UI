@@ -865,5 +865,10 @@
 	"Custom Themes" : "Temas personalizados",
 	"Theme Name" : "Nombre del tema",
 	"Turn Campaign Analytics ON or OFF" : "Activar o desactivar el análisis de campaña",
-	"You have the ability to view or hide the campaign analytics in the Manage Campaigns section." : "Tiene la posibilidad de ver u ocultar los análisis de la campaña en la sección Administrar campañas."
+	"You have the ability to view or hide the campaign analytics in the Manage Campaigns section." : "Tiene la posibilidad de ver u ocultar los análisis de la campaña en la sección Administrar campañas.",
+	"To enable ChatGPT integration, access the settings, enter your API key, and activate the relevant options. To disable it, simply toggle the setting off and remove the API key if desired" : "Para habilitar la integración de ChatGPT, acceda a la configuración, ingrese su clave API y active las opciones relevantes. Para desactivarlo, simplemente desactive la configuración y elimine la clave API si lo desea.",
+	"Stages" : "Etapas",
+	"Turn Lead Approval/Rejection option ON or OFF" : "Active o desactive la opción de aprobación/rechazo de clientes potenciales",
+	"You have the ability to Approve or Reject the leads registered by the partners." : "Tienes la capacidad de Aprobar o Rechazar los leads registrados por los socios.",
+	"You have the ability to add flexible fields, which will be displayed in your contact form." : "Tiene la posibilidad de agregar campos flexibles, que se mostrarán en su formulario de contacto."
 }

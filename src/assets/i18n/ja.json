@@ -864,7 +864,12 @@
 	"Custom Themes" : "カスタムテーマ",
 	"Theme Name" : "テーマ名",
 	"Turn Campaign Analytics ON or OFF" : "キャンペーン分析をオンまたはオフにする",
-	"You have the ability to view or hide the campaign analytics in the Manage Campaigns section." : "「キャンペーンの管理」セクションでキャンペーン分析を表示または非表示にすることができます。"
+	"You have the ability to view or hide the campaign analytics in the Manage Campaigns section." : "「キャンペーンの管理」セクションでキャンペーン分析を表示または非表示にすることができます。",
+	"To enable ChatGPT integration, access the settings, enter your API key, and activate the relevant options. To disable it, simply toggle the setting off and remove the API key if desired" : "ChatGPT 統合を有効にするには、設定にアクセスし、API キーを入力し、関連するオプションを有効にします。これを無効にするには、設定をオフに切り替え、必要に応じて API キーを削除します。",
+	"Stages" : "ステージ",
+	"Turn Lead Approval/Rejection option ON or OFF" : "リードの承認/拒否オプションをオンまたはオフにします",
+	"You have the ability to Approve or Reject the leads registered by the partners." : "パートナーによって登録されたリードを承認または拒否することができます。",
+	"You have the ability to add flexible fields, which will be displayed in your contact form." : "連絡先フォームに表示される柔軟なフィールドを追加することができます。"
 }
 
 

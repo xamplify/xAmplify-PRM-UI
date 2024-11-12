@@ -2,7 +2,7 @@
 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
 <div *ngIf="!chatGptSettingsLoader">
   <div class="portlet light">
-    <h5 class="bold-font-weight h5-custom-font">{{description}}</h5>
+    <h5 class="bold-font-weight h5-custom-font">{{description | translate }}</h5>
     <!--ApI Key-->
     <div class="form-group">
       <input type="text" maxlength="255" placeholder="Enter Your ChatGPT API key" [(ngModel)]="chatGptIntegrationSettingsDto.chatGptApiKey"
@@ -18,6 +18,6 @@
   <!--Update Button-->
   <div id="right">
     <button type="button" class="button_blue bgcolor-unset"  (click)="updateSettings()">
-      <span class="btn btn-primary transition txt_pd-top3">Update</span></button>
+      <span class="btn btn-primary transition txt_pd-top3" translate>Update</span></button>
   </div>
 </div>
