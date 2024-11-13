@@ -2528,4 +2528,19 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
   i.fa.fa-edit.ml_6 {
     color:#333!important;
   }
-  
+  table tr#uploaded-csv-tr.alert-success{
+    background-color: #dff0d8 !important;
+  }
+  table tr#uploaded-csv-tr.alert-danger{
+    background-color: #f2dede !important;
+    border-color: #ebccd1 !important;
+  }
+  .tgrid>tbody>tr#uploaded-csv-tr>td {
+    color: #272626 !important;
+}
+.tgrid>tbody>tr#uploaded-csv-tr>td:hover {
+  color: #fff !important;
+}
+table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-danger:hover{
+  background-color: #22313a !important;
+}
