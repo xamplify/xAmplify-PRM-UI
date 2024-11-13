@@ -19,7 +19,7 @@
 <div class="row" *ngIf="editVendorPage">
   <div class="col-xs-12">
     <div class="page-bar mWidth" style="border:none !important;">
-      <app-preview-popup #previewPopUpComponent></app-preview-popup>
+      <app-preview-popup   [isPartnerJourneyPages]="isPartnerJourneyPages" #previewPopUpComponent ></app-preview-popup>
       <app-merge-tags [input]="mergeTagsInput"></app-merge-tags>
       <app-add-vendor-logos *ngIf = "isMasterLandingPages || isVendorMarketplacePages" [vendorLogoDetails] = "vendorLogoDetails" [isVendorMarketplace] = 'isVendorMarketplacePages'
       [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput" [dropdownList] = "categoryDropDownOptions"></app-add-vendor-logos>

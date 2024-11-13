@@ -127,6 +127,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
             pagination.vendorMarketplacePageAnalytics = true;
             pagination.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
             pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+        }else if(this.isVendorMarketplacePage){
+            pagination.vendorMarketplacePage = true;
+            pagination.vendorLandingPageId = this.importedObject['partnerLandingPageId'];
         }
         this.formService.getFormAnalytics(pagination, this.alias, false).subscribe(
             (response: any) => {

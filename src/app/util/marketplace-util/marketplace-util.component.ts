@@ -91,13 +91,18 @@ export class MarketplaceUtilComponent implements OnInit {
 
   navigateToParent(event: Event): void {
     event.preventDefault(); 
-    const newUrl = (event.target as HTMLAnchorElement).href; 
-    window.parent.location.href = newUrl;
-  }
+    const newUrl = (event.target as HTMLAnchorElement).href;
+
+    // Try opening the link directly
+    const newTab = window.open(newUrl, '_blank');
+    //window.parent.location.href = newUrl;
+    }
 
   setParentIframeHeight() {
     const componentHeight = this.elementRef.nativeElement.offsetHeight;
     (window.parent as any).$('#frame-full-height').height(componentHeight +20);
   }
+
+
 
 }
