@@ -316,7 +316,7 @@
                                  <ul class="page-breadcrumb" style="padding-left: 0px;"
                                     *ngIf="checkingContactTypeName!='Contact'">
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
-                                       <span translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span translate>Groups</span>
+                                       <span class="fs-16" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span translate>Groups</span>
                                     </li>
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
                                        Your {{checkingContactTypeName | translate}} Lists

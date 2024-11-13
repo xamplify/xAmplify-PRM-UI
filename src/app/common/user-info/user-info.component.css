@@ -63,3 +63,6 @@ p.lead_camp_mobile_no {
 .width-100{
   width: 100%;
 }
+.float-unset{
+  float: unset!important;
+}
