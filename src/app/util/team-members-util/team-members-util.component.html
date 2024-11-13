@@ -884,7 +884,7 @@
           </div>
         </span>
         <!--******************Team Member Wise Assets Details*******************-->
-        <span *ngIf="authenticationService?.lmsAccess">
+        <span *ngIf="authenticationService?.module?.damAccess">
           <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm ) " class="row rowPaddingCustomize6">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
               <app-team-member-asset-analytics [selectedTeamMemberIds]="selectedTeamMemberIds"

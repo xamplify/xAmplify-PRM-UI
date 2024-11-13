@@ -47,7 +47,7 @@
   </div>
 
   <!--******************User wise Track Counts & User wise PlayBook Counts*******************-->
-  <div class="row rowPaddingCustomization2 mobilerowPadding">
+  <div class="row rowPaddingCustomization2 mobilerowPadding" *ngIf="authenticationService?.lmsAccess">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--*****************User wise Track Counts********************-->
       <app-userwise-track-counts [type]="'TRACK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
