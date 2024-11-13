@@ -2616,6 +2616,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     addContactModalOpen() {
         this.resetResponse();
         this.contactService.isContactModalPopup = true;
+        this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
     }
 
     addContactModalClose() {
