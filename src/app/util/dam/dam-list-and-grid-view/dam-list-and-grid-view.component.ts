@@ -117,6 +117,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.videoFileService.campaignReport = false;
 		}
 		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
+		/** XNFR-574 **/
+		if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "") {
+			this.sortOption.searchKey = this.referenceService.universalSearchKey;
+			this.pagination.searchKey = this.referenceService.universalSearchKey;
+		}
 	}
 
 	callInitMethods() {

@@ -151,6 +151,22 @@ export class ManageDealsComponent implements OnInit {
       this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
     }
     this.mergeTagForUserGuide();
+    this.triggerViewDeal();
+  }
+  triggerViewDeal() {
+    if (this.referenceService.universalId !== 0) {
+      this.showDealForm = true;   
+      this.actionType = "view";
+      this.dealId = this.referenceService.universalId;
+      this.dealsResponse.isVisible = false;
+    }
+  }
+  triggerUniversalSearch() {
+    if (this.referenceService.universalSearchKey != "") {
+      this.dealsSortOption.searchKey = this.referenceService.universalSearchKey;
+      let keyCode = 13;
+      if (keyCode === 13) { this.searchDeals();}
+    }
   }
   /** User GUide **/
   mergeTagForUserGuide(){
@@ -183,10 +199,10 @@ export class ManageDealsComponent implements OnInit {
           }
         });
   }
-
   //XNFR-681
   ngOnDestroy() {
     this.referenceService.isCreated = false;
+    this.referenceService.universalId = 0;
   }
 
   init() {
@@ -372,6 +388,7 @@ export class ManageDealsComponent implements OnInit {
     this.selectedTabIndex = 1;
     this.titleHeading = "Total ";
     this.resetDealsPagination();
+    this.triggerUniversalSearch(); //XNFR-574
     this.campaignPagination = new Pagination;
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if(this.vanityLoginDto.vanityUrlFilter){

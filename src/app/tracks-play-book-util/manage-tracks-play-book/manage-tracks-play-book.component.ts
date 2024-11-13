@@ -64,6 +64,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
     this.referenceService.renderer = this.renderer;
     this.pagination.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
+    this.triggerLmsSearch();//XNFR-574
   }
 
   ngOnInit() {
@@ -114,6 +115,14 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     }
     if(this.viewType!="fl" && this.viewType!="fg"){
       this.listLearningTracks(this.pagination);
+    }
+  }
+  /****XNFR-574 ***/
+  triggerLmsSearch(){
+    if(this.referenceService.universalSearchKey != ""){
+      this.sortOption.searchKey = this.referenceService.universalSearchKey;
+      let keyCode = 13;
+      if (keyCode === 13) { this.searchLearningTracks(); } 
     }
   }
 /********XNFR-170******/

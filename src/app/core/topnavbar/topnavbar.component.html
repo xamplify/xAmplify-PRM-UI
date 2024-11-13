@@ -38,7 +38,7 @@
             <div class="top-menu">
                <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
                   <li class="topnav-button-css">
-                     <app-universal-search-bar></app-universal-search-bar>
+                     <app-universal-search-bar *ngIf="authenticationService.vanityURLEnabled"></app-universal-search-bar>
                   </li>
                   <!---XNFR-222-->
                   <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css LogedAsBoxTop">

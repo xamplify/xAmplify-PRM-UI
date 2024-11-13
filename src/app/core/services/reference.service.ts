@@ -158,7 +158,9 @@ export class ReferenceService {
   isHarizontalNavigationBar:boolean = false;
   isFromLogin:boolean  = false;
   isUserProfileLoading = false;
-  universalSearchKey:string = "";
+  universalSearchKey:string = ""; //XNFR-574
+  universalId:number = 0; //XNFR-574
+
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

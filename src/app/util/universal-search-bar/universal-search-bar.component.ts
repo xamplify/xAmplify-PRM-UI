@@ -23,4 +23,9 @@ export class UniversalSearchBarComponent implements OnInit {
       this.universalSearch();
     }
   }
+  goToDashBoard() {
+    this.searchKey = "";
+    this.refService.universalSearchKey = "";
+    this.refService.goToRouter(this.refService.homeRouter)
+  }
 }
