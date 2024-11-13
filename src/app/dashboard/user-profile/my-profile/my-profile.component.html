@@ -528,7 +528,7 @@
                                             <li [ngClass]="{'active-tab': activeTabName == 'vendorMarketplacePages'}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorMarketplacePages'}"
                                                     (click)="activateTab('vendorMarketplacePages');clearCustomResponse()">
-                                                    {{properties.vendorMarketplacePages | translate }
+                                                    {{properties.vendorMarketplacePages | translate }}
                                                     <ng-template [ngTemplateOutlet]="activeIcon"
                                                         [ngTemplateOutletContext]="{'moduleName':'vendorMarketplacePages'}"></ng-template>
                                                 </a>
