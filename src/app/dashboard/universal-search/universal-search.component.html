@@ -1,0 +1,242 @@
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home"></i>
+        <a [routerLink]="referenceService?.homeRouter">Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+        <a>Universal Search Results</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <app-modal-popup-loader *ngIf="universalSearchApiLoading"></app-modal-popup-loader>
+      <ng-container *ngIf="!universalSearchApiLoading">
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption">
+              <ul class="mix-filter"
+                *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner 
+                              || authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner
+                              || thenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+                <li class="filter" (click)="filterUniversalSearch('All',0)"
+                  [class.emailtemplate-selected]="0 == selectedFilterIndex">All<i
+                    class="fa fa-check-circle-o check-icons" *ngIf="0 == selectedFilterIndex"></i></li>
+                <li class="filter"
+                  *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"
+                  (click)="filterUniversalSearch('Assets',1)" [class.emailtemplate-selected]="1 == selectedFilterIndex">
+                  Assets<i class="fa fa-check-circle-o check-icons" *ngIf="1 == selectedFilterIndex"></i></li>
+                <li class="filter"
+                  *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"
+                  (click)="filterUniversalSearch('Tracks',2)" [class.emailtemplate-selected]="2 == selectedFilterIndex">
+                  Tracks<i class="fa fa-check-circle-o check-icons" *ngIf="2 == selectedFilterIndex"></i></li>
+                <li class="filter"
+                  *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"
+                  (click)="filterUniversalSearch('PlayBooks',3)"
+                  [class.emailtemplate-selected]="3 == selectedFilterIndex">Play Books<i
+                    class="fa fa-check-circle-o check-icons" *ngIf="3 == selectedFilterIndex"></i></li>
+                <li class="filter"
+                  *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner"
+                  (click)="filterUniversalSearch('Lead',4)" [class.emailtemplate-selected]="4 == selectedFilterIndex">
+                  Leads<i class="fa fa-check-circle-o check-icons" *ngIf="4 == selectedFilterIndex"></i></li>
+                <li class="filter"
+                  *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner"
+                  (click)="filterUniversalSearch('Deal',5)" [class.emailtemplate-selected]="5 == selectedFilterIndex">
+                  Deals<i class="fa fa-check-circle-o check-icons" *ngIf="5 == selectedFilterIndex"></i></li>
+              </ul>
+            </div>
+          </div>
+          <div class="portlet-body pt0">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
+              [showCloseIcon]="false"></app-response-message>
+            <ng-container *ngIf="!customResponse?.isVisible">
+              <div class="border-end" *ngFor="let quickLink of universalSearch">
+                <table>
+                  <thead>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngIf="quickLink?.type=='Asset'">
+                      <ng-template [ngTemplateOutlet]="assetsDetails"
+                        [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
+                    </ng-container>
+                    <ng-container *ngIf="quickLink?.type=='Track' || quickLink?.type=='Play Book'">
+                      <ng-template [ngTemplateOutlet]="trackDetails"
+                        [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
+                    </ng-container>
+                    <ng-container *ngIf="quickLink?.type=='Lead'">
+                      <ng-template [ngTemplateOutlet]="leadDetails"
+                        [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
+                    </ng-container>
+                    <ng-container *ngIf="quickLink?.type=='Deal'">
+                      <ng-template [ngTemplateOutlet]="dealDetails"
+                        [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <div class="alert alert-info text-center" *ngIf="universalSearch?.length==0">
+                <strong>No Data Found</strong>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <!--Pagination-->
+        <div *ngIf="universalSearchPagination?.totalRecords>0">
+          <app-pagination [pagination]="universalSearchPagination" (notifyParent)="navigateBetweenPageNumbers($event)"
+            (notifyParentDropDown)="findUniversalSearch($event)"></app-pagination>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #assetsDetails let-quickLink="quickLink">
+  <tr>
+    <td class="p10" style="width: 100%;" (click)="preview(quickLink)">
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">
+        <span><b>Asset Name: </b>{{quickLink?.name}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.slug}}">
+        <span><b>Asset Type: </b>{{quickLink?.slug}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.tag}}" *ngIf="quickLink?.tag != null">
+        <span><b>Tag:</b><span class="tag tablegray-tag">{{quickLink?.tag}}</span></span>
+      </h6>
+    </td>
+    <td>
+      <div class="col">
+        <div class="instant-links-type">
+          <span *ngIf="quickLink?.type=='Asset'" class="view-banner banner-top mr5 w-80px">{{quickLink?.type}}</span>
+          <ng-template [ngTemplateOutlet]="navigation"
+            [ngTemplateOutletContext]="{quickLink:quickLink}" *ngIf="!isPartnerLoggedInThroughVanityUrl"></ng-template>
+          <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview"
+            (click)="$event.stopPropagation();preview(quickLink)">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+<ng-template #trackDetails let-quickLink="quickLink">
+  <tr>
+    <td class="p10" [ngStyle]="{ 'width': quickLink?.type=='Track' ? '95.3%' : '93%' }" (click)="preview(quickLink)">
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">
+        <span *ngIf="quickLink?.type=='Track'"><b>Tracks Title: </b>{{quickLink?.name}} </span>
+        <span *ngIf="quickLink?.type=='Play Book'"><b>Play Books Title: </b>{{quickLink?.name}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.slug}}">
+        <span><b>Slug:</b>{{quickLink?.slug}}</span>
+      </h6>
+      <h6 class="pointer"  data-toggle="tooltip" data-placement="top" title="{{quickLink?.tag}}" *ngIf="quickLink?.tag != null">
+        <!-- <span *ngIf="isPartnerView"><b>Published By:</b>{{asset?.displayName}}</span> -->
+        <span><b>Tag:</b><span class="tag tablegray-tag">{{quickLink?.tag}}</span></span>
+      </h6>
+    </td>
+    <td>
+      <div class="col">
+        <div class="instant-links-type">
+          <span *ngIf="quickLink?.type=='Track'"
+            class="view-banner orange-lable-cu1 mr5 w-80px">{{quickLink?.type}}</span>
+          <span *ngIf="quickLink?.type=='Play Book'" class="view-banner published mr5 w-80px">{{quickLink?.type}}</span>
+          <ng-template [ngTemplateOutlet]="navigation"
+          [ngTemplateOutletContext]="{quickLink:quickLink}"  *ngIf="!isPartnerLoggedInThroughVanityUrl"></ng-template>
+          <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview"
+            (click)="$event.stopPropagation();preview(quickLink)">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+<ng-template #leadDetails let-quickLink="quickLink">
+  <tr>
+    <td class="p10" style="width:  100%;" (click)="preview(quickLink)">
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">
+        <span><b>Name: </b>{{quickLink?.name}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top"
+        title="{{quickLink?.slug}}">
+        <span><b>Email ID: </b>{{quickLink?.slug}} </span>
+      </h6>
+      <h6  class="pointer" data-toggle="tooltip" data-placement="top"
+        title="{{quickLink?.tag}}">
+        <span><b>Lead Id: </b>{{quickLink?.tag}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.stage}}">
+        <span><b>Stage: </b>{{quickLink?.stage}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.addedBy}}">
+        <span><b>Added By: </b>{{quickLink?.addedBy}} </span>
+      </h6>
+
+    </td>
+    <td>
+      <div class="col">
+        <div class="instant-links-type">
+          <span *ngIf="quickLink?.type=='Lead'"
+            class="view-banner orange-lable-cu1 mr5 w-80px">{{quickLink?.type}}</span>
+            <ng-template [ngTemplateOutlet]="navigation"
+            [ngTemplateOutletContext]="{quickLink:quickLink}"  *ngIf="!isPartnerLoggedInThroughVanityUrl"></ng-template>
+          <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview"
+            (click)="$event.stopPropagation();preview(quickLink)">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+<ng-template #dealDetails let-quickLink="quickLink">
+  <tr>
+    <td class="p10" style="width:  100%;" (click)="preview(quickLink)">
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">
+        <span><b>Deal Name: </b>{{quickLink?.name}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top"
+        title="{{quickLink?.tag}}">
+        <span><b>Deal Id: </b>{{quickLink?.tag}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.stage}}">
+        <span><b>Stage: </b>{{quickLink?.stage}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.addedBy}}">
+        <span><b>Added By: </b>{{quickLink?.addedBy}} </span>
+      </h6>
+      <h6 class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.assetType}}" *ngIf="quickLink?.assetType != null">
+        <span><b>Deal Type: </b>{{quickLink?.assetType}} </span>
+      </h6>
+    </td>
+    <td>
+      <div class="col">
+        <div class="instant-links-type">
+          <span *ngIf="quickLink?.type=='Deal'"
+            class="view-banner orange-lable-cu1 mr5 w-80px">{{quickLink?.type}}</span>
+            <ng-template [ngTemplateOutlet]="navigation"
+            [ngTemplateOutletContext]="{quickLink:quickLink}" *ngIf="!isPartnerLoggedInThroughVanityUrl"></ng-template>
+          <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview"
+            (click)="$event.stopPropagation();preview(quickLink)">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+
+        </div>
+      </div>
+    </td>
+
+  </tr>
+</ng-template>
+<ng-template #navigation let-quickLink="quickLink">
+  <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Click here to Navigate"
+    (click)="$event.stopPropagation();navigateToManage(quickLink)">
+    <i class="fas fa-route" aria-hidden="true"></i>
+  </a>
+</ng-template>

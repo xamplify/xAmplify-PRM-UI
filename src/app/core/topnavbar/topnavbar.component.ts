@@ -367,6 +367,8 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     this.refService.isSidebarClosed = false;
     this.refService.defaulgVideoMethodCalled = false;
     this.refService.companyProfileImage = '';
+    this.refService.universalSearchKey = '';//XNFR-574
+    this.refService.universalId = 0; //XNFR-574
     document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
     localStorage.setItem('isLogout', 'loggedOut');
     this.authenticationService.logout();

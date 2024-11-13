@@ -23,6 +23,7 @@ export const RouterUrlConstants = {
     addDealFromHome: 'deal/d/add',
     damPartnerView:'sharedp/',
     view:'view/',
-    authorize:'authorize/'
+    authorize:'authorize/',
+    universalSearch:'universal-search'
 
 }
