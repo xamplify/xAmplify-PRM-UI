@@ -1,0 +1,152 @@
+<div>
+  <div class="inputs display row" align="right">
+    <div class="col-xs-12 col-sm-12 col-lg-12 mb10">
+      <div class="page-toolbar">
+        <div class="btn-group pull-right">
+          <div class="inputs float-right row" style="display: inline-flex;margin-right: 2px;">
+            <div class="float-left filter-above">
+              <span class="filter-by">Filter By:</span>
+              <select class="form-control" [(ngModel)]="sortOption.activityDropDownOption"
+                (ngModelChange)="sortBy($event)" id="select-dropdown">
+                <option *ngFor="let option of sortOption.activityDropDownOptions" [ngValue]="option">
+                  {{option.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+  <div *ngIf="activityPagination?.totalRecords>0 && !httpRequestLoader?.isLoading">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <app-response-message class="pg8" [customResponse]="customResponse"
+      *ngIf="customResponse?.isVisible"></app-response-message>
+    <div class="activity_card mb10" *ngFor="let activity of activityPagination?.pagedItems">
+      <!--Email-->
+      <div *ngIf="activity.type == 'Email'">
+        <div class="activity-header">
+          <span><i class="fas fa-user icon"></i><label
+              class="mr5 activity-title">From:</label>{{activity.schedule}} </span>
+          <span *ngIf="activity.stage=='DELIVERED'" class="activity-date"><i
+              class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+          <span *ngIf="activity.stage=='OPENED'" class="activity-date"><i
+              class="fa fa-clock icon"></i>{{activity.updatedTime}}</span>
+        </div>
+        <div class="activity-body">
+          <span><i class="fa fa-comment icon"></i><label
+              class="mr3 activity-title">Subject:</label>{{activity.name}}</span>
+        </div>
+        <div class="activity-footer">
+          <span class="activity-title">Status: <span
+              [ngClass]="activity.stage=='OPENED'?'view-banner' : 'view-banner published'">{{activity.stage}}</span></span>
+          <a (click)="viewEmail(activity.id)"><span>View details</span></a>
+        </div>
+      </div>
+      <!---Note--->
+      <div *ngIf="activity.type == 'Note'">
+        <div class="activity-header">
+          <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(activity.id)">
+            <span>{{activity.name}}</span></a></span>
+          <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+        </div>
+        <div class="activity-body" *ngIf="activity.schedule == 'PUBLIC'">
+          <span class=""><i class="fas fa-user icon"></i>{{activity.closeDate}}</span>
+           <!-- <span>Need to handle created by Note.</span> -->
+        </div>
+        <div class="note-activity-body">
+          <i class="fa fa-comment icon"></i>
+          <span>{{activity.stage | slice:0:100}}<a *ngIf="activity.stage.length>100" (click)="viewNote(activity.id)">
+            <span>..View More</span></a></span>
+        </div>
+        <div class="activity-footer">
+          <span [ngClass]="activity.schedule=='PUBLIC'?'view-banner' : 'view-banner orange-lable-cu1'"><i class=" fa fa-lock" *ngIf="activity.schedule=='PRIVATE'"></i> {{activity.schedule}}</span>
+          <span>
+            <!--1st version-->
+            <a (click)="showEditNoteTab(activity.id)"><span class="mr10">edit</span></a>
+          <a (click)="showDeleteConformationAlert(activity.id)"><span>delete</span></a>
+    
+          <!--2nd version-->
+          <!-- <button type="submit" class="button bgcolor-unset m0 p0" (click)="showEditNoteTab(note)">
+            <span class="view-banner"><i class="fa fa-edit"></i>EDIT</span></button>
+          <button type="submit" class="button bgcolor-unset m0 p0" (click)="showDeleteConformationAlert(note)">
+            <span class="view-banner delete-bg-color"><i class="fa fa-trash-o"></i>DELETE</span></button> -->
+    
+            <!--3rd version-->
+            <!-- <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
+            (click)="showEditNoteTab(note)" data-toggle="tooltip" data-placement="bottom" title="Edit Note" id="note">
+              <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+              <div class="clickicons"></div>
+            </a>
+            <a class="custom-icon" data-rel="fancybox-button" (click)="showDeleteConformationAlert(note)" data-toggle="tooltip" data-placement="bottom" title="Delete Note" id="note">
+              <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+              <div class="del-icon"></div>
+            </a> -->
+          </span>
+        </div>
+      </div>
+      <!---Campaign--->
+      <div *ngIf="activity.type == 'Campaign'">
+        <div class="activity-header">
+          <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewCampaignTimeLine(activity.id)">
+            <span>{{activity.name}}</span></a></span>
+          <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+        </div>
+        <div class="activity-body">
+          <span><label class="mr3 activity-title">Type:</label> {{activity.stage}}</span>
+        </div>
+        <div class="activity-footer">
+          <span class="activity-title">Status: <span
+              [ngClass]="activity.schedule=='SCHEDULE'?'view-banner' : 'view-banner published'">{{activity.schedule}}</span></span>
+        </div>
+      </div>
+      <!---Lead--->
+      <div *ngIf="activity.type == 'Lead'">
+        <div class="activity-header">
+          <!-- <span><i class="fas fa-user icon"></i><label
+                    class="mr5 activity-title">Name:</label> <a (click)="viewLead(activity.id)">{{activity.name}}</a> </span> -->
+        
+          <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Name:</label><a
+              (click)="viewLead(activity.id)">
+              <span> {{activity.name}}</span></a></span>
+          <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+        </div>
+        <div class="activity-body">
+          <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
+        </div>
+      </div>
+      <!---Deal--->
+      <div *ngIf="activity.type == 'Deal'">
+        <div class="activity-header">
+          <!-- <span><i class="fas fa-user icon"></i><label
+                    class="mr5 activity-title">Title:</label> <a (click)="viewDeal(activity.id)">{{activity.name}}</a> </span> -->
+        
+          <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Title:</label><a
+              (click)="viewDeal(activity.id)">
+              <span> {{activity.name}}</span></a></span>
+          <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+        </div>
+        <div class="activity-body">
+          <span *ngIf="activity.schedule != undefined"><i class="fa fa-usd"></i><label class="mr3 activity-title">Amount: </label> {{activity.schedule}}</span>
+          <span><i class="fa fa-calendar" aria-hidden="true"></i><label class="mr3 activity-title">Close Date:</label> {{activity.closeDate | slice:0:10}}</span>
+          <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
+        </div>
+      </div>
+    </div>
+    <!-- --------------------Pagination0-------------------- -->
+    <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
+      <app-pagination [pagination]="activityPagination" (notifyParent)="setActivityPage($event)"
+        (notifyParentDropDown)="fetchAllRecentActivities($event)"></app-pagination>
+    </div>
+  </div>
+  <div *ngIf="!httpRequestLoader.isLoading && activityPagination.totalRecords==0" class="alert alert-info">
+    <strong translate>No Data Found.</strong>
+  </div>
+</div>
+
+<app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
+  [emailActivityId]="emailActivityId" (notifyClose)="closeModalPopup()"></app-add-email-modal-popup>
+
+<app-add-note-modal-popup *ngIf="showNoteModalPopup" [noteId]="noteId" [isReloadTab]="reloadTab" [actionType]="actionType"
+  (notifyClose)="closeNoteModalPopup()" (notifySuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>

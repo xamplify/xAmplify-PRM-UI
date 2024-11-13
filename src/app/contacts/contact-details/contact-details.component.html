@@ -173,45 +173,11 @@
                 </ul>
               </div>
               <div class="tab-content tab-bg p-13">
-                <div *ngIf="showActivityTab" id="activity1" class="tab-pane fade in active integration-profile">
-                  <!-- Start -->
-                  <div class="activity_card mb10">
-                    <div class="activity-header">
-                      <span class="activity-title">Lorem Ipsum</span>
-                      <span class="activity-date">Sep 27, 2024 at 12:57 PM</span>
-                    </div>
-                    <div class="activity-body">
-                      Lorem Ipsum is simply dummy text of the printing...
-                    </div>
-                    <div class="activity-footer">
-                      <a>View details</a>
-                    </div>
-                  </div>
-                  <div class="activity_card mb10">
-                    <div class="activity-header">
-                      <span class="activity-title">Lorem Ipsum</span>
-                      <span class="activity-date">Sep 27, 2024 at 12:57 PM</span>
-                    </div>
-                    <div class="activity-body">
-                      Lorem Ipsum is simply dummy text of the printing...
-                    </div>
-                    <div class="activity-footer">
-                      <a>View details</a>
-                    </div>
-                  </div>
-                  <div class="activity_card mb10">
-                    <div class="activity-header">
-                      <span class="activity-title">Lorem Ipsum</span>
-                      <span class="activity-date">Sep 27, 2024 at 12:57 PM</span>
-                    </div>
-                    <div class="activity-body">
-                      Lorem Ipsum is simply dummy text of the printing...
-                    </div>
-                    <div class="activity-footer">
-                      <a>View details</a>
-                    </div>
-                  </div>
-                  <!-- end -->
+                <div id="activity1" class="tab-pane fade in active integration-profile">
+                  <app-activity-stream *ngIf="showActivityTab" [contactId]="contactId" [reloadTab]="isReloadActivityTab"
+                    [isFromCompanyModule]="isFromCompanyModule" (notifyShowDealForm)="viewDeal($event)"
+                    (notifyShowLeadForm)="viewLead($event)" [selectedContactListId]="selectedContactListId"
+                    (notifySuccess)="showNoteUpdateCutomResponse($event)" (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-activity-stream>
                 </div>
                 <div *ngIf="showNotesTab" id="note1" class="tab-pane fade pt-top">
                   <app-note [contactId]="contactId" [reloadTab]="isReloadNoteTab" (notifySuccess)="showNoteUpdateCutomResponse($event)"
@@ -254,7 +220,7 @@
               <div class="activity_card mb10" *ngFor="let lead of contactLeads">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a (click)="viewLead(lead)">
+                  <a (click)="viewLead(lead.id)">
                     <span class="activity-title">{{lead.firstName != null ? lead.firstName:''}} {{lead.lastName}}</span>
                   </a>
                 </div>
@@ -291,7 +257,7 @@
               <div class="activity_card mb10" *ngFor="let deal of contactDeals">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a (click)="viewDeal(deal)">
+                  <a (click)="viewDeal(deal.id)">
                     <span class="activity-title">{{deal.title}}</span>
                   </a>
                 </div>

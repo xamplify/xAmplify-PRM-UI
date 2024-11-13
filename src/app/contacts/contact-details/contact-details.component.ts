@@ -98,6 +98,7 @@ export class ContactDetailsComponent implements OnInit {
   campaignsCount:number = 0;
   selectedContactListId:number;
   viewCampaigns: boolean = false;
+  isReloadActivityTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -346,6 +347,7 @@ export class ContactDetailsComponent implements OnInit {
 
   showEmailSubmitSuccessStatus(event) {
     this.isReloadEmailActivityTab = event;
+    this.isReloadActivityTab = event;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
     this.closeModalPopup();
   }
@@ -386,9 +388,9 @@ export class ContactDetailsComponent implements OnInit {
     this.fetchDealsAndCount();
   }
 
-  viewLead(lead:any) {
+  viewLead(leadId:any) {
     this.actionType = 'view';
-    this.leadId = lead.id;
+    this.leadId = leadId;
     this.showLeadForm = true;
   }
 
@@ -429,9 +431,9 @@ export class ContactDetailsComponent implements OnInit {
     this.viewDeals = true;
   }
 
-  viewDeal(deal:any) {
+  viewDeal(dealId:any) {
     this.actionType = 'view';
-    this.dealId = deal.id;
+    this.dealId = dealId;
     this.showDealForm = true;
   }
 
@@ -462,12 +464,14 @@ export class ContactDetailsComponent implements OnInit {
 
   showNoteCutomResponse(event: any) {
     this.isReloadNoteTab = event;
+    this.isReloadActivityTab = event;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.noteSubmittedSuccessResponseMessage, true);
     this.closeAddNoteModalPopup();
   }
 
   showNoteUpdateCutomResponse(event: any) {
     this.isReloadNoteTab = event;
+    this.isReloadActivityTab = event;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.noteUpdatedSuccessResponseMessage, true);
     this.closeAddNoteModalPopup();
   }

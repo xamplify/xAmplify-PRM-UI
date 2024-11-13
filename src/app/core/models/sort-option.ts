@@ -472,6 +472,15 @@ export class SortOption {
         { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
         { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
     ]; 
+
+	activityDropDownOptions = [
+		{ 'name': 'All', 'value': 'All-Desc' },
+		{ 'name': 'Campaign', 'value': 'Campaign-Desc' },
+		{ 'name': 'Lead', 'value': 'Lead-Desc' },
+		{ 'name': 'Deal', 'value': 'Deal-Desc' },
+		{ 'name': 'Email', 'value': 'Email-Desc' },
+		{ 'name': 'Note', 'value': 'Note-Desc' }
+	]
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -544,6 +553,7 @@ export class SortOption {
 	/***XNFR-679***/
 	public selectedCustomFieldsSortDropDownOption: any = this.customFieldsDropDownOptions[this.customFieldsDropDownOptions.length-1];
 
-
+	/**XNFR-735**/
+	activityDropDownOption = this.activityDropDownOptions[0];
 
 }

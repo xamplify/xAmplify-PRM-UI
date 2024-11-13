@@ -38,6 +38,7 @@ import { CKEditorModule } from "ng2-ckeditor";
 import { EmailActivityComponent } from 'app/activity/email-activity/email-activity.component';
 import { AddNoteModalPopupComponent } from 'app/activity/add-note-modal-popup/add-note-modal-popup.component';
 import { NoteComponent } from 'app/activity/note/note.component';
+import { ActivityStreamComponent } from 'app/activity/activity-stream/activity-stream.component';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
@@ -46,7 +47,7 @@ import { NoteComponent } from 'app/activity/note/note.component';
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
-                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent],
+                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -55,7 +56,7 @@ import { NoteComponent } from 'app/activity/note/note.component';
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent, 
-                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent],
+                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent],
         providers: [FormService],
 })
 
