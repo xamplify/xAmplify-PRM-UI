@@ -19,10 +19,7 @@
         <div class="portlet light">
           <div class="portlet-title">
             <div class="caption">
-              <ul class="mix-filter"
-                *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner 
-                              || authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner
-                              || thenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+              <ul class="mix-filter">
                 <li class="filter" (click)="filterUniversalSearch('All',0)"
                   [class.emailtemplate-selected]="0 == selectedFilterIndex">All<i
                     class="fa fa-check-circle-o check-icons" *ngIf="0 == selectedFilterIndex"></i></li>
