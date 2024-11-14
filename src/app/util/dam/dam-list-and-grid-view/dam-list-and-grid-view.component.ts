@@ -82,6 +82,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	exportObject = {};
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+	@Input() searchKeyValue : any;
 	SuffixHeading: string = "";
 	titleHeader: string = "";
 	actionsDivClass = "actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign";
@@ -231,6 +232,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							/*** XBI-2133 ****/
 							this.fetchWhiteLabeledContentSharedByVendorCompanies()
 							this.pagination.userId = this.loggedInUserId;
+							this.sortOption.searchKey = this.searchKeyValue;
+							if (this.utilService.searchKey) {
+								this.sortOption.searchKey = this.utilService.searchKey;
+								this.pagination.searchKey = this.sortOption.searchKey;
+								this.utilService.searchKey = "";
+								this.showUpArrowButton = true;
+							}
 							this.listAssets(this.pagination);
 						}
 					}

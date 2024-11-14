@@ -41,6 +41,12 @@
 									[ngValue]="option">{{option.name}}</option>
 							</select>
 						</div>
+						<div id="left">
+                            <select *ngIf="pagination.categoryType === 'DAM'"  class="form-control"  [(ngModel)]="selectedOption" (ngModelChange)="onSelect(selectedOption)"
+                                id="select-dropdown">
+                                <option *ngFor="let option of options" [ngValue]="option">{{option}}</option>
+                            </select>
+                        </div>
 						<div class="portlet-input input-inline" id="search-div">
 							<div class="input-icon right" id="icon">
 								<input type="text" id="sort-text" class="form-control"

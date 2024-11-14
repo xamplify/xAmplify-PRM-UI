@@ -11,6 +11,7 @@ declare var $:any;
 @Injectable()
 export class UtilService {
     topnavBareLoading = false;
+    searchKey : any ='';
     pagination: Pagination;
     constructor( private http: Http,private pagerService:PagerService) { }
 
