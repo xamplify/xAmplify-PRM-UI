@@ -70,3 +70,9 @@ th.alignItamsleft {
   position: relative;
 }
 }
+@media (min-width: 768px) {
+  div#comments-div{height:0px !important}
+}
+@media (min-width: 360px) and (max-width: 390px) {
+  div#comments-div{height:0px !important}
+}
