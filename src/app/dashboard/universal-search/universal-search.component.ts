@@ -24,11 +24,13 @@ export class UniversalSearchComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   searchKey: string;
   applyFilter = true;
+  defaultDisplayType:string = '/l';
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
     public dashboardService: DashboardService) {
     if (!this.authenticationService.isTeamMember()) {
       this.applyFilter = false;
     }
+    this.defaultDisplayType = localStorage.getItem('defaultDisplayType');
   }
 
   ngOnInit() {
@@ -120,15 +122,20 @@ export class UniversalSearchComponent implements OnInit {
     }
   }
   navigateToManage(quickLink: any) {
+    if(this.defaultDisplayType === "FOLDER_GRID" || this.defaultDisplayType === "FOLDER_LIST" ) {
+      this.defaultDisplayType = "/l";
+    } else {
+      this.defaultDisplayType = "/g";
+    }
     if (quickLink.type === 'Asset') {
       let router = this.isPartnerLoggedInThroughVanityUrl ? '/home/dam/shared' : '/home/dam/manage';
-      this.referenceService.goToRouter(router);
+      this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Track') {
       let router = this.isPartnerLoggedInThroughVanityUrl ? 'home/tracks/shared' : '/home/tracks/manage';
-      this.referenceService.goToRouter(router);
+      this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Play Book') {
       let router = this.isPartnerLoggedInThroughVanityUrl ? '/homeplaybook/shared' : '/home/playbook/manage';
-      this.referenceService.goToRouter(router);
+      this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Lead') {
       this.referenceService.goToRouter("/home/leads/manage");
     } else if (quickLink.type === 'Deal') {
