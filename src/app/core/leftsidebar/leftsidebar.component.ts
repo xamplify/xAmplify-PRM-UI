@@ -440,6 +440,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	}
 	
 	startLoader(){
+		this.referenceService.universalModuleType = "";
 		this.authenticationService.leftSideMenuLoader = true;
 	}
 

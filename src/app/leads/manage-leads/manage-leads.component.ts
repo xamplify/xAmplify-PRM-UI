@@ -155,7 +155,7 @@ export class ManageLeadsComponent implements OnInit {
     }
 }
 triggerUniversalSearch(){
-  if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "") {
+  if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Lead') {
     this.leadsSortOption.searchKey = this.referenceService.universalSearchKey;
     let keyCode:any = 13;
     if (keyCode === 13) { this.searchLeads(); }

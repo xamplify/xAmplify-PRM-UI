@@ -118,13 +118,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.videoFileService.campaignReport = false;
 		}
 		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
-		/** XNFR-574 **/
-		if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "") {
+	
+	}
+	triggerUniversalSearch() {
+		if (this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Asset') {
+			this.searchKeyValue = this.referenceService.universalSearchKey;
 			this.sortOption.searchKey = this.referenceService.universalSearchKey;
-			this.pagination.searchKey = this.referenceService.universalSearchKey;
+			//this.pagination.searchKey = this.referenceService.universalSearchKey;
+			this.getAllFilteredResults();
 		}
 	}
-
 	callInitMethods() {
 		localStorage.removeItem('campaignReport');
 		localStorage.removeItem('saveVideoFile');
@@ -163,7 +166,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (message!=undefined && message.length > 0 && !this.folderListViewExpanded ) {
 			this.customResponse = new CustomResponse('SUCCESS', message, true);
 		}
-
+		this.triggerUniversalSearch(); //XNFR-574
 		if (this.viewType != "fl" && this.viewType != "fg") {
 			this.getCompanyId();
 		}
@@ -230,7 +233,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 						} else {
 							this.findFileTypes();
 							/*** XBI-2133 ****/
-							this.fetchWhiteLabeledContentSharedByVendorCompanies()
+							this.fetchWhiteLabeledContentSharedByVendorCompanies();
 							this.pagination.userId = this.loggedInUserId;
 							this.sortOption.searchKey = this.searchKeyValue;
 							if (this.utilService.searchKey) {

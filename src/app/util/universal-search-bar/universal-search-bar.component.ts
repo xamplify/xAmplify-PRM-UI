@@ -19,9 +19,13 @@ export class UniversalSearchBarComponent implements OnInit {
     this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.universalSearch)
   }
   universalSearchOnKeyPress(keyCode:any) {
-    if (keyCode === 13) { 
+    this.searchKey = this.searchKey.trim();
+    if (keyCode === 13 && (this.searchKey != '' && this.searchKey.trim().length>0)) { 
       this.universalSearch();
     }
+  }
+  isEmptyOrWhitespace(value: string | null | undefined): boolean {
+    return this.searchKey != '' && this.searchKey.trim().length>0;
   }
   goToDashBoard() {
     this.searchKey = "";
