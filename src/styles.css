@@ -3256,3 +3256,19 @@ a.quicklinks_icons:hover {
 .detailedarrow,.float_unset{
   float: unset !important;
 }
+@media (min-width: 344px) {
+  .mobile_thumbnail{padding-left: 16px !important;}
+}
+.view_type{padding: 9px !important;}
+@media (min-width: 360px) {
+  button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4.view_type.mobile_view_type,
+  button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4.view_type.mobile_view_type{padding: 9px !important;}
+}
+@media (min-width: 390px){
+.mobile_text{
+  padding-top: 4px;
+}
+.mobile_ques{
+  padding-left: 4px;
+}
+}

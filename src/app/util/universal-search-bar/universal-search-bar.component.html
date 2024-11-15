@@ -1,7 +1,7 @@
-<div class="header">
+<div class="">
   <div class="search-container">
     <input type="text" [(ngModel)]="searchKey" placeholder="Search..." class="search-input"  (keypress)="universalSearchOnKeyPress($event.keyCode)"/>
-    <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';goToDashBoard();"></button>
+    <button *ngIf="isEmptyOrWhitespace(searchKey)" class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';goToDashBoard();"></button>
     <button [disabled]="searchKey === ''" [ngClass]="searchKey != ''? '':'disabled-div'" class="search-button" (click)="universalSearch();">
       <i class="fa fa-search" aria-hidden="true" [ngClass]="searchKey != ''?'':'disabled'"></i>
     </button>

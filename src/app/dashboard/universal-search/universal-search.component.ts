@@ -24,11 +24,13 @@ export class UniversalSearchComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   searchKey: string;
   applyFilter = true;
+  defaultDisplayType:string = '/l';
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
     public dashboardService: DashboardService) {
     if (!this.authenticationService.isTeamMember()) {
       this.applyFilter = false;
     }
+    this.defaultDisplayType = localStorage.getItem('defaultDisplayType');
   }
 
   ngOnInit() {
@@ -73,9 +75,7 @@ export class UniversalSearchComponent implements OnInit {
   filterUniversalSearch(type: string, index: number) {
     this.selectedFilterIndex = index;
     this.universalSearchPagination = new Pagination();
-    if(type === 'Lead' || type === 'Deal') {
     this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    }
     this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
     this.universalSearchPagination.filterBy = type;
     this.findUniversalSearch(this.universalSearchPagination);
@@ -119,16 +119,23 @@ export class UniversalSearchComponent implements OnInit {
       this.referenceService.goToRouter(router);
     }
   }
+
   navigateToManage(quickLink: any) {
+    this.referenceService.universalModuleType = quickLink.type;
+    if (this.defaultDisplayType === "GRID") {
+      this.defaultDisplayType = "/g";
+    } else {
+      this.defaultDisplayType = "/l";
+    }
     if (quickLink.type === 'Asset') {
       let router = this.isPartnerLoggedInThroughVanityUrl ? '/home/dam/shared' : '/home/dam/manage';
-      this.referenceService.goToRouter(router);
+      this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Track') {
       let router = this.isPartnerLoggedInThroughVanityUrl ? 'home/tracks/shared' : '/home/tracks/manage';
-      this.referenceService.goToRouter(router);
+      this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Play Book') {
       let router = this.isPartnerLoggedInThroughVanityUrl ? '/homeplaybook/shared' : '/home/playbook/manage';
-      this.referenceService.goToRouter(router);
+      this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Lead') {
       this.referenceService.goToRouter("/home/leads/manage");
     } else if (quickLink.type === 'Deal') {

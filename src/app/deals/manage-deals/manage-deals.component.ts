@@ -162,7 +162,7 @@ export class ManageDealsComponent implements OnInit {
     }
   }
   triggerUniversalSearch() {
-    if (this.referenceService.universalSearchKey != "") {
+    if (this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Deal') {
       this.dealsSortOption.searchKey = this.referenceService.universalSearchKey;
       let keyCode = 13;
       if (keyCode === 13) { this.searchDeals();}

@@ -160,7 +160,7 @@ export class ReferenceService {
   isUserProfileLoading = false;
   universalSearchKey:string = ""; //XNFR-574
   universalId:number = 0; //XNFR-574
-
+  universalModuleType:string = ""; //XNFR-574
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

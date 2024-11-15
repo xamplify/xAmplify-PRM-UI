@@ -33,6 +33,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
   type:string = "";
   titleHeader:string = "";
   suffixHeader:string = "";
+  options: string[] = ['Search Folder', 'Search In Folder'];
+  selectedOption: string;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -45,6 +47,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
     this.folderViewType = this.route.snapshot.params['viewType'];
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
+    this.selectedOption = 'Search Folder';
     this.findAllCategories(this.pagination);
   }
 
@@ -100,10 +103,27 @@ export class FolderTypeViewUtilComponent implements OnInit {
       this.getAllCategoryFilteredResults(this.pagination);
   }
 
-
   /*************************Search********************** */
   searchCategories() {
+    if (this.selectedOption == 'Search In Folder') {
+      this.utilService.searchKey = this.categorySortOption.searchKey;
+      if (this.pagination.categoryType == "DAM") {
+        this.gridViewtoListView('home/dam/manage/l');
+      } 
+    } else {
       this.getAllCategoryFilteredResults(this.pagination);
+    }
+  }
+  
+  private gridViewtoListView(isView: any) {
+    if (this.utilService.searchKey == "") {
+      if (this.pagination.categoryType == "DAM") {
+        this.referenceService.goToRouter('home/dam/manage/fg');
+      }
+    }
+    else {
+      this.referenceService.goToRouter(isView);
+    }
   }
 
   paginationDropdown(items: any) {
@@ -184,4 +204,7 @@ getUpdatedItemsCount(event:any){
   $('#count-'+this.moduleId+"-"+categoryId).text(itemsCount);
 }
 
+onSelect(option: string) {
+  this.selectedOption = option;
+}
 }

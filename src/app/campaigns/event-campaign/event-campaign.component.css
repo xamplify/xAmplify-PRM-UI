@@ -1299,7 +1299,7 @@ span.text-algn {
 }
 .imgage-paddings img {
   margin: 0px;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 .hover-bar {
   height: 96px;
