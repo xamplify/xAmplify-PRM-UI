@@ -37,26 +37,22 @@
                  <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
                   (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)" id="unPublished-dashboardButtons-header-checkbox-id">
               </th>
-              <th class="text-center">Name</th>
-              <th class="text-center">Type</th>
-              <th class="text-center">Created By</th>
+              <th class="text-center">Title</th>
+              <th class="text-center">Link</th>
               <th class="text-center">Created On</th>
            </tr>
         </thead>
         <tbody>
-           <tr class="pointer" *ngFor="let dashboardButton of pagination.pagedItems ;let i =index" id="unPublished-dashboardButtons-tr-{{dashboardButton.id}}" [class.row-selected]="selectedDashboardButtonIds.indexOf(dashboardButton.id)>-1" (click)="highlightSelectedDashboardButtonOnRowClick(dashboardButton.id,$event)">
+           <tr class="pointer" *ngFor="let dashboardButton of pagination?.pagedItems ;let i =index" id="unPublished-dashboardButtons-tr-{{dashboardButton.id}}" [class.row-selected]="selectedDashboardButtonIds.indexOf(dashboardButton.id)>-1" (click)="highlightSelectedDashboardButtonOnRowClick(dashboardButton.id,$event)">
            <td class="text-center">
               <input type="checkbox" class="pointer checkBox_shadow"  id="{{dashboardButton.id}}" [checked]="selectedDashboardButtonIds.indexOf(dashboardButton.id)>-1"
                name="unPublishedDashboardButtonsCheckBox[]" value="{{dashboardButton.id}}" (click)="$event.stopPropagation();highlightDashboardButtonRowOnCheckBoxClick(dashboardButton.id,$event)">
            </td>
-           <td class="text-center" title="{{dashboardButton?.dashboardButtonName}}">
-              {{dashboardButton?.dashboardButtonName | slice:0:25}} <span *ngIf="dashboardButton?.dashboardButtonName?.length>25">...</span>
+           <td class="text-center" title="{{dashboardButton?.buttonTitle}}">
+              {{dashboardButton?.buttonTitle | slice:0:25}} <span *ngIf="dashboardButton?.buttonTitle?.length>25">...</span>
            </td>
            <td class="text-center">
-              <span>{{dashboardButton?.dashboardButtonType}}</span>
-           </td>
-           <td class="text-center">
-              <span>{{dashboardButton?.createdBy}}</span>
+              <span>{{dashboardButton?.buttonLink}}</span>
            </td>
            <td class="text-center">
               <app-display-date-and-time [dateAndTimeUTCString]="dashboardButton?.createdTimeInString"></app-display-date-and-time>
