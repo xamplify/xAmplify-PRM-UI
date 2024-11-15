@@ -58,7 +58,7 @@ export class ShareDashboardButtonsComponent implements OnInit {
      this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
     this.referenceService.scrollToModalBodyTopByClass();
-    this.vanityUrlService.findAllUnPublishedAndFilteredPublishedDashboardButtons(this.pagination).subscribe(
+    this.vanityUrlService.findAllPublishedAndUnPublishedDashboardButtons(this.pagination).subscribe(
       response => {
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
