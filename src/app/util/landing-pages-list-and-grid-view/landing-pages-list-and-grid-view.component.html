@@ -156,7 +156,7 @@
                                 <ng-container *ngIf="!isPartnerLandingPage ">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded && (!(vendorJourney || isMasterLandingPages || !welcomePages || isPartnerJourneyPages || isVendorMarketplacePages) || ((vendorJourney || isMasterLandingPages || isPartnerJourneyPages || isVendorMarketplacePages) &&!landingPage.defaultLandingPage)) "><span>Regular</span></span>
-                                    <span class="ribbon1" *ngIf="!landingPage.coBranded && ((vendorJourney || isMasterLandingPages || welcomePages || isVendorMarketplacePages)&& landingPage.defaultLandingPage) "><span>Default</span></span>
+                                    <span class="ribbon1" *ngIf="!landingPage.coBranded && ((vendorJourney || isMasterLandingPages || welcomePages || isVendorMarketplacePages || isPartnerJourneyPages )&& landingPage.defaultLandingPage) "><span>Default</span></span>
                                 </ng-container>
                                 <div class="ribbon tab-ribbon" *ngIf = "vendorJourney || isPartnerJourneyPages">
                                     <span
