@@ -4998,7 +4998,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				return 'assets/images/theme/Final/dark-theme.webp';
 			case 'Neumorphism Light':
 				return 'assets/images/theme/Final/light-neumorphism.webp';
-			case 'Neumorphism Dark(Beta)':
+			case 'Neumorphism Dark':
 				return 'assets/images/theme/Final/dark-neumorphism.webp';
 			case 'Glassomorphism Light':
 				return 'assets/images/theme/Final/beta-light-glassomorphism.webp';
