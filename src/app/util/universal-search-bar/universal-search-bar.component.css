@@ -4,7 +4,7 @@
     justify-content: flex-end;
   }
   
-  .search-container {
+  .universal-search-container {
     display: flex;
     align-items: center;
     border: 1px solid #ccc;
@@ -12,14 +12,14 @@
     overflow: hidden;
   }
   
-  .search-input {
+  .universal-search-input {
     padding: 0px 0px 0px 5px;
     border: none;
     outline: none;
     font-size: 14px;
   }
   
-  .search-button {
+  .universal-search-button {
     background-color: transparent;
     border: none;
     cursor: pointer;

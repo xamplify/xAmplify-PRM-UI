@@ -23,6 +23,7 @@ export class SelectContentModulesComponent implements OnInit {
   }
   navigate(suffixUrl:string){
     this.loading = true;
+    this.referenceService.universalModuleType = "";
     this.referenceService.goToRouter(this.prefixUrl+suffixUrl);
   }
 
