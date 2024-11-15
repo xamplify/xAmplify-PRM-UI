@@ -176,7 +176,7 @@
           </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.slug}}">{{quickLink?.slug}}</span>
         </span>
       </h6>
-      <h6 (click)="preview(quickLink)">
+      <h6 (click)="preview(quickLink)" *ngIf="!isPartnerLoggedInThroughVanityUrl">
         <span class="pointer"><b>Lead Id:
           </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.tag}}">{{quickLink?.tag}}</span>
         </span>
@@ -217,7 +217,7 @@
           </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span>
         </span>
       </h6>
-      <h6 (click)="preview(quickLink)">
+      <h6 (click)="preview(quickLink)" *ngIf="!isPartnerLoggedInThroughVanityUrl">
         <span class="pointer"><b>Deal Id:
           </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.tag}}">{{quickLink?.tag}}</span>
         </span>
