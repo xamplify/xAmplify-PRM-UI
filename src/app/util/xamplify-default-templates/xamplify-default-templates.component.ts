@@ -64,7 +64,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   modulesDisplayType = new ModulesDisplayType();
   updateAndRedirectClicked = false;
   categoryId: number = 0;
-  vanitySubjectLines: string[] = [];
+  vanitySubjectLines: any[] = [];
   isSubjectDuplicate: boolean = false;
 
   constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,private logger: XtremandLogger,
@@ -98,18 +98,23 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
   if (normalizedNewSubject === normalizedExistingName) {
     this.isSubjectDuplicate = false;
   }else{
-    const trimmedSubjects = this.vanitySubjectLines.map(item => 
+    const trimmedSubjects = this.vanitySubjectLines[0].map(item => 
       item[1].trim().toLowerCase()
   );
-  this.vanitySubjectLines.forEach((subject : any) => {
-    if(id === subject[0] && subject[1].trim().toLowerCase() === normalizedNewSubject){
+  this.vanitySubjectLines[0].forEach((subjects:any)=>{
+    if(id === subjects[0] && subjects[1].trim().toLowerCase() === normalizedNewSubject){
       this.isSubjectDuplicate = false;
-    }else{
-      if(subject[1].trim().toLowerCase() === normalizedNewSubject){
+    }
+    else {
+      if(subjects[1].trim().toLowerCase() === normalizedNewSubject){
         this.isSubjectDuplicate = true;
       }
     }
-  
+  })
+  this.vanitySubjectLines[1].forEach((name:any)=>{
+    if(name.trim().toLowerCase() === normalizedNewSubject){
+      this.isSubjectDuplicate = true;
+    }
   })
   }
   return this.isSubjectDuplicate;
