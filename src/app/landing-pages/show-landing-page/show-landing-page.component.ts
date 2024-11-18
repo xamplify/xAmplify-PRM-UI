@@ -152,6 +152,8 @@ export class ShowLandingPageComponent implements OnInit {
                 landingPageAnalytics.partnerLandingPageAlias = this.alias;
                   landingPageAnalytics.vendorJourney = this.isVendorJourney;
                   landingPageAnalytics.fromMasterLandingPage = this.isFromMasterLandingPage;
+                  landingPageAnalytics.partnerJourneyPage = this.isPartnerJourneyPage;
+                  landingPageAnalytics.fromVendoeMarketplacePage = this.isFromVendorMarketplacePage;
             }
             this.saveAnalytics(landingPageAnalytics);
             if(analyticsTypeString!="CAMPAIGN_LANDING_PAGE_FORM"){

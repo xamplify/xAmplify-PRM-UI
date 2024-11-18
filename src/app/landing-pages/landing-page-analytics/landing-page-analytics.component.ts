@@ -58,7 +58,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     @Input() welcomePages= false;
     @Input() isPartnerJourneyPages= false;
     @Input() isVendorMarketplacePages= false;
-    
+    @Input() vendorPartnerJourneyPages = false;
     campaignTitle = "";
     barChartViewPopUpSortValue:any;
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
@@ -82,6 +82,10 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
         if(this.vendorPages){
             this.landingPageAlias = this.vendorPageAlias;
             this.landingPageAnalyticsPostDto.vendorPages = true;
+        }
+        if(this.vendorPartnerJourneyPages){
+            this.landingPageAlias = this.vendorPageAlias;
+            this.landingPageAnalyticsPostDto.vendorPartnerJourneyPages = true;
         }
         if(categoryId>0){
             this.routerLink = this.managePagesRouterLink+"/"+categoryId;
@@ -208,6 +212,9 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
             if (this.vendorPages) {
                 pagination.vendorPages = true;
             }
+            if(this.vendorPartnerJourneyPages){
+                pagination.vendorPartnerJourneyPage = true;
+            }
             this.landingPageService.listAnalytics(pagination, this.countryCode).subscribe(
                 (response: any) => {
                     this.statusCode = response.statusCode;
@@ -312,6 +319,8 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
         this.referenceService.loading( pagination.loader, true );
         pagination.partnerId = this.partnerId;
         pagination.vendorPages = this.landingPageAnalyticsPostDto.vendorPages;
+        pagination.vendorPartnerJourneyPage = this.landingPageAnalyticsPostDto.vendorPartnerJourneyPages;
+        
         this.landingPageService.listBarChartAnalytics(pagination,timePeriod,filterValue,this.landingPageAnalyticsPostDto.analyticsTypeString).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;

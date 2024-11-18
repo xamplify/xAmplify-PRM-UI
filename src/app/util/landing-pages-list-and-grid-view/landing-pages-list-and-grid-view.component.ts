@@ -482,7 +482,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
      
   }
   goToPartnerLandingPageAnalytics(alias: string) {
-    if(this.isLandingPages){
+    if(this.isLandingPages || this.isVendorPartnerJourneyPages){
         this.viewVendorPageAnalytics.emit(alias);
     }else{
         this.router.navigate(['/home/pages/partner/' + alias + '/analytics']);
