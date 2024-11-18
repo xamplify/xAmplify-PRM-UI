@@ -193,4 +193,14 @@
   .quicklinks_icons {
     margin-right: 5px;
   }
-  
+  .universal-profile {
+    background: #9079d2;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    min-height: 50px;
+    min-width: 50px;
+    text-align: center;
+    color: #fff;
+    padding-top: 17px;
+}

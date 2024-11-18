@@ -130,7 +130,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   triggerLmsSearch(){
     if(this.referenceService.universalSearchKey != ""  && (this.referenceService.universalModuleType == 'Track' || this.referenceService.universalModuleType == 'Play Book')){
       this.referenceService.loading(this.httpRequestLoader, true);
-      this.sortOption.searchKey = this.referenceService.universalSearchKey;
+      this.searchKeyValue = this.referenceService.universalSearchKey;
+      this.sortOption.searchKey = this.searchKeyValue;
       this.getAllFilteredResults();
     }
   }
@@ -153,11 +154,13 @@ setViewType(viewType: string) {
   ngOnDestroy() {
     this.referenceService.isCreated = false;
     this.referenceService.isUpdated = false;
+    this.referenceService.universalModuleType = "";//XNFR-574
     swal.close();
   }
 
   showMessageOnTop(message: string) {
     $(window).scrollTop(0);
+    this.referenceService.universalModuleType = "";//XNFR-574
     this.customResponse = new CustomResponse('SUCCESS', message, true);
   }
 

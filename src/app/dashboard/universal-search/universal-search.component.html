@@ -3,11 +3,11 @@
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home"></i>
-        <a [routerLink]="referenceService?.homeRouter">Home</a>
+        <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
         <i class="fa fa-angle-right"></i>
       </li>
       <li>
-        <a>Universal Search Results</a>
+        <a translate>Universal Search Results</a>
       </li>
     </ul>
   </div>
@@ -24,28 +24,32 @@
               || authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner
               || thenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner || authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">
                 <li class="filter" (click)="filterUniversalSearch('All',0)"
-                  [class.emailtemplate-selected]="0 == selectedFilterIndex">All<i
+                  [class.emailtemplate-selected]="0 == selectedFilterIndex" translate>All<i
                     class="fa fa-check-circle-o check-icons" *ngIf="0 == selectedFilterIndex"></i></li>
                 <li class="filter"
                   *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"
-                  (click)="filterUniversalSearch('Assets',1)" [class.emailtemplate-selected]="1 == selectedFilterIndex">
+                  (click)="filterUniversalSearch('Assets',1)" [class.emailtemplate-selected]="1 == selectedFilterIndex"
+                  translate>
                   Assets<i class="fa fa-check-circle-o check-icons" *ngIf="1 == selectedFilterIndex"></i></li>
                 <li class="filter"
                   *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"
-                  (click)="filterUniversalSearch('Tracks',2)" [class.emailtemplate-selected]="2 == selectedFilterIndex">
+                  (click)="filterUniversalSearch('Tracks',2)" [class.emailtemplate-selected]="2 == selectedFilterIndex"
+                  translate>
                   Tracks<i class="fa fa-check-circle-o check-icons" *ngIf="2 == selectedFilterIndex"></i></li>
                 <li class="filter"
                   *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"
                   (click)="filterUniversalSearch('PlayBooks',3)"
-                  [class.emailtemplate-selected]="3 == selectedFilterIndex">Play Books<i
+                  [class.emailtemplate-selected]="3 == selectedFilterIndex" translate>Play Books<i
                     class="fa fa-check-circle-o check-icons" *ngIf="3 == selectedFilterIndex"></i></li>
                 <li class="filter"
                   *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner"
-                  (click)="filterUniversalSearch('Lead',4)" [class.emailtemplate-selected]="4 == selectedFilterIndex">
+                  (click)="filterUniversalSearch('Lead',4)" [class.emailtemplate-selected]="4 == selectedFilterIndex"
+                  translate>
                   Leads<i class="fa fa-check-circle-o check-icons" *ngIf="4 == selectedFilterIndex"></i></li>
                 <li class="filter"
                   *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner"
-                  (click)="filterUniversalSearch('Deal',5)" [class.emailtemplate-selected]="5 == selectedFilterIndex">
+                  (click)="filterUniversalSearch('Deal',5)" [class.emailtemplate-selected]="5 == selectedFilterIndex"
+                  translate>
                   Deals<i class="fa fa-check-circle-o check-icons" *ngIf="5 == selectedFilterIndex"></i></li>
               </ul>
             </div>
@@ -100,7 +104,14 @@
 
 <ng-template #assetsDetails let-quickLink="quickLink">
   <tr>
-    <td class="p10" style="width: 100%;">
+      <td style="width: 10%;">
+        <div class="col">
+          <div class="instant-links-type">
+            <img alt="Videos" style="height: 50px; border-radius: 30px;" src="assets/images/universal-asset-img.jpg">
+          </div>
+        </div>
+      </td>
+    <td style="width: 90%;">
       <h6 (click)="preview(quickLink)">
         <span class="pointer"><b>Asset Name:
           </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span>
@@ -132,8 +143,16 @@
   </tr>
 </ng-template>
 <ng-template #trackDetails let-quickLink="quickLink">
-  <tr>
-    <td class="p10" style="width: 100%;">
+  <tr style="height: 60px;">
+    <td style="width: 10%;">
+      <div class="col">
+        <div class="instant-links-type">
+          <img alt="Videos"*ngIf="quickLink?.type=='Track'" style="height: 50px;" src="assets/images/tracks.png">
+          <img alt="Videos"*ngIf="quickLink?.type=='Play Book'" style="height: 50px;" src="assets/images/universalsearch-book.png">
+        </div>
+      </div>
+    </td>
+    <td  style="width: 90%;">
       <h6 (click)="preview(quickLink)">
         <span class="pointer" *ngIf="quickLink?.type=='Track'"><b>Tracks Title: </b><span data-toggle="tooltip"
             data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span> </span>
@@ -165,7 +184,14 @@
 </ng-template>
 <ng-template #leadDetails let-quickLink="quickLink">
   <tr>
-    <td class="p10" style="width:  100%;">
+    <td style="width: 10%;">
+      <div class="col">
+        <div class="instant-links-type">
+          <img alt="manual" class="neu-l-d" style="height: 50px;" src="assets/admin/pages/media/works/contacts2.png">
+        </div>
+      </div>
+    </td>
+    <td style="width:  90%;">
       <h6 (click)="preview(quickLink)">
         <span class="pointer"><b>Name:
           </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span>
@@ -211,7 +237,15 @@
 </ng-template>
 <ng-template #dealDetails let-quickLink="quickLink">
   <tr>
-    <td class="p10" style="width:  100%;">
+    <td style="width: 10%;">
+      <div class="col">
+        <div class="instant-links-type">
+          <img alt="manual" class="neu-l-d" style="height: 50px;" src="assets/admin/pages/media/works/contacts2.png">
+        </div>
+      </div>
+    </td>
+
+    <td style="width:  90%;">
       <h6 (click)="preview(quickLink)">
         <span class="pointer"><b>Deal Name:
           </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span>

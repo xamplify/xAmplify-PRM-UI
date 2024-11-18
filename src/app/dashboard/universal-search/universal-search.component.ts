@@ -7,6 +7,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { PagerService } from 'app/core/services/pager.service';
 import { DashboardService } from '../dashboard.service';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Component({
   selector: 'app-universal-search',
@@ -31,6 +32,15 @@ export class UniversalSearchComponent implements OnInit {
       this.applyFilter = false;
     }
     this.defaultDisplayType = localStorage.getItem('defaultDisplayType');
+    let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
+    let isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+    if (isWelcomePageEnabled) {
+      let setSearchKey = localStorage.getItem(XAMPLIFY_CONSTANTS.universalSearchKey);//XNFR-574
+      if (setSearchKey) {
+        this.referenceService.universalSearchKey = setSearchKey;
+      } else {
+        this.referenceService.universalSearchKey = '';
+      }    }
   }
 
   ngOnInit() {
