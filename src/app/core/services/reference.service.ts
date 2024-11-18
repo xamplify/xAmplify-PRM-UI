@@ -2611,6 +2611,15 @@ export class ReferenceService {
     }
   }
 
+  /**XBI-2417**/
+  getDefaultViewType(){
+    let defaultDisplayType = localStorage.getItem("defaultDisplayType");
+    return defaultDisplayType === "LIST" ? "l" :
+       defaultDisplayType === "FOLDER_LIST" ? "fl" :
+       defaultDisplayType === "FOLDER_GRID" ? "fg" :
+       defaultDisplayType === "GRID" ? "g" : "l";
+  }
+
   setDisplayType(modulesDisplayType: ModulesDisplayType, viewType: string) {
     if ("l" == viewType) {
       modulesDisplayType.isListView = true;
@@ -3805,7 +3814,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
 
   navigateToQuickLinksAnalytics(quickLink:any){
     let router = "";
-    let viewType = "/"+this.getListOrGridViewType();
+    let viewType = "/"+this.getDefaultViewType();
     if(quickLink.type=="Asset"){
       router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
     }else if(quickLink.type=="Track"){
@@ -3817,7 +3826,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
   }
 
   handleQuickLinkPreview(quickLink: any, isPartnerLoggedInThroughVanityUrl: boolean, vendorCompanyId: number) {
-    const viewType = `/${this.getListOrGridViewType()}`;
+    const viewType = `/${this.getDefaultViewType()}`;
     let router = '';
     let id = quickLink.id;
     if(isPartnerLoggedInThroughVanityUrl){
