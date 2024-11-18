@@ -345,6 +345,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.stopLoaders();
 		}, error => {
 			this.stopLoadersAndShowError(error);
+		},()=>{
+			this.callFolderListViewEmitter();
 		});
 	}
 

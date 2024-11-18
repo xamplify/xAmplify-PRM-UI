@@ -490,6 +490,7 @@ callFolderListViewEmitter(){
   if(this.folderListView){
       this.exportObject['categoryId'] = this.categoryId;
       this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+      this.exportObject['filteredItemsCount'] = this.pagination.totalRecords;
       this.updatedItemsCountEmitter.emit(this.exportObject);
   }
 }

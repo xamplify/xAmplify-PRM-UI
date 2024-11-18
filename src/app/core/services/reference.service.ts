@@ -1990,8 +1990,14 @@ export class ReferenceService {
   goToCampaignAnalytics(campaign:any) {
     let campaignId = campaign.campaignId;
     let encodedCampaignId = this.encodePathVariable(campaignId);
-    let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
-    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
+    let campaignTitle = campaign.campaignTitle;
+    if(campaignTitle!=undefined && this.getTrimmedData(campaignTitle).length>0){
+      let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
+      this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
+    }else{
+      this.showSweetAlertErrorMessage("Campaign Title Not Found");
+    }
+    
   }
 
   navigateBackToCampaignAnalytics(campaign:any) {

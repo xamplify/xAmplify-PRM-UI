@@ -91,8 +91,6 @@
                                 <h4 class="folder-name align-titletext tab_whitespace" data-placement="bottom"
                                     data-toggle="tooltip" title="{{category.name}}">
                                     <b>Folder Name:</b> {{category.name}} 
-                                    <!-- <span
-                                        *ngIf="category.name?.length>20">...</span> -->
                                 </h4>
                                 <span class="Track-countbg">{{moduleName}} {{category.count}}</span>
                                 <h6 data-placement="bottom" data-toggle="tooltip" [title]="category.createdBy"
@@ -197,7 +195,7 @@
                                 </ng-container>
                                 <ng-container *ngIf="selectedModuleType==5">
                                     <app-redistribute-campaigns-list-view-util
-                                        [folderListViewInput]="folderListViewInput"></app-redistribute-campaigns-list-view-util>
+                                        [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-redistribute-campaigns-list-view-util>
                                 </ng-container>
                             </ng-container>
                         </td>

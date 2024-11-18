@@ -141,11 +141,8 @@
                      </div>
                      <!--Description-->
                      <div class="col-lg-12 col-md-12">
-                        <div *ngIf="!isValidDescription" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                           <span class="required">{{descriptionErrorMessage}}</span>
-                        </div>
                         <div class="form-group col-lg-12 col-md-12">
-                           <label translate>Description<span class="required">*</span></label>
+                           <label translate>Description</label>
                            <div *ngIf="isAddAssetDetailsPopupLoaded">
                               <ckeditor #ckeditor [(ngModel)]="damPostDto.description"
                                  [ngModelOptions]="{standalone: true}" [config]="ckeConfig" (ready)="onReady($event)"
