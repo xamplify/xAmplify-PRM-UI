@@ -229,7 +229,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							/*** XBI-2133 ****/
 							this.findSharedAssetsByCompaniesForPartnerView();
 							this.pagination.userId = this.loggedInUserId;
-							this.listPublishedAssets(this.pagination);
+							this.sortOption.searchKey = this.searchKeyValue;
+							if (this.utilService.searchKey) {
+								this.sortOption.searchKey = this.utilService.searchKey;
+								this.pagination.searchKey = this.sortOption.searchKey;
+								this.utilService.searchKey = "";
+								this.showUpArrowButton = true;
+								this.listPublishedAssets(this.pagination);
+							}else{
+								this.listPublishedAssets(this.pagination);
+							}
 						} else {
 							this.findFileTypes();
 							/*** XBI-2133 ****/

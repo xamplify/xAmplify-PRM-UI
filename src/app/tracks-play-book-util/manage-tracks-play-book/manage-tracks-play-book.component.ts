@@ -54,6 +54,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 	@Output() updatedItemsCountEmitter = new EventEmitter();
   @Output() notifyParentComponent = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+  @Input() searchKeyValue : any;
   titleHeader:string = "";
   suffixHeader:string = "";
   trackOrPlayBookText = "";
@@ -113,7 +114,14 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       }
     }
     this.triggerLmsSearch();//XNFR-574
-    if(this.viewType!="fl" && this.viewType!="fg"){
+    if(this.viewType != "fl" && this.viewType != "fg"){
+      this.sortOption.searchKey = this.searchKeyValue;
+      if (this.utilService.searchKey) {
+        this.sortOption.searchKey = this.utilService.searchKey;
+        this.pagination.searchKey = this.sortOption.searchKey;
+        this.utilService.searchKey = "";
+        this.showUpArrowButton = true;
+      }
       this.listLearningTracks(this.pagination);
     }
     
