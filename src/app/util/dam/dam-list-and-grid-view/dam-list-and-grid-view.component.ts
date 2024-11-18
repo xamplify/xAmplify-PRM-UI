@@ -179,6 +179,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.isUploaded = false;
 		this.referenceService.isAssetDetailsUpldated = false;
 		this.referenceService.assetResponseMessage = "";
+		this.referenceService.universalModuleType = "";//XNFR-574
 	}
 
 	/********XNFR-169******/
