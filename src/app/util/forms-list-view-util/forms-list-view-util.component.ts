@@ -131,7 +131,7 @@ export class FormsListViewUtilComponent implements OnInit,OnDestroy {
                 if (this.statusCode == 200) {
                     pagination.totalRecords = data.totalRecords;
                     this.sortOption.totalRecords = data.totalRecords;
-                    $.each(data.forms, function (_index, form:any) {
+                    $.each(data.forms, function (_index:number, form:any) {
                         form.createdDateString = new Date(form.createdDateString);
                         if(form.updatedString!=undefined && $.trim(form.updatedString).length>0){
                             form.updatedDateString = new Date(form.updatedDateString);
@@ -143,8 +143,16 @@ export class FormsListViewUtilComponent implements OnInit,OnDestroy {
             },
             (error: any) => {
                 this.logger.errorPage(error);
+            },()=>{
+                this.callFolderListViewEmitter();
             });
     }
+
+    callFolderListViewEmitter() {
+		this.exportObject['categoryId'] = this.categoryId;
+        this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+        this.updatedItemsCount.emit(this.exportObject);
+	}
     /********************Pagaination&Search Code*****************/
 
     /*************************Sort********************** */
@@ -222,9 +230,7 @@ export class FormsListViewUtilComponent implements OnInit,OnDestroy {
                             this.customResponse = new CustomResponse('SUCCESS', message, true);
                             this.pagination.pageIndex = 1;
                             this.listForms(this.pagination);
-                            this.exportObject['categoryId'] = this.categoryId;
-                            this.exportObject['itemsCount'] = this.pagination.totalRecords;	
-                            this.updatedItemsCount.emit(this.exportObject);
+                           
                         } else {
                             let emailTemplateNames = "";
                             $.each(response.data, function (index, value) {

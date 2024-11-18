@@ -872,7 +872,7 @@ export class CustomSkinComponent implements OnInit {
       (data: any) => {
         this.themeDto = data.data;
         if (this.themeDto.name === "Light" || this.themeDto.name === "Dark" ||
-          this.themeDto.name === "Neumorphism Light" || this.themeDto.name === "Neumorphism Dark(Beta)"
+          this.themeDto.name === "Neumorphism Light" || this.themeDto.name === "Neumorphism Dark"
           || this.isSaveTheme) {
           this.sname = this.themeDto.name + '_copy';
         }

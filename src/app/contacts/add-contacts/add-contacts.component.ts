@@ -489,6 +489,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 self.customResponse = new CustomResponse('ERROR', "No records found.", true);
                 self.isNoResultFound = true;
                 self.cancelContacts();
+            } else if (allTextLines[0][0] == 'Email Id') {
+                self.csvRows = csvResult.data;
             } else if (allTextLines.length > 2 && allTextLines.length == self.emptyUsersCount + 1) {
                 self.customResponse = new CustomResponse('ERROR', "Email address is mandatory.", true);
                 self.isNoResultFound = true;

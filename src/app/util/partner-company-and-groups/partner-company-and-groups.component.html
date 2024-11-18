@@ -44,17 +44,17 @@
 
 <!--Partner Companies-->
 <ng-template #partnerCompaniesTemplate>
-  <div class="portlet-title"  *ngIf="!httpRequestLoader.isLoading">
+  <div class="portlet-title" >
     <div class="row">
       <div>
         <div class="col-xs-12">
           <!--Team Member Filter-->
-          <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 p0">
+          <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 p0" [ngClass]="httpRequestLoader?.isLoading ? 'zero-opacity':''">
             <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany"
               (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
           </div>
           <!--Search Bar-->
-          <div class="page-toolbar col-xs-12 col-sm-7 col-lg-7 col-md-7 pr0 d-flex justify-end">
+          <div class="page-toolbar col-xs-12 col-sm-7 col-lg-7 col-md-7 pr0 d-flex justify-end" *ngIf="!httpRequestLoader.isLoading">
             <div class="left-float clear-all-prop"> 
               <button class="btn btn-danger" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0  )"
                  (click)="clearAll()">Clear All</button>
@@ -67,7 +67,7 @@
                       [ngModelOptions]="{standalone: true}" placeholder="Search..." (keydown.enter)="searchPartners()" autocomplete="off">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
                       (click)="sortOption.searchKey='';searchPartners();"></button>
-                    <button  class="search-box-item-click" (click)="searchPartners()">
+                    <button type="submit" class="search-box-item-click" (click)="searchPartners()">
                       <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                   </div>

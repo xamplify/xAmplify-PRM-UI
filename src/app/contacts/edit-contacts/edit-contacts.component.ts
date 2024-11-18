@@ -538,6 +538,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						if (allTextLines.length == 2) {
 							self.customResponse = new CustomResponse('ERROR', 'No records found.', true);
 							self.removeCsv();
+						} else if (allTextLines[0][0] == 'Email Id') {
+							self.filePrevew = true;
+							self.uploadCsvUsingFile = true;
+							self.csvRows = csvResult.data;
 						} else if (allTextLines.length > 2 && allTextLines.length == self.emptyUsersCount + 1) {
 							self.customResponse = new CustomResponse('ERROR', 'Email address is mandatory.', true);
 							self.removeCsv();

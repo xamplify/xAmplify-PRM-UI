@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-
 import { User } from '../../core/models/user';
 import { RegularExpressions } from '../../common/models/regular-expressions';
-
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
-
 import { UserService } from '../../core/services/user.service';
 import { matchingPasswords, noWhiteSpaceValidator} from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -300,8 +297,8 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                 this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
               }
               this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-              /**** XBI-2362 *****/
-              
+              /*XBI-3362*/
+              this.vanityURLService.setVanityURLTitleAndFavIcon();      
             }, error => {
               console.log(error);
             });
