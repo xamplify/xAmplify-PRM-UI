@@ -48,7 +48,9 @@
               <!-- <td> <span>{{item.emailId}}</span></td> -->
               <!-- <td> <span>{{item.firstName}}</span> <span>{{item.lastName}}</span></td> -->
               <td> <span>{{item.status}}</span></td>
-              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.logInTime"></app-timestamp></td>
+              <!-- <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.logInTime"></app-timestamp></td> -->
+              <td><app-display-date-and-time  [dateAndTimeUTCString]="item?.logInTime"></app-display-date-and-time></td>
+              {{dateAndTimeUTCString}} 
               <td class="text-center">
                 <div class="btn-group btnGroupFlex" *ngIf="item.teamMemberGroupId!=null &&!item?.primaryAdmin">
                   <button class="group-name-cclass btn-primary default-btn-cursor">
