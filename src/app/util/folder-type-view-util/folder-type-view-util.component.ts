@@ -105,27 +105,27 @@ export class FolderTypeViewUtilComponent implements OnInit {
 
   /*************************Search********************** */
   searchCategories() {
-
     if (this.selectedOption == 'Search In Folder') {
-
       this.utilService.searchKey = this.categorySortOption.searchKey;
       if (this.pagination.categoryType == "DAM") {
         if (this.isPartnerView && this.utilService.searchKey) {
-          this.referenceService.goToRouter('home/dam/shared');
+          this.referenceService.goToRouter('home/dam/shared/l');
         }
         else {
           this.gridViewtoListView('home/dam/manage/l');
         }
       } else if (this.pagination.categoryType == "PLAY_BOOK") {
         if (this.isPartnerView && this.utilService.searchKey) {
-          this.referenceService.goToRouter('home/playbook/shared');
-        } else {
+          this.referenceService.goToRouter('home/playbook/shared/l');
+        }
+        else {
           this.gridViewtoListView('/home/playbook/manage/l/');
         }
       } else if (this.pagination.categoryType == "LEARNING_TRACK") {
         if (this.isPartnerView && this.utilService.searchKey) {
-          this.referenceService.goToRouter('home/tracks/shared');
-        } else {
+          this.referenceService.goToRouter('home/tracks/shared/l');
+        }
+        else {
           this.gridViewtoListView('/home/tracks/manage/l/');
         }
       }
@@ -138,22 +138,48 @@ export class FolderTypeViewUtilComponent implements OnInit {
     if (this.utilService.searchKey == "") {
       if (this.pagination.categoryType == "DAM") {
         if (this.isPartnerView) {
-          this.referenceService.goToRouter('home/dam/shared/fg');
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/dam/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/dam/shared/fg');
+          }
         } else {
-          this.referenceService.goToRouter('home/dam/manage/fg');
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/dam/manage/fl');
+          }
+          else {
+            this.referenceService.goToRouter('home/dam/manage/fg');
+          }
         }
       }
       else if (this.pagination.categoryType == "PLAY_BOOK") {
         if (this.isPartnerView) {
-          this.referenceService.goToRouter('home/playbook/shared/fg');
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/playbook/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/playbook/shared/fg');
+          }
         } else {
-          this.referenceService.goToRouter('/home/playbook/manage/fg/');
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('/home/playbook/manage/fl/');
+          } else {
+            this.referenceService.goToRouter('/home/playbook/manage/fg/');
+          }
         }
       } else if (this.pagination.categoryType == "LEARNING_TRACK") {
         if (this.isPartnerView) {
-          this.referenceService.goToRouter('home/tracks/shared/fg');
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/tracks/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/tracks/shared/fg');
+          }
         } else {
-          this.referenceService.goToRouter('/home/tracks/manage/fg/');
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/tracks/shared/fl');
+          } else {
+            this.referenceService.goToRouter('/home/tracks/manage/fg/');
+
+          }
         }
       }
     }
