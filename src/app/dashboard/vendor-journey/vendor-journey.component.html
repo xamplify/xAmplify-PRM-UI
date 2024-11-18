@@ -52,5 +52,5 @@
 [isPartnerJourneyPages] = "isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages"
 [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"
 (formAnalytics)="goToFormAnalytics($event)"></app-manage-form>
-<app-form-analytics-util *ngIf = "isFormAnalytics && (isMasterLandingPages ||welcomePages || isVendorMarketplacePages ) " [importedObject]="importedObject" ></app-form-analytics-util>
+<app-form-analytics-util *ngIf = "isFormAnalytics && (isMasterLandingPages ||welcomePages || isVendorMarketplacePages ) "  [isVendorMarketplacePage]="isVendorMarketplacePages" [importedObject]="importedObject" ></app-form-analytics-util>
 <app-vendor-journey-form-analytics *ngIf = "isFormAnalytics && (vendorJourney || isPartnerJourneyPages)" [isVendorJourney]="vendorJourney" [isPartnerJourneyPage]="isPartnerJourneyPages" [importedObject]="importedObject" ></app-vendor-journey-form-analytics>
