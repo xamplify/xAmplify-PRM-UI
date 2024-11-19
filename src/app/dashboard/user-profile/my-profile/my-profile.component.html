@@ -558,7 +558,7 @@
                                         </li>
                                         <!---XNFR-326---->
                                         <!--Email Notification Settings-->
-                                        <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings"
+                                        <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings && !authenticationService?.module?.isMarketingCompany"
                                             [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
                                                 (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings | translate}}
@@ -2216,45 +2216,29 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="button_blue bgcolor-unset pd_lft2"
-                                                                    (click)="addCategory()">
-                                                                    <span class="btn btn-primary transition txt_pd-top3">Create
-                                                                        a Folder</span></button>
+                                                                <button class="button_blue bgcolor-unset pd_lft2" (click)="addCategory()">
+                                                                    <span class="btn btn-primary transition txt_pd-top3">Create a Folder</span>
+                                                                </button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                                 <div class="page-toolbar">
                                                                     <div class="btn-group pull-right">
-                                                                        <div class="inputs float-right"
-                                                                            style="display: inline-flex;">
+                                                                        <div class="inputs float-right"  style="display: inline-flex;">
                                                                             <div id="left">
-                                                                                <select class="form-control"
-                                                                                    [(ngModel)]="categorySortOption.selectedCategoryDropDownOption"
-                                                                                    (ngModelChange)="sortBy($event)"
-                                                                                    id="select-dropdown">
-                                                                                    <option
-                                                                                        *ngFor="let option of categorySortOption.categorySortDropDownOptions"
-                                                                                        [ngValue]="option">
+                                                                                <select class="form-control" [(ngModel)]="categorySortOption.selectedCategoryDropDownOption"
+                                                                                    (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                                                                    <option *ngFor="let option of categorySortOption.categorySortDropDownOptions" [ngValue]="option">
                                                                                         {{option.name}}</option>
                                                                                 </select>
                                                                             </div>
-                                                                            <div class="portlet-input input-inline"
-                                                                                id="search-div">
+                                                                            <div class="portlet-input input-inline" id="search-div">
                                                                                 <div class="input-icon right" id="icon">
-                                                                                    <input type="text" id="sort-text"
-                                                                                        class="form-control"
-                                                                                        [(ngModel)]="categorySortOption.searchKey"
-                                                                                        [ngModelOptions]="{standalone: true}"
-                                                                                        placeholder="search..."
-                                                                                        (keypress)="eventHandler($event.keyCode)">
-                                                                                    <button
-                                                                                        class="glyphicon glyphicon-remove search-box-item-clear"
-                                                                                        *ngIf="categorySortOption.searchKey"
+                                                                                    <input type="text" id="sort-text" class="form-control" [(ngModel)]="categorySortOption.searchKey"
+                                                                                        [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                                                                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="categorySortOption.searchKey"
                                                                                         (click)="categorySortOption.searchKey='';searchCategories();"></button>
-                                                                                    <button type="submit"
-                                                                                        class="search-box-item-click"
-                                                                                        (click)="searchCategories()">
-                                                                                        <i class="fa fa-search"
-                                                                                            aria-hidden="true"></i>
+                                                                                    <button type="submit" class="search-box-item-click" (click)="searchCategories()">
+                                                                                        <i class="fa fa-search" aria-hidden="true"></i>
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
@@ -2269,33 +2253,26 @@
                                                 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                                 <ng-container *ngIf="!httpRequestLoader.isLoading">
                                                     <div class="table-responsive">
-                                                        <table class='table tgrid table-hover table-sm'
-                                                            id="category-list"
-                                                            *ngIf="categoryPagination.pagedItems?.length>0"
+                                                        <table class='table tgrid table-hover table-sm' id="category-list" *ngIf="categoryPagination.pagedItems?.length>0"
                                                             aria-describedby="">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="text-center" colspan="2"
-                                                                        style="width: 50%" id="border-bottom">
+                                                                    <th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
                                                                         <span class="ui-column-resizer gray"
                                                                             (mousedown)="referenceService.onMouseDown($event,'category-list',2)">
                                                                         </span>
                                                                         <span class="gridHeader" translate>Folder</span>
                                                                     </th>
-                                                                    <th class="text-center" id="border-bottom"
-                                                                        translate>Created On</th>
-                                                                    <th class="text-center" id="border-bottom"
-                                                                        translate>Items Count</th>
-                                                                    <th class="text-center border-top"
-                                                                        id="border-bottom" translate>Actions</th>
+                                                                    <th class="text-center" id="border-bottom" translate>Created On</th>
+                                                                    <th class="text-center" id="border-bottom" translate>Items Count</th>
+                                                                    <th class="text-center border-top" id="border-bottom" translate>Actions</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr *ngFor="let category of categoryPagination.pagedItems ;let i =index"
                                                                     id="CategoryList_{{category.id}}">
                                                                     <td class="custom-icon-width">
-                                                                        <i class="{{category.icon}}" aria-hidden="true"
-                                                                            id="fa-custom-width"></i>
+                                                                        <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
                                                                     </td>
                                                                     <td>
                                                                         <h4 class="moreipsis" title="{{category.name}}">
@@ -2323,64 +2300,39 @@
                                                                             class="actions-block override-actions cwotpx mb_whitespace">
                                                                             <ng-container
                                                                                 *ngIf="category.defaultCategory">
-                                                                                <a data-placement="top"
-                                                                                    class="disabled-event"
-                                                                                    title="Default Folder Can't Be Edited">
-                                                                                    <i class="fa fa-pencil-square-o disabled-event IconCustomization gray"
-                                                                                        aria-hidden="true"></i>
+                                                                                <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
+                                                                                    <i class="fa fa-pencil-square-o disabled-event IconCustomization gray" aria-hidden="true"></i>
                                                                                 </a>
-                                                                                <a id="template-delete"
-                                                                                    class="disabled-event"
-                                                                                    data-placement="top"
-                                                                                    title="Default Folder Can't Be Deleted">
-                                                                                    <i class="fa fa-trash-o disabled-event trashIconCustomization"
-                                                                                        aria-hidden="true"></i>
+                                                                                <a id="template-delete" class="disabled-event" data-placement="top" title="Default Folder Can't Be Deleted">
+                                                                                    <i class="fa fa-trash-o disabled-event trashIconCustomization" aria-hidden="true"></i>
                                                                                 </a>
                                                                             </ng-container>
                                                                             <ng-container
                                                                                 *ngIf="!category.defaultCategory">
-                                                                                <a class="custom-icon"
-                                                                                    data-toggle="tooltip"
-                                                                                    data-placement="top" title="Edit"
-                                                                                    (click)="getCategoryById(category)">
-                                                                                    <i class="fa fa-pencil-square-o IconCustomization"
-                                                                                        aria-hidden="true"></i>
+                                                                                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit" (click)="getCategoryById(category)">
+                                                                                    <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
                                                                                     <div class="clickicons"></div>
                                                                                 </a>
-                                                                                <a class="custom-icon"
-                                                                                    id="template-delete"
-                                                                                    (click)="confirmDeleteCategory(category)"
-                                                                                    data-toggle="tooltip"
+                                                                                <a *ngIf="isEditOrDeleteAccessForFolder ||  loggedInUserId==category.createdUserId" class="custom-icon" id="template-delete" (click)="confirmDeleteCategory(category)" data-toggle="tooltip"
                                                                                     data-placement="top" title="Delete">
-                                                                                    <i class="fa fa-trash-o trashIconCustomization"
-                                                                                        aria-hidden="true"></i>
+                                                                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                                                                     <div class="del-icon"></div>
                                                                                 </a>
                                                                             </ng-container>
                                                                             <ng-container *ngIf="category?.count>0">
-                                                                                <a class="custom-icon"
-                                                                                    *ngIf="categoryPagination.previewAccess"
-                                                                                    data-toggle="tooltip"
-                                                                                    data-placement="top" title="Preview"
-                                                                                    (click)="previewItems(category)">
-                                                                                    <i class="fa fa-eye IconCustomization"
-                                                                                        aria-hidden="true"></i>
+                                                                                <a class="custom-icon" *ngIf="categoryPagination.previewAccess" data-toggle="tooltip" data-placement="top"
+                                                                                    title="Preview" (click)="previewItems(category)">
+                                                                                    <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                                                     <div class="clickicons"></div>
                                                                                 </a>
-                                                                                <a class="custom-icon"
-                                                                                    *ngIf="!categoryPagination.previewAccess"
-                                                                                    title="You do not have permission to preview">
-                                                                                    <i class="fa fa-eye disabled-event IconCustomization"
-                                                                                        aria-hidden="true"></i>
+                                                                                <a class="custom-icon" *ngIf="!categoryPagination.previewAccess" title="You do not have permission to preview">
+                                                                                    <i class="fa fa-eye disabled-event IconCustomization" aria-hidden="true"></i>
                                                                                     <div class="clickicons"></div>
                                                                                 </a>
                                                                             </ng-container>
                                                                             <ng-container *ngIf="category?.count==0">
-                                                                                <a data-toggle="tooltip"
-                                                                                    data-placement="top"
-                                                                                    title="Nothing To Preview">
-                                                                                    <i class="fa fa-eye disabled-event IconCustomization"
-                                                                                        aria-hidden="true"></i>
+                                                                                <a data-toggle="tooltip" data-placement="top" title="Nothing To Preview">
+                                                                                    <i class="fa fa-eye disabled-event IconCustomization" aria-hidden="true"></i>
                                                                                 </a>
                                                                             </ng-container>
                                                                         </div>

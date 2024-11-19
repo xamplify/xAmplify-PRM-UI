@@ -2529,6 +2529,12 @@ export class ReferenceService {
     );
   }
 
+  deleteAndEditAccessForAllRoles(){
+    let isAnyVendorAdminOrSuperVisor = this.deleteAndEditAccess();
+    let isOnlyPartnerAdmin = this.authenticationService.isOnlyPartner();
+    return isAnyVendorAdminOrSuperVisor || isOnlyPartnerAdmin;
+  }
+
   public onMouseDown(event: any, tableId: string, columnPosition: number) {
     this.start = event.target;
     this.pressed = true;
