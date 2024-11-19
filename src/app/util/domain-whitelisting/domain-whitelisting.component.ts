@@ -47,6 +47,13 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   isTabDisplayed = false;
   isCollapsed: boolean = false;
   moduleName = "";
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  filterResponse: CustomResponse = new CustomResponse(); 
+  filterMode: boolean = false;
+  showFilterOption: boolean = false;
+  applyFilterText ="Apply Filter";
+  createdOnText = "Created On";
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -89,6 +96,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.isPartnerDomainsTabSelected = false;
     this.domainWhitelistingDescription = "";
     this.domainWhitelistingUrlDescription = "";
+    this.restFilterOption();
   }
 
   public activateTeamMemberDomainsTab() {
@@ -155,6 +163,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   /********Pagination & Search Code***********/
   paginateDomains(event: any) {
     this.pagination.pageIndex = event.page;
+    this.referenceService.scrollSmoothToTop();
     this.findTeamMemberOrPartnerDomains(this.pagination);
   }
 
@@ -174,7 +183,6 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   }
 
   findTeamMemberOrPartnerDomains(pagination: Pagination) {
-    this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     this.dashboardService.findDomains(pagination, this.selectedTab).subscribe(
       response => {
@@ -293,6 +301,91 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   toggleCollapse(event: Event) {
     event.preventDefault();
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  downlaodDomainListCsv() {
+    this.pagination.userId = this.authenticationService.getUserId();
+    let domainType = this.selectedTab == 1 ? '' : '/partners';
+    const url = `${this.authenticationService.REST_URL}domain/downloadDomainsCsv${domainType}`;
+    const headers = {
+      'Authorization': `Bearer ${this.authenticationService.access_token}`,
+      'Content-Type': 'application/json'
+    };
+
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(this.pagination)
+    })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = this.selectedTab == 1 ? 'team_doman_list.csv' : 'partner_domain_list.csv';
+        a.click();
+      }, (_error: any) => {
+        this.xtremandLogger.error(_error);
+        this.customResponse = new CustomResponse('ERROR', "Failed to Download", true);
+      });
+  }
+
+  validateDateFilters() {
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    if (isEmptyFromDateFilter && isEmptyToDateFilter) {
+      this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else {
+      let validDates = false;
+      if (isValidFromDateFilter && isEmptyToDateFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
+        var toDate = Date.parse(this.toDateFilter);
+        var fromDate = Date.parse(this.fromDateFilter);
+        if (fromDate <= toDate) {
+          validDates = true;
+          this.pagination.pageIndex = 1;
+          this.pagination.maxResults = 12;
+          this.pagination.fromDateFilterString = this.fromDateFilter;
+          this.pagination.toDateFilterString = this.toDateFilter;
+          this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          this.pagination.userId = this.authenticationService.getUserId();
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }
+
+        if (validDates) {
+          this.filterResponse.isVisible = false;
+          this.findTeamMemberOrPartnerDomains(this.pagination);
+        }
+      }
+    }
+  }
+
+  toggleFilterOption() {
+    this.showFilterOption = true;
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+  }
+
+
+  clearFilter() {
+    this.restFilterOption();
+    this.findTeamMemberOrPartnerDomains(this.pagination);
+  }
+
+  restFilterOption() {
+    this.showFilterOption = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.pagination.fromDateFilterString = "";
+    this.pagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
+    this.pagination.pageIndex = 1;
   }
 
 }

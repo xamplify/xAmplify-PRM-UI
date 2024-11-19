@@ -3051,12 +3051,17 @@ export class ReferenceService {
     let sortColumn = $.trim(pagination.sortcolumn)!=null ? $.trim(pagination.sortcolumn):"";
     let sortOrder = $.trim(pagination.sortingOrder)!=null ? $.trim(pagination.sortingOrder):"";
     let sort = sortColumn.length>0 && sortOrder.length>0 ? sortColumn+","+sortOrder:"";
+    let fromDateFilterString = $.trim(pagination.fromDateFilterString)!=null ? $.trim(pagination.fromDateFilterString) :"";
+    let toDateFilterString =$.trim(pagination.toDateFilterString)!=null ? $.trim(pagination.toDateFilterString) :"";
     let sortParam = sort.length>0 ? "&sort="+sort:"";
     let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
+    let fromDateFilterStringParam = fromDateFilterString.length>0 ? "&fromDateFilterString="+fromDateFilterString:"";
+    let toDateFilterStringParam = toDateFilterString.length>0 ? "&toDateFilterString="+toDateFilterString:"";
     let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true":"";
+    let timeZoneParam = pagination.timeZone != null ? "&timeZone="+pagination.timeZone :"";
     let filterBy = $.trim(pagination.filterBy)!=null ? $.trim(pagination.filterBy) :"";
     let filterParam = filterBy.length>0 ? "&filterBy="+filterBy:"";
-    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter+filterParam);
+    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter+filterParam+fromDateFilterStringParam+toDateFilterStringParam+timeZoneParam);
   }
   
   downloadCsvTemplate(url:string){
