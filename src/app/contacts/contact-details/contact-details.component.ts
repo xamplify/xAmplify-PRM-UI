@@ -352,6 +352,13 @@ export class ContactDetailsComponent implements OnInit {
     this.closeModalPopup();
   }
 
+  showEmailFailedErrorStatus(event) {
+    this.isReloadEmailActivityTab = event;
+    this.isReloadActivityTab = event;
+    this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+    this.closeModalPopup();
+  }
+
   closeModalPopup() {
     this.showEmailModalPopup = false;
   }

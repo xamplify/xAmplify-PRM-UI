@@ -8,4 +8,5 @@ export class EmailActivity {
     contactId:number;
     ccEmailIds = [];
     bccEmailIds = [];
+    attachments:any;
 }

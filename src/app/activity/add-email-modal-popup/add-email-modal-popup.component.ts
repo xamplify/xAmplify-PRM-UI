@@ -26,6 +26,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   @Input() isReloadEmailActivityTab:boolean;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
+  @Output() notifySubmitFailed = new EventEmitter();
 
   emailActivity:EmailActivity = new EmailActivity();
   customResponse:CustomResponse = new CustomResponse();
@@ -44,6 +45,12 @@ export class AddEmailModalPopupComponent implements OnInit {
   tagInput: SourceTagInput;
   ccEmailIds = [];
   bccEmailIds = [];
+  files: File[] = [];
+  formData: any = new FormData();
+  showAttachmentErrorMessage: boolean = false;
+  showFilePathError: boolean = false;
+  restrictedFileTypes = ["exe"];
+  showFileTypeError: boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties) {}
@@ -65,15 +72,17 @@ export class AddEmailModalPopupComponent implements OnInit {
 
   sendEmailToUser() {
     this.ngxLoading = true;
+    this.prepareFormData();
     this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
     this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
-    this.emailActivityService.sendEmailToUser(this.emailActivity).subscribe(
+    this.emailActivityService.sendEmailToUser(this.emailActivity, this.formData).subscribe(
       data => {
         this.ngxLoading = false;
         $('#addEmailModalPopup').modal('hide');
         this.notifySubmitSuccess.emit(!this.isReloadEmailActivityTab);
       }, error => {
         this.ngxLoading = false;
+        this.notifySubmitFailed.emit(!this.isReloadEmailActivityTab);
         this.closeEmailModal();
       }
     )
@@ -81,7 +90,7 @@ export class AddEmailModalPopupComponent implements OnInit {
 
   private extractEmailIds(emailList: any[]): string[] {
     return emailList.map(email => email.value);
-}
+  }
 
   closeEmailModal() {
     this.isPreview = false;
@@ -123,21 +132,28 @@ export class AddEmailModalPopupComponent implements OnInit {
     this.referenceService.showSweetAlertSuccessMessage(this.properties.emailSendSuccessResponseMessage);
   }
 
+  showTestMailErrorStatus() {
+    this.isTestMail = false;
+    this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
+  }
+
   closeTestMailPopup() {
     this.isTestMail = false;
   }
 
   sendTestEmail() {
     this.testEmailLoading = true;
+    this.prepareFormData();
     this.emailActivity.toEmailId = this.testToEmailId;
     this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
     this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
-    this.emailActivityService.sendTestEmailToUser(this.emailActivity).subscribe(
+    this.emailActivityService.sendTestEmailToUser(this.emailActivity, this.formData).subscribe(
       data => {
         this.emailActivity.toEmailId = this.userEmailId;
         this.showTestMailSubmittedStatus();
         this.testEmailLoading = false;
       }, error => {
+        this.showTestMailErrorStatus();
         this.testEmailLoading = false;
       }
     )
@@ -176,6 +192,61 @@ export class AddEmailModalPopupComponent implements OnInit {
     }
     this.addFirstAttemptFailed = false;
     return Observable.of(tag);
+  }
+
+  onFileChange(event: any): void {
+    const selectedFiles: FileList = event.target.files;    
+    if (selectedFiles.length > 0) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        this.files.push(selectedFiles[i]);
+      }
+      event.target.value = '';
+      this.validateAttachments();
+    }
+  }
+
+  validateAttachments() {
+    let sizeInKb = 0;
+    let maxFileSizeInKb = 1024 * 20;
+    this.showFileTypeError = false;
+    for ( let file of this.files) {
+      sizeInKb = sizeInKb + (file.size / 1024);
+      let fileType = this.getFileExtension(file.name);
+      if (this.restrictedFileTypes.includes(fileType)) {
+        this.isValidEmail = false;
+        this.showFileTypeError = true;
+        break;
+      }
+    }
+    if (sizeInKb>maxFileSizeInKb) {
+      this.showAttachmentErrorMessage = true;
+      this.isValidEmail = false;
+    } else {
+      this.showAttachmentErrorMessage = false;
+      this.isValidEmail = true;
+    }
+    this.validateEmail();
+  }
+
+  removeFile(index: number): void {
+    this.files.splice(index, 1);
+    this.validateAttachments();
+  }
+
+  setUploadedFileProperties(file: File) {
+    this.formData.delete("uploadedFile");
+    this.formData.append("uploadedFile", file, file['name']);
+  }
+
+  prepareFormData(): void {
+    this.files.forEach(file => {
+      this.formData.append("uploadedFiles", file, file['name']);
+    });
+  }
+
+  getFileExtension(fileName: string): string {
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : '';
   }
   
 }

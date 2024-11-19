@@ -338,7 +338,7 @@
 
 <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
   [userEmailId]="selectedContact.emailId" [emailActivityId]="emailActivityId" (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"
-  (notifyClose)="closeModalPopup()" [isReloadEmailActivityTab]="isReloadEmailActivityTab"></app-add-email-modal-popup>
+  (notifyClose)="closeModalPopup()" [isReloadEmailActivityTab]="isReloadEmailActivityTab" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"></app-add-email-modal-popup>
 
 <app-custom-manage-leads *ngIf="viewLeads" [listView]="true" [isConvertingContactToLead]="true" [isFromCompanyModule]="isFromCompanyModule"
   [selectedContact]="selectedContact" (notifyClose)="closeViewMoreLeadsTab()"></app-custom-manage-leads>
