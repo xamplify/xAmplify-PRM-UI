@@ -1169,7 +1169,7 @@ triggerUniversalSearch(){
           this.leadsPagination.fromDateFilterString = this.fromDateFilter;
           this.leadsPagination.toDateFilterString = this.toDateFilter;
         } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
         }        
       }
 

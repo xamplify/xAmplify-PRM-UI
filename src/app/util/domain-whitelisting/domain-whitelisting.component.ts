@@ -356,7 +356,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
           this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
           this.pagination.userId = this.authenticationService.getUserId();
         } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
         }
 
         if (validDates) {

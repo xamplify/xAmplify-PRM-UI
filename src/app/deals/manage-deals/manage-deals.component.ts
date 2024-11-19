@@ -1148,7 +1148,7 @@ export class ManageDealsComponent implements OnInit {
           this.dealsPagination.fromDateFilterString = this.fromDateFilter;
           this.dealsPagination.toDateFilterString = this.toDateFilter;
         } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
         }        
       }
 
