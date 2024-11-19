@@ -50,15 +50,18 @@ export class ManageDamComponent implements OnInit {
 		this.damId = this.route.snapshot.params['damId'];
 	}
 
-	ngOnInit() { 
-		this.isPartnerView = this.router.url.indexOf('/shared')>-1;
-		if(this.router.url.indexOf('/editVideo')>-1 || this.router.url.indexOf('/previewVideo')>-1){	
-          /***XNFR-694****/  	
-          this.validateVideoId(this.videoId,'editVideo');
-		}
+    ngOnInit() {
+        this.isPartnerView = this.router.url.indexOf('/shared') > -1;
+        if (this.router.url.indexOf('/editVideo') > -1) {
+            this.validateVideoId(this.videoId, 'editVideo');
+        } else if (this.router.url.indexOf('/previewVideo') > -1) {
+            /***XNFR-694****/
+            this.validateVideoId(this.videoId, 'playVideo');
+        }
         this.getRoleByUserId();
-	}
-    validateVideoId(videoId: number,routerIndex:string) {
+    }
+
+    validateVideoId(videoId: number, routerIndex: string) {
         this.damService.validateVideoId(videoId).subscribe(
             _response => {
                 this.getVideo(this.videoId, this.damId, routerIndex);
@@ -68,10 +71,9 @@ export class ManageDamComponent implements OnInit {
         )
     }
 	
-	  getDefaultVideoSettings() {
+    getDefaultVideoSettings() {
         this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });
-      }
-    
+    }
 
     getVideo(videoId:number, damId: number, actionType : string) {
         if(this.referenceService.defaultPlayerSettings!=undefined && this.referenceService.defaultPlayerSettings.playerColor===undefined){ 
