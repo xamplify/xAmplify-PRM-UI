@@ -95,4 +95,10 @@ fieldset.scheduler-borders {
   legend {
     margin-bottom: 6px;
   }
+.deal-flex-wrap {
+    flex-wrap: wrap;
+}
+.mr3 {
+    margin-right: 3px;
+}
   

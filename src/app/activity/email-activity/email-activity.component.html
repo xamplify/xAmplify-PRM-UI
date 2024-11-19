@@ -59,5 +59,8 @@
   <strong translate>No Data Found.</strong>
 </div>
 
-<app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
-  [emailActivityId]="emailActivityId" (notifyClose)="closeModalPopup()"></app-add-email-modal-popup> 
+<!-- <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
+  [emailActivityId]="emailActivityId" (notifyClose)="closeModalPopup()"></app-add-email-modal-popup>  -->
+
+<app-preview-email-activity *ngIf="showEmailModalPopup" [emailActivityId]="emailActivityId"
+  (notifyClose)="closeModalPopup()"></app-preview-email-activity>

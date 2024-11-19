@@ -26,7 +26,7 @@
     <div class="activity_card mb10" *ngFor="let activity of activityPagination?.pagedItems">
       <!--Email-->
       <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Email'">
-        <legend class="scheduler-borders campaign_boxes">Email</legend>
+        <legend class="scheduler-borders campaign_boxes">Email Sent</legend>
       <div>
         <div class="activity-header">
           <span><i class="fas fa-user icon"></i><label
@@ -49,7 +49,7 @@
       </fieldset>
       <!---Note--->
       <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Note'">
-        <legend class="scheduler-borders campaign_boxes">Note</legend>
+        <legend class="scheduler-borders campaign_boxes">Note {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
       <div>
         <div class="activity-header">
           <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(activity.id)">
@@ -94,7 +94,7 @@
       </fieldset>
       <!---Campaign--->
       <fieldset class="scheduler-borders" *ngIf="activity.type == 'Campaign'" >
-        <legend class="scheduler-borders campaign_boxes">Campaign</legend>
+        <legend class="scheduler-borders campaign_boxes">Campaign Launched</legend>
       <div>
         <div class="activity-header">
           <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewCampaignTimeLine(activity.id)">
@@ -112,7 +112,7 @@
       </fieldset>
       <!---Lead--->
       <fieldset class="scheduler-borders" *ngIf="activity.type == 'Lead'">
-        <legend class="scheduler-borders campaign_boxes">Lead</legend>
+        <legend class="scheduler-borders campaign_boxes">Lead {{activity.activity == 'LEAD_CREATED'?'Created':'Stage Updated'}}</legend>
       <div>
         <div class="activity-header">
           <!-- <span><i class="fas fa-user icon"></i><label
@@ -130,7 +130,7 @@
       </fieldset>
       <!---Deal--->
       <fieldset class="scheduler-borders" *ngIf="activity.type == 'Deal'">
-        <legend class="scheduler-borders campaign_boxes">Deal</legend>
+        <legend class="scheduler-borders campaign_boxes">Deal {{activity.activity == 'DEAL_CREATED'?'Created':'Stage Updated'}}</legend>
       <div>
         <div class="activity-header">
           <!-- <span><i class="fas fa-user icon"></i><label
@@ -141,9 +141,9 @@
               <span> {{activity.name}}</span></a></span>
           <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
         </div>
-        <div class="activity-body">
-          <span *ngIf="activity.schedule != undefined"><i class="fa fa-usd"></i><label class="mr3 activity-title">Amount: </label> {{activity.schedule}}</span>
-          <span><i class="fa fa-calendar" aria-hidden="true"></i><label class="mr3 activity-title">Close Date:</label> {{activity.closeDate | slice:0:10}}</span>
+        <div class="activity-body deal-flex-wrap">
+          <span *ngIf="activity.schedule != undefined"><i class="fa fa-usd mr3"></i><label class="activity-title">Amount: </label> {{activity.schedule}}</span>
+          <span><i class="fa fa-calendar mr3" aria-hidden="true"></i><label class="activity-title">Close Date:</label> {{activity.closeDate | slice:0:10}}</span>
           <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
         </div>
       </div>

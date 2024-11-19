@@ -1,3 +1,52 @@
-<p>
-  preview-email-activity works!
-</p>
+<div class="modal fade right" id="previewEmailModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeEmailModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">View Email</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="exampleInputEmail1">From <span class="text-danger">*</span></label>
+          <input type="text" id="toEmailId" [(ngModel)]="emailActivity.senderEmailId" [ngModelOptions]="{standalone: true}"
+           placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">CC</label>
+          <input type="text" id="toEmailId" [(ngModel)]="emailActivity.ccEmailIds" [ngModelOptions]="{standalone: true}"
+             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">BCC</label>
+          <input type="text" id="toEmailId" [(ngModel)]="emailActivity.bccEmailIds" [ngModelOptions]="{standalone: true}"
+             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Email subject <span class="text-danger">*</span></label>
+          <input type="text" id="subjectLine" [(ngModel)]="emailActivity.subject" [ngModelOptions]="{standalone: true}"
+           placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" (input)="validateEmail()" disabled />
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Message <span class="text-danger">*</span></label>
+          <div class="email-body" [innerHTML]="emailActivity.body"></div>
+        </div>
+        <div class="form-group">
+          <label for="attachments">Attachments:</label>
+          <ul *ngIf="emailActivity?.emailAttachmentDTOs?.length > 0">
+            <li *ngFor="let emailAttachmentDTO of emailActivity.emailAttachmentDTOs; let i = index">
+              <a *ngIf="emailAttachmentDTO.filePath != undefined" target="_blank" href="{{emailAttachmentDTO.filePath}}">{{emailAttachmentDTO.fileName}}</a>
+              <a *ngIf="emailAttachmentDTO.filePath == undefined" (click)="showFilePathError = 'true'">{{emailAttachmentDTO.fileName}}</a>
+              <span *ngIf="showFilePathError" class="text-danger" id="filePathError">Unable to load the file. <p (click)="showFilePathError = 'false'"><i class="fa fa-times"></i></p></span>
+            </li>
+          </ul>
+          <p *ngIf="emailActivity?.emailAttachmentDTOs?.length == 0">No file attached</p>
+        </div>
+      </div>
+      <div class="modal-footer" style="border: none">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
