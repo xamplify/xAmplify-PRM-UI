@@ -15,13 +15,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'app/core/services/user.service';
 import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { EmailActivityService } from 'app/activity/services/email-activity-service';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService]
+  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -47,14 +49,14 @@ export class ContactDetailsComponent implements OnInit {
   selectedTabIndex: number;
   selectedFilterIndex: number = 1;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-  showLeadsTab: boolean;
+  showFormsTab: boolean;
   listView:boolean = true;
   showLeadForm: boolean;
-  actionType: string;
+  actionType: string = 'add';
   leadId: number;
   isConvertingContactToLead: boolean = true;
 
-  showDealsTab: boolean = false;
+  showNotesTab: boolean = false;
   companyId: any;
   gdprInput:any;
   gdprSetting: any;
@@ -69,10 +71,32 @@ export class ContactDetailsComponent implements OnInit {
   isMobileNumberCopied:boolean = false;
   isFromCompanyModule:boolean = false;
   companyRouter = RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage;
+  showEmailModalPopup: boolean = false;
+  showEmailTab: boolean = false;
+  showMeetingsTab: boolean = false;
+  showActivityTab: boolean = false;
+  leadsCount:number = 0;
+  leadsResponse: CustomResponse = new CustomResponse();
+  contactLeads = [];
+  viewLeads: boolean = false;
+  leadsLoader:HttpRequestLoader = new HttpRequestLoader();
+  dealsCount:number = 0;
+  contactDeals = [];
+  dealsResponse: CustomResponse = new CustomResponse();
+  dealsLoader:HttpRequestLoader = new HttpRequestLoader();
+  viewDeals: boolean = false;
+  dealId: any;
+  showDealForm: boolean = false;
+
+  /** note **/
+  showAddNoteModalPopup:boolean = false;
+  isReloadEmailActivityTab:boolean;
+  isReloadNoteTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
-    public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router ) {
+    public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
+    public emailActivityService: EmailActivityService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -91,13 +115,16 @@ export class ContactDetailsComponent implements OnInit {
   ngOnInit() {
     this.selectedContactListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
     this.contactId = this.referenceService.decodePathVariable(this.route.snapshot.params['id']);
-    if (this.router.url.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
+    if (this.router.url.includes(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.company)) {
       this.isFromCompanyModule = true;
     }
     this.getContact();
+    this.showActivityTab = true;
     this.referenceService.goToTop();
     this.checkTermsAndConditionStatus();
     this.getLegalBasisOptions();
+    this.fetchLeadsAndCount();
+    this.fetchDealsAndCount();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -165,10 +192,16 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   setActiveTab(tabName:string) {
-    if (tabName === 'leads1') {
-      
-    } else if (tabName === 'deals1') {
-      this.showDealsTab = true;
+    if (tabName === 'email1') {
+      this.showEmailTab = true;
+    } else if (tabName === 'note1') {
+      this.showNotesTab = true;
+    } else if (tabName === 'meeting') {
+      this.showMeetingsTab = true;
+    } else if (tabName === 'activity1') {
+      this.showActivityTab = true;
+    } else if (tabName === 'form1') {
+      this.showFormsTab = true;
     }
   }
 
@@ -196,7 +229,7 @@ export class ContactDetailsComponent implements OnInit {
       },
       () => {
         this.setHighlightLetter();
-        this.showLeadsTab = true;
+        this.showActivityTab = true;
         this.setContactNameToDisplay();
       }
     )
@@ -297,6 +330,147 @@ export class ContactDetailsComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+  }
+
+  showModalPopup() {
+    this.actionType = 'add';
+    this.showEmailModalPopup = true;
+  }
+
+  showEmailSubmitSuccessStatus(event) {
+    this.isReloadEmailActivityTab = event;
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
+    this.closeModalPopup();
+  }
+
+  closeModalPopup() {
+    this.showEmailModalPopup = false;
+  }
+
+  fetchLeadsAndCount() {
+    this.referenceService.loading(this.leadsLoader, true);
+    this.leadsService.findLeadsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+      response => {
+        const data = response.data;
+        let isSuccess = response.statusCode === 200;
+        if (isSuccess) {
+          this.leadsCount = data.totalRecords;
+          this.contactLeads = data.list;
+        } else {
+          this.leadsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
+        }
+        this.referenceService.loading(this.leadsLoader, false);
+      }, error => {
+        this.referenceService.loading(this.leadsLoader, false);
+        let message = this.referenceService.getApiErrorMessage(error);
+        this.leadsResponse = new CustomResponse('ERROR', message, true);
+      }
+    )
+  }
+
+  viewMoreLeads() {
+    this.viewLeads = true;
+  }
+
+  closeViewMoreLeadsTab() {
+    this.viewLeads = false;
+    this.fetchLeadsAndCount();
+    this.fetchDealsAndCount();
+  }
+
+  viewLead(lead:any) {
+    this.actionType = 'view';
+    this.leadId = lead.id;
+    this.showLeadForm = true;
+  }
+
+  addLead() {
+    this.actionType = 'add';
+    this.showLeadForm = true;
+  }
+
+  showLeadSubmitSuccess(event) {
+    this.showLeadForm = false;
+    this.fetchLeadsAndCount();
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.leadSubmittedSuccessResponseMessage, true);
+  }
+
+  fetchDealsAndCount() {
+    this.referenceService.loading(this.dealsLoader, true);
+    this.dealsService.findDealsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+      response => {
+        const data = response.data;
+        let isSuccess = response.statusCode === 200;
+        if (isSuccess) {
+          this.dealsCount = data.totalRecords;
+          this.contactDeals = data.list;
+        } else {
+          this.dealsResponse = new CustomResponse('Error', this.properties.failedToFetchDealsResponseMessage, true);
+        }
+        this.referenceService.loading(this.dealsLoader, false);
+      }, error => {
+        this.referenceService.loading(this.dealsLoader, false);
+        let message = this.referenceService.getApiErrorMessage(error);
+        this.dealsResponse = new CustomResponse('ERROR', message, true);
+      }
+    )
+  }
+
+  viewMoreDeals() {
+    this.viewDeals = true;
+  }
+
+  viewDeal(deal:any) {
+    this.actionType = 'view';
+    this.dealId = deal.id;
+    this.showDealForm = true;
+  }
+
+  addDeal() {
+    this.actionType = 'add';
+    this.showDealForm = true;
+  }
+
+  closeViewMoreDealsTab() {
+    this.viewDeals = false;
+    this.fetchDealsAndCount();
+  }
+
+  showDealSubmitSuccess(event) {
+    this.showDealForm = false;
+    this.fetchLeadsAndCount();
+    this.fetchDealsAndCount();
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.dealSubmittedSuccessResponseMessage, true);
+  }
+
+  closeDealForm() {
+    this.showDealForm = false;
+  }
+
+  openAddNoteModalPopup() {
+    this.showAddNoteModalPopup = true;
+  }
+
+  showNoteCutomResponse(event: any) {
+    this.isReloadNoteTab = event;
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.noteSubmittedSuccessResponseMessage, true);
+    this.closeAddNoteModalPopup();
+  }
+
+  showNoteUpdateCutomResponse(event: any) {
+    this.isReloadNoteTab = event;
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.noteUpdatedSuccessResponseMessage, true);
+    this.closeAddNoteModalPopup();
+  }
+  
+  closeAddNoteModalPopup() {
+    this.showAddNoteModalPopup = false;
+  }
+
+  showNoteDeleteSuccessStatus(event) {
+    this.customResponse = new CustomResponse('SUCCESS', event, true);
   }
   
 }

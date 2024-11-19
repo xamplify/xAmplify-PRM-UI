@@ -262,7 +262,7 @@
 												[(ngModel)]="campaignAccess.videoCampaign"
 												[ngModelOptions]="{standalone: true}"></td>
 									</tr>
-									<tr>
+									<tr style="display:none">
 										<th scope="row">Social Campaign</th>
 										<td><input class="checkBox_shadow" type="checkbox"
 												[(ngModel)]="campaignAccess.socialCampaign"
@@ -363,9 +363,14 @@
 											[ngModelOptions]="{standalone: true}">
 									</td>
 								</tr>
-								<tr>
+								<tr> 
 									<th scope="row">Social Feeds</th>
 									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr style="display:none">
+									<th scope="row">Social Share</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialShareOptionEnabled"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
@@ -456,6 +461,12 @@
 									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.welcomePages"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
+								<tr>
+									<th scope="row">Vendor Marketplace</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.vendorMarketplace"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+
 							</tbody>
 						</table>
 					</div>

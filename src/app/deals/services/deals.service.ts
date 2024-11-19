@@ -8,6 +8,7 @@ import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DealDynamicProperties } from 'app/deal-registration/models/deal-dynamic-properties';
 import { UtilService } from 'app/core/services/util.service';
+declare var $:any;
 
 @Injectable()
 export class DealsService {
@@ -278,6 +279,18 @@ findVendorDetailsWithSelfDealsCount(campaignId:any, loggedInUserId:any) {
     let requestCampaignId = (campaignId != undefined && campaignId > 0)? "&campaignId="+campaignId:"&campaignId="+0;
     let requestLoggedInUserId = "&loggedInUserId="+loggedInUserId;
     let url = this.authenticationService.REST_URL+"deal/findVendorDetailsWithSelfDealsCount"+"?access_token="+this.authenticationService.access_token+requestCampaignId+requestLoggedInUserId;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  /**XNFR-553**/
+  findDealsAndCountByContactId(contactId:number, vanityUrlFilter:boolean, vendorCompanyName:string) {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:"&loggedInUserId=0";
+    let contactIdRequestParam = contactId!=undefined && contactId>0 ? "&contactId="+contactId:"&contactId=0";
+    let vanityUrlFilterParam = vanityUrlFilter!=undefined?"&vanityUrlFilter="+vanityUrlFilter:"";
+    let vendorCompanyNameParam = vendorCompanyName!=undefined ? "&vendorCompanyName="+vendorCompanyName:"";
+    let dealRequestDtoParam = $.trim(loggedInUserIdRequestParam+contactIdRequestParam+vanityUrlFilterParam+vendorCompanyNameParam);
+    let url = this.authenticationService.REST_URL + "deal/fetchContactAssociatedDealsAndCount" + "?access_token="+this.authenticationService.access_token + dealRequestDtoParam;
     return this.authenticationService.callGetMethod(url);
   }
  

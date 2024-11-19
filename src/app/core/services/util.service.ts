@@ -11,6 +11,7 @@ declare var $:any;
 @Injectable()
 export class UtilService {
     topnavBareLoading = false;
+    searchKey : any ='';
     pagination: Pagination;
     constructor( private http: Http,private pagerService:PagerService) { }
 
@@ -149,6 +150,7 @@ export class UtilService {
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
+            localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey,"");//XNFR-574
     }
 
     isLoggedAsTeamMember(){

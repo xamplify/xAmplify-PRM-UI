@@ -3,7 +3,7 @@
     <div class="portlet-title portletCardCu" style="border: none !important;">
       <div class="col-xs-12 col-md-5 col-lg-6 col-sm-6 p0">
         <div class="caption TitlePaddingTop">
-          <span class="caption-subject font-red-sunglo uppercase">Active
+          <span class="caption-subject font-red-sunglo uppercase"> Active
             {{authenticationService?.partnerModule?.customName}} Journey</span>
         </div>
       </div>
@@ -53,6 +53,8 @@
         </div>
       </div>
     </div>
+    <div *ngIf="!isCollapsed" class="alert alert-info"> List Of 
+      {{authenticationService?.module.isPrm ? properties?.activePartnerTileDescriptionForPrm : properties?.activePartnerTileDescription}}    </div>
     <ng-template [ngTemplateOutlet]="filter"></ng-template>
     <ng-template #filter>
 

@@ -1,0 +1,9 @@
+<div class="">
+  <div class="universal-search-container">
+    <input type="text" [(ngModel)]="searchKey" placeholder="Search..." class="universal-search-input"  (keypress)="universalSearchOnKeyPress($event.keyCode)"/>
+    <button *ngIf="isEmptyOrWhitespace(searchKey)" class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';goToDashBoard();"></button>
+    <button [disabled]="!isEmptyOrWhitespace(searchKey)" [ngClass]="isEmptyOrWhitespace(searchKey)? '':'disabled-div'" class="universal-search-button" (click)="universalSearch();">
+      <i class="fa fa-search" aria-hidden="true" [ngClass]="isEmptyOrWhitespace(searchKey)?'':'disabled'"></i>
+    </button>
+  </div>
+</div>

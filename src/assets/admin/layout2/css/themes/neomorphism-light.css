@@ -683,7 +683,8 @@ legend {
   border: 1px solid #d0d5db !important;
 }
 select {
-  background-color: #d0d5db!important;
+  background-color: #f0f5fa !important;
+  border: 1px solid #d0d5db !important;
 }
 
 #text-color-my-profile {
@@ -2945,26 +2946,15 @@ button.unlink-button {
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
+/*** XNFR-725 ***/
 .tiles-card{
-  color: #000 !important;
-  border: 1px solid #d0d5db !important;
+  border: 1px solid #d0d5db !important; 
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
-  background: #f0f5fa !important;
 }
 .tiles-card:hover{
-  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
-  color: #000 !important;
-  background: #f0f5fa !important;
-  transform: scale(1.04);
-  transition: all 0.3s ease;
+  box-shadow: inset 0px 0px 0px #d6dadf, inset 0px 0px 0px #fff !important;
 }
-p.pa-text{
-  color: #000 !important;
-}
-.tiles-card:hover p{
-  color:#000 !important;
-  background-color: #f0f5fa !important;
-}
+/*** XNFR-725 ***/
 .pjCardTitlebg {
   background-color: #f0f5fa !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
@@ -4428,3 +4418,9 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important;}
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 .neo{margin-left:65px !important;}
+  /* contact-journey */
+  .activity_card,.lead_details h3{
+    background: #f0f5fa !important;
+    border: 1px solid #d0d5db !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}

@@ -314,11 +314,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 return true;
             } else if (urlType == this.damUrl || url.indexOf('select-modules')>-1 || url.indexOf("/content/")>-1) {
                 /**XNFR-694**/
-                if(this.authenticationService.isLocalHost()){
-                    this.authorizeUrlAccess(url);
-                }else{
-                    return true;
-                }
+                this.authorizeUrlAccess(url);
             } else if (urlType == this.leadsUrl) {
                 return true;
             } else if (urlType == this.dealsUrl) {
@@ -456,8 +452,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
 
-    goToAccessDenied(url):boolean{
-        if(!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember()) && !url.includes("/home/partners/analytics")){
+    goToAccessDenied(url:string):boolean{
+        if(!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember()) && 
+            !url.includes("/home/partners/analytics") && !url.includes("/dam/") 
+            && !url.includes("/home/select-modules")){
             this.router.navigate( ['/access-denied'] );
             return false;
         } else {

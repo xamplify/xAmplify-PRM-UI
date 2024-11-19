@@ -190,7 +190,7 @@
 <!-- Add Lead Model-->
 <app-custom-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType"
   [dealToLead]="dealToLead" [disableCreatedForVendor]="disableCreatedForVendor" [isVendorVersion]="dealToLead.isVendorVersion"
-  [isOrgAdmin]="dealToLead.isOrgAdmin" (notifySubmitSuccess)="leadCreated($event)"
-  (notifyClose)="closeLeadForm()"></app-custom-add-lead>
+  [isOrgAdmin]="dealToLead.isOrgAdmin" (notifySubmitSuccess)="leadCreated($event)" [selectedContact]="selectedContact"
+  (notifyClose)="closeLeadForm()" [isConvertingContactToLead]="isConvertingContactToLead"></app-custom-add-lead>
 
 <!-- END CONTENT -->

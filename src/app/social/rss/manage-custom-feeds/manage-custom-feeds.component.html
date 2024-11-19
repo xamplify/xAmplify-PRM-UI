@@ -1,4 +1,4 @@
-<div class="page-content">
+<div class="page-content" *ngIf="authenticationService?.module?.socialFeedsAccess || authenticationService?.module?.socialFeedsAccessAsPartner">
 	<div class="page-bar border_only_glass">
 		<ul class="page-breadcrumb">
 			<li>
@@ -6,7 +6,7 @@
 				<a routerLink="/home/dashboard/default">Home</a>
 				<i class="fa fa-angle-right" aria-hidden="true"></i>
 			</li>
-			<li><i class="fa fa-rss" aria-hidden="true"></i>RSS <span class="beta_social_icon_for_breadcrumbs">(Beta)</span></li>
+			<li><i class="fa fa-rss" aria-hidden="true"></i>RSS <sup>(Beta)</sup></li>
 		</ul>
 	</div>
 	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -460,4 +460,8 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div lass="page-content" *ngIf="!authenticationService?.module?.socialFeedsAccess && !authenticationService?.module?.socialFeedsAccessAsPartner">
+	<app-access-denied-util></app-access-denied-util>
 </div>

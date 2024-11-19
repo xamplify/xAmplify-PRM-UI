@@ -25,9 +25,9 @@
        <li class="mt10 uppercase-text" *ngIf="isLocalHost">
         <button class="btn btn-primary" (click)="openUpdateCompanyProfileNameModalPopup()"><span>Find Details By UserId / CompanyId</span></button>
       </li>
-      <!--Upgrade Partner Account-->
+      <!--Upgrade Account-->
       <li class="mt10 uppercase-text">
-        <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Partner Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
+        <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
       </li>
       <!--Create An Account-->
       <li class="mt10 uppercase-text">
@@ -66,7 +66,7 @@
   <div>
     <button class="btn btn-success full-width uppercase-text" (click)="expandOrCollpase()"><span>Expand / Collapse All</span></button>
     <!--List All Users-->
-    <app-list-all-users></app-list-all-users> 
+    <app-list-all-users></app-list-all-users>
      <!---Vendor Report-->
      <app-vendor-report></app-vendor-report>
     <!--Processing User Lists-->
@@ -110,7 +110,7 @@
 <!--Vanity Url Login-->
   <div *ngIf="isVanityUrlEnabled">
      <!--List All Users For Logged In Vendor Vanity-->
-     <app-list-all-users></app-list-all-users> 
+     <app-list-all-users></app-list-all-users>
      <!--List All Partners For Logged In Vendor Vanity-->
      <app-list-all-users [showPartners]="true"></app-list-all-users>
   </div>
@@ -197,31 +197,32 @@
 </ng-container>
 
 <!-- ---------------------Upgrade Account------------------ -->
-<div class="modal fade right" id="upgrade-account-modal" data-backdrop="static">
+<div class="modal fade right" id="upgrade-account-modal" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog full-width">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title text-center">Upgrade Account</h4>
-        <div class="table-responsive">
-          <table class='table tgrid table-bordered' aria-describedby="">
-            <thead>
-              <tr>
-                <th style="width: 10%;" scope="row">Enter Email</th>
-                <th scope="row" style="width: 50%;">
-                  <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId"
-                   [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
-                  <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
-                </th>
-                  <th scope="row" class="inline-flex">
-                    <button [disabled]="upgradeAccountLoader" class="btn btn-primary" (click)="findCompanyInfo()">Search</button>
-                    <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
-                  </th>
-                </tr>
-            </thead>
-          </table>
-        </div>
       </div>
       <div class="modal-body">
+        <table class='table tgrid table-bordered' aria-describedby="">
+          <thead>
+            <tr>
+              <th scope="row">Enter Email</th>
+              <th scope="row">
+                <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId"
+                 [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
+                <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
+              </th>
+              </tr>
+              <tr>
+                <th></th>
+                  <th scope="row">
+                    <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
+                    <button [disabled]="upgradeAccountLoader" class="btn btn-primary float-right" (click)="findCompanyInfo()">Search</button>
+                  </th>
+              </tr>
+          </thead>
+        </table>
         <app-response-message [showCloseIcon]="false" [customResponse]="upgradeAccountResponse" *ngIf="upgradeAccountResponse?.isVisible"></app-response-message>
         <app-modal-popup-loader *ngIf="upgradeAccountLoader"></app-modal-popup-loader>
         <div *ngIf="!upgradeAccountLoader && (upgradeAccountStatusCode==200 || upgradeAccountStatusCode==400)">
@@ -240,9 +241,10 @@
                   <tr>
                     <td>{{companyInfo?.companyName}}</td>
                     <td class="text-center">{{companyInfo?.companyProfileName}}</td>
-                    <td [className]="companyInfo?.companyType=='Partner' && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
+                    <td [className]="(companyInfo?.companyType=='Partner'||companyInfo?.companyType=='Vendor') && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
                       <strong>{{companyInfo?.companyType}}</strong></td>
-                    <td class="text-center" *ngIf="upgradeAccountStatusCode==200"> 
+                    <td class="text-center" *ngIf="upgradeAccountStatusCode==200">
+                      <!--Upgrading Partner Account-->
                       <select id="upgrade-account-type" class="form-control" *ngIf="companyInfo?.companyType=='Partner'" (change)="upgradeAccountType()">
                         <option value="0">--Please Select Option--</option>
                         <option value="20">PRM</option>
@@ -250,19 +252,24 @@
                         <option value="13">Vendor</option>
                         <option value="2">Org Admin</option>
                       </select>
-                      <strong class="required" *ngIf="companyInfo?.companyType!='Partner'">Upgrade Option Available Only For Partner Accounts.</strong>
+                      <!--Upgrading Vendor To OrgAdmin-->
+                      <select id="upgrade-account-type" class="form-control" *ngIf="companyInfo?.companyType=='Vendor'" (change)="upgradeAccountType()">
+                        <option value="0">--Please Select Option--</option>
+                        <option value="2">Org Admin</option>
+                      </select>
+                      <strong class="required" *ngIf="companyInfo?.companyType!='Partner' && companyInfo?.companyType!='Vendor' ">Upgrade Option Available Only For Partner / Vendor Accounts.</strong>
                     </td>
                   </tr>
                 </tbody>
               </table>
           </div>
-          
+
           <!----Admins And Team Members----->
           <div class="table-responsive" *ngIf="adminsAndTeamMembers?.length>0">
             <table class="table tgrid table-bordered"  aria-describedby="">
               <thead>
                 <th>
-                  <h4  translate>
+                  <h4>
                     <img src="../../../assets/images/user-permission.png" alt="No Image Found">
                     Admins & Team Members {{adminAndTeamMembers?.length}}
                 </h4>
@@ -299,12 +306,11 @@
                       <i class="fa fa-check active-status" aria-hidden="true"></i>
                     </div>
                   </td>
-                  <td class="text-center" *ngIf="adminOrTeamMember?.status=='DECLINE'" title="This team member is inactive">
+                  <td class="text-center" *ngIf="adminOrTeamMember?.status=='DECLINE'" title="This team member account is declined by admin.">
                     <div class="actions-block float-none">
                       <i class="fa fa-times required" aria-hidden="true"></i>
                     </div>
                   </td>
-                  <!---Enabled/Disabled---->
                 </tr>
               </tbody>
             </table>
@@ -331,3 +337,8 @@
     </button>
   </li>
 </ng-template>
+
+  <!-- Group Preview Popup -->
+  <app-team-member-group-preview-popup *ngIf="isPreviewRolesButtonClicked" [modulesFromUpgradeAccountModal]="modules"
+    (previewGroupPopupEventEmitter)="isPreviewRolesButtonClicked=false"></app-team-member-group-preview-popup>
+  <!-- End of  Group Preview Popup -->

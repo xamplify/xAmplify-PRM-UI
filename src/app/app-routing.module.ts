@@ -190,6 +190,17 @@ export const routes: Routes = [
 	{ path: 'pv/ptp/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{path:'welcome-page',component:WelcomePageComponent,canActivate: [AuthGuard], data: { preload: true }},
 	{ path: 'mp/mps/:alias', component: MarketplaceUtilComponent },	
+	{ path: 'mp/vmp/:alias', component: MarketplaceUtilComponent },	
+	{ path: 'pv/pjplp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/vmplp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
+
+	{ path: 'pjpl/:alias', component: ShowLandingPageComponent },
+	{ path: 'pjpf/:alias', component: FormPreviewComponent },
+	{ path: 'vmpf/:alias', component: FormPreviewComponent },
+	{ path: 'vmppjf/:landingPageId/:alias', component: FormPreviewComponent },	
+
+	{ path: 'vmpl/:alias', component: ShowLandingPageComponent },
+	{ path: 'vmpjpl/:alias', component: ShowLandingPageComponent },
 
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },

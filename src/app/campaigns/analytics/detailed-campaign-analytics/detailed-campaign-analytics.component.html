@@ -85,7 +85,7 @@
                        campaignType != 'VIDEO' &&
                        campaignType != 'LANDINGPAGE'
                        ">
-                              {{ campaignType }} CAMPAIGN <span *ngIf="campaignType?.toLowerCase() == 'social'" class="beta_social_icon">(Beta)</span>({{
+                              {{ campaignType }} CAMPAIGN <sup *ngIf="campaignType?.toLowerCase() == 'social'">(Beta)</sup>({{
                               authenticationService?.partnerModule?.customName
                               }})
                            </div>
@@ -97,7 +97,7 @@
                            <div class="camp-title" *ngIf="
                        !campaign.channelCampaign && campaignType != 'LANDINGPAGE'
                        ">
-                              {{ campaignType }} CAMPAIGN <span *ngIf="campaignType?.toLowerCase() == 'social'" class="beta_social_icon">(Beta)</span>
+                              {{ campaignType }} CAMPAIGN <sup *ngIf="campaignType?.toLowerCase() == 'social'">(Beta)</sup>
                            </div>
                            <div class="camp-title" *ngIf="
                        !campaign.channelCampaign && campaignType == 'LANDINGPAGE'
@@ -847,7 +847,7 @@
                         <div class="portlet light" style="margin: 10px -5px 5px -5px">
                            <div class="portlet-title">
                               <div class="caption">
-                                 <span class="caption-subject font-red-sunglo">Social Status<span class="beta_social_icon">(Beta)</span></span>
+                                 <span class="caption-subject font-red-sunglo">Social Status<sup>(Beta)</sup></span>
                               </div>
                            </div>
                            <div class="portlet-body clearfix">
@@ -1401,7 +1401,7 @@
                                                    <!-- ----------Landing Page Forms----------- -->
                                                    <ng-container *ngIf="campaignType == 'LANDINGPAGE'">
                                                       <td class="text-center" (click)="$event.stopPropagation()">
-                                                         <div class="actions-block override-actions"
+                                                         <div class="actions-block override-actions float_unset"
                                                             id="landing-page-icons">
                                                             <a *ngIf="item.pageAnalyticsCount > 0" (click)="goToPageAnalyticsByPartnerId(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                                title="Page Analytics">
@@ -1416,7 +1416,7 @@
                                                          </div>
                                                       </td>
                                                       <td class="text-center" *ngIf="campaign.formsCount > 0">
-                                                         <div class="actions-block override-actions" id="landing-page-icons">
+                                                         <div class="actions-block override-actions float_unset" id="landing-page-icons">
                                                             <a (click)="goToPageFormAnalyticsByPartnerId(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
                                                                <i class="fa fa-wpforms chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{campaign.formsCount}}</span>

@@ -81,6 +81,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Output() isFormAnalytics = new EventEmitter();
   @Input() welcomePages = false;
   @ViewChild("partnerCompanyAndGroupsComponent") partnerCompanyAndGroupsComponent:PartnerCompanyAndGroupsComponent;
+  /*  XNFR-712 */
+  @Input()isPartnerJourneyPages = false;
+  showSharePartnerPagePopup= false;
+  selectedVendorCompanyIds=[];
+  selectedVendorCompanyIdAndStatuses=[];
+  @Input() isVendorPartnerJourneyPages = false;
+  @Input() isVendorMarketplacePages = false;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -106,6 +113,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
     this.sefDefaultViewType();
     if(this.isLandingPages){
         this.findPartnerVendorJourneyLandingPages(this.pagination);
+    }else if(this.isVendorPartnerJourneyPages){
+        this.findVendorPartnerJourneyLandingPages(this.pagination);
     }else{
         this.listLandingPages(this.pagination);
     }
@@ -113,7 +122,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 }
 
   private sefDefaultViewType() {
-    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages){
+    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages
+        ||this.isPartnerJourneyPages || this.isVendorPartnerJourneyPages || this.isVendorMarketplacePages
+    ){
         this.viewType = 'g';
     }else if (this.folderListViewCategoryId != undefined) {
         this.categoryId = this.folderListViewCategoryId;
@@ -186,10 +197,22 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         this.pagination.companyId = this.loggedInUserCompanyId;
         this.pagination.welcomePages = true;
 
+      }else if(this.isPartnerJourneyPages){
+        this.pagination.source = "PARTNER_JOURNEY_PAGE";
+        this.pagination.defaultLandingPage = false;
+        this.pagination.loginAsUserId = this.loggedInUserId;
+        this.pagination.companyId = this.loggedInUserCompanyId;
+        this.pagination.partnerJourneyPage = true;
+      }else if(this.isVendorMarketplacePages){
+        this.pagination.source = "VENDOR_MARKETPLACE_PAGE";
+        this.pagination.defaultLandingPage = false;
+        this.pagination.loginAsUserId = this.loggedInUserId;
+        this.pagination.companyId = this.loggedInUserCompanyId;
+        this.pagination.vendorMarketplacePage = true;
       }else{
         this.pagination.source = "MANUAL";
       }
-      if(this.vendorJourney && !this.isLandingPages){
+      if((this.vendorJourney || this.isPartnerJourneyPages) && !this.isLandingPages){
         this.pagination.vendorJourneyOnly = true;
       }
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
@@ -237,7 +260,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         }
         if (this.isLandingPages) {
             this.findPartnerVendorJourneyLandingPages(this.pagination)
-        } else {
+        } else if(this.isVendorPartnerJourneyPages){
+            this.findVendorPartnerJourneyLandingPages(this.pagination);
+        }else {
             this.getAllFilteredResults(this.pagination);
         }
     }
@@ -247,6 +272,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   searchLandingPages() {
     if(this.isLandingPages){
         this.findPartnerVendorJourneyLandingPages(this.pagination);
+    }else if(this.isVendorPartnerJourneyPages){
+        this.findVendorPartnerJourneyLandingPages(this.pagination);
     }else{
         this.getAllFilteredResults(this.pagination);
     }
@@ -260,7 +287,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /************Page************** */
   setPage(event: any) {
       this.pagination.pageIndex = event.page;
+    if(this.isLandingPages){
+        this.findPartnerVendorJourneyLandingPages(this.pagination);
+    }else if(this.isVendorPartnerJourneyPages){
+        this.findVendorPartnerJourneyLandingPages(this.pagination);
+    }else{
       this.listLandingPages(this.pagination);
+    }
   }
 
   getAllFilteredResults(pagination: Pagination) {
@@ -290,6 +323,10 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         this.referenceService.previewVendorJourneyPartnerPageInNewTab(landingPage.vendorJourneyId);
     }else if(this.isMasterLandingPages){
         this.referenceService.previewMasterPartnerPageInNewTab(landingPage.id);
+    }else if(this.isVendorPartnerJourneyPages){
+        this.referenceService.previewPartnerJourneyVendorPageInNewTab(landingPage.vendorJourneyId)
+    }else if(this.isVendorMarketplacePages){
+        this.referenceService.previewVendorMarketplacePageInNewTab(landingPage.id);
     }
     else{
         this.referenceService.previewPageInNewTab(landingPage.id);
@@ -327,7 +364,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   editLandingPage(id: number) {
-    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages){
+    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages
+        || this.isPartnerJourneyPages || this.isVendorMarketplacePages
+    ){
         this.landingPageService.getById(id).subscribe(
             (data: any) => {
                 this.vendorLandingPage.emit(data.data);
@@ -349,7 +388,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.customResponse = new CustomResponse();
       this.referenceService.loading(this.httpRequestLoader, true);
       this.referenceService.goToTop();
-      this.landingPageService.deletebById(landingPage.id,(this.vendorJourney || this.isMasterLandingPages))
+      this.landingPageService.deletebById(landingPage.id,(this.vendorJourney || this.isMasterLandingPages ||this.isPartnerJourneyPages
+        || this.isVendorMarketplacePages
+      ))
           .subscribe(
               (response: any) => {
                   if(response.access){
@@ -410,7 +451,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
   goToFormAnalytics(id: number) {
-    if(this.isMasterLandingPages || this.vendorJourney || this.welcomePages){
+    if(this.isMasterLandingPages || this.vendorJourney || this.welcomePages || this.isPartnerJourneyPages
+        || this.isVendorMarketplacePages
+    ){
         this.isFormAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
@@ -425,7 +468,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.router.navigate(['/home/forms/partner/lf/' + alias]);
   }
   goToLandingPageAnalytics(id: number) {
-    if(this.vendorJourney || this.isMasterLandingPages || this.welcomePages){
+    if(this.vendorJourney || this.isMasterLandingPages || this.welcomePages || this.isPartnerJourneyPages
+        ||this.isVendorMarketplacePages
+    ){
         this.viewAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
@@ -437,7 +482,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
      
   }
   goToPartnerLandingPageAnalytics(alias: string) {
-    if(this.isLandingPages){
+    if(this.isLandingPages || this.isVendorPartnerJourneyPages){
         this.viewVendorPageAnalytics.emit(alias);
     }else{
         this.router.navigate(['/home/pages/partner/' + alias + '/analytics']);
@@ -526,6 +571,9 @@ copy(landingPage:any){
         this.selectedLandingPageId = landingPageId;
             this.ngxloading = true;
             let self = this;
+            if(this.isPartnerJourneyPages){
+                this.openSharePartnerPagePopup(landingPageId);
+            }else{
             this.landingPageService.getLandingPageSharedDetails(landingPageId).subscribe(
               (response) => {
                 self.landingPageSharedDetails = response.data;
@@ -541,6 +589,7 @@ copy(landingPage:any){
                 this.ngxloading = false;
                 this.logger.errorPage(error);
               });
+            }
     }
     closeShareListPopup(event:any) {
         this.showShareListPopup = false;
@@ -703,5 +752,83 @@ copy(landingPage:any){
                 }
             );
     }
+
+    openSharePartnerPagePopup(landingPageId: any) {
+        this.customResponse = new CustomResponse();
+        this.selectedLandingPageId = landingPageId;
+        let self = this;
+
+        this.landingPageService.getPartnerJourneyPageSharedDetails(landingPageId).subscribe(
+            (response) => {
+                self.selectedVendorCompanyIdAndStatuses = response.data;
+                self.selectedVendorCompanyIdAndStatuses = self.selectedVendorCompanyIdAndStatuses && self.selectedVendorCompanyIdAndStatuses.length > 0 
+                ? self.selectedVendorCompanyIdAndStatuses:[];
+                self.selectedVendorCompanyIds = self.selectedVendorCompanyIdAndStatuses && self.selectedVendorCompanyIdAndStatuses.length > 0 
+                ? self.selectedVendorCompanyIdAndStatuses.map(id=>id.vendorCompanyId) 
+                : [];
+                this.ngxloading = false;
+                this.showSharePartnerPagePopup = true;
+                $("#sharePartnerPagePopup").modal("show");
+            },
+            error => {
+                this.ngxloading = false;
+                this.logger.errorPage(error);
+            });
+
+    }
+
+    closeSharePartnerPagePopup(event:any) {
+        this.showSharePartnerPagePopup = false;
+        $("#sharePartnerPagePopup").modal("hide");
+        this.ngxloading = false;
+        this.listLandingPages(this.pagination);
+        if(event != undefined && event != null && event != ""){
+            this.customResponse = new CustomResponse('SUCCESS', event, true);
+        }
+
+    }
+
+    findVendorPartnerJourneyLandingPages(pagination: Pagination) {
+        this.referenceService.loading(this.httpRequestLoader, true);
+        if(!this.folderListView){
+          this.referenceService.goToTop();
+        }
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
+          this.pagination.source = "PARTNER_JOURNEY_PAGE";
+          this.pagination.defaultLandingPage = false;
+          this.pagination.companyId = this.loggedInUserCompanyId;
+          this.pagination.searchKey = this.sortOption.searchKey;
+          let self = this;
+          this.pagination.vendorPartnerJourneyPage = true;
+
+        this.landingPageService.findVendorPartnerJourneyLandingPages(pagination).subscribe(
+            (response: any) => {
+                if(response.access){
+                    const data = response.data;
+                    self.statusCode = response.statusCode;
+                    if (self.statusCode == 200) {
+                        pagination.totalRecords = data.totalRecords;
+                        this.sortOption.totalRecords = data.totalRecords;
+                        $.each(data.landingPages, function (index, landingPage) {
+                            landingPage.displayTime = new Date(landingPage.createdDateInString);
+                        });
+                        pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                    }
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            (error: any) => { 
+              this.logger.errorPage(error); 
+          },()=>{
+              this.callFolderListViewEmitter();
+          });
+    }
+    
 }
 

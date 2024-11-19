@@ -639,5 +639,10 @@ export class ParterService {
         return Observable.throw(error);
     }
 
+    findVendorCompanies(pagination: Pagination) {
+        const apiUrl = this.URL + 'partnership/findVendorCompanies?access_token=' + this.authenticationService.access_token
+        return this.httpClient.post(apiUrl, pagination)
+        .catch(this.handleError);    
+    }
 
 }

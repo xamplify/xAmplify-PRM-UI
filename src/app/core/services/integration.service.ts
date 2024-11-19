@@ -10,8 +10,7 @@ import { SocialContact } from "app/contacts/models/social-contact";
 
 @Injectable()
 export class IntegrationService {
-       
-
+ 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
     }
 
@@ -242,5 +241,11 @@ export class IntegrationService {
         let url = this.authenticationService.REST_URL + "crm/view/opportunites?access_token="+this.authenticationService.access_token + "&loggedInUserId=" + loggedInUserIdRequestParam
             + opportunityTypeRequestParam + "&opportunityId=" + dealIdRequestParam + "&companyId=" + companyIdRequestParam;
         return this.authenticationService.callGetMethod(url);
+    }
+
+    getFormLabelChoices(formLabelId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `crm/view/getLabelChoices/${formLabelId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 }

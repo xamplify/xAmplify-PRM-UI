@@ -12,4 +12,8 @@ export class FormSubmit {
     partnerMasterLandingPageId:number;
     vendorLandingPageId:number;
     searchKey:string;
+
+    partnerJourneyPage:boolean=false;
+    vendorMarketplacePage:boolean =false;
+    vendorMarketplacePageId:number;
 }

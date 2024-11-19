@@ -16,6 +16,8 @@ export class VendorLogoDetails {
 	categoryIds:number[]=[];
 	dropdownSettings={};
 	selectedCategories = [];
+	partnerJourneyPageId:number;
+	partnerJourneyPageAlias:string;
 }
 
 export class LogoTeamMembers{
@@ -30,5 +32,7 @@ export class LogoTeamMembers{
 	categoryIds:number[]=[];
 	dropdownSettings={};
 	selectedCategories = [];
+	partnerJourneyPageId:number;
+	partnerJourneyPageAlias:string;
 
 }

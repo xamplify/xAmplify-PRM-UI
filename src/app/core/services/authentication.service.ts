@@ -1388,17 +1388,23 @@ getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
   return this.callGetMethod(URL);
 }
 
-getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean, isMasterLandingPages:boolean){
+getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean, isMasterLandingPages:boolean,
+  isPartnerJourneyPage:boolean, isVendoeMarketPlacePage:boolean
+){
   let userId = this.getUserId();
   let URL_PREFIX = "";
-  if(isPartnerLandingPagePreview || vendorJourney){
+  let vendorOrPartnerJourneyVar ="";
+  let partnerOrVendorMarketplace = "";
+  if(isPartnerLandingPagePreview || vendorJourney || isPartnerJourneyPage){
     URL_PREFIX = this.REST_URL+"landing-page/partner/";
-  }else if(isMasterLandingPages){
+    vendorOrPartnerJourneyVar = vendorJourney? "&vendorJourney=true":isPartnerJourneyPage? "&partnerJourneyPage=true":"";
+  }else if(isMasterLandingPages ||isVendoeMarketPlacePage ){
     URL_PREFIX = this.REST_URL+"landing-page/master/";
+    partnerOrVendorMarketplace =isMasterLandingPages? "&masterLandingPage=true":isVendoeMarketPlacePage? "&vendoeMarketPlacePage=true":"";
   }else{
     URL_PREFIX = this.REST_URL+"landing-page/";
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&masterLandingPage="+isMasterLandingPages+"&access_token="+this.access_token;
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+vendorOrPartnerJourneyVar+partnerOrVendorMarketplace+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 
@@ -1471,6 +1477,20 @@ vanityWelcomePageRequired(userId) {
 
   getCompanyProfileNameByCustomDomain(customDomain:string){
     let url = this.REST_URL + 'v_url/getCompanyProfileNameByCustomDomain/' + customDomain;
+    return this.callGetMethod(url);
+  }
+
+  publishContentToPartnerCompanyByModuleName(userListId:number,partnerUserId:number,inputId:number,moduleName:string){
+    let userId = this.getUserId();
+    let urlPrefix = "";
+    if(moduleName==this.properties.dashboardButtons){
+      urlPrefix = "dashboardButtons";
+    }else if(moduleName=="dam"){
+      urlPrefix = "dam";
+    }else if(moduleName=="lms"){
+      urlPrefix = "lms";
+    }
+    let url = this.REST_URL + urlPrefix+"/publish/userListId/"+userListId+"/partnerUserId/"+partnerUserId+"/id/"+inputId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
     return this.callGetMethod(url);
   }
 

@@ -26,3 +26,15 @@ background-color: var(--custom-buttonbg-color) !important;
   border: 1px solid var(--custom-border-color) !important;
   color: var(--custom-text-color)  !important;
 }
+/*** XNFR-574 ****/
+.universalsearchBox,
+.universalsearch:hover > .universalsearchButton {
+    background-color: var(--custom-buttonbg-color);
+    background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%);
+    background-size: calc(100% + 20px) calc(100% + 20px);
+}
+.universalsearchBox:hover > .universalsearchInput,
+.universalsearchBox:hover> .universal-close,
+.universalsearchInput {
+    color: var(--custom-text-color);
+}

@@ -10,6 +10,7 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
+import { Properties } from 'app/common/models/properties';
 
 @Component({
   selector: 'app-active-partners-table',
@@ -42,7 +43,7 @@ export class ActivePartnersTableComponent implements OnInit {
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
-    public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
+    public xtremandLogger: XtremandLogger, public sortOption: SortOption,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 

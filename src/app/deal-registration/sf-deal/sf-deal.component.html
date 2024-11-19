@@ -342,8 +342,9 @@
       </ng-container>
       <!--------------------------------Radio------------------------------------------->
       <ng-container *ngIf="columnInfo.labelType=='radio'">
-        <div class="radiobtn-card">
-          <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+        <app-dropdown-loader *ngIf="columnInfo?.isDropDownLoading"></app-dropdown-loader>
+        <div class="radiobtn-card" *ngIf="!columnInfo?.isDropDownLoading">
+          <ng-container *ngFor="let radioButton of columnInfo.formLabelChoices;let i=index">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-check radiobtn">
               <label class="form-check-label radioAlignmant">
                 <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
@@ -367,17 +368,20 @@
       
       <!-- ---------------------------Check Box----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='checkbox'">
-        <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" [checked]="columnInfo.value==='true'"
-                class="form-check-input" (click)="updateCheckBoxModel(columnInfo, $event)"
-                [disabled]="isVendor || isPreview">
-              {{checkBox.name}}
-            </label>
-          </div>
-          <br>
-        </ng-container>
+        <app-dropdown-loader *ngIf="columnInfo?.isDropDownLoading"></app-dropdown-loader>
+        <span *ngIf="!columnInfo?.isDropDownLoading">
+          <ng-container *ngFor="let checkBox of columnInfo.formLabelChoices;let i=index">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" [checked]="columnInfo.value==='true'"
+                  class="form-check-input" (click)="updateCheckBoxModel(columnInfo, $event)"
+                  [disabled]="isVendor || isPreview">
+                {{checkBox.name}}
+              </label>
+            </div>
+            <br>
+          </ng-container>
+        </span>
       </ng-container>
       <!-- ---------------------------Searchable DropDown For Lookup----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='lookup'">

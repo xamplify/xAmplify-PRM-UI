@@ -1,342 +1,363 @@
-<div *ngIf="!showLeadForm && !showDealForm">
-  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-  </app-list-loader>
-  <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
-    <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
-      <div class="btn-group pull-right btn-add-lead" style="width: max-content;">
-        <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
-          (click)="addLead()" style="padding-left: 4px;">
-          <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
-            <span class="btn btn-primary transition d-inline">
-              <i class="fa fa-plus  mb-btns" aria-hidden="true"></i> {{LEAD_CONSTANTS?.registerALead}}</span>
-          </button>
+<div class="page-content" *ngIf="!showLeadForm && !showDealForm">
+  <div class="page-bar" style="height:48px;">
+    <ul class="page-breadcrumb">
+      <li><i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="!isFromCompanyModule">
+        <a (click)="goBackToManageContacts()" translate> Manage Contacts
         </a>
-
-        <div class="inputs display" align="right">
-          <div class="portlet-input input-inline" style="display: table-cell;">
-            <div
-              [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'r20' : 'mr-pd'"
-              class="input-icon right r5" style="position: relative;right: -3px;">
-              <input type="text" class="form-control pr-pl ml" [(ngModel)]="leadsSortOption.searchKey"
-                [ngModelOptions]="{standalone: true}" placeholder="Search"
-                (keypress)="leadEventHandler($event.keyCode)">
-              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="leadsSortOption.searchKey"
-                (click)="clearSearch()"></button>
-              <button type="submit"
-                [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'"
-                class="search-box-item-click top mb_v_search" (click)="searchLeads()">
-                <i class="fa fa-search" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="isFromCompanyModule">
+        <a translate (click)="goBackToManageCompanies()">Manage Companies</a>
+      </li>
+      <li>
+        <a (click)="goBackToEditContacts()" translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Edit Contacts
+        </a>
+      </li>
+      <li>
+        <a (click)="goBackToContactDetailsPage()" translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Details
+        </a>
+      </li>
+      <li>
+        <a translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>All Leads
+        </a>
+      </li>
+    </ul>
+  </div>
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <div class="page-bar p10">
+    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+    </app-list-loader>
+    <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
+      <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
+        <div class="btn-group pull-right btn-add-lead" style="width: max-content;">
+          <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
+            (click)="addLead()" style="padding-left: 4px;">
+            <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
+              <span class="btn btn-primary transition d-inline">
+                <i class="fa fa-plus  mb-btns" aria-hidden="true"></i> {{LEAD_CONSTANTS?.registerALead}}</span>
+            </button>
+          </a>
+  
+          <div class="inputs display" align="right">
+            <div class="portlet-input input-inline" style="display: table-cell;">
+              <div
+                [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'r20' : 'mr-pd'"
+                class="input-icon right r5" style="position: relative;right: -3px;">
+                <input type="text" class="form-control pr-pl ml" [(ngModel)]="leadsSortOption.searchKey"
+                  [ngModelOptions]="{standalone: true}" placeholder="Search"
+                  (keypress)="leadEventHandler($event.keyCode)">
+                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="leadsSortOption.searchKey"
+                  (click)="clearSearch()"></button>
+                <button type="submit"
+                  [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'"
+                  class="search-box-item-click top mb_v_search" (click)="searchLeads()">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+            style="margin-left: 5px !important;" title="Filter" *ngIf="listView" (click)="toggleFilterOption()">
+            <i aria-hidden="true" class="fa fa-filter p10"></i>
+          </span>
+          <div class="filter-btn">
+            <a data-placement="bottom" (click)="showLeads()" class="btn btn-xs  l-g-view" data-toggle="tooltip"
+              title="Refresh">
+              <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption" translate>Apply Filters</div>
+            <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <div class="form-group" style="text-align: -webkit-right;">
+              <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" type="button" (click)="validateDateFilters()">
+                <span class="btn Btn-Green transition txt_pd-top3">Filter</span>
               </button>
             </div>
           </div>
-        </div>
-        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-          style="margin-left: 5px !important;" title="Filter" *ngIf="listView" (click)="toggleFilterOption()">
-          <i aria-hidden="true" class="fa fa-filter p10"></i>
-        </span>
-        <div class="filter-btn">
-          <a data-placement="bottom" (click)="showLeads()"
-             class="btn btn-xs  l-g-view" data-toggle="tooltip" title="Refresh">
-             <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
-          </a>
-       </div>
-
-      </div>
-    </div>
-  </div>
-  <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="portlet light">
-        <div class="portlet-title">
-          <div class="caption" translate>Apply Filters</div>
-          <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-          <div class="form-group" style="text-align: -webkit-right;">
-            <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" type="button" (click)="validateDateFilters()">
-              <span class="btn Btn-Green transition txt_pd-top3">Filter</span>
-            </button>
+          <!--Filter Options-->
+          <div class="portlet-body clearfix">
+            <app-response-message class="pg8" [customResponse]="filterResponse"
+              *ngIf="filterResponse.isVisible"></app-response-message>
+            <form class="form-horizontal form-bordered form-label-stripped">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <!--From Date-->
+                <div class="form-group">
+                  <label class="control-label col-sm-5">From Date</label>
+                  <div class="col-sm-7">
+                    <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
+                  </div>
+                </div>
+                <!--Status-->
+                <div class="form-group">
+                  <label class="control-label col-sm-5">Status</label>
+                  <div class="col-sm-7">
+                    <p class="mt--10px" *ngIf="statusLoader">
+                      <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading
+                        {{LEAD_CONSTANTS.addedBy}}...</strong>
+                    </p>
+                    <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully"
+                      [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter" [disableDropDown]="false"
+                      (searchableDropdownEventEmitter)="getSelectedStatus($event)">
+                    </app-searchable-dropdown>
+                    <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
+                      <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <!--To Date-->
+                <div class="form-group">
+                  <label class="control-label col-sm-5">To Date</label>
+                  <div class="col-sm-7">
+                    <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
+                  </div>
+                </div>
+                <!--Added For-->
+                <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
+                  <label class="control-label col-sm-5">Added For</label>
+                  <div class="col-sm-7">
+                    <app-searchable-dropdown *ngIf="!registeredForCompaniesLoader"
+                      [searchableDropDownDto]="registeredForCompaniesSearchableDropDownDto" [id]="vendorCompanyIdFilter"
+                      [disableDropDown]="false"
+                      (searchableDropdownEventEmitter)="getSelectedRegisteredForCompanyId($event)">
+                    </app-searchable-dropdown>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-        <!--Filter Options-->
-        <div class="portlet-body clearfix">
-          <app-response-message class="pg8" [customResponse]="filterResponse"
-            *ngIf="filterResponse.isVisible"></app-response-message>
-          <form class="form-horizontal form-bordered form-label-stripped">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-              <!--From Date-->
-              <div class="form-group">
-                <label class="control-label col-sm-5">From Date</label>
-                <div class="col-sm-7">
-                  <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
-                </div>
-              </div>
-              <!--Status-->
-              <div class="form-group">
-                <label class="control-label col-sm-5">Status</label>
-                <div class="col-sm-7">
-                  <p class="mt--10px" *ngIf="statusLoader">
-                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading
-                      {{LEAD_CONSTANTS.addedBy}}...</strong>
-                  </p>
-                  <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully"
-                    [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter" [disableDropDown]="false"
-                    (searchableDropdownEventEmitter)="getSelectedStatus($event)">
-                  </app-searchable-dropdown>
-                  <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
-                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-              <!--To Date-->
-              <div class="form-group">
-                <label class="control-label col-sm-5">To Date</label>
-                <div class="col-sm-7">
-                  <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
-                </div>
-              </div>
-              <!--Added For-->
-              <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
-                <label class="control-label col-sm-5">Added For</label>
-                <div class="col-sm-7">
-                  <app-searchable-dropdown *ngIf="!registeredForCompaniesLoader"
-                    [searchableDropDownDto]="registeredForCompaniesSearchableDropDownDto" [id]="vendorCompanyIdFilter"
-                    [disableDropDown]="false"
-                    (searchableDropdownEventEmitter)="getSelectedRegisteredForCompanyId($event)">
-                  </app-searchable-dropdown>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
-  </div>
-  <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
-    [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-    <div class="table-responsive pos_pd_top6" [hidden]="httpRequestLoader.isLoading">
-      <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
-        <thead>
-          <tr>
-            <th class="center-aligned leadTablewidth0" translate>Lead Details</th>
-            <th class="center leadTablewidth1" translate>Added By</th>
-            <th class="center leadTablewidth2 text-center" translate>Status</th>
-            <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <ng-container *ngFor='let lead of leadsPagination.pagedItems; let i=index'>
+    <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
+      [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
+      <div class="table-responsive pos_pd_top6" [hidden]="httpRequestLoader.isLoading">
+        <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
+          <thead>
             <tr>
-              <td>
-                <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
-                <div style="margin-left: 60px;">
-                  <h5 class="m0" *ngIf="isPartnerVersion"><strong>Added For:</strong>
-                    <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
-                      <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
-                    </span>
+              <th class="center-aligned leadTablewidth0" translate>Lead Details</th>
+              <th class="center leadTablewidth1" translate>Added By</th>
+              <th class="center leadTablewidth2 text-center" translate>Status</th>
+              <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
+            </tr>
+          </thead>
+  
+          <tbody>
+            <ng-container *ngFor='let lead of leadsPagination.pagedItems; let i=index'>
+              <tr>
+                <td>
+                  <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
+                  <div style="margin-left: 60px;">
+                    <h5 class="m0" *ngIf="isPartnerVersion"><strong>Added For:</strong>
+                      <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
+                        <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
+                      </span>
+                    </h5>
+                  </div>
+                  <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;" data-toggle="tooltip"
+                    data-placement="bottom" title="{{lead.campaignName}}">
+                    <h5 class="m0"><strong>Campaign:</strong>
+                      <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                        <span *ngIf="lead.campaignName?.length>30">...</span>
+                      </span>
+                    </h5>
+                  </div>
+                  <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;"
+                    data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">
+                    <h5 class="m0"><strong>Campaign:</strong>
+                      <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
+                        <span *ngIf="lead.parentCampaignName?.length>30">...</span>
+                      </span>
+                    </h5>
+                  </div>
+                  <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0"
+                    style="margin-left: 60px;" data-toggle="tooltip" data-placement="bottom"
+                    title="{{lead.campaignName}}">
+                    <h5 class="m0"><strong>Campaign:</strong>
+                      <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                        <span *ngIf="lead.campaignName?.length>30">...</span>
+                      </span>
+                    </h5>
+                  </div>
+                  <div *ngIf="isVendorVersion" style="margin-left: 60px;">
+                    <h5 class="m0"><strong>Lead Id:</strong>
+                      <span>{{lead.referenceId}}
+                      </span>
+                    </h5>
+                  </div>
+                </td>
+                <td>
+                  <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
+                    title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
+                    <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                   </h5>
-                </div>
-                <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;" data-toggle="tooltip"
-                  data-placement="bottom" title="{{lead.campaignName}}">
-                  <h5 class="m0"><strong>Campaign:</strong>
-                    <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
-                      <span *ngIf="lead.campaignName?.length>30">...</span>
-                    </span>
+                  <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByName}}"
+                    style="margin: 7px 0 2px 0;font-weight: 400;">
+                    {{lead.createdByName | slice:0:20}}
+                    <span *ngIf="lead.createdByName?.length>20">...</span>
                   </h5>
-                </div>
-                <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;"
-                  data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">
-                  <h5 class="m0"><strong>Campaign:</strong>
-                    <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
-                      <span *ngIf="lead.parentCampaignName?.length>30">...</span>
-                    </span>
+                  <h6 class='m0' style="font-weight: 400;">
+                    <a data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByEmail}}">{{lead.createdByEmail
+                      |
+                      slice:0:30}}</a>
+                    <span *ngIf="lead.createdByEmail?.length>30">...</span>
+                  </h6>
+                  <h5 style="font-weight: 600; color: #676767;">
+                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
+                    </app-timestamp>
                   </h5>
-                </div>
-                <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0"
-                  style="margin-left: 60px;" data-toggle="tooltip" data-placement="bottom"
-                  title="{{lead.campaignName}}">
-                  <h5 class="m0"><strong>Campaign:</strong>
-                    <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
-                      <span *ngIf="lead.campaignName?.length>30">...</span>
-                    </span>
-                  </h5>
-                </div>
-                <div *ngIf="isVendorVersion" style="margin-left: 60px;">
-                  <h5 class="m0"><strong>Lead Id:</strong>
-                    <span>{{lead.referenceId}}
-                    </span>
-                  </h5>
-                </div>
-              </td>
-              <td>
-                <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
-                  title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
-                  <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
-                </h5>
-                <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByName}}"
-                  style="margin: 7px 0 2px 0;font-weight: 400;">
-                  {{lead.createdByName | slice:0:20}}
-                  <span *ngIf="lead.createdByName?.length>20">...</span>
-                </h5>
-                <h6 class='m0' style="font-weight: 400;">
-                  <a data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByEmail}}">{{lead.createdByEmail
-                    |
-                    slice:0:30}}</a>
-                  <span *ngIf="lead.createdByEmail?.length>30">...</span>
-                </h6>
-                <h5 style="font-weight: 600; color: #676767;">
-                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
-                  </app-timestamp>
-                </h5>
-              </td>
-              <td class="text-center">
-                <!---xnfr-426---->
-                {{lead.currentStageName | slice:0:30}}
-                <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
-                  <i class="fa fa-check-circle mr5" aria-hidden="true"
-                    style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                  Deal
-                </div>
-                <div style="color: #f71111;"
-                  *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined && !lead?.leadApprovalOrRejection"
-                  translate>
-                  <i class="fa fa-times-circle mr5" aria-hidden="true"
-                    style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                  Rejected
-                </div>
-                <div *ngIf="showRegisterDealButton(lead)">
-                  <button class="button_blue bgcolor-unset" (click)="showDealRegistrationForm(lead)"
-                    [disabled]="lead?.associatedCampaignDeleted" data-toggle="tooltip" data-placement="bottom"
-                    title="{{lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : ''}}"
+                </td>
+                <td class="text-center">
+                  <!---xnfr-426---->
+                  {{lead.currentStageName | slice:0:30}}
+                  <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
+                    <i class="fa fa-check-circle mr5" aria-hidden="true"
+                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                    Deal
+                  </div>
+                  <div style="color: #f71111;"
+                    *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined && !lead?.leadApprovalOrRejection"
                     translate>
-                    <span class="btn btn-primary transition d-inline"> Register Deal</span>
-                  </button>
-                </div>
-
-                <div *ngIf="lead?.leadApprovalOrRejection && !lead?.selfLead">
-                  <div *ngIf="!authenticationService?.module?.deletedPartner">
-                    <div style="color: #06c306;"
-                      *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined"
+                    <i class="fa fa-times-circle mr5" aria-hidden="true"
+                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                    Rejected
+                  </div>
+                  <div *ngIf="showRegisterDealButton(lead)">
+                    <button class="button_blue bgcolor-unset" (click)="showDealRegistrationForm(lead)"
+                      [disabled]="lead?.associatedCampaignDeleted" data-toggle="tooltip" data-placement="bottom"
+                      title="{{lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : ''}}"
                       translate>
-                      <i class="fa fa-check-circle mr5" aria-hidden="true"
-                        style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                      Approved
+                      <span class="btn btn-primary transition d-inline"> Register Deal</span>
+                    </button>
+                  </div>
+  
+                  <div *ngIf="lead?.leadApprovalOrRejection && !lead?.selfLead">
+                    <div *ngIf="!authenticationService?.module?.deletedPartner">
+                      <div style="color: #06c306;"
+                        *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined"
+                        translate>
+                        <i class="fa fa-check-circle mr5" aria-hidden="true"
+                          style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                        Approved
+                      </div>
+                      <div style="color: #f71111;"
+                        *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined"
+                        translate>
+                        <i class="fa fa-times-circle mr5" aria-hidden="true"
+                          style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                        Rejected
+                      </div>
+                      <div
+                        *ngIf="(lead?.dealByVendor && isVendor && lead?.leadApprovalStatusType != undefined || (lead?.dealByPartner && lead?.canRegisterDeal)) && lead.enableRegisterDealButton && lead?.associatedDealId == undefined">
+                        <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
+                          title="{{(lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : (lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : '')) : (!lead?.leadApprovalStatusType && !lead?.associatedCampaignDeleted ? 'You can not register a deal for an unapproved lead' : (lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : '')))}}"
+                          [disabled]="(lead?.leadApprovalStatusType == 'REJECTED' || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection) || lead?.associatedCampaignDeleted)"
+                          (click)="showDealRegistrationForm(lead)" translate>
+                          <span class="btn btn-primary transition d-inline"> Register Deal</span>
+                        </button>
+                      </div>
                     </div>
-                    <div style="color: #f71111;"
-                      *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined"
-                      translate>
-                      <i class="fa fa-times-circle mr5" aria-hidden="true"
-                        style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                      Rejected
-                    </div>
-                    <div
-                      *ngIf="(lead?.dealByVendor && isVendor && lead?.leadApprovalStatusType != undefined || (lead?.dealByPartner && lead?.canRegisterDeal)) && lead.enableRegisterDealButton && lead?.associatedDealId == undefined">
-                      <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
-                        title="{{(lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : (lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : '')) : (!lead?.leadApprovalStatusType && !lead?.associatedCampaignDeleted ? 'You can not register a deal for an unapproved lead' : (lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : '')))}}"
-                        [disabled]="(lead?.leadApprovalStatusType == 'REJECTED' || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection) || lead?.associatedCampaignDeleted)"
-                        (click)="showDealRegistrationForm(lead)" translate>
-                        <span class="btn btn-primary transition d-inline"> Register Deal</span>
-                      </button>
+                    <div class="buttons"
+                      *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection">
+                      <button type="button" class="button_blue bgcolor-unset" translate
+                        (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
+                          class="btn btn-primary transition txt_pd-top3">Approve</span></button>
+                      <button type="button" class="btn Btn-Gray neg_mrg_top4"
+                        (click)="addApprovalStatusModelPopup(lead,'REJECTED')" translate>Reject</button>
                     </div>
                   </div>
-                  <div class="buttons"
-                    *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection">
-                    <button type="button" class="button_blue bgcolor-unset" translate
-                      (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
-                        class="btn btn-primary transition txt_pd-top3">Approve</span></button>
-                    <button type="button" class="btn Btn-Gray neg_mrg_top4"
-                      (click)="addApprovalStatusModelPopup(lead,'REJECTED')" translate>Reject</button>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="actions-block override-actions tb_view_actions">
-                  <a class="custom-icon" data-rel="fancybox-button" (click)="viewLead(lead)" data-toggle="tooltip"
-                    data-placement="bottom" title="View Lead" id="lead">
-                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
-                    <div class="clickicons"></div>
-                  </a>
-                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                    <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
-                      *ngIf="lead.canUpdate && lead.enableRegisterDealButton"
-                      (click)="(lead?.leadApprovalStatusType !== 'REJECTED' && !lead?.associatedCampaignDeleted) ? editLead(lead) : ''"
-                      data-toggle="tooltip" data-placement="bottom"
-                      title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'You can not edit a rejected lead' : (lead?.associatedCampaignDeleted ? 'You can not edit a lead for a deleted campaign' : 'Edit Lead')}}"
-                      id="lead">
-                      <i [ngClass]="(lead?.leadApprovalStatusType == 'REJECTED' || lead?.associatedCampaignDeleted) ? 'fa fa-edit mr5 IconCustomization disabled gray':'fa fa-edit mr5 IconCustomization'"
-                        class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                </td>
+                <td>
+                  <div class="actions-block override-actions tb_view_actions">
+                    <a class="custom-icon" data-rel="fancybox-button" (click)="viewLead(lead)" data-toggle="tooltip"
+                      data-placement="bottom" title="View Lead" id="lead">
+                      <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                       <div class="clickicons"></div>
                     </a>
-                    <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
-                      (click)="confirmDeleteLead(lead)" data-toggle="tooltip" data-placement="bottom"
-                      title="Delete Lead" id="lead">
-                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-                      <div class="del-icon"></div>
+                    <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                      <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
+                        *ngIf="lead.canUpdate && lead.enableRegisterDealButton"
+                        (click)="(lead?.leadApprovalStatusType !== 'REJECTED' && !lead?.associatedCampaignDeleted) ? editLead(lead) : ''"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'You can not edit a rejected lead' : (lead?.associatedCampaignDeleted ? 'You can not edit a lead for a deleted campaign' : 'Edit Lead')}}"
+                        id="lead">
+                        <i [ngClass]="(lead?.leadApprovalStatusType == 'REJECTED' || lead?.associatedCampaignDeleted) ? 'fa fa-edit mr5 IconCustomization disabled gray':'fa fa-edit mr5 IconCustomization'"
+                          class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                        <div class="clickicons"></div>
+                      </a>
+                      <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
+                        (click)="confirmDeleteLead(lead)" data-toggle="tooltip" data-placement="bottom"
+                        title="Delete Lead" id="lead">
+                        <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                        <div class="del-icon"></div>
+                      </a>
+                    </ng-container>
+                    <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
+                      data-toggle="tooltip" data-placement="bottom" title="Comments/History">
+                      <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
+                      </i>
+                      <div class="clickicons"></div>
                     </a>
-                  </ng-container>
-                  <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
-                    data-toggle="tooltip" data-placement="bottom" title="Comments/History">
-                    <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
-                    </i>
-                    <div class="clickicons"></div>
-                  </a>
-                  <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default notify-badge"
-                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
-                </div>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
+                    <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default notify-badge"
+                      style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- --------------------Pagination0-------------------- -->
+      <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
+        <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
+          (notifyParentDropDown)="listLeads($event)"></app-pagination>
+      </div>
+      <!-- End of 24 -->
+      <div *ngIf="!httpRequestLoader.isLoading && leadsPagination?.totalRecords==0" class="alert alert-info">
+        <strong translate>No Leads Found.</strong>
+      </div>
+    </section>
+    <div *ngIf="listView && !httpRequestLoader?.isLoading && leadsSortOption?.totalRecords==0"
+      class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
+      <strong>No Leads Found.</strong>
     </div>
-
-    <!-- --------------------Pagination0-------------------- -->
-    <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
-      <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
-        (notifyParentDropDown)="listLeads($event)"></app-pagination>
-    </div>
-    <!-- End of 24 -->
-    <div *ngIf="!httpRequestLoader.isLoading && leadsPagination?.totalRecords==0" class="alert alert-info">
-      <strong translate>No Leads Found.</strong>
-    </div>
-  </section>
-  <div *ngIf="listView && !httpRequestLoader?.isLoading && leadsSortOption?.totalRecords==0"
-    class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
-    <strong>No Leads Found.</strong>
   </div>
-</div>
+  </div>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="commentModalPopUpClose($event)">
 </app-deal-chat-popup>
 
 <section *ngIf="showLeadForm">
   <div [ngClass]="selectedContact != undefined ? '' : 'page-content'">
-    <div>
-      <a (click)="closeLeadForm()" class="pull-right close-circle mrg1">
-        <i class="fa fa-times" aria-hidden="true"></i>
-      </a>
-    </div>
     <app-custom-add-lead [leadId]="leadId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
-      [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()" [selectedContact]="selectedContact"
-      [isConvertingContactToLead]="isConvertingContactToLead"></app-custom-add-lead>
+      [isFromCompanyModule]="isFromCompanyModule" [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()"
+      [selectedContact]="selectedContact" [isConvertingContactToLead]="isConvertingContactToLead"
+      (notifyClose)="closeLeadForm()" [isFromContactAllLeadsTab]="'true'"></app-custom-add-lead>
   </div>
 </section>
 
 <!-- Deal Form-->
-<section *ngIf="showDealForm">
-  <div class="selectedContact != undefined ? '' : 'page-content'">
-    <a (click)="closeDealForm()" class="pull-right close-circle mrg1"
-      style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-      <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;padding-top:6px;"
-        aria-hidden="true"></span></a>
-    <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()"
-      [hideAttachLeadButton]="true" [isVendorVersion]="isVendorVersion"></app-add-deal>
-  </div>
-</section>
+<app-add-deal *ngIf="showDealForm" [leadId]="leadId" [actionType]="actionType" [selectedContact]="selectedContact"
+  (notifySubmitSuccess)="showSubmitDealSuccess()" [hideAttachLeadButton]="true" [isVendorVersion]="isVendorVersion"
+  [isDealFromContact]="isConvertingContactToLead" [isFromCompanyModule]="isFromCompanyModule"
+  (notifyClose)="closeDealForm()" [isFromContactAllLeadsTab]="'true'"></app-add-deal>
 
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [leadApprovalStatusType]="leadApprovalStatusType"
   [lead]="selectedLead" [loggedInUserId]="loggedInUserId" (closePopupEmitter)="closeApprovalStatusModelPopup()">

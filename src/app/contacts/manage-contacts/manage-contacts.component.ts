@@ -1857,7 +1857,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	downloadContactTypeList() {
 		try {
 			let csvNameSuffix = this.checkingContactTypeName == "Partner" ? this.authenticationService.partnerModule.customName : this.checkingContactTypeName;
-			let suffix = this.checkingContactTypeName == "Partner" ?  's_group' : 's_list';
+			let suffix = this.checkingContactTypeName == "Partner" ? 's_group' : 's_list';
 			if (this.contactsByType.selectedCategory === 'all') {
 				this.logListName = 'All_' + csvNameSuffix + suffix + '.csv';
 			}
@@ -1878,34 +1878,67 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
 				if (!this.authenticationService.module.isPrm && !this.authenticationService.module.isPrmTeamMember && !this.authenticationService.module.isPrmAndPartner && !this.authenticationService.module.isPrmAndPartnerTeamMember) {
-					var object = {
-						"First Name": this.contactsByType.listOfAllContacts[i].firstName,
-						"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
-						"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
-						"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
-						"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
-						"Address": this.contactsByType.listOfAllContacts[i].address,
-						"City": this.contactsByType.listOfAllContacts[i].city,
-						"State": this.contactsByType.listOfAllContacts[i].state,
-						"Country": this.contactsByType.listOfAllContacts[i].country,
-						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
-						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+					if (this.isPartner) {
+						var parentObject = {
+							"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+							"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+							"Account Name": this.contactsByType.listOfAllContacts[i].accountName,
+							"Account Owner": this.contactsByType.listOfAllContacts[i].accountOwner,
+							"Company Domain": this.contactsByType.listOfAllContacts[i].companyDomain,
+							"Account Sub Type": this.contactsByType.listOfAllContacts[i].accountSubType,
+							"Website": this.contactsByType.listOfAllContacts[i].website,
+							"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+							"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+							"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+							"Address": this.contactsByType.listOfAllContacts[i].address,
+							"City": this.contactsByType.listOfAllContacts[i].city,
+							"Country": this.contactsByType.listOfAllContacts[i].country,
+							"Territory": this.contactsByType.listOfAllContacts[i].territory,
+							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+						}
+					} else {
+						var object = {
+							"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+							"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+							"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+							"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+							"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+							"Address": this.contactsByType.listOfAllContacts[i].address,
+							"City": this.contactsByType.listOfAllContacts[i].city,
+							"State": this.contactsByType.listOfAllContacts[i].state,
+							"Country": this.contactsByType.listOfAllContacts[i].country,
+							"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
+							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+						}
 					}
 					if (this.authenticationService.module.isCampaign && ((!this.authenticationService.module.isPrmAndPartner
-						 && !this.authenticationService.module.isPrmAndPartnerTeamMember) || !this.isPartner)
-						 && this.contactsByType.selectedCategory != 'invalid'
-					 && this.contactsByType.selectedCategory !='excluded' && !this.assignLeads ) {
-						object["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
-							object["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
-							object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
-							object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+						&& !this.authenticationService.module.isPrmAndPartnerTeamMember) || !this.isPartner)
+						&& this.contactsByType.selectedCategory != 'invalid'
+						&& this.contactsByType.selectedCategory != 'excluded' && !this.assignLeads) {
+						if (this.isPartner) {
+							parentObject["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+								parentObject["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+								parentObject["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+								parentObject["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+						} else {
+							object["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+								object["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+								object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+								object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+						}
 					}
 					if (this.contactsByType.selectedCategory === 'excluded') {
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
+
 					if (this.contactsByType.selectedCategory === 'unsubscribed') {
-						object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						if (this.isPartner) {
+							parentObject["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						} else {
+							object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						}
 					}
+					
 					if (this.contactsByType.selectedCategory === 'invalid') {
 						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
 					}
@@ -1915,20 +1948,44 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
 						});
 					}
-					this.downloadDataList.push(object);
+					if (this.isPartner) {
+						this.downloadDataList.push(parentObject);
+					} else {
+						this.downloadDataList.push(object);
+					}
 				} else {
-					let object = {
-						"First Name": this.contactsByType.listOfAllContacts[i].firstName,
-						"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
-						"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
-						"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
-						"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
-						"Address": this.contactsByType.listOfAllContacts[i].address,
-						"City": this.contactsByType.listOfAllContacts[i].city,
-						"State": this.contactsByType.listOfAllContacts[i].state,
-						"Country": this.contactsByType.listOfAllContacts[i].country,
-						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
-						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+					if (this.isPartner) {
+						var parentObject = {
+							"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+							"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+							"Account Name": this.contactsByType.listOfAllContacts[i].accountName,
+							"Account Owner": this.contactsByType.listOfAllContacts[i].accountOwner,
+							"Company Domain": this.contactsByType.listOfAllContacts[i].companyDomain,
+							"Account Sub Type": this.contactsByType.listOfAllContacts[i].accountSubType,
+							"Website": this.contactsByType.listOfAllContacts[i].website,
+							"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+							"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+							"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+							"Address": this.contactsByType.listOfAllContacts[i].address,
+							"City": this.contactsByType.listOfAllContacts[i].city,
+							"Country": this.contactsByType.listOfAllContacts[i].country,
+							"Territory": this.contactsByType.listOfAllContacts[i].territory,
+							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+						}
+					} else {
+						var object = {
+							"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+							"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+							"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+							"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+							"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+							"Address": this.contactsByType.listOfAllContacts[i].address,
+							"City": this.contactsByType.listOfAllContacts[i].city,
+							"State": this.contactsByType.listOfAllContacts[i].state,
+							"Country": this.contactsByType.listOfAllContacts[i].country,
+							"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
+							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+						}
 					}
 					if (this.contactsByType.selectedCategory === 'excluded') {
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
@@ -1945,7 +2002,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
 						});
 					}
-					this.downloadDataList.push(object);
+					if (this.isPartner) {
+						this.downloadDataList.push(parentObject);
+					} else {
+						this.downloadDataList.push(object);
+					}
 				}
 			}
 			this.referenceService.isDownloadCsvFile = true;
@@ -2978,16 +3039,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	/***** XNFR-671 *****/
 	findFlexiFieldsData() {
-		if (this.isLocalHost()) {
-			this.loading = true;
-			this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
-				this.flexiFieldsRequestAndResponseDto = data;
-				this.loading = false;
-			}, (error: any) => {
-				this.referenceService.showSweetAlertServerErrorMessage();
-				this.loading = false;
-			});
-		}
+		this.loading = true;
+		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+			this.flexiFieldsRequestAndResponseDto = data;
+			this.loading = false;
+		}, (error: any) => {
+			this.referenceService.showSweetAlertServerErrorMessage();
+			this.loading = false;
+		});
 	}
 
 	isContactsByTypeAllVaildUnsubscribed() {
@@ -2997,12 +3056,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	isContactModule() {
 		return (this.module == 'contacts');
-	}
-
-	isLocalHost() {
-		let allowedEmailIds = ['clakshman@stratapps.com'];
-		let userName = this.authenticationService.getUserName();
-		return this.authenticationService.isLocalHost() && allowedEmailIds.indexOf(userName) > -1;
 	}
 
 }

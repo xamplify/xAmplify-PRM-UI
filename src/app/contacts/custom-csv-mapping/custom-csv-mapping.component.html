@@ -14,6 +14,7 @@
       <strong class="ml5">We found invalid data for the email address. Please update or
         <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}}
         or <a class="required" (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
+        <br><span>{{properties?.uploadCsvSaveOptionNote}}</span>
       </strong>
     </div>
     <table class="table tgrid" *ngIf="isColumnMapped">
@@ -331,12 +332,12 @@
           <tbody>
             <ng-container *ngFor="let user of csvPagedItems;let i=index">
               <tr id="invalid-user-column-row{{i}}">
-                <td class="text-center" [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
+                <td class="text-center" [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'" style="width: 90%;">
                   <input type="text" class="form-control" [(ngModel)]="user.emailId"
                     [ngModelOptions]="{standalone: true}" (input)="validateEmailAddressPattern(user)">
                 </td>
                 <td class="text-center">
-                  <a class="custom-icon" data-toggle="tooltip" data-placement="bottom" title="Delete"
+                  <a class="custom-icon actions-block override-actions" data-toggle="tooltip" data-placement="bottom" title="Delete"
                     (click)="removeInvalidUser(i, user)"><i class="fa fa-trash-o trashIconCustomization"></i></a>
                 </td>
               </tr>

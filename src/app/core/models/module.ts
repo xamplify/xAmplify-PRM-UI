@@ -140,6 +140,11 @@ export class Module {
     isMyVendorsOptionDisplayed = false;
 
     authGuardLoading = false;
+    /**XNFR-726***/
+    socialShareOptionEnabled = false;
+
+    socialFeedsAccess = false;
+    socialFeedsAccessAsPartner = false;
 
 
 }

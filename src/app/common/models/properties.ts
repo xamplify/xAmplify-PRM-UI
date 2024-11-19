@@ -198,9 +198,13 @@ export class Properties {
 
 	vendorJourney = "Vendor Journey";
 	landingPages = "Vendor Pages";
-	masterLandingPages = "Marketplace Pages"
-	masterLandingPageCategories = "Marketplace Categories"
+	masterLandingPages = "Partner Landscape"
+	masterLandingPageCategories = "Landscape Categories"
 	welcomePages = "Welcome Pages"
+	/*****XNFR-712******/
+	partnerJourneyPages = "Partner Journey Pages";
+	vendorPartnerJourneyPages = "Partner Pages"
+	vendorMarketplacePages = "Vendor Landscape"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
 
@@ -215,6 +219,7 @@ export class Properties {
 	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated successfully";
 	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted successfully";
 	VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT = "Error while Updating Email Template";
+	DUPLICATE_SUBJECT_ERROR_TEXT="The subject name has already been assigned to another template.";
 
 	reAuthenticateMessage = 'Please unlink  and reconnect your account.';
 
@@ -429,6 +434,8 @@ export class Properties {
 	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
 	flexiFieldDisplayText = "You have the ability to add flexible fields, which will be displayed in your contact form.";
 	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
+	uploadCsvSaveOptionNote = "Note: By using the save option you can save the list with valid email id(s).";
+	
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
 	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin";
 	selectAnOptionToSaveListMessage = "Select an option to save the list.";
@@ -439,7 +446,29 @@ export class Properties {
 
 	NO_DATA_RETRIVED_FROM_SALESFORCE = "No data retrieved from Salesforce. Please ensure all required fields are filled in.";
 
+	/**XNFR-553**/
+	noteSubmittedSuccessResponseMessage = "Note Submitted Successfully";
+	noteUpdatedSuccessResponseMessage = "Note Updated Successfully";
+	emailSendSuccessResponseMessage = "Email sent successfully";
+	failedToFetchLeadsResponseMessage = "Failed to fetch leads";
+	leadSubmittedSuccessResponseMessage = "Lead Submitted Successfully";
+	failedToFetchDealsResponseMessage = "Failed to fetch deals";
+	dealSubmittedSuccessResponseMessage = "Deal Submitted Successfully";
+
+	ckEditorConfig = {
+		height:'300px',
+		baseFloatZIndex:1E5
+	}
+
 	UNABLE_TO_PROCESS_REQUEST = "We're currently unable to process this request. Please try again later.";
 	
+	activePartnerTileDescription = "Partners who have interacted with Content, Redistributed Campaigns, Created Leads or Deals.";
+	signupPartnertileDescription = "Partners who have not yet completed the sign-up process.";
+	companyProfileIncompletepartnertileDescription = "Partners who have not yet completed the company profile.";
+	dormantpartnertileDescription = "Partners who have not yet interacted with the Content, Redistributed Campaigns, Created Leads or Deals.";
+	activePartnerTileDescriptionForPrm = "Partners who have interacted with Content, Created Leads or Deals.";
+	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
+	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
+	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
 	}
 

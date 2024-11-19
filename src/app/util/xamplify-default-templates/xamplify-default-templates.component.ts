@@ -15,7 +15,7 @@ import { ModulesDisplayType } from '../models/modules-display-type';
 import { Observable } from 'rxjs';
 import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
 import { LandingPageType } from 'app/landing-pages/models/landing-page-type.enum';
-
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 declare var BeePlugin,swal,$:any;
 
 @Component({
@@ -41,6 +41,9 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   @Input() openInNewTabChecked: boolean = false;
   @Output() landingPageOpenInNewTabChecked = new EventEmitter();
   @Input() welcomePages:boolean = false;
+  @Input() isPartnerJourneyPages:boolean = false;
+  @Input() isVendorMarketplacePages:boolean = false;
+
   clickedButtonName = "";
   isAdd: boolean;
   name = "";
@@ -61,20 +64,61 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   modulesDisplayType = new ModulesDisplayType();
   updateAndRedirectClicked = false;
   categoryId: number = 0;
+  vanitySubjectLines: any[] = [];
+  isSubjectDuplicate: boolean = false;
 
-  constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,
+  constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,private logger: XtremandLogger,
     private landingPageService: LandingPageService) {
     this.loggedInUserId = this.authenticationService.getUserId();
-    if(landingPageService.vendorJourney || landingPageService.isMasterLandingPages || landingPageService.welcomePages){
+    if(landingPageService.vendorJourney || landingPageService.isMasterLandingPages || landingPageService.welcomePages ||landingPageService.isPartnerJourneyPages || landingPageService.isVendorMarketplacePages ){
       this.findPageDataAndLoadBeeContainer(landingPageService, authenticationService);
     }
    }
 
   ngOnInit() {
-    if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages){
+    if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages && !this.isPartnerJourneyPages && !this.isVendorMarketplacePages){
       this.editTemplate();
+      this.getAllTemplatesDuplicates();
     }
   }
+  getAllTemplatesDuplicates() {
+    this.vanityUrlService.getAllTemplatesDuplicates()
+    .subscribe(
+        response => {
+            this.vanitySubjectLines = response.data;
+        },
+        error => { this.logger.errorPage(error) },
+        () => { this.logger.info("Completed getAllTemplatesDuplicates()") }
+    );
+}
+checkForDuplicates(newSubject: string, existingName: string, id:number) {
+  const normalizedNewSubject = newSubject.trim().toLowerCase();
+  const normalizedExistingName = existingName.trim().toLowerCase();
+
+  if (normalizedNewSubject === normalizedExistingName) {
+    this.isSubjectDuplicate = false;
+  }else{
+    const trimmedSubjects = this.vanitySubjectLines[0].map(item => 
+      item[1].trim().toLowerCase()
+  );
+  this.vanitySubjectLines[0].forEach((subjects:any)=>{
+    if(id === subjects[0] && subjects[1].trim().toLowerCase() === normalizedNewSubject){
+      this.isSubjectDuplicate = false;
+    }
+    else {
+      if(subjects[1].trim().toLowerCase() === normalizedNewSubject){
+        this.isSubjectDuplicate = true;
+      }
+    }
+  })
+  this.vanitySubjectLines[1].forEach((name:any)=>{
+    if(name.trim().toLowerCase() === normalizedNewSubject){
+      this.isSubjectDuplicate = true;
+    }
+  })
+  }
+  return this.isSubjectDuplicate;
+}
 
   editTemplate(){
    let self = this;
@@ -114,10 +158,9 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         emailTemplate.jsonBody = jsonContent;
         emailTemplate.htmlBody = htmlContent;
         emailTemplate.userId = self.loggedInUserId;
-    
         const emailTemplateType = emailTemplate.typeInString;
     
-        const requiredTagsMap = {
+         const requiredTagsMap = {
             "ADD_LEAD": [
                 '{{partnerModuleCustomName}}',
                 '{{partnerName}}',
@@ -133,7 +176,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
                 '{{partnerCompany}}',
                 '{{leadName}}',
                 '{{leadCompany}}',
-                '{{dealDescription}}',
+                '{{dealName}}',
                 '{{dealAmount}}',
                 '{{dealStage}}',
                 '{{dealComment}}',
@@ -164,7 +207,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
                 '{{createdByCompanyName}}',
                 '{{leadName}}',
                 '{{leadCompany}}',
-                '{{dealDescription}}',
+                '{{dealName}}',
                 '{{dealAmount}}',
                 '{{dealStage}}',
                 '{{dealComment}}',
@@ -175,7 +218,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
                 '{{createdByCompanyName}}',
                 '{{leadName}}',
                 '{{leadCompany}}',
-                '{{dealDescription}}',
+                '{{dealName}}',
                 '{{dealAmount}}',
                 '{{dealStage}}',
                 '{{dealComment}}',
@@ -212,7 +255,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
                 '{{partnerCompany}}',
                 '{{leadName}}',
                 '{{leadCompany}}',
-                '{{dealDescription}}',
+                '{{dealName}}',
                 '{{dealAmount}}',
                 '{{dealStage}}',
                 '{{dealComment}}',
@@ -223,7 +266,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
     
         const validationChecks = [
           {
-            condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages,
+            condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages && !self.isVendorMarketplacePages,
             checks: [
               { condition: () => !$.trim(emailTemplate.subject), message: "Whoops! We are unable to save this template because subject line is empty." },
               { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
@@ -363,7 +406,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       { name: 'Social Status Content', value: '{{socialStatusContent}}' },
       ];
     }
-    if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType)
+    if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType) {
       mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
       { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
       { name: 'Partner Name', value: '{{partnerName}}' },
@@ -373,6 +416,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       { name: 'Lead Stage', value: '{{leadStage}}' },
       { name: 'Lead Comment', value: '{{leadComment}}' },
       ];
+    }
     if("ADD_DEAL"==emailTemplateType || "DEAL_UPDATE"==emailTemplateType){
       mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
@@ -380,7 +424,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Partner Company', value: '{{partnerCompany}}' },
         { name: 'Lead Name', value: '{{leadName}}' },
         { name: 'Lead Company', value: '{{leadCompany}}'},
-        { name: 'Deal Name', value: '{{dealDescription}}' },
+        { name: 'Deal Name', value: '{{dealName}}' },
         { name: 'Deal Amount', value: '{{dealAmount}}' },
         { name: 'Deal Stage', value: '{{dealStage}}' },
         { name: 'Deal Comment', value: '{{dealComment}}' },
@@ -421,13 +465,14 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Created By Company', value: '{{createdByCompanyName}}' },
         { name: 'Lead Name', value: '{{leadName}}' },
         { name: 'Lead Company', value: '{{leadCompany}}'},
-        { name: 'Deal Name', value: '{{dealDescription}}' },
+        { name: 'Deal Name', value: '{{dealName}}' },
         { name: 'Deal Amount', value: '{{dealAmount}}' },
         { name: 'Deal Stage', value: '{{dealStage}}' },
         { name: 'Company Name', value: '{{companyName}}' },
         { name: 'Deal Comment', value: '{{dealComment}}' },
         ];
     }
+
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
       var beeConfig = {
@@ -498,6 +543,19 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
     this.loading = true;
     this.customResponse = new CustomResponse();
     this.replaceToDefaultLogos(emailTemplate);
+    this.customResponse = new CustomResponse('', '', false);
+    const existingName = emailTemplate.name;
+    const newSubject = emailTemplate.subject;
+    this.checkForDuplicates(newSubject, existingName, emailTemplate.id);
+    if (this.isSubjectDuplicate) {
+      this.loading = false;
+      this.customResponse = new CustomResponse('ERROR', this.properties.DUPLICATE_SUBJECT_ERROR_TEXT, true);
+      this.isSubjectDuplicate = false;
+      return;
+     } 
+     else {
+      this.customResponse = new CustomResponse('', '', false);
+    }
     this.vanityUrlService.saveOrUpdateEmailTemplate(emailTemplate).subscribe(result => {
       this.referenceService.goToTop();
       this.loading = false;
@@ -568,7 +626,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   this.landingPage.categoryId = landingPage.categoryId;
                   this.landingPage.openLinksInNewTab = landingPage.openLinksInNewTab;
                   if(landingPage.sourceInString == 'VENDOR_JOURNEY' || landingPage.sourceInString == 'MASTER_PARTNER_PAGE'
-                    ||landingPage.sourceInString == 'WELCOME_PAGE' ){
+                    ||landingPage.sourceInString == 'WELCOME_PAGE' || landingPage.sourceInString == 'PARTNER_JOURNEY_PAGE'
+                    || landingPage.sourceInString == 'VENDOR_MARKETPLACE_PAGE'){
                     this.landingPage.sourceInString = landingPage.sourceInString;
                   }
                   this.openInNewTabChecked = this.landingPage.openLinksInNewTab;
@@ -635,7 +694,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                           var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                               .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200" autocomplete="off"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                           let dropDown = '';
-                          if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages) {
+                          if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages && !self.isVendorMarketplacePages) {
                               /**********Public/Private************** */
                               dropDown += '<div class="form-group">';
                               dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
@@ -705,7 +764,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                                   '<span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                           if (!self.loggedInAsSuperAdmin) {
                               let dropDown = '';
-                              if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages) {
+                              if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages && !self.isVendorMarketplacePages) {
                                   dropDown += '<div class="form-group">';
                                   dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
                                   dropDown += '<select class="form-control" id="pageType">';
@@ -870,15 +929,15 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.name = this.name;
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
-  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages ;
   this.landingPage.previousLandingPageId = this.id;
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
-  if(this.landingPage.hasVendorJourney || this.welcomePages){
+  if(this.landingPage.hasVendorJourney || this.welcomePages || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
     this.landingPage.type = LandingPageType.PUBLIC;
   }
   if (!this.loggedInAsSuperAdmin) {
-      if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages){
+      if(!this.vendorJourney && !this.isMasterLandingPages && !this.welcomePages && !this.isPartnerJourneyPages && !this.isVendorMarketplacePages){
         this.landingPage.type = $('#pageType option:selected').val();
       }
       this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
@@ -951,7 +1010,8 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
   this.landingPage.welcomePages = this.welcomePages;
-  if(this.landingPage.hasVendorJourney || this.welcomePages){
+  this.landingPage.partnerJourneyPages = this.isPartnerJourneyPages;
+  if(this.landingPage.hasVendorJourney || this.welcomePages || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
   }
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);

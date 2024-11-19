@@ -44,7 +44,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   vendorCompanyLogoPath = "";
   partnerCompanyLogoPath = "";
   isValidName = false;
-  isValidDescription = false;
+  isValidDescription = true;
   beeContainerInput = {};
   tags: Array<Tag> = new Array<Tag>();
   tagFirstColumnEndIndex: number = 0;
@@ -91,6 +91,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.viewType = this.route.snapshot.params["viewType"];
     this.categoryId = this.route.snapshot.params["categoryId"];
     this.folderViewType = this.route.snapshot.params["folderViewType"];
+    this.ckeConfig = this.properties.ckEditorConfig;
   }
 
     ngOnInit() {
@@ -264,13 +265,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
         $.trim(this.damPostDto.name) != undefined &&
         $.trim(this.damPostDto.name).length > 0;
     } else if (columnName == "description") {
-      let trimmedDescription =  this.referenceService.getTrimmedCkEditorDescription(this.damPostDto.description);
-      trimmedDescription = trimmedDescription.substring(3,trimmedDescription.length-4).trim();
-      this.isValidDescription =
-        $.trim(trimmedDescription) != undefined &&
-        $.trim(trimmedDescription).length > 0 &&
-        $.trim(trimmedDescription).length < 5000;
-      this.updateDescriptionErrorMessage(trimmedDescription);
+      this.isValidDescription = true;
     }
     this.validateFields();
   }

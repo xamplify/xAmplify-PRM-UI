@@ -129,7 +129,7 @@
 													<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 														<div class="mActionAlign ActionButtonPad">
 															<!--History-->
-															<a class="custom-icon" *ngIf="asset?.history &&!isPartnerView  && asset?.edit" data-toggle="tooltip" data-placement="top" title="History" (click)="expandHistory(asset,i)">
+															<a class="custom-icon" *ngIf="asset?.history &&!isPartnerView" data-toggle="tooltip" data-placement="top" title="History" (click)="expandHistory(asset,i)">
 																<i class="fa IconCustomization"[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
@@ -256,11 +256,8 @@
 																		<h4 class="mt5 mb5 f-w-600"
 																			data-toggle="tooltip" data-placement="top"
 																			title="{{asset?.assetName}}">
-																			<span><b>Asset Name:</b> <span>
-																					{{asset?.assetName | slice: 0:
-																					17}}</span></span>
-																			<span
-																				*ngIf="asset?.assetName?.length>17">...</span>
+																			<span><b>Asset Name:</b> <span>{{asset?.assetName | slice: 0:17}}</span></span>
+																			<span *ngIf="asset?.assetName?.length>17">...</span>
 																		</h4>
 																		<h6 data-toggle="tooltip" data-placement="top"
 																			title="{{asset?.categoryName}}">
@@ -272,23 +269,16 @@
 																		</h6>
 																		<h6 data-toggle="tooltip" data-placement="top"
 																			title="{{asset?.displayName}}">
-																			<span translate> <b>Created
-																					By:</b>{{asset?.displayName | slice:
-																				0: 23}} </span>
+																			<span translate><b>Created	By:</b>{{asset?.displayName | slice: 0: 23}} </span>
 																		</h6>
 																		<h6 class="moreipsis"
 																			*ngIf="!isPartnerView && asset?.beeTemplate">
-																			<span translate> <b>Version:</b>
-																				{{asset?.versionInString}} </span>
+																			<span translate> <b>Version:</b>{{asset?.versionInString}} </span>
 																		</h6>
 																		<h6 class="moreipsis" *ngIf="isPartnerView">
-																			<span data-toggle="tooltip"
-																				data-placement="top"
-																				title="{{asset?.vendorCompanyName}}"
-																				translate><b>From:</b>
-																				{{asset?.vendorCompanyName
-																				| slice:0:20}} <span
-																					*ngIf="asset?.vendorCompanyName?.length>20">...</span>
+																			<span data-toggle="tooltip"	data-placement="top" title="{{asset?.vendorCompanyName}}" translate><b>From:</b>
+																				{{asset?.vendorCompanyName | slice:0:20}}
+																				<span *ngIf="asset?.vendorCompanyName?.length>20">...</span>
 																			</span>
 																		</h6>
 																		<!---XNFR-255-->
@@ -360,7 +350,7 @@
 																		<div class="actions-block override-actions ActionAlign"
 																			*ngIf="!asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 																			<!--XNFR-381-->
-																			<a class="custom-icon" data-toggle="tooltip"
+																			<a  *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
 																				data-placement="top"
 																				title="Switch To Parent Template"
 																				(click)="changeAsParentPdf(asset.id)">
@@ -369,15 +359,15 @@
 																				<div class="clickicons"></div>
 																			</a>
 																			<!--XNFR-381-->
-																			<a class="custom-icon" data-toggle="tooltip"
+																			<a *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
 																				data-placement="top" title="Design"
 																				(click)="addOrEdit(asset.id)">
 																				<i class="fa fa-paint-brush IconCustomization"
 																					aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
-																			<a class="custom-icon"
-																				*ngIf="asset?.beeTemplate && isPartnerView"
+																			<a  class="custom-icon"
+																				*ngIf="asset?.beeTemplate && isPartnerView && asset?.edit"
 																				data-toggle="tooltip"
 																				data-placement="top" title="Edit"
 																				(click)="addOrEdit(asset.id)">
@@ -416,7 +406,7 @@
 																					aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
-																			<a class="custom-icon" data-toggle="tooltip"
+																			<a *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
 																				data-placement="top" title="Delete"
 																				(click)="confirmDelete(asset)">
 																				<i class="fa fa-trash-o trashIconCustomization"
@@ -478,9 +468,8 @@
 									</div>
 									<h4 class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top"
 										title="{{asset?.assetName}}">
-										<span><b>Asset Name:</b> <span>
-												{{asset?.assetName | slice: 0:
-												54}}</span></span> <span *ngIf="asset?.assetName?.length>54">...</span>
+										<span><b>Asset Name:</b> 
+										<span>{{asset?.assetName | slice: 0: 54}}</span></span> <span *ngIf="asset?.assetName?.length>54">...</span>
 									</h4>
 									<div class="divapdding-or-cards">
 										<div class="aligntowbtns">
@@ -491,17 +480,14 @@
 													<span><b>Received From:</b>
 														{{asset?.whiteLabeledAssetSharedByVendorCompanyName}} </span>
 												</h6>
-												<span
-													class="view-banner-white-labeled LableSpaceings">White-Labeled</span>
+												<span class="view-banner-white-labeled LableSpaceings">White-Labeled</span>
 											</ng-container>
-											<span
-												class="view-banner-dam assettype-bgcolor LableSpaceings">{{asset?.assetType}}</span>
+											<span class="view-banner-dam assettype-bgcolor LableSpaceings">{{asset?.assetType}}</span>
 										</div>
 										<h6 class="xamplify-ellipsis GridViewCotent pt10">
 											<span *ngIf="isPartnerView"> <b>Published On: </b></span>
 											<span *ngIf="!isPartnerView"> <b>Created On: </b></span>
-											<app-timestamp [showInLine]="'true'"
-												[dateAndTime]="asset?.displayTime"></app-timestamp>
+											<app-timestamp [showInLine]="'true'" [dateAndTime]="asset?.displayTime"></app-timestamp>
 										</h6>
 
 										<h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
@@ -522,10 +508,8 @@
 										</h6>
 									</div>
 									<div class="ribbon tab-ribbon">
-										<span
-											*ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
-										<span
-											*ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
+										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
+										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
 									</div>
 									<div class="bar auto-height gridIconCustomization border_none">
 										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset"

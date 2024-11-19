@@ -968,7 +968,7 @@
 																		value="{{contact.id}}" id="{{contact.id}}"
 																		(click)="highlightRow(contact.id,$event)" />
 																</td>
-																<td *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'text-line':''" *ngIf="isPartner">
 																	<app-user-info [isPartnerEntityInfo]="true"
 																		[isPartnerInfo]="true" [userInfo]="contact">
 																	</app-user-info>
@@ -1004,28 +1004,28 @@
 																		</span>
 																	</ng-container>
 																</td>
-																<td class="white-space-transform" *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.vertical | slice:0:14}}
 																	<span *ngIf="contact.vertical?.length>14">..</span>
 																</td>
-																<td class="white-space-transform" *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.region | slice:0:14}}
 																	<span *ngIf="contact.region?.length>14">..</span>
 																</td>
-																<td class="white-space-transform" *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.partnerType | slice:0:14}}
 																	<span
 																		*ngIf="contact.partnerType?.length>14">..</span>
 																</td>
-																<td class="white-space-transform" *ngIf="isPartner">
+																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.category | slice:0:14}}
 																	<span *ngIf="contact.category?.length>14">..</span>
 																</td>
-																<td *ngIf="!isPartner">
+																<td [ngClass]="(isContactModule && isLocalhostOrQADomain)?'text-line':''" *ngIf="!isPartner" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''">
 																	<app-user-info [isContactCompanyInfo]="true"
 																		[userInfo]="contact"> </app-user-info>
 																</td>
-																<td class="hidden-xs" *ngIf="!isPartner">
+																<td [ngClass]="(isContactModule && isLocalhostOrQADomain)?'hidden-xs text-line':'hidden-xs'" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''" *ngIf="!isPartner">
 																	<h5 class='mb0 ellipsis' data-toggle="tooltip"
 																		data-placement="bottom"
 																		title="{{contact.jobTitle}}">{{contact.jobTitle
@@ -1034,7 +1034,7 @@
 																			*ngIf="contact.jobTitle?.length>25">...</span>
 																	</h5>
 																</td>
-																<td align="center" class="hidden-xs">
+																<td align="center" [ngClass]="(isContactModule && isLocalhostOrQADomain)?'hidden-xs text-line':'hidden-xs'" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''">
 																	<h5 *ngIf="contact?.address" class='mb0'>
 																		{{contact.address | slice:0:30}}
 																		<span
@@ -1124,13 +1124,11 @@
 																		</ng-container>
 																		<!--XNFR-342---->
 																		<a class="custom-icon"
-																			*ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList"
-																			data-toggle="tooltip"
-																			data-placement="bottom"
-																			title="Campaign Analytics"
-																			(click)="goToCampaigns(contact)">
-																			<i class="fa fa-line-chart IconCustomization"
-																				aria-hidden="true"></i>
+																			*ngIf="(authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads 
+																				&& (!sharedLeads) && !isSynchronizationList) || (isContactModule && authenticationService.module.isCampaign && (authenticationService?.module?.isPrmAndPartner 
+																				|| authenticationService?.module?.isPrmAndPartnerTeamMember))"
+																			data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+																			<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
 																			<div class="clickicons"></div>
 																		</a>
 																	</div>
@@ -1328,7 +1326,7 @@
 										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 											style="float: left; cursor: pointer; " data-toggle="modal"
 											data-target="#filterModal">
-											<i class="fa fa-filter ml-16" aria-hidden="true" data-toggle="tooltip"
+											<i class="fa fa-filter ml_16" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 												style="color: #0095da; font-size: 30px; margin-top: 10px; margin-left: 40px;"></i>
 										</div>
@@ -1639,6 +1637,105 @@
 																	</tr>
 																</ng-container>
 
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none" *ngIf="isPartner">
+																		<td class='pt10 pb10 bold' translate>
+																			Account Name:</td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.accountName}}</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none" *ngIf="isPartner">
+																		<td class='pt10 pb10 bold' translate>
+																			Account Owner :</td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.accountOwner}}</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none" *ngIf="isPartner">
+																		<td class='pt10 pb10 bold' translate>
+																			Account Sub Type :</td>
+																		<td class='pt10 pb10 pr10'>
+																			{{allcontacts.accountSubType}}</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none" *ngIf="isPartner">
+																		<td class='pt10 pb10 bold' translate>
+																			Company Domain:</td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.companyDomain}}</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none" *ngIf="isPartner">
+																		<td class='pt10 pb10 bold' translate>
+																			Website :</td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.website}}</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none" *ngIf="isPartner">
+																		<td class='pt10 pb10 bold' translate>
+																			Territory : </td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.territory}}</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none">
+																		<td class='pt10 pb10 bold' translate>
+																			Address:</td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.address}}</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none">
+																		<td class='pt10 pb10 bold' translate>
+																			City:</td>
+																		<td class='pt10 pb10'>{{allcontacts.city}}
+																		</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none">
+																		<td class='pt10 pb10 bold' translate>
+																			State:</td>
+																		<td class='pt10 pb10'>{{allcontacts.state}}
+																		</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none">
+																		<td class='pt10 pb10 bold' translate>Zip
+																			Code:</td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.zipCode}}</td>
+																	</tr>
+																</ng-container>
+															
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none">
+																		<td class='pt10 pb10 bold' translate>
+																			Country:</td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.country}}</td>
+																	</tr>
+																</ng-container>
+
 																<!----- XNFR-680 Flexi Fields ----->
 																<ng-container>
 																	<tr *ngFor="let flexiField of allcontacts.flexiFields" class="bg-unset flex-none">
@@ -1883,33 +1980,28 @@
 										</switch>
 									</td>
 									<!--- (XNFR-85) ----->
-									<td *ngIf="authenticationService?.module?.adminOrSuperVisor"
-										id="edit-team-member-group-error-count-{{i}}">
+									<td *ngIf="authenticationService?.module?.adminOrSuperVisor" id="edit-team-member-group-error-count-{{i}}">
 										<div class="input-group">
-											<select id="edit-partner-tm-group-{{i}}"
-												[disabled]="partner?.selectedTeamMemberIds?.length > 0"
+											<select id="edit-partner-tm-group-{{i}}" [disabled]="partner?.selectedTeamMemberIds?.length > 0"
 												class="form-control" [(ngModel)]="partner.teamMemberGroupId"
 												(ngModelChange)="getTeamMembersByGroupId(partner,i)">
-												<option *ngFor="let teamMemberGroup of teamMemberGroups"
-													[ngValue]="teamMemberGroup.id">
-													{{teamMemberGroup?.name}} ({{teamMemberGroup?.teamMembersCount}})
+												<option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+													{{teamMemberGroup?.name}}{{ teamMemberGroup?.name !== '--Please Select--' ? '(' +
+													teamMemberGroup.teamMembersCount + ')' : '' }}
 												</option>
 											</select>
 											<span class="input-group-btn">
-												<button data-toggle="tooltip" data-placement="bottom"
-													title="Preview Modules" [disabled]="partner.teamMemberGroupId==0"
-													class="btn btn-info" type="button" tabindex="-1"
+												<button data-toggle="tooltip" data-placement="bottom" title="Preview Modules"
+													[disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
 													(click)="previewModules(partner.teamMemberGroupId)">
 													<i class="fa fa-eye white" aria-hidden="true"></i>
 												</button>
 											</span>
 											<span class="input-group-btn">
-												<button data-toggle="tooltip" data-placement="bottom"
-													title="Select Team Members"
-													[disabled]="partner.teamMemberGroupId==0" class="btn btn-info"
-													type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
-													<i class="fa"
-														[ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
+												<button data-toggle="tooltip" data-placement="bottom" title="Select Team Members"
+													[disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
+													(click)="getTeamMembers(partner,i)">
+													<i class="fa" [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
 														aria-hidden="true"></i>
 												</button>
 											</span>

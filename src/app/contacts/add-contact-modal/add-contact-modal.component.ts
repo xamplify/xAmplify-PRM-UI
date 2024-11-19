@@ -226,7 +226,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.addContactModalClose();
         this.addContactuser.country = this.addContactuser.country == this.countryNames.countries[0] ? '' : this.addContactuser.country
         if (this.checkIsContactType()) {
-            this.addContactuser.flexiFields = this.flexiFieldsRequestAndResponseDto;
+            this.addContactuser.flexiFields = JSON.parse(JSON.stringify(this.flexiFieldsRequestAndResponseDto));
         }
         this.notifyParent.emit(this.addContactuser);
     }

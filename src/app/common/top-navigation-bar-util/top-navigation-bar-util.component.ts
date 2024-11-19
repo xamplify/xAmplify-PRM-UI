@@ -30,6 +30,7 @@ import { UserService } from 'app/core/services/user.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { Module } from 'app/core/models/module';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var $:any, CKEDITOR:any;
 
@@ -126,6 +127,7 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
   itemsToShow: number = 3;
   isWelcomePageActive:boolean = false;
   helpGuidesUrl:boolean = false;
+  searchKey:string = "";//XNFR-574
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -139,6 +141,12 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
 		, private dashBoardService: DashboardService) {
     try {
       if (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()) {
+      }
+      let setSearchKey = localStorage.getItem(XAMPLIFY_CONSTANTS.universalSearchKey);//XNFR-574
+      if (setSearchKey) {
+        this.searchKey = setSearchKey;
+      } else {
+        this.searchKey = '';
       }
       this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
       this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
@@ -740,6 +748,12 @@ private beforeAdd(tag: any) {
 					this.menuItem.socialFeedsAccessAsPartner = data.rssFeedsAccessAsPartner;
 					module.hasSocialStatusRole = data.socialShare;
 
+          /**XNFR-726***/
+					module.socialShareOptionEnabled = data.socialShare;
+					module.socialFeedsAccess = data.rssFeeds;
+					module.socialFeedsAccessAsPartner = data.rssFeedsAccessAsPartner;
+					/**XNFR-726***/
+
 					this.menuItem.mdf = data.mdf;
 					this.menuItem.mdfAccessAsPartner = data.mdfAccessAsPartner;
 					
@@ -1170,4 +1184,31 @@ private beforeAdd(tag: any) {
       () => this.logger.log('Finished')
     );
   } 
+  /**  XNFR-574 */
+  universalSearchOnKeyPress(keyCode:any) {
+    this.searchKey = this.searchKey.trim();
+    if (keyCode === 13 && (this.searchKey != '' && this.searchKey.trim().length>0)) { 
+      this.universalSearch();
+    }
+  }
+  universalSearch() {
+    this.refService.universalSearchKey = this.searchKey;
+    this.saveSearchKeyToLocalStorage(this.refService.universalSearchKey);
+    let universalSearchUrl = RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.universalSearch;
+    this.location.replaceState(universalSearchUrl);
+    this.refService.goToRouter(universalSearchUrl);
+  }
+  isEmptyOrWhitespace(value: string | null | undefined): boolean {
+    return value != '' && value.trim().length>0;
+  }
+  saveSearchKeyToLocalStorage(searchKey: string) {
+    localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey, searchKey);
+  }
+  goToDashBoard() {
+    this.searchKey = "";
+    this.refService.universalSearchKey = "";
+    this.saveSearchKeyToLocalStorage(this.refService.universalSearchKey);
+    this.refService.goToRouter(this.refService.homeRouter);
+  }
+  /** XNFR-574 */
 }

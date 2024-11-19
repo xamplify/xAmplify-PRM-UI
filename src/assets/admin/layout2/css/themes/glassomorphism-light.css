@@ -1147,8 +1147,8 @@ input#copy-link {
 }
 .c-btn {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background-color: #22313a !important;
-  color: white !important;
+  background-color: rgb(255 253 253 / 35%) !important;
+  color: #000 !important;
 }
 .list-area {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -2924,23 +2924,9 @@ button.unlink-button {
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
-.tiles-card{
-  color: #ffffff!important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-.tiles-card:hover{
-  color: #fff !important;
-  background: rgb(146 151 179 / 8%) !important;
-  transform: scale(1.04);
-  transition: all 0.3s ease;
-}
-p.pa-text{
-  color: #ffffff!important;
-}
-.tiles-card:hover p{
-  color: #ffffff !important;
-  background-color: rgb(146 151 179 / 0%) !important;
-}
+/*** XNFR-725 ***/
+/* removed css */
+ /*** XNFR-725 ***/
 .pjCardTitlebg {
   background-color: rgb(146 151 179 / 8%) !important;
   border-radius: 10px 10px 0px 0px !important;
@@ -4445,4 +4431,39 @@ border: 1px solid rgb(255 255 255 / 35%) !important;
 }
 .quicklinks_icons>i.fa.fa-eye{
   padding-left: 0px!important;
+}
+/*Contact-journey*/
+.profile-leftsidebar{
+  background: rgb(255 255 255 / 40%) !important;
+  border-right: 1px solid rgb(255 255 255 / 35%)!important;
+}
+.icons_colors,.profile_info p,.lead_details li i {
+  color: #404040!important;
+}
+.lead_details h3{
+  background: rgb(255 255 255 / 40%) !important;
+  font-weight: 600;
+}
+.edit_contact{
+  border-bottom: 1.4px rgb(255 255 255 / 35%)dashed;
+}
+.activity_card,.asidebar{
+  background: rgb(255 255 255 / 40%) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.panel-headings>.panel-title a{
+  color: #333!important;
+}
+.panel-title>a.add-btn {
+  color: #578ebe!important;
+}
+.icon-btns:hover,i.fa.fa-edit.ml_6:hover{
+  background-color: #dee2e5!important;
+}
+i.fa.fa-edit.ml_6{
+  background-color: #eaf0f6!important;
+  color: #555 !important;
+}
+.asidebar{
+  border-left: 1px solid rgb(255 255 255 / 35%)!important;
 }

@@ -143,7 +143,24 @@ export class ManageLeadsComponent implements OnInit {
       this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
     }
     this.mergeTagForUserGuide();
+    /** XNFR-574 **/
+    this.triggerViewLead(); 
   }
+  triggerViewLead() {
+    if (this.referenceService.universalId !== 0) {
+        //this.lead.id = this.referenceService.universalLeadId;
+        this.showLeadForm = true;
+        this.actionType = "view";
+        this.leadId = this.referenceService.universalId;
+    }
+}
+triggerUniversalSearch(){
+  if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Lead') {
+    this.leadsSortOption.searchKey = this.referenceService.universalSearchKey;
+    let keyCode:any = 13;
+    if (keyCode === 13) { this.searchLeads(); }
+  }
+}
 
   init() {
     const roles = this.authenticationService.getRoles();
@@ -237,13 +254,13 @@ export class ManageLeadsComponent implements OnInit {
         }
     
       });
-    });
-   
+    });  
   }
 
   //XNFR-681
   ngOnDestroy() {
-    this.referenceService.isCreated = false;
+    this.referenceService.isCreated = false; 
+    this.referenceService.universalId = 0; //XNFR-574
   }
 
   showVendor() {
@@ -354,6 +371,7 @@ export class ManageLeadsComponent implements OnInit {
     this.selectedTabIndex = 1;
     this.titleHeading = "Total ";
     this.resetLeadsPagination();
+    this.triggerUniversalSearch();//XNFR-574
     this.campaignPagination = new Pagination;
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if (this.vanityLoginDto.vanityUrlFilter) {

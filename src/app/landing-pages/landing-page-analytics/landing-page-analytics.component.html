@@ -1,9 +1,9 @@
-<div  [ngClass]="{'page-content':(!(vendorJourney||masterLandingPages || welcomePages) && !vendorPages) }">
+<div  [ngClass]="{'page-content':(!(vendorJourney||masterLandingPages || welcomePages || isPartnerJourneyPages || isVendorMarketplacePages) && !vendorPages && !vendorPartnerJourneyPages) }">
     <ng-container *ngIf="pageLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
     </ng-container>
     <ng-container *ngIf="!pageLoader">
-    <div class="page-bar" *ngIf = "!(vendorJourney||masterLandingPages || welcomePages) && !vendorPages" >
+    <div class="page-bar" *ngIf = "!(vendorJourney||masterLandingPages || welcomePages|| isPartnerJourneyPages || isVendorMarketplacePages) && !vendorPages && !vendorPartnerJourneyPages" >
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -79,7 +79,7 @@
             </div>
             <!-- END PORTLET-->
         </div>
-        <app-vendor-journey-analytics *ngIf="viewsStatusCode==200 &&(vendorJourney || masterLandingPages)" [isVendorJourney]="vendorJourney" [isMasterLandingPages] ="masterLandingPages" [vendorLandingPageId]="vendorLandingPageId"></app-vendor-journey-analytics>
+        <app-vendor-journey-analytics *ngIf="viewsStatusCode==200 &&(vendorJourney || masterLandingPages || isVendorMarketplacePages ||isPartnerJourneyPages )" [isVendorJourney]="vendorJourney" [isMasterLandingPages] ="masterLandingPages" [isPartnerJourneyPages]="isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages" [vendorLandingPageId]="vendorLandingPageId"></app-vendor-journey-analytics>
         <div class="col-xs-12 p5" *ngIf="statusCode==404 && landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
             <div class="alert alert-danger">
                 <strong>

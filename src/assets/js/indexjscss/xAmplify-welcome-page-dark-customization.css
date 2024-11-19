@@ -131,3 +131,14 @@
 background-color: var(--top-bg-color) !important;
   }
 }
+
+/*** XNFR-574 ****/
+.universalsearchBox,
+.universalsearch:hover > .universalsearchButton {
+  background-color: var(--top-buton-color);
+}
+.universalsearchBox:hover > .universalsearchInput,
+.universalsearchBox:hover> .universal-close,
+.universalsearchInput {
+  color: var(--top-button-value-color);
+}

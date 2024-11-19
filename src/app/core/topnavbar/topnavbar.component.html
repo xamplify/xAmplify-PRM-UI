@@ -37,6 +37,9 @@
          <div class="page-top" [ngClass]="cskin.defaultSkin?'':'customskin-top'" [class.active]="isNavbarBackgroundVisible">
             <div class="top-menu">
                <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
+                  <li class="topnav-button-css">
+                     <app-universal-search-bar *ngIf="authenticationService.vanityURLEnabled"></app-universal-search-bar>
+                  </li>
                   <!---XNFR-222-->
                   <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css LogedAsBoxTop">
                      <div class="alert alert-info LogedAsBox" style="position: relative;bottom: 5px;">
@@ -67,11 +70,11 @@
                      &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                      <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                   </li>
-                  <li class="btnShare" class="topnav-button-css"
-                     *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
+                  <li style="display: none;" class="btnShare" class="topnav-button-css"
+                     *ngIf="authenticationService?.module?.socialShareOptionEnabled &&  authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                      <button class="btn btn custom btn_custom_bg" [ngClass]="authenticationService?.isTop?'customskin':''"
                         [routerLink]="['/home/social/update-status']" style="border-radius: 7px;">
-                        <span class="hidden-xs" translate>Update Status <span class="beta_social_icon_for_buttons">(Beta)</span></span>
+                        <span class="hidden-xs hidden-tabview" translate>Update Status <sup>(Beta)</sup></span>
                         <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''" button
                            data-toggle="tooltip" aria-hidden="true"></i>
                      </button>
@@ -128,16 +131,17 @@
                            </a>
                            <div class="border-bt"></div>
                         </li>
-                        <li
+                        <li style="display: none;"
                            *ngIf="(refService.hasAllAccess()
                             || authenticationService.module.hasSocialStatusRole
                             || authenticationService.module.isOrgAdmin
                             || authenticationService.module.isVendor
                             || authenticationService.module.isPrm
                             || authenticationService.module.isVendorTier
-                            || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
-                           <a (click)="goToRouter('/home/social/manage/all')" translate> <i class="fa fa-cog"
-                                 aria-hidden="true"></i> Social Accounts <span class="beta_social_icon">(Beta)</span></a>
+                            || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && authenticationService?.module?.socialShareOptionEnabled">
+                           <a (click)="goToRouter('/home/social/manage/all')" translate>
+                              <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts <sup>(Beta)</sup>
+                           </a>
                            <div class="border-bt"></div>
                         </li>
 
@@ -234,7 +238,7 @@
    <!-- END HEADER -->
    <div class="clearfix"></div>
    <!--Requesting vendor modal-->
-   <div class="modal fade right" id="requestForVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+   <div class="modal fade right" id="requestForVendor" role="dialog" aria-labelledby="myModalLabel"
       data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog" role="document">
          <div class="my-container">
@@ -271,7 +275,7 @@
                   <div class="form-group" *ngIf="isShowCKeditor">
                      <label for="subjectLine">Message <span class="text-danger">*</span></label>
                      <ckeditor name="body" [(ngModel)]="vendoorInvitation.message" [ngModelOptions]="{standalone: true}"
-                        (input)="validateVendoorInvitation()"></ckeditor>
+                        (input)="validateVendoorInvitation()" [config]="ckeConfig"></ckeditor>
                   </div>
                </div>
                <div *ngIf="isValidationMessage">

@@ -16,6 +16,7 @@ import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
+import { Properties } from 'app/common/models/properties';
 
 declare var $, swal, Highcharts, CKEDITOR: any;
 
@@ -23,7 +24,7 @@ declare var $, swal, Highcharts, CKEDITOR: any;
     selector: 'app-partner-reports',
     templateUrl: './partner-reports.component.html',
     styleUrls: ['./partner-reports.component.css'],
-    providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue]
+    providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue,Properties]
 })
 export class PartnerReportsComponent implements OnInit, OnDestroy {
     landingPage: any;
@@ -99,7 +100,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
-        public utilService: UtilService,private route: ActivatedRoute) {
+        public utilService: UtilService,private route: ActivatedRoute,public properties: Properties) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('partnerAnalytics');
         this.isListView = !this.referenseService.isGridView;
@@ -115,7 +116,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         Highcharts.chart('campaign-type-chart', {
             chart: { type: 'bar',backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff" },
             xAxis: {
-                categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
+                categories: ['VIDEO CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
                 lineWidth: 0,
                 minorTickLength: 0,
                 tickLength: 0,
@@ -164,7 +165,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             (data: any) => {
                 const campaignData = [];
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
-                campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
+               // campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SURVEY);
@@ -448,6 +449,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     /************************InActive Partners Tab********************/
     goToInActivePartnersDiv() {
         this.sortOption = new SortOption();
+        this.customResponse = new CustomResponse();
         this.selectedTabIndex = 1;
         this.httpRequestLoader = new HttpRequestLoader();
         //XBI-1975
@@ -1041,6 +1043,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.selectedTabIndex = 6;
         this.sortOption = new SortOption();
         this.httpRequestLoader = new HttpRequestLoader();
+        this.customResponse = new CustomResponse();
         this.isThroughPartnerDiv = false;
         this.isInactivePartnersDiv = false;
         this.isActivePartnerDiv = false;
@@ -1061,6 +1064,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.selectedTabIndex = 7;
         this.sortOption = new SortOption();
         this.httpRequestLoader = new HttpRequestLoader();
+        this.customResponse = new CustomResponse();
         this.isThroughPartnerDiv = false;
         this.isInactivePartnersDiv = false;
         this.isActivePartnerDiv = false;
@@ -1152,5 +1156,4 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
-
 }

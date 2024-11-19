@@ -9,7 +9,7 @@
         authenticationService.module.isVendor || authenticationService.module.isMarketing || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||
         authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || authenticationService.module.isVendorTierTeamMember || 
         authenticationService.module.isMarketingTeamMember || !isTeamMemberAnalytics ||
-        authenticationService.module.isMarketingAndPartnerTeamMember" title="{{properties.vendorText}}" [ngStyle]="{'display': headerText === 'Status Wise Track' ? 'none':'inline'}" style="position: relative;left: 6px;top: 6px;"></i>
+        authenticationService.module.isMarketingAndPartnerTeamMember" title="{{properties.vendorText}}" [ngStyle]="{'display': headerText === '' || headerText === 'Status Wise Track' ? 'none' : 'inline'}" style="position: relative;left: 6px;top: 6px;"></i>
         <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top" *ngIf="authenticationService.hasOnlyPartnerRole" title="{{properties.partnerText}}" [ngStyle]="{'display': headerText === 'Status Wise Track' ? 'none':'inline'}" style="position: relative;left: 6px;top: 6px;"></i>
       </div>
       <div class="portlet-body">

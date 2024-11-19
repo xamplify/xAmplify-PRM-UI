@@ -2,8 +2,8 @@
 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 <div *ngIf="!loading">
   <div class="portlet light">
-    <h4 class="bold-font-weight">Turn Campaign Analytics ON or OFF</h4>
-    <label class="bold-font">You have the ability to view or hide the campaign analytics in the "Manage Campaigns" section.</label>
+    <h4 class="bold-font-weight" translate>Turn Campaign Analytics ON or OFF</h4>
+    <label class="bold-font" translate>You have the ability to view or hide the campaign analytics in the "Manage Campaigns" section.</label>
     <div>
       <h5 class="bold-font-weight h5-custom-font">Enabling this option may result in a delay when loading the analytics.
         <br><br>
@@ -14,6 +14,6 @@
   <!--Update Button-->
   <div id="right">
     <button type="button" class="button_blue bgcolor-unset" translate (click)="updateCampaignAnalyticsSettingsOption()">
-      <span class="btn btn-primary transition txt_pd-top3">Update</span></button>
+      <span class="btn btn-primary transition txt_pd-top3" translate>Update</span></button>
   </div>
 </div>

@@ -1209,7 +1209,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
 
     getUpdatedValue(event: any) {
-        //this.archived = event.archived;
         let viewType = event.viewType;
         if (viewType != undefined) {
             this.setViewType(viewType);

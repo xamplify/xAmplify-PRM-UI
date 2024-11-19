@@ -6,11 +6,11 @@
   webshims.polyfill('forms forms-ext');
 </script>
 
-<div [ngClass]=" isThroughAddUrl ? 'page-content' :'' " id="del-profile-div">
+<div [ngClass]=" (isThroughAddUrl || isDealFromContact) ? 'page-content' :'' " id="del-profile-div">
    <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div *ngIf="isThroughAddUrl" class="page-bar" style="height:48px">
+  <div *ngIf="isThroughAddUrl || isDealFromContact" class="page-bar" style="height:48px">
     <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
-      <div class="col-xs-12 col-sm-5 col-lg-6">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
         <ul class="page-breadcrumb pbc-m3">
           <li *ngIf="!authenticationService.isSuperAdmin()">
             <i class="fa fa-home" aria-hidden="true"></i>
@@ -22,14 +22,47 @@
             </a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li>
+          <li *ngIf="!isDealFromContact">
             <a>Add</a>
+          </li>
+          <li *ngIf="isDealFromContact && !isFromCompanyModule">
+            <a (click)="goBackToManageContacts()">Manage Contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromCompanyModule">
+            <a (click)="goBackToManageCompanies()">Manage Companies</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact">
+            <a (click)="goBackToEditContacts()">Edit Contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact">
+            <a (click)="goBackToContactDetailsPage()">Contact Details</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromContactAllLeadsTab">
+            <a (click)="goBackToContactDetailsAllLeadsPage()">All Leads</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromContactAllDealsTab">
+            <a (click)="goBackToContactDetailsAllLeadsPage()">All Deals</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'add'">
+            <a>Add Deal</a>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'edit'">
+            <a>Edit Deal</a>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'view'">
+            <a>View Deal</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="portlet-title">
+  <div class="portlet-title" *ngIf="!isDealFromContact">
     <div class="caption deal-title-css" [ngClass]="isDealForAndContactInfoDivCenterAligned ? 'text-center':''">
       {{dealFormTitle}}
     </div>
@@ -45,7 +78,7 @@
         <div class="row mr-3">
           <div [ngClass]="isDealForAndContactInfoDivCenterAligned ? ' col-md-6 col-md-offset-3' :'col-sm-6 col-xs-12 px-10 pl0 mb_pr0'">
             <!--Deal Details-->
-            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="!hideDealDetailsForSelfDeal && (!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany))) && isDealDetailsTabDisplayed">
+            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="!hideDealDetailsForSelfDeal && (!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin))) && isDealDetailsTabDisplayed">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -227,7 +260,7 @@
                     </h4>
                   </div>
                   <div [ngClass]="{'collapse': isCommentAndHistoryCollapsed, '': !isCommentAndHistoryCollapsed}" id="commentsAndHistory">
-                    <div class="panel-body br-unset pl0 pr0 pt0 pb0">
+                    <div class="panel-body br-unset pl0 pr0 pt0 pb0 commentScroll">
                       <div class="card-bgcolors h-260 pl0 pr0">
                         <div *ngIf="!commentsLoader"  class="deal-details">
                           <div class="row mix-grid p10 bg-color">

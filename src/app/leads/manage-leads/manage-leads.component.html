@@ -348,50 +348,50 @@
                           <tr>
                             <td>
                               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
-                              <div style="margin-left: 60px;"  data-toggle="tooltip" data-placement="bottom" title="{{lead.createdForCompanyName}}">
-                                <h5 class="m0" *ngIf="isPartnerVersion"><strong>Added For:</strong>
+                              <div class="ml-50" style="margin-left: 60px;"  data-toggle="tooltip" data-placement="bottom" title="{{lead.createdForCompanyName}}">
+                                <h5 class="mb0 mt5" *ngIf="isPartnerVersion"><strong>Added For:</strong>
                                   <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
                                   </span>
                                 </h5>
                               </div>
                               <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 61px;"
-                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}" class="neo">
-                                <h5 class="m0"><strong>Campaign:</strong>
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}" class="neo ml-50">
+                                <h5 class="mb0 mt5"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                     <span *ngIf="lead.campaignName?.length>30">...</span>
                                   </span>
                                 </h5>
                               </div>
                               <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 61px;"
-                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}" class="neo">
-                                <h5 class="m0"><strong>Campaign:</strong>
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}" class="neo ml-50">
+                                <h5 class="mb0 mt5"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
                                     <span *ngIf="lead.parentCampaignName?.length>30">...</span>
                                   </span>
                                 </h5>
                               </div>
                               <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0" style="margin-left: 60px;"
-                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}" class="neo">
-                                <h5 class="m0"><strong>Campaign:</strong>
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}" class="neo ml-50">
+                                <h5 class="mb0 mt5"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                     <span *ngIf="lead.campaignName?.length>30">...</span>
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion" style="margin-left: 61px;" class="neo">
-                                <h5 class="m0"><strong>Lead Id:</strong>
+                              <div *ngIf="isVendorVersion" style="margin-left: 61px;" class="neo ml-50">
+                                <h5 class="mb0 mt5"><strong>Lead Id:</strong>
                                   <span>{{lead.referenceId}}
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion" style="margin-left: 61px;" class="neo">
-                                <h5 class="m0"><strong>CRM Id:</strong>
+                              <div *ngIf="isVendorVersion" style="margin-left: 61px;" class="neo ml-50">
+                                <h5 class="mb0 mt5"><strong>CRM Id:</strong>
                                   <span>{{lead.crmId}}
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 61px;" class="neo">
+                              <div *ngIf="isVendorVersion && lead.sfcfDealRegStatusForVersa && lead.sfcfDealRegStatusForVersa.length > 1" style="margin-left: 61px;" class="neo ml-50">
                                 <h5 class="mt5"><strong>Deal Reg Status:</strong>
                                   <span>{{lead.sfcfDealRegStatusForVersa}}
                                   </span>
@@ -399,21 +399,21 @@
                               </div>
                             </td>
                             <td>
-                              <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
+                              <h5 class="m0" *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
                                 title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:20}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
-                              <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"
+                              <h5 class='m_t_view mt5 mb0' data-toggle="tooltip" data-placement="bottom"
                                 title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{lead.createdByName | slice:0:20}}
                                 <span *ngIf="lead.createdByName?.length>20">...</span>
                               </h5>
-                              <h6 class='m0' style="font-weight: 400;">
+                              <h6 class='mt5 mb0' style="font-weight: 400;">
                                 <a data-toggle="tooltip" data-placement="bottom"
                                   title="{{lead.createdByEmail}}">{{lead.createdByEmail | slice:0:30}}</a>
                                 <span *ngIf="lead.createdByEmail?.length>30">...</span>
                               </h6>
-                              <h5 style="font-weight: 600; color: #676767;">
+                              <h5 class="mt5 mb0" style="font-weight: 600; color: #676767;">
                                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
                                 </app-timestamp>
                               </h5>

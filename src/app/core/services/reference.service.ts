@@ -158,7 +158,9 @@ export class ReferenceService {
   isHarizontalNavigationBar:boolean = false;
   isFromLogin:boolean  = false;
   isUserProfileLoading = false;
-
+  universalSearchKey:string = ""; //XNFR-574
+  universalId:number = 0; //XNFR-574
+  universalModuleType:string = ""; //XNFR-574
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -1988,8 +1990,14 @@ export class ReferenceService {
   goToCampaignAnalytics(campaign:any) {
     let campaignId = campaign.campaignId;
     let encodedCampaignId = this.encodePathVariable(campaignId);
-    let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
-    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
+    let campaignTitle = campaign.campaignTitle;
+    if(campaignTitle!=undefined && this.getTrimmedData(campaignTitle).length>0){
+      let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
+      this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
+    }else{
+      this.showSweetAlertErrorMessage("Campaign Title Not Found");
+    }
+    
   }
 
   navigateBackToCampaignAnalytics(campaign:any) {
@@ -2603,6 +2611,15 @@ export class ReferenceService {
     }
   }
 
+  /**XBI-2417**/
+  getDefaultViewType(){
+    let defaultDisplayType = localStorage.getItem("defaultDisplayType");
+    return defaultDisplayType === "LIST" ? "l" :
+       defaultDisplayType === "FOLDER_LIST" ? "fl" :
+       defaultDisplayType === "FOLDER_GRID" ? "fg" :
+       defaultDisplayType === "GRID" ? "g" : "l";
+  }
+
   setDisplayType(modulesDisplayType: ModulesDisplayType, viewType: string) {
     if ("l" == viewType) {
       modulesDisplayType.isListView = true;
@@ -3034,12 +3051,17 @@ export class ReferenceService {
     let sortColumn = $.trim(pagination.sortcolumn)!=null ? $.trim(pagination.sortcolumn):"";
     let sortOrder = $.trim(pagination.sortingOrder)!=null ? $.trim(pagination.sortingOrder):"";
     let sort = sortColumn.length>0 && sortOrder.length>0 ? sortColumn+","+sortOrder:"";
+    let fromDateFilterString = $.trim(pagination.fromDateFilterString)!=null ? $.trim(pagination.fromDateFilterString) :"";
+    let toDateFilterString =$.trim(pagination.toDateFilterString)!=null ? $.trim(pagination.toDateFilterString) :"";
     let sortParam = sort.length>0 ? "&sort="+sort:"";
     let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
+    let fromDateFilterStringParam = fromDateFilterString.length>0 ? "&fromDateFilterString="+fromDateFilterString:"";
+    let toDateFilterStringParam = toDateFilterString.length>0 ? "&toDateFilterString="+toDateFilterString:"";
     let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true":"";
+    let timeZoneParam = pagination.timeZone != null ? "&timeZone="+pagination.timeZone :"";
     let filterBy = $.trim(pagination.filterBy)!=null ? $.trim(pagination.filterBy) :"";
     let filterParam = filterBy.length>0 ? "&filterBy="+filterBy:"";
-    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter+filterParam);
+    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter+filterParam+fromDateFilterStringParam+toDateFilterStringParam+timeZoneParam);
   }
   
   downloadCsvTemplate(url:string){
@@ -3708,6 +3730,16 @@ previewMasterPartnerPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/mplp/"+encodedIdURLString);
 }
 
+previewPartnerJourneyVendorPageInNewTab(id:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/pjplp/"+encodedIdURLString);
+}
+
+previewVendorMarketplacePageInNewTab(id:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vmplp/"+encodedIdURLString);
+}
+
 previewAssetPdfInNewTab(id:number){
   let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
   this.openWindowInNewTab("/pv/v/pdf/"+encodedIdURLString);
@@ -3787,7 +3819,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
 
   navigateToQuickLinksAnalytics(quickLink:any){
     let router = "";
-    let viewType = "/"+this.getListOrGridViewType();
+    let viewType = "/"+this.getDefaultViewType();
     if(quickLink.type=="Asset"){
       router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
     }else if(quickLink.type=="Track"){
@@ -3799,7 +3831,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
   }
 
   handleQuickLinkPreview(quickLink: any, isPartnerLoggedInThroughVanityUrl: boolean, vendorCompanyId: number) {
-    const viewType = `/${this.getListOrGridViewType()}`;
+    const viewType = `/${this.getDefaultViewType()}`;
     let router = '';
     let id = quickLink.id;
     if(isPartnerLoggedInThroughVanityUrl){

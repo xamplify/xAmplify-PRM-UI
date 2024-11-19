@@ -126,6 +126,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   isNavigatedFromSuperAdminScreen = false;
   showAnalytics: boolean = false;
   teamInfo: any;
+  csvPagination: any;
+  logListName: string = "";
+  downloadDataList = [];
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -1202,4 +1205,60 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.isCollapsed = false;
     this.refreshList();
   }
-}
+
+  downloadTeamMemberCsv() {
+    this.httpRequestLoader.isHorizontalCss = true;
+    this.csvPagination = { 
+      ...this.pagination, 
+      selectedTeamMemberIds: this.selectedTeamMemberIds,
+      filterKey: this.isTeamMemberModule ? undefined : "teamMemberGroup",
+      categoryId: this.teamMemberGroupId > 0 ? this.teamMemberGroupId : 0,
+      pageIndex: 1,
+      maxResults: this.pagination.totalRecords 
+    };
+    this.teamMemberService.findAll(this.csvPagination)
+      .subscribe(
+        response => {
+          let data = response.data;
+          this.csvPagination.csvPagedItems = data.list;
+          this.downloadCsv();
+          this.httpRequestLoader.isHorizontalCss = false;
+        },
+        error => {
+          this.logger.errorPage(error);
+          this.httpRequestLoader.isHorizontalCss = false;
+        });
+  }
+
+  downloadCsv() {
+    let csvName = "team_Members.csv";
+    this.downloadDataList = this.csvPagination.csvPagedItems.map(item => {
+      return {
+        "FIRSTNAME": item.firstName,
+        "LASTNAME": item.lastName,
+        "EMAILID": item.emailId,
+        "GROUP": item.primaryAdmin ? "N/A" : item.teamMemberGroupName,
+        "ADMIN": (item.secondAdmin || item.primaryAdmin) ? "Yes" : "No",
+        "STATUS": (item.status == "APPROVE") ? "Active" : "InActive",
+      };
+    });
+
+    this.downloadCsvFile(this.downloadDataList, csvName);
+  }
+
+  downloadCsvFile(data: any[], filename: string) {
+    const header = Object.keys(data[0]).join(',') + '\n';
+    const rows = data.map(row => Object.keys(row).map(key => row[key]).join(',')).join('\n');
+    const csvContent = header + rows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  }

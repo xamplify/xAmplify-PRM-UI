@@ -78,6 +78,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
   isScrolled: boolean = false;
   isRegisterDealEnabled:boolean = true;
   isReferVendorOptionEnabledForVanity = false;
+  ckeConfig: any;
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -180,6 +181,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
         this.authenticationService.logout();
       }
     } catch (error) { this.logger.error('error' + error); }
+    this.ckeConfig = this.properties.ckEditorConfig;
   }
   errorHandler(event: any) {
     event.target.src = 'assets/images/icon-user-default.png';
@@ -365,6 +367,8 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     this.refService.isSidebarClosed = false;
     this.refService.defaulgVideoMethodCalled = false;
     this.refService.companyProfileImage = '';
+    this.refService.universalSearchKey = '';//XNFR-574
+    this.refService.universalId = 0; //XNFR-574
     document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
     localStorage.setItem('isLogout', 'loggedOut');
     this.authenticationService.logout();
@@ -571,14 +575,16 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     // header navbar end
 
   getVendorRegisterDealValue() {
-    if (this.authenticationService.vanityURLEnabled) {
-      this.integrationService.getVendorRegisterDealValue(this.userId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-        data => {
-          if (data.statusCode == 200) {
-            this.isRegisterDealEnabled = data.data;
-          }
+    this.authenticationService.module.topNavBarLoader = true;
+    this.integrationService.getVendorRegisterDealValue(this.userId, this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          this.isRegisterDealEnabled = data.data;
         }
-      )
-    }
+        this.authenticationService.module.topNavBarLoader = false
+      }, error => {
+        this.authenticationService.module.topNavBarLoader = false;
+      }
+    )
   }
 }

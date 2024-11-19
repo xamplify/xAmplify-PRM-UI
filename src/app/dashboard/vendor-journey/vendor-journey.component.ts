@@ -38,14 +38,22 @@ export class VendorJourneyComponent implements OnInit {
   importedObject:any={};
   categoryDropDownOptions=[];
   welcomePages:boolean = false;
+  /**XNFR-712****/
+  isPartnerJourneyPages:boolean = false;
+  isVendorPartnerJourneyPages:boolean = false;
+  isVendorMarketplacePages:boolean = false;
+
   constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
     this.resetVendorJourney();
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
-    this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
+    this.isMasterLandingPages = this.moduleType == "Partner Landscape";
     this.welcomePages = this.moduleType == "Welcome Pages";
+    this.isPartnerJourneyPages = this.moduleType == "Partner Journey Pages";
+    this.isVendorPartnerJourneyPages = this.moduleType == "Partner Pages";
+    this.isVendorMarketplacePages = this.moduleType == "Vendor Landscape";
   }
 
   editVendorLandingPage(event){
@@ -53,16 +61,23 @@ export class VendorJourneyComponent implements OnInit {
     this.landingPageService.vendorJourney = this.vendorJourney;
     this.landingPageService.isMasterLandingPages = this.isMasterLandingPages;
     this.landingPageService.welcomePages = this.welcomePages;
+    this.landingPageService.isPartnerJourneyPages = this.isPartnerJourneyPages;
+    this.landingPageService.isVendorMarketplacePages = this.isVendorMarketplacePages;
     this.landingPageService.id = this.vendorDefaultTemplate.id;
     this.mergeTagsInput['page'] = true;
     this.editVendorPage = true;
-    this.getVendorLogoDetailsByPartnerDetails();
+    if(this.isMasterLandingPages){
+      this.getVendorLogoDetailsByPartnerDetails();
+    }else if(this.isVendorMarketplacePages){
+      this.getPartnerDetailsByVendorCompany();
+    }
     this.vendorJourneyEditOrViewAnalytics.emit();
   }
   resetVendorJourney(){
     this.editVendorPage = false;
     this.vendorDefaultTemplate = new LandingPage() ;
     this.landingPageService.vendorJourney = false;
+    this.landingPageService.isPartnerJourneyPages = false;
     this.landingPageService.id = 0;
     this.mergeTagsInput['page'] = false;
     this.vendorJourney = false;
@@ -70,11 +85,14 @@ export class VendorJourneyComponent implements OnInit {
     this.isViewAnalytics = false;
     this.isMasterLandingPages = false;
     this.welcomePages = false;
+    this.isVendorPartnerJourneyPages =false;
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
-    this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
+    this.isMasterLandingPages = this.moduleType == "Partner Landscape";
     this.welcomePages = this.moduleType == "Welcome Pages";
-
+    this.isPartnerJourneyPages = this.moduleType == "Partner Journey Pages"
+    this.isVendorPartnerJourneyPages = this.moduleType == "Partner Pages";
+    this.isVendorMarketplacePages = this.moduleType == "Vendor Landscape";
     this.isFormAnalytics = false;
     this.isManageForms = false;
     this.isEditVendorOrMasterForm = false;
@@ -188,6 +206,8 @@ export class VendorJourneyComponent implements OnInit {
           details.expand = false;
           details.teamMembers = [];
           details.vendorJourneyId = logo.vendorJourneyId
+          details.partnerJourneyPageId = logo.partnerJourneyPageId
+          
         }
         let memberDetails = {
           'selected': logo.selected,
@@ -197,6 +217,7 @@ export class VendorJourneyComponent implements OnInit {
           'emailId': logo.emailId,
           'vendorJourneyId': logo.vendorJourneyId,
           'categoryIds': logo.categoryIds,
+          'partnerJourneyPageId':logo.partnerJourneyPageId,
           'dropdownSettings': { ...dropdownSettings }
         }
         if (logo.categoryIds != null && logo.categoryIds.length > 0) {
@@ -214,7 +235,7 @@ export class VendorJourneyComponent implements OnInit {
   }
 
   populateVendorDetailsForTeamMember(data: VendorLogoDetails[], categoryDropDownOptions){
-    if ( !this.authenticationService.module.isAnyAdminOrSupervisor &&data != undefined && data != null) {
+    if ( (!this.authenticationService.module.isAnyAdminOrSupervisor || this.isVendorMarketplacePages) &&data != undefined && data != null) {
       for (let logo of data) {
         var dropdownSettings = {
           text: "Please select",
@@ -246,4 +267,29 @@ landingPageOpenInNewTabChecked(){
     this.isManageForms = false;
     this.isFormAnalytics = true;
   }
+
+  getPartnerDetailsByVendorCompany() {
+    let userId = this.authenticationService.getUserId();
+    let landingPageId = this.landingPageService.id;
+    let self = this;
+    self.landingPageService.getPartnerDetailsByVendorCompany(this.loggedInUserCompanyId, landingPageId).subscribe(
+    (data: any) => {
+             if(data.statusCode==200){
+              var logoDetails:VendorLogoDetails[] = data.data;
+              self.vendorLogoDetails = logoDetails;
+              let categoryDetails = data.map.categoryDetails
+              if(categoryDetails != null ){
+                self.categoryDropDownOptions = [];
+                for(let category of categoryDetails){
+                  self.categoryDropDownOptions.push({"id":category.marketPlaceCategoryId, "itemName":category.categoryName })
+                }
+              }
+              this.populateSharedVendorDetails(logoDetails, self.categoryDropDownOptions);
+              this.populateVendorDetailsForTeamMember(logoDetails, self.categoryDropDownOptions);
+            }
+    }, (error: any) => {
+      console.log(error);
+    }
+);
+}
 }

@@ -28,4 +28,7 @@ export class GeoLocationAnalytics {
     openedInBrowser = false;
     vendorJourney:boolean = false;
     fromMasterLandingPage:boolean =false;
+
+    partnerJourneyPage:boolean = false;
+    fromVendoeMarketplacePage:boolean = false;
 }

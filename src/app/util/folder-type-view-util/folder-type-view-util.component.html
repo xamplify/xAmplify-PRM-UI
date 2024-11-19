@@ -41,6 +41,12 @@
 									[ngValue]="option">{{option.name}}</option>
 							</select>
 						</div>
+						<div id="left">
+                            <select *ngIf="pagination.categoryType === 'DAM' || pagination.categoryType === 'PLAY_BOOK' || pagination.categoryType == 'LEARNING_TRACK'"  class="form-control"  [(ngModel)]="selectedOption" (ngModelChange)="onSelect(selectedOption)"
+                                id="select-dropdown">
+                                <option *ngFor="let option of options" [ngValue]="option">{{option}}</option>
+                            </select>
+                        </div>
 						<div class="portlet-input input-inline" id="search-div">
 							<div class="input-icon right" id="icon">
 								<input type="text" id="sort-text" class="form-control"
@@ -130,27 +136,27 @@
 			aria-describedby="">
 			<thead>
 				<tr>
-					<th class="text-center" colspan="2" style="width: 50%" id="border-bottom"><span
-							class="ui-column-resizer gray"
-							(mousedown)="referenceService.onMouseDown($event,'folder-list-view',2)">
-						</span> <span class="gridHeader" translate>Folder</span></th>
-					<th class="text-center" id="border-bottom" translate>Created
-						On</th>
-					<th class="text-center" id="border-bottom" translate>Items
-						Count</th>
+					<th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
+						<span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'folder-list-view',2)"></span>
+						<span class="gridHeader" translate>Folder</span>
+					</th>
+					<th class="text-center" id="border-bottom" translate>Created On</th>
+					<th class="text-center" id="border-bottom" translate>Items Count</th>
 				</tr>
 			</thead>
 			<tbody>
 				<ng-container *ngFor="let category of pagination.pagedItems ;let i =index">
 					<tr id="folder-row-{{i}}" class="child-row-list-view border-cls">
-						<td class="custom-icon-width"><a (click)="$event.stopPropagation();viewFolderItems(category,i)"
-								data-toggle="tooltip" data-placement="right" title="View More/Less Items"> <i class="fa"
-									id="fa-folder-custom-size"
+						<td class="custom-icon-width">
+							<a (click)="$event.stopPropagation();viewFolderItems(category,i)" data-toggle="tooltip" data-placement="right"
+								title="View More/Less Items">
+								<i class="fa" id="fa-folder-custom-size"
 									[ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}"
-									aria-hidden="true"> </i> <i class="fa" id="fa-folder-custom-size"
-									[ngClass]="{'fa-folder': !category.expanded, 'fa-folder-open': category.expanded}"
-									aria-hidden="true"> </i>
-							</a></td>
+									aria-hidden="true"></i>
+								<i class="fa" id="fa-folder-custom-size"
+									[ngClass]="{'fa-folder': !category.expanded, 'fa-folder-open': category.expanded}" aria-hidden="true"></i>
+							</a>
+						</td>
 						<td>
 							<h4 class="">
 								<span data-toggle="tooltip" data-placement="bottom" title="{{category.name}}">
@@ -160,9 +166,9 @@
 								<span translate> <b>Created By:</b> {{category.createdBy}} </span>
 							</h6>
 						</td>
-						<td class="text-center"><app-timestamp *ngIf="!referenceService.isSafariBrowser()"
-								[isOnlyDate]="false" [dateAndTime]="category.displayTime"> </app-timestamp> <span
-								*ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
+						<td class="text-center"><app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+								[dateAndTime]="category.displayTime"> </app-timestamp>
+							<span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
 						</td>
 						<td class="text-center">
 							<div class="override-actions">
@@ -174,10 +180,10 @@
 						<td class="td-netbg" colspan="5">
 							<!----DAM---->
 							<ng-container *ngIf="category.expanded">
-								<ng-container *ngIf="moduleId==roles.damId"> <app-dam-list-and-grid-view
-										[folderListViewCategoryId]="category.id"
-										[folderListViewExpanded]="category.expanded"
-										(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
+								<ng-container *ngIf="moduleId==roles.damId">
+									<app-dam-list-and-grid-view [folderListViewCategoryId]="category.id"
+										[folderListViewExpanded]="category.expanded" (updatedItemsCountEmitter)="getUpdatedItemsCount($event)">
+									</app-dam-list-and-grid-view>
 								</ng-container>
 								<!----TRACKS / PLAYBOOKS---->
 								<ng-container *ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">

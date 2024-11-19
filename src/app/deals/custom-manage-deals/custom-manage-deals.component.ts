@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
@@ -14,6 +14,7 @@ import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { LeadsService } from 'app/leads/services/leads.service';
 import { Roles } from 'app/core/models/roles';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var swal: any, $: any;
 
@@ -27,6 +28,9 @@ export class CustomManageDealsComponent implements OnInit {
   readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
 
   @Input() selectedContact: any;
+  @Input() isDealFromContact: boolean = false;
+  @Input() isFromCompanyModule:boolean = false;
+  @Output() notifyClose = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   updateCurrentStage: boolean = false;
@@ -50,7 +54,6 @@ export class CustomManageDealsComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   selectedFilterIndex: number = 1;
   isRegisterDealEnabled: boolean = true;
-  isDealFromContact: boolean = false;
   registeredByUsersLoader = true;
   fromDateFilter: any = "";
   toDateFilter: any = "";
@@ -88,6 +91,7 @@ export class CustomManageDealsComponent implements OnInit {
 
   ngOnInit() {
     this.showDeals();
+    this.referenceService.goToTop();
   }
 
 
@@ -200,7 +204,6 @@ export class CustomManageDealsComponent implements OnInit {
   addDeal() {
     this.showContactDeals = false;
     this.showDealForm = true;
-    this.isDealFromContact = true;
     this.actionType = "add";
     this.dealId = 0;
     this.dealsResponse.isVisible = false;
@@ -533,6 +536,27 @@ export class CustomManageDealsComponent implements OnInit {
     } else {
       this.vendorCompanyIdFilter = 0;
     }
+  }
+
+  goBackToContactDetailsPage() {
+    this.notifyClose.emit();
+  }
+
+  goBackToManageContacts() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+  }
+
+  goBackToEditContacts() {
+    let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+    }
+  }
+
+  goBackToManageCompanies() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
   }
 
 }

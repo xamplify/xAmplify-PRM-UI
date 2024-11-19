@@ -58,7 +58,10 @@ export class VendorJourneyAnalyticsComponent implements OnInit {
   @Input() vendorLandingPageId:number;
   @Output() vendorJourneyOrMasterLandingPageEdit: EventEmitter<any> = new EventEmitter();
   @Output() formAnalytics: EventEmitter<any> = new EventEmitter();
+  @Input() isPartnerJourneyPages:boolean = false;
+  @Input() isVendorMarketplacePages:boolean = false;
 
+  moduleLabel:string=""
   constructor(public referenceService: ReferenceService,
       public httpRequestLoader: HttpRequestLoader, public pagerService:
           PagerService, public authenticationService: AuthenticationService,
@@ -83,12 +86,14 @@ export class VendorJourneyAnalyticsComponent implements OnInit {
   ngOnInit() {
       this.selectedFormTypeIndex = 0;
       this.pagination.filterKey = "All";
-      if(this.isVendorJourney || this.isMasterLandingPages){
+      if(this.isVendorJourney || this.isMasterLandingPages || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
           this.landingPageId = this.vendorLandingPageId;
           this.pagination.landingPageId = this.landingPageId;
           this.pagination.landingPageForm = true;
           this.pagination.vendorJourney = this.isVendorJourney;
           this.pagination.masterLandingPage = this.isMasterLandingPages;
+          this.pagination.partnerJourneyPage = this.isPartnerJourneyPages;
+          this.pagination.vendorMarketplacePage = this.isVendorMarketplacePages;
           if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
               this.modulesDisplayType.isListView = true;
               this.modulesDisplayType.isGridView = false;
@@ -96,9 +101,10 @@ export class VendorJourneyAnalyticsComponent implements OnInit {
           this.modulesDisplayType.isFolderListView = false;
           this.modulesDisplayType.isFolderGridView = false;
           this.listForms(this.pagination);
-          if(this.isMasterLandingPages){
+          if(this.isMasterLandingPages || this.isVendorMarketplacePages){
             this.exportObject['landingPageId']= this.vendorLandingPageId;
           }
+          this.moduleLabel = this.isMasterLandingPages?"Vendor Page Analytics":this.isVendorMarketplacePages?"Partner Page Analytics":"";
       }
   }
 

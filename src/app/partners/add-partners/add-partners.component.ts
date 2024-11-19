@@ -304,7 +304,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	selectedUser: User = null;
 	/*****XNFR-342*****/
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
-	isLocalHost = false;
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
@@ -317,7 +316,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public campaignService: CampaignService, public integrationService: IntegrationService,
 		private utilService: UtilService) {
-		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		//Added for Vanity URL
@@ -2120,8 +2118,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			if (this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 4) {
 				this.savePartnerUsers();
 			}
-
-
 			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
 				this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10
 				|| this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
@@ -2626,7 +2622,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		else if (tempZohoAuth == 'yes') {
 			this.zohoShowModal();
-			this.checkingZohoPopupValues();
+			// this.checkingZohoPopupValues();
 			tempZohoAuth = 'no';
 			this.contactService.vanitySocialProviderName = "nothing";
 		}
@@ -4663,14 +4659,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	validatePartnersCompany(newPartnerUser: any, partnerListId: number) {
 		try {
+			this.referenceService.showSweetAlertProcessingLoader("We are validating");
 			this.contactService.validatePartnersCompany(newPartnerUser, partnerListId)
 				.subscribe(
 					(data: any) => {
+						this.referenceService.closeSweetAlert();
 						if (data.statusCode == 200) {
 							if (this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 4) {
 								this.askForPermission();
 							}
-
 							if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
 								this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 ||
 								this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
@@ -4685,6 +4682,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							let updatedMessage = data.message + "\n" + emailIds;
 							this.customResponse = new CustomResponse('ERROR', updatedMessage, true);
 						}
+						
 					},
 					error => this.xtremandLogger.error(error),
 					() => console.log('validatePartnersCompany() finished')

@@ -143,6 +143,11 @@ export class VanityURLService {
       .catch(this.handleError);
   }
 
+  getAllTemplatesDuplicates() {
+    return this.http.get(this.URL + "v_url/getDuplicateTemplates/" +this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
   saveOrUpdateEmailTemplate(vanityEmailTemplate: VanityEmailTempalte) {
     const url = this.authenticationService.REST_URL + "v_url/saveOrUpdate/emailTemplate" + "?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, vanityEmailTemplate)
@@ -376,10 +381,10 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     }
 
     /***XNFR-599****/
-    findAllUnPublishedAndFilteredPublishedDashboardButtons(pagination: Pagination) {
+    findAllPublishedAndUnPublishedDashboardButtons(pagination: Pagination) {
       let userId = this.authenticationService.getUserId();
       let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-      let findAllUrl = this.DASHBOARD_BUTTON_PREFIX_URL+'/findAllUnPublishedAndFilteredPublishedDashboardButtons/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+      let findAllUrl = this.DASHBOARD_BUTTON_PREFIX_URL+'/published-and-unpublished/loggedInUserId/'+userId+'/userListId/'+pagination.userListId+'/partnerUserId/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
       return this.authenticationService.callGetMethod(findAllUrl);
     }
 

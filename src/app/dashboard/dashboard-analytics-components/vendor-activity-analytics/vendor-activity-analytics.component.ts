@@ -48,9 +48,9 @@ export class VendorActivityAnalyticsComponent implements OnInit {
           if(size==4){
             this.divClass = "col-lg-3 col-md-3 col-sm-3 col-xs-6";
         }else if(size==5){
-           this.divClass = "col-lg-2 col-md-2 col-sm-2 col-xs-6";
+           this.divClass = "col-lg-2 col-md-3 col-sm-3 col-xs-6";
         }else if(size==6){
-            this.divClass = "col-lg-2 col-md-2 col-sm-2 col-xs-6";
+            this.divClass = "col-lg-2 col-md-3 col-sm-3 col-xs-6";
         }
         }
         this.referenceService.loading( this.httpRequestLoader, false );
