@@ -23,7 +23,8 @@
         </div>
         <span class="morePadding">
           <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view
-            <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+            <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+            <i class="fa fa-info-circle" aria-hidden="true" title="{{dto?.description | translate}}"></i></a>           
         </span>
       </a>
     </div>
