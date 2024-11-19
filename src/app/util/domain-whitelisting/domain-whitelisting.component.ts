@@ -231,6 +231,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
       response => {
         this.customResponse = new CustomResponse('SUCCESS', response.message, true);
         this.closeAddDomainModal();
+        this.referenceService.scrollSmoothToTop();
         this.pagination.pageIndex = 1;
         this.findTeamMemberOrPartnerDomains(this.pagination);
         this.ngxloading = false;
