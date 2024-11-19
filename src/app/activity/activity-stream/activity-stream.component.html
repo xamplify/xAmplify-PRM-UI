@@ -25,7 +25,9 @@
       *ngIf="customResponse?.isVisible"></app-response-message>
     <div class="activity_card mb10" *ngFor="let activity of activityPagination?.pagedItems">
       <!--Email-->
-      <div *ngIf="activity.type == 'Email'">
+      <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Email'">
+        <legend class="scheduler-borders campaign_boxes">Email</legend>
+      <div>
         <div class="activity-header">
           <span><i class="fas fa-user icon"></i><label
               class="mr5 activity-title">From:</label>{{activity.schedule}} </span>
@@ -44,8 +46,11 @@
           <a (click)="viewEmail(activity.id)"><span>View details</span></a>
         </div>
       </div>
+      </fieldset>
       <!---Note--->
-      <div *ngIf="activity.type == 'Note'">
+      <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Note'">
+        <legend class="scheduler-borders campaign_boxes">Note</legend>
+      <div>
         <div class="activity-header">
           <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(activity.id)">
             <span>{{activity.name}}</span></a></span>
@@ -86,8 +91,11 @@
           </span>
         </div>
       </div>
+      </fieldset>
       <!---Campaign--->
-      <div *ngIf="activity.type == 'Campaign'">
+      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Campaign'" >
+        <legend class="scheduler-borders campaign_boxes">Campaign</legend>
+      <div>
         <div class="activity-header">
           <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewCampaignTimeLine(activity.id)">
             <span>{{activity.name}}</span></a></span>
@@ -101,8 +109,11 @@
               [ngClass]="activity.schedule=='SCHEDULE'?'view-banner' : 'view-banner published'">{{activity.schedule}}</span></span>
         </div>
       </div>
+      </fieldset>
       <!---Lead--->
-      <div *ngIf="activity.type == 'Lead'">
+      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Lead'">
+        <legend class="scheduler-borders campaign_boxes">Lead</legend>
+      <div>
         <div class="activity-header">
           <!-- <span><i class="fas fa-user icon"></i><label
                     class="mr5 activity-title">Name:</label> <a (click)="viewLead(activity.id)">{{activity.name}}</a> </span> -->
@@ -116,8 +127,11 @@
           <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
         </div>
       </div>
+      </fieldset>
       <!---Deal--->
-      <div *ngIf="activity.type == 'Deal'">
+      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Deal'">
+        <legend class="scheduler-borders campaign_boxes">Deal</legend>
+      <div>
         <div class="activity-header">
           <!-- <span><i class="fas fa-user icon"></i><label
                     class="mr5 activity-title">Title:</label> <a (click)="viewDeal(activity.id)">{{activity.name}}</a> </span> -->
@@ -133,6 +147,7 @@
           <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
         </div>
       </div>
+      </fieldset>
     </div>
     <!-- --------------------Pagination0-------------------- -->
     <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
