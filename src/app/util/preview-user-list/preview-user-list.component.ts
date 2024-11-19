@@ -32,23 +32,21 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   @Input() vendorJourney:boolean = false;
   @Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
   showTickMark = false;
+  isAssetsModule = false;
+  isLmsModule = false;
+  isPlayBooksModule = false;
+  isDashboardButtonsModule = false;
   constructor(public referenceService:ReferenceService,public contactService:ContactService,public properties:Properties,
     public pagerService:PagerService,private authenticationService:AuthenticationService,private router:Router) { }
 
   ngOnInit() {
     $('#userListUsersPreviewPopup').modal('show');
-    let currentUrl = this.router.url;
-    if(currentUrl.includes("/dam/edit")){
-      this.showTickMark = false;
-    }else{
-      this.showTickMark = true;
-    }
     if(this.userListId!=undefined && this.userListId>0){
       let isValidInputId = this.inputId!=undefined && this.inputId>0;
-      let isAssets = this.moduleName=="dam";
-      let isLms = this.moduleName=="lms";
-      let isDashboardButtons = this.moduleName== this.properties.dashboardButtons;
-      let isModuleMatched = isAssets || isLms || isDashboardButtons;
+      this.isAssetsModule = this.moduleName=="dam";
+      this.isLmsModule = this.moduleName=="lms";
+      this.isDashboardButtonsModule = this.moduleName== this.properties.dashboardButtons;
+      let isModuleMatched = this.isAssetsModule || this.isLmsModule  || this.isDashboardButtonsModule;
       if(isModuleMatched && isValidInputId){
         this.findPublishedPartnerIdsByUserListIdAndId();
       } else{
@@ -68,6 +66,7 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
     .subscribe(
       response=>{
         this.publishedPartnerIds = response.data;
+        this.showTickMark = true;
       },error=>{
         this.findUsersByUserListId(this.pagination);
       },()=>{
@@ -123,25 +122,29 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
 
  }
 
- publishDashboardButton(user:any){
-  let isDashboardButtonPublishedSuccessfully = false;
-  this.referenceService.showSweetAlertProcessingLoader("We are publishing dashboard button");
-  this.authenticationService.publishDashboardButtonToPartnerCompany(user.userListId,user.userId,this.inputId).
+ 
+
+ publish(user:any){
+  let isPublishingCompleted = false;
+  let sweetAlertPrefixText = this.isAssetsModule ? "Asset" : this.isLmsModule ? "Track" : this.isPlayBooksModule ? "Play Book" : this.isDashboardButtonsModule ? "Dashboard Button":""; 
+  this.referenceService.showSweetAlertProcessingLoader(sweetAlertPrefixText+" publishing is in progress");
+  this.authenticationService.publishContentToPartnerCompanyByModuleName(user.userListId,user.userId,this.inputId,this.moduleName).
   subscribe(
     response=>{
       let statusCode = response.statusCode;
       let message = response.message;
       if(statusCode==200){
         this.referenceService.showSweetAlertSuccessMessage(message);
-        isDashboardButtonPublishedSuccessfully = true;
+        isPublishingCompleted = true;
       }else{
         this.referenceService.showSweetAlertErrorMessage(message);
-        isDashboardButtonPublishedSuccessfully = false;
+        isPublishingCompleted = false;
       }
     },error=>{
       this.referenceService.showSweetAlertServerErrorMessage();
+      isPublishingCompleted = false;
     },()=>{
-      if(isDashboardButtonPublishedSuccessfully){
+      if(isPublishingCompleted){
         this.findPublishedPartnerIdsByUserListIdAndId();
       }
     });
