@@ -137,6 +137,19 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 /********XNFR-170******/
 setViewType(viewType: string) {
+  if (this.utilService.folderListViewSelected) {
+    if (viewType === 'g') {
+      if (this.pagination.categoryType === "LEARNING_TRACK") {
+        this.referenceService.goToRouter('/home/tracks/manage/g');
+      } else if (this.pagination.categoryType == "PLAY_BOOK") {
+        this.referenceService.goToRouter('/home/playbook/manage/g');
+      }
+      else {
+        this.referenceService.goToRouter('/home/tracks/manage/fl');
+      }
+    } 
+    this.utilService.folderListViewSelected = false;
+  } else{
   if(this.viewType!=viewType){
     if (this.folderListView) {
       let gridView = "g" == viewType;
@@ -150,6 +163,7 @@ setViewType(viewType: string) {
       }
     }
   }
+}
 }
   ngOnDestroy() {
     this.referenceService.isCreated = false;
