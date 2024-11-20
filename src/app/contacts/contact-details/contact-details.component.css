@@ -334,7 +334,7 @@ border-bottom:none;
      overflow-x:auto;
     }
   }
-  a :hover {
+  .add-btn :hover {
     text-decoration-line: underline;
   }
   ::-webkit-scrollbar {

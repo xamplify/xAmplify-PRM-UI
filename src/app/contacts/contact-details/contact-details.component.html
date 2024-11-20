@@ -96,10 +96,10 @@
         <!-- Header-contacts-Details start-->
         <div class="lead_details">
           <h3>Contact Details:
-            <!-- <a data-toggle="collapse" (click)="toggleClass('account-details-icon')" style="float: right;"
+            <a data-toggle="collapse" (click)="toggleClass('account-details-icon')" style="float: right;"
               href="javascript:;#accountDetailsDropdown">
               <i id="account-details-icon" class="fa fa-minus" aria-hidden="true"></i>
-            </a> -->
+            </a>
             <ul id="accountDetailsDropdown" class="nav collapse in">
               <li><i class="fas fa-building"></i>
                 <div class="user_details">
@@ -177,6 +177,7 @@
                   <app-activity-stream *ngIf="showActivityTab" [contactId]="contactId" [reloadTab]="isReloadActivityTab"
                     [isFromCompanyModule]="isFromCompanyModule" (notifyShowDealForm)="viewDeal($event)"
                     (notifyShowLeadForm)="viewLead($event)" [selectedContactListId]="selectedContactListId"
+                    [contactName]="contactName" [contactEmailId]="selectedContact.emailId"
                     (notifySuccess)="showNoteUpdateCutomResponse($event)" (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-activity-stream>
                 </div>
                 <div *ngIf="showNotesTab" id="note1" class="tab-pane fade pt-top">
@@ -184,7 +185,7 @@
                     (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-note>
                 </div>
                 <div *ngIf="showEmailTab" id="email1" class="tab-pane fade pt-top">
-                  <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab"></app-email-activity>
+                  <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab" [contactName]="contactName" [contactEmailId]="selectedContact.emailId"></app-email-activity>
                 </div>
                 <div *ngIf="showFormsTab" id="form1" class="tab-pane fade pt-top">
                   dcsddcscde
@@ -220,7 +221,7 @@
               <div class="activity_card mb10" *ngFor="let lead of contactLeads">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a (click)="viewLead(lead.id)">
+                  <a class="add-btn" (click)="viewLead(lead.id)">
                     <span class="activity-title">{{lead.firstName != null ? lead.firstName:''}} {{lead.lastName}}</span>
                   </a>
                 </div>
@@ -257,7 +258,7 @@
               <div class="activity_card mb10" *ngFor="let deal of contactDeals">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a (click)="viewDeal(deal.id)">
+                  <a class="add-btn" (click)="viewDeal(deal.id)">
                     <span class="activity-title">{{deal.title}}</span>
                   </a>
                 </div>
@@ -300,7 +301,7 @@
               <div class="activity_card mb10" *ngFor="let campaign of contactCampaigns">
                 <div>
                   <i class="fas fa-bullhorn mr5" aria-hidden="true"> </i>
-                  <a (click)="viewCampaignTimeLine(campaign)">
+                  <a class="add-btn" (click)="viewCampaignTimeLine(campaign)">
                     <span class="activity-title">{{campaign.campaignName}}</span>
                   </a>
                 </div>
