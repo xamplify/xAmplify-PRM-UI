@@ -143,6 +143,21 @@
                     </span>
                   </div>
                 </div>
+
+                <!-- XNFR-745 -->
+                <div class="row form-group pb10" *ngIf="type == 'PLAYBOOK'">
+                  <label class="control-label col-sm-4" style="text-align: right;" translate>Group by Assets</label>
+                  <div class="col-sm-8 col-xs-12 mt--10px">
+                    <app-custom-ui-switch [customSwitch]="tracksPlayBook?.groupByAssets"
+                      (customUiSwitchEventEmitter)="setGroupByAssets($event)">
+                    </app-custom-ui-switch>
+                    <span class="info-color-xampc">
+                      <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup" data-toggle="tooltip"
+                        data-placement="top" aria-hidden="true" title="{{properties?.groupByAssetsTooltipMessage}}"></i>
+                    </span>
+                  </div>
+                </div>
+
                 <!---Tags-->
                 <div class="row form-group mTags" style="padding-bottom: 10px;">
                   <label class="control-label col-sm-4 col-xs-6 mTextAlign" style="text-align: right;">Tags
@@ -335,9 +350,9 @@
                   class="button_blue bgcolor-unset select_quiz_margin mrgn_lft0" (click)="openQuizPopup()"><span
                     class="btn btn-primary transition txt_pd-top3">Select
                     Quiz</span></button>
-                <button class="button_blue bgcolor-unset asset_padding pos_mrg_lft4"
-                  (click)="openOrderAssetsPopup()"><span class="btn btn-primary transition txt_pd-top3"
-                    *ngIf="type == undefined || type == 'TRACK'">Order
+                <button class="button_blue bgcolor-unset asset_padding pos_mrg_lft4" (click)="openOrderAssetsPopup()"
+                  [disabled]=tracksPlayBook?.groupByAssets data-toggle="tooltip" data-placement="right" title="{{tracksPlayBook?.groupByAssets ? properties?.disableOrderAssetsTooltipMessage : ''}}" ><span
+                    class="btn btn-primary transition txt_pd-top3" *ngIf="type == undefined || type == 'TRACK'">Order
                     Assets And
                     Quiz</span><span class="btn btn-primary transition txt_pd-top3" *ngIf="type !== 'TRACK'">Order
                     Assets</span></button>

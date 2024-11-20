@@ -472,6 +472,12 @@ export class SortOption {
         { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
         { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
     ]; 
+
+	/*** XNFR-745 ***/
+	groupedAssetsForPlaybookDropDown = [
+        { 'name': 'Sort by Folder(A-Z)', 'value': 'folderName-ASC' },
+        { 'name': 'Sort by Folder(Z-A)', 'value': 'folderName-DESC' },
+    ];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -544,6 +550,8 @@ export class SortOption {
 	/***XNFR-679***/
 	public selectedCustomFieldsSortDropDownOption: any = this.customFieldsDropDownOptions[this.customFieldsDropDownOptions.length-1];
 
+	/** XNFR-745 **/
+	public groupedAssetsForPlaybook: any = this.groupedAssetsForPlaybookDropDown[0].value;
 
 
 }

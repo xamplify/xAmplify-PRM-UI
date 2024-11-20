@@ -470,5 +470,9 @@ export class Properties {
 	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
 	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
 	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
+
+	/** XNFR-745 **/
+	groupByAssetsTooltipMessage = "Turn on the 'Group by Assets' toggle to view assets categorized within their respective folders";
+	disableOrderAssetsTooltipMessage = "Enabling 'Group by Assets' will lock asset ordering since assets are organized by folders";
 	}
 
