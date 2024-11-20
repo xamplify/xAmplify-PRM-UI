@@ -47,6 +47,7 @@
         && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"
         [filterIcon]="true"
         (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+        <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
   </div>
   <!--XNFR-458--->
