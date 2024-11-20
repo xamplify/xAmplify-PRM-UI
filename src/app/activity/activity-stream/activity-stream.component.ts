@@ -24,6 +24,8 @@ export class ActivityStreamComponent implements OnInit {
   @Input() reloadTab: boolean;
   @Input() isFromCompanyModule:boolean = false;
   @Input() selectedContactListId:number;
+  @Input() contactName:any;
+  @Input() contactEmailId;
   @Output() notifyShowDealForm = new EventEmitter();
   @Output() notifyShowLeadForm = new EventEmitter();
   @Output() notifySuccess = new EventEmitter();
@@ -42,6 +44,7 @@ export class ActivityStreamComponent implements OnInit {
   actionType:any;
   noteId: any;
   showNoteModalPopup: boolean = false;
+  isFirstChange: boolean = true;
 
   constructor(private activityService:ActivityService, private referenceService: ReferenceService, public pagerService: PagerService,
     private noteService:NoteService,public utilService:UtilService,public sortOption:SortOption) { }
@@ -51,7 +54,11 @@ export class ActivityStreamComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.showAllActivities();
+    if (this.isFirstChange) {
+      this.isFirstChange = false;
+    } else {
+      this.showAllActivities();
+    }
   }
 
   showAllActivities() {

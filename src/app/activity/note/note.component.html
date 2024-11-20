@@ -31,7 +31,7 @@
     <div class="activity-header">
       <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(note)">
         <span>{{note.title}}</span></a></span>
-      <span class="activity-date"><i class="fa fa-clock icon"></i>{{note.createdTime}}</span>
+      <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="note.updatedTime"></app-display-date-and-time></span>
     </div>
     <div class="activity-body" *ngIf="note.visibility == 'PUBLIC'">
       <span class=""><i class="fas fa-user icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
@@ -42,7 +42,7 @@
         <span>..View More</span></a></span>
     </div>
     <div class="activity-footer">
-      <span [ngClass]="note.visibility=='PUBLIC'?'view-banner' : 'view-banner orange-lable-cu1'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
+      <span [ngClass]="note.visibility=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
       <span>
         <!--1st version-->
         <a (click)="showEditNoteTab(note)"><span class="mr10">edit</span></a>

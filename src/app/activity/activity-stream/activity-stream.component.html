@@ -26,15 +26,15 @@
     <div class="activity_card mb10" *ngFor="let activity of activityPagination?.pagedItems">
       <!--Email-->
       <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Email'">
-        <legend class="scheduler-borders campaign_boxes">Email Sent</legend>
+        <legend class="scheduler-borders campaign_boxes sent-activity">Email Sent</legend>
       <div>
         <div class="activity-header">
           <span><i class="fas fa-user icon"></i><label
               class="mr5 activity-title">From:</label>{{activity.schedule}} </span>
           <span *ngIf="activity.stage=='DELIVERED'" class="activity-date"><i
-              class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+              class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
           <span *ngIf="activity.stage=='OPENED'" class="activity-date"><i
-              class="fa fa-clock icon"></i>{{activity.updatedTime}}</span>
+              class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.updatedTime"></app-display-date-and-time></span>
         </div>
         <div class="activity-body">
           <span><i class="fa fa-comment icon"></i><label
@@ -42,19 +42,19 @@
         </div>
         <div class="activity-footer">
           <span class="activity-title">Status: <span
-              [ngClass]="activity.stage=='OPENED'?'view-banner' : 'view-banner published'">{{activity.stage}}</span></span>
+              [ngClass]="activity.stage=='OPENED'?'view-banner activity-updated-status-btn' : 'view-banner activity-created-status-btn'">{{activity.stage}}</span></span>
           <a (click)="viewEmail(activity.id)"><span>View details</span></a>
         </div>
       </div>
       </fieldset>
       <!---Note--->
       <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Note'">
-        <legend class="scheduler-borders campaign_boxes">Note {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
+        <legend [ngClass]="activity.activity == 'CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Note {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
       <div>
         <div class="activity-header">
           <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(activity.id)">
             <span>{{activity.name}}</span></a></span>
-          <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+          <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
         <div class="activity-body" *ngIf="activity.schedule == 'PUBLIC'">
           <span class=""><i class="fas fa-user icon"></i>{{activity.closeDate}}</span>
@@ -66,7 +66,7 @@
             <span>..View More</span></a></span>
         </div>
         <div class="activity-footer">
-          <span [ngClass]="activity.schedule=='PUBLIC'?'view-banner' : 'view-banner orange-lable-cu1'"><i class=" fa fa-lock" *ngIf="activity.schedule=='PRIVATE'"></i> {{activity.schedule}}</span>
+          <span [ngClass]="activity.schedule=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i class=" fa fa-lock" *ngIf="activity.schedule=='PRIVATE'"></i> {{activity.schedule}}</span>
           <span>
             <!--1st version-->
             <a (click)="showEditNoteTab(activity.id)"><span class="mr10">edit</span></a>
@@ -94,25 +94,25 @@
       </fieldset>
       <!---Campaign--->
       <fieldset class="scheduler-borders" *ngIf="activity.type == 'Campaign'" >
-        <legend class="scheduler-borders campaign_boxes">Campaign Launched</legend>
+        <legend class="scheduler-borders campaign_boxes sent-activity">Campaign Launched</legend>
       <div>
         <div class="activity-header">
           <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewCampaignTimeLine(activity.id)">
             <span>{{activity.name}}</span></a></span>
-          <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+          <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
         <div class="activity-body">
           <span><label class="mr3 activity-title">Type:</label> {{activity.stage}}</span>
         </div>
-        <div class="activity-footer">
+        <!-- <div class="activity-footer">
           <span class="activity-title">Status: <span
               [ngClass]="activity.schedule=='SCHEDULE'?'view-banner' : 'view-banner published'">{{activity.schedule}}</span></span>
-        </div>
+        </div> -->
       </div>
       </fieldset>
       <!---Lead--->
       <fieldset class="scheduler-borders" *ngIf="activity.type == 'Lead'">
-        <legend class="scheduler-borders campaign_boxes">Lead {{activity.activity == 'LEAD_CREATED'?'Created':'Stage Updated'}}</legend>
+        <legend [ngClass]="activity.activity == 'LEAD_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Lead {{activity.activity == 'LEAD_CREATED'?'Created':'Stage Updated'}}</legend>
       <div>
         <div class="activity-header">
           <!-- <span><i class="fas fa-user icon"></i><label
@@ -121,7 +121,7 @@
           <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Name:</label><a
               (click)="viewLead(activity.id)">
               <span> {{activity.name}}</span></a></span>
-          <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+          <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
         <div class="activity-body">
           <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
@@ -130,7 +130,7 @@
       </fieldset>
       <!---Deal--->
       <fieldset class="scheduler-borders" *ngIf="activity.type == 'Deal'">
-        <legend class="scheduler-borders campaign_boxes">Deal {{activity.activity == 'DEAL_CREATED'?'Created':'Stage Updated'}}</legend>
+        <legend [ngClass]="activity.activity == 'DEAL_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Deal {{activity.activity == 'DEAL_CREATED'?'Created':'Stage Updated'}}</legend>
       <div>
         <div class="activity-header">
           <!-- <span><i class="fas fa-user icon"></i><label
@@ -139,7 +139,7 @@
           <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Title:</label><a
               (click)="viewDeal(activity.id)">
               <span> {{activity.name}}</span></a></span>
-          <span class="activity-date"><i class="fa fa-clock icon"></i>{{activity.createdTime}}</span>
+          <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
         <div class="activity-body deal-flex-wrap">
           <span *ngIf="activity.schedule != undefined"><i class="fa fa-usd mr3"></i><label class="activity-title">Amount: </label> {{activity.schedule}}</span>
@@ -160,8 +160,11 @@
   </div>
 </div>
 
-<app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
-  [emailActivityId]="emailActivityId" (notifyClose)="closeModalPopup()"></app-add-email-modal-popup>
+<!-- <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
+  [emailActivityId]="emailActivityId" (notifyClose)="closeModalPopup()"></app-add-email-modal-popup> -->
+
+  <app-preview-email-activity *ngIf="showEmailModalPopup" [emailActivityId]="emailActivityId"
+  (notifyClose)="closeModalPopup()" [contactName]="contactName" [contactEmailId]="contactEmailId"></app-preview-email-activity>
 
 <app-add-note-modal-popup *ngIf="showNoteModalPopup" [noteId]="noteId" [isReloadTab]="reloadTab" [actionType]="actionType"
   (notifyClose)="closeNoteModalPopup()" (notifySuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>

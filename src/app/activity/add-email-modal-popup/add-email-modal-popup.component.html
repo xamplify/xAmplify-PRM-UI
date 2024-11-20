@@ -27,7 +27,7 @@
                [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
                [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
                [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
-               [onTextChangeDebounce]="40" required>
+               [onTextChangeDebounce]="40">
             </tag-input>
             <input *ngIf="isPreview" type="text" id="toEmailId" [(ngModel)]="emailActivity.ccEmailIds" [ngModelOptions]="{standalone: true}"
              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
@@ -39,7 +39,7 @@
                [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
                [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
                [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
-               [onTextChangeDebounce]="40" required>
+               [onTextChangeDebounce]="40">
             </tag-input>
             <input *ngIf="isPreview" type="text" id="toEmailId" [(ngModel)]="emailActivity.bccEmailIds" [ngModelOptions]="{standalone: true}"
              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />

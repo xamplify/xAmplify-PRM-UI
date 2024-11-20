@@ -126,7 +126,6 @@ export class ContactDetailsComponent implements OnInit {
       this.isFromCompanyModule = true;
     }
     this.getContact();
-    this.showActivityTab = true;
     this.referenceService.goToTop();
     this.checkTermsAndConditionStatus();
     this.getLegalBasisOptions();
