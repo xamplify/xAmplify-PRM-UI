@@ -1386,6 +1386,7 @@
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									</div>
 								</div>
+								<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 								<div class="table-responsive" *ngIf="contactsByType.contacts?.length > 0">
 									<app-loader [model]="httpRequestLoader.isHorizontalCss"
 										*ngIf="httpRequestLoader.isLoading"></app-loader>

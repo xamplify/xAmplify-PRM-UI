@@ -289,6 +289,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isUploadCsvOptionEnabled: boolean = false;
 	flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	@ViewChild('customCsvMapping') customCsvMapping: CustomCsvMappingComponent;
+	emailIds = ['Email','EmailId','Email-Id','Email-Address','EmailAddress', 'Mail', 'MailId', 'ElectronicMail', 'ContactMail'];
 	/***** XNFR-671 *****/
 	selectedContact: any;
 	showContactDetailsTab: boolean = false;
@@ -529,9 +530,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					} else if (self.isUploadCsvOptionEnabled) {
 						var csvResult = Papa.parse(contents);
 						var allTextLines = csvResult.data;
-						for (var i = 1; i < allTextLines.length; i++) {
-							if (allTextLines[i][4]) {
-							} else {
+						for (let i = 0; i < headers.length; i++) {
+							if (self.emailIds.some(emailId =>
+								headers[i].replace(/ /g, '').toLowerCase().includes(emailId.toLowerCase()))) {
+								var emailIdIndex = i;
+								break;
+							}
+						}
+						for (let i = 1; i < allTextLines.length; i++) {
+							if (!allTextLines[i][emailIdIndex]) {
 								self.emptyUsersCount++;
 							}
 						}
@@ -1460,6 +1467,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		if (this.selectedAddContactsOption == 2) {
 			if (this.isContactModuleType()) {
+				this.resetResponse();
 				this.customCsvMapping.saveCustomUploadCsvContactList();
 			} else {
 				this.updateCsvContactList(this.contactListId);
@@ -1566,6 +1574,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
 			this.userListPaginationWrapper.userList = this.contactListObject;
+			pagination.totalRecords = 0;
 			this.contactService.loadUsersOfContactLists(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.contacts = data.listOfUsers;
