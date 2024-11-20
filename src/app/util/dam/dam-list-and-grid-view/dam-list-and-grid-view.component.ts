@@ -184,26 +184,30 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/********XNFR-169******/
 	setViewType(viewType: string) {
-		if(this.utilService.folderListViewSelected){
-			this.referenceService.goToRouter('/home/dam/manage/fl');
-			this.utilService.folderListViewSelected = false;
-		}else{
-		if (this.viewType != viewType) {
-			if (this.folderListView) {
-				let gridView = "g" == viewType;
-				this.modulesDisplayType.isGridView = gridView;
-				this.modulesDisplayType.isListView = !gridView;
+		if (this.utilService.folderListViewSelected) {
+			if (viewType === 'g') {
+				this.referenceService.goToRouter('/home/dam/manage/g');
 			} else {
-				if (this.folderViewType != undefined && viewType != "fg") {
-					this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId, this.isPartnerView);
+				this.referenceService.goToRouter('/home/dam/manage/fl');
+			}
+			this.utilService.folderListViewSelected = false;
+		} else {
+			if (this.viewType != viewType) {
+				if (this.folderListView) {
+					let gridView = "g" == viewType;
+					this.modulesDisplayType.isGridView = gridView;
+					this.modulesDisplayType.isListView = !gridView;
 				} else {
-					this.referenceService.goToManageAssets(viewType, this.isPartnerView);
+					if (this.folderViewType != undefined && viewType != "fg") {
+						this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId, this.isPartnerView);
+					} else {
+						this.referenceService.goToManageAssets(viewType, this.isPartnerView);
+					}
+					this.titleHeader = ' Assets';
 				}
-				this.titleHeader = ' Assets';
 			}
 		}
 	}
-}
 
 	startLoaders() {
 		this.referenceService.loading(this.listLoader, true);
