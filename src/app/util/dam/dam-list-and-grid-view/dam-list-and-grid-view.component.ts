@@ -185,11 +185,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/********XNFR-169******/
 	setViewType(viewType: string) {
 		if (this.utilService.folderListViewSelected) {
-			if (viewType === 'g') {
-				this.referenceService.goToRouter('/home/dam/manage/g');
-			} else {
-				this.referenceService.goToRouter('/home/dam/manage/fl');
+			if (this.isPartnerView) {
+				if (viewType == 'g') {
+					this.referenceService.goToRouter('home/dam/shared/g');
+				} else {
+					this.referenceService.goToRouter('home/dam/shared/fl');
+				}
 			}
+			else {
+				if (viewType == 'g') {
+					this.referenceService.goToRouter('/home/dam/manage/g/');
+				} else {
+					this.referenceService.goToRouter('/home/dam/manage/fl/');
+				}
+			}
+
 			this.utilService.folderListViewSelected = false;
 		} else {
 			if (this.viewType != viewType) {
