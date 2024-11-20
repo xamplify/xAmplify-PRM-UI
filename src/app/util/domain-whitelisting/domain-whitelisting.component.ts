@@ -323,7 +323,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = this.selectedTab == 1 ? 'team_doman_list.csv' : 'partner_domain_list.csv';
+        a.download = this.selectedTab == 1 ? 'team_domain_list.csv' : 'partner_domain_list.csv';
         a.click();
       }, (_error: any) => {
         this.xtremandLogger.error(_error);
