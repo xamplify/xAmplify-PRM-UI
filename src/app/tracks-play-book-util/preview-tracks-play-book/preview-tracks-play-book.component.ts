@@ -228,9 +228,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.showAsset = false;
     this.notifyShowAsset.emit(this.showAsset);
     this.assetDetails = "";
-    if(this.isAssetGroupingEnabled) {
-      this.getGroupedAssetsBySlug();
-    } else {
+    if(!this.isAssetGroupingEnabled) {
       this.getBySlug();
     }
     this.addMessage(customResponse);
