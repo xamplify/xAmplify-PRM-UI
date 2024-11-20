@@ -64,7 +64,7 @@ export class AddVendorLogosComponent implements OnInit {
 	
 		const areSharedVendorLogosValid = this.sharedVendorLogoDetails.every(logo => 
 			logo.teamMembers.every(member => 
-				!member.selected || (member.selected && member.categoryIds != null)
+				!member.selected || (member.selected && member.categoryIds != null && member.categoryIds.length>0)
 			)
 		);
 	
