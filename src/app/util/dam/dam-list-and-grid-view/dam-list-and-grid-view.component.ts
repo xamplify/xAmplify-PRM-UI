@@ -184,6 +184,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/********XNFR-169******/
 	setViewType(viewType: string) {
+		if(this.utilService.folderListViewSelected){
+			this.referenceService.goToRouter('/home/dam/manage/fl');
+			this.utilService.folderListViewSelected = false;
+		}else{
 		if (this.viewType != viewType) {
 			if (this.folderListView) {
 				let gridView = "g" == viewType;
@@ -199,6 +203,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
+}
 
 	startLoaders() {
 		this.referenceService.loading(this.listLoader, true);

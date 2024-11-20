@@ -106,6 +106,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   /*************************Search********************** */
   searchCategories() {
     if (this.selectedOption == 'Search In Folder') {
+      this.folderViewType == "fl" ? this.utilService.folderListViewSelected = true : this.utilService.folderListViewSelected = false;
       this.utilService.searchKey = this.categorySortOption.searchKey;
       if (this.pagination.categoryType == "DAM") {
         if (this.isPartnerView && this.utilService.searchKey) {

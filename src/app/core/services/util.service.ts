@@ -12,6 +12,7 @@ declare var $:any;
 export class UtilService {
     topnavBareLoading = false;
     searchKey : any ='';
+    folderListViewSelected : boolean = false;
     pagination: Pagination;
     constructor( private http: Http,private pagerService:PagerService) { }
 
