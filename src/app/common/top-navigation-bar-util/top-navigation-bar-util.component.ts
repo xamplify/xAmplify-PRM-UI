@@ -1186,13 +1186,13 @@ private beforeAdd(tag: any) {
   } 
   /**  XNFR-574 */
   universalSearchOnKeyPress(keyCode:any) {
-    this.searchKey = this.searchKey.trim();
+    // this.searchKey = this.searchKey.trim();
     if (keyCode === 13 && (this.searchKey != '' && this.searchKey.trim().length>0)) { 
       this.universalSearch();
     }
   }
   universalSearch() {
-    this.refService.universalSearchKey = this.searchKey;
+    this.refService.universalSearchKey = this.searchKey.trim();
     this.saveSearchKeyToLocalStorage(this.refService.universalSearchKey);
     let universalSearchUrl = RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.universalSearch;
     this.location.replaceState(universalSearchUrl);

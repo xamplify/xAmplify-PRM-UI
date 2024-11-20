@@ -15,11 +15,11 @@ export class UniversalSearchBarComponent implements OnInit {
     this.searchKey = this.refService.universalSearchKey;
   }
   universalSearch() {
-    this.refService.universalSearchKey = this.searchKey
-    this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.universalSearch)
+    this.refService.universalSearchKey = this.searchKey.trim();
+    this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.universalSearch);
   }
   universalSearchOnKeyPress(keyCode:any) {
-    this.searchKey = this.searchKey.trim();
+    //this.searchKey = this.searchKey.trim();
     if (keyCode === 13 && (this.searchKey != '' && this.searchKey.trim().length>0)) { 
       this.universalSearch();
     }
