@@ -512,7 +512,7 @@
                                      </ng-container>
                                             <!--Vendor Partner Journey Pages-->
                                             <ng-container
-                                                *ngIf="vendorMarketplace && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                            *ngIf="vendorMarketplace && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember|| authenticationService?.module.isPrmTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin()|| authenticationService?.module.isPrm)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorPartnerJourneyPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorPartnerJourneyPages'}"
                                                         (click)="activateTab('vendorPartnerJourneyPages');clearCustomResponse()">
