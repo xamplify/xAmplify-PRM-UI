@@ -115,9 +115,6 @@
         <legend [ngClass]="activity.activity == 'LEAD_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Lead {{activity.activity == 'LEAD_CREATED'?'Created':'Stage Updated'}}</legend>
       <div>
         <div class="activity-header">
-          <!-- <span><i class="fas fa-user icon"></i><label
-                    class="mr5 activity-title">Name:</label> <a (click)="viewLead(activity.id)">{{activity.name}}</a> </span> -->
-        
           <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Name:</label><a
               (click)="viewLead(activity.id)">
               <span> {{activity.name}}</span></a></span>
@@ -133,9 +130,6 @@
         <legend [ngClass]="activity.activity == 'DEAL_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Deal {{activity.activity == 'DEAL_CREATED'?'Created':'Stage Updated'}}</legend>
       <div>
         <div class="activity-header">
-          <!-- <span><i class="fas fa-user icon"></i><label
-                    class="mr5 activity-title">Title:</label> <a (click)="viewDeal(activity.id)">{{activity.name}}</a> </span> -->
-        
           <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Title:</label><a
               (click)="viewDeal(activity.id)">
               <span> {{activity.name}}</span></a></span>
