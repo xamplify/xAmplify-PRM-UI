@@ -12,10 +12,14 @@ export class EmailActivityService {
 
     constructor(private http: Http, private authenticationService: AuthenticationService, private referenceService: ReferenceService) {}
 
-    sendEmailToUser(emailActivity:EmailActivity) {
+    sendEmailToUser(emailActivity:EmailActivity, formData:FormData) {
         emailActivity.loggedInUserId = this.authenticationService.getUserId();
+        formData.append('emailActivityDTO', new Blob([JSON.stringify(emailActivity)],
+          {
+              type: "application/json"
+          }));
         let url = this.URL + this.ACCESS_TOKEN_URL;
-        return this.authenticationService.callPostMethod(url, emailActivity);
+        return this.authenticationService.callPostMethod(url, formData);
     }
 
     fetchAllEmailActivities(emailActivityPagination:Pagination) {
@@ -30,9 +34,13 @@ export class EmailActivityService {
         return this.authenticationService.callGetMethod(url);
     }
 
-    sendTestEmailToUser(emailActivity:EmailActivity) {
+    sendTestEmailToUser(emailActivity:EmailActivity, formData:FormData) {
         emailActivity.loggedInUserId = this.authenticationService.getUserId();
+        formData.append('emailActivityDTO', new Blob([JSON.stringify(emailActivity)],
+          {
+              type: "application/json"
+          }));
         let url = this.URL + "/sendTestMail" + this.ACCESS_TOKEN_URL;
-        return this.authenticationService.callPostMethod(url, emailActivity);
+        return this.authenticationService.callPostMethod(url, formData);
     }
 }

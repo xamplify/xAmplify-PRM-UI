@@ -473,6 +473,15 @@ export class SortOption {
         { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
     ]; 
 
+	activityDropDownOptions = [
+		{ 'name': 'All', 'value': 'All-Desc' },
+		{ 'name': 'Campaign', 'value': 'Campaign-Desc' },
+		{ 'name': 'Lead', 'value': 'Lead-Desc' },
+		{ 'name': 'Deal', 'value': 'Deal-Desc' },
+		{ 'name': 'Email', 'value': 'Email-Desc' },
+		{ 'name': 'Note', 'value': 'Note-Desc' }
+	];
+  
 	/*** XNFR-745 ***/
 	groupedAssetsForPlaybookDropDown = [
         { 'name': 'Sort by Folder(A-Z)', 'value': 'folderName-ASC' },
@@ -550,6 +559,9 @@ export class SortOption {
 	/***XNFR-679***/
 	public selectedCustomFieldsSortDropDownOption: any = this.customFieldsDropDownOptions[this.customFieldsDropDownOptions.length-1];
 
+	/**XNFR-735**/
+	activityDropDownOption = this.activityDropDownOptions[0];
+  
 	/** XNFR-745 **/
 	public groupedAssetsForPlaybook: any = this.groupedAssetsForPlaybookDropDown[0].value;
 

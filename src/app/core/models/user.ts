@@ -81,5 +81,5 @@ export class User {
     isWelcomePageEnabled:boolean;
     flexiFields : Array<FlexiFieldsRequestAndResponseDto>= new Array<FlexiFieldsRequestAndResponseDto>();
     accountId : string;
-
+    userStatus : string;
 }

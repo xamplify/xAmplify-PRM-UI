@@ -53,14 +53,14 @@ export class AddVendorLogosComponent implements OnInit {
 
 		this.marketPlaceCategoryResponse = new CustomResponse();
 	
-		const isTeamMemberWithoutAdminPrivileges = this.authenticationService.module.isTeamMember && 
-												   !this.authenticationService.module.isAnyAdminOrSupervisor;
+		const isTeamMemberWithoutAdminPrivileges = (this.authenticationService.module.isTeamMember && 
+												   !this.authenticationService.module.isAnyAdminOrSupervisor) || this.isVendorMarketplace;
 	
 		const areVendorLogosValid = this.vendorLogoDetails.every(logo => 
 			!logo.selected || (logo.selected && logo.categoryIds != null && logo.categoryIds.length > 0)
 		);
 	
-		const isAdminOrSupervisor = this.authenticationService.module.isAnyAdminOrSupervisor;
+		const isAdminOrSupervisor = this.authenticationService.module.isAnyAdminOrSupervisor && !this.isVendorMarketplace;
 	
 		const areSharedVendorLogosValid = this.sharedVendorLogoDetails.every(logo => 
 			logo.teamMembers.every(member => 
@@ -74,7 +74,8 @@ export class AddVendorLogosComponent implements OnInit {
 			this.notifyComponent.emit();
 			$('#' + this.modalPopupId).modal('hide');
 		} else {
-			this.responseMessage = "Please Select The Category('s) for the selected Vendors";
+			let VendorMarketplace = this.isVendorMarketplace ? " Partners":" Vendors"
+			this.responseMessage = "Please Select The Category('s) for the selected" + VendorMarketplace;
 			this.marketPlaceCategoryResponse = new CustomResponse('ERROR', this.responseMessage, true);
 		}
 		
