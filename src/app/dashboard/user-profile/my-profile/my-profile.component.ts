@@ -372,7 +372,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isVendorPartnerJourneyPages:boolean = false;
 	vendorMarketplace:boolean = false;
 	isVendorMarketplacePages:boolean = false;
-	partnerJourneyPageEnabled:boolean =true;
+	partnerJourneyPageEnabled:boolean =false;
 	isEditOrDeleteAccessForFolder = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -703,7 +703,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.masterLandingPageOrVendorPages = result.masterLandingPageOrVendorPages;
 			this.welcomePagesAccess = result.welcomePages;
 			this.vendorMarketplace = result.vendorMarketplace;
-			//this.partnerJourneyPageEnabled = result.partnerJourneyPageEnabled;
+			this.partnerJourneyPageEnabled = result.partnerJourneyPageEnabled;
 			this.ngxloading = false;
 		}, _error => {
 			this.ngxloading = false;
