@@ -474,5 +474,10 @@ export class Properties {
 	/** XNFR-745 **/
 	groupByAssetsTooltipMessage = "Turn on the 'Group by Assets' toggle to view assets categorized within their respective folders";
 	disableOrderAssetsTooltipMessage = "Enabling 'Group by Assets' will lock asset ordering since assets are organized by folders";
-	}
+	/***** XNFR-755 *****/
+	SIGNUP_PROCESS_NOT_COMPLETED = "The sign-up process is not yet complete.";
+	COMPANY_PROFILE_NOT_COMPLETED = "The company profile has not been completed yet.";
+	SIGNUP_PROCESS_COMPLETED = "The sign-up process is completed.";
+	COMPANY_PROFILE_COMPLETED = "The company profile has been completed.";		
+}
 

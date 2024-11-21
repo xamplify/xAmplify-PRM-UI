@@ -927,9 +927,9 @@
                                                 <th style="width: 20%;" translate>Entity info</th>
                                                 <th class="hidden-xs" translate>VERTICAL</th>
                                                 <th class="hidden-xs" translate>REGION</th>
-                                                <th class="hidden-xs" translate>TYPE</th>
-                                                <th class="hidden-xs hidden-sm" translate>CATEGORY</th>
                                                 <th></th>
+                                                <th class="hidden-xs" translate>SIGNUP STATUS</th>
+                                                <th class="hidden-xs hidden-sm" translate>COMPANY PROFILE</th>
                                                 <th class='text-center' translate>ACTIONS</th>
                                             </tr>
                                         </thead>
@@ -986,16 +986,6 @@
                                                         title="{{contact.region}}">{{contact.region | slice:0:14}}
                                                         <span *ngIf="contact.region?.length>14">..</span>
                                                     </td>
-                                                    <td class="hidden-xs white-space-transform"
-                                                        title="{{contact.partnerType}}">{{contact.partnerType |
-                                                        slice:0:14}}
-                                                        <span *ngIf="contact.partnerType?.length>14">..</span>
-                                                    </td>
-                                                    <td class="hidden-xs hidden-sm white-space-transform"
-                                                        title="{{contact.category}}">{{contact.category | slice:0:14}}
-                                                        <span *ngIf="contact.category?.length>14">..</span>
-                                                    </td>
-
                                                     <td>
                                                         <button id='more_less_button_{{i}}'
                                                             class="hidden-xs lightgray-btn"
@@ -1003,6 +993,28 @@
                                                             <span *ngIf="!contact.isShowDetails" translate>More</span>
                                                             <span *ngIf="contact.isShowDetails" translate>Less</span>
                                                         </button>
+                                                    </td>
+                                                    <td>
+                                                        <div class="actions-block float-none" style="text-align: center;">
+                                                            <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                                title="{{contact?.userStatus == 'APPROVE' ? properties?.SIGNUP_PROCESS_COMPLETED : properties?.SIGNUP_PROCESS_NOT_COMPLETED}}">
+                                                                <i [className]="contact?.userStatus == 'APPROVE' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
+                                                                    aria-hidden="true"></i>
+                                                                <div [className]="contact?.userStatus == 'APPROVE' ? 'clickicons': 'del-icon'">
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="actions-block float-none" style="text-align: center;">
+                                                            <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                                title="{{contact?.companyNameStatus == 'active' ? properties?.COMPANY_PROFILE_COMPLETED : properties?.COMPANY_PROFILE_NOT_COMPLETED}}">
+                                                                <i [className]="contact?.companyNameStatus == 'active' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
+                                                                    aria-hidden="true"></i>
+                                                                <div [className]="contact?.companyNameStatus == 'active' ? 'clickicons': 'del-icon'">
+                                                                </div>
+                                                            </a>
+                                                        </div>
                                                     </td>
                                                     <td class="white-space-transform">
                                                         <div class="actions-block override-actions"
@@ -1138,6 +1150,10 @@
                                                                     <td class='pt10 pb10 bold' translate>Territory:</td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{contact.territory}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Type:</td>
+                                                                    <td class='pt10 pb10'>{{contact.partnerType}}</td>
                                                                 </tr>
 
                                                                 <tr>
