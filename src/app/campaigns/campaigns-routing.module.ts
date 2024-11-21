@@ -59,9 +59,12 @@ export const campaignRoutes: Routes = [
   { path: "timeline/:type/:campaignId/:userId/:title", component: UserLevelTimelineComponent },
   { path: "timeline/:type/:campaignId/:userId/:navigatedFrom", component: UserLevelTimelineComponent },
   { path: "timeline/:type/:campaignId/:userId/:navigatedFrom/:analyticsCampaignId/:campaignTitle", component: UserLevelTimelineComponent },
+  { path: "timeline/:type/:campaignId/:userId/:userListId/:navigatedFrom", component: UserLevelTimelineComponent },
+  { path: "timeline/:type/:campaignId/:userId/:parent/:navigation/:userListId/:navigatedFrom", component: UserLevelTimelineComponent },
   { path: 'user-campaigns/:type/:userId',component:UserCampaignsListUtilComponent},
   { path: 'user-campaigns/:type/:userId/:navigatedFrom',component:UserCampaignsListUtilComponent},
   { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId/:campaignTitle',component:UserCampaignsListUtilComponent},
+  { path: 'user-campaigns/:type/:userId/:userListId/:navigatedFrom',component:UserCampaignsListUtilComponent},
 
 ];
 

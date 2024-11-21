@@ -19,6 +19,8 @@ export class EmailActivityComponent implements OnInit {
 
   @Input() contactId:number;
   @Input() reloadTab: boolean;
+  @Input() contactEmailId:any;
+  @Input() contactName:any;
 
   emailActivities = [];
   emailActivityId: number = 0;
@@ -31,6 +33,7 @@ export class EmailActivityComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   emailSortOption: SortOption = new SortOption();
+  isFirstChange:boolean = true;
 
   constructor(public emailActivityService: EmailActivityService, public authenticationService: AuthenticationService,
     public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {}
@@ -40,7 +43,11 @@ export class EmailActivityComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.showAllEmailActivities();
+    if (this.isFirstChange) {
+      this.isFirstChange = false;
+    } else {
+      this.showAllEmailActivities();
+    }
   }
 
   showAllEmailActivities() {

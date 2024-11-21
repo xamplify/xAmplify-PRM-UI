@@ -13,6 +13,7 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var $:any,swal:any;
 @Component({
@@ -46,6 +47,10 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	campaignTitle = "";
 	statusCode = 0;
 	userIdParameter = "";
+	/**XNFR-735**/
+	isFromContactDetails:boolean = false;
+	userListId:any;
+	isFromCompanyModule: boolean = false;
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -72,6 +77,13 @@ export class UserCampaignsListUtilComponent implements OnInit {
 			this.validateCampaignIdAndUserId(this.analyticsCampaignId,this.pagination.userId);
 		}else{
 			this.validatePartnerOrContactIdForCampaignAnalytics();
+		}
+		if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd") {
+			this.userListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
+			this.isFromContactDetails = true;
+			if (this.navigatedFrom == "ccd") {
+				this.isFromCompanyModule = true;
+			}
 		}
 	}
 
@@ -299,18 +311,27 @@ setAutoResponsesPage(event: any,campaign:any) {
   }
 
 
-	goToCampaignAnalytics(campaignId:number,campaignTitle:any){
-		this.loading = true;
-		let campaign = {};
-		campaign['campaignId'] = campaignId;
-		campaign['campaignTitle']=campaignTitle;
-		this.referenceService.goToCampaignAnalytics(campaign);
+	goToCampaignAnalytics(campaignId: any, campaignTitle: any) {
+		if (this.isFromContactDetails) {
+			let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignId);
+			let encodedTitle = this.referenceService.getEncodedUri(campaignTitle);
+			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
+		} else {
+			this.loading = true;
+			let campaign = {};
+			campaign['campaignId'] = campaignId;
+			campaign['campaignTitle'] = campaignTitle;
+			this.referenceService.goToCampaignAnalytics(campaign);
+		}
 	}
 	
 	viewTimeLine(campaignAnalytics:any){
 		this.loading = true;
 		let url  = "/home/campaigns/timeline/"+this.previousRouterAlias+"/"+this.referenceService.encodePathVariable(campaignAnalytics.campaignId)+"/"+this.referenceService.encodePathVariable(this.pagination.userId);
-		if(this.navigatedFrom!=undefined&& this.analyticsCampaignId==undefined){
+		if (this.isFromContactDetails) {
+			let userListId = this.referenceService.encodePathVariable(this.userListId);
+			this.referenceService.goToRouter(url+"/c/l"+"/"+userListId+"/"+this.navigatedFrom);
+		}else if(this.navigatedFrom!=undefined&& this.analyticsCampaignId==undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
 		}else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.referenceService.encodePathVariable(this.analyticsCampaignId)+"/"+this.referenceService.getEncodedUri(campaignAnalytics.campaignTitle));
@@ -347,7 +368,15 @@ setAutoResponsesPage(event: any,campaign:any) {
 			}else if(this.navigatedFrom=="b"){
 				this.referenceService.goToRouter(manageCampaignsUrl);
 				//this.referenceService.goToRouter(campaignAnalyticsUrl);
-			}else{
+			} else if (this.isFromContactDetails) {
+				let encodedUserListId = this.referenceService.encodePathVariable(this.userListId);
+				let encodeUserId = this.referenceService.encodePathVariable(this.userIdParameter);
+				if (this.isFromCompanyModule) {
+					this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.company + RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId);
+				} else {
+					this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId);
+				}
+			} else{
 				url = url+"contacts/";
 				this.referenceService.goToRouter(url+"manage");
 			}

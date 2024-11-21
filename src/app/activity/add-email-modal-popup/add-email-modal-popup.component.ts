@@ -5,6 +5,10 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { EmailActivity } from '../models/email-activity-dto';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Properties } from 'app/common/models/properties';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { TagInputComponent as SourceTagInput } from 'ngx-chips';
+import { tap } from 'rxjs/operators';
 declare var $:any, CKEDITOR:any;
 
 @Component({
@@ -22,6 +26,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   @Input() isReloadEmailActivityTab:boolean;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
+  @Output() notifySubmitFailed = new EventEmitter();
 
   emailActivity:EmailActivity = new EmailActivity();
   customResponse:CustomResponse = new CustomResponse();
@@ -33,6 +38,19 @@ export class AddEmailModalPopupComponent implements OnInit {
   isValidTestEmailId: boolean = false;
   isTestMail: boolean = false;
   ckeConfig = {};
+  public validators = [this.must_be_email.bind(this)];
+  addFirstAttemptFailed: boolean = false;
+  public errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
+  public onAddedFunc = this.beforeAdd.bind(this);
+  tagInput: SourceTagInput;
+  ccEmailIds = [];
+  bccEmailIds = [];
+  files: File[] = [];
+  formData: any = new FormData();
+  showAttachmentErrorMessage: boolean = false;
+  showFilePathError: boolean = false;
+  restrictedFileTypes = ["exe"];
+  showFileTypeError: boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties) {}
@@ -44,28 +62,34 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.isPreview = false;
       this.emailActivity.toEmailId = this.userEmailId;
       this.emailActivity.senderEmailId = this.authenticationService.getUserName();
-      // $('#addEmailModalPopup').modal('show');
       this.referenceService.openModalPopup('addEmailModalPopup');
     } else if (this.actionType == 'view') {
       this.isPreview = true;
       this.fetchEmailActivityById();
-      // $('#addEmailModalPopup').modal('show');
       this.referenceService.openModalPopup('addEmailModalPopup');
     }
   }
 
   sendEmailToUser() {
     this.ngxLoading = true;
-    this.emailActivityService.sendEmailToUser(this.emailActivity).subscribe(
+    this.prepareFormData();
+    this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+    this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+    this.emailActivityService.sendEmailToUser(this.emailActivity, this.formData).subscribe(
       data => {
         this.ngxLoading = false;
         $('#addEmailModalPopup').modal('hide');
         this.notifySubmitSuccess.emit(!this.isReloadEmailActivityTab);
       }, error => {
         this.ngxLoading = false;
+        this.notifySubmitFailed.emit(!this.isReloadEmailActivityTab);
         this.closeEmailModal();
       }
     )
+  }
+
+  private extractEmailIds(emailList: any[]): string[] {
+    return emailList.map(email => email.value);
   }
 
   closeEmailModal() {
@@ -108,19 +132,28 @@ export class AddEmailModalPopupComponent implements OnInit {
     this.referenceService.showSweetAlertSuccessMessage(this.properties.emailSendSuccessResponseMessage);
   }
 
+  showTestMailErrorStatus() {
+    this.isTestMail = false;
+    this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
+  }
+
   closeTestMailPopup() {
     this.isTestMail = false;
   }
 
   sendTestEmail() {
     this.testEmailLoading = true;
+    this.prepareFormData();
     this.emailActivity.toEmailId = this.testToEmailId;
-    this.emailActivityService.sendTestEmailToUser(this.emailActivity).subscribe(
+    this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+    this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+    this.emailActivityService.sendTestEmailToUser(this.emailActivity, this.formData).subscribe(
       data => {
         this.emailActivity.toEmailId = this.userEmailId;
         this.showTestMailSubmittedStatus();
         this.testEmailLoading = false;
       }, error => {
+        this.showTestMailErrorStatus();
         this.testEmailLoading = false;
       }
     )
@@ -132,6 +165,88 @@ export class AddEmailModalPopupComponent implements OnInit {
     } else {
       this.isValidTestEmailId = false;
     }
+  }
+
+  private must_be_email(control: FormControl) {
+    if (this.addFirstAttemptFailed && !this.validateCCorBCCEmail(control.value)) {
+      return { "must_be_email": true };
+    }
+    return null;
+  }
+
+  private validateCCorBCCEmail(text: string) {
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return (text && EMAIL_REGEXP.test(text));
+  }
+
+  private beforeAdd(tag: any) {
+    let isPaste = false;
+    if (tag['value']) { isPaste = true; tag = tag.value; }
+    if (!this.validateCCorBCCEmail(tag)) {
+      if (!this.addFirstAttemptFailed) {
+        this.addFirstAttemptFailed = true;
+        if (!isPaste) { this.tagInput.setInputValue(tag); }
+      }
+      if (isPaste) { return Observable.throw(this.errorMessages['must_be_email']); }
+      else { return Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag)))); }
+    }
+    this.addFirstAttemptFailed = false;
+    return Observable.of(tag);
+  }
+
+  onFileChange(event: any): void {
+    const selectedFiles: FileList = event.target.files;    
+    if (selectedFiles.length > 0) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        this.files.push(selectedFiles[i]);
+      }
+      event.target.value = '';
+      this.validateAttachments();
+    }
+  }
+
+  validateAttachments() {
+    let sizeInKb = 0;
+    let maxFileSizeInKb = 1024 * 20;
+    this.showFileTypeError = false;
+    for ( let file of this.files) {
+      sizeInKb = sizeInKb + (file.size / 1024);
+      let fileType = this.getFileExtension(file.name);
+      if (this.restrictedFileTypes.includes(fileType)) {
+        this.isValidEmail = false;
+        this.showFileTypeError = true;
+        break;
+      }
+    }
+    if (sizeInKb>maxFileSizeInKb) {
+      this.showAttachmentErrorMessage = true;
+      this.isValidEmail = false;
+    } else {
+      this.showAttachmentErrorMessage = false;
+      this.isValidEmail = true;
+    }
+    this.validateEmail();
+  }
+
+  removeFile(index: number): void {
+    this.files.splice(index, 1);
+    this.validateAttachments();
+  }
+
+  setUploadedFileProperties(file: File) {
+    this.formData.delete("uploadedFile");
+    this.formData.append("uploadedFile", file, file['name']);
+  }
+
+  prepareFormData(): void {
+    this.files.forEach(file => {
+      this.formData.append("uploadedFiles", file, file['name']);
+    });
+  }
+
+  getFileExtension(fileName: string): string {
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : '';
   }
   
 }

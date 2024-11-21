@@ -1,0 +1,83 @@
+<div class="modal fade right" id="previewEmailModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeEmailModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">View Email</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="email-card">
+              <div class="maualSPFCardbg">
+                <!-- Cards -->
+                <div class="profile_header">
+                  <div class="avatar2">
+                    <span class="avatar-initial">{{highlightLetter}}</span>
+                  </div>
+                  <div class="profile_info">
+                    <div *ngIf="contactName != ''">
+                      <i aria-hidden="true" class="fas fa-user mr_6 icons_colors"></i>
+                      <span data-placement="bottom" data-toggle="tooltip" title="" class="view_name">{{contactName}}</span>
+                    </div>
+                    <span class="email-id">
+                      <p data-placement="bottom" data-toggle="tooltip" title="">
+                        <i class="fa fa-envelope mr_6 icons_colors" aria-hidden="true"></i>{{contactEmailId}}
+                      </p>
+                    </span>
+                    <div class="text_email">
+                      <h5 class="m0 fs-10" *ngIf="emailActivity.ccEmailIdsString != undefined">
+                        <span class="d-flex">
+                          <label class="mr5 activity-titles">CC:</label>
+                          {{emailActivity.ccEmailIdsString}}
+                        </span>
+                      </h5>
+                      <h5 class="m0 fs-10" *ngIf="emailActivity.bccEmailIdsString != undefined">
+                        <span class="d-flex">
+                          <label class="mr5 activity-titles">BCC:</label>
+                          {{emailActivity.bccEmailIdsString}}
+                        </span>
+                      </h5>
+                      <h5 class="m0 fs-10">
+                        <span class="d-flex">
+                          <label class="mr5 activity-titles">From:</label>
+                          {{emailActivity.senderEmailId}}
+                        </span>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h5>
+                <span class="d-flex">
+                  <label class="mr5 activity-title">Subject:</label>
+                  {{emailActivity.subject}}
+                </span>
+              </h5>
+              <div class="email_content">
+                <span>
+                  <div [innerHTML]="emailActivity.body"></div>
+                </span>
+              </div>
+              <h5 *ngIf="emailActivity?.emailAttachmentDTOs?.length > 0">
+                <label class="mr5 activity-title">Attachments:</label>
+                <h6 class="m0">
+                  <span *ngFor="let emailAttachmentDTO of emailActivity.emailAttachmentDTOs; let i = index">
+                    <span><a *ngIf="emailAttachmentDTO.filePath != undefined" target="_blank" href="{{emailAttachmentDTO.filePath}}" class="bg-soft-info">{{emailAttachmentDTO.fileName}}</a>
+                      <a *ngIf="emailAttachmentDTO.filePath == undefined" (click)="emailAttachmentDTO.uploadedFile = 'true'" class="bg-soft-info">{{emailAttachmentDTO.fileName}}</a></span>
+                      <span *ngIf="emailAttachmentDTO.uploadedFile" class="text-danger" id="filePathError">Unable to load the file. <p (click)="emailAttachmentDTO.uploadedFile = 'false'"><i class="fa fa-times"></i></p></span>
+                  </span>
+                </h6>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
