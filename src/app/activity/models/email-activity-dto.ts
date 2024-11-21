@@ -9,4 +9,7 @@ export class EmailActivity {
     ccEmailIds = [];
     bccEmailIds = [];
     attachments:any;
+    ccEmailIdsString:any;
+    bccEmailIdsString:any;
+    emailAttachmentDTOs = [];
 }
