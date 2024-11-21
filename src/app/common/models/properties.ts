@@ -472,8 +472,8 @@ export class Properties {
 	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
 
 	/** XNFR-745 **/
-	groupByAssetsTooltipMessage = "Turn on the 'Group by Assets' toggle to view assets categorized within their respective folders";
-	disableOrderAssetsTooltipMessage = "Enabling 'Group by Assets' will lock asset ordering since assets are organized by folders";
+	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders";
+	disableOrderAssetsTooltipMessage = "Enabling 'Show Assets By Folders' will lock asset ordering since assets are organized by folders";
 	/***** XNFR-755 *****/
 	SIGNUP_PROCESS_NOT_COMPLETED = "The sign-up process is not yet complete.";
 	COMPANY_PROFILE_NOT_COMPLETED = "The company profile has not been completed yet.";
