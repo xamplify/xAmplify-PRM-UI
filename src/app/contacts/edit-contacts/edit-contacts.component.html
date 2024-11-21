@@ -879,16 +879,13 @@
 																translate>NAME</th>
 															<th scope="col" *ngIf="isPartner" translate>VERTICAL</th>
 															<th scope="col" *ngIf="isPartner" translate>REGION</th>
-															<th scope="col" *ngIf="isPartner" translate>TYPE</th>
-															<th scope="col" *ngIf="isPartner" translate>CATEGORY</th>
-															<th scope="col" class="hidden-xs" *ngIf="!isPartner"
-																translate>Job Title</th>
-															<th scope="col" class="text-center hidden-xs"
-																*ngIf="!isPartner" translate>ADDRESS</th>
-															<th scope="col" class="text-center "
-																*ngIf="gdprStatus || isPartner"></th>
-															<th scope="col" class="text-center hidden-xs"
-																*ngIf="isPartner"></th>
+															<!-- <th scope="col" *ngIf="isPartner" translate>TYPE</th>
+															<th scope="col" *ngIf="isPartner" translate>CATEGORY</th> -->
+															<th scope="col" class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
+															<th scope="col" class="text-center hidden-xs" translate>ADDRESS</th>
+															<th scope="col" class="text-center " *ngIf="gdprStatus || isPartner"></th>
+															<th scope="col" *ngIf="isPartner" translate>SIGNUP STATUS</th>
+															<th scope="col" *ngIf="isPartner" translate>COMPANY PROFILE</th>
 															<th scope="col" class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  ||
 							  authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner
 							 || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId))
@@ -1012,7 +1009,7 @@
 																	{{contact.region | slice:0:14}}
 																	<span *ngIf="contact.region?.length>14">..</span>
 																</td>
-																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
+																<!-- <td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.partnerType | slice:0:14}}
 																	<span
 																		*ngIf="contact.partnerType?.length>14">..</span>
@@ -1020,7 +1017,7 @@
 																<td [ngClass]="isContactModule?'white-space-transform text-line':'white-space-transform'" *ngIf="isPartner">
 																	{{contact.category | slice:0:14}}
 																	<span *ngIf="contact.category?.length>14">..</span>
-																</td>
+																</td> -->
 																<td [ngClass]="(isContactModule && isLocalhostOrQADomain)?'text-line':''" *ngIf="!isPartner" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''">
 																	<app-user-info [isContactCompanyInfo]="true"
 																		[userInfo]="contact"> </app-user-info>
@@ -1058,6 +1055,28 @@
 																		<span *ngIf="!contact.isShowDetails" translate>More</span>
 																		<span *ngIf="contact.isShowDetails" translate>Less</span>
 																	</button>
+																</td>
+																<td align="center" *ngIf="isPartner">
+																	<div class="actions-block float-none">
+																		<a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+																			title="{{contact?.userStatus == 'APPROVE' ? properties?.SIGNUP_PROCESS_COMPLETED : properties?.SIGNUP_PROCESS_NOT_COMPLETED}}">
+																			<i [className]="contact?.userStatus == 'APPROVE' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
+																				aria-hidden="true"></i>
+																			<div [className]="contact?.userStatus == 'APPROVE' ? 'clickicons': 'del-icon'">
+																			</div>
+																		</a>
+																	</div>
+																</td>
+																<td align="center" *ngIf="isPartner">
+																	<div class="actions-block float-none" style="text-align: center;">
+																		<a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+																			title="{{contact?.companyNameStatus == 'active' ? properties?.COMPANY_PROFILE_COMPLETED : properties?.COMPANY_PROFILE_NOT_COMPLETED}}">
+																			<i [className]="contact?.companyNameStatus == 'active' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
+																				aria-hidden="true"></i>
+																			<div [className]="contact?.companyNameStatus == 'active' ? 'clickicons': 'del-icon'">
+																			</div>
+																		</a>
+																	</div>
 																</td>
 																<td align="center"
 																	*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || 
@@ -1183,7 +1202,18 @@
 																				<td class='pt10 pb10'>
 																					{{contact.territory}}</td>
 																			</tr>
-
+																			<tr *ngIf="isPartner">
+																				<td class='pt10 pb10 bold mr_10' translate>
+																					Type : </td>
+																				<td class='pt10 pb10'>
+																					{{contact.partnerType}}</td>
+																			</tr>
+																			<tr *ngIf="isPartner">
+																				<td class='pt10 pb10 bold mr_10' translate>
+																					Category : </td>
+																				<td class='pt10 pb10'>
+																					{{contact.category}}</td>
+																			</tr>
 																			<tr *ngIf="gdprStatus" class="bg-unset flex-none">
 																				<td class='pt10 pb10 bold mr_10'
 																					translate>Legal Basis: </td>
@@ -1412,15 +1442,15 @@
 													class="hidden-xs" translate>EXCLUDED CATEGORY</th>
 												<th *ngIf="isPartner" translate scope="col">VERTICAL</th>
 												<th *ngIf="isPartner" translate scope="col">REGION</th>
-												<th *ngIf="isPartner" translate scope="col">TYPE</th>
-												<th *ngIf="isPartner" translate scope="col">CATEGORY</th>
-												<th class="hidden-xs" *ngIf="!isPartner" translate scope="col">Job Title
-												</th>
-												<th class="text-center hidden-xs" *ngIf="!isPartner" translate
-													scope="col">ADDRESS</th>
+												<!-- <th *ngIf="isPartner" translate scope="col">TYPE</th>
+												<th *ngIf="isPartner" translate scope="col">CATEGORY</th> -->
+												<th class="hidden-xs" *ngIf="!isPartner" translate scope="col">Job Title</th>
+												<th class="text-center hidden-xs" *ngIf="!isPartner" translate scope="col">ADDRESS</th>
 												<th class="text-center hidden-xs"
 													*ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !== 'excluded' && (gdprStatus || isPartner)"
 													scope="col"></th>
+												<th *ngIf="isPartner" translate scope="col">SIGNUP STATUS</th>
+												<th *ngIf="isPartner" translate scope="col">COMPANY PROFILE</th>
 												<th class="text-center hidden-xs"
 													*ngIf="contactsByType.selectedCategory == 'unsubscribed'" translate
 													scope="col">Reason</th>
@@ -1503,12 +1533,12 @@
 													<td *ngIf="isPartner">{{allcontacts.region | slice:0:14}}
 														<span *ngIf="allcontacts.region?.length>14">..</span>
 													</td>
-													<td *ngIf="isPartner">{{allcontacts.partnerType | slice:0:14}}
+													<!-- <td *ngIf="isPartner">{{allcontacts.partnerType | slice:0:14}}
 														<span *ngIf="allcontacts.partnerType?.length>14">..</span>
 													</td>
 													<td *ngIf="isPartner">{{allcontacts.category | slice:0:14}}
 														<span *ngIf="allcontacts.category?.length>14">..</span>
-													</td>
+													</td> -->
 													<td class="hidden-xs" *ngIf="!isPartner">
 														<h5 class='mb0 ellipsis'>{{allcontacts.jobTitle | slice:0:25}}
 															<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
@@ -1562,6 +1592,28 @@
 														</button>
 													</td>
 
+													<td align="center" *ngIf="isPartner">
+                                                        <div class="actions-block float-none">
+                                                            <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                                title="{{allcontacts?.userStatus == 'APPROVE' ? properties?.SIGNUP_PROCESS_COMPLETED : properties?.SIGNUP_PROCESS_NOT_COMPLETED}}">
+                                                                <i [className]="allcontacts?.userStatus == 'APPROVE' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
+                                                                    aria-hidden="true"></i>
+                                                                <div [className]="allcontacts?.userStatus == 'APPROVE' ? 'clickicons': 'del-icon'">
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    <td align="center" *ngIf="isPartner">
+                                                        <div class="actions-block float-none">
+                                                            <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                                title="{{allcontacts?.companyNameStatus == 'active' ? properties?.COMPANY_PROFILE_COMPLETED : properties?.COMPANY_PROFILE_NOT_COMPLETED}}">
+                                                                <i [className]="allcontacts?.companyNameStatus == 'active' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
+                                                                    aria-hidden="true"></i>
+                                                                <div [className]="allcontacts?.companyNameStatus == 'active' ? 'clickicons': 'del-icon'">
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </td>
 													<td class="hidden-xs text-center"
 														*ngIf="contactsByType.selectedCategory == 'unsubscribed'">
 														<h5 class='mb0 ellipsis fl-unset' data-toggle="tooltip"
@@ -1689,6 +1741,24 @@
 																			Territory : </td>
 																		<td class='pt10 pb10'>
 																			{{allcontacts.territory}}</td>
+																	</tr>
+																</ng-container>
+
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none" *ngIf="isPartner">
+																		<td class='pt10 pb10 bold' translate>
+																			Type : </td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.partnerType}}</td>
+																	</tr>
+																</ng-container>
+
+																<ng-container *ngIf="isPartner">
+																	<tr class="bg-unset flex-none" *ngIf="isPartner">
+																		<td class='pt10 pb10 bold' translate>
+																			Category : </td>
+																		<td class='pt10 pb10'>
+																			{{allcontacts.category}}</td>
 																	</tr>
 																</ng-container>
 															
