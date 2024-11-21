@@ -104,44 +104,44 @@
               <li><i class="fas fa-building"></i>
                 <div class="user_details">
                   <span class="address_title">Company:</span>
-                  <p *ngIf="selectedContact?.contactCompany != undefined" class="mb0 pt5">{{selectedContact?.contactCompany}}
-                  </p>
+                  <span *ngIf="selectedContact?.contactCompany != undefined" class="mb0">{{selectedContact?.contactCompany}}
+                  </span>
                 </div>
               </li>
               <li><i class="fas fa-briefcase"></i>
                 <div class="user_details">
                   <span class="address_title">Job Title:</span>
-                  <p *ngIf="selectedContact?.jobTitle != undefined" class="mb0 pt5">{{selectedContact?.jobTitle}}</p>
+                  <span *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</span>
                 </div>
               </li>
               <li><i class="fas fa-map-marker-alt"></i>
                 <div class="user_details">
                   <span class="address_title">Address:</span>
-                  <p *ngIf="selectedContact?.address != undefined" class="mb0 pt5">{{selectedContact?.address}}</p>
+                  <span *ngIf="selectedContact?.address != undefined" class="mb0">{{selectedContact?.address}}</span>
                 </div>
               </li>
               <li><i class="fas fa-city"></i>
                 <div class="user_details">
                   <span class="address_title">City:</span>
-                  <p *ngIf="selectedContact?.city != undefined" class="mb0 pt5">{{selectedContact?.city}}</p>
+                  <span *ngIf="selectedContact?.city != undefined" class="mb0">{{selectedContact?.city}}</span>
                 </div>
               </li>
               <li><i class="fas fa-map"></i>
                 <div class="user_details">
                   <span class="address_title">State/Province:</span>
-                  <p *ngIf="selectedContact?.state != undefined" class="mb0 pt5">{{selectedContact?.state}}</p>
+                  <span *ngIf="selectedContact?.state != undefined" class="mb0">{{selectedContact?.state}}</span>
                 </div>
               </li>
               <li><i class="fas fa-mail-bulk"></i>
                 <div class="user_details">
                   <span class="address_title"> Postal Code:</span>
-                  <p *ngIf="selectedContact?.zipCode != undefined" class="mb0 pt5">{{selectedContact?.zipCode}}</p>
+                  <span *ngIf="selectedContact?.zipCode != undefined" class="mb0">{{selectedContact?.zipCode}}</span>
                 </div>
               </li>
               <li><i class="fas fa-globe"></i>
                 <div class="user_details">
                   <span class="address_title"> Country:</span>
-                  <p *ngIf="selectedContact?.country != undefined" class="mb0 pt5">{{selectedContact?.country}}</p>
+                  <span *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</span>
                 </div>
               </li>
             </ul>
@@ -233,7 +233,7 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a (click)="viewMoreLeads()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn" (click)="viewMoreLeads()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
             <div class="panel-body" *ngIf="!(contactLeads.length > 0) && !leadsLoader?.isLoading">
@@ -277,7 +277,7 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a (click)="viewMoreDeals()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn" (click)="viewMoreDeals()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
             <div class="panel-body" *ngIf="!(contactDeals.length > 0) && !dealsLoader.isLoading">
@@ -313,7 +313,7 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a (click)="viewMoreCampaigns()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn" (click)="viewMoreCampaigns()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
             <div class="panel-body" *ngIf="!(contactCampaigns.length > 0) && !campaignsLoader?.isLoading">

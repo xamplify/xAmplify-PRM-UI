@@ -77,18 +77,19 @@ padding:0px!important;
     margin: 5px 0px;
 }
 .lead_details li {
-    font-size: 14px;
+    font-size: 13px;
     color: #555;
     display: flex;
-    padding: 10px 0px;
+    padding: 10px 0px 5px 0px;
 }
 .lead_details li i {
-    margin-right: 10px;
+    margin-right: 6px;
     color: #7d7a7a;
+    font-size: 13px;
 }
 .user_details{
     position: relative;
-    top: -5px;
+    /* top: -5px; */
 }
 .address_title{
     color: #333;
