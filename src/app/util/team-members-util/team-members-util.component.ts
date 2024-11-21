@@ -1207,18 +1207,15 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   downloadTeamMemberCsv() {
-    if (this.moveToTop) {
-      this.referenceService.scrollSmoothToTop();
-    }
     this.httpRequestLoader.isHorizontalCss = true;
-    this.csvPagination = this.pagination;
-    this.csvPagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
-    if (!this.isTeamMemberModule) {
-      this.csvPagination.filterKey = "teamMemberGroup";
-      this.csvPagination.categoryId = this.teamMemberGroupId > 0 ? this.teamMemberGroupId : 0;
-    }
-    this.csvPagination.maxResults = this.pagination.totalRecords;
-    this.csvPagination.pageIndex = 1;
+    this.csvPagination = { 
+      ...this.pagination, 
+      selectedTeamMemberIds: this.selectedTeamMemberIds,
+      filterKey: this.isTeamMemberModule ? undefined : "teamMemberGroup",
+      categoryId: this.teamMemberGroupId > 0 ? this.teamMemberGroupId : 0,
+      pageIndex: 1,
+      maxResults: this.pagination.totalRecords 
+    };
     this.teamMemberService.findAll(this.csvPagination)
       .subscribe(
         response => {
@@ -1240,7 +1237,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         "FIRSTNAME": item.firstName,
         "LASTNAME": item.lastName,
         "EMAILID": item.emailId,
-        "GROUP": item.teamMemberGroupName,
+        "GROUP": item.primaryAdmin ? "N/A" : item.teamMemberGroupName,
         "ADMIN": (item.secondAdmin || item.primaryAdmin) ? "Yes" : "No",
         "STATUS": (item.status == "APPROVE") ? "Active" : "InActive",
       };

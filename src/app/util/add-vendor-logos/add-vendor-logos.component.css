@@ -96,4 +96,9 @@
 .modal-dialog, .modal-content, .modal-body, .model-footer {
   overflow: auto !important;
 }
-
+.vendorLogoCheck{
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: center; 
+  margin-top: 36px;
+}

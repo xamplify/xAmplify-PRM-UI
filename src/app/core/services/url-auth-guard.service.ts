@@ -23,7 +23,7 @@ export class UrlAuthGuardService {
     if(isDamRouterUrl){
       moduleId = this.roles.damId;
     }
-    const damModuleRouterUrlsForPartner = ["modules", "shared","editp"];
+    const damModuleRouterUrlsForPartner = ["modules", "shared","editp","pda"];
     let componentUrlName = this.getComponentUrlName(routerUrl,damModuleRouterUrlsForPartner,"dam");
     let url = this.AUTH_URL+"url/modules/"+moduleId+"/users/"+this.userId+"/routerUrls/"+componentUrlName+this.ACCESS_TOKEN_PARAMETER+this.authenticationService.access_token;
     let subDomain = this.authenticationService.getSubDomain();

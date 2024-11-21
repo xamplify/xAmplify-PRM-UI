@@ -62,4 +62,5 @@ export class ColumnInfo {
     //XNFR-710
     selectedChoiceValue: any;
     formLabelDefaultFieldType : any;
+    formLabelChoices: Array<FormOption> = new Array<FormOption>();
 }

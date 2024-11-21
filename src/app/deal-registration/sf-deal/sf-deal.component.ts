@@ -205,7 +205,7 @@ export class SfDealComponent implements OnInit {
     }
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
@@ -214,7 +214,12 @@ export class SfDealComponent implements OnInit {
         this.isDealRegistrationFormInvalid = true;
         this.isFormValid.emit(this.isDealRegistrationFormInvalid);
         this.addLoader();
-        this.getActiveCRMCustomForm();
+        if ("SALESFORCE" === this.activeCRM.createdForActiveCRMType && this.isPreview && !("CONNECTWISE" === this.activeCRM.createdByActiveCRMType)) {
+          this.isSalesForceEnabledAsActiveCRM = true;
+          this.getFormLablesValues();
+        } else {
+          this.getActiveCRMCustomForm();
+        }
       }
     }
   }
@@ -857,6 +862,21 @@ export class SfDealComponent implements OnInit {
       if (result.statusCode == 200) {
         this.formLabels = result.data;
         this.formLabels.forEach((columnInfo: ColumnInfo) => {
+
+          if (columnInfo.labelType === "checkbox" || columnInfo.labelType === "radio") {
+            columnInfo.isDropDownLoading = true;
+            this.integrationService.getFormLabelChoices(columnInfo.id).subscribe(result => {
+              columnInfo.isDropDownLoading = false;
+              if (result.statusCode == 200) {
+                columnInfo.formLabelChoices = result.data;
+              }
+            }, error => {
+              columnInfo.isDropDownLoading = false;
+              this.sfFormError = this.referenceService.getApiErrorMessage(error);
+            });
+          }
+
+
           if (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany)) {
             if (columnInfo.private) {
               columnInfo.hideFieldInfo = true;
@@ -866,7 +886,6 @@ export class SfDealComponent implements OnInit {
           if (columnInfo.formLabelDefaultFieldType === "LEAD_ID" || columnInfo.formLabelDefaultFieldType === "DEAL_ID") {
             columnInfo.hideFieldInfo = true;
           }
-
         });
       }
     }, error => {

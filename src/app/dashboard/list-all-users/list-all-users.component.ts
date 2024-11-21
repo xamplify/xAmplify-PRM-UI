@@ -35,6 +35,12 @@ export class ListAllUsersComponent implements OnInit {
 	dropdownDataLoading = true;
     isSearchableDropdownHidden = false;
 	selectedCompanyIds = [];
+	xAmplifyRoles = [{'id':2,'itemName':'OrgAdmin'},{'id':14,'itemName':'OrgAdmin & Partner'},
+					 {'id':13,'itemName':'Vendor'},{'id':25,'itemName':'Vendor & Partner'},
+					 {'id':20,'itemName':'PRM'},{'id':32,'itemName':'PRM & Partner'},
+					 {'id':18,'itemName':'Marketing'},{'id':30,'itemName':'Marketing & Partner'},
+					 {'id':12,'itemName':'Partner'}];
+
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -47,16 +53,16 @@ export class ListAllUsersComponent implements OnInit {
 
 	ngOnInit() {
 		this.referenceService.loading(this.httpRequestLoader, true);
-		if(this.showPartners){
+		if (this.showPartners) {
 			this.collpsableId = "collapsible-all-partners";
 			this.headerText = "Partner Company Users";
-      		this.isSearchableDropdownHidden = false;
+			this.isSearchableDropdownHidden = false;
 			this.findAllPartnerCompanies();
-		}else{
-      if(this.isVanityUrlEnabled){
-        this.isSearchableDropdownHidden = true;
-        this.headerText = this.authenticationService.v_companyName;
-      }
+		} else {
+			if (this.isVanityUrlEnabled) {
+				this.isSearchableDropdownHidden = true;
+				this.headerText = this.authenticationService.v_companyName;
+			}
 			this.findAllCompanyNames();
 		}
 		this.listAllApprovedUsers(this.pagination);
@@ -89,13 +95,20 @@ export class ListAllUsersComponent implements OnInit {
 
 	searchableDropdownEventReceiver(event:any){
 		if(event!=null){
-			this.pagination = new Pagination();
 			this.pagination.companyId = event['id'];
 		}else{
-			this.pagination = new Pagination();
+			this.pagination.companyId = 0;
 		}
 		this.listAllApprovedUsers(this.pagination);
+	}
 
+	filterDataBySelectedRole(event:any){
+		if(event!=null){
+			this.pagination.campaignId = event['id'];
+		}else{
+			this.pagination.campaignId = 0;
+		}
+		this.listAllApprovedUsers(this.pagination);
 	}
 
 	listAllApprovedUsers(pagination: Pagination) {
@@ -148,10 +161,10 @@ export class ListAllUsersComponent implements OnInit {
 	}
 
 	getAllFilteredResults(pagination: Pagination) {
-		this.pagination.pageIndex = 1;
-		this.pagination.searchKey = this.sortOption.searchKey;
-		this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedActiveUsersSortOption, this.pagination);
-		this.listAllApprovedUsers(this.pagination);
+		pagination.pageIndex = 1;
+		pagination.searchKey = this.sortOption.searchKey;
+		pagination = this.utilService.sortOptionValues(this.sortOption.selectedActiveUsersSortOption, pagination);
+		this.listAllApprovedUsers(pagination);
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 	refreshList() {

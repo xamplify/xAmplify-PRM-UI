@@ -1480,4 +1480,18 @@ vanityWelcomePageRequired(userId) {
     return this.callGetMethod(url);
   }
 
+  publishContentToPartnerCompanyByModuleName(userListId:number,partnerUserId:number,inputId:number,moduleName:string){
+    let userId = this.getUserId();
+    let urlPrefix = "";
+    if(moduleName==this.properties.dashboardButtons){
+      urlPrefix = "dashboardButtons";
+    }else if(moduleName=="dam"){
+      urlPrefix = "dam";
+    }else if(moduleName=="lms"){
+      urlPrefix = "lms";
+    }
+    let url = this.REST_URL + urlPrefix+"/publish/userListId/"+userListId+"/partnerUserId/"+partnerUserId+"/id/"+inputId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
 }

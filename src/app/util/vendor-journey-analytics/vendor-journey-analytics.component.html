@@ -10,7 +10,8 @@
     </div>
     <div class="portlet-body" *ngIf="formData != null && formData.length >0">
       <ng-container *ngFor="let importedObject of formData;let i = index">
-        <app-form-analytics-util *ngIf=" isMasterLandingPages || this.isVendorMarketplacePages"
+        <app-form-analytics-util *ngIf=" isMasterLandingPages || isVendorMarketplacePages"
+        [isVendorMarketplacePage] ="isVendorMarketplacePages"
           [importedObject]="importedObject"></app-form-analytics-util>
         <app-vendor-journey-form-analytics *ngIf="isVendorJourney || isPartnerJourneyPages" [isVendorJourney]="isVendorJourney"
         [isPartnerJourneyPage]="isPartnerJourneyPages"

@@ -434,6 +434,8 @@ export class Properties {
 	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
 	flexiFieldDisplayText = "You have the ability to add flexible fields, which will be displayed in your contact form.";
 	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
+	uploadCsvSaveOptionNote = "Note: By using the save option you can save the list with valid email id(s).";
+	
 	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
 	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin";
 	selectAnOptionToSaveListMessage = "Select an option to save the list.";
@@ -466,6 +468,11 @@ export class Properties {
 	dormantpartnertileDescription = "Partners who have not yet interacted with the Content, Redistributed Campaigns, Created Leads or Deals.";
 	activePartnerTileDescriptionForPrm = "Partners who have interacted with Content, Created Leads or Deals.";
 	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
+	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
+	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
 
+	/** XNFR-745 **/
+	groupByAssetsTooltipMessage = "Turn on the 'Group by Assets' toggle to view assets categorized within their respective folders";
+	disableOrderAssetsTooltipMessage = "Enabling 'Group by Assets' will lock asset ordering since assets are organized by folders";
 	}
 

@@ -296,3 +296,6 @@
 .justify-end{
     justify-content: end;
 }
+.zero-opacity{
+    opacity: 0;
+}

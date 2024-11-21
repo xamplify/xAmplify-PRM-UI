@@ -93,7 +93,6 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.parsedCsvDtos = [];
     this.customCsvHeaders = [];
     this.defaultContactsCsvColumnHeaderDtos = [];
-    this.addFlexiFieldsToDefaultCsvHeaders();
     this.customUploadCsvHeaders();
     this.addCsvHeadersToMultiSelectDropDown(csvHeaders, self);
     const headersLength = this.customCsvHeaders.length;
@@ -146,10 +145,10 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
         }
       }
       // Check for flexi fields
-      if (this.flexiFields.some(name => headerColumn.includes(name.replace(/ /g, '').toLowerCase()))) {
+      const header = this.customCsvHeaders[i].itemName.toLowerCase();
+      if (this.flexiFields.some(name => header.includes(name.toLowerCase()))) {
         this.defaultContactsCsvColumnHeaderDtos.forEach((dto) => {
-          const defaultHeader = dto.defaultColumn.replace(/ /g, '').toLowerCase();
-          if (headerColumn == defaultHeader && dto.mappedColumn.length == 0) {
+          if (header == dto.defaultColumn.toLowerCase() && dto.mappedColumn.length == 0) {
             this.selectedMappedColumn(this.customCsvHeaders[i], dto);
           }
         });
@@ -159,15 +158,11 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-671 *****/
-  private addFlexiFieldsToDefaultCsvHeaders() {
+  private customUploadCsvHeaders() {
     this.flexiFieldsRequestAndResponseDto.forEach((flexiField => {
       this.xAmplifyDefaultCsvHeaders.push(flexiField.fieldName);
       this.flexiFields.push(flexiField.fieldName);
     }));
-  }
-
-  /***** XNFR-671 *****/
-  private customUploadCsvHeaders() {
     this.xAmplifyDefaultCsvHeaders.forEach((header) => {
       const defaultContactsCsvColumnHeaderDto = new DefaultContactsCsvColumnHeaderDto();
       defaultContactsCsvColumnHeaderDto.defaultColumn = header;
@@ -197,8 +192,9 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-671 *****/
   private iterateDTOAndCsvRows(rows: any, i: number, self: this, parsedCsvDto: ParsedCsvDto) {
+    rows = rows.filter((row, index) => !self.emptyHeadersIndex.includes(index));
     $.each(rows, function (index: number, value: any) {
-      if (!self.emptyHeadersIndex.includes(index)) {
+      if (self.customCsvHeaders.length > index) {
         let csvRowDto = new CsvRowDto();
         let rowIndex = "R" + (index + 1);
         let columnIndex = "C" + i;

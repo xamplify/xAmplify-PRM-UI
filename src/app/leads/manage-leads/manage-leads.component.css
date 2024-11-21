@@ -132,6 +132,9 @@ i.fa.fa-check-circle-o.check-icons{
       display: inline-flex;
       flex-wrap: wrap;
     }
+  .ml-50{
+   margin-left: 50px!important;
+  }
 }
 .select-width {
   width: 196px;

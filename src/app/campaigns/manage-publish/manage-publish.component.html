@@ -69,7 +69,7 @@
                               [class.campaign-type-selected]="3 == selectedCampaignTypeIndex"
                               *ngIf="campaignAccess.socialCampaign || authenticationService?.module?.deletedPartner"
                               translate>
-                              Social  <span class="beta_social_icon_for_buttons">(Beta)</span></li>
+                              Social  <sup>(Beta)</sup></li>
                            <li class="filter" (click)="filterCampaigns('EVENT',4)"
                               [class.campaign-type-selected]="4 == selectedCampaignTypeIndex"
                               *ngIf="campaignAccess.eventCampaign || authenticationService?.module?.deletedPartner"
@@ -179,7 +179,7 @@
                                     </div>
                                     <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
                                        data-toggle="tooltip" title="Click here to email the report"
-                                       (click)="downloadCampaignsData(pagination)" *ngIf="!archived"
+                                       (click)="downloadCampaignsData(pagination)"
                                        [disabled]="pagination.totalRecords == 0">
                                        <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </button>

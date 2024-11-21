@@ -19,7 +19,7 @@
 <div class="row" *ngIf="editVendorPage">
   <div class="col-xs-12">
     <div class="page-bar mWidth" style="border:none !important;">
-      <app-preview-popup #previewPopUpComponent></app-preview-popup>
+      <app-preview-popup   #previewPopUpComponent ></app-preview-popup>
       <app-merge-tags [input]="mergeTagsInput"></app-merge-tags>
       <app-add-vendor-logos *ngIf = "isMasterLandingPages || isVendorMarketplacePages" [vendorLogoDetails] = "vendorLogoDetails" [isVendorMarketplace] = 'isVendorMarketplacePages'
       [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput" [dropdownList] = "categoryDropDownOptions"></app-add-vendor-logos>
@@ -44,7 +44,8 @@
   </div>
 </div>
 <app-landing-page-analytics *ngIf = "isViewAnalytics" [vendorJourney] = 'vendorJourney' [masterLandingPages]='isMasterLandingPages' [vendorLandingPageId] = "selectedLandingPageId"
-[vendorPageAlias] = "selectedVendorPageAlias" [vendorPages] = 'isLandingPages' [welcomePages] ='welcomePages' [isPartnerJourneyPages] = "isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages">
+[vendorPageAlias] = "selectedVendorPageAlias" [vendorPages] = 'isLandingPages' [welcomePages] ='welcomePages' [isPartnerJourneyPages] = "isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages"
+[vendorPartnerJourneyPages]="isVendorPartnerJourneyPages">
 </app-landing-page-analytics>
 <app-add-form-util *ngIf = "isEditVendorOrMasterForm" [isMdfForm]="false" [selectedForm]="selectedFrom"  [isCopyForm]="false"
 [isVendorOrMasterLandingPage] = "true" (goBack) = "goToManageForms()"></app-add-form-util>
@@ -52,5 +53,5 @@
 [isPartnerJourneyPages] = "isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages"
 [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"
 (formAnalytics)="goToFormAnalytics($event)"></app-manage-form>
-<app-form-analytics-util *ngIf = "isFormAnalytics && (isMasterLandingPages ||welcomePages || isVendorMarketplacePages ) " [importedObject]="importedObject" ></app-form-analytics-util>
+<app-form-analytics-util *ngIf = "isFormAnalytics && (isMasterLandingPages ||welcomePages || isVendorMarketplacePages ) "  [isVendorMarketplacePage]="isVendorMarketplacePages" [importedObject]="importedObject" ></app-form-analytics-util>
 <app-vendor-journey-form-analytics *ngIf = "isFormAnalytics && (vendorJourney || isPartnerJourneyPages)" [isVendorJourney]="vendorJourney" [isPartnerJourneyPage]="isPartnerJourneyPages" [importedObject]="importedObject" ></app-vendor-journey-form-analytics>

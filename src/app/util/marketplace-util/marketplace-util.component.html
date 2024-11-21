@@ -17,17 +17,17 @@
         <div class="row">
           <div *ngFor="let company of category.companies" class="col-xs-12 col-sm-4 columnClass">
             <div class="card">
-              <a class="img-card"  [href]="company.link"   target="_top" >
+              <a class="img-card"  href="{{company.link}}"  (click)="navigateToParent($event, company.openInNewTab)" >
                 <img [src]="company.image">
               </a>
               <div class="card-content">
                 <h4 class="card-title">
-                  <a   [href]="company.link"  target="_top" >{{ company.name }}</a>
+                  <a   href="{{company.link}}"  (click)="navigateToParent($event, company.openInNewTab)" >{{ company.name }}</a>
                 </h4>
                 <div class="company-text"  style="-webkit-box-orient:vertical">{{ company.description }}</div>
               </div>
               <div class="card-read-more">
-                <a [href]="company.link"  target="_top" class="btn btn-link btn-block">Know More</a>
+                <a href="{{company.link}}"  (click)="navigateToParent($event, company.openInNewTab)" class="btn btn-link btn-block">Know More</a>
               </div>
             </div>
           </div>

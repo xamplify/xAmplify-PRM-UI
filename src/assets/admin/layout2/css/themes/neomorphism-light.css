@@ -683,7 +683,8 @@ legend {
   border: 1px solid #d0d5db !important;
 }
 select {
-  background-color: #d0d5db!important;
+  background-color: #f0f5fa !important;
+  border: 1px solid #d0d5db !important;
 }
 
 #text-color-my-profile {

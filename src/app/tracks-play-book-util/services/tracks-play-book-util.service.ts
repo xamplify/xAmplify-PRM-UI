@@ -163,4 +163,18 @@ export class TracksPlayBookUtilService {
   private handleError(error: any) {
     return Observable.throw(error);
   }
+
+  /** XNFR-745 **/
+  getGroupedAssetsBySlug(companyId: number, slug: string, sortKey: string) {
+    let url = "";
+    url = this.playBookURL + "/getGroupedPlaybookAssetsBySlug/" + companyId + "/" + slug + "/" + sortKey + "?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+  
+  checkGroupByAssetsEnabled(companyId: number, slug: string) {
+    let url = "";
+    url = this.playBookURL + "/checkGroupByAssetsEnabledForPlaybook/" + companyId + "/" + slug + "?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

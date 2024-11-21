@@ -372,7 +372,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isVendorPartnerJourneyPages:boolean = false;
 	vendorMarketplace:boolean = false;
 	isVendorMarketplacePages:boolean = false;
-	partnerJourneyPageEnabled:boolean =true
+	partnerJourneyPageEnabled:boolean =true;
+	isEditOrDeleteAccessForFolder = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -690,6 +691,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.authenticationService.logout();
 		}
 		this.getCompanyId();
+		this.isEditOrDeleteAccessForFolder = this.referenceService.deleteAndEditAccessForAllRoles();
 	}
 
 	getModuleAccessByUser() {
@@ -4998,7 +5000,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				return 'assets/images/theme/Final/dark-theme.webp';
 			case 'Neumorphism Light':
 				return 'assets/images/theme/Final/light-neumorphism.webp';
-			case 'Neumorphism Dark(Beta)':
+			case 'Neumorphism Dark':
 				return 'assets/images/theme/Final/dark-neumorphism.webp';
 			case 'Glassomorphism Light':
 				return 'assets/images/theme/Final/beta-light-glassomorphism.webp';

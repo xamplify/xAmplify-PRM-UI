@@ -18,12 +18,13 @@
           <div
             [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font TextFontDecrease':'desc default-name-font TextFontDecrease'">
             {{dto.moduleName | translate}}
-            <span *ngIf="dto.moduleId == 6" class="beta_social_icon_for_buttons">(Beta)</span>
+            <sup *ngIf="dto.moduleId == 6">(Beta)</sup>
           </div>
         </div>
         <span class="morePadding">
           <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view
-            <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+            <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+            <i class="fa fa-info-circle" aria-hidden="true" title="{{dto?.description | translate}}"></i></a>           
         </span>
       </a>
     </div>

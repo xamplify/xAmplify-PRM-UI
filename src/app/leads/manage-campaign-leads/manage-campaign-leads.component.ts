@@ -508,6 +508,10 @@ downloadLeads(pagination: Pagination){
   pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   pagination.partnerTeamMemberGroupFilter = partnerTeamMemberGroupFilter;
   pagination.forCampaignAnalytics = this.fromAnalytics
+  if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+    pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    pagination.vanityUrlFilter = true;
+  }
   this.leadsService.downloadLeads(pagination, this.loggedInUserId)
       .subscribe(
           data => {    

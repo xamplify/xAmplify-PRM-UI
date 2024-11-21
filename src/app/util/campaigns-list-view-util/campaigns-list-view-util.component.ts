@@ -198,9 +198,17 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                     this.isloading = false;
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished listCampaign()", this.campaigns)
+                () => {
+                    this.callFolderListViewEmitter();
+                }
             );
     }
+
+    callFolderListViewEmitter() {
+		this.exportObject['categoryId'] = this.categoryId;
+        this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+        this.updatedItemsCount.emit(this.exportObject);
+	}
 
     setPage(event) {
         this.showAllAnalytics = false;
@@ -601,9 +609,6 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                         this.pagination.pageIndex = 1;
                         this.listCampaign(this.pagination);
                         this.listNotifications();
-                        this.exportObject['categoryId'] = this.categoryId;
-                        this.exportObject['itemsCount'] = this.pagination.totalRecords;
-                        this.updatedItemsCount.emit(this.exportObject);
                     } else {
                         this.authenticationService.forceToLogout();
                     }
@@ -614,6 +619,8 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             );
         this.isCampaignDeleted = false;
     }
+
+   
 
     ngOnDestroy() {
         this.isCampaignDeleted = false;

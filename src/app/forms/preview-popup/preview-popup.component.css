@@ -156,7 +156,7 @@
     display: contents;
   }
   .modal.right.fade.in .modal-dialog{
-    width: 100% !important;
+    width: 96% !important;
   }
 }
 .pg8 {

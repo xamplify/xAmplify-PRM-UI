@@ -289,12 +289,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isUploadCsvOptionEnabled: boolean = false;
 	flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	@ViewChild('customCsvMapping') customCsvMapping: CustomCsvMappingComponent;
+	emailIds = ['Email','EmailId','Email-Id','Email-Address','EmailAddress', 'Mail', 'MailId', 'ElectronicMail', 'ContactMail'];
 	/***** XNFR-671 *****/
 	selectedContact: any;
 	showContactDetailsTab: boolean = false;
 	isFromCompanyModule: boolean = false;
 	isContactModule: boolean = false;
 	activeCrmType: any;
+	isLocalhostOrQADomain: boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -528,15 +530,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					} else if (self.isUploadCsvOptionEnabled) {
 						var csvResult = Papa.parse(contents);
 						var allTextLines = csvResult.data;
-						for (var i = 1; i < allTextLines.length; i++) {
-							if (allTextLines[i][4]) {
-							} else {
+						for (let i = 0; i < headers.length; i++) {
+							if (self.emailIds.some(emailId =>
+								headers[i].replace(/ /g, '').toLowerCase().includes(emailId.toLowerCase()))) {
+								var emailIdIndex = i;
+								break;
+							}
+						}
+						for (let i = 1; i < allTextLines.length; i++) {
+							if (!allTextLines[i][emailIdIndex]) {
 								self.emptyUsersCount++;
 							}
 						}
 						if (allTextLines.length == 2) {
 							self.customResponse = new CustomResponse('ERROR', 'No records found.', true);
 							self.removeCsv();
+						} else if (allTextLines[0][0] == 'Email Id') {
+							self.filePrevew = true;
+							self.uploadCsvUsingFile = true;
+							self.csvRows = csvResult.data;
 						} else if (allTextLines.length > 2 && allTextLines.length == self.emptyUsersCount + 1) {
 							self.customResponse = new CustomResponse('ERROR', 'Email address is mandatory.', true);
 							self.removeCsv();
@@ -1455,6 +1467,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		if (this.selectedAddContactsOption == 2) {
 			if (this.isContactModuleType()) {
+				this.resetResponse();
 				this.customCsvMapping.saveCustomUploadCsvContactList();
 			} else {
 				this.updateCsvContactList(this.contactListId);
@@ -1561,6 +1574,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
 			this.userListPaginationWrapper.userList = this.contactListObject;
+			pagination.totalRecords = 0;
 			this.contactService.loadUsersOfContactLists(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.contacts = data.listOfUsers;
@@ -2104,6 +2118,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
 		this.contactAllDetails = null;
+		this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
 		this.contactService.isContactModalPopup = true;
 	}
 
@@ -3020,6 +3035,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			/********Check Gdpr Settings******************/
 			this.checkTermsAndConditionStatus();
 			this.contactService.deleteUserSucessMessage = false;
+			this.checkLocalhostOrQADomain();
 		}
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
@@ -3673,7 +3689,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***XNFR-553***/
 	showContactDetails(contact) {
-		let encodedUserListId = this.refService.encodePathVariable(contact.userListId);
+		let encodedUserListId = this.refService.encodePathVariable(this.selectedContactListId);
 		let encodeUserId = this.refService.encodePathVariable(contact.id);
 		if (this.isFromCompanyModule) {
 			this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
@@ -3695,6 +3711,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.isTeamMemberPartnerList = data.teamMemberPartnerList;
 					this.selectedCompanyId = data.associatedCompanyId;
 					this.companyName = data.companyName;
+					this.uploadedUserId = data.uploadedUserId;
 					if (this.isFromCompanyModule) {
 						this.setCompanyModuleFields(data);
 					} else {
@@ -3720,7 +3737,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	private setCompanyModuleFields(data: any) {
-		this.uploadedUserId = data.uploadedUserId;
 		this.contactService.publicList = data.publicList;
 	}
 	/***XNFR-553***/
@@ -3744,6 +3760,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/***** XNFR-718 *****/
 	csvCustomResponse() {
 		this.customResponse = new CustomResponse('ERROR', "We couldn't find any valid email id(s) in the records. Please ensure that the email id(s) are correctly formatted and try again.", true);
+	}
+
+	checkLocalhostOrQADomain() {
+		this.isLocalhostOrQADomain = (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain());
 	}
 
 }

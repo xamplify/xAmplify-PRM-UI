@@ -232,7 +232,7 @@
 														<th scope="col">Video Campaign</th>
 														<td><input type="checkbox" [(ngModel)]="campaignAccess.videoCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
-													<tr>
+													<tr style="display: none;">
 														<th scope="col">Social Campaign</th>
 														<td><input type="checkbox" [(ngModel)]="campaignAccess.socialCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
@@ -318,7 +318,7 @@
 													<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
-												<tr>
+												<tr style="display: none;">
 													<th scope="row">Social Share</th>
 													<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialShareOptionEnabled"
 															[ngModelOptions]="{standalone: true}"></td>
@@ -652,7 +652,7 @@
 												<div class="panel-heading  panel-header" data-toggle="collapse"
 													href="#collapse2" (click)="refService.scrollSmoothToBottom()">
 													<h4 class="panel-title f-w-500" translate>
-														Social Accounts<span class="beta_social_icon">(Beta)</span> <i class="fa fa-caret-down pull-right"
+														Social Accounts<sup>(Beta)</sup> <i class="fa fa-caret-down pull-right"
 															aria-hidden="true"></i>
 													</h4>
 												</div>

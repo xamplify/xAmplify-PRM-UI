@@ -244,7 +244,7 @@
                   <a [className]="approvePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
                     (click)="approvePartnersCount>0 ? goToApprovePartnersDiv() : ''"> Detailed view
                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                    <i class="fa fa-info-circle" aria-hidden="true" title="Total Invited, Approved, Declined Partners"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" title="{{properties?.approvePartnerDescription}}"></i>
                   </a>
                 </span>
               </a>
@@ -400,6 +400,9 @@
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
           </div>
+          <div class="alert alert-info">
+            <span>List Of {{properties?.approvePartnerDescription}}</span>
+          </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
             *ngIf="customResponse.isVisible"></app-response-message>
@@ -424,9 +427,9 @@
                     </td>
                     <td style="text-align: center;">
                       <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle"
-                          [disabled]="item.invitationStatus === 'approved'" style="text-transform: capitalize"
-                          type="button" data-toggle="dropdown">{{item.invitationStatus}}
+                        <button class="btn btn-default dropdown-toggle" [disabled]="item.invitationStatus === 'approved'"
+                          style="text-transform: capitalize" type="button"
+                          data-toggle="dropdown">{{item.invitationStatus}}
                           <span class="caret"></span></button>
                         <ul class="dropdown-menu" style="left: 68px;" *ngIf="item.invitationStatus != 'approved'">
                           <li *ngIf="item.invitationStatus != 'approved'"><a
@@ -450,7 +453,6 @@
       </div>
     </div>
   </div>
-
   <!-- ------****************Redistribute Partner Analytics************************** -->
   <div *ngIf="isRedistributePartnersDiv">
     <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>

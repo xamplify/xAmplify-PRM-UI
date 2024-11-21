@@ -12,10 +12,9 @@
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
          <li>
-            <a (click)="navigateToManageContacts()" translate>
-               Manage
+            <a (click)="navigateToManageContacts()"><span translate>Manage</span>
                <span
-                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName | translate}}</span>
                <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
             </a>
             <i class="fa fa-angle-right" *ngIf="! showListOfContactList" aria-hidden="true"></i>
@@ -317,10 +316,10 @@
                                  <ul class="page-breadcrumb" style="padding-left: 0px;"
                                     *ngIf="checkingContactTypeName!='Contact'">
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
-                                       Your {{authenticationService?.partnerModule?.customName}} Groups
+                                       <span class="fs-16" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span translate>Groups</span>
                                     </li>
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
-                                       Your {{checkingContactTypeName}} Lists
+                                       Your {{checkingContactTypeName | translate}} Lists
                                     </li>
                                  </ul>
                               </div>
@@ -423,8 +422,7 @@
                                              [hidden]="isPartner || assignLeads || sharedLeads" translate id="border-bottom"><span
                                                 [hidden]="isPartner ||assignLeads || sharedLeads">Type</span></th>
                                           <th scope="col" class="hidden-xs" [hidden]="assignLeads" translate
-                                             id="border-bottom"><span [hidden]="assignLeads">Created
-                                                On</span>
+                                             id="border-bottom"><span [hidden]="assignLeads" translate>Created On</span>
                                           </th>
                                           <th scope="col" class="hidden-xs" translate [hidden]="!assignLeads"
                                              id="border-bottom"><span [hidden]="!assignLeads">Date</span></th>
@@ -508,7 +506,7 @@
                                                    </span>
                                                    <span *ngIf="isPartner" data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList.name}}" class="ListFontCu">
-                                                      <b> Group Name:</b> {{contactList?.name}}
+                                                      <b translate>Group Name:</b> {{contactList?.name}}
                                                    </span>
                                                 </h4>
                                                 <h5 *ngIf="contactList?.defaultPartnerList" class="mb0 moreipsis mt5">
@@ -517,7 +515,7 @@
                                                 <h5 class='mb0 moreipsis mt5'>
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.uploadedBy}}">
-                                                      <b>By:</b> {{contactList.uploadedBy}}
+                                                      <b translate>By:</b> {{contactList.uploadedBy}}
                                                    </span>
                                                 </h5>
                                                 <h5 class='mb0 moreipsis mt5' *ngIf="contactList?.formList && contactList.sharedCompanyName">
@@ -535,7 +533,7 @@
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.companyName}}"
                                                       *ngIf="!contactList.companyList">
-                                                      <b>Company Name:</b> {{contactList.companyName}}
+                                                      <b translate>Company Name:</b> {{contactList.companyName}}
                                                    </span>
                                                    <h5 class="mb0 hidden-xs hidden-sm hidden-md hidden-lg">
                                                       <span class="mb0"

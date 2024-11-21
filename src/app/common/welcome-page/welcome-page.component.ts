@@ -149,7 +149,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
             && activeThemeDto.name === "Dark" && !this.router.url.includes('home/help')) {
             $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-dark.css' type='text/css'>");
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
-            && activeThemeDto.name === "Neumorphism Dark(Beta)" && !this.router.url.includes('home/help')) {
+            && activeThemeDto.name === "Neumorphism Dark" && !this.router.url.includes('home/help')) {
             $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-neumorphism-dark.css' type='text/css'>");
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1

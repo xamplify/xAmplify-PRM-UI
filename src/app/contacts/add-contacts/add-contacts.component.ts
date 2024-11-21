@@ -251,6 +251,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     isUploadCsvOptionEnabled: boolean = false;
     flexiFieldsRequestAndResponseDto: Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
     @ViewChild('customCsvMapping') customCsvMapping: CustomCsvMappingComponent;
+    emailIds = ['Email','EmailId','Email-Id','Email-Address','EmailAddress', 'Mail', 'MailId', 'ElectronicMail', 'ContactMail'];
     /***** XNFR-671 *****/
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
@@ -479,9 +480,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             /***** XNFR-671 *****/
             var csvResult = Papa.parse(contents);
             var allTextLines = csvResult.data;
-            for (var i = 1; i < allTextLines.length; i++) {
-                if (allTextLines[i][4]) {
-                } else {
+            for (let i = 0; i < headers.length; i++) {
+                if (this.emailIds.some(emailId =>
+                    headers[i].replace(/ /g, '').toLowerCase().includes(emailId.toLowerCase()))) {
+                    var emailIdIndex = i;
+                    break;
+                }
+            }
+            for (let i = 1; i < allTextLines.length; i++) {
+                if (!allTextLines[i][emailIdIndex]) {
                     self.emptyUsersCount++;
                 }
             }
@@ -489,6 +496,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 self.customResponse = new CustomResponse('ERROR', "No records found.", true);
                 self.isNoResultFound = true;
                 self.cancelContacts();
+            } else if (allTextLines[0][0] == 'Email Id') {
+                self.csvRows = csvResult.data;
             } else if (allTextLines.length > 2 && allTextLines.length == self.emptyUsersCount + 1) {
                 self.customResponse = new CustomResponse('ERROR', "Email address is mandatory.", true);
                 self.isNoResultFound = true;
@@ -1010,6 +1019,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
             if (this.selectedAddContactsOption == 2) {
                 if (this.isContactModule()) {
+                    this.resetResponse();
                     this.customCsvMapping.saveCustomUploadCsvContactList();
                 } else {
                     this.saveUploadCsvContactList();
@@ -2616,6 +2626,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     addContactModalOpen() {
         this.resetResponse();
         this.contactService.isContactModalPopup = true;
+        this.flexiFieldsRequestAndResponseDto.forEach(flexiField => flexiField.fieldValue = '');
     }
 
     addContactModalClose() {
@@ -2658,7 +2669,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
         else if (tempZohoAuth == 'yes' && !this.isPartner) {
             this.zohoShowModal();
-            this.checkingZohoPopupValues();
             this.contactService.vanitySocialProviderName = "nothing";
         }
         else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {

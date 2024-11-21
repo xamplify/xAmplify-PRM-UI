@@ -409,7 +409,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 "formAlias":form.alias,
                 "partnerLandingPageId":this.landingPageId,
                 "isVendorJourney":this.isVendorJourney,
-                "isMasterLandingPage":this.isMasterLandingPage
+                "isMasterLandingPage":this.isMasterLandingPage,
+                "isPartnerJourneyPages":this.isPartnerJourneyPages,
+                "isVendorMarketplacePages":this.isVendorMarketplacePages
+                
             }
             this.formAnalytics.emit(data);
             return;

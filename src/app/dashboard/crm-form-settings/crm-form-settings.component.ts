@@ -49,6 +49,7 @@ export class CrmFormSettingsComponent {
 	expandField: boolean = false;
 	typeMismatchMessage: any;
 	searchKey: any;
+	searchKeyValue: any;
 	FilteredCustomFields: any;
 	haveCustomFields: boolean = false;
 	isSortApplied: boolean = false;
@@ -261,9 +262,9 @@ export class CrmFormSettingsComponent {
 				}
 			}
 			this.referenceService.goToTop();
-			if (this.searchKey !== undefined && this.searchKey !== '') {
+			if (this.searchKeyValue !== undefined && this.searchKeyValue !== '') {
 				this.FilteredCustomFields = this.sfCustomFieldsResponse.filter(customField =>
-					(customField.label.toLowerCase().includes(this.searchKey.trim().toLowerCase()) || customField.name.toLowerCase().includes(this.searchKey.trim().toLowerCase()))
+					(customField.label.toLowerCase().includes(this.searchKeyValue.trim().toLowerCase()) || customField.name.toLowerCase().includes(this.searchKeyValue.trim().toLowerCase()))
 				);
 				this.sfcfPager = this.socialPagerService.getPager(this.FilteredCustomFields.length, page, this.pageSize);
 				this.sfcfPagedItems = this.FilteredCustomFields.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
@@ -583,6 +584,7 @@ export class CrmFormSettingsComponent {
 	reloadCustomFields() {
 		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
+		this.searchKeyValue = '';
 		this.searchKey = '';
 		this.sortOption = '';
 		this.isFilterApplied = false;
@@ -771,6 +773,7 @@ export class CrmFormSettingsComponent {
 	}
 
 	searchFields() {
+		this.searchKeyValue = this.searchKey;
 		this.getAllFilteredResultsFields();
 	}
 
@@ -785,6 +788,7 @@ export class CrmFormSettingsComponent {
 
 	clearFieldSearch() {
 		this.searchKey = '';
+		this.searchKeyValue = '';
 		if (this.integrationType.toLowerCase() === 'salesforce') {
 			this.listSalesforceCustomFields(this.opportunityType);
 		} else {

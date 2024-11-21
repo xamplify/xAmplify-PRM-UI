@@ -62,7 +62,7 @@
                   Home</a>
                 </li>
                 <!-- start Show 3 modules-->
-                <ng-container *ngFor="let menu of menuItems | slice:0:4">
+                <ng-container *ngFor="let menu of menuItems | slice:0:3">
                   <li *ngIf="!menu.showSubMenu">
                     <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                       <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
@@ -88,22 +88,22 @@
                   </li>
                 </ng-container>
                 <!-- End Show 3 modules-->
-                <li *ngIf = "menuItems.length>4">
+                <li *ngIf = "menuItems.length>3">
                   <a class = "moduleTextColor">More</a>
                   <i class='fa fa-chevron-down htmlcss-arrow arrow '></i>
                   <ul class="htmlCss-sub-menu sub-menu-bar">
-                    <ng-container *ngFor="let menu of menuItems | slice:4">
+                    <ng-container *ngFor="let menu of menuItems | slice:3">
                       <li *ngIf="!menu.showSubMenu" >
                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                           <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
-                          {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span>
+                          {{menu.customName}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup>
                         </a>
                       </li>
                       <li class="more" *ngIf="menu.showSubMenu">
                     
                         <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                           <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                          {{menu.customName}}<span *ngIf="menu.moduleId == 15"class="beta_social_icon_welcome_page">(Beta)</span></a>
+                          {{menu.customName}}<sup *ngIf="menu.moduleId == 15">(Beta)</sup></a>
                           <i class='fa fa-chevron-right arrow more-arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
                         </span>
                         <!-- <i class='fa fa-chevron-down js-arrow arrow'></i> -->
@@ -126,7 +126,10 @@
         </div>
         <!-- end -->
         <!-- Btns -->
+        <!-- <ng-template [ngTemplateOutlet]="universalSearch"></ng-template> -->
         <div class="xamplify-btn-group xamplify-refer-vendor-button xamplify-right">
+          <ng-template [ngTemplateOutlet]="universalSearchButtonTemplate"></ng-template>
+
                             <!--Invite A Vendor For Normal Login-->
                             <ng-container *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService?.vanityURLEnabled  &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                             &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
@@ -200,7 +203,7 @@
               *ngIf="authenticationService?.module?.socialShareOptionEnabled && authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                 <a (click)="goToRouter('/home/social/update-status')" translate>
                   <i class="fa fa-share " aria-hidden="true"></i>
-                  Update Status<span class="beta_social_icon_welcome_page">(Beta)</span>
+                  Update Status<sup>(Beta)</sup>
                 </a>
                 <div class="border-bt"></div>
               </li>
@@ -212,7 +215,7 @@
   || authenticationService.module.isVendorTier
   || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && authenticationService?.module?.socialShareOptionEnabled">
                 <a (click)="goToRouter('/home/social/manage/all')" translate> <i class="fa fa-cog"
-                    aria-hidden="true"></i> Social Accounts<span class="beta_social_icon_welcome_page">(Beta)</span></a>
+                    aria-hidden="true"></i> Social Accounts<sup>(Beta)</sup></a>
                 <div class="border-bt"></div>
               </li>
 
@@ -381,3 +384,20 @@
 <!-- 
 -------------------------------------------------------------------------------
  -->
+<ng-template #universalSearchButtonTemplate>
+  <div class="universal-search-div" *ngIf="userId!=1">
+    <a class=" universal-search">
+      <div class="universalsearchBox">
+        <input class="universalsearchInput" [(ngModel)]="searchKey" type="text" name="" placeholder="Search"
+          (keypress)="universalSearchOnKeyPress($event.keyCode)">
+        <i class="fa fa-times universal-close" aria-hidden="true" *ngIf="isEmptyOrWhitespace(searchKey)"
+          (click)="searchKey='';goToDashBoard();"></i>
+        <button (click)="universalSearch();" class="universalsearchButton" [disabled]="!isEmptyOrWhitespace(searchKey)"
+          [ngClass]="isEmptyOrWhitespace(searchKey)? '':'xamplify-disabled-div'">
+          <i class="fa fa-search" [ngClass]="isEmptyOrWhitespace(searchKey)?'':'xamplify-disabled'">
+          </i>
+        </button>
+      </div>
+    </a>
+  </div>
+</ng-template>

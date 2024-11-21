@@ -28,6 +28,7 @@ export const RouterUrlConstants = {
     userCampaigns:'user-campaigns/',
     ccd:'ccd',
     cd:'cd',
-    timeline:'timeline/'
+    timeline:'timeline/',
+    universalSearch:'universal-search'
 
 }

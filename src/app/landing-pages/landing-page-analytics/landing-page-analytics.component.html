@@ -1,9 +1,9 @@
-<div  [ngClass]="{'page-content':(!(vendorJourney||masterLandingPages || welcomePages || isPartnerJourneyPages || isVendorMarketplacePages) && !vendorPages) }">
+<div  [ngClass]="{'page-content':(!(vendorJourney||masterLandingPages || welcomePages || isPartnerJourneyPages || isVendorMarketplacePages) && !vendorPages && !vendorPartnerJourneyPages) }">
     <ng-container *ngIf="pageLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
     </ng-container>
     <ng-container *ngIf="!pageLoader">
-    <div class="page-bar" *ngIf = "!(vendorJourney||masterLandingPages || welcomePages|| isPartnerJourneyPages || isVendorMarketplacePages) && !vendorPages" >
+    <div class="page-bar" *ngIf = "!(vendorJourney||masterLandingPages || welcomePages|| isPartnerJourneyPages || isVendorMarketplacePages) && !vendorPages && !vendorPartnerJourneyPages" >
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>

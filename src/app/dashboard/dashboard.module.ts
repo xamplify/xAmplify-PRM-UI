@@ -115,6 +115,7 @@ import { ChatGptIntegrationSettingsComponent } from './chat-gpt-integration-sett
 import { ChatGptSettingsService } from './chat-gpt-settings.service';
 import { FlexiFieldComponent } from './user-profile/flexi-fields/manage-flexi-fields/flexi-field.component';
 import { FlexiFieldService } from './user-profile/flexi-fields/services/flexi-field.service';
+import { UniversalSearchComponent } from './universal-search/universal-search.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -198,7 +199,8 @@ import { FlexiFieldService } from './user-profile/flexi-fields/services/flexi-fi
         CrmFormSettingsComponent,
         MarketPlaceCategoriesComponent,
         ChatGptIntegrationSettingsComponent,
-        FlexiFieldComponent
+        FlexiFieldComponent,
+        UniversalSearchComponent
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,

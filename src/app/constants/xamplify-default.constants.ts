@@ -13,6 +13,7 @@ export const XAMPLIFY_CONSTANTS = {
     contact: 'Contact',
     pageSize: 12,
     sandbox:'Sandbox',
-    production:'Production'
+    production:'Production',
+    universalSearchKey:'universalSearchKey',
 
 }

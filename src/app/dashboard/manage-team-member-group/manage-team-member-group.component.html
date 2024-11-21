@@ -91,7 +91,7 @@
           <tr *ngFor="let defaultModule of defaultModules;let i = index">
             <th scope="row" class="fstcw-tm">
               <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-              {{defaultModule?.moduleName}}<span *ngIf="defaultModule?.roleId == 26 || defaultModule?.roleId == 10" class="beta_social_icon">(Beta)</span>
+              {{defaultModule?.moduleName}}<sup *ngIf="defaultModule?.roleId == 26 || defaultModule?.roleId == 10">(Beta)</sup>
               <br>
             </th>
             <td>
@@ -159,7 +159,7 @@
             <tr *ngFor="let module of group?.teamMemberModuleDTOs;let j=index;" class="text-center module-text-color">
               <th *ngIf="j<=4" scope="row">
                 <i aria-hidden="true" class="{{module?.moduleIcon}} wtfpx"></i>
-                <span>{{module?.moduleName}}<span *ngIf="module?.roleId == 10 || module?.roleId == 26" class="beta_social_icon">(Beta)</span></span>
+                <span>{{module?.moduleName}}<sup *ngIf="module?.roleId == 10 || module?.roleId == 26">(Beta)</sup></span>
               </th>
             </tr>
             <tr *ngIf="group?.teamMemberModuleDTOs?.length>5" class="text-center module-text-color">

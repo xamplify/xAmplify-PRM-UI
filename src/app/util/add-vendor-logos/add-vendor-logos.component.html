@@ -68,23 +68,29 @@
 					</thead>
 					<tbody>
 						<ng-container *ngFor="let vendorLogo of sharedVendorLogoDetails;let i = index">
-						<tr >
+						<tr>
 							<td class="hidden-xs text-center" style="width: 10%;">
 								<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
 									<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
 										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
 										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
 								</div>
+								<span class="vendorLogoCheck">
+									<ng-container *ngFor="let member of vendorLogo.teamMembers; let i = index">
+										<i *ngIf="member?.selectedCategories?.length > 0" class="fa fa-check-circle-o success i-20px"
+											style="margin-left: 32px;"></i>
+									</ng-container>
+								</span>
 							</td>
 							<td class="text-center">{{vendorLogo.companyName}}</td>
 							<td class="text-center">
 								<div class="actions-block ">
 									<a (click)="viewTeamMembers(vendorLogo)" title="View/Hide Team Members">
-									  <i class="fa IconCustomization"
-										[ngClass]="{'fa-angle-right': !vendorLogo.expand, 'fa-angle-down': vendorLogo.expand}"
-										aria-hidden="true"></i>
+										<i class="fa IconCustomization"
+											[ngClass]="{'fa-angle-right': !vendorLogo.expand, 'fa-angle-down': vendorLogo.expand}"
+											aria-hidden="true"></i>
 									</a>
-								  </div>
+								</div>
 							</td>
 						</tr>
 						<tr *ngIf="vendorLogo?.expand">

@@ -54,6 +54,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 	@Output() updatedItemsCountEmitter = new EventEmitter();
   @Output() notifyParentComponent = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+  @Input() searchKeyValue : any;
   titleHeader:string = "";
   suffixHeader:string = "";
   trackOrPlayBookText = "";
@@ -112,8 +113,26 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         this.showMessageOnTop(this.message);
       }
     }
-    if(this.viewType!="fl" && this.viewType!="fg"){
+    this.triggerLmsSearch();//XNFR-574
+    if(this.viewType != "fl" && this.viewType != "fg"){
+      this.sortOption.searchKey = this.searchKeyValue;
+      if (this.utilService.searchKey) {
+        this.sortOption.searchKey = this.utilService.searchKey;
+        this.pagination.searchKey = this.sortOption.searchKey;
+        this.utilService.searchKey = "";
+        this.showUpArrowButton = true;
+      }
       this.listLearningTracks(this.pagination);
+    }
+    
+  }
+  /****XNFR-574 ***/
+  triggerLmsSearch(){
+    if(this.referenceService.universalSearchKey != ""  && (this.referenceService.universalModuleType == 'Track' || this.referenceService.universalModuleType == 'Play Book')){
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.searchKeyValue = this.referenceService.universalSearchKey;
+      this.sortOption.searchKey = this.searchKeyValue;
+      this.getAllFilteredResults();
     }
   }
 /********XNFR-170******/
@@ -135,11 +154,13 @@ setViewType(viewType: string) {
   ngOnDestroy() {
     this.referenceService.isCreated = false;
     this.referenceService.isUpdated = false;
+    this.referenceService.universalModuleType = "";//XNFR-574
     swal.close();
   }
 
   showMessageOnTop(message: string) {
     $(window).scrollTop(0);
+    this.referenceService.universalModuleType = "";//XNFR-574
     this.customResponse = new CustomResponse('SUCCESS', message, true);
   }
 

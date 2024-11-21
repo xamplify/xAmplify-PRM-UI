@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,ViewChild,Renderer,Input } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild,Renderer,Input, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { SocialService } from '../../social/services/social.service';
@@ -23,7 +23,7 @@ import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Properties } from 'app/common/models/properties';
 
-declare var $,swal: any;
+declare var $:any,swal: any;
 
 @Component({
   selector: 'app-redistribute-campaigns-list-view-util',
@@ -79,6 +79,7 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   exportObject:any = {};
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewInput:any;
+  @Output() updatedItemsCount = new EventEmitter();
   socialAccountsLoader  =false;
   socialCampaign: any;
   campaignAccess:CampaignAccess = new CampaignAccess();
@@ -144,11 +145,17 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
           error => {
               this.xtremandLogger.errorPage(error);
           },
-          () => this.xtremandLogger.info("Finished listPartnerCampaigns()", this.campaigns)
+          () => {this.callFolderListViewEmitter()}
           );
   }
 
-  setPage(event) {
+  callFolderListViewEmitter() {
+    this.exportObject['categoryId'] = this.categoryId;
+    this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+    this.updatedItemsCount.emit(this.exportObject);
+}
+
+  setPage(event:any) {
       this.pagination.pageIndex = event.page;
       this.listCampaign(this.pagination);
   }

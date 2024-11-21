@@ -47,6 +47,7 @@
         && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"
         [filterIcon]="true"
         (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+        <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
   </div>
   <!--XNFR-458--->
@@ -253,7 +254,7 @@
       </ng-container>
       <!---Social Accounts-->
       <ng-container *ngIf="welcomePageItems?.showSocialAccounts">
-        <div class="flex">
+        <div class="flex" style="display: none;">
           <div class="col-sm-6 col-xs-12 block image-block tab_imgblock"
             *ngIf="welcomePageItems?.socialAccountsImagePosition=='left'">
             <img class="" class="dash-img-svg" alt="" src="../../../assets/images/welcome/social.svg">
@@ -266,7 +267,7 @@
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')"
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
-                    class="btn btn-primary transition" translate>Connect<span class="beta_social_icon_for_buttons">(Beta)</span></span></button>
+                    class="btn btn-primary transition" translate>Connect<sup>(Beta)</sup></span></button>
                 <button type="button" class="button bgcolor-unset btn-xs guides_btn" data-toggle="modal"
                   [disabled]="true" data-target="#myModal" translate><span class="btn Btn-Green transition" translate>Tell me how</span></button>
               </div>
