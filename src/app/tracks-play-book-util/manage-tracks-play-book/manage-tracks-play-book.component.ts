@@ -122,7 +122,6 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       if (this.utilService.searchKey) {
         this.sortOption.searchKey = this.utilService.searchKey;
         this.pagination.searchKey = this.sortOption.searchKey;
-        this.utilService.searchKey = "";
         this.showUpArrowButton = true;
       }
       this.listLearningTracks(this.pagination);
@@ -143,11 +142,15 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     if (this.utilService.folderListViewSelected) {
       if (viewType === 'g') {
         this.utilService.checkListViewType = 'g';
+      } else if (viewType === 'l') {
+        this.utilService.checkListViewType = 'l';
+      } else {
+        this.utilService.checkListViewType = 'fl';
+
       }
       let tracksOrPlaybooks = this.tracksModule ? 'tracks' : 'playbook';
       let partnerUrl = this.isPartnerView ? 'shared' : 'manage';
       this.referenceService.goToRouter('/home/' + tracksOrPlaybooks + '/' + partnerUrl + '/' + this.utilService.checkListViewType);
-      this.utilService.folderListViewSelected = false;
     } else {
       if (this.viewType != viewType) {
         if (this.folderListView) {
