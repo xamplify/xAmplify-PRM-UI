@@ -166,14 +166,12 @@ export class TracksPlayBookUtilService {
 
   /** XNFR-745 **/
   getGroupedAssetsBySlug(companyId: number, slug: string, sortKey: string) {
-    let url = "";
-    url = this.playBookURL + "/getGroupedPlaybookAssetsBySlug/" + companyId + "/" + slug + "/" + sortKey + "?access_token=" + this.authenticationService.access_token;
+    let url = this.playBookURL + "/getGroupedPlaybookAssetsBySlug/" + companyId + "/" + slug + "/" + sortKey + "?access_token=" + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
   
-  checkGroupByAssetsEnabled(companyId: number, slug: string) {
-    let url = "";
-    url = this.playBookURL + "/checkGroupByAssetsEnabledForPlaybook/" + companyId + "/" + slug + "?access_token=" + this.authenticationService.access_token;
+  checkGroupByAssetsEnabled(companyId: number, slug: string, type: string) {
+    let url = this.playBookURL + "/checkGroupByAssetsEnabledForPlaybook/" + companyId + "/" + slug + "/" + type + "?access_token=" + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
