@@ -471,7 +471,7 @@
 												<div class="form-group" [attr.class]="companyNameDivClass">
 													<label class="control-label" translate>Company Name <font><b
 																style="color: #f55d7a !important">*</b></font></label>
-													<input type="text" id="companyName" name="companyName"
+													<input type="text" id="companyName" name="companyName" [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 														placeholder="Company Name" class="form-control"
 														[(ngModel)]="companyProfile.companyName"
 														(input)="validateEmptySpace('companyName');validateNames(companyProfile.companyName)" autocomplete="off" /> <span
@@ -495,7 +495,7 @@
 														<span *ngIf="companyProfileNameError" style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
 													</ng-container>
 													<ng-container *ngIf="!companyProfile.isAdd"> <input type="text"
-															id="companyProfileName" [disabled]="isDisable"
+															id="companyProfileName" [disabled]="isDisable || (!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															placeholder="Company Profile Name" class="form-control"
 															name="companyProfileName"
 															[(ngModel)]="companyProfile.companyProfileName" />
@@ -511,7 +511,7 @@
 														class="form-control" maxlength="240"
 														[(ngModel)]="companyProfile.emailId"
 														(input)="validatePattern('emailId')"
-														(blur)="validatePattern('emailId')" autocomplete="off" /> <span
+														(blur)="validatePattern('emailId')" autocomplete="off" [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"/> <span
 														*ngIf="emailIdError"
 														style="color: #f55d7a">{{emailIdErrorMessage}}</span>
 												</div>
@@ -519,7 +519,7 @@
 											<div class="col-md-6 col-lg-6 mPadCompanyProfile"
 												style="padding-left: 0px;">
 												<div class="form-group" [attr.class]="tagLineDivClass">
-													<label class="control-label" translate>Tag Line</label> <input
+													<label class="control-label" translate>Tag Line</label> <input  [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 														type="text" id="tagLine" name="tagLine" placeholder="Tag Line"
 														class="form-control" maxlength="240"
 														[(ngModel)]="companyProfile.tagLine" autocomplete="off" /> <span
@@ -537,7 +537,7 @@
 													[(ngModel)]="companyProfile.phone"
 													[ngModelOptions]="{standalone: true}"
 													(input)="validatePattern('phone')"
-													(blur)="validatePattern('phone')" autocomplete="off">
+													(blur)="validatePattern('phone')" autocomplete="off" [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())">
 												<span *ngIf="phoneError"
 													style="color: #f55d7a">{{phoneErrorMessage}}</span>
 											</div>
@@ -546,7 +546,7 @@
 											<div class="form-group" [attr.class]="websiteDivClass">
 												<label class="control-label" translate>Company URL <font><b
 															style="color: #f55d7a !important">*</b></font></label>
-												<input type="text" id="website" name="website" placeholder="WebSite"
+												<input type="text" id="website" name="website" placeholder="WebSite" [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 													maxlength="240" class="form-control"
 													[(ngModel)]="companyProfile.website" autocomplete="off"
 													(input)="validatePattern('website')"
@@ -557,7 +557,7 @@
 										<div class="col-md-6 col-lg-6 mPadCompanyProfile" style="padding-left: 15px;">
 											<div class="form-group" [attr.class]="supportEmailIdDivClass">
 												<label class="control-label" translate>Support Email Id </label>
-												<input type="text" id="supportEmailId" name="supportEmailId" placeholder="Enter Support Email Id"
+												<input type="text" id="supportEmailId" name="supportEmailId" placeholder="Enter Support Email Id" [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 													maxlength="240" class="form-control" [(ngModel)]="companyProfile.supportEmailId" autocomplete="off"
 													(input)="validatePattern('supportEmailId')" (blur)="validatePattern('supportEmailId')" /> <span
 													*ngIf="supportEmailIdError" style="color: #f55d7a">{{supportEmailIdErrorMessage}}</span>
@@ -568,7 +568,7 @@
 											<div class="form-group" [attr.class]="aboutUsDivClass">
 												<label class="control-label" translate>About Us <font><b
 															style="color: #f55d7a !important">*</b></font></label>
-												<textarea class="form-control" rows="3" cols="5" maxlength="1000"
+												<textarea class="form-control" rows="3" cols="5" maxlength="1000" [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 													placeholder="About Us" name="aboutUs" id="aboutUs"
 													style="resize: none" [(ngModel)]="companyProfile.aboutUs"
 													(input)="validateEmptySpace('aboutUs')" autocomplete="off"
@@ -580,7 +580,7 @@
 										<div class="col-md-12 col-lg-12">
 											<div class="form-group">
 												<label class="control-label" translate>Privacy Policy</label>
-												<textarea class="form-control" rows="3" cols="5" maxlength="1000"
+												<textarea class="form-control" rows="3" cols="5" maxlength="1000" [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 													placeholder="Privacy Policy" name="privacyPolicy" id="privacyPolicy"
 													style="resize: none"
 													[(ngModel)]="companyProfile.privacyPolicy" autocomplete="off"></textarea>
@@ -603,13 +603,13 @@
 												</div>
 												<div id="collapse1" class="panel-collapse collapse panel-account">
 													<div class="form-group">
-														<label class="control-label" translate>Street</label> <input
+														<label class="control-label" translate>Street</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="street" [(ngModel)]="companyProfile.street"
 															name="street" placeholder="Street" maxlength="240"
 															class="form-control" autocomplete="off" />
 													</div>
 													<div class="form-group" [attr.class]="cityDivClass">
-														<label class="control-label" translate>City</label> <input
+														<label class="control-label" translate>City</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="city" name="city" placeholder="City"
 															class="form-control" maxlength="240"
 															[(ngModel)]="companyProfile.city"
@@ -618,7 +618,7 @@
 															style="color: #f55d7a">{{cityErrorMessage}}</span>
 													</div>
 													<div class="form-group" [attr.class]="stateDivClass">
-														<label class="control-label" translate>State</label> <input
+														<label class="control-label" translate>State</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="state" name="state" placeholder="State"
 															class="form-control" maxlength="240"
 															[(ngModel)]="companyProfile.state" autocomplete="off"
@@ -628,7 +628,7 @@
 															style="color: #f55d7a">{{stateErrorMessage}}</span>
 													</div>
 													<div class="form-group" [attr.class]="zipDivClass">
-														<label class="control-label" translate>Zip</label> <input
+														<label class="control-label" translate>Zip</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="zip" name="zip" maxlength="10"
 															placeholder="Zip"
 															onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -637,7 +637,7 @@
 															style="color: #f55d7a">{{zipErrorMessage}}</span>
 													</div>
 													<div class="form-group" [attr.class]="countryDivClass">
-														<label class="control-label" translate>Country</label> <select
+														<label class="control-label" translate>Country</label> <select [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															class="form-control" name="companyProfile.country"
 															[(ngModel)]="companyProfile.country" autocomplete="off" style="width: 100%">
 															<option *ngFor="let country of countryNames.countries"
@@ -658,7 +658,7 @@
 												</div>
 												<div id="collapse2" class="panel-collapse collapse panel-account">
 													<div class="form-group" [attr.class]="facebookDivClass">
-														<label class="control-label" translate>Facebook</label> <input
+														<label class="control-label" translate>Facebook</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="facebook" name="facebook"
 															placeholder="Facebook" class="form-control"
 															[(ngModel)]="companyProfile.facebookLink" autocomplete="off"
@@ -668,7 +668,7 @@
 															style="color: #f55d7a">{{facebookLinkErrorMessage}}</span>
 													</div>
 													<div class="form-group" [attr.class]="googlePlusDivClass">
-														<label class="control-label" translate>Google</label> <input
+														<label class="control-label" translate>Google</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="googlePlusLink" name="googlePlusLink"
 															placeholder="Google" class="form-control"
 															[(ngModel)]="companyProfile.googlePlusLink" autocomplete="off"
@@ -678,7 +678,7 @@
 															style="color: #f55d7a">{{googlePlusLinkErrorMessage}}</span>
 													</div>
 													<div class="form-group" [attr.class]="linkedInDivClass">
-														<label class="control-label" translate>LinkedIn</label> <input
+														<label class="control-label" translate>LinkedIn</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="linkedInLink" name="linkedInLink"
 															placeholder="LinkedIn" class="form-control"
 															[(ngModel)]="companyProfile.linkedInLink" autocomplete="off"
@@ -689,7 +689,7 @@
 													</div>
 													<!-----****XNFR-281****------>
 													<div class="form-group" [attr.class]="instagramDivClass">
-														<label class="control-label" translate>Instagram</label> <input
+														<label class="control-label" translate>Instagram</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="instagramLink" name="instagramLink"
 															placeholder="Instagram" class="form-control"
 															[(ngModel)]="companyProfile.instagramLink" autocomplete="off"
@@ -700,7 +700,7 @@
 													</div>
 
 													<div class="form-group" [attr.class]="twitterDivClass">
-														<label class="control-label" translate>Twitter</label> <input
+														<label class="control-label" translate>Twitter</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="twitterLink" name="twitterLink"
 															placeholder="Twitter" class="form-control"
 															[(ngModel)]="companyProfile.twitterLink" autocomplete="off"
@@ -711,7 +711,7 @@
 													</div>
 													<!-----****XNFR-281****------>
 													<div class="form-group" [attr.class]="eventUrlDivClass">
-														<label class="control-label" translate>Event Url</label> <input
+														<label class="control-label" translate>Event Url</label> <input [disabled]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())"
 															type="text" id="eventUrl" name="eventUrl"
 															placeholder="Event Url" class="form-control"
 															[(ngModel)]="companyProfile.eventUrl" autocomplete="off"
@@ -729,7 +729,8 @@
 											*ngIf="!isDisable" id="saveOrUpdateCompanyButton" (click)="save()"
 											class="button bgcolor-unset" disabled="disabled" translate><span
 												class="btn Btn-Green transition txt_pd-top3">Save</span></button>
-										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
+										<button type="submit" [disabled]="authenticationService.isSuperAdmin() || (!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())" aria-hidden="true" 
+										   data-toggle="tooltip" data-placement="top" title="{{(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin()) ? 'You cannot edit the company profile as your access is restricted' : ''}}"
 											*ngIf="isDisable" id="saveOrUpdateCompanyButton"
 											(click)="update()" class="button bgcolor-unset" translate><span
 												class="btn Btn-Green transition txt_pd-top3">Update</span></button>
