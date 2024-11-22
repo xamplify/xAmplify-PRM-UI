@@ -1395,6 +1395,7 @@ getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:b
   let URL_PREFIX = "";
   let vendorOrPartnerJourneyVar ="";
   let partnerOrVendorMarketplace = "";
+  let vanityCompanyProfile = "&vanityCompanyProfile="+this.getSubDomain();
   if(isPartnerLandingPagePreview || vendorJourney || isPartnerJourneyPage){
     URL_PREFIX = this.REST_URL+"landing-page/partner/";
     vendorOrPartnerJourneyVar = vendorJourney? "&vendorJourney=true":isPartnerJourneyPage? "&partnerJourneyPage=true":"";
@@ -1404,7 +1405,9 @@ getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:b
   }else{
     URL_PREFIX = this.REST_URL+"landing-page/";
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+vendorOrPartnerJourneyVar+partnerOrVendorMarketplace+"&access_token="+this.access_token;
+  
+  
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+vendorOrPartnerJourneyVar+partnerOrVendorMarketplace+vanityCompanyProfile+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 
