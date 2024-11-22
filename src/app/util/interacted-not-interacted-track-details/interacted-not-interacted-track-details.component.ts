@@ -182,9 +182,11 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
 
   downloadInteractedAndNonInteractedTracksReport() {
     let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
+    let trackTypeFilterRequestParam = this.trackType != undefined ? this.trackType : "";
+    let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
     let url = this.authenticationService.REST_URL + "partner/journey/download/track-interaction-report?access_token=" + this.authenticationService.access_token
-      + "&loggedInUserId=" + loggedInUserIdRequestParam;
-    window.location.href = url;
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" + trackTypeFilterRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam;
+    this.referenseService.openWindowInNewTab(url);
   }
 
 }
