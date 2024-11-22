@@ -16,7 +16,10 @@
 			</div>
 			<app-response-message class="pg8" [customResponse]="marketPlaceCategoryResponse" *ngIf="marketPlaceCategoryResponse.isVisible">
 			</app-response-message>
-			<div class="modal-body" *ngIf = "(!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember) || isVendorMarketplace">
+			<div *ngIf="vendorLogoDetails.length==0 && isVendorMarketplace" class="alert alert-info">
+				<strong translate>No Data Found.</strong>
+			</div>
+			<div class="modal-body" *ngIf = "vendorLogoDetails.length!=0 && ((!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember) || isVendorMarketplace)">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
@@ -34,6 +37,9 @@
 										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
 										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
 								</div>
+								<span class="vendorLogoCheck">
+									<i *ngIf="vendorLogo?.selectedCategories?.length > 0" class="fa fa-check-circle-o success i-20px"
+										style="margin-right:54px;"></i></span>
 							</td>
 							<td class="text-center">{{vendorLogo.companyName}}</td>
 							<td>
@@ -57,7 +63,10 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="modal-body" *ngIf = "authenticationService?.module?.isAnyAdminOrSupervisor && !isVendorMarketplace">
+			<div *ngIf="sharedVendorLogoDetails.length==0 && !isVendorMarketplace" class="alert alert-info">
+				<strong translate>No Data Found.</strong>
+			</div>
+			<div class="modal-body" *ngIf = "sharedVendorLogoDetails.length!=0 && (authenticationService?.module?.isAnyAdminOrSupervisor && !isVendorMarketplace)">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
