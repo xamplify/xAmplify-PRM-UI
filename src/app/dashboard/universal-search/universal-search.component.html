@@ -122,10 +122,8 @@
           </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.slug}}">{{quickLink?.slug}}</span>
         </span>
       </h6>
-      <h6 (click)="preview(quickLink)" *ngIf="quickLink?.tag != null">
-        <span><b>Tag:</b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.tag}}"
-            class="tag tablegray-tag">{{quickLink?.tag}}</span></span>
-      </h6>
+      <ng-template [ngTemplateOutlet]="tracksplaybooksFieldsDetails"
+      [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
     </td>
     <td>
       <div class="col">
@@ -154,16 +152,14 @@
     </td>
     <td  style="width: 90%;">
       <h6 (click)="preview(quickLink)">
-        <span class="pointer" *ngIf="quickLink?.type=='Track'"><b>Tracks Title: </b><span data-toggle="tooltip"
+        <span class="pointer"><b>{{quickLink?.type}}s Title: </b><span data-toggle="tooltip"
             data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span> </span>
-        <span class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}"
+        <!-- <span class="pointer" data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}"
           *ngIf="quickLink?.type=='Play Book'"><b>Play Books Title: </b><span data-toggle="tooltip" data-placement="top"
-            title="{{quickLink?.name}}">{{quickLink?.name}}</span> </span>
+            title="{{quickLink?.name}}">{{quickLink?.name}}</span> </span> -->
       </h6>
-      <h6 (click)="preview(quickLink)" *ngIf="quickLink?.tag != null">
-        <span><b>Tag:</b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.tag}}"
-            class="tag tablegray-tag">{{quickLink?.tag}}</span></span>
-      </h6>
+      <ng-template [ngTemplateOutlet]="tracksplaybooksFieldsDetails"
+      [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
     </td>
     <td>
       <div class="col">
@@ -192,31 +188,8 @@
       </div>
     </td>
     <td style="width:  90%;">
-      <h6 (click)="preview(quickLink)">
-        <span class="pointer"><b>Name:
-          </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span>
-        </span>
-      </h6>
-      <h6 (click)="preview(quickLink)">
-        <span class="pointer"><b>Email ID:
-          </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.slug}}">{{quickLink?.slug}}</span>
-        </span>
-      </h6>
-      <h6 (click)="preview(quickLink)" *ngIf="!isPartnerLoggedInThroughVanityUrl">
-        <span class="pointer"><b>Lead Id:
-          </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.tag}}">{{quickLink?.tag}}</span>
-        </span>
-      </h6>
-      <h6 (click)="preview(quickLink)">
-        <span class="pointer"><b>Stage:
-          </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.stage}}">{{quickLink?.stage}}</span>
-        </span>
-      </h6>
-      <h6 (click)="preview(quickLink)">
-        <span class="pointer"><b>Added By:
-          </b><span data-toggle="tooltip" data-placement="top"
-            title="{{quickLink?.addedBy}}">{{quickLink?.addedBy}}</span> </span>
-      </h6>
+      <ng-template [ngTemplateOutlet]="leadDealFieldsDetails"
+      [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
 
     </td>
     <td>
@@ -246,31 +219,8 @@
     </td>
 
     <td style="width:  90%;">
-      <h6 (click)="preview(quickLink)">
-        <span class="pointer"><b>Deal Name:
-          </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span>
-        </span>
-      </h6>
-      <h6 (click)="preview(quickLink)" *ngIf="!isPartnerLoggedInThroughVanityUrl">
-        <span class="pointer"><b>Deal Id:
-          </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.tag}}">{{quickLink?.tag}}</span>
-        </span>
-      </h6>
-      <h6 (click)="preview(quickLink)">
-        <span class="pointer"><b>Stage:
-          </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.stage}}">{{quickLink?.stage}}</span>
-        </span>
-      </h6>
-      <h6 (click)="preview(quickLink)">
-        <span class="pointer"><b>Added By:
-          </b><span data-toggle="tooltip" data-placement="top"
-            title="{{quickLink?.addedBy}}">{{quickLink?.addedBy}}</span> </span>
-      </h6>
-      <h6 (click)="preview(quickLink)" *ngIf="quickLink?.assetType != null">
-        <span class="pointer"><b>Deal Type:
-          </b><span data-toggle="tooltip" data-placement="top"
-            title="{{quickLink?.assetType}}">{{quickLink?.assetType}}</span> </span>
-      </h6>
+      <ng-template [ngTemplateOutlet]="leadDealFieldsDetails"
+      [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
     </td>
     <td>
       <div class="col">
@@ -295,4 +245,79 @@
     (click)="$event.stopPropagation();navigateToManage(quickLink)">
     <i class="fas fa-route" aria-hidden="true"></i>
   </a>
+</ng-template>
+
+<ng-template #tracksplaybooksFieldsDetails let-quickLink="quickLink">
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.folder != null">
+    <span class="pointer"><b>Folder:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.folder}}">{{quickLink?.folder}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.createdBy != null">
+    <span class="pointer">
+      <b *ngIf="!isPartnerLoggedInThroughVanityUrl || quickLink?.type != 'Asset'">created By:</b>
+      <b *ngIf="isPartnerLoggedInThroughVanityUrl && quickLink?.type === 'Asset'">Published By:</b>
+      <span data-toggle="tooltip" data-placement="top" title="{{quickLink?.createdBy}}">{{quickLink?.createdBy}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)"
+    *ngIf="quickLink?.from != null && isPartnerLoggedInThroughVanityUrl && quickLink?.type === 'Asset'">
+    <span class="pointer">
+      <b>From:</b>
+      <span data-toggle="tooltip" data-placement="top" title="{{quickLink?.from}}">{{quickLink?.from}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.tag != null">
+    <span class="pointer"><b>Tag:</b><span *ngFor="let tag of (quickLink?.tag?.split(',') || []).slice(0, 5)" data-toggle="tooltip"
+        data-placement="top" [title]="tag" class="tag tablegray-tag mr5">
+        {{ tag }}
+      </span>
+      <span *ngIf="(quickLink?.tag?.split(',') || []).length > 5" data-toggle="tooltip" data-placement="top"
+        [title]="(quickLink?.tag?.split(',').slice(5).join(', ') || '')">
+        More
+      </span>
+    </span>
+  </h6>
+</ng-template>
+<ng-template #leadDealFieldsDetails let-quickLink="quickLink">
+  <h6 (click)="preview(quickLink)" >
+    <span class="pointer"><b>{{quickLink?.type}} Name:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.createdBy != null">
+    <span class="pointer"><b>Email Id:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.createdBy}}">{{quickLink?.createdBy}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.crmReferanceId != null && !isPartnerLoggedInThroughVanityUrl">
+    <span class="pointer"><b>{{quickLink?.type}} Id:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.crmReferanceId}}">{{quickLink?.crmReferanceId}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.stage != null">
+    <span class="pointer"><b>Stage:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.stage}}">{{quickLink?.stage}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.addedFor != null && isPartnerLoggedInThroughVanityUrl">
+    <span class="pointer"><b>Added For:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.addedFor}}">{{quickLink?.addedFor}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.from != null">
+    <span class="pointer"><b>Added By:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.from}}">{{quickLink?.from}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.companyName != null">
+    <span class="pointer"><b>Company Name:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.companyName}}">{{quickLink?.companyName}}</span>
+    </span>
+  </h6>
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.campaignName != null">
+    <span class="pointer"><b>Campaign:
+      </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.campaignName}}">{{quickLink?.campaignName}}</span>
+    </span>
+  </h6>
 </ng-template>

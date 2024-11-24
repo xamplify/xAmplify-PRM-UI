@@ -193,6 +193,11 @@
   .quicklinks_icons {
     margin-right: 5px;
   }
+  .tag.tablegray-tag {
+    padding: 2px !important;
+    border-radius: 3px !important;
+  }
+
   .universal-profile {
     background: #9079d2;
     border-radius: 30px;
