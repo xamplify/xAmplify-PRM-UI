@@ -1344,9 +1344,8 @@
 												<a id="delete_button" (click)="invalidContactsShowAlert()" translate>
 													Delete</a>
 											</li>
-											<li
-												*ngIf="!sharedLeads || (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))">
-												<a id="export_button"
+											<li *ngIf="!sharedLeads || (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))">
+												<a id="export_button" [class.disabled]="contactsByType?.contacts?.length === 0"
 													(click)="hasAccessForDownloadUndeliverableContacts()" translate>
 													Export To Excel </a>
 											</li>
