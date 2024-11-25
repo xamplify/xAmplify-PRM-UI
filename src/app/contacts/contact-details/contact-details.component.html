@@ -72,13 +72,13 @@
               </div>
               <div class="icon-label">Note</div>
             </div>
-            <div class="icon-item" (click)="showModalPopup()">
+            <div class="icon-item" (click)="openEmailModalPopup()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Send an Email">
                 <i class="glyphicon glyphicon-envelope"></i>
               </div>
               <div class="icon-label">Email</div>
             </div>
-            <div class="icon-item">
+            <div class="icon-item" (click)="openTaskModalPopup()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Add a Task">
                 <i class="glyphicon glyphicon-file"></i>
               </div>
@@ -188,7 +188,8 @@
                   <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab" [contactName]="contactName" [contactEmailId]="selectedContact.emailId"></app-email-activity>
                 </div>
                 <div *ngIf="showFormsTab" id="form1" class="tab-pane fade pt-top">
-                  dcsddcscde
+                  <app-task-activity [contactId]="contactId" [reloadTab]="isReloadTaskActivityTab" (notifyDeleteSuccess)="showTaskDeleteSuccessStatus($event)"
+                    (notifyTaskUpdatedStatus)="showTaskUpdateCutomResponse($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
                   dcsddcscde
@@ -339,7 +340,7 @@
 
 <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
   [userEmailId]="selectedContact.emailId" [emailActivityId]="emailActivityId" (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"
-  (notifyClose)="closeModalPopup()" [isReloadEmailActivityTab]="isReloadEmailActivityTab" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"></app-add-email-modal-popup>
+  (notifyClose)="closeEmailModalPopup()" [isReloadEmailActivityTab]="isReloadEmailActivityTab" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"></app-add-email-modal-popup>
 
 <app-custom-manage-leads *ngIf="viewLeads" [listView]="true" [isConvertingContactToLead]="true" [isFromCompanyModule]="isFromCompanyModule"
   [selectedContact]="selectedContact" (notifyClose)="closeViewMoreLeadsTab()"></app-custom-manage-leads>
@@ -357,4 +358,8 @@
 
 <app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [selectedContact]="selectedContact" [isReloadTab]="isReloadNoteTab"
 (notifySuccess)="showNoteCutomResponse($event)" (notifyClose)="closeAddNoteModalPopup()"></app-add-note-modal-popup>
+
+<app-add-task-modal-popup *ngIf="showTaskModalPopup" [isReloadTaskActivityTab]="isReloadTaskActivityTab"
+  (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)" [userId]="contactId" [actionType]="actionType"
+  (notifyClose)="closeTaskModalPopup()"></app-add-task-modal-popup>
 

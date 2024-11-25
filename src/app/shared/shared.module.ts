@@ -40,6 +40,8 @@ import { AddNoteModalPopupComponent } from 'app/activity/add-note-modal-popup/ad
 import { NoteComponent } from 'app/activity/note/note.component';
 import { ActivityStreamComponent } from 'app/activity/activity-stream/activity-stream.component';
 import { PreviewEmailActivityComponent } from 'app/activity/preview-email-activity/preview-email-activity.component';
+import { AddTaskModalPopupComponent } from 'app/activity/add-task-modal-popup/add-task-modal-popup.component';
+import { TaskActivityComponent } from 'app/activity/task-activity/task-activity.component';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
@@ -48,7 +50,8 @@ import { PreviewEmailActivityComponent } from 'app/activity/preview-email-activi
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
-                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent],
+                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,
+                AddTaskModalPopupComponent, TaskActivityComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -57,7 +60,7 @@ import { PreviewEmailActivityComponent } from 'app/activity/preview-email-activi
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent, 
-                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent],
+                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AddTaskModalPopupComponent, TaskActivityComponent],
         providers: [FormService],
 })
 

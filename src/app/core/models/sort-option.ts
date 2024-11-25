@@ -487,6 +487,26 @@ export class SortOption {
         { 'name': 'Sort by Folder(A-Z)', 'value': 'folderName-ASC' },
         { 'name': 'Sort by Folder(Z-A)', 'value': 'folderName-DESC' },
     ];
+
+	/**XNFR-757**/
+	taskActivityTypeDropDown = [
+        { 'name': 'Note', 'value': 'NOTE' },
+        { 'name': 'Email', 'value': 'EMAIL' },
+		{ 'name': 'To-Do', 'value': 'TODO'}
+    ];
+
+	taskActivityPriorityDropDown = [
+        { 'name': 'Low', 'value': 'LOW' },
+        { 'name': 'Medium', 'value': 'MEDIUM' },
+		{ 'name': 'High', 'value': 'HIGH'}
+    ];
+
+	taskActivityDropDownOptions = [
+		{ 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+	];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -564,6 +584,13 @@ export class SortOption {
   
 	/** XNFR-745 **/
 	public groupedAssetsForPlaybook: any = this.groupedAssetsForPlaybookDropDown[0].value;
+
+	/**XNFR-757**/
+	public taskActivityTypeDropDownOption = this.taskActivityTypeDropDown[this.taskActivityTypeDropDown.length-1];
+
+	public taskActivityPriorityDropDownOption = this.taskActivityPriorityDropDown[0];
+
+	taskActivityDropDownOption = this.taskActivityDropDownOptions[this.taskActivityDropDownOptions.length-1];
 
 
 }
