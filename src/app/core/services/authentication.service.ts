@@ -1395,7 +1395,7 @@ getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:b
   let URL_PREFIX = "";
   let vendorOrPartnerJourneyVar ="";
   let partnerOrVendorMarketplace = "";
-  let vanityCompanyProfile = "&vanityCompanyProfile="+this.getSubDomain();
+  let vanityCompanyProfile = "&vanityCompanyProfileName="+this.getSubDomain();
   if(isPartnerLandingPagePreview || vendorJourney || isPartnerJourneyPage){
     URL_PREFIX = this.REST_URL+"landing-page/partner/";
     vendorOrPartnerJourneyVar = vendorJourney? "&vendorJourney=true":isPartnerJourneyPage? "&partnerJourneyPage=true":"";
