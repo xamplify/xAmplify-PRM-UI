@@ -2344,7 +2344,7 @@ color: var(--icon-color) !important;
 .edit_contact {
   border-bottom: 1.4px var(--border-color) dashed !important;
 }
-.lead_details h3 {
+.lead_details h3,.deals_card {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
@@ -2367,7 +2367,7 @@ color: var(--icon-color) !important;
   color: var(--icon-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.activity_card {
+.activity_card,.activity_bgcolor{
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }
