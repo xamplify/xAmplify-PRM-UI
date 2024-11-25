@@ -285,7 +285,7 @@
       </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.name}}">{{quickLink?.name}}</span>
     </span>
   </h6>
-  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.createdBy != null">
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.createdBy != null  && quickLink?.type === 'Lead' ">
     <span class="pointer"><b>Email Id:
       </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.createdBy}}">{{quickLink?.createdBy}}</span>
     </span>
@@ -310,7 +310,7 @@
       </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.from}}">{{quickLink?.from}}</span>
     </span>
   </h6>
-  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.companyName != null">
+  <h6 (click)="preview(quickLink)" *ngIf="quickLink?.companyName != null && quickLink?.type === 'Lead' ">
     <span class="pointer"><b>Company Name:
       </b><span data-toggle="tooltip" data-placement="top" title="{{quickLink?.companyName}}">{{quickLink?.companyName}}</span>
     </span>
