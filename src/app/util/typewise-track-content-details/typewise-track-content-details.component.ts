@@ -182,9 +182,10 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
     let trackTypeFilterRequestParam = this.trackType != undefined ? this.trackType : "";
     let assertTypeFilterRequestParm = this.assetType != undefined ? this.assetType : "";
+    let searchKeyRequestParm = this.searchKey != undefined ? this.sortOption.searchKey : "";
     let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
     let url = this.authenticationService.REST_URL + "partner/journey/download/typewise-track-content-report?access_token=" + this.authenticationService.access_token
-      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" + trackTypeFilterRequestParam
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" + trackTypeFilterRequestParam + "&searchKey=" + searchKeyRequestParm;
       + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&assetType=" + assertTypeFilterRequestParm;
     this.referenseService.openWindowInNewTab(url);
   }

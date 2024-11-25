@@ -154,4 +154,17 @@ export class TrackAssetDetailsComponent implements OnInit {
     );
   }
 
+  downloadTrackAssetsDetailsReport() {
+    let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
+    let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
+    let searchKeyRequestParm = this.searchKey != undefined ? this.sortOption.searchKey : "";
+    let urlSuffix = "partner/journey/download/track-asset-details-report"
+    if (this.type === 'PLAYBOOK') {
+      urlSuffix = "partner/journey/download/playbook-asset-details-report"
+    }
+    let url = this.authenticationService.REST_URL + urlSuffix + "?access_token=" + this.authenticationService.access_token
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm;
+    this.referenseService.openWindowInNewTab(url);
+  }
+
 }
