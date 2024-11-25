@@ -1,7 +1,6 @@
 <div>
-	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0"
-		style="padding-top: 6px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
-			class="btn btn-primary transition">{{moduleLable}}</span></button>
+	<button class="btn btn-primary ml5 float-right"
+		style="margin-top: 6px" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate>{{moduleLable}}</button>
 </div>
 
 <div class="modal fade right" id="add-vendor-logo-popup" role="dialog" data-backdrop="static"
@@ -16,7 +15,10 @@
 			</div>
 			<app-response-message class="pg8" [customResponse]="marketPlaceCategoryResponse" *ngIf="marketPlaceCategoryResponse.isVisible">
 			</app-response-message>
-			<div class="modal-body" *ngIf = "(!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember) || isVendorMarketplace">
+			<div *ngIf="vendorLogoDetails.length==0 && isVendorMarketplace" class="alert alert-info">
+				<strong translate>No Data Found.</strong>
+			</div>
+			<div class="modal-body" *ngIf = "vendorLogoDetails.length!=0 && ((!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember) || isVendorMarketplace)">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
@@ -34,6 +36,9 @@
 										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
 										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
 								</div>
+								<span class="vendorLogoCheck">
+									<i *ngIf="vendorLogo?.selectedCategories?.length > 0" class="fa fa-check-circle-o success i-20px"
+										style="margin-right:54px;"></i></span>
 							</td>
 							<td class="text-center">{{vendorLogo.companyName}}</td>
 							<td>
@@ -57,7 +62,10 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="modal-body" *ngIf = "authenticationService?.module?.isAnyAdminOrSupervisor && !isVendorMarketplace">
+			<div *ngIf="sharedVendorLogoDetails.length==0 && !isVendorMarketplace" class="alert alert-info">
+				<strong translate>No Data Found.</strong>
+			</div>
+			<div class="modal-body" *ngIf = "sharedVendorLogoDetails.length!=0 && (authenticationService?.module?.isAnyAdminOrSupervisor && !isVendorMarketplace)">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
