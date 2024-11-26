@@ -96,7 +96,11 @@ export class MarketplaceUtilComponent implements OnInit {
 
   setParentIframeHeight() {
     const componentHeight = this.elementRef.nativeElement.offsetHeight;
-    (window.parent as any).$('#frame-full-height').height(componentHeight +20);
+    if(this.categories != null && this.categories.length>0){
+      (window.parent as any).$('#frame-full-height').height(componentHeight +20);
+    }else{
+      (window.parent as any).$('#frame-full-height').height(componentHeight );
+    }
   }
 
 

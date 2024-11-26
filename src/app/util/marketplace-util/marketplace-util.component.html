@@ -1,4 +1,8 @@
-<div class="flexbody">
+<div *ngIf="categories == null || !categories.length>0">
+  <img width="100%" src="https://xamplify.s3.amazonaws.com/images/deafult-master-lading-page.jpg"
+  alt="No Image Found">
+</div>
+<div class="flexbody" *ngIf="categories != null && categories.length>0">
   <div class="menu">
     <input type="text" class="searchField" [(ngModel)]="searchTerm" placeholder="Search" (keyup)="getFilteredCompanies()">
     <h3>Categories</h3>
