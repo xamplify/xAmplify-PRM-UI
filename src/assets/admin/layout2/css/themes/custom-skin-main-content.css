@@ -2415,3 +2415,9 @@ background-color: #22313a !important;
 .e-ddl.e-popup {
   background-color:var(--page-content)!important;
 }
+/* Sudha Sri(27-11-2024) */
+.portlet.light.remove_cardBgcolor.padding_0.light_bg_removal,
+.page-bar.remove_cardBgcolor.p10.light_bg_removal,
+.page-bar.remove_cardBgcolor.neg_mrg_top14.light_bg_removal,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal{background: none !important; border:none !important;}
+.portlet-title.pb_8.pb_4.b-b_none, .portlet-title.pt0, .portlet-title.remove_border{border-bottom:none !important;}

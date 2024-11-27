@@ -69,8 +69,8 @@
     <!---Team Members---->
     <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && !showAnalytics">
       <!--List Of Team members---->
-      <div class="portlet light remove_cardBgcolor">
-        <div class="portlet-title">
+      <div class="portlet light remove_cardBgcolor light_bg_removal">
+        <div class="portlet-title remove_border">
           <div class="row flex_unset" style="display:flex;align-items: center;">
             <div class="col-xs-3 col-sm-2 col-md-2 col-lg-3 mb_width100">
               <div class="caption mg-top7 team_header">Team Members
@@ -399,8 +399,8 @@
 
     <!--Add a Team Member Div-->
     <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
-      <div class="portlet light remove_cardBgcolor">
-        <div class="portlet-title">
+      <div class="portlet light remove_cardBgcolor light_bg_removal">
+        <div class="portlet-title remove_border">
           <div class="caption">
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
             <span *ngIf="editTeamMember">Edit Team Member</span>

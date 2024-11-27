@@ -276,7 +276,7 @@
                      </div>
                   </div>
                   <!-- End tile here-->
-                  <div [ngClass]="{'page-bar remove_cardBgcolor p10': showListOfContactList}">
+                  <div [ngClass]="{'page-bar remove_cardBgcolor p10 light_bg_removal': showListOfContactList}">
                      <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                         <div class="tab-pane active">
                            <div class="row mr0 ml0">
@@ -316,7 +316,7 @@
                                  <ul class="page-breadcrumb" style="padding-left: 0px;"
                                     *ngIf="checkingContactTypeName!='Contact'">
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
-                                       <span class="fs-16" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span translate>Groups</span>
+                                       <span class="fs-16" id="col-black" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span id="col-black" translate>Groups</span>
                                     </li>
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
                                        Your {{checkingContactTypeName | translate}} Lists
@@ -1097,7 +1097,7 @@
       </div>
       <div class="row">
          <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="page-bar remove_cardBgcolor neg_mrg_top14">
+            <div class="page-bar remove_cardBgcolor neg_mrg_top14 light_bg_removal">
                <div class="tab-content table-padding">
                   <!-- BEGIN PAGE HEADER-->
                   <div class="" style="">

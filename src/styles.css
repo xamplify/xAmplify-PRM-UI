@@ -2822,7 +2822,7 @@ span.progresleft {
 
 @media only screen and (min-width: 992px) {
   .grid-box {
-    background: #f1f5f9;
+    background: #fff;
     height: auto;
     width: 100%;
     margin: 7px 0;
@@ -3003,7 +3003,7 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 @media only screen and (min-width: 992px){
   .grid-box{
     border-radius: 15px !important;
-    border: 1px solid #d0d5db;
+    border: 1px solid #c3c7d2d6;
   }
 } 
 .bar.gridIconCustomization{
@@ -3300,3 +3300,29 @@ a.quicklinks_icons:hover {
   border: 1px solid #e87e04;
 }
 }
+/* Sudha Sri(19-11-2024) */
+.light_bg_removal{
+  Background: none !important;
+  Border: none !important;
+}
+thead>tr {
+  background-color: #c3c7d2b0 !important;
+}
+.tgrid, .form-control, .l-g-view, 
+.close-circle, .pagination>li>a {
+  border: 1px solid #c3c7d2d6 !important;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, 
+.table>thead>tr>th {
+  border-top: 1px solid #c3c7d2d6 !important;
+}
+table {
+  background-color: transparent !important;
+}
+.table-responsive {
+  border-radius: 10px;
+}
+#col-black{color:#333;}
+.remove_border{border-bottom: none !important;}
+.pb_5{padding-bottom: 5px;}
+tbody{background: #fff;}
