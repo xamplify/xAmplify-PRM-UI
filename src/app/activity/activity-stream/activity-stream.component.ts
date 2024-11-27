@@ -45,6 +45,7 @@ export class ActivityStreamComponent implements OnInit {
   noteId: any;
   showNoteModalPopup: boolean = false;
   isFirstChange: boolean = true;
+  activitySortOption: SortOption = new SortOption();
 
   constructor(private activityService:ActivityService, private referenceService: ReferenceService, public pagerService: PagerService,
     private noteService:NoteService,public utilService:UtilService,public sortOption:SortOption) { }
@@ -184,13 +185,29 @@ export class ActivityStreamComponent implements OnInit {
 
   sortBy(text: any) {
     this.sortOption.activityDropDownOption = text;
-    this.getAllFilteredEmailActivityResults();
+    this.getAllFilteredActivityResults();
   }
 
-  getAllFilteredEmailActivityResults() {
+  getAllFilteredActivityResults() {
     this.activityPagination.pageIndex = 1;
+    this.activityPagination.searchKey = this.activitySortOption.searchKey;
     this.activityPagination = this.utilService.sortOptionValues(this.sortOption.activityDropDownOption, this.activityPagination);
     this.fetchAllRecentActivities(this.activityPagination);
+  }
+
+  searchActivities() {
+    this.getAllFilteredActivityResults();
+  }
+
+  activityEventHandler(keyCode: any) {
+    if (keyCode === 13) {
+      this.searchActivities();
+    }
+  }
+
+  clearSearch() {
+    this.activitySortOption.searchKey='';
+    this.getAllFilteredActivityResults();
   }
 
 }
