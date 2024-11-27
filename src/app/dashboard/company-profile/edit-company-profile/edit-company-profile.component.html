@@ -760,11 +760,11 @@
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<button style="position: relative; top: -8px;"
 					class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
-					*ngIf="!imageChangedEvent; else uploadButton">
+					*ngIf="(authenticationService?.module?.isAnyAdminOrSupervisor) && !imageChangedEvent; else uploadButton">
 					<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input style="height: 36px;"
 						title=" " id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
 				</button>
-				<ng-template #uploadButton>
+				<ng-template #uploadButton *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor">
 					<button style="position: relative; top: -5px;"
 						class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg">
 						<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input
@@ -817,7 +817,7 @@
 								class="fa fa-refresh" title="reset" data-toggle="tooltip"
 								aria-hidden="true"></i></button>
 					</div>
-					<div>
+					<div *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor">
 						<button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="uploadLogo()"><span
 								class="btn btn-primary transition txt_pd-top3">Save
 								Changes</span></button>
