@@ -1909,6 +1909,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	themeName = "Light Theme";
 	showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
+		this.resetVendorJourneyAndPartnerJourneyFunctionality()
 		this.activeTabName = activeTabName;
 		if (this.activeTabName != 'playerSettings') {
 			if (this.videoJSplayer) {
@@ -5039,4 +5040,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		)
 	}
 
+	resetVendorJourneyAndPartnerJourneyFunctionality(){
+		this.vendorJourney =false;
+		this.isLandingPages = false;
+		this.isMasterLandingPages = false;
+		this.isPartnerJourneyPages = false;
+		this.isVendorPartnerJourneyPages =false;
+		this.isVendorMarketplacePages = false;
+	}
 }
+
