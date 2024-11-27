@@ -1,54 +1,115 @@
 const fs = require('fs');
-const { exec } = require('child_process');
 
-// Load package.json
-const packageJsonPath = './package.json';
+function analyzeDependencies(packageJsonPath = './package.json') {
+    // Ensure package.json exists
+    if (!fs.existsSync(packageJsonPath)) {
+        console.error(`Error: ${packageJsonPath} not found. Please ensure you're running this script in the correct directory.`);
+        process.exit(1);
+    }
 
-if (!fs.existsSync(packageJsonPath)) {
-    console.error('Error: package.json not found in the project root.');
-    process.exit(1);
-}
+    // Read package.json
+    let packageJson;
+    try {
+        packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    } catch (err) {
+        console.error('Error: Unable to parse package.json. Please check the file format.');
+        process.exit(1);
+    }
 
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+    // Combine all dependencies
+    const allDependencies = {
+        ...packageJson.dependencies,
+        ...packageJson.devDependencies,
+    };
 
-// Extract Angular-related dependencies and devDependencies
-const dependencies = {
-    ...packageJson.dependencies,
-    ...packageJson.devDependencies,
-};
+    const report = {
+        angular: {},
+        thirdParty: {},
+        critical: [],
+        suggestions: [],
+    };
 
-const angularPackages = Object.keys(dependencies).filter(dep =>
-    dep.startsWith('@angular') || dep === 'typescript' || dep === 'rxjs'
-);
-
-if (angularPackages.length === 0) {
-    console.log('No Angular-related dependencies found in package.json.');
-    process.exit(0);
-}
-
-console.log('Analyzing Angular-related dependencies...\n');
-
-// Function to check package version
-const checkPackageVersion = (packageName, currentVersion) => {
-    exec(`npm show ${packageName} version`, (err, stdout, stderr) => {
-        if (err) {
-            console.error(`Error checking version for ${packageName}:`, stderr.trim());
-            return;
-        }
-
-        const latestVersion = stdout.trim();
-        if (currentVersion === latestVersion) {
-            console.log(`${packageName} is up to date (v${currentVersion}).`);
+    // Analyze Angular core packages
+    Object.entries(allDependencies).forEach(([pkg, version]) => {
+        if (pkg.startsWith('@angular/')) {
+            report.angular[pkg] = {
+                currentVersion: version,
+                targetVersion: '^18.0.0',
+                isCritical: true,
+            };
+            report.critical.push(`${pkg} needs to be updated from ${version} to ^18.0.0`);
         } else {
-            console.log(
-                `${packageName} is outdated (current: v${currentVersion}, latest: v${latestVersion}).`
-            );
+            report.thirdParty[pkg] = {
+                currentVersion: version,
+                needsReview: true,
+            };
         }
     });
-};
 
-// Check each Angular-related dependency
-angularPackages.forEach(packageName => {
-    const currentVersion = dependencies[packageName];
-    checkPackageVersion(packageName, currentVersion);
-});
+    // Common known package updates needed for Angular 18
+    const knownUpdates = {
+        'rxjs': {
+            minVersion: '^7.0.0',
+            note: 'Required for Angular 18. Major breaking changes from RxJS 5',
+        },
+        'typescript': {
+            minVersion: '~5.2.0',
+            note: 'Required for Angular 18',
+        },
+        'zone.js': {
+            minVersion: '~0.14.0',
+            note: 'Required for Angular 18',
+        },
+    };
+
+    // Check for known critical packages
+    Object.entries(knownUpdates).forEach(([pkg, info]) => {
+        if (allDependencies[pkg]) {
+            report.critical.push(`${pkg} needs to be updated to ${info.minVersion} - ${info.note}`);
+        }
+    });
+
+    // Generate migration suggestions
+    report.suggestions = [
+        'Review and update RxJS operators to new syntax',
+        'Check for deprecated HttpModule usage',
+        'Review template syntax for dynamic values in structural directives',
+        'Check for ViewEngine-specific code',
+        'Review usage of renderers (Renderer to Renderer2)',
+        'Check for HttpClient usage instead of Http',
+        'Review forms usage for deprecated features',
+    ];
+
+    return report;
+}
+
+// Generate readable report
+function generateReadableReport(report) {
+    let output = '📊 Angular Migration Dependency Report\n\n';
+
+    output += '🔷 Angular Core Packages:\n';
+    Object.entries(report.angular).forEach(([pkg, info]) => {
+        output += `  ${pkg}: ${info.currentVersion} → ${info.targetVersion}\n`;
+    });
+
+    output += '\n🔷 Third Party Packages to Review:\n';
+    Object.entries(report.thirdParty).forEach(([pkg, info]) => {
+        output += `  ${pkg}: ${info.currentVersion}\n`;
+    });
+
+    output += '\n⚠️ Critical Updates Required:\n';
+    report.critical.forEach(item => {
+        output += `  • ${item}\n`;
+    });
+
+    output += '\n📝 Migration Suggestions:\n';
+    report.suggestions.forEach(suggestion => {
+        output += `  • ${suggestion}\n`;
+    });
+
+    return output;
+}
+
+// Run the analyzer
+const report = analyzeDependencies();
+console.log(generateReadableReport(report));

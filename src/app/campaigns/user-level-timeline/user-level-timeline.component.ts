@@ -11,6 +11,7 @@ import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { LeadsService } from 'app/leads/services/leads.service';
 import { Roles } from 'app/core/models/roles';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 
 @Component({
@@ -55,6 +56,10 @@ export class UserLevelTimelineComponent implements OnInit {
   isOrgAdmin: boolean = false;
   campaignTitle = "";
   canPartnerEditLead:boolean = true;
+  /**XNFR-735**/
+  isFromContactDetails: boolean = false;
+  userListId: number = 0;
+  isFromCampaignList:boolean = false;
   constructor(private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -79,6 +84,14 @@ export class UserLevelTimelineComponent implements OnInit {
     const roles = this.authenticationService.getRoles();
     if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
       this.isOrgAdmin = true;
+    }
+    if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd") {
+      this.isFromContactDetails = true;
+      this.userListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
+      let parentNavigation = this.route.snapshot.params['parent'];
+      if (parentNavigation != undefined) {
+        this.isFromCampaignList = true;
+      }
     }
   }
 
@@ -157,7 +170,20 @@ export class UserLevelTimelineComponent implements OnInit {
     let encodedUserId = this.referenceService.encodePathVariable(this.selectedUserId);
     let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
     let url = "/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+encodedUserId;
-    if(this.navigatedFrom!=undefined && encodedCampaignId==undefined){
+    if (this.isFromContactDetails) {
+      let baseUrl = RouterUrlConstants.home;
+      let destination = '';
+      let encodedUserListId = this.referenceService.encodePathVariable(this.userListId);
+      if (this.isFromCampaignList) {
+        destination = RouterUrlConstants.campaigns + RouterUrlConstants.userCampaigns + "c/" + encodedUserId + "/" + encodedUserListId;
+        destination += (this.navigatedFrom == "ccd") ? "/" + RouterUrlConstants.ccd : "/" + RouterUrlConstants.cd;
+      } else {
+        destination = RouterUrlConstants.contacts;
+        let contactDetailsUrl = RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodedUserId;
+        destination += (this.navigatedFrom == "ccd") ? RouterUrlConstants.company+contactDetailsUrl : contactDetailsUrl;
+      }
+      this.referenceService.goToRouter(baseUrl+destination);
+    }else if(this.navigatedFrom!=undefined && encodedCampaignId==undefined){
       this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
     }else if(encodedCampaignId!=undefined && this.navigatedFrom!=undefined ){
       this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+this.campaignTitle);

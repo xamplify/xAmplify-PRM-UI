@@ -3,3 +3,9 @@
     padding: 10px;
     border-radius: 5px;
 }
+.file-input {
+    display: none;
+}
+.custom-file-label {
+    color: white !important;
+}

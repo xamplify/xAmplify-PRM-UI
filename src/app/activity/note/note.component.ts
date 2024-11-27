@@ -35,6 +35,7 @@ export class NoteComponent implements OnInit {
   noteId: any;
   ngxLoading:boolean = false;
   actionType: string;
+  isFirstChange:boolean = true;
 
   constructor(public noteService: NoteService, public authenticationService: AuthenticationService,
     public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {}
@@ -45,7 +46,11 @@ export class NoteComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.showAllNoteActivities();
+    if (this.isFirstChange) {
+      this.isFirstChange = false;
+    } else {
+      this.showAllNoteActivities();
+    }
   }
 
   showAllNoteActivities() {
