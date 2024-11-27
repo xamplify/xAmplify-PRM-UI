@@ -226,7 +226,7 @@
 	<!--Pagination-->
 	<div *ngIf="pagination.pagedItems.length !== 0" style="margin-top: 25px;padding-left: 10px;">
 		<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-			(notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+			(notifyParentDropDown)="findAllCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 	</div>
 	<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
 		<strong translate>No Folders Found.</strong>
