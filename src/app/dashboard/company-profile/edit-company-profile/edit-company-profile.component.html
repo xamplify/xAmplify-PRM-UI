@@ -724,13 +724,12 @@
 											</div>
 										</div>
 									</ng-template>
-									<div class="pull-right" *ngIf="!isFromAdminPanel">
+									<div class="pull-right" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && !isFromAdminPanel">
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
 											*ngIf="!isDisable" id="saveOrUpdateCompanyButton" (click)="save()"
 											class="button bgcolor-unset" disabled="disabled" translate><span
 												class="btn Btn-Green transition txt_pd-top3">Save</span></button>
-										<button type="submit" [disabled]="authenticationService.isSuperAdmin() || (!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin())" aria-hidden="true" 
-										   data-toggle="tooltip" data-placement="top" title="{{(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !authenticationService?.isSuperAdmin()) ? 'You cannot edit the company profile as your access is restricted' : ''}}"
+										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
 											*ngIf="isDisable" id="saveOrUpdateCompanyButton"
 											(click)="update()" class="button bgcolor-unset" translate><span
 												class="btn Btn-Green transition txt_pd-top3">Update</span></button>
