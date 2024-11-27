@@ -6,8 +6,8 @@ import { SortOption } from 'app/core/models/sort-option';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { TaskActivityService } from '../services/task-activity-service.service';
 import { UtilService } from 'app/core/services/util.service';
+import { TaskActivityService } from '../services/task-activity.service';
 
 declare var swal:any;
 

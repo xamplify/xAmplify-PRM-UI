@@ -4,7 +4,7 @@ import { TaskActivity } from '../models/task-activity-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { SortOption } from 'app/core/models/sort-option';
-import { TaskActivityService } from '../services/task-activity-service.service';
+import { TaskActivityService } from '../services/task-activity.service';
 
 declare var flatpickr:any;
 

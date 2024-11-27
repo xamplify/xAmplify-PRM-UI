@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TaskActivityService } from '../services/task-activity-service.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { TaskActivity } from '../models/task-activity-dto';
 import { SortOption } from 'app/core/models/sort-option';
+import { TaskActivityService } from '../services/task-activity.service';
 
 @Component({
   selector: 'app-preview-task-activity',

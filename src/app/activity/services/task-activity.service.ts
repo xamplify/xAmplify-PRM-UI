@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { TaskActivity } from '../models/task-activity-dto';
 import { Http } from '@angular/http';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { TaskActivity } from '../models/task-activity-dto';
 import { Pagination } from 'app/core/models/pagination';
 
 @Injectable()
