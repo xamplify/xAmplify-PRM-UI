@@ -179,9 +179,13 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
     let searchKeyRequestParm = this.searchKey != undefined ? this.sortOption.searchKey : "";
     let campaignTypeFilterRequestParm = this.campaignTypeFilter != undefined ? this.campaignTypeFilter : "";
+    let partnerCompanyIdRequestParam = this.partnerCompanyId != undefined && this.partnerCompanyId > 0 ? this.partnerCompanyId : 0;
+    let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
+    let teamMemberIdRequestParam = this.teamMemberId != undefined && this.teamMemberId > 0 ? this.teamMemberId : 0;
     let url = this.authenticationService.REST_URL + "partner/journey/download/redistributed-campaign-details-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
-      + "&campaignTypeFilter=" + campaignTypeFilterRequestParm;
+      + "&campaignTypeFilter=" + campaignTypeFilterRequestParm + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam;
     this.referenseService.openWindowInNewTab(url);
   }
 

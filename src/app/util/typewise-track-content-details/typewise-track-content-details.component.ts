@@ -184,9 +184,14 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     let assertTypeFilterRequestParm = this.assetType != undefined ? this.assetType : "";
     let searchKeyRequestParm = this.searchKey != undefined ? this.sortOption.searchKey : "";
     let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
+    let partnerCompanyIdRequestParam = this.partnerCompanyId != undefined && this.partnerCompanyId > 0 ? this.partnerCompanyId : 0;
+    let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
+    let teamMemberIdRequestParam = this.teamMemberId != undefined && this.teamMemberId > 0 ? this.teamMemberId : 0;
     let url = this.authenticationService.REST_URL + "partner/journey/download/typewise-track-content-report?access_token=" + this.authenticationService.access_token
-      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" + trackTypeFilterRequestParam + "&searchKey=" + searchKeyRequestParm;
-      + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&assetType=" + assertTypeFilterRequestParm;
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" + trackTypeFilterRequestParam + "&searchKey=" + searchKeyRequestParm
+      + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&assetType=" + assertTypeFilterRequestParm
+      + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam;
     this.referenseService.openWindowInNewTab(url);
   }
 

@@ -13,10 +13,16 @@
               <i class="fa fa-search" aria-hidden="true"></i></button>
           </div>
         </span>
+        <button *ngIf="!isTeamMemberAnalytics" class="pull-right mt25m btn btn-xs l-g-view custom-icon" data-placement="bottom"
+        [disabled]="pagination.totalRecords==0" (click)="downloadMDFDetailsReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
       </h3>
     </div>
     <div class="panel-body">    
-      <div class="scroll table-responsive {{scrollClass}}">
+      <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="3"></app-list-loader>
+      <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
             <tr>
