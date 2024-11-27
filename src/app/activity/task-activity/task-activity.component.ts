@@ -23,6 +23,8 @@ export class TaskActivityComponent implements OnInit {
   @Input() reloadTab: boolean;
   @Output() notifyTaskUpdatedStatus = new EventEmitter();
   @Output() notifyDeleteSuccess = new EventEmitter();
+  @Output() notifySubmitSuccess = new EventEmitter();
+  @Output() notifySubmitFailed = new EventEmitter();
 
   taskActivities = [];
   isFirstChange:boolean = true;
@@ -36,6 +38,7 @@ export class TaskActivityComponent implements OnInit {
   showTaskModalPopup:boolean = false;
   taskActivityId: any;
   actionType:string;
+  showPreviewTaskModalPopup: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, public pagerService: PagerService, public sortOption:SortOption, 
     public referenceService:ReferenceService, public taskActivityService: TaskActivityService, public utilService:UtilService) { }
@@ -120,13 +123,16 @@ export class TaskActivityComponent implements OnInit {
   }
 
   viewTask(taskId) {
-    this.actionType = 'view';
     this.taskActivityId = taskId;
-    this.showTaskModalPopup = true;
+    this.showPreviewTaskModalPopup = true;
   }
 
   closeTaskModalPopup() {
     this.showTaskModalPopup = false;
+  }
+
+  closePreviewTaskModalPopup() {
+    this.showPreviewTaskModalPopup = false;
   }
 
   editTask(taskId) {
@@ -170,6 +176,16 @@ export class TaskActivityComponent implements OnInit {
     }, function (dismiss: any) {
       console.log('you clicked on option' + dismiss);
     })
+  }
+
+  openAddTaskModalPopup() {
+    this.actionType = 'add';
+    this.showTaskModalPopup = true;
+  }
+
+  showTaskSubmitSuccessStatus(event) {
+    this.showTaskModalPopup = false;
+    this.notifySubmitSuccess.emit(event);
   }
 
 }

@@ -5,7 +5,9 @@ export class TaskActivity {
     priority:string;
     assignedTo:number = 0;
     dueDate:any;
-    status:string;
+    status:number = 0;
     userId:number;
     loggedInUserId:number;
+    statusName:string;
+    assignedToName:string;
 }

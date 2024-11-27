@@ -1,0 +1,63 @@
+<div class="modal fade right" id="viewTaskModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeTaskModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">View Task</h4>
+      </div>
+      <div class="modal-body">
+        <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+        <div class="form-group">
+          <label for="subjectLine">Name<span class="text-danger">*</span></label>
+          <input type="text" id="subjectLine" [(ngModel)]="taskActivity.name" [ngModelOptions]="{standalone: true}"
+            placeholder="Enter Task Name" class="form-control" name="subjectLine" disabled />
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Task Type</label>
+          <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
+            (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
+            [disabled]="isPreview" /> -->
+          <select class="form-control" [(ngModel)]="taskPriorityOption.taskActivityTypeDropDownOption.value"
+            (ngModelChange)="sortBy($event)" id="select-dropdown" disabled>
+            <option *ngFor="let option of taskPriorityOption.taskActivityTypeDropDown" [ngValue]="option.value">
+              {{option.name}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Priority</label>
+          <select class="form-control" [(ngModel)]="taskPriorityOption.taskActivityPriorityDropDownOption.value"
+            (ngModelChange)="sortBy($event)" id="select-dropdown" disabled>
+            <option *ngFor="let option of taskPriorityOption.taskActivityPriorityDropDown" [ngValue]="option.value">
+              {{option.name}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Assign To<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" [(ngModel)]="taskActivity.assignedToName" disabled>
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Status<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" [(ngModel)]="taskActivity.statusName" disabled>
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Due Date<span class="text-danger">*</span></label>
+          <div class="input-group">
+            <input type="text" id="taskActivityDueDatePicker" class="form-control flatpickr" placeholder="Due Date"
+            [(ngModel)]="taskActivity.dueDate" [ngModelOptions]="{standalone: true}" disabled>
+         </div>
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Description</label>
+          <div class="email-body" [innerHTML]="taskActivity.description"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeTaskModal()" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

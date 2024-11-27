@@ -5,6 +5,10 @@
         data-original-title="Refresh" (click)="showAllTaskActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Add Task"
+        data-original-title="Refresh" (click)="openAddTaskModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">
@@ -42,7 +46,7 @@
     </div>
     <div class="activity-body">
       <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Priority:</label>{{taskActivity.priority}}</span>
-      <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Type:</label>{{taskActivity.taskType}}</span>
+      <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Type:</label>{{taskActivity.taskType == 'Todo' ? 'To Do':taskActivity.taskType}}</span>
     </div>
     <div class="activity-footer">
       <span class="activity-title">Status: <span class="view-banner" >{{taskActivity.statusName}}</span></span>
@@ -61,5 +65,10 @@
   <strong translate>No Data Found.</strong>
 </div>
 
-<app-add-task-modal-popup *ngIf="showTaskModalPopup" [taskActivityId]="taskActivityId" [actionType]="actionType"
-  (notifyClose)="closeTaskModalPopup()" (notifySubmitSuccess)="showUpdateSuccessStatus($event)"></app-add-task-modal-popup>
+<app-add-task-modal-popup *ngIf="showTaskModalPopup" [userId]="contactId" [taskActivityId]="taskActivityId"
+  [actionType]="actionType" (notifyClose)="closeTaskModalPopup()"
+  (notifyUpdateSuccess)="showUpdateSuccessStatus($event)"
+  (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-add-task-modal-popup>
+
+<app-preview-task-activity *ngIf="showPreviewTaskModalPopup" [taskActivityId]="taskActivityId"
+  (notifyClose)="closePreviewTaskModalPopup()"></app-preview-task-activity>
