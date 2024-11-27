@@ -472,7 +472,17 @@ export class Properties {
 	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
 
 	/** XNFR-745 **/
-	groupByAssetsTooltipMessage = "Turn on the 'Group by Assets' toggle to view assets categorized within their respective folders";
-	disableOrderAssetsTooltipMessage = "Enabling 'Group by Assets' will lock asset ordering since assets are organized by folders";
-	}
+	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders while viewing the Play Book";
+	disableOrderAssetsTooltipMessage = "Enabling 'Show Assets By Folders' will lock asset ordering since assets are organized by folders";
+	/***** XNFR-755 *****/
+	SIGNUP_PROCESS_NOT_COMPLETED = "The sign-up process is not yet complete.";
+	COMPANY_PROFILE_NOT_COMPLETED = "The company profile has not been completed yet.";
+	SIGNUP_PROCESS_COMPLETED = "The sign-up process is completed.";
+	COMPANY_PROFILE_COMPLETED = "The company profile has been completed.";	
+	
+	/***** XNFR-763 *****/
+	COMPANY_NAME_INFO = "Represents the name of the company, displayed on the dashboard and used as a merge tag across the platform."
+	COMPANY_PROFILE_NAME_INFO ="Non-editable alphanumeric field, also used as a vanity URL to ensure uniqueness and validate duplicates."
+	COMPANY_PROFILE_NAME_PARTNER_INFO = "Non-editable alphanumeric field to ensure unique partner profiles and prevent duplicates."
+}
 

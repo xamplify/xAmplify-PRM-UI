@@ -1,4 +1,4 @@
-<div class="caption caption-md col-xs-12" *ngIf="editVendorPage || isViewAnalytics 
+<div class="caption caption-md col-xs-12 mb5" *ngIf="editVendorPage || isViewAnalytics 
 || isFormAnalytics || isManageForms">
   <i class="icon-globe theme-font hide" aria-hidden="true"></i>
   <a class="close-circle pull-right" (click)="goBack()">
@@ -24,8 +24,8 @@
       <app-add-vendor-logos *ngIf = "isMasterLandingPages || isVendorMarketplacePages" [vendorLogoDetails] = "vendorLogoDetails" [isVendorMarketplace] = 'isVendorMarketplacePages'
       [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput" [dropdownList] = "categoryDropDownOptions"></app-add-vendor-logos>
       <div>
-        <button class="button_blue bgcolor-unset" (click)="checkOrUncheckOpenLinksInNewTabOption()"
-          style="float:right;padding-right:5px;padding-top: 2px;margin-top: 6px;">
+        <button class="button_blue bgcolor-unset pt0" (click)="checkOrUncheckOpenLinksInNewTabOption()"
+          style="float:right;padding-right:5px;margin-top: 6px;">
           <span class="btn btn-primary transition txt_pd-top3">Open Links In New Tab
             <input class="pointer checkBox_shadow" id="openLinksInNewTab-page-links" type="checkbox"
               (click)="checkOrUncheckOpenLinksInNewTabOption()">

@@ -1135,6 +1135,7 @@ input#copy-link {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background-color: rgba(16 18 27/40%)!important;
   color: white !important;
+  box-shadow: none!important;
 }
 .list-area {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -4184,6 +4185,14 @@ i.fa.fa-edit.ml_6{
 background-color: #eaf0f6!important;
 color: #555 !important;
 }
+
 .e-ddl.e-popup {
   background: rgba(16 18 27 / 40%)!important;
+
+.tgrid>tbody>tr#uploaded-csv-tr>td:hover {
+  color: #fff !important;
+  }
+.tgrid>tbody>tr#uploaded-csv-tr>td {
+  color: #272626 !important;
+
 }

@@ -2806,7 +2806,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 
 			if (this.isPartner) {
-				this.downloadDataList.push(parentObject);
+				parentObject["Signup Status"] = this.contactsByType.listOfAllContacts[i].userStatus == 'APPROVE' ? 'Yes' : 'No';
+				parentObject["Company Profile"] = this.contactsByType.listOfAllContacts[i].companyNameStatus == 'active' ? 'Yes' : 'No';
+				this.downloadDataList.push(parentObject); 
 			} else {
 				this.downloadDataList.push(object);
 			}

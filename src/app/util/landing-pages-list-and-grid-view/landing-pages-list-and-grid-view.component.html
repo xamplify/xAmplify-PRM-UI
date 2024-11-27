@@ -571,7 +571,7 @@
         <div class="clickicons"></div>
     </a>
     <a class="Iconhover custom-grid-icon" *ngIf="!landingPage.publishingOrWhiteLabelingInProgress && !isPartnerLandingPage && (vendorJourney || isPartnerJourneyPages)" data-toggle="tooltip"
-        data-placement="top" title="Share" (click)="openShareListPopup(landingPage.id)">
+        data-placement="top" title="Share" (click)="openShareListPopup(landingPage.id, landingPage.published)">
         <i class="fa fa-share" aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
@@ -632,6 +632,6 @@ data-backdrop="static" data-keyboard="false">
 </div>
 
 <app-vendor-company-model-popup *ngIf="showSharePartnerPagePopup" 
-[loggedInUserCompanyId] = "loggedInUserCompanyId" [loggedInUserId]="loggedInUserId" [input]="selectedLandingPageId" 
+[loggedInUserCompanyId] = "loggedInUserCompanyId" [loggedInUserId]="loggedInUserId" [input]="selectedLandingPageId" [isPublished] ='selectedLandingPagePublished'
 [selectedCompanyIds] = "selectedVendorCompanyIds" [selectedVendorCompanyIdAndStatuses]="selectedVendorCompanyIdAndStatuses" (closePopup)=closeSharePartnerPagePopup($event)></app-vendor-company-model-popup>
 <app-scroll-top></app-scroll-top>

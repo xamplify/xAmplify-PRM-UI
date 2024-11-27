@@ -45,7 +45,7 @@
               </td> -->
               <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td>
-                <span ata-toggle="tooltip" data-placement="top" title="{{item?.title}}"> {{item?.title | slice:0:15}}
+                <span class = "item-title" data-toggle="tooltip" data-placement="top" title="{{item?.title}}"> {{item?.title | slice:0:15}}
                   <span *ngIf="item.title?.length>15">...</span>
                 </span>
                 </td>
@@ -88,7 +88,14 @@
                 <span *ngIf="item.progress == undefined">0%</span>
               </td>
               <td>{{item?.quizCount}}</td>
-              <td  *ngIf = "!isVendorVersion">{{item?.score}}</td>
+              <td *ngIf="!isVendorVersion">
+                  <ng-container *ngIf="item?.quizCount > 0; else quizNotAvailable">
+                    {{item?.score}}
+                  </ng-container>
+                  <ng-template #quizNotAvailable>
+                    <h6 class="view-banner" translate>Quiz Not Available</h6>
+                  </ng-template>
+                </td>
             </tr>
           </tbody>
         </table>

@@ -118,7 +118,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.videoFileService.campaignReport = false;
 		}
 		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
-	
 	}
 	triggerUniversalSearch() {
 		if (this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Asset') {
@@ -188,19 +187,23 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if (this.isPartnerView) {
 				if (viewType == 'g') {
 					this.referenceService.goToRouter('home/dam/shared/g');
-				} else {
+				} else if (viewType == 'l') {
+					this.referenceService.goToRouter('/home/dam/manage/l/');
+				}
+				else {
 					this.referenceService.goToRouter('home/dam/shared/fl');
 				}
 			}
 			else {
 				if (viewType == 'g') {
 					this.referenceService.goToRouter('/home/dam/manage/g/');
-				} else {
+				} else if (viewType == 'l') {
+					this.referenceService.goToRouter('/home/dam/manage/l/');
+				}
+				else {
 					this.referenceService.goToRouter('/home/dam/manage/fl/');
 				}
 			}
-
-			this.utilService.folderListViewSelected = false;
 		} else {
 			if (this.viewType != viewType) {
 				if (this.folderListView) {
@@ -240,6 +243,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
 						this.pagination.companyId = this.loggedInUserCompanyId;
+						this.folderListSearchInFolder();
 						if (this.isPartnerView) {
 							if (this.vanityLoginDto.vanityUrlFilter) {
 								this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
@@ -249,28 +253,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							/*** XBI-2133 ****/
 							this.findSharedAssetsByCompaniesForPartnerView();
 							this.pagination.userId = this.loggedInUserId;
-							this.sortOption.searchKey = this.searchKeyValue;
-							if (this.utilService.searchKey) {
-								this.sortOption.searchKey = this.utilService.searchKey;
-								this.pagination.searchKey = this.sortOption.searchKey;
-								this.utilService.searchKey = "";
-								this.showUpArrowButton = true;
 								this.listPublishedAssets(this.pagination);
-							}else{
-								this.listPublishedAssets(this.pagination);
-							}
 						} else {
 							this.findFileTypes();
 							/*** XBI-2133 ****/
 							this.fetchWhiteLabeledContentSharedByVendorCompanies();
 							this.pagination.userId = this.loggedInUserId;
-							this.sortOption.searchKey = this.searchKeyValue;
-							if (this.utilService.searchKey) {
-								this.sortOption.searchKey = this.utilService.searchKey;
-								this.pagination.searchKey = this.sortOption.searchKey;
-								this.utilService.searchKey = "";
-								this.showUpArrowButton = true;
-							}
 							this.listAssets(this.pagination);
 						}
 					}
@@ -392,6 +380,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.getAllFilteredResults();
 	}
 	/*************************Search********************** */
+	folderListSearchInFolder() {
+		this.sortOption.searchKey = this.searchKeyValue;
+		if (this.utilService.searchKey) {
+			this.sortOption.searchKey = this.utilService.searchKey;
+			this.pagination.searchKey = this.sortOption.searchKey;
+			this.showUpArrowButton = true;
+		}
+	}
 	searchAssets() {
 		this.getAllFilteredResults();
 	}

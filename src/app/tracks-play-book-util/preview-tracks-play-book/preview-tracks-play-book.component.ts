@@ -388,7 +388,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   /** XNFR-745 start **/
   checkGroupingAndLoadAssets() {
     this.referenceService.startLoader(this.httpRequestLoader);
-    this.tracksPlayBookUtilService.checkGroupByAssetsEnabled(this.createdUserCompanyId, this.slug).subscribe(
+    this.tracksPlayBookUtilService.checkGroupByAssetsEnabled(this.createdUserCompanyId, this.slug, this.type).subscribe(
       (result: any) => {
         this.referenceService.stopLoader(this.httpRequestLoader);
         if (result.statusCode == 200) {

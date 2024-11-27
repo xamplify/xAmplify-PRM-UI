@@ -44,9 +44,11 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
     if(this.userListId!=undefined && this.userListId>0){
       let isValidInputId = this.inputId!=undefined && this.inputId>0;
       this.isAssetsModule = this.moduleName=="dam";
-      this.isLmsModule = this.moduleName=="lms";
+      let currentUrl = this.referenceService.getCurrentRouteUrl();
+      this.isLmsModule = this.moduleName=="lms" && currentUrl.includes("tracks");
+      this.isPlayBooksModule = this.moduleName=="lms" && currentUrl.includes("playbook");
       this.isDashboardButtonsModule = this.moduleName== this.properties.dashboardButtons;
-      let isModuleMatched = this.isAssetsModule || this.isLmsModule  || this.isDashboardButtonsModule;
+      let isModuleMatched = this.isAssetsModule || this.isLmsModule || this.isPlayBooksModule  || this.isDashboardButtonsModule;
       if(isModuleMatched && isValidInputId){
         this.findPublishedPartnerIdsByUserListIdAndId();
       } else{

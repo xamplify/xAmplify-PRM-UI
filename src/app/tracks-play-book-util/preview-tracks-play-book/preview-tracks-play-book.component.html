@@ -176,7 +176,7 @@
                 <div class=" col-md-12 col-lg-12 color-inline border-line remove_unwanted_shadow content-buttom">
                     <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
                         <a class="title padding_bottom text-color content-bg row-space"
-                            style="font-size: 17px; padding-top: 10px;padding-bottom: 9px;border-bottom:none !important">Content</a>
+                            style="font-size: 15px; padding-top: 10px;padding-bottom: 9px;border-bottom:none !important">Content</a>
                     </div>
 
                     <!-- XNFR-745 -->
@@ -319,7 +319,10 @@
                                                                 <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': content.isCollapsed}"
                                                                     class="arrowpositinon fa collapseIconColorCu" aria-hidden="false"
                                                                     style="float: right;"></i>
-                                                                <i class="fa fa-folder" aria-hidden="true"></i> {{content.categoryName}} 
+                                                                <i class="fa fa-folder" aria-hidden="true"></i>
+                                                                <span data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                                    title="{{content.categoryName.length > 36 ? content.categoryName : ''}}">{{content.categoryName.length > 36 ?
+                                                                    content.categoryName.substring(0,33)+'...' : content.categoryName}} </span>
                                                                 <span style="padding-right: 8px; float: right; font-size: 13px; color: #8b8989;">
                                                                     Total: {{content.count}}
                                                                 </span>
