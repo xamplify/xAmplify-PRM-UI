@@ -3271,4 +3271,32 @@ a.quicklinks_icons:hover {
 .mobile_ques{
   padding-left: 4px;
 }
+  
+.detailedarrow{float: unset !important;}
+  
+/**Contact-journey**/
+.activity-created-status-btn {
+  padding: 2px 6px !important;
+  font-size: 9px !important;
+  color: #008000;
+  border: 1px solid #008000;
+  font-weight: 800;
+  background-color: #ffffff !important;
+}
+.activity-updated-status-btn {
+  padding: 2px 6px !important;
+  font-size: 9px !important;
+  color: #00a6e8;
+  border: 1px solid #00a6e8;
+  font-weight: 800;
+  background-color: #ffffff !important;
+}
+.note-visibility-private-label {
+  background: #fff !important;
+  padding: 2px 6px !important;
+  font-size: 10px !important;
+  color: #e87e04 !important;
+  border-radius: 3px !important;
+  border: 1px solid #e87e04;
+}
 }

@@ -6,4 +6,10 @@ export class EmailActivity {
     toEmailId:string;
     senderEmailId:string;
     contactId:number;
+    ccEmailIds = [];
+    bccEmailIds = [];
+    attachments:any;
+    ccEmailIdsString:any;
+    bccEmailIdsString:any;
+    emailAttachmentDTOs = [];
 }

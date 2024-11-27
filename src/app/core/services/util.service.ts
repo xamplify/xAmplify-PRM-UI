@@ -13,6 +13,7 @@ export class UtilService {
     topnavBareLoading = false;
     searchKey : any ='';
     folderListViewSelected : boolean = false;
+    checkListViewType:any;
     pagination: Pagination;
     constructor( private http: Http,private pagerService:PagerService) { }
 

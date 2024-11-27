@@ -1462,5 +1462,16 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    fetchCampaignsAndCountByContactId(contactId: number, vanityUrlFilter: boolean, vendorCompanyName: string) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? "&loggedInUserId=" + loggedInUserId : "&loggedInUserId=0";
+        let contactIdRequestParam = contactId != undefined && contactId > 0 ? "&contactId=" + contactId : "&contactId=0";
+        let vanityUrlFilterParam = vanityUrlFilter != undefined ? "&vanityUrlFilter=" + vanityUrlFilter : "";
+        let vendorCompanyNameParam = vendorCompanyName != undefined ? "&vendorCompanyName=" + vendorCompanyName : "";
+        let campaignRequestDtoParam = $.trim(loggedInUserIdRequestParam + contactIdRequestParam + vanityUrlFilterParam + vendorCompanyNameParam);
+        let url = this.URL + "campaign/fetchContactAssociatedCampaignsAndCount" + "?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 
 }

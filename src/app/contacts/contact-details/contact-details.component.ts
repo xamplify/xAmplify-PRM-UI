@@ -17,13 +17,14 @@ import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { EmailActivityService } from 'app/activity/services/email-activity-service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { CampaignService } from 'app/campaigns/services/campaign.service';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService]
+  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -31,7 +32,6 @@ export class ContactDetailsComponent implements OnInit {
   @Input() public selectedCompanyId:number;
   @Input() isTeamMemberPartnerList: boolean;
   @Input() contacts: User[];
-  @Input() selectedContactListId: any;
 
   title: string = 'Contact Journey'
   highlightLetter:string = '';
@@ -92,11 +92,18 @@ export class ContactDetailsComponent implements OnInit {
   showAddNoteModalPopup:boolean = false;
   isReloadEmailActivityTab:boolean;
   isReloadNoteTab:boolean;
+  campaignsLoader:HttpRequestLoader = new HttpRequestLoader();
+  campaignsResponse: CustomResponse = new CustomResponse();
+  contactCampaigns = [];
+  campaignsCount:number = 0;
+  selectedContactListId:number;
+  viewCampaigns: boolean = false;
+  isReloadActivityTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public emailActivityService: EmailActivityService ) {
+    public emailActivityService: EmailActivityService, public campaignService: CampaignService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -119,12 +126,12 @@ export class ContactDetailsComponent implements OnInit {
       this.isFromCompanyModule = true;
     }
     this.getContact();
-    this.showActivityTab = true;
     this.referenceService.goToTop();
     this.checkTermsAndConditionStatus();
     this.getLegalBasisOptions();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchCampaignsAndCount();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -339,7 +346,15 @@ export class ContactDetailsComponent implements OnInit {
 
   showEmailSubmitSuccessStatus(event) {
     this.isReloadEmailActivityTab = event;
+    this.isReloadActivityTab = event;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
+    this.closeModalPopup();
+  }
+
+  showEmailFailedErrorStatus(event) {
+    this.isReloadEmailActivityTab = event;
+    this.isReloadActivityTab = event;
+    this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
     this.closeModalPopup();
   }
 
@@ -379,9 +394,9 @@ export class ContactDetailsComponent implements OnInit {
     this.fetchDealsAndCount();
   }
 
-  viewLead(lead:any) {
+  viewLead(leadId:any) {
     this.actionType = 'view';
-    this.leadId = lead.id;
+    this.leadId = leadId;
     this.showLeadForm = true;
   }
 
@@ -422,9 +437,9 @@ export class ContactDetailsComponent implements OnInit {
     this.viewDeals = true;
   }
 
-  viewDeal(deal:any) {
+  viewDeal(dealId:any) {
     this.actionType = 'view';
-    this.dealId = deal.id;
+    this.dealId = dealId;
     this.showDealForm = true;
   }
 
@@ -455,12 +470,14 @@ export class ContactDetailsComponent implements OnInit {
 
   showNoteCutomResponse(event: any) {
     this.isReloadNoteTab = event;
+    this.isReloadActivityTab = event;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.noteSubmittedSuccessResponseMessage, true);
     this.closeAddNoteModalPopup();
   }
 
   showNoteUpdateCutomResponse(event: any) {
     this.isReloadNoteTab = event;
+    this.isReloadActivityTab = event;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.noteUpdatedSuccessResponseMessage, true);
     this.closeAddNoteModalPopup();
   }
@@ -472,5 +489,49 @@ export class ContactDetailsComponent implements OnInit {
   showNoteDeleteSuccessStatus(event) {
     this.customResponse = new CustomResponse('SUCCESS', event, true);
   }
+
+  fetchCampaignsAndCount() {
+    this.referenceService.loading(this.campaignsLoader, true);
+    this.campaignService.fetchCampaignsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+      response => {
+        const data = response.data;
+        let isSuccess = response.statusCode === 200;
+        if (isSuccess) {
+          this.campaignsCount = data.totalRecords;
+          this.contactCampaigns = data.list;
+        } else {
+          this.campaignsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
+        }
+        this.referenceService.loading(this.campaignsLoader, false);
+      }, error => {
+        this.referenceService.loading(this.campaignsLoader, false);
+        let message = this.referenceService.getApiErrorMessage(error);
+        this.campaignsResponse = new CustomResponse('ERROR', message, true);
+      }
+    )
+  }
+
+  viewMoreCampaigns() {
+    this.viewCampaigns = true;
+    let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.cd);
+    }
+  }
+
+  viewCampaignTimeLine(campaignData:any){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignData.campaignId);
+    let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.cd);
+    }
+	}
   
 }

@@ -58,7 +58,9 @@
 .danger {
   color: red;
 }
-
+.red {
+  color: red !important;
+}
 #download-partners-csv {
   margin-top: 2px;
   float: right;

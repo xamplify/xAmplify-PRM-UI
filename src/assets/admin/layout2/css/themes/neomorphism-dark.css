@@ -4356,4 +4356,10 @@ color:unset!important;
 .edit_contact{
   border-bottom: 1.3px dashed #2f4857 !important;
 }
-   
+tbody>tr#uploaded-csv-tr>td {
+  color: unset !important;
+} 
+/*app-searchable-dropdown */
+.e-ddl.e-popup {
+  background-color:#a0a0a0!important;
+}

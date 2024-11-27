@@ -73,7 +73,14 @@ border-color: #ddd;
 	width: 7px;
     height: 7px;  
   }
+
   
   .custom-icon{
     margin: -1px 3px 0px 3px;
   }
+
+
+  .item-title{
+    display: inline-flex
+  }
+

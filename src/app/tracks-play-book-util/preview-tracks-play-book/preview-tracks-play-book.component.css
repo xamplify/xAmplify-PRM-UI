@@ -552,8 +552,8 @@ img.custom-image-css {
 .overflow-control {
   overflow: auto !important;
 }
-.tgrid {
-  border: none;
+.tgrid-list {
+  border: none !important;
 }
 .table > thead > tr > th {
   border-bottom: none;
@@ -627,6 +627,11 @@ button:hover {
 .track-selected{
   color: green;
 }
+
+.content-buttom{
+  margin-bottom: 3px !important;
+}
+
 @media only screen and (min-width:768px) and (max-width:1180px) { 
   .img_fit-content{
    height: 100px!important;

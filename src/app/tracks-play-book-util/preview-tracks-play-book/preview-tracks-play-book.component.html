@@ -173,19 +173,28 @@
                 </div>
             </section>
             <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="showAsset || showTracksPlayBook">
-                <div class=" col-md-12 col-lg-12 color-inline border-line remove_unwanted_shadow">
+                <div class=" col-md-12 col-lg-12 color-inline border-line remove_unwanted_shadow content-buttom">
                     <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
                         <a class="title padding_bottom text-color content-bg row-space"
                             style="font-size: 15px; padding-top: 10px;padding-bottom: 9px;border-bottom:none !important">Content</a>
                     </div>
+
+                    <!-- XNFR-745 -->
+                    <div class="pb3 pull-right" style="padding-right: 5px;" *ngIf="modulesDisplayType.isFolderListView">
+                        <select class="form-control mDamSort SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.groupedAssetsForPlaybook"
+                            (ngModelChange)="sortAssets($event)" style="position: relative;">
+                            <option *ngFor="let option of sortOption.groupedAssetsForPlaybookDropDown" [ngValue]="option.value">
+                                {{option.name}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="page-bar">
-                    <app-list-loader *ngIf="trackViewLoader && modulesDisplayType.isListView">
+                    <app-list-loader *ngIf="trackViewLoader && (modulesDisplayType.isListView || modulesDisplayType.isFolderListView)">
                     </app-list-loader>
                     <!---List View----->
                     <section *ngIf="modulesDisplayType.isListView && !trackViewLoader">
                         <div class="table-responsive tab_float_unset" style="float: left;">
-                            <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                            <table class='table tgrid-list tgrid table-hover table-sm' id="manage-assets-table"
                                 *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
                                 <thead>
                                     <tr>
@@ -289,6 +298,139 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <!-- XNFR-745 -->
+                    <section *ngIf="modulesDisplayType.isFolderListView && !trackViewLoader">
+                        <div class="table-responsive" style="display: inline;">
+                            <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                                *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
+                                <tbody class="pointer">
+                                    <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
+                                        <div class="col-lg-12 p10">
+                                            <div role="tablist" aria-multiselectable="true">
+                                                <div class="panel panel-default deal-bgcolor" style="margin-bottom: 0px;">
+                                                    <div class="panel-heading deal-bgcolor" (click)="toggleAssetExpansion(i)">
+                                                        <h4 class="panel-title">
+                                                            <a>
+                                                                <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': content.isCollapsed}"
+                                                                    class="arrowpositinon fa collapseIconColorCu" aria-hidden="false"
+                                                                    style="float: right;"></i>
+                                                                <i class="fa fa-folder" aria-hidden="true"></i>
+                                                                <span data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                                    title="{{content.categoryName.length > 36 ? content.categoryName : ''}}">{{content.categoryName.length > 36 ?
+                                                                    content.categoryName.substring(0,33)+'...' : content.categoryName}} </span>
+                                                                <span style="padding-right: 8px; float: right; font-size: 13px; color: #8b8989;">
+                                                                    Total: {{content.count}}
+                                                                </span>
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="leadDetails">
+                                                        <div class="br-unset pt0 pb0">
+                                                            <div class="card-bgcolors h-260 pl0 pr0">
+                                                                <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                                                                    aria-describedby="manageAssetTables">
+                                                                    <thead [hidden]="content.isCollapsed">
+                                                                        <tr>
+                                                                            <th colspan="2" style="width: 70%" id="border-bottom">
+                                                                                <span class="gridHeader" translate>Asset Details </span>
+                                                                            </th>
+                                                                            <th class="text-center" scope="row" translate
+                                                                                id="border-bottom">Type</th>
+                                                                            <th class="text-center" id="min-width" translate
+                                                                                id="border-bottom">Actions</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let dam of content.dam ;let j =index"
+                                                                            (click)="$event.stopPropagation();viewAssetDetails(dam)"
+                                                                            [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}"
+                                                                            [hidden]="content.isCollapsed">
+                                                                            <ng-container>
+                                                                                <td style="width: 10%;">
+                                                                                    <div class="list-image-container">
+                                                                                        <div class="thumbnail-wrapper">
+                                                                                            <img class="custom-image-css"
+                                                                                                src="{{dam?.thumbnailPath}}"
+                                                                                                alt="Image Not Found">
+                                                                                        </div>
+                                                                                        <div *ngIf="dam?.assetType != undefined && (videoFormats.indexOf(dam.assetType?.toLowerCase())>-1)"
+                                                                                            class="overlay-icon">
+                                                                                            <button
+                                                                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && j != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[j-1].finished || !dam.previousContentFinished)  && !isCreatedUser}"
+                                                                                                class="list-play-icon-wrap"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="View"
+                                                                                                (click)="$event.stopPropagation();viewAssetDetails(dam)">
+                                                                                                <i class="fa fa-play list-play-icon"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div *ngIf="dam?.assetType == undefined || !(videoFormats.indexOf(dam.assetType?.toLowerCase())>-1)"
+                                                                                            class="overlay-icon">
+                                                                                            <button
+                                                                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && j != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[j-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
+                                                                                                class="list-play-icon-wrap"
+                                                                                                data-toggle="tooltip" data-placement="top"
+                                                                                                title="View"
+                                                                                                (click)="$event.stopPropagation();viewAssetDetails(dam)">
+                                                                                                <i class="fa fa-file list-file-icon"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <h4 class="moreipsis mt5 mb5 f-w-600"
+                                                                                        data-toggle="tooltip" data-placement="bottom"
+                                                                                        title="{{dam?.assetName}}">
+                                                                                        <span><strong>{{dam?.assetName}}</strong></span>
+                                                                                    </h4>
+                                                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
+                                                                                        style="padding-top: 5px;">
+                                                                                        <h6 *ngIf="dam.finished"
+                                                                                            style="background-color: #5cb85c;"
+                                                                                            class="banner">
+                                                                                            Finished
+                                                                                        </h6>
+                                                                                        <h6 *ngIf="dam.opened && !dam.finished"
+                                                                                            style="background-color: #819081;"
+                                                                                            class="banner">In
+                                                                                            Progress</h6>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center">{{dam?.assetType}}</td>
+                                                                            </ng-container>
+                                                                            <td id="actions-row" class="text-center">
+                                                                                <div
+                                                                                    class="actions-block override-actions custom-width-icon no-float">
+                                                                                    <a class="custom-icon"
+                                                                                        [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && j != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[j-1].finished || !dam.previousContentFinished)  && !isCreatedUser}"
+                                                                                        data-toggle="tooltip" data-placement="bottom"
+                                                                                        title="View"
+                                                                                        (click)="$event.stopPropagation();viewAssetDetails(dam)">
+                                                                                        <i class="fa fa-eye IconCustomization"
+                                                                                            aria-hidden="true"></i>
+                                                                                        <div class="clickicons"></div>
+                                                                                    </a>
+                                                                                    <a class="custom-icon" *ngIf="dam.id == contentIndexInView">
+                                                                                        <i class="fa fa-check-circle-o display-inline track-selected selected-check-mark-circle disabled-div"
+                                                                                            aria-hidden="true"></i>
+                                                                                        <div class="clickicons"></div>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </ng-container>
                                 </tbody>
                             </table>

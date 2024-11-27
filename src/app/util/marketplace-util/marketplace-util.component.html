@@ -1,4 +1,4 @@
-<div class="flexbody">
+<div class="flexbody" *ngIf="categories != null && categories?.length>0">
   <div class="menu">
     <input type="text" class="searchField" [(ngModel)]="searchTerm" placeholder="Search" (keyup)="getFilteredCompanies()">
     <h3>Categories</h3>

@@ -11,4 +11,6 @@ export class DashboardModuleAnalyticsViewDto {
 	faIcon: string = "";
 
 	color: string = "";
+
+	description:string = "";
 }

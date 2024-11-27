@@ -469,35 +469,33 @@
 										<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
 											<div class="col-md-6 col-lg-6">
 												<div class="form-group" [attr.class]="companyNameDivClass">
-													<label class="control-label" translate>Company Name <font><b
+													<label class="control-label" translate>Company Name <font><span class="fa fa-info-circle" data-toggle="tooltip"
+																data-placement="top" title="{{properties?.COMPANY_NAME_INFO}}" aria-hidden="true"></span> <b
 																style="color: #f55d7a !important">*</b></font></label>
-													<input type="text" id="companyName" name="companyName"
-														placeholder="Company Name" class="form-control"
+													<input type="text" id="companyName" name="companyName" placeholder="Company Name" class="form-control"
 														[(ngModel)]="companyProfile.companyName"
-														(input)="validateEmptySpace('companyName');validateNames(companyProfile.companyName)" autocomplete="off" /> <span
-														*ngIf="companyNameError"
-														style="color: #f55d7a">{{companyNameErrorMessage}}</span>
+														(input)="validateEmptySpace('companyName');validateNames(companyProfile.companyName)" autocomplete="off" />
+													<span *ngIf="companyNameError" style="color: #f55d7a">{{companyNameErrorMessage}}</span>
 												</div>
 											</div>
 											<div class="col-md-6 col-lg-6 mPadCompanyProfile"
 												style="padding-left: 0px;">
 												<div class="form-group" [attr.class]="companyProfileNameDivClass">
-													<label class="control-label" translate>Company Profile Name 
+													<label class="control-label" translate>Company Profile Name
+														<span class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+																title="{{companyProfileNameInfo}}"></span>
 														<span><b style="color: #f55d7a !important">*</b></span>
 													</label>
 													<ng-container *ngIf="companyProfile.isAdd">
-														<input type="text" id="companyProfileName" placeholder="Company Profile Name"
-															maxlength="15" class="form-control lowercase-text"
-															name="companyProfileName"
+														<input type="text" id="companyProfileName" placeholder="Company Profile Name" maxlength="15"
+															class="form-control lowercase-text" name="companyProfileName"
 															[(ngModel)]="companyProfile.companyProfileName"
 															(input)="validateEmptySpace('companyProfileName');validateProfileNames(companyProfile.companyProfileName);"
-															 autocomplete="off"/>
+															autocomplete="off" />
 														<span *ngIf="companyProfileNameError" style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
 													</ng-container>
-													<ng-container *ngIf="!companyProfile.isAdd"> <input type="text"
-															id="companyProfileName" [disabled]="isDisable"
-															placeholder="Company Profile Name" class="form-control"
-															name="companyProfileName"
+													<ng-container *ngIf="!companyProfile.isAdd"> <input type="text" id="companyProfileName" [disabled]="isDisable"
+															placeholder="Company Profile Name" class="form-control" name="companyProfileName"
 															[(ngModel)]="companyProfile.companyProfileName" />
 													</ng-container>
 												</div>

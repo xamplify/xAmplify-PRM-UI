@@ -1664,4 +1664,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.tracksPlayBook.addedToQuickLinks = event;
   }
 
+  /** XNFR-745 **/
+  setGroupByAssets(event: any) {
+    this.tracksPlayBook.groupByAssets = event;
+  }
+
 }
