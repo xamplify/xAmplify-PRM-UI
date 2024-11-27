@@ -74,6 +74,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Input() loggedInUserCompanyId = 0;
   @Input() isLandingPages =  false;
   selectedLandingPageId:any;
+  selectedLandingPagePublished:any;
   landingPageSharedDetails:LandingPageShareDto = new LandingPageShareDto();
   @Output() viewAnalytics = new EventEmitter();
   @Output() viewVendorPageAnalytics = new EventEmitter();
@@ -566,13 +567,15 @@ copy(landingPage:any){
     );
   }
     
-    openShareListPopup(landingPageId:any) {
+    openShareListPopup(landingPageId:any, isPublished:boolean) {
         this.customResponse = new CustomResponse();
         this.selectedLandingPageId = landingPageId;
+        this.selectedLandingPagePublished =isPublished;
             this.ngxloading = true;
             let self = this;
             if(this.isPartnerJourneyPages){
-                this.openSharePartnerPagePopup(landingPageId);
+                this.openSharePartnerPagePopup(landingPageId, isPublished);
+
             }else{
             this.landingPageService.getLandingPageSharedDetails(landingPageId).subscribe(
               (response) => {
@@ -753,9 +756,10 @@ copy(landingPage:any){
             );
     }
 
-    openSharePartnerPagePopup(landingPageId: any) {
+    openSharePartnerPagePopup(landingPageId: any,isPublished:boolean) {
         this.customResponse = new CustomResponse();
         this.selectedLandingPageId = landingPageId;
+        this.selectedLandingPagePublished =isPublished;
         let self = this;
 
         this.landingPageService.getPartnerJourneyPageSharedDetails(landingPageId).subscribe(
