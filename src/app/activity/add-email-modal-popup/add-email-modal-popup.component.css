@@ -9,3 +9,31 @@
 .custom-file-label {
     color: white !important;
 }
+.display_flex {
+    display: flex;
+    word-break: normal;
+}
+.pr45 {
+    padding-right: 45px;
+}
+.pr25 {
+    padding-right: 25px;
+}
+.pt12 {
+    padding-top: 12px;
+}
+.pr46 {
+    padding-right: 46px;
+}
+.pr36 {
+    padding-right: 36px;
+}
+.pt11 {
+    padding-top: 11px;
+}
+.pr7 {
+    padding-right: 7px;
+}
+.f_r {
+    float: right;
+}

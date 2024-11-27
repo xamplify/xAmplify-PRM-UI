@@ -16,55 +16,60 @@
             [disabled]="isPreview" />
         </div>
         <div class="form-group">
-          <label for="subjectLine">Task Type</label>
-          <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
-            (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
-            [disabled]="isPreview" /> -->
-          <select class="form-control" [(ngModel)]="taskTypeOption.taskActivityTypeDropDownOption"
-            (ngModelChange)="sortBy($event)" id="select-dropdown">
-            <option *ngFor="let option of taskTypeOption.taskActivityTypeDropDown" [ngValue]="option">
-              {{option.name}}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="subjectLine">Priority</label>
-          <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
-            (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
-            [disabled]="isPreview" /> -->
-          <select class="form-control" [(ngModel)]="taskPriorityOption.taskActivityPriorityDropDownOption"
-            (ngModelChange)="sortBy($event)" id="select-dropdown">
-            <option *ngFor="let option of taskPriorityOption.taskActivityPriorityDropDown" [ngValue]="option">
-              {{option.name}}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
           <label for="subjectLine">Assign To<span class="text-danger">*</span></label>
           <select class="form-control" [(ngModel)]="taskActivity.assignedTo"
             (ngModelChange)="addTaskActivityAssignTo($event);validateTask()" id="select-dropdown">
             <option [ngValue]="0">Select a member</option>
             <option *ngFor="let member of assignToDropDownOptions" [ngValue]="member.userId">
-              {{member.fullName}}
+              &#xf007;{{member.fullName}}
             </option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="subjectLine">Status<span class="text-danger">*</span></label>
-          <select class="form-control" [(ngModel)]="taskActivity.status"
-            (ngModelChange)="addTaskActivitystatus($event);validateTask()" id="select-dropdown">
-            <option *ngFor="let status of statusDropDownOptions" [ngValue]="status.id">
-              {{status.name}}
-            </option>
-          </select>
+        <div class="col-lg-12 col-md-12 col-sm-12 p0">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
+            <label for="subjectLine">Task Type</label>
+            <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
+              (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
+              [disabled]="isPreview" /> -->
+            <select class="form-control" [(ngModel)]="taskTypeOption.taskActivityTypeDropDownOption.value"
+              (ngModelChange)="validateTask()" id="select-dropdown">
+              <option *ngFor="let option of taskTypeOption.taskActivityTypeDropDown" [ngValue]="option.value">
+                {{option.name}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field">
+            <label for="subjectLine">Priority</label>
+            <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
+              (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
+              [disabled]="isPreview" /> -->
+            <select class="form-control" [(ngModel)]="taskPriorityOption.taskActivityPriorityDropDownOption.value"
+              (ngModelChange)="validateTask()" id="select-dropdown">
+              <option *ngFor="let option of taskPriorityOption.taskActivityPriorityDropDown" [ngValue]="option.value">
+                {{option.name}}
+              </option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="subjectLine">Due Date<span class="text-danger">*</span></label>
-          <div class="input-group">
-            <input type="text" id="taskActivityDueDatePicker" class="form-control flatpickr" placeholder="Due Date"
-            [(ngModel)]="taskActivity.dueDate" [ngModelOptions]="{standalone: true}" (input)="dueDateError();validateTask()">
-            <div class="col-sm-12 text-danger" style="padding:0" *ngIf="isDueDateError">Due Date / Time is already over.</div>
-         </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 p0">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
+            <label for="subjectLine">Status<span class="text-danger">*</span></label>
+            <select class="form-control" [(ngModel)]="taskActivity.status"
+              (ngModelChange)="addTaskActivitystatus($event);validateTask()" id="select-dropdown">
+              <option [ngValue]="0">Select a status</option>
+              <option *ngFor="let status of statusDropDownOptions" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field">
+            <label for="subjectLine">Due Date<span class="text-danger">*</span></label>
+            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+              <input type="text" id="taskActivityDueDatePicker" class="form-control flatpickr" placeholder="Due Date"
+              [(ngModel)]="taskActivity.dueDate" [ngModelOptions]="{standalone: true}" (input)="dueDateError();validateTask()">
+              <div class="col-sm-12 text-danger" style="padding:0" *ngIf="isDueDateError">Due Date / Time is already over.</div>
+           </div>
+          </div>
         </div>
         <div class="form-group">
           <label for="subjectLine">Description</label>

@@ -51,6 +51,6 @@
   .mr3{
     margin-right: 3px;
   }
-  a :hover {
+  .view_details :hover {
     text-decoration-line: underline;
   }

@@ -181,15 +181,19 @@
                     (notifySuccess)="showNoteUpdateCutomResponse($event)" (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-activity-stream>
                 </div>
                 <div *ngIf="showNotesTab" id="note1" class="tab-pane fade pt-top">
-                  <app-note [contactId]="contactId" [reloadTab]="isReloadNoteTab" (notifySuccess)="showNoteUpdateCutomResponse($event)"
-                    (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-note>
+                  <app-note [contactId]="contactId" [reloadTab]="isReloadNoteTab" (notifyUpdateSuccess)="showNoteUpdateCutomResponse($event)"
+                    (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)" (notifySubmitSuccess)="showNoteCutomResponse($event)"></app-note>
                 </div>
                 <div *ngIf="showEmailTab" id="email1" class="tab-pane fade pt-top">
-                  <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab" [contactName]="contactName" [contactEmailId]="selectedContact.emailId"></app-email-activity>
+                  <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab" [contactName]="contactName"
+                    [contactEmailId]="selectedContact.emailId" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"
+                    (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"></app-email-activity>
                 </div>
                 <div *ngIf="showFormsTab" id="form1" class="tab-pane fade pt-top">
-                  <app-task-activity [contactId]="contactId" [reloadTab]="isReloadTaskActivityTab" (notifyDeleteSuccess)="showTaskDeleteSuccessStatus($event)"
-                    (notifyTaskUpdatedStatus)="showTaskUpdateCutomResponse($event)"></app-task-activity>
+                  <app-task-activity [contactId]="contactId" [reloadTab]="isReloadTaskActivityTab"
+                    (notifyDeleteSuccess)="showTaskDeleteSuccessStatus($event)"
+                    (notifyTaskUpdatedStatus)="showTaskUpdateCutomResponse($event)"
+                    (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
                   dcsddcscde
@@ -356,7 +360,7 @@
   [isDealFromContact]="true" (notifySubmitSuccess)="showDealSubmitSuccess()" [isFromCompanyModule]="isFromCompanyModule"
   (notifyClose)="closeDealForm()"></app-add-deal>
 
-<app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [selectedContact]="selectedContact" [isReloadTab]="isReloadNoteTab"
+<app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [contactId]="selectedContact.id" [isReloadTab]="isReloadNoteTab"
 (notifySuccess)="showNoteCutomResponse($event)" (notifyClose)="closeAddNoteModalPopup()"></app-add-note-modal-popup>
 
 <app-add-task-modal-popup *ngIf="showTaskModalPopup" [isReloadTaskActivityTab]="isReloadTaskActivityTab"

@@ -22,6 +22,7 @@ export class AddTaskModalPopupComponent implements OnInit {
   @Input() taskActivityId:any;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
+  @Output() notifyUpdateSuccess = new EventEmitter();
 
   taskActivity:TaskActivity = new TaskActivity();
   customResponse:CustomResponse = new CustomResponse();
@@ -36,11 +37,13 @@ export class AddTaskModalPopupComponent implements OnInit {
   dueDateTime: string;
   isDueDateError: boolean = false;
   isEdit:boolean = false;
+  ckeConfig:any;
 
   constructor(public referenceService:ReferenceService, public taskService:TaskActivityService, public properties:Properties) { }
 
   ngOnInit() {
     this.initializeDueDatePicker();
+    this.ckeConfig = this.properties.ckEditorConfig;
     if (this.actionType == 'add') {
       this.taskActivity.userId = this.userId;
       this.fetchAssignToDropDownOptions();
@@ -87,9 +90,11 @@ export class AddTaskModalPopupComponent implements OnInit {
   }
 
   validateTask() {
-    if (this.taskActivity.name != undefined && this.taskActivity.name.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && 
-      this.taskActivity.dueDate != undefined && this.taskActivity.dueDate.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") 
-      && this.taskActivity.assignedTo != undefined && this.taskActivity.assignedTo > 0) {
+    let isValidName = this.taskActivity.name != undefined && this.taskActivity.name.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ");
+    let isValidDueDate = this.taskActivity.dueDate != undefined && this.taskActivity.dueDate.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ");
+    let isValidAssignedTo = this.taskActivity.assignedTo != undefined && this.taskActivity.assignedTo > 0;
+    let isValidStatus = this.taskActivity.status != undefined && this.taskActivity.status > 0;
+    if (isValidName && isValidDueDate && isValidAssignedTo && isValidStatus) {
       this.isValidTask = true;
     } else {
       this.isValidTask = false;
@@ -97,7 +102,7 @@ export class AddTaskModalPopupComponent implements OnInit {
   }
 
   sortBy(text: any) {
-    this.taskTypeOption.activityDropDownOption = text;
+    this.taskTypeOption.taskActivityTypeDropDownOption = text;
   }
 
   clearEndDate() {
@@ -180,6 +185,8 @@ export class AddTaskModalPopupComponent implements OnInit {
       response => {
         if (response.statusCode == 200) {
           this.taskActivity = response.data;
+          this.taskTypeOption.taskActivityTypeDropDownOption.value = this.taskActivity.taskType;
+          this.taskPriorityOption.taskActivityPriorityDropDownOption.value = this.taskActivity.priority;
         } else {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
         }
@@ -199,10 +206,14 @@ export class AddTaskModalPopupComponent implements OnInit {
       response => {
         if (response.statusCode == 200) {
           this.closeTaskModal();
-          this.notifySubmitSuccess.emit(!this.isReloadTaskActivityTab);
+          this.notifyUpdateSuccess.emit(!this.isReloadTaskActivityTab);
         } else {
-          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-          // this.closeTaskModal();
+          let data = response.data;
+          if (data != undefined && data.errorMessages != undefined && data.errorMessages.length > 0) {
+            this.customResponse = new CustomResponse('ERROR', data.errorMessages[0].message, true);
+          } else {
+            this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+          }
         }
         this.ngxLoading = false;
       }, error => {

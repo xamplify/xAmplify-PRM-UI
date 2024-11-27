@@ -492,18 +492,25 @@ export class SortOption {
 	taskActivityTypeDropDown = [
         { 'name': 'Note', 'value': 'NOTE' },
         { 'name': 'Email', 'value': 'EMAIL' },
-		{ 'name': 'To-Do', 'value': 'TODO'}
+		{ 'name': 'To Do', 'value': 'TODO'}
     ];
 
 	taskActivityPriorityDropDown = [
-        { 'name': 'Low', 'value': 'LOW' },
+        { 'name': 'High', 'value': 'HIGH'},
         { 'name': 'Medium', 'value': 'MEDIUM' },
-		{ 'name': 'High', 'value': 'HIGH'}
+		{ 'name': 'Low', 'value': 'LOW' }
     ];
 
 	taskActivityDropDownOptions = [
 		{ 'name': 'Name(Z-A)', 'value': 'name-DESC' },
 		{ 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+	];
+
+	noteActivityDropDownOptions = [
+		{ 'name': 'Title(Z-A)', 'value': 'title-DESC' },
+		{ 'name': 'Title(A-Z)', 'value': 'title-ASC' },
 		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
 	];
@@ -588,9 +595,11 @@ export class SortOption {
 	/**XNFR-757**/
 	public taskActivityTypeDropDownOption = this.taskActivityTypeDropDown[this.taskActivityTypeDropDown.length-1];
 
-	public taskActivityPriorityDropDownOption = this.taskActivityPriorityDropDown[0];
+	public taskActivityPriorityDropDownOption = this.taskActivityPriorityDropDown[this.taskActivityPriorityDropDown.length-1];
 
 	taskActivityDropDownOption = this.taskActivityDropDownOptions[this.taskActivityDropDownOptions.length-1];
+
+	noteActivityDropDownOption = this.noteActivityDropDownOptions[this.noteActivityDropDownOptions.length-1];
 
 
 }

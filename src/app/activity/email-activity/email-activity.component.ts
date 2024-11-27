@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EmailActivityService } from '../services/email-activity-service';
 import { Pagination } from 'app/core/models/pagination';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -21,6 +21,8 @@ export class EmailActivityComponent implements OnInit {
   @Input() reloadTab: boolean;
   @Input() contactEmailId:any;
   @Input() contactName:any;
+  @Output() notifySubmitSuccess = new EventEmitter();
+  @Output() notifySubmitFailed = new EventEmitter();
 
   emailActivities = [];
   emailActivityId: number = 0;
@@ -34,6 +36,7 @@ export class EmailActivityComponent implements OnInit {
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   emailSortOption: SortOption = new SortOption();
   isFirstChange:boolean = true;
+  showAddEmailModalPopup: boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public authenticationService: AuthenticationService,
     public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {}
@@ -125,6 +128,25 @@ export class EmailActivityComponent implements OnInit {
   sortBy(text: any) {
     this.sortOption.emailActivityDropDownOption = text;
     this.getAllFilteredEmailActivityResults();
+  }
+
+  openEmailModalPopup() {
+    this.actionType = 'add';
+    this.showAddEmailModalPopup = true;
+  }
+
+  closeEmailModalPopup() {
+    this.showAddEmailModalPopup = false;
+  }
+
+  showEmailSubmitSuccessStatus(event) {
+    this.showAddEmailModalPopup = false;
+    this.notifySubmitSuccess.emit(event);
+  }
+
+  showEmailSubmitFailedStatus(event) {
+    this.showAddEmailModalPopup = false;
+    this.notifySubmitFailed.emit(event);
   }
 
 }

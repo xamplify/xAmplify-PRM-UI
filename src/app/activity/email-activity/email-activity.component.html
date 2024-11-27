@@ -5,6 +5,10 @@
         data-original-title="Refresh" (click)="showAllEmailActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Send Email"
+        data-original-title="Refresh" (click)="openEmailModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">
@@ -46,7 +50,7 @@
     </div>
     <div class="activity-footer">
       <span class="activity-title">Status: <span [ngClass]="emailActivity.status=='OPENED'?'view-banner activity-updated-status-btn' : 'view-banner published activity-created-status-btn'" >{{emailActivity.status}}</span></span>
-      <a (click)="viewEmail(emailActivity.id)"><span>View details</span></a>
+      <a class="view_details" (click)="viewEmail(emailActivity.id)"><span>View details</span></a>
     </div>
   </div>
   <!-- --------------------Pagination0-------------------- -->
@@ -59,8 +63,9 @@
   <strong translate>No Data Found.</strong>
 </div>
 
-<!-- <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
-  [emailActivityId]="emailActivityId" (notifyClose)="closeModalPopup()"></app-add-email-modal-popup>  -->
+<app-add-email-modal-popup *ngIf="showAddEmailModalPopup" [userId]="contactId" [actionType]="actionType"
+  (notifyClose)="closeEmailModalPopup()" (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"
+  (notifySubmitFailed)="showEmailSubmitFailedStatus($event)" [userEmailId]="contactEmailId"></app-add-email-modal-popup>
 
 <app-preview-email-activity *ngIf="showEmailModalPopup" [emailActivityId]="emailActivityId"
   (notifyClose)="closeModalPopup()" [contactName]="contactName" [contactEmailId]="contactEmailId"></app-preview-email-activity>
