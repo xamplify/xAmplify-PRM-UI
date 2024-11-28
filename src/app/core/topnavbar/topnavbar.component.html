@@ -125,7 +125,7 @@
                            <div class="border-bt"></div>
                         </li>
                         <li
-                           *ngIf="(!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin()) || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
+                           *ngIf="(!isOnlyUser && !isSuperAdmin) || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                            <a (click)="navigateToCompanyProfile('/home/dashboard/edit-company-profile',authenticationService?.module?.companyProfileCreated)"
                               translate> <i class="fa fa-building-o"></i> Company Profile
                            </a>
