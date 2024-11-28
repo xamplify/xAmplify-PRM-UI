@@ -4316,7 +4316,7 @@ i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place{margin-left: 0px !imp
 .profile_info span,.profile_info p,.address_title,.lead_details li,.icon-label,.activity-date,.activity-body,.panel-headings>.panel-title a{
 color: #fff!important;
 }
-.lead_details h3{
+.lead_details h3,.activity_bgcolor,.deals_card,.activity_card{
   background: #2d3035 !important;
   border: 1px solid #191b1e!important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
@@ -4324,11 +4324,6 @@ color: #fff!important;
 .fa_edit{
   background-color: #8d8d8d!important;
   border: 1px solid #8d8d8d!important;
-}
-.activity_card{
-  background: #2c2f33 !important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px 0px 7px #3b4451 !important;
-  border:none!important;
 }
 .asidebar>.panel-group>.panel-default.panel-dropdown{
   border-top: none !important;
@@ -4356,6 +4351,12 @@ color:unset!important;
 .edit_contact{
   border-bottom: 1.3px dashed #2f4857 !important;
 }
+
+.update-activity,.create-activity,.sent-activity {
+  box-shadow: unset!important;
+}
+   
+
 tbody>tr#uploaded-csv-tr>td {
   color: unset !important;
 } 
@@ -4363,3 +4364,4 @@ tbody>tr#uploaded-csv-tr>td {
 .e-ddl.e-popup {
   background-color:#a0a0a0!important;
 }
+
