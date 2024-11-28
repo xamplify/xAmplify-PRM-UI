@@ -756,20 +756,20 @@
 				<h4 class="modal-title" id="cropLogoImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<button style="position: relative; top: -8px;"
-					class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
-					*ngIf="!imageChangedEvent; else uploadButton">
-					<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input style="height: 36px;"
-						title=" " id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
-				</button>
+				<button class="btn btn-primary fileinput-button-css pd_left1" *ngIf="!imageChangedEvent; else uploadButton">
+                    Upload image <input style="height: 36px;"
+                        title=" " id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
+                </button>
+                <button class="btn btn-primary" (click)="editSavedImage()" [disabled]="isCropperVisible">Re-crop
+                </button>
 				<ng-template #uploadButton>
-					<button style="position: relative; top: -5px;"
-						class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg">
-						<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input
-							style="height: 36px;" title=" " id="custom-input" type="file"
-							(change)="fileBgImageChangeEvent($event)">
-					</button>
-				</ng-template>
+                    <button
+                        class="btn btn-primary fileinput-button-css pd_left1">
+                        Upload image <input
+                            style="height: 36px;" title=" " id="custom-input" type="file"
+                            (change)="fileBgImageChangeEvent($event)">
+                    </button>
+                </ng-template>
 				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
 				<div>
@@ -787,10 +787,9 @@
 							(loadImageFailed)="loadImageFailed()">
 						</app-img-croppr-v2>
 					</div>
-					<div *ngIf="!imageChangedEvent">
-						<fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
-						</fieldset>
-					</div>
+					<div *ngIf="!imageChangedEvent && companyLogoImageUrlPath">
+                        <img [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath" style="width:100%; margin-bottom: 5px;" />
+                    </div>
 
 
 				</div>

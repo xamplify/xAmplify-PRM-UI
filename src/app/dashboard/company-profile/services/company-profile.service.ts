@@ -155,4 +155,28 @@ export class CompanyProfileService {
             .catch(this.handleError);
 
     }
+
+    
+    async downloadImage(url: string): Promise<File> {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const fileName = this.getIdFromUrl(url);
+        const fileType = blob.type;
+        return new File([blob], fileName, { type: fileType });
+      }
+
+      private getFileNameFromUrl(url: string): string {
+        return url.split('/').pop() || 'downloaded-file';
+      }
+
+      private getIdFromUrl(url: string): string {
+        const parts = url.split('/');
+        const id = parts[3] || 'default-id';
+        return `${id}.webp`;
+      }
+
+      processFile(file: File): void {
+        // Call another method with the file
+        console.log('Processing file:', file);
+      }
 }

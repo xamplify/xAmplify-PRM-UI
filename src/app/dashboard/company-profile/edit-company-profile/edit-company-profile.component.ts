@@ -214,6 +214,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     displayName = "";
     companyProfileNameInfo: String;
+    
+    isCropperVisible: boolean = false;
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -421,7 +423,53 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.squareDataForBgImage = {};
         }
         this.getCompanyNameandProfileInfo();
+
+        this.handleImage("https://cdn.brandfetch.io/idCQRI3fxc/w/237/h/60/theme/light/logo.png?c=1bx1735036113982idkhk9J-6cESLd4MMw");
     }
+
+    
+    async handleImage(imageUrl: string): Promise<void> {
+        this.containWithinAspectRatio = true;
+        try {
+          const file = await this.companyProfileService.downloadImage(imageUrl);
+          console.log('Downloaded file:', file);
+          //this.processFile(file);//companyProfileService
+          this.fileUploadCode(file);
+        } catch (error) {
+          console.error('Error handling the image:', error);
+        }
+      }
+
+    autoFillCompanyProfileData: any;
+
+    someFile: any;
+
+    autoFillCompanyProfile() {
+    //    this.handleImage("https://cdn.brandfetch.io/idCQRI3fxc/w/237/h/60/theme/light/logo.png?c=1bx1735036113982idkhk9J-6cESLd4MMw");
+    //    this.companyProfileService.autoFillCompanyProfile(this.authenticationService.getUserId()).subscribe(
+    //     (result: any) => {
+    //         this.autoFillCompanyProfileData = result.data;
+    //         this.companyProfile.companyLogoPath = this.autoFillCompanyProfileData.companyLogoPath;
+    //         this.companyProfile.companyProfileName = this.autoFillCompanyProfileData.companyProfileName;
+    //         this.companyProfile.aboutUs = this.autoFillCompanyProfileData.aboutUs;
+    //         this.companyProfile.website = this.autoFillCompanyProfileData.website;
+    //         this.companyProfile.city = this.autoFillCompanyProfileData.city;
+    //         this.companyProfile.country = this.autoFillCompanyProfileData.country;
+    //         this.companyProfile.state = this.autoFillCompanyProfileData.state;
+    //         this.companyProfile.instagramLink = this.autoFillCompanyProfileData.instagramLink;
+    //         this.companyProfile.facebookLink = this.autoFillCompanyProfileData.facebookLink;
+    //         this.companyProfile.twitterLink = this.autoFillCompanyProfileData.twitterLink;
+    //         this.companyProfile.googlePlusLink = this.autoFillCompanyProfileData.googlePlusLink;
+    //         this.companyProfile.linkedInLink = this.autoFillCompanyProfileData.linkedInLink;           
+    //     }, (error: any) => {
+    //     },
+    //   );
+    }
+
+
+
+
+
     
     uploadFileConfiguration(){
         this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
@@ -457,6 +505,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.croppedImageForBgImage = '';
       this.squareDataForBgImage = {};
       this.bgImageChangedEvent = null;
+      this.showCropper = false;
+      this.isCropperVisible = false;  
     }
     // cropperSettings(){
     //   this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
@@ -493,6 +543,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
             this.errorUploadCropper = false;
             this.imageChangedEvent = event;
+            this.showCropper = true;
         } else {
           this.errorUploadCropper = true;
           this.showCropper = false;
@@ -502,7 +553,25 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.croppedImage = event.base64;
       console.log(event, base64ToFile(event.base64));
     }
+
+    editSavedImage() {
+        const savedImageUrl = this.authenticationService.MEDIA_URL + this.companyLogoImageUrlPath;
+        const dynamicFilename = this.companyLogoImageUrlPath.split('/').pop() || 'default-image.png';
+        this.isCropperVisible = true;
+        this.utilService.fetchImageAsBlob(savedImageUrl).then(blob => {
+            const file = new File([blob], dynamicFilename, { type: blob.type });
+            this.imageChangedEvent = {
+                target: {
+                    files: [file]
+                }
+            };
+            this.showCropper = true;
+            this.isCropperVisible = true;
+        }).catch(err => console.error('Failed to fetch the saved image:', err));
+    }
+
     imageLoaded() {
+        this.loadingcrop = false;
       this.showCropper = true;
       console.log('Image loaded')
     }
@@ -1832,15 +1901,18 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
 
     fileBgImageChangeEvent(event){
+        this.loadingcrop = true;
         const image:any = new Image();
         const file:File = event.target.files[0];
         const isSupportfile = file.type;
         if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
             this.errorUploadCropper = false;
             this.imageChangedEvent = event;
+            this.isCropperVisible = true; 
         } else {
           this.errorUploadCropper = true;
           this.showCropper = false;
+          this.isCropperVisible = false; 
         }
       }
 
