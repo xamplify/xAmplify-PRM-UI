@@ -261,12 +261,14 @@
       <app-active-partners-table [applyFilter]="applyFilter"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
-        (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"></app-active-partners-table>
+        (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"
+        (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-active-partners-table>
     </ng-container>
   </div>
   <!--******************All Counts - Tiles*******************-->
   <app-partner-journey-count-tiles [partnerCompanyId]="'0'" [applyFilter]="applyFilter" [isDetailedAnalytics]="false"
-    [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+    [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter"
+    [toDateFilter]="partnertoDateFilter"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
@@ -872,14 +874,15 @@
       <div class="ml15m">
         <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'" [isDetailedAnalytics]="false"
           [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
-          [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+          [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter"
+          [toDateFilter]="partnertoDateFilter"
           (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
-
       </div>
 
       <!--******************Interacted & Not Interacted Track Details*******************-->
       <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+        [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-interacted-not-interacted-track-details>
     </div>
   </div>

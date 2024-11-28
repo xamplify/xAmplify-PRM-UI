@@ -97,6 +97,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isSingUpPendingDiv = false;
     incompleteCompanyProfileAndPendingSingupPagination: Pagination = new Pagination();
     companyProfileIncompletePartnersList :any= [];
+    partnerfromDateFilter: any = "";
+    partnertoDateFilter: any = "";
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -1155,5 +1157,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         );
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
+    }
+
+    getDateFilterOptions(event: any) {
+        this.partnerfromDateFilter = event.fromDate;
+        this.partnertoDateFilter = event.toDate;
     }
 }

@@ -41,6 +41,8 @@ export class DonutPieChartComponent implements OnInit {
   @Input() isVendorVersion: boolean = false;
   @Input() vanityUrlFilter: boolean = false;
   @Input() vendorCompanyProfileName: string = '';
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
  isOrgadminPartner : boolean = true; 
   headerText: string;
@@ -146,6 +148,9 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
     partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+    partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter;
+    partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+    partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.partnerService.getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);

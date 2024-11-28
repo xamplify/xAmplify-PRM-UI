@@ -29,7 +29,8 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   @Input() isVendorVersion: boolean = false;
   @Input() vanityUrlFilter: boolean = false;
   @Input() vendorCompanyProfileName: string = '';
-
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -82,6 +83,9 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.maxResults = 6;
     this.pagination.teamMemberId = this.teamMemberId;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getPartnerJourneyTrackDetailsByInteraction(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
