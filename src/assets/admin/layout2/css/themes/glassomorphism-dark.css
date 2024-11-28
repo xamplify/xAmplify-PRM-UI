@@ -4185,14 +4185,12 @@ i.fa.fa-edit.ml_6{
 background-color: #eaf0f6!important;
 color: #555 !important;
 }
-
 .e-ddl.e-popup {
   background: rgba(16 18 27 / 40%)!important;
-
+}
 .tgrid>tbody>tr#uploaded-csv-tr>td:hover {
   color: #fff !important;
-  }
+}
 .tgrid>tbody>tr#uploaded-csv-tr>td {
   color: #272626 !important;
-
 }
