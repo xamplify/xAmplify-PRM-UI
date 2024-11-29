@@ -128,6 +128,8 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
   isWelcomePageActive:boolean = false;
   helpGuidesUrl:boolean = false;
   searchKey:string = "";//XNFR-574
+  isOnlyUser: boolean = false;
+  
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -182,9 +184,8 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
       /*** XNFR-134***/
       this.userId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.userId;
+      this.isOnlyUser = this.authenticationService.isOnlyUser();
      
-
-
       if (userName != undefined) {
         this.sourceType = this.authenticationService.getSource();
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
