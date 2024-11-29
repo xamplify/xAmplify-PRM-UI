@@ -784,11 +784,11 @@
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<button style="position: relative; top: -8px;"
 					class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
-					*ngIf="(authenticationService?.module?.isAnyAdminOrSupervisor) && !imageChangedEvent; else uploadButton">
+					*ngIf="!imageChangedEvent; else uploadButton">
 					<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input style="height: 36px;"
 						title=" " id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
 				</button>
-				<ng-template #uploadButton *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor">
+				<ng-template #uploadButton>
 					<button style="position: relative; top: -5px;"
 						class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg">
 						<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input
@@ -814,8 +814,9 @@
 						</app-img-croppr-v2>
 					</div>
 
-					<div *ngIf="!imageChangedEvent && companyLogoImageUrlPath">
-                        <img [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath" style="width:100%; margin-bottom: 5px;" />
+					<div *ngIf="!imageChangedEvent">
+                        <fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
+                        </fieldset>
                     </div>
 
 
@@ -841,7 +842,7 @@
 								class="fa fa-refresh" title="reset" data-toggle="tooltip"
 								aria-hidden="true"></i></button>
 					</div>
-					<div *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor">
+					<div>
 						<button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="uploadLogo()"><span
 								class="btn btn-primary transition txt_pd-top3">Save
 								Changes</span></button>
