@@ -28,6 +28,8 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   @Input() isVendorVersion: boolean = false;
   @Input() vanityUrlFilter: boolean = false;
   @Input() vendorCompanyProfileName: string = '';
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -64,6 +66,9 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.teamMemberId = this.teamMemberId;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getDealDetails(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

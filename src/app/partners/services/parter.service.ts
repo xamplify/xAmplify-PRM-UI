@@ -121,7 +121,7 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(chartId: string, filterType: string, applyTeamMemberFilter: boolean) {
+    getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(partnerJourneyRequest: PartnerJourneyRequest, chartId: string) {
         let urlSuffix = "";
         if (chartId == "redistributeCampaignsAndLeadsCountBarChart") {
             urlSuffix = 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes';
@@ -134,8 +134,8 @@ export class ParterService {
         } else if (chartId == "allLeadsAndDealsBarChart") {
             urlSuffix = 'getAllLeadsAndDealsCount';
         }
-        const url = this.URL + 'partner/' + urlSuffix + '/' + this.authenticationService.getUserId() + '/' + filterType + '/' + applyTeamMemberFilter + '?access_token=' + this.authenticationService.access_token
-        return this.httpClient.get(url)
+        const url = this.URL + 'partner/' + urlSuffix + '?access_token=' + this.authenticationService.access_token
+        return this.httpClient.post(url, partnerJourneyRequest)
             .catch(this.handleError);
     }
 

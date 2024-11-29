@@ -27,6 +27,8 @@ export class PieChartComponent implements OnInit {
   @Input() isVendorVersion: boolean = false;
   @Input() vanityUrlFilter: boolean = false;
   @Input() vendorCompanyProfileName: string = '';
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
 
   headerText: string;
@@ -156,6 +158,9 @@ export class PieChartComponent implements OnInit {
     partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
     partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+    partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
+    partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+    partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.redistributedCampaignDetailsPieChart(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);

@@ -208,26 +208,28 @@ export class ActivePartnersTableComponent implements OnInit {
     let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
     let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
     let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
-    if (isEmptyFromDateFilter && isEmptyToDateFilter) {
+    if (!(this.selectedCompanyIds.length > 0) && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
       this.customResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
     } else {
       let validDates = false;
-      if (isValidFromDateFilter && isEmptyToDateFilter) {
-        this.customResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
-        this.customResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-      } else {
-        var toDate = Date.parse(this.toDateFilter);
-        var fromDate = Date.parse(this.fromDateFilter);
-        if (fromDate <= toDate) {
-          validDates = true;
+      if (!(isEmptyFromDateFilter && isEmptyToDateFilter)) {
+        if (isValidFromDateFilter && isEmptyToDateFilter) {
+          this.customResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+        } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+          this.customResponse = new CustomResponse('ERROR', "Please pick From Date", true);
         } else {
-          this.customResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+          var toDate = Date.parse(this.toDateFilter);
+          var fromDate = Date.parse(this.fromDateFilter);
+          if (fromDate <= toDate) {
+            validDates = true;
+          } else {
+            this.customResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+          }
         }
+      }
 
-        if (validDates) {
-          this.applyFilters();
-        }
+      if (validDates || this.selectedCompanyIds.length > 0) {
+        this.applyFilters();
       }
     }
   }

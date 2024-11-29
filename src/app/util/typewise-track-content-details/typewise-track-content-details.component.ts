@@ -27,9 +27,11 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() isTeamMemberAnalytics : boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
-  @Input() vanityUrlFilter : boolean = false;
-  @Input() vendorCompanyProfileName : string = '';
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -64,9 +66,12 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.assetTypeFilter = this.assetType;
     this.pagination.maxResults = 6;
-    this.pagination.teamMemberId = this.teamMemberId; 
+    this.pagination.teamMemberId = this.teamMemberId;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getTypeWiseTrackContentDetails(this.pagination).subscribe(
-			(response: any) => {	
+      (response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;

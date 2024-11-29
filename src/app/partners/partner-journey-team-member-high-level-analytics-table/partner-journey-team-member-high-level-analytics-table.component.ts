@@ -25,6 +25,8 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
   
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -69,6 +71,9 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.teamMemberId = this.teamMemberId;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
     this.parterService.getPartnerJourneyTeamInfo(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
