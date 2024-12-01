@@ -28,9 +28,6 @@ export class UniversalSearchComponent implements OnInit {
   defaultDisplayType:string = '/l';
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
     public dashboardService: DashboardService) {
-    if (!this.authenticationService.isTeamMember()) {
-      this.applyFilter = false;
-    }
     this.defaultDisplayType = localStorage.getItem('defaultDisplayType');
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
     let isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
@@ -40,11 +37,16 @@ export class UniversalSearchComponent implements OnInit {
         this.referenceService.universalSearchKey = setSearchKey;
       } else {
         this.referenceService.universalSearchKey = '';
-      }    }
+      }
+    }
   }
 
   ngOnInit() {
-    this.universalSearchPagination.filterBy = "All";
+    //this.applyFilter = (this.authenticationService.module.isAdmin || this.authenticationService.module.isPartnerAdmin) && this.authenticationService.module.isTeamMember;
+    if(!this.authenticationService.isTeamMember()){
+      this.applyFilter = false;
+  }
+    this.universalSearchPagination.filterBy =  this.referenceService.universalSearchFilterType ;
     this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.universalSearchPagination.maxResults = 12;
     if (this.referenceService.universalSearchKey != "" && this.referenceService.universalSearchKey != null) {
@@ -83,6 +85,10 @@ export class UniversalSearchComponent implements OnInit {
     this.findUniversalSearch(this.universalSearchPagination);
   }
   filterUniversalSearch(type: string, index: number) {
+    // this.applyFilter = (this.authenticationService.module.isAdmin || this.authenticationService.module.isPartnerAdmin) && this.authenticationService.module.isTeamMember;
+    if(!this.authenticationService.isTeamMember()){
+      this.applyFilter = false;
+  }
     this.selectedFilterIndex = index;
     this.universalSearchPagination = new Pagination();
     this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
@@ -138,18 +144,60 @@ export class UniversalSearchComponent implements OnInit {
       this.defaultDisplayType = "/l";
     }
     if (quickLink.type === 'Asset') {
-      let router = this.isPartnerLoggedInThroughVanityUrl ? '/home/dam/shared' : '/home/dam/manage';
+      let router = quickLink.navigate === 'Shared' ? '/home/dam/shared' : '/home/dam/manage';
       this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Track') {
-      let router = this.isPartnerLoggedInThroughVanityUrl ? 'home/tracks/shared' : '/home/tracks/manage';
+      let router = quickLink.navigate === 'Shared' ? 'home/tracks/shared' : '/home/tracks/manage';
       this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Play Book') {
-      let router = this.isPartnerLoggedInThroughVanityUrl ? '/homeplaybook/shared' : '/home/playbook/manage';
+      let router =quickLink.navigate === 'Shared' ? '/home/playbook/shared' : '/home/playbook/manage';
       this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Lead') {
+      this.referenceService.universalSearchVendorOrPartnerView = quickLink.navigate;
       this.referenceService.goToRouter("/home/leads/manage");
     } else if (quickLink.type === 'Deal') {
+      this.referenceService.universalSearchVendorOrPartnerView = quickLink.navigate;
       this.referenceService.goToRouter('/home/deal/manage');
     }
   }
+
+  getTooltipTitle(field: string): string {
+    return field || '';
+  }
+
+  /**
+   * Determines the image source based on quickLink type.
+   */
+  getImageSrc(quickLink): string {
+    switch (quickLink.type) {
+      case 'Track': 
+        return 'assets/images/universal-search-images/universal-track.webp';
+      case 'Play Book': 
+        return 'assets/images/universal-search-images/universal-playbook.webp';
+      case 'Asset': 
+        return 'assets/images/universal-search-images/universal-asset.webp';
+      default: 
+        return 'assets/admin/pages/media/works/contacts2.png';
+    }
+  }
+
+  /**
+   * Determines the label class based on quickLink type.
+   */
+  getLabelClass(quickLink): string {
+    switch (quickLink.type) {
+      case 'Track': 
+        return 'view-banner orange-lable-cu1 mr5';
+      case 'Play Book': 
+        return 'view-banner published mr5';
+      case 'Lead':
+      case 'Deal': 
+        return 'view-banner orange-lable-cu1 mr5';
+      case 'Asset':
+        return 'view-banner banner-top mr5';
+      default: 
+        return '';
+    }
+  }
+
 }

@@ -157,6 +157,13 @@ export class ManageLeadsComponent implements OnInit {
 triggerUniversalSearch(){
   if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Lead') {
     this.leadsSortOption.searchKey = this.referenceService.universalSearchKey;
+    // if(this.referenceService.universalSearchVendorOrPartnerView === 'Partner') {
+    //   this.isPartnerVersion = true;
+    //   this.isVendorVersion = false;
+    // } else {
+    //   this.isPartnerVersion = false;
+    //   this.isVendorVersion = true;
+    // }
     let keyCode:any = 13;
     if (keyCode === 13) { this.searchLeads(); }
   }
@@ -238,7 +245,11 @@ triggerUniversalSearch(){
               () => { }
             );
           } else {
+            if(this.referenceService.universalSearchVendorOrPartnerView === 'Partner'){
+              this.showPartner()
+            } else {
             this.showVendor();
+            }
           }
         } else {
           this.showPartner();
@@ -261,12 +272,14 @@ triggerUniversalSearch(){
   ngOnDestroy() {
     this.referenceService.isCreated = false; 
     this.referenceService.universalId = 0; //XNFR-574
+    this.referenceService.universalSearchVendorOrPartnerView = "";
   }
 
   showVendor() {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      //this.referenceService.universalSearchVendorOrPartnerView = 'Vendor';//XNFR-574
       this.getActiveCRMDetails();
       this.showLeads();
       if (this.prm) {
@@ -281,6 +294,7 @@ triggerUniversalSearch(){
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
+    //this.referenceService.universalSearchVendorOrPartnerView = 'Partner';//XNFR-574
     this.showLeads();
     this.getActiveCRMDetails();
     this.mergeTagForUserGuide();

@@ -202,7 +202,8 @@ export class ManageDealsComponent implements OnInit {
   //XNFR-681
   ngOnDestroy() {
     this.referenceService.isCreated = false;
-    this.referenceService.universalId = 0;
+    this.referenceService.universalId = 0;//XNFR-574
+    this.referenceService.universalSearchVendorOrPartnerView = "";//XNFR-574
   }
 
   init() {
@@ -276,7 +277,11 @@ export class ManageDealsComponent implements OnInit {
               () => { }
             );
           } else {
+            if(this.referenceService.universalSearchVendorOrPartnerView === 'Partner') {
+              this.showPartner();
+            } else {
             this.showVendor();
+            }
           }
         } else {
           this.showPartner();

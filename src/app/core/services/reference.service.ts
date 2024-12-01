@@ -161,6 +161,8 @@ export class ReferenceService {
   universalSearchKey:string = ""; //XNFR-574
   universalId:number = 0; //XNFR-574
   universalModuleType:string = ""; //XNFR-574
+  universalSearchFilterType:string = 'All'
+  universalSearchVendorOrPartnerView :String ="";
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3060,7 +3062,7 @@ export class ReferenceService {
     let fromDateFilterString = $.trim(pagination.fromDateFilterString)!=null ? $.trim(pagination.fromDateFilterString) :"";
     let toDateFilterString =$.trim(pagination.toDateFilterString)!=null ? $.trim(pagination.toDateFilterString) :"";
     let sortParam = sort.length>0 ? "&sort="+sort:"";
-    let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
+    let searchParam = searchKey.length>0 ? "&search="+this.getEncodedUri(pagination.searchKey):"";
     let fromDateFilterStringParam = fromDateFilterString.length>0 ? "&fromDateFilterString="+fromDateFilterString:"";
     let toDateFilterStringParam = toDateFilterString.length>0 ? "&toDateFilterString="+toDateFilterString:"";
     let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true":"";
