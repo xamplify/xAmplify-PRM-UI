@@ -5054,6 +5054,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.isPartnerJourneyPages = false;
 		this.isVendorPartnerJourneyPages =false;
 		this.isVendorMarketplacePages = false;
+		this.welcomePages = false;
 	}
 	/**XNFR-771**/
 	getForLandscapeAccessforVendorandPartner() {
