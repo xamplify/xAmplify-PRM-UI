@@ -4049,7 +4049,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	getSelectedIndex(index: number) {
 		this.isLoadingList = true;
 		this.selectedFilterIndex = index;
-		this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
+		this.pagination = this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
 		this.defaultPartnerList(this.loggedInUserId);
 	}
 

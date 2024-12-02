@@ -21,30 +21,40 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    this.loading = true;
     this.showPartnersFilterOption();
+  }
+
+  showPartnersFilterOption() {
+    this.authenticationService.showPartnersFilter().subscribe(
+      response => {
+        this.showPartners = response.data;
+      }, _error => {
+        this.showPartners = false;
+        this.selectedFilterIndex = 0;
+        this.loading = false;
+      },()=>{
+        if(this.showPartners){
+          this.handleSelectedFilterIndex();
+          this.applyFilter(this.selectedFilterIndex);
+        }else{
+          this.selectedFilterIndex = 0;
+        }
+        this.loading = false;
+      });
+  }
+
+
+  private handleSelectedFilterIndex() {
     if (this.customSelectedIndex !== undefined && this.customSelectedIndex !== null) {
       this.selectedFilterIndex = this.customSelectedIndex;
     }
     this.resetTMSelectedFilterIndex.subscribe(response => {
-        if (response) {
-        	this.selectedFilterIndex = 1;
-        }
-      });
-  }
-
-  showPartnersFilterOption() {
-    this.loading = true;
-    this.authenticationService.showPartnersFilter().subscribe(
-      response => {
-        this.showPartners = response.data;
-        this.loading = false;
-      }, _error => {
-        this.showPartners = false;
-        this.loading = false;
+      if (response) {
+        this.selectedFilterIndex = 1;
       }
-    )
+    });
   }
-
 
   applyFilter(selectedIndex: number) {
     this.selectedFilterIndex = selectedIndex;
