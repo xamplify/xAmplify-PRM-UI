@@ -235,3 +235,6 @@ button.btn-info.aspect_ratio:disabled {
 .company-text-wrap{
   word-wrap: break-word;
 }
+.cursor-not-allowed{
+  cursor: not-allowed !important;
+}
