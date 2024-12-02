@@ -79,6 +79,10 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
   isRegisterDealEnabled:boolean = true;
   isReferVendorOptionEnabledForVanity = false;
   ckeConfig: any;
+  isNotUserOrSuperAdmin: boolean = false;
+  isOnlyUser: boolean = false;
+  isSuperAdmin: boolean = false;
+
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -306,6 +310,8 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
       this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
       this.getVendorRegisterDealValue();
       this.getReferVendorOption();
+      this.isOnlyUser = this.authenticationService.isOnlyUser();
+      this.isSuperAdmin = this.authenticationService.isSuperAdmin();
     } catch (error) { this.logger.error('error' + error); }
   }
   getReferVendorOption() {
