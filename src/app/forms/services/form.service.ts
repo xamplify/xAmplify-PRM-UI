@@ -252,4 +252,12 @@ export class FormService {
             .catch( this.handleError );
     }
 
+    getLeadDataByFormSubmitId(formSubmitId)
+    {
+        return this.http.get(this.URL + "getUserDtoByFormSubmitId/"+formSubmitId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+    }
+
 }

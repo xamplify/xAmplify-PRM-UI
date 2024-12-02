@@ -32,6 +32,7 @@ import { RegionNames } from 'app/common/models/region-names';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { ActivatedRoute, Router } from "@angular/router";
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { FormService } from 'app/forms/services/form.service';
 declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
@@ -59,7 +60,11 @@ export class CustomAddLeadComponent implements OnInit {
   /**XNFR-553**/
   @Input() public isFromCompanyModule:boolean = false;
   @Input() public isFromContactAllLeadsTab:boolean = false;
-
+  /**XNFR-766**/
+  @Input() public isFromFormAnalytics:boolean = false;
+  @Input() public formSubmitId;
+  @Output() notifyFormAnalytics = new EventEmitter();
+  
   preview = false;
   edit = false;
   loggedInUserId: number;
@@ -229,7 +234,7 @@ export class CustomAddLeadComponent implements OnInit {
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
      public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService, private router: Router,public regions: RegionNames,
-    public route: ActivatedRoute) {
+    public route: ActivatedRoute, public formService:FormService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -329,6 +334,9 @@ export class CustomAddLeadComponent implements OnInit {
     }
     if (this.isConvertingContactToLead) {
       this.setDefaultLeadData(this.selectedContact);
+    }
+    if(this.isFromFormAnalytics){
+      this.getLeadDataByFormSubmitId();
     }
   }
 
@@ -504,7 +512,13 @@ export class CustomAddLeadComponent implements OnInit {
     this.lead.postalCode = data.zipCode;
     this.lead.company = data.contactCompany;
     this.lead.city = data.city;
-    this.lead.email = this.selectedContact.emailId;
+    if(this.isFromFormAnalytics){
+      this.lead.email = data.emailId;
+      this.lead.formSubmitId = this.formSubmitId;
+    }else{
+      this.lead.email = this.selectedContact.emailId;
+    }
+
   }
 
   getCampaignLeadPipeline() {
@@ -569,7 +583,9 @@ export class CustomAddLeadComponent implements OnInit {
       this.activeCRMDetails.hasCreatedForPipeline = false;
       this.activeCRMDetails.hasCreatedByPipeline = false;
       this.showTicketTypesDropdown = false;
-      this.resetLeadDetails();
+      if(!this.isFromFormAnalytics){
+        this.resetLeadDetails();
+      }
       this.vendorCompanyName = '';
     }
   }
@@ -911,7 +927,11 @@ export class CustomAddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.showLoadingButton = false;
           if (data.statusCode == 200) {
-            this.notifySubmitSuccess.emit(data.data);
+            if(this.isFromFormAnalytics){
+              this.notifyFormAnalytics.emit(data);
+            }else{
+              this.notifySubmitSuccess.emit(data.data);
+            }
             this.closeLeadModal();
             if (this.isThroughAddUrl) {
               this.referenceService.isCreated = true;
@@ -919,6 +939,9 @@ export class CustomAddLeadComponent implements OnInit {
             }
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
+            if(this.isFromFormAnalytics){
+              this.notifyFormAnalytics.emit(data);
+            }
           }
         },
         error => {
@@ -927,6 +950,9 @@ export class CustomAddLeadComponent implements OnInit {
           this.isLoading = false;
           this.showLoadingButton = false;
           this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
+          if(this.isFromFormAnalytics){
+            this.notifyFormAnalytics.emit(error);
+          }
         },
         () => { }
       );
@@ -1907,5 +1933,22 @@ export class CustomAddLeadComponent implements OnInit {
       );
 
   }
+
+ 
+
+  getLeadDataByFormSubmitId() {
+    this.formService.getLeadDataByFormSubmitId(this.formSubmitId)
+      .subscribe(
+        data => {
+          console.log(data)
+          this.selectedContact = data.data;
+          this.setDefaultLeadData(this.selectedContact);
+        },
+        (error: any) => {
+          this.httpRequestLoader.isServerError = true;
+        }
+      );
+  }
+
 
 }
