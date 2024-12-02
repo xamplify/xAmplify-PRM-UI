@@ -939,9 +939,6 @@ export class CustomAddLeadComponent implements OnInit {
             }
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
-            if(this.isFromFormAnalytics){
-              this.notifyFormAnalytics.emit(data);
-            }
           }
         },
         error => {
@@ -950,9 +947,6 @@ export class CustomAddLeadComponent implements OnInit {
           this.isLoading = false;
           this.showLoadingButton = false;
           this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
-          if(this.isFromFormAnalytics){
-            this.notifyFormAnalytics.emit(error);
-          }
         },
         () => { }
       );
