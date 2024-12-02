@@ -80,12 +80,12 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
-			<div class="btn-group pull-right setting-icon-cu" data-toggle="tooltip" data-placement="top" title="Click here to export excel"
-			 [class.disabled]="videoViewsLevelSecond.length == 0" style="margin-top: 4px; cursor:pointer" >
+			<div class="btn-group pull-right setting-icon-cu" data-toggle="tooltip" data-placement="top"
+				title="Click here to export excel" style="margin-top: 4px; cursor:pointer">
 				<span>
-					<a id="delete_button" (click)="downloadLogs()">  
-					<i  class="fas fa-file-export" style="font-size:15px;margin-right: -4px;"></i>
-				</a>
+					<a id="delete_button" (click)="videoViewsLevelSecond.length > 0 ? downloadLogs() : null">
+						<i class="fas fa-file-export" style="font-size:15px;margin-right: -4px;"></i>
+					</a>
 				</span>
 			</div>
 		</div>
