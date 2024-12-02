@@ -288,7 +288,6 @@
           </tr>
         </thead>
         <tbody>
-          {{selectedPartnerGroupIds}}
           <ng-container *ngFor="let partnerGroup of partnerGroupsPagination.pagedItems;let i = index;">
             <tr class="pointer" id="partnerGroups-tr-{{partnerGroup.id}}"
               [class.row-selected]="selectedPartnerGroupIds?.indexOf(partnerGroup.id)>-1"
