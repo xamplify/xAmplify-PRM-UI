@@ -3325,4 +3325,6 @@ table {
 .remove_border{border-bottom: none !important;}
 .pb_5{padding-bottom: 5px;}
 tbody{background: #fff;}
-
+.break-word{
+  word-wrap: break-word;
+}

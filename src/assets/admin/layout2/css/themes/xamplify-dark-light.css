@@ -2505,7 +2505,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
   .profile_info span{
     color:#ffff!important;
   }
-  .profile_info p{
+  .profile_info p,.folder_count{
     color:#ffff!important;
   }
   .lead_details h3,.deals_card{
@@ -2536,10 +2536,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
     border-color: #ebccd1 !important;
   }
   .tgrid>tbody>tr#uploaded-csv-tr>td {
-    color: #272626 !important;
-}
-.tgrid>tbody>tr#uploaded-csv-tr>td:hover {
-  color: #fff !important;
+    color:unset !important;
 }
 table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-danger:hover{
   background-color: #22313a !important;
