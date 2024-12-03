@@ -4440,7 +4440,7 @@ border: 1px solid rgb(255 255 255 / 35%) !important;
 .icons_colors,.profile_info p,.lead_details li i {
   color: #404040!important;
 }
-.lead_details h3{
+.lead_details h3,.activity_bgcolor,.deals_card{
   background: rgb(255 255 255 / 40%) !important;
   font-weight: 600;
 }

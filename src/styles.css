@@ -3271,9 +3271,9 @@ a.quicklinks_icons:hover {
 .mobile_ques{
   padding-left: 4px;
 }
-  
+} 
 .detailedarrow{float: unset !important;}
-  
+
 /**Contact-journey**/
 .activity-created-status-btn {
   padding: 2px 6px !important;
@@ -3281,7 +3281,7 @@ a.quicklinks_icons:hover {
   color: #008000;
   border: 1px solid #008000;
   font-weight: 800;
-  background-color: #ffffff !important;
+  background: transparent!important;
 }
 .activity-updated-status-btn {
   padding: 2px 6px !important;
@@ -3289,7 +3289,7 @@ a.quicklinks_icons:hover {
   color: #00a6e8;
   border: 1px solid #00a6e8;
   font-weight: 800;
-  background-color: #ffffff !important;
+  background: transparent!important;
 }
 .note-visibility-private-label {
   background: #fff !important;
@@ -3326,3 +3326,4 @@ table {
 .remove_border{border-bottom: none !important;}
 .pb_5{padding-bottom: 5px;}
 tbody{background: #fff;}
+
