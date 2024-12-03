@@ -16,7 +16,8 @@ body,
 /*** MainContent ***/
 .page-bar,
 .dashboard-stat2,
-.tabbable-custom > .tab-content {
+.tabbable-custom > .tab-content ,
+.portlet.light.remove_cardBgcolor.glass_Bgcolor{
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
@@ -325,7 +326,7 @@ fieldset,
   color: white !important;
 }
 .tgrid > thead {
-  background-color: #22313a !important;
+  background-color: #2b3c46  !important;
   color: white !important;
 }
 /* 04-07-2023 Templates privew background */
@@ -2561,3 +2562,22 @@ table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-dang
 .icon-btns i{
   color: inherit!important;
 }
+.page-bar.remove_cardBgcolor.p10.light_bg_removal,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal,
+.portlet.light.remove_cardBgcolor.padding_0.clearfix.mDamResponse.mt0.light_bg_removal,
+.portlet.light.remove_cardBgcolor.padding_0.light_bg_removal,
+.portlet.light.remove_cardBgcolor,
+.page-bar.remove_cardBgcolor.neg_mrg_top14.light_bg_removal,
+.page-bar.camp_card_removal.light_bg_removal,
+.p10.remobe_bg{
+  background: none !important;
+  border: none !important;
+}
+.portlet-title.remove_border,
+.portlet-title.pt0,
+.portlet-title.pb_8.pb_4 {
+  border-bottom: none !important;
+}
+.table_body_color{background-color: #263741c7 !important;}
+.page-bar.m10.bg-none.light_bg_removal{background: none !important;}
+tbody{background: transparent;}
