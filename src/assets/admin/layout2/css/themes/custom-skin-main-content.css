@@ -2344,7 +2344,7 @@ color: var(--icon-color) !important;
 .edit_contact {
   border-bottom: 1.4px var(--border-color) dashed !important;
 }
-.lead_details h3 {
+.lead_details h3,.deals_card {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
@@ -2367,7 +2367,7 @@ color: var(--icon-color) !important;
   color: var(--icon-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.activity_card {
+.activity_card,.activity_bgcolor{
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }
@@ -2394,4 +2394,24 @@ g.highcharts-axis-labels.highcharts-xaxis-labels text,text.highcharts-subtitle,
 text.highcharts-axis-title,g.highcharts-axis-labels.highcharts-yaxis-labels text,text.highcharts-title
 ,g.highcharts-axis-labels.highcharts-coloraxis-labels text{
   fill: var(---text-color) !important;
+}
+table tr#uploaded-csv-tr.alert-success{
+  background-color: #dff0d8 !important;
+}
+table tr#uploaded-csv-tr.alert-danger{
+  background-color: #f2dede !important;
+  border-color: #ebccd1 !important;
+}
+.tgrid>tbody>tr#uploaded-csv-tr>td {
+  color: unset !important;
+}
+/* .tgrid>tbody>tr#uploaded-csv-tr>td:hover {
+color: #fff !important;
+} */
+table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-danger:hover{
+background-color: #22313a !important;
+}
+/*app-searchable-dropdown */
+.e-ddl.e-popup {
+  background-color:var(--page-content)!important;
 }

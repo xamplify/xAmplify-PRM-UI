@@ -278,7 +278,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.showQuizField = false;
             this.removeBlurClass();
         } else {
-            if (this.router.url.indexOf('edit') > -1) {
+            if ((this.router.url.indexOf('edit') > -1) || (this.isVendorOrMasterLandingPage != undefined && this.isVendorOrMasterLandingPage)) {
                 this.formHeader = "EDIT FORM";
             } else {
                 this.formHeader = "CREATE FORM";

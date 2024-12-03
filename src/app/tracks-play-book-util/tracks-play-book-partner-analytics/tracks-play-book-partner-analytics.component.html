@@ -118,7 +118,7 @@
         </ng-container>
         <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
           <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-            (notifyParentDropDown)="getAnalytics($event)" [hidden]="httpRequestLoader.isLoading">
+            (notifyParentDropDown)="getPartnerAnalytics($event)" [hidden]="httpRequestLoader.isLoading">
           </app-pagination>
         </div>
         <!-- End of 24 -->

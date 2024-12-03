@@ -994,8 +994,8 @@
                                                             <span *ngIf="contact.isShowDetails" translate>Less</span>
                                                         </button>
                                                     </td>
-                                                    <td>
-                                                        <div class="actions-block float-none" style="text-align: center;">
+                                                    <td align="center">
+                                                        <div class="actions-block float-none">
                                                             <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{contact?.userStatus == 'APPROVE' ? properties?.SIGNUP_PROCESS_COMPLETED : properties?.SIGNUP_PROCESS_NOT_COMPLETED}}">
                                                                 <i [className]="contact?.userStatus == 'APPROVE' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
@@ -1005,8 +1005,8 @@
                                                             </a>
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="actions-block float-none" style="text-align: center;">
+                                                    <td align="center">
+                                                        <div class="actions-block float-none">
                                                             <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{contact?.companyNameStatus == 'active' ? properties?.COMPANY_PROFILE_COMPLETED : properties?.COMPANY_PROFILE_NOT_COMPLETED}}">
                                                                 <i [className]="contact?.companyNameStatus == 'active' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"

@@ -94,6 +94,9 @@ a.disabled {
 .danger {
   color: red;
 }
+.red {
+  color: red !important;
+}
 @media (min-width: 768px) {
   .col-sm-5ths {
     width: 20% !important;

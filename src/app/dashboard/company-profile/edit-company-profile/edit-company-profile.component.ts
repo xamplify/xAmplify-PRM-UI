@@ -213,6 +213,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     supportEmailIdErrorMessage = "";
 
     displayName = "";
+    companyProfileNameInfo: String;
+    isSuperAdmin: boolean = false;
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -385,6 +387,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     
     ngOnInit() {
         this.isLocalHost = this.authenticationService.isLocalHost();
+        this.isSuperAdmin = this.authenticationService.isSuperAdmin();
         let firstName = this.authenticationService.user.firstName;
         let lastName = this.authenticationService.user.lastName;
         if (firstName == undefined) {
@@ -419,6 +422,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         if (!this.companyBgImagePath) {
             this.squareDataForBgImage = {};
         }
+        this.getCompanyNameandProfileInfo();
     }
     
     uploadFileConfiguration(){
@@ -2005,6 +2009,15 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     isValidTwitterLink(twitterLink: any) {
         const  regex =  /^(https?:\/\/)?(www\.)?x\.com(\/.*)?$/;
         return regex.test(twitterLink);
+    }
+    /***** XNFR-763 *****/
+    getCompanyNameandProfileInfo() {
+        if (!this.authenticationService.isOnlyPartner() && (this.authenticationService.isSuperAdmin || this.authenticationService.isVendor() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendorAndPartnerTeamMember || this.authenticationService.module.isPrmCompany
+            || this.authenticationService.module.isOrgAdminCompany || this.authenticationService.module.isMarketingCompany)) {
+            this.companyProfileNameInfo = this.properties.COMPANY_PROFILE_NAME_INFO;
+        } else if (this.authenticationService.isOnlyUser() || this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) {
+            this.companyProfileNameInfo = this.properties.COMPANY_PROFILE_NAME_PARTNER_INFO;
+        }
     }
   
 }

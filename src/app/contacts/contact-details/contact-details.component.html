@@ -225,7 +225,7 @@
             <app-response-message [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
             <app-dropdown-loader *ngIf="leadsLoader?.isLoading" [text]="'leads'"></app-dropdown-loader>
             <div class="panel-body" *ngIf="contactLeads.length > 0">
-              <div class="activity_card mb10" *ngFor="let lead of contactLeads">
+              <div class="deals_card mb10" *ngFor="let lead of contactLeads">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
                   <a class="add-btn underline-on-hover" (click)="viewLead(lead.id)">
@@ -262,7 +262,7 @@
             <app-response-message [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible"></app-response-message>
             <app-dropdown-loader *ngIf="dealsLoader?.isLoading" [text]="'deals'"></app-dropdown-loader>
             <div class="panel-body" *ngIf="contactDeals.length > 0">
-              <div class="activity_card mb10" *ngFor="let deal of contactDeals">
+              <div class="deals_card mb10" *ngFor="let deal of contactDeals">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
                   <a class="add-btn underline-on-hover" (click)="viewDeal(deal.id)">
@@ -305,7 +305,7 @@
             <app-response-message [customResponse]="campaignsResponse" *ngIf="campaignsResponse.isVisible"></app-response-message>
             <app-dropdown-loader *ngIf="campaignsLoader.isLoading" [text]="'campaigns'"></app-dropdown-loader>
             <div class="panel-body" *ngIf="contactCampaigns.length > 0">
-              <div class="activity_card mb10" *ngFor="let campaign of contactCampaigns">
+              <div class="deals_card mb10" *ngFor="let campaign of contactCampaigns">
                 <div>
                   <i class="fas fa-bullhorn mr5" aria-hidden="true"> </i>
                   <a class="add-btn underline-on-hover" (click)="viewCampaignTimeLine(campaign)">

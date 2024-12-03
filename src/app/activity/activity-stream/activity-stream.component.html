@@ -32,9 +32,9 @@
     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <app-response-message class="pg8" [customResponse]="customResponse"
       *ngIf="customResponse?.isVisible"></app-response-message>
-    <div class="activity_card mb10" *ngFor="let activity of activityPagination?.pagedItems">
+    <div class="activity_cards mb10" *ngFor="let activity of activityPagination?.pagedItems">
       <!--Email-->
-      <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Email'">
+      <fieldset class="scheduler-borders activity_bgcolor"  *ngIf="activity.type == 'Email'">
         <legend class="scheduler-borders campaign_boxes sent-activity">Email Sent</legend>
       <div>
         <div class="activity-header">
@@ -57,7 +57,7 @@
       </div>
       </fieldset>
       <!---Note--->
-      <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Note'">
+      <fieldset class="scheduler-borders activity_bgcolor"  *ngIf="activity.type == 'Note'">
         <legend [ngClass]="activity.activity == 'CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Note {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
       <div>
         <div class="activity-header">
@@ -102,7 +102,7 @@
       </div>
       </fieldset>
       <!---Campaign--->
-      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Campaign'" >
+      <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Campaign'" >
         <legend class="scheduler-borders campaign_boxes sent-activity">Campaign Launched</legend>
       <div>
         <div class="activity-header">
@@ -120,7 +120,7 @@
       </div>
       </fieldset>
       <!---Lead--->
-      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Lead'">
+      <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Lead'">
         <legend [ngClass]="activity.activity == 'LEAD_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Lead {{activity.activity == 'LEAD_CREATED'?'Created':'Stage Updated'}}</legend>
       <div>
         <div class="activity-header">

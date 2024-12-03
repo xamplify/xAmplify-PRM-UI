@@ -666,8 +666,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                       self.landingPage.htmlBody = htmlContent;
                       self.landingPage.jsonBody = jsonContent;
 
-                      if(self.isMasterLandingPages){
-                        if(self.authenticationService.module.isAnyAdminOrSupervisor){
+                      if(self.isMasterLandingPages || self.isVendorMarketplacePages){
+                        if(self.authenticationService.module.isAnyAdminOrSupervisor && !self.isVendorMarketplacePages ){
                           for(let logoDetails of self.vendorLogoDetails){
                             logoDetails.selected = self.sharedVendorLogoDetails
                             .filter(company=> company.companyId == logoDetails.companyId)[0].teamMembers
