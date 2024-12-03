@@ -156,27 +156,60 @@ export class CompanyProfileService {
 
     }
 
-    
-    async downloadImage(url: string): Promise<File> {
+    /** XNFR-760 - start **/
+    autoFillCompanyProfile() {
+        let url = this.URL + "autofillCompanyProfile" + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    async resizeAndCropImage(url: string, targetWidth: number, aspectRatio: number): Promise<File> {
         const response = await fetch(url);
         const blob = await response.blob();
-        const fileName = this.getIdFromUrl(url);
         const fileType = blob.type;
-        return new File([blob], fileName, { type: fileType });
-      }
+        const img = new Image();
+        img.src = URL.createObjectURL(blob);
 
-      private getFileNameFromUrl(url: string): string {
-        return url.split('/').pop() || 'downloaded-file';
-      }
+        await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve();
+            img.onerror = (err) => reject(err);
+        });
 
-      private getIdFromUrl(url: string): string {
+        const targetHeight = targetWidth / aspectRatio;
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        const scaleX = targetWidth / img.width;
+        const scaleY = targetHeight / img.height;
+        const scale = Math.min(scaleX, scaleY);
+
+        const scaledWidth = img.width * scale;
+        const scaledHeight = img.height * scale;
+
+        const offsetX = (targetWidth - scaledWidth) / 2;
+        const offsetY = (targetHeight - scaledHeight) / 2;
+
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        ctx.fillStyle = 'transparent';
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+        ctx.drawImage(
+            img,
+            offsetX, offsetY,
+            scaledWidth, scaledHeight
+        );
+        const processedBlob = await new Promise<Blob>((resolve) => canvas.toBlob(resolve, fileType));
+        const fileName = this.getFileNameFromUrl(url);
+        return new File([processedBlob], fileName, { type: fileType });
+    }
+
+    private getFileNameFromUrl(url: string): string {
         const parts = url.split('/');
         const id = parts[3] || 'default-id';
         return `${id}.webp`;
-      }
+    }
+    /** XNFR-760 - end **/
 
-      processFile(file: File): void {
-        // Call another method with the file
-        console.log('Processing file:', file);
-      }
 }

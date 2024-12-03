@@ -528,9 +528,7 @@
 										</div>
 										<div class="col-md-6 col-lg-6">
 											<div class="form-group" [attr.class]="phoneDivClass">
-												<label class="control-label" translate>Phone Number <font><b
-															style="color: #f55d7a !important">*</b></font></label>
-
+												<label class="control-label" translate>Phone Number</label>
 												<input type="text" maxlength="20" class="form-control"
 													[(ngModel)]="companyProfile.phone"
 													[ngModelOptions]="{standalone: true}"
@@ -787,9 +785,9 @@
 							(loadImageFailed)="loadImageFailed()">
 						</app-img-croppr-v2>
 					</div>
-					<div *ngIf="!imageChangedEvent && companyLogoImageUrlPath">
-                        <img [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath" style="width:100%; margin-bottom: 5px;" />
-                    </div>
+					<div *ngIf="!imageChangedEvent && !!companyLogoImageUrlPath">
+						<img [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath" style="width:100%; margin-bottom: 5px;" />
+					</div>	  
 
 
 				</div>

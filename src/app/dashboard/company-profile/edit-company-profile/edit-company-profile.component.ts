@@ -151,7 +151,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     hasPublicVideo = false;
     existingCompanyName = "";
     companyLogoUploader: FileUploader;
-    companyLogoImageUrlPath = "";
+    companyLogoImageUrlPath: string = "";
     companyBackGroundLogoUploader: FileUploader;
     companyBackgroundLogoImageUrlPath = "";
     backGroundImage = "https://i.imgur.com/tgYLuLr.jpg";
@@ -216,6 +216,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     companyProfileNameInfo: String;
     
     isCropperVisible: boolean = false;
+    autofillCompanyProfile: any;
+    companyLogoSourceLink: any;
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -424,54 +426,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         }
         this.getCompanyNameandProfileInfo();
 
-        this.handleImage("https://cdn.brandfetch.io/idCQRI3fxc/w/237/h/60/theme/light/logo.png?c=1bx1735036113982idkhk9J-6cESLd4MMw");
-    }
+        
+        this.checkAndAutofillCompanyProfile();
+    } 
 
-    
-    async handleImage(imageUrl: string): Promise<void> {
-        this.containWithinAspectRatio = true;
-        try {
-          const file = await this.companyProfileService.downloadImage(imageUrl);
-          console.log('Downloaded file:', file);
-          //this.processFile(file);//companyProfileService
-          this.fileUploadCode(file);
-        } catch (error) {
-          console.error('Error handling the image:', error);
-        }
-      }
-
-    autoFillCompanyProfileData: any;
-
-    someFile: any;
-
-    autoFillCompanyProfile() {
-    //    this.handleImage("https://cdn.brandfetch.io/idCQRI3fxc/w/237/h/60/theme/light/logo.png?c=1bx1735036113982idkhk9J-6cESLd4MMw");
-    //    this.companyProfileService.autoFillCompanyProfile(this.authenticationService.getUserId()).subscribe(
-    //     (result: any) => {
-    //         this.autoFillCompanyProfileData = result.data;
-    //         this.companyProfile.companyLogoPath = this.autoFillCompanyProfileData.companyLogoPath;
-    //         this.companyProfile.companyProfileName = this.autoFillCompanyProfileData.companyProfileName;
-    //         this.companyProfile.aboutUs = this.autoFillCompanyProfileData.aboutUs;
-    //         this.companyProfile.website = this.autoFillCompanyProfileData.website;
-    //         this.companyProfile.city = this.autoFillCompanyProfileData.city;
-    //         this.companyProfile.country = this.autoFillCompanyProfileData.country;
-    //         this.companyProfile.state = this.autoFillCompanyProfileData.state;
-    //         this.companyProfile.instagramLink = this.autoFillCompanyProfileData.instagramLink;
-    //         this.companyProfile.facebookLink = this.autoFillCompanyProfileData.facebookLink;
-    //         this.companyProfile.twitterLink = this.autoFillCompanyProfileData.twitterLink;
-    //         this.companyProfile.googlePlusLink = this.autoFillCompanyProfileData.googlePlusLink;
-    //         this.companyProfile.linkedInLink = this.autoFillCompanyProfileData.linkedInLink;           
-    //     }, (error: any) => {
-    //     },
-    //   );
-    }
-
-
-
-
-
-    
-    uploadFileConfiguration(){
+    uploadFileConfiguration() {
         this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
         this.companyBackGroundLogoUploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
@@ -549,12 +508,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.showCropper = false;
         }
       }
-    imageCroppedMethod(event: ImageCroppedEvent) {
-      this.croppedImage = event.base64;
-      console.log(event, base64ToFile(event.base64));
-    }
-
-    editSavedImage() {
+      editSavedImage() {
         const savedImageUrl = this.authenticationService.MEDIA_URL + this.companyLogoImageUrlPath;
         const dynamicFilename = this.companyLogoImageUrlPath.split('/').pop() || 'default-image.png';
         this.isCropperVisible = true;
@@ -568,8 +522,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.showCropper = true;
             this.isCropperVisible = true;
         }).catch(err => console.error('Failed to fetch the saved image:', err));
+        this.isCropperVisible = false;
     }
 
+    imageCroppedMethod(event: ImageCroppedEvent) {
+      this.croppedImage = event.base64;
+      console.log(event, base64ToFile(event.base64));
+    }
     imageLoaded() {
         this.loadingcrop = false;
       this.showCropper = true;
@@ -810,13 +769,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
             !this.zipError && !this.logoError && !this.aboutUsError && !this.supportEmailIdError) {
             this.processor.set(this.processor);
-
-            if ( this.companyProfile.phone ) {
-                if ( this.companyProfile.phone.length < 6 ) {
-                    this.companyProfile.phone = "";
-                }
-             }
-
             this.validateCompanyName('update');
         } else {
             this.ngxloading = false;
@@ -865,7 +817,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.validateNames(this.companyProfile.companyName);
       this.validateEmptySpace('aboutUs');
       this.validatePattern('emailId');
-      this.validatePattern('phone');
       this.validatePattern('website');
       this.validatePattern('facebook');
       this.validatePattern('googlePlusLink');
@@ -1211,7 +1162,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     addPhoneError() {
         this.phoneError = true;
-        this.phoneErrorMessage = "Phone number is mandatory";
+        this.phoneErrorMessage = "Invalid Phone Number";
         this.phoneDivClass = this.refService.errorClass;
         this.disableButton();
     }
@@ -1414,12 +1365,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         if (this.companyProfile.phone) {
             if (this.companyProfile.phone.length< 8) {
                 this.addPhoneError();
-                this.phoneErrorMessage = "Invalid Phone Number"
             } else {
                 this.removePhoneError();
             }
         } else {
-            this.addPhoneError();
+            this.removePhoneError();
         }
     }
 
@@ -2088,6 +2038,53 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         } else if (this.authenticationService.isOnlyUser() || this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) {
             this.companyProfileNameInfo = this.properties.COMPANY_PROFILE_NAME_PARTNER_INFO;
         }
+    } 
+
+    /** XNFR-760 - start **/
+    checkAndAutofillCompanyProfile() {
+        if (this.companyProfile.isAdd && !this.refService.checkIsValidString(this.companyProfile.companyProfileName)) {
+            this.autoFillCompanyProfile();
+        }
     }
+
+    autoFillCompanyProfile() {
+        this.isLoading = true;
+        this.companyProfileService.autoFillCompanyProfile().subscribe(
+            (result: any) => {
+                this.isLoading = false;
+                this.autofillCompanyProfile = result.data;
+                this.companyLogoSourceLink = this.autofillCompanyProfile.companyLogoSourceLink;
+                this.companyProfile.companyProfileName = this.autofillCompanyProfile.companyProfileName;
+                this.companyProfile.aboutUs = this.autofillCompanyProfile.aboutUs;
+                this.companyProfile.website = this.autofillCompanyProfile.website;
+                this.companyProfile.city = this.autofillCompanyProfile.city;
+                this.companyProfile.country = this.autofillCompanyProfile.country;
+                this.companyProfile.state = this.autofillCompanyProfile.state;
+                this.companyProfile.instagramLink = this.autofillCompanyProfile.instagramLink;
+                this.companyProfile.facebookLink = this.autofillCompanyProfile.facebookLink;
+                this.companyProfile.twitterLink = this.autofillCompanyProfile.twitterLink;
+                this.companyProfile.googlePlusLink = this.autofillCompanyProfile.googlePlusLink;
+                this.companyProfile.linkedInLink = this.autofillCompanyProfile.linkedInLink;
+            }, (error: any) => {
+                this.isLoading = false;
+                console.log('Error Occured while retriving the company profile automatically');
+            }, () => {
+                this.autofillCompanyLogoFromUrl(this.companyLogoSourceLink);
+            }
+        );
+    }
+
+    async autofillCompanyLogoFromUrl(imageUrl: string): Promise<void> {
+        try {
+            const targetWidth = 800;
+            const aspectRatio = 3 / 1;
+            const file = await this.companyProfileService.resizeAndCropImage(imageUrl, targetWidth, aspectRatio);
+            console.log('Image source link has converted as file object as : ', file);
+            this.fileUploadCode(file);
+        } catch (error) {
+            console.error('Error converting the url link to image :', error);
+        }
+    }
+    /** XNFR-760 - end **/
   
 }
