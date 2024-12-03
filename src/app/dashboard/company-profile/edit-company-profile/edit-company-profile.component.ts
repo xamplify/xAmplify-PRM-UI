@@ -214,10 +214,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     displayName = "";
     companyProfileNameInfo: String;
-    
+  
     isCropperVisible: boolean = false;
     autofillCompanyProfile: any;
     companyLogoSourceLink: any;
+
+    isSuperAdmin: boolean = false;
+
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -390,6 +393,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     
     ngOnInit() {
         this.isLocalHost = this.authenticationService.isLocalHost();
+        this.isSuperAdmin = this.authenticationService.isSuperAdmin();
         let firstName = this.authenticationService.user.firstName;
         let lastName = this.authenticationService.user.lastName;
         if (firstName == undefined) {
