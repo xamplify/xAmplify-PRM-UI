@@ -4,7 +4,7 @@
 </div>
 <div class="row" *ngIf="statusCode==200">
     <div class="col-md-12">
-        <div class="portlet light remove_cardBgcolor padding_0 clearfix" style="box-shadow: none;">
+        <div class="portlet light remove_cardBgcolor padding_0 clearfix light_bg_removal" style="box-shadow: none;">
             <!--List View / Grid View-->
             <div *ngIf="modulesDisplayType?.isListView || modulesDisplayType?.isGridView">
                 <ng-template *ngIf="!httpRequestLoader?.isLoading"
