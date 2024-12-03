@@ -17,11 +17,11 @@
         </div>
         <div class="form-group">
           <label for="subjectLine">Assign To<span class="text-danger">*</span></label>
-          <select class="form-control" [(ngModel)]="taskActivity.assignedTo"
+          <select class="form-control option_user_icon" [(ngModel)]="taskActivity.assignedTo"
             (ngModelChange)="addTaskActivityAssignTo($event);validateTask()" id="select-dropdown">
             <option [ngValue]="0">Select a member</option>
             <option *ngFor="let member of assignToDropDownOptions" [ngValue]="member.userId">
-              &#xf007;{{member.fullName}}
+              &#xf007; {{member.fullName}}
             </option>
           </select>
         </div>
@@ -71,11 +71,33 @@
            </div>
           </div>
         </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 p0">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
+            <label for="subjectLine">Remainder</label>
+            <select class="form-control" [(ngModel)]="taskActivity.remainderType" [disabled]="taskActivity.dueDate == undefined"
+              (ngModelChange)="handleRemainderType($event);validateTask()" id="select-dropdown">
+              <option [ngValue]="''">Select a remainder</option>
+              <option [ngValue]="'Before_30_Min'" [disabled]="isBeforeHalfAnHourEnable">30 Min Before</option>
+              <option [ngValue]="'Before_1_Hour'" [disabled]="isBeforeOneHourEnable">1 Hour Before</option>
+              <option [ngValue]="'Before_1_Day'" [disabled]="isBeforeOneDayEnable">1 Day Before</option>
+              <option [ngValue]="'Before_1_Week'" [disabled]="isBeforeOneWeekEnable">1 Week Before</option>
+              <option [ngValue]="'Custom_Date'">Custom Date</option>
+            </select>
+          </div>
+          <div [ngClass]="showRemainderDate ? 'form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field' : 'form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field hide_remainder_date'">
+            <label for="subjectLine">Custom Date<span class="text-danger">*</span></label>
+            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+              <input type="text" id="taskActivityRemainderPicker" class="form-control flatpickr" placeholder="Remainder"
+                [disabled]="taskActivity.dueDate == undefined" [(ngModel)]="taskActivity.remainder"
+                [ngModelOptions]="{standalone: true}" (input)="validateTask()">
+              <div class="col-sm-12 text-danger" style="padding:0" *ngIf="isDueDateError">Remainder / Time is already over.</div>
+            </div>
+          </div>
+        </div>
         <div class="form-group">
           <label for="subjectLine">Description</label>
           <ckeditor *ngIf="!isPreview" name="body" [(ngModel)]="taskActivity.description" (change)="validateTask()"
           [ngModelOptions]="{standalone: true}" [config]="ckeConfig"></ckeditor>
-          <!-- <div class="email-body" *ngIf="isPreview" [innerHTML]="taskActivity.description"></div> -->
         </div>
       </div>
       <div class="modal-footer">

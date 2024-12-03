@@ -38,11 +38,18 @@ export class AddTaskModalPopupComponent implements OnInit {
   isDueDateError: boolean = false;
   isEdit:boolean = false;
   ckeConfig:any;
+  remainderDatePickr: any;
+  showRemainderDate:boolean = false;
+  isBeforeHalfAnHourEnable: boolean = true;
+  isBeforeOneHourEnable: boolean = true;
+  isBeforeOneDayEnable: boolean = true;
+  isBeforeOneWeekEnable: boolean = true;
 
   constructor(public referenceService:ReferenceService, public taskService:TaskActivityService, public properties:Properties) { }
 
   ngOnInit() {
     this.initializeDueDatePicker();
+    this.initializeRemainderPicker();
     this.ckeConfig = this.properties.ckEditorConfig;
     if (this.actionType == 'add') {
       this.taskActivity.userId = this.userId;
@@ -94,7 +101,8 @@ export class AddTaskModalPopupComponent implements OnInit {
     let isValidDueDate = this.taskActivity.dueDate != undefined && this.taskActivity.dueDate.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ");
     let isValidAssignedTo = this.taskActivity.assignedTo != undefined && this.taskActivity.assignedTo > 0;
     let isValidStatus = this.taskActivity.status != undefined && this.taskActivity.status > 0;
-    if (isValidName && isValidDueDate && isValidAssignedTo && isValidStatus) {
+    let isValidRemainder = (this.taskActivity.remainderType == 'Custom_Date' && this.taskActivity.remainder && this.taskActivity.remainder.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) || this.taskActivity.remainderType != 'Custom_Date'; 
+    if (isValidName && isValidDueDate && isValidAssignedTo && isValidStatus && isValidRemainder) {
       this.isValidTask = true;
     } else {
       this.isValidTask = false;
@@ -124,6 +132,35 @@ export class AddTaskModalPopupComponent implements OnInit {
       minDate: now,
       defaultDate: defaultDate
     });
+  }
+
+  private initializeRemainderPicker() {
+    let now: Date = new Date();
+    now.setMinutes(now.getMinutes() + 30);
+    let defaultDate;
+    if (this.taskActivity.remainder != undefined && this.taskActivity.remainder != null) {
+      defaultDate = new Date(this.taskActivity.remainder);
+    }
+
+    if (this.actionType == 'add') {
+      this.remainderDatePickr = flatpickr('#taskActivityRemainderPicker', {
+        enableTime: true,
+        dateFormat: 'Y-m-d H:i',
+        time_24hr: true,
+        minDate: now,
+        defaultDate: defaultDate,
+        maxDate: Date.parse(this.taskActivity.dueDate)
+      })
+    } else {
+      this.remainderDatePickr = flatpickr('#taskActivityRemainderPicker', {
+        enableTime: true,
+        dateFormat: 'Y-m-d H:i',
+        time_24hr: true,
+        minDate: now,
+        defaultDate: defaultDate,
+        maxDate: Date.parse(this.taskActivity.dueDate)
+      })
+    };
   }
 
   fetchAssignToDropDownOptions() {
@@ -177,6 +214,14 @@ export class AddTaskModalPopupComponent implements OnInit {
     } else {
       this.isDueDateError = false;
     }
+    if (this.taskActivity.remainder != undefined) {
+      const remainder = Date.parse(this.taskActivity.remainder);
+      if (startDate < remainder) {
+        this.taskActivity.remainder = undefined;
+      }
+    }
+    this.initializeRemainderPicker();
+    this.checkRemainderOptionsVisibility();
   }
 
   fetchTaskActivityByIdForEdit() {
@@ -194,6 +239,12 @@ export class AddTaskModalPopupComponent implements OnInit {
       }, error => {
         this.ngxLoading = false;
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+      },
+      () => {
+        this.initializeRemainderPicker();
+        if (this.taskActivity.remainderType == 'Custom_Date') {
+          this.showRemainderDate = true;
+        }
       }
     )
   }
@@ -221,6 +272,59 @@ export class AddTaskModalPopupComponent implements OnInit {
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       }
     )
+  }
+
+  handleRemainderType(event) {
+    if (event == 'Custom_Date') {
+      this.showRemainderDate = true;
+      this.initializeRemainderPicker();
+    } else {
+      this.showRemainderDate = false;
+      this.taskActivity.remainder = event;
+    }
+  }
+
+  isDueDateLessThanHalfAnHour(): boolean {
+    if (this.taskActivity.dueDate) {
+      const now = new Date();
+      const diffInMinutes = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 60);
+      return diffInMinutes < 30;
+    }
+    return false;
+  }
+
+  isDueDateLessThanOneHour(): boolean {
+    if (this.taskActivity.dueDate) {
+      const now = new Date();
+      const diffInMinutes = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 60);
+      return diffInMinutes < 60;
+    }
+    return false;
+  }
+
+  isDueDateLessThanOneDay(): boolean {
+    if (this.taskActivity.dueDate) {
+      const now = new Date();
+      const diffInDays = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 3600 * 24);
+      return diffInDays < 1;
+    }
+    return false;
+  }
+
+  isDueDateLessThanOneWeek(): boolean {
+    if (this.taskActivity.dueDate) {
+      const now = new Date();
+      const diffInDays = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 3600 * 24);
+      return diffInDays < 7;
+    }
+    return false;
+  }
+
+  checkRemainderOptionsVisibility() {
+    this.isBeforeHalfAnHourEnable = this.isDueDateLessThanHalfAnHour();
+    this.isBeforeOneHourEnable = this.isDueDateLessThanOneHour();
+    this.isBeforeOneDayEnable = this.isDueDateLessThanOneDay();
+    this.isBeforeOneWeekEnable = this.isDueDateLessThanOneWeek();
   }
 
 }

@@ -9,6 +9,7 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { NoteService } from '../services/note-service';
 import { UtilService } from 'app/core/services/util.service';
 import { SortOption } from 'app/core/models/sort-option';
+import { TaskActivityService } from '../services/task-activity.service';
 
 declare var swal:any;
 
@@ -16,7 +17,7 @@ declare var swal:any;
   selector: 'app-activity-stream',
   templateUrl: './activity-stream.component.html',
   styleUrls: ['./activity-stream.component.css'],
-  providers: [ActivityService, NoteService, SortOption]
+  providers: [ActivityService, NoteService, SortOption, TaskActivityService]
 })
 export class ActivityStreamComponent implements OnInit {
 
@@ -28,8 +29,10 @@ export class ActivityStreamComponent implements OnInit {
   @Input() contactEmailId;
   @Output() notifyShowDealForm = new EventEmitter();
   @Output() notifyShowLeadForm = new EventEmitter();
-  @Output() notifySuccess = new EventEmitter();
-  @Output() notifyDeleteSuccess = new EventEmitter();
+  @Output() notifyNoteUpdateSuccess = new EventEmitter();
+  @Output() notifyNoteDeleteSuccess = new EventEmitter();
+  @Output() notifyTaskDeleteSuccess = new EventEmitter();
+  @Output() notifyTaskUpdateSuccess = new EventEmitter();
 
   ngxLoading:boolean = false;
   activities = [];
@@ -46,9 +49,12 @@ export class ActivityStreamComponent implements OnInit {
   showNoteModalPopup: boolean = false;
   isFirstChange: boolean = true;
   activitySortOption: SortOption = new SortOption();
+  taskActivityId: any;
+  showPreviewTaskModalPopup: boolean = false;
+  showTaskModalPopup: boolean = false;
 
   constructor(private activityService:ActivityService, private referenceService: ReferenceService, public pagerService: PagerService,
-    private noteService:NoteService,public utilService:UtilService,public sortOption:SortOption) { }
+    private noteService:NoteService,public utilService:UtilService,public sortOption:SortOption, public taskActivityService: TaskActivityService) { }
 
   ngOnInit() {
     this.showAllActivities();
@@ -148,7 +154,7 @@ export class ActivityStreamComponent implements OnInit {
 
   showNoteCutomResponse(event) {
     this.showNoteModalPopup = false;
-    this.notifySuccess.emit(event);
+    this.notifyNoteUpdateSuccess.emit(event);
   }
 
   showDeleteConformationAlert(noteId) {
@@ -174,7 +180,7 @@ export class ActivityStreamComponent implements OnInit {
       data => {
         if (data.statusCode == 200) {
           this.showAllActivities();
-          this.notifyDeleteSuccess.emit(data.message);
+          this.notifyNoteDeleteSuccess.emit(data.message);
         }
         this.referenceService.loading(this.httpRequestLoader, false);
       }, error => {
@@ -208,6 +214,62 @@ export class ActivityStreamComponent implements OnInit {
   clearSearch() {
     this.activitySortOption.searchKey='';
     this.getAllFilteredActivityResults();
+  }
+
+  viewTask(taskId) {
+    this.taskActivityId = taskId;
+    this.showPreviewTaskModalPopup = true;
+  }
+
+  closeTaskModalPopup() {
+    this.showTaskModalPopup = false;
+  }
+
+  closePreviewTaskModalPopup() {
+    this.showPreviewTaskModalPopup = false;
+  }
+
+  editTask(taskId) {
+    this.actionType = 'edit';
+    this.taskActivityId = taskId;
+    this.showTaskModalPopup = true;
+  }
+
+  showUpdateSuccessStatus(event:any) {
+    this.closeTaskModalPopup();
+    this.notifyTaskUpdateSuccess.emit(event);
+  }
+
+  deleteTask(id) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.taskActivityService.delete(id).subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          this.showAllActivities();
+          this.notifyTaskDeleteSuccess.emit(data.message);
+        }
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }, error => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    )
+  }
+
+  showTaskDeleteConformationAlert(id) {
+    const self = this;
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, the task can not be recovered.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes'
+    }).then(function () {
+      self.deleteTask(id);
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    })
   }
 
 }

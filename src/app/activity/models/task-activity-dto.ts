@@ -10,4 +10,7 @@ export class TaskActivity {
     loggedInUserId:number;
     statusName:string;
     assignedToName:string;
+    remainder:any;
+    createdTime:any;
+    remainderType:any = '';
 }

@@ -50,7 +50,7 @@
     </div>
     <div class="activity-footer">
       <span class="activity-title">Status: <span [ngClass]="emailActivity.status=='OPENED'?'view-banner activity-updated-status-btn' : 'view-banner published activity-created-status-btn'" >{{emailActivity.status}}</span></span>
-      <a class="view_details" (click)="viewEmail(emailActivity.id)"><span>View details</span></a>
+      <a class="underline-on-hover" (click)="viewEmail(emailActivity.id)"><span>View details</span></a>
     </div>
   </div>
   <!-- --------------------Pagination0-------------------- -->

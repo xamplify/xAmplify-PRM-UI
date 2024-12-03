@@ -479,7 +479,8 @@ export class SortOption {
 		{ 'name': 'Lead', 'value': 'Lead-Desc' },
 		{ 'name': 'Deal', 'value': 'Deal-Desc' },
 		{ 'name': 'Email', 'value': 'Email-Desc' },
-		{ 'name': 'Note', 'value': 'Note-Desc' }
+		{ 'name': 'Note', 'value': 'Note-Desc' },
+		{ 'name': 'Task', 'value': 'Task-Desc'}
 	];
   
 	/*** XNFR-745 ***/

@@ -335,9 +335,6 @@ border-bottom:none;
      overflow-x:auto;
     }
   }
-  .add-btn :hover {
-    text-decoration-line: underline;
-  }
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

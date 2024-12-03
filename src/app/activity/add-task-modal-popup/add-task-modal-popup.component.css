@@ -4,3 +4,12 @@
 .right_aligned_input_field {
     padding: 0px 0px 0px 2px;
 }
+.option_user_icon {
+    font-family: 'FontAwesome', 'Gantari';
+}
+.hide_remainder_date {
+    display: none;
+}
+.custom-file-label {
+    color: white !important;
+}

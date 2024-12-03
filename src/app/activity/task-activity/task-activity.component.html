@@ -41,7 +41,7 @@
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <div class="activity_card mb10" *ngFor="let taskActivity of taskActivityPagination?.pagedItems">
     <div class="activity-header">
-      <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">Name:</label><a (click)="viewTask(taskActivity.id)">{{taskActivity.name}}</a></span>
+      <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">Name:</label><a class="underline-on-hover" (click)="viewTask(taskActivity.id)">{{taskActivity.name | slice:0:32}}<span *ngIf="taskActivity.name.length > 32">...</span></a></span>
       <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="taskActivity.createdTime"></app-display-date-and-time></span>
     </div>
     <div class="activity-body">
@@ -49,10 +49,10 @@
       <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Type:</label>{{taskActivity.taskType == 'Todo' ? 'To Do':taskActivity.taskType}}</span>
     </div>
     <div class="activity-footer">
-      <span class="activity-title">Status: <span class="view-banner" >{{taskActivity.statusName}}</span></span>
-      <span class="activity-title">Due Date: <span class="view-banner" ><app-display-date-and-time [dateAndTimeUTCString]="taskActivity.dueDate"></app-display-date-and-time></span></span>
-      <a (click)="editTask(taskActivity.id)"><span>Edit</span></a>
-      <a (click)="showDeleteConformationAlert(taskActivity.id)"><span>Delete</span></a>
+      <span class="activity-title">Status: <span class="view-banner activity-updated-status-btn" >{{taskActivity.statusName}}</span></span>
+      <span class="activity-title">Due Date: <span class="view-banner activity-updated-status-btn" ><app-display-date-and-time [dateAndTimeUTCString]="taskActivity.dueDate"></app-display-date-and-time></span></span>
+      <a class="underline-on-hover" (click)="editTask(taskActivity.id)"><span>Edit</span></a>
+      <a class="underline-on-hover" (click)="showDeleteConformationAlert(taskActivity.id)"><span>Delete</span></a>
     </div>
   </div>
   <!-- --------------------Pagination0-------------------- -->
@@ -67,7 +67,7 @@
 
 <app-add-task-modal-popup *ngIf="showTaskModalPopup" [userId]="contactId" [taskActivityId]="taskActivityId"
   [actionType]="actionType" (notifyClose)="closeTaskModalPopup()"
-  (notifyUpdateSuccess)="showUpdateSuccessStatus($event)"
+  (notifyUpdateSuccess)="showUpdateSuccessStatus($event)" [isReloadTaskActivityTab]="reloadTab"
   (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-add-task-modal-popup>
 
 <app-preview-task-activity *ngIf="showPreviewTaskModalPopup" [taskActivityId]="taskActivityId"

@@ -42,12 +42,12 @@ export class TaskActivityService {
 
   update(taskActivity:TaskActivity) {
     taskActivity.loggedInUserId = this.authenticationService.getUserId();
-    let url = this.URL + "/updateTaskActivity" + this.ACCESS_TOKEN_URL;
+    let url = this.URL + this.ACCESS_TOKEN_URL;
     return this.authenticationService.callPutMethod(url, taskActivity);
   }
 
   delete(id:any) {
-    let url = this.URL + "/delete/" + id + this.ACCESS_TOKEN_URL;
+    let url = this.URL + "/" + id + this.ACCESS_TOKEN_URL;
     return this.authenticationService.callDeleteMethod(url);
   }
 

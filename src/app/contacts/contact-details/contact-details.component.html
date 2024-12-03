@@ -176,9 +176,11 @@
                 <div id="activity1" class="tab-pane fade in active integration-profile">
                   <app-activity-stream *ngIf="showActivityTab" [contactId]="contactId" [reloadTab]="isReloadActivityTab"
                     [isFromCompanyModule]="isFromCompanyModule" (notifyShowDealForm)="viewDeal($event)"
-                    (notifyShowLeadForm)="viewLead($event)" [selectedContactListId]="selectedContactListId"
-                    [contactName]="contactName" [contactEmailId]="selectedContact.emailId"
-                    (notifySuccess)="showNoteUpdateCutomResponse($event)" (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-activity-stream>
+                    (notifyShowLeadForm)="viewLead($event)" [selectedContactListId]="selectedContactListId" [contactName]="contactName"
+                    [contactEmailId]="selectedContact.emailId" (notifyNoteUpdateSuccess)="showNoteUpdateCutomResponse($event)"
+                    (notifyNoteDeleteSuccess)="showNoteDeleteSuccessStatus($event)"
+                    (notifyTaskUpdateSuccess)="showTaskUpdateCutomResponse($event)"
+                    (notifyTaskDeleteSuccess)="showTaskDeleteSuccessStatus($event)"></app-activity-stream>
                 </div>
                 <div *ngIf="showNotesTab" id="note1" class="tab-pane fade pt-top">
                   <app-note [contactId]="contactId" [reloadTab]="isReloadNoteTab" (notifyUpdateSuccess)="showNoteUpdateCutomResponse($event)"
@@ -216,7 +218,7 @@
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                 Leads({{leadsCount}})
               </a>
-              <a (click)="addLead()" class="add-btn"><span>+ Add</span></a>
+              <a (click)="addLead()" class="add-btn underline-on-hover"><span>+ Add</span></a>
             </h4>
           </div>
           <div id="collapse1" class="panel-collapse collapse in">
@@ -226,7 +228,7 @@
               <div class="activity_card mb10" *ngFor="let lead of contactLeads">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a class="add-btn" (click)="viewLead(lead.id)">
+                  <a class="add-btn underline-on-hover" (click)="viewLead(lead.id)">
                     <span class="activity-title">{{lead.firstName != null ? lead.firstName:''}} {{lead.lastName}}</span>
                   </a>
                 </div>
@@ -238,10 +240,10 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a class="add-btn" (click)="viewMoreLeads()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn underline-on-hover" (click)="viewMoreLeads()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
-            <div class="panel-body" *ngIf="!(contactLeads.length > 0) && !leadsLoader?.isLoading">
+            <div class="panel-body" *ngIf="!(contactLeads.length > 0) && !leadsLoader?.isLoading && !leadsResponse.isVisible">
               No leads associated with this contact.
             </div>
           </div>
@@ -253,7 +255,7 @@
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
                 Deals({{dealsCount}})
               </a>
-              <a (click)="addDeal()" class="add-btn"><span>+ Add</span></a>
+              <a (click)="addDeal()" class="add-btn underline-on-hover"><span>+ Add</span></a>
             </h4>
           </div>
           <div id="collapse2" class="panel-collapse collapse in">
@@ -263,7 +265,7 @@
               <div class="activity_card mb10" *ngFor="let deal of contactDeals">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a class="add-btn" (click)="viewDeal(deal.id)">
+                  <a class="add-btn underline-on-hover" (click)="viewDeal(deal.id)">
                     <span class="activity-title">{{deal.title}}</span>
                   </a>
                 </div>
@@ -282,10 +284,10 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a class="add-btn" (click)="viewMoreDeals()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn underline-on-hover" (click)="viewMoreDeals()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
-            <div class="panel-body" *ngIf="!(contactDeals.length > 0) && !dealsLoader.isLoading">
+            <div class="panel-body" *ngIf="!(contactDeals.length > 0) && !dealsLoader.isLoading && !dealsResponse.isVisible">
               No deals associated with this contact.
             </div>
           </div>
@@ -306,7 +308,7 @@
               <div class="activity_card mb10" *ngFor="let campaign of contactCampaigns">
                 <div>
                   <i class="fas fa-bullhorn mr5" aria-hidden="true"> </i>
-                  <a class="add-btn" (click)="viewCampaignTimeLine(campaign)">
+                  <a class="add-btn underline-on-hover" (click)="viewCampaignTimeLine(campaign)">
                     <span class="activity-title">{{campaign.campaignName}}</span>
                   </a>
                 </div>
@@ -318,10 +320,10 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a class="add-btn" (click)="viewMoreCampaigns()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn underline-on-hover" (click)="viewMoreCampaigns()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
-            <div class="panel-body" *ngIf="!(contactCampaigns.length > 0) && !campaignsLoader?.isLoading">
+            <div class="panel-body" *ngIf="!(contactCampaigns.length > 0) && !campaignsLoader?.isLoading && !campaignsResponse.isVisible">
               No Campaign associated with this contact.
             </div>
           </div>
