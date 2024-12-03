@@ -24,6 +24,7 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 	activePartnersPagination: Pagination = new Pagination();
 	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	loggedInUserId: number = 0;
+	scrollClass: string;
 	constructor(public listLoaderValue: ListLoaderValue,public authenticationService: AuthenticationService,public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
 		public xtremandLogger: XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -51,7 +52,6 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 		if (this.authenticationService.isSuperAdmin()) {
 			this.activePartnersPagination.userId = this.authenticationService.checkLoggedInUserId(this.activePartnersPagination.userId);
 		}
-		this.activePartnersPagination.maxResults = 3;
 		this.activePartnersPagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
 		this.activePartnersPagination.fromDateFilterString = this.fromDateFilter;
 		this.activePartnersPagination.toDateFilterString = this.toDateFilter;
@@ -62,6 +62,12 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 					response.activePartnesList[i].contactCompany = response.activePartnesList[i].partnerCompanyName;
 				}
 				this.activePartnersPagination.totalRecords = response.totalRecords;
+
+				if (this.activePartnersPagination.totalRecords == 0) {
+					this.scrollClass = 'noData'
+				} else {
+					this.scrollClass = 'tableHeightScroll'
+				}
 				this.activePartnersPagination = this.pagerService.getPagedItems(this.activePartnersPagination, response.activePartnesList);
 				this.referenseService.loading(this.activeParnterHttpRequestLoader, false);
 			},
@@ -78,6 +84,21 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 		this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
 		this.referenseService.goToTop(); 
 	  }
+
+	downloadCampaignLaunchedByReport() {
+		let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
+		let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
+		let searchKeyRequestParm = this.activePartnersSearchKey != undefined ? this.activePartnersPagination.searchKey : "";
+		let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
+		let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
+		let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
+		let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+		let url = this.authenticationService.REST_URL + "partner/journey/download/active-partners-launched-campaigns-report?access_token=" + this.authenticationService.access_token
+			+ "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
+			+ "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm
+			+ "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
+		this.referenseService.openWindowInNewTab(url);
+	}
 	
 
 }

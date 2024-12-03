@@ -35,6 +35,7 @@ export class UserwiseTrackDetailsComponent implements OnInit {
   loggedInUserId: number = 0;
   searchKey: string = "";
   pagination: Pagination = new Pagination();
+  scrollClass: string;
 
 
   constructor(public authenticationService: AuthenticationService,
@@ -64,7 +65,6 @@ export class UserwiseTrackDetailsComponent implements OnInit {
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    this.pagination.maxResults = 6;
     this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
@@ -75,6 +75,11 @@ export class UserwiseTrackDetailsComponent implements OnInit {
         if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }
       },
@@ -132,7 +137,6 @@ export class UserwiseTrackDetailsComponent implements OnInit {
   getUserWiseTrackDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 6;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     if (!this.isVendorVersion) {
@@ -145,6 +149,11 @@ export class UserwiseTrackDetailsComponent implements OnInit {
         if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }
       },

@@ -81,7 +81,6 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    this.pagination.maxResults = 6;
     this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
@@ -154,7 +153,6 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
       pagination.vanityUrlFilter = this.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     }
-    this.pagination.maxResults = 6;
     this.parterService.getTeamMemberTrackDetailsByInteraction(this.pagination, this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

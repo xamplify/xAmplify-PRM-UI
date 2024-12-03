@@ -105,7 +105,7 @@
       </div>
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getInteractedNotInteractedTrackDetails($event)">
         </app-pagination>
       </div>

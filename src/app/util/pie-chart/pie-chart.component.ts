@@ -110,7 +110,13 @@ export class PieChartComponent implements OnInit {
 
   launchedCampaignsCountGroupByCampaignType() {
     var pieChartData;
-    this.parterService.launchedCampaignsCountGroupByCampaignType(this.partnerCompanyId, this.authenticationService.user.id).subscribe(
+    let partnerJourneyRequest = new PartnerJourneyRequest();
+    partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+    partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
+    partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
+    partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+    partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.parterService.launchedCampaignsCountGroupByCampaignType(partnerJourneyRequest).subscribe(
       (data: any) => {
         if(this.isVendorVersion){
           pieChartData = [{ name: 'VIDEO', y: data.VIDEO }, { name: 'Email', y: data.REGULAR }, { name: 'SOCIAL', y: data.SOCIAL }, { name: 'EVENT', y: data.EVENT }, { name: 'SURVEY', y: data.SURVEY },{ name: 'PAGE', y: data.PAGE }];

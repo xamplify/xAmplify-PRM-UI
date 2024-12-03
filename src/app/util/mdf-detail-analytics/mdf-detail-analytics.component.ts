@@ -53,7 +53,6 @@ export class MdfDetailAnalyticsComponent implements OnInit {
   getMdfDetailsForPartnerJourney(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 3;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
@@ -129,7 +128,6 @@ export class MdfDetailAnalyticsComponent implements OnInit {
   getMdfDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 6;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     if (!this.isVendorVersion) {

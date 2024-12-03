@@ -72,7 +72,6 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
-    this.pagination.maxResults = 6;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.campaignTypeFilter = this.campaignTypeFilter;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
@@ -150,7 +149,6 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   getRedistributedCampaignDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 6;
     this.pagination.campaignTypeFilter = this.campaignTypeFilter;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;

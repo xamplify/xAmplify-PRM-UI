@@ -39,6 +39,7 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   logger: any;
   showModulesPopup: boolean;
   teamMemberGroupId: any;
+  scrollClass: string;
   
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, private teamMemberService: TeamMemberService, public parterService: ParterService,
@@ -67,7 +68,6 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
-    this.pagination.maxResults = 6;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.teamMemberId = this.teamMemberId;
@@ -80,6 +80,11 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
         if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }
       },

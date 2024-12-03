@@ -65,7 +65,6 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.assetTypeFilter = this.assetType;
-    this.pagination.maxResults = 6;
     this.pagination.teamMemberId = this.teamMemberId;
     this.pagination.fromDateFilterString = this.fromDateFilter;
     this.pagination.toDateFilterString = this.toDateFilter;
@@ -96,7 +95,6 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.assetTypeFilter = this.assetType;
-    this.pagination.maxResults = 6; 
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds; 
     if(!this.isVendorVersion){

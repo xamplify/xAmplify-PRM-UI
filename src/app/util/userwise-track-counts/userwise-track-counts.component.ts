@@ -79,7 +79,6 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.lmsType = this.type;
-    this.pagination.maxResults = 8;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
@@ -158,7 +157,6 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.lmsType = this.type;
-    this.pagination.maxResults = 8;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     if (!this.isVendorVersion) {

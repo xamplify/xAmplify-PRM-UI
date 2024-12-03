@@ -169,7 +169,7 @@ export class ActivePartnersTableComponent implements OnInit {
     this.filterApplied = true;
     this.setDateFilterOptions();
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
-    this.isCollapsed = false;
+    this.showActivePartnersTable();
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
   }
@@ -231,6 +231,12 @@ export class ActivePartnersTableComponent implements OnInit {
       if (validDates || this.selectedCompanyIds.length > 0) {
         this.applyFilters();
       }
+    }
+  }
+
+  showActivePartnersTable() {
+    if(this.selectedCompanyIds.length > 0){
+      this.isCollapsed = false;
     }
   }
 

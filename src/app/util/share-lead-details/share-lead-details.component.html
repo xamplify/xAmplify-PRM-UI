@@ -20,7 +20,7 @@
     </div>
     <div class="panel-body">
       <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
-      <div class="scroll table-responsive" *ngIf="!httpRequestLoader.isLoading">
+      <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
             <tr>
@@ -87,7 +87,7 @@
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin"
         [hidden]="httpRequestLoader.isLoading">
-        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getShareLeadDetails($event)">
         </app-pagination>
       </div>

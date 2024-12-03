@@ -84,3 +84,13 @@ border-color: #ddd;
     display: inline-flex
   }
 
+  .tableHeightScroll{   
+    height: 383px !important;
+   overflow-y: auto;
+   margin-bottom: 20px;
+}
+
+.noData{
+  height: 0px;
+}
+

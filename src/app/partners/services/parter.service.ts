@@ -77,8 +77,14 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    launchedCampaignsCountGroupByCampaignType(partnerCompanyId: number, customerId: number) {
-        const url = this.URL + 'partner/campaigns-count-by-campaigntype/' + customerId + '/' + partnerCompanyId + '?access_token=' + this.authenticationService.access_token
+    launchedCampaignsCountGroupByCampaignType(partnerJourneyRequest: PartnerJourneyRequest) {
+        let loggedInUserIdRequestParam = partnerJourneyRequest.loggedInUserId != undefined && partnerJourneyRequest.loggedInUserId > 0 ? "&loggedInUserId=" + partnerJourneyRequest.loggedInUserId : "&loggedInUserId=0";
+        let partnerCompanyIdRequestParam = partnerJourneyRequest.partnerCompanyId != undefined && partnerJourneyRequest.partnerCompanyId > 0 ? "&partnerCompanyId=" + partnerJourneyRequest.partnerCompanyId : "&partnerCompanyId=0";
+        let fromDateRequestParam = partnerJourneyRequest.fromDateFilterInString != undefined ? "&fromDateFilterInString=" + partnerJourneyRequest.fromDateFilterInString : "&fromDateFilterInString =''"
+        let toDateRequestParam = partnerJourneyRequest.toDateFilterInString != undefined ? "&toDateFilterInString=" + partnerJourneyRequest.toDateFilterInString : "&toDateFilterInString =''"
+        let timeZoneRequestParam = partnerJourneyRequest.timeZone != undefined ? "&timeZone=" + partnerJourneyRequest.timeZone : "&timeZone =''"
+        let partnerJourneyRequestDto = loggedInUserIdRequestParam + partnerCompanyIdRequestParam + fromDateRequestParam + toDateRequestParam + timeZoneRequestParam;
+        const url = this.URL + 'partner/campaigns-count-by-campaigntype?access_token=' + this.authenticationService.access_token + partnerJourneyRequestDto;
         return this.httpClient.get(url)
             .catch(this.handleError);
     }
