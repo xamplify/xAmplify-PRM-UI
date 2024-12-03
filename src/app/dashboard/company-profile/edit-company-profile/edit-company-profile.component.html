@@ -529,7 +529,7 @@
 										<div class="col-md-6 col-lg-6">
 											<div class="form-group" [attr.class]="phoneDivClass">
 												<label class="control-label" translate>Phone Number</label>
-												<input type="text" maxlength="20" class="form-control"
+												<input type="text" maxlength="20" class="form-control" placeholder="Phone Number"
 													[(ngModel)]="companyProfile.phone"
 													[ngModelOptions]="{standalone: true}"
 													(input)="validatePattern('phone')"

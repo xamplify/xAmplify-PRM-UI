@@ -1863,6 +1863,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.errorUploadCropper = true;
           this.showCropper = false;
           this.isCropperVisible = false; 
+          this.loadingcrop = false;
         }
       }
 
@@ -2042,7 +2043,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     /** XNFR-760 - start **/
     checkAndAutofillCompanyProfile() {
-        if (this.companyProfile.isAdd && !this.refService.checkIsValidString(this.companyProfile.companyProfileName)) {
+        if (this.companyProfile.isAdd && this.authenticationService.isPartner()) {
             this.autoFillCompanyProfile();
         }
     }
@@ -2052,24 +2053,28 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.companyProfileService.autoFillCompanyProfile().subscribe(
             (result: any) => {
                 this.isLoading = false;
-                this.autofillCompanyProfile = result.data;
-                this.companyLogoSourceLink = this.autofillCompanyProfile.companyLogoSourceLink;
-                this.companyProfile.companyProfileName = this.autofillCompanyProfile.companyProfileName;
-                this.companyProfile.aboutUs = this.autofillCompanyProfile.aboutUs;
-                this.companyProfile.website = this.autofillCompanyProfile.website;
-                this.companyProfile.city = this.autofillCompanyProfile.city;
-                this.companyProfile.country = this.autofillCompanyProfile.country;
-                this.companyProfile.state = this.autofillCompanyProfile.state;
-                this.companyProfile.instagramLink = this.autofillCompanyProfile.instagramLink;
-                this.companyProfile.facebookLink = this.autofillCompanyProfile.facebookLink;
-                this.companyProfile.twitterLink = this.autofillCompanyProfile.twitterLink;
-                this.companyProfile.googlePlusLink = this.autofillCompanyProfile.googlePlusLink;
-                this.companyProfile.linkedInLink = this.autofillCompanyProfile.linkedInLink;
+                if (result.statusCode == 200) {
+                    this.autofillCompanyProfile = result.data;
+                    this.companyLogoSourceLink = this.autofillCompanyProfile.companyLogoSourceLink;
+                    this.companyProfile.companyProfileName = this.autofillCompanyProfile.companyProfileName;
+                    this.companyProfile.aboutUs = this.autofillCompanyProfile.aboutUs;
+                    this.companyProfile.website = this.autofillCompanyProfile.website;
+                    this.companyProfile.city = this.autofillCompanyProfile.city;
+                    this.companyProfile.country = this.autofillCompanyProfile.country;
+                    this.companyProfile.state = this.autofillCompanyProfile.state;
+                    this.companyProfile.instagramLink = this.autofillCompanyProfile.instagramLink;
+                    this.companyProfile.facebookLink = this.autofillCompanyProfile.facebookLink;
+                    this.companyProfile.twitterLink = this.autofillCompanyProfile.twitterLink;
+                    this.companyProfile.googlePlusLink = this.autofillCompanyProfile.googlePlusLink;
+                    this.companyProfile.linkedInLink = this.autofillCompanyProfile.linkedInLink;
+                }
             }, (error: any) => {
                 this.isLoading = false;
                 console.log('Error Occured while retriving the company profile automatically');
             }, () => {
-                this.autofillCompanyLogoFromUrl(this.companyLogoSourceLink);
+                if(this.refService.checkIsValidString(this.companyLogoSourceLink)) {
+                    this.autofillCompanyLogoFromUrl(this.companyLogoSourceLink);
+                }
             }
         );
     }
