@@ -645,4 +645,8 @@ export class ParterService {
         .catch(this.handleError);    
     }
 
+    findTotalPartnersCount(loggedInUserId: number, applyFilter: boolean) {
+        return this.callApiForDashBoard("findTotalPartnersCount", loggedInUserId, applyFilter);
+    }
+
 }

@@ -194,6 +194,9 @@ export class UserwiseTrackCountsComponent implements OnInit {
     let partnerCompanyIdRequestParam = this.partnerCompanyId != undefined && this.partnerCompanyId > 0 ? this.partnerCompanyId : 0;
     let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
     let teamMemberIdRequestParam = this.teamMemberId != undefined && this.teamMemberId > 0 ? this.teamMemberId : 0;
+    let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
+    let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
+    let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
     let urlSuffix = "partner/journey/download/track-counts-report"
     if (this.type === 'PLAYBOOK') {
       urlSuffix = "partner/journey/download/playbook-counts-report"
@@ -201,7 +204,8 @@ export class UserwiseTrackCountsComponent implements OnInit {
     let url = this.authenticationService.REST_URL + urlSuffix + "?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
-      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam;
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
     this.referenseService.openWindowInNewTab(url);
   }
 

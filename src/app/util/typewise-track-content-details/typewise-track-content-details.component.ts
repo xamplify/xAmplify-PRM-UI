@@ -192,11 +192,16 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     let partnerCompanyIdRequestParam = this.partnerCompanyId != undefined && this.partnerCompanyId > 0 ? this.partnerCompanyId : 0;
     let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
     let teamMemberIdRequestParam = this.teamMemberId != undefined && this.teamMemberId > 0 ? this.teamMemberId : 0;
+    let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
+    let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
+    let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
     let url = this.authenticationService.REST_URL + "partner/journey/download/typewise-track-content-report?access_token=" + this.authenticationService.access_token
       + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" + trackTypeFilterRequestParam + "&searchKey=" + searchKeyRequestParm
       + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&assetType=" + assertTypeFilterRequestParm
       + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
-      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam;
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
+      + timeZoneRequestParm;
     this.referenseService.openWindowInNewTab(url);
   }
 

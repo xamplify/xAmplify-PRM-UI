@@ -99,6 +99,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     companyProfileIncompletePartnersList :any= [];
     partnerfromDateFilter: any = "";
     partnertoDateFilter: any = "";
+    totalPartnersCountLoader: boolean;
+    totalPartnersCount: any;
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -754,6 +756,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.findInActivePartnersCount();
                 this.findApprovePartnersCount();
                 this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+                this.findTotalPartnersCount();
             if(tabIndex != undefined){
                 if(tabIndex == 1){
                 this.goToInActivePartnersDiv()
@@ -1162,5 +1165,22 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     getDateFilterOptions(event: any) {
         this.partnerfromDateFilter = event.fromDate;
         this.partnertoDateFilter = event.toDate;
+    }
+
+
+    findTotalPartnersCount() {
+        if (!this.authenticationService.isTeamMember()) {
+            this.applyFilter = false;
+        }
+        this.totalPartnersCountLoader = true;
+        this.parterService.findTotalPartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
+            (result: any) => {
+                this.totalPartnersCount = result.data.totalPartnersCount;
+                this.totalPartnersCountLoader = false;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.totalPartnersCountLoader = false;
+            });
     }
 }

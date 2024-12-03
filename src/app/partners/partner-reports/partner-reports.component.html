@@ -46,7 +46,7 @@
               <a [className]="activePartnersCount > 0 ? 'dashboard-stat dashboard-stat-lighter yellow-gold' : 'dashboard-stat dashboard-stat-lighter yellow-gold disable-tile-pj'"
                 [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 0"
                     aria-hidden="true"></i>
                 </div>
@@ -76,7 +76,7 @@
               <a [className]="inActivePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft' : 'dashboard-stat dashboard-stat-lighter blue-soft disable-tile-pj'"
                 [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 1"
                     aria-hidden="true"></i>
                 </div>
@@ -108,7 +108,7 @@
                 [class.greay]="6!=selectedTabIndex"
                 (click)="companyProfileIncompletePartnersCount>0 ?  goToIncompleteCompanyProfilePartnersDiv() : ''">
                 <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 6===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 6"
                     aria-hidden="true"></i>
                 </div>
@@ -138,7 +138,7 @@
                       <a [className]="PendingSignupPartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter red-soft' : 'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
                         [class.greay]="7!=selectedTabIndex">
                         <div class="visual">
-                          <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                          <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                             [ngStyle]="{'color': 7===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 7"
                             aria-hidden="true"></i>
                         </div>
@@ -168,7 +168,7 @@
                       <a [className]="throughPartnerCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
                         [class.greay]="3!=selectedTabIndex" (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
                         <div class="visual">
-                          <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                          <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                             [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
                             aria-hidden="true"></i>
                         </div>
@@ -199,7 +199,7 @@
                 [class.greay]="2!=selectedTabIndex"
                 (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''">
                 <div class="visual">
-                  <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle"
+                  <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle fontCustom"
                     style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }" aria-hidden="true">
                   </i>
@@ -228,7 +228,7 @@
               <a [className]="approvePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter red-soft' : 'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
                 [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 5===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 5"
                     aria-hidden="true"></i>
                 </div>
@@ -249,6 +249,23 @@
                 </span>
               </a>
             </div>
+             <!--TotalPartner Count-->
+             <app-box-loader [countLoader]=5 *ngIf="totalPartnersCountLoader"></app-box-loader>
+             <div *ngIf="!totalPartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth">
+               <a class="dashboard-stat dashboard-stat-lighter red-soft cardCustomStyle">
+                 <div class="visual pt0">
+                  <i class="fa fa-handshake-o dbiconscss" aria-hidden="true"></i>
+                 </div>
+                 <div class="details">
+                   <div class="number NumberFontDecrease">{{totalPartnersCount}}</div>
+                   <div class="desc default-name-font TextFontDecrease" data-toggle="tooltip" data-placement="top"
+                     title="Total {{authenticationService?.partnerModule?.customName}}s" style="font-size: 13px">Total
+                     {{authenticationService?.partnerModule?.customName | slice:0:10}}s
+                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
+                   </div>
+                 </div>
+               </a>
+             </div>
           </div>
         </div>
       </div>
@@ -314,6 +331,7 @@
       </div>
       <app-campaigns-launched-by-partners (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [applyFilter]="applyFilter" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-campaigns-launched-by-partners>
     </div>
   </div>

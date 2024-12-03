@@ -15,9 +15,11 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 	providers: [Pagination, HttpRequestLoader,ListLoaderValue]
 })
 export class CampaignsLaunchedByPartnersComponent implements OnInit {
-	@Input() applyFilter:boolean;
+	@Input() applyFilter: boolean;
 	@Input() selectedPartnerCompanyIds: any = [];
 	@Output() notifyShowDetailedAnalytics = new EventEmitter();
+	@Input() fromDateFilter: string = '';
+	@Input() toDateFilter: string = '';
 	activePartnersSearchKey: string = "";
 	activePartnersPagination: Pagination = new Pagination();
 	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -51,6 +53,9 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 		}
 		this.activePartnersPagination.maxResults = 3;
 		this.activePartnersPagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+		this.activePartnersPagination.fromDateFilterString = this.fromDateFilter;
+		this.activePartnersPagination.toDateFilterString = this.toDateFilter;
+		this.activePartnersPagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 		this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
 			(response: any) => {
 				for (var i in response.activePartnesList) {
