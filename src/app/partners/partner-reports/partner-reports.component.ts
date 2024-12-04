@@ -869,6 +869,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.approvePartnersCountLoader = true;
         this.throughPartnerCampaignsCountLoader = true;
         this.PendingSignupAndCompanyProfilePartnersLoader = true;
+        this.totalPartnersCountLoader = true;
         this.selectedPartnerCompanyIds = [];
         if(this.selectedTabIndex==0){
             this.loadAllCharts = true;
@@ -884,6 +885,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         self.findInActivePartnersCount();
         self.findApprovePartnersCount();
         self.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+        self.findTotalPartnersCount();
         if(self.selectedTabIndex==0){
             self.reloadWithFilter = true;
             self.getPartnersRedistributedCampaignsData();
@@ -1169,9 +1171,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
 
     findTotalPartnersCount() {
-        if (!this.authenticationService.isTeamMember()) {
-            this.applyFilter = false;
-        }
         this.totalPartnersCountLoader = true;
         this.parterService.findTotalPartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
             (result: any) => {
