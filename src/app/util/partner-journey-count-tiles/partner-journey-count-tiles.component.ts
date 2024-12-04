@@ -25,7 +25,9 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   @Input() isVendorVersion : boolean = false;
   @Input() vanityUrlFilter : boolean = false;
   @Input() vendorCompanyProfileName : string = '';
-  shareLeadText : string = 'Share Leads';
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
+  shareLeadText: string = 'Share Leads';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -62,18 +64,21 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
     partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
     partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+    partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
+    partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+    partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getPartnerJourneyCounts(partnerJourneyRequest).subscribe(
-			(response: any) => {	
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
-          this.partnerJourneyAnalytics = response.data;	
-        }        	
-			},
-			(_error: any) => {
+          this.partnerJourneyAnalytics = response.data;
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
   getTeamMemberCounts() {
