@@ -16,8 +16,8 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="portlet light remove_cardBgcolor padding_0 clearfix">
-                <div class="portlet-title" style="border-bottom: none;">
+            <div class="portlet light remove_cardBgcolor padding_0 clearfix light_bg_removal">
+                <div class="portlet-title remove_border" style="border-bottom: none;">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-lg-12">
                             <div class="col-xs-8 col-sm-8 col-lg-8 p0">
@@ -43,7 +43,7 @@
                                         <button class="glyphicon glyphicon-remove search-box-item-clear"
                                             (click)="searchKey='';searchLandingPages();"
                                             *ngIf="searchKey?.length>0"></button>
-                                        <button type="submit" class="search-box-item-click"
+                                        <button type="submit" class="search-box-item-click only_content"
                                             (click)="searchLandingPages()"><i class="fa fa-search"></i></button>
                                     </div>
                                 </div>

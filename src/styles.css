@@ -3328,3 +3328,7 @@ tbody{background: #fff;}
 .break-word{
   word-wrap: break-word;
 }
+button.search-box-item-click.only_partner{top: 0.7px !important;}
+button.search-box-item-click.only_content{top: 1.2px !important;}
+button.search-box-item-click.only_design{top: 6.2px !important;}
+button.search-box-item-click.only_mdf{top: 0.8px !important;}
