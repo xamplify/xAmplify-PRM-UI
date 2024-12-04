@@ -27,6 +27,8 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
     @Input() selectedTeamMemberIds: any[] = [];
     @Input() vanityUrlFilter: boolean = false;
     @Input() vendorCompanyProfileName: string = '';
+    @Input() fromDateFilter: string = '';
+    @Input() toDateFilter: string = '';
 
     hasLeadsAndDealsAccess = false;
     headerText = "";
@@ -94,6 +96,9 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
             partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
             partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
             partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+            partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
+            partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+            partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             this.partnerService.getPartnerJourneyLeadDealCounts(this.chartId, partnerJourneyRequest).subscribe(
                 response => {
                     this.processResponse(response);
@@ -104,7 +109,16 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
 
         } else {
             if (!this.isTeamMemberAnalytics) {
-                this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId, this.filterValue, this.applyTeamMemberFilter).subscribe(
+                let partnerJourneyRequest = new PartnerJourneyRequest();
+                partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+                partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
+                partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+                partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
+                partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+                partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyTeamMemberFilter;
+                partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                partnerJourneyRequest.filterType = this.filterValue;
+                this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(partnerJourneyRequest,this.chartId).subscribe(
                     response => {
                         this.processResponse(response);
                     }, error => {

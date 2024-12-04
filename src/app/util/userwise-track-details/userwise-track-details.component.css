@@ -74,6 +74,23 @@ border-color: #ddd;
     height: 7px;  
   }
 
+  
+  .custom-icon{
+    margin: -1px 3px 0px 3px;
+  }
+
+
   .item-title{
     display: inline-flex
   }
+
+  .tableHeightScroll{   
+    height: 383px !important;
+   overflow-y: auto;
+   margin-bottom: 20px;
+}
+
+.noData{
+  height: 0px;
+}
+
