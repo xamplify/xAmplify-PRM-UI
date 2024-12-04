@@ -2284,7 +2284,7 @@ button.btn.Btn-Gray.btn-hvr-text.neg_mrg_top4 {
   background-color: var(--page-content) !important;
   border-radius: 3px!important;
 }
-.lead-label{
+.lead-label,.folder_count{
   color: var(---text-color) !important;
 }
 legend.scheduler-borders{
