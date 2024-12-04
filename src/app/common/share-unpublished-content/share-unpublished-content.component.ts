@@ -51,6 +51,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
   trackOrPlayBooksSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   isTrackOrPlayBooksSweetAlertComponentCalled = false;
   isDashboardButtonsComponentCalled = false;
+  partnerIds = [];
+  dashboardButtonTitle = [];
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -156,6 +158,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.user = event['partnerDetails'];
     this.isPartnerInfoRequried = event['isPartnerInfoRequried'];
     this.isPublishingToPartnerList = event['isPublishingToPartnerList'];
+    this.partnerIds = event['partnerIds'];
+    this.dashboardButtonTitle = event['buttonTitle']
   }
 
   
@@ -174,6 +178,15 @@ export class ShareUnpublishedContentComponent implements OnInit {
       }else if(this.selectedModule==this.properties.tracksHeaderText
          || this.selectedModule==this.properties.playBooksHeaderText){
           this.addLoaderAndShareTracksOrPlayBooks();
+      }else if(this.selectedModule==this.properties.dashboardButtons){
+        this.ngxLoading = true;
+        let dashboardButtons = {};
+        dashboardButtons["ids"] = this.selectedIds;
+        dashboardButtons['partnerIds'] = this.partnerIds
+        dashboardButtons['vendorId'] = this.authenticationService.getUserId();
+        dashboardButtons['titles'] =  this.dashboardButtonTitle;
+        dashboardButtons['userListId'] = this.selectedUserListId;
+        this.shareDashboardbuttons(dashboardButtons);
       }
     }else{
       this.referenceService.goToTop();
@@ -271,6 +284,19 @@ export class ShareUnpublishedContentComponent implements OnInit {
         this.showPublishError();
       }
     );
+  }
+
+  private shareDashboardbuttons(campaignDetails:any) {
+    this.authenticationService.shareSelectedDashboardButtons(campaignDetails)
+      .subscribe(
+        data => {
+          this.showPublishedSuccessMessage(data);
+        },
+        _error => {
+          this.showPublishError();
+        }, () => {
+        }
+      );
   }
 
 }

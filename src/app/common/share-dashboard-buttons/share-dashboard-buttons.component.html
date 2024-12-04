@@ -43,10 +43,10 @@
            </tr>
         </thead>
         <tbody>
-           <tr class="pointer" *ngFor="let dashboardButton of pagination?.pagedItems ;let i =index" id="unPublished-dashboardButtons-tr-{{dashboardButton.id}}" [class.row-selected]="selectedDashboardButtonIds.indexOf(dashboardButton.id)>-1" (click)="highlightSelectedDashboardButtonOnRowClick(dashboardButton.id,$event)">
+           <tr class="pointer" *ngFor="let dashboardButton of pagination?.pagedItems ;let i =index" id="unPublished-dashboardButtons-tr-{{dashboardButton.id}}" [class.row-selected]="selectedDashboardButtonIds.indexOf(dashboardButton.id)>-1" (click)="highlightSelectedDashboardButtonOnRowClick(dashboardButton.id,$event,dashboardButton?.buttonTitle)">
            <td class="text-center">
               <input type="checkbox" class="pointer checkBox_shadow"  id="{{dashboardButton.id}}" [checked]="selectedDashboardButtonIds.indexOf(dashboardButton.id)>-1"
-               name="unPublishedDashboardButtonsCheckBox[]" value="{{dashboardButton.id}}" (click)="$event.stopPropagation();highlightDashboardButtonRowOnCheckBoxClick(dashboardButton.id,$event)">
+               name="unPublishedDashboardButtonsCheckBox[]" value="{{dashboardButton.id}}" (click)="$event.stopPropagation();highlightDashboardButtonRowOnCheckBoxClick(dashboardButton.id,$event,dashboardButton?.buttonTitle)">
            </td>
            <td class="text-center" title="{{dashboardButton?.buttonTitle}}">
               {{dashboardButton?.buttonTitle | slice:0:25}} <span *ngIf="dashboardButton?.buttonTitle?.length>25">...</span>
@@ -72,4 +72,3 @@
    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findDashboardButtons($event)">
    </app-pagination>
  </div>
-

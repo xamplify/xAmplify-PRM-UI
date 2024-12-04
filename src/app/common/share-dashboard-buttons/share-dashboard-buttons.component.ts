@@ -32,6 +32,8 @@ export class ShareDashboardButtonsComponent implements OnInit {
   lastName = "";
   companyName = "";
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  buttontitle = [];
+  partnerIds = [];;
 
   constructor(private authenticationService:AuthenticationService,
     private referenceService:ReferenceService,private pagerService:PagerService,private utilService:UtilService,
@@ -79,5 +81,33 @@ export class ShareDashboardButtonsComponent implements OnInit {
         this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
       });
   }
+
+  highlightSelectedDashboardButtonOnRowClick(selectedCampaignId: any, event: any,title:any) {
+    this.referenceService.highlightRowOnRowCick('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, 'unPublished-dashboardButtons-header-checkbox-id', selectedCampaignId, event);
+    this.sendEmitterValues(title);
+  }
+  
+  highlightDashboardButtonRowOnCheckBoxClick(selectedCampaignId: any, event: any,title:any) {
+    this.referenceService.highlightRowByCheckBox('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, 'unPublished-dashboardButtons-header-checkbox-id', selectedCampaignId, event);
+    this.sendEmitterValues(title);
+  }
+
+  selectOrUnselectAllRowsOfTheCurrentPage(event: any) {
+    this.selectedDashboardButtonIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, this.pagination, event);
+		this.sendEmitterValues('');
+  }
+
+  sendEmitterValues(title: any){
+		let emitterObject = {};
+		emitterObject['selectedRowIds'] = this.selectedDashboardButtonIds;
+    emitterObject['isPartnerInfoRequried'] = false;
+    if(this.pagination.partnerId>0){
+     this.partnerIds.push(this.pagination.partnerId);
+    }
+    emitterObject['partnerIds'] = this.partnerIds;
+    this.buttontitle.push(title);
+    emitterObject['buttonTitle'] = this.buttontitle;
+		this.shareDashboardButtonsEventEmitter.emit(emitterObject);
+	}
 
 }
