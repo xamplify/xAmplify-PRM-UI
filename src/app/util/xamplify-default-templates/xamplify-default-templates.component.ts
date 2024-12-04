@@ -260,6 +260,13 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
                 '{{dealStage}}',
                 '{{dealComment}}',
             ],
+            "PARTNER_REMAINDER": [
+              '{{VENDOR_FULL_NAME}}',
+              '{{VENDOR_COMPANY_NAME}}',
+          ],
+          "COMPANY_PROFILE_INCOMPLETE":[
+            '{{senderFullName}}',
+          ]
         };
     
         const requiredTags = requiredTagsMap[emailTemplateType] || [];
@@ -269,7 +276,7 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
             condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages && !self.isVendorMarketplacePages,
             checks: [
               { condition: () => !$.trim(emailTemplate.subject), message: "Whoops! We are unable to save this template because subject line is empty." },
-              { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
+              { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION", "PARTNER_REMAINDER", "COMPANY_PROFILE_INCOMPLETE"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
               { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN", "ADD_LEAD", "ADD_DEAL", "LEAD_UPDATE", "DEAL_UPDATE", "FORM_COMPLETED", "ADD_SELF_LEAD", "ADD_SELF_DEAL", "UPDATE_SELF_LEAD", "UPDATE_SELF_DEAL", "PRM_ADD_LEAD", "PRM_UPDATED"].includes(emailTemplateType) && !jsonContent.includes('{{customerFullName}}'), message: "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag." },
               { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
               { condition: () => emailTemplateType === "TRACK_PUBLISH" && !jsonContent.includes("{{trackTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag." },
@@ -470,6 +477,17 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
         { name: 'Deal Stage', value: '{{dealStage}}' },
         { name: 'Company Name', value: '{{companyName}}' },
         { name: 'Deal Comment', value: '{{dealComment}}' },
+        ];
+    }
+    if("PARTNER_REMAINDER"==emailTemplateType){
+      mergeTags =[{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
+        { name: 'Vendor Full Name', value: '{{VENDOR_FULL_NAME}}' },
+        { name: 'Vendor Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
+        ];
+    }
+    if("COMPANY_PROFILE_INCOMPLETE"==emailTemplateType){
+      mergeTags =[{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
         ];
     }
 

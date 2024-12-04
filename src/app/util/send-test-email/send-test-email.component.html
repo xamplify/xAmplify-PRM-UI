@@ -15,14 +15,14 @@
                         <label>Email Address<span class="required">*</span></label>
                         <input type="email" autocomplete="off" placeholder="Please Enter Email Address"
                            [(ngModel)]="sendTestEmailDto.toEmail" [ngModelOptions]="{standalone: true}"
-                           (input)="validateForm()" class="form-control">
+                           (input)="validateForm()" class="form-control"  [disabled]="vanityTemplatesOne">
                         <span class="required" *ngIf="!isValidEmailFormat">Please enter a valid email address</span>
                      </div>
                      <div class="form-group">
                         <label>Email Subject<span class="required">*</span></label>
                         <input type="text" autocomplete="off" [(ngModel)]="sendTestEmailDto.subject"
                            (input)="validateForm()" [ngModelOptions]="{standalone: true}"
-                           placeholder="Please Enter Email Subject" class="form-control" name="subjectLine" />
+                           placeholder="Please Enter Email Subject" class="form-control" name="subjectLine" [disabled]="vanityTemplatesOne" />
                      </div>
                      <div class="form-group">
                         <label>Email Body</label>
@@ -38,7 +38,7 @@
             <button class="btn Btn-Gray neg_mrg_top4" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
             <button type="submit" class="button bgcolor-unset btn-top3" [disabled]="!isValidForm || clicked"
                (click)="send();clicked = true" *ngIf="!sent && !isPreviewEmailTemplate">
-               <span class="btn Btn-Green transition txt_pd-top3">Send Test<i class="fa fa-paper-plane mr5 ml-4"
+               <span class="btn Btn-Green transition txt_pd-top3">{{vanityTemplatesOne ? 'Send' : 'Send Test' }}<i class="fa fa-paper-plane mr5 ml-4"
                      aria-hidden="true"></i></span>
             </button>
          </div>

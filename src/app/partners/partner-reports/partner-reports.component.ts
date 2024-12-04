@@ -17,7 +17,7 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { Properties } from 'app/common/models/properties';
-
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 declare var $, swal, Highcharts, CKEDITOR: any;
 
 @Component({
@@ -97,10 +97,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isSingUpPendingDiv = false;
     incompleteCompanyProfileAndPendingSingupPagination: Pagination = new Pagination();
     companyProfileIncompletePartnersList :any= [];
+    selectedEmailTemplateId: any;
+    sendTestEmailIconClicked: boolean;
+    vanityTemplates : boolean = false;
+    selectedEmailId: String;
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
-        public utilService: UtilService,private route: ActivatedRoute,public properties: Properties) {
+        public utilService: UtilService,private route: ActivatedRoute,public properties: Properties, private vanityURLService: VanityURLService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('partnerAnalytics');
         this.isListView = !this.referenseService.isGridView;
@@ -1156,4 +1160,43 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
+
+    openSendTestEmailModalPopup(emailId : String){
+        this.selectedEmailId = emailId;
+        if(this.isInactivePartnersDiv){
+         this.sendTestEmailIconClicked = true;
+            this.vanityTemplates = true;
+            this.selectedEmailTemplateId=26;
+        }
+        else if(this.isIncompleteCompanyProfileDiv)
+        {
+            this.sendTestEmailIconClicked = true;
+            this.vanityTemplates = true;
+            this.selectedEmailTemplateId=27;
+        }
+        else if(this.isSingUpPendingDiv){
+            this.vanityURLService.getTemplateId(this.selectedEmailId).subscribe(
+                response =>  {
+                    if (response.statusCode === 200) {
+                        this.selectedEmailTemplateId = response.data;
+                        this.sendTestEmailIconClicked = true;
+                        this.vanityTemplates = true;
+                    } else if (response.statusCode === 400) {
+                        console.error("Error: Invalid email ID or other bad request.");
+                    } else {
+                        console.error("Unexpected status code:", response.statusCode);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching template ID:", error);
+                }
+            );
+        } 
+      }
+
+      sendTestEmailModalPopupEventReceiver(){
+        this.selectedEmailTemplateId = 0;
+        this.sendTestEmailIconClicked = false;
+        this.vanityTemplates = false;
+      }
 }
