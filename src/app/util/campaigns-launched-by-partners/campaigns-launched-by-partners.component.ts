@@ -63,10 +63,8 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 				}
 				this.activePartnersPagination.totalRecords = response.totalRecords;
 
-				if (this.activePartnersPagination.totalRecords == 0) {
-					this.scrollClass = 'noData'
-				} else {
-					this.scrollClass = 'tableHeightScroll'
+				if (!(this.activePartnersPagination.totalRecords == 0)) {
+					this.scrollClass = 'tableHeightScroll';
 				}
 				this.activePartnersPagination = this.pagerService.getPagedItems(this.activePartnersPagination, response.activePartnesList);
 				this.referenseService.loading(this.activeParnterHttpRequestLoader, false);
