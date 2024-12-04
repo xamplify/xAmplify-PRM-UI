@@ -44,7 +44,8 @@
   <!--******************Team Member Details*******************-->
   <div class="row customeRow">
     <app-partner-journey-team-members-table [partnerCompanyId]="partnerCompanyId"
-      (notifyTeamMemberSelection)="applyTeamMemberSelection($event)">
+      (notifyTeamMemberSelection)="applyTeamMemberSelection($event)" [fromDateFilter]="fromDateFilter"
+      [toDateFilter]="toDateFilter">
     </app-partner-journey-team-members-table>
   </div>
 
