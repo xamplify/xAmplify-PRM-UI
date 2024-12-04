@@ -1,6 +1,7 @@
 import { PicklistValues } from "app/forms/models/picklist-values";
 
 export class CustomFieldsDto {
+    id: number;
     name = "";
     label = "";
     type = "";
@@ -11,7 +12,7 @@ export class CustomFieldsDto {
     placeHolder = "";
     canUnselect = true;
     displayName = "";
-    formDefaultFieldType= '';
+    formDefaultFieldType: any;
     canEditRequired = false;
     options: Array<PicklistValues> = new Array<PicklistValues>();
     picklistValues : Array<PicklistValues> = new Array<PicklistValues>();
@@ -23,4 +24,6 @@ export class CustomFieldsDto {
     private = false;
     formLookUpDefaultFieldType: any;
     referenceTo: any;
+    active: boolean = false;
+    formFieldType: any;
 }

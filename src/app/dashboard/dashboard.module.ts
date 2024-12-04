@@ -116,6 +116,9 @@ import { ChatGptSettingsService } from './chat-gpt-settings.service';
 import { FlexiFieldComponent } from './user-profile/flexi-fields/manage-flexi-fields/flexi-field.component';
 import { FlexiFieldService } from './user-profile/flexi-fields/services/flexi-field.service';
 import { UniversalSearchComponent } from './universal-search/universal-search.component';
+import { XamplifyCustomFieldsSettingsComponent } from './xamplify-custom-fields-settings/xamplify-custom-fields-settings.component';
+import { LeadCustomFieldsSettingsComponent } from './lead-custom-fields-settings/lead-custom-fields-settings.component';
+import { AddCustomFieldsComponent } from './add-custom-fields/add-custom-fields.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -200,7 +203,10 @@ import { UniversalSearchComponent } from './universal-search/universal-search.co
         MarketPlaceCategoriesComponent,
         ChatGptIntegrationSettingsComponent,
         FlexiFieldComponent,
-        UniversalSearchComponent
+        UniversalSearchComponent,
+        XamplifyCustomFieldsSettingsComponent,
+        LeadCustomFieldsSettingsComponent,
+        AddCustomFieldsComponent
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
