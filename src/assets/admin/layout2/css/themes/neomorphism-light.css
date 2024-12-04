@@ -4430,5 +4430,5 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
   background-color: #54a7e9 !important;
 }
 .update-activity,.create-activity,.sent-activity {
-  box-shadow: unset!important;
+  box-shadow: inset 5px 5px 10px #c3dcc82e, inset -5px -5px 10px #475c4a1f !important;
 }
