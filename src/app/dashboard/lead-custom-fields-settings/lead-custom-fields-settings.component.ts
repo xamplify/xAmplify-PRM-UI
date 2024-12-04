@@ -445,6 +445,8 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
   showCustomFieldSubmitSuccess(){
 	this.isAddCustomFieldsModelPopUp = false;
 	this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+	this.isFilterApplied = false;
+	this.isSortApplied = false;
 	this.listCustomFields();
   }
 
