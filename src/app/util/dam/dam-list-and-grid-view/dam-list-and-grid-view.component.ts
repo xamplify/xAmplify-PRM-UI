@@ -124,7 +124,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Asset') {
 			this.searchKeyValue = this.referenceService.universalSearchKey;
 			this.sortOption.searchKey = this.referenceService.universalSearchKey;
-			//this.pagination.searchKey = this.referenceService.universalSearchKey;
 			this.getAllFilteredResults();
 		}
 	}

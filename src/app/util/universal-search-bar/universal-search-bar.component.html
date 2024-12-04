@@ -8,32 +8,25 @@
   </div>
 </div> -->
 
-
-
-<!-- <li class=""> -->
-  <div class="input-group">
-     <!-- Dropdown Button -->
-     <div class="input-group-btn" *ngIf="isShowDropdown">
-        <button type="button" class="btn btn-default dropdown-toggle h_34 dropdown-search" data-toggle="dropdown" (click)="updateDropdownVisibility()">
-          {{ refService.universalSearchFilterType || 'All Modules' }}  <span class="caret"></span>
-        </button>
-        <!-- Dropdown Menu -->
-        <ul class="dropdown-menu" *ngIf="isDropdownVisible">
-          <li *ngFor="let option of dropdownOptions" (click)="filterUniversalSearch(option.label, option.index)">
-           <a *ngIf="option.condition">  {{ option.label }} </a>
-          </li>
-        </ul>
-     </div>
-     <!-- Search Input -->
-     <input type="text" class="form-control dropdown_search" [(ngModel)]="searchKey" placeholder="Search..." (keypress)="universalSearchOnKeyPress($event.keyCode)" (focus)="showDropDown()"/>
-     <button *ngIf="isEmptyOrWhitespace(searchKey)" class="glyphicon glyphicon-remove search-box-item-clear search-clear-icon" (click)="searchKey='';goToDashBoard();"></button>
-     <!-- Search Button -->
-     <span class="input-group-btn">
-        <button class="btn btn-primary h_34" type="button" [disabled]="!isEmptyOrWhitespace(searchKey)" [ngClass]="isEmptyOrWhitespace(searchKey)? '':'disabled-div'" (click)="universalSearch();">
-           <span class="glyphicon glyphicon-search" [ngClass]="isEmptyOrWhitespace(searchKey)?'':'disabled'"></span>
-        </button>
-     </span>
+<div class="welcome-search-container">
+  <div class="welcome-dropdown" (change)="updateDropdownVisibility()">
+    <input type="checkbox" id="dropdownToggle"  [checked]="isDropdownVisible"  (click)="updateDropdownVisibility()">
+    <label for="dropdownToggle">
+      {{ refService.universalSearchFilterType || 'All Modules' }}<span class="caret"></span>
+    </label>
+    <ul class="welcome-dropdown-menu" *ngIf="isDropdownVisible">
+      <li *ngFor="let option of dropdownOptions" (click)="selectDropdownOption(option.label, option.index)">
+        <a *ngIf="option.condition"> {{ option.label }} </a>
+      </li>
+    </ul>
   </div>
-  <!--  -->
-  <!--  -->
-<!-- </li> -->
+  <div class="search-container">
+    <input class="welcome-input" type="text" placeholder="Search..." [(ngModel)]="searchKey"
+      (keypress)="universalSearchOnKeyPress($event.keyCode)" />
+    <i class="fa fa-times clear-icon" *ngIf="isEmptyOrWhitespace()"
+      (click)="searchKey=''; goToDashBoard();"></i>
+  </div>
+  <button class="welcome-btn" (click)=" universalSearch()">
+    <i aria-hidden="true" class="fa fa-search"></i>
+  </button>
+</div>

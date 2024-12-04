@@ -1185,30 +1185,8 @@ private beforeAdd(tag: any) {
     );
   } 
   /**  XNFR-574 */
-  universalSearchOnKeyPress(keyCode:any) {
-    // this.searchKey = this.searchKey.trim();
-    if (keyCode === 13 && (this.searchKey != '' && this.searchKey.trim().length>0)) { 
-      this.universalSearch();
-    }
+  showUniversalSearch(){
+    this.refService.isOpenUniversalSearch = true;
   }
-  universalSearch() {
-    this.refService.universalSearchKey = this.searchKey.trim();
-    this.saveSearchKeyToLocalStorage(this.refService.universalSearchKey);
-    let universalSearchUrl = RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.universalSearch;
-    this.location.replaceState(universalSearchUrl);
-    this.refService.goToRouter(universalSearchUrl);
-  }
-  isEmptyOrWhitespace(value: string | null | undefined): boolean {
-    return value != '' && value.trim().length>0;
-  }
-  saveSearchKeyToLocalStorage(searchKey: string) {
-    localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey, searchKey);
-  }
-  goToDashBoard() {
-    this.searchKey = "";
-    this.refService.universalSearchKey = "";
-    this.saveSearchKeyToLocalStorage(this.refService.universalSearchKey);
-    this.refService.goToRouter(this.refService.homeRouter);
-  }
-  /** XNFR-574 */
+   /** XNFR-574 */
 }

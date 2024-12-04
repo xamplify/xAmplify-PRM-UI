@@ -2544,3 +2544,23 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
 table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-danger:hover{
   background-color: #22313a !important;
 }
+/*** XNFR-758 ***/
+.welcome-dropdown label {
+  background-color: #0276FF !important;
+  border: 1px solid #1ca6f3 !important;
+  color: #fff !important;
+}
+.welcome-dropdown .caret{
+  border-top: 5px solid #fff !important;
+}
+.welcome-dropdown-menu {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.welcome-dropdown-menu li a,
+.clear-icon {
+  color: #fff !important;
+}
+.welcome-dropdown-menu li a:hover {
+  background-color: #22313a !important;
+}

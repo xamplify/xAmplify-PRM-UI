@@ -157,13 +157,6 @@ export class ManageLeadsComponent implements OnInit {
 triggerUniversalSearch(){
   if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Lead') {
     this.leadsSortOption.searchKey = this.referenceService.universalSearchKey;
-    // if(this.referenceService.universalSearchVendorOrPartnerView === 'Partner') {
-    //   this.isPartnerVersion = true;
-    //   this.isVendorVersion = false;
-    // } else {
-    //   this.isPartnerVersion = false;
-    //   this.isVendorVersion = true;
-    // }
     let keyCode:any = 13;
     if (keyCode === 13) { this.searchLeads(); }
   }
@@ -294,7 +287,6 @@ triggerUniversalSearch(){
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
-    //this.referenceService.universalSearchVendorOrPartnerView = 'Partner';//XNFR-574
     this.showLeads();
     this.getActiveCRMDetails();
     this.mergeTagForUserGuide();

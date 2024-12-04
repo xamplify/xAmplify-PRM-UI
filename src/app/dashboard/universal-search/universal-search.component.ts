@@ -25,10 +25,9 @@ export class UniversalSearchComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   searchKey: string;
   applyFilter = true;
-  defaultDisplayType:string = '/l';
+  defaultDisplayType: string = '/l';
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
     public dashboardService: DashboardService) {
-    this.defaultDisplayType = localStorage.getItem('defaultDisplayType');
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
     let isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
     if (isWelcomePageEnabled) {
@@ -42,11 +41,10 @@ export class UniversalSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.applyFilter = (this.authenticationService.module.isAdmin || this.authenticationService.module.isPartnerAdmin) && this.authenticationService.module.isTeamMember;
-    if(!this.authenticationService.isTeamMember()){
+    if (!this.authenticationService.isTeamMember()) {
       this.applyFilter = false;
-  }
-    this.universalSearchPagination.filterBy =  this.referenceService.universalSearchFilterType ;
+    }
+    this.universalSearchPagination.filterBy = this.referenceService.universalSearchFilterType;
     this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.universalSearchPagination.maxResults = 12;
     if (this.referenceService.universalSearchKey != "" && this.referenceService.universalSearchKey != null) {
@@ -84,18 +82,18 @@ export class UniversalSearchComponent implements OnInit {
     this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
     this.findUniversalSearch(this.universalSearchPagination);
   }
-  filterUniversalSearch(type: string, index: number) {
-    // this.applyFilter = (this.authenticationService.module.isAdmin || this.authenticationService.module.isPartnerAdmin) && this.authenticationService.module.isTeamMember;
-    if(!this.authenticationService.isTeamMember()){
-      this.applyFilter = false;
-  }
-    this.selectedFilterIndex = index;
-    this.universalSearchPagination = new Pagination();
-    this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
-    this.universalSearchPagination.filterBy = type;
-    this.findUniversalSearch(this.universalSearchPagination);
-  }
+  // filterUniversalSearch(type: string, index: number) {
+  //   // this.applyFilter = (this.authenticationService.module.isAdmin || this.authenticationService.module.isPartnerAdmin) && this.authenticationService.module.isTeamMember;
+  //   if(!this.authenticationService.isTeamMember()){
+  //     this.applyFilter = false;
+  // }
+  //   this.selectedFilterIndex = index;
+  //   this.universalSearchPagination = new Pagination();
+  //   this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+  //   this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
+  //   this.universalSearchPagination.filterBy = type;
+  //   this.findUniversalSearch(this.universalSearchPagination);
+  // }
   preview(quickLink: any) {
     if (quickLink.type === 'Lead') {
       this.referenceService.universalId = quickLink.id;
@@ -104,13 +102,33 @@ export class UniversalSearchComponent implements OnInit {
       this.referenceService.universalId = quickLink.id
       this.referenceService.goToRouter('/home/deal/manage');
     } else if (quickLink.type === 'Asset') {
-      if (this.isPartnerLoggedInThroughVanityUrl) {
+      if (quickLink.navigate === 'Shared') {
         this.navigateToDamPartnerView(quickLink);
       } else {
         this.handleAssetPreview(quickLink);
       }
     } else {
-      this.referenceService.handleQuickLinkPreview(quickLink, this.isPartnerLoggedInThroughVanityUrl, this.companyId);
+      this.handleTrackOrPlaybookePreviwe(quickLink);
+    }
+
+  }
+  handleTrackOrPlaybookePreviwe(quickLink: any) {
+    const viewType = `/${this.defaultDisplayType}`;
+    let router = '';
+    let companyId = quickLink.createdByCompanyId
+    if(this.authenticationService.vanityURLEnabled) {
+      companyId = this.companyId;
+    }
+    switch (quickLink.type) {
+      case 'Track':
+        router = `home/tracks/tb/${companyId}/${quickLink.slug}${viewType}`;
+        break;
+      case 'Play Book':
+        router = `home/playbook/pb/${companyId}/${quickLink.slug}${viewType}`;
+        break;
+    }
+    if (router) {
+      this.referenceService.goToRouter(router);
     }
   }
   handleAssetPreview(quickLink: any) {
@@ -124,10 +142,10 @@ export class UniversalSearchComponent implements OnInit {
     }
   }
   navigateToDamPartnerView(quickLink: any) {
-    const viewType = this.referenceService.getListOrGridViewType();
+    const viewType = `/${this.defaultDisplayType}`;
     let router = '';
     let id = quickLink.id;
-    if (this.isPartnerLoggedInThroughVanityUrl) {
+    if (quickLink.navigate === 'Shared') {
       id = quickLink.damPartnerId;
     }
     router = `${RouterUrlConstants.home}${RouterUrlConstants.dam}${RouterUrlConstants.damPartnerView}${RouterUrlConstants.view}${id}${viewType}`;
@@ -138,9 +156,8 @@ export class UniversalSearchComponent implements OnInit {
 
   navigateToManage(quickLink: any) {
     this.referenceService.universalModuleType = quickLink.type;
-    if (this.defaultDisplayType === "GRID") {
-      this.defaultDisplayType = "/g";
-    } else {
+    this.defaultDisplayType = this.referenceService.getDefaultViewType();
+    if (this.defaultDisplayType === "fl" || this.defaultDisplayType === "fg") {
       this.defaultDisplayType = "/l";
     }
     if (quickLink.type === 'Asset') {
@@ -150,7 +167,7 @@ export class UniversalSearchComponent implements OnInit {
       let router = quickLink.navigate === 'Shared' ? 'home/tracks/shared' : '/home/tracks/manage';
       this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Play Book') {
-      let router =quickLink.navigate === 'Shared' ? '/home/playbook/shared' : '/home/playbook/manage';
+      let router = quickLink.navigate === 'Shared' ? '/home/playbook/shared' : '/home/playbook/manage';
       this.referenceService.goToRouter(router + this.defaultDisplayType);
     } else if (quickLink.type === 'Lead') {
       this.referenceService.universalSearchVendorOrPartnerView = quickLink.navigate;
@@ -170,13 +187,13 @@ export class UniversalSearchComponent implements OnInit {
    */
   getImageSrc(quickLink): string {
     switch (quickLink.type) {
-      case 'Track': 
+      case 'Track':
         return 'assets/images/universal-search-images/universal-track.webp';
-      case 'Play Book': 
+      case 'Play Book':
         return 'assets/images/universal-search-images/universal-playbook.webp';
-      case 'Asset': 
+      case 'Asset':
         return 'assets/images/universal-search-images/universal-asset.webp';
-      default: 
+      default:
         return 'assets/admin/pages/media/works/contacts2.png';
     }
   }
@@ -186,16 +203,16 @@ export class UniversalSearchComponent implements OnInit {
    */
   getLabelClass(quickLink): string {
     switch (quickLink.type) {
-      case 'Track': 
+      case 'Track':
         return 'view-banner orange-lable-cu1 mr5';
-      case 'Play Book': 
+      case 'Play Book':
         return 'view-banner published mr5';
       case 'Lead':
-      case 'Deal': 
+      case 'Deal':
         return 'view-banner orange-lable-cu1 mr5';
       case 'Asset':
         return 'view-banner banner-top mr5';
-      default: 
+      default:
         return '';
     }
   }

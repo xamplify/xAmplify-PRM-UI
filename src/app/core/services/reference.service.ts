@@ -163,6 +163,7 @@ export class ReferenceService {
   universalModuleType:string = ""; //XNFR-574
   universalSearchFilterType:string = 'All'
   universalSearchVendorOrPartnerView :String ="";
+  isOpenUniversalSearch:boolean= false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

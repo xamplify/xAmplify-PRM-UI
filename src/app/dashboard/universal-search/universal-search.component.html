@@ -17,7 +17,7 @@
       <app-modal-popup-loader *ngIf="universalSearchApiLoading"></app-modal-popup-loader>
       <ng-container *ngIf="!universalSearchApiLoading">
         <div class="portlet light">
-          <div class="portlet-title">
+          <!-- <div class="portlet-title">
             <div class="caption">
              <ul class="mix-filter"
                 *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner 
@@ -53,7 +53,7 @@
                   Deals<i class="fa fa-check-circle-o check-icons" *ngIf="5 == selectedFilterIndex"></i></li>
               </ul> 
             </div>
-          </div>
+          </div> -->
           <div class="portlet-body pt0">
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
               [showCloseIcon]="false"></app-response-message>
@@ -151,7 +151,7 @@
           <span [ngClass]="getLabelClass(quickLink)">{{quickLink?.navigate}} {{quickLink?.type}}s</span>
 
           <!-- Navigation Icon -->
-          <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Click here to Navigate"
+          <a *ngIf="!authenticationService.module.isOnlyPartner" class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Click here to Navigate"
             (click)="$event.stopPropagation();navigateToManage(quickLink)">
             <i class="fas fa-route" aria-hidden="true"></i>
           </a>
