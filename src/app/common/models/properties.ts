@@ -196,10 +196,15 @@ export class Properties {
 	notifyPartners = "Onboarding Configurations";
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
-	vendorJourney = "Vendor Journey";
-	landingPages = "Vendor Pages";
-	masterLandingPages = "Marketplace Pages"
-	masterLandingPageCategories = "Marketplace Categories"
+	vendorJourney = "Vendor Journey for Partners";
+	landingPages = "Vendor Shared Pages";
+	masterLandingPages = "Partner Landscape"
+	masterLandingPageCategories = "Landscape Categories"
+	welcomePages = "Welcome Pages"
+	/*****XNFR-712******/
+	partnerJourneyPages = "Partner Journey for Vendors";
+	vendorPartnerJourneyPages = "Partner Shared Pages"
+	vendorMarketplacePages = "Vendor Landscape"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
 
@@ -214,6 +219,7 @@ export class Properties {
 	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated successfully";
 	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted successfully";
 	VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT = "Error while Updating Email Template";
+	DUPLICATE_SUBJECT_ERROR_TEXT="The subject name has already been assigned to another template.";
 
 	reAuthenticateMessage = 'Please unlink  and reconnect your account.';
 
@@ -393,5 +399,90 @@ export class Properties {
 	showRegisterDealForPartnerLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for partner leads.";
 	showRegisterDealToSelfLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for self leads.";
 	showRegisterDealToSelfLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for self leads.";
+	showLeadPipeLineCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Pipeline' option in the lead registration form because 'Show Lead Pipeline' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showLeadPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the lead registration form because 'Show Lead Stage' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showDealPipeLineCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Pipeline' option in the deal registration form because 'Show Deal Pipeline' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showDealPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the deal registration form because 'Show Deal Stage' is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
+	leadPipelineTooltipTitle = "Enabling this option will allow your partner to view the select pipeline option in the lead registration form";
+	leadPipelineStageTooltipTitle = "Enabling this option will allow your partner to view the select stage option in the lead registration form";
+	dealPipelineTooltipTitle = "Enabling this option will allow your partner to view the select pipeline option in the deal registration form";
+	dealPipelineStageTooltipTitle = "Enabling this option will allow your partner to view the select stage option in the deal registration form";
+	leadPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the lead registration form";
+	leadPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the lead registration form";
+	dealPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the deal registration form";
+	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
+	editLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Edit' the Lead";
+	deleteLeadOptionForPartnerToggleTooltipTitle = "Enabling this option will allow your partner to 'Delete' the Lead";
+
+	partnerText = "Interactions and Non-interactions on distinct tracks based on progress";
+	vendorText = "Partner interactions and non-interactions on distinct tracks based on progress";
+	publishedTrackCountText = "Count of Tracks Published to the Partner";
+	publishedPlaybookCountText = "Count of Playbooks Published to the Partner";
+	vendorTeamMemberTrackText = "Count of Tracks Published by Team Members";
+	venodrTeamMemberPlaybookText = "Count of Playbooks Published by Team Members";
+	partnerTeamMemberTrackText = "Count of Tracks Received by Team Members";
+	partnerTeamMemberPlaybookText = "Count of Playbooks Received by Team Members";
+
+	
+	contactsCsvHeaderMisMatchedErrorMessage = "The CSV headers you provided do not match the default format.";
+	mapCsvHeaderMessage = " to map your headers to the expected format.";
+	duplicateColumnsMappedErrorMessage = "Duplicate columns have been mapped. Please ensure to check for the specified errors.";
+	emailAddressMandatoryMessage = "Email id mapping is mandatory.";
+	contactsCsvHeaderMatchedMessage = "The CSV headers have been successfully matched with the default format";
+	remapHeadersMessage = " to remap the headers";
+	resetMessage = " to reset to the original state.";
+	contactsCsvHeadersMisMatchMessage = "CSV headers do not match our default format. Please match your headers to the expected format to proceed.";
+	flexiFieldDisplayText = "You have the ability to add flexible fields, which will be displayed in your contact form.";
+	customFieldsMissingErrorMessage = "Warning! A few custom fields are missing in your Salesforce account. As a result, leads and deals created in xAmplify may not be pushed into Salesforce. You can ignore this message if you create the required custom fields as needed."
+	uploadCsvSaveOptionNote = "Note: By using the save option you can save the list with valid email id(s).";
+	
+	salesforceIntegrationExpiredMessage = "Warning!! Your Salesforce Integration was expired. Please re-configure.";
+	clientMethodNameError = "Error In {{methodName}}.Please Contact Admin";
+	selectAnOptionToSaveListMessage = "Select an option to save the list.";
+	ignoreInvalidAndEmptyEmailIdsMessage = "Ignore invalid email id(s) and empty records";
+	editInvalidAndIgnoreEmptyEmailIdsMessage = "Edit invalid email id(s) and ignore empty records";
+
+	socialVanityCallBackErrorMessage = "We are unable to process request. Please contact admin for details.";
+
+	NO_DATA_RETRIVED_FROM_SALESFORCE = "No data retrieved from Salesforce. Please ensure all required fields are filled in.";
+
+	/**XNFR-553**/
+	noteSubmittedSuccessResponseMessage = "Note Submitted Successfully";
+	noteUpdatedSuccessResponseMessage = "Note Updated Successfully";
+	emailSendSuccessResponseMessage = "Email sent successfully";
+	failedToFetchLeadsResponseMessage = "Failed to fetch leads";
+	leadSubmittedSuccessResponseMessage = "Lead Submitted Successfully";
+	failedToFetchDealsResponseMessage = "Failed to fetch deals";
+	dealSubmittedSuccessResponseMessage = "Deal Submitted Successfully";
+
+	ckEditorConfig = {
+		height:'300px',
+		baseFloatZIndex:1E5
+	}
+
+	UNABLE_TO_PROCESS_REQUEST = "We're currently unable to process this request. Please try again later.";
+	
+	activePartnerTileDescription = "Partners who have interacted with Content, Redistributed Campaigns, Created Leads or Deals.";
+	signupPartnertileDescription = "Partners who have not yet completed the sign-up process.";
+	companyProfileIncompletepartnertileDescription = "Partners who have not yet completed the company profile.";
+	dormantpartnertileDescription = "Partners who have not yet interacted with the Content, Redistributed Campaigns, Created Leads or Deals.";
+	activePartnerTileDescriptionForPrm = "Partners who have interacted with Content, Created Leads or Deals.";
+	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
+	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
+	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
+
+	/** XNFR-745 **/
+	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders while viewing the Play Book";
+	disableOrderAssetsTooltipMessage = "Enabling 'Show Assets By Folders' will lock asset ordering since assets are organized by folders";
+	/***** XNFR-755 *****/
+	SIGNUP_PROCESS_NOT_COMPLETED = "The sign-up process is not yet complete.";
+	COMPANY_PROFILE_NOT_COMPLETED = "The company profile has not been completed yet.";
+	SIGNUP_PROCESS_COMPLETED = "The sign-up process is completed.";
+	COMPANY_PROFILE_COMPLETED = "The company profile has been completed.";	
+	
+	/***** XNFR-763 *****/
+	COMPANY_NAME_INFO = "Represents the name of the company, displayed on the dashboard and used as a merge tag across the platform."
+	COMPANY_PROFILE_NAME_INFO ="Non-editable alphanumeric field, also used as a vanity URL to ensure uniqueness and validate duplicates."
+	COMPANY_PROFILE_NAME_PARTNER_INFO = "Non-editable alphanumeric field to ensure unique partner profiles and prevent duplicates."
 }
 

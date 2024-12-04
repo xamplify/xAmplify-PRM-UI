@@ -54,6 +54,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 	@Output() updatedItemsCountEmitter = new EventEmitter();
   @Output() notifyParentComponent = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+  @Input() searchKeyValue : any;
   titleHeader:string = "";
   suffixHeader:string = "";
   trackOrPlayBookText = "";
@@ -73,15 +74,18 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.titleHeader = this.tracksModule ? "Tracks" : "Play Books";
     this.trackOrPlayBookText = this.tracksModule ? "track" : "play book";
     this.suffixHeader = this.isPartnerView ? 'Shared ':'Manage ';
-    if(this.folderListViewCategoryId!=undefined){
-			this.categoryId = this.folderListViewCategoryId;
-			this.folderListView = true;
-		}else{
-			this.viewType = this.route.snapshot.params['viewType'];
-			this.categoryId = this.route.snapshot.params['categoryId'];
-			this.folderViewType = this.route.snapshot.params['folderViewType'];
-			this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
-		}
+    if (this.folderListViewCategoryId != undefined) {
+      this.categoryId = this.folderListViewCategoryId;
+      this.folderListView = true;
+    } else {
+      this.viewType = this.route.snapshot.params['viewType'];
+      if (this.viewType === 'fl') {
+        this.utilService.checkListViewType = 'fl';
+      }
+      this.categoryId = this.route.snapshot.params['categoryId'];
+      this.folderViewType = this.route.snapshot.params['folderViewType'];
+      this.showUpArrowButton = this.categoryId != undefined && this.categoryId != 0;
+    }
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
 		} else {
@@ -112,34 +116,67 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         this.showMessageOnTop(this.message);
       }
     }
-    if(this.viewType!="fl" && this.viewType!="fg"){
+    this.triggerLmsSearch();//XNFR-574
+    if(this.viewType != "fl" && this.viewType != "fg"){
+      this.sortOption.searchKey = this.searchKeyValue;
+      if (this.utilService.searchKey) {
+        this.sortOption.searchKey = this.utilService.searchKey;
+        this.pagination.searchKey = this.sortOption.searchKey;
+        this.showUpArrowButton = true;
+      }
       this.listLearningTracks(this.pagination);
+    }
+    
+  }
+  /****XNFR-574 ***/
+  triggerLmsSearch(){
+    if(this.referenceService.universalSearchKey != ""  && (this.referenceService.universalModuleType == 'Track' || this.referenceService.universalModuleType == 'Play Book')){
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.searchKeyValue = this.referenceService.universalSearchKey;
+      this.sortOption.searchKey = this.searchKeyValue;
+      this.getAllFilteredResults();
     }
   }
 /********XNFR-170******/
-setViewType(viewType: string) {
-  if(this.viewType!=viewType){
-    if (this.folderListView) {
-      let gridView = "g" == viewType;
-      this.modulesDisplayType.isGridView = gridView;
-      this.modulesDisplayType.isListView = !gridView;
-    } else {
-      if (this.folderViewType != undefined && viewType != "fg") {
-        this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", viewType, this.categoryId,this.isPartnerView,this.tracksModule);
+  setViewType(viewType: string) {
+    if (this.utilService.folderListViewSelected) {
+      if (viewType === 'g') {
+        this.utilService.checkListViewType = 'g';
+      } else if (viewType === 'l') {
+        this.utilService.checkListViewType = 'l';
       } else {
-        this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,this.tracksModule);
+        this.utilService.checkListViewType = 'fl';
+
+      }
+      let tracksOrPlaybooks = this.tracksModule ? 'tracks' : 'playbook';
+      let partnerUrl = this.isPartnerView ? 'shared' : 'manage';
+      this.referenceService.goToRouter('/home/' + tracksOrPlaybooks + '/' + partnerUrl + '/' + this.utilService.checkListViewType);
+    } else {
+      if (this.viewType != viewType) {
+        if (this.folderListView) {
+          let gridView = "g" == viewType;
+          this.modulesDisplayType.isGridView = gridView;
+          this.modulesDisplayType.isListView = !gridView;
+        } else {
+          if (this.folderViewType != undefined && viewType != "fg") {
+            this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", viewType, this.categoryId, this.isPartnerView, this.tracksModule);
+          } else {
+            this.referenceService.goToManageTracksOrPlayBooks(viewType, this.isPartnerView, this.tracksModule);
+          }
+        }
       }
     }
   }
-}
   ngOnDestroy() {
     this.referenceService.isCreated = false;
     this.referenceService.isUpdated = false;
+    this.referenceService.universalModuleType = "";//XNFR-574
     swal.close();
   }
 
   showMessageOnTop(message: string) {
     $(window).scrollTop(0);
+    this.referenceService.universalModuleType = "";//XNFR-574
     this.customResponse = new CustomResponse('SUCCESS', message, true);
   }
 

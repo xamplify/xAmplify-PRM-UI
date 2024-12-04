@@ -5,11 +5,15 @@ import { Pagination } from '../models/pagination';
 import { CropperSettings} from 'ng2-img-cropper';
 import { PagerService } from './pager.service';
 import { ActivatedRoute } from '@angular/router';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $:any;
 @Injectable()
 export class UtilService {
     topnavBareLoading = false;
+    searchKey : any ='';
+    folderListViewSelected : boolean = false;
+    checkListViewType:any;
     pagination: Pagination;
     constructor( private http: Http,private pagerService:PagerService) { }
 
@@ -143,10 +147,12 @@ export class UtilService {
                 'campaignAccessDto':data.campaignAccessDto,
                 'logedInCustomerCompanyNeme':data.companyName,
 				'source':data.source,
-                'secondAdmin': data.secondAdmin
+                'secondAdmin': data.secondAdmin,
+                'isWelcomePageEnabled':JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey],
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
+            localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey,"");//XNFR-574
     }
 
     isLoggedAsTeamMember(){
@@ -215,5 +221,17 @@ export class UtilService {
         return JSON.stringify(jsonInput);
         
     }
+
+
+    showUIError(methodName:string){
+       return "Error In "+methodName+"(). Please Contact Admin;";
+
+    }
+
+    reloadAppInAllTabs() {
+        // Set a timestamp to notify all tabs
+        localStorage.setItem('reloadApp', new Date().toISOString());
+      }
+
 
 }

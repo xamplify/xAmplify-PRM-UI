@@ -1,0 +1,66 @@
+.activity_card {
+    border: 1px solid #ddd;
+    padding: 10px 15px 10px 15px;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .activity-title {
+    font-weight: bold;
+  }
+  .activity-date {
+    color: #666;
+    font-size: 12px;
+  }
+  .activity-body {
+    display: flex;
+    align-items: baseline;
+    margin-top: 8px;
+    color: #555;
+  } 
+  .activity-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px 4px 0px;
+  }
+  .activity-footer a {
+    color: #578ebe;
+    text-transform: capitalize;
+    font-weight: 600;
+  }
+  .icon {
+    font-size: 13px;
+    padding-right: 5px;
+  }
+  .alert {
+    padding: 15px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+  .fa-lock{
+    font-size: 12px;
+    margin-right: 2px;
+  }
+  .ml_20{
+    margin-left: 20px;
+  }
+  a :hover {
+    text-decoration-line: underline;
+  }
+  .delete-bg-color {
+    background-color: #fa3131;
+  }
+  .fa-trash-o {
+    font-size: 12px;
+    margin-right: 2px;
+  }
+  .fa-edit {
+    font-size: 12px;
+    margin-right: 2px;
+  }

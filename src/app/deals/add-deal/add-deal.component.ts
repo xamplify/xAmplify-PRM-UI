@@ -26,6 +26,8 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Router } from "@angular/router";
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var $: any, swal: any;
 
 
@@ -45,7 +47,14 @@ export class AddDealComponent implements OnInit {
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
   @Input() public hideAttachLeadButton: boolean;
+  @Input() public selectedContact: any;
+  @Input() public isDealFromContact: boolean = false;
   @Output() notifySubmitSuccess = new EventEmitter();
+  /**XNFR-553**/
+  @Input() isFromCompanyModule:boolean = false;
+  @Input() public isFromContactAllLeadsTab:boolean = false;
+  @Input() public isFromContactAllDealsTab:boolean = false;
+  @Output() notifyClose = new EventEmitter();
 
   preview = false;
   edit = false;
@@ -158,11 +167,18 @@ export class AddDealComponent implements OnInit {
   hideDealDetailsForSelfDeal:boolean = false;
   hideDealForInEditSelfDeal:boolean = false;
   isDealForAndContactInfoDivCenterAligned = false;
+  isCRMIdCopiedToClipboard: boolean = false;
+  halopsaTicketTypeId:number = 0;
+  halopsaTicketTypes: any;
+  //XNFR-681
+  isThroughAddUrl : boolean = false;
+  isFromManageDeals : boolean = false;
+  attachLeadError: boolean = false;
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
-    public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
+    public utilService: UtilService, private leadsService: LeadsService, public userService: UserService,private router: Router, private integrationService: IntegrationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -174,6 +190,7 @@ export class AddDealComponent implements OnInit {
   }
 
   ngOnInit() {
+    let currentUrl = this.router.url;
     this.utilService.getJSONLocation().subscribe(response => console.log(response));
     if(this.vanityLoginDto.vanityUrlFilter){
       this.isDealDetailsTabDisplayed = this.actionType!="add";
@@ -188,7 +205,7 @@ export class AddDealComponent implements OnInit {
     if (this.actionType === "add") {
       this.showCommentActions = true;
       this.showAttachLeadButton = true;
-      if(this.hideAttachLeadButton){
+      if (this.hideAttachLeadButton) {
         this.showAttachLeadButton = false;
       }
       this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
@@ -204,7 +221,7 @@ export class AddDealComponent implements OnInit {
     } else if (this.actionType === "view") {
       this.preview = true;
       this.showAttachLeadButton = false;
-      this.dealFormTitle = "Deal Details";
+      this.dealFormTitle = "View Deal";
       if (this.dealId > 0) {
         this.getDeal(this.dealId);
       }
@@ -214,11 +231,36 @@ export class AddDealComponent implements OnInit {
       if (this.dealId > 0) {
         this.getDeal(this.dealId);
       }
+    } else if (currentUrl.includes(RouterUrlConstants.addDeal)) {
+      this.isFromManageDeals = true;
+      this.checkIfHasAcessForAddDeal();
+      this.setDeafultValuesForDeal();
+    } else if (currentUrl.includes(RouterUrlConstants.addDealFromHome)) {
+      if (this.authenticationService.isPartnershipOnlyWithPrm) {
+        this.setDeafultValuesForDeal();
+      } else {
+        this.referenceService.goToAccessDeniedPage();
+      }
     }
     this.getVendorList();
 
     /***XNFR-623***/
     this.loadComments();
+  }
+
+  setDeafultValuesForDeal() {
+    this.actionType = "add";
+    this.isThroughAddUrl = true;
+    this.showCommentActions = true;
+    this.showAttachLeadButton = true;
+    if (this.hideAttachLeadButton) {
+      this.showAttachLeadButton = false;
+    }
+    this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.dealFormTitle = "";
+      this.setCreatedForCompanyId();
+    }
   }
 
   /***XNFR-623***/
@@ -344,7 +386,11 @@ export class AddDealComponent implements OnInit {
         error => {
           this.httpRequestLoader.isServerError = true;
         },
-        () => { }
+        () => {
+          if (this.isDealFromContact) {
+            this.validateField("attachLead", false);
+          }
+         }
       );
   }
 
@@ -613,6 +659,11 @@ export class AddDealComponent implements OnInit {
       this.deal.createdForPipelineId = 0;
       this.createdForPipelines = [];
       this.createdForStages = [];
+      this.activeCRMDetails.showDealPipeline = false;
+      this.activeCRMDetails.showDealPipelineStage = false;
+      this.showCreatedByPipelineAndStage = false;
+      this.showOpportunityTypes = false;
+      this.resetDealTitle();
     }
   }
 
@@ -825,6 +876,10 @@ export class AddDealComponent implements OnInit {
           this.deal.properties.forEach(p => p.isSaved = true);
           if (data.statusCode == 200) {
             this.notifySubmitSuccess.emit();
+            if(this.isThroughAddUrl){
+              this.referenceService.isCreated = true;
+              this.goBackToManageDeals();
+            }
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
           }
@@ -1003,6 +1058,13 @@ export class AddDealComponent implements OnInit {
         this.opportunityTypeId = successClass;
         this.opportunityTypeIdError = false;
       }
+      if (fieldId == "attachLead") {
+        if (this.deal.associatedLeadId > 0) {
+          this.attachLeadError = false;
+        } else {
+          this.attachLeadError = true;
+        }
+      }
     }
     this.setFieldErrorStates();
   }
@@ -1035,7 +1097,7 @@ export class AddDealComponent implements OnInit {
 
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
       && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
-      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
+      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError && !this.attachLeadError) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -1108,6 +1170,16 @@ export class AddDealComponent implements OnInit {
       this.createdForPipelineStageIdError = false
     else
       this.createdForPipelineStageIdError = true;
+
+    /**************** Contact To Deal *********************/
+    if (this.isDealFromContact) {
+      if (this.deal.associatedLeadId > 0) 
+        this.attachLeadError = false;
+      else 
+        this.attachLeadError = true;
+    } else {
+      this.attachLeadError = false;
+    }
 
     this.propertiesQuestions.forEach(property => {
       this.validateQuestion(property);
@@ -1185,8 +1257,10 @@ export class AddDealComponent implements OnInit {
               const event = new Date(formLabel.value);
               sfCfData.dateTimeIsoValue = event.toISOString();
             }
-          }
-          else {
+          } else if (formLabel.labelType === 'lookup') {
+            sfCfData.value = formLabel.value;
+            sfCfData.selectedChoiceValue = formLabel.selectedChoiceValue;
+          } else {
             sfCfData.value = formLabel.value;
           }
           sfCfDataList.push(sfCfData);
@@ -1281,6 +1355,7 @@ export class AddDealComponent implements OnInit {
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
             /***Added By Sravan On 08/08/2024****/
+            this.setDealTitle();
             if(!this.preview){
               let showDealPipeline = this.activeCRMDetails['showDealPipeline'];
               let showDealPipelineStage = this.activeCRMDetails['showDealPipelineStage'];
@@ -1334,6 +1409,11 @@ export class AddDealComponent implements OnInit {
             if ("ZOHO" == this.activeCRMDetails.createdForActiveCRMType && this.leadId !== undefined && this.leadId > 0) {
               this.isZohoLeadAttachedWithoutSelectingDealFor = true;
             }
+            if (this.actionType == "edit" && (this.isOrgAdmin || this.isMarketingCompany)) {
+              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled && (this.deal.associatedLeadId == undefined || this.deal.associatedLeadId == 0);
+            }
+          } else {
+            this.resetDealTitle();
           }
         },
         error => {
@@ -1715,6 +1795,10 @@ export class AddDealComponent implements OnInit {
         if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType) {
           this.hasCampaignPipeline = false;
         }
+        this.activeCRMDetails.showDealPipeline = false;
+        this.activeCRMDetails.showDealPipelineStage = false;
+        this.showCustomForm = false;
+        this.showDefaultForm = false;
       } else {
         this.holdTicketTypeId = this.deal.haloPSATickettypeId;
       }
@@ -1739,10 +1823,11 @@ export class AddDealComponent implements OnInit {
         this.isCampaignTicketTypeSelected = false;
       }
     }
+    if (this.isDealFromContact) {
+      this.setFieldErrorStates();
+    }
   }
 
-  halopsaTicketTypeId:number = 0;
-  halopsaTicketTypes: any;
   getHaloPSATicketTypes(companyId:number, integrationType: string) {
     this.isLoading = true;
     this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'DEAL').subscribe(data => {
@@ -1769,6 +1854,15 @@ export class AddDealComponent implements OnInit {
     inputElement.setSelectionRange(0, 0);
     $('#copy-reference-id').show(500);
     this.isCopiedToClipboard = true;
+  }
+
+  copyCRMId(inputElement: any) {
+    inputElement.select();
+    $('#copy-crm-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-crm-id').show(500);
+    this.isCRMIdCopiedToClipboard = true;
   }
 
   getConvertMappingLayout(layoutId:string) {
@@ -1801,6 +1895,80 @@ export class AddDealComponent implements OnInit {
         }
       }
     )
+  }
+
+  goBackToManageDeals() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.manageDeals;
+    this.referenceService.goToRouter(url);
+  }
+
+  setDealTitle() {
+    if (this.actionType === "add") {
+      let dealTitle = this.activeCRMDetails.dealTitle;
+      if (dealTitle != undefined) {
+        this.dealFormTitle = dealTitle;
+      } else {
+        this.dealFormTitle = "";
+      }
+    }
+  }
+
+  resetDealTitle() {
+    this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
+  }
+
+
+  /**XNFR-553**/
+  goBackToContactDetailsAllLeadsPage() {
+    this.notifyClose.emit();
+  }
+
+  goBackToManageContacts() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+  }
+
+  goBackToEditContacts() {
+    let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+    if (this.isFromCompanyModule) {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else {
+      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+    }
+  }
+
+  goBackToManageCompanies() {
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
+  }
+
+  goBackToContactDetailsPage() {
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+		let encodeUserId = this.referenceService.encodePathVariable(this.selectedContact.id);
+    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+  }
+
+  checkIfHasAcessForAddDeal() {
+    this.ngxloading = true;
+    this.isLoading = true;
+    this.leadsService.checkIfHasAcessForAddLeadOrDeal(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          let hasAuthorization = result.data;
+          if (hasAuthorization) {
+            this.setDeafultValuesForDeal();
+          } else {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.ngxloading = false;
+          this.isLoading = false;
+          this.httpRequestLoader.isServerError = true;
+          this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
+        },
+        () => { }
+      );
   }
 
 }

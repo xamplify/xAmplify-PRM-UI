@@ -70,8 +70,8 @@ export class QuickLinksComponent implements OnInit {
     }
   }
 
-  navigate(quickLink:any){
-    this.referenceService.navigateToQuickLinksAnalytics(quickLink,this.isPartnerLoggedInThroughVanityUrl,this.companyId);
+  navigateToAnalytics(quickLink:any){
+    this.referenceService.navigateToQuickLinksAnalytics(quickLink);
   }
 
   filterQuickLinks(type:string,index:number){
@@ -80,6 +80,10 @@ export class QuickLinksComponent implements OnInit {
     this.quickLinksPagination.searchKey = this.searchKey;
     this.quickLinksPagination.filterBy = type;
     this.findAllQuickLinks(this.quickLinksPagination);
+  }
+
+  preview(quickLink:any){
+    this.referenceService.handleQuickLinkPreview(quickLink,this.isPartnerLoggedInThroughVanityUrl,this.companyId);
   }
   
 }

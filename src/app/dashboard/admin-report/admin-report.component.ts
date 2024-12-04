@@ -16,6 +16,8 @@ import { DynamicEmailContentComponent } from '../dynamic-email-content/dynamic-e
 import { UpdatePasswordComponent } from './../super-admin/update-password/update-password.component';
 import { UpdateEmailAddressComponent } from '../update-email-address/update-email-address.component';
 import { IntegrationDetailsComponent } from '../integration-details/integration-details.component';
+import { SuperAdminService } from '../super-admin.service';
+
 declare var swal:any,$:any;
 
 @Component({
@@ -76,8 +78,12 @@ export class AdminReportComponent implements OnInit {
     isLocalHost = true;
     @ViewChild('integrationDetailsComponent') integrationDetailsComponent:IntegrationDetailsComponent;
     readonly SUPER_ADMIN_MODULE_CONTSTANTS = SUPER_ADMIN_MODULE_CONTSTANTS;
-  constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
-    public authenticationService: AuthenticationService, public router:Router) {
+    modules:Array<any> = new Array<any>();
+    isPreviewRolesButtonClicked = false;
+    teamMemberGroupId = 0;
+  constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , 
+    public pagerService: PagerService, public referenceService: ReferenceService,
+    public authenticationService: AuthenticationService, public router:Router,public superAdminService:SuperAdminService) {
         this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
         this.isLocalHost = this.authenticationService.isLocalHost();
   }
@@ -238,5 +244,6 @@ export class AdminReportComponent implements OnInit {
     openUpdateCompanyProfileNameModalPopup(){
         
     }
+
 
 }

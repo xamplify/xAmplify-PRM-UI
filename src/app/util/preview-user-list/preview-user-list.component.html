@@ -30,7 +30,7 @@
               <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
               <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
               <ng-container *ngIf="!httpRequestLoader.isLoading && !customResponse.isVisible">
-              <div>
+              <div class="table-responsive">
                 <table class='table tgrid table-condensed table-bordered' *ngIf="pagination.pagedItems?.length>0" id="user-list-users" aria-describedby="userListUsersTableDescription">
                   <thead>
                     <tr>
@@ -50,12 +50,34 @@
                         <span  data-toggle="tooltip" data-placement="bottom"
                         [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">{{user.emailId}}
                       </span>
-                      <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success" title="Published">
-                        <i class="fa fa-check"></i>
-                      </span>
-                      <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)<0" class="required" title="Not Published" >
-                        <i class="fa fa-exclamation-circle"></i>
-                      </span>
+                      <!--XBI-2880-->
+                      <ng-container *ngIf="showTickMark">
+                        <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success" title="Published">
+                          <i class="fa fa-check"></i>
+                        </span>
+                        <ng-container *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 
+                          && publishedPartnerIds.indexOf(user.userId)<0 ">
+
+
+                          <ng-container *ngIf="partnershipIds!=undefined && partnershipIds?.length>0 && partnershipIds.indexOf(user.partnershipId)<0">
+                            <span class="required" title="Not Published" >
+                              <i class="fa fa-times-circle"></i>
+                            </span>
+                            <span *ngIf="isDashboardButtonsModule || isAssetsModule" title="Click here to publish">
+                              <a (click)="publish(user)"><i  class="fa fa-share"></i></a>
+                            </span>
+                          </ng-container>
+                          <ng-container *ngIf="partnershipIds!=undefined && partnershipIds?.length>0 && partnershipIds.indexOf(user.partnershipId)>-1">
+                            <span class="required" title="Already Published Using Another Group" >
+                              <i class="fa fa-exclamation-circle"></i>
+                            </span>
+                            <span  *ngIf="isDashboardButtonsModule || isAssetsModule" title="Click here to add this group to the selection.">
+                              <a (click)="addGroup(user)"><i  class="fa fa-plus"></i></a>
+                            </span>
+                          </ng-container>
+
+                        </ng-container>
+                      </ng-container>
                       </td>
                       <td>
                         {{user?.firstName}}
@@ -88,3 +110,10 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+

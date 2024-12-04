@@ -67,8 +67,11 @@ export class FormService {
             .catch( this.handleError );
     }
 
-    getByAlias( alias: string, vendorJourney:boolean ) {
-        return this.http.get( this.authenticationService.REST_URL + "/getByFormAlias/" + alias+"/"+vendorJourney, "" )
+    getByAlias( alias: string, vendorJourney:boolean, isPartnerJourneyPage:boolean ) {
+        let aliasString = "alias="+alias;
+        let vendorJourneyString = "&vendorJourney="+vendorJourney;
+        let partnerJourneyPageString = "&partnerJourneyPage="+isPartnerJourneyPage;
+        return this.http.get( this.authenticationService.REST_URL + "/getByFormAlias?"+aliasString+vendorJourneyString+partnerJourneyPageString, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

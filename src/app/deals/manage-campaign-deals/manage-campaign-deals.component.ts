@@ -29,6 +29,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   @Input() public fromAnalytics : boolean = false;
   @Input() public showTeamMemberFilter : boolean = false;
   @Input() public isDataShare : boolean = false;
+  @Input() public isOneClickLaunchCampaign:boolean = false;
 
   @Output() viewCampaignDealForm = new EventEmitter<any>();
   @Output() editCampaignDealForm = new EventEmitter<any>();
@@ -101,6 +102,7 @@ export class ManageCampaignDealsComponent implements OnInit {
     if (this.filterKey != undefined && this.filterKey !== "") {
       pagination.filterKey = this.filterKey;
     }
+    pagination.oneClickLaunch = this.isOneClickLaunchCampaign;
     this.dealsService.listCampaignLeads(pagination)
     .subscribe(
         response => {            
@@ -582,6 +584,10 @@ downloadDeals(pagination: Pagination){
   pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   pagination.partnerTeamMemberGroupFilter = partnerTeamMemberGroupFilter;
   pagination.forCampaignAnalytics = this.fromAnalytics
+  if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+    pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    pagination.vanityUrlFilter = true;
+  }
   this.dealsService.downloadDeals(pagination, this.loggedInUserId)
       .subscribe(
           data => {    

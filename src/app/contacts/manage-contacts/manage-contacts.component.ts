@@ -27,6 +27,11 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { Subject } from 'rxjs';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
+import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
+import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+
 
 declare var $: any, swal: any;
 
@@ -246,10 +251,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	isregistered: boolean = false;
 	/*****XNFR-342*****/
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
+	/***** XNFR-671 *****/
+	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public route: ActivatedRoute) {
+		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -889,21 +896,26 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number,
 		isPartnerUserList: boolean, isDefaultPartnerList: boolean, isDefaultContactList: boolean, isSynchronizationList: boolean, isFormList: boolean, isTeamMemberPartnerList: boolean, isCompanyList: boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
-		this.uploadedUserId = uploadUserId;
-		this.isPartnerUserList = isPartnerUserList;
-		this.selectedContactListId = contactSelectedListId;
-		this.selectedContactListName = contactListName;
-		this.isDefaultPartnerList = isDefaultPartnerList;
-		this.isSynchronizationList = isSynchronizationList;
-		this.isTeamMemberPartnerList = isTeamMemberPartnerList;
-		this.showAll = false;
-		this.showEdit = true;
-		this.isFormList = isFormList;
-		this.isCompanyList = isCompanyList;
-		this.selectedAssociatedCompany = selectedAssociatedCompany;
-		this.selectedCompanyId = selectedAssociatedCompanyId;
-		this.isDefaultContactList = isDefaultContactList;
-		$("#pagination").hide();
+		if (this.module == 'contacts') {
+			let encodedURL = this.referenceService.encodePathVariable(contactSelectedListId);
+			this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts + encodedURL);
+		} else {
+			this.uploadedUserId = uploadUserId;
+			this.isPartnerUserList = isPartnerUserList;
+			this.selectedContactListId = contactSelectedListId;
+			this.selectedContactListName = contactListName;
+			this.isDefaultPartnerList = isDefaultPartnerList;
+			this.isSynchronizationList = isSynchronizationList;
+			this.isTeamMemberPartnerList = isTeamMemberPartnerList;
+			this.showAll = false;
+			this.showEdit = true;
+			this.isFormList = isFormList;
+			this.isCompanyList = isCompanyList;
+			this.selectedAssociatedCompany = selectedAssociatedCompany;
+			this.selectedCompanyId = selectedAssociatedCompanyId;
+			this.isDefaultContactList = isDefaultContactList;
+			$("#pagination").hide();
+		}
 	}
 
 	setListType(publicList: boolean, contactType: string, assignedToPartner: boolean) {
@@ -1845,7 +1857,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	downloadContactTypeList() {
 		try {
 			let csvNameSuffix = this.checkingContactTypeName == "Partner" ? this.authenticationService.partnerModule.customName : this.checkingContactTypeName;
-			let suffix = this.checkingContactTypeName == "Partner" ?  's_group' : 's_list';
+			let suffix = this.checkingContactTypeName == "Partner" ? 's_group' : 's_list';
 			if (this.contactsByType.selectedCategory === 'all') {
 				this.logListName = 'All_' + csvNameSuffix + suffix + '.csv';
 			}
@@ -1866,51 +1878,114 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
 				if (!this.authenticationService.module.isPrm && !this.authenticationService.module.isPrmTeamMember && !this.authenticationService.module.isPrmAndPartner && !this.authenticationService.module.isPrmAndPartnerTeamMember) {
-					var object = {
-						"First Name": this.contactsByType.listOfAllContacts[i].firstName,
-						"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
-						"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
-						"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
-						"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
-						"Address": this.contactsByType.listOfAllContacts[i].address,
-						"City": this.contactsByType.listOfAllContacts[i].city,
-						"State": this.contactsByType.listOfAllContacts[i].state,
-						"Country": this.contactsByType.listOfAllContacts[i].country,
-						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
-						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+					if (this.isPartner) {
+						var parentObject = {
+							"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+							"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+							"Account Name": this.contactsByType.listOfAllContacts[i].accountName,
+							"Account Owner": this.contactsByType.listOfAllContacts[i].accountOwner,
+							"Company Domain": this.contactsByType.listOfAllContacts[i].companyDomain,
+							"Account Sub Type": this.contactsByType.listOfAllContacts[i].accountSubType,
+							"Website": this.contactsByType.listOfAllContacts[i].website,
+							"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+							"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+							"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+							"Address": this.contactsByType.listOfAllContacts[i].address,
+							"City": this.contactsByType.listOfAllContacts[i].city,
+							"Country": this.contactsByType.listOfAllContacts[i].country,
+							"Territory": this.contactsByType.listOfAllContacts[i].territory,
+							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+						}
+					} else {
+						var object = {
+							"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+							"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+							"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+							"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+							"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+							"Address": this.contactsByType.listOfAllContacts[i].address,
+							"City": this.contactsByType.listOfAllContacts[i].city,
+							"State": this.contactsByType.listOfAllContacts[i].state,
+							"Country": this.contactsByType.listOfAllContacts[i].country,
+							"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
+							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+						}
 					}
 					if (this.authenticationService.module.isCampaign && ((!this.authenticationService.module.isPrmAndPartner
-						 && !this.authenticationService.module.isPrmAndPartnerTeamMember) || !this.isPartner)
-						 && this.contactsByType.selectedCategory != 'invalid'
-					 && this.contactsByType.selectedCategory !='excluded' && !this.assignLeads ) {
-						object["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
-							object["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
-							object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
-							object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+						&& !this.authenticationService.module.isPrmAndPartnerTeamMember) || !this.isPartner)
+						&& this.contactsByType.selectedCategory != 'invalid'
+						&& this.contactsByType.selectedCategory != 'excluded' && !this.assignLeads) {
+						if (this.isPartner) {
+							parentObject["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+								parentObject["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+								parentObject["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+								parentObject["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+						} else {
+							object["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+								object["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+								object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+								object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+						}
 					}
 					if (this.contactsByType.selectedCategory === 'excluded') {
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
+
 					if (this.contactsByType.selectedCategory === 'unsubscribed') {
-						object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						if (this.isPartner) {
+							parentObject["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						} else {
+							object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+						}
 					}
+					
 					if (this.contactsByType.selectedCategory === 'invalid') {
 						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
 					}
-					this.downloadDataList.push(object);
+					if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
+						this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
+							let dto = this.contactsByType.listOfAllContacts[i].flexiFields.find(dto => dto.fieldName == flexiField.fieldName);
+							object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
+						});
+					}
+					if (this.isPartner) {
+						this.downloadDataList.push(parentObject);
+					} else {
+						this.downloadDataList.push(object);
+					}
 				} else {
-					let object = {
-						"First Name": this.contactsByType.listOfAllContacts[i].firstName,
-						"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
-						"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
-						"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
-						"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
-						"Address": this.contactsByType.listOfAllContacts[i].address,
-						"City": this.contactsByType.listOfAllContacts[i].city,
-						"State": this.contactsByType.listOfAllContacts[i].state,
-						"Country": this.contactsByType.listOfAllContacts[i].country,
-						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
-						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+					if (this.isPartner) {
+						var parentObject = {
+							"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+							"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+							"Account Name": this.contactsByType.listOfAllContacts[i].accountName,
+							"Account Owner": this.contactsByType.listOfAllContacts[i].accountOwner,
+							"Company Domain": this.contactsByType.listOfAllContacts[i].companyDomain,
+							"Account Sub Type": this.contactsByType.listOfAllContacts[i].accountSubType,
+							"Website": this.contactsByType.listOfAllContacts[i].website,
+							"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+							"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+							"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+							"Address": this.contactsByType.listOfAllContacts[i].address,
+							"City": this.contactsByType.listOfAllContacts[i].city,
+							"Country": this.contactsByType.listOfAllContacts[i].country,
+							"Territory": this.contactsByType.listOfAllContacts[i].territory,
+							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+						}
+					} else {
+						var object = {
+							"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+							"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+							"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+							"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+							"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+							"Address": this.contactsByType.listOfAllContacts[i].address,
+							"City": this.contactsByType.listOfAllContacts[i].city,
+							"State": this.contactsByType.listOfAllContacts[i].state,
+							"Country": this.contactsByType.listOfAllContacts[i].country,
+							"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
+							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+						}
 					}
 					if (this.contactsByType.selectedCategory === 'excluded') {
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
@@ -1921,7 +1996,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					if (this.contactsByType.selectedCategory === 'invalid') {
 						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
 					}
-					this.downloadDataList.push(object);
+					if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
+						this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
+							let dto = this.contactsByType.listOfAllContacts[i].flexiFields.find(dto => dto.fieldName == flexiField.fieldName);
+							object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
+						});
+					}
+					if (this.isPartner) {
+						this.downloadDataList.push(parentObject);
+					} else {
+						this.downloadDataList.push(object);
+					}
 				}
 			}
 			this.referenceService.isDownloadCsvFile = true;
@@ -2468,7 +2553,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					this.socialContact.contactListId = JSON.parse(localStorage.getItem('selectedContactListId'));
 					this.socialContact.contactType = localStorage.getItem('contactType');
 					this.socialContact.alias = localStorage.getItem('alias');
-					this.syncronizeContactList(this.socialContact);
+					// this.syncronizeContactList(this.socialContact);
 					localStorage.removeItem("currentPage");
 					localStorage.removeItem("currentModule");
 					localStorage.removeItem("selectedContactListId");
@@ -2486,6 +2571,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			if (this.checkingContactTypeName == "Contact") {
 				this.pagination.filterBy = 'MY-CONTACTS';
+				this.findFlexiFieldsData();
 			}
 			this.loadContactLists(this.pagination);
 			this.contactsCount();
@@ -2530,7 +2616,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.successMessage = false;
 			this.contactService.deleteUserSucessMessage = false;
 			this.contactService.addUserSuccessMessage = false;
-
+			this.flexiFieldsRequestAndResponseDto = [];
 			swal.close();
 			$('#filterModal').modal('hide');
 		} catch (error) {
@@ -2951,5 +3037,25 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		});
 	}
 
+	/***** XNFR-671 *****/
+	findFlexiFieldsData() {
+		this.loading = true;
+		this.flexiFieldService.findFlexiFieldsData().subscribe(data => {
+			this.flexiFieldsRequestAndResponseDto = data;
+			this.loading = false;
+		}, (error: any) => {
+			this.referenceService.showSweetAlertServerErrorMessage();
+			this.loading = false;
+		});
+	}
+
+	isContactsByTypeAllVaildUnsubscribed() {
+		return (this.isContactModule() && (this.contactsByType.selectedCategory == 'all' 
+			|| this.contactsByType.selectedCategory == 'valid' || this.contactsByType.selectedCategory == 'unsubscribed'));
+	}
+
+	isContactModule() {
+		return (this.module == 'contacts');
+	}
 
 }

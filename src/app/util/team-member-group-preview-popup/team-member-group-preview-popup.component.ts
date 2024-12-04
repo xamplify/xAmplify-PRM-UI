@@ -15,6 +15,7 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
   @Input() teamMemberGroupId:number;
   @Output() previewGroupPopupEventEmitter = new EventEmitter();
   @Input() agencyId:number;
+  @Input() modulesFromUpgradeAccountModal:any
   constructor(public authenticationService:AuthenticationService,public logger:XtremandLogger,public referenceService:ReferenceService,
     public authencticationService:AuthenticationService) { }
 
@@ -29,6 +30,10 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
     $('#preview-team-member-popup').modal('show');
     if(this.teamMemberGroupId!=undefined && this.teamMemberGroupId>0){
       this.findTeamMemberGroupModules();
+    }else if(this.modulesFromUpgradeAccountModal!=undefined && this.modulesFromUpgradeAccountModal.length>0){
+      this.defaultModules = this.modulesFromUpgradeAccountModal;
+      this.emptyModules = this.defaultModules.length == 0;
+      this.modulesLoader = false;
     }else{
       this.findAgencyModules();
     }

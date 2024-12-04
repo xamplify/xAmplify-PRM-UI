@@ -11,8 +11,7 @@ import { CustomFieldsDto } from "app/dashboard/models/custom-fields-dto";
 
 @Injectable()
 export class IntegrationService {
-       
-
+ 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
     }
 
@@ -221,10 +220,41 @@ export class IntegrationService {
       
       }
 
+    getCrmCustomDropdowns(parentLabelId: string, selectedValue: string) {
+        return this._http.get(this.authenticationService.REST_URL + `crm/custom/choices/${parentLabelId}/${selectedValue}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /**XNFR-677**/
+    getSalesforceRedirectUrl(instanceType:any) {
+        let url = this.authenticationService.REST_URL + "salesforce/redirect-url/"+instanceType+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    //XNFR-710
+    getFormLabelsValues(dealId: any, opportunityType: any, createdForCompanyId: any) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? loggedInUserId : 0;
+        let dealIdRequestParam = dealId != undefined && dealId > 0 ? dealId : 0;
+        let opportunityTypeRequestParam = opportunityType != undefined ? "&opportunityType=" + opportunityType : "&opportunityType =''";
+        let companyIdRequestParam = createdForCompanyId != undefined && createdForCompanyId > 0 ? createdForCompanyId : 0;
+        let url = this.authenticationService.REST_URL + "crm/view/opportunites?access_token="+this.authenticationService.access_token + "&loggedInUserId=" + loggedInUserIdRequestParam
+            + opportunityTypeRequestParam + "&opportunityId=" + dealIdRequestParam + "&companyId=" + companyIdRequestParam;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getFormLabelChoices(formLabelId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `crm/view/getLabelChoices/${formLabelId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     saveCustomFields(request: any) {
         let url = this.authenticationService.REST_URL + "/customFields/save?access_token=" + this.authenticationService.access_token
         return this.authenticationService.callPostMethod(url, request);
     }
+
     syncCustomFieldsForm(request: any) {
         let url = this.authenticationService.REST_URL + "/customFields/sync?access_token=" + this.authenticationService.access_token
         return this.authenticationService.callPostMethod(url, request);

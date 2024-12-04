@@ -74,6 +74,9 @@ export class SfDealComponent implements OnInit {
   formGroupClass: string;
   formLabelGroupClass: string;
   isInvalidLookupField: boolean = false;
+  //XNFR-710
+  isSalesForceEnabledAsActiveCRM : boolean = false;
+  formLabels: any;
 
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
@@ -127,22 +130,32 @@ export class SfDealComponent implements OnInit {
         classes: "myclass custom-class"
       };
     }
-    let isValidCreatedForComapnyId = this.createdForCompanyId != undefined && this.createdForCompanyId > 0;
-    if (isValidCreatedForComapnyId) {
+    let isValidCreatedForCompanyId = this.createdForCompanyId != undefined && this.createdForCompanyId > 0;
+    if (isValidCreatedForCompanyId) {
       this.setDealIdAsZero();
       let isCreatedByActiveTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdByActiveCRMType;
       let isCreatedForActiveCRMTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdForActiveCRMType;
       let isCreatedForActiveCRMTypeNotZOHO = "ZOHO" !== this.activeCRM.createdForActiveCRMType;
+
       if (isCreatedByActiveTypeNotHALOPSA && isCreatedForActiveCRMTypeNotHALOPSA && isCreatedForActiveCRMTypeNotZOHO) {
         this.setTicketTypeIdAsZero();
         this.addLoader();
-        this.getActiveCRMCustomForm();
+        //XNFR-710
+        if ("SALESFORCE" === this.activeCRM.createdForActiveCRMType && this.isPreview && !("CONNECTWISE" === this.activeCRM.createdByActiveCRMType)) {
+          this.isSalesForceEnabledAsActiveCRM = true;
+          this.getFormLablesValues();
+        } else {
+          this.getActiveCRMCustomForm();
+        }
       }
     }
+
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
+
   }
+
   /***Added By Sravan 08/08/2024****/
   private updateFormAlignments() {
     if (this.isPreview) {
@@ -192,7 +205,7 @@ export class SfDealComponent implements OnInit {
     }
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
@@ -201,7 +214,12 @@ export class SfDealComponent implements OnInit {
         this.isDealRegistrationFormInvalid = true;
         this.isFormValid.emit(this.isDealRegistrationFormInvalid);
         this.addLoader();
-        this.getActiveCRMCustomForm();
+        if ("SALESFORCE" === this.activeCRM.createdForActiveCRMType && this.isPreview && !("CONNECTWISE" === this.activeCRM.createdByActiveCRMType)) {
+          this.isSalesForceEnabledAsActiveCRM = true;
+          this.getFormLablesValues();
+        } else {
+          this.getActiveCRMCustomForm();
+        }
       }
     }
   }
@@ -251,8 +269,10 @@ export class SfDealComponent implements OnInit {
           if (dropDownObj !== undefined && dropDownObj.value !== undefined) {
             let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(dropDownObj.id);
             if (haveChildrenDropDown) {
+              let parentLabelId = dropDownObj.labelId;
               let selectedParentValue = dropDownObj.value;
-              this.populateDependentChildValuesByParentValue(dropDownObj.id, selectedParentValue);
+              let parentLabelType = dropDownObj.labelType;
+              this.populateDependentChildValuesByParentValue(dropDownObj.id, selectedParentValue,parentLabelId,parentLabelType);
             }
           }
         }
@@ -266,7 +286,11 @@ export class SfDealComponent implements OnInit {
           for (let column of this.form.formLabelDTOs) {
             let addActionType = this.actionType === 'add';
             if (column.labelId === 'Company' && addActionType) {
-              column.value = this.selectedContact.companyName;
+              if (this.selectedContact.contactCompany != undefined) {
+                column.value = this.selectedContact.contactCompany;
+              } else {
+                column.value = this.selectedContact.companyName;
+              }
             } else if (column.labelId === 'Email') {
               if (addActionType) {
                 column.value = this.selectedContact.emailId;
@@ -276,6 +300,16 @@ export class SfDealComponent implements OnInit {
               column.value = this.selectedContact.firstName;
             } else if (column.labelId === 'LastName' && addActionType) {
               column.value = this.selectedContact.lastName;
+            } else if (column.labelId === 'Phone' && addActionType) {
+              column.value = this.selectedContact.mobileNumber;
+            } else if (column.labelId === 'City' && addActionType) {
+              column.value = this.selectedContact.city;
+            } else if (column.labelId === 'Address' && addActionType) {
+              column.value = this.selectedContact.street;
+            } else if (column.labelId === 'PostalCode' && addActionType) {
+              column.value = this.selectedContact.zipCode;
+            } else if (column.labelId === 'State' && addActionType) {
+              column.value = this.selectedContact.state;
             }
           }
           this.validateAllFields();
@@ -368,21 +402,26 @@ export class SfDealComponent implements OnInit {
     if (haveChildrenDropDown) {
       let selectedValue = columnInfo.value;
       let parentLabelType = columnInfo.labelType;
-      this.populateDependentChildValues(columnInfo.id, selectedValue,parentLabelType);
+      let parentLabelId = columnInfo.labelId;
+      this.populateDependentChildValues(columnInfo.id, selectedValue,parentLabelType,parentLabelId);
     }
     this.validateAllFields();
   }
 
-  populateDependentChildValuesByParentValue(parentId: any, selectedValue: string) {
+  populateDependentChildValuesByParentValue(parentId: any, selectedValue: string, parentLabelId: string, parentLabelType: string) {
     this.form.formLabelDTOs.forEach(column => {
       if (column.parentLabelId === parentId) {
-        column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
-          Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
-        );
-        if (!(column.dropDownChoices.length > 0) && (selectedValue != "")) {
-          column.labelType = "text";
-        } else {
-          column.labelType = "select";
+        if (column.dependentDropDownChoices === undefined) {
+          this.getCrmCustomDropdownsBySelectedValue(parentLabelId, selectedValue, column, parentLabelType);
+        } else if (column.dependentDropDownChoices.length > 0) {
+          column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
+            Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
+          );
+          if (!(column.dropDownChoices.length > 0) && (selectedValue != "")) {
+            column.labelType = "text";
+          } else {
+            column.labelType = "select";
+          }
         }
       }
     });
@@ -396,23 +435,28 @@ export class SfDealComponent implements OnInit {
     return false;
   }
 
-  populateDependentChildValues(parentId: any, selectedValue: string, parentLabelType: any) {
+  populateDependentChildValues(parentId: any, selectedValue: string, parentLabelType: any, parentLabelId: any) {
     this.form.formLabelDTOs.forEach(column => {
       if (column.parentLabelId === parentId) {
         column.value = "";
-        column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
-          Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
-        );
-        if (!(column.dropDownChoices.length > 0) && (selectedValue != "" || parentLabelType === "text")) {
-          column.labelType = "text";
-        } else {
-          column.labelType = "select";
-        }
-        let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
-        if (haveChildrenDropDown) {
-          let selectedValue = column.value;
-          let parentLabelType = column.labelType;
-          this.populateDependentChildValues(column.id, selectedValue, parentLabelType);
+        if (column.dependentDropDownChoices === undefined) {
+          this.getCrmCustomDropdowns(parentLabelId, selectedValue,column,parentLabelType);
+        } else if (column.dependentDropDownChoices.length > 0) {
+          column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
+            Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
+          );
+          if (!(column.dropDownChoices.length > 0) && (selectedValue != "" || parentLabelType === "text")) {
+            column.labelType = "text";
+          } else {
+            column.labelType = "select";
+          }
+          let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
+          if (haveChildrenDropDown) {
+            let selectedValue = column.value;
+            let parentLabelType = column.labelType;
+            let parentLabelId = column.labelId;
+            this.populateDependentChildValues(column.id, selectedValue, parentLabelType,parentLabelId);
+          }
         }
       }
     });
@@ -611,6 +655,7 @@ export class SfDealComponent implements OnInit {
       }
     } else if (!columnInfo.required) {
       this.isInvalidPhoneNumber = false;
+      columnInfo.errorMessage = '';
     }
   }
 
@@ -654,12 +699,13 @@ export class SfDealComponent implements OnInit {
     columnInfo.divClass = "success";
     if (columnInfo.labelType == 'lookup' && columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
       if (columnInfo.value == 0 && columnInfo.required) {
-        columnInfo.errorMessage = "Please select "+ columnInfo.labelName;
+        columnInfo.errorMessage = "Please select " + columnInfo.labelName;
         columnInfo.divClass = "error";
         this.isInvalidLookupField = true;
       } else {
         this.isInvalidLookupField = false;
-      }      
+        this.setSelectedChoiceIdForLookUp(columnInfo);
+      }
     } else if (!columnInfo.required && columnInfo.labelType == 'lookup') {
       this.isInvalidLookupField = false;
     }
@@ -727,4 +773,127 @@ export class SfDealComponent implements OnInit {
     return searchableDropDownDto;
   }
 
+  getCrmCustomDropdownsBySelectedValue(parentLabelId: string, selectedValue: string, column: ColumnInfo, parentLabelType: any) {
+    column.isDropDownLoading = true;
+    this.integrationService.getCrmCustomDropdowns(parentLabelId, selectedValue)
+      .subscribe(
+        result => {
+          if (result.statusCode == 200) {
+            column.dropDownChoices = result.data;
+            column.isDropDownLoading = false;
+            if (!(column.dropDownChoices.length > 0) && selectedValue != "" || parentLabelType === "text") {
+              column.labelType = "text";
+            } else {
+              column.labelType = "select";
+            }
+          }
+        },
+        error => {
+          column.isDropDownLoading = false;
+          this.sfFormError = this.referenceService.getApiErrorMessage(error);
+        },
+        () => { }
+      );
+  }
+
+  getCrmCustomDropdowns(parentLabelId: string, selectedValue: string, column: ColumnInfo, parentLabelType: any) {
+    column.isDropDownLoading = true;
+    this.integrationService.getCrmCustomDropdowns(parentLabelId, selectedValue)
+      .subscribe(
+        result => {
+          if (result.statusCode == 200) {
+            column.dropDownChoices = result.data;
+            column.isDropDownLoading = false;
+            if (!(column.dropDownChoices.length > 0) && selectedValue != "" || parentLabelType === "text") {
+              column.labelType = "text";
+            } else {
+              column.labelType = "select";
+            }
+            let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
+            if (haveChildrenDropDown) {
+              let labelType = column.labelType;
+              this.setChildDropDownType(column, labelType);
+            }
+          }
+        },
+        error => {
+          column.isDropDownLoading = false;
+          this.sfFormError = this.referenceService.getApiErrorMessage(error);
+        },
+        () => { }
+      );
+  }
+
+  setChildDropDownType(column: ColumnInfo, parentLabelType: any) {
+    let parentId = column.id;
+    this.form.formLabelDTOs.forEach(column => {
+      if (column.parentLabelId === parentId) {
+        column.value = "";
+        column.dropDownChoices = [];
+        if (parentLabelType === "text") {
+          column.labelType = "text";
+        } else {
+          column.labelType = "select";
+        }
+        let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
+        if (haveChildrenDropDown) {
+          let parentLabelType = column.labelType;
+          this.setChildDropDownType(column, parentLabelType);
+        }
+      }
+    });
+  }
+
+  //XNFR-710
+  setSelectedChoiceIdForLookUp(columnInfo: any): any {
+    let selectedChoiceId = columnInfo.value;
+    if (columnInfo.lookupDropDownChoices != null && columnInfo.lookupDropDownChoices != undefined && !columnInfo.hideFieldInfo) {
+      let selectedChoice = columnInfo.lookupDropDownChoices.filter(choice => choice.id === selectedChoiceId);
+      for (let choice of selectedChoice) {
+        columnInfo.selectedChoiceValue = choice.name;
+      }
+    }
+  }
+
+  getFormLablesValues() {
+    this.integrationService.getFormLabelsValues(this.dealId, this.opportunityType, this.createdForCompanyId).subscribe(result => {
+      this.showSFFormError = false;
+      this.removeLoader();
+      if (result.statusCode == 200) {
+        this.formLabels = result.data;
+        this.formLabels.forEach((columnInfo: ColumnInfo) => {
+
+          if (columnInfo.labelType === "checkbox" || columnInfo.labelType === "radio") {
+            columnInfo.isDropDownLoading = true;
+            this.integrationService.getFormLabelChoices(columnInfo.id).subscribe(result => {
+              columnInfo.isDropDownLoading = false;
+              if (result.statusCode == 200) {
+                columnInfo.formLabelChoices = result.data;
+              }
+            }, error => {
+              columnInfo.isDropDownLoading = false;
+              this.sfFormError = this.referenceService.getApiErrorMessage(error);
+            });
+          }
+
+
+          if (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany)) {
+            if (columnInfo.private) {
+              columnInfo.hideFieldInfo = true;
+            }
+          }
+
+          if (columnInfo.formLabelDefaultFieldType === "LEAD_ID" || columnInfo.formLabelDefaultFieldType === "DEAL_ID") {
+            columnInfo.hideFieldInfo = true;
+          }
+        });
+      }
+    }, error => {
+      this.removeLoader();
+      this.showSFFormError = true;
+      this.sfFormError = this.referenceService.getApiErrorMessage(error);
+    });
+  }
+
 }
+

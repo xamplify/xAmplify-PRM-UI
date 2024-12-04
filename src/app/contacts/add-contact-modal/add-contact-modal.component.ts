@@ -11,14 +11,18 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Properties } from 'app/common/models/properties';
 
-declare var $: any;
+
+declare var $: any, swal: any;
 
 @Component( {
     selector: 'app-add-contact-modal',
     templateUrl: './add-contact-modal.component.html',
     styleUrls: ['./add-contact-modal.component.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [CountryNames, RegularExpressions]
+    providers: [CountryNames, RegularExpressions,Properties]
 })
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
     @Input() contactDetails: any;
@@ -33,7 +37,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     @Output() notifyParent: EventEmitter<any>;
     addContactuser: User = new User();
     validEmailPatternSuccess = true;
-    emailNotValid: boolean;
+    emailNotValid: boolean = false;
     checkingForEmail: boolean;
     editingEmailId = '';
     isEmailExist: boolean = false;
@@ -64,10 +68,20 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     validationResponse : CustomResponse = new CustomResponse();
     partners: User[] = [];
     isWebsiteNotValid : boolean = false;
-    
+  
+    //XNFR-697
+    @Input() activeCrmType: any;
+    loggedInUserId: number;
+    canBlurDiv : boolean = false;
+    isSalesforceAsActiveCRM = false;
+    previousEmailIds:any = [];
+    isValidEmail : boolean = false;
+    @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
+
     
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
-                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
+                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
+                 public logger: XtremandLogger,public authenticationService: AuthenticationService,public properties:Properties ) {
         this.notifyParent = new EventEmitter();
 
 
@@ -83,7 +97,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
       else {
           this.isPartner = true;
           this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
-        
       }
       this.contactDetails
     }
@@ -100,12 +113,26 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     validateEmail( emailId: string ) {
         const lowerCaseEmail = emailId.toLowerCase();
-        if ( this.validateEmailAddress( emailId ) ) {
+        if (this.validateEmailAddress(emailId)) {
             this.checkingForEmail = true;
             this.validEmailPatternSuccess = true;
-        }
-        else {
+            this.isValidEmail = true;
+            if (this.isSalesforceAsActiveCRM) {
+                if (this.previousEmailIds.length > 1 && this.previousEmailIds.indexOf(emailId) !== -1) {
+                    this.resetContactDetails();
+                    this.canBlurDiv = true;
+                    this.previousEmailIds.push(emailId);
+                } else {
+                    this.previousEmailIds.push(emailId);
+                }
+            }
+        } else {
             this.checkingForEmail = false;
+            this.isValidEmail = false;
+            if (this.isSalesforceAsActiveCRM) {
+                this.resetContactDetails();
+                this.canBlurDiv = true;
+            }
         }
 
         if ( lowerCaseEmail != this.editingEmailId && this.totalUsers ) {
@@ -125,9 +152,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         return EMAIL_ID_PATTERN.test( emailId );
     }
 
-    checkingEmailPattern( emailId: string ) {
+    checkingEmailPattern(emailId: string) {
         this.validEmailPatternSuccess = false;
-        if ( this.validateEmailAddress( emailId ) ) {
+        if (this.validateEmailAddress(emailId)) {
             this.validEmailPatternSuccess = true;
             this.emailNotValid = true;
         } else {
@@ -195,10 +222,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 		}
 	}
     
-    closeAndEmitData(){
+    closeAndEmitData() {
         this.addContactModalClose();
-        this.addContactuser.country = this.addContactuser.country == this.countryNames.countries[0] ? '':this.addContactuser.country
-        this.notifyParent.emit( this.addContactuser );
+        this.addContactuser.country = this.addContactuser.country == this.countryNames.countries[0] ? '' : this.addContactuser.country
+        if (this.checkIsContactType()) {
+            this.addContactuser.flexiFields = JSON.parse(JSON.stringify(this.flexiFieldsRequestAndResponseDto));
+        }
+        this.notifyParent.emit(this.addContactuser);
     }
 
     addEditContactRow() {
@@ -224,6 +254,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 this.isValidLegalOptions = true;
                 $( '#addContactModal' ).modal( 'hide' );
                 this.contactService.isContactModalPopup = false;
+                if (this.checkIsContactType()) {
+                    this.addContactuser.flexiFields = this.flexiFieldsRequestAndResponseDto;
+                }
                 this.notifyParent.emit( this.addContactuser );
             }else{
                 this.isValidLegalOptions = false;
@@ -237,14 +270,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         
     }
 
-contactCompanyChecking( event:any ) {
-        if (this.checkingContactTypeName == 'Contact' ) 
-        {
+    contactCompanyChecking(event: any) {
+        if (this.checkIsContactType()) {
             this.isCompanyDetails = true;
-        } else if  (this.isPartner && (this.addContactuser.contactCompany != null 
-             && this.addContactuser.contactCompany !='' && this.addContactuser.contactCompany.trim().length>0 )){
-                this.isCompanyDetails = true;
-            }        
+        } else if (this.isPartner && (this.addContactuser.contactCompany != null
+            && this.addContactuser.contactCompany != '' && this.addContactuser.contactCompany.trim().length > 0)) {
+            this.isCompanyDetails = true;
+        }
         else {
             this.isCompanyDetails = false;
         }
@@ -275,80 +307,93 @@ contactCompanyChecking( event:any ) {
     
 
     ngOnInit() {
-       try{
-        this.addContactuser.country = this.countryNames.countries[0];
-        this.addContactuser.contactCompanyId = this.selectedCompanyId;
-        if ( this.isUpdateUser ) {
-            this.checkingForEmail = true;
-            this.addContactuser.userId = this.contactDetails.id;
-            this.addContactuser.firstName = this.contactDetails.firstName;
-            this.addContactuser.lastName = this.contactDetails.lastName;
-            this.addContactuser.contactCompanyId = this.contactDetails.contactCompanyId;
-            this.addContactuser.contactCompany = this.contactDetails.contactCompany;
-            this.addContactuser.jobTitle = this.contactDetails.jobTitle;
-            this.addContactuser.emailId = this.contactDetails.emailId;
-            this.editingEmailId = this.contactDetails.emailId;
-            this.addContactuser.vertical = this.contactDetails.vertical;
-            this.addContactuser.region = this.contactDetails.region;
-            this.addContactuser.partnerType = this.contactDetails.partnerType;
-            this.addContactuser.category = this.contactDetails.category;
-            this.addContactuser.address = this.contactDetails.address;
-            this.addContactuser.city = this.contactDetails.city;
-            this.addContactuser.state = this.contactDetails.state;
-            this.addContactuser.zipCode = this.contactDetails.zipCode;
-            if(this.countryNames.countries.indexOf(this.contactDetails.country) !== -1){
-                this.addContactuser.country = this.contactDetails.country;
-            }
-            this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
-            this.addContactuser.legalBasis = this.contactDetails.legalBasis;
-            this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
-            this.addContactuser.accountName = this.contactDetails.accountName;
-            this.addContactuser.accountSubType = this.contactDetails.accountSubType;
-            this.addContactuser.accountOwner = this.contactDetails.accountOwner;
-            this.addContactuser.companyDomain = this.contactDetails.companyDomain;
-            this.addContactuser.territory = this.contactDetails.territory;
-            this.addContactuser.website = this.contactDetails.website;
-            this.validLimit = this.contactDetails.contactsLimit>0;
-            this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
-            if ( this.isPartner){
-            this.addContactuser.displayContactCompany = this.contactDetails.displayContactCompany;
-            this.addContactuser.companyNameStatus = this.contactDetails.companyNameStatus;
-            }
-            
-            if ( this.isPartner || this.isAssignLeads ) {
-                if ( this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
-                    this.isCompanyDetails = true;
-                } else {
-                    this.isCompanyDetails = false;
-                }
-                /*******XNFR-85*******/
-                this.findTeamMemberGroups();
-                
-            }
-        }
-        if ( this.addContactuser.country == undefined ) {
+        try {
+            this.loggedInUserId = this.authenticationService.getUserId();
             this.addContactuser.country = this.countryNames.countries[0];
+            this.addContactuser.contactCompanyId = this.selectedCompanyId;
+            if (this.isUpdateUser) {
+                this.checkingForEmail = true;
+                this.addContactuser.userId = this.contactDetails.id;
+                this.addContactuser.firstName = this.contactDetails.firstName;
+                this.addContactuser.lastName = this.contactDetails.lastName;
+                this.addContactuser.contactCompanyId = this.contactDetails.contactCompanyId;
+                this.addContactuser.contactCompany = this.contactDetails.contactCompany;
+                this.addContactuser.jobTitle = this.contactDetails.jobTitle;
+                this.addContactuser.emailId = this.contactDetails.emailId;
+                this.editingEmailId = this.contactDetails.emailId;
+                this.addContactuser.vertical = this.contactDetails.vertical;
+                this.addContactuser.region = this.contactDetails.region;
+                this.addContactuser.partnerType = this.contactDetails.partnerType;
+                this.addContactuser.category = this.contactDetails.category;
+                this.addContactuser.address = this.contactDetails.address;
+                this.addContactuser.city = this.contactDetails.city;
+                this.addContactuser.state = this.contactDetails.state;
+                this.addContactuser.zipCode = this.contactDetails.zipCode;
+                if (this.countryNames.countries.indexOf(this.contactDetails.country) !== -1) {
+                    this.addContactuser.country = this.contactDetails.country;
+                }
+                this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
+                this.addContactuser.legalBasis = this.contactDetails.legalBasis;
+                this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
+                this.addContactuser.accountName = this.contactDetails.accountName;
+                this.addContactuser.accountSubType = this.contactDetails.accountSubType;
+                this.addContactuser.accountOwner = this.contactDetails.accountOwner;
+                this.addContactuser.companyDomain = this.contactDetails.companyDomain;
+                this.addContactuser.territory = this.contactDetails.territory;
+                this.addContactuser.website = this.contactDetails.website;
+                this.validLimit = this.contactDetails.contactsLimit > 0;
+                this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
+                if (this.checkIsContactType()) {
+                    this.addContactuser.flexiFields = this.contactDetails.flexiFields;
+                }
+                if (this.isPartner) {
+                    this.addContactuser.displayContactCompany = this.contactDetails.displayContactCompany;
+                    this.addContactuser.companyNameStatus = this.contactDetails.companyNameStatus;
+                }
+
+                if (this.isPartner || this.isAssignLeads) {
+                    if (this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
+                        this.isCompanyDetails = true;
+                    } else {
+                        this.isCompanyDetails = false;
+                    }
+                    /*******XNFR-85*******/
+                    this.findTeamMemberGroups();
+
+                }
+            }
+            if (this.addContactuser.country == undefined) {
+                this.addContactuser.country = this.countryNames.countries[0];
+            }
+            /**************Show Legal Basis Content*******************/
+            this.fields = { text: 'name', value: 'id' };
+            if (this.gdprInput != undefined) {
+                this.legalBasisOptions = this.gdprInput.legalBasisOptions;
+                this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
+                this.gdprStatus = this.gdprInput.gdprStatus;
+            }
+            if (this.router.url.includes('home/contacts')) {
+                this.getActiveCompanies();
+            }
+            /*****XNFR-98*****/
+            if (this.isTeamMemberPartnerList == undefined) {
+                this.isTeamMemberPartnerList = false;
+            }
+            $('#addContactModal').modal('show');
+            //XNFR-697
+            this.isSalesforceAsActiveCRM = this.isPartner && (this.activeCrmType == "salesforce");
+            if (!(this.addContactuser.emailId !== undefined)) {
+                this.canBlurDiv = this.isSalesforceAsActiveCRM && !this.isUpdateUser;
+            }
+        } catch (error) {
+            console.error(error, "addcontactOneAttimeModalComponent()", "ngOnInit()");
         }
-        /**************Show Legal Basis Content*******************/
-        this.fields = { text: 'name', value: 'id' };
-        if(this.gdprInput!=undefined){
-            this.legalBasisOptions = this.gdprInput.legalBasisOptions;
-            this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
-            this.gdprStatus = this.gdprInput.gdprStatus;
-        }
-        if ( this.router.url.includes( 'home/contacts' ) ){
-            this.getActiveCompanies();
-        }
-        /*****XNFR-98*****/
-        if(this.isTeamMemberPartnerList==undefined){
-            this.isTeamMemberPartnerList = false;
-        }
-        $( '#addContactModal' ).modal( 'show' );
-        
-       } catch ( error ) {
-           console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
-       }
     }
+    
+    public checkIsContactType() {
+        return this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact;
+    }
+
     /**********XNFR-85************ */
     findTeamMemberGroups(){
         if(this.isPartner){
@@ -425,6 +470,7 @@ contactCompanyChecking( event:any ) {
     }
     ngOnDestroy(){
         this.addContactModalClose();
+        swal.close();
     }
     
     contactCompanyChanged(updatedContactCompany : any){
@@ -464,7 +510,7 @@ contactCompanyChecking( event:any ) {
     }
 
     searchableDropdownEventReceiver(event: any) {
-        if(this.checkingContactTypeName == 'Contact'){
+        if(this.checkIsContactType()){
             if(event != null){
                 this.addContactuser.contactCompanyId = event['id'];
                 this.addContactuser.contactCompany = event['name'];
@@ -476,6 +522,86 @@ contactCompanyChecking( event:any ) {
         }else{
             this.addContactuser.contactCompany = event;
         }
+    }
+
+    //XNFR-697
+    fetchUserDetailsFromSalesForce(emailId: string) {
+        this.validationResponse = new CustomResponse();
+        let message = 'Retrieving details from your salesforce account...It\'s processing'
+        this.referenceService.showSweetAlertProceesor(message);
+        this.contactService.getContactDetalisFromSalesforce(this.loggedInUserId, emailId)
+            .subscribe(
+                response => {
+                    this.loading = false;
+                    let contactData = response.data;
+                    if (contactData != undefined) {
+                        this.setContactInfoFromSalesForce(contactData);
+                    }
+                    swal.close();
+                    this.canBlurDiv = false;
+                    if (response.statusCode == 401) {
+                        this.referenceService.showSweetAlertErrorMessage('Your Salesforce Integration was expired. Please re-configure.');
+                    } else if (response.statusCode == 404) {
+                        this.resetContactDetails();
+                        this.validationResponse = new CustomResponse('ERROR', this.properties.NO_DATA_RETRIVED_FROM_SALESFORCE, true);
+                    }
+                },
+                (error: any) => {
+                    swal.close();
+                    this.loading = false;
+                    this.canBlurDiv = false;
+                    this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
+                },
+            );
+
+    }
+
+    setContactInfoFromSalesForce(contactData: any) {
+        this.addContactuser.accountName = contactData.accountName;
+        this.addContactuser.accountSubType = contactData.accountSubType;
+        this.addContactuser.accountOwner = contactData.accountOwner;
+        this.addContactuser.companyDomain = contactData.companyDomain;
+        this.addContactuser.territory = contactData.territory;
+        this.addContactuser.website = contactData.website;
+        this.addContactuser.region = contactData.region;
+        if (this.countryNames.countries.indexOf(contactData.country) !== -1) {
+            this.addContactuser.country = contactData.country;
+        }
+        this.addContactuser.contactCompany = contactData.contactCompany;
+        this.addContactuser.accountId = contactData.accountId;
+        this.contactCompanyChecking(contactData.contactCompany);
+        this.addContactuser.firstName = contactData.firstName;
+        this.addContactuser.lastName = contactData.lastName;
+        this.addContactuser.jobTitle = contactData.jobTitle;
+        this.addContactuser.address = contactData.address;
+        this.addContactuser.city = contactData.city;
+        this.addContactuser.state = contactData.state;
+        this.addContactuser.zipCode = contactData.zipCode;
+        this.addContactuser.mobileNumber = contactData.mobileNumber;
+    }
+
+    resetContactDetails() {
+        this.addContactuser.firstName = "";
+        this.addContactuser.lastName = "";
+        this.addContactuser.contactCompany = "";
+        this.addContactuser.jobTitle = "";
+        this.addContactuser.vertical = "";
+        this.addContactuser.region = "";
+        this.addContactuser.partnerType = "";
+        this.addContactuser.category = "";
+        this.addContactuser.address = "";
+        this.addContactuser.city = "";
+        this.addContactuser.state = "";
+        this.addContactuser.zipCode = "";
+        this.addContactuser.country = this.countryNames.countries[0];
+        this.addContactuser.mobileNumber = "";
+        this.addContactuser.legalBasis = [];
+        this.addContactuser.accountName = "";
+        this.addContactuser.accountSubType = "";
+        this.addContactuser.accountOwner = "";
+        this.addContactuser.companyDomain = "";
+        this.addContactuser.territory = "";
+        this.addContactuser.website = "";
     }
 
 }

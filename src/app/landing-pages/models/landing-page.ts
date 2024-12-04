@@ -37,4 +37,8 @@ export class LandingPage {
     /*XNFR-583*/
     previousLandingPageId = 0;
     publishingOrWhiteLabelingInProgress:boolean = false;
+    /*XNFR-667*/
+    welcomePages:boolean = false;
+    /*XNFR-712*/
+    partnerJourneyPages:boolean = false;
 }

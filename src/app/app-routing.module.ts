@@ -48,6 +48,7 @@ import { PreviewEmailTemplateComponent } from './util/preview-email-template/pre
 import { PreviewPageComponent } from './util/preview-page/preview-page.component';
 import { PreviewAssetPdfComponent } from './common/preview-asset-pdf/preview-asset-pdf.component';
 import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
+import { MarketplaceUtilComponent } from './util/marketplace-util/marketplace-util.component';
 
 
 export const routes: Routes = [
@@ -166,13 +167,18 @@ export const routes: Routes = [
 	{ path: 'pv/evt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/edevt/:campaignId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/ct/:campaignId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/ctfe/:campaignId/:fromEmailUserId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/ulctp/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/sct/:campaignId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/sctfe/:campaignId/:fromEmailUserId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/sect/:campaignId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/scwaret/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/scwaret/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/cwaret/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/scwarwlt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/cwaretfe/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/scwarwlt/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/cwarwlt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/wt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/cwarwltfe/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/wt/:id/:fromEmailUserId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/p/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/vt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/lp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
@@ -183,9 +189,23 @@ export const routes: Routes = [
 	{ path: 'pv/p/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/ptp/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{path:'welcome-page',component:WelcomePageComponent,canActivate: [AuthGuard], data: { preload: true }},
+	{ path: 'mp/mps/:alias', component: MarketplaceUtilComponent },	
+	{ path: 'mp/vmp/:alias', component: MarketplaceUtilComponent },	
+	{ path: 'pv/pjplp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/vmplp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
+
+	{ path: 'pjpl/:alias', component: ShowLandingPageComponent },
+	{ path: 'pjpf/:alias', component: FormPreviewComponent },
+	{ path: 'vmpf/:alias', component: FormPreviewComponent },
+	{ path: 'vmppjf/:landingPageId/:alias', component: FormPreviewComponent },	
+
+	{ path: 'vmpl/:alias', component: ShowLandingPageComponent },
+	{ path: 'vmpjpl/:alias', component: ShowLandingPageComponent },
+
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },
+
 ];
 
 @NgModule({

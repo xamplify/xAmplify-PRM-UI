@@ -10,6 +10,7 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { GeoLocationAnalyticsType } from '../../util/geo-location-analytics-type.enum';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 
 declare var $:any;
@@ -34,8 +35,12 @@ export class ShowLandingPageComponent implements OnInit {
     isVendorJourney:boolean = false;
     isMasterLandingPage: boolean = false;
     isFromMasterLandingPage:boolean = false;
+    isPartnerJourneyPage: boolean = false;
+    isVendorMarketplacePage: boolean = false;
+    isFromVendorMarketplacePage:boolean = false;
   constructor(private route: ActivatedRoute,private landingPageService:LandingPageService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
-          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService) {
+          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService,
+          public referenceService:ReferenceService) {
           }
 
   ngOnInit() {   
@@ -47,6 +52,7 @@ export class ShowLandingPageComponent implements OnInit {
       this.vanityURLService.checkVanityURLDetails();
     }
       this.alias = this.route.snapshot.params['alias'];
+      this.referenceService.clearHeadScriptFiles();
       if(this.router.url.includes("/showCampaignLandingPage/") || this.router.url.includes("/scp/")){
           this.getHtmlBodyCampaignLandingPageAlias(this.alias);
       }else if(this.router.url.includes("/clpl/")){
@@ -66,7 +72,19 @@ export class ShowLandingPageComponent implements OnInit {
       }else if(this.router.url.includes("/mlpl/")){
         this.isMasterLandingPage = true;
         this.getHtmlBodyAlias(this.alias);
-      }else{
+      }else if(this.router.url.includes("/pjpl/")){
+        this.isPartnerLandingPage = true;
+        this.isPartnerJourneyPage = true;
+        this.getHtmlBodyAlias(this.alias);
+      }else if(this.router.url.includes("/vmpjpl/")){
+        this.isPartnerLandingPage = true;
+        this.isPartnerJourneyPage = true;
+        this.isFromVendorMarketplacePage = true;
+        this.getHtmlBodyAlias(this.alias);
+      }else if(this.router.url.includes("/vmpl/")){
+        this.isVendorMarketplacePage = true;
+        this.getHtmlBodyAlias(this.alias);
+      }else {
           this.getHtmlBodyAlias(this.alias);
       }
   }
@@ -134,6 +152,8 @@ export class ShowLandingPageComponent implements OnInit {
                 landingPageAnalytics.partnerLandingPageAlias = this.alias;
                   landingPageAnalytics.vendorJourney = this.isVendorJourney;
                   landingPageAnalytics.fromMasterLandingPage = this.isFromMasterLandingPage;
+                  landingPageAnalytics.partnerJourneyPage = this.isPartnerJourneyPage;
+                  landingPageAnalytics.fromVendoeMarketplacePage = this.isFromVendorMarketplacePage;
             }
             this.saveAnalytics(landingPageAnalytics);
             if(analyticsTypeString!="CAMPAIGN_LANDING_PAGE_FORM"){
@@ -182,8 +202,11 @@ export class ShowLandingPageComponent implements OnInit {
         "vendorJourney":this.isVendorJourney,
         "masterLandingPage":this.isMasterLandingPage,
         "fromMasterLandingPage":this.isFromMasterLandingPage,
+        "partnerJourneyPage":this.isPartnerJourneyPage,
+        "vendorMarketplacePage":this.isVendorMarketplacePage,
+        "fromVendorMarketplacePage":this.isFromVendorMarketplacePage
       }
-      this.landingPageService.getHtmlContentByAlias(landingPageHtmlDto,this.isPartnerLandingPage, this.isMasterLandingPage)
+      this.landingPageService.getHtmlContentByAlias(landingPageHtmlDto,this.isPartnerLandingPage, (this.isMasterLandingPage ||this.isVendorMarketplacePage))
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {
@@ -250,4 +273,5 @@ export class ShowLandingPageComponent implements OnInit {
   removeErrorMessage(){
     this.show = false;
   }
+
 }

@@ -683,7 +683,8 @@ legend {
   border: 1px solid #d0d5db !important;
 }
 select {
-  background-color: #d0d5db!important;
+  background-color: #f0f5fa !important;
+  border: 1px solid #d0d5db !important;
 }
 
 #text-color-my-profile {
@@ -1150,21 +1151,21 @@ input#copy-link {
   background: linear-gradient(225deg,#d8dde1,#fff)!important;
   color: #000 !important;
 }
-.list-area {
+/* .list-area {
   border: 1px solid #2f4857 !important;
   background-color: #22313a !important;
   box-shadow: 0px 1px 5px #22313a !important;
-}
+} */
 .selected-list .c-btn {
   box-shadow: inset 5px 5px 10px #d6dadf,inset -5px -5px 10px #fff!important;
 }
-.arrow-up,
+/* .arrow-up,
 .arrow-down {
   border-bottom: 15px solid #2b3c46 !important;
 }
 .dropdown-list ul li:hover {
   background-color: #2b3c46 !important;
-}
+} */
 .select-all,
 .list-filter {
   border-bottom: 1px solid #2b3c46 !important;
@@ -2945,26 +2946,15 @@ button.unlink-button {
   transform: scale(1.02);
   transition: all 0.3s ease;
 }
+/*** XNFR-725 ***/
 .tiles-card{
-  color: #000 !important;
-  border: 1px solid #d0d5db !important;
+  border: 1px solid #d0d5db !important; 
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
-  background: #f0f5fa !important;
 }
 .tiles-card:hover{
-  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
-  color: #000 !important;
-  background: #f0f5fa !important;
-  transform: scale(1.04);
-  transition: all 0.3s ease;
+  box-shadow: inset 0px 0px 0px #d6dadf, inset 0px 0px 0px #fff !important;
 }
-p.pa-text{
-  color: #000 !important;
-}
-.tiles-card:hover p{
-  color:#000 !important;
-  background-color: #f0f5fa !important;
-}
+/*** XNFR-725 ***/
 .pjCardTitlebg {
   background-color: #f0f5fa !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
@@ -3340,7 +3330,8 @@ span.btn.Btn-Green.transition.txt_pd-top3{
   margin-left: -12px;
 }
 b,
-td.pt10.pb10.bold.mr_10{
+td.pt10.pb10.bold.mr_10,
+td.pt10.pb10.bold.pr10{
   color: #787878 !important;
 }
 a.tabColorOne b,
@@ -3938,7 +3929,7 @@ li.active a.text-white.active-tab-anchor-text{
 .mrg_lft6{
   margin-left: 6px !important;
 }
-.mix-filter li.contact-filter-selected {
+.mix-filter li.contact-filter-selected,.mix-filter li.vanity-template-selected {
   border: 0px solid #ececec !important;
   background: #0276FF !important;
   box-shadow: none !important;
@@ -4426,3 +4417,18 @@ i.fa.fa-history.fa-fa-consistency.IconCustomization,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important;}
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
+.neo{margin-left:65px !important;}
+  /* contact-journey */
+  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor{
+    background: #f0f5fa !important;
+    border: 1px solid #d0d5db !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+
+/* Sudha Sri(27-11-2024) */
+.ffolder.big.gray.folder-cheight {
+  background-color: #54a7e9 !important;
+}
+.update-activity,.create-activity,.sent-activity {
+  box-shadow: inset 5px 5px 10px #c3dcc82e, inset -5px -5px 10px #475c4a1f !important;
+}

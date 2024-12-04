@@ -235,7 +235,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.checkAndRemoveEmptyRows();
         });
         this.siteKey = this.envService.captchaSiteKey;
-        this.customResponseForFormUpdate = new CustomResponse('INFO', 'The form cannot be updated because it has been associated to a track. Please remove the association, come back here and try again to update. However, the "Save As" button allows you to make a copy of the form.', true);
+        this.customResponseForFormUpdate = new CustomResponse('INFO', 'The form cannot be updated because it has been associated to a track. Please remove the association, come back here and try again to update.', true);
         this.customResponseForNewFeature = new CustomResponse('INFO', 'You can add a maximum of three fields in a row.', true);
     }
 
@@ -278,7 +278,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.showQuizField = false;
             this.removeBlurClass();
         } else {
-            if (this.router.url.indexOf('edit') > -1) {
+            if ((this.router.url.indexOf('edit') > -1) || (this.isVendorOrMasterLandingPage != undefined && this.isVendorOrMasterLandingPage)) {
                 this.formHeader = "EDIT FORM";
             } else {
                 this.formHeader = "CREATE FORM";

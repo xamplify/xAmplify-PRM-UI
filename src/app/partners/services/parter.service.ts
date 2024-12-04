@@ -57,6 +57,12 @@ export class ParterService {
             .catch(this.handleError);
     }
 
+    getCompanyProfileIncomplete(pagination: Pagination) {
+        const url = this.URL + 'partner/companyProfileIncomplete-partners?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+
     partnerUserInteractionReports(userId: number, pagination: Pagination): Observable<any> {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/campaigns?access_token=' + this.authenticationService.access_token +
@@ -71,8 +77,14 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    launchedCampaignsCountGroupByCampaignType(partnerCompanyId: number, customerId: number) {
-        const url = this.URL + 'partner/campaigns-count-by-campaigntype/' + customerId + '/' + partnerCompanyId + '?access_token=' + this.authenticationService.access_token
+    launchedCampaignsCountGroupByCampaignType(partnerJourneyRequest: PartnerJourneyRequest) {
+        let loggedInUserIdRequestParam = partnerJourneyRequest.loggedInUserId != undefined && partnerJourneyRequest.loggedInUserId > 0 ? "&loggedInUserId=" + partnerJourneyRequest.loggedInUserId : "&loggedInUserId=0";
+        let partnerCompanyIdRequestParam = partnerJourneyRequest.partnerCompanyId != undefined && partnerJourneyRequest.partnerCompanyId > 0 ? "&partnerCompanyId=" + partnerJourneyRequest.partnerCompanyId : "&partnerCompanyId=0";
+        let fromDateRequestParam = partnerJourneyRequest.fromDateFilterInString != undefined ? "&fromDateFilterInString=" + partnerJourneyRequest.fromDateFilterInString : "&fromDateFilterInString =''"
+        let toDateRequestParam = partnerJourneyRequest.toDateFilterInString != undefined ? "&toDateFilterInString=" + partnerJourneyRequest.toDateFilterInString : "&toDateFilterInString =''"
+        let timeZoneRequestParam = partnerJourneyRequest.timeZone != undefined ? "&timeZone=" + partnerJourneyRequest.timeZone : "&timeZone =''"
+        let partnerJourneyRequestDto = loggedInUserIdRequestParam + partnerCompanyIdRequestParam + fromDateRequestParam + toDateRequestParam + timeZoneRequestParam;
+        const url = this.URL + 'partner/campaigns-count-by-campaigntype?access_token=' + this.authenticationService.access_token + partnerJourneyRequestDto;
         return this.httpClient.get(url)
             .catch(this.handleError);
     }
@@ -83,6 +95,11 @@ export class ParterService {
             .catch(this.handleError);
     }
 
+    mailSend(pagination: Pagination) {
+        const url = this.URL + 'partner/sendsingup-incompletecompanyprofile-mail?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
     listRedistributedThroughPartnerCampaign(userId: number, pagination: Pagination): Observable<any> {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/list-re-distributed-partner-campaigns/' + userId + '?access_token=' + this.authenticationService.access_token;
@@ -110,8 +127,18 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(chartId: string, filterType: string, applyTeamMemberFilter: boolean) {
+    getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(partnerJourneyRequest: PartnerJourneyRequest, chartId: string) {
         let urlSuffix = "";
+        let loggedInUserIdRequestParam = partnerJourneyRequest.loggedInUserId != undefined && partnerJourneyRequest.loggedInUserId > 0 ? "&loggedInUserId=" + partnerJourneyRequest.loggedInUserId : "&loggedInUserId=0";
+        let partnerCompanyIdRequestParam = partnerJourneyRequest.partnerCompanyId != undefined && partnerJourneyRequest.partnerCompanyId > 0 ? "&partnerCompanyId=" + partnerJourneyRequest.partnerCompanyId : "&partnerCompanyId=0";
+        let fromDateRequestParam = partnerJourneyRequest.fromDateFilterInString != undefined ? "&fromDateFilterInString=" + partnerJourneyRequest.fromDateFilterInString : "&fromDateFilterInString =''"
+        let toDateRequestParam = partnerJourneyRequest.toDateFilterInString != undefined ? "&toDateFilterInString=" + partnerJourneyRequest.toDateFilterInString : "&toDateFilterInString =''"
+        let timeZoneRequestParam = partnerJourneyRequest.timeZone != undefined ? "&timeZone=" + partnerJourneyRequest.timeZone : "&timeZone =''"
+        let filterTypeRequestParam = partnerJourneyRequest.filterType != undefined ? "&filterType=" + partnerJourneyRequest.filterType : "&filterType= =''"
+        let partnerTeamMemberGroupFilterRequestParm = "&partnerTeamMemberGroupFilter=" + partnerJourneyRequest.partnerTeamMemberGroupFilter
+        let teamMemberIdRequestParam = partnerJourneyRequest.teamMemberUserId != undefined ? "&teamMemberUserId=" + partnerJourneyRequest.teamMemberUserId : "&teamMemberUserId=0"
+        let partnerJourneyRequestDto = loggedInUserIdRequestParam + partnerCompanyIdRequestParam + fromDateRequestParam + toDateRequestParam + timeZoneRequestParam 
+        + filterTypeRequestParam + partnerTeamMemberGroupFilterRequestParm + teamMemberIdRequestParam;
         if (chartId == "redistributeCampaignsAndLeadsCountBarChart") {
             urlSuffix = 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes';
         } else if (chartId == "redistributeCampaignsAndLeadsCountBarChartQuarterly") {
@@ -123,7 +150,7 @@ export class ParterService {
         } else if (chartId == "allLeadsAndDealsBarChart") {
             urlSuffix = 'getAllLeadsAndDealsCount';
         }
-        const url = this.URL + 'partner/' + urlSuffix + '/' + this.authenticationService.getUserId() + '/' + filterType + '/' + applyTeamMemberFilter + '?access_token=' + this.authenticationService.access_token
+        const url = this.URL + 'partner/' + urlSuffix + '?access_token=' + this.authenticationService.access_token + partnerJourneyRequestDto
         return this.httpClient.get(url)
             .catch(this.handleError);
     }
@@ -194,7 +221,9 @@ export class ParterService {
         return this.callApiForDashBoard("findApprovePartnersCount", userId, applyFilter);
     }
 
-
+    findPendingSignupAndCompanyProfilePartnersCount(userId: number, applyFilter: boolean) {
+        return this.callApiForDashBoard("findPendingSignupAndCompanyProfilePartnersCount", userId, applyFilter);
+    }
     callApiForDashBoard(urlPrefix: string, userId: number, applyFilter: boolean) {
         const url = this.URL + 'partner/' + urlPrefix + '?access_token=' + this.authenticationService.access_token +
             '&userId=' + userId + "&applyFilter=" + applyFilter;
@@ -338,16 +367,23 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    getPartnerJourneyLeadDealCounts(chartId: string,partnerJourneyRequest: PartnerJourneyRequest) {
+    getPartnerJourneyLeadDealCounts(chartId: string, partnerJourneyRequest: PartnerJourneyRequest) {
         let urlSuffix = "";
-        if(chartId == "partnerJourneyLeadsAndDealsBarChart"){
+        let loggedInUserIdRequestParam = partnerJourneyRequest.loggedInUserId != undefined && partnerJourneyRequest.loggedInUserId > 0 ? "&loggedInUserId=" + partnerJourneyRequest.loggedInUserId : "&loggedInUserId=0";
+        let partnerCompanyIdRequestParam = partnerJourneyRequest.partnerCompanyId != undefined && partnerJourneyRequest.partnerCompanyId > 0 ? "&partnerCompanyId=" + partnerJourneyRequest.partnerCompanyId : "&partnerCompanyId=0";
+        let fromDateRequestParam = partnerJourneyRequest.fromDateFilterInString != undefined ? "&fromDateFilterInString=" + partnerJourneyRequest.fromDateFilterInString : "&fromDateFilterInString =''"
+        let toDateRequestParam = partnerJourneyRequest.toDateFilterInString != undefined ? "&toDateFilterInString=" + partnerJourneyRequest.toDateFilterInString : "&toDateFilterInString =''"
+        let timeZoneRequestParam = partnerJourneyRequest.timeZone != undefined ? "&timeZone=" + partnerJourneyRequest.timeZone : "&timeZone =''"
+        let teamMemberIdRequestParam = partnerJourneyRequest.teamMemberUserId != undefined ? "&teamMemberUserId=" + partnerJourneyRequest.teamMemberUserId : "&teamMemberUserId=0"
+        let partnerJourneyRequestDto = loggedInUserIdRequestParam + partnerCompanyIdRequestParam + fromDateRequestParam + toDateRequestParam + timeZoneRequestParam
+            + teamMemberIdRequestParam;
+        if (chartId == "partnerJourneyLeadsAndDealsBarChart") {
             urlSuffix = "/lead-to-deal";
-        }else{
+        } else {
             urlSuffix = "/campaigns-to-lead";
         }
-        const url = this.URL + 'partner/journey' + urlSuffix + '/counts?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.post(url, partnerJourneyRequest)
-            .catch(this.handleError);
+        const url = this.URL + 'partner/journey' + urlSuffix + '/counts?access_token=' + this.authenticationService.access_token + partnerJourneyRequestDto;
+        return this.authenticationService.callGetMethod(url);
     }
 
     getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest: PartnerJourneyRequest) {
@@ -626,5 +662,14 @@ export class ParterService {
         return Observable.throw(error);
     }
 
+    findVendorCompanies(pagination: Pagination) {
+        const apiUrl = this.URL + 'partnership/findVendorCompanies?access_token=' + this.authenticationService.access_token
+        return this.httpClient.post(apiUrl, pagination)
+        .catch(this.handleError);    
+    }
+
+    findTotalPartnersCount(loggedInUserId: number, applyFilter: boolean) {
+        return this.callApiForDashBoard("findTotalPartnersCount", loggedInUserId, applyFilter);
+    }
 
 }

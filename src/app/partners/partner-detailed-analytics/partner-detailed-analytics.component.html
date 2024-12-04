@@ -25,7 +25,8 @@
 
   <!--******************Company Info*******************-->
   <div class="row customeRow">
-    <app-partner-journey-company-info [partnerCompanyId]="partnerCompanyId"></app-partner-journey-company-info>
+    <app-partner-journey-company-info [partnerCompanyId]="partnerCompanyId"
+    (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-partner-journey-company-info>
   </div>
 
   <!--******************Campaign Counts - Tiles*******************-->
@@ -37,24 +38,28 @@
   <!--******************All Counts - Tiles*******************-->
   <div class="row customeRow">
     <app-partner-journey-count-tiles [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-      [isDetailedAnalytics]="true"></app-partner-journey-count-tiles>
+      [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter"
+      [toDateFilter]="toDateFilter"></app-partner-journey-count-tiles>
   </div>
   <!--******************Team Member Details*******************-->
   <div class="row customeRow">
     <app-partner-journey-team-members-table [partnerCompanyId]="partnerCompanyId"
-      (notifyTeamMemberSelection)="applyTeamMemberSelection($event)">
+      (notifyTeamMemberSelection)="applyTeamMemberSelection($event)" [fromDateFilter]="fromDateFilter"
+      [toDateFilter]="toDateFilter">
     </app-partner-journey-team-members-table>
   </div>
 
   <!--******************User wise Track Counts & User wise PlayBook Counts*******************-->
-  <div class="row rowPaddingCustomization2 mobilerowPadding">
+  <div class="row rowPaddingCustomization2 mobilerowPadding" *ngIf="authenticationService?.lmsAccess">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--*****************User wise Track Counts********************-->
       <app-userwise-track-counts [type]="'TRACK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [isDetailedAnalytics]="true"></app-userwise-track-counts>
+        [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter"
+        [toDateFilter]="toDateFilter"></app-userwise-track-counts>
       <!--******************User wise Playbook Counts*******************-->
       <app-userwise-track-counts [type]="'PLAYBOOK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [isDetailedAnalytics]="true"></app-userwise-track-counts>
+        [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter"
+        [toDateFilter]="toDateFilter"></app-userwise-track-counts>
     </div>
   </div>
 
@@ -64,13 +69,13 @@
       <!--******************Campaigns To Lead Conversion Chart*******************-->
       <div>
         <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId"
-          [teamMemberId]="teamMemberId"
+          [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
           [chartId]="'partnerJourneyredistributeCampaignsAndLeadsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
       </div>
       <!--******************Lead To Deal Conversion Chart*******************-->
       <div>
         <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId"
-          [teamMemberId]="teamMemberId"
+          [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
           [chartId]="'partnerJourneyLeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
       </div>
     </div>
@@ -84,14 +89,15 @@
       <div class="ml15m">
         <app-donut-pie-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
           [chartId]="'interactedAndNotInteractedTracksDonut'" [isDetailedAnalytics]="true"
-          (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
+          (notifySelectSlice)="interactionTracksDonutSliceSelected($event)" [fromDateFilter]="fromDateFilter"
+          [toDateFilter]="toDateFilter"
           (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
-
       </div>
 
       <!--******************Interacted & Not Interacted Track Details*******************-->
       <app-interacted-not-interacted-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [isDetailedAnalytics]="true" [trackType]="selectedTrackType"></app-interacted-not-interacted-track-details>
+        [isDetailedAnalytics]="true" [trackType]="selectedTrackType"
+        [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"></app-interacted-not-interacted-track-details>
     </div>
   </div>
 
@@ -103,32 +109,33 @@
         <app-donut-pie-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
           [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
           (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)" [isDetailedAnalytics]="true"
-          (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
+          (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"
+          [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"></app-donut-pie-chart>
       </div>
 
       <!--******************Type wise Track Content Details*******************-->
       <app-typewise-track-content-details [partnerCompanyId]="partnerCompanyId" [trackType]="selectedTrackType"
         [isDetailedAnalytics]="true" [assetType]="selectedAssetType"
-        [teamMemberId]="teamMemberId"></app-typewise-track-content-details>
+        [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"></app-typewise-track-content-details>
     </div>
   </div>
 
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization1">
     <app-userwise-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-      [isDetailedAnalytics]="true" *ngIf="authenticationService?.lmsAccess"></app-userwise-track-details>
+      [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="authenticationService?.lmsAccess"></app-userwise-track-details>
   </div>
   <!--******************Track & Playbook Asset Details*******************-->
   <div class="row rowPaddingCustomization mobilerowPadding">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Track Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [isDetailedAnalytics]="true" [type]="'TRACK'"
+        [isDetailedAnalytics]="true" [type]="'TRACK'" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
         *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [isDetailedAnalytics]="true" [type]="'PLAYBOOK'"
+        [isDetailedAnalytics]="true" [type]="'PLAYBOOK'" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
         *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
     </div>
   </div>
@@ -136,23 +143,26 @@
   <!--******************Share Lead Details*******************-->
   <div class="row rowPaddingCustomization1">
     <app-share-lead-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
-      [teamMemberId]="teamMemberId" *ngIf="authenticationService.module?.hasShareLeadAccess"></app-share-lead-details>
+      [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" [teamMemberId]="teamMemberId"
+      *ngIf="authenticationService.module?.hasShareLeadAccess"></app-share-lead-details>
   </div>
   <!--******************Redistributed Camapign Details*******************-->
   <div class="row rowPaddingCustomization1">
     <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-      [isDetailedAnalytics]="true"
+      [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
       *ngIf="authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaign-details>
   </div>
   <!--******************Lead Details*******************-->
   <div class="row rowPaddingCustomization1">
     <app-partner-journey-lead-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
-      [teamMemberId]="teamMemberId" *ngIf="authenticationService?.enableLeads"></app-partner-journey-lead-details>
+      [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
+      *ngIf="authenticationService?.enableLeads"></app-partner-journey-lead-details>
   </div>
   <!--******************Deal Details*******************-->
   <div class="row rowPaddingCustomization1">
     <app-partner-journey-deal-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
-      [teamMemberId]="teamMemberId" *ngIf="authenticationService?.enableLeads"></app-partner-journey-deal-details>
+      [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
+      *ngIf="authenticationService?.enableLeads"></app-partner-journey-deal-details>
   </div>
   <!--******************Contact Details*******************-->
   <!-- This is commented for GDPR Compliance

@@ -1,10 +1,9 @@
 <div>
-	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0"
-		style="padding-top: 6px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
-			class="btn btn-primary transition">Pick Your Vendors</span></button>
+	<button class="btn btn-primary ml5 float-right"
+		style="margin-top: 6px" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate>{{moduleLable}}</button>
 </div>
 
-<div class="modal fade right" id="add-vendor-logo-popup" tabindex="-1" role="dialog" data-backdrop="static"
+<div class="modal fade right" id="add-vendor-logo-popup" role="dialog" data-backdrop="static"
 	data-keyboard="false">
 	<div class="modal-dialog modal-css" role="document" style="width: 75% !important;">
 		<div class="modal-content">
@@ -12,11 +11,14 @@
 				<button type="button" class="close-circle" (click)="hideModal()">
 					<i class="fa fa-times" aria-hidden="true"></i>
 				</button>
-				<h4 class="modal-title text-center" translate>Pick Your Vendors</h4>
+				<h4 class="modal-title text-center" translate>{{moduleLable}}</h4>
 			</div>
 			<app-response-message class="pg8" [customResponse]="marketPlaceCategoryResponse" *ngIf="marketPlaceCategoryResponse.isVisible">
 			</app-response-message>
-			<div class="modal-body" *ngIf = "!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember">
+			<div *ngIf="vendorLogoDetails.length==0 && isVendorMarketplace" class="alert alert-info">
+				<strong translate>No Data Found.</strong>
+			</div>
+			<div class="modal-body" *ngIf = "vendorLogoDetails.length!=0 && ((!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember) || isVendorMarketplace)">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
@@ -34,6 +36,9 @@
 										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
 										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
 								</div>
+								<span class="vendorLogoCheck">
+									<i *ngIf="vendorLogo?.selectedCategories?.length > 0" class="fa fa-check-circle-o success i-20px"
+										style="margin-right:54px;"></i></span>
 							</td>
 							<td class="text-center">{{vendorLogo.companyName}}</td>
 							<td>
@@ -57,7 +62,10 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="modal-body" *ngIf = "authenticationService?.module?.isAnyAdminOrSupervisor">
+			<div *ngIf="sharedVendorLogoDetails.length==0 && !isVendorMarketplace" class="alert alert-info">
+				<strong translate>No Data Found.</strong>
+			</div>
+			<div class="modal-body" *ngIf = "sharedVendorLogoDetails.length!=0 && (authenticationService?.module?.isAnyAdminOrSupervisor && !isVendorMarketplace)">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
@@ -68,23 +76,29 @@
 					</thead>
 					<tbody>
 						<ng-container *ngFor="let vendorLogo of sharedVendorLogoDetails;let i = index">
-						<tr >
+						<tr>
 							<td class="hidden-xs text-center" style="width: 10%;">
 								<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
 									<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
 										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
 										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
 								</div>
+								<span class="vendorLogoCheck">
+									<ng-container *ngFor="let member of vendorLogo.teamMembers; let i = index">
+										<i *ngIf="member?.selectedCategories?.length > 0" class="fa fa-check-circle-o success i-20px"
+											style="margin-left: 32px;"></i>
+									</ng-container>
+								</span>
 							</td>
 							<td class="text-center">{{vendorLogo.companyName}}</td>
 							<td class="text-center">
 								<div class="actions-block ">
 									<a (click)="viewTeamMembers(vendorLogo)" title="View/Hide Team Members">
-									  <i class="fa IconCustomization"
-										[ngClass]="{'fa-angle-right': !vendorLogo.expand, 'fa-angle-down': vendorLogo.expand}"
-										aria-hidden="true"></i>
+										<i class="fa IconCustomization"
+											[ngClass]="{'fa-angle-right': !vendorLogo.expand, 'fa-angle-down': vendorLogo.expand}"
+											aria-hidden="true"></i>
 									</a>
-								  </div>
+								</div>
 							</td>
 						</tr>
 						<tr *ngIf="vendorLogo?.expand">

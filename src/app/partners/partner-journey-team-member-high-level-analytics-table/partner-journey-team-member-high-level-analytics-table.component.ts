@@ -25,6 +25,8 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
   
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -37,6 +39,7 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   logger: any;
   showModulesPopup: boolean;
   teamMemberGroupId: any;
+  scrollClass: string;
   
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, private teamMemberService: TeamMemberService, public parterService: ParterService,
@@ -65,16 +68,23 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
-    this.pagination.maxResults = 6;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.teamMemberId = this.teamMemberId;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
     this.parterService.getPartnerJourneyTeamInfo(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }
       },
@@ -178,6 +188,36 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
 
   hideModulesPreviewPopUp(){
     this.showModulesPopup = false;
+  }
+
+  /****** XNFR-147*****/
+
+  downloadTeamMemberListCsv() {
+    const url = `${this.authenticationService.REST_URL}partner/download`;
+    const headers = {
+      'Authorization': `Bearer ${this.authenticationService.access_token}`,
+      'Content-Type': 'application/json'
+    };
+
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(this.pagination)
+    })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'partner-team-member.csv';
+        a.click();
+      }, (_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.referenseService.loading(this.httpRequestLoader, false);
+        this.xtremandLogger.error(_error);
+        this.customResponse = new CustomResponse('ERROR', "Failed to Download", true);
+      });
+
   }
 
 }

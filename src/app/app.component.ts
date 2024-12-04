@@ -34,12 +34,40 @@ export class AppComponent implements OnInit, AfterViewInit {
   numberOfOnlineUsers: number;
   isLocalHost = false;
   isChatGptIconDisplayed = false;
-constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
+  previousUrl:string='';
+
+
+  constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
   public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService,
    private router: Router,private utilService:UtilService) {
+    // Listen for changes in localStorage
+    window.addEventListener('storage', this.storageEventListener.bind(this));
     this.isLocalHost = this.authenticationService.isLocalHost();
     this.addLoaderForAuthGuardService();
 		this.addLoaderForLazyLoadingModules(router);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // Check if the user is navigating back from '/welcome-page'
+        if (this.previousUrl === '/welcome-page' && event.url !== '/welcome-page') {
+          window.location.reload(); // Reload the page
+        }
+        // Update the previous URL after navigation
+        this.previousUrl = event.url;
+      }
+    });
+    }
+
+    storageEventListener(event: StorageEvent) {
+      // Check if the 'reloadApp' key was modified
+      if (event.key === 'reloadApp') {
+        // Reload the page
+        window.location.reload();
+      }
+    }
+  
+    // To trigger reload manually, you can call this function
+    triggerReload() {
+      this.utilService.reloadAppInAllTabs();
     }
 
     addLoaderForAuthGuardService(){
@@ -106,6 +134,7 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     
     ngOnInit() {
+      
         this.versionCheckService.initVersionCheck();
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
@@ -151,11 +180,14 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
                 let samlSecurityUrl = currentUrl.indexOf('samlsecurity')>-1;
                 let teamMemberSignUpUrl = currentUrl.indexOf('tsignUp')>-1;
                 let partnerSignUpUrl = currentUrl.indexOf('psignUp')>-1;
+                let vendorLandscapCategories = currentUrl.indexOf('vmp/')>-1;
+                let partnerLandscapeCategories = currentUrl.indexOf('mps/')>-1;
+
                 let exculdeUrls =  ( !loginUrl && !emptyUrl && !signUpUrl && !forgotPasswordUrl && !userLockUrl && !registerUrl &&  !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
                                   !shareUrl && !showCampaignVideoUrl &&  !showCampaignEmail &&  !companyPageUrl && !partnerPageUrl && !logeUrl &&
                                   !unsubscribeUrl && !serviceUnavailableUrl && !accessDeniedUrl &&   !rsvpUrl && !smsShowCampaignUrl && !showEventCampaignUrl &&
                                   !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl
-                                   && !samlSecurityUrl && !logoutUrl && !expiredUrl && !teamMemberSignUpUrl && !partnerSignUpUrl 
+                                   && !samlSecurityUrl && !logoutUrl && !expiredUrl && !teamMemberSignUpUrl && !partnerSignUpUrl && !vendorLandscapCategories && !partnerLandscapeCategories
                                   );
 
                  if(exculdeUrls){

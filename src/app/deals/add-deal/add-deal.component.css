@@ -155,3 +155,12 @@
 .justify-content-end{
   justify-content: end;
 }
+
+.commentScroll {
+  max-height: 1200px;
+  overflow-y: auto;
+}
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}

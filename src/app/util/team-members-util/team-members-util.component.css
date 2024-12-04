@@ -165,7 +165,7 @@ hr {
 .file-upload {
   position: absolute;
   top: 0;
-  width: 162px;
+  width: 110px;
   height: 38px;
   right: 15px;
   opacity: 0;
@@ -469,6 +469,27 @@ span.filterActiveBg i {
   .mb_pl0{
     padding-left: 0px!important;
   }
+  .flex_unset{
+    flex: unset!important;
+    display: block!important;
+  }
+  .mb_width100{
+   width: 100%;
+  }
+  .mb_width26{
+    width: 24%;
+    margin: 10px 0px;
+  }
+  .mb_width74{
+  width: 74%;
+   margin: 10px 0px;
+  }
+  .mr-21{
+    margin-right: 0px!important;
+  }
+  .neg_mt10{
+    margin-top: -10px!important;
+  }  
 }
 .button_placement{
   left : 0px !important;
@@ -535,4 +556,25 @@ span.filterActiveBg i {
 .campaign-type-selected {
   background-color: #0276ff;
   color: #fff;
+}
+.downloadteam{
+  display: flex;
+  align-items: center;
+}
+.mr-21{
+  margin-right: 20px;
+}
+@media only screen and (min-width:768px) and (max-width: 1198px) {
+  .team_header{
+    width: 120px;
+  }
+}
+.border_btn{
+  border-left: 1px solid #1ca6f3;
+}
+.team-member-icon{
+border-radius:7px 0px 0px 7px !important;
+}
+.team_downlaod{
+border-radius: 7px;
 }

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -30,17 +31,25 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   publishedPartnerIds:Array<Number> = new Array<Number>();
   @Input() vendorJourney:boolean = false;
   @Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
+  showTickMark = false;
+  isAssetsModule = false;
+  isLmsModule = false;
+  isPlayBooksModule = false;
+  isDashboardButtonsModule = false;
+  partnershipIds:Array<Number> = new Array<Number>();
   constructor(public referenceService:ReferenceService,public contactService:ContactService,public properties:Properties,
-    public pagerService:PagerService,private authenticationService:AuthenticationService) { }
+    public pagerService:PagerService,private authenticationService:AuthenticationService,private router:Router) { }
 
   ngOnInit() {
     $('#userListUsersPreviewPopup').modal('show');
     if(this.userListId!=undefined && this.userListId>0){
       let isValidInputId = this.inputId!=undefined && this.inputId>0;
-      let isAssets = this.moduleName=="dam";
-      let isLms = this.moduleName=="lms";
-      let isDashboardButtons = this.moduleName== this.properties.dashboardButtons;
-      let isModuleMatched = isAssets || isLms || isDashboardButtons;
+      this.isAssetsModule = this.moduleName=="dam";
+      let currentUrl = this.referenceService.getCurrentRouteUrl();
+      this.isLmsModule = this.moduleName=="lms" && currentUrl.includes("tracks");
+      this.isPlayBooksModule = this.moduleName=="lms" && currentUrl.includes("playbook");
+      this.isDashboardButtonsModule = this.moduleName== this.properties.dashboardButtons;
+      let isModuleMatched = this.isAssetsModule || this.isLmsModule || this.isPlayBooksModule  || this.isDashboardButtonsModule;
       if(isModuleMatched && isValidInputId){
         this.findPublishedPartnerIdsByUserListIdAndId();
       } else{
@@ -60,6 +69,11 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
     .subscribe(
       response=>{
         this.publishedPartnerIds = response.data;
+        let map = response.map;
+        if(map!=undefined && map['partnershipIds']!=undefined){
+          this.partnershipIds = map['partnershipIds'];
+        }
+        this.showTickMark = true;
       },error=>{
         this.findUsersByUserListId(this.pagination);
       },()=>{
@@ -113,5 +127,58 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   this.pagination.pageIndex = 1;
   this.findUsersByUserListId(this.pagination);
 
+ }
+
+ 
+
+ publish(user:any){
+  let isPublishingCompleted = false;
+  let sweetAlertPrefixText = this.isAssetsModule ? "Asset" : this.isLmsModule ? "Track" : this.isPlayBooksModule ? "Play Book" : this.isDashboardButtonsModule ? "Dashboard Button":""; 
+  this.referenceService.showSweetAlertProcessingLoader(sweetAlertPrefixText+" publishing is in progress");
+  this.authenticationService.publishContentToPartnerCompanyByModuleName(user.userListId,user.userId,this.inputId,this.moduleName).
+  subscribe(
+    response=>{
+      let statusCode = response.statusCode;
+      let message = response.message;
+      if(statusCode==200){
+        this.referenceService.showSweetAlertSuccessMessage(message);
+        isPublishingCompleted = true;
+      }else{
+        this.referenceService.showSweetAlertErrorMessage(message);
+        isPublishingCompleted = false;
+      }
+    },error=>{
+      this.referenceService.showSweetAlertServerErrorMessage();
+      isPublishingCompleted = false;
+    },()=>{
+      if(isPublishingCompleted){
+        this.findPublishedPartnerIdsByUserListIdAndId();
+      }
+    });
+ }
+
+ addGroup(user:any){
+  let isAddingGroupCompleted = false;
+  this.referenceService.showSweetAlertProcessingLoader("Addging group is in progress");
+  this.authenticationService.addPartnerGroupByModuleName(user.userListId,user.partnershipId,this.inputId,this.moduleName).
+  subscribe(
+    response=>{
+      let statusCode = response.statusCode;
+      let message = response.message;
+      if(statusCode==200){
+        this.referenceService.showSweetAlertSuccessMessage(message);
+        isAddingGroupCompleted = true;
+      }else{
+        this.referenceService.showSweetAlertErrorMessage(message);
+        isAddingGroupCompleted = false;
+      }
+    },error=>{
+      this.referenceService.showSweetAlertServerErrorMessage();
+      isAddingGroupCompleted = false;
+    },()=>{
+      if(isAddingGroupCompleted){
+        this.findPublishedPartnerIdsByUserListIdAndId();
+      }
+    });
  }
 }

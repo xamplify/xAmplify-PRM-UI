@@ -18,6 +18,8 @@ import 'rxjs/add/observable/throw';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 import { UtilService } from 'app/core/services/util.service';
+import { ContactsRequestDto } from '../models/contacts-request-dto';
+import { EnvService } from 'app/env.service';
 
 @Injectable()
 export class ContactService {
@@ -48,6 +50,8 @@ export class ContactService {
     url = this.authenticationService.REST_URL + "admin/";
     companyUrl = this.authenticationService.REST_URL + "companies/"
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
+    contactsSchedulerUrl = this.authenticationService.SCHEDULER_URL+"userlists/";
+    contactsV2Url = this.authenticationService.SCHEDULER_URL+"contacts/v2/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
@@ -56,7 +60,9 @@ export class ContactService {
     isUnsubscribeContactModalPopup: boolean = false;
     isresubscribeContactModalPopup: boolean = false;
 
-    constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private utilService: UtilService) {
+
+    constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, 
+        private utilService: UtilService,private envService:EnvService) {
     }
 
 
@@ -260,20 +266,36 @@ export class ContactService {
     }
 
     saveContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
-        var requestoptions = new RequestOptions({
-            body: userUserListWrapper,
-        })
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var options = {
-            headers: headers
-        };
-        //var url = this.contactsUrl + "save-userlist?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token + "&userListName="+ contactListName + "&isPartnerUserList="+isPartner ;
-        var url = this.contactsUrl + "save-userlist/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
-        this.logger.info(userUserListWrapper);
-        return this._http.post(url, options, requestoptions)
-            .map((response: any) => response.json())
-            .catch(this.handleError);
+        /**XNFR-713***/
+        if(this.envService.isContactsVersion2ApiEnabled && userUserListWrapper.isUploadCsvOptionUsed){
+            this.logger.info("Contacts V2 Api Executed");
+            let contactsRequestDto = new ContactsRequestDto();
+            let userList = userUserListWrapper.userList;
+            contactsRequestDto.socialNetwork = userList.socialNetwork;
+            contactsRequestDto.contactListName = userList.name;
+            contactsRequestDto.contactType = userList.contactType;
+            contactsRequestDto.externalListId = userList.externalListId;
+            contactsRequestDto.publicList = userList.publicList;
+            contactsRequestDto.users = userUserListWrapper.users;
+            contactsRequestDto.loggedInUserId = this.authenticationService.getUserId();
+            let url = this.contactsV2Url + "save?access_token=" + this.authenticationService.access_token;
+            return this.authenticationService.callPostMethod(url,contactsRequestDto);
+        }else{
+            this.logger.info("Contacts V1 Api Executed");
+            var requestoptions = new RequestOptions({
+                body: userUserListWrapper,
+            })
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            var options = {
+                headers: headers
+            };
+            var url = this.contactsSchedulerUrl + "save-userlist/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+            return this._http.post(url, options, requestoptions)
+                .map((response: any) => response.json())
+                .catch(this.handleError);
+        }
+        
     }
 
     saveAssignedLeadsList(userUserListWrapper: UserUserListWrapper): Observable<any> {
@@ -285,8 +307,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + "save-assign-leads-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
-
+        var url = this.contactsSchedulerUrl + "save-assign-leads-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this._http.post(url, options, requestoptions)
             .map((response: any) => response.json())
             .catch(this.handleError);
@@ -301,27 +322,40 @@ export class ContactService {
         var options = {
             headers: headers
         };
-
         var url = this.contactsUrl + "/save-as-share-leads/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
-
         return this._http.post(url, options, requestoptions)
             .map((response: any) => response.json())
             .catch(this.handleError);
     }
 
     updateContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
-        var requestoptions = new RequestOptions({
-            body: userUserListWrapper,
-        })
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        var options = {
-            headers: headers
-        };
-        var url = this.contactsUrl + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
-        return this._http.post(url, options, requestoptions)
-            .map(this.extractData)
-            .catch(this.handleError);
+        /**XNFR-713***/
+        if(this.envService.isContactsVersion2ApiEnabled && 
+            userUserListWrapper.isUploadCsvOptionUsed && userUserListWrapper.isContactsModule){
+            this.logger.info("Contacts V2 Api Executed");
+            let contactsRequestDto = new ContactsRequestDto();
+            let userList = userUserListWrapper.userList;
+            contactsRequestDto.users = userUserListWrapper.users;
+            contactsRequestDto.loggedInUserId = this.authenticationService.getUserId();
+            contactsRequestDto.userListId = userList.id;
+            let url = this.contactsV2Url + "update?access_token=" + this.authenticationService.access_token;
+            return this.authenticationService.callPutMethod(url,contactsRequestDto);
+        }else{
+            this.logger.info("Contacts V1 Api Executed");
+            var requestoptions = new RequestOptions({
+                body: userUserListWrapper,
+            })
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            var options = {
+                headers: headers
+            };
+            var url = this.contactsSchedulerUrl + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
+            return this._http.post(url, options, requestoptions)
+                .map(this.extractData)
+                .catch(this.handleError);
+    
+        }
     }
 
     updateContactListUser(contactListId: number, editUser: EditUser): Observable<any> {
@@ -933,6 +967,30 @@ export class ContactService {
         return this._http.get(this.authenticationService.REST_URL + 'zoho/' + localStorage.getItem('vanityUserId') + "/authorize")
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    /***XNFR-553***/
+    findContactByUserIdAndUserListId(userId:any, userListId:any) {
+        let url = this.contactsUrl + "findUserByUserIdAndUserListId/"+userId+"/"+userListId+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /***XNFR-553***/
+    findUserListDetials(userListId:any, isFromCompanyModule:boolean) {
+        let url = this.contactsUrl + "findUserListDetails/"+userListId+"/"+isFromCompanyModule+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getActiveCrmType(loggedInUserId: number) {
+        let url = this.authenticationService.REST_URL + "active/crm/type/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getContactDetalisFromSalesforce(loggedInUserId: number, emailId: string) {
+        let emailIdRequestParam = emailId != undefined ? "&emailId=" + emailId : "&emailId =''";
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? "&id=" + loggedInUserId : "&id=0";
+        let url = this.authenticationService.REST_URL + "salesforce/getContactDetails" + "?access_token=" + this.authenticationService.access_token + loggedInUserIdRequestParam + emailIdRequestParam;
+        return this.authenticationService.callGetMethod(url);
     }
 
 }

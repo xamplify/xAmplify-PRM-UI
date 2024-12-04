@@ -46,7 +46,7 @@
               <a [className]="activePartnersCount > 0 ? 'dashboard-stat dashboard-stat-lighter yellow-gold' : 'dashboard-stat dashboard-stat-lighter yellow-gold disable-tile-pj'"
                 [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 0"
                     aria-hidden="true"></i>
                 </div>
@@ -59,12 +59,135 @@
                   </div>
                 </div>
                 <span id="permhref" class="morePadding">
-                  <a [className]="activePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                  <a [className]="activePartnersCount > 0 ? 'more' : 'more disable-tile-pj'" 
+                     (click)="activePartnersCount > 0 ? goToActivePartnersDiv() : ''">Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" 
+                       title="{{authenticationService?.module.isPrm ? properties?.activePartnerTileDescriptionForPrm : properties?.activePartnerTileDescription}}"></i>
+                  </a>
                 </span>
               </a>
             </div>
+
+            <!--InActive Partner Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
+            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth"
+              (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''">
+              <a [className]="inActivePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft' : 'dashboard-stat dashboard-stat-lighter blue-soft disable-tile-pj'"
+                [class.greay]="1!=selectedTabIndex">
+                <div class="visual">
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                    [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 1"
+                    aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{inActivePartnersCount}}</div>
+                  <div class="desc" data-toggle="tooltip" data-placement="top"
+                    title="Dormant {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
+                    Dormant
+                    {{authenticationService?.partnerModule?.customName | slice:0:10}}
+                    <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
+                  </div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a [className]="inActivePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
+                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''"> Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true"
+                      title="{{authenticationService?.module.isPrm ? properties?.dormantPartnertileDescriptionForPrm : properties?.dormantpartnertileDescription}}"></i>
+                  </a>
+                </span>
+              </a>
+            </div>
+
+            <!--companyProfileIncomplete Count-->
+            <app-box-loader [countLoader]=5 *ngIf="PendingSignupAndCompanyProfilePartnersLoader"></app-box-loader>
+            <div *ngIf="!PendingSignupAndCompanyProfilePartnersLoader"
+              class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
+              <a [className]="companyProfileIncompletePartnersCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
+                [class.greay]="6!=selectedTabIndex"
+                (click)="companyProfileIncompletePartnersCount>0 ?  goToIncompleteCompanyProfilePartnersDiv() : ''">
+                <div class="visual">
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                    [ngStyle]="{'color': 6===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 6"
+                    aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{companyProfileIncompletePartnersCount}}</div>
+                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top"
+                    title=" Company Profile Incomplete">
+                    Company Profile Incomplete
+                  </div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a [className]="companyProfileIncompletePartnersCount > 0 ? 'more' : 'more disable-tile-pj' "
+                    (click)="companyProfileIncompletePartnersCount > 0 ?  goToIncompletecompanyProfilePartnersDiv() : ''">
+                    Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true"
+                      title="{{properties?.companyProfileIncompletepartnertileDescription}}"></i>
+                  </a>
+                </span>
+              </a>
+            </div>
+                    <!--PendingSignup Count-->
+                    <app-box-loader [countLoader]=5 *ngIf="PendingSignupAndCompanyProfilePartnersLoader"></app-box-loader>
+                    <div *ngIf="!PendingSignupAndCompanyProfilePartnersLoader"
+                      class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth"
+                      (click)="PendingSignupPartnersCount>0 ? goToSignupPendingPartnersDiv() : ''">
+                      <a [className]="PendingSignupPartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter red-soft' : 'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
+                        [class.greay]="7!=selectedTabIndex">
+                        <div class="visual">
+                          <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                            [ngStyle]="{'color': 7===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 7"
+                            aria-hidden="true"></i>
+                        </div>
+                        <div class="details">
+                          <div class="number">{{PendingSignupPartnersCount}}</div>
+                          <div class="desc" data-toggle="tooltip" data-placement="top"
+                            title="Pending Signup" style="font-size: 13px">Pending Signup
+                          </div>
+                        </div>
+                        <span id="permhref" class="morePadding">
+                          <a [className]="PendingSignupPartnersCount>0 ? 'more' : 'more disable-tile-pj'"
+                            (click)="PendingSignupPartnersCount>0 ?  goToSignupPendingPartnersDiv() : ''">
+                            Detailed view
+                            <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                            <i class="fa fa-info-circle" aria-hidden="true" title="{{properties?.signupPartnertileDescription}}"></i>
+                          </a>
+                        </span>
+                      </a>
+                    </div>
+
+                    <!--Through Partner Campaigns Count-->
+                    <app-box-loader [countLoader]=5
+                      *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
+                    <div
+                      *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+                      class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
+                      <a [className]="throughPartnerCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
+                        [class.greay]="3!=selectedTabIndex" (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
+                        <div class="visual">
+                          <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                            [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
+                            aria-hidden="true"></i>
+                        </div>
+                        <div class="details">
+                          <div class="number">{{throughPartnerCampaignsCount}}</div>
+                          <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top"
+                            title="{{throughPartnerCampaignsTabName}}">
+                            {{throughPartnerCampaignsTabName | slice:0:20}}
+                            <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
+                          </div>
+                        </div>
+                        <span id="permhref" class="morePadding">
+                          <a [className]="throughPartnerCampaignsCount > 0 ? 'more' : 'more disable-tile-pj' "
+                            (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''"> Detailed view
+                            <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                            <i class="fa fa-info-circle" aria-hidden="true" title="Total Through Partner Campaigns Launched by Vendor"></i></a>
+                        </span>
+                      </a>
+                    </div>
 
             <!--Redistributed Campaigns Count-->
             <app-box-loader [countLoader]=5
@@ -76,7 +199,7 @@
                 [class.greay]="2!=selectedTabIndex"
                 (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''">
                 <div class="visual">
-                  <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle"
+                  <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle fontCustom"
                     style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }" aria-hidden="true">
                   </i>
@@ -90,67 +213,10 @@
                 </div>
                 <span id="permhref" class="morePadding">
                   <a [className]="redistributedCampaignsCount > 0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''"> Detailed view <i
-                      class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
-            </div>
-
-            <!--Through Partner Campaigns Count-->
-            <app-box-loader [countLoader]=5
-              *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
-            <div
-              *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
-              class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
-              <a [className]="throughPartnerCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
-                [class.greay]="3!=selectedTabIndex"
-                (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                    [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
-                    aria-hidden="true"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top"
-                    title="{{throughPartnerCampaignsTabName}}">
-                    {{throughPartnerCampaignsTabName | slice:0:20}}
-                    <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
-                  </div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a [className]="throughPartnerCampaignsCount > 0 ? 'more' : 'more disable-tile-pj' "
-                    (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
-            </div>
-
-            <!--InActive Partner Campaigns Count-->
-            <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!inActivePartnersCountLoader"
-              class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth"
-              (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''">
-              <a [className]="inActivePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft' : 'dashboard-stat dashboard-stat-lighter blue-soft disable-tile-pj'"
-                [class.greay]="1!=selectedTabIndex">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                    [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 1"
-                    aria-hidden="true"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc" data-toggle="tooltip" data-placement="top"
-                    title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
-                    Inactive
-                    {{authenticationService?.partnerModule?.customName | slice:0:10}}
-                    <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
-                  </div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a [className]="inActivePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
-                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                    (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''"> Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" title="Total Campaigns Redistributed by All Partner Companies"></i>
+                    </a>
                 </span>
               </a>
             </div>
@@ -162,7 +228,7 @@
               <a [className]="approvePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter red-soft' : 'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
                 [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 5===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 5"
                     aria-hidden="true"></i>
                 </div>
@@ -177,11 +243,29 @@
                 <span id="permhref" class="morePadding">
                   <a [className]="approvePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
                     (click)="approvePartnersCount>0 ? goToApprovePartnersDiv() : ''"> Detailed view
-                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" title="{{properties?.approvePartnerDescription}}"></i>
+                  </a>
                 </span>
               </a>
             </div>
-
+             <!--TotalPartner Count-->
+             <app-box-loader [countLoader]=5 *ngIf="totalPartnersCountLoader"></app-box-loader>
+             <div *ngIf="!totalPartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth">
+               <a class="dashboard-stat dashboard-stat-lighter red-soft cardCustomStyle">
+                 <div class="visual pt0">
+                  <i class="fa fa-handshake-o dbiconscss" aria-hidden="true"></i>
+                 </div>
+                 <div class="details">
+                   <div class="number NumberFontDecrease">{{totalPartnersCount}}</div>
+                   <div class="desc default-name-font TextFontDecrease" data-toggle="tooltip" data-placement="top"
+                     title="All {{authenticationService?.partnerModule?.customName}}s" style="font-size: 13px">
+                     All {{authenticationService?.partnerModule?.customName | slice:0:10}}s
+                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
+                   </div>
+                 </div>
+               </a>
+             </div>
           </div>
         </div>
       </div>
@@ -194,12 +278,14 @@
       <app-active-partners-table [applyFilter]="applyFilter"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
-        (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"></app-active-partners-table>
+        (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"
+        (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-active-partners-table>
     </ng-container>
   </div>
   <!--******************All Counts - Tiles*******************-->
   <app-partner-journey-count-tiles [partnerCompanyId]="'0'" [applyFilter]="applyFilter" [isDetailedAnalytics]="false"
-    [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+    [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter"
+    [toDateFilter]="partnertoDateFilter"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
@@ -213,7 +299,7 @@
         <!---XNFR-220----->
 
 
-        <div class="col-xs-12 col-sm-6" style="padding-right: 5px;">
+        <div class="col-xs-12 col-sm-5" style="padding-right: 5px;">
           <!-- Word Cloud Map-->
           <div class="portlet light" style="margin-bottom: 20px;">
             <div class="portlet-title pjCardTitlebg">
@@ -245,6 +331,7 @@
       </div>
       <app-campaigns-launched-by-partners (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [applyFilter]="applyFilter" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-campaigns-launched-by-partners>
     </div>
   </div>
@@ -256,7 +343,7 @@
         <div class="portlet light" style="padding: 10px !important;">
           <div class="portlet-title">
             <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">Inactive
+              <span class="caption-subject font-red-sunglo uppercase"> Dormant
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
             <div class="inputs" style="float: right">
@@ -273,40 +360,46 @@
               </div>
             </div>
           </div>
+          <div class="alert alert-info">List Of
+            {{authenticationService?.module.isPrm ? properties?.dormantPartnertileDescriptionForPrm
+            :properties?.dormantpartnertileDescription}}
+          </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
             *ngIf="customResponse.isVisible"></app-response-message>
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
-            <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
-              <thead>
-                <tr>
-                  <th class="center-aligned" style="width:50%" scope="col">
-                    {{authenticationService?.partnerModule?.customName}}</th>
-                  <th class="hidden-xs" style="text-align: left;" scope="col">LAST REMINDER SENT</th>
-                  <th style="text-align: left" class="mAlign" scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
-                  <td>
-                    <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
-                    </app-user-info>
-                  </td>
-                  <td class="hidden-xs">
-                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
-                    <h4 *ngIf="!item.time"><strong>-</strong></h4>
-                  </td>
-                  <td class="mAlign" (click)="sendPartnerReminder(item)">
-                    <div class="actions-block float-none">
-                      <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
-                        <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
-                        <div class="clickicons"></div>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
+                <thead>
+                  <tr>
+                    <th class="center-aligned" style="width:50%" scope="col">
+                      {{authenticationService?.partnerModule?.customName}}</th>
+                    <th class="hidden-xs text-center" scope="col">LAST REMINDER SENT</th>
+                    <th class="mAlign text-center" scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
+                    <td>
+                      <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
+                      </app-user-info>
+                    </td>
+                    <td class="hidden-xs text-center">
+                      <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
+                      <h4 *ngIf="!item.time"><strong>-</strong></h4>
+                    </td>
+                    <td class="mAlign text-center" (click)="sendPartnerReminder(item)">
+                      <div class="actions-block float-none">
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
+                          <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <app-pagination class="pg8" [pagination]="inActivePartnersPagination" [type]="'userInteraction'"
             (notifyParentDropDown)="inActivePartnerDropDownList($event)"
@@ -326,6 +419,9 @@
               <span class="caption-subject font-red-sunglo uppercase">Approve
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
+          </div>
+          <div class="alert alert-info">
+            <span>List Of {{properties?.approvePartnerDescription}}</span>
           </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
@@ -351,9 +447,9 @@
                     </td>
                     <td style="text-align: center;">
                       <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle"
-                          [disabled]="item.invitationStatus === 'approved'" style="text-transform: capitalize"
-                          type="button" data-toggle="dropdown">{{item.invitationStatus}}
+                        <button class="btn btn-default dropdown-toggle" [disabled]="item.invitationStatus === 'approved'"
+                          style="text-transform: capitalize" type="button"
+                          data-toggle="dropdown">{{item.invitationStatus}}
                           <span class="caret"></span></button>
                         <ul class="dropdown-menu" style="left: 68px;" *ngIf="item.invitationStatus != 'approved'">
                           <li *ngIf="item.invitationStatus != 'approved'"><a
@@ -377,7 +473,6 @@
       </div>
     </div>
   </div>
-
   <!-- ------****************Redistribute Partner Analytics************************** -->
   <div *ngIf="isRedistributePartnersDiv">
     <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>
@@ -710,6 +805,85 @@
     </div>
   </div>
 
+
+  <div *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv ">
+    <div class="row">
+      <div class="">
+        <div class="portlet light" style="padding: 10px !important;">
+          <div class="portlet-title">
+            <div class="caption">
+              <span class="caption-subject font-red-sunglo uppercase">
+                {{ isSingUpPendingDiv ? 'Pending SignUp' : 'Incomplete Company Profile' }}
+                {{ isSingUpPendingDiv ? '' : authenticationService?.partnerModule?.customName }} </span>
+            </div>
+            <div class="inputs" style="float: right">
+              <div class="portlet-input input-inline">
+                <div class="input-icon right mTop" style="position: relative; margin: -12px 0 0 0;">
+                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"
+                    [ngModelOptions]="{ standalone: true }" placeholder="Search"
+                    (keypress)=" inCompleteCompanyProfileSignupPendingPartnersSearch($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey"
+                    (click)="inActivePartnersSearchKey=''; searchCompanyProfileIncompleteAndSignupPendingPartnerAnalytics()"></button>
+                  <button type="submit" class="search-box-item-click"
+                    (click)="searchCompanyProfileIncompleteAndSignupPendingPartnerAnalytics()">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-info">
+            <span *ngIf="isIncompleteCompanyProfileDiv">List Of {{properties?.companyProfileIncompletepartnertileDescription}}</span>
+            <span *ngIf="isSingUpPendingDiv">List Of {{properties?.signupPartnertileDescription}}</span>
+
+          </div>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
+            *ngIf="customResponse.isVisible"></app-response-message>
+          <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+            <div class="table-responsive">
+              <table class="table tgrid"
+                *ngIf="incompleteCompanyProfileAndPendingSingupPagination.pagedItems.length !== 0">
+                <thead>
+                  <tr>
+                    <th class="center-aligned">partners</th>
+                    <th style="text-align: center;">LAST REMINDER SENT</th>
+                    <th style="text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of incompleteCompanyProfileAndPendingSingupPagination.pagedItems"
+                    style="cursor: pointer;">
+                    <td>
+                      <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
+                      </app-user-info>
+                    </td>
+                    <td class="hidden-xs text-center">
+                      <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
+                      <h4 *ngIf="!item.time"><strong>-</strong></h4>
+                    </td>
+                    <td class="mAlign text-center" (click)="sendmail(item)">
+                      <div class="actions-block float-none">
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
+                          <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <app-pagination class="pg8" [pagination]="incompleteCompanyProfileAndPendingSingupPagination"
+            [type]="'userInteraction'" (notifyParentDropDown)="CompanyProfileIncompleteAndSignupPendingList($event)"
+            (notifyParent)="setCompanyProfileIncompleteAndSignupPendingPartnesPage($event)"></app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
   <div class="row rowPaddingCustomization"
     *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.lmsAccess">
@@ -718,14 +892,15 @@
       <div class="ml15m">
         <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'" [isDetailedAnalytics]="false"
           [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
-          [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+          [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter"
+          [toDateFilter]="partnertoDateFilter"
           (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
-
       </div>
 
       <!--******************Interacted & Not Interacted Track Details*******************-->
       <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+        [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-interacted-not-interacted-track-details>
     </div>
   </div>
@@ -740,13 +915,14 @@
           [isDetailedAnalytics]="false" [applyFilter]="applyFilter"
           (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
           [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+          [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
           (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
       </div>
 
       <!--******************Type wise Track Content Details*******************-->
       <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
-        [applyFilter]="applyFilter"
+        [applyFilter]="applyFilter" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-typewise-track-content-details>
     </div>
   </div>
@@ -757,11 +933,12 @@
       <!--******************Company wise Track Counts******************-->
       <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
-        [applyFilter]="applyFilter" *ngIf="authenticationService?.lmsAccess"></app-userwise-track-counts>
+        [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter" [applyFilter]="applyFilter"
+        *ngIf="authenticationService?.lmsAccess"></app-userwise-track-counts>
 
       <!--******************Company wise Playbook Counts******************-->
       <app-userwise-track-counts [type]="'PLAYBOOK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
-        [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         [applyFilter]="applyFilter" *ngIf="authenticationService.module?.playbookAccess"></app-userwise-track-counts>
     </div>
   </div>
@@ -770,6 +947,7 @@
   <div class="row rowPaddingCustomization2">
     <app-userwise-track-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.lmsAccess"></app-userwise-track-details>
   </div>
 
@@ -779,11 +957,13 @@
       <!--******************Track Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'TRACK'" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+        [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'PLAYBOOK'" [isDetailedAnalytics]="false"
         [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+        [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
     </div>
   </div>
@@ -792,6 +972,7 @@
   <div class="row rowPaddingCustomization2">
     <app-partner-journey-team-member-high-level-analytics-table *ngIf="!loadAllCharts && selectedTabIndex == 0"
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)">
     </app-partner-journey-team-member-high-level-analytics-table>
   </div>
@@ -799,6 +980,7 @@
   <div class="row rowPaddingCustomization2">
     <app-share-lead-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.hasShareLeadAccess"></app-share-lead-details>
   </div>
 
@@ -806,18 +988,18 @@
     <!-- -Campaigns Launched By Partners -->
     <!-- <ng-container *ngIf="reloadWithFilter"> -->
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
-      [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'"
+      [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
-      [chartId]="'allLeadsAndDealsBarChart'"
+      [chartId]="'allLeadsAndDealsBarChart'" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 "></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
-      [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"
+      [chartId]="'redistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaigns-and-leads-bar-chart>
     <!-- <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
         [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart> -->
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
-      [chartId]="'top10LeadsAndDealsBarChart'"
+      [chartId]="'top10LeadsAndDealsBarChart'" [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
     <!-- </ng-container> -->
   </div>
@@ -830,11 +1012,13 @@
           (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
           (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)" [isDetailedAnalytics]="false"
           [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+          [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
           *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-pie-chart>
       </div>
       <app-redistributed-campaign-details [partnerCompanyId]="'0'" [campaignTypeFilter]="selectedCampaignType"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [applyFilter]="applyFilter"
+        [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
         *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaign-details>
     </div>
   </div>
@@ -844,6 +1028,7 @@
     <app-partner-journey-lead-details [partnerCompanyId]="'0'" [isDetailedAnalytics]="false"
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.enableLeads"></app-partner-journey-lead-details>
   </div>
   <!--******************Deal Details*******************-->
@@ -851,6 +1036,7 @@
     <app-partner-journey-deal-details [partnerCompanyId]="'0'" [isDetailedAnalytics]="false"
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.enableLeads"></app-partner-journey-deal-details>
   </div>
 
@@ -861,6 +1047,7 @@
 
     <app-mdf-detail-analytics *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.mdf"
       [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-mdf-detail-analytics>
   </div>
   <app-scroll-top></app-scroll-top>
@@ -980,3 +1167,7 @@
     </div>
   </div>
 </div>
+
+
+
+

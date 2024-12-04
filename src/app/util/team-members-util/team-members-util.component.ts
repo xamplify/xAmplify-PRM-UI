@@ -24,6 +24,7 @@ import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ParterService } from 'app/partners/services/parter.service';
 import { Roles } from 'app/core/models/roles';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $: any, swal: any;
 @Component({
@@ -125,6 +126,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   isNavigatedFromSuperAdminScreen = false;
   showAnalytics: boolean = false;
   teamInfo: any;
+  csvPagination: any;
+  logListName: string = "";
+  downloadDataList = [];
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -446,12 +450,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
   loginAs(teamMember: TeamMember) {
     this.utilService.addLoginAsLoader();
+    this.utilService.reloadAppInAllTabs();
     this.loginAsTeamMember(teamMember.emailId, false);
 
   }
 
   loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
     if (this.isLoggedInThroughVanityUrl) {
+      this.referenceService.isWelcomePageLoading = true;
       this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
     } else {
       this.getUserData(emailId, isLoggedInAsAdmin);
@@ -499,7 +505,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.utilService.setUserInfoIntoLocalStorage(emailId, response);
     let self = this;
     setTimeout(function () {
-      self.router.navigate(['home/dashboard/'])
+      
+      const currentUser = localStorage.getItem( 'currentUser' );
+      let isWelcomePageEnabled = JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+      let routingLink = isWelcomePageEnabled? 'welcome-page':'home/dashboard/';
+
+      self.router.navigate([routingLink])
         .then(() => {
           window.location.reload();
         })
@@ -509,6 +520,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   logoutAsTeamMember() {
     this.utilService.addLoginAsLoader();
+    this.utilService.reloadAppInAllTabs();
     let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
     this.loginAsTeamMember(adminEmailId, true);
   }
@@ -1193,4 +1205,60 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.isCollapsed = false;
     this.refreshList();
   }
-}
+
+  downloadTeamMemberCsv() {
+    this.httpRequestLoader.isHorizontalCss = true;
+    this.csvPagination = { 
+      ...this.pagination, 
+      selectedTeamMemberIds: this.selectedTeamMemberIds,
+      filterKey: this.isTeamMemberModule ? undefined : "teamMemberGroup",
+      categoryId: this.teamMemberGroupId > 0 ? this.teamMemberGroupId : 0,
+      pageIndex: 1,
+      maxResults: this.pagination.totalRecords 
+    };
+    this.teamMemberService.findAll(this.csvPagination)
+      .subscribe(
+        response => {
+          let data = response.data;
+          this.csvPagination.csvPagedItems = data.list;
+          this.downloadCsv();
+          this.httpRequestLoader.isHorizontalCss = false;
+        },
+        error => {
+          this.logger.errorPage(error);
+          this.httpRequestLoader.isHorizontalCss = false;
+        });
+  }
+
+  downloadCsv() {
+    let csvName = "team_Members.csv";
+    this.downloadDataList = this.csvPagination.csvPagedItems.map(item => {
+      return {
+        "FIRSTNAME": item.firstName,
+        "LASTNAME": item.lastName,
+        "EMAILID": item.emailId,
+        "GROUP": item.primaryAdmin ? "N/A" : item.teamMemberGroupName,
+        "ADMIN": (item.secondAdmin || item.primaryAdmin) ? "Yes" : "No",
+        "STATUS": (item.status == "APPROVE") ? "Active" : "InActive",
+      };
+    });
+
+    this.downloadCsvFile(this.downloadDataList, csvName);
+  }
+
+  downloadCsvFile(data: any[], filename: string) {
+    const header = Object.keys(data[0]).join(',') + '\n';
+    const rows = data.map(row => Object.keys(row).map(key => row[key]).join(',')).join('\n');
+    const csvContent = header + rows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  }

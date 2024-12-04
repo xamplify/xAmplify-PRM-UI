@@ -1,0 +1,81 @@
+<div class="inputs display row" align="right">
+  <div class="col-xs-12 col-sm-12 col-lg-12 mb10">
+    <div class="page-toolbar">
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Refresh"
+        data-original-title="Refresh" (click)="showAllNoteActivities()">
+        <i aria-hidden="true" class="fa fa-refresh"></i>
+      </a>
+      <div class="btn-group pull-right">
+        <div class="inputs float-right" style="display: inline-flex;">
+          <div>
+            <div class="ml5">
+              <input type="text" autocomplete="off" id="sort-text" class="form-control"
+                [(ngModel)]="noteSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                (keypress)="noteActivityEventHandler($event.keyCode)">
+              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="noteSortOption.searchKey"
+                (click)="noteSortOption.searchKey='';clearSearch();"></button>
+              <button type="submit" class="search-box-item-click" (click)="searchNoteActivities();"><i
+                  class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+<div *ngIf="notePagination?.totalRecords>0 && !httpRequestLoader?.isLoading">
+  <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+  <div class="activity_card mb10" *ngFor="let note of notePagination?.pagedItems">
+    <div class="activity-header">
+      <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(note)">
+        <span>{{note.title}}</span></a></span>
+      <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="note.updatedTime"></app-display-date-and-time></span>
+    </div>
+    <div class="activity-body" *ngIf="note.visibility == 'PUBLIC'">
+      <span class=""><i class="fas fa-user icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
+    </div>
+    <div class="activity-body">
+      <i class="fa fa-comment icon"></i>
+      <span>{{note.content | slice:0:100}}<a *ngIf="note.content.length>100" (click)="viewNote(note)">
+        <span>..View More</span></a></span>
+    </div>
+    <div class="activity-footer">
+      <span [ngClass]="note.visibility=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
+      <span>
+        <!--1st version-->
+        <a (click)="showEditNoteTab(note)"><span class="mr10">edit</span></a>
+      <a (click)="showDeleteConformationAlert(note)"><span>delete</span></a>
+
+      <!--2nd version-->
+      <!-- <button type="submit" class="button bgcolor-unset m0 p0" (click)="showEditNoteTab(note)">
+        <span class="view-banner"><i class="fa fa-edit"></i>EDIT</span></button>
+      <button type="submit" class="button bgcolor-unset m0 p0" (click)="showDeleteConformationAlert(note)">
+        <span class="view-banner delete-bg-color"><i class="fa fa-trash-o"></i>DELETE</span></button> -->
+
+        <!--3rd version-->
+        <!-- <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
+        (click)="showEditNoteTab(note)" data-toggle="tooltip" data-placement="bottom" title="Edit Note" id="note">
+          <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+        <a class="custom-icon" data-rel="fancybox-button" (click)="showDeleteConformationAlert(note)" data-toggle="tooltip" data-placement="bottom" title="Delete Note" id="note">
+          <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+          <div class="del-icon"></div>
+        </a> -->
+      </span>
+    </div>
+  </div>
+  <!-- --------------------Pagination0-------------------- -->
+  <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
+    <app-pagination [pagination]="notePagination" (notifyParent)="setnotePage($event)"
+      (notifyParentDropDown)="fetchAllNoteActivities($event)"></app-pagination>
+  </div>
+</div>
+<div *ngIf="!httpRequestLoader.isLoading && notePagination.totalRecords==0" class="alert alert-info">
+  <strong translate>No Data Found.</strong>
+</div>
+
+<app-add-note-modal-popup *ngIf="showNoteModalPopup" [noteId]="noteId" [isReloadTab]="reloadTab" [actionType]="actionType"
+  (notifyClose)="closeNoteModalPopup()" (notifySuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>

@@ -31,14 +31,24 @@ import { FormService } from 'app/forms/services/form.service';
 import { CustomAddLeadComponent } from 'app/leads/custom-add-lead/custom-add-lead.component';
 import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
 import { VendorJourneyAnalyticsComponent } from 'app/util/vendor-journey-analytics/vendor-journey-analytics.component';
+import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom-manage-leads.component';
+import { CustomManageDealsComponent } from 'app/deals/custom-manage-deals/custom-manage-deals.component';
+import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
+import { CKEditorModule } from "ng2-ckeditor";
+import { EmailActivityComponent } from 'app/activity/email-activity/email-activity.component';
+import { AddNoteModalPopupComponent } from 'app/activity/add-note-modal-popup/add-note-modal-popup.component';
+import { NoteComponent } from 'app/activity/note/note.component';
+import { ActivityStreamComponent } from 'app/activity/activity-stream/activity-stream.component';
+import { PreviewEmailActivityComponent } from 'app/activity/preview-email-activity/preview-email-activity.component';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
                   BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, 
-                  CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
+                  CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule, CKEditorModule],
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
-                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent ],
+                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
+                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -46,7 +56,8 @@ import { VendorJourneyAnalyticsComponent } from 'app/util/vendor-journey-analyti
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
-                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent],
+                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent, 
+                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent],
         providers: [FormService],
 })
 

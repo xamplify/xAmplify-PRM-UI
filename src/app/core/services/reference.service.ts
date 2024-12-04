@@ -154,6 +154,13 @@ export class ReferenceService {
   website:String="";
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
+  isWelcomePageLoading: boolean = false;
+  isHarizontalNavigationBar:boolean = false;
+  isFromLogin:boolean  = false;
+  isUserProfileLoading = false;
+  universalSearchKey:string = ""; //XNFR-574
+  universalId:number = 0; //XNFR-574
+  universalModuleType:string = ""; //XNFR-574
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -1983,8 +1990,14 @@ export class ReferenceService {
   goToCampaignAnalytics(campaign:any) {
     let campaignId = campaign.campaignId;
     let encodedCampaignId = this.encodePathVariable(campaignId);
-    let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
-    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
+    let campaignTitle = campaign.campaignTitle;
+    if(campaignTitle!=undefined && this.getTrimmedData(campaignTitle).length>0){
+      let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
+      this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
+    }else{
+      this.showSweetAlertErrorMessage("Campaign Title Not Found");
+    }
+    
   }
 
   navigateBackToCampaignAnalytics(campaign:any) {
@@ -2516,6 +2529,12 @@ export class ReferenceService {
     );
   }
 
+  deleteAndEditAccessForAllRoles(){
+    let isAnyVendorAdminOrSuperVisor = this.deleteAndEditAccess();
+    let isOnlyPartnerAdmin = this.authenticationService.isOnlyPartner();
+    return isAnyVendorAdminOrSuperVisor || isOnlyPartnerAdmin;
+  }
+
   public onMouseDown(event: any, tableId: string, columnPosition: number) {
     this.start = event.target;
     this.pressed = true;
@@ -2598,6 +2617,15 @@ export class ReferenceService {
     }
   }
 
+  /**XBI-2417**/
+  getDefaultViewType(){
+    let defaultDisplayType = localStorage.getItem("defaultDisplayType");
+    return defaultDisplayType === "LIST" ? "l" :
+       defaultDisplayType === "FOLDER_LIST" ? "fl" :
+       defaultDisplayType === "FOLDER_GRID" ? "fg" :
+       defaultDisplayType === "GRID" ? "g" : "l";
+  }
+
   setDisplayType(modulesDisplayType: ModulesDisplayType, viewType: string) {
     if ("l" == viewType) {
       modulesDisplayType.isListView = true;
@@ -2676,6 +2704,11 @@ export class ReferenceService {
   goToDashboard() {
     this.router.navigate(["/home/dashboard"]);
   }
+
+  goToServerErrorPage() {
+    this.router.navigate(["/500"]);
+  }
+
 
   filterSelectedColumnsFromArrayList(list: any, columnName: string) {
     return list.map(function (e: any) {
@@ -3024,12 +3057,17 @@ export class ReferenceService {
     let sortColumn = $.trim(pagination.sortcolumn)!=null ? $.trim(pagination.sortcolumn):"";
     let sortOrder = $.trim(pagination.sortingOrder)!=null ? $.trim(pagination.sortingOrder):"";
     let sort = sortColumn.length>0 && sortOrder.length>0 ? sortColumn+","+sortOrder:"";
+    let fromDateFilterString = $.trim(pagination.fromDateFilterString)!=null ? $.trim(pagination.fromDateFilterString) :"";
+    let toDateFilterString =$.trim(pagination.toDateFilterString)!=null ? $.trim(pagination.toDateFilterString) :"";
     let sortParam = sort.length>0 ? "&sort="+sort:"";
     let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
+    let fromDateFilterStringParam = fromDateFilterString.length>0 ? "&fromDateFilterString="+fromDateFilterString:"";
+    let toDateFilterStringParam = toDateFilterString.length>0 ? "&toDateFilterString="+toDateFilterString:"";
     let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true":"";
+    let timeZoneParam = pagination.timeZone != null ? "&timeZone="+pagination.timeZone :"";
     let filterBy = $.trim(pagination.filterBy)!=null ? $.trim(pagination.filterBy) :"";
     let filterParam = filterBy.length>0 ? "&filterBy="+filterBy:"";
-    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter+filterParam);
+    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter+filterParam+fromDateFilterStringParam+toDateFilterStringParam+timeZoneParam);
   }
   
   downloadCsvTemplate(url:string){
@@ -3380,6 +3418,19 @@ export class ReferenceService {
     });
     return arr;
   }
+
+  removeAnItemFromArray(arr:any,itemToRemove:any){
+    arr = $.grep(arr, function(value:any) {
+      return value != itemToRemove;
+    });
+    return arr;
+  }
+
+  removeMultipleItemsFromArray(array:any,itemsToRemove:any){
+    return array.filter(v => { 
+    	return !itemsToRemove.includes(v); 
+    });
+  }
   
   iterateNamesAndGetErrorMessage(response:any){
     let names = "";
@@ -3391,6 +3442,10 @@ export class ReferenceService {
 
   getTrimmedData(input:any){
     return $.trim(input);
+  }
+
+  isValidText(input:any){
+    return input!=undefined &&  $.trim(input).length > 0;
   }
 
 
@@ -3532,15 +3587,15 @@ clearHeadScriptFiles(){
 }
 
   private setTitleAndFavIcon() {
-    this.setTitle();
     this.setFavIcon();
+    this.setTitle();
     
   }
 
-  private setTitle() {
+  public setFavIcon() {
     let iconPath = localStorage.getItem("appIcon");
     let completeIconPath = "";
-    if (iconPath) {
+    if (iconPath !== "null" && iconPath != null && iconPath != "") {
       completeIconPath = this.authenticationService.MEDIA_URL + iconPath;
     } else {
       completeIconPath += this.authenticationService.APP_URL + "favicon.ico";
@@ -3548,7 +3603,7 @@ clearHeadScriptFiles(){
     $("#xamplify-index-head").append('<link rel="icon" type="image/x-icon" href="' + completeIconPath + '" id="appFavicon">');
   }
 
-  private setFavIcon() {
+  private setTitle() {
     let companyName = localStorage.getItem("companyName");
     if (companyName) {
       $("#xamplify-index-head").append('<title>' + companyName + '</title>');
@@ -3560,6 +3615,11 @@ clearHeadScriptFiles(){
 encodePathVariable(input:any){
   let encodedPathVariable = btoa(input);
   return encodedPathVariable;
+}
+
+/**XNFR-735**/
+encodePathVariableInNewTab(input:any) {
+  return this.getEncodedUri(this.encodePathVariable(input));
 }
 
 decodePathVariable(value:any){
@@ -3574,74 +3634,136 @@ decodePathVariable(value:any){
 }
 
 previewEmailTemplateInNewTab(id:any){
-  this.openWindowInNewTab("/pv/t/"+this.encodePathVariable(id));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/t/"+encodedURLString);
+}
+/***XNFR-664*****/
+previewUnLaunchedCampaignEmailTemplateUsingFromEmailUserIdInNewTab(id:any,fromEmailUserId:any){
+  let encodedEmailId = this.getEncodedUri(this.encodePathVariable(id));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/ulctp/"+encodedEmailId+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewEventCampaignEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/evt/"+this.encodePathVariable(id));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/evt/"+encodedURLString);
 }
 previewEditRedistributedEventCampaignTemplatePreview(campaignId: any) {
-  this.openWindowInNewTab("/pv/edevt/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/edevt/"+encodedURLString);
 }
 
-previewWorkflowEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/wt/"+this.encodePathVariable(id));
+previewWorkflowEmailTemplateInNewTab(id:number,fromEmailUserId:number){
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/wt/"+encodedURLString+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/ct/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/ct/"+encodedURLString);
+}
+
+previewCampaignEmailTemplateWithFromEmailUserIdInNewTab(campaignId:number,fromEmailUserId:number){
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/ctfe/"+encodedCampaignURLString+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/sct/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/sct/"+encodedURLString);
+}
+
+previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaignId:number,fromEmailUserId:number){
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/sctfe/"+encodedCampaignURLString+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/sect/"+this.encodePathVariable(campaignId));
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/sect/"+encodedCampaignURLString);
 }
 
 previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){
-  this.openWindowInNewTab("/pv/cwaret/"+this.encodePathVariable(replyId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(replyId));
+  this.openWindowInNewTab("/pv/cwaret/"+encodedIdURLString);
 }
+
+previewEditNurtureCampaignAutoReplyEmailTemplateInNewTabByFromEmailUserId(replyId:number,fromEmailUserId:number){
+  let encodedReplyIdString = this.getEncodedUri(this.encodePathVariable(replyId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/cwaretfe/"+encodedReplyIdString+"/"+encodedIdFromEmailIdURLString);
+}
+
 
 previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number){
-  this.openWindowInNewTab("/pv/cwarwlt/"+this.encodePathVariable(urlId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(urlId));
+  this.openWindowInNewTab("/pv/cwarwlt/"+encodedIdURLString);
 }
 
-previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
-  this.openWindowInNewTab("/pv/scwaret/"+this.encodePathVariable(vendorCampaignWorkflowId));
+previewEditNurtureCampaignCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number,fromEmailUserId:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(urlId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/cwarwltfe/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
 }
 
-previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
-  this.openWindowInNewTab("/pv/scwarwlt/"+this.encodePathVariable(vendorCampaignWorkflowId));
+previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number,fromEmailUserId:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(vendorCampaignWorkflowId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/scwaret/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
+}
+
+previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number,fromEmailUserId:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(vendorCampaignWorkflowId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/scwarwlt/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
 }
 
 previewPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/lp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/lp/"+encodedIdURLString);
 }
 
 previewPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/plp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/plp/"+encodedIdURLString);
 }
 
 previewVendorJourneyPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/vjplp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vjplp/"+encodedIdURLString);
 }
 
 previewMasterPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/mplp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/mplp/"+encodedIdURLString);
+}
+
+previewPartnerJourneyVendorPageInNewTab(id:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/pjplp/"+encodedIdURLString);
+}
+
+previewVendorMarketplacePageInNewTab(id:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vmplp/"+encodedIdURLString);
 }
 
 previewAssetPdfInNewTab(id:number){
-  this.openWindowInNewTab("/pv/v/pdf/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/v/pdf/"+encodedIdURLString);
 }
 
 previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(learningTrackContentMappingId:number){
-  this.openWindowInNewTab("/pv/ptp/pdf/"+this.encodePathVariable(learningTrackContentMappingId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(learningTrackContentMappingId));
+  this.openWindowInNewTab("/pv/ptp/pdf/"+encodedIdURLString);
 }
 /***XNFR-496***/
 previewVanityEmailTemplateInNewTab(id:any){
-  this.openWindowInNewTab("/pv/vt/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vt/"+encodedIdURLString);
 }
 
 openWindowInNewTab(url:string){
@@ -3706,30 +3828,69 @@ preivewAssetForPartnerOnNewHost(id: any) {
 		this.navigateToRouterByViewTypes(url, categoryId, viewType, folderViewType, folderListView);
   }
 
-  navigateToQuickLinksAnalytics(quickLink:any,isPartnerLoggedInThroughVanityUrl:boolean,vendorCompanyId:number){
+  navigateToQuickLinksAnalytics(quickLink:any){
     let router = "";
-    let viewType = "/"+this.getListOrGridViewType();
+    let viewType = "/"+this.getDefaultViewType();
     if(quickLink.type=="Asset"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "/home/dam/sharedp/view/"+quickLink.damPartnerId+viewType;
-      }else{
-        router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
-      }
+      router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
     }else if(quickLink.type=="Track"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "home/tracks/tb/"+vendorCompanyId+"/"+quickLink.slug+viewType;
-      }else{
-        router = "/home/tracks/analytics/"+quickLink.id+viewType;
-      }
+      router = "/home/tracks/analytics/"+quickLink.id+viewType;
     }else if(quickLink.type=="Play Book"){
-      if(isPartnerLoggedInThroughVanityUrl){
-        router = "home/playbook/pb/"+vendorCompanyId+"/"+quickLink.slug+viewType;
-      }else{
-        router = "/home/playbook/analytics/"+quickLink.id+viewType;
-      }
+      router = "/home/playbook/analytics/"+quickLink.id+viewType;
     }
     this.goToRouter(router);
   }
+
+  handleQuickLinkPreview(quickLink: any, isPartnerLoggedInThroughVanityUrl: boolean, vendorCompanyId: number) {
+    const viewType = `/${this.getDefaultViewType()}`;
+    let router = '';
+    let id = quickLink.id;
+    if(isPartnerLoggedInThroughVanityUrl){
+      id = quickLink.damPartnerId;
+    }
+    const navigateToDamPartnerView = () => {
+        router = `${RouterUrlConstants.home}${RouterUrlConstants.dam}${RouterUrlConstants.damPartnerView}${RouterUrlConstants.view}${id}${viewType}`;
+    };
+
+    const handleAssetPreview = () => {
+      if (this.isVideo(quickLink.assetType)) {
+            const videoUrl = `/home/dam/previewVideo/${quickLink.videoId}/${quickLink.id}`;
+            this.navigateToRouterByViewTypes(videoUrl, 0, undefined, undefined, undefined);
+        } else if (quickLink.beeTemplate) {
+            this.previewAssetPdfInNewTab(quickLink.id);
+        } else {
+            this.preivewAssetOnNewHost(quickLink.id);
+        }
+    };
+
+    const handleOtherTypes = () => {
+        switch (quickLink.type) {
+            case 'Track':
+                router = `home/tracks/tb/${vendorCompanyId}/${quickLink.slug}${viewType}`;
+                break;
+            case 'Play Book':
+                router = `home/playbook/pb/${vendorCompanyId}/${quickLink.slug}${viewType}`;
+                break;
+        }
+    };
+
+    if (quickLink.type === 'Asset') {
+        if (isPartnerLoggedInThroughVanityUrl) {
+            navigateToDamPartnerView();
+        } else {
+            handleAssetPreview();
+        }
+    } else {
+        handleOtherTypes();
+    }
+
+    if (router) {
+        this.goToRouter(router);
+    }
+}
+
+ 
+  
 
   isNumber(value:any){
     return typeof value === 'number';
@@ -3743,6 +3904,49 @@ copySelectedElement(inputElement:any,id:string){
   inputElement.setSelectionRange(0, 0);
   $('#'+id).show(600);
 }
+
+/*XNFR-553*/
+checkIsValidString(inputString:any) {
+  return inputString != undefined && inputString != null && this.getTrimmedData(inputString).length > 0;
+}
+/*XNFR-553*/
+getFirstLetter(inputString:any) {
+  return inputString.length > 0 ? inputString.slice(0,1) : '*';
+}
+
+  findDuplicateArrayElements(array:any) {
+    var recipientsArray = array.sort();
+    var duplicateElements = [];
+    for (var i = 0; i < recipientsArray.length - 1; i++) {
+      if (recipientsArray[i + 1] == recipientsArray[i]) {
+        duplicateElements.push(recipientsArray[i]);
+      }
+    }
+    return duplicateElements;
+  }
+  
+  /*XNFR-679*/
+  isValidCustomFieldName(input:string){
+    return this.regularExpressions.CUSTOM_FIELD_NAME_PATTERN.test(input);
+  }
+
+
+  getStatusCode(error: any) {
+    let statusCode = JSON.parse(error["status"]);
+    return statusCode;
+  }
+
+
+  showDiv(divId:string){
+    $('#'+divId).show(500);
+  }
+
+  showUIError(methodName:string){
+    return this.showSweetAlertErrorMessage("Error In "+methodName+"(). Please Contact Admin");
+   
+
+ }
+
   
 }
 

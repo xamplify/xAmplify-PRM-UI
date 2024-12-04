@@ -43,4 +43,8 @@ export class TracksPlayBook {
     /***XNFR-523*****/
     trackUpdatedEmailNotification = false;
     addedToQuickLinks = false;
+    
+    /** XNFR-745 **/
+    groupByAssets: boolean = false;
+    isCollapsed : boolean = false;
 }

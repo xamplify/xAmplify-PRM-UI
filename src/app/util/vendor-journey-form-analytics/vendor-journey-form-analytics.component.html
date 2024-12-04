@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-12 p5" *ngIf="statusCode==200">
 		<div class="portlet light remove_cardBgcolor padding_0">
-			<div class="portlet-title" *ngIf="!isMasterLandingPageAnalytics">
+			<div class="portlet-title" *ngIf="!(isMasterLandingPageAnalytics || isVendorMarketplacePageAnalytics)">
 				<div class="col-xs-12">
 					<div class="row">
 						<div class="col-xs-12 col-sm-6 col-md-6 text-left p0">
@@ -36,13 +36,13 @@
                 </span> <span class="gridHeader" translate>Landing Page Name</span></th>
 				<th class="text-center" id="border-bottom" translate>Created
 					By</th>
-				<th class="text-center" *ngIf="!isMasterLandingPageAnalytics" id="border-bottom" translate>Partner Company</th>
-				<th class="text-center" *ngIf="isMasterLandingPageAnalytics" id="border-bottom" translate>Vendor Company</th>
+				<th class="text-center" *ngIf="!(isMasterLandingPageAnalytics || isPartnerJourneyPage )" id="border-bottom" translate>Partner Company</th>
+				<th class="text-center" *ngIf="isMasterLandingPageAnalytics || isPartnerJourneyPage" id="border-bottom" translate>Vendor Company</th>
             </tr>
           </thead>
           <tbody>
             <ng-container *ngFor="let landingPage of pagination.pagedItems ;let i =index">
-			<ng-container *ngIf="!isMasterLandingPageAnalytics">
+			<ng-container *ngIf="!(isMasterLandingPageAnalytics || isVendorMarketplacePageAnalytics)">
 			<tr id="folder-row-{{i}}" class="child-row-list-view border-cls">
 				<td class="custom-icon-width">
 					<div class="actions-block ">
@@ -62,7 +62,7 @@
 							<b>Name:</b> {{landingPage.masterLandingPageName}}</span>
 						<span *ngIf="landingPage.masterLandingPageName == null || landingPage.masterLandingPageName == ''"
 							data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
-							<b>Uncategorised</b></span>
+							<b>Uncategorized</b></span>
 					</h4>
 				</td>
 				<td class="text-center">
@@ -81,13 +81,13 @@
 					<ng-container *ngIf="landingPage.expanded">
 						<ng-container>
 							<app-form-analytics-util [importedObject]="analyticsObject"
-								[isVendorJourney]="true"></app-form-analytics-util>
+								[isVendorJourney]="isVendorJourney" [isPartnerJourneyPage] = "isPartnerJourneyPage"></app-form-analytics-util>
 						</ng-container>
 					</ng-container>
 				</td>
 			</tr>
 			</ng-container>
-			<ng-container *ngIf="isMasterLandingPageAnalytics">
+			<ng-container *ngIf="isMasterLandingPageAnalytics || isVendorMarketplacePageAnalytics">
 				<tr  id="folder-row-{{i}}" class="child-row-list-view border-cls">
 					<td class="custom-icon-width">
 						<div class="actions-block ">
@@ -123,7 +123,8 @@
 						<ng-container *ngIf="landingPage.expanded">
 							<ng-container>
 								<app-form-analytics-util [importedObject]="analyticsObject"
-									[isMasterLandingPageAnalytics]="isMasterLandingPageAnalytics"></app-form-analytics-util>
+									[isMasterLandingPageAnalytics]="isMasterLandingPageAnalytics"
+									[isVendorMarketplacePageAnalytics]="isVendorMarketplacePageAnalytics"></app-form-analytics-util>
 							</ng-container>
 						</ng-container>
 					</td>

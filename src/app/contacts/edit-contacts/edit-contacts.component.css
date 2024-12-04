@@ -94,6 +94,9 @@ a.disabled {
 .danger {
   color: red;
 }
+.red {
+  color: red !important;
+}
 @media (min-width: 768px) {
   .col-sm-5ths {
     width: 20% !important;
@@ -129,6 +132,9 @@ a.disabled {
   }
   .mb_btn{
     padding: 6px 10px!important;
+  }
+  .ml_16{
+   margin-left: 16px!important;
   }
 }
 @media (max-width: 425px) {
@@ -273,3 +279,15 @@ a.disabled {
 }
 /* Sudha Sri(24-07-2024) */
 .dashboard-stat{border-radius: 10px !important;}
+
+/**XNFR-553**/
+.text-line :hover{
+  text-decoration-line: underline;
+}
+/* XNFR-684 */
+.buttonalign{
+  padding-left: 27px;
+}
+.fl-unset{
+  float: unset !important;
+}

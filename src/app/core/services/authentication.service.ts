@@ -31,6 +31,7 @@ import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
 import { Properties } from 'app/common/models/properties';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Injectable()
 export class AuthenticationService {
@@ -45,6 +46,7 @@ export class AuthenticationService {
   DOMAIN_URL = "";
   SERVER_URL: any;
   REST_URL: string;
+  SCHEDULER_URL:string;
   MEDIA_URL: string;
   SHARE_URL: string;
   MARKETO_URL: string;
@@ -165,12 +167,15 @@ export class AuthenticationService {
 
   /*** XNFR-603 ****/
   showVanityURLError1 = false;
-
+/***** XNFR-669*********** */
+isWelcomePageEnabled = false;
+  
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
     this.DOMAIN_URL = this.APP_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
+    this.SCHEDULER_URL = this.envService.SCHEDULER_URL+'xtremand-rest/';
     if (this.SERVER_URL.indexOf('localhost') > -1) {
       this.MEDIA_URL = 'http://localhost:8000/';
     } else {
@@ -248,6 +253,7 @@ export class AuthenticationService {
       return this.map;
     }).flatMap((map) => this.getVanityURLUserRoles(userName, this.map.access_token).map((response: any) => {
       this.vanityURLUserRoles = response.data;
+      this.isWelcomePageEnabled = response.map.isWelcomePageEnabled;
     }))
       .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
         + '&access_token=' + this.map.access_token, '')
@@ -267,6 +273,7 @@ export class AuthenticationService {
 
           if (this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles) {
             userToken['roles'] = this.vanityURLUserRoles;
+            userToken[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] =  this.isWelcomePageEnabled;
           }
 
           if(this.vanityURLEnabled && this.companyProfileName && userName=="admin@xamplify.io"){
@@ -321,6 +328,17 @@ export class AuthenticationService {
     } catch (error) {
       this.xtremandLogger.error('error' + error);
     }
+  }
+
+  getUserName() {
+    let userName = "";
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      userName = JSON.parse(currentUser)['userName'];
+    } else {
+      userName = "";
+    }
+    return userName;
   }
 
   getSource() {
@@ -682,9 +700,13 @@ export class AuthenticationService {
     this.resetData();
     this.access_token = null;
     this.refresh_token = null;
+    let isWelcomePage = this.router.url.includes('/welcome-page');
     if (!this.router.url.includes('/userlock')) {
       if (this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost") < 0) {
         this.closeSwal();
+        if(isWelcomePage){
+          window.location.reload();
+        }
         window.location.href = "https://" + window.location.hostname + "/login";
       } else {
         if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
@@ -699,13 +721,20 @@ export class AuthenticationService {
   private logoutFormLocalOrVanity() {
     this.closeSwal();
     let self = this;
+    let isWelcomePage = this.router.url.includes('/welcome-page');
     if (this.envService.CLIENT_URL == "http://localhost:4200/") {
       setTimeout(() => {
+        if(isWelcomePage){
+          window.location.reload();
+        }
         self.router.navigate(['/']);
         $("body").removeClass("logout-loader");
       }, 1500);
     } else {
       window.location.href = this.envService.CLIENT_URL + "login";
+      if(isWelcomePage){
+        window.location.reload();
+      }
     }
   }
 
@@ -1103,11 +1132,15 @@ export class AuthenticationService {
   /*****XNFR-278****/
 
   /****XNFR-317****/
-  getTemplateHtmlBodyAndMergeTagsInfo(id: number) {
+  getTemplateHtmlBodyAndMergeTagsInfo(id: number,fromEmail:string) {
     let url = this.REST_URL + "email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
     let map = {};
     map['id'] = id;
-    map['emailId'] = this.user.emailId;
+    if(fromEmail!=undefined && $.trim(fromEmail).length>0){
+      map['emailId'] = fromEmail;
+    }else{
+      map['emailId'] = this.user.emailId;
+    }
     return this.callPostMethod(url, map);
   }
 
@@ -1171,6 +1204,12 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
+  public callGetMethodWithQueryParameters(url:string,params:any){
+    return this.http.get(url, { search: params })
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   public callPostMethod(url: string, requestDto: any) {
     return this.http.post(url, requestDto)
       .map(this.extractData)
@@ -1213,6 +1252,15 @@ export class AuthenticationService {
     } else {
       this.DOMAIN_URL = this.APP_URL;
     }
+  }
+
+  setCustomDomainUrl(customDomain:string) {
+    if (this.vanityURLEnabled) {
+      this.DOMAIN_URL = "https://"+customDomain+"/";
+    } else {
+      this.DOMAIN_URL = this.APP_URL;
+    }
+    this.xtremandLogger.info("Custom Domain Url To Access Across The Application : "+this.DOMAIN_URL);
   }
 
   stopLoaders() {
@@ -1340,17 +1388,26 @@ getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
   return this.callGetMethod(URL);
 }
 
-getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean, isMasterLandingPages:boolean){
+getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean, isMasterLandingPages:boolean,
+  isPartnerJourneyPage:boolean, isVendoeMarketPlacePage:boolean
+){
   let userId = this.getUserId();
   let URL_PREFIX = "";
-  if(isPartnerLandingPagePreview || vendorJourney){
+  let vendorOrPartnerJourneyVar ="";
+  let partnerOrVendorMarketplace = "";
+  let vanityCompanyProfile = "&vanityCompanyProfileName="+this.getSubDomain();
+  if(isPartnerLandingPagePreview || vendorJourney || isPartnerJourneyPage){
     URL_PREFIX = this.REST_URL+"landing-page/partner/";
-  }else if(isMasterLandingPages){
+    vendorOrPartnerJourneyVar = vendorJourney? "&vendorJourney=true":isPartnerJourneyPage? "&partnerJourneyPage=true":"";
+  }else if(isMasterLandingPages ||isVendoeMarketPlacePage ){
     URL_PREFIX = this.REST_URL+"landing-page/master/";
+    partnerOrVendorMarketplace =isMasterLandingPages? "&masterLandingPage=true":isVendoeMarketPlacePage? "&vendoeMarketPlacePage=true":"";
   }else{
     URL_PREFIX = this.REST_URL+"landing-page/";
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&masterLandingPage="+isMasterLandingPages+"&access_token="+this.access_token;
+  
+  
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+vendorOrPartnerJourneyVar+partnerOrVendorMarketplace+vanityCompanyProfile+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 
@@ -1409,4 +1466,46 @@ logoutByUserId(){
   return this.callGetMethod(url);
 }
 
+vanityWelcomePageRequired(userId) {
+  this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+  let url = this.REST_URL + 'v_url/vanityWelcomePageRequired?userId=' + userId +'&vanityUrlFilter='+this.dashboardAnalyticsDto.vanityUrlFilter +'&vendorCompanyProfileName='+this.dashboardAnalyticsDto.vendorCompanyProfileName +'&access_token=' + this.access_token;
+  return this.callGetMethod(url);
+} 
+
+  getCustomFieldsMissingErrorMessage(){
+    let partnersMergeTag = this.properties.partnersMergeTag;
+    let partnerModuleCustomName = this.getPartnerModuleCustomName();
+    return this.properties.customFieldsMissingErrorMessage.replace(partnersMergeTag, partnerModuleCustomName);
+  }
+
+  getCompanyProfileNameByCustomDomain(customDomain:string){
+    let url = this.REST_URL + 'v_url/getCompanyProfileNameByCustomDomain/' + customDomain;
+    return this.callGetMethod(url);
+  }
+
+  publishContentToPartnerCompanyByModuleName(userListId:number,partnerUserId:number,inputId:number,moduleName:string){
+    let userId = this.getUserId();
+    let urlPrefix = this.getUrlPrefix(moduleName);
+    let url = this.REST_URL + urlPrefix+"/publish/userListId/"+userListId+"/partnerUserId/"+partnerUserId+"/id/"+inputId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  addPartnerGroupByModuleName(userListId:number,partnershipId:number,inputId:number,moduleName:string){
+    let userId = this.getUserId();
+    let urlPrefix = this.getUrlPrefix(moduleName);
+    let url = this.REST_URL + urlPrefix+"/addPartnerGroup/userListId/"+userListId+"/partnershipId/"+partnershipId+"/id/"+inputId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  private getUrlPrefix(moduleName: string) {
+    let urlPrefix = "";
+    if (moduleName == this.properties.dashboardButtons) {
+      urlPrefix = "dashboardButtons";
+    } else if (moduleName == "dam") {
+      urlPrefix = "dam";
+    } else if (moduleName == "lms") {
+      urlPrefix = "lms";
+    }
+    return urlPrefix;
+  }
 }

@@ -44,14 +44,13 @@
         <ul class="page-breadcrumb">
             <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"
                     translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i></li>
-            <li><a translate>Onboarding
-                    {{authenticationService?.partnerModule?.customName}}</a></li>
+            <li><a translate><span translate>Onboarding</span> {{authenticationService?.partnerModule?.customName}}</a></li>
         </ul>
         <div id="download-partners-csv" class="hidden-xs dwnload-csv_btn " style="padding-right: 3px;padding-top:2px;">
             <a (click)="downloadEmptyCsv()">
                 <button type="button" class="button p-rgt_p-top bgcolor-unset" download
                     [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-                    <span class="btn Btn-Green transition">Download CSV Template <i class="fa fa-download icon_color"
+                    <span class="btn Btn-Green transition" translate>Download CSV Template <i class="fa fa-download icon_color"
                             aria-hidden="true" style="margin-left: 5px"></i></span>
                 </button>
             </a>
@@ -70,11 +69,10 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 pr10">
                         <div class="portlet light add-options">
-                            <div class="portlet-title" translate>How would you like to
-                                add your {{authenticationService?.partnerModule?.customName}}?</div>
+                            <div class="portlet-title" translate>How would you like to add your Partner ?</div>
                             <div class="portlet-body">
                                 <div class="row mrg-right0">
-                                    <div class="col-xs-12 col-sm-4 col-md-6 SideParddings1 cards_align">
+                                    <div class="col-xs-12 col-sm-6 col-md-12 SideParddings1 cards_align">
                                         <button class="color-flow-button btn-primary btn-block white-co"
                                             id="addContacts" (click)="addPartnerModalOpen()"
                                             [disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5 || disableOtherFuctionality">
@@ -83,24 +81,14 @@
                                                 </i>One at a Time</span></button>
                                     </div>
                                     <ng-container *ngIf="!referenceService.isMobileScreenSize()">
-                                        <div class="col-xs-12 col-sm-4 col-md-6 hidden-xs SideParddings2 cards_align">
-                                            <button class="color-flow-button Btn-Green btn-block white-co"
-                                                id="copyFromClipBoard" (click)="copyFromClipboard()"
-                                                [disabled]="selectedAddPartnerOption != 5">
-                                                <span class="buttonSPan" translate>
-                                                    <i class="fa fa-users IconTopMargin" aria-hidden="true"></i>Copy
-                                                    list from clipboard</span>
-                                            </button>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-6 hidden-xs SideParddings3 cards_align">
+                                        <div class="col-xs-12 col-sm-6 col-md-12 hidden-xs SideParddings3 cards_align">
                                             <button
                                                 class="color-flow-button btn-primary fileinput-button btn-block white-co"
                                                 id="uploadCSV"
                                                 [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
                                                 <span class="buttonSPan" style="z-index: 0;" translate>
                                                     <i class="fa fa-file-excel-o cct IconTopMargin"
-                                                        aria-hidden="true"></i>Upload a
-                                                    CSV</span>
+                                                        aria-hidden="true"></i>Upload a CSV</span>
                                                 <input type="file" ng2FileSelect [uploader]="uploader" title=" "
                                                     (click)="input.value = null;resetResponse();"
                                                     (change)="fileChange(input)" accept=".csv" #input
@@ -127,9 +115,8 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 pl10">
                         <div class="portlet light cloud-services" style="padding-bottom: 42px !important;">
-                            <div class="portlet-title" translate>Import
-                                {{authenticationService?.partnerModule?.customName}} from the
-                                cloud:
+                            <div class="portlet-title"><span translate>Import</span>
+                                {{authenticationService?.partnerModule?.customName | translate}} <span translate>from the cloud:</span>
                                 <!-- <a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
                                         class="fa fa-chevron-down" aria-hidden="true"
                                         style="display: contents !important; font-size: 15px !important"></i></a> -->
@@ -577,14 +564,12 @@
                                                     <tbody>
 
                                                         <tr>
-                                                            <td class='pt10 pb10 pr10 bold' translate>Account Name:
-                                                            </td>
+                                                            <td class='pt10 pb10 pr10 bold' translate>Account Name: </td>
                                                             <td class='pt10 pb10'>{{user.accountName}}</td>
                                                         </tr>
 
                                                         <tr>
-                                                            <td class='pt10 pb10 pr10 bold' translate>Account Sub Type:
-                                                            </td>
+                                                            <td class='pt10 pb10 pr10 bold' translate>Account Sub Type: </td>
                                                             <td class='pt10 pb10'>{{user.accountSubType}}</td>
                                                         </tr>
                                                         <tr>
@@ -607,7 +592,7 @@
                                                                 {{user.title}}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class='pt10 pb10 bold' translate>Phone:</td>
+                                                            <td class='pt10 pb10 bold' translate>Phone: </td>
                                                             <td class='pt10 pb10'>
                                                                 <!-- <div *ngIf="user?.mobilePhone" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
                                                                         <int-phone-prefix [(ngModel)]="user.mobilePhone" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
@@ -688,45 +673,6 @@
                 </div>
                 <!-- END EXAMPLE TABLE PORTLET-->
             </div>
-        </div>
-        <div class="row">
-            <ng-template #copyTextFromClipBoard>
-                <div *ngIf="clipBoard" style="margin-bottom: 15px;">
-                    <div class="col-sm-12" style="padding-left: 0px">
-                        <h4 class="copy_text_mrgn" style="margin-left: 30px;" translate>Copy from text --
-                            paste below</h4>
-                        <div class="col-xs-12 col-sm-12 copy_text_select_dropdown">
-                            <div class="col-xs-6" style="margin-bottom: 10px">
-                                <select class="opts form-control">
-                                    <option selected value="DEFAULT" translate>Delimiter
-                                        Type</option>
-                                    <option value="CommaSeperated" translate>Comma
-                                        Separated</option>
-                                    <option value="TabSeperated" translate>Tab Separated</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="button bgcolor-unset p0" type="button" (click)="clipboardShowPreview()"
-                                    translate><span class="btn Btn-Green transition">Verify
-                                        Data</span></button>
-                            </div>
-                            <div class="col-xs-12">
-                                <textarea id="copyFromclipTextArea" class="textareaNumber copy_text_area_border"
-                                    title="Calendar View" [(ngModel)]="clipboardTextareaText"
-                                    title="please fill out this field" data-toggle="tooltip"
-                                    placeholder="FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone&#10;FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone &#10;FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
-                                    [ngModelOptions]="{standalone: true}"
-                                    style="height: 150px;font-size: 11px;line-height: 1.4;width: 100%;"
-                                    required="required">
-                                        </textarea>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-3" style="margin-top: 30px; padding-left: 0px">
-                            <span id="clipBoardValidationMessage"></span>
-                        </div>
-                    </div>
-                </div>
-            </ng-template>
         </div>
         <div class="clearfix">
             <div class="col-xs-12 pl0 pr0" *ngIf="(selectedAddPartnerOption == 2 || selectedAddPartnerOption == 4)">
@@ -914,11 +860,11 @@
             <div class="col-xs-12 pl0 pr0" [class.p0]="referenceService.isMobileScreenSize()" style=""
                 *ngIf="selectedAddPartnerOption == 5 && !clipBoard">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                <div class="portlet light remove_cardBgcolor padding_0">
+                <div class="portlet light remove_cardBgcolor padding_0 light_bg_removal">
                     <div class="portlet-title" style="border-bottom: none !important;">
                         <div class="caption" style="padding-top: 11px !important;" translate>
                             <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>
-                            Group of {{authenticationService?.partnerModule?.customName}}
+                            <span translate>Group of</span> {{authenticationService?.partnerModule?.customName}}
                         </div>
                         <div class="inputs" align="right" style="float: right; padding: 4px;display:flex;"
                             *ngIf="!referenceService.isMobileScreenSize()">
@@ -981,9 +927,9 @@
                                                 <th style="width: 20%;" translate>Entity info</th>
                                                 <th class="hidden-xs" translate>VERTICAL</th>
                                                 <th class="hidden-xs" translate>REGION</th>
-                                                <th class="hidden-xs" translate>TYPE</th>
-                                                <th class="hidden-xs hidden-sm" translate>CATEGORY</th>
                                                 <th></th>
+                                                <th class="hidden-xs" translate>SIGNUP STATUS</th>
+                                                <th class="hidden-xs hidden-sm" translate>COMPANY PROFILE</th>
                                                 <th class='text-center' translate>ACTIONS</th>
                                             </tr>
                                         </thead>
@@ -1040,16 +986,6 @@
                                                         title="{{contact.region}}">{{contact.region | slice:0:14}}
                                                         <span *ngIf="contact.region?.length>14">..</span>
                                                     </td>
-                                                    <td class="hidden-xs white-space-transform"
-                                                        title="{{contact.partnerType}}">{{contact.partnerType |
-                                                        slice:0:14}}
-                                                        <span *ngIf="contact.partnerType?.length>14">..</span>
-                                                    </td>
-                                                    <td class="hidden-xs hidden-sm white-space-transform"
-                                                        title="{{contact.category}}">{{contact.category | slice:0:14}}
-                                                        <span *ngIf="contact.category?.length>14">..</span>
-                                                    </td>
-
                                                     <td>
                                                         <button id='more_less_button_{{i}}'
                                                             class="hidden-xs lightgray-btn"
@@ -1057,6 +993,28 @@
                                                             <span *ngIf="!contact.isShowDetails" translate>More</span>
                                                             <span *ngIf="contact.isShowDetails" translate>Less</span>
                                                         </button>
+                                                    </td>
+                                                    <td align="center">
+                                                        <div class="actions-block float-none">
+                                                            <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                                title="{{contact?.userStatus == 'APPROVE' ? properties?.SIGNUP_PROCESS_COMPLETED : properties?.SIGNUP_PROCESS_NOT_COMPLETED}}">
+                                                                <i [className]="contact?.userStatus == 'APPROVE' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
+                                                                    aria-hidden="true"></i>
+                                                                <div [className]="contact?.userStatus == 'APPROVE' ? 'clickicons': 'del-icon'">
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    <td align="center">
+                                                        <div class="actions-block float-none">
+                                                            <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                                title="{{contact?.companyNameStatus == 'active' ? properties?.COMPANY_PROFILE_COMPLETED : properties?.COMPANY_PROFILE_NOT_COMPLETED}}">
+                                                                <i [className]="contact?.companyNameStatus == 'active' ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
+                                                                    aria-hidden="true"></i>
+                                                                <div [className]="contact?.companyNameStatus == 'active' ? 'clickicons': 'del-icon'">
+                                                                </div>
+                                                            </a>
+                                                        </div>
                                                     </td>
                                                     <td class="white-space-transform">
                                                         <div class="actions-block override-actions"
@@ -1143,33 +1101,27 @@
                                                             <tbody class="px-13">
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
-                                                                        Name:
-                                                                    </td>
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account Name:</td>
                                                                     <td class='pt10 pb10'>{{contact.accountName}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
-                                                                        Sub Type:
-                                                                    </td>
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account Sub Type:</td>
                                                                     <td class='pt10 pb10'>{{contact.accountSubType}}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Account Owner:
-                                                                    </td>
+                                                                    <td class='pt10 pb10 bold' translate>Account Owner:</td>
                                                                     <td class='pt10 pb10'>{{contact.accountOwner}}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Company Domain:
-                                                                    </td>
+                                                                    <td class='pt10 pb10 bold' translate>Company Domain:</td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{contact.companyDomain}}</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Website : </td>
+                                                                    <td class='pt10 pb10 bold' translate>Website:</td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{contact.website}}</td>
                                                                 </tr>
@@ -1195,26 +1147,28 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Territory : </td>
+                                                                    <td class='pt10 pb10 bold' translate>Territory:</td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{contact.territory}}</td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Type:</td>
+                                                                    <td class='pt10 pb10'>{{contact.partnerType}}</td>
+                                                                </tr>
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Category: </td>
+                                                                    <td class='pt10 pb10 bold' translate>Category:</td>
                                                                     <td class='pt10 pb10'>{{contact.category}}</td>
                                                                 </tr>
                                                                 
                                                                 <tr class="bg-unset flex-none" *ngIf="gdprStatus">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Legal
-                                                                        Basis :</td>
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Legal Basis :</td>
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.legalBasisString}}</td>
                                                                 </tr>
                                                                 <tr class="bg-unset flex-none"
                                                                     *ngIf="authenticationService.contactsCount">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Contacts
-                                                                        Limit:</td>
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Contacts Limit:</td>
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.contactsLimit}}</td>
                                                                 </tr>
@@ -1243,9 +1197,9 @@
 
     <!-- Modal -->
     <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
-        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput"
-            [totalUsers]="contactService.allPartners" [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser"
-            [partnerListId]="partnerListId" (notifyParent)="addRow($event)"></app-add-contact-modal>
+        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"
+            [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser" [partnerListId]="partnerListId"
+            (notifyParent)="addRow($event)" [activeCrmType]="activeCrmType"></app-add-contact-modal>
     </div>
 
     <div *ngIf="contactService.isContactModalPopup && updatePartnerUser">
@@ -1872,49 +1826,40 @@
                                         </switch>
                                     </td>
                                     <!--- (XNFR-85) ----->
-                                    <td *ngIf="authenticationService?.module?.adminOrSuperVisor"
-                                        id="team-member-group-error-count-{{i}}">
+                                    <td *ngIf="authenticationService?.module?.adminOrSuperVisor" id="team-member-group-error-count-{{i}}">
                                         <div class="input-group">
-                                            <select id="partner-tm-group-{{i}}"
-                                                class="form-control decressOptionfont borderColorsCU"
-                                                [(ngModel)]="partner.teamMemberGroupId"
-                                                (ngModelChange)="getTeamMembersByGroupId(partner,i)">
-                                                <option *ngFor="let teamMemberGroup of teamMemberGroups"
-                                                    [ngValue]="teamMemberGroup.id">
+                                            <select id="partner-tm-group-{{i}}" class="form-control decressOptionfont borderColorsCU"
+                                                [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembersByGroupId(partner,i)">
+                                                <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                                                     {{teamMemberGroup?.name}}
-                                                    ({{teamMemberGroup?.teamMembersCount}})</option>
+                                                    {{ teamMemberGroup?.name !== '--Please Select--' ? '(' + teamMemberGroup.teamMembersCount + ')' : '' }}
+                                                </option>
                                             </select> <span class="input-group-btn">
-                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info"
-                                                    type="button" tabindex="-1"
+                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="previewModules(partner.teamMemberGroupId)">
-                                                    <i title="Preview Modules" data-toggle="tooltip"
-                                                        data-placement="top" class="fa fa-eye white"
+                                                    <i title="Preview Modules" data-toggle="tooltip" data-placement="top" class="fa fa-eye white"
                                                         aria-hidden="true"></i>
                                                 </button>
                                             </span> <span class="input-group-btn">
-                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info"
-                                                    type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
-                                                    <i title="Select Team Members" data-toggle="tooltip"
-                                                        data-placement="top" class="my-icon fa"
-                                                        [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
-                                                        aria-hidden="true"></i>
+                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
+                                                    (click)="getTeamMembers(partner,i)">
+                                                    <i title="Select Team Members" data-toggle="tooltip" data-placement="top" class="my-icon fa"
+                                                        [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
                                                 </button>
                                             </span>
-                                        </div> <span class="active-status"
-                                            *ngIf="partner?.selectedTeamMemberIds?.length>0"> <strong>Selected
-                                                Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong> <a
-                                                *ngIf="newPartnerUser?.length>1" (click)="applyForAll(partner)">
+                                        </div> <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0"> <strong>Selected
+                                                Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong> <a *ngIf="newPartnerUser?.length>1"
+                                                (click)="applyForAll(partner)">
                                                 <strong><i class="fa fa-check"></i>Apply For All</strong>
                                             </a>
                                         </span>
                                     </td>
-                                </tr>
-                                <!---XNFR-131-->
-                                <tr *ngIf="partner?.expand">
-                                    <td colspan="5" class="bgc-lg"><app-partner-team-member-group-team-members
-                                            [currentPartner]="currentPartner"
-                                            (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
-                                    </td>
+                                    </tr>
+                                    <!---XNFR-131-->
+                                    <tr *ngIf="partner?.expand">
+                                        <td colspan="5" class="bgc-lg"><app-partner-team-member-group-team-members [currentPartner]="currentPartner"
+                                                (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+                                        </td>
                                 </tr>
                             </ng-container>
                         </tbody>

@@ -1,5 +1,6 @@
 <div style="padding-top:6px;margin-bottom: -5px;">
-    <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService?.isShowForms)"
+    <button *ngIf="(authenticationService.module.hasFormAccess && (showButton || authenticationService?.isShowForms) 
+        && !isVendorJourney && !isMasterLandingPage && !isWelcomePage && !isVendorOrMasterLandingPage && !isPartnerJourneyPages)"
         class="button_blue show-forms-btn bgcolor-unset px-0" id="right" style="border-radius: 5px" (click)="showForms()">
         <span class="btn btn-primary transition">{{buttonText}}</span>
     </button>
@@ -23,9 +24,9 @@
                             <div class="portlet-title">
                                 <div class="inputs mMargin tab_formsearch" id="right">
                                     <div id="left" class="mPadSort">
-                                        <select class="form-control" [(ngModel)]="sortOption.formsSortOption"
+                                        <select class="form-control" [(ngModel)]="sortOption.previewFormsSortOption"
                                             (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                                            <option *ngFor="let option of sortOption.manageFormsSortOptions"
+                                            <option *ngFor="let option of sortOption.previewPopUpFormsSortOptions"
                                                 [ngValue]="option">
                                                 {{option.name}}
                                             </option>

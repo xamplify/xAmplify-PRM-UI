@@ -1,15 +1,12 @@
 import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-
 import { User } from '../../core/models/user';
 import { RegularExpressions } from '../../common/models/regular-expressions';
-
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
-
 import { UserService } from '../../core/services/user.service';
-import { matchingPasswords } from '../../form-validator';
+import { matchingPasswords, noWhiteSpaceValidator} from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
@@ -49,6 +46,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     validationMessages = {
         'firstName': {
             'required': 'First name is required.',
+            'whitespace': 'Invalid First Name'
         },
         'emailId': {
             'required': 'Email is required.',
@@ -124,6 +122,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         this.loading = true;
         this.signUpUser.vendorSignUp = this.vendorSignup;
         this.signUpUser.companyProfileName = this.authenticationService.companyProfileName;
+        this.signUpUser.userId = this.authenticationService.getUserId();
         this.userService.signUp(this.signUpUser)
             .subscribe(
                 data => {
@@ -183,7 +182,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
             'password': [this.signUpUser.password, [Validators.required, Validators.minLength(6),Validators.maxLength(20), Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'confirmPassword': [null, [Validators.required, Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'agree': [false, Validators.required],
-            'firstName': [this.signUpUser.firstName, Validators.required],
+            'firstName':  [this.signUpUser.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator])],
             'lastName': [this.signUpUser.lastName]
             // 'fullName': [this.signUpUser.fullName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             // 'address': [this.signUpUser.address, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50),])],//Validators.pattern(nameRegEx)
@@ -298,8 +297,8 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                 this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
               }
               this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-              /**** XBI-2362 *****/
-              
+              /*XBI-3362*/
+              this.vanityURLService.setVanityURLTitleAndFavIcon();      
             }, error => {
               console.log(error);
             });

@@ -20,6 +20,8 @@ export class PreviewPageComponent implements OnInit {
   isPartnerLandingPagePreview = false;
   isPartnerVendorLandingPage = false;
   isMasterPartnerLandingPage = false;
+  isVendorPartnerJourneyPage = false;
+  isVendorMarketplacePage = false;
   id:any;
   statusCode = 404;
   customResponse:CustomResponse = new CustomResponse();
@@ -37,6 +39,8 @@ export class PreviewPageComponent implements OnInit {
     this.isPartnerLandingPagePreview = currentRouterUrl.indexOf("/pv/plp/")>-1;
     this.isPartnerVendorLandingPage = currentRouterUrl.indexOf("/pv/vjplp/")>-1;
     this.isMasterPartnerLandingPage = currentRouterUrl.indexOf("/pv/mplp/")>-1;
+    this.isVendorPartnerJourneyPage = currentRouterUrl.indexOf("/pv/pjplp/")>-1;
+    this.isVendorMarketplacePage = currentRouterUrl.indexOf("/pv/vmplp/")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.decodeIdParameter();
     this.getHtmlBody();
@@ -59,7 +63,9 @@ export class PreviewPageComponent implements OnInit {
   getHtmlBody(){
     let isVanityURLEnabled = this.vanityUrlService.isVanityURLEnabled();
     let isSubDomain = isVanityURLEnabled!=undefined ? isVanityURLEnabled : false;
-    this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain,this.isPartnerLandingPagePreview, this.isPartnerVendorLandingPage, this.isMasterPartnerLandingPage).
+    this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain,this.isPartnerLandingPagePreview, this.isPartnerVendorLandingPage, this.isMasterPartnerLandingPage,
+      this.isVendorPartnerJourneyPage, this.isVendorMarketplacePage
+    ).
     subscribe(
       response=>{
         this.statusCode = response.statusCode;

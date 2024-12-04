@@ -113,13 +113,7 @@ export class CustomLinksUtilComponent implements OnInit {
     private xtremandLogger: XtremandLogger, public properties: Properties, public httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
     private regularExpressions:RegularExpressions,public utilService:UtilService) {
-      this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
-      this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
-       this.iconsList = result.names;
-       this.isDropDownLoading = false;
-    }, error => {
-      console.log(error);
-    });
+    this.loadCustomLinkIcons();
     let news = {'id':CustomLinkType[CustomLinkType.NEWS],'value':"News"};
     let announcements = {'id':CustomLinkType[CustomLinkType.ANNOUNCEMENTS],'value':"Announcements"};
     this.customLinkTypes.push(news);
@@ -127,6 +121,16 @@ export class CustomLinksUtilComponent implements OnInit {
     
   }
   
+  private loadCustomLinkIcons() {
+    this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
+    this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
+      this.iconsList = result.names;
+      this.isDropDownLoading = false;
+    }, error => {
+      console.log(error);
+    });
+  }
+
   private setDefaultValuesForForm() {
     this.customLinkForm = new FormGroup({
       title: new FormControl(),
@@ -612,7 +616,11 @@ export class CustomLinksUtilComponent implements OnInit {
   cancel() {
     this.customLinkDto = new CustomLinkDto();
     this.customResponse = new CustomResponse();
+    this.isDropDownLoading = true;
     this.initializeVariables();
+    setTimeout(() => {
+      this.isDropDownLoading = false;
+    }, 100);
     if(this.moduleType==this.properties.dashboardBanners){
       this.isAddDashboardBannersDivHidden = this.customLinkDtos.length==5;
       this.dashboardBannersInfoMessage = new CustomResponse('INFO',this.properties.maximumDashboardBannersLimitReached,true);

@@ -23,6 +23,7 @@ export class CustomFieldsDto {
     defaultChoiceLabel: any;
     private = false;
     formLookUpDefaultFieldType: any;
+    referenceTo: any;
     active: boolean = false;
     formFieldType: any;
 }

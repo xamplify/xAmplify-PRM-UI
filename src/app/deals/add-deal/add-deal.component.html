@@ -6,10 +6,65 @@
   webshims.polyfill('forms forms-ext');
 </script>
 
-<div id="del-profile-div">
+<div [ngClass]=" (isThroughAddUrl || isDealFromContact) ? 'page-content' :'' " id="del-profile-div">
    <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div class="portlet-title">
-    <div class="caption deal-title-css" [ngClass]="isDealForAndContactInfoDivCenterAligned ? 'text-center':''">{{dealFormTitle}}
+  <div *ngIf="isThroughAddUrl || isDealFromContact" class="page-bar" style="height:48px">
+    <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
+        <ul class="page-breadcrumb pbc-m3">
+          <li *ngIf="!authenticationService.isSuperAdmin()">
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isFromManageDeals">
+            <a (click)="goBackToManageDeals()" translate>Deals
+            </a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="!isDealFromContact">
+            <a>Add</a>
+          </li>
+          <li *ngIf="isDealFromContact && !isFromCompanyModule">
+            <a (click)="goBackToManageContacts()">Manage Contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromCompanyModule">
+            <a (click)="goBackToManageCompanies()">Manage Companies</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact">
+            <a (click)="goBackToEditContacts()">Edit Contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact">
+            <a (click)="goBackToContactDetailsPage()">Contact Details</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromContactAllLeadsTab">
+            <a (click)="goBackToContactDetailsAllLeadsPage()">All Leads</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && isFromContactAllDealsTab">
+            <a (click)="goBackToContactDetailsAllLeadsPage()">All Deals</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'add'">
+            <a>Add Deal</a>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'edit'">
+            <a>Edit Deal</a>
+          </li>
+          <li *ngIf="isDealFromContact && actionType == 'view'">
+            <a>View Deal</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="portlet-title" *ngIf="!isDealFromContact">
+    <div class="caption deal-title-css" [ngClass]="isDealForAndContactInfoDivCenterAligned ? 'text-center':''">
+      {{dealFormTitle}}
     </div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -23,7 +78,7 @@
         <div class="row mr-3">
           <div [ngClass]="isDealForAndContactInfoDivCenterAligned ? ' col-md-6 col-md-offset-3' :'col-sm-6 col-xs-12 px-10 pl0 mb_pr0'">
             <!--Deal Details-->
-            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="!hideDealDetailsForSelfDeal && (!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany))) && isDealDetailsTabDisplayed">
+            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="!hideDealDetailsForSelfDeal && (!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin))) && isDealDetailsTabDisplayed">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -62,9 +117,8 @@
                         *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
                         <div> <label class="control-label">Deal ID</label></div>
                         <div style="display:flex; height:35px;">
-                          <input type="text" maxlength="100" name="referenceId" class="form-control"
-                            [(ngModel)]="deal.referenceId" [ngModelOptions]="{standalone: true}" readonly="readonly"
-                            #referenceIdInput>
+                          <input type="text" maxlength="100" name="referenceId" class="form-control" [(ngModel)]="deal.referenceId"
+                            [ngModelOptions]="{standalone: true}" readonly="readonly" #referenceIdInput>
                           <div>
                             <a class="button_blue remove_bg lead_copy_id_btn_blue" (click)="copyReferenceId(referenceIdInput)">
                               <span class="btn btn-primary transition copy_link btn_primary_lead_copy_id" data-toggle="tooltip"
@@ -74,8 +128,28 @@
                         </div>
                         <div>
                           <span class="success">
-                            <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Deal Id copied successfully<i
-                                class="fa fa-check" aria-hidden="true"></i></strong>
+                            <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Deal Id copied successfully<i class="fa fa-check"
+                                aria-hidden="true"></i></strong>
+                          </span>
+                        </div>
+                      </div>
+                      <div [ngStyle]="{ 'margin-bottom': isCRMIdCopiedToClipboard ? '2px' : '20px' }"
+                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
+                        <div> <label class="control-label">CRM ID</label></div>
+                        <div style="display:flex; height:35px;">
+                          <input type="text" maxlength="100" name="crmIdInput" class="form-control" [(ngModel)]="deal.crmId"
+                            [ngModelOptions]="{standalone: true}" readonly="readonly" #crmIdInput>
+                          <div>
+                            <a class="button_blue remove_bg lead_copy_id_btn_blue" (click)="copyCRMId(crmIdInput)">
+                              <span class="btn btn-primary transition copy_link btn_primary_lead_copy_id" data-toggle="tooltip"
+                                data-placement="top" title="Copy ID"><i class="fa fa-copy"></i></span>
+                            </a>
+                          </div>
+                        </div>
+                        <div>
+                          <span class="success">
+                            <strong id="copy-crm-id" *ngIf="isCRMIdCopiedToClipboard">CRM Id copied successfully<i class="fa fa-check"
+                                aria-hidden="true"></i></strong>
                           </span>
                         </div>
                       </div>
@@ -186,7 +260,7 @@
                     </h4>
                   </div>
                   <div [ngClass]="{'collapse': isCommentAndHistoryCollapsed, '': !isCommentAndHistoryCollapsed}" id="commentsAndHistory">
-                    <div class="panel-body br-unset pl0 pr0 pt0 pb0">
+                    <div class="panel-body br-unset pl0 pr0 pt0 pb0 commentScroll">
                       <div class="card-bgcolors h-260 pl0 pr0">
                         <div *ngIf="!commentsLoader"  class="deal-details">
                           <div class="row mix-grid p10 bg-color">
@@ -291,7 +365,7 @@
 
 
 <!-- Select Lead Model-->
-<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
+<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead" [selectedContact]="selectedContact"
   (notifyLeadSelected)="leadSelected($event)"></app-select-lead>
 
 

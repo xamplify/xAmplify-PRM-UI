@@ -50,5 +50,10 @@ export class CampaignAccess {
 
   chatGpt = false;
   referVendor = false;
+/****XNFR-669****/
+  welcomePages:boolean = false;
+/****XNFR-712****/
+  vendorMarketplace:boolean = false;
+  socialShareOptionEnabled:boolean = false;
 
 }

@@ -3,7 +3,7 @@ export class RegularExpressions {
     PASSWORD_PATTERN = '((?=.*\\d)(?=.*[A-Za-z])(?!.* )(?=.*[^a-zA-Z0-9]).{6,20})';
     CITY_PATTERN = /[a-zA-Z]+[a-zA-Z ]+/;
     ADDRESS_PATTERN = /^[a-zA-Z0-9-\/] ?([a-zA-Z0-9-\/]|[a-zA-Z0-9-\/] )*[a-zA-Z0-9-\/]$/;
-    PHONE_NUMBER_PATTERN = /^[0-9-+]+$/;
+    PHONE_NUMBER_PATTERN = /^(?:\+?\d{1,3}[\s-]?|0)?(?:\(?\d{1,4}?\)?[\s-]?)?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9}(\s?x\d+)?$/;
     URL_PATTERN = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
     LINK_PATTERN_OAUTH = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])+(.[a-z])?/;
     LINK_PATTERN = /^(?:(http(s)?):\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
@@ -12,5 +12,7 @@ export class RegularExpressions {
     DOMAIN_PATTERN = /\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/;
     ALPHABETS_PATTERN =  /^[A-Za-z\s]+$/;
     FIRSTNAME_PATTERN=/[a-zA-Z]/;
-    //FIRSTNAME_PATTERN=/[^a-zA-Z\s]/;
+    
+    //Only letters, numbers, spaces, apostrophes ('), hyphens (-), underscores (_), and ampersands (&) are allowed
+    CUSTOM_FIELD_NAME_PATTERN = /^[a-zA-Z0-9'&\-_ ]+$/;
 }

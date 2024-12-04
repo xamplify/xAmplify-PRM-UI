@@ -23,6 +23,8 @@ export class AddVendorLogosComponent implements OnInit {
 	dropdownSettings={};
 	selectedItems = [];
 	@Input() dropdownList;
+	@Input() isVendorMarketplace:boolean = false;
+	moduleLable:string;
 	marketPlaceCategoryResponse:CustomResponse = new CustomResponse();
 	constructor(public authenticationService: AuthenticationService) { }
 
@@ -35,6 +37,7 @@ export class AddVendorLogosComponent implements OnInit {
 		if (this.hideButton) {
 			this.showMergeTagsPopUp();
 		}
+		this.moduleLable=this.isVendorMarketplace?"Pick Your Partners":"Pick Your Vendors"
 	}
 
 	ngOnDestroy() {
@@ -44,18 +47,48 @@ export class AddVendorLogosComponent implements OnInit {
     showMergeTagsPopUp() {
 		$('#add-vendor-logo-popup').modal('show');
 	}
-
+	
+	
 	hideModal() {
+
 		this.marketPlaceCategoryResponse = new CustomResponse();
+	
+		const isTeamMemberWithoutAdminPrivileges = (this.authenticationService.module.isTeamMember && 
+												   !this.authenticationService.module.isAnyAdminOrSupervisor) || this.isVendorMarketplace;
+	
+		const areVendorLogosValid = this.vendorLogoDetails.every(logo => 
+			!logo.selected || (logo.selected && logo.categoryIds != null && logo.categoryIds.length > 0)
+		);
+	
+		const isAdminOrSupervisor = this.authenticationService.module.isAnyAdminOrSupervisor && !this.isVendorMarketplace;
+	
+		const areSharedVendorLogosValid = this.sharedVendorLogoDetails.every(logo => 
+			logo.teamMembers.every(member => 
+				!member.selected || (member.selected && member.categoryIds != null && member.categoryIds.length>0)
+			)
+		);
+	
+		if ((isTeamMemberWithoutAdminPrivileges && areVendorLogosValid) || 
+			(isAdminOrSupervisor && areSharedVendorLogosValid)) {
+			
+			this.notifyComponent.emit();
+			$('#' + this.modalPopupId).modal('hide');
+		} else {
+			let VendorMarketplace = this.isVendorMarketplace ? " Partners":" Vendors"
+			this.responseMessage = "Please Select The Category('s) for the selected" + VendorMarketplace;
+			this.marketPlaceCategoryResponse = new CustomResponse('ERROR', this.responseMessage, true);
+		}
+		
+		/*this.marketPlaceCategoryResponse = new CustomResponse();
 		if ( ((this.authenticationService.module.isTeamMember && !this.authenticationService.module.isAnyAdminOrSupervisor) &&  (this.vendorLogoDetails.every(logo=>!logo.selected || (logo.selected && logo.categoryIds!= null && logo.categoryIds.length>0))))
 		 || (this.authenticationService.module.isAnyAdminOrSupervisor && (this.sharedVendorLogoDetails.every(logo=>logo.teamMembers.every(member=>!member.selected 
-		||(member.selected && member.categoryIds != null && member.categoryIds.length>0)))))){
+		||(member.selected && member.categoryIds != null)))))){
 			this.notifyComponent.emit();
 			$('#' + this.modalPopupId).modal('hide');				
 		}else{
 			this.responseMessage = "Please Select The Catogory('s) for the selected Vendors";
 			this.marketPlaceCategoryResponse = new CustomResponse('ERROR', this.responseMessage, true);
-		}
+		}*/
 	}
 
 	viewTeamMembers(item: any) {

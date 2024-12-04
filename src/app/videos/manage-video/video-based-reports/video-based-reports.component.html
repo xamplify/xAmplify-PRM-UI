@@ -7,7 +7,7 @@
 				<div>
 					<h4 class="videoTitle" title="{{selectedVideo.title}}">{{selectedVideo.title | slice:0:50}}<span
 							*ngIf="selectedVideo.title?.length>50">...</span></h4>
-					<h5 style="word-break: break-all;">{{selectedVideo.description}}</h5>
+					<h5 style="word-break: break-word;">{{selectedVideo.description}}</h5>
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
@@ -93,7 +93,7 @@
 					<span class="caption-helper"></span>
 				</div>
 				<div class="panel-title pull-right mPannel">
-					<span style="float:right; font-size: 13px;">
+					<span class="ml5" style="float:right; font-size: 13px;">
 						<select style="cursor: pointer" [(ngModel)]="minutesSort"
 							(ngModelChange)="selectedSortByValue($event.value)">
 							<option *ngFor="let sort of sortMintuesDates" [ngValue]="sort"> {{sort.name}} </option>

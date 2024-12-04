@@ -22,6 +22,8 @@ declare var swal, $, videojs: any;
 })
 export class SelectLeadComponent implements OnInit {  
   @Input() public dealToLead: any;
+  @Input() public selectedContact: any;
+
   @Output() notifyClose = new EventEmitter();
   @Output() notifyLeadSelected = new EventEmitter();
   @Output() notifyShowLeadForm = new EventEmitter();
@@ -39,6 +41,7 @@ export class SelectLeadComponent implements OnInit {
   showSelectedLead: number = 0;
   isLeadSelected = false;
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
+  isConvertingContactToLead: boolean = false;
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     private leadsService: LeadsService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -57,6 +60,10 @@ export class SelectLeadComponent implements OnInit {
     this.leadId = this.dealToLead.leadId;
     this.showSelectedLead = this.dealToLead.leadId;
     this.isLeadSelected = this.showSelectedLead!=undefined && this.showSelectedLead>0;
+    if (this.selectedContact != undefined && this.selectedContact.id > 0) {
+      this.pagination.contactId = this.selectedContact.id;
+      this.isConvertingContactToLead = true;
+    }
     this.getLeads(this.pagination);
   }
 

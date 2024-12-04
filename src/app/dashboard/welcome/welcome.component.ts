@@ -15,7 +15,7 @@ import { EnvService } from 'app/env.service';
 import { CustomSkin } from '../models/custom-skin';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { Roles } from 'app/core/models/roles';
-
+import { UserGuideDashboardDto } from 'app/guides/models/user-guide-dashboard-dto';
 
 declare var $:any;
 
@@ -87,6 +87,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     mergeTagForGuide:any;
     isOnlyPartner:boolean;
     roleName: Roles = new Roles();
+    userGuideDashboardDto:UserGuideDashboardDto = new UserGuideDashboardDto();
     /****** User Guide *******/
 
     constructor(
@@ -209,6 +210,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
         this.getWelcomePageItems();
         this.getMainContent(this.userId);
+        /** User Guide **/
+      this.getMergeTagForGuide();
+      /** User Guide **/
       }catch(error){ console.log(error);this.xtremandLogger.error(error);
         this.xtremandLogger.errorPage(error);}
   }
@@ -301,4 +305,46 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
     /** User Guide **/
   
+        /** User Guide **/
+        getMergeTagForGuide() {
+          this.dashboardService.getUserGuidesForDashBoard(this.vanityLoginDto)
+              .subscribe(
+                  (response) => {
+                      this.userGuideDashboardDto = response.data;
+                      if (this.userGuideDashboardDto.partnerLoggedInThroughVanityUrl) {
+                          if(this.userGuideDashboardDto.prmCompany){
+                              this.mergeTagForGuide = 'vanity_prm_partner_account_dashboard';
+                          } else {
+                          this.mergeTagForGuide = 'vanity_partner_account_dashboard';
+                          }
+                      } else if (this.userGuideDashboardDto.vendorLoggedInThroughOwnVanityUrl) {
+                          if ( this.userGuideDashboardDto.vendorCompany) {
+                              this.mergeTagForGuide = 'vanity_vendor_account_dashboard';
+                          } else if(this.userGuideDashboardDto.orgAdminCompany){
+                              this.mergeTagForGuide = 'vanity_orgadmin_account_dashboard';
+                          }else if(this.userGuideDashboardDto.prmCompany) {
+                              this.mergeTagForGuide = 'vanity_prm_account_dashboard';
+                          } else {
+                              this.mergeTagForGuide = 'vanity_marketing_account_dashboard';
+                          }
+                      } else {
+                          if (this.userGuideDashboardDto.orgAdminCompany) {
+                              this.mergeTagForGuide = 'orgadmin_account_dashboard';
+                          } else if (this.userGuideDashboardDto.vendorCompany) {
+                              this.mergeTagForGuide = 'vendor_account_dashboard';
+                          } else if (this.userGuideDashboardDto.marketingCompany) {
+                              this.mergeTagForGuide = 'marketing_account_dashboard';
+                          } else if (this.userGuideDashboardDto.prmCompany) {
+                              this.mergeTagForGuide = 'prm_account_dashboard';
+                          } else {
+                              this.mergeTagForGuide = 'partner_account_dashboard';
+                          }
+                      }
+                  },
+                  error => {
+                      console.log(error);
+                  }
+              );
+      }
+        /** User Guide */
 }

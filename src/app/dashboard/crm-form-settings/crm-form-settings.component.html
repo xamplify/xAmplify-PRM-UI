@@ -155,7 +155,7 @@
                         id="asset-history">
                         <tbody>
                           <ng-container>
-                            <tr>
+                            <tr class="edit_label">
                               <td class="p10" style="width:25%;">
                                 <span
                                   *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO')"
@@ -252,9 +252,8 @@
         </select>
       </div>
       <div class="text-center" *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
-        <span *ngIf="integrationType =='SALESFORCE' && !isFilterApplied">Please Reconfigure {{ integrationType |
-          titlecase }} as the token
-          has expired</span>
+        <span *ngIf="integrationType =='SALESFORCE' && !isFilterApplied">Your {{ integrationType |
+          titlecase }}  integration is not valid. Re-configure with valid credentials</span>
         <span *ngIf="integrationType !='SALESFORCE' && !isFilterApplied">There are no custom fields in your {{
           integrationType | titlecase
           }} account.</span>

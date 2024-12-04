@@ -13,6 +13,7 @@ import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.c
 import { DamService } from '../../dam/services/dam.service';
 import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { SortOption } from 'app/core/models/sort-option';
 
 declare var $, swal: any;
 
@@ -20,7 +21,7 @@ declare var $, swal: any;
   selector: 'app-preview-tracks-play-book',
   templateUrl: './preview-tracks-play-book.component.html',
   styleUrls: ['./preview-tracks-play-book.component.css'],
-  providers: [HttpRequestLoader, TracksPlayBookUtilService, DamService]
+  providers: [HttpRequestLoader, TracksPlayBookUtilService, DamService, SortOption]
 })
 export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   createdUserCompanyId: number = 0;
@@ -61,10 +62,16 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   selectedVideoId = 0;
   videoLoader: boolean;
 
+  /** XNFR-475 **/
+  isCollapsed: boolean = false;
+  assetsSortOption: SortOption = new SortOption();
+  groupByAssetsParam: boolean = false;
+  isAssetGroupingEnabled: boolean = false;
+
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
     private router: Router, public logger: XtremandLogger,
-    private damService: DamService, public sanitizer: DomSanitizer) {
+    private damService: DamService, public sanitizer: DomSanitizer, public sortOption: SortOption) {
     this.notifyShowTracksPlayBook = new EventEmitter<any>();
     this.notifyShowAsset = new EventEmitter<any>();
     this.notifyCreatedUser = new EventEmitter<any>();
@@ -75,8 +82,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createdUserCompanyId = parseInt(this.route.snapshot.params['companyId']);
     this.slug = this.route.snapshot.params['slug'];
-    this.getBySlug();
-    this.setViewType("List");
+    this.checkGroupingAndLoadAssets();
   }
 
   ngOnDestroy() {
@@ -147,7 +153,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.tracksPlayBookUtilService.updatePartnerProgress(progress).subscribe(
         (result: any) => {
           if (result.statusCode == 200) {
-            this.getBySlug();
+            if(!this.isAssetGroupingEnabled) {
+              this.getBySlug();
+            }
             this.logger.info('Finished updatePartnerProgress()');
             this.assetViewLoader = false;
           } else {
@@ -220,7 +228,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.showAsset = false;
     this.notifyShowAsset.emit(this.showAsset);
     this.assetDetails = "";
-    this.getBySlug();
+    if(!this.isAssetGroupingEnabled) {
+      this.getBySlug();
+    }
     this.addMessage(customResponse);
   }
 
@@ -335,11 +345,17 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   setViewType(viewType: string) {
     if ("List" == viewType) {
-      this.modulesDisplayType.isListView = true;
       this.modulesDisplayType.isGridView = false;
+      this.modulesDisplayType.isFolderListView = false;
+      this.modulesDisplayType.isListView = true;
     } else if ("Grid" == viewType) {
       this.modulesDisplayType.isListView = false;
+      this.modulesDisplayType.isFolderListView = false;
       this.modulesDisplayType.isGridView = true;
+    } else if ("FolderListView" == viewType) {
+      this.modulesDisplayType.isListView = false;
+      this.modulesDisplayType.isGridView = false;
+      this.modulesDisplayType.isFolderListView = true;
     }
   }
 
@@ -368,5 +384,90 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     }
     this.selectedVideoId = 0;
   }
+
+  /** XNFR-745 start **/
+  checkGroupingAndLoadAssets() {
+    this.referenceService.startLoader(this.httpRequestLoader);
+    this.tracksPlayBookUtilService.checkGroupByAssetsEnabled(this.createdUserCompanyId, this.slug, this.type).subscribe(
+      (result: any) => {
+        this.referenceService.stopLoader(this.httpRequestLoader);
+        if (result.statusCode == 200) {
+          this.isAssetGroupingEnabled = result.data;
+        } else {
+          this.isAssetGroupingEnabled = false;
+          this.trackViewLoader = false;
+        }
+      },
+      (error: string) => {
+        this.isAssetGroupingEnabled = false;
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      },()=>{
+        if(this.isAssetGroupingEnabled) {
+          this.setViewType("FolderListView");
+          this.getGroupedAssetsBySlug();
+        } else {
+          this.setViewType("List");
+          this.getBySlug();
+        }
+      });
+  }
+  
+  getGroupedAssetsBySlug() {
+    this.trackViewLoader = true;
+    this.tracksPlayBookUtilService.getGroupedAssetsBySlug(this.createdUserCompanyId,this.slug, this.sortOption.groupedAssetsForPlaybook).subscribe(
+      (result: any) => {
+        if (result.statusCode == 200) {
+          let playbookAssets: TracksPlayBook = result.data;
+          if (playbookAssets != undefined) {
+            this.tracksPlayBook = playbookAssets;
+            this.tracksPlayBook.featuredImage = this.tracksPlayBook.featuredImage + "?" + Date.now();
+          }
+          this.trackViewLoader = false;
+        } else {
+          this.router.navigate(['/home/error/', 403]);
+          this.trackViewLoader = false;
+        }
+      },
+      (error: string) => {
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+        this.trackViewLoader = false;
+      });
+  }
+
+  viewAssetDetails(dam: any) {
+    this.assetViewLoader = true;
+    this.isVideo = false;
+    this.selectedVideoId = 0;
+    setTimeout(() => {
+      this.isVideo = dam != undefined && dam.assetType == 'mp4';
+      this.contentIndexInView = dam.id;
+      this.showTracksPlayBook = false;
+      this.notifyShowTracksPlayBook.emit(this.showTracksPlayBook);
+      this.assetDetails = dam;
+      this.showAsset = true;
+      this.notifyShowAsset.emit(this.showAsset);
+      this.referenceService.goToTop();
+      this.setProgressAndUpdate(dam.id, ActivityType.OPENED, false);
+      if (this.isVideo) {
+        this.selectedVideoId = this.assetDetails.videoId;
+        this.assetPreview(this.assetDetails);
+        this.videoLoader = false;
+      }
+      this.assetViewLoader = false;
+    }, 300);
+  }
+
+  toggleAssetExpansion(index: number) {
+    this.tracksPlayBook.contents[index].isCollapsed = !this.tracksPlayBook.contents[index].isCollapsed;
+  }
+
+  sortAssets(text: any) {
+    this.sortOption.groupedAssetsForPlaybook = text;
+    this.getGroupedAssetsBySlug();
+  }
+  /** XNFR-745 end **/
+
 
 }

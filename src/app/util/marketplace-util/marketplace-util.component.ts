@@ -1,0 +1,107 @@
+
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { Processor } from 'app/core/models/processor';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { TracksPlayBookUtilService } from 'app/tracks-play-book-util/services/tracks-play-book-util.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+
+@Component({
+  selector: 'app-marketplace-util',
+  templateUrl: './marketplace-util.component.html',
+  styleUrls: ['./marketplace-util.component.css'],
+  providers: [HttpRequestLoader, Processor, LandingPageService, TracksPlayBookUtilService],
+})
+export class MarketplaceUtilComponent implements OnInit {
+  searchTerm: string = '';
+  activeCategory: string = 'All Categories';
+  alias: string;
+  landingPageId: number;
+  categories: any[] = [];
+  filteredCategories: any[] = [];
+
+  isMasterLandingPage: boolean = false;
+  constructor(
+    private route: ActivatedRoute,
+    private landingPageService: LandingPageService,
+    private logger: XtremandLogger,
+    public httpRequestLoader: HttpRequestLoader,
+    public processor: Processor,
+    private router: Router,
+    private vanityURLService: VanityURLService,
+    public referenceService: ReferenceService,
+    private elementRef: ElementRef,
+  ) {}
+
+  ngOnInit() {
+    this.alias = this.route.snapshot.params['alias'];
+    this.landingPageId = this.route.snapshot.params['id'];
+
+    this.isMasterLandingPage = this.router.url.includes("/mps/")
+    this.getVendorCompaniesByAlias();
+  }
+
+  ngAfterViewChecked() {
+      this.setParentIframeHeight();
+  }
+  showContent(section: string) {
+    this.activeCategory = section;
+
+  }
+
+  showAllCategories() {
+    this.activeCategory = 'All Categories';
+
+  }
+
+  getFilteredCompanies() {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredCategories = this.categories
+      .map(category => ({
+        ...category,
+        companies: category.companies.filter(
+          company => company.name.toLowerCase().includes(term) || company.description.toLowerCase().includes(term)
+        )
+      }))
+      .filter(category => category.companies.length > 0);
+  }
+
+  getVendorCompaniesByAlias() {
+    this.landingPageService.getVendorCompaniesByAlias(this.alias, this.isMasterLandingPage).subscribe(
+      response => {
+        this.categories = response.data;
+        this.getFilteredCompanies();
+      },
+      error => {
+        this.categories = [];
+      },()=>{
+        this.setParentIframeHeight();
+      }
+    );
+  }
+
+  navigateToParent(event: any, openInNewTab: boolean): void {
+    event.preventDefault();
+    const newUrl = event.currentTarget.href;
+
+    if (openInNewTab) {
+      const newTab = window.open(newUrl, '_blank');
+    } else {
+      window.parent.location.href = newUrl;
+    }
+  }
+
+  setParentIframeHeight() {
+    const componentHeight = this.elementRef.nativeElement.offsetHeight;
+    if(this.categories != null && this.categories.length >0){
+      (window.parent as any).$('#frame-full-height').height(componentHeight +20);
+    }else{
+      (window.parent as any).$('#frame-full-height').height(componentHeight +5);
+
+    }
+  }
+
+}

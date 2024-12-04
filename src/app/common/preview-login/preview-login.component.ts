@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomResponse } from '../models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Router } from '@angular/router';
@@ -22,7 +21,6 @@ export class PreviewLoginComponent implements OnInit {
   isBgColor:boolean;
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
-  isLoggedInVanityUrl = false;  
   signInText = "Sign In";
   htmlContent:any;
   loginStyleId:number;
@@ -41,44 +39,14 @@ export class PreviewLoginComponent implements OnInit {
   constructor(public authenticationService: AuthenticationService, private vanityURLService: VanityURLService,
     private router: Router, public sanitizer: DomSanitizer,public referenceService: ReferenceService,
     private xtremandLogger: XtremandLogger, public envService:EnvService) {
-    // this.SERVER_URL = this.envService.SERVER_URL;
-    // this.APP_URL = this.envService.CLIENT_URL;
-     this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
    }
-  isVanityURLEnabled() {
-    let url = window.location.hostname;
-     let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && 
-     this.envService.CLIENT_URL.indexOf('localhost')>-1;
-     if(isLocalHost){
-       let domainName = this.envService.domainName;
-       this.authenticationService.companyProfileName = domainName;
-       if(domainName!="" && domainName!=window.location.hostname){
-         url = this.envService.domainName+".xamplify.com";
-       }
-     }
-     if (!url.includes("192.168") && !url.includes("172.16")) {
-       let domainName = url.split('.');
-       if (domainName.length > 2) {
-         this.authenticationService.vanityURLEnabled = true;
-         this.authenticationService.companyProfileName = domainName[0];
-         this.authenticationService.setDomainUrl();
-         if (!this.authenticationService.vanityURLUserRoles) {
-           let currentUser = localStorage.getItem('currentUser');
-           if (currentUser) {
-             const parsedObject = JSON.parse(currentUser);
-             this.authenticationService.vanityURLUserRoles = parsedObject.roles;
-           }
-         }
-         return true;
-       }
-     }
-   }
+ 
   ngOnInit() {
-    this.isVanityURLEnabled();
+    this.vanityURLService.isVanityURLEnabled();
     this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
-    this.vanityUrlDetails(this.authenticationService.companyProfileName);
+    this.vanityUrlDetails();
   }
-  vanityUrlDetails(companyProfile:any){
+  vanityUrlDetails(){
   this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
     this.vanityURLEnabled = result.enableVanityURL;  
     this.authenticationService.loginType = result.loginType;
@@ -94,7 +62,6 @@ export class PreviewLoginComponent implements OnInit {
       if(result.styleOneBgColor) {
       document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
       } else {
-        //document.documentElement.style.setProperty('--login-bg-color-style1', 'none');
         if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
         document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
         } else {
@@ -107,7 +74,6 @@ export class PreviewLoginComponent implements OnInit {
       if(result.styleTwoBgColor) {
       document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
       } else {
-        //document.documentElement.style.setProperty('--login-bg-color', 'none');
         if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
           document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
         } else {
@@ -133,7 +99,6 @@ export class PreviewLoginComponent implements OnInit {
       this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
     }
     this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-    //this.authenticationService.loginScreenDirection = result.loginScreenDirection;
     this.vanityURLService.setVanityURLTitleAndFavIcon();
     if (result.showMicrosoftSSO) {
       this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });

@@ -12,10 +12,9 @@
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
          <li>
-            <a (click)="navigateToManageContacts()" translate>
-               Manage
+            <a (click)="navigateToManageContacts()"><span translate>Manage</span>
                <span
-                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName | translate}}</span>
                <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
             </a>
             <i class="fa fa-angle-right" *ngIf="! showListOfContactList" aria-hidden="true"></i>
@@ -277,7 +276,7 @@
                      </div>
                   </div>
                   <!-- End tile here-->
-                  <div [ngClass]="{'page-bar remove_cardBgcolor p10': showListOfContactList}">
+                  <div [ngClass]="{'page-bar remove_cardBgcolor p10 light_bg_removal': showListOfContactList}">
                      <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                         <div class="tab-pane active">
                            <div class="row mr0 ml0">
@@ -317,10 +316,10 @@
                                  <ul class="page-breadcrumb" style="padding-left: 0px;"
                                     *ngIf="checkingContactTypeName!='Contact'">
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
-                                       Your {{authenticationService?.partnerModule?.customName}} Groups
+                                       <span class="fs-16" id="col-black" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span id="col-black" translate>Groups</span>
                                     </li>
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
-                                       Your {{checkingContactTypeName}} Lists
+                                       Your {{checkingContactTypeName | translate}} Lists
                                     </li>
                                  </ul>
                               </div>
@@ -423,8 +422,7 @@
                                              [hidden]="isPartner || assignLeads || sharedLeads" translate id="border-bottom"><span
                                                 [hidden]="isPartner ||assignLeads || sharedLeads">Type</span></th>
                                           <th scope="col" class="hidden-xs" [hidden]="assignLeads" translate
-                                             id="border-bottom"><span [hidden]="assignLeads">Created
-                                                On</span>
+                                             id="border-bottom"><span [hidden]="assignLeads" translate>Created On</span>
                                           </th>
                                           <th scope="col" class="hidden-xs" translate [hidden]="!assignLeads"
                                              id="border-bottom"><span [hidden]="!assignLeads">Date</span></th>
@@ -508,7 +506,7 @@
                                                    </span>
                                                    <span *ngIf="isPartner" data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList.name}}" class="ListFontCu">
-                                                      <b> Group Name:</b> {{contactList?.name}}
+                                                      <b translate>Group Name:</b> {{contactList?.name}}
                                                    </span>
                                                 </h4>
                                                 <h5 *ngIf="contactList?.defaultPartnerList" class="mb0 moreipsis mt5">
@@ -517,7 +515,7 @@
                                                 <h5 class='mb0 moreipsis mt5'>
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.uploadedBy}}">
-                                                      <b>By:</b> {{contactList.uploadedBy}}
+                                                      <b translate>By:</b> {{contactList.uploadedBy}}
                                                    </span>
                                                 </h5>
                                                 <h5 class='mb0 moreipsis mt5' *ngIf="contactList?.formList && contactList.sharedCompanyName">
@@ -535,7 +533,7 @@
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.companyName}}"
                                                       *ngIf="!contactList.companyList">
-                                                      <b>Company Name:</b> {{contactList.companyName}}
+                                                      <b translate>Company Name:</b> {{contactList.companyName}}
                                                    </span>
                                                    <h5 class="mb0 hidden-xs hidden-sm hidden-md hidden-lg">
                                                       <span class="mb0"
@@ -952,17 +950,17 @@
                                        </a>
                                        <a class="Iconhover custom-grid-icon"
                                           [class.disabled]="!contactList.emailValidationInd || (contactList.noOfContacts == 0 && contactList.formList)"
-                                          *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
-                     (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
+                                          *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm ||authenticationService.module.isPrmAndPartner || (hasAllAccess && loggedInUserId == contactList.uploadedUserId) || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
+                                                                           (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
                                           (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.isPartnerUserList,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList)"
-                                          data-toggle="tooltip" data-placement="top"
-                                          title="{{actionsDescription.contact_list_edit}}" data-rel="fancybox-button">
+                                          data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"
+                                          data-rel="fancybox-button">
                                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                           <div class="clickicons"></div>
                                        </a>
                                        <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                           <a class="Iconhover custom-grid-icon"
-                                             [class.disabled]="!contactList.emailValidationInd" style="" *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) || contactList.synchronisedList
+                                             [class.disabled]="!contactList.emailValidationInd" style="" *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor  || authenticationService.module.isVendorTier) || contactList.synchronisedList
                         || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
                                              (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.isPartnerUserList,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                                              data-toggle="tooltip" data-placement="top"
@@ -1007,7 +1005,7 @@
                                        <ng-container
                                           *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList && !contactList?.teamMemberPartnerList">
                                           <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
-                                             *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
+                                             *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmAndPartner  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
                                                 || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                                    && !contactList.defaultPartnerList &&  !contactList.isDefaultContactList  && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList && !contactList.companyList)"
                                              (click)="showAlert(contactList.id)" data-toggle="tooltip"
@@ -1075,7 +1073,7 @@
             </div>
          </div>
       </div>
-      <app-edit-contacts *ngIf="showEdit" [showEdit]="showEdit" [contacts]="users" (notifyParent)="update($event)"
+      <app-edit-contacts *ngIf="showEdit && module != 'contacts'" [showEdit]="showEdit" [contacts]="users" (notifyParent)="update($event)"
          [selectedContactListId]="selectedContactListId" [uploadedUserId]="uploadedUserId"
          [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"
          [isDefaultPartnerList]="isDefaultPartnerList" [isDefaultContactList]="isDefaultContactList"
@@ -1099,7 +1097,7 @@
       </div>
       <div class="row">
          <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="page-bar remove_cardBgcolor neg_mrg_top14">
+            <div class="page-bar remove_cardBgcolor neg_mrg_top14 light_bg_removal">
                <div class="tab-content table-padding">
                   <!-- BEGIN PAGE HEADER-->
                   <div class="" style="">
@@ -1281,6 +1279,7 @@
                                              </th>
                                           </ng-container>
                                           <th scope="row" style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
+                                          <th scope="row" class="text-center" *ngIf="isContactsByTypeAllVaildUnsubscribed()"></th>
                                           <th scope="row"
                                              *ngIf="(contactsByType.selectedCategory =='invalid') && !isPartner"
                                              class="hidden-xs" translate>EMAIL CATEGORY</th>
@@ -1289,10 +1288,10 @@
                                              class="hidden-xs" translate>EXCLUDED CATEGORY</th>
                                           <th scope="row" style="width: 25%" *ngIf="isPartner" translate>Entity info
                                           </th>
-                                          <th scope="row" class="text-center hidden-xs" *ngIf="!isPartner" translate
-                                             style="width:200px;">Job Title</th>
-                                          <th scope="row" class="text-center hidden-xs" *ngIf="!isPartner" translate>
-                                             ADDRESS</th>
+                                          <th scope="row" class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()" 
+                                             translate style="width:200px;">Job Title</th>
+                                          <th scope="row" class="text-center hidden-xs" *ngIf="!isPartner  && !isContactsByTypeAllVaildUnsubscribed()" 
+                                             translate>ADDRESS</th>
                                           <th scope="row" class="text-center" *ngIf="isPartner"></th>
                                           <th scope="row" *ngIf="contactsByType.selectedCategory == 'unsubscribed'"
                                              class="hidden-xs" translate>
@@ -1389,9 +1388,9 @@
                                                 {{contact.excludedCatagory}}
                                                 <span *ngIf="!contact.excludedCatagory"><strong>-</strong></span>
                                              </td>
-                                             <td class="text-center hidden-xs" *ngIf="!isPartner">{{contact.jobTitle}}
+                                             <td class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()">{{contact.jobTitle}}
                                              </td>
-                                             <td class="text-center hidden-xs" *ngIf="!isPartner">
+                                             <td class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()">
                                                 <h5 *ngIf="contact?.address" title="{{contact.address}}" class='mb0'>
                                                    {{contact.address |
                                                    slice:0:30}}
@@ -1428,7 +1427,7 @@
                                                    translate><span class="btn markas transition txt_pd-top8">Mark as
                                                       valid</span></button>
                                              </td>
-                                             <td *ngIf="isPartner">
+                                             <td *ngIf="isPartner || isContactModule()">
                                                 <button class="border-btn-small lightgray-btn"
                                                    id='more_less_button_{{i}}'
                                                    (click)="contact.isShowDetails = ! contact.isShowDetails">
@@ -1570,7 +1569,55 @@
                                                 <table cellpadding="5" cellspacing="0" class="border"
                                                    style="border:none !important;" aria-describedby="">
                                                    <tbody class="px-13">
-                                                      <tr class="bg-unset flex-none">
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Account Name : </td>
+                                                         <td class="hidden-xs" title="{{contact.accountName}}">
+                                                            {{contact.accountName |
+                                                            slice:0:14}}
+                                                            <span *ngIf="contact.accountName?.length>14">..</span>
+                                                         </td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Account Owner : </td>
+                                                         <td class="hidden-xs" title="{{contact.accountOwner}}">
+                                                            {{contact.accountOwner |
+                                                            slice:0:14}}
+                                                            <span *ngIf="contact.accountOwner?.length>14">..</span>
+                                                         </td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Account Sub Type : </td>
+                                                         <td class="hidden-xs" title="{{contact.accountSubType}}">
+                                                            {{contact.accountSubType |
+                                                            slice:0:14}}
+                                                            <span *ngIf="contact.accountSubType?.length>14">..</span>
+                                                         </td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Company Domain :</td>
+                                                         <td class="hidden-xs" title="{{contact.companyDomain}}">
+                                                            {{contact.companyDomain |
+                                                            slice:0:14}}
+                                                            <span *ngIf="contact.companyDomain?.length>14">..</span>
+                                                         </td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Website :</td>
+                                                         <td class="hidden-xs" title="{{contact.website}}">
+                                                            {{contact.website |
+                                                            slice:0:14}}
+                                                            <span *ngIf="contact.website?.length>14">..</span>
+                                                         </td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Territory :</td>
+                                                         <td class="hidden-xs" title="{{contact.territory}}">
+                                                            {{contact.territory |
+                                                            slice:0:14}}
+                                                            <span *ngIf="contact.territory?.length>14">..</span>
+                                                         </td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
                                                          <td class='pt10 pb10 bold mr_10' translate>Address: </td>
                                                          <td align="center" class="hidden-xs">
                                                             <h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}
@@ -1585,7 +1632,7 @@
                                                             </h5>
                                                          </td>
                                                       </tr>
-                                                      <tr class="bg-unset flex-none">
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
                                                          <td class='pt10 pb10 bold mr_10' translate>Vertical: </td>
                                                          <td class="hidden-xs" title="{{contact.vertical}}">
                                                             {{contact.vertical |
@@ -1593,14 +1640,14 @@
                                                             <span *ngIf="contact.vertical?.length>14">..</span>
                                                          </td>
                                                       </tr>
-                                                      <tr class="bg-unset flex-none">
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
                                                          <td class='pt10 pb10 bold mr_10' translate>Region: </td>
                                                          <td class="hidden-xs" title="{{contact.region}}">
                                                             {{contact.region | slice:0:14}}
                                                             <span *ngIf="contact.region?.length>14">..</span>
                                                          </td>
                                                       </tr>
-                                                      <tr class="bg-unset flex-none">
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
                                                          <td class='pt10 pb10 bold mr_10' translate>Type: </td>
                                                          <td class="hidden-xs" title="{{contact.partnerType}}">
                                                             {{contact.partnerType |
@@ -1608,13 +1655,42 @@
                                                             <span *ngIf="contact.partnerType?.length>14">..</span>
                                                          </td>
                                                       </tr>
-                                                      <tr class="bg-unset flex-none">
+                                                      <tr class="bg-unset flex-none" *ngIf="isPartner">
                                                          <td class='pt10 pb10 bold mr_10' translate>Category: </td>
                                                          <td class="hidden-xs" title="{{contact.category}}">
                                                             {{contact.category |
                                                             slice:0:14}}
                                                             <span *ngIf="contact.category?.length>14">..</span>
                                                          </td>
+                                                      </tr>
+
+                                                      <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Job Title : </td>
+                                                         <td class='pt10 pb10' title="{{contact.jobTitle}}">{{contact.jobTitle}}</td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Address : </td>
+                                                         <td class='pt10 pb10' title="{{contact.address}}">{{contact.address}}</td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
+                                                         <td class='pt10 pb10 bold mr_10' translate>City : </td>
+                                                         <td class='pt10 pb10' title="{{contact.city}}">{{contact.city}}</td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
+                                                         <td class='pt10 pb10 bold mr_10' translate>State : </td>
+                                                         <td class='pt10 pb10' title="{{contact.state}}">{{contact.state}}</td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Zip Code : </td>
+                                                         <td class='pt10 pb10' title="{{contact.zipCode}}">{{contact.zipCode}}</td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isContactsByTypeAllVaildUnsubscribed()">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Country : </td>
+                                                         <td class='pt10 pb10' title="{{contact.country}}">{{contact.country}}</td>
+                                                      </tr>
+                                                      <tr class="bg-unset flex-none" *ngFor="let flexiField of contact?.flexiFields">
+                                                         <td class='pt10 pb10 bold mr_10' translate>{{flexiField.fieldName}} : </td>
+                                                         <td class='pt10 pb10' title="{{flexiField.fieldValue}}">{{flexiField.fieldValue}}</td>
                                                       </tr>
                                                    </tbody>
                                                 </table>

@@ -139,8 +139,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
-		{ 'name': 'Added(ASC)', 'value': 'id-ASC' },
-		{ 'name': 'Added(DESC)', 'value': 'id-DESC' },
+
+		/* XNFR-556
+		 { 'name': 'Added(ASC)', 'value': 'id-ASC' },
+		 { 'name': 'Added(DESC)', 'value': 'id-DESC' },*/
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;
@@ -302,10 +304,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	selectedUser: User = null;
 	/*****XNFR-342*****/
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
-	isLocalHost = false;
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+	activeCrmType: any;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -314,7 +316,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public campaignService: CampaignService, public integrationService: IntegrationService,
 		private utilService: UtilService) {
-		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		//Added for Vanity URL
@@ -864,7 +865,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						});
 						this.newPartnerUser.length = 0;
 						this.allselectedUsers.length = 0;
-						if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+						if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
 							this.pagination.partnerTeamMemberGroupFilter = true;
 						}
 						this.loadPartnerList(this.pagination);
@@ -917,14 +918,22 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				},
 				(error: any) => {
-					let body: string = error['_body'];
-					body = body.substring(1, body.length - 1);
-					if (error._body.includes('Please launch or delete those campaigns first')) {
-						this.customResponse = new CustomResponse('ERROR', error._body, true);
-					} else if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
-						this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body), true);
-					} else {
-						this.xtremandLogger.errorPage(error);
+					let status = error['status'];
+					if(status==0){
+						this.referenceService.showSweetAlertErrorMessage(this.properties.UNABLE_TO_PROCESS_REQUEST);
+					}else{
+						let body: string = error['_body'];
+						if(body!=undefined){
+							body = body.substring(1, body.length - 1);
+							if (error._body.includes('Please launch or delete those campaigns first')) {
+								this.customResponse = new CustomResponse('ERROR', error._body, true);
+							} else if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+								this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body), true);
+							} else {
+								this.loading = false;
+								this.xtremandLogger.errorPage(error);
+							}
+						}
 					}
 					this.xtremandLogger.error(error);
 					this.loading = false;
@@ -1189,399 +1198,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			&& isMobileNumberMatched && isAccountSubTypeMatched && isAccountOwnerMatched
 			&& isCompanyDomainMatched && isTerritoryMatched && isWebsiteMatched && isAccountNameMatched);
 	}
-
-	copyFromClipboard() {
-		this.resetResponse();
-		this.fileTypeError = false;
-		this.clipboardTextareaText = "";
-		this.paginationType = "csvPartners";
-		this.disableOtherFuctionality = true;
-		$("button#cancel_button").prop('disabled', false);
-		$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-		$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
-		$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		this.clipBoard = true;
-		$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-		$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-		$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-		$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-		$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-		$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-		$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-		$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-	}
-
-	clipboardShowPreview() {
-		var selectedDropDown = $("select.opts:visible option:selected ").val();
-		var splitValue;
-		if (this.clipboardTextareaText == undefined) {
-			swal("value can't be null");
-		}
-		if (selectedDropDown == "DEFAULT") {
-			swal("<span style='font-weight: 100;font-family: Open Sans;font-size: 16px;'>Please Select the Delimiter Type</span>");
-			return false;
-		}
-		else {
-			if (selectedDropDown == "CommaSeperated")
-				splitValue = ",";
-			else if (selectedDropDown == "TabSeperated")
-				splitValue = "\t";
-		}
-		this.xtremandLogger.info("selectedDropDown:" + selectedDropDown);
-		this.xtremandLogger.info(splitValue);
-		var startTime = new Date();
-		$("#clipBoardValidationMessage").html('');
-		var self = this;
-
-		var allTextLines = this.clipboardTextareaText.split("\n");
-		this.xtremandLogger.info("allTextLines: " + allTextLines);
-		this.xtremandLogger.info("allTextLines Length: " + allTextLines.length);
-		var isValidData: boolean = true;
-		if (this.clipboardTextareaText === "") {
-			//$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>");
-			self.customResponse = new CustomResponse('ERROR', "Please enter the valid data.", true);
-			isValidData = false;
-		}
-
-		if (this.clipboardTextareaText != "") {
-			let isEmailError = false;
-			let isWebsiteError = false;
-			let emailError = ''
-			let websiteError = ''
-			for (var i = 0; i < allTextLines.length; i++) {
-				var data = allTextLines[i].split(splitValue);
-				if (!this.validateEmailAddress(data[8])) {
-					isEmailError = true;
-					//$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[4] + "</h4>");
-					emailError = emailError + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[8] + "\n";
-					isValidData = false;
-				}
-
-				if (data[9] != undefined) {
-					if (!this.validateWebsite(data[9]) && data[9].length > 0) {
-						isWebsiteError = true;
-						websiteError = websiteError + "Website URL is not valid for Row:" + (i + 1) + " -- Entered Website URL : " + data[9] + "\n";
-						isValidData = false;
-					}
-				}
-				if (isEmailError) {
-					self.customResponse = new CustomResponse('ERROR', emailError, true);
-				}
-				if (isWebsiteError) {
-					self.customResponse = new CustomResponse('ERROR', websiteError, true);
-				}
-				this.newPartnerUser.length = 0;
-			}
-		}
-		if (isValidData) {
-			$("button#sample_editable_1_new").prop('disabled', false);
-			for (var i = 0; i < allTextLines.length; i++) {
-				var data = allTextLines[i].split(splitValue);
-				let user = new User();
-				switch (data.length) {
-					case 1:
-						user.firstName = data[0];
-						break;
-					case 2:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						break;
-					case 3:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						break;
-					case 4:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						break;
-					case 5:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						break;
-					case 6:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						break;
-					case 7:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						break;
-					case 8:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						break;
-					case 9:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						break;
-					case 10:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						break;
-					case 11:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						break;
-					case 12:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						break;
-					case 13:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						break;
-					case 14:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						break;
-					case 15:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						break;
-
-					case 16:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						break;
-
-					case 17:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						break;
-					case 18:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						user.state = data[17];
-						break;
-					case 19:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
-						break;
-
-					case 20:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
-						user.country = data[19];
-						break;
-
-					case 21:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountOwner = data[3];
-						user.accountSubType = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15].trim();
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
-						user.country = data[19];
-						user.mobileNumber = data[20];
-						break;
-				}
-				this.xtremandLogger.info(user);
-				self.newPartnerUser.push(user);
-			}
-			this.selectedAddPartnerOption = 4;
-			this.setSocialPage(1);
-			var endTime = new Date();
-			// $("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>");
-			// $("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>");
-			// $("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Total Number of records Found: <b>" + allTextLines.length + "</b></h5>");
-			let processMessage = '';
-			processMessage = "Processing started at: " + startTime + "\nProcessing Finished at:" + endTime + "\nTotal Number of records Found: " + allTextLines.length;
-			self.customResponse = new CustomResponse('SUCCESS', processMessage, true);
-		} else {
-			$("button#sample_editable_1_new").prop('disabled', true);
-			$("#clipBoardValidationMessage").show();
-		}
-		this.xtremandLogger.info(this.newPartnerUser);
-	}
-
-
+	
 	deleteUserShowAlert(contactId: number) {
 		let self = this;
 		swal({
@@ -1837,7 +1454,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				text: message,
 				allowOutsideClick: false,
 				showConfirmButton: false,
-				imageUrl: 'assets/images/loader.gif'
+				imageUrl: 'assets/images/loader.gif',
+				allowEscapeKey: false
 			});
 			this.contactService.socialProviderName = 'google';
 			this.socialPartners.socialNetwork = "GOOGLE";
@@ -2267,6 +1885,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialPartners.territory = '';
 			this.socialPartners.companyDomain = '';
 			this.socialPartners.accountOwner = '';
+			this.socialPartners.accountId = '';
 			this.socialPartners.address = '';
 			this.socialPartners.country = '';
 			this.socialPartners.city = '';
@@ -2337,6 +1956,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 										socialContact.accountOwner = this.getGoogleConatacts.contacts[i].accountOwner;
 										socialContact.company = this.getGoogleConatacts.contacts[i].company;
 										socialContact.title = this.getGoogleConatacts.contacts[i].title;
+										socialContact.accountId = this.getGoogleConatacts.contacts[i].accountId;
 									}
 									this.socialPartnerUsers.push(socialContact);
 								}
@@ -2498,8 +2118,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			if (this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 4) {
 				this.savePartnerUsers();
 			}
-
-
 			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
 				this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10
 				|| this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
@@ -2796,7 +2414,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					try {
 						this.downloadAssociatedPagination.userListId = this.partnerListId;
 						this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
-						if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+						if (this.isPartner && this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
 							this.referenceService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination, this.selectedFilterIndex);
 						}
 						this.downloadAssociatedPagination.searchKey = this.searchKey;
@@ -3004,7 +2622,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		else if (tempZohoAuth == 'yes') {
 			this.zohoShowModal();
-			this.checkingZohoPopupValues();
+			// this.checkingZohoPopupValues();
 			tempZohoAuth = 'no';
 			this.contactService.vanitySocialProviderName = "nothing";
 		}
@@ -3022,7 +2640,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
-			if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+			if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
 			}
 			this.defaultPartnerList(this.loggedInUserId);
@@ -3083,6 +2701,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
+		this.getActiveCrmType();
 	}
 
 
@@ -3140,27 +2759,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('#settingSocialNetworkPartner').modal('hide');
 		$("body>#settingSocialNetworkPartner").remove();
 		$('body').removeClass('modal-backdrop in');
-
-		// if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
-		//    let self = this;
-		//     swal( {
-		//         title: 'Are you sure?',
-		//         text: "You have unsaved data",
-		//         type: 'warning',
-		//         showCancelButton: true,
-		//         confirmButtonColor: '#54a7e9',
-		//         cancelButtonColor: '#999',
-		//         confirmButtonText: 'Yes, Save it!',
-		//         cancelButtonText: "No"
-
-		//     }).then( function() {
-		//         self.saveContacts();
-		//     }, function( dismiss ) {
-		//         if ( dismiss === 'No' ) {
-		//             self.selectedAddPartnerOption = 5;
-		//         }
-		//     })
-		// }
 		if (this.selectedAddPartnerOption == 5) {
 			swal.close();
 		}
@@ -3485,7 +3083,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				"companyDomain": user.companyDomain,
 				"accountOwner": user.accountOwner,
 				"website": user.website,
-				"region": user.region
+				"region": user.region,
+				"accountId": user.accountId
 			}
 			this.allselectedUsers.push(object);
 		} else {
@@ -3965,6 +3564,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							this.customResponse = new CustomResponse('SUCCESS', message, true);
 							this.loadPartnerList(this.pagination);
 							this.editContactComponent.selectedContactListIds.length = 0;
+							this.editContactComponent.selectedContactForSave.length = 0;
 						} else {
 							this.authenticationService.forceToLogout();
 						}
@@ -4024,101 +3624,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	addCampaigns(contact: any) {
 		this.sendCampaignComponent.openPopUp(this.partnerListId, contact, "Partner");
 	}
-
-
-	/*openCampaignsPopupForNewlyAddedPartners() {
-		this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.partnerListId, this.newUserDetails, "Partner");
-	}*/
-
-	/**********************Sravan************************ */
-	/*checkingZohoContactsAuthentication() {
-		try {
-
-			if(this.loggedInThroughVanityUrl){
-				this.referenceService.showSweetAlertInfoMessage();
-			}else{
-				if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
-					this.contactService.checkingZohoAuthentication(this.isPartner)
-						.subscribe(
-						( data: any ) => {
-							this.storeLogin = data;
-							if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-								this.getZohoContactsUsingOAuth2();
-							} else{
-								localStorage.setItem( "userAlias", data.userAlias )
-								localStorage.setItem( "isPartner", data.isPartner );
-								window.location.href = "" + data.redirectUrl;
-							}
-						},
-						( error: any ) => {
-						   this.referenceService.showSweetAlertServerErrorMessage();
-
-						},
-						() => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
-						)
-				}
-			}
-
-
-		} catch ( error ) {
-			this.xtremandLogger.error( error, "addPartnerComponent", "zoho authentication cheking" );
-		}
-	}
-
-	getZohoContactsUsingOAuth2(){
-		this.socialPartners.socialNetwork = "ZOHO";
-		this.socialPartners.contactType = this.contactType;
-		this.socialPartners.contactType = "CONTACT";
-		swal( {
-			text: 'Retrieving partners from zoho...! Please Wait...It\'s processing',
-			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
-		});
-		this.contactService.getZohoAutherizedContacts(this.socialPartners)
-				.subscribe(
-				data => {
-					this.getGoogleConatacts = data;
-					this.zohoImageBlur = false;
-					this.zohoImageNormal = true;
-					if ( !this.getGoogleConatacts.contacts ) {
-						this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
-						this.selectedAddPartnerOption = 5;
-						$("button#cancel_button").prop('disabled', false);
-					} else {
-						for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
-							let socialContact = new SocialContact();
-							socialContact.id = i;
-							if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-								socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
-								socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
-								socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
-								this.socialPartnerUsers.push( socialContact );
-							}
-							this.showFilePreview();
-							$( "#myModal .close" ).click()
-							$( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-							$( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-							$( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px' );
-							$( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-							$( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-							$( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-							$( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-							$( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-						}
-					}
-					this.selectedAddPartnerOption = 6;
-					this.setSocialPage( 1 );
-					swal.close();
-				},
-				( error: any ) => {
-					swal.close();
-					this.xtremandLogger.error( error );
-					this.xtremandLogger.errorPage( error );
-				},
-				() => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
-				);
-
-	}*/
-
 
 	checkingZohoContactsAuthentication() {
 		try {
@@ -4207,7 +3712,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactType = "CONTACT";
 		swal({
 			text: 'Retrieving contacts from zoho...! Please Wait...It\'s processing',
-			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
+			allowEscapeKey: false,
+			
 		});
 
 		this.contactService.getZohoAutherizedContacts(this.socialPartners)
@@ -4261,7 +3768,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactType = "LEAD";
 		swal({
 			text: 'Retrieving leads from zoho...! Please Wait...It\'s processing',
-			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
+			allowEscapeKey: false
 		});
 
 		this.contactService.getZohoAutherizedLeads(this.socialPartners)
@@ -4541,7 +4049,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	getSelectedIndex(index: number) {
 		this.isLoadingList = true;
 		this.selectedFilterIndex = index;
-		this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
+		this.pagination = this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
 		this.defaultPartnerList(this.loggedInUserId);
 	}
 
@@ -5108,6 +4616,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
+			this.socialPartners.contacts = this.socialPartnerUsers;
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 13;
 			console.log("Social Contact Users for HaloPSA::" + this.socialPartnerUsers);
@@ -5150,14 +4659,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	validatePartnersCompany(newPartnerUser: any, partnerListId: number) {
 		try {
+			this.referenceService.showSweetAlertProcessingLoader("We are validating");
 			this.contactService.validatePartnersCompany(newPartnerUser, partnerListId)
 				.subscribe(
 					(data: any) => {
+						this.referenceService.closeSweetAlert();
 						if (data.statusCode == 200) {
 							if (this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 4) {
 								this.askForPermission();
 							}
-
 							if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
 								this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 ||
 								this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
@@ -5172,6 +4682,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							let updatedMessage = data.message + "\n" + emailIds;
 							this.customResponse = new CustomResponse('ERROR', updatedMessage, true);
 						}
+						
 					},
 					error => this.xtremandLogger.error(error),
 					() => console.log('validatePartnersCompany() finished')
@@ -5235,6 +4746,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				},
 				() => this.xtremandLogger.info("download partner List completed")
 			);
+	}
+
+	getActiveCrmType() {
+		this.loading = true;
+		this.contactService.getActiveCrmType(this.loggedInUserId)
+			.subscribe(
+				result => {
+					this.activeCrmType = result.data;
+					this.loading = false;
+				},
+				(error: any) => {
+					this.loading = false;
+				},
+			);
+
 	}
 
 

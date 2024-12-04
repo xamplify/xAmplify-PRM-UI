@@ -1,16 +1,16 @@
 <div class="row">
 	<!-- <div class="row" id="responsive">  -->
 	<div class="col-xs-12 p5" *ngIf="statusCode==200">
-		<div class="portlet light remove_cardBgcolor padding_0">
-			<div class="portlet-title">
+		<div class="portlet light remove_cardBgcolor padding_0 light_bg_removal">
+			<div class="portlet-title remove_border">
 				<div class="col-xs-12">
 					<div class="row">
 						<div class="col-xs-12 col-sm-6 col-md-6 text-left p0">
 							<div class="caption text-wrap" title="{{title}}" style="padding:10px">
 								<span class="caption-subject font-red-sunglo uppercase"
-									*ngIf="!pagination.checkInLeads && !isVendorJourney">{{title}}</span>
+									*ngIf="!pagination.checkInLeads && !(isVendorJourney || isPartnerJourneyPages)">{{title}}</span>
 								<span class="caption-subject font-red-sunglo uppercase"
-									*ngIf="(pagination.checkInLeads || isVendorJourney) && !httpRequestLoader.isLoading"></span>
+									*ngIf="(pagination.checkInLeads || (isVendorJourney || isPartnerJourneyPages) ) && !httpRequestLoader.isLoading"></span>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6 col-md-6 text-right">
@@ -73,7 +73,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<ng-container *ngIf="!isVendorJourney">
+							<ng-container *ngIf="!(isVendorJourney)">
 							<ng-container  *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
 								<tr  id="form-data-row-{{rowIndex}}" class="form-data-row">
 									<ng-container
@@ -142,11 +142,6 @@
 										  title="{{formDataRow.partnerCompanyName}}">{{formDataRow.partnerCompanyName | slice:0:30}}
 										  <span *ngIf="formDataRow.partnerCompanyName?.length>20">...</span>
 										</h5>
-<!-- 										<h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"
-										  title="{{formDataRow.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
-										  {{formDataRow.createdByName | slice:0:20}}
-										  <span *ngIf="formDataRow.createdByName?.length>20">...</span>
-										</h5> -->
 										<h6 class='m0' style="font-weight: 400;">
 										  <a data-toggle="tooltip" data-placement="bottom"
 											title="{{formDataRow.partnerEmailId}}">{{formDataRow.partnerEmailId | slice:0:30}}</a>

@@ -31,7 +31,7 @@ authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationServic
                                                 {{mdfData?.totalBalanceInString}}
                                             </h3>
 
-                                            <p class="partners-text" title="Total Funds">Total Funds</p>
+                                            <p class="partners-text" title="Total Funds" translate>Total Funds</p>
                                         </div>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@ authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationServic
                                                 {{mdfData?.usedBalanceInString}}
                                             </h3>
 
-                                            <p class="partners-text" title="Used Funds">Used Funds</p>
+                                            <p class="partners-text" [attr.title]="'Used Funds' | translate" translate>Used Funds</p>
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@ authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationServic
                                                 {{mdfData?.availableBalanceInString}}
                                             </h3>
 
-                                            <p class="partners-text" title="Available Funds">Available Funds</p>
+                                            <p class="partners-text" [attr.title]="'Available Funds' | translate"  translate>Available Funds</p>
                                         </div>
                                     </div>
                                 </div>

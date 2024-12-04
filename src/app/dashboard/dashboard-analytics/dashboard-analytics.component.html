@@ -1,7 +1,7 @@
 <div class="page-content"
     *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm && !showLeadForm && !authenticationService?.module?.contentLoader">
     <div *ngIf="showSandboxText" class="alert alert-info">
-        <strong>{{properties?.sandboxText}}</strong>
+        <strong>{{properties?.sandboxText | translate}}</strong>
     </div>
     <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
         <div class="col-xs-12 col-sm-6 p0">
@@ -21,7 +21,7 @@
 <div class="page-content"
     *ngIf="!playVideo && !editVideo && ((!showDealForm && !showLeadForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
     <div *ngIf="showSandboxText" class="alert alert-info">
-        <strong>{{properties?.sandboxText}}</strong>
+        <strong>{{properties?.sandboxText | translate }}</strong>
     </div>
     <div>
         <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -42,7 +42,7 @@
                     </h4>
                 </div>
             </div>
-            <div class="page-bar p0" [hidden]="ngxLoading" style="height:48px;">
+            <div class="page-bar p0 mb-height_auto" [hidden]="ngxLoading" style="height:48px;">
                 <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
                     <div
                         [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
@@ -53,8 +53,7 @@
                     <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5"
                         [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
                         <div class="df-mt5 dashboardfloatRight">
-                            <h4 class="defaultScreenText" style="margin: 0.3em">Do you want to set this as your default
-                                screen?</h4>
+                            <h4 class="defaultScreenText" style="margin: 0.3em" translate>Do you want to set this as your default screen?</h4>
                             <div>
                                 <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
                                     size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
@@ -124,7 +123,7 @@
                     <div class="portlet-title" *ngIf="authenticationService?.module?.createCampaign">
                         <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
                         <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
-                            <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"
+                            <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isMarketingRole()"
                                 data-toggle="tooltip" data-placement="bottom" title="Customize campaign report"
                                 id="right">
                                 <i id="customize-campaign-setting" class="fa fa-cog pull-right" data-toggle="modal"
@@ -281,14 +280,12 @@
             </div>
 
             <!---PRM Dashboard -->
+            <!---Only PRM Company || Partnership Only With Prm || Logged In As Partner Of PRM-->
             <ng-container
-                *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+                *ngIf="(authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                 <!----Show PRM Content--------->
-                <app-show-prm-content [hideRowClass]="false"
-                    *ngIf="!authenticationService?.module.isOnlyPartner && !authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && 
-                    (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
-                    authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner)">
+                <app-show-prm-content [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
+                    authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
                 </app-show-prm-content>
                 <!--Top 4 Assets--------------->
                 <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" (newItemEvent)="setManageDam($event)"

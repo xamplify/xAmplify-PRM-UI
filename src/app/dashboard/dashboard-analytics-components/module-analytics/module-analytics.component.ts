@@ -11,6 +11,7 @@ import {VanityURLService} from "app/vanity-url/services/vanity.url.service";
 import { LeadsService } from 'app/leads/services/leads.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 @Component({
   selector: 'app-module-analytics',
@@ -54,7 +55,7 @@ export class ModuleAnalyticsComponent implements OnInit {
       },
       error => this.xtremandLogger.log(error),
       () => {
-        if (this.authenticationService.module.showAddLeadsAndDealsOptionInTheDashboard && this.authenticationService.vanityURLEnabled) {
+        if (this.authenticationService.module.showAddLeadsAndDealsOptionInTheDashboard) {
           this.getVendorRegisterDealValue();
         }
        }
@@ -104,19 +105,20 @@ export class ModuleAnalyticsComponent implements OnInit {
       this.showLeadForm = false;
     }
 
-    addDeal() {   
-      //this.showDealForm = true;
-      //this.actionType = "add";
-      this.notifyShowDealForm.emit();
-    }
+  addDeal() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.addDealFromHome;
+    this.referenceService.goToRouter(url);
+  }
 
-    addLead() {      
-      this.notifyShowLeadForm.emit();    
-    }
+  addLead() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.addLeadFromHome;
+    this.referenceService.goToRouter(url);
+  }
 
   getVendorRegisterDealValue() {
     this.ngxLoading = true;
-    this.integrationService.getVendorRegisterDealValue(this.authenticationService.getUserId(), this.authenticationService.companyProfileName).subscribe(
+    let vendorCompanyName = (this.authenticationService.companyProfileName != undefined && this.authenticationService.companyProfileName != "") ? this.authenticationService.companyProfileName : ' ';
+    this.integrationService.getVendorRegisterDealValue(this.authenticationService.getUserId(), vendorCompanyName).subscribe(
       data => {
         if (data.statusCode == 200) {
           this.isRegisterDealEnabled = data.data

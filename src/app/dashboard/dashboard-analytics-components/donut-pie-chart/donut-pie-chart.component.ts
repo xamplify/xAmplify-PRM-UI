@@ -41,7 +41,10 @@ export class DonutPieChartComponent implements OnInit {
   @Input() isVendorVersion: boolean = false;
   @Input() vanityUrlFilter: boolean = false;
   @Input() vendorCompanyProfileName: string = '';
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
+ isOrgadminPartner : boolean = true; 
   headerText: string;
   chartColors: string[];
   colClass: string;
@@ -87,7 +90,7 @@ export class DonutPieChartComponent implements OnInit {
         this.loadDonutChartForInteractedAndNotInteractedTracksForTeamMember();
       }
     } else if (this.chartId == "typewiseTrackContentDonut") {
-      this.headerText = 'Status Wise Track Assets';
+      this.headerText = 'Status Wise Track';
       this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a'];
       this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-4";
       this.portletLightClass = "portlet light active-donut-pie-chart";
@@ -115,6 +118,9 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
     partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+    partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
+    partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+    partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.partnerService.getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);
@@ -145,6 +151,9 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
     partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+    partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter;
+    partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+    partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.partnerService.getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);

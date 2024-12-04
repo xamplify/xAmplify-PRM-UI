@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { XtremandLogger } from './../../error-pages/xtremand-logger.service';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { ActivatedRoute } from '@angular/router';
@@ -11,9 +12,12 @@ import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { Properties } from 'app/common/models/properties';
+import { ModuleCustomName } from '../models/module-custom-name';
+import { SuperAdminService } from '../super-admin.service';
+import { CustomDomainDto } from '../models/custom-domain-dto';
+import { runInThisContext } from 'vm';
 
-
-declare var $;
+declare var $:any;
 @Component({
   selector: 'app-module-access',
   templateUrl: './module-access.component.html',
@@ -53,32 +57,164 @@ export class ModuleAccessComponent implements OnInit {
   companyProfileNameError = false;
   companyProfileNameErrorMessage = "";
   companyProfileName = "";
+  @Input() isNavigatedFromMyProfileSection = false;
+  myProfileLoader = false;
+  /***Partner Module Custom Label***/
+  partnerModuleCustomLabelLoader = false;
+  disablePartnerModuleCustomLabelUpdateButton: boolean;
+  partnerModuleCustomLabelErrorMessage = "";
+  moduleCustomName: ModuleCustomName = new ModuleCustomName();
+
+  /**XNFR-709***/
+  customDomainLoader = false;
+  customDomainErrorMessage = "";
+  customDomainApiError = false;
+  customDomainDto:CustomDomainDto = new CustomDomainDto();
+
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
-    public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,public properties:Properties) { }
-  ngOnInit() {
-    this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
-    if(this.isDashboardStats){
-      this.headerName = "Dashboard Stats";
-      this.authenticationService.selectedVendorId = this.route.snapshot.params['userId'];
-      this.companyId = this.route.snapshot.params['companyId'];
-      this.userAlias = this.route.snapshot.params['userAlias'];
-      if(this.userAlias!=undefined){
-        this.getCompanyAndUserDetails();
+    public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
+    public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminService) { }
+
+    ngOnInit() {
+      this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
+      if(this.isDashboardStats){
+        this.headerName = "Dashboard Stats";
+        this.authenticationService.selectedVendorId = this.route.snapshot.params['userId'];
+        this.companyId = this.route.snapshot.params['companyId'];
+        this.userAlias = this.route.snapshot.params['userAlias'];
+        if(this.userAlias!=undefined){
+          this.getCompanyAndUserDetails();
+        }else{
+          this.companyLoader = false;
+        }
       }else{
-        this.companyLoader = false;
+        if(this.isNavigatedFromMyProfileSection){
+          this.getCompanyIdAndUserAliasAndCompanyProfileName();
+        }else{
+          this.companyId = this.route.snapshot.params['alias'];
+          this.userAlias = this.route.snapshot.params['userAlias'];
+          this.companyProfilename = this.route.snapshot.params['companyProfileName'];
+          this.getAllData();
+        }
+          
+      }
+    
+    }
+
+  private getAllData() {
+    this.getCompanyAndUserDetails();
+    this.getModuleAccessByCompanyId();
+    this.getDnsConfiguredDetails();
+    this.getSpfConfiguredDetails();
+    this.findMaximumAdminsLimitDetails();
+    this.findPartnerModuleCustomLabelByCompanyId();
+    this.getCustomDomain();
+    this.headerName = "Module Access";
+  }
+  
+  /**XNFR-709***/
+  getCustomDomain(){
+    this.customDomainLoader = true;
+    this.superAdminService.getCustomDomain(this.companyId).subscribe(
+      response=>{
+        this.customDomainDto.customDomain = response.data;
+        this.customDomainLoader = false;
+        this.customDomainApiError = false;
+      },error=>{
+        this.customDomainApiError = true;
+        this.customDomainLoader = false;
+      }
+    )
+  }
+
+  /**XNFR-709***/
+  updateCustomDomain(){
+    this.customDomainLoader = true;
+    this.validateCustomDomain();
+    if(this.customDomainErrorMessage.length==0){
+      this.customDomainDto.companyId = this.companyId;
+      this.superAdminService.updateCustomDomain(this.customDomainDto).subscribe(
+        response=>{
+          this.referenceService.showSweetAlertSuccessMessage("Custom Domain Updated Successfully");
+          this.customDomainLoader = false;
+        },error=>{
+          let errorMessage = this.referenceService.getApiErrorMessage(error);
+          this.referenceService.showSweetAlertErrorMessage(errorMessage);
+          this.customDomainLoader = false;
+
+        });
+    }else{
+      this.customDomainLoader = false;
+    }
+  }
+
+  /**XNFR-709***/
+  validateCustomDomain(){
+    let trimmedCustomDomain = this.referenceService.getTrimmedData(this.customDomainDto.customDomain);
+    this.customDomainErrorMessage = trimmedCustomDomain.length==0 ? 'Please Enter Custom Domain':'';
+  }
+
+  findPartnerModuleCustomLabelByCompanyId(){
+    this.partnerModuleCustomLabelLoader = true;
+    this.dashboardService.findPartnerModuleByCompanyId(this.companyId).
+    subscribe(
+      response=>{
+        this.moduleCustomName = response.data;
+        this.partnerModuleCustomLabelLoader = false;
+      },error=>{
+        this.xtremandLogger.errorPage(error);
+      }
+
+    );
+  }
+
+  validatePartnerModuleCustomLabel(moduleCustomName:ModuleCustomName){
+    this.disablePartnerModuleCustomLabelUpdateButton = false;
+    this.partnerModuleCustomLabelErrorMessage = "";
+    let partnerModuleCustomLabel = $.trim(moduleCustomName.customName);
+    if(partnerModuleCustomLabel.length>0){
+      let isValidName = this.regularExpressions.ALPHABETS_PATTERN.test(partnerModuleCustomLabel);
+      if(isValidName){
+        this.disablePartnerModuleCustomLabelUpdateButton = false;
+      }else{
+        this.disablePartnerModuleCustomLabelUpdateButton = true;
+        this.partnerModuleCustomLabelErrorMessage = "Invalid name";
       }
     }else{
-      this.companyId = this.route.snapshot.params['alias'];
-      this.userAlias = this.route.snapshot.params['userAlias'];
-      this.companyProfilename = this.route.snapshot.params['companyProfileName'];
-      this.getCompanyAndUserDetails();
-      this.getModuleAccessByCompanyId();
-      this.getDnsConfiguredDetails();
-      this.getSpfConfiguredDetails();
-      this.findMaximumAdminsLimitDetails();
-      this.headerName = "Module Access";
+      this.disablePartnerModuleCustomLabelUpdateButton = true;
+      this.partnerModuleCustomLabelErrorMessage = "Please enter name";
     }
-   
+    
+  }
+
+  updatePartnerModuleCustomLabel(){
+    this.partnerModuleCustomLabelLoader = true;
+    this.dashboardService.updateModuleName(this.moduleCustomName)
+    .subscribe(
+        response=>{
+          this.referenceService.showSweetAlertSuccessMessage(response.message);
+          this.partnerModuleCustomLabelLoader = false;
+        },_error=>{
+          this.stopLoaderWithErrorMessage('Unable to update Partner Module Custom Label.');
+          this.partnerModuleCustomLabelLoader = false;
+        }
+    );
+  }
+
+
+  getCompanyIdAndUserAliasAndCompanyProfileName() {
+    this.myProfileLoader = true;
+    this.dashboardService.getCompanyIdAndUserAliasAndCompanyProfileName().subscribe(result => {
+      let data = result.data;
+      this.companyId = data.companyId;
+      this.userAlias = data.alias;
+      this.companyProfilename = data.companyProfileName;
+    }, error => {
+      this.xtremandLogger.error(error);
+    }, () => {
+      this.myProfileLoader = false;
+      this.getAllData();
+    });
   }
 
   
@@ -173,10 +309,10 @@ export class ModuleAccessComponent implements OnInit {
 
   getCompanyAndUserDetails() {
     this.dashboardService.getCompanyDetailsAndUserId(this.companyId, this.userAlias).subscribe(result => {
-      this.companyLoader = false;
       this.companyAndUserDetails = result;
       this.companyProfileName = this.companyAndUserDetails.companyProfileName;
       this.roleId = result.roleId;
+      this.companyLoader = false;
     }, error => {
       this.companyLoader = false;
       this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
@@ -218,7 +354,12 @@ export class ModuleAccessComponent implements OnInit {
           this.addDefaultMdfForm();
         }else{
           this.showSuccessMessage();
-          this.findMaximumAdminsLimitDetails();
+          if(!this.isNavigatedFromMyProfileSection){
+            this.findMaximumAdminsLimitDetails();
+          }else{
+            this.showMessageAndLogout();
+          }
+          
         }
       }
     }
@@ -243,7 +384,17 @@ export class ModuleAccessComponent implements OnInit {
     }, _error => {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('ERROR', "Something went wrong while adding default mdf form.", true);
+    },()=>{
+      this.showMessageAndLogout();
     });
+  }
+
+  private showMessageAndLogout() {
+    this.referenceService.showSweetAlertProcessingLoader("Settings have been updated.");
+    setTimeout(() => {
+      this.authenticationService.logout();
+      this.referenceService.closeSweetAlert();
+    }, 3000);
   }
 
   setModulesByRole(){

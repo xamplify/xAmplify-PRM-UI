@@ -242,3 +242,7 @@ div#htmlContent {
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
 }
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4 {
+  padding: 10px !important;
+}

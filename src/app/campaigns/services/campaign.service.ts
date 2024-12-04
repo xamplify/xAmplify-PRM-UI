@@ -209,9 +209,9 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    getCampaignHighLevelAnalytics(campaignId: number, userId: number) {
+    getCampaignHighLevelAnalytics(campaignId: number, userId: number, loggedInUserId:number) {
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        return this.http.get(this.URL + 'campaign/' + campaignId + '/' + userId + '/highlevel-analytics/?access_token=' + this.authenticationService.access_token)
+        return this.http.get(this.URL + 'campaign/' + campaignId + '/' + userId + '/' + loggedInUserId + '/highlevel-analytics/?access_token=' + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -1459,6 +1459,17 @@ export class CampaignService {
 
     validateCampaignIdAndCampaignTitle(campaignId: number,campaignTitle:string) {
         let url = this.URL + "campaign/validateCampaignIdAndCampaignTitle?campaignId=" + campaignId + "&campaignTitle="+campaignTitle+"&access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    fetchCampaignsAndCountByContactId(contactId: number, vanityUrlFilter: boolean, vendorCompanyName: string) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? "&loggedInUserId=" + loggedInUserId : "&loggedInUserId=0";
+        let contactIdRequestParam = contactId != undefined && contactId > 0 ? "&contactId=" + contactId : "&contactId=0";
+        let vanityUrlFilterParam = vanityUrlFilter != undefined ? "&vanityUrlFilter=" + vanityUrlFilter : "";
+        let vendorCompanyNameParam = vendorCompanyName != undefined ? "&vendorCompanyName=" + vendorCompanyName : "";
+        let campaignRequestDtoParam = $.trim(loggedInUserIdRequestParam + contactIdRequestParam + vanityUrlFilterParam + vendorCompanyNameParam);
+        let url = this.URL + "campaign/fetchContactAssociatedCampaignsAndCount" + "?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
         return this.authenticationService.callGetMethod(url);
     }
 

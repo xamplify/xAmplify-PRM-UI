@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { ReferenceService } from 'app/core/services/reference.service';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { ActivatedRoute } from '@angular/router';
-declare var swal: any, $: any;
+declare var $: any;
 @Component({
   selector: 'app-send-test-email',
   templateUrl: './send-test-email.component.html',
@@ -20,6 +20,7 @@ export class SendTestEmailComponent implements OnInit {
   @Input() templateName: string = "";
   @Input() fromEmail = "";
   @Input() fromName = "";
+  @Input() fromEmailUserId = 0;
   @Input() campaignSendTestEmail = false;
   @Input() campaign: any;
   email = "";
@@ -63,13 +64,12 @@ export class SendTestEmailComponent implements OnInit {
 
   getTemplateHtmlBodyAndMergeTagsInfo() {
     this.processing = true;
-    this.authenticationService.getTemplateHtmlBodyAndMergeTagsInfo(this.id).subscribe(
+    this.authenticationService.getTemplateHtmlBodyAndMergeTagsInfo(this.id,this.fromEmail).subscribe(
       response => {
         let map = response.data;
         let htmlBody = map['emailTemplateDTO']['body'];
         let mergeTagsInfo = map['mergeTagsInfo'];
         htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
-
         this.sendTestEmailDto.body = htmlBody;
         $('#sendTestEmailHtmlBody').append(htmlBody);
         $('tbody').addClass('preview-shown')
@@ -162,7 +162,11 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   previewEmailTemplate() {
-    this.referenceService.previewEmailTemplateInNewTab(this.id);
+    if (this.fromEmailUserId!=undefined && this.fromEmailUserId>0) {
+      this.referenceService.previewUnLaunchedCampaignEmailTemplateUsingFromEmailUserIdInNewTab(this.id,this.fromEmailUserId);
+    } else {
+      this.referenceService.previewEmailTemplateInNewTab(this.id);
+    }
   }
 
 }

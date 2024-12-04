@@ -449,13 +449,13 @@
                                     class="fa fa-search" aria-hidden="true"></i></button>
                            </div>
                         </div>
-                        <table class="table" aria-describedby=""
+                        <table class="table tgrid" aria-describedby=""
                            [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader"
                            id="campaign-preview-contact-list">
                            <thead>
                               <tr>
                                  <th scope="row">{{tableHeader}}</th>
-                                 <th scope="row" *ngIf="previewCampaignType!='SOCIAL'">Analytics</th>
+                                 <th scope="row" class="text-center" *ngIf="previewCampaignType!='SOCIAL'">Analytics</th>
                                  <th scope="row" class="text-center"
                                     *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">
                                     Action</th>

@@ -1,9 +1,9 @@
 <div class="page-content" *ngIf="!showDealForm">
   <div id="deals-page-content-div">
     <div>
-      <div class="page-bar mb-height_auto" style="height: 48px;">
+      <div class="page-bar mb-height_auto">
         <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
-          <div class="col-xs-12 col-sm-5 col-lg-6">
+          <div class="col-xs-12 col-sm-3 col-lg-4">
             <ul class="page-breadcrumb pbc-m3">
               <li *ngIf="!authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -15,7 +15,7 @@
               </li>
             </ul>
           </div>
-          <div class="col-xs-12 col-sm-7 col-lg-6 p0">
+          <div class="col-xs-12 col-sm-9 col-lg-8 p0">
             <ul class="mix-filter p0 m0" style="float: right;padding-top:1.5px !important;margin-right: -9px !important;"
               *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
               <!--Partner View-->
@@ -129,7 +129,7 @@
       <!-- -----------------------------Deals List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
-          <div class="page-bar remove_cardBgcolor padding_0 p10" id="header">
+          <div class="page-bar remove_cardBgcolor padding_0 p10 bg-none light_bg_removal" id="header">
             <div class="portlet-title">
               <div *ngIf="!showCampaignDeals">
                 <!-- XNFR-148 -->
@@ -163,7 +163,7 @@
                         (click)="downloadDeals(dealsPagination)">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled"
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled &&  !this.authenticationService.module.isPrmTeamMember"
                         (click)="addDeal()" style="padding-left: 11px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                           <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
@@ -171,7 +171,7 @@
                         </button>
                       </a>
 
-                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && (activeCRMDetails?.type == 'CONNECTWISE' || activeCRMDetails?.type == 'HALOPSA'))"
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && (activeCRMDetails?.type == 'CONNECTWISE' || activeCRMDetails?.type == 'HALOPSA' || this.authenticationService.module.isPrmTeamMember))"
 
                         (click)="syncLeadsWithActiveCRM()">
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
@@ -361,6 +361,9 @@
                                 <span *ngIf="isVendorVersion"><b>Deal Id:</b> {{deal.referenceId}}</span>
                               </div>
                               <div>
+                                <span *ngIf="isVendorVersion"><b>CRM Id:</b> {{deal.crmId}}</span>
+                              </div>
+                              <div data-toggle="tooltip" data-placement="bottom" title="{{deal.createdForCompanyName}}">
                                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
                                   <span style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="deal.createdForCompanyName?.length>30">...</span>
@@ -564,6 +567,55 @@
                             <td colspan="8" style="padding-right: 0px !important;">
                               <div class="row" *ngIf="showPartnerList" style="width: 100%;">
                                 <div class="col-xs-12 p5" style="padding-right: 0px !important">
+                                  <div class="portlet light"  *ngIf="vendorSelfDealsWithCountList != undefined && vendorSelfDealsWithCountList.length > 0">
+                                    <div class="caption">
+                                      <span
+                                        class="caption-subject font-red-sunglo uppercase">Vendor</span>
+                                    </div>
+                                    <div class="portlet-title" style="border-bottom: none">
+                                      <!-- <div class="row" id="box" *ngIf="partnerRequestLoader.isServerError">
+                                        Please contact admin for "Campaings"
+                                      </div> -->
+                                      <app-list-loader
+                                        *ngIf="vendorSelfDealsRequestLoader">
+                                      </app-list-loader>
+                                      <div class="portlet-body table-responsive" style="overflow: hidden;"
+                                      [hidden]="vendorSelfDealsWithCountList == undefined || vendorSelfDealsWithCountList.length == 0">
+                                        <div class="table-responsive" [hidden]="vendorSelfDealsRequestLoader">
+                                          <table class="table tgrid">
+                                            <thead>
+                                              <tr>
+                                                <th class="center-aligned width-76">Vendor
+                                                  <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right"
+                                                    title="Vendor converted deals count"></i>
+                                                </th>
+                                                <th class="center">#Deals Count</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <ng-container *ngFor="let item of vendorSelfDealsWithCountList;let i=index">
+                                                <tr>
+                                                  <td>
+                                                    <app-user-info [userInfo]="item" [isPartnerInfo]="true" [isPartnerEntityInfo]="true" [hideEmptyBar]="true"></app-user-info>
+                                                  </td>
+                                                  <td>
+                                                    <a class="custom-icon" (click)="showCampaignDealsByVendor(item)"
+                                                    data-toggle="tooltip" data-placement="top" title="Number Of Deals">
+                                                    <i
+                                                      class="circled-number IconCustomization fontStyleNormal"><b>{{item.totalDeals}}</b></i>
+                                                    <div class="clickicons"></div>
+                                                  </a>
+                                                  </td>
+                                                </tr>
+                                              </ng-container>
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-xs-12 p5" style="padding-right: 0px !important">
                                   <div class="portlet light">
                                     <div class="portlet-title" style="border-bottom: none">
                                       <div class="caption">
@@ -725,8 +777,8 @@
         style="margin: 0px -10px;padding-top: 7px;padding-left: 5px;">
         <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
           style="font-size:18px"></span>
-        <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default"
-          style="margin-top: -62px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
+        <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default edit-deal-notify"
+          style="background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
       </a>
 
     </div>
@@ -738,7 +790,7 @@
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
   [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
   [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)"
-  (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusStatusCode)="stageUpdateResponse($event)">
+  (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"

@@ -504,7 +504,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
  }
     getEmailSentCount(campaignId: number) {
       try {
-          this.campaignService.getCampaignHighLevelAnalytics(campaignId, this.loggedInUserId)
+          this.campaignService.getCampaignHighLevelAnalytics(campaignId, this.loggedInUserId, this.loggedInUserId)
           .subscribe(
             response => {
               if(response.data!=undefined){

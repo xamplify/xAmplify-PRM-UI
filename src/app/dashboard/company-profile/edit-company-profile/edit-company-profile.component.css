@@ -232,3 +232,9 @@ button.btn-info.aspect_ratio:disabled {
   opacity: .5; /* Change the opacity to make the button look disabled */
   cursor: not-allowed; /* Change the cursor to indicate it's disabled */
 }
+.company-text-wrap{
+  word-wrap: break-word;
+}
+.cursor-not-allowed{
+  cursor: not-allowed !important;
+}

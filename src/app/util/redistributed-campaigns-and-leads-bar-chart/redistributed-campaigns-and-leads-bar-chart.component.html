@@ -4,9 +4,10 @@
       [ngStyle]="{'margin-bottom':chartId=='redistributeCampaignsAndLeadsCountBarChart'?'15px':'20px'}">
       <div class="portlet-title minheight-zero-px pjCardTitlebg" [hidden]="chartLoader">
         <div class="caption pjCardTitleCenterAlignment1 panel-bg">
-          <span class="caption-subject font-red-sunglo uppercase" translate>{{headerText}}</span>
+          <span class="caption-subject font-red-sunglo uppercase" *ngIf="chartId=='top10LeadsAndDealsBarChart' || chartId=='redistributeCampaignsAndLeadsCountBarChart' || chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'" translate> Top 10 {{ headerText }}</span>
+          <span class="caption-subject font-red-sunglo uppercase" *ngIf="chartId=='allRedistributeCampaignsAndLeadsCountBarChart' || chartId=='allLeadsAndDealsBarChart' || statusCode==404 || chartId=='partnerJourneyLeadsAndDealsBarChart' || chartId=='partnerJourneyredistributeCampaignsAndLeadsBarChart'"  translate> {{ headerText }}</span>
         </div>
-        <div [hidden]=" !(hasLeadsAndDealsAccess || authenticationService?.module?.opportunitiesAccessAsPartner) ">
+        <div [hidden]=" !(hasLeadsAndDealsAccess || authenticationService?.module?.opportunitiesAccessAsPartner) || statusCode==404 ">
           <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">
             <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown"
               (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">
@@ -60,7 +61,7 @@
             </div>
           </div>
         </figure>
-        <div class="alert alert-info " *ngIf="statusCode==404">
+        <div class="alert alert-info " *ngIf="statusCode==404 && !chartLoader">
           <strong>No Data Found</strong>
         </div>
 

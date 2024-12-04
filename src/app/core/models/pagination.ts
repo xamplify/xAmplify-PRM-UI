@@ -144,6 +144,15 @@ export class Pagination {
 	masterLandingPageAnalytics:boolean  = false;
 
 	vendorLandingPageId:number;
+	welcomePages:boolean = false;
+	contactId:number;
+	isAdmin: boolean = false;
 
+	partnerJourneyPage:boolean = false;
 
+	vendorMarketplacePage:boolean = false;
+
+	vendorPartnerJourneyPage:boolean = false;
+
+	vendorMarketplacePageAnalytics:boolean = false;
 }

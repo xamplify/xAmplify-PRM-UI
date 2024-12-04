@@ -10,6 +10,7 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
+import { Properties } from 'app/common/models/properties';
 
 @Component({
   selector: 'app-active-partners-table',
@@ -33,16 +34,20 @@ export class ActivePartnersTableComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Output() notifySelectedPartnerCompanyIds = new EventEmitter();
+  @Output() notifySelectedDateFilters = new EventEmitter();
   @Input() selectedPartnerCompanyIds: any = [];
   showFilterDropDown: boolean = false;
   filterActiveBg: string;
   filterApplied: boolean = false;
+  dateFilterText = "Select Date Filter";
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
 
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
-    public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
+    public xtremandLogger: XtremandLogger, public sortOption: SortOption,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -136,7 +141,6 @@ export class ActivePartnersTableComponent implements OnInit {
         this.showFilterDropDown = true;
       }     
     }
-    
   }
 
   viewDropDownFilter(){
@@ -150,6 +154,9 @@ export class ActivePartnersTableComponent implements OnInit {
   }
 
   clearFilter() {
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.setDateFilterOptions();
     this.selectedCompanyIds = [];
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
     this.isCollapsed = true;
@@ -160,11 +167,13 @@ export class ActivePartnersTableComponent implements OnInit {
 
   applyFilters() {
     this.filterApplied = true;
+    this.setDateFilterOptions();
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
-    this.isCollapsed = false;
+    this.showActivePartnersTable();
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
   }
+
   setFilterColor(){
     if(this.selectedCompanyIds != null && this.selectedCompanyIds.length >0 && this.selectedCompanyIds != undefined){
       this.filterActiveBg = 'filterActiveBg';
@@ -175,15 +184,60 @@ export class ActivePartnersTableComponent implements OnInit {
   
   findCompanyNames() {
     this.filterCategoryLoader = true;
-      this.selectedCompanyIds = this.selectedPartnerCompanyIds;
-      this.companyInfoFields = { text: 'companyName', value: 'companyId' };
-      this.parterService.getPartnerJourneyCompanyDetailsForFilter(this.pagination).
+    this.selectedCompanyIds = this.selectedPartnerCompanyIds;
+    this.companyInfoFields = { text: 'companyName', value: 'companyId' };
+    this.parterService.getPartnerJourneyCompanyDetailsForFilter(this.pagination).
       subscribe(response => {
         this.companyNameFilters = response.data;
       }, error => {
-          this.companyNameFilters = [];
-          this.filterCategoryLoader = false;
+        this.companyNameFilters = [];
+        this.filterCategoryLoader = false;
       });
+  }
+
+  setDateFilterOptions() {
+    let obj = {
+      "fromDate": this.fromDateFilter,
+      "toDate": this.toDateFilter
+    }
+    this.notifySelectedDateFilters.emit(obj);
+  }
+
+  validateDateFilter() {
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    if (!(this.selectedCompanyIds.length > 0) && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
+      this.customResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else {
+      let validDates = false;
+      if (!(isEmptyFromDateFilter && isEmptyToDateFilter)) {
+        if (isValidFromDateFilter && isEmptyToDateFilter) {
+          this.customResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+        } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+          this.customResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+        } else {
+          var toDate = Date.parse(this.toDateFilter);
+          var fromDate = Date.parse(this.fromDateFilter);
+          if (fromDate <= toDate) {
+            validDates = true;
+          } else {
+            this.customResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+          }
+        }
+      }
+
+      if (validDates || this.selectedCompanyIds.length > 0) {
+        this.applyFilters();
+      }
+    }
+  }
+
+  showActivePartnersTable() {
+    if(this.selectedCompanyIds.length > 0){
+      this.isCollapsed = false;
+    }
   }
 
 }

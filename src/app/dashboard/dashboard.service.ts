@@ -1412,6 +1412,16 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callGetMethod(findAllUrl);
     }
 
+    findUniversalSearch(pagination:Pagination){
+        let userId = this.authenticationService.getUserId();
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let domainName= this.authenticationService.companyProfileName!="" ? this.authenticationService.companyProfileName : '0';
+        // let findAllUrl = this.dashboardAnalytics+'findUniversalSearch/domainName/'+domainName+'/userId/'+userId+this.QUERY_PARAMETERS+pageableUrl;
+        // return this.authenticationService.callGetMethod(findAllUrl);
+        const findAllUrl = `${this.dashboardAnalytics}findUniversalSearch/domainName/${domainName}/userId/${userId}${this.QUERY_PARAMETERS}${pageableUrl}`;
+        return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
     findAllIntegrations(pagination:Pagination){
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         let companyId = pagination.companyId;
@@ -1441,6 +1451,18 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
     isReferVendorOptionEnabled(vanityUrlPostDto: any) {
         const url = this.moduleUrl + 'getReferVendorOption?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vanityUrlPostDto).map(this.extractData).catch(this.handleError);
+    }
+
+    getVendorCompaniesDropdownList() {
+        const url = this.superAdminUrl + 'findAllVendorCompanyNames?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getCompanyIdAndUserAliasAndCompanyProfileName() {
+        let loggedInUserId = this.authenticationService.getUserId();
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/getCompanyIdAndUserAliasAndCompanyProfileName/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
   

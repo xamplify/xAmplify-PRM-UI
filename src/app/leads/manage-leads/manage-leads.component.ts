@@ -20,6 +20,7 @@ import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { Properties } from 'app/common/models/properties';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -137,8 +138,29 @@ export class ManageLeadsComponent implements OnInit {
   ngOnInit() {
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.checkOppourtunityAcess();
+    if (this.referenceService.isCreated) {
+      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    }
     this.mergeTagForUserGuide();
+    /** XNFR-574 **/
+    this.triggerViewLead(); 
   }
+  triggerViewLead() {
+    if (this.referenceService.universalId !== 0) {
+        //this.lead.id = this.referenceService.universalLeadId;
+        this.showLeadForm = true;
+        this.actionType = "view";
+        this.leadId = this.referenceService.universalId;
+    }
+}
+triggerUniversalSearch(){
+  if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Lead') {
+    this.leadsSortOption.searchKey = this.referenceService.universalSearchKey;
+    let keyCode:any = 13;
+    if (keyCode === 13) { this.searchLeads(); }
+  }
+}
 
   init() {
     const roles = this.authenticationService.getRoles();
@@ -232,8 +254,13 @@ export class ManageLeadsComponent implements OnInit {
         }
     
       });
-    });
-   
+    });  
+  }
+
+  //XNFR-681
+  ngOnDestroy() {
+    this.referenceService.isCreated = false; 
+    this.referenceService.universalId = 0; //XNFR-574
   }
 
   showVendor() {
@@ -344,6 +371,7 @@ export class ManageLeadsComponent implements OnInit {
     this.selectedTabIndex = 1;
     this.titleHeading = "Total ";
     this.resetLeadsPagination();
+    this.triggerUniversalSearch();//XNFR-574
     this.campaignPagination = new Pagination;
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if (this.vanityLoginDto.vanityUrlFilter) {
@@ -633,9 +661,11 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   addLead() {
+    let url = RouterUrlConstants.home + RouterUrlConstants.addLead;
     this.showLeadForm = true;
     this.actionType = "add";
     this.leadId = 0;
+    this.referenceService.goToRouter(url);
   }
 
   resetValues() {
@@ -1139,7 +1169,7 @@ export class ManageLeadsComponent implements OnInit {
           this.leadsPagination.fromDateFilterString = this.fromDateFilter;
           this.leadsPagination.toDateFilterString = this.toDateFilter;
         } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
         }        
       }
 
@@ -1460,16 +1490,71 @@ export class ManageLeadsComponent implements OnInit {
 		}
   }
 
-  showRegisterDealButton(lead):boolean {
+  showRegisterDealButton(lead: any): boolean {
     let showRegisterDeal = false;
-    if (lead.selfLead && lead.dealBySelfLead && (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
+    if (this.canRegisterSelfLead(lead)) {
       showRegisterDeal = true;
-    } else if (((((lead.dealByVendor && this.isVendor || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
-      && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED'))) {
+    }
+    else if (this.canVendorOrPartnerRegisterDeal(lead)) {
       showRegisterDeal = true;
     }
     return showRegisterDeal;
   }
+
+  private canRegisterSelfLead(lead: any): boolean {
+    return lead.selfLead &&
+      lead.dealBySelfLead &&
+      (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) &&
+      lead.associatedDealId == undefined;
+  }
+
+  private canVendorOrPartnerRegisterDeal(lead: any): boolean {
+    let canVendorRegisterDeal = (lead.dealByVendor && this.isVendorVersion && (this.isVendor || this.prm));
+    let canPartnerRegisterDeal = lead.canRegisterDeal && lead.dealByPartner;
+    let canLeadConvertToDeal = lead.enableRegisterDealButton && !lead.leadApprovalOrRejection
+      && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED';
+
+    return (((canVendorRegisterDeal || canPartnerRegisterDeal) && !lead.selfLead) && lead.associatedDealId == undefined)
+      && canLeadConvertToDeal;
+  }
+
+  viewCustomLeadForm(event :Lead) {
+    this.showLeadForm = true;
+    this.actionType = 'view';
+    this.leadId = event.id;
+  }
+
+
+  editCustomLeadForm(event :Lead) {
+    this.showLeadForm = true;
+    this.actionType = 'edit';
+    this.leadId = event.id;
+  }
+
+  closeCustomForm() {
+    this.showLeadForm = false;
+    this.showDealForm = false;
+    this.closeLeadModal();
+  }
+
+  checkOppourtunityAcess() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.checkIfHasOppourtunityAcess(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          let hasAuthorization = result.data;
+          if (!hasAuthorization) {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
 
   
 }

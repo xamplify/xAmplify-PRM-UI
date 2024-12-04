@@ -36,33 +36,39 @@ export class PaginationComponent implements OnInit {
     this.notifyParentDropDown.emit(this.pagination);
   }
   ngOnInit() {
-    if(this.customDropDown){
+    if (this.customDropDown) {
       const newFirstElement = { 'name': '4', 'value': 4 };
       this.numberPerPage = [newFirstElement].concat(this.numberPerPage);
-      if(this.pagination.maxResults == 4){
+      if (this.pagination.maxResults == 4) {
         this.pageNumber = this.numberPerPage[0];
-      }if (this.pagination.maxResults == 12) {
+      } if (this.pagination.maxResults == 12) {
         this.pageNumber = this.numberPerPage[1];
       } else if (this.pagination.maxResults == 24) {
         this.pageNumber = this.numberPerPage[2];
       } else if (this.pagination.maxResults == 48) {
-        if(this.pagination.totalRecords>4 && this.pagination.totalRecords<13){
+        if (this.pagination.totalRecords > 4 && this.pagination.totalRecords < 13) {
           this.pageNumber = this.numberPerPage[1];
-        }else if(this.pagination.totalRecords>12 && this.pagination.totalRecords<25){
+        } else if (this.pagination.totalRecords > 12 && this.pagination.totalRecords < 25) {
           this.pageNumber = this.numberPerPage[2];
-        }else{
+        } else {
           this.pageNumber = this.numberPerPage[3];
         }
       }
-    }else{
+    } else {
       if (this.pagination.maxResults == 12) {
         this.pageNumber = this.numberPerPage[0];
       } else if (this.pagination.maxResults == 24) {
-        this.pageNumber = this.numberPerPage[1];
-      } else if (this.pagination.maxResults == 48) {
-        if(this.pagination.totalRecords>12 && this.pagination.totalRecords<25){
+        if (this.pagination.totalRecords > 0 && this.pagination.totalRecords < 13) {
+          this.pageNumber = this.numberPerPage[0];
+        } else {
           this.pageNumber = this.numberPerPage[1];
-        }else{
+        }
+      } else if (this.pagination.maxResults == 48) {
+        if (this.pagination.totalRecords > 0 && this.pagination.totalRecords < 13) {
+          this.pageNumber = this.numberPerPage[0];
+        } else if (this.pagination.totalRecords > 12 && this.pagination.totalRecords < 25) {
+          this.pageNumber = this.numberPerPage[1];
+        } else {
           this.pageNumber = this.numberPerPage[2];
         }
       }

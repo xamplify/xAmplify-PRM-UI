@@ -21,6 +21,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var swal, $, videojs: any;
 
 
@@ -119,6 +120,8 @@ export class ManageDealsComponent implements OnInit {
   statusLoader = false;
   isStatusLoadedSuccessfully = true;
   isRegisterDealEnabled:boolean = true;
+  vendorSelfDealsWithCountList:any = [];
+  vendorSelfDealsRequestLoader: boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -143,7 +146,27 @@ export class ManageDealsComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.checkOppourtunityAcess();
+    if (this.referenceService.isCreated) {
+      this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    }
     this.mergeTagForUserGuide();
+    this.triggerViewDeal();
+  }
+  triggerViewDeal() {
+    if (this.referenceService.universalId !== 0) {
+      this.showDealForm = true;   
+      this.actionType = "view";
+      this.dealId = this.referenceService.universalId;
+      this.dealsResponse.isVisible = false;
+    }
+  }
+  triggerUniversalSearch() {
+    if (this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Deal') {
+      this.dealsSortOption.searchKey = this.referenceService.universalSearchKey;
+      let keyCode = 13;
+      if (keyCode === 13) { this.searchDeals();}
+    }
   }
   /** User GUide **/
   mergeTagForUserGuide(){
@@ -175,6 +198,11 @@ export class ManageDealsComponent implements OnInit {
             this.authenticationService.superiorRole = response.data.superiorRole;            
           }
         });
+  }
+  //XNFR-681
+  ngOnDestroy() {
+    this.referenceService.isCreated = false;
+    this.referenceService.universalId = 0;
   }
 
   init() {
@@ -208,7 +236,8 @@ export class ManageDealsComponent implements OnInit {
         /** User Guide */
       } else {
         if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
-        && !this.authenticationService.superiorRole.includes("Marketing") && this.authenticationService.superiorRole.includes("Partner")) {
+        && !this.authenticationService.superiorRole.includes("Marketing") && !this.authenticationService.superiorRole.includes("Prm")
+        && this.authenticationService.superiorRole.includes("Partner")) {
           this.isOnlyPartner = true;
         }
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
@@ -262,16 +291,22 @@ export class ManageDealsComponent implements OnInit {
         }  
       });    
     });
-    if (this.authenticationService.vanityURLEnabled) {
-      this.integrationService.getVendorRegisterDealValue(this.loggedInUserId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
-        data => {
-          if (data.statusCode == 200) {
-            this.isRegisterDealEnabled = data.data;
-          }
+    this.getVendorRegisterDealValue();
+
+  }
+
+  getVendorRegisterDealValue() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.integrationService.getVendorRegisterDealValue(this.loggedInUserId, this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          this.isRegisterDealEnabled = data.data;
         }
-      )
-    }
-   
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }, error => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    );
   }
 
     setEnableLeads() {
@@ -353,6 +388,7 @@ export class ManageDealsComponent implements OnInit {
     this.selectedTabIndex = 1;
     this.titleHeading = "Total ";
     this.resetDealsPagination();
+    this.triggerUniversalSearch(); //XNFR-574
     this.campaignPagination = new Pagination;
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if(this.vanityLoginDto.vanityUrlFilter){
@@ -676,10 +712,12 @@ export class ManageDealsComponent implements OnInit {
   searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
   addDeal() {   
+    let url = RouterUrlConstants.home + RouterUrlConstants.addDeal;
     this.showDealForm = true;
     this.actionType = "add";
     this.dealId = 0;
-    this.dealsResponse.isVisible = false;    
+    this.dealsResponse.isVisible = false;   
+    this.referenceService.goToRouter(url); 
   }
 
   viewDeal(deal: Deal) {
@@ -806,6 +844,7 @@ export class ManageDealsComponent implements OnInit {
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
           this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
           this.partnerSortOption.searchKey = "";
+          this.findVendorDetailsWithSelfDealsCount(this.selectedCampaignId);
           this.listPartnersForCampaign(this.partnerPagination);
         }
       } else {
@@ -1109,7 +1148,7 @@ export class ManageDealsComponent implements OnInit {
           this.dealsPagination.fromDateFilterString = this.fromDateFilter;
           this.dealsPagination.toDateFilterString = this.toDateFilter;
         } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
         }        
       }
 
@@ -1417,7 +1456,7 @@ export class ManageDealsComponent implements OnInit {
 
   stageUpdateResponse(event:any){
     this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
-
+    this.referenceService.scrollSmoothToTop();
   }
 
   
@@ -1494,6 +1533,46 @@ export class ManageDealsComponent implements OnInit {
 			this.statusFilter = "";
 		}
    
+  }
+
+  findVendorDetailsWithSelfDealsCount(campaignId:number) {
+    this.vendorSelfDealsRequestLoader = true;
+    this.dealsService.findVendorDetailsWithSelfDealsCount(campaignId,this.loggedInUserId).subscribe(
+      data => {
+        this.vendorSelfDealsRequestLoader = false;
+        if (data.statusCode == 200) {
+          this.vendorSelfDealsWithCountList = data.data;
+        }
+      }, error => {
+        this.vendorSelfDealsRequestLoader = false;
+      }
+    )
+  }
+
+  showCampaignDealsByVendor(vendor: any) {
+    if (vendor.companyId > 0  && this.selectedCampaignId) {
+      this.selectedPartnerCompanyId = vendor.companyId;
+      this.selectedPartnerCompanyName = "";
+      this.showCampaignDeals = true;
+    }
+  }
+
+  checkOppourtunityAcess() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.checkIfHasOppourtunityAcess(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        result => {
+          let hasAuthorization = result.data;
+          if (!hasAuthorization) {
+            this.referenceService.goToAccessDeniedPage();
+          }
+        },
+        error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
 }

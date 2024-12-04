@@ -15,14 +15,17 @@
           </div>
           <div class="details">
             <div class="number" style="padding-right: 15px;">{{dto.count}}</div>
-            <div title="{{dto?.moduleName}}"
+            <div title="{{dto?.moduleName | translate}}"
               [className]="dto?.moduleName?.length>=25 ? 'desc custom-name-font':'desc default-name-font'">
               {{dto.moduleName | translate}}</div>
           </div>
-          <span class="morePadding" (click)="goToManage(dto)" title="{{dto.description}}">
-            <a [className]="dto.hasAccess? 'more more-hl-stat':'more more-hl-stat dashboard-access-denied'" translate>
-              {{dto.description | slice:0:28}}
-              <span *ngIf="dto?.description?.length>28">...</span>
+          <span class="morePadding" (click)="goToManage(dto)">
+            <a [className]="dto.hasAccess? 'more more-hl-stat':'more more-hl-stat dashboard-access-denied'">
+              <!-- {{dto.description | slice:0:28}}
+                        <span *ngIf="dto?.description?.length>28">...</span> -->
+              Detailed view
+              <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+              <i class="fa fa-info-circle" aria-hidden="true" title="{{dto?.description | translate}}"></i>
             </a>
           </span>
         </a>

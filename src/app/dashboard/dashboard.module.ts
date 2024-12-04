@@ -106,13 +106,16 @@ import { QuickLinksComponent } from './quick-links/quick-links.component';
 import { UpdateEmailAddressComponent } from './update-email-address/update-email-address.component';
 import { IntegrationDetailsComponent } from './integration-details/integration-details.component';
 import { CustomFieldsOrderPopupComponent } from './custom-fields-order-popup/custom-fields-order-popup.component';
-import { SuperAdminServiceService } from './super-admin-service.service';
+import { SuperAdminService } from './super-admin.service';
 import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-settings/campaign-analytics-settings.component';
 import { MyProfileService } from './my-profile.service';
 import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.component';
 import { MarketPlaceCategoriesComponent } from './market-place-categories/market-place-categories.component';
 import { ChatGptIntegrationSettingsComponent } from './chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { ChatGptSettingsService } from './chat-gpt-settings.service';
+import { FlexiFieldComponent } from './user-profile/flexi-fields/manage-flexi-fields/flexi-field.component';
+import { FlexiFieldService } from './user-profile/flexi-fields/services/flexi-field.service';
+import { UniversalSearchComponent } from './universal-search/universal-search.component';
 import { XamplifyCustomFieldsSettingsComponent } from './xamplify-custom-fields-settings/xamplify-custom-fields-settings.component';
 import { LeadCustomFieldsSettingsComponent } from './lead-custom-fields-settings/lead-custom-fields-settings.component';
 import { AddCustomFieldsComponent } from './add-custom-fields/add-custom-fields.component';
@@ -199,12 +202,14 @@ import { AddCustomFieldsComponent } from './add-custom-fields/add-custom-fields.
         CrmFormSettingsComponent,
         MarketPlaceCategoriesComponent,
         ChatGptIntegrationSettingsComponent,
+        FlexiFieldComponent,
+        UniversalSearchComponent,
         XamplifyCustomFieldsSettingsComponent,
         LeadCustomFieldsSettingsComponent,
         AddCustomFieldsComponent
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
-        SuperAdminServiceService,MyProfileService,ChatGptSettingsService]
+        SuperAdminService,MyProfileService,ChatGptSettingsService,FlexiFieldService]
 })
 export class DashboardModule { }

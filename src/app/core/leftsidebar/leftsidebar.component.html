@@ -19,7 +19,9 @@
             <li *ngIf="!menu.showSubMenu" [ngClass]="{'active': menu.mergeTag === mergeTag}">
               <a (click)="startLoader()" [routerLink]="menu.angularPath">
                 <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                <span class="title">{{menu.customName}}</span>
+                <span class="title">{{menu.customName | translate }}
+                  <sup *ngIf="menu.moduleId == 15">(Beta)</sup>
+                </span>
                 <span class="selected"></span>
               </a>
               <div class="border-bt"></div>
@@ -27,7 +29,7 @@
             <li *ngIf="menu.showSubMenu" [ngClass]="{'active': menu.mergeTag === mergeTag}">
               <a href="javascript:;" (click)="toggleSubMenu(menu.mergeTag)">
                 <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                <span class="title">{{menu.customName}}</span>
+                <span class="title">{{menu.customName | translate }}</span>
                 <span class="arrow"></span>
                 <span class="selected"></span>
               </a>
@@ -37,7 +39,7 @@
                 <li *ngFor="let subMenu of menu.subModules">
                   <a class="sub_menu_margin" (click)="startLoader()" [routerLink]="subMenu.angularPath">
                     <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
-                    <span class="title">{{subMenu.customName}}</span>
+                    <span class="title">{{subMenu.customName | translate }}</span>
                   </a>
                 </li>
               </ul>

@@ -1,6 +1,7 @@
 import { Role } from './role';
 import { CampaignAccess } from '../../campaigns/models/campaign-access';
 import { CompanyProfileDTO } from '../../dashboard/company-profile/models/company-profile-dto';
+import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 
 export class User {
     username: string;
@@ -76,5 +77,9 @@ export class User {
     companyDomain : string;
     accountOwner : string;
     website: string;
-
+    isValidEmailIdPattern = false;
+    isWelcomePageEnabled:boolean;
+    flexiFields : Array<FlexiFieldsRequestAndResponseDto>= new Array<FlexiFieldsRequestAndResponseDto>();
+    accountId : string;
+    userStatus : string;
 }

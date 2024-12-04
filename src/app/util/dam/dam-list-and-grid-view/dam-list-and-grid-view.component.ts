@@ -82,6 +82,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	exportObject = {};
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+	@Input() searchKeyValue : any;
 	SuffixHeading: string = "";
 	titleHeader: string = "";
 	actionsDivClass = "actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign";
@@ -118,7 +119,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
 	}
-
+	triggerUniversalSearch() {
+		if (this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Asset') {
+			this.searchKeyValue = this.referenceService.universalSearchKey;
+			this.sortOption.searchKey = this.referenceService.universalSearchKey;
+			//this.pagination.searchKey = this.referenceService.universalSearchKey;
+			this.getAllFilteredResults();
+		}
+	}
 	callInitMethods() {
 		localStorage.removeItem('campaignReport');
 		localStorage.removeItem('saveVideoFile');
@@ -157,7 +165,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (message!=undefined && message.length > 0 && !this.folderListViewExpanded ) {
 			this.customResponse = new CustomResponse('SUCCESS', message, true);
 		}
-
+		this.triggerUniversalSearch(); //XNFR-574
 		if (this.viewType != "fl" && this.viewType != "fg") {
 			this.getCompanyId();
 		}
@@ -170,22 +178,46 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.isUploaded = false;
 		this.referenceService.isAssetDetailsUpldated = false;
 		this.referenceService.assetResponseMessage = "";
+		this.referenceService.universalModuleType = "";//XNFR-574
 	}
 
 	/********XNFR-169******/
 	setViewType(viewType: string) {
-		if (this.viewType != viewType) {
-			if (this.folderListView) {
-				let gridView = "g" == viewType;
-				this.modulesDisplayType.isGridView = gridView;
-				this.modulesDisplayType.isListView = !gridView;
-			} else {
-				if (this.folderViewType != undefined && viewType != "fg") {
-					this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId, this.isPartnerView);
-				} else {
-					this.referenceService.goToManageAssets(viewType, this.isPartnerView);
+		if (this.utilService.folderListViewSelected) {
+			if (this.isPartnerView) {
+				if (viewType == 'g') {
+					this.referenceService.goToRouter('home/dam/shared/g');
+				} else if (viewType == 'l') {
+					this.referenceService.goToRouter('/home/dam/manage/l/');
 				}
-				this.titleHeader = ' Assets';
+				else {
+					this.referenceService.goToRouter('home/dam/shared/fl');
+				}
+			}
+			else {
+				if (viewType == 'g') {
+					this.referenceService.goToRouter('/home/dam/manage/g/');
+				} else if (viewType == 'l') {
+					this.referenceService.goToRouter('/home/dam/manage/l/');
+				}
+				else {
+					this.referenceService.goToRouter('/home/dam/manage/fl/');
+				}
+			}
+		} else {
+			if (this.viewType != viewType) {
+				if (this.folderListView) {
+					let gridView = "g" == viewType;
+					this.modulesDisplayType.isGridView = gridView;
+					this.modulesDisplayType.isListView = !gridView;
+				} else {
+					if (this.folderViewType != undefined && viewType != "fg") {
+						this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId, this.isPartnerView);
+					} else {
+						this.referenceService.goToManageAssets(viewType, this.isPartnerView);
+					}
+					this.titleHeader = ' Assets';
+				}
 			}
 		}
 	}
@@ -211,6 +243,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
 						this.pagination.companyId = this.loggedInUserCompanyId;
+						this.folderListSearchInFolder();
 						if (this.isPartnerView) {
 							if (this.vanityLoginDto.vanityUrlFilter) {
 								this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
@@ -220,11 +253,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							/*** XBI-2133 ****/
 							this.findSharedAssetsByCompaniesForPartnerView();
 							this.pagination.userId = this.loggedInUserId;
-							this.listPublishedAssets(this.pagination);
+								this.listPublishedAssets(this.pagination);
 						} else {
 							this.findFileTypes();
 							/*** XBI-2133 ****/
-							this.fetchWhiteLabeledContentSharedByVendorCompanies()
+							this.fetchWhiteLabeledContentSharedByVendorCompanies();
 							this.pagination.userId = this.loggedInUserId;
 							this.listAssets(this.pagination);
 						}
@@ -329,6 +362,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.stopLoaders();
 		}, error => {
 			this.stopLoadersAndShowError(error);
+		},()=>{
+			this.callFolderListViewEmitter();
 		});
 	}
 
@@ -345,6 +380,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.getAllFilteredResults();
 	}
 	/*************************Search********************** */
+	folderListSearchInFolder() {
+		this.sortOption.searchKey = this.searchKeyValue;
+		if (this.utilService.searchKey) {
+			this.sortOption.searchKey = this.utilService.searchKey;
+			this.pagination.searchKey = this.sortOption.searchKey;
+			this.showUpArrowButton = true;
+		}
+	}
 	searchAssets() {
 		this.getAllFilteredResults();
 	}

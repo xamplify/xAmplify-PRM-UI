@@ -5,7 +5,7 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0">
+        <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0 light_bg_removal">
             <!--List View / Grid View-->
             <div *ngIf="modulesDisplayType?.isListView || modulesDisplayType?.isGridView">
                 <ng-template *ngIf="!httpRequestLoader?.isLoading" [ngTemplateOutlet]="manageEmailTemplateHeaderOptions"></ng-template>
@@ -273,9 +273,8 @@
                 <div class="btn-group pull-right" style="display: flex;">
                     <div>
                         <div class="group-dropdown">
-                            <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr_4' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr_4':
-                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view  mr_4': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view mr_4':'fa fa-th-list btn btn-xs l-g-view mr_4'"
-                                style="padding:10px !important"></button>
+                            <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr_4 view_type mobile_view_type' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr_4 view_type mobile_view_type':
+                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view  mr_4': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view mr_4':'fa fa-th-list btn btn-xs l-g-view mr_4 view_type mobile_view_type'"></button>
                                 <div class="group-dd-content">
                                     <ng-container class='m10'>
                                         <span class="btn btn-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="!modulesDisplayType.isListView && setViewType('l')">

@@ -34,6 +34,8 @@ import { MdfService } from 'app/mdf/services/mdf.service';
 import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { unescape } from 'querystring';
 
 
 declare var $,swal: any;
@@ -210,6 +212,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     supportEmailIdError = false;
     supportEmailIdErrorMessage = "";
 
+    displayName = "";
+    companyProfileNameInfo: String;
+    isSuperAdmin: boolean = false;
+
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -381,32 +387,42 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     
     ngOnInit() {
         this.isLocalHost = this.authenticationService.isLocalHost();
+        this.isSuperAdmin = this.authenticationService.isSuperAdmin();
+        let firstName = this.authenticationService.user.firstName;
+        let lastName = this.authenticationService.user.lastName;
+        if (firstName == undefined) {
+            firstName = "";
+        }
+        if (lastName == undefined) {
+            lastName = "";
+        }
+        this.displayName = firstName + " " + lastName;
         this.geoLocation();
-        if(!this.isFromAdminPanel){
-            this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
+        if (!this.isFromAdminPanel) {
+            this.upadatedUserId = this.authenticationService.isSuperAdmin() ? this.authenticationService.selectedVendorId : this.loggedInUserId;
             this.getCompanyProfileByUserId(this.upadatedUserId);
             if (this.authenticationService.user.hasCompany) {
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
-            }else{
-				if(this.authenticationService.isPartner()|| this.authenticationService.isOnlyUser()){
-            			this.getPartnerDetails();
-            	}
+            } else {
+                if (this.authenticationService.isPartner() || this.authenticationService.isOnlyUser()) {
+                    this.getPartnerDetails();
+                }
             }
-            
+
             if (this.authenticationService.vanityURLEnabled && this.authenticationService.checkSamlSettingsUserRoles()) {
                 this.setVendorLogoTooltipText();
             }
         }
-       // this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
-        if(!this.companyLogoImageUrlPath){
-          this.squareData = {};
+        if (!this.companyLogoImageUrlPath) {
+            this.squareData = {};
         }
 
-        if(!this.companyBgImagePath){
+        if (!this.companyBgImagePath) {
             this.squareDataForBgImage = {};
         }
+        this.getCompanyNameandProfileInfo();
     }
     
     uploadFileConfiguration(){
@@ -591,7 +607,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             'roles': data.roles,
                             'campaignAccessDto': data.campaignAccessDto,
                             'logedInCustomerCompanyNeme': JSON.parse(currentUser)['companyName'],
-							'source':data.source	
+							'source':data.source,
+                            'isWelcomePageEnabled':JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
                         };
                         localStorage.clear();
                         if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles) {
@@ -658,10 +675,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.authenticationService.user.hasCompany = true;
                             self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
-                            self.router.navigate(["/home/dashboard/welcome"]);
+                            const currentUser = localStorage.getItem('currentUser');
+                            if(JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]){
+                                self.router.navigate(["/welcome-page"]);
+                            }else{
+                                self.router.navigate(["/home/dashboard/welcome"]);
+                            }
                             self.processor.set(self.processor);
                             self.saveVideoBrandLog();
-                            const currentUser = localStorage.getItem('currentUser');
                             let companyName = JSON.parse(currentUser)['companyName'];
                             if(companyName==null || companyName==undefined || companyName==""){
                                 companyName = self.companyProfile.companyName;
@@ -676,7 +697,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                                 'roles': JSON.parse(currentUser)['roles'],
                                 'campaignAccessDto':JSON.parse(currentUser)['campaignAccessDto'],
                                 'logedInCustomerCompanyNeme':companyName,
-								'source':JSON.parse(currentUser)['source']                         
+								'source':JSON.parse(currentUser)['source']  ,
+                                'isWelcomePageEnabled':JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
   							};
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
@@ -933,7 +955,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     }
                 }
             } else {
-                this.removeCompanyNameError();
+                if (value.length >50){
+                    this.setCompanyNameError("Company Name cannot be more than 50 characters long.");
+                }else{
+                    this.removeCompanyNameError();
+                }  
             }
         } else {
             this.companyNameErrorMessage = "";
@@ -1405,9 +1431,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     validateTwitter() {
         if ($.trim(this.companyProfile.twitterLink).length > 0) {
-            if (!this.companyProfile.twitterLink.includes('twitter.com') ) {
+            if (!(this.companyProfile.twitterLink.includes('twitter.com') || this.isValidTwitterLink(this.companyProfile.twitterLink))) {
                 this.addTwitterError();
-                this.twitterLinkErrorMessage = "Invalid Twiiter Url";
+                this.twitterLinkErrorMessage = "Invalid Twitter Url";
             } else {
                 this.removeTwitterError();
             }
@@ -1561,14 +1587,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                       this.companyProfile.lastName = user.lastName;
                       this.setCompanyProfileViewData(data.companyProfile.companyName);
                         if(roleIds.indexOf(13)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already vendor and has company profile.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has vendor role and has company profile.So account cannot be created", true );
                             this.addBlur();
                         }else if(roleIds.indexOf(18)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already vendor tier-1 and has company profile.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has marketing role and has company profile.So account cannot be created", true );
                             this.addBlur();
                         }
                         else if(roleIds.indexOf(2)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already an orgadmin.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has an orgadmin role.So account cannot be created", true );
                             this.addBlur();
                         }
                         else if(roleIds.length==2&&roleIds.indexOf(3)>-1 && roleIds.indexOf(12)>-1){
@@ -1753,7 +1779,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               this.errorUploadCropper = true;
               this.showCropper = false;
               this.refService.showSweetAlertErrorMessage("Uploaded File Type :"+file.type+" is not supported");
-              this.isLoading = true;
+              this.isLoading = false;
             }       
             this.closeModal(); 
         } else{
@@ -1979,6 +2005,19 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     setReferVendorValue(event:boolean){
         this.campaignAccess.referVendor = event;
+    }
+    isValidTwitterLink(twitterLink: any) {
+        const  regex =  /^(https?:\/\/)?(www\.)?x\.com(\/.*)?$/;
+        return regex.test(twitterLink);
+    }
+    /***** XNFR-763 *****/
+    getCompanyNameandProfileInfo() {
+        if (!this.authenticationService.isOnlyPartner() && (this.authenticationService.isSuperAdmin || this.authenticationService.isVendor() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendorAndPartnerTeamMember || this.authenticationService.module.isPrmCompany
+            || this.authenticationService.module.isOrgAdminCompany || this.authenticationService.module.isMarketingCompany)) {
+            this.companyProfileNameInfo = this.properties.COMPANY_PROFILE_NAME_INFO;
+        } else if (this.authenticationService.isOnlyUser() || this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) {
+            this.companyProfileNameInfo = this.properties.COMPANY_PROFILE_NAME_PARTNER_INFO;
+        }
     }
   
 }

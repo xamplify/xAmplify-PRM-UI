@@ -508,6 +508,10 @@ downloadLeads(pagination: Pagination){
   pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   pagination.partnerTeamMemberGroupFilter = partnerTeamMemberGroupFilter;
   pagination.forCampaignAnalytics = this.fromAnalytics
+  if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+    pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    pagination.vanityUrlFilter = true;
+  }
   this.leadsService.downloadLeads(pagination, this.loggedInUserId)
       .subscribe(
           data => {    
@@ -541,9 +545,9 @@ getSelectedStatus(event:any){
 
 showRegisterDealButton(lead):boolean {
   let showRegisterDeal = false;
-  if (lead.selfLead && lead.dealBySelfLead && (this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
+  if (lead.selfLead && lead.dealBySelfLead && (this.authenticationService.module.isOrgAdminCompany || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
     showRegisterDeal = true;
-  } else if (((((lead.dealByVendor && this.authenticationService.isVendor() || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
+  } else if (((((lead.dealByVendor && (this.authenticationService.module.isVendor || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
     && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED'))) {
     showRegisterDeal = true;
   }

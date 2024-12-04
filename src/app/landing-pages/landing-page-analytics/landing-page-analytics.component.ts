@@ -55,7 +55,12 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     @Input() vendorLandingPageId;
     @Input() vendorPageAlias;
     @Input() masterLandingPages= false;
+    @Input() welcomePages= false;
+    @Input() isPartnerJourneyPages= false;
+    @Input() isVendorMarketplacePages= false;
+    @Input() vendorPartnerJourneyPages = false;
     campaignTitle = "";
+    barChartViewPopUpSortValue:any;
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService,private campaignService:CampaignService) {
@@ -71,12 +76,16 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
         this.landingPageAlias = this.route.snapshot.params['alias'];
         this.partnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
         let categoryId = this.route.snapshot.params['categoryId'];
-        if(this.vendorJourney || this.masterLandingPages){
+        if(this.vendorJourney || this.masterLandingPages || this.welcomePages || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
             this.landingPageId = this.vendorLandingPageId;
         }
         if(this.vendorPages){
             this.landingPageAlias = this.vendorPageAlias;
             this.landingPageAnalyticsPostDto.vendorPages = true;
+        }
+        if(this.vendorPartnerJourneyPages){
+            this.landingPageAlias = this.vendorPageAlias;
+            this.landingPageAnalyticsPostDto.vendorPartnerJourneyPages = true;
         }
         if(categoryId>0){
             this.routerLink = this.managePagesRouterLink+"/"+categoryId;
@@ -194,34 +203,40 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
             ( error: any ) => { this.logger.errorPage( error ); } );
     }
     
-    listAnalytics(pagination:Pagination){
-        this.referenceService.loading( pagination.loader, true );
-        pagination.partnerId = this.partnerId;
-        if(this.vendorPages){
-            pagination.vendorPages = true;
+    listAnalytics(pagination: Pagination) {
+        if (this.barChartPopUp) {
+            this.listBarChartAnalytics(this.barChartPagination, this.videoUtilService.timePeriod, this.barChartViewPopUpSortValue);
+        } else {
+            this.referenceService.loading(pagination.loader, true);
+            pagination.partnerId = this.partnerId;
+            if (this.vendorPages) {
+                pagination.vendorPages = true;
+            }
+            if(this.vendorPartnerJourneyPages){
+                pagination.vendorPartnerJourneyPage = true;
+            }
+            this.landingPageService.listAnalytics(pagination, this.countryCode).subscribe(
+                (response: any) => {
+                    this.statusCode = response.statusCode;
+                    if (this.statusCode == 200) {
+                        const data = response.data;
+                        pagination.totalRecords = data.totalRecords;
+                        this.partnerEmailId = data.partnerEmailId;
+                        this.sortOption.totalRecords = data.totalRecords;
+                        $.each(data.landingPageAnalytics, function (index, analytics) {
+                            if ($.trim(analytics.openedTimeInString).length > 0) {
+                                analytics.displayTime = new Date(analytics.openedTimeInString);
+                            } else {
+                                analytics.displayTime = new Date();
+                            }
+                        });
+                        pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
+                    }
+                    this.referenceService.loading(pagination.loader, false);
+                    this.pageLoader = false;
+                },
+                (error: any) => { this.closeModal(); this.logger.errorPage(error); });
         }
-        this.landingPageService.listAnalytics( pagination,this.countryCode ).subscribe(
-            ( response: any ) => {
-                this.statusCode = response.statusCode;
-                if(this.statusCode==200){
-                    const data = response.data;
-                    pagination.totalRecords = data.totalRecords;
-                    this.partnerEmailId = data.partnerEmailId;
-                    this.sortOption.totalRecords = data.totalRecords;
-                    $.each(data.landingPageAnalytics,function(index,analytics){
-                        if($.trim(analytics.openedTimeInString).length>0){
-                            analytics.displayTime = new Date(analytics.openedTimeInString);
-                        }else{
-                            analytics.displayTime = new Date();
-                        }
-                   });
-                    pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
-                }
-                this.referenceService.loading(pagination.loader, false );
-                this.pageLoader = false;
-            },
-            ( error: any ) => {this.closeModal();this.logger.errorPage( error ); } );
-    
     }
     
     /********************Pagaination&Search Code*****************/
@@ -289,6 +304,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     
     viewInDetail(value:any){
         this.barChartPopUp = true;
+        this.barChartViewPopUpSortValue = value;
         $('#country-views-modal').modal('show');
         this.barChartPagination.landingPageId = this.landingPageId;
         this.barChartPagination.userId = this.authenticationService.getUserId();
@@ -302,6 +318,9 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     listBarChartAnalytics(pagination:Pagination,timePeriod:string,filterValue:any){
         this.referenceService.loading( pagination.loader, true );
         pagination.partnerId = this.partnerId;
+        pagination.vendorPages = this.landingPageAnalyticsPostDto.vendorPages;
+        pagination.vendorPartnerJourneyPage = this.landingPageAnalyticsPostDto.vendorPartnerJourneyPages;
+        
         this.landingPageService.listBarChartAnalytics(pagination,timePeriod,filterValue,this.landingPageAnalyticsPostDto.analyticsTypeString).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;

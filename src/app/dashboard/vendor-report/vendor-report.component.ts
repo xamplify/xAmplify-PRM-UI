@@ -40,11 +40,23 @@ export class VendorReportComponent implements OnInit {
     userAlias: string = "";
     accessAccountVanityURL: string;
     loading = false;
+    dropdownDataLoading = true;
+    companiesDropdownList = [];
     constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public pagination: Pagination,
         public dashboardService: DashboardService, public pagerService: PagerService, public properties: Properties) { }
 
     ngOnInit() {
         this.getVendorsDetails();
+    }
+
+    getVendorCompaniesDropdownList(){
+        this.dashboardService.getVendorCompaniesDropdownList().subscribe(
+            response=>{
+                this.companiesDropdownList = response.data;
+                this.dropdownDataLoading = false;
+            },error=>{
+                this.dropdownDataLoading = false;
+            });
     }
 
     eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
@@ -228,12 +240,6 @@ export class VendorReportComponent implements OnInit {
         }
     }
 
-    editModuleNames(report: any) {
-        if (report && report.companyId && report.companyProfileName) {
-            this.referenceService.goToRouter('/home/dashboard/edit-module-names/' + report.companyId);
-        }
-    }
-
    navigateToDashboardStats(report:any){
     let companyProfileName = report['companyProfileName'];
     if(companyProfileName!=undefined){
@@ -252,6 +258,16 @@ export class VendorReportComponent implements OnInit {
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
     $('#copied-vendor-report-users-email-address-' + index).show(600);
+}
+
+getSelectedVendorCompanyId(event:any){
+    if(event!=null){
+        this.pagination = new Pagination();
+        this.pagination.companyId = event['id'];
+    }else{
+        this.pagination = new Pagination();
+    }
+    this.getVendorsDetails();
 }
 
 

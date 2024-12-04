@@ -25,6 +25,9 @@ export class LandingPageService {
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
     vendorJourney:boolean = false;
     isMasterLandingPages:boolean = false;
+    welcomePages:boolean = false;
+    isPartnerJourneyPages:boolean = false;
+    isVendorMarketplacePages:boolean = false;
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
@@ -84,15 +87,25 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    getAvailableNames( userId: number ) {
-        return this.http.get( this.URL + "/listAvailableNames/" + userId + "?access_token=" + this.authenticationService.access_token, "" )
+    getAvailableNames( userId: number, isWelcomePage:boolean) {
+        let url;
+        if(isWelcomePage){
+            url = this.URL + "/listAvailableNamesForWelcomePage/";
+        }else{
+            url = this.URL + "/listAvailableNames/";
+
+        }
+        return this.http.get( url + userId + "?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
 
     getById( id: number ): Observable<any> {
-        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
-        return this.http.get( this.URL + "getById/" + id + "/"+vanityUrlFilter+"?access_token=" + this.authenticationService.access_token, "" )
+        let isVanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        let landingPageId = "landingPageId="+id;
+        let vanityUrlFilter = "&vanityUrlFilter="+isVanityUrlFilter;
+        let companyProfileName = isVanityUrlFilter?"&vanityCompanyProfileName="+this.authenticationService.companyProfileName:"";
+        return this.http.get( this.URL + "getById?"+landingPageId+vanityUrlFilter+companyProfileName +"&access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -117,21 +130,19 @@ export class LandingPageService {
     
     getHtmlContentByAlias( landingPageHtmlDto:any,isPartnerLandingPage:boolean, isMasterLandingPage:boolean) {
         landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        landingPageHtmlDto['vanityCompnayProfileName'] = this.authenticationService.companyProfileName;
+        let url = this.authenticationService.REST_URL;
         if(isPartnerLandingPage){
-            return this.http.post( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias",landingPageHtmlDto)
-            .map( this.extractData )
-            .catch( this.handleError );
+            url = url +"/getPartnerHtmlBodyByAlias"
         }else if(isMasterLandingPage){
-            return this.http.post( this.authenticationService.REST_URL + "/getMasterLandingPageHtmlBodyByAlias",landingPageHtmlDto)
-            .map( this.extractData )
-            .catch( this.handleError );
-
+            url = url +"/getMasterLandingPageHtmlBodyByAlias"
         }else{
-            return this.http.post( this.authenticationService.REST_URL + "/getHtmlBodyByAlias" , landingPageHtmlDto )
-            .map( this.extractData )
-            .catch( this.handleError );
+            url = url +"/getHtmlBodyByAlias"
         }
-        
+        return this.http.post( url,landingPageHtmlDto)
+        .map( this.extractData )
+        .catch( this.handleError );
+
     }
     
     getHtmlContentByCampaignLandingPageAlias( alias: string ) {
@@ -271,5 +282,58 @@ export class LandingPageService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+
+    updateWelcomePage(landingPage:LandingPage) {
+        landingPage.userId = this.authenticationService.getUserId();
+        const url = this.URL +"/activate-welcome-page?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,landingPage);
+
+    } 
     
+    getActiveWelcomePageByVanity( landingPageHtmlDto:any) {
+        let vanityUrlFilter  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        let vanityCompnayProfileName = this.authenticationService.companyProfileName;
+        const url = this.URL + "/getActiveWelcomePageByVanity?vanityUrlFilter=" + vanityUrlFilter + "&vanityCompnayProfileName=" + vanityCompnayProfileName + "&access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    unPublishWelcomePage(landingPage:LandingPage) {
+        landingPage.userId = this.authenticationService.getUserId();
+        const url = this.URL + "/unpublish-welcome-page?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,landingPage);
+    } 
+
+    welcomePageDeletebById( id: number): Observable<any> {   
+        const url =this.URL +"welcomePageDelete/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callDeleteMethod(url);
+    }
+
+    getVendorCompaniesByAlias( alias:string, isMasterLandingPage) {
+        const url = this.authenticationService.REST_URL + "/getVendorCompaniesByAlias/" + alias+"/"+isMasterLandingPage ;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    sharePartnerJourneyLandingPageToPartners(shareLeadsDTO: any) {
+        return this.http.post(this.URL + "sharePartnerJourneyPageToVendors?access_token=" + this.authenticationService.access_token, shareLeadsDTO)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getPartnerJourneyPageSharedDetails( landingPageId: number ) {
+        return this.http.get( this.URL + "findVendorCompanyIdsByLandingPageId/" + landingPageId + "?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    findVendorPartnerJourneyLandingPages(pagination: any) {
+        return this.http.post(this.URL + "findVendorPartnerJourneyLandingPages?searchKey=" + pagination.searchKey + "&access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getPartnerDetailsByVendorCompany(companyId: number, landingPageId:number ) {
+        return this.http.get( this.URL + "getPartnerDetailsByVendorCompany/"+companyId+"/"+landingPageId+"?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 }

@@ -10,8 +10,7 @@
                <div class="col-sm-6 col-md-8 col-lg-6 text-left" style="padding-left: 0px;">
                   <ul class="page-breadcrumb">
                      <li>
-                        <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"
-                           translate>Home</a>
+                        <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                      </li>
                      <li>
@@ -63,11 +62,8 @@
                            <span class="btn btn-primary transition">Edit PDF</span>
                      </button>
                   </div>
-                  
-                  
                </div>
-               <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-               </app-response-message>
+               <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
                <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
                <ng-container *ngIf="!previewItems">
                   <div [hidden]="formLoader" class="row">
@@ -422,7 +418,7 @@
                                              </div>
                                           </div>
                                        </div>
-                                       <div class="col-md-4 col-lg-4 col-xs-12 col-sm-4 mb_pl_15"
+                                       <div class="col-md-4 col-lg-4 col-xs-12 col-sm-4 mb_pl_15 mobile_thumbnail"
                                           style="padding-left: 0;">
                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                              <!---Thumbnail Image-->

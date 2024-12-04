@@ -1,4 +1,4 @@
-<div class="page-content">
+<div class="page-content" *ngIf="authenticationService?.module?.socialFeedsAccess">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
@@ -250,80 +250,83 @@
 			</div>
 		</div>
 	</div>
+</div>
 
+<div *ngIf="!authenticationService?.module?.socialFeedsAccess">
+	<app-access-denied-util></app-access-denied-util>
+</div>
 
-
-	<div class="modal right fade-scale" id="listVideosModal" tabindex="-1" role="dialog"
-		aria-labelledby="listVideosModalLabel" data-keyboard="false" data-backdrop="static">
-		<div class="modal-dialog" role="document" style="width: 80%; right: 0;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a class="close-circle" (click)="closeListVideosModal();">
-						<i class="fa fa-times" aria-hidden="true"></i>
-					</a>
-					<h4 class="modal-title" id="listVideosModalLabel">List Of Videos</h4>
-				</div>
-				<div class="modal-body clearfix">
-					<div class="row">
-						<div class="col-xs-12" id="preview-section">
-							<div id="newPlayerVideo"></div>
+<div class="modal right fade-scale" id="listVideosModal" tabindex="-1" role="dialog"
+	aria-labelledby="listVideosModalLabel" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog" role="document" style="width: 80%; right: 0;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class="close-circle" (click)="closeListVideosModal();">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</a>
+				<h4 class="modal-title" id="listVideosModalLabel">List Of Videos</h4>
+			</div>
+			<div class="modal-body clearfix">
+				<div class="row">
+					<div class="col-xs-12" id="preview-section">
+						<div id="newPlayerVideo"></div>
+					</div>
+					<div *ngIf="videosPagination.pagedItems?.length > 0" class="col-xs-12">
+						<div class="table-responsive">
+							<table class="table table-hover" id="list-videos-table">
+								<tbody>
+									<tr style="cursor: pointer;"
+										*ngFor="let video of videosPagination.pagedItems; let i = index"
+										[ngClass]="{'highlight': selectedVideo === video}">
+										<td (click)="selectVideo(video)">
+											<div class="select-video">
+												<i class="fa fa-circle-o" *ngIf="selectedVideo !== video"></i>
+												<i class="fa fa-check-circle-o" *ngIf="selectedVideo === video"></i>
+											</div>
+											<div class="thumbnail-wrapper">
+												<img src="{{video.imagePath}}"
+													(error)="videoUtilService.errorVideoHandler($event)">
+												<h6 class="duration">
+													{{videoUtilService.truncateHourZeros(video.videoLength)}}</h6>
+											</div>
+											<div class="video-title">
+												<h5>{{video.title | slice:0:150}}<span
+														*ngIf="video.title?.length>150">...</span></h5>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
-						<div *ngIf="videosPagination.pagedItems?.length > 0" class="col-xs-12">
-							<div class="table-responsive">
-								<table class="table table-hover" id="list-videos-table">
-									<tbody>
-										<tr style="cursor: pointer;"
-											*ngFor="let video of videosPagination.pagedItems; let i = index"
-											[ngClass]="{'highlight': selectedVideo === video}">
-											<td (click)="selectVideo(video)">
-												<div class="select-video">
-													<i class="fa fa-circle-o" *ngIf="selectedVideo !== video"></i>
-													<i class="fa fa-check-circle-o" *ngIf="selectedVideo === video"></i>
-												</div>
-												<div class="thumbnail-wrapper">
-													<img src="{{video.imagePath}}"
-														(error)="videoUtilService.errorVideoHandler($event)">
-													<h6 class="duration">
-														{{videoUtilService.truncateHourZeros(video.videoLength)}}</h6>
-												</div>
-												<div class="video-title">
-													<h5>{{video.title | slice:0:150}}<span
-															*ngIf="video.title?.length>150">...</span></h5>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<!--pager here  -->
-							<app-pagination *ngIf="videosPagination.pagedItems?.length > 0"
-								[pagination]="videosPagination" [type]="'updatestatusvideos'"
-								(notifyParent)="setPage($event)"
-								(notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
-						</div>
+						<!--pager here  -->
+						<app-pagination *ngIf="videosPagination.pagedItems?.length > 0"
+							[pagination]="videosPagination" [type]="'updatestatusvideos'"
+							(notifyParent)="setPage($event)"
+							(notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn Btn-Gray" (click)="closeListVideosModal()">Close</button>
-					<button type="button" class="btn btn-primary" style="color:white"
-						(click)="addVideo()">Select</button>
-				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn Btn-Gray" (click)="closeListVideosModal()">Close</button>
+				<button type="button" class="btn btn-primary" style="color:white"
+					(click)="addVideo()">Select</button>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class="modal fade right" id="rssModal" tabindex="-1" role="dialog" aria-labelledby="rssModalLabel">
-		<div class="modal-dialog" role="document" style="width: 100% !important;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"><i
-							class="fa fa-times"></i></button>
-					<h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
-				</div>
-				<div class="modal-body" style="background: #f1f3fa">
-					<app-feed-update (selectedFeed)='addToPost($event)'
-						(navigateUrl)='navigateRssHome($event)'></app-feed-update>
-				</div>
+<div class="modal fade right" id="rssModal" tabindex="-1" role="dialog" aria-labelledby="rssModalLabel">
+	<div class="modal-dialog" role="document" style="width: 100% !important;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"><i
+						class="fa fa-times"></i></button>
+				<h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
+			</div>
+			<div class="modal-body" style="background: #f1f3fa">
+				<app-feed-update (selectedFeed)='addToPost($event)'
+					(navigateUrl)='navigateRssHome($event)'></app-feed-update>
 			</div>
 		</div>
 	</div>
+</div>

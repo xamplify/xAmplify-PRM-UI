@@ -16,6 +16,7 @@ import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { ThemePropertiesDto } from "app/dashboard/models/theme-properties-dto";
 import { CompanyThemeActivate } from "app/dashboard/models/company-theme-activate";
 import { ThemeDto } from "app/dashboard/models/theme-dto";
+import { XAMPLIFY_CONSTANTS } from "app/constants/xamplify-default.constants";
 
 
 declare var $: any;
@@ -39,6 +40,8 @@ export class HomeComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number;
   serverImageHostUrl = "";
+  /**XNFR-669**/
+  isWelcomePageEnabled:boolean;
   constructor(
     private titleService: Title,
     public referenceService: ReferenceService,
@@ -308,6 +311,8 @@ export class HomeComponent implements OnInit {
       this.userId = this.currentUser['userId'];
       this.token = this.currentUser['accessToken'];
       const roleNames = this.currentUser['roles'];
+      this.isWelcomePageEnabled = this.currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+      this.referenceService.isHarizontalNavigationBar = this.isWelcomePageEnabled;
       if (
         this.referenceService.defaulgVideoMethodCalled === false &&
         (roleNames.length > 1 && this.authenticationService.hasCompany())
@@ -412,7 +417,7 @@ export class HomeComponent implements OnInit {
             this.authenticationService.isDarkForCharts = true;
             require("style-loader!../../../assets/admin/layout2/css/themes/xamplify-dark-light.css");
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
-            && activeThemeDto.name === "Neumorphism Dark(Beta)" && !this.router.url.includes('home/help')) {
+            && activeThemeDto.name === "Neumorphism Dark" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = true;
             require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
             require("style-loader!../../../assets/admin/layout2/css/themes/neumorphism-light-dark-buttons.css")
@@ -536,24 +541,30 @@ export class HomeComponent implements OnInit {
   getDisplayViewType() {
     let companyProfileName = this.authenticationService.companyProfileName;
     if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.loader = true;
       this.userService.getDisplayViewType(this.authenticationService.getUserId(), this.authenticationService.companyProfileName)
         .subscribe(
           data => {
             if (data.statusCode == 200) {
               localStorage.setItem('defaultDisplayType', data.data);
             }
+            this.loader = false;
           }, error => {
             localStorage.setItem('defaultDisplayType', 'LIST');
+            this.loader = false;
           });
     } else {
+      this.loader = true;
       this.userService.getModulesDisplayDefaultView(this.authenticationService.getUserId())
         .subscribe(
           data => {
             if (data.statusCode == 200) {
               localStorage.setItem('defaultDisplayType', data.data);
             }
+            this.loader = false;
           }, error => {
             localStorage.setItem('defaultDisplayType', 'LIST');
+            this.loader = false;
           });
     }
   }

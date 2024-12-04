@@ -1,10 +1,9 @@
 import { Injectable, Inject } from "@angular/core";
-import { Http, Response, RequestOptions, Headers, ResponseContentType } from "@angular/http";
+import { Http, Response } from "@angular/http";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Observable } from "rxjs/Observable";
 import { VanityURL } from "../models/vanity.url";
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
-import { DashboardButton } from "../models/dashboard.button";
 import { Pagination } from "app/core/models/pagination";
 import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
 import { Title, DOCUMENT } from "@angular/platform-browser";
@@ -144,6 +143,11 @@ export class VanityURLService {
       .catch(this.handleError);
   }
 
+  getAllTemplatesDuplicates() {
+    return this.http.get(this.URL + "v_url/getDuplicateTemplates/" +this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
   saveOrUpdateEmailTemplate(vanityEmailTemplate: VanityEmailTempalte) {
     const url = this.authenticationService.REST_URL + "v_url/saveOrUpdate/emailTemplate" + "?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, vanityEmailTemplate)
@@ -176,10 +180,7 @@ export class VanityURLService {
       const url = this.authenticationService.REST_URL + "v_url/customLogInTemplateId/" + id +"/loggedInUserId/"+ loggedInUserId;
       return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
-  // getLoginStyleByCompanyId(companyprofileName:any){
-  //   const url = this.authenticationService.REST_URL + "v_url/customLoginStyle/companyProfile/"+ companyprofileName;
-  //     return this.http.get(url).map(this.extractData).catch(this.handleError);
-  // }
+ 
   getActiveLoginTemplate(companyProfileName:number){
     const url = this.authenticationService.REST_URL + "v_url/active/loginTemplate/"+ companyProfileName;
       return this.http.get(url).map(this.extractData).catch(this.handleError);
@@ -209,26 +210,74 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
    let url = window.location.hostname;
     let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && 
     this.envService.CLIENT_URL.indexOf('localhost')>-1;
-    if(isLocalHost){
-      let domainName = this.envService.domainName;
-      if(domainName!="" && domainName!=window.location.hostname){
-        url = this.envService.domainName+".xamplify.com";
-      }
-    }
+    url = this.setUrlForLocalHost(isLocalHost, url);
     if (!url.includes("192.168") && !url.includes("172.16")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
-        this.authenticationService.vanityURLEnabled = true;
-        this.authenticationService.companyProfileName = domainName[0];
-        this.authenticationService.setDomainUrl();
-        if (!this.authenticationService.vanityURLUserRoles) {
-          let currentUser = localStorage.getItem('currentUser');
-          if (currentUser) {
-            const parsedObject = JSON.parse(currentUser);
-            this.authenticationService.vanityURLUserRoles = parsedObject.roles;
+        if(url.includes("xamplify.co") || url.includes("xamplify.io")){
+          this.authenticationService.companyProfileName = domainName[0];
+          this.setVanityVariables(this.authenticationService.companyProfileName);
+        }else{
+          let subDomain  = this.getCustomDomain(url);
+          console.log(url+" is the url And Custom Domain : "+subDomain);
+          let companyProfileName = this.authenticationService.companyProfileName;
+          if(companyProfileName==undefined || companyProfileName==""){
+            this.authenticationService.getCompanyProfileNameByCustomDomain(subDomain+".").subscribe(
+              response=>{
+                let statusCode = response.statusCode;
+                if(statusCode == 200){
+                  this.authenticationService.companyProfileName = response.data;
+                  this.setVanityVariables(this.authenticationService.companyProfileName);
+                }else{
+                  this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
+                  this.router.navigate( ['/vanity-domain-error'] );
+                }
+              
+              },error=>{
+                this.referenceService.showSweetAlertErrorMessage("Invalid Custom Domain");
+              });
+          }else{
+            console.log("API is not needed to get the company profile name");
           }
         }
         return true;
+      }
+    }
+  }
+
+  private getCustomDomain(url:string) {
+    var textBeforeLogin = url.replace(/\/login$/, "");
+    textBeforeLogin = textBeforeLogin.replace(/https?:\/\/|\/$/g, "");
+    return textBeforeLogin;
+  }
+
+  private setUrlForLocalHost(isLocalHost: boolean, url: string) {
+    if (isLocalHost) {
+      let domainName = this.envService.domainName;
+      if (domainName != "" && domainName != window.location.hostname) {
+        var dotCount = (domainName.match(/\./g) || []).length;
+        if (dotCount == 0) {
+          url = this.envService.domainName + ".xamplify.co";
+        } else {
+          url = "https://"+this.envService.domainName+"/login";
+        }
+      }
+    }
+    return url;
+  }
+
+  private setVanityVariables(companyProfileNameOrDomain:string) {
+    this.authenticationService.vanityURLEnabled = true;
+    if(companyProfileNameOrDomain.includes('.')){
+      this.authenticationService.setCustomDomainUrl(companyProfileNameOrDomain);
+    }else{
+      this.authenticationService.setDomainUrl();
+    }
+    if (!this.authenticationService.vanityURLUserRoles) {
+      let currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        const parsedObject = JSON.parse(currentUser);
+        this.authenticationService.vanityURLUserRoles = parsedObject.roles;
       }
     }
   }
@@ -285,7 +334,9 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
       this.titleService.setTitle(this.authenticationService.v_companyName);
     }
     if(this.authenticationService.v_companyFavIconPath) {
-      this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
+      if(this.isVanityURLEnabled()){
+        this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
+      }
     }
   }
 
@@ -330,10 +381,10 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     }
 
     /***XNFR-599****/
-    findAllUnPublishedAndFilteredPublishedDashboardButtons(pagination: Pagination) {
+    findAllPublishedAndUnPublishedDashboardButtons(pagination: Pagination) {
       let userId = this.authenticationService.getUserId();
       let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-      let findAllUrl = this.DASHBOARD_BUTTON_PREFIX_URL+'/findAllUnPublishedAndFilteredPublishedDashboardButtons/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+      let findAllUrl = this.DASHBOARD_BUTTON_PREFIX_URL+'/published-and-unpublished/loggedInUserId/'+userId+'/userListId/'+pagination.userListId+'/partnerUserId/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
       return this.authenticationService.callGetMethod(findAllUrl);
     }
 

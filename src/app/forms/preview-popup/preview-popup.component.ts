@@ -48,7 +48,11 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     @Input() learningTrackId: number = 0;
     /*******XNFR-423*****/
     countryNames = [];
-
+    @Input() isVendorJourney:boolean = false;
+    @Input() isMasterLandingPage:boolean = false;
+    @Input() isWelcomePage:boolean = false;
+    @Input() isVendorOrMasterLandingPage:boolean = false;
+    @Input() isPartnerJourneyPages:boolean = false;
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
         public router: Router, private vanityUrlService: VanityURLService, public sanitizer: DomSanitizer) {
@@ -118,7 +122,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
 
     /*************************Sort********************** */
     sortBy(text: any) {
-        this.sortOption.formsSortOption = text;
+        this.sortOption.previewFormsSortOption = text;
         this.getAllFilteredResults(this.pagination);
     }
 
@@ -142,7 +146,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     getAllFilteredResults(pagination: Pagination) {
         this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.sortOption.searchKey;
-        this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
+        this.pagination = this.utilService.sortOptionValues(this.sortOption.previewFormsSortOption, this.pagination);
         this.listForms(this.pagination);
     }
 

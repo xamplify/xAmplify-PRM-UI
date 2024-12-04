@@ -135,6 +135,16 @@ export class Module {
     /****XNFR-583****/
     vendorPagesEnabled= false;
     chatGptIntegrationEnabled = false;
+    updateModulesFromMyProfile = false;
+
+    isMyVendorsOptionDisplayed = false;
+
+    authGuardLoading = false;
+    /**XNFR-726***/
+    socialShareOptionEnabled = false;
+
+    socialFeedsAccess = false;
+    socialFeedsAccessAsPartner = false;
 
 
 }

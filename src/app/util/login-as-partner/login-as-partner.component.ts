@@ -1,5 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
@@ -64,6 +65,7 @@ export class LoginAsPartnerComponent implements OnInit {
   loginAsPartner(){
     this.utilService.addLoginAsLoader();
     setTimeout(() => {
+      this.utilService.reloadAppInAllTabs()
       this.sendEmailNotificationToPartner();
     }, 2000);
     
@@ -92,11 +94,18 @@ export class LoginAsPartnerComponent implements OnInit {
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(vendorAdminCompanyUserEmailId, true);
   }
 
-  logoutAsPartnerOrTeamMember(){
+  logoutAsPartnerOrTeamMember() {
+    let isCreateCampaignUrl = this.router.url.indexOf("/campaigns/create/email") > -1;
+    if (isCreateCampaignUrl) {
+      this.authenticationService.module.logoutButtonClicked = isCreateCampaignUrl;
+      this.referenceService.goToDashboard();
+    }
     this.utilService.addLoginAsLoader();
-    if(this.isLoggedInAsTeamMember){
+    this.utilService.reloadAppInAllTabs()
+    this.referenceService.isWelcomePageLoading = true;
+    if (this.isLoggedInAsTeamMember) {
       this.logoutAsTeamMember();
-    }else{
+    } else {
       this.logoutAsPartner();
     }
   }
@@ -161,7 +170,10 @@ export class LoginAsPartnerComponent implements OnInit {
     this.utilService.setUserInfoIntoLocalStorage(emailId, data);
     let self = this;
     setTimeout(function () {
-      self.router.navigate(['home/dashboard/'])
+      const currentUser = localStorage.getItem( 'currentUser' );
+      let isWelcomePageEnabled = JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+      let routingLink = isWelcomePageEnabled? 'welcome-page':'home/dashboard/';
+      self.router.navigate([routingLink])
         .then(() => {
           window.location.reload();
         });
@@ -170,6 +182,7 @@ export class LoginAsPartnerComponent implements OnInit {
 
  
 loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
+  this.utilService.reloadAppInAllTabs();
   if (this.isLoggedInThroughVanityUrl) {
     this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
   } else {

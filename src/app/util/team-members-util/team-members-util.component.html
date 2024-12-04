@@ -24,8 +24,7 @@
       *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany && !authenticationService.vanityURLEnabled">
       <ul class="mix-filter p0 m0" style="float: right;margin-top: -4px !important;">
         <li class="filter" style="float: right; margin-top: 5px;" (click)="showPartnerView()"
-          [class.campaign-type-selected]="!isVendorVersion" translate>
-          {{authenticationService?.partnerModule?.customName}} View </li>
+          [class.campaign-type-selected]="!isVendorVersion" translate>Partner View </li>
         <li style="float: right; margin-top: 5px; margin-right: 5px;" (click)="showVendorView()"
           [class.campaign-type-selected]="isVendorVersion" translate>Vendor View</li>
         <p class="filter" style="float: right; margin: 10px;" translate>Team Member as: </p>
@@ -63,35 +62,41 @@
 
   <!-- Team Member Domain Whitelisting #XNFR-549 -->
   <app-domain-whitelisting
-    *ngIf="!showAnalytics && isTeamMemberModule && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isPartnerSuperVisor || authenticationService?.module?.isPartnerAdmin)"
+    *ngIf="!showAnalytics && isTeamMemberModule && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isPartnerSuperVisor || authenticationService?.module?.isPartnerAdmin) && !(authenticationService?.companyProfileName === 'versa-networks' && authenticationService?.module?.loggedInThroughVendorVanityUrl)"
     [isTeamMemberDomains]="true" [hidden]="showAddTeamMemberDiv || editTeamMember"></app-domain-whitelisting>
 
   <div class="row neg_mrg_top18">
     <!---Team Members---->
     <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && !showAnalytics">
       <!--List Of Team members---->
-      <div class="portlet light remove_cardBgcolor">
-        <div class="portlet-title">
-          <div class="row" style="display:flex;align-items: center;">
-            <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3">
-              <div class="caption mg-top7">Team Members
+      <div class="portlet light remove_cardBgcolor light_bg_removal">
+        <div class="portlet-title remove_border">
+          <div class="row flex_unset" style="display:flex;align-items: center;">
+            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-3 mb_width100">
+              <div class="caption mg-top7 team_header">Team Members
               </div>
             </div>
-            <div class="col-lg-4 col-md-3 col-sm-5 col-xs-4  moveButtonsCu button_placement"
+            <div class="col-lg-4 col-md-5 col-sm-5 col-xs-4  moveButtonsCu button_placement mb_width26"
               style="padding-right: 10px;">
-              <div class="row">
+              <div class="row mr-21">
                 <div class="clearfix" *ngIf="isTeamMemberModule &&!isNavigatedFromSuperAdminScreen">
                   <section class="clearfix">
-                    <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                      <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
-                        <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button bgcolor-unset position-relative"
-                            [disabled]="isLoggedInAsTeamMember" [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''">
-                          <span class="btn Btn-Green">Upload a CSV</span>
-                          <input *ngIf="!isLoggedInAsTeamMember" type="file" title="" class="file-upload" #fileImportInput name="File Upload"
-                            id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
-                        </button>
+                    <ng-container *ngIf="!authenticationService?.module?.deletedPartner && !(authenticationService?.companyProfileName === 'versa-networks' && authenticationService?.module?.loggedInThroughVendorVanityUrl)">
+                      <div class="hidden-xs pull-right downloadteam" style="padding:0px">
+                        <button class=" btn btn-primary fileinput-button rounded-0 button position-relative"  [ngClass]=" !isCollapsed ?'team-member-icon' : 'team_downlaod'"
+                        [disabled]="isLoggedInAsTeamMember" [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''">
+                     Upload a CSV
+                      <input *ngIf="!isLoggedInAsTeamMember" type="file" title="" class="file-upload" #fileImportInput name="File Upload"
+                        id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
+                    </button>
+                    <button data-placement="bottom" class="hidden-xs btn btn-primary button border_btn" style="border-radius: 0px 7px 7px 0px!important;" data-toggle="tooltip"
+                    title="Download TeamMembers Csv Template" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
+                    && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
+                    && !authenticationService?.module?.deletedPartner && !isCollapsed ">
+                    <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download"></i>
+                    </button>
                       </div>
-                      <div class="col-xs-12 col-sm-4 pull-right">
+                      <div class="pull-right mr5">
                         <button class="btn-xs btn-block rounded-0 button_blue bgcolor-unset" style="padding:1px;"
                           (click)="!isLoggedInAsTeamMember && goToAddTeamMemberDiv()" [disabled]="isLoggedInAsTeamMember" [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''">
                           <span class="btn btn-primary transition primary_btn_width team_blue_btn_text">Add</span>
@@ -103,7 +108,7 @@
               </div>
               <!-- close inner row-->
             </div>
-            <div class="col-lg-5 col-md-5 col-xs-12 col-sm-4 pull-right mb_pl0"
+            <div class="col-lg-5 col-md-5 col-xs-12 col-sm-5 pull-right mb_pl0 mb_width74"
               style="display: flex;justify-content: flex-end ;">
               <div class="tools zero-padding-margin" style="margin-top: -2px;">
                 <div class="inputs zero-padding-display-inline" *ngIf="!isCollapsed">
@@ -124,13 +129,12 @@
                   style="margin-left: -10px !important" title="Refresh" (click)="refreshList()">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
                 </span>
-                <!-- Download TeamMembers Csv -->
-                <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
-                  title="Download TeamMembers Csv" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
-                  && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
-                  && !authenticationService?.module?.deletedPartner && !isCollapsed ">
-                  <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
-                </span>
+                <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
+												data-toggle="tooltip"
+												title="Export to Excel"
+												(click)="downloadTeamMemberCsv()">
+												<i aria-hidden="true" class="fas fa-file-export p10"></i>
+											</button>
                 <span
                   *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
                   class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" title="Filter">
@@ -157,7 +161,7 @@
         </div>
         <ng-template [ngTemplateOutlet]="filter"></ng-template>
         <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="teamMemberTable">
-          <div class="portlet-body clearfix neg_mrg_top14" style="padding-top: 0px;">
+          <div class="portlet-body clearfix neg_mrg_top14 neg_mt10" style="padding-top: 0px;">
             <a *ngIf="!httpRequestLoader.isLoading && !authenticationService?.module?.deletedPartner"
               (click)="findPrimaryAdminAndExtraAdmins()">
               <span><strong>Admins : <span title="Availed Admins">{{analyticsCountDto?.availed}}</span> / <span
@@ -167,7 +171,7 @@
               <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
               <table class="table table-striped silvertm" id="team-members" *ngIf="!httpRequestLoader.isLoading"
                 aria-describedby="TeamMemberList">
-                <thead>
+                <thead class="hash-table-color">
                   <tr>
                     <th scope="row">
                       <h4 class="user-permission-min-width TopBottomMZ">
@@ -192,7 +196,7 @@
                   </tr>
                 </thead>
                 <ng-container *ngIf="pagination.totalRecords>0">
-                  <tbody>
+                  <tbody class="table_body_color">
                     <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}"
                       class="list-team-member-class">
                       <td class="pdl-15">
@@ -324,7 +328,6 @@
                           <a data-toggle="tooltip" data-placement="bottom"
                             [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see anlaytics'"
                             [className]="teamMember.status=='UNAPPROVED'? 'inactive custom-icon':'custom-icon'"
-                            *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService?.module?.deletedPartner && !authenticationService.partnershipEstablishedOnlyWithPrm && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner"
                             (click)="goToAnalytics(teamMember)">
                             <i class="fa fa-line-chart IconCustomization"
                               [ngClass]="teamMember.status=='UNAPPROVED'? 'disabled gray': 'active'"
@@ -396,8 +399,8 @@
 
     <!--Add a Team Member Div-->
     <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
-      <div class="portlet light remove_cardBgcolor">
-        <div class="portlet-title">
+      <div class="portlet light remove_cardBgcolor light_bg_removal">
+        <div class="portlet-title remove_border">
           <div class="caption">
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
             <span *ngIf="editTeamMember">Edit Team Member</span>
@@ -881,7 +884,7 @@
           </div>
         </span>
         <!--******************Team Member Wise Assets Details*******************-->
-        <span *ngIf="authenticationService?.lmsAccess">
+        <span *ngIf="authenticationService?.module?.damAccess">
           <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm ) " class="row rowPaddingCustomize6">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
               <app-team-member-asset-analytics [selectedTeamMemberIds]="selectedTeamMemberIds"
@@ -960,7 +963,7 @@
         </span>
         <!--******************Deal Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService?.enableLeads">
-          <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+          <div class="row rowPaddingCustomize4">
             <app-partner-journey-deal-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"

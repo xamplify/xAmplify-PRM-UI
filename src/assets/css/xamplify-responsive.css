@@ -393,6 +393,9 @@ flex-wrap: wrap;
 .template-selected-border{
   border-radius: 15px !important;
 }
+.mrg-10{
+  margin-left: 10px !important;
+}
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  
   /* myprofile old dropdown */
@@ -411,9 +414,9 @@ flex-wrap: wrap;
     width: 34px;
   }
    /* myprofile old dropdown end*/
-   .grid-box {
+   /* .grid-box {
     padding-bottom: 1em;
-}
+} */
 }
 
 @media only screen and (max-width:1024px){
@@ -465,6 +468,9 @@ flex-wrap: wrap;
   .search-fields{
   padding: 5px 0px 10px 0px;
   }
+  .mb_float-left{
+    float: left;
+   }
 }
 /*Select Campaign- campaign */
 @media only screen and (min-width: 991px) and (max-width: 1035px) {  
@@ -681,6 +687,9 @@ flex-wrap: wrap;
 @media (min-width: 200px) and (max-width: 767px)  { 
   .mobilesearchdisplay{display: contents;}
   .mobilesearchdisplayTop{Margin-top:7px;}
+  .mb_14{
+    margin-bottom: 14px;
+  }
 }
 @media only screen and (min-width:768px) and (max-width:1024px) {
   .tflex_inline{
@@ -689,6 +698,10 @@ flex-wrap: wrap;
   .choose_temp{
     display: flex;
     align-items: center;
+  }
+  .text-overflow-wrap{
+    margin-left: 10px!important;
+    overflow-wrap: anywhere;
   }
  }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 
@@ -20,6 +21,11 @@ export class ConfirmUnpublishTracksOrPlaybooksModelPopupComponent implements OnI
   isPublishing:boolean;
   selectedOption : boolean;
   @Input() type:string;
+
+  /**XNFR-677**/
+  @Input() isFromIntegration: boolean = false;
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
+  instanceType:string;
   
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService) { }
 
@@ -36,5 +42,10 @@ export class ConfirmUnpublishTracksOrPlaybooksModelPopupComponent implements OnI
 
   closePopUp(){
     this.cancelEmitter.emit();
+  }
+
+  /**XNFR-677**/
+  emitInstanceType() {
+    this.eventOutput.emit(this.instanceType);
   }
 }

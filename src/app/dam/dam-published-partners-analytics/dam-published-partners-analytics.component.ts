@@ -60,7 +60,17 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.damId = atob(this.route.snapshot.params['damId']);
     this.damPartnerId = atob(this.route.snapshot.params['damPartnerId']);
     this.pagination.id = this.damPartnerId;
-    this.findAllPartnerCompanyUsers(this.pagination);
+    this.validateDamId(this.damId);
+  }
+  validateDamId(damId: any) {
+    this.damService.validateDamId(damId).subscribe(
+      _response=>{
+        this.findAllPartnerCompanyUsers(this.pagination);
+      },error=>{
+        this.xtremandLogger.errorPage(error);
+      }
+    );
+    
   }
 
   findAllPartnerCompanyUsers(pagination:Pagination){

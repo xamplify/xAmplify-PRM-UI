@@ -10,6 +10,7 @@ export class LandingPageAnalyticsPostDto {
     landingPageAlias:string = "";
     partnerId:number;
     vendorPages:boolean;
+    vendorPartnerJourneyPages:boolean;
     
     
 }

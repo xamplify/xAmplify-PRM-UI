@@ -5,10 +5,60 @@
   });
   webshims.polyfill('forms forms-ext');
 </script>
-<div class="" id="del-profile-div">
+<div [ngClass]=" (isThroughAddUrl || isConvertingContactToLead) ? 'page-content' :'' " id="del-profile-div">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div class="portlet-title">
-    <div class="caption header-padding"  [ngClass]="isLeadForDivCenterAligned ? 'text-center':''" >{{leadFormTitle}}</div>
+  <div *ngIf="isThroughAddUrl || isConvertingContactToLead" class="page-bar" style="height:48px">
+    <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
+        <ul class="page-breadcrumb pbc-m3">
+          <li *ngIf="!authenticationService.isSuperAdmin()">
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isFromManageLeads">
+            <a (click)="goBackToManageLeads()" translate>Leads
+            </a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="!isConvertingContactToLead">
+            <a>Add</a>
+          </li>
+          <li *ngIf="isConvertingContactToLead && !isFromCompanyModule">
+            <a (click)="goBackToManageContacts()">Manage Contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead && isFromCompanyModule">
+            <a (click)="goBackToManageCompanies()">Manage Companies</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead">
+            <a (click)="goBackToEditContacts()">Edit Contacts</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead">
+            <a (click)="goBackToContactDetailsPage()">Contact Details</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead && isFromContactAllLeadsTab">
+            <a (click)="goBackToContactDetailsAllLeadsPage()">All Leads</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="isConvertingContactToLead && actionType == 'add'">
+            <a>Add Lead</a>
+          </li>
+          <li *ngIf="isConvertingContactToLead && actionType == 'edit'">
+            <a>Edit Lead</a>
+          </li>
+          <li *ngIf="isConvertingContactToLead && actionType == 'view'">
+            <a>View Lead</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="portlet-title" *ngIf="!isConvertingContactToLead">
+    <div class="caption header-padding" [ngClass]="isLeadForDivCenterAligned ? 'text-center':''">{{leadFormTitle}}</div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
@@ -23,7 +73,7 @@
           <div [ngClass]="isLeadForDivCenterAligned ? ' col-md-6 col-md-offset-3' :'col-sm-6 col-xs-12 px-10 pl0 mb_pr0'">
             <!--Lead Details-->
             <div class="panel-group" role="tablist" aria-multiselectable="true"
-              *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))
+              *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin)))
                        && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion && actionType != 'add'))">
               <div class="panel panel-default deal-bgcolor" *ngIf="isLeadDetailsTabDisplayed">
                 <div class="panel-heading deal-bgcolor">
@@ -80,6 +130,27 @@
                           <span class="success">
                             <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Lead Id copied successfully<i
                                 class="fa fa-check" aria-hidden="true"></i></strong>
+                          </span>
+                        </div>
+                      </div>
+                      <!--CRM ID-->
+                      <div [ngStyle]="{ 'margin-bottom': isCRMIdCopiedToClipboard ? '2px' : '20px' }"
+                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
+                        <div> <label class="control-label">CRM ID</label></div>
+                        <div style="display:flex; height:35px;">
+                          <input type="text" maxlength="100" name="crmId" class="form-control" [(ngModel)]="lead.crmId"
+                            [ngModelOptions]="{standalone: true}" readonly="readonly" #crmIdInput>
+                          <div>
+                            <a class="button_blue lead_copy_id_btn_blue" (click)="copyCRMId(crmIdInput)">
+                              <span class="btn btn-primary transition copy_link btn_primary_lead_copy_id" data-toggle="tooltip"
+                                data-placement="top" title="Copy CRM ID"><i class="fa fa-copy"></i></span>
+                            </a>
+                          </div>
+                        </div>
+                        <div>
+                          <span class="success">
+                            <strong id="copy-crm-id" *ngIf="isCRMIdCopiedToClipboard">CRM Id copied successfully<i class="fa fa-check"
+                                aria-hidden="true"></i></strong>
                           </span>
                         </div>
                       </div>
@@ -153,7 +224,7 @@
                     </h4>
                   </div>
                   <div [ngClass]="{'collapse': isCommentAndHistoryCollapsed, '': !isCommentAndHistoryCollapsed}" id="commentsAndHistory">
-                    <div class="panel-body br-unset pl0 pr0 pt0 pb0">
+                    <div class="panel-body br-unset pl0 pr0 pt0 pb0 commentScroll">
                       <div class="card-bgcolors h-260 pl0 pr0">
                         <div *ngIf="!commentsLoader"  class="deal-details">
                           <div class="row mix-grid p10 bg-color">
@@ -439,7 +510,7 @@
         </div>
         <div *ngIf="showCustomForm && !showDefaultForm && showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails" (isFormValid) = checkCustomLeadFormValid($event)
-            [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0" [actionType]="actionType"></app-sf-deal>
+            [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0" [actionType]="actionType" [selectedContact]="selectedContact"></app-sf-deal>
         </div>
       </div>
       <div class="pull-right" *ngIf="!preview && !showCustomForm && showDefaultForm" style="padding-top: 13px;padding-right: 39px;">
@@ -504,7 +575,7 @@
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.email"
         [ngModelOptions]="{standalone: true}" id="email" (input)="validateField('email',false)"
-        placeholder="{{leadCustomField.placeholder}}" [disabled]="preview || edit || (lead.campaignId > 0)" aria-autocomplete="none" autocomplete="off" />
+        placeholder="{{leadCustomField.placeholder}}" [disabled]="preview || edit || (lead.campaignId > 0) || isConvertingContactToLead" aria-autocomplete="none" autocomplete="off" />
       <span class="required" *ngIf="inValidEmailId">{{errorMessage}}</span>
     </div>
 

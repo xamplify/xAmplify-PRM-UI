@@ -3,8 +3,8 @@
         <div class="portlet light mHeight partner_stat_card_hgt">
             <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
                 <div class="caption">
-                    <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName}}
-                        Statistics</span>
+                    <span class="caption-subject">{{authenticationService?.partnerModule?.customName | translate}}
+                        <span translate>Statistics</span></span>
                 </div>
                 <div class="inputs" id="right">
                     <div class="portlet-input input-inline input-medium">
@@ -46,7 +46,7 @@
                                                 {{partnerAnalyticsCount?.totalPartners}}
                                             </h3>
 
-                                            <p class="partners-text">Total</p>
+                                            <p class="partners-text" translate>Total</p>
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                                                 {{partnerAnalyticsCount?.activePartners}}
                                             </h3>
 
-                                            <p class="partners-text">Active</p>
+                                            <p class="partners-text" translate>Active</p>
                                         </div>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                                                 {{partnerAnalyticsCount?.inActivePartners}}
                                             </h3>
 
-                                            <p class="partners-text">InActive</p>
+                                            <p class="partners-text" translate>InActive</p>
                                         </div>
                                     </div>
                                 </div>
@@ -95,10 +95,10 @@
                             aria-describedby="redistributedCampaignsAndPartners">
                             <thead>
                                 <tr>
-                                    <th scope="col">{{authenticationService?.partnerModule?.customName}} Company Name
+                                    <th scope="col">{{authenticationService?.partnerModule?.customName | translate}} <span translate>Company Name</span>
                                     </th>
-                                    <th scope="col" class="text-center">Campaigns</th>
-                                    <th scope="col" class="text-center">Type</th>
+                                    <th scope="col" class="text-center" translate>Campaigns</th>
+                                    <th scope="col" class="text-center" translate>Type</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,7 +126,7 @@
                             </tbody>
                         </table>
                         <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
-                            <strong>No campaigns found</strong>
+                            <strong translate>No campaigns found</strong>
                         </div>
                     </div>
                     <div

@@ -1,24 +1,31 @@
-<div class="caption caption-md col-xs-12" *ngIf="editVendorPage || isViewAnalytics 
+<div class="caption caption-md col-xs-12 mb5" *ngIf="editVendorPage || isViewAnalytics 
 || isFormAnalytics || isManageForms">
   <i class="icon-globe theme-font hide" aria-hidden="true"></i>
   <a class="close-circle pull-right" (click)="goBack()">
       <i class="fa fa-times" aria-hidden="true"></i>
   </a>
 </div>
-<app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics && !isManageForms && !isFormAnalytics && !isEditVendorOrMasterForm" [vendorJourney]='vendorJourney'
-  [isLandingPages] ='isLandingPages' [isMasterLandingPages] = 'isMasterLandingPages' [loggedInUserCompanyId]="loggedInUserCompanyId"
+<app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics && !isManageForms && !isFormAnalytics && !isEditVendorOrMasterForm"
+  [vendorJourney]='vendorJourney'
+  [isLandingPages] ='isLandingPages' 
+  [isVendorPartnerJourneyPages] = "isVendorPartnerJourneyPages"
+  [isMasterLandingPages] = 'isMasterLandingPages' 
+  [isVendorMarketplacePages] = 'isVendorMarketplacePages'
+  [welcomePages] = 'welcomePages' 
+  [isPartnerJourneyPages] = 'isPartnerJourneyPages'
+  [loggedInUserCompanyId]="loggedInUserCompanyId" 
   (vendorLandingPage)='editVendorLandingPage($event)' (viewAnalytics) = "viewAnalytics($event)" 
   (viewVendorPageAnalytics) = "viewVendorPageAnalytics($event)" (isFormAnalytics) = "viewLandingPageForms($event)"></app-landing-pages-list-and-grid-view>
 <div class="row" *ngIf="editVendorPage">
   <div class="col-xs-12">
     <div class="page-bar mWidth" style="border:none !important;">
-      <app-preview-popup #previewPopUpComponent></app-preview-popup>
+      <app-preview-popup   #previewPopUpComponent ></app-preview-popup>
       <app-merge-tags [input]="mergeTagsInput"></app-merge-tags>
-      <app-add-vendor-logos *ngIf = "isMasterLandingPages" [vendorLogoDetails] = "vendorLogoDetails"
+      <app-add-vendor-logos *ngIf = "isMasterLandingPages || isVendorMarketplacePages" [vendorLogoDetails] = "vendorLogoDetails" [isVendorMarketplace] = 'isVendorMarketplacePages'
       [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput" [dropdownList] = "categoryDropDownOptions"></app-add-vendor-logos>
       <div>
-        <button class="button_blue bgcolor-unset" (click)="checkOrUncheckOpenLinksInNewTabOption()"
-          style="float:right;padding-right:5px;">
+        <button class="button_blue bgcolor-unset pt0" (click)="checkOrUncheckOpenLinksInNewTabOption()"
+          style="float:right;padding-right:5px;margin-top: 6px;">
           <span class="btn btn-primary transition txt_pd-top3">Open Links In New Tab
             <input class="pointer checkBox_shadow" id="openLinksInNewTab-page-links" type="checkbox"
               (click)="checkOrUncheckOpenLinksInNewTabOption()">
@@ -27,18 +34,24 @@
       </div>
     </div>
     <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
-      <app-xamplify-default-templates *ngIf="editVendorPage" [vendorJourney]='vendorJourney' [isMasterLandingPages] = 'isMasterLandingPages'
-        [landingPage]='vendorDefaultTemplate' [openInNewTabChecked] = "openInNewTabChecked"  [loggedInUserCompanyId]= 'loggedInUserCompanyId' [vendorLogoDetails]="vendorLogoDetails" [sharedVendorLogoDetails] = "sharedVendorLogoDetails" (redirect)="resetVendorJourney()"
+      <app-xamplify-default-templates *ngIf="editVendorPage" [vendorJourney]='vendorJourney' [isMasterLandingPages] = 'isMasterLandingPages' [welcomePages] = 'welcomePages'
+      [isVendorMarketplacePages] = 'isVendorMarketplacePages'
+        [landingPage]='vendorDefaultTemplate' [openInNewTabChecked] = "openInNewTabChecked"  [loggedInUserCompanyId]= 'loggedInUserCompanyId' [vendorLogoDetails]="vendorLogoDetails" 
+        [sharedVendorLogoDetails] = "sharedVendorLogoDetails" (redirect)="resetVendorJourney()"
+        [isPartnerJourneyPages] = 'isPartnerJourneyPages'
         (landingPageOpenInNewTabChecked)="landingPageOpenInNewTabChecked()" ></app-xamplify-default-templates>
     </div>
   </div>
 </div>
 <app-landing-page-analytics *ngIf = "isViewAnalytics" [vendorJourney] = 'vendorJourney' [masterLandingPages]='isMasterLandingPages' [vendorLandingPageId] = "selectedLandingPageId"
-[vendorPageAlias] = "selectedVendorPageAlias" [vendorPages] = 'isLandingPages'>
+[vendorPageAlias] = "selectedVendorPageAlias" [vendorPages] = 'isLandingPages' [welcomePages] ='welcomePages' [isPartnerJourneyPages] = "isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages"
+[vendorPartnerJourneyPages]="isVendorPartnerJourneyPages">
 </app-landing-page-analytics>
 <app-add-form-util *ngIf = "isEditVendorOrMasterForm" [isMdfForm]="false" [selectedForm]="selectedFrom"  [isCopyForm]="false"
 [isVendorOrMasterLandingPage] = "true" (goBack) = "goToManageForms()"></app-add-form-util>
-<app-manage-form *ngIf = "isManageForms" [isVendorJourney]="vendorJourney" [isMasterLandingPage] = "isMasterLandingPages"  [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"
+<app-manage-form *ngIf = "isManageForms" [isVendorJourney]="vendorJourney" [isMasterLandingPage] = "isMasterLandingPages" [isWelcomePage]="welcomePages"  
+[isPartnerJourneyPages] = "isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages"
+[vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"
 (formAnalytics)="goToFormAnalytics($event)"></app-manage-form>
-<app-form-analytics-util *ngIf = "isFormAnalytics && isMasterLandingPages" [importedObject]="importedObject" ></app-form-analytics-util>
-<app-vendor-journey-form-analytics *ngIf = "isFormAnalytics && vendorJourney" [importedObject]="importedObject" ></app-vendor-journey-form-analytics>
+<app-form-analytics-util *ngIf = "isFormAnalytics && (isMasterLandingPages ||welcomePages || isVendorMarketplacePages ) "  [isVendorMarketplacePage]="isVendorMarketplacePages" [importedObject]="importedObject" ></app-form-analytics-util>
+<app-vendor-journey-form-analytics *ngIf = "isFormAnalytics && (vendorJourney || isPartnerJourneyPages)" [isVendorJourney]="vendorJourney" [isPartnerJourneyPage]="isPartnerJourneyPages" [importedObject]="importedObject" ></app-vendor-journey-form-analytics>

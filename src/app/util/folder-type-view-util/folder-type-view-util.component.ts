@@ -33,6 +33,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
   type:string = "";
   titleHeader:string = "";
   suffixHeader:string = "";
+  options: string[] = ['Search Folder', 'Search In Folder'];
+  selectedOption: string;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -45,7 +47,9 @@ export class FolderTypeViewUtilComponent implements OnInit {
     this.folderViewType = this.route.snapshot.params['viewType'];
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
+    this.selectedOption = 'Search Folder';
     this.findAllCategories(this.pagination);
+    this.utilService.searchKey ="";
   }
 
   findAllCategories(pagination:Pagination){
@@ -100,10 +104,90 @@ export class FolderTypeViewUtilComponent implements OnInit {
       this.getAllCategoryFilteredResults(this.pagination);
   }
 
-
   /*************************Search********************** */
   searchCategories() {
+    if (this.selectedOption == 'Search In Folder') {
+      this.folderViewType == "fl" ? this.utilService.folderListViewSelected = true : this.utilService.folderListViewSelected = false;
+      this.utilService.searchKey = this.categorySortOption.searchKey;
+      if (this.pagination.categoryType == "DAM") {
+        if (this.isPartnerView && this.utilService.searchKey) {
+          this.referenceService.goToRouter('home/dam/shared/l');
+        }
+        else {
+          this.gridViewtoListView('home/dam/manage/l');
+        }
+      } else if (this.pagination.categoryType == "PLAY_BOOK") {
+        if (this.isPartnerView && this.utilService.searchKey) {
+          this.referenceService.goToRouter('home/playbook/shared/l');
+        }
+        else {
+          this.gridViewtoListView('/home/playbook/manage/l/');
+        }
+      } else if (this.pagination.categoryType == "LEARNING_TRACK") {
+        if (this.isPartnerView && this.utilService.searchKey) {
+          this.referenceService.goToRouter('home/tracks/shared/l');
+        }
+        else {
+          this.gridViewtoListView('/home/tracks/manage/l/');
+        }
+      }
+    } else {
       this.getAllCategoryFilteredResults(this.pagination);
+    }
+  }
+
+  private gridViewtoListView(isView: any) {
+    if (this.utilService.searchKey == "") {
+      if (this.pagination.categoryType == "DAM") {
+        if (this.isPartnerView) {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/dam/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/dam/shared/fg');
+          }
+        } else {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/dam/manage/fl');
+          }
+          else {
+            this.referenceService.goToRouter('home/dam/manage/fg');
+          }
+        }
+      }
+      else if (this.pagination.categoryType == "PLAY_BOOK") {
+        if (this.isPartnerView) {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/playbook/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/playbook/shared/fg');
+          }
+        } else {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('/home/playbook/manage/fl/');
+          } else {
+            this.referenceService.goToRouter('/home/playbook/manage/fg/');
+          }
+        }
+      } else if (this.pagination.categoryType == "LEARNING_TRACK") {
+        if (this.isPartnerView) {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/tracks/shared/fl');
+          } else {
+            this.referenceService.goToRouter('home/tracks/shared/fg');
+          }
+        } else {
+          if (this.folderViewType == "fl") {
+            this.referenceService.goToRouter('home/tracks/shared/fl');
+          } else {
+            this.referenceService.goToRouter('/home/tracks/manage/fg/');
+
+          }
+        }
+      }
+    }
+    else {
+      this.referenceService.goToRouter(isView);
+    }
   }
 
   paginationDropdown(items: any) {
@@ -126,6 +210,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
   viewItemsByCategoryId(categoryId:number) {
+    this.utilService.folderListViewSelected = false;
     if(this.moduleId==this.roles.damId){
       this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,this.isPartnerView);
     }else if(this.moduleId==this.roles.learningTrackId){
@@ -144,6 +229,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   }
 
   setViewType(viewType:string){
+    this.utilService.folderListViewSelected = false;
     if(this.folderViewType!=viewType){
       if(this.moduleId==this.roles.damId){
         this.referenceService.goToManageAssets(viewType,this.isPartnerView);
@@ -162,6 +248,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   }
 
   viewFolderItems(category:any,selectedIndex:number){
+    this.utilService.folderListViewSelected = false;
     $.each(this.pagination.pagedItems, function (index:number, row:any) {
         if (selectedIndex != index) {
           row.expanded = false;
@@ -184,4 +271,7 @@ getUpdatedItemsCount(event:any){
   $('#count-'+this.moduleId+"-"+categoryId).text(itemsCount);
 }
 
+onSelect(option: string) {
+  this.selectedOption = option;
+}
 }
