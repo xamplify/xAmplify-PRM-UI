@@ -1934,7 +1934,6 @@ export class CustomAddLeadComponent implements OnInit {
     this.formService.getLeadDataByFormSubmitId(this.formSubmitId)
       .subscribe(
         data => {
-          console.log(data)
           this.selectedContact = data.data;
           this.setDefaultLeadData(this.selectedContact);
         },

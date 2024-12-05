@@ -254,9 +254,8 @@ export class FormService {
 
     getLeadDataByFormSubmitId(formSubmitId)
     {
-        return this.http.get(this.URL + "getUserDtoByFormSubmitId/"+formSubmitId + "?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
+        const url = this.URL + "getUserDtoByFormSubmitId/"+formSubmitId + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
 
     }
 

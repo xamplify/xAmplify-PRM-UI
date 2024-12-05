@@ -92,7 +92,7 @@
 									<td *ngIf="columns?.length>3">
 										<div class="d-flex">
 											<a class="close-circle" (click)="addLeadsForm(formDataRow)" data-toggle="tooltip" title="Add Lead"
-												*ngIf="isEmailFieldExists && this.authenticationService.module.isContact">
+												*ngIf="isEmailFieldExists && authenticationService?.module?.isContact">
 												<i class="fa fa-address-card" aria-hidden="true"></i>
 											</a>
 											<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
@@ -172,17 +172,16 @@
 									</ng-container>
 									<td *ngIf="columns?.length>2">
 										<div class="d-flex">
-											<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
-												title="View More Columns" *ngIf="columns.length>4">
-												<i class="fa" [ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"
-													aria-hidden="true"></i>
-											</a>
-											<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
-												title="View More Columns" *ngIf="columns.length>4">
-												<i class="fa" [ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"
-													aria-hidden="true"></i>
-											</a>
-										</div>
+											<a class="close-circle" (click)="addLeadsForm(formDataRow)" data-toggle="tooltip" title="Add Lead"
+											*ngIf="isEmailFieldExists && authenticationService?.module?.isContact?">
+											<i class="fa fa-address-card" aria-hidden="true"></i>
+										</a>
+										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
+										title="View More Columns" *ngIf="columns.length>4">
+										<i class="fa" [ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"
+											aria-hidden="true"></i>
+									</a>
+								</div>
 									</td>
 									<td *ngIf="isEventCheckIn">
 										<switch [status]="formDataRow.checkedInForEvent"
