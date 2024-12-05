@@ -28,9 +28,6 @@
         <div class="col-lg-12 col-md-12 col-sm-12 p0">
           <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
             <label for="subjectLine">Task Type</label>
-            <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
-              (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
-              [disabled]="isPreview" /> -->
             <select class="form-control" [(ngModel)]="taskActivity.taskType"
               (ngModelChange)="validateTask()" id="select-dropdown">
               <option [ngValue]="'TODO'">To Do</option>
@@ -40,9 +37,6 @@
           </div>
           <div class="form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field">
             <label for="subjectLine">Priority</label>
-            <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
-              (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
-              [disabled]="isPreview" /> -->
             <select class="form-control" [(ngModel)]="taskActivity.priority"
               (ngModelChange)="validateTask()" id="select-dropdown">
               <option [ngValue]="'LOW'">Low</option>
@@ -105,8 +99,14 @@
           <label for="fileInput" class="btn Btn-Green custom-file-label">
             Choose a file
           </label>
-          <div *ngIf="(files.length > 0)">
-            <ul>
+          <div>
+            <ul *ngIf="(taskActivity?.taskAttachmentDTOs?.length > 0)">
+              <li *ngFor="let file of taskActivity?.taskAttachmentDTOs; let i = index">
+                {{ file.fileName }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
+                <button type="button" (click)="removeFileDTO(i);validateTask()"><i class="fa fa-times"></i></button>
+              </li>
+            </ul>
+            <ul *ngIf="(files.length > 0)">
               <li *ngFor="let file of files; let i = index">
                 {{ file.name }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
                 <button type="button" (click)="removeFile(i);validateTask()"><i class="fa fa-times"></i></button>

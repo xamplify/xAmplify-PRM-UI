@@ -236,7 +236,6 @@ export class AddTaskModalPopupComponent implements OnInit {
           this.taskActivity = response.data;
           this.taskTypeOption.taskActivityTypeDropDownOption.value = this.taskActivity.taskType;
           this.taskPriorityOption.taskActivityPriorityDropDownOption.value = this.taskActivity.priority;
-          this.addFiles();
         } else {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
         }
@@ -338,22 +337,6 @@ export class AddTaskModalPopupComponent implements OnInit {
         this.files.push(selectedFiles[i]);
       }
       event.target.value = '';
-    }
-  }
-
-  addFiles() {    
-    if (this.taskActivity.taskAttachmentDTOs.length > 0) {
-      this.files = this.taskActivity.taskAttachmentDTOs.map(attachment => {
-        const fileContent = new Blob([], { type: 'application/octet-stream' });
-        const file = new File([fileContent], attachment.fileName, {
-          type: attachment.fileType
-        });
-        Object.defineProperty(file, 'size', {
-          value: attachment.size,
-          writable: false
-        });
-        return file;
-      });
     }
   }
 
