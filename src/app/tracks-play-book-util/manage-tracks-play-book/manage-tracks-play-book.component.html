@@ -27,17 +27,15 @@
                                             style="padding: 10px !important"></button>
                                         <div class="group-dd-content">
                                             <ng-container class='m10'>
-                                                <span class="btn btn-xs l-g-view" data-toggle="tooltip"
+                                                <span class="btn btn-xs l-g-view"[ngClass]="{'disabled-div': modulesDisplayType.isListView}" data-toggle="tooltip"
                                                     data-placement="bottom" title="List View"
-                                                    [class.disabled]="modulesDisplayType.isListView"
-                                                    (click)="setViewType('l')">
-                                                    <i class="fa fa-th-list p10" aria-hidden="true"></i>
+                                                    (click)="!modulesDisplayType.isListView && setViewType('l')">
+                                                    <i class="fa fa-th-list p10" aria-hidden="true" [class.disabled]="modulesDisplayType.isListView"></i>
                                                 </span>
-                                                <span class="btn btn-xs l-g-view margin-space"
+                                                <span class="btn btn-xs l-g-view margin-space" [ngClass]="{'disabled-div': modulesDisplayType.isGridView}"
                                                     data-toggle="tooltip" data-placement="bottom" title="Grid View"
-                                                    [class.disabled]="modulesDisplayType.isGridView"
-                                                    (click)="setViewType('g')">
-                                                    <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                                                    (click)="!modulesDisplayType.isGridView && setViewType('g')">
+                                                    <i class="fa fa-th-large p10" aria-hidden="true" [class.disabled]="modulesDisplayType.isGridView"></i>
                                                 </span>
                                                 <!----XNFR-170---->
                                                 <ng-container *ngIf="!showUpArrowButton && !folderListView">

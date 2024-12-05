@@ -49,6 +49,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
     this.selectedOption = 'Search Folder';
     this.findAllCategories(this.pagination);
+    this.utilService.searchKey ="";
   }
 
   findAllCategories(pagination:Pagination){
@@ -209,6 +210,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
   viewItemsByCategoryId(categoryId:number) {
+    this.utilService.folderListViewSelected = false;
     if(this.moduleId==this.roles.damId){
       this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,this.isPartnerView);
     }else if(this.moduleId==this.roles.learningTrackId){
@@ -227,6 +229,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   }
 
   setViewType(viewType:string){
+    this.utilService.folderListViewSelected = false;
     if(this.folderViewType!=viewType){
       if(this.moduleId==this.roles.damId){
         this.referenceService.goToManageAssets(viewType,this.isPartnerView);
@@ -245,6 +248,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   }
 
   viewFolderItems(category:any,selectedIndex:number){
+    this.utilService.folderListViewSelected = false;
     $.each(this.pagination.pagedItems, function (index:number, row:any) {
         if (selectedIndex != index) {
           row.expanded = false;

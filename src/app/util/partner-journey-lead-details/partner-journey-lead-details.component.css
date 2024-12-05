@@ -26,3 +26,22 @@
 .table>tbody>tr>td {
 	vertical-align: middle !important;
 }
+
+.custom-icon{
+	margin: -1px 3px 0px 3px;
+  }
+
+  .tableHeightScroll{   
+    height: 383px !important;
+   overflow-y: auto;
+   margin-bottom: 20px;
+}
+
+.noData{
+  height: 0px;
+}
+
+::-webkit-scrollbar {
+	width: 7px;
+  height:7px;
+  }

@@ -13,6 +13,7 @@ export class UtilService {
     topnavBareLoading = false;
     searchKey : any ='';
     folderListViewSelected : boolean = false;
+    checkListViewType:any;
     pagination: Pagination;
     constructor( private http: Http,private pagerService:PagerService) { }
 
@@ -231,6 +232,16 @@ export class UtilService {
         // Set a timestamp to notify all tabs
         localStorage.setItem('reloadApp', new Date().toISOString());
       }
+
+      fetchImageAsBlob(imageUrl: string): Promise<Blob> {
+        return fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            });
+    }
 
 
 }

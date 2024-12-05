@@ -17,7 +17,9 @@ import { PartnerJourneyRequest } from '../models/partner-journey-request';
   providers: [SortOption]
 })
 export class PartnerJourneyTeamMembersTableComponent implements OnInit {
-  @Input() partnerCompanyId: any;  
+  @Input() partnerCompanyId: any;
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
   @Output() notifyTeamMemberSelection = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -51,6 +53,9 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.partnerJourneyFilter = true;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
       this.pagination.filterKey = "teamMemberFilter";
@@ -124,6 +129,9 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     let partnerJourneyRequest = new PartnerJourneyRequest();
     partnerJourneyRequest.loggedInUserId = this.loggedInUserId;
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
+    partnerJourneyRequest.fromDateFilterInString = this.fromDateFilter
+    partnerJourneyRequest.toDateFilterInString = this.toDateFilter;
+    partnerJourneyRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getPartnerJourneyTeamEmails(partnerJourneyRequest).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -145,6 +153,23 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
 
   hideModulesPreviewPopUp(){
     this.showModulesPopup = false;
+  }
+
+  downloadTeamMembersReport() {
+    let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
+    let searchKeyRequestParm = this.sortOption.searchKey != undefined ? this.sortOption.searchKey : "";
+    let partnerTeamMemberGroupFilterRequestParm = true;
+    let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
+    let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
+    let partnerCompanyIdRequestParam = this.partnerCompanyId != undefined ? this.partnerCompanyId : 0;
+    let teamMemberIdRequestParam = this.teamMemberId != undefined ? this.teamMemberId : 0;
+    let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let filterTypeRequestParam = this.teamMemberId != undefined && this.teamMemberId > 0 ? "&filterType=teamMemberFilter" : "";
+    let url = this.authenticationService.REST_URL + "partner/journey/download/team-members-report?access_token=" + this.authenticationService.access_token
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&partnerCompanyId=" + partnerCompanyIdRequestParam + "&searchKey=" + searchKeyRequestParm
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm + filterTypeRequestParam;
+    this.referenseService.openWindowInNewTab(url);
   }
 
 }

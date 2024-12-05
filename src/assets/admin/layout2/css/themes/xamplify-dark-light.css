@@ -2508,7 +2508,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
   .profile_info p{
     color:#ffff!important;
   }
-  .lead_details h3{
+  .lead_details h3,.deals_card{
     background-color: #2b3c46!important;
     border: 1px solid #2f4857 !important;
   }
@@ -2544,6 +2544,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
 table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-danger:hover{
   background-color: #22313a !important;
 }
+
 /*** XNFR-758 ***/
 .welcome-dropdown label {
   background-color: #0276FF !important;
@@ -2563,4 +2564,24 @@ table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-dang
 }
 .welcome-dropdown-menu li a:hover {
   background-color: #22313a !important;
+=======
+.activity_bgcolor{
+  background-color: #22313a !important;
+}
+.edit_contact{
+  border-bottom: 1.3px dashed #2f4857 !important;
+}
+.icon-btns{
+  background-color: transparent !important;
+    color: #fff !important;
+}
+.icon-btns:hover {
+  background-color: #f5f8fa !important;
+  color: #333 !important;
+}
+.icon-btns i:hover {
+    color: #333 !important;
+}
+.icon-btns i{
+  color: inherit!important;
 }
