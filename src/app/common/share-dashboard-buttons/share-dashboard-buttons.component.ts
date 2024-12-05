@@ -58,6 +58,9 @@ export class ShareDashboardButtonsComponent implements OnInit {
 
   findDashboardButtons(pagination: Pagination) {
      this.customResponse = new CustomResponse();
+     pagination.pageIndex = 1;
+     pagination.searchKey = this.sortOption.searchKey;
+    //  pagination = this.utilService.sortOptionValues(this.sortOption.selectedShareCampaignDropDownOption, pagination);
     this.referenceService.startLoader(this.httpRequestLoader);
     this.referenceService.scrollToModalBodyTopByClass();
     this.vanityUrlService.findAllPublishedAndUnPublishedDashboardButtons(this.pagination).subscribe(
@@ -109,5 +112,15 @@ export class ShareDashboardButtonsComponent implements OnInit {
     emitterObject['buttonTitle'] = this.buttontitle;
 		this.shareDashboardButtonsEventEmitter.emit(emitterObject);
 	}
+  setPage(event: any) {
+    this.customResponse = new CustomResponse();
+    this.pagination.pageIndex = event.page;
+    this.findDashboardButtons(this.pagination);
+  }
+  searchDashboardButtons(){
+    this.findDashboardButtons(this.pagination);
+  }
+
+  findUnPublishedDashboardButtonsOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchDashboardButtons(); } }
 
 }
