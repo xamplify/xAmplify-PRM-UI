@@ -270,4 +270,10 @@ export class IntegrationService {
         let url = this.authenticationService.REST_URL + `/customFields/delete/${loggedInUserId}/${customFieldId}?access_token=${this.authenticationService.access_token}`
         return this.authenticationService.callDeleteMethod(url);
     }
+
+    getLeadCountForCustomField(customFieldId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `/customFields/leads/count/${customFieldId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

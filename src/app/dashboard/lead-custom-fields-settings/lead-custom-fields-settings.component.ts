@@ -450,23 +450,26 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 	this.listCustomFields();
   }
 
-  confirmDelete(customFieldId : number) {
-		let self = this;
-		swal({
-			title: 'Are you sure?',
-			text: "This Custom Field and Data associated to this field will be deleted.",
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			confirmButtonText: 'Yes, delete it!'
-
-		}).then(function () {
-			self.deleteCustomField(customFieldId);
-		}, function (dismiss: any) {
-			console.log('you clicked on option' + dismiss);
-		});
-	}
+  confirmDelete(customFieldId: number) {
+	let self = this;
+	this.integrationService.getLeadCountForCustomField(customFieldId).subscribe(data => {
+	  let leadText = data.data > 0 ? `Deleting this Custom Field will also remove the data of ${data.data} lead(s) linked to it.` 
+								   : "This Custom Field will be deleted, with no impact on any leads.";
+	  swal({
+		title: 'Are you sure?',
+		text: leadText,
+		type: 'warning',
+		showCancelButton: true,
+		swalConfirmButtonColor: '#54a7e9',
+		swalCancelButtonColor: '#999',
+		confirmButtonText: 'Yes, delete it!'
+	  }).then(function () {
+		self.deleteCustomField(customFieldId);
+	  }, function (dismiss: any) {
+		console.log('You clicked on option: ' + dismiss);
+	  });
+	});
+  }
 
 	deleteCustomField(customFieldId: number) {
 		this.ngxloading = true;

@@ -153,12 +153,12 @@ export class CustomAddLeadComponent implements OnInit {
   companyFields = ['Company'];
   phoneFields = ['Phone','Phone_Number','Phone Number'];
   websiteFields = ['Website'];
-  streetFields = ['Street'];
+  streetFields = ['Street', 'Address'];
   cityFields = ['City'];
   stateFields = ['State'];
   postalCodeFields = ['PostalCode','Postal Code','Postal_Code'];
-  countryFields = [];
-  regionFields = [];
+  countryFields = ['Country'];
+  regionFields = ['Region'];
   industryFields = ['Industry'];
 
   type = "LEAD";

@@ -83,7 +83,7 @@ export class AddCustomFieldsComponent implements OnInit {
               this.notifySubmitSuccess.emit();
             } else if (response.statusCode == 500 && response.message === 'Duplicate Name'){
               this.isValid = false;
-              this.errorMessage = 'A custom field with this name already exists.';
+              this.errorMessage = 'A custom field with this Label Name already exists.';
             }
             this.ngxloading = false;
           },error=>{
