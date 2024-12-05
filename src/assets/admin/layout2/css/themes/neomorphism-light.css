@@ -4432,3 +4432,5 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 .update-activity,.create-activity,.sent-activity {
   box-shadow: inset 5px 5px 10px #c3dcc82e, inset -5px -5px 10px #475c4a1f !important;
 }
+.neg-mrg-top5{margin-top: -5px;}
+.neg-mrg-top7{margin-top: -7px !important;}

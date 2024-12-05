@@ -97,6 +97,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isSingUpPendingDiv = false;
     incompleteCompanyProfileAndPendingSingupPagination: Pagination = new Pagination();
     companyProfileIncompletePartnersList :any= [];
+    partnerfromDateFilter: any = "";
+    partnertoDateFilter: any = "";
+    totalPartnersCountLoader: boolean;
+    totalPartnersCount: any;
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -752,6 +756,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.findInActivePartnersCount();
                 this.findApprovePartnersCount();
                 this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+                this.findTotalPartnersCount();
             if(tabIndex != undefined){
                 if(tabIndex == 1){
                 this.goToInActivePartnersDiv()
@@ -864,6 +869,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.approvePartnersCountLoader = true;
         this.throughPartnerCampaignsCountLoader = true;
         this.PendingSignupAndCompanyProfilePartnersLoader = true;
+        this.totalPartnersCountLoader = true;
         this.selectedPartnerCompanyIds = [];
         if(this.selectedTabIndex==0){
             this.loadAllCharts = true;
@@ -879,6 +885,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         self.findInActivePartnersCount();
         self.findApprovePartnersCount();
         self.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+        self.findTotalPartnersCount();
         if(self.selectedTabIndex==0){
             self.reloadWithFilter = true;
             self.getPartnersRedistributedCampaignsData();
@@ -1155,5 +1162,24 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         );
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
+    }
+
+    getDateFilterOptions(event: any) {
+        this.partnerfromDateFilter = event.fromDate;
+        this.partnertoDateFilter = event.toDate;
+    }
+
+
+    findTotalPartnersCount() {
+        this.totalPartnersCountLoader = true;
+        this.parterService.findTotalPartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
+            (result: any) => {
+                this.totalPartnersCount = result.data.totalPartnersCount;
+                this.totalPartnersCountLoader = false;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.totalPartnersCountLoader = false;
+            });
     }
 }
