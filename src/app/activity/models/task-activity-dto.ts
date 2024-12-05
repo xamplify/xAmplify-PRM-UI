@@ -13,4 +13,5 @@ export class TaskActivity {
     remainder:any;
     createdTime:any;
     remainderType:any = '';
+    taskAttachmentDTOs:any;
 }

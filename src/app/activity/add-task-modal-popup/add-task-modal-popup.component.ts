@@ -44,6 +44,9 @@ export class AddTaskModalPopupComponent implements OnInit {
   isBeforeOneHourEnable: boolean = true;
   isBeforeOneDayEnable: boolean = true;
   isBeforeOneWeekEnable: boolean = true;
+  files: File[] = [];
+  file: File;
+  formData: any = new FormData();
 
   constructor(public referenceService:ReferenceService, public taskService:TaskActivityService, public properties:Properties) { }
 
@@ -53,6 +56,8 @@ export class AddTaskModalPopupComponent implements OnInit {
     this.ckeConfig = this.properties.ckEditorConfig;
     if (this.actionType == 'add') {
       this.taskActivity.userId = this.userId;
+      this.taskActivity.priority = 'LOW';
+      this.taskActivity.taskType = 'TODO';
       this.fetchAssignToDropDownOptions();
       this.fetchStatusDropDownOptions();
       this.isEdit = false;
@@ -72,9 +77,8 @@ export class AddTaskModalPopupComponent implements OnInit {
 
   save() {
     this.ngxLoading = true;
-    this.taskActivity.taskType = this.taskTypeOption.taskActivityTypeDropDownOption.value;
-    this.taskActivity.priority = this.taskPriorityOption.taskActivityPriorityDropDownOption.value;
-    this.taskService.save(this.taskActivity).subscribe(
+    this.prepareFormData();
+    this.taskService.save(this.taskActivity, this.formData).subscribe(
       response => {
         if (response.statusCode == 200) {
           this.closeTaskModal();
@@ -226,12 +230,13 @@ export class AddTaskModalPopupComponent implements OnInit {
 
   fetchTaskActivityByIdForEdit() {
     this.ngxLoading = true;
-    this.taskService.fetchTaskActivityByIdForEdit(this.taskActivityId).subscribe(
+    this.taskService.fetchTaskActivityById(this.taskActivityId).subscribe(
       response => {
         if (response.statusCode == 200) {
           this.taskActivity = response.data;
           this.taskTypeOption.taskActivityTypeDropDownOption.value = this.taskActivity.taskType;
           this.taskPriorityOption.taskActivityPriorityDropDownOption.value = this.taskActivity.priority;
+          this.addFiles();
         } else {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
         }
@@ -251,9 +256,8 @@ export class AddTaskModalPopupComponent implements OnInit {
 
   update() {
     this.ngxLoading = true;
-    this.taskActivity.taskType = this.taskTypeOption.taskActivityTypeDropDownOption.value;
-    this.taskActivity.priority = this.taskPriorityOption.taskActivityPriorityDropDownOption.value;
-    this.taskService.update(this.taskActivity).subscribe(
+    this.prepareFormData();
+    this.taskService.update(this.taskActivity, this.formData).subscribe(
       response => {
         if (response.statusCode == 200) {
           this.closeTaskModal();
@@ -275,7 +279,7 @@ export class AddTaskModalPopupComponent implements OnInit {
   }
 
   handleRemainderType(event) {
-    if (event == 'Custom_Date') {
+    if (event == 'CUSTOMDATE') {
       this.showRemainderDate = true;
       this.initializeRemainderPicker();
     } else {
@@ -325,6 +329,46 @@ export class AddTaskModalPopupComponent implements OnInit {
     this.isBeforeOneHourEnable = this.isDueDateLessThanOneHour();
     this.isBeforeOneDayEnable = this.isDueDateLessThanOneDay();
     this.isBeforeOneWeekEnable = this.isDueDateLessThanOneWeek();
+  }
+
+  onFileChange(event: any): void {
+    const selectedFiles: FileList = event.target.files;    
+    if (selectedFiles.length > 0) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        this.files.push(selectedFiles[i]);
+      }
+      event.target.value = '';
+    }
+  }
+
+  addFiles() {    
+    if (this.taskActivity.taskAttachmentDTOs.length > 0) {
+      this.files = this.taskActivity.taskAttachmentDTOs.map(attachment => {
+        const fileContent = new Blob([], { type: 'application/octet-stream' });
+        const file = new File([fileContent], attachment.fileName, {
+          type: attachment.fileType
+        });
+        Object.defineProperty(file, 'size', {
+          value: attachment.size,
+          writable: false
+        });
+        return file;
+      });
+    }
+  }
+
+  removeFile(index: number): void {
+    this.files.splice(index, 1);
+  }
+
+  removeFileDTO(index: number): void {
+    this.taskActivity.taskAttachmentDTOs.splice(index, 1);
+  }
+
+  prepareFormData(): void {
+    this.files.forEach(file => {
+      this.formData.append("uploadedFiles", file, file['name']);
+    });
   }
 
 }

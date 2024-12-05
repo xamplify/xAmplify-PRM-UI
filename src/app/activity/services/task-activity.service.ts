@@ -13,10 +13,14 @@ export class TaskActivityService {
 
     constructor(private http: Http, private authenticationService: AuthenticationService, private referenceService: ReferenceService) {}
 
-  save(taskActivity: TaskActivity) {
+  save(taskActivity: TaskActivity, formData: FormData) {
     taskActivity.loggedInUserId = this.authenticationService.getUserId();
+    formData.append('taskActivityDTO', new Blob([JSON.stringify(taskActivity)],
+          {
+              type: "application/json"
+          }));
     let url = this.URL + this.ACCESS_TOKEN_URL;
-    return this.authenticationService.callPostMethod(url, taskActivity);
+    return this.authenticationService.callPostMethod(url, formData);
   }
 
   fetchAssignToDropDownOptions() {
@@ -35,25 +39,24 @@ export class TaskActivityService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  fetchTaskActivityByIdForEdit(taskActivityId:any) {
-    let url = this.URL + "/fetchTaskActivityByIdForEdit/" + taskActivityId + this.ACCESS_TOKEN_URL;
+  fetchTaskActivityById(taskActivityId:any) {
+    let url = this.URL + "/fetchTaskActivityById/" + taskActivityId + this.ACCESS_TOKEN_URL;
     return this.authenticationService.callGetMethod(url);
   }
 
-  update(taskActivity:TaskActivity) {
+  update(taskActivity:TaskActivity, formData: FormData) {
     taskActivity.loggedInUserId = this.authenticationService.getUserId();
-    let url = this.URL + this.ACCESS_TOKEN_URL;
-    return this.authenticationService.callPutMethod(url, taskActivity);
+    formData.append('taskActivityDTO', new Blob([JSON.stringify(taskActivity)],
+          {
+              type: "application/json"
+          }));
+    let url = this.URL + "/update" + this.ACCESS_TOKEN_URL;
+    return this.authenticationService.callPostMethod(url, formData);
   }
 
   delete(id:any) {
     let url = this.URL + "/" + id + this.ACCESS_TOKEN_URL;
     return this.authenticationService.callDeleteMethod(url);
-  }
-
-  fetchTaskActivityByIdForPreview(taskActivityId:any) {
-    let url = this.URL + "/fetchTaskActivityByIdForPreivew/" + taskActivityId + this.ACCESS_TOKEN_URL;
-    return this.authenticationService.callGetMethod(url);
   }
 
 }

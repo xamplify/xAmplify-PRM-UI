@@ -28,7 +28,7 @@ export class PreviewTaskActivityComponent implements OnInit {
 
   fecthTaskActivity() {
     this.ngxLoading = true;
-    this.taskService.fetchTaskActivityByIdForPreview(this.taskActivityId).subscribe(
+    this.taskService.fetchTaskActivityById(this.taskActivityId).subscribe(
       data => {
         if (data.statusCode == 200) {
           this.taskActivity = data.data;

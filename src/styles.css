@@ -3302,3 +3302,15 @@ a.quicklinks_icons:hover {
 .underline-on-hover :hover {
   text-decoration: underline;
 }
+.low_priority {
+  color: #0ea5e9;
+  font-size: 16px !important;
+  position: relative;
+  top: 2px;
+}
+.medium_priority {
+  color: #f4b135;
+}
+.high_priority {
+  font-size: 16px !important;
+}

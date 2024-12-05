@@ -21,7 +21,7 @@
              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
           </div>
           <div *ngIf="!showCCEmailInputField || !showBCCEmailInputField" class="f_r">
-            <span *ngIf="!showCCEmailInputField"><a (click)="showCCEmailInputField = 'true'">CC</a></span>
+            <span class="mr5" *ngIf="!showCCEmailInputField"><a (click)="showCCEmailInputField = 'true'">CC</a></span>
             <span *ngIf="!showBCCEmailInputField"><a (click)="showBCCEmailInputField = 'true'">BCC</a></span>
           </div>
           <div *ngIf="showCCEmailInputField" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">

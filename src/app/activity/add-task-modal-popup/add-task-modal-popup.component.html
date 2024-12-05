@@ -21,7 +21,7 @@
             (ngModelChange)="addTaskActivityAssignTo($event);validateTask()" id="select-dropdown">
             <option [ngValue]="0">Select a member</option>
             <option *ngFor="let member of assignToDropDownOptions" [ngValue]="member.userId">
-              &#xf007; {{member.fullName}}
+              &#xf007; {{member.fullName}} ({{member.emailId}})
             </option>
           </select>
         </div>
@@ -31,11 +31,11 @@
             <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
               (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
               [disabled]="isPreview" /> -->
-            <select class="form-control" [(ngModel)]="taskTypeOption.taskActivityTypeDropDownOption.value"
+            <select class="form-control" [(ngModel)]="taskActivity.taskType"
               (ngModelChange)="validateTask()" id="select-dropdown">
-              <option *ngFor="let option of taskTypeOption.taskActivityTypeDropDown" [ngValue]="option.value">
-                {{option.name}}
-              </option>
+              <option [ngValue]="'TODO'">To Do</option>
+              <option [ngValue]="'NOTE'">Note</option>
+              <option [ngValue]="'EMAIL'">Email</option>
             </select>
           </div>
           <div class="form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field">
@@ -43,11 +43,11 @@
             <!-- <input type="text" id="subjectLine" [(ngModel)]="taskActivity.taskType" [ngModelOptions]="{standalone: true}"
               (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
               [disabled]="isPreview" /> -->
-            <select class="form-control" [(ngModel)]="taskPriorityOption.taskActivityPriorityDropDownOption.value"
+            <select class="form-control" [(ngModel)]="taskActivity.priority"
               (ngModelChange)="validateTask()" id="select-dropdown">
-              <option *ngFor="let option of taskPriorityOption.taskActivityPriorityDropDown" [ngValue]="option.value">
-                {{option.name}}
-              </option>
+              <option [ngValue]="'LOW'">Low</option>
+              <option [ngValue]="'MEDIUM'">Medium</option>
+              <option [ngValue]="'HIGH'">High</option>
             </select>
           </div>
         </div>
@@ -77,11 +77,11 @@
             <select class="form-control" [(ngModel)]="taskActivity.remainderType" [disabled]="taskActivity.dueDate == undefined"
               (ngModelChange)="handleRemainderType($event);validateTask()" id="select-dropdown">
               <option [ngValue]="''">Select a remainder</option>
-              <option [ngValue]="'Before_30_Min'" [disabled]="isBeforeHalfAnHourEnable">30 Min Before</option>
-              <option [ngValue]="'Before_1_Hour'" [disabled]="isBeforeOneHourEnable">1 Hour Before</option>
-              <option [ngValue]="'Before_1_Day'" [disabled]="isBeforeOneDayEnable">1 Day Before</option>
-              <option [ngValue]="'Before_1_Week'" [disabled]="isBeforeOneWeekEnable">1 Week Before</option>
-              <option [ngValue]="'Custom_Date'">Custom Date</option>
+              <option [ngValue]="'BEFORE30MIN'" [disabled]="isBeforeHalfAnHourEnable">30 Min Before</option>
+              <option [ngValue]="'BEFORE1HOUR'" [disabled]="isBeforeOneHourEnable">1 Hour Before</option>
+              <option [ngValue]="'BEFORE1DAY'" [disabled]="isBeforeOneDayEnable">1 Day Before</option>
+              <option [ngValue]="'BEFORE1WEEK'" [disabled]="isBeforeOneWeekEnable">1 Week Before</option>
+              <option [ngValue]="'CUSTOMDATE'">Custom Date</option>
             </select>
           </div>
           <div [ngClass]="showRemainderDate ? 'form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field' : 'form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field hide_remainder_date'">
@@ -98,6 +98,21 @@
           <label for="subjectLine">Description</label>
           <ckeditor *ngIf="!isPreview" name="body" [(ngModel)]="taskActivity.description" (change)="validateTask()"
           [ngModelOptions]="{standalone: true}" [config]="ckeConfig"></ckeditor>
+        </div>
+        <div class="form-group">
+          <label for="attachments">Attachments:</label>
+          <input id="fileInput" class="hide_remainder_date" type="file" (change)="onFileChange($event);validateTask()" multiple>
+          <label for="fileInput" class="btn Btn-Green custom-file-label">
+            Choose a file
+          </label>
+          <div *ngIf="(files.length > 0)">
+            <ul>
+              <li *ngFor="let file of files; let i = index">
+                {{ file.name }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
+                <button type="button" (click)="removeFile(i);validateTask()"><i class="fa fa-times"></i></button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
