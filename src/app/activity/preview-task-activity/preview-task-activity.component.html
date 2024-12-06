@@ -50,12 +50,12 @@
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 p0" *ngIf="taskActivity.remainder != undefined">
           <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
-            <label for="subjectLine">Remainder<span class="text-danger">*</span></label>
+            <label for="subjectLine">Reminder<span class="text-danger">*</span></label>
             <div class="input-group">
-              <input *ngIf="taskActivity.remainderType == 'CUSTOMDATE'" type="text" id="taskActivityDueDatePicker" class="form-control flatpickr" placeholder="Remainder"
+              <input *ngIf="taskActivity.remainderType == 'CUSTOMDATE'" type="text" id="taskActivityDueDatePicker" class="form-control flatpickr" placeholder="Reminder"
                 [(ngModel)]="taskActivity.remainder" [ngModelOptions]="{standalone: true}" disabled>
               <select *ngIf="taskActivity.remainderType != 'CUSTOMDATE'" class="form-control" [(ngModel)]="taskActivity.remainderType" disabled id="select-dropdown">
-                <option [ngValue]="''">Select a remainder</option>
+                <option [ngValue]="''">Select a reminder</option>
                 <option [ngValue]="'BEFORE30MIN'">30 Min Before</option>
                 <option [ngValue]="'BEFORE1HOUR'">1 Hour Before</option>
                 <option [ngValue]="'BEFORE1DAY'">1 Day Before</option>
@@ -63,6 +63,12 @@
                 <option [ngValue]="'CUSTOMDATE'">Custom Date</option>
               </select>
             </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 p0" *ngIf="taskActivity.description != undefined">
+          <div class="form-group">
+            <label for="subjectLine">Description</label>
+            <div [innerHTML]="taskActivity.description"></div>
           </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 p0">
