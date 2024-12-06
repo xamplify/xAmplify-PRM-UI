@@ -3299,6 +3299,23 @@ a.quicklinks_icons:hover {
   border-radius: 3px !important;
   border: 1px solid #e87e04;
 }
+
+.underline-on-hover :hover {
+  text-decoration: underline;
+}
+.low_priority {
+  color: #0ea5e9;
+  font-size: 16px !important;
+  position: relative;
+  top: 2px;
+}
+.medium_priority {
+  color: #f4b135;
+}
+.high_priority {
+  font-size: 16px !important;
+}
+
 /* Sudha Sri(19-11-2024) */
 .light_bg_removal{
   Background: none !important;
