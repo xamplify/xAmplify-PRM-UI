@@ -99,6 +99,8 @@ export class ContactDetailsComponent implements OnInit {
   selectedContactListId:number;
   viewCampaigns: boolean = false;
   isReloadActivityTab:boolean;
+  showTaskModalPopup: boolean = false;
+  isReloadTaskActivityTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -339,7 +341,7 @@ export class ContactDetailsComponent implements OnInit {
     document.body.removeChild(textarea);
   }
 
-  showModalPopup() {
+  openEmailModalPopup() {
     this.actionType = 'add';
     this.showEmailModalPopup = true;
   }
@@ -348,17 +350,17 @@ export class ContactDetailsComponent implements OnInit {
     this.isReloadEmailActivityTab = event;
     this.isReloadActivityTab = event;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
-    this.closeModalPopup();
+    this.closeEmailModalPopup();
   }
 
   showEmailFailedErrorStatus(event) {
     this.isReloadEmailActivityTab = event;
     this.isReloadActivityTab = event;
     this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-    this.closeModalPopup();
+    this.closeEmailModalPopup();
   }
 
-  closeModalPopup() {
+  closeEmailModalPopup() {
     this.showEmailModalPopup = false;
   }
 
@@ -533,5 +535,32 @@ export class ContactDetailsComponent implements OnInit {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.cd);
     }
 	}
+
+  openTaskModalPopup() {
+    this.actionType = 'add';
+    this.showTaskModalPopup = true;
+  }
+
+  closeTaskModalPopup() {
+    this.showTaskModalPopup = false;
+  }
+
+  showTaskSubmitSuccessStatus(event) {
+    this.isReloadTaskActivityTab = event;
+    this.isReloadActivityTab = event;
+    this.customResponse = new CustomResponse('SUCCESS', 'Task Submitted Succesfully.', true);
+    this.closeTaskModalPopup();
+  }
+
+  showTaskUpdateCutomResponse(event: any) {
+    this.isReloadTaskActivityTab = event;
+    this.isReloadActivityTab = event;
+    this.customResponse = new CustomResponse('SUCCESS', 'Task Updated Successfully.', true);
+    this.closeTaskModalPopup();
+  }
+
+  showTaskDeleteSuccessStatus(event) {
+    this.customResponse = new CustomResponse('SUCCESS', event, true);
+  }
   
 }
