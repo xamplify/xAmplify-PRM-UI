@@ -4,12 +4,30 @@
 <div class="page-bar PaddingTwentyCU">
   <div class="row">
     <div class="col-md-12 col-md-12 col-xs-12 col-sm-12">
-     <div [ngClass]=" !isInfonull ? 'col-md-12 col-md-12 col-xs-12 col-sm-12' : 'col-md-2 col-md-2 col-xs-2 col-sm-2'"><h4>Company Name: {{companyInfo?.companyName}}</h4></div> 
-     <div class="col-md-10 col-md-10 col-xs-10 col-sm-10 alert alert-danger text-center custom-alert" id="company-profile-error-div" *ngIf="isInfonull">
-      <strong>{{errorMessage}}</strong>
-    </div>
+      <div [ngClass]=" !isInfonull ? 'col-md-10 col-md-10 col-xs-10 col-sm-10' : 'col-md-2 col-md-2 col-xs-2 col-sm-2'">
+        <h4>Company Name: {{companyInfo?.companyName}}</h4>
+      </div>
+      <div *ngIf="!isInfonull" class="col-md-2 col-md-2 col-xs-2 col-sm-2">
+        <span class="btn btn-xs hidden-xs l-g-view FliterAlignment pull-right {{filterActiveBg}}" title="Filter">
+          <div class="btn-group">
+            <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true"
+              aria-expanded="false" (click)="clickFilter()">
+              <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+            </a>
+            <ul *ngIf="showFilterDropDown" class="dropdown-menu pull-right">
+              <li><a (click)="viewDropDownFilter()">View Filter</a></li>
+              <li><a (click)="clearFilter()">Clear Filter</a></li>
+            </ul>
+          </div>
+        </span>
+      </div>
+      <div class="col-md-10 col-md-10 col-xs-10 col-sm-10 alert alert-danger text-center custom-alert"
+        id="company-profile-error-div" *ngIf="isInfonull">
+        <strong>{{errorMessage}}</strong>
+      </div>
     </div>
   </div>
+  <ng-template [ngTemplateOutlet]="filter"></ng-template>
   <div class="row BgForCard">
     <div class="col-md-12 col-md-12 col-xs-12 col-sm-12">
       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -48,3 +66,52 @@
     </div>
   </div>
 </div>
+
+    <ng-template #filter>
+
+      <div class="portlet light ht125 mt10" *ngIf="showFilterOption && !showFilterDropDown">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!-- Alert Message Box -->
+            <app-response-message class="pg8" [customResponse]="customResponse"
+              *ngIf="customResponse?.isVisible"></app-response-message>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8 pl0">
+              <h4 translate>Apply Filter</h4>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
+              <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+              <div class="portlet box custom_fiter-asset mt10">
+                <div class="row pl10 pr10 pb10">
+                  <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+                    <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                      <div class="control-label" style="font-size:15px">{{dateFilterText}}</div>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <label class="control-label">
+                        From Date &nbsp;
+                      </label>
+                      <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                      </app-date-picker>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                      <label class="control-label">To Date &nbsp;
+                      </label>
+                      <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                      </app-date-picker>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="btn-aligmntCu pull-right">
+                <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>

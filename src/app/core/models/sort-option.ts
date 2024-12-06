@@ -461,6 +461,12 @@ export class SortOption {
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
 	];
 
+	customFieldsDropDown = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name(A-Z)', 'value': 'customFields-ASC' },
+		{ 'name': 'Name(Z-A)', 'value': 'customFields-DESC' },
+	];
+
 	customFieldsDropDownOptions = [
 		{ 'name': 'Name(A-Z)', 'value': 'fieldName-ASC' },
 		{ 'name': 'Name(Z-A)', 'value': 'fieldName-DESC' },
@@ -601,6 +607,9 @@ export class SortOption {
 	taskActivityDropDownOption = this.taskActivityDropDownOptions[this.taskActivityDropDownOptions.length-1];
 
 	noteActivityDropDownOption = this.noteActivityDropDownOptions[this.noteActivityDropDownOptions.length-1];
+
+	/***XNFR-662****/
+    public selectedCustomFieldsDropDownOption = this.customFieldsDropDown[0];
 
 
 }

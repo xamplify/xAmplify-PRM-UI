@@ -25,9 +25,11 @@ export class ShareLeadDetailsComponent implements OnInit {
   @Input() isTeamMemberAnalytics : boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
-  @Input() vanityUrlFilter : boolean = false;
-  @Input() vendorCompanyProfileName : string = '';
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
   headerText:string = 'Share Leads Details';
   
 
@@ -35,6 +37,7 @@ export class ShareLeadDetailsComponent implements OnInit {
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
+  scrollClass: string;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -66,16 +69,23 @@ export class ShareLeadDetailsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
-    this.pagination.maxResults = 6;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.teamMemberId = this.teamMemberId;  
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getShareLeadDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }        	
 			},
@@ -134,7 +144,6 @@ export class ShareLeadDetailsComponent implements OnInit {
   getShareLeadDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 6; 
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     if(!this.isVendorVersion){
@@ -147,6 +156,11 @@ export class ShareLeadDetailsComponent implements OnInit {
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }        	
 			},
@@ -155,6 +169,24 @@ export class ShareLeadDetailsComponent implements OnInit {
         this.xtremandLogger.error(_error);
 			}
 		);
+  }
+
+  downloadShareLeadsDetailsReport() {
+    let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
+    let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
+    let searchKeyRequestParm = this.searchKey != undefined ? this.sortOption.searchKey : "";
+    let partnerCompanyIdRequestParam = this.partnerCompanyId != undefined && this.partnerCompanyId > 0 ? this.partnerCompanyId : 0;
+    let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
+    let teamMemberIdRequestParam = this.teamMemberId != undefined && this.teamMemberId > 0 ? this.teamMemberId : 0;
+    let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
+    let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
+    let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let url = this.authenticationService.REST_URL + "partner/journey/download/share-leads-details-report?access_token=" + this.authenticationService.access_token
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
+      + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
+    this.referenseService.openWindowInNewTab(url);
   }
 
 }

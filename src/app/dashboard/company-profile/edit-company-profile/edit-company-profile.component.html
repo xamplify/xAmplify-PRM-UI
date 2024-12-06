@@ -91,7 +91,9 @@
 										</ng-container>
 										<hr class="divider" />
 										<label class="control-label">Upload Logo</label>
-										<div class="profile-image-wrapper dotted-image-border" (click)="imageClick()">
+										<div [ngClass]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !isSuperAdmin) ? 'cursor-not-allowed' : ''" 
+											class="profile-image-wrapper dotted-image-border"
+											(click)="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !isSuperAdmin) ? '' : imageClick()">
 											<span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
 											<span *ngIf="!croppedImage">
 												<h5 *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a !important;">
@@ -111,8 +113,10 @@
 													*ngIf="companyLogoImageUrlPath"
 													[src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath"
 													(error)="errorHandler($event)"> </ng-template>
-											<a class="btn btn-primary1 profile-pic" (click)="fileChangeEvent()"
-												data-toggle="tooltip" data-placement="right"
+													<a class="btn btn-primary1 profile-pic" 
+													[ngClass]="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !isSuperAdmin) ? 'cursor-not-allowed' : ''"
+													(click)="(!companyProfile?.isAdd && !authenticationService?.module?.isAnyAdminOrSupervisor && !isSuperAdmin) ? '' : fileChangeEvent()"
+													data-toggle="tooltip" data-placement="right"
 												title="upload 2:1 ratio logo !">
 												&nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
 													style="font-size:25px;padding-top:10px"></i></a>
@@ -538,10 +542,8 @@
 										</div>
 										<div class="col-md-6 col-lg-6">
 											<div class="form-group" [attr.class]="phoneDivClass">
-												<label class="control-label" translate>Phone Number <font><b
-															style="color: #f55d7a !important">*</b></font></label>
-
-												<input type="text" maxlength="20" class="form-control"
+												<label class="control-label" translate>Phone Number</label>
+												<input type="text" maxlength="20" class="form-control" placeholder="Phone Number"
 													[(ngModel)]="companyProfile.phone"
 													[ngModelOptions]="{standalone: true}"
 													(input)="validatePattern('phone')"
@@ -782,20 +784,20 @@
 				<h4 class="modal-title" id="cropLogoImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<button style="position: relative; top: -8px;"
-					class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
-					*ngIf="!imageChangedEvent; else uploadButton">
-					<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input style="height: 36px;"
-						title=" " id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
-				</button>
+				<button class="btn btn-primary fileinput-button-css pd_left1" *ngIf="!imageChangedEvent; else uploadButton">
+                    Upload image <input style="height: 36px;"
+                        title=" " id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
+                </button>
+                <button class="btn btn-primary" (click)="editSavedImage()" [disabled]="isCropperVisible">Re-crop
+                </button>
 				<ng-template #uploadButton>
-					<button style="position: relative; top: -5px;"
-						class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg">
-						<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input
-							style="height: 36px;" title=" " id="custom-input" type="file"
-							(change)="fileBgImageChangeEvent($event)">
-					</button>
-				</ng-template>
+                    <button
+                        class="btn btn-primary fileinput-button-css pd_left1">
+                        Upload image <input
+                            style="height: 36px;" title=" " id="custom-input" type="file"
+                            (change)="fileBgImageChangeEvent($event)">
+                    </button>
+                </ng-template>
 				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
 				<div>
@@ -814,11 +816,9 @@
 						</app-img-croppr-v2>
 					</div>
 
-					<div *ngIf="!imageChangedEvent">
-                        <fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
-                        </fieldset>
-                    </div>
-
+					<div *ngIf="!imageChangedEvent && !!companyLogoImageUrlPath">
+						<img [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath" style="width:100%; margin-bottom: 5px;" />
+					</div>	  
 
 				</div>
 				<div class="d-flex justify-content-between">
