@@ -23,6 +23,7 @@ import { PartnersJourneyAutomationComponent } from './partners-journey-automatio
 import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
 import { PendingChangesGuard } from "app/component-can-deactivate";
 import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './partner-journey-team-member-high-level-analytics-table/partner-journey-team-member-high-level-analytics-table.component';
+import { PartnerJourneyAssetDetailsComponent } from './partner-journey-asset-details/partner-journey-asset-details.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,6 @@ import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './part
      SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent, PartnerJourneyAssetDetailsComponent]
 })
 export class PartnersModule { }

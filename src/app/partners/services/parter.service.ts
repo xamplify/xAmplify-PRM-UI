@@ -672,4 +672,26 @@ export class ParterService {
         return this.callApiForDashBoard("findTotalPartnersCount", loggedInUserId, applyFilter);
     }
 
+    getAssetDetails(pagination: Pagination) {
+        let page = pagination.pageIndex;
+        let size = pagination.maxResults;
+        let searchKey = pagination.searchKey != null ? pagination.searchKey : "";
+        let loggedInUserIdRequestParam = pagination.userId != undefined && pagination.userId > 0 ? "&loggedInUserId=" + pagination.userId : "&loggedInUserId=0";
+        let partnerCompanyId = pagination.partnerCompanyId != undefined && pagination.partnerCompanyId > 0 ? pagination.partnerCompanyId : "";
+        let searchParam = searchKey.length > 0 ? "&search=" + searchKey : "";
+        let fromDateFilterStringParam = pagination.fromDateFilterString != null ? "&fromDateFilterInString=" + pagination.fromDateFilterString : "";
+        let toDateFilterStringParam = pagination.toDateFilterString != null ? "&toDateFilterInString=" + pagination.toDateFilterString : "";
+        let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true" : "";
+        let timeZoneParam = pagination.timeZone != null ? "&timeZone=" + pagination.timeZone : "";
+        let partnerCompanyIdRequestParam = partnerCompanyId != null ? "&partnerCompanyId=" + partnerCompanyId : "";
+        let selectedPartnerCompanyIdsRequestParam = pagination.selectedPartnerCompanyIds != undefined ? "&selectedPartnerCompanyIds=" + pagination.selectedPartnerCompanyIds : "";
+        let detailedAnalyticsRequestParam = pagination.detailedAnalytics ? "&detailedAnalytics=true" : "";
+        let teamMemberUserIdRequestParam = pagination.teamMemberId != undefined && pagination.teamMemberId > 0 ? "&teamMemberUserId=" + pagination.teamMemberId : "";
+        let partnerjourneyRequestParam = "&page=" + page + "&size=" + size + searchParam + partnerCompanyIdRequestParam + detailedAnalyticsRequestParam + loggedInUserIdRequestParam
+        + fromDateFilterStringParam + toDateFilterStringParam + teamMemberPartnerFilter + timeZoneParam + selectedPartnerCompanyIdsRequestParam + teamMemberUserIdRequestParam;
+        const url = this.URL + 'partner/journey/assets/details?access_token=' + this.authenticationService.access_token + partnerjourneyRequestParam;
+        return this.httpClient.get(url)
+            .catch(this.handleError);
+    }
+
 }
