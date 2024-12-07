@@ -51,8 +51,9 @@ export class ShareUnpublishedContentComponent implements OnInit {
   trackOrPlayBooksSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   isTrackOrPlayBooksSweetAlertComponentCalled = false;
   isDashboardButtonsComponentCalled = false;
-  partnerIds = [];
   dashboardButtonTitle = [];
+  @Input() hasDashboardButtonsAccess = false;
+  partnerId: any;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -76,6 +77,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     accessList.push(this.hasDamAccess && !isActiveOrInActiveMasterPartnerList);
     accessList.push(this.hasLmsAccess && !isActiveOrInActiveMasterPartnerList);
     accessList.push(this.hasPlaybookAccess && !isActiveOrInActiveMasterPartnerList);
+    accessList.push(this.hasDashboardButtonsAccess && !isActiveOrInActiveMasterPartnerList);
     let filteredArrayList = this.referenceService.filterArrayList(accessList,false);
     this.showFilterOptions = filteredArrayList!=undefined && filteredArrayList.length>1;
     this.addFilterOptions();
@@ -104,7 +106,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     if(this.hasPlaybookAccess) {
       this.filterOptions.push(this.properties.playBooksHeaderText);
     }
-    if(this.authenticationService.isLocalHost()){
+    if(this.hasDashboardButtonsAccess){
       this.filterOptions.push(this.properties.dashboardButtons);
     }
   }
@@ -122,7 +124,6 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isShareButtonClicked = false;
     this.customResponse = new CustomResponse();
     this.isPublishingToPartnerList = false;
-
   }
 
   closePopup(){
@@ -142,12 +143,13 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isAssetChildComponentCalled = false;
     this.isTrackChildComponentCalled = false;
     this.isPlayBookChildComponentCalled = false;
+    this.isDashboardButtonsComponentCalled = false;
     setTimeout(() => {
       this.isCampaignChildComponentCalled = this.hasCampaignAccess && filterOption==this.properties.campaignsHeaderText;
       this.isAssetChildComponentCalled = this.hasDamAccess && filterOption==this.properties.assetsHeaderText;
       this.isTrackChildComponentCalled = this.hasLmsAccess && filterOption==this.properties.tracksHeaderText;
       this.isPlayBookChildComponentCalled = this.hasPlaybookAccess && filterOption==this.properties.playBooksHeaderText;
-      this.isDashboardButtonsComponentCalled = filterOption==this.properties.dashboardButtons;
+      this.isDashboardButtonsComponentCalled =  this.hasDashboardButtonsAccess && filterOption==this.properties.dashboardButtons;
       this.ngxLoading = false;
     }, 500);
    
@@ -158,8 +160,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.user = event['partnerDetails'];
     this.isPartnerInfoRequried = event['isPartnerInfoRequried'];
     this.isPublishingToPartnerList = event['isPublishingToPartnerList'];
-    this.partnerIds = event['partnerIds'];
-    this.dashboardButtonTitle = event['buttonTitle']
+    this.partnerId = event['partnerId'];
   }
 
   
@@ -180,18 +181,14 @@ export class ShareUnpublishedContentComponent implements OnInit {
           this.addLoaderAndShareTracksOrPlayBooks();
       }else if(this.selectedModule==this.properties.dashboardButtons){
         this.ngxLoading = true;
-        let dashboardButtons = {};
-        dashboardButtons["ids"] = this.selectedIds;
-        dashboardButtons['partnerIds'] = this.partnerIds
-        dashboardButtons['vendorId'] = this.authenticationService.getUserId();
-        dashboardButtons['titles'] =  this.dashboardButtonTitle;
-        dashboardButtons['userListId'] = this.selectedUserListId;
+        let dashboardButtons = this.dashboarButtonsDetails();
         this.shareDashboardbuttons(dashboardButtons);
       }
     }else{
       this.referenceService.goToTop();
       this.customResponse = new CustomResponse('ERROR','Please select atleast one row',true);
     }
+
   }
 
   trackOrPlayBooksSweetAlertEventReceiver(event:boolean){
@@ -297,6 +294,17 @@ export class ShareUnpublishedContentComponent implements OnInit {
         }, () => {
         }
       );
+  }
+  private dashboarButtonsDetails() {
+    let dashboardButtons = {};
+    dashboardButtons["ids"] = this.selectedIds;
+    dashboardButtons['partnerId'] = this.partnerId;
+    dashboardButtons['vendorId'] = this.authenticationService.getUserId();
+    dashboardButtons['userListId'] = this.selectedUserListId;
+    if (this.contact != undefined) {
+      dashboardButtons['partnershipId'] = this.contact.partnershipId;
+    }
+    return dashboardButtons;
   }
 
 }

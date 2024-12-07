@@ -1721,7 +1721,8 @@
 <app-share-unpublished-content #shareUnPublishedComponent
     [hasCampaignAccess]="authenticationService?.module?.isCampaign"
     [hasDamAccess]="authenticationService?.module?.damAccess" [hasLmsAccess]="authenticationService?.module?.lmsAccess"
-    [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+    [hasPlaybookAccess]="authenticationService?.module?.playbookAccess"
+    [hasDashboardButtonsAccess] ="authenticationService?.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.loggedInThroughOwnVanityUrl">
 </app-share-unpublished-content>
 
 <!--Open Pop up-->

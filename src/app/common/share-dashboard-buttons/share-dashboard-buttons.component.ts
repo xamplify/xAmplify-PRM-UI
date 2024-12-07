@@ -58,7 +58,7 @@ export class ShareDashboardButtonsComponent implements OnInit {
 
   findDashboardButtons(pagination: Pagination) {
      this.customResponse = new CustomResponse();
-     pagination.pageIndex = 1;
+    //  pagination.pageIndex = 1;
      pagination.searchKey = this.sortOption.searchKey;
     //  pagination = this.utilService.sortOptionValues(this.sortOption.selectedShareCampaignDropDownOption, pagination);
     this.referenceService.startLoader(this.httpRequestLoader);
@@ -85,31 +85,28 @@ export class ShareDashboardButtonsComponent implements OnInit {
       });
   }
 
-  highlightSelectedDashboardButtonOnRowClick(selectedCampaignId: any, event: any,title:any) {
+  highlightSelectedDashboardButtonOnRowClick(selectedCampaignId: any, event: any) {
     this.referenceService.highlightRowOnRowCick('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, 'unPublished-dashboardButtons-header-checkbox-id', selectedCampaignId, event);
-    this.sendEmitterValues(title);
+    this.sendEmitterValues();
   }
   
-  highlightDashboardButtonRowOnCheckBoxClick(selectedCampaignId: any, event: any,title:any) {
+  highlightDashboardButtonRowOnCheckBoxClick(selectedCampaignId: any, event: any) {
     this.referenceService.highlightRowByCheckBox('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, 'unPublished-dashboardButtons-header-checkbox-id', selectedCampaignId, event);
-    this.sendEmitterValues(title);
+    this.sendEmitterValues();
   }
 
   selectOrUnselectAllRowsOfTheCurrentPage(event: any) {
     this.selectedDashboardButtonIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, this.pagination, event);
-		this.sendEmitterValues('');
+		this.sendEmitterValues();
   }
 
-  sendEmitterValues(title: any){
+  sendEmitterValues(){
 		let emitterObject = {};
 		emitterObject['selectedRowIds'] = this.selectedDashboardButtonIds;
     emitterObject['isPartnerInfoRequried'] = false;
     if(this.pagination.partnerId>0){
-     this.partnerIds.push(this.pagination.partnerId);
+      emitterObject['partnerId']= this.pagination.partnerId;
     }
-    emitterObject['partnerIds'] = this.partnerIds;
-    this.buttontitle.push(title);
-    emitterObject['buttonTitle'] = this.buttontitle;
 		this.shareDashboardButtonsEventEmitter.emit(emitterObject);
 	}
   setPage(event: any) {
