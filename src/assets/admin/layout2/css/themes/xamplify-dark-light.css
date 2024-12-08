@@ -2492,7 +2492,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
   background-color: #22313a!important;
   border-right: 1px solid #2f4857 !important;
   }
-  .activity_card{
+  .activity_card,.view_emailcard,.email_content{
     background-color: #22313a!important;
     border: 1px solid #2f4857 !important;
   }
