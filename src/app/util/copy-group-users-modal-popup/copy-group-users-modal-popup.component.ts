@@ -23,6 +23,7 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
   @Input() userListId = 0;
   @Input() selectedUserIds = [];
   @Input() moduleName = '';
+  @Input() selectedUsers = [];
   @Output() copyGroupUsersModalPopupEventEmitter = new EventEmitter();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   customResponse: CustomResponse = new CustomResponse();
@@ -133,6 +134,7 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
       this.copyGroupUsersDto.userGroupIds = this.selectedPartnerGroupIds;
       this.copyGroupUsersDto.userGroupId = this.userListId;
       this.copyGroupUsersDto.moduleName = this.moduleName;
+      this.copyGroupUsersDto.users = this.selectedUsers;
       this.authenticationService.copyUsersToUserGroups(this.copyGroupUsersDto).subscribe(
         response=>{
           this.copySuccess = true;
@@ -162,6 +164,7 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
     this.selectedPartnerGroupIds = [];
     this.selectedUserIds = [];
     this.userListId = 0;
+    this.selectedUsers = [];
   }
 
   callEmitter(){

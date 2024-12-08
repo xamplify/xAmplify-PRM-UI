@@ -2117,7 +2117,7 @@
 <!---XNFR-278-->
 <ng-container *ngIf="mergeOptionClicked">
 	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging"
-		[moduleName]="module"
+		[moduleName]="module" [selectedUsers] = "selectedContactForSave"
 		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
 

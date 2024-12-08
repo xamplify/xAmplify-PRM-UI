@@ -5,4 +5,5 @@ export class CopyGroupUsersDto {
     loggedInUserId = 0;
     userGroupId = 0;
     moduleName = '';
+    users = [];
 }
