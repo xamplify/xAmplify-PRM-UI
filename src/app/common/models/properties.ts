@@ -196,13 +196,13 @@ export class Properties {
 	notifyPartners = "Onboarding Configurations";
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
-	vendorJourney = "Vendor Journey for Partners";
+	vendorJourney = "Vendor Showcase";
 	landingPages = "Vendor Shared Pages";
 	masterLandingPages = "Partner Landscape"
 	masterLandingPageCategories = "Landscape Categories"
 	welcomePages = "Welcome Pages"
 	/*****XNFR-712******/
-	partnerJourneyPages = "Partner Journey for Vendors";
+	partnerJourneyPages = "Partner Showcase";
 	vendorPartnerJourneyPages = "Partner Shared Pages"
 	vendorMarketplacePages = "Vendor Landscape"
 	/********Error Messages************* */
