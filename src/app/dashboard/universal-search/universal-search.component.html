@@ -3,7 +3,7 @@
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home"></i>
-        <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
+        <a [routerLink]="referenceService?.homeRouter" (click)="homeButton()" translate>Home</a>
         <i class="fa fa-angle-right"></i>
       </li>
       <li>
@@ -114,11 +114,12 @@
       <h6 *ngIf="quickLink?.name" (click)="preview(quickLink)">
         <span class="pointer">
           <b>{{quickLink?.type || 'Item'}} Name: </b>
-          <span data-toggle="tooltip" data-placement="top"
-            [title]="getTooltipTitle(quickLink?.name)">{{quickLink?.name}}</span>
+          <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.name)">
+            {{quickLink?.name | slice:0:50}}
+            <span *ngIf="quickLink?.name?.length>50">..</span>
+          </span>
         </span>
       </h6>
-
       <h6 *ngIf="quickLink?.slug && quickLink?.type === 'Asset' " (click)="preview(quickLink)">
         <span class="pointer">
           <b>{{quickLink?.type || 'Item'}} Type: </b>
@@ -130,16 +131,18 @@
       <!-- Created By Field -->
       <h6 *ngIf="quickLink?.createdBy && quickLink?.type != 'Deal'" (click)="preview(quickLink)">
         <span class="pointer">
-          <b *ngIf="quickLink?.navigate === 'Manage'">Created By: </b>
-          <b *ngIf="quickLink?.navigate === 'Shared'">Published By: </b>
+          <b *ngIf="quickLink?.navigate === 'Manage' ||  quickLink?.type != 'Asset'">Created By: </b>
+          <b *ngIf="quickLink?.navigate === 'Shared' && quickLink?.type === 'Asset'">Published By: </b>
           <b *ngIf="quickLink?.navigate === 'Vendor' || quickLink?.navigate === 'Partner' ">Email Id: </b>
           <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.createdBy)">
-            {{quickLink?.createdBy}}
+            {{quickLink?.createdBy | slice:0:50}}
+            <span *ngIf="quickLink?.createdBy?.length>50">..</span>
           </span>
         </span>
       </h6>
-      
-      <ng-template *ngIf="quickLink?.type == 'Lead' || quickLink?.type == 'Deal'" [ngTemplateOutlet]="leadOrDealDetails" [ngTemplateOutletContext]="{ quickLink: quickLink }"></ng-template>
+
+      <ng-template *ngIf="quickLink?.type == 'Lead' || quickLink?.type == 'Deal'" [ngTemplateOutlet]="leadOrDealDetails"
+        [ngTemplateOutletContext]="{ quickLink: quickLink }"></ng-template>
 
       <!-- Tags, Folders, and Additional Details -->
       <ng-template [ngTemplateOutlet]="extraDetails" [ngTemplateOutletContext]="{ quickLink: quickLink }"></ng-template>
@@ -151,10 +154,18 @@
           <span [ngClass]="getLabelClass(quickLink)">{{quickLink?.navigate}} {{quickLink?.type}}s</span>
 
           <!-- Navigation Icon -->
-          <a *ngIf="!authenticationService.module.isOnlyPartner" class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Click here to Navigate"
-            (click)="$event.stopPropagation();navigateToManage(quickLink)">
-            <i class="fas fa-route" aria-hidden="true"></i>
-          </a>
+          <!-- <div [ngClass]="quickLink?.navigate === 'Shared'? 'disabled-div':''">
+            <a *ngIf="!authenticationService.module.isOnlyPartner " class="quicklinks_icons"
+              [ngClass]="quickLink?.navigate === 'Shared'? 'disabled-div':''" data-toggle="tooltip" data-placement="top"
+              title="Click here to Navigate" (click)="$event.stopPropagation();navigateToManage(quickLink)">
+              <i class="fas fa-route" aria-hidden="true" [ngClass]="quickLink?.navigate === 'Shared'?'disabled':''"></i>
+            </a>
+          </div> -->
+          <ng-template [ngTemplateOutlet]="searchNgTemplateIcon" [ngTemplateOutletContext]="{quickLink:quickLink,
+          access:quickLink?.navigate === 'Shared',
+          title: quickLink?.navigate != 'Shared'? 'Navigate To Manage'
+           :'You do not have permission to Navigate Manage'}">
+          </ng-template>
 
           <!-- Preview Icon -->
           <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview"
@@ -176,7 +187,8 @@
       </span>
     </span>
   </h6>
-  <h6 *ngIf="quickLink?.from && quickLink?.type === 'Asset' && quickLink?.navigate === 'Shared' " (click)="preview(quickLink)">
+  <h6 *ngIf="quickLink?.from && quickLink?.type === 'Asset' && quickLink?.navigate === 'Shared' "
+    (click)="preview(quickLink)">
     <span class="pointer"><b>From: </b>
       <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.from)">
         {{quickLink?.from}}
@@ -253,4 +265,15 @@
       </span>
     </span>
   </h6>
+</ng-template>
+
+
+<ng-template #searchNgTemplateIcon let-quickLink="quickLink" let-access="access" let-title="title">
+  <div *ngIf="!authenticationService.module.isOnlyPartner " [ngClass]="access ? 'disabled-navigate':''"
+    data-toggle="tooltip" data-placement="top" title="{{title}}">
+    <a class="quicklinks_icons" [ngClass]="access? 'disabled-navigate-none':''"
+      (click)="$event.stopPropagation(); navigateToManage(quickLink)">
+      <i class="fas fa-route"></i>
+    </a>
+  </div>
 </ng-template>

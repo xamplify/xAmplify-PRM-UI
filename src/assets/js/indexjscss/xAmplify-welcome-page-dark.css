@@ -130,3 +130,35 @@ h1, h2, h3, h4, h5, h6 {
         background: #22313a !important;
     }
 }
+
+/*** Universal Search *******/
+.welcome-dropdown label {
+    background-color: #2b3c46 !important;
+    color: #fff !important;
+}
+.welcome-input[type="text"]{
+    background: #2b3c46;
+    color: #fff;
+}
+.clear-icon {
+    color: #fff !important;
+}
+.welcome-dropdown-menu {
+    background-color: #2b3c46;
+    border: 1px solid #2f4857;
+}
+.welcome-input[type="text"] {
+    border: 1px solid #2f4857;
+}
+.welcome-dropdown-menu li a {
+    color: #fff;
+}
+.welcome-dropdown-menu li a:hover {
+    background: #22313a;
+    color: #fff;
+}
+.welcome-dropdown label:hover,
+  .welcome-dropdown label:focus {
+    background-color: #22313a;
+    border: 1px solid #2f4857;
+  }

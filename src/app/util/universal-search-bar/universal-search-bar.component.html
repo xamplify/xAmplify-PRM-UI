@@ -1,20 +1,12 @@
-<!-- <div class="">
-  <div class="universal-search-container">
-    <input type="text" [(ngModel)]="searchKey" placeholder="Search..." class="universal-search-input"  (keypress)="universalSearchOnKeyPress($event.keyCode)"/>
-    <button *ngIf="isEmptyOrWhitespace(searchKey)" class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';goToDashBoard();"></button>
-    <button [disabled]="!isEmptyOrWhitespace(searchKey)" [ngClass]="isEmptyOrWhitespace(searchKey)? '':'disabled-div'" class="universal-search-button" (click)="universalSearch();">
-      <i class="fa fa-search" aria-hidden="true" [ngClass]="isEmptyOrWhitespace(searchKey)?'':'disabled'"></i>
-    </button>
-  </div>
-</div> -->
-
 <div class="welcome-search-container">
-  <div class="welcome-dropdown" (change)="updateDropdownVisibility()">
-    <input type="checkbox" id="dropdownToggle"  [checked]="isDropdownVisible"  (click)="updateDropdownVisibility()">
+  <div class="welcome-dropdown">
+    <input type="checkbox" id="dropdownToggle" (click)="updateDropdownVisibility()">
     <label for="dropdownToggle">
-      {{ refService.universalSearchFilterType || 'All Modules' }}<span class="caret"></span>
+      {{ refService.universalSearchFilterType ? refService.universalSearchFilterType : 'All' }}
+      <span
+        [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'"></span>
     </label>
-    <ul class="welcome-dropdown-menu" *ngIf="isDropdownVisible">
+    <ul class="welcome-dropdown-menu" [class.show]="isDropdownVisible">
       <li *ngFor="let option of dropdownOptions" (click)="selectDropdownOption(option.label, option.index)">
         <a *ngIf="option.condition"> {{ option.label }} </a>
       </li>
@@ -23,10 +15,9 @@
   <div class="search-container">
     <input class="welcome-input" type="text" placeholder="Search..." [(ngModel)]="searchKey"
       (keypress)="universalSearchOnKeyPress($event.keyCode)" />
-    <i class="fa fa-times clear-icon" *ngIf="isEmptyOrWhitespace()"
-      (click)="searchKey=''; goToDashBoard();"></i>
+    <i *ngIf="isEmptyOrWhitespace(searchKey? searchKey :'')" class="clear-icon fa fa-times" (click)="searchKey=''; goToDashBoard();"></i>
   </div>
-  <button class="welcome-btn" (click)=" universalSearch()">
-    <i aria-hidden="true" class="fa fa-search"></i>
+  <button [disabled]="!disabledButton(searchKey? searchKey :'')" [ngClass]="disabledButton(searchKey? searchKey :'')? '':'disabled-div'" class="welcome-btn" (click)=" universalSearch()">
+    <i aria-hidden="true" class="fa fa-search" [ngClass]="disabledButton(searchKey? searchKey :'')?'':'disabled'"></i>
   </button>
 </div>

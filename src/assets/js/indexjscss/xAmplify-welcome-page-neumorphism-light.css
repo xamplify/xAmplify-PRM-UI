@@ -85,3 +85,33 @@ a.xamplify-dropdown-toggle.circlebg-none-v {
 }
 
 }
+/*** Universal Search *******/
+.welcome-dropdown label {
+  background-color: #f0f5fa !important;
+  color: #000 !important;
+}
+.welcome-input[type="text"]{
+  background-color: #f0f5fa !important;
+  color: #000;
+}
+.clear-icon {
+  color: #000 !important;
+}
+.welcome-dropdown-menu {
+  background: linear-gradient(225deg, #d8dde1, #fff);
+  box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #fff;
+  border: 1px solid #d0d5db !important;
+}
+.welcome-input[type="text"] {
+  border: 1px solid #d0d5db !important;
+}
+.welcome-dropdown-menu li a {
+  color: #000;
+  border-bottom: 1px solid #d0d5db !important;
+}
+.welcome-dropdown-menu li a:hover,
+.welcome-dropdown label:hover,
+.welcome-dropdown label:focus {
+  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+  background: linear-gradient(225deg, #d8dde1, #fff) !important;
+}

@@ -4427,3 +4427,24 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 .update-activity,.create-activity,.sent-activity {
   box-shadow: unset!important;
 }
+/*** XNFR-758 ***/
+.welcome-btn{box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;}
+.welcome-dropdown-menu {
+  background: linear-gradient(225deg, #d8dde1, #ffffff);
+  border: 1px solid #d0d5db !important;
+  box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
+}
+.welcome-dropdown-menu li a,.welcome-dropdown-menu li a:hover,.clear-icon {
+  border-bottom: 1px solid #d0d5db !important;
+}
+.welcome-input[type="text"]:focus,.welcome-input[type="text"], .welcome-btn,.welcome-dropdown label {
+  color: #000 !important;
+    background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+    border: 1px solid #d0d5db !important;
+    /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
+}
+.welcome-dropdown-menu li a:hover {
+  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+}
+/*** XNFR-758 ***/

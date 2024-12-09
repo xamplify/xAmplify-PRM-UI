@@ -1122,13 +1122,17 @@ line-height: 1;
   vertical-align: super;
 }
 /****** Universal Search *******/ 
+.welcome-search-container {
+  bottom: 3px;
+  position: relative;
+}
 .welcome-btn {
-  padding: 8px 14px !important ;
+  padding: 10px 14px !important ;
   display: inline !important;
 }
 .welcome-input[type="text"],
 .welcome-dropdown label{
-  padding: 8px 14px !important;
+  padding: 10px 16px !important;
 }
 .xamplify-disabled-div {
   opacity: 0.5;

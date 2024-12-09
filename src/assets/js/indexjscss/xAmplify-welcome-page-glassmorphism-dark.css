@@ -68,3 +68,23 @@ a.xamplify-dropdown-toggle.circlebg-color-bell-v {
       background-color: #ddd !important;
   } */
 }
+/*** Universal Search *******/
+.welcome-dropdown label,
+.welcome-input[type="text"] {
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  background: rgba(16 18 27 / 40%) !important;
+  color: #ffffff !important;
+}
+.welcome-dropdown-menu li a {
+  color: #fff !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.clear-icon {
+  color: #fff !important;
+}
+.welcome-dropdown-menu {
+  background-color: rgb(16 18 27 / 93%) !important;
+}
+.welcome-dropdown-menu li a:hover {
+  background-color: rgb(146 151 179 / 13%) !important;
+}

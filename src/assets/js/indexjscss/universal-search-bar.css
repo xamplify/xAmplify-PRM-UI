@@ -1,0 +1,115 @@
+/* Dropdown Search */
+.welcome-search-container {
+    display: flex;
+    align-items: center;
+    float: inline-start;
+    margin-right: 10px;
+  }
+  
+  .welcome-dropdown {
+    position: relative;
+  }
+  
+  .welcome-dropdown input[type="checkbox"] {
+    display: none;
+  }
+  
+  .welcome-dropdown label {
+    background-color: #f8f9fa;
+    border: 1px solid #d1d5db;
+    border-radius: 7px 0px 0px 7px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 120px;
+    margin: 0px;
+  }
+  .welcome-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    list-style: none;
+    padding: 0 0;
+    margin: 0;
+    min-width: 120px;
+    z-index: 1000;
+    /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); */
+  }
+  
+  .welcome-dropdown-menu li {
+    padding: 0;
+  }
+  
+  .welcome-dropdown-menu li a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .welcome-dropdown-menu li a:hover {
+    background-color: #f1f5f9;
+  }
+  .welcome-input[type="text"] {
+    flex: 1;
+    border: 1px solid #d1d5db;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+  
+  .welcome-input[type="text"]:focus {
+    outline: none;
+    border-color: #3b82f6;
+  }
+  
+  .welcome-btn {
+    border-radius: 0px 7px 7px 0px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #008fd5;
+    color: #fff;
+  }
+  .welcome-btn:hover {
+    background: #008fd5;
+    color: #fff;
+  }
+  
+  .welcome-dropdown label:hover,
+  .welcome-dropdown label:focus {
+    background-color: rgb(241 245 249);
+    border: 1px solid #a3a3a3;
+  }
+  
+  .search-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .clear-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+  }
+  
+  .clear-icon:hover {
+    color: #000;
+    /* Change color on hover for better UX */
+  }
+  .show {
+    display: block;
+  }

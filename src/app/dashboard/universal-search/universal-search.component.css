@@ -46,3 +46,11 @@
   white-space: nowrap;
   width: auto !important;
 }
+.disabled-navigate {
+  cursor: not-allowed;
+  /* pointer-events: none; */
+  opacity: 0.6;
+}
+.disabled-navigate-none {
+  pointer-events: none;
+}

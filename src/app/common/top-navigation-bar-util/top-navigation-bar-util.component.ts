@@ -372,6 +372,11 @@ private beforeAdd(tag: any) {
   ngOnInit() {
     try {
       this.checkWelcomePageRequired();
+      /*** XNFR-758 ***/
+      this.refService.universalSearchKey = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchKey); 
+      this.refService.universalSearchFilterType = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchFilterBy);
+      this.refService.isOpenUniversalSearch = false;
+       /*** XNFR-758 ***/
     } catch (error) { this.logger.error('error' + error); }
   }
   getReferVendorOption() {
@@ -1127,6 +1132,10 @@ private beforeAdd(tag: any) {
     this.router.navigate([path]).then(() => {
       // Reload the page (optional, Angular should handle route changes without a full reload)
       this.referenceService.isWelcomePageLoading = true;
+      /*** XNFR-758 ****/
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchKey,'');
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchFilterBy,'All');
+      /*** XNFR-758 ****/
       window.location.reload();
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
@@ -8,6 +8,8 @@ import { PagerService } from 'app/core/services/pager.service';
 import { DashboardService } from '../dashboard.service';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Router } from '@angular/router';
+import { UtilService } from 'app/core/services/util.service';
 
 @Component({
   selector: 'app-universal-search',
@@ -21,37 +23,25 @@ export class UniversalSearchComponent implements OnInit {
   isPartnerLoggedInThroughVanityUrl = false;
   universalSearchApiLoading = true;
   universalSearchPagination: Pagination = new Pagination();
-  companyId = 0;
+  companyId: number = 0;
   customResponse: CustomResponse = new CustomResponse();
   searchKey: string;
   applyFilter = true;
-  defaultDisplayType: string = '/l';
+  defaultDisplayType: string = 'l';
+  isWelcomePageEnabled: boolean;
+  isTeamMember: boolean;
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
-    public dashboardService: DashboardService) {
+    public dashboardService: DashboardService, public router: Router, public utilService: UtilService) {
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
-    let isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
-    if (isWelcomePageEnabled) {
-      let setSearchKey = localStorage.getItem(XAMPLIFY_CONSTANTS.universalSearchKey);//XNFR-574
-      if (setSearchKey) {
-        this.referenceService.universalSearchKey = setSearchKey;
-      } else {
-        this.referenceService.universalSearchKey = '';
-      }
+    this.isWelcomePageEnabled = currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+    if (this.isWelcomePageEnabled) {
+      this.referenceService.universalSearchKey = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchKey);
+      this.referenceService.universalSearchFilterType = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchFilterBy);
     }
   }
 
   ngOnInit() {
-    if (!this.authenticationService.isTeamMember()) {
-      this.applyFilter = false;
-    }
-    this.universalSearchPagination.filterBy = this.referenceService.universalSearchFilterType;
-    this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    this.universalSearchPagination.maxResults = 12;
-    if (this.referenceService.universalSearchKey != "" && this.referenceService.universalSearchKey != null) {
-      this.searchUniversally();
-    } else {
-      this.findUniversalSearch(this.universalSearchPagination);
-    }
+    this.searchUniversally();
   }
   findUniversalSearch(universalSearchPagination: Pagination) {
     this.customResponse = new CustomResponse();
@@ -77,23 +67,17 @@ export class UniversalSearchComponent implements OnInit {
     this.findUniversalSearch(this.universalSearchPagination);
   }
   searchUniversally() {
+    if (!this.utilService.isLoggedAsTeamMember()) {
+      this.applyFilter = false;
+    }
+    console.log(this.utilService.isLoggedAsTeamMember() + "  loginAsTeammember")
     this.universalSearchPagination.pageIndex = 1;
     this.universalSearchPagination.maxResults = 12;
     this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
+    this.universalSearchPagination.filterBy = this.referenceService.universalSearchFilterType;
+    this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.findUniversalSearch(this.universalSearchPagination);
   }
-  // filterUniversalSearch(type: string, index: number) {
-  //   // this.applyFilter = (this.authenticationService.module.isAdmin || this.authenticationService.module.isPartnerAdmin) && this.authenticationService.module.isTeamMember;
-  //   if(!this.authenticationService.isTeamMember()){
-  //     this.applyFilter = false;
-  // }
-  //   this.selectedFilterIndex = index;
-  //   this.universalSearchPagination = new Pagination();
-  //   this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
-  //   this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
-  //   this.universalSearchPagination.filterBy = type;
-  //   this.findUniversalSearch(this.universalSearchPagination);
-  // }
   preview(quickLink: any) {
     if (quickLink.type === 'Lead') {
       this.referenceService.universalId = quickLink.id;
@@ -116,7 +100,7 @@ export class UniversalSearchComponent implements OnInit {
     const viewType = `/${this.defaultDisplayType}`;
     let router = '';
     let companyId = quickLink.createdByCompanyId
-    if(this.authenticationService.vanityURLEnabled) {
+    if (this.authenticationService.vanityURLEnabled || quickLink.createdByCompanyId == null) {
       companyId = this.companyId;
     }
     switch (quickLink.type) {
@@ -158,17 +142,17 @@ export class UniversalSearchComponent implements OnInit {
     this.referenceService.universalModuleType = quickLink.type;
     this.defaultDisplayType = this.referenceService.getDefaultViewType();
     if (this.defaultDisplayType === "fl" || this.defaultDisplayType === "fg") {
-      this.defaultDisplayType = "/l";
+      this.defaultDisplayType = "l";
     }
     if (quickLink.type === 'Asset') {
       let router = quickLink.navigate === 'Shared' ? '/home/dam/shared' : '/home/dam/manage';
-      this.referenceService.goToRouter(router + this.defaultDisplayType);
+      this.referenceService.goToRouter(router + `/${this.defaultDisplayType}`);
     } else if (quickLink.type === 'Track') {
       let router = quickLink.navigate === 'Shared' ? 'home/tracks/shared' : '/home/tracks/manage';
-      this.referenceService.goToRouter(router + this.defaultDisplayType);
+      this.referenceService.goToRouter(router + `/${this.defaultDisplayType}`);
     } else if (quickLink.type === 'Play Book') {
       let router = quickLink.navigate === 'Shared' ? '/home/playbook/shared' : '/home/playbook/manage';
-      this.referenceService.goToRouter(router + this.defaultDisplayType);
+      this.referenceService.goToRouter(router + `/${this.defaultDisplayType}`);
     } else if (quickLink.type === 'Lead') {
       this.referenceService.universalSearchVendorOrPartnerView = quickLink.navigate;
       this.referenceService.goToRouter("/home/leads/manage");
@@ -216,5 +200,23 @@ export class UniversalSearchComponent implements OnInit {
         return '';
     }
   }
-
+  homeButton() {
+    if (this.isWelcomePageEnabled) {
+      this.referenceService.universalSearchKey = "";
+      this.referenceService.universalSearchFilterType = 'All';
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchKey, this.referenceService.universalSearchKey);
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchFilterBy, this.referenceService.universalSearchFilterType);
+    }
+  }
+  // filterUniversalSearch(type: string, index: number) {
+  //   if (!this.isTeamMember) {
+  //     this.applyFilter = false;
+  //   }
+  //   this.selectedFilterIndex = index;
+  //   this.universalSearchPagination = new Pagination();
+  //   this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+  //   this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
+  //   this.universalSearchPagination.filterBy = type;
+  //   this.findUniversalSearch(this.universalSearchPagination);
+  // }
 }

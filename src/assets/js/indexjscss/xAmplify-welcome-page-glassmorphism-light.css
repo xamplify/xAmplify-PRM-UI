@@ -55,3 +55,13 @@ span.xamplify-submenu-flex>a.moduleTextColor,
         background-color: #ddd !important;
     }
   }
+/*** Universal Search *******/
+.welcome-dropdown label {
+    border: 1px solid rgb(255 255 255 / 35%) !important;
+    background: rgb(255 255 255 / 31%) !important;
+    color: #000000 !important;
+}
+.welcome-dropdown-menu li a {
+    color: #000;
+    border: 1px solid rgb(255 255 255 / 35%) !important;
+}
