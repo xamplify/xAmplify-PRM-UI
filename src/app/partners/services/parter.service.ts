@@ -678,7 +678,7 @@ export class ParterService {
         let searchKey = pagination.searchKey != null ? pagination.searchKey : "";
         let loggedInUserIdRequestParam = pagination.userId != undefined && pagination.userId > 0 ? "&loggedInUserId=" + pagination.userId : "&loggedInUserId=0";
         let partnerCompanyId = pagination.partnerCompanyId != undefined && pagination.partnerCompanyId > 0 ? pagination.partnerCompanyId : "";
-        let searchParam = searchKey.length > 0 ? "&search=" + searchKey : "";
+        let searchParam = searchKey.length > 0 ? "&searchKey=" + searchKey : "";
         let fromDateFilterStringParam = pagination.fromDateFilterString != null ? "&fromDateFilterInString=" + pagination.fromDateFilterString : "";
         let toDateFilterStringParam = pagination.toDateFilterString != null ? "&toDateFilterInString=" + pagination.toDateFilterString : "";
         let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true" : "";

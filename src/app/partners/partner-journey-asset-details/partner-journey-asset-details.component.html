@@ -1,18 +1,19 @@
 <div class="col-sm-12 col-md-12 col-lg-12 ml15m">
   <div class="panel panel-info panel-bgMain panel-card br-10">
-    <div class="panel-heading panel-heading-custom panel-bg" id="pj-share-lead-details-div">
+    <div class="panel-heading panel-heading-custom panel-bg" id="asset-details-div">
       <h3 class="panel-title mt7">{{headerText}}</h3>
       <span class="pull-right mt25m mobilesearchdisplay">
         <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
-          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="search()"></button>
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+            (click)="searchKey='';search()"></button>
           <button type="submit" class="search-box-item-click" (click)="search()">
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
       <button class="pull-right mt25m btn btn-xs l-g-view custom-icon" data-placement="bottom"
-        [disabled]="pagination.totalRecords==0" (click)="downloadShareLeadsDetailsReport()">
+        [disabled]="pagination.totalRecords==0" (click)="downloadAssetDetailsReport()">
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
           data-original-title="Export to Excel"></i>
       </button>

@@ -113,4 +113,22 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     this.getAssetDetailsForPartnerJourney(this.pagination);
   }
 
+  downloadAssetDetailsReport() {
+    let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
+    let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
+    let searchKeyRequestParm = this.searchKey != undefined ? this.searchKey : "";
+    let partnerCompanyIdRequestParam = this.partnerCompanyId != undefined && this.partnerCompanyId > 0 ? this.partnerCompanyId : 0;
+    let partnerTeamMemberGroupFilterRequestParm = this.applyFilter != undefined ? this.applyFilter : false;
+    let teamMemberIdRequestParam = this.teamMemberId != undefined && this.teamMemberId > 0 ? this.teamMemberId : 0;
+    let fromDateFilterRequestParam = this.fromDateFilter != undefined ? this.fromDateFilter : "";
+    let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
+    let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let url = this.authenticationService.REST_URL + "partner/journey/download/asset-details-report?access_token=" + this.authenticationService.access_token
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" +
+      + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
+    this.referenseService.openWindowInNewTab(url);
+  }
+
 }
