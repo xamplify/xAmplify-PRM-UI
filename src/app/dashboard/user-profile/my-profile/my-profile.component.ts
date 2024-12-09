@@ -2122,7 +2122,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.vendorJourney = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.vendorJourney;
+			this.activeTabHeader = this.properties.vendorJourney + " Pages for your Partners";
 
 		}
 		else if (this.activeTabName == "landingPages") {
@@ -2212,7 +2212,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isPartnerJourneyPages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.partnerJourneyPages;
+			this.activeTabHeader = this.properties.partnerJourneyPages + " Pages for your Vendors";
 		}else if (this.activeTabName == "vendorPartnerJourneyPages") {
 			this.ngxloading = true;
 			this.isVendorPartnerJourneyPages = false;
