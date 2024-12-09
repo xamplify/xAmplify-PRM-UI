@@ -681,7 +681,7 @@ export class ParterService {
         let searchParam = searchKey.length > 0 ? "&searchKey=" + searchKey : "";
         let fromDateFilterStringParam = pagination.fromDateFilterString != null ? "&fromDateFilterInString=" + pagination.fromDateFilterString : "";
         let toDateFilterStringParam = pagination.toDateFilterString != null ? "&toDateFilterInString=" + pagination.toDateFilterString : "";
-        let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true" : "";
+        let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&partnerTeamMemberGroupFilter=true" : "";
         let timeZoneParam = pagination.timeZone != null ? "&timeZone=" + pagination.timeZone : "";
         let partnerCompanyIdRequestParam = partnerCompanyId != null ? "&partnerCompanyId=" + partnerCompanyId : "";
         let selectedPartnerCompanyIdsRequestParam = pagination.selectedPartnerCompanyIds != undefined ? "&selectedPartnerCompanyIds=" + pagination.selectedPartnerCompanyIds : "";
