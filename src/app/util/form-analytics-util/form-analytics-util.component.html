@@ -173,7 +173,7 @@
 									<td *ngIf="columns?.length>2">
 										<div class="d-flex">
 											<a class="close-circle" (click)="addLeadsForm(formDataRow)" data-toggle="tooltip" title="Add Lead"
-											*ngIf="isEmailFieldExists && authenticationService?.module?.isContact?">
+											*ngIf="isEmailFieldExists && authenticationService?.module?.isContact">
 											<i class="fa fa-address-card" aria-hidden="true"></i>
 										</a>
 										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
