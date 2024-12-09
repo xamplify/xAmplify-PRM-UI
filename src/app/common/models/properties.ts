@@ -173,7 +173,7 @@ export class Properties {
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
 	saml2SSOsettings = "SAML 2.0 SSO Settings";
-	leadFieldSettings = "Lead Fields Settings";
+	leadFieldSettings = "Custom Fields";
 	oauthSSOConfiguration = "oAuth SSO Settings";
 
 
@@ -196,14 +196,14 @@ export class Properties {
 	notifyPartners = "Onboarding Configurations";
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
-	vendorJourney = "Vendor Journey";
-	landingPages = "Vendor Pages";
+	vendorJourney = "Vendor Journey for Partners";
+	landingPages = "Vendor Shared Pages";
 	masterLandingPages = "Partner Landscape"
 	masterLandingPageCategories = "Landscape Categories"
 	welcomePages = "Welcome Pages"
 	/*****XNFR-712******/
-	partnerJourneyPages = "Partner Journey Pages";
-	vendorPartnerJourneyPages = "Partner Pages"
+	partnerJourneyPages = "Partner Journey for Vendors";
+	vendorPartnerJourneyPages = "Partner Shared Pages"
 	vendorMarketplacePages = "Vendor Landscape"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";

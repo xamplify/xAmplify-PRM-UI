@@ -461,6 +461,12 @@ export class SortOption {
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
 	];
 
+	customFieldsDropDown = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name(A-Z)', 'value': 'customFields-ASC' },
+		{ 'name': 'Name(Z-A)', 'value': 'customFields-DESC' },
+	];
+
 	customFieldsDropDownOptions = [
 		{ 'name': 'Name(A-Z)', 'value': 'fieldName-ASC' },
 		{ 'name': 'Name(Z-A)', 'value': 'fieldName-DESC' },
@@ -479,7 +485,8 @@ export class SortOption {
 		{ 'name': 'Lead', 'value': 'Lead-Desc' },
 		{ 'name': 'Deal', 'value': 'Deal-Desc' },
 		{ 'name': 'Email', 'value': 'Email-Desc' },
-		{ 'name': 'Note', 'value': 'Note-Desc' }
+		{ 'name': 'Note', 'value': 'Note-Desc' },
+		{ 'name': 'Task', 'value': 'Task-Desc'}
 	];
   
 	/*** XNFR-745 ***/
@@ -487,6 +494,33 @@ export class SortOption {
         { 'name': 'Sort by Folder(A-Z)', 'value': 'folderName-ASC' },
         { 'name': 'Sort by Folder(Z-A)', 'value': 'folderName-DESC' },
     ];
+
+	/**XNFR-757**/
+	taskActivityTypeDropDown = [
+        { 'name': 'Note', 'value': 'NOTE' },
+        { 'name': 'Email', 'value': 'EMAIL' },
+		{ 'name': 'To Do', 'value': 'TODO'}
+    ];
+
+	taskActivityPriorityDropDown = [
+        { 'name': 'High', 'value': 'HIGH'},
+        { 'name': 'Medium', 'value': 'MEDIUM' },
+		{ 'name': 'Low', 'value': 'LOW' }
+    ];
+
+	taskActivityDropDownOptions = [
+		{ 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+	];
+
+	noteActivityDropDownOptions = [
+		{ 'name': 'Title(Z-A)', 'value': 'title-DESC' },
+		{ 'name': 'Title(A-Z)', 'value': 'title-ASC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+	];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -564,6 +598,18 @@ export class SortOption {
   
 	/** XNFR-745 **/
 	public groupedAssetsForPlaybook: any = this.groupedAssetsForPlaybookDropDown[0].value;
+
+	/**XNFR-757**/
+	public taskActivityTypeDropDownOption = this.taskActivityTypeDropDown[this.taskActivityTypeDropDown.length-1];
+
+	public taskActivityPriorityDropDownOption = this.taskActivityPriorityDropDown[this.taskActivityPriorityDropDown.length-1];
+
+	taskActivityDropDownOption = this.taskActivityDropDownOptions[this.taskActivityDropDownOptions.length-1];
+
+	noteActivityDropDownOption = this.noteActivityDropDownOptions[this.noteActivityDropDownOptions.length-1];
+
+	/***XNFR-662****/
+    public selectedCustomFieldsDropDownOption = this.customFieldsDropDown[0];
 
 
 }

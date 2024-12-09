@@ -8,12 +8,18 @@
             [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
             (click)="sortOption.searchKey='';search()"></button>
-          <button type="submit" class="search-box-item-click" (click)="search()">
+          <button type="submit" class="search-box-item-click" (click)="search()" [disabled]="pagination.totalRecords==0">
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
+      <button *ngIf="!isTeamMemberAnalytics" class="pull-right mt25m btn btn-xs l-g-view custom-icon" data-placement="bottom"
+        [disabled]="pagination.totalRecords==0" (click)="downloadInteractedAndNonInteractedTracksReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
     </div>
     <div class="panel-body">
+      <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
       <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading"
         [ngClass]="isVendorVersion?'scrolladjustment':''">
         <table class="table">
@@ -40,16 +46,15 @@
               <td *ngIf="isDetailedAnalytics"> <app-user-info [isPartnerEntityInfo]="true"
                   [userInfo]="item"></app-user-info></td>
               <!-- <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td>  -->
-              <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext"
-                  data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info
-                    [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"
+                  (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true"
+                    [userInfo]="item"></app-user-info></a></td>
               <td *ngIf="isTeamMemberAnalytics && !isVendorVersion">
                 <p><i class="fa fa-user-circle" aria-hidden="true"></i>
-                  <b>  Company Name: </b> <span>{{item?.vendorCompany | slice:0:15}}</span>
+                  <b> Company Name: </b> <span>{{item?.vendorCompany | slice:0:15}}</span>
                   <span *ngIf="item?.vendorCompany?.length>15">..</span>
                   <span>
-                    <p class="pl20" data-toggle="tooltip" data-placement="top"
-                      title="{{item?.vendorTeamMemberEmailId}}">
+                    <p class="pl20" data-toggle="tooltip" data-placement="top" title="{{item?.vendorTeamMemberEmailId}}">
                       <b>EmailId : </b> <a>{{item?.vendorTeamMemberEmailId | slice:0:15}}</a><span
                         *ngIf="item?.vendorTeamMemberEmailId?.length>15">..</span>
                     </p>
@@ -80,7 +85,7 @@
               </td>
               <!-- <td>{{item.progress}}%</td> -->
               <td>
-
+    
                 <div class="progress heightabjustment">
                   <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{item.progress}}%"
                     [ngStyle]="{'width': item.progress + '%'}" style="border-radius:1px;" role="progressbar">
@@ -88,8 +93,8 @@
                 </div>
                 <span *ngIf="item.progress != undefined">{{item.progress}}%</span>
                 <span *ngIf="item.progress == undefined">0%</span>
-
-
+    
+    
               </td>
             </tr>
           </tbody>
@@ -100,7 +105,7 @@
       </div>
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getInteractedNotInteractedTrackDetails($event)">
         </app-pagination>
       </div>

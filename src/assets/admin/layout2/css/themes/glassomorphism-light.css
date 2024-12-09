@@ -4440,7 +4440,7 @@ border: 1px solid rgb(255 255 255 / 35%) !important;
 .icons_colors,.profile_info p,.lead_details li i {
   color: #404040!important;
 }
-.lead_details h3{
+.lead_details h3,.activity_bgcolor,.deals_card{
   background: rgb(255 255 255 / 40%) !important;
   font-weight: 600;
 }
@@ -4470,3 +4470,8 @@ i.fa.fa-edit.ml_6{
 input.c-input {
   color: #333;
 }
+.create-activity,.sent-activity {
+  box-shadow: inset 5px 5px 10px #c3dcc82e, inset -5px -5px 10px #475c4a1f !important;
+}
+.update-activity {
+box-shadow: inset 5px 5px 10px #a19d9d42, inset -5px -5px 10px #7a72721f !important;}

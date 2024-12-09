@@ -17,13 +17,14 @@ declare var $: any, CKEDITOR:any;
 })
 export class AddNoteModalPopupComponent implements OnInit {
 
-  @Input() selectedContact: any;
+  @Input() contactId: any;
   @Input() actionType: any;
   @Input() editNote:NoteDTO;
   @Input() noteId:number;
   @Input() isReloadTab:boolean;
-  @Output() notifySuccess= new EventEmitter();
+  @Output() notifySubmitSuccess= new EventEmitter();
   @Output() notifyClose= new EventEmitter();
+  @Output() notifyUpdateSuccess= new EventEmitter();
 
   note: NoteDTO = new NoteDTO();
   customResponse: CustomResponse = new CustomResponse();
@@ -77,7 +78,7 @@ export class AddNoteModalPopupComponent implements OnInit {
   save() {
     this.ngxLoading = true;
     this.note.associationType = 'CONTACT';
-    this.note.contactId = this.selectedContact.id;
+    this.note.contactId = this.contactId;
     this.note.visibility = this.publicNotes ? 'PUBLIC':'PRIVATE';
     this.note.pinned = false;
     this.noteService.saveNote(this.note).subscribe(
@@ -85,7 +86,7 @@ export class AddNoteModalPopupComponent implements OnInit {
         let statusCode = response.statusCode;
         if (statusCode == 200) {
           this.closeNoteModalPopup();
-          this.notifySuccess.emit(!this.isReloadTab);
+          this.notifySubmitSuccess.emit(!this.isReloadTab);
         } else {
           this.closeNoteModalPopup();
         }
@@ -107,7 +108,7 @@ export class AddNoteModalPopupComponent implements OnInit {
       data => {
         if (data.statusCode == 200) {
           this.closeNoteModalPopup();
-          this.notifySuccess.emit(!this.isReloadTab);
+          this.notifyUpdateSuccess.emit(!this.isReloadTab);
         } else {
           this.closeNoteModalPopup();
         }

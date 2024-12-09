@@ -55,13 +55,27 @@
                         <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success" title="Published">
                           <i class="fa fa-check"></i>
                         </span>
-                        <ng-container *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)<0">
-                          <span class="required" title="Not Published" >
-                            <i class="fa fa-exclamation-circle"></i>
-                          </span>
-                          <span *ngIf="isDashboardButtonsModule || isAssetsModule || isLmsModule || isPlayBooksModule" title="Click here to publish">
-                            <a  (click)="publish(user)"><i  class="fa fa-share"></i></a>
-                          </span>
+                        <ng-container *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 
+                          && publishedPartnerIds.indexOf(user.userId)<0 ">
+
+
+                          <ng-container *ngIf="partnershipIds!=undefined && partnershipIds?.length>0 && partnershipIds.indexOf(user.partnershipId)<0">
+                            <span class="required" title="Not Published" >
+                              <i class="fa fa-times-circle"></i>
+                            </span>
+                            <span *ngIf="isDashboardButtonsModule || isAssetsModule" title="Click here to publish">
+                              <a (click)="publish(user)"><i  class="fa fa-share"></i></a>
+                            </span>
+                          </ng-container>
+                          <ng-container *ngIf="partnershipIds!=undefined && partnershipIds?.length>0 && partnershipIds.indexOf(user.partnershipId)>-1">
+                            <span class="required" title="Already Published Using Another Group" >
+                              <i class="fa fa-exclamation-circle"></i>
+                            </span>
+                            <span  *ngIf="isDashboardButtonsModule || isAssetsModule" title="Click here to add this group to the selection.">
+                              <a (click)="addGroup(user)"><i  class="fa fa-plus"></i></a>
+                            </span>
+                          </ng-container>
+
                         </ng-container>
                       </ng-container>
                       </td>

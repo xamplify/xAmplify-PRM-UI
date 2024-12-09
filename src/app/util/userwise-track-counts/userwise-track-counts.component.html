@@ -12,6 +12,11 @@
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
+      <button *ngIf="!isTeamMemberAnalytics" class="pull-right mt25m btn btn-xs l-g-view custom-icon" data-placement="bottom"
+        [disabled]="pagination.totalRecords==0" (click)="downloadUserWiseTrackCountsReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
     </div>
     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="tooltipText" *ngIf="authenticationService.module.isOrgAdmin ||
     authenticationService.module.isVendor || authenticationService.module.isMarketing || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||
@@ -20,8 +25,9 @@
     authenticationService.module.isMarketingAndPartnerTeamMember" [ngStyle]="getIconStyle()"></i>
     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="partnerTeamMemberText" *ngIf="isVendorVersion" [ngStyle]="getIconStyle()"></i>
     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right" [attr.title]="vendorTeamMemberText" *ngIf="authenticationService.module.isOnlyPartner" [ngStyle]="getIconStyle()"></i>
+    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
     <div class="panel-body">
-      <div class="scroll table-responsive {{scrollClass}}">
+      <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
             <tr>
@@ -87,7 +93,7 @@
       </div>
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getUserWiseTrackCounts($event)">
         </app-pagination>
       </div>

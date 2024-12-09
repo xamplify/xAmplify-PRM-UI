@@ -50,9 +50,6 @@
   .ml_20{
     margin-left: 20px;
   }
-  a :hover {
-    text-decoration-line: underline;
-  }
   .delete-bg-color {
     background-color: #fa3131;
   }

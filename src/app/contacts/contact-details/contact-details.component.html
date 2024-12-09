@@ -72,13 +72,13 @@
               </div>
               <div class="icon-label">Note</div>
             </div>
-            <div class="icon-item" (click)="showModalPopup()">
+            <div class="icon-item" (click)="openEmailModalPopup()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Send an Email">
                 <i class="glyphicon glyphicon-envelope"></i>
               </div>
               <div class="icon-label">Email</div>
             </div>
-            <div class="icon-item">
+            <div class="icon-item" (click)="openTaskModalPopup()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Add a Task">
                 <i class="glyphicon glyphicon-file"></i>
               </div>
@@ -176,19 +176,26 @@
                 <div id="activity1" class="tab-pane fade in active integration-profile">
                   <app-activity-stream *ngIf="showActivityTab" [contactId]="contactId" [reloadTab]="isReloadActivityTab"
                     [isFromCompanyModule]="isFromCompanyModule" (notifyShowDealForm)="viewDeal($event)"
-                    (notifyShowLeadForm)="viewLead($event)" [selectedContactListId]="selectedContactListId"
-                    [contactName]="contactName" [contactEmailId]="selectedContact.emailId"
-                    (notifySuccess)="showNoteUpdateCutomResponse($event)" (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-activity-stream>
+                    (notifyShowLeadForm)="viewLead($event)" [selectedContactListId]="selectedContactListId" [contactName]="contactName"
+                    [contactEmailId]="selectedContact.emailId" (notifyNoteUpdateSuccess)="showNoteUpdateCutomResponse($event)"
+                    (notifyNoteDeleteSuccess)="showNoteDeleteSuccessStatus($event)"
+                    (notifyTaskUpdateSuccess)="showTaskUpdateCutomResponse($event)"
+                    (notifyTaskDeleteSuccess)="showTaskDeleteSuccessStatus($event)"></app-activity-stream>
                 </div>
                 <div *ngIf="showNotesTab" id="note1" class="tab-pane fade pt-top">
-                  <app-note [contactId]="contactId" [reloadTab]="isReloadNoteTab" (notifySuccess)="showNoteUpdateCutomResponse($event)"
-                    (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)"></app-note>
+                  <app-note [contactId]="contactId" [reloadTab]="isReloadNoteTab" (notifyUpdateSuccess)="showNoteUpdateCutomResponse($event)"
+                    (notifyDeleteSuccess)="showNoteDeleteSuccessStatus($event)" (notifySubmitSuccess)="showNoteCutomResponse($event)"></app-note>
                 </div>
                 <div *ngIf="showEmailTab" id="email1" class="tab-pane fade pt-top">
-                  <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab" [contactName]="contactName" [contactEmailId]="selectedContact.emailId"></app-email-activity>
+                  <app-email-activity [contactId]="contactId" [reloadTab]="isReloadEmailActivityTab" [contactName]="contactName"
+                    [contactEmailId]="selectedContact.emailId" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"
+                    (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"></app-email-activity>
                 </div>
                 <div *ngIf="showFormsTab" id="form1" class="tab-pane fade pt-top">
-                  dcsddcscde
+                  <app-task-activity [contactId]="contactId" [reloadTab]="isReloadTaskActivityTab"
+                    (notifyDeleteSuccess)="showTaskDeleteSuccessStatus($event)"
+                    (notifyTaskUpdatedStatus)="showTaskUpdateCutomResponse($event)"
+                    (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
                   dcsddcscde
@@ -211,17 +218,17 @@
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                 Leads({{leadsCount}})
               </a>
-              <a (click)="addLead()" class="add-btn"><span>+ Add</span></a>
+              <a (click)="addLead()" class="add-btn underline-on-hover"><span>+ Add</span></a>
             </h4>
           </div>
           <div id="collapse1" class="panel-collapse collapse in">
             <app-response-message [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
             <app-dropdown-loader *ngIf="leadsLoader?.isLoading" [text]="'leads'"></app-dropdown-loader>
             <div class="panel-body" *ngIf="contactLeads.length > 0">
-              <div class="activity_card mb10" *ngFor="let lead of contactLeads">
+              <div class="deals_card mb10" *ngFor="let lead of contactLeads">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a class="add-btn" (click)="viewLead(lead.id)">
+                  <a class="add-btn underline-on-hover" (click)="viewLead(lead.id)">
                     <span class="activity-title">{{lead.firstName != null ? lead.firstName:''}} {{lead.lastName}}</span>
                   </a>
                 </div>
@@ -233,10 +240,10 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a class="add-btn" (click)="viewMoreLeads()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn underline-on-hover" (click)="viewMoreLeads()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
-            <div class="panel-body" *ngIf="!(contactLeads.length > 0) && !leadsLoader?.isLoading">
+            <div class="panel-body" *ngIf="!(contactLeads.length > 0) && !leadsLoader?.isLoading && !leadsResponse.isVisible">
               No leads associated with this contact.
             </div>
           </div>
@@ -248,17 +255,17 @@
               <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
                 Deals({{dealsCount}})
               </a>
-              <a (click)="addDeal()" class="add-btn"><span>+ Add</span></a>
+              <a (click)="addDeal()" class="add-btn underline-on-hover"><span>+ Add</span></a>
             </h4>
           </div>
           <div id="collapse2" class="panel-collapse collapse in">
             <app-response-message [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible"></app-response-message>
             <app-dropdown-loader *ngIf="dealsLoader?.isLoading" [text]="'deals'"></app-dropdown-loader>
             <div class="panel-body" *ngIf="contactDeals.length > 0">
-              <div class="activity_card mb10" *ngFor="let deal of contactDeals">
+              <div class="deals_card mb10" *ngFor="let deal of contactDeals">
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a class="add-btn" (click)="viewDeal(deal.id)">
+                  <a class="add-btn underline-on-hover" (click)="viewDeal(deal.id)">
                     <span class="activity-title">{{deal.title}}</span>
                   </a>
                 </div>
@@ -277,10 +284,10 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a class="add-btn" (click)="viewMoreDeals()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn underline-on-hover" (click)="viewMoreDeals()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
-            <div class="panel-body" *ngIf="!(contactDeals.length > 0) && !dealsLoader.isLoading">
+            <div class="panel-body" *ngIf="!(contactDeals.length > 0) && !dealsLoader.isLoading && !dealsResponse.isVisible">
               No deals associated with this contact.
             </div>
           </div>
@@ -298,10 +305,10 @@
             <app-response-message [customResponse]="campaignsResponse" *ngIf="campaignsResponse.isVisible"></app-response-message>
             <app-dropdown-loader *ngIf="campaignsLoader.isLoading" [text]="'campaigns'"></app-dropdown-loader>
             <div class="panel-body" *ngIf="contactCampaigns.length > 0">
-              <div class="activity_card mb10" *ngFor="let campaign of contactCampaigns">
+              <div class="deals_card mb10" *ngFor="let campaign of contactCampaigns">
                 <div>
                   <i class="fas fa-bullhorn mr5" aria-hidden="true"> </i>
-                  <a class="add-btn" (click)="viewCampaignTimeLine(campaign)">
+                  <a class="add-btn underline-on-hover" (click)="viewCampaignTimeLine(campaign)">
                     <span class="activity-title">{{campaign.campaignName}}</span>
                   </a>
                 </div>
@@ -313,10 +320,10 @@
                 </div>
               </div>
               <div class="activity-footer">
-                <a class="add-btn" (click)="viewMoreCampaigns()"><span class="f-w-600">View More</span></a>
+                <a class="add-btn underline-on-hover" (click)="viewMoreCampaigns()"><span class="f-w-600">View More</span></a>
               </div>
             </div>
-            <div class="panel-body" *ngIf="!(contactCampaigns.length > 0) && !campaignsLoader?.isLoading">
+            <div class="panel-body" *ngIf="!(contactCampaigns.length > 0) && !campaignsLoader?.isLoading && !campaignsResponse.isVisible">
               No Campaign associated with this contact.
             </div>
           </div>
@@ -339,7 +346,7 @@
 
 <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
   [userEmailId]="selectedContact.emailId" [emailActivityId]="emailActivityId" (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"
-  (notifyClose)="closeModalPopup()" [isReloadEmailActivityTab]="isReloadEmailActivityTab" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"></app-add-email-modal-popup>
+  (notifyClose)="closeEmailModalPopup()" [isReloadEmailActivityTab]="isReloadEmailActivityTab" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"></app-add-email-modal-popup>
 
 <app-custom-manage-leads *ngIf="viewLeads" [listView]="true" [isConvertingContactToLead]="true" [isFromCompanyModule]="isFromCompanyModule"
   [selectedContact]="selectedContact" (notifyClose)="closeViewMoreLeadsTab()"></app-custom-manage-leads>
@@ -355,6 +362,10 @@
   [isDealFromContact]="true" (notifySubmitSuccess)="showDealSubmitSuccess()" [isFromCompanyModule]="isFromCompanyModule"
   (notifyClose)="closeDealForm()"></app-add-deal>
 
-<app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [selectedContact]="selectedContact" [isReloadTab]="isReloadNoteTab"
+<app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [contactId]="selectedContact.id" [isReloadTab]="isReloadNoteTab"
 (notifySuccess)="showNoteCutomResponse($event)" (notifyClose)="closeAddNoteModalPopup()"></app-add-note-modal-popup>
+
+<app-add-task-modal-popup *ngIf="showTaskModalPopup" [isReloadTaskActivityTab]="isReloadTaskActivityTab"
+  (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)" [userId]="contactId" [actionType]="actionType"
+  (notifyClose)="closeTaskModalPopup()"></app-add-task-modal-popup>
 
