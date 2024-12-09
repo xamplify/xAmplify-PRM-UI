@@ -128,7 +128,7 @@
         <!-- Btns -->
         <!-- <ng-template [ngTemplateOutlet]="universalSearch"></ng-template> -->
         <div class="xamplify-btn-group xamplify-refer-vendor-button xamplify-right">
-          <ng-template [ngTemplateOutlet]="universalSearchButtonTemplate"></ng-template>
+          <ng-template *ngIf="!helpGuidesUrl" [ngTemplateOutlet]="universalSearchButtonTemplate"></ng-template>
 
                             <!--Invite A Vendor For Normal Login-->
                             <ng-container *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService?.vanityURLEnabled  &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
@@ -388,5 +388,7 @@
   <button *ngIf="!refService.isOpenUniversalSearch" (click)="showUniversalSearch()" style="border-radius: 7px;margin-right: 10px;">
     <i class="fa fa-search"></i>
   </button>
-  <app-universal-search-bar *ngIf="refService.isOpenUniversalSearch"></app-universal-search-bar>
+  <div class="universal-search-div" *ngIf="refService.isOpenUniversalSearch">
+  <app-universal-search-bar ></app-universal-search-bar>
+  </div>
 </ng-template>

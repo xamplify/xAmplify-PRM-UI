@@ -1,23 +1,25 @@
-<div class="welcome-search-container">
-  <div class="welcome-dropdown">
-    <input type="checkbox" id="dropdownToggle" (click)="updateDropdownVisibility()">
-    <label for="dropdownToggle">
+<div style="display: flex;margin-right: 5px;">
+  <div class="universal-dropdown-container">
+    <input type="checkbox" id="dropdown-toggle" class="universal-dropdown-checkbox"
+      (change)="updateDropdownVisibility()" [checked]="isDropdownOpen" />
+    <label for="dropdown-toggle" class="universal-dropdown-label">
       {{ refService.universalSearchFilterType ? refService.universalSearchFilterType : 'All' }}
-      <span
-        [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'"></span>
+      <span [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'"></span>
     </label>
-    <ul class="welcome-dropdown-menu" [class.show]="isDropdownVisible">
-      <li *ngFor="let option of dropdownOptions" (click)="selectDropdownOption(option.label, option.index)">
-        <a *ngIf="option.condition"> {{ option.label }} </a>
+    <ul class="universal-dropdown-menu" [class.show]="isDropdownVisible">
+      <li *ngFor="let option of dropdownOptions" (click)="selectDropdownOption(option.label)">
+        {{ option.label }}
       </li>
     </ul>
   </div>
-  <div class="search-container">
-    <input class="welcome-input" type="text" placeholder="Search..." [(ngModel)]="searchKey"
+  <div class="universal-search-bar-container">
+    <input type="text" class="universal-search-input" placeholder="Search..." [(ngModel)]="searchKey"
       (keypress)="universalSearchOnKeyPress($event.keyCode)" />
-    <i *ngIf="isEmptyOrWhitespace(searchKey? searchKey :'')" class="clear-icon fa fa-times" (click)="searchKey=''; goToDashBoard();"></i>
+    <i *ngIf="isEmptyOrWhitespace(searchKey? searchKey :'')" class="clear-icon fa fa-times"
+      (click)="searchKey=''; goToDashBoard();"></i>
+    <button class="universal-search-button" [disabled]="!disabledButton(searchKey? searchKey :'')"
+      [ngClass]="disabledButton(searchKey? searchKey :'')? '':'disabled-div'" (click)="universalSearch()">
+      <i aria-hidden="true" class="fa fa-search" [ngClass]="disabledButton(searchKey? searchKey :'')?'':'disabled'"></i>
+    </button>
   </div>
-  <button [disabled]="!disabledButton(searchKey? searchKey :'')" [ngClass]="disabledButton(searchKey? searchKey :'')? '':'disabled-div'" class="welcome-btn" (click)=" universalSearch()">
-    <i aria-hidden="true" class="fa fa-search" [ngClass]="disabledButton(searchKey? searchKey :'')?'':'disabled'"></i>
-  </button>
 </div>

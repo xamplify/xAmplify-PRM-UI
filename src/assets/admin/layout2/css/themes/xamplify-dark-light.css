@@ -2546,34 +2546,26 @@ table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-dang
 }
 
 /*** XNFR-758 ***/
-.welcome-btn,.welcome-dropdown label {
-  background-color: #0276FF !important;
-  border: 1px solid #1ca6f3 !important;
+.universal-search-bar-container,
+.universal-dropdown-label {
+    background-color: #2b3c46 !important;
+    color: #fff !important;
+    border: 1px solid #2f4857 !important;
+}
+.universal-dropdown-menu {
+    background-color: #2b3c46 !important;
+    border: 1px solid #2f4857;
+}
+.universal-dropdown-menu li {
+    border-bottom: 1px solid #2f4857;
+}
+.universal-dropdown-menu li:hover {
+    background-color: #22313a !important;
+}
+.clear-icon {
+  padding: 10px  0px;
   color: #fff !important;
 }
-
-.welcome-btn:hover,  .welcome-dropdown label:hover,
-.welcome-dropdown label:focus {
-  background-color: #0276FF ;
-}
-
-.welcome-dropdown-menu {
-  background-color: #2b3c46 !important;
-  border: 1px solid #2f4857 !important;
-}
-
-.welcome-dropdown-menu li a,.welcome-dropdown-menu li a:hover,.clear-icon {
-  color: #fff !important;
-}
-
-.welcome-input[type="text"]:focus,.welcome-input[type="text"] {
-  border: 1px solid #1ca6f3 !important;
-}
-
-.welcome-dropdown-menu li a:hover {
-  background-color: #22313a !important;
-}
-
 /*** XNFR-758 ***/
 .activity_bgcolor{
   background-color: #22313a !important;

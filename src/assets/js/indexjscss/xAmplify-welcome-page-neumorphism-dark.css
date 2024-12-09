@@ -64,34 +64,25 @@ a.xamplify-dropdown-toggle.circlebg-none-v
 }
 
 /*** Universal Search *******/
-.welcome-dropdown label {
-  background-color: #2c2f33 !important;
-  color: #fff !important;
-  border: 1px solid #191b1e !important;
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+  color: white !important;
+    background-color: #2c2f33 !important;
+    border: 1px solid #191b1e !important;
+    box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
-.welcome-input[type="text"]{
-  background-color: #2c2f33 !important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-  color: #ffff;
-}
-.clear-icon {
-  color: #fff !important;
-}
-.welcome-dropdown-menu {
+.universal-dropdown-menu {
   background-color: #2c2f33 !important;
   border: 1px solid #191b1e !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
-.welcome-input[type="text"] {
-  border:1px solid #191b1e !important;
-}
-.welcome-dropdown-menu li a {
-  color: #fff !important;
+.universal-dropdown-menu li {
   border-bottom: 1px solid #191b1e !important;
 }
-.welcome-dropdown-menu li a:hover,
-.welcome-dropdown label:hover,
-.welcome-dropdown label:focus {
+.universal-dropdown-menu li:hover {
   background-color: #2c2f33 !important;
+  color: #fff;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
+/*** Universal Search *******/

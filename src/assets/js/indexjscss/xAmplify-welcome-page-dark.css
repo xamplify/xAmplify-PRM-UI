@@ -132,33 +132,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*** Universal Search *******/
-.welcome-dropdown label {
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
     background-color: #2b3c46 !important;
     color: #fff !important;
+    border: 1px solid #2f4857 !important;
 }
-.welcome-input[type="text"]{
-    background: #2b3c46;
-    color: #fff;
-}
-.clear-icon {
-    color: #fff !important;
-}
-.welcome-dropdown-menu {
-    background-color: #2b3c46;
+.universal-dropdown-menu {
+    background-color: #2b3c46 !important;
     border: 1px solid #2f4857;
 }
-.welcome-input[type="text"] {
-    border: 1px solid #2f4857;
+.universal-dropdown-menu li {
+    border-bottom: 1px solid #2f4857;
 }
-.welcome-dropdown-menu li a {
-    color: #fff;
+.universal-dropdown-menu li:hover {
+    background-color: #22313a !important;
 }
-.welcome-dropdown-menu li a:hover {
-    background: #22313a;
-    color: #fff;
-}
-.welcome-dropdown label:hover,
-  .welcome-dropdown label:focus {
-    background-color: #22313a;
-    border: 1px solid #2f4857;
-  }
+/*** Universal Search *******/

@@ -4366,27 +4366,24 @@ tbody>tr#uploaded-csv-tr>td {
 }
 
 /*** XNFR-758 ***/
-.welcome-btn{box-shadow: inset 5px -5px 10px #000, inset -5px 5px 10px #3b4451 !important;
+.universal-search-bar-container,
+.universal-dropdown-label {
   color: white !important;
-  background-color: #2c2f33 !important;
-  border: 1px solid #191b1e !important;}
-.welcome-dropdown-menu {
+    background-color: #2c2f33 !important;
+    border: 1px solid #191b1e !important;
+    box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.universal-dropdown-menu {
   background-color: #2c2f33 !important;
   border: 1px solid #191b1e !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
-.welcome-dropdown-menu li a,.welcome-dropdown-menu li a:hover,.clear-icon {
-  color: white !important;
+.universal-dropdown-menu li {
   border-bottom: 1px solid #191b1e !important;
 }
-.welcome-input[type="text"]:focus,.welcome-input[type="text"],.welcome-dropdown label {
-  color: white !important;
+.universal-dropdown-menu li:hover {
   background-color: #2c2f33 !important;
-  border: 1px solid #191b1e !important;
+  color: #fff;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-}
-.welcome-dropdown-menu li a:hover {
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-  background-color: #2c2f33 !important;
 }
 /*** XNFR-758 ***/

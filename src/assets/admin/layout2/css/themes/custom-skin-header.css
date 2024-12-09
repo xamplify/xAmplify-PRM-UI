@@ -10,4 +10,35 @@
 .customskin-icon {
   color: var(--top-button-value-color) !important;
 }
+/*** Universal Search *******/
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+  background-color: var(--top-buton-color) !important;
+  border: 1px solid var(--top-button-border-color) !important;
+  color: var(--top-button-value-color) !important;
+}
+.clear-icon {
+  color: var(--top-button-value-color) !important;
+}
+.universal-dropdown-menu {
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.universal-dropdown-menu li {
+  border-bottom: 1px solid var(--top-button-border-color) !important;
+}
+.universal-dropdown-menu li:hover {
+  background: var(--page-content) !important;
+  color: var(--text-color) !important;
+}
+.universal-search-button {
+  background-color: var(--top-buton-color) !important;
+  color: var(--top-button-value-color) !important;
+  border: 1px solid var(--top-button-border-color) !important;
+}
+.universal-search-input::placeholder {
+  color: var(--top-button-value-color) !important;
+}
+/*** Universal Search *******/
 

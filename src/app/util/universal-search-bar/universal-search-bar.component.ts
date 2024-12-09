@@ -102,7 +102,7 @@ export class UniversalSearchBarComponent implements OnInit {
     return this.isWelcomePageEnabled ? true : this.isEmptyOrWhitespace(value);
   }
   // Filter function
-  selectDropdownOption(label: string, index: number): void {
+  selectDropdownOption(label: string): void {
     this.refService.universalSearchFilterType = label;
     this.isDropdownVisible = false;
   }

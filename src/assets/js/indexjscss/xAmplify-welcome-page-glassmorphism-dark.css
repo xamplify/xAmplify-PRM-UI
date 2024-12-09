@@ -69,22 +69,25 @@ a.xamplify-dropdown-toggle.circlebg-color-bell-v {
   } */
 }
 /*** Universal Search *******/
-.welcome-dropdown label,
-.welcome-input[type="text"] {
+.universal-search-bar-container,
+.universal-dropdown-label {
   border: 1px solid rgb(255 255 255 / 35%) !important;
   background: rgba(16 18 27 / 40%) !important;
   color: #ffffff !important;
 }
-.welcome-dropdown-menu li a {
-  color: #fff !important;
-  border: 1px solid rgb(255 255 255 / 35%) !important;
+.universal-search-input {
+color: #fff !important;
 }
-.clear-icon {
-  color: #fff !important;
-}
-.welcome-dropdown-menu {
+.universal-dropdown-menu {
   background-color: rgb(16 18 27 / 93%) !important;
+  border: 1px solid #ffffff33 !important;
+  border-radius: 10px !important;
 }
-.welcome-dropdown-menu li a:hover {
+.universal-dropdown-menu li {
+  border-bottom: 1px solid hsla(0, 0%, 100%, .1) !important;
+}
+.universal-dropdown-menu li:hover {
   background-color: rgb(146 151 179 / 13%) !important;
+  color: #ffffff !important;
 }
+/*** Universal Search *******/

@@ -28,14 +28,19 @@ background-color: var(--custom-buttonbg-color) !important;
 }
 /*** XNFR-574 ****/
 /*** Universal Search *******/
-.welcome-btn {
+/*** XNFR-758 ***/
+.universal-search-button {
     background-color: var(--custom-buttonbg-color) !important;
     background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
     background-size: calc(100% + 20px) calc(100% + 20px) !important;
     border: 1px solid var(--custom-border-color) !important;
     color: var(--custom-text-color)  !important;
 }
-/* .welcome-input[type="text"],
-.clear-icon {
-    color: var(--custom-text-color)  !important;
-} */
+.universal-search-button:hover {
+    background-color: var(--custom-buttonbg-color) !important;
+    background-image: linear-gradient(1deg, var(--custom-gradient-two-color), var(--custom-gradient-one-color) 99%) !important;
+    background-size: calc(100% + 20px) calc(100% + 20px) !important;
+    border: 1px solid var(--custom-border-color) !important;
+    color:  var(--custom-text-color) !important;
+}
+/*** Universal Search *******/
