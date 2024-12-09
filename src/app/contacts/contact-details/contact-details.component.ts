@@ -18,13 +18,14 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { EmailActivityService } from 'app/activity/services/email-activity-service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
+import { ActivityService } from 'app/activity/services/activity-service';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService]
+  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -101,11 +102,14 @@ export class ContactDetailsComponent implements OnInit {
   isReloadActivityTab:boolean;
   showTaskModalPopup: boolean = false;
   isReloadTaskActivityTab:boolean;
+  showImageTag:boolean = false;
+  imageSourcePath:any = '';
+  NOT_AVAILABLE = 'Not available';
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public emailActivityService: EmailActivityService, public campaignService: CampaignService ) {
+    public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -134,6 +138,7 @@ export class ContactDetailsComponent implements OnInit {
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
     this.fetchCampaignsAndCount();
+    this.fetchLogoFromExternalSource();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -561,6 +566,22 @@ export class ContactDetailsComponent implements OnInit {
 
   showTaskDeleteSuccessStatus(event) {
     this.customResponse = new CustomResponse('SUCCESS', event, true);
+  }
+
+  fetchLogoFromExternalSource() {
+    this.activityService.fetchLogoFromExternalSource(this.contactId).subscribe(
+      response => {
+        const data = response.data;
+        if (response.statusCode == 200 && data != this.NOT_AVAILABLE) {
+          this.imageSourcePath = data;
+          this.showImageTag = true;
+        } else {
+          this.showImageTag = false;
+        }
+      }, error => {
+        this.showImageTag = false;
+      }
+    )
   }
   
 }
