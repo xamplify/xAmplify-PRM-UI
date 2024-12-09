@@ -13,6 +13,8 @@ export class SubmittedFormData {
 	vendorCompanyName:string;
 	vendorMailId:string;
     vendorFormAlias:string;
+    validEmailExist:boolean;
+    formSubmittedId:number;
 
     
 }
