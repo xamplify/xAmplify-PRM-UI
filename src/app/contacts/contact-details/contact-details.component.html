@@ -34,7 +34,8 @@
           <!-- Header 1 -->
           <div class="profile_header">
             <div class="avatar2">
-              <span class="avatar-initial">{{highlightLetter}}</span>
+              <span *ngIf="!showImageTag" class="avatar-initial">{{highlightLetter}}</span>
+              <img *ngIf="showImageTag" class="img_wdt" src="{{imageSourcePath}}" alt="">
             </div>
             <div class="profile_info">
               <div>

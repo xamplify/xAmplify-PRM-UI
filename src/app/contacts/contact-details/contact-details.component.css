@@ -345,3 +345,6 @@ border-bottom:none;
 .profile_info span.anonymous-text {
   color: darkgray;
 }
+.img_wdt {
+  width: 100%;
+}
