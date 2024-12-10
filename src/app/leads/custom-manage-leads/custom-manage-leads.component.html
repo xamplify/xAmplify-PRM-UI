@@ -292,7 +292,7 @@
                     </a>
                     <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                       <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
-                        *ngIf="lead.canUpdate && lead.enableRegisterDealButton"
+                        *ngIf="lead.canUpdate && lead.enableRegisterDealButton && lead.partnerEditLead"
                         (click)="(lead?.leadApprovalStatusType !== 'REJECTED' && !lead?.associatedCampaignDeleted) ? editLead(lead) : ''"
                         data-toggle="tooltip" data-placement="bottom"
                         title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'You can not edit a rejected lead' : (lead?.associatedCampaignDeleted ? 'You can not edit a lead for a deleted campaign' : 'Edit Lead')}}"
@@ -301,7 +301,7 @@
                           class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                         <div class="clickicons"></div>
                       </a>
-                      <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
+                      <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate && lead.partnerDeleteLead"
                         (click)="confirmDeleteLead(lead)" data-toggle="tooltip" data-placement="bottom"
                         title="Delete Lead" id="lead">
                         <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
