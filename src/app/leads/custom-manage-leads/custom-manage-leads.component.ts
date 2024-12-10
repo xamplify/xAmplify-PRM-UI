@@ -458,7 +458,7 @@ export class CustomManageLeadsComponent implements OnInit {
   }
 
   getStageNamesForFilter() {
-    this.leadsService.getStageNamesForVendor(this.loggedInUserId)
+    this.leadsService.getStageNamesForPartner1(this.loggedInUserId)
       .subscribe(
         response => {
           this.fromDateFilter;

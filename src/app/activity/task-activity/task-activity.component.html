@@ -44,7 +44,7 @@
       <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">Title:</label><a class="underline-on-hover" (click)="viewTask(taskActivity.id)"><span>{{taskActivity.name | slice:0:35}}</span><span *ngIf="taskActivity.name.length > 35">...</span></a></span>
       <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="taskActivity.createdTime"></app-display-date-and-time></span>
     </div>
-    <div class="activity-body">
+    <div class="activity-body mt0">
       <span class="activity-title">Status: <span class="view-banner activity-updated-status-btn" >{{taskActivity.statusName}}</span></span>
       <span><i *ngIf="taskActivity?.priority == 'Medium'" class="fas fa-equals icon medium_priority"></i><i *ngIf="taskActivity?.priority == 'Low'" class="fas fa-angle-down icon low_priority"></i><i *ngIf="taskActivity?.priority == 'High'" class="fas fa-angle-up icon danger high_priority"></i><label class="activity-title">{{taskActivity.priority}}</label></span>
       <span><label class="mr3 activity-title">Type:</label>{{taskActivity.taskType == 'Todo' ? 'To Do':taskActivity.taskType}}</span>
@@ -53,8 +53,8 @@
       <span class="activity-title">Due Date: <span class="activity-date"><i
             class="fa fa-clock"></i><app-display-date-and-time
             [dateAndTimeUTCString]="taskActivity.dueDate"></app-display-date-and-time></span></span>
-      <span><a class="underline-on-hover mr10" (click)="editTask(taskActivity.id)"><span>Edit</span></a>
-        <a class="underline-on-hover" (click)="showDeleteConformationAlert(taskActivity.id)"><span>Delete</span></a>
+      <span><a class="mr5" (click)="editTask(taskActivity.id)"><i class="fas fa-pencil-alt task_edit" aria-hidden="true"></i></a>
+        <a (click)="showDeleteConformationAlert(taskActivity.id)"><i class="fas fa-trash task_delete" aria-hidden="true"></i></a>
       </span>
     </div>
   </div>

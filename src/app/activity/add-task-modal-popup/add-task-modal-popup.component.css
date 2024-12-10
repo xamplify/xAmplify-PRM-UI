@@ -13,3 +13,17 @@
 .custom-file-label {
     color: white !important;
 }
+select option[data-class="info"] {
+    color: rgb(37, 160, 221);
+  }
+  
+select option[data-class="warning"] {
+    color: orange;
+  }
+  
+select option[data-class="red"] {
+    color: red;
+  }
+  select {
+    font-family: 'FontAwesome', 'sans-serif';
+  }

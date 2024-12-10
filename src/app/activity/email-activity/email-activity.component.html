@@ -45,10 +45,10 @@
       <span *ngIf="emailActivity.status=='DELIVERED'" class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="emailActivity.createdTime"></app-display-date-and-time></span>
       <span *ngIf="emailActivity.status=='OPENED'" class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="emailActivity.openedTime"></app-display-date-and-time></span>
     </div>
-    <div class="activity-body">
+    <div class="activity-body mt0">
       <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Subject:</label>{{emailActivity.subject}}</span>
     </div>
-    <div class="activity-footer">
+    <div class="activity-footer mt0">
       <span class="activity-title">Status: <span [ngClass]="emailActivity.status=='OPENED'?'view-banner activity-updated-status-btn' : 'view-banner published activity-created-status-btn'" >{{emailActivity.status}}</span></span>
       <a class="underline-on-hover" (click)="viewEmail(emailActivity.id)"><span>View details</span></a>
     </div>
