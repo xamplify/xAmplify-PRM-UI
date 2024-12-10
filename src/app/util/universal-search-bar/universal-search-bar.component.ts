@@ -111,14 +111,14 @@ export class UniversalSearchBarComponent implements OnInit {
   }
 
   updateDropdownVisibility() {
-    this.dropdownOptions = [
-      { label: 'All', index: 0, condition: true, },
-      { label: 'Assets', index: 1, condition: this.authenticationService.module.damAccess || this.authenticationService.module.damAccessAsPartner, },
-      { label: 'Tracks', index: 2, condition: this.authenticationService.module.lmsAccess || this.authenticationService.module.lmsAccessAsPartner, },
-      { label: 'PlayBooks', index: 3, condition: this.authenticationService.module.playbookAccess || this.authenticationService.module.playbookAccessAsPartner, },
-      { label: 'Lead', index: 4, condition: this.authenticationService.module.hasOpportunityRole || this.authenticationService.module.opportunitiesAccessAsPartner, },
-      { label: 'Deal', index: 5, condition: this.authenticationService.module.hasOpportunityRole || this.authenticationService.module.opportunitiesAccessAsPartner, }
-    ];
+    // this.dropdownOptions = [
+    //   { label: 'All', index: 0, condition: true, },
+    //   { label: 'Assets', index: 1, condition: this.authenticationService.module.damAccess || this.authenticationService.module.damAccessAsPartner, },
+    //   { label: 'Tracks', index: 2, condition: this.authenticationService.module.lmsAccess || this.authenticationService.module.lmsAccessAsPartner, },
+    //   { label: 'PlayBooks', index: 3, condition: this.authenticationService.module.playbookAccess || this.authenticationService.module.playbookAccessAsPartner, },
+    //   { label: 'Lead', index: 4, condition: this.authenticationService.module.hasOpportunityRole || this.authenticationService.module.opportunitiesAccessAsPartner, },
+    //   { label: 'Deal', index: 5, condition: this.authenticationService.module.hasOpportunityRole || this.authenticationService.module.opportunitiesAccessAsPartner, }
+    // ];
     this.isDropdownVisible = !this.isDropdownVisible;
   }
 }

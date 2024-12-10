@@ -2561,7 +2561,7 @@ table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-dang
     background-color: #22313a !important;
 }
 .clear-icon {
-  padding: 10px  0px;
+  /* padding: 10px  0px; */
   color: #fff !important;
 }
 /*** XNFR-758 ***/

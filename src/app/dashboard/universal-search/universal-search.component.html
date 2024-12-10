@@ -225,11 +225,11 @@
     </span>
   </h6>
 
-  <h6 *ngIf="quickLink?.crmReferanceId && quickLink?.navigate != 'Partner'" (click)="preview(quickLink)">
+  <h6 *ngIf="quickLink?.referenceId && quickLink?.navigate != 'Partner'" (click)="preview(quickLink)">
     <span class="pointer">
       <b> {{quickLink?.type}} Id: </b>
-      <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.crmReferanceId)">
-        {{quickLink?.crmReferanceId}}
+      <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.referenceId)">
+        {{quickLink?.referenceId}}
       </span>
     </span>
   </h6>

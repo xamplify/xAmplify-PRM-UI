@@ -7,9 +7,18 @@
       <span [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'"></span>
     </label>
     <ul class="universal-dropdown-menu" [class.show]="isDropdownVisible">
-      <li *ngFor="let option of dropdownOptions" (click)="selectDropdownOption(option.label)">
+      <!-- <li *ngFor="let option of dropdownOptions" (click)="selectDropdownOption(option.label)">
         {{ option.label }}
-      </li>
+      </li> -->
+      <li (click)="selectDropdownOption('All')">All</li>
+      <li (click)="selectDropdownOption('Assets')" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner">Assets</li>
+       <li (click)="selectDropdownOption('Tracks')" *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">Tracks</li>
+       <li (click)="selectDropdownOption('PlayBooks')" *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">PlayBooks</li>
+       <li (click)="selectDropdownOption('Lead')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Lead</li>
+       <li (click)="selectDropdownOption('Deal')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Deal</li>
+
+
+
     </ul>
   </div>
   <div class="universal-search-bar-container">
