@@ -83,7 +83,7 @@ export class ModuleAnalyticsComponent implements OnInit {
       }else if(moduleId==8){
         this.router.navigate(["/home/team/add-team"]);
       }else if(moduleId==9){
-        this.router.navigate(["/home/partners/manage"]);
+        this.router.navigate(["/home/partners/add"]);
       }else if(moduleId==10){
         this.router.navigate(["/home/forms/manage"]);
       }
