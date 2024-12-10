@@ -61,10 +61,6 @@
     margin-top: 8px;
     color: #555;
 }
-
-a :hover {
-    text-decoration-line: underline;
-}
 .filter-by {
     width: 77%;
     padding-top: 8px;
@@ -113,4 +109,28 @@ fieldset.scheduler-borders {
     background-color: #d5f2d8!important;
     color: #333!important;
 }
-  
+.text-baseline{
+    align-items: baseline;
+}
+.task_edit{
+    font-size: 10px;
+    color: #578ebe;
+    background-color: #d9e5ff;
+    border: 1px solid #8abeff;
+    border-radius: 4px;
+    padding: 2px 5px;
+  }
+  .task_edit:hover{
+    background-color: #c6d5f6;
+  }
+  .task_delete{
+    font-size: 10px;
+    border-radius: 4px;
+    padding: 2px 5px;
+    background-color: #f20000;
+    border: 1px solid #ea2370;
+    color: #ffff;
+  }
+  .task_delete:hover {
+    background-color: #d52828;
+}

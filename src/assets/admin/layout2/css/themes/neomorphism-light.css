@@ -4419,13 +4419,19 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 .neo{margin-left:65px !important;}
   /* contact-journey */
-  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor{
+  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor,.view_emailcard,.email_content{
     background: #f0f5fa !important;
     border: 1px solid #d0d5db !important;
     box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
+
+/* Sudha Sri(27-11-2024) */
+.ffolder.big.gray.folder-cheight {
+  background-color: #54a7e9 !important;
+}
 .update-activity,.create-activity,.sent-activity {
   box-shadow: unset!important;
+  box-shadow: inset 5px 5px 10px #c3dcc82e, inset -5px -5px 10px #475c4a1f !important;
 }
 /*** XNFR-758 ***/
 .universal-search-bar-container,
@@ -4448,4 +4454,6 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
   background: linear-gradient(225deg, #d8dde1, #fff) !important;
 }
 
-/*** XNFR-758 ***/
+.neg-mrg-top5{margin-top: -5px;}
+.neg-mrg-top7{margin-top: -7px !important;}
+

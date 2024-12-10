@@ -2284,7 +2284,7 @@ button.btn.Btn-Gray.btn-hvr-text.neg_mrg_top4 {
   background-color: var(--page-content) !important;
   border-radius: 3px!important;
 }
-.lead-label{
+.lead-label,.folder_count{
   color: var(---text-color) !important;
 }
 legend.scheduler-borders{
@@ -2367,7 +2367,7 @@ color: var(--icon-color) !important;
   color: var(--icon-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.activity_card,.activity_bgcolor{
+.activity_card,.activity_bgcolor,.view_emailcard,.email_content{
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }
@@ -2414,4 +2414,21 @@ background-color: #22313a !important;
 /*app-searchable-dropdown */
 .e-ddl.e-popup {
   background-color:var(--page-content)!important;
+}
+/* Sudha Sri(27-11-2024) */
+.portlet.light.remove_cardBgcolor.padding_0.light_bg_removal,
+.page-bar.remove_cardBgcolor.p10.light_bg_removal,
+.page-bar.remove_cardBgcolor.neg_mrg_top14.light_bg_removal,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal,
+.page-bar.camp_card_removal.light_bg_removal,
+.portlet.light.remove_cardBgcolor.light_bg_removal,
+.page-bar.m10.bg-none.light_bg_removal{background: none !important; border:none !important;}
+.portlet-title.pb_8.pb_4.b-b_none, .portlet-title.pt0, .portlet-title.remove_border{border-bottom:none !important;}
+tbody{background: transparent;}
+button.search-box-item-click.only_partner{top: 0.7px !important;}
+button.search-box-item-click.only_content{top: 1.2px !important;}
+button.search-box-item-click.only_design{top: 6.2px !important;}
+button.search-box-item-click.only_mdf{top: 0.8px !important;}
+.border_btn{
+  border-left:1px solid var(--border-color) !important;
 }

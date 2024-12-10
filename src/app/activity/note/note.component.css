@@ -50,9 +50,6 @@
   .ml_20{
     margin-left: 20px;
   }
-  a :hover {
-    text-decoration-line: underline;
-  }
   .delete-bg-color {
     background-color: #fa3131;
   }
@@ -64,3 +61,25 @@
     font-size: 12px;
     margin-right: 2px;
   }
+  .task_edit{
+    font-size: 10px;
+    color: #578ebe;
+    background-color: #d9e5ff;
+    border: 1px solid #8abeff;
+    border-radius: 4px;
+    padding: 2px 5px;
+  }
+  .task_edit:hover{
+    background-color: #c6d5f6;
+  }
+  .task_delete{
+    font-size: 10px;
+    border-radius: 4px;
+    padding: 2px 5px;
+    background-color: #f20000;
+    border: 1px solid #ea2370;
+    color: #ffff;
+  }
+  .task_delete:hover {
+    background-color: #d52828;
+}

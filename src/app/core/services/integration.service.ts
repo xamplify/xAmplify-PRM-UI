@@ -7,6 +7,7 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs/Observable";
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import { SocialContact } from "app/contacts/models/social-contact";
+import { CustomFieldsDto } from "app/dashboard/models/custom-fields-dto";
 
 @Injectable()
 export class IntegrationService {
@@ -247,5 +248,32 @@ export class IntegrationService {
         return this._http.get(this.authenticationService.REST_URL + `crm/view/getLabelChoices/${formLabelId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    saveCustomFields(request: any) {
+        let url = this.authenticationService.REST_URL + "/customFields/save?access_token=" + this.authenticationService.access_token
+        return this.authenticationService.callPostMethod(url, request);
+    }
+
+    syncCustomFieldsForm(request: any) {
+        let url = this.authenticationService.REST_URL + "/customFields/sync?access_token=" + this.authenticationService.access_token
+        return this.authenticationService.callPostMethod(url, request);
+    }
+
+    getCustomFields() {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.authenticationService.REST_URL + `/customFields/${loggedInUserId}?access_token=${this.authenticationService.access_token}`
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    deleteCustomField(customFieldId: number, loggedInUserId: any) {
+        let url = this.authenticationService.REST_URL + `/customFields/delete/${loggedInUserId}/${customFieldId}?access_token=${this.authenticationService.access_token}`
+        return this.authenticationService.callDeleteMethod(url);
+    }
+
+    getLeadCountForCustomField(customFieldId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `/customFields/leads/count/${customFieldId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 }

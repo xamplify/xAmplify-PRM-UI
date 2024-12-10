@@ -1,0 +1,73 @@
+<div class="my-container">
+  <ng-container>
+    <div class="alert alert-danger" *ngIf="!isValid">
+      <a class="close" aria-label="close" (click)="isValid = true">x</a>
+      <strong>{{errorMessage}}</strong>
+    </div>
+    <div class="mt10">
+      <label for="html">Object Type <strong class="required">*</strong> </label>
+      <select class="form-control" [(ngModel)]="customField.objectType" [disabled] = "true" [ngModelOptions]="{standalone: true}">
+        <option [ngValue]="">None</option>
+        <option [ngValue]="'LEAD'">Lead
+        </option>
+        <option [ngValue]="'DEAL'">Deal
+        </option>
+        <option [ngValue]="'CONTACT'">Contact
+        </option>
+      </select>
+    </div>
+  <div class="mt10">
+    <label>Label Name <strong class="required">*</strong> </label>
+    <input type="text" class="form-control" [(ngModel)]="customFieldsDto.label" [ngModelOptions]="{standalone: true}"  placeholder="Label Name">
+  </div>
+  <div class="mt10">
+    <label for="html">Label Type <strong class="required">*</strong> </label>
+    <select class="form-control" [(ngModel)]="customFieldsDto.type" [ngModelOptions]="{standalone: true}">
+      <option [ngValue]="null">None</option>
+      <option [ngValue]="'text'">Text
+      </option>
+      <option [ngValue]="'textarea'">Text Area
+      </option>
+      <option [ngValue]="'select'">Drop Down
+      </option>
+      <option [ngValue]="'checkbox'">Check Box
+      </option>
+      <option [ngValue]="'number'">Number
+      </option>
+    </select>
+  </div>
+  <div *ngIf="customFieldsDto.type === 'select'" class="bg-color-for-card" style="margin-top: 20px;">
+    <div class="form-group mb0">
+      <div *ngIf="customFieldsDto.options.length === 0" class="alert alert-info text-center mb0">
+        <strong>Please <a (click)="addOption()">Click here</a> to add an Option</strong>
+      </div>
+    </div>
+  
+    <ul class="list-group mb0">
+      <ng-container *ngFor="let option of customFieldsDto.options; let x = index">
+        <li class="list-group-item" id="stage{{x}}">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex">
+              <input type="text" placeholder="Enter Option" [(ngModel)]="option.label"
+                class="form-control bg-color field-border-customization inputFieldWidth">
+              <button *ngIf="customFieldsDto.options.length > 1" type="button" class="btn btn-danger deleteBntAligment"
+                data-toggle="tooltip" data-placement="top" title="Delete" (click)="delete(x)">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </div>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+  
+    <a *ngIf="customFieldsDto.options.length >= 1" class="dashboard-stat pb0" style="padding: 9px 0;margin-top: 6px;"
+      (click)="addOption()">
+      <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Option
+    </a>
+  </div>
+  <div class="float-right mt10">
+    <button class="btn btn-danger" (click)="notifyCloseCustomField()">Cancel</button>
+    <button class="btn btn-primary" (click)="validateAndSubmit()">Submit</button>
+  </div>
+</ng-container>
+</div>

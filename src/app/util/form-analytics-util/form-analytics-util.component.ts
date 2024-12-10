@@ -59,7 +59,10 @@ export class FormAnalyticsUtilComponent implements OnInit {
     @Input() isPartnerJourneyPage: boolean;
     @Input() isVendorMarketplacePage: boolean;
     @Input() isVendorMarketplacePageAnalytics:boolean;
-
+    isEmailFieldExists: boolean = false;
+    showLeadForm:boolean = false;
+    addLeadsOptionPermissionRequired:boolean = false;
+    selectedFormSubmitId:number;
     constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -151,6 +154,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
                     this.selectedSortedOption = this.columns[0];
                     this.formDataRows = data.submittedData;
                     pagination.totalRecords = data.totalRecords;
+                    this.isEmailFieldExists = data.isEmailFieldExists;
                     pagination = this.pagerService.getPagedItems(pagination, this.formDataRows);
                 } else {
                     this.referenceService.goToPageNotFound();
@@ -289,6 +293,30 @@ export class FormAnalyticsUtilComponent implements OnInit {
             }
         );
     }
+    addLeadsOptionRequired(){
+        //orgadmin,orgadminteammenber, partner, partnerTeammenber
+        this.addLeadsOptionPermissionRequired = this.authenticationService.module.isContact
+    }   
 
 
+    addLeadsForm(formDataRow:any){
+        this.showLeadForm = true;
+        this.selectedFormSubmitId = formDataRow.formSubmittedId;
+        $("#addLeadsPopup").modal("show");
+
+    }
+    hideModal(){
+        $("#addLeadsPopup").modal("hide");
+        this.showLeadForm = false;
+
+    }
+    showSubmitLeadMessage(event:any){
+        this.hideModal();
+        if(event.statusCode=200){
+            swal("Lead Created Successfully", "", "success"); 
+        }else{
+            swal(event.message, "", "error"); 
+
+        }
+    }
 }

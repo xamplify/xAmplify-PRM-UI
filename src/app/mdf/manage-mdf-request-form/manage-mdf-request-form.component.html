@@ -4,8 +4,8 @@
       <div class="clearfix">
          <div class="col-xs-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet light remove_cardBgcolor">
-               <div class="portlet-title" style="padding-bottom: 6px;">
+            <div class="portlet light remove_cardBgcolor light_bg_removal">
+               <div class="portlet-title remove_border" style="padding-bottom: 6px;">
                   <div class="caption" style="padding-top: 11px !important;padding-left: 4px !important;" translate>
                      <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                      {{formName}}
@@ -18,7 +18,7 @@
                               (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
                               (click)="searchKey='';search();"></button>
-                           <button type="submit" class="search-box-item-click" (click)="search()"><i
+                           <button type="submit" class="search-box-item-click only_mdf" (click)="search()"><i
                                  class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
                      </div>

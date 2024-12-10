@@ -2122,7 +2122,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.vendorJourney = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.vendorJourney;
+			this.activeTabHeader = this.properties.vendorJourney + " Pages for your Partners";
 
 		}
 		else if (this.activeTabName == "landingPages") {
@@ -2155,8 +2155,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 		/*****XNFR-592 ******/
 		else if (this.activeTabName == "leadFieldSettings") {
+			this.startNgxLoader();
+			this.updateLeadFieldSettingsOption(false);
+			let self = this;
+			setTimeout(() => {
+				self.updateLeadFieldSettingsOption(true);
+				self.stopNgxLoader();
+			}, 500);
 			this.activeTabHeader = this.properties.leadFieldSettings;
-			this.showleadFieldSettings = true;
 		}
 		/*****XNFR-609 ******/
 		else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER) {
@@ -2206,7 +2212,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isPartnerJourneyPages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.partnerJourneyPages;
+			this.activeTabHeader = this.properties.partnerJourneyPages + " Pages for your Vendors";
 		}else if (this.activeTabName == "vendorPartnerJourneyPages") {
 			this.ngxloading = true;
 			this.isVendorPartnerJourneyPages = false;
@@ -2263,6 +2269,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	stopNgxLoader(){
 		this.ngxloading = false;
+	}
+
+	updateLeadFieldSettingsOption(option:boolean){
+		this.showleadFieldSettings = option;
 	}
 
 	ngOnDestroy() {
