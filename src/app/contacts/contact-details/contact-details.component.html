@@ -85,7 +85,7 @@
               </div>
               <div class="icon-label">Task</div>
             </div>
-            <div class="icon-item">
+            <div class="icon-item" *ngIf="isLocalhost">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Add a Meeting">
                 <i class="glyphicon glyphicon-calendar"></i>
               </div>
@@ -170,7 +170,7 @@
                   <li><a data-toggle="tab" (click)="setActiveTab('email1')" href="#email1">Email</a>
                   </li>
                   <li><a data-toggle="tab" (click)="setActiveTab('form1')" href="#form1">Task</a></li>
-                  <li><a data-toggle="tab" (click)="setActiveTab('meeting')" href="#meeting">Meeting</a></li>
+                  <li *ngIf="isLocalhost"><a data-toggle="tab" (click)="setActiveTab('meeting')" href="#meeting">Meeting</a></li>
                 </ul>
               </div>
               <div class="tab-content tab-bg p-13">
