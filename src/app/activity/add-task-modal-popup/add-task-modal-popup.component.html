@@ -28,16 +28,16 @@
         <div class="col-lg-12 col-md-12 col-sm-12 p0">
           <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
             <label for="subjectLine">Task Type</label>
-            <select class="form-control" [(ngModel)]="taskActivity.taskType"
+            <select class="form-control option_user_icon" [(ngModel)]="taskActivity.taskType"
               (ngModelChange)="validateTask()" id="select-dropdown">
-              <option [ngValue]="'TODO'">To Do</option>
+              <option [ngValue]="'TODO'">&#xf022; To Do</option>
               <option [ngValue]="'NOTE'">&#xf044; Note</option>
-              <option [ngValue]="'EMAIL'">&#xf003;&nbsp;Email</option>
+              <option [ngValue]="'EMAIL'">&#xf003; Email</option>
             </select>
           </div>
           <div class="form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field">
             <label for="subjectLine">Priority</label>
-            <select class="form-control" [(ngModel)]="taskActivity.priority"
+            <select class="form-control option_user_icon" [(ngModel)]="taskActivity.priority"
               (ngModelChange)="validateTask()" id="select-dropdown">
               <option data-class="info"  [ngValue]="'LOW'">Low</option>
               <option data-class="warning" [ngValue]="'MEDIUM'">Medium</option>

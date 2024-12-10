@@ -15,15 +15,18 @@
 }
 select option[data-class="info"] {
     color: rgb(37, 160, 221);
+    font-weight: 600;
   }
   
 select option[data-class="warning"] {
     color: orange;
+    font-weight: 600;
   }
   
 select option[data-class="red"] {
     color: red;
+    font-weight: 600;
   }
-  select {
+  /* select {
     font-family: 'FontAwesome', 'sans-serif';
-  }
+  } */
