@@ -5,7 +5,7 @@
         data-original-title="Refresh" (click)="showAllNoteActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Add Note"
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Add Notes"
         data-original-title="Refresh" (click)="openAddNoteModalPopup()">
         <i aria-hidden="true" class="fa fa-plus"></i>
       </a>
@@ -41,8 +41,8 @@
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <div class="activity_card mb10" *ngFor="let note of notePagination?.pagedItems">
     <div class="activity-header">
-      <span><label class="activity-title mr5 mb0">Title:</label><a class="underline-on-hover" (click)="viewNote(note)">
-        <span>{{note.title}}</span></a></span>
+      <span><label class="activity-title mr5 mb0">Title:</label><a class="underline-on-hover" data-toggle="tooltip" data-placement="top" title="{{note.title}}" (click)="viewNote(note)">
+        <span>{{note.title | slice:0:30}}</span><span *ngIf="note.title.length > 30">...</span></a></span>
       <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="note.updatedTime"></app-display-date-and-time></span>
     </div>
     <div class="activity-body" *ngIf="note.visibility == 'PUBLIC'">
@@ -54,28 +54,15 @@
         <span>..View More</span></a></span>
     </div>
     <div class="activity-footer">
-      <span [ngClass]="note.visibility=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
+      <span
+        [ngClass]="note.visibility=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i
+          class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
       <span>
-        <!--1st version-->
-        <a class="underline-on-hover" (click)="showEditNoteTab(note)"><span class="mr10">edit</span></a>
-      <a class="underline-on-hover" (click)="showDeleteConformationAlert(note)"><span>delete</span></a>
-
-      <!--2nd version-->
-      <!-- <button type="submit" class="button bgcolor-unset m0 p0" (click)="showEditNoteTab(note)">
-        <span class="view-banner"><i class="fa fa-edit"></i>EDIT</span></button>
-      <button type="submit" class="button bgcolor-unset m0 p0" (click)="showDeleteConformationAlert(note)">
-        <span class="view-banner delete-bg-color"><i class="fa fa-trash-o"></i>DELETE</span></button> -->
-
-        <!--3rd version-->
-        <!-- <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
-        (click)="showEditNoteTab(note)" data-toggle="tooltip" data-placement="bottom" title="Edit Note" id="note">
-          <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
-          <div class="clickicons"></div>
-        </a>
-        <a class="custom-icon" data-rel="fancybox-button" (click)="showDeleteConformationAlert(note)" data-toggle="tooltip" data-placement="bottom" title="Delete Note" id="note">
-          <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-          <div class="del-icon"></div>
-        </a> -->
+        <span><a class="mr5" (click)="showEditNoteTab(note)" data-toggle="tooltip" data-placement="bottom"
+            title="Edit note"><i class="fas fa-pencil-alt task_edit" aria-hidden="true"></i></a>
+          <a (click)="showDeleteConformationAlert(note)" data-toggle="tooltip" data-placement="bottom"
+            title="Delete note"><i class="fas fa-trash task_delete" aria-hidden="true"></i></a>
+        </span>
       </span>
     </div>
   </div>

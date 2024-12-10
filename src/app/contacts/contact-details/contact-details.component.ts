@@ -104,7 +104,6 @@ export class ContactDetailsComponent implements OnInit {
   isReloadTaskActivityTab:boolean;
   showImageTag:boolean = false;
   imageSourcePath:any = '';
-  NOT_AVAILABLE = 'Not available';
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -572,7 +571,7 @@ export class ContactDetailsComponent implements OnInit {
     this.activityService.fetchLogoFromExternalSource(this.contactId).subscribe(
       response => {
         const data = response.data;
-        if (response.statusCode == 200 && data != this.NOT_AVAILABLE) {
+        if (response.statusCode == 200 && data != '') {
           this.imageSourcePath = data;
           this.showImageTag = true;
         } else {
