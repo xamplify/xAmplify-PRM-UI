@@ -25,10 +25,9 @@
 					<ng-template [ngTemplateOutlet]="showVanitySSOProviderList"
 						*ngIf="vanitySSOProviderList?.length && authenticationService?.vanityURLEnabled">
 					</ng-template>
-					<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;" type="submit"
-						(click)="showLoginWithCredentialsForm()">
-						<span alt="" class="login-credentials-icon"></span>Login with Credentials
-					</button>
+					<label class="check text_center mt10"> (or)
+						<a class="agree-link ml5" (click)="showLoginWithCredentialsForm()">Login with Credentials</a>
+					</label>
 				</ng-container>
 
 				<ng-container *ngIf="!vanitySSOProviderList?.length">
@@ -49,7 +48,7 @@
 				</ng-template>
 
 				<div class="text-center mt10" *ngIf="authenticationService.companyProfileName == 'versa-networks'">
-					<label class="check">Don’t have an account yet?
+					<label class="check m0">Don’t have an account yet?
 						<a class="agree-link" href="https://iam.versa-networks.com/register/partner"
 							target="_blank">Request an
 							account</a>
@@ -89,10 +88,9 @@
 							<ng-template [ngTemplateOutlet]="showVanitySSOProviderList"
 								*ngIf="vanitySSOProviderList?.length && authenticationService?.vanityURLEnabled">
 							</ng-template>
-							<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;"
-								type="submit" (click)="showLoginWithCredentialsForm()">
-								<span alt="" class="login-credentials-icon"></span>Login with Credentials 
-							</button>
+							<label class="check text_center mt10"> (or)
+								<a class="agree-link ml5" (click)="showLoginWithCredentialsForm()">Login with Credentials</a>
+							</label>
 						</ng-container>
 
 						<ng-container *ngIf="!vanitySSOProviderList?.length">
@@ -114,7 +112,7 @@
 
 						<div class="text-center mt10"
 							*ngIf="authenticationService.companyProfileName == 'versa-networks'">
-							<label class="check">Don’t have an account yet?
+							<label class="check m0">Don’t have an account yet?
 								<a class="agree-link" href="https://iam.versa-networks.com/register/partner"
 									target="_blank">Request an
 									account</a>

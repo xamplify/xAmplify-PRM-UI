@@ -76,7 +76,7 @@ export class AddCustomFieldsComponent implements OnInit {
   saveCustomField(){
       this.ngxloading = true;
       this.customField.loggedInUserId = this.loggedInUserId;
-      this.customField.selectedFields.push(this.customFieldsDto);
+      this.customField.selectedFields = [this.customFieldsDto];
       this.integrationService.saveCustomFields(this.customField).subscribe(
           response=>{
             if(response.statusCode == 200){
