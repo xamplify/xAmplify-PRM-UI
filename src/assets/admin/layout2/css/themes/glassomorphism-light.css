@@ -4326,7 +4326,8 @@ switch.switchON .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-anim
   background: rgb(255 255 255 / 31%) !important;
 }
 /***** Sudha Sri(24-07-2024) *****/
-.portlet.light.remove_cardBgcolor.glass_Bgcolor {
+.portlet.light.remove_cardBgcolor.glass_Bgcolor,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white {
   background: rgb(255 255 255 / 31%) !important;
   border: 1px solid rgb(255 255 255 / 35%) !important;
 }

@@ -333,7 +333,7 @@
 					<div *ngIf="showEditContactData">
 						<div class="col-xs-12 p0">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
-							<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal"
+							<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal" [ngClass]="{ 'bg-color-white' : uploadCsvUsingFile}"
 								[ngStyle]="{'margin-top' :
 				((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads)) ? '-9px !important' : '2px !important'}">
 								<div class="portlet-title remove_border" style="padding-bottom: 6px !important;">

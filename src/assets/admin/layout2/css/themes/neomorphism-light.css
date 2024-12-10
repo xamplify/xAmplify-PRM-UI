@@ -4434,3 +4434,7 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 }
 .neg-mrg-top5{margin-top: -5px;}
 .neg-mrg-top7{margin-top: -7px !important;}
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white{
+  background: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}

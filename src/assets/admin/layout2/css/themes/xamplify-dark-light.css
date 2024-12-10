@@ -17,8 +17,9 @@ body,
 .page-bar,
 .dashboard-stat2,
 .tabbable-custom > .tab-content ,
-.portlet.light.remove_cardBgcolor.glass_Bgcolor{
-  background-color: #2b3c46 !important;
+.portlet.light.remove_cardBgcolor.glass_Bgcolor,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white{
+  background: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
 .page-container-bg-solid .page-content,

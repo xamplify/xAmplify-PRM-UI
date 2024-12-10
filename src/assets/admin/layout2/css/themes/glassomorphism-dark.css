@@ -3997,7 +3997,8 @@ button.swal2-confirm.styled:hover {
   border: 1px solid #026deb !important;
 }
 /***** Sudha Sri(04-07-2024) *****/
-.portlet.light.remove_cardBgcolor.glass_Bgcolor {background: rgb(0 0 0 / 18%) !important;}
+.portlet.light.remove_cardBgcolor.glass_Bgcolor,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white {background: rgb(0 0 0 / 18%) !important;}
 
 .modal-body {
   max-height: calc(100vh - 113px);

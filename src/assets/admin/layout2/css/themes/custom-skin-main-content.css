@@ -2432,3 +2432,9 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
 .border_btn{
   border-left:1px solid var(--border-color) !important;
 }
+.only_custom_mar_rgt4{margin-right: 4px !important;}
+.only_custom_mrg_top8{margin-top: -8px !important;}
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
