@@ -141,9 +141,6 @@ background-color: var(--top-bg-color) !important;
   border: 1px solid var(--top-button-border-color) !important;
   color: var(--top-button-value-color) !important;
 }
-.clear-icon {
-  color: var(--top-button-value-color) !important;
-}
 .universal-dropdown-menu {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
@@ -160,7 +157,7 @@ background-color: var(--top-bg-color) !important;
   color: var(--top-button-value-color) !important;
   border: 1px solid var(--top-button-border-color) !important;
 }
-.universal-search-input::placeholder {
+.clear-icon,.universal-search-input {
   color: var(--top-button-value-color) !important;
 }
 /*** Universal Search *******/

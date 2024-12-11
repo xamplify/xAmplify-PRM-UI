@@ -269,7 +269,7 @@
 
 
 <ng-template #searchNgTemplateIcon let-quickLink="quickLink" let-access="access" let-title="title">
-  <div *ngIf="!authenticationService.module.isOnlyPartner " [ngClass]="access ? 'disabled-navigate':''"
+  <div *ngIf="!authenticationService.module.isOnlyPartner || !isPartnerLoggedInThroughVanityUrl " [ngClass]="access ? 'disabled-navigate':''"
     data-toggle="tooltip" data-placement="top" title="{{title}}">
     <a class="quicklinks_icons" [ngClass]="access? 'disabled-navigate-none':''"
       (click)="$event.stopPropagation(); navigateToManage(quickLink)">

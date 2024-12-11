@@ -385,8 +385,9 @@
 -------------------------------------------------------------------------------
  -->
 <ng-template #universalSearchButtonTemplate>
-  <button *ngIf="!refService.isOpenUniversalSearch" (click)="showUniversalSearch()" style="border-radius: 7px;margin-right: 10px;">
+  <button *ngIf="!refService.isOpenUniversalSearch" (click)="showUniversalSearch()" class="universal-search-show-button" >
     <i class="fa fa-search"></i>
+    <span class="universal-tooltip">Search</span>
   </button>
   <div class="universal-search-div" *ngIf="refService.isOpenUniversalSearch">
   <app-universal-search-bar ></app-universal-search-bar>

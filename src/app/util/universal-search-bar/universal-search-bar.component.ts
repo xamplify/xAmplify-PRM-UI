@@ -28,32 +28,29 @@ export class UniversalSearchBarComponent implements OnInit {
       this.refService.universalSearchKey = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchKey);
       this.refService.universalSearchFilterType = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchFilterBy);
     }
-    let isStyleLoaded = false;
-    if (!isStyleLoaded) {
-      $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/universal-search-bar.css' type='text/css'>");
-      isStyleLoaded = true;
-    }
   }
 
   ngOnInit() {
-    this.loadCssFile();
+    if (!this.isWelcomePageEnabled) {
+      $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/universal-search-bar.css' type='text/css'>");
+    }
     this.searchKey = this.refService.universalSearchKey;
   }
-  loadCssFile(): void {
-    // Check if the CSS file is already loaded
-    if (!document.querySelector("link[href='/assets/js/indexjscss/universal-search-bar.css']")) {
-      // Dynamically create and append the <link> element to <head>
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/assets/js/indexjscss/universal-search-bar.css';
-      link.type = 'text/css';
-      const headElement = document.getElementById('xamplify-index-head');
-      headElement.appendChild(link); // Append to <head>
-      console.log('CSS file added successfully!');
-    } else {
-      console.log('CSS file is already loaded. Skipping.');
-    }
-  }
+  // loadCssFile(): void {
+  //   // Check if the CSS file is already loaded
+  //   if (!document.querySelector("link[href='/assets/js/indexjscss/universal-search-bar.css']")) {
+  //     // Dynamically create and append the <link> element to <head>
+  //     const link = document.createElement('link');
+  //     link.rel = 'stylesheet';
+  //     link.href = '/assets/js/indexjscss/universal-search-bar.css';
+  //     link.type = 'text/css';
+  //     const headElement = document.getElementById('xamplify-index-head');
+  //     headElement.appendChild(link); // Append to <head>
+  //     console.log('CSS file added successfully!');
+  //   } else {
+  //     console.log('CSS file is already loaded. Skipping.');
+  //   }
+  // }
 
   universalSearch() {
     this.refService.universalSearchKey = this.searchKey ? this.searchKey.trim() : "";
@@ -69,7 +66,15 @@ export class UniversalSearchBarComponent implements OnInit {
           this.refService.goToRouter(routerNavigate);
         }
       } else {
+        if(this.isWelcomePageUrl) {
         this.refService.isOpenUniversalSearch = false;
+        } else {
+          if(!this.searchKey || this.searchKey.trim() === "") {
+            this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchKey, "");
+            this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchFilterBy, 'All');
+          }
+          this.refService.goToRouter(this.refService.homeRouter);
+        }
       }
     } else {
       this.refService.goToRouter(routerNavigate);
