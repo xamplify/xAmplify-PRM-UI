@@ -103,13 +103,13 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, data.data);
-          this.referenceService.stopLoader(this.httpRequestLoader);
-          this.initLoader = false;
+        } else if (response.statusCode == 403) {
+          this.referenceService.goToAccessDeniedPage();
         } else {
-          this.referenceService.stopLoader(this.httpRequestLoader);
-          this.initLoader = false;
           this.referenceService.showSweetAlertErrorMessage(response.message);
         }
+        this.initLoader = false;
+        this.referenceService.stopLoader(this.httpRequestLoader);
       });
     (error: any) => {
       this.referenceService.stopLoader(this.httpRequestLoader);
