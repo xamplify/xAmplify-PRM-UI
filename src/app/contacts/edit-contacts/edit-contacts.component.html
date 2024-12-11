@@ -410,7 +410,7 @@
 										</button>
 									</div>
 									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
-										style="margin-right: 5px;">
+										style="margin-right: 5px;" [ngClass]="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) && isPartner ? 'media-btn' : 'no-media-btn'">
 										<div *ngIf="!clickBoard && !filePrevew"
 											class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
 											<div *ngIf="!isSegmentation" (click)="modelForSeg()"
@@ -457,7 +457,7 @@
 																	class="glyphicon glyphicon-remove search-box-item-clear"
 																	*ngIf="searchKey"
 																	(click)="searchKey='';search('contactList')"></button>
-																<button type="submit" class="search-box-item-click"
+																<button type="submit" class="search-box-item-click only_mdf"
 																	(click)="search('contactList')">
 																	<i class="fa fa-search" aria-hidden="true"></i>
 																</button>
@@ -1386,7 +1386,7 @@
 													<button class="glyphicon glyphicon-remove search-box-item-clear"
 														*ngIf="searchKey"
 														(click)="searchKey='';search('contacts')"></button>
-													<button type="submit" class="search-box-item-click"
+													<button type="submit" class="search-box-item-click only_mdf"
 														(click)="search('contacts')"><i class="fa fa-search"
 															aria-hidden="true"></i></button>
 												</div>

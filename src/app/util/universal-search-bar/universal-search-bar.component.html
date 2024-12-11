@@ -15,7 +15,7 @@
        <li (click)="selectDropdownOption('Tracks')" *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">Tracks</li>
        <li (click)="selectDropdownOption('PlayBooks')" *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">PlayBooks</li>
        <li (click)="selectDropdownOption('Lead')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Leads</li>
-       <li (click)="selectDropdownOption('Deal')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Deals</li>
+       <li (click)="selectDropdownOption('Deal')" style="border-bottom: none !important;" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Deals</li>
 
 
 
