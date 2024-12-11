@@ -1412,13 +1412,19 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callGetMethod(findAllUrl);
     }
 
-    findUniversalSearch(pagination:Pagination){
+    findUniversalSearch(pagination: Pagination) {
         let userId = this.authenticationService.getUserId();
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let isCompanyProfileName = companyProfileName != undefined && companyProfileName.length > 0;
+        let xamplifyLogin = companyProfileName == undefined || companyProfileName.length == 0;
+        let logInAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        if (xamplifyLogin && logInAsUserId != null && logInAsUserId != "" && logInAsUserId != undefined) {
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-        let domainName= this.authenticationService.companyProfileName!="" ? this.authenticationService.companyProfileName : '0';
-        // let findAllUrl = this.dashboardAnalytics+'findUniversalSearch/domainName/'+domainName+'/userId/'+userId+this.QUERY_PARAMETERS+pageableUrl;
-        // return this.authenticationService.callGetMethod(findAllUrl);
-        const findAllUrl = `${this.dashboardAnalytics}findUniversalSearch/domainName/${domainName}/userId/${userId}${this.QUERY_PARAMETERS}${pageableUrl}`;
+        const domainNameQuery = isCompanyProfileName ? `${companyProfileName}` : '';
+        const findAllUrl = this.dashboardAnalytics + "findUniversalSearch/" + userId + "?domainName=" + domainNameQuery + "&access_token=" + this.authenticationService.access_token + pageableUrl;
+        console.log(findAllUrl);
         return this.authenticationService.callGetMethod(findAllUrl);
     }
 

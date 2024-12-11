@@ -1,7 +1,7 @@
 .activity_card {
     border: 1px solid #ddd;
     padding: 10px 15px 10px 15px;
-    border-radius: 4px;
+    border-radius: 7px;
     background-color: #ffffff;
 }
 .activity-header {
@@ -10,10 +10,11 @@
     align-items: center;
   }
   .activity-title {
-    font-weight: 600;
+    font-weight: 400;
   }
   .activity-date {
     color: #666;
+    margin-top: -5px;
     font-size: 12px;
   }
   .activity-body {
@@ -72,4 +73,12 @@
   }
   .task_edit:hover{
     background-color: #c6d5f6;
+  }
+  .activity-updated-status-btn-v2 {
+    padding: 2px 6px !important;
+    font-size: 10px !important;
+    color: #576064;
+    border: 1px solid #576064;
+    font-weight: 800;
+    background: transparent!important;
   }

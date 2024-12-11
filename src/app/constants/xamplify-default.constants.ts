@@ -15,5 +15,6 @@ export const XAMPLIFY_CONSTANTS = {
     sandbox:'Sandbox',
     production:'Production',
     universalSearchKey:'universalSearchKey',
+    universalSearchFilterBy:'universalSearchFiterBy',
 
 }

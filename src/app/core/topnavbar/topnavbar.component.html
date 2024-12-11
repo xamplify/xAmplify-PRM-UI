@@ -37,8 +37,8 @@
          <div class="page-top" [ngClass]="cskin.defaultSkin?'':'customskin-top'" [class.active]="isNavbarBackgroundVisible">
             <div class="top-menu">
                <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
-                  <li class="topnav-button-css">
-                     <app-universal-search-bar *ngIf="authenticationService.vanityURLEnabled"></app-universal-search-bar>
+                  <li class="topnav-button-css" style="margin-right: 0px;">
+                     <app-universal-search-bar *ngIf="!helpGuidesUrl"></app-universal-search-bar>
                   </li>
                   <!---XNFR-222-->
                   <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css LogedAsBoxTop">

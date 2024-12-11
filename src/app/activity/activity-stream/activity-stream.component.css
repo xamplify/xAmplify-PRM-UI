@@ -11,11 +11,12 @@
 }
 
 .activity-title {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .activity-date {
     color: #666;
+    margin-top: -5px;
     font-size: 12px;
 }
 
@@ -84,7 +85,7 @@ fieldset.scheduler-borders {
     color: #000;
     font-weight: 500;
     font-size: 13px;
-    border: 1px solid #ddd;
+    border: 1px solid #c0c0c0;
     border-radius: 7px;
     /* background-color: #f1f5f9; */
   }
@@ -109,6 +110,19 @@ fieldset.scheduler-borders {
     background-color: #d5f2d8!important;
     color: #333!important;
 }
+
+.task_delete{
+    font-size: 10px;
+    border-radius: 4px;
+    padding: 2px 5px;
+    background-color: #f20000;
+    border: 1px solid #ea2370;
+    color: #ffff;
+  }
+  .task_delete:hover {
+    background-color: #d52828;
+  }
+
 .text-baseline{
     align-items: baseline;
 }
@@ -123,14 +137,22 @@ fieldset.scheduler-borders {
   .task_edit:hover{
     background-color: #c6d5f6;
   }
-  .task_delete{
+  .activity-updated-status-btn-v2 {
+    padding: 2px 6px !important;
+    font-size: 10px !important;
+    color: #576064;
+    border: 1px solid #576064;
+    font-weight: 800;
+    background: transparent!important;
+  }
+  .task_view{
     font-size: 10px;
+    color: #333333;
+    background-color: #ffffff;
+    border: 1px solid #333333;
     border-radius: 4px;
     padding: 2px 5px;
-    background-color: #f20000;
-    border: 1px solid #ea2370;
-    color: #ffff;
   }
-  .task_delete:hover {
-    background-color: #d52828;
-}
+  .task_view:hover{
+    background-color: #c6d5f6;
+  }
