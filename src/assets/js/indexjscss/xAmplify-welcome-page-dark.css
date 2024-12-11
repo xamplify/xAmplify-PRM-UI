@@ -130,3 +130,23 @@ h1, h2, h3, h4, h5, h6 {
         background: #22313a !important;
     }
 }
+
+/*** Universal Search *******/
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+    background-color: #2b3c46 !important;
+    color: #fff !important;
+    border: 1px solid #2f4857 !important;
+}
+.universal-dropdown-menu {
+    background-color: #2b3c46 !important;
+    border: 1px solid #2f4857;
+}
+.universal-dropdown-menu li {
+    border-bottom: 1px solid #2f4857;
+}
+.universal-dropdown-menu li:hover {
+    background-color: #22313a !important;
+}
+/*** Universal Search *******/

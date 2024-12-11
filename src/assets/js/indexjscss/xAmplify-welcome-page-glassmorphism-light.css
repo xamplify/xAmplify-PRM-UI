@@ -55,3 +55,26 @@ span.xamplify-submenu-flex>a.moduleTextColor,
         background-color: #ddd !important;
     }
   }
+/*** Universal Search *******/
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+    color: #000 !important;
+    background-color: rgb(255 255 255 / 31%) !important;
+    border: 1px solid rgb(255 255 255 / 35%) !important;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+.universal-search-input {
+color: #000 !important;
+}
+.universal-dropdown-menu {
+    background-color: rgb(255 255 255 / 90%) !important;
+    border: 1px solid rgb(208 207 199) !important;
+    border-radius: 10px !important;
+}
+.universal-dropdown-menu li {
+    border-bottom: 1px solid #d0d5db;
+}
+/*** Universal Search *******/
+

@@ -161,6 +161,9 @@ export class ReferenceService {
   universalSearchKey:string = ""; //XNFR-574
   universalId:number = 0; //XNFR-574
   universalModuleType:string = ""; //XNFR-574
+  universalSearchFilterType:string = 'All'
+  universalSearchVendorOrPartnerView :String ="";
+  isOpenUniversalSearch:boolean= false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3053,6 +3056,7 @@ export class ReferenceService {
   getPagebleUrl(pagination:Pagination){
     let page = pagination.pageIndex;
     let size = pagination.maxResults;
+    let loginAsUserId = pagination.loginAsUserId != 0 ? pagination.loginAsUserId: 0;
     let searchKey = $.trim(pagination.searchKey)!=null ? $.trim(pagination.searchKey) :"";
     let sortColumn = $.trim(pagination.sortcolumn)!=null ? $.trim(pagination.sortcolumn):"";
     let sortOrder = $.trim(pagination.sortingOrder)!=null ? $.trim(pagination.sortingOrder):"";
@@ -3060,14 +3064,14 @@ export class ReferenceService {
     let fromDateFilterString = $.trim(pagination.fromDateFilterString)!=null ? $.trim(pagination.fromDateFilterString) :"";
     let toDateFilterString =$.trim(pagination.toDateFilterString)!=null ? $.trim(pagination.toDateFilterString) :"";
     let sortParam = sort.length>0 ? "&sort="+sort:"";
-    let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
+    let searchParam = searchKey.length>0 ? "&search="+this.getEncodedUri(pagination.searchKey):"";
     let fromDateFilterStringParam = fromDateFilterString.length>0 ? "&fromDateFilterString="+fromDateFilterString:"";
     let toDateFilterStringParam = toDateFilterString.length>0 ? "&toDateFilterString="+toDateFilterString:"";
     let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true":"";
     let timeZoneParam = pagination.timeZone != null ? "&timeZone="+pagination.timeZone :"";
     let filterBy = $.trim(pagination.filterBy)!=null ? $.trim(pagination.filterBy) :"";
     let filterParam = filterBy.length>0 ? "&filterBy="+filterBy:"";
-    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter+filterParam+fromDateFilterStringParam+toDateFilterStringParam+timeZoneParam);
+    return $.trim("&page="+page+"&size="+size+"&loginAsUserId="+loginAsUserId+sortParam+searchParam+teamMemberPartnerFilter+filterParam+fromDateFilterStringParam+toDateFilterStringParam+timeZoneParam);
   }
   
   downloadCsvTemplate(url:string){
