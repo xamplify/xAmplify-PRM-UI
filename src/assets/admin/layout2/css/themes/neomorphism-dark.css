@@ -4398,5 +4398,7 @@ tbody>tr#uploaded-csv-tr>td {
 .ffolder.big.gray.folder-cheight {
   background-color: #54a7e9 !important;
 } 
-
+.portlet.light.remove_space,.light_bg_removal.remove_space {
+  padding: 10px!important;
+}
 

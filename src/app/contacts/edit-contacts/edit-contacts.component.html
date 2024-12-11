@@ -333,10 +333,10 @@
 					<div *ngIf="showEditContactData">
 						<div class="col-xs-12 p0">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
-							<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal" [ngClass]="{ 'bg-color-white' : uploadCsvUsingFile}"
+							<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal remove_space" [ngClass]="{ 'bg-color-white' : uploadCsvUsingFile}"
 								[ngStyle]="{'margin-top' :
 				((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads)) ? '-9px !important' : '2px !important'}">
-								<div class="portlet-title remove_border" style="padding-bottom: 6px !important;">
+								<div class="portlet-title remove_border">
 									<div class="caption" translate style="font-size: 2;padding-top: 8px !important;">
 										<i class="fa fa-edit" aria-hidden="true"
 											style="font-size: 20px;"></i>{{isPartner ? 'Group of' : 'List of'}}
@@ -864,7 +864,7 @@
 											<div class="table-responsive">
 												<table class='table tgrid'
 													*ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading || (isValidClipBoardData)"
-													aria-describedby="" style="padding-top: 9px;">
+													aria-describedby="">
 													<thead>
 														<tr>
 															<th class='text-center' scope="col"><input type="checkbox"
@@ -1286,7 +1286,7 @@
 					</div>
 					<div class="valid-list" id="hidingListOfUsersTable">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
-						<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal">
+						<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal remove_space">
 							<div class="portlet-title remove_border">
 								<div class="caption" style="padding-top: 8px !important;">
 									<span class="capitalize"
@@ -1410,7 +1410,7 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="page-bar remove_table_bg register_bg" *ngIf="!showEditContactData"
+								<div class="page-bar remove_table_bg register_bg mb10" *ngIf="!showEditContactData"
 									style="border:none !important;">
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									</div>

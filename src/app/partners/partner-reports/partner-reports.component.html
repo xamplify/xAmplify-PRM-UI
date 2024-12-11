@@ -594,7 +594,7 @@
             <section class='col-xs-12 p0'
               *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               <div class="table-responsive">
-                <table class='table tgrid table-hover table-sm' *ngIf="isListView" aria-describedby="">
+                <table class='table tgrid table-hover table-sm mt10' *ngIf="isListView" aria-describedby="">
                   <thead>
                     <tr>
                       <th scope="col" class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
@@ -807,7 +807,7 @@
 
   <div *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv ">
     <div class="row">
-      <div class="">
+      <div class="col-xs-12 cl-sm-12 col-md-12 col-lg-12">
         <div class="portlet light" style="padding: 10px !important;">
           <div class="portlet-title">
             <div class="caption">

@@ -4222,3 +4222,9 @@ color: #fff !important;
   color:#fff;
 }
 /*** XNFR-758 ***/
+.portlet.light.remove_space,.light_bg_removal.remove_space {
+  padding: 10px!important;
+}
+.border_btn{
+  border-left: 1px solid #026deb !important;
+}
