@@ -429,9 +429,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.squareDataForBgImage = {};
         }
         this.getCompanyNameandProfileInfo();
-
         
-        this.checkAndAutofillCompanyProfile();
     } 
 
     uploadFileConfiguration() {
@@ -873,7 +871,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     this.isDisable = isValidCompanyProfileName;
                 },
                 error => { this.logger.errorPage(error) },
-                () => { this.logger.info("Completed getCompanyProfileByUserId()") }
+                () => { this.logger.info("Completed getCompanyProfileByUserId()")
+                    this.checkAndAutofillCompanyProfile();
+                }
             );
         }
        
@@ -2047,7 +2047,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     /** XNFR-760 - start **/
     checkAndAutofillCompanyProfile() {
-        if (this.companyProfile.isAdd && this.authenticationService.isPartner()) {
+        if (!this.authenticationService.user.hasCompany && this.authenticationService.isPartner()) {
             this.autoFillCompanyProfile();
         }
     }
