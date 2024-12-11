@@ -33,7 +33,7 @@
         <div class="edit_contact">
           <!-- Header 1 -->
           <div class="profile_header">
-            <div class="avatar2">
+            <div [ngClass]="showImageTag ? 'avatar2_v2' : 'avatar2'">
               <span *ngIf="!showImageTag" class="avatar-initial">{{highlightLetter}}</span>
               <img *ngIf="showImageTag" class="img_wdt" src="{{imageSourcePath}}" alt="">
             </div>
@@ -68,10 +68,10 @@
           <!--  -->
           <div class="icon-group">
             <div class="icon-item" (click)="openAddNoteModalPopup()">
-              <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Add a Note">
+              <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Add Notes">
                 <i class="glyphicon glyphicon-pencil"></i>
               </div>
-              <div class="icon-label">Note</div>
+              <div class="icon-label">Notes</div>
             </div>
             <div class="icon-item" (click)="openEmailModalPopup()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Send an Email">
@@ -265,7 +265,6 @@
             <div class="panel-body pt0" *ngIf="contactDeals.length > 0">
               <div class="deals_card mb10" *ngFor="let deal of contactDeals">
                 <div>
-                  <i class="fas fa-user mr5" aria-hidden="true"> </i>
                   <a class="add-btn underline-on-hover" (click)="viewDeal(deal.id)">
                     <span class="activity-title">{{deal.title}}</span>
                   </a>

@@ -5,6 +5,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { SortOption } from 'app/core/models/sort-option';
 import { TaskActivityService } from '../services/task-activity.service';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
 declare var flatpickr:any;
 
@@ -47,6 +48,8 @@ export class AddTaskModalPopupComponent implements OnInit {
   files: File[] = [];
   file: File;
   formData: any = new FormData();
+  assignedToUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  showAssignedToUserDropdown:boolean = false;
 
   constructor(public referenceService:ReferenceService, public taskService:TaskActivityService, public properties:Properties) { }
 
@@ -58,6 +61,7 @@ export class AddTaskModalPopupComponent implements OnInit {
       this.taskActivity.userId = this.userId;
       this.taskActivity.priority = 'LOW';
       this.taskActivity.taskType = 'TODO';
+      this.taskActivity.assignedTo = 0;
       this.fetchAssignToDropDownOptions();
       this.fetchStatusDropDownOptions();
       this.isEdit = false;
@@ -172,7 +176,9 @@ export class AddTaskModalPopupComponent implements OnInit {
     this.taskService.fetchAssignToDropDownOptions().subscribe(
       response => {
         if (response.statusCode == 200) {
-          this.assignToDropDownOptions = response.data;
+          this.assignedToUsersSearchableDropDownDto.data = response.data;
+          this.assignedToUsersSearchableDropDownDto.placeHolder = "Select a member";
+          this.showAssignedToUserDropdown = true;
         } else {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
         }
@@ -352,6 +358,10 @@ export class AddTaskModalPopupComponent implements OnInit {
     this.files.forEach(file => {
       this.formData.append("uploadedFiles", file, file['name']);
     });
+  }
+
+  getSelectedAssignedToUserId(event) {
+    this.taskActivity.assignedTo = event['id'];
   }
 
 }
