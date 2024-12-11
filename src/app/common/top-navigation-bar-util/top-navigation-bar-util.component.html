@@ -128,7 +128,7 @@
         <!-- Btns -->
         <!-- <ng-template [ngTemplateOutlet]="universalSearch"></ng-template> -->
         <div class="xamplify-btn-group xamplify-refer-vendor-button xamplify-right">
-          <ng-template *ngIf="!helpGuidesUrl" [ngTemplateOutlet]="universalSearchButtonTemplate"></ng-template>
+          <ng-template *ngIf="!helpGuidesUrl && authenticationService?.user?.hasCompany && userId!=1" [ngTemplateOutlet]="universalSearchButtonTemplate"></ng-template>
 
                             <!--Invite A Vendor For Normal Login-->
                             <ng-container *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService?.vanityURLEnabled  &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
