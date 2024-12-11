@@ -943,6 +943,13 @@
     </div>
   </div>
 
+  <div class="row rowPaddingCustomization2">
+    <app-partner-journey-asset-details [partnerCompanyId]="'0'"
+      (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [isDetailedAnalytics]="false"
+      [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+      [fromDateFilter]="partnerfromDateFilter" [toDateFilter]="partnertoDateFilter"
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.module?.damAccess"></app-partner-journey-asset-details>
+  </div>
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization2">
     <app-userwise-track-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"

@@ -120,6 +120,12 @@
     </div>
   </div>
 
+  <div class="row rowPaddingCustomization1">
+    <app-partner-journey-asset-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
+      [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
+      *ngIf="authenticationService?.module?.damAccess"></app-partner-journey-asset-details>
+  </div>
+
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization1">
     <app-userwise-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"

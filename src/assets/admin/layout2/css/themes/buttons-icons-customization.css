@@ -123,3 +123,21 @@ button.btn.btn-xs.hidden-xs.l-g-view{color:#fff !important;}
 .clickicons, .del-icon {
   animation: none !important;
   background: none !important;}
+  /*** XNFR-758 ***/
+  .welcome-btn {
+    background-color: var(--custom-buttonbg-color) !important;
+    background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
+    background-size: calc(100% + 20px) calc(100% + 20px) !important;
+    border: 1px solid var(--custom-border-color) !important;
+    color: var(--custom-text-color)  !important;
+    box-shadow: none !important;
+  }
+  .welcome-btn:hover {
+    background-color: var(--custom-buttonbg-color) !important;
+    background-image: linear-gradient(1deg, var(--custom-gradient-two-color), var(--custom-gradient-one-color) 99%) !important;
+    background-size: calc(100% + 20px) calc(100% + 20px) !important;
+    border: 1px solid var(--custom-border-color) !important;
+    color:  var(--custom-text-color) !important;
+    box-shadow: none !important;
+  }
+  /*** XNFR-758 ***/

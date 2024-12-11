@@ -74,7 +74,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
   isLoggedInAsTeamMember = false;
   vendorAdminCompanyUserEmailId: any;
   guideHomeUrl: any;
-
+  helpGuidesUrl:boolean = false; //XNFR-758
   isScrolled: boolean = false;
   isRegisterDealEnabled:boolean = true;
   isReferVendorOptionEnabledForVanity = false;
@@ -308,6 +308,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
       this.getRoles();
       this.isAddedByVendor();
       this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
+      this.helpGuidesUrl = this.router.url.includes('home/help');
       this.getVendorRegisterDealValue();
       this.getReferVendorOption();
       this.isOnlyUser = this.authenticationService.isOnlyUser();

@@ -3285,7 +3285,7 @@ a.quicklinks_icons:hover {
 }
 .activity-updated-status-btn {
   padding: 2px 6px !important;
-  font-size: 9px !important;
+  font-size: 10px !important;
   color: #00a6e8;
   border: 1px solid #00a6e8;
   font-weight: 800;
@@ -3345,6 +3345,11 @@ tbody{background: #fff;}
 .break-word{
   word-wrap: break-word;
 }
+
+.fs-10px {
+  font-size: 10px !important;
+}
+
 button.search-box-item-click.only_partner{top: 0.7px !important;}
 button.search-box-item-click.only_content{top: 1.2px !important;}
 button.search-box-item-click.only_design{top: 6.2px !important;}

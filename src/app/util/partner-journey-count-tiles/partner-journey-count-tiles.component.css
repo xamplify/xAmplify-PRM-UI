@@ -440,6 +440,24 @@ p.pa-TextTwelv {
   color: #fff;
 }
 
+p.pa-TextThirteen {
+  color: #369;
+}
+
+.pa-CardThirteen {
+  color: #369;
+}
+
+.pa-CardThirteen:hover {
+  background: #369;
+  color: #fff;
+  border: 1px solid #369;
+}
+
+.pa-CardThirteen:hover p {
+  background: #369;
+  color: #fff;
+}
 
 /**************************************************************************/
 

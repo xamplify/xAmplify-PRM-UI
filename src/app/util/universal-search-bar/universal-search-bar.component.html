@@ -1,9 +1,34 @@
-<div class="">
-  <div class="universal-search-container">
-    <input type="text" [(ngModel)]="searchKey" placeholder="Search..." class="universal-search-input"  (keypress)="universalSearchOnKeyPress($event.keyCode)"/>
-    <button *ngIf="isEmptyOrWhitespace(searchKey)" class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';goToDashBoard();"></button>
-    <button [disabled]="!isEmptyOrWhitespace(searchKey)" [ngClass]="isEmptyOrWhitespace(searchKey)? '':'disabled-div'" class="universal-search-button" (click)="universalSearch();">
-      <i class="fa fa-search" aria-hidden="true" [ngClass]="isEmptyOrWhitespace(searchKey)?'':'disabled'"></i>
+<div style="display: flex;margin-right: 5px;">
+  <div class="universal-dropdown-container">
+    <input type="checkbox" id="dropdown-toggle" class="universal-dropdown-checkbox"
+      (change)="updateDropdownVisibility()" [checked]="isDropdownOpen" />
+    <label for="dropdown-toggle" class="universal-dropdown-label">
+      {{ refService.universalSearchFilterType ? refService.universalSearchFilterType : 'All' }}
+      <span [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'"></span>
+    </label>
+    <ul class="universal-dropdown-menu" [class.show]="isDropdownVisible">
+      <!-- <li *ngFor="let option of dropdownOptions" (click)="selectDropdownOption(option.label)">
+        {{ option.label }}
+      </li> -->
+      <li (click)="selectDropdownOption('All')">All</li>
+      <li (click)="selectDropdownOption('Assets')" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner">Assets</li>
+       <li (click)="selectDropdownOption('Tracks')" *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">Tracks</li>
+       <li (click)="selectDropdownOption('PlayBooks')" *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">PlayBooks</li>
+       <li (click)="selectDropdownOption('Lead')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Lead</li>
+       <li (click)="selectDropdownOption('Deal')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Deal</li>
+
+
+
+    </ul>
+  </div>
+  <div class="universal-search-bar-container">
+    <input type="text" class="universal-search-input" placeholder="Search..." [(ngModel)]="searchKey"
+      (keypress)="universalSearchOnKeyPress($event.keyCode)" />
+    <i *ngIf="isEmptyOrWhitespace(searchKey? searchKey :'')" class="clear-icon fa fa-times"
+      (click)="searchKey=''; goToDashBoard();"></i>
+    <button class="universal-search-button" [disabled]="!disabledButton(searchKey? searchKey :'')"
+      [ngClass]="disabledButton(searchKey? searchKey :'')? '':'disabled-div'" (click)="universalSearch()">
+      <i aria-hidden="true" class="fa fa-search" [ngClass]="disabledButton(searchKey? searchKey :'')?'':'disabled'"></i>
     </button>
   </div>
 </div>
