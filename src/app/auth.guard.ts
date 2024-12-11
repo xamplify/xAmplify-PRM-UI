@@ -321,17 +321,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 return true;
             } else if (urlType == this.lmsUrl) {
                 /*** XNFR-696 ***/
-                if (this.authenticationService.isLocalHost()) {
-                    this.authorizeUrlAccess(url);
-                } else {
-                    return true;
-                }
+                this.authorizeUrlAccess(url);
             } else if (urlType == this.playbookUrl) {
-                if (this.authenticationService.isLocalHost()) {
-                    this.authorizeUrlAccess(url);
-                } else {
-                    return true;
-                }
+                /*** XNFR-695 ***/
+                this.authorizeUrlAccess(url);
             }
             /*******XNFR-83*******/
             else if (urlType == this.agencyUrl) {

@@ -20,7 +20,7 @@ export class UrlAuthGuardService {
   authorizeUrlAccess(routerUrl: string) {
     let isDamRouterUrl = routerUrl.includes("/home/dam") || routerUrl.includes("/home/select-modules");
     let isTrackRouterUrl = routerUrl.includes("/home/tracks");
-    let isPlaybookrouterurl = routerUrl.includes("/home/playbooks");
+    let isPlaybookRouterUrl = routerUrl.includes("/home/playbook");
     let moduleId = 0;
     let moduleName = "";
     if (isDamRouterUrl) {
@@ -29,7 +29,7 @@ export class UrlAuthGuardService {
     } else if (isTrackRouterUrl) {
       moduleId = this.roles.learningTrackId;
       moduleName = "tracks";
-    } else if (isPlaybookrouterurl) {
+    } else if (isPlaybookRouterUrl) {
       moduleId = this.roles.playbookId;
       moduleName = "playbook";
     }

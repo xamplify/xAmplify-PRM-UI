@@ -367,7 +367,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             this.goToManageSectionWithError();
             this.ngxloading = false;
           }
-        } else {
+        } else if (response.statusCode == 403) {
+          this.referenceService.goToAccessDeniedPage();
+        }else {
           swal("Please Contact Admin!", response.message, "error");
           this.ngxloading = false;
         }
