@@ -120,21 +120,9 @@
             <p class="pa-text pa-TextSeven">MDF Amount</p>
          </div>
       </div>
-      <!-- card eight  -->
-      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount && !isVendorVersion"
-         [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#pj-asset-details-div': ''" [scrollDuration]="1000"
-         [scrollOffset]="-100">
-         <div
-            [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">
-            <i class="fa fa-cogs pa-fafaIconCustomization" aria-hidden="true"></i>
-            <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
-            <p class="pa-text pa-TextEight">Track Assets</p>
-         </div>
-      </div>
       <!-- card eight  for team member analytics -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount && isVendorVersion"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics"
          [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#ta-asset-details-div': ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div
@@ -142,6 +130,30 @@
             <i class="fa fa-cogs pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
             <p class="pa-text pa-TextEight">Assets</p>
+         </div>
+      </div>
+
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics && !isVendorVersion"
+         [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#pj-asset-details-div': ''" [scrollDuration]="1000"
+         [scrollOffset]="-100">
+         <div
+            [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">
+            <i class="fa fa-cogs pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
+            <p class="pa-text pa-TextEight">Assets</p>
+         </div>
+      </div>
+      
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showTrackAssetCount && !isTeamMemberAnalytics"
+         [scrollTo]="partnerJourneyAnalytics?.trackAssetCount > 0 ? '#pj-asset-details-div' : ''" [scrollDuration]="1000"
+         [scrollOffset]="-100">
+         <div
+            [className]="partnerJourneyAnalytics?.trackAssetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardThirteen tiles-card' : 'disabled-event-pj pa-Card pa-CardThirteen tiles-card'">
+            <i class="fas fa-chalkboard-teacher pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextThirteen">{{partnerJourneyAnalytics?.trackAssetCount}}</p>
+            <p class="pa-text pa-TextThirteen">Track Assets</p>
          </div>
       </div>
       <!-- card nine  -->
@@ -166,6 +178,18 @@
             <i class="fa fa-book pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextTen">{{partnerJourneyAnalytics?.playbookCount}}</p>
             <p class="pa-text pa-TextTen">Playbooks</p>
+         </div>
+      </div>
+      <!-- card eleven  for team analytics-->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && !isTeamMemberAnalytics"
+         [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#asset-details-div': ''" [scrollDuration]="1000"
+         [scrollOffset]="-100">
+         <div
+            [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">
+            <i class="fa fa-cogs pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
+            <p class="pa-text pa-TextEight">Assets</p>
          </div>
       </div>
    </div>

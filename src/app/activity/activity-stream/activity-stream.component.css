@@ -110,6 +110,7 @@ fieldset.scheduler-borders {
     background-color: #d5f2d8!important;
     color: #333!important;
 }
+
 .task_delete{
     font-size: 10px;
     border-radius: 4px;
@@ -121,7 +122,11 @@ fieldset.scheduler-borders {
   .task_delete:hover {
     background-color: #d52828;
   }
-  .task_edit{
+
+.text-baseline{
+    align-items: baseline;
+}
+.task_edit{
     font-size: 10px;
     color: #578ebe;
     background-color: #d9e5ff;
@@ -151,4 +156,3 @@ fieldset.scheduler-borders {
   .task_view:hover{
     background-color: #c6d5f6;
   }
-  

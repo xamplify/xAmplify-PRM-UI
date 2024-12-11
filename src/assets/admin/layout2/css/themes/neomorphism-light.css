@@ -4419,7 +4419,7 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 .neo{margin-left:65px !important;}
   /* contact-journey */
-  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor{
+  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor,.view_emailcard,.email_content{
     background: #f0f5fa !important;
     border: 1px solid #d0d5db !important;
     box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
@@ -4430,5 +4430,30 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
   background-color: #54a7e9 !important;
 }
 .update-activity,.create-activity,.sent-activity {
+  box-shadow: unset!important;
   box-shadow: inset 5px 5px 10px #c3dcc82e, inset -5px -5px 10px #475c4a1f !important;
 }
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+  color: #000 !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+.universal-dropdown-menu {
+  background: linear-gradient(225deg, #d8dde1, #fff) !important;
+  box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #fff !important;
+  border: 1px solid #d0d5db !important;
+}
+.universal-dropdown-menu li {
+  border-bottom: 1px solid #d0d5db !important;
+}
+.universal-dropdown-menu li:hover {
+  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+  background: linear-gradient(225deg, #d8dde1, #fff) !important;
+}
+
+.neg-mrg-top5{margin-top: -5px;}
+.neg-mrg-top7{margin-top: -7px !important;}
+

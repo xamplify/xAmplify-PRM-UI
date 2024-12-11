@@ -180,7 +180,6 @@ import { BackgroundImageUploadComponent } from 'app/util/background-image-upload
 import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain-whitelisting.component';
 import { SamlSsoLoginComponent } from 'app/dashboard/saml-sso-login/saml-sso-login.component';
 import { LeadCustomFieldsSettingsComponent } from 'app/dashboard/lead-custom-fields-settings/lead-custom-fields-settings.component';
-import { VendorJourneyFormAnalyticsComponent } from '../util/vendor-journey-form-analytics/vendor-journey-form-analytics.component';
 import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configuration/oauth-sso-configuration.component';
 import { CrmSettingsComponent } from 'app/dashboard/crm-settings/crm-settings.component'; 
 import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-dashboard-buttons.component';
@@ -205,9 +204,9 @@ import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/unive
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
 		PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
-		DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent,
+		TimestampComponent, ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent,
 		ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent,
-		LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
+		LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent,
 		CampaignsListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
 		AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent, RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, 
@@ -234,7 +233,7 @@ import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/unive
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
+		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent
 	],
 
@@ -242,10 +241,10 @@ import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/unive
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
 		ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
-		ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
+		ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, TimestampComponent,
 		ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,
 		PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
-		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent,
+		MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent,
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent, CampaignsListViewUtilComponent,
 		PreviewCampaignComponent, SocialStatusComponent, AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTagsUtilComponent, 
@@ -272,7 +271,7 @@ import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/unive
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
+		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent
 
 	]

@@ -45,10 +45,10 @@
         <span>{{note.title | slice:0:30}}</span><span *ngIf="note.title.length > 30">...</span></a></span>
       <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="note.updatedTime"></app-display-date-and-time></span>
     </div>
-    <div class="activity-body" *ngIf="note.visibility == 'PUBLIC'">
+    <div class="activity-body mt0" *ngIf="note.visibility == 'PUBLIC'">
       <span class=""><i class="fas fa-user icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
     </div>
-    <div class="activity-body">
+    <div class="activity-body mt0">
       <i class="fa fa-comment icon"></i>
       <span>{{note.content | slice:0:100}}<a *ngIf="note.content.length>100" class="underline-on-hover" (click)="viewNote(note)">
         <span>..View More</span></a></span>

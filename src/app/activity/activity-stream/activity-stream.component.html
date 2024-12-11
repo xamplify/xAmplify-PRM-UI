@@ -32,9 +32,9 @@
     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <app-response-message class="pg8" [customResponse]="customResponse"
       *ngIf="customResponse?.isVisible"></app-response-message>
-    <div class="activity_card mb10" *ngFor="let activity of activityPagination?.pagedItems">
+    <div class="activity_cards mb10" *ngFor="let activity of activityPagination?.pagedItems">
       <!--Email-->
-      <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Email'">
+      <fieldset class="scheduler-borders activity_bgcolor"  *ngIf="activity.type == 'Email'">
         <legend class="scheduler-borders campaign_boxes sent-activity">Email Sent</legend>
       <div>
         <div class="activity-header">
@@ -45,11 +45,11 @@
           <span *ngIf="activity.stage=='OPENED'" class="activity-date"><i
               class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.updatedTime"></app-display-date-and-time></span>
         </div>
-        <div class="activity-body">
+        <div class="activity-body mt0">
           <span><i class="fa fa-comment icon"></i><label
               class="mr3 activity-title">Subject:</label><span>{{activity.name | slice:0:100}}<span *ngIf="activity.name.length>100">...</span></span></span>
         </div>
-        <div class="activity-footer">
+        <div class="activity-footer mt0">
           <span class="activity-title">Status: <span
               [ngClass]="activity.stage=='OPENED'?'view-banner activity-updated-status-btn' : 'view-banner activity-created-status-btn'">{{activity.stage}}</span></span>
           <a (click)="viewEmail(activity.id)" data-toggle="tooltip" data-placement="bottom" title="View details"><i class="fas fa-eye task_view"
@@ -58,7 +58,7 @@
       </div>
       </fieldset>
       <!---Note--->
-      <fieldset class="scheduler-borders"  *ngIf="activity.type == 'Note'">
+      <fieldset class="scheduler-borders activity_bgcolor"  *ngIf="activity.type == 'Note'">
         <legend [ngClass]="activity.activity == 'CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Note {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
       <div>
         <div class="activity-header">
@@ -66,10 +66,10 @@
             <span>{{activity.name | slice:0:30}}</span><span *ngIf="activity.name.length > 30">...</span></a></span>
           <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
-        <div class="activity-body" *ngIf="activity.schedule == 'PUBLIC'">
+        <div class="activity-body mt0" *ngIf="activity.schedule == 'PUBLIC'">
           <span class=""><i class="fas fa-user icon"></i>{{activity.closeDate}}</span>
         </div>
-        <div class="note-activity-body">
+        <div class="activity-body text-baseline mt0 mb5">
           <i class="fa fa-comment icon"></i>
           <span>{{activity.stage | slice:0:100}}<a *ngIf="activity.stage.length>100" class="underline-on-hover" (click)="viewNote(activity.id)">
             <span>..View More</span></a></span>
@@ -89,7 +89,7 @@
       </div>
       </fieldset>
       <!---Campaign--->
-      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Campaign'" >
+      <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Campaign'" >
         <legend class="scheduler-borders campaign_boxes sent-activity">Campaign Launched</legend>
       <div>
         <div class="activity-header">
@@ -97,13 +97,13 @@
             <span>{{activity.name}}</span></a></span>
           <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
-        <div class="activity-body">
+        <div class="activity-body mt0">
           <span><label class="mr3 activity-title">Type:</label> {{activity.stage}}</span>
         </div>
       </div>
       </fieldset>
       <!---Lead--->
-      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Lead'">
+      <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Lead'">
         <legend [ngClass]="activity.activity == 'LEAD_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Lead {{activity.activity == 'LEAD_CREATED'?'Created':'Stage Updated'}}</legend>
       <div>
         <div class="activity-header">
@@ -112,13 +112,13 @@
               <span> {{activity.name}}</span></a></span>
           <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
-        <div class="activity-body">
+        <div class="activity-body mt0">
           <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
         </div>
       </div>
       </fieldset>
       <!---Deal--->
-      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Deal'">
+      <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Deal'">
         <legend
           [ngClass]="activity.activity == 'DEAL_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">
           Deal {{activity.activity == 'DEAL_CREATED'?'Created':'Stage Updated'}}</legend>
@@ -130,7 +130,7 @@
             <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time
                 [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
           </div>
-          <div class="activity-body deal-flex-wrap">
+          <div class="activity-body deal-flex-wrap mt0">
             <span *ngIf="activity.schedule != undefined"><label class="activity-title">Amount:
               </label> {{activity.schedule}}</span>
             <span><i class="fa fa-calendar mr3" aria-hidden="true"></i><label class="activity-title">Close Date:</label>
@@ -140,7 +140,7 @@
         </div>
       </fieldset>
       <!--- Task --->
-      <fieldset class="scheduler-borders" *ngIf="activity.type == 'Task'">
+      <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Task'">
         <legend
         [ngClass]="activity.activity == 'CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">
           Task {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
@@ -160,7 +160,7 @@
                 <i *ngIf="activity.schedule == 'Note'" class="fa fa-pencil-square-o fs-10px"></i><i *ngIf="activity.schedule == 'Email'" class="fa fa-envelope-o fs-10px"></i><i *ngIf="activity.schedule == 'Todo'" class="fa fa-list-alt fs-10px"></i>
                 {{activity.schedule == 'Todo' ? 'To Do':activity.schedule}}</span></span>
             </div>
-            <div class="activity-footer">
+            <div class="activity-footer mt0">
               <span class="activity-title">Due Date: <span class="activity-date"><i
                     class="fa fa-calendar"></i><app-display-date-and-time
                     [dateAndTimeUTCString]="activity.dueDateString"></app-display-date-and-time></span></span>

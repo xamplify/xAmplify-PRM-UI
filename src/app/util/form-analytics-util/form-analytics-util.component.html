@@ -90,12 +90,17 @@
 										</td>
 									</ng-container>
 									<td *ngIf="columns?.length>3">
-										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)"
-											data-toggle="tooltip" title="View More Columns" *ngIf="columns.length>4">
-											<i class="fa"
-												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"
-												aria-hidden="true"></i>
-										</a>
+										<div class="d-flex">
+											<a class="close-circle" (click)="addLeadsForm(formDataRow)" data-toggle="tooltip" title="Add Lead"
+												*ngIf="isEmailFieldExists && authenticationService?.module?.isContact">
+												<i class="fa fa-address-card" aria-hidden="true"></i>
+											</a>
+											<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
+												title="View More Columns" *ngIf="columns.length>4">
+												<i class="fa" [ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"
+													aria-hidden="true"></i>
+											</a>
+										</div>
 									</td>
 									<td *ngIf="isEventCheckIn">
 										<switch [status]="formDataRow.checkedInForEvent"
@@ -166,12 +171,17 @@
 										</td>
 									</ng-container>
 									<td *ngIf="columns?.length>2">
-										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)"
-											data-toggle="tooltip" title="View More Columns" *ngIf="columns.length>4">
-											<i class="fa"
-												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"
-												aria-hidden="true"></i>
+										<div class="d-flex">
+											<a class="close-circle" (click)="addLeadsForm(formDataRow)" data-toggle="tooltip" title="Add Lead"
+											*ngIf="isEmailFieldExists && authenticationService?.module?.isContact">
+											<i class="fa fa-address-card" aria-hidden="true"></i>
 										</a>
+										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
+										title="View More Columns" *ngIf="columns.length>4">
+										<i class="fa" [ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"
+											aria-hidden="true"></i>
+									</a>
+								</div>
 									</td>
 									<td *ngIf="isEventCheckIn">
 										<switch [status]="formDataRow.checkedInForEvent"
@@ -242,4 +252,21 @@
 		</div>
 	</div>
 	<app-scroll-top></app-scroll-top>
+</div>
+<div class="modal fade right" id="addLeadsPopup"  role="dialog" data-backdrop="static"
+	data-keyboard="false">
+	<div class="modal-dialog modal-css" role="document" style="width: 75% !important;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" (click)="hideModal()">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</button>
+				<h4 class="modal-title text-center" translate>Add Lead</h4>
+			</div>
+			<div class="modal-body">
+			  <app-custom-add-lead *ngIf="showLeadForm" [actionType]="'add'" (notifyFormAnalytics)="showSubmitLeadMessage($event)"
+	  		[formSubmitId]="selectedFormSubmitId" [isFromFormAnalytics] ="true"></app-custom-add-lead>
+			</div>
+		</div>
+	</div>
 </div>
