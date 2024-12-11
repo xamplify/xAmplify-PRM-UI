@@ -275,10 +275,9 @@
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
   <div class="row" style="padding-right: 12px;padding-bottom: 10px;">
     <ng-container *ngIf="reloadWithFilter && !loadAllCharts && selectedTabIndex == 0">
-      <app-active-partners-table [applyFilter]="applyFilter"
-        (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
-        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
-        (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"
+      <app-active-partners-table [applyFilter]="applyFilter" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [fromDateFilter]="partnerfromDateFilter"
+        [toDateFilter]="partnertoDateFilter" (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"
         (notifySelectedDateFilters)="getDateFilterOptions($event)"></app-active-partners-table>
     </ng-container>
   </div>

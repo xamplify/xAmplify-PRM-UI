@@ -40,8 +40,8 @@ export class ActivePartnersTableComponent implements OnInit {
   filterActiveBg: string;
   filterApplied: boolean = false;
   dateFilterText = "Select Date Filter";
-  fromDateFilter: any = "";
-  toDateFilter: any = "";
+  @Input() fromDateFilter: any = "";
+  @Input() toDateFilter: any = "";
 
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
@@ -132,15 +132,16 @@ export class ActivePartnersTableComponent implements OnInit {
   }
 
   clickFilter() {
-    if(!this.filterApplied) {
+    if (!this.filterApplied) {
       this.showFilterOption = !this.showFilterOption;
-    } else {      
+    } else {
       if (this.showFilterOption) {
         this.showFilterOption = false;
       } else {
         this.showFilterDropDown = true;
-      }     
+      }
     }
+    this.customResponse.isVisible = false;
   }
 
   viewDropDownFilter(){
@@ -174,11 +175,16 @@ export class ActivePartnersTableComponent implements OnInit {
     this.filterActiveBg = 'filterActiveBg';
   }
 
-  setFilterColor(){
-    if(this.selectedCompanyIds != null && this.selectedCompanyIds.length >0 && this.selectedCompanyIds != undefined){
+  setFilterColor() {
+    let isValidSelectedCompanies = this.selectedCompanyIds != undefined && this.selectedCompanyIds.length > 0;
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter.length > 0;
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter.length > 0;
+    if (isValidSelectedCompanies && isValidFromDateFilter && isValidToDateFilter) {
       this.filterActiveBg = 'filterActiveBg';
-      this.isCollapsed = false;
       this.filterApplied = true;
+    }
+    if (isValidSelectedCompanies) {
+      this.isCollapsed = false;
     }
   }
   
