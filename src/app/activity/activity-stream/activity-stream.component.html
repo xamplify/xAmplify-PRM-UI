@@ -79,9 +79,9 @@
             [ngClass]="activity.schedule=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i
               class=" fa fa-lock" *ngIf="activity.schedule=='PRIVATE'"></i> {{activity.schedule}}</span>
           <span>
-            <span><a class="mr5" (click)="showEditNoteTab(activity.id)" data-toggle="tooltip" data-placement="bottom"
+            <span><a *ngIf="activity.editEnabled" class="mr5" (click)="showEditNoteTab(activity.id)" data-toggle="tooltip" data-placement="bottom"
                 title="Edit note"><i class="fas fa-pencil-alt task_edit" aria-hidden="true"></i></a>
-              <a (click)="showDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom"
+              <a *ngIf="activity.deleteEnabled" (click)="showDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom"
                 title="Delete note"><i class="fas fa-trash task_delete" aria-hidden="true"></i></a>
             </span>
           </span>
@@ -149,7 +149,7 @@
               <span><label class="mr5 activity-title">Title:</label><a class="underline-on-hover" (click)="viewTask(activity.id)" data-toggle="tooltip" data-placement="top" title="{{activity.name}}"><span>{{activity.name | slice:0:35}}</span><span *ngIf="activity.name.length > 35">...</span></a></span>
               <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity.createdTime"></app-display-date-and-time></span>
             </div>
-            <div class="activity-body mt0">
+            <div class="activity-body task_body_jc mt0">
               <span class="activity-title">Status: <span
                   class="view-banner activity-updated-status-btn">{{activity.closeDate}}</span></span>
               <span><i *ngIf="activity?.stage == 'Medium'" class="fas fa-equals icon medium_priority"></i><i
@@ -164,9 +164,9 @@
               <span class="activity-title">Due Date: <span class="activity-date"><i
                     class="fa fa-calendar"></i><app-display-date-and-time
                     [dateAndTimeUTCString]="activity.dueDateString"></app-display-date-and-time></span></span>
-              <span><a class="mr5" (click)="editTask(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Edit task"><i class="fas fa-pencil-alt task_edit"
+              <span><a *ngIf="activity.editEnabled" class="mr5" (click)="editTask(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Edit task"><i class="fas fa-pencil-alt task_edit"
                     aria-hidden="true"></i></a>
-                <a (click)="showDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Delete task"><i class="fas fa-trash task_delete"
+                <a *ngIf="activity.deleteEnabled" (click)="showDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Delete task"><i class="fas fa-trash task_delete"
                     aria-hidden="true"></i></a>
               </span>
             </div>
@@ -188,7 +188,7 @@
   (notifyClose)="closeModalPopup()" [contactName]="contactName" [contactEmailId]="contactEmailId"></app-preview-email-activity>
 
 <app-add-note-modal-popup *ngIf="showNoteModalPopup" [noteId]="noteId" [isReloadTab]="reloadTab" [actionType]="actionType"
-  (notifyClose)="closeNoteModalPopup()" (notifySuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>
+  (notifyClose)="closeNoteModalPopup()" (notifyUpdateSuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>
 
 <app-add-task-modal-popup *ngIf="showTaskModalPopup" [userId]="contactId" [taskActivityId]="taskActivityId"
   [actionType]="actionType" (notifyClose)="closeTaskModalPopup()"
