@@ -1,7 +1,7 @@
 <div style="display: flex;margin-right: 5px;">
   <div class="universal-dropdown-container">
     <input type="checkbox" id="dropdown-toggle" class="universal-dropdown-checkbox"
-      (change)="updateDropdownVisibility()" [checked]="isDropdownOpen" />
+      (change)="updateDropdownVisibility()" [checked]="isDropdownVisible" />
     <label for="dropdown-toggle" class="universal-dropdown-label">
       {{ refService.universalSearchFilterType ? refService.universalSearchFilterType : 'All' }}
       <span [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'"></span>

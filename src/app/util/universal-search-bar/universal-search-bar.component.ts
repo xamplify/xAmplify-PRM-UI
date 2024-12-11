@@ -20,7 +20,7 @@ export class UniversalSearchBarComponent implements OnInit {
   isWelcomePageEnabled: boolean = false;
   isWelcomePageUrl: boolean;
   dropdownOptions: { label: string; condition: boolean; index: number }[] = [];
-  constructor(private refService: ReferenceService, public authenticationService: AuthenticationService, public router: Router, public location: Location, private renderer: Renderer2) {
+  constructor(public refService: ReferenceService, public authenticationService: AuthenticationService, public router: Router, public location: Location, private renderer: Renderer2) {
     this.currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
     this.isWelcomePageEnabled = this.currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
     this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
