@@ -3354,4 +3354,11 @@ button.search-box-item-click.only_partner{top: 0.7px !important;}
 button.search-box-item-click.only_content{top: 1.2px !important;}
 button.search-box-item-click.only_design{top: 6.2px !important;}
 button.search-box-item-click.only_mdf{top: 0.8px !important;}
-
+.pos_mar_rgt4{
+  margin-right: 4px !important;
+}
+.neg_mrg_top8{
+  margin-top: -8px !important;
+}
+.bg-color-white{background-color: #fff !important;border: 1px solid #ddd !important;border-radius: 8px !important;}
+.register_bg{background: none !important;}

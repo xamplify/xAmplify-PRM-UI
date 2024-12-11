@@ -433,7 +433,8 @@ tr {
   border: dotted 3px #191b1e !important;
   color: white !important;
 }
-.custom-alert {
+.custom-alert,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white {
   background-color: #2b3c46 !important;
   border-color: #2f4857 !important;
 }
@@ -1156,7 +1157,8 @@ input#copy-link {
   border: 1px solid #191b1e !important;
 }
 .portlet.light,
-.feature-img {
+.feature-img,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white {
   background: #2c2f33 !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
