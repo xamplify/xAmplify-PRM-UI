@@ -984,9 +984,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
     findPendingSignupAndCompanyProfileIncompletePartnersCount() {
-        if(!this.authenticationService.isTeamMember()){
-            this.applyFilter = false;
-        }
         this.PendingSignupAndCompanyProfilePartnersLoader = true;
         this.parterService.findPendingSignupAndCompanyProfilePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
             (data: any) => {
@@ -1081,10 +1078,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = true;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
-        if(!this.authenticationService.isTeamMember()){
-            this.applyFilter = false;
-        }
-
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
         this.incompleteCompanyProfileAndPendingSingupPagination.maxResults = 12;
         this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'pSignUp';
