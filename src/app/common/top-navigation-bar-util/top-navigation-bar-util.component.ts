@@ -128,6 +128,8 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
   isWelcomePageActive:boolean = false;
   helpGuidesUrl:boolean = false;
   searchKey:string = "";//XNFR-574
+  isOnlyUser: boolean = false;
+  
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -182,9 +184,8 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
       /*** XNFR-134***/
       this.userId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.userId;
+      this.isOnlyUser = this.authenticationService.isOnlyUser();
      
-
-
       if (userName != undefined) {
         this.sourceType = this.authenticationService.getSource();
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
@@ -371,6 +372,11 @@ private beforeAdd(tag: any) {
   ngOnInit() {
     try {
       this.checkWelcomePageRequired();
+      /*** XNFR-758 ***/
+      this.refService.universalSearchKey = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchKey); 
+      this.refService.universalSearchFilterType = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchFilterBy);
+      this.refService.isOpenUniversalSearch = false;
+       /*** XNFR-758 ***/
     } catch (error) { this.logger.error('error' + error); }
   }
   getReferVendorOption() {
@@ -1126,6 +1132,10 @@ private beforeAdd(tag: any) {
     this.router.navigate([path]).then(() => {
       // Reload the page (optional, Angular should handle route changes without a full reload)
       this.referenceService.isWelcomePageLoading = true;
+      /*** XNFR-758 ****/
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchKey,'');
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchFilterBy,'All');
+      /*** XNFR-758 ****/
       window.location.reload();
     });
   }
@@ -1185,30 +1195,8 @@ private beforeAdd(tag: any) {
     );
   } 
   /**  XNFR-574 */
-  universalSearchOnKeyPress(keyCode:any) {
-    // this.searchKey = this.searchKey.trim();
-    if (keyCode === 13 && (this.searchKey != '' && this.searchKey.trim().length>0)) { 
-      this.universalSearch();
-    }
+  showUniversalSearch(){
+    this.refService.isOpenUniversalSearch = true;
   }
-  universalSearch() {
-    this.refService.universalSearchKey = this.searchKey.trim();
-    this.saveSearchKeyToLocalStorage(this.refService.universalSearchKey);
-    let universalSearchUrl = RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.universalSearch;
-    this.location.replaceState(universalSearchUrl);
-    this.refService.goToRouter(universalSearchUrl);
-  }
-  isEmptyOrWhitespace(value: string | null | undefined): boolean {
-    return value != '' && value.trim().length>0;
-  }
-  saveSearchKeyToLocalStorage(searchKey: string) {
-    localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey, searchKey);
-  }
-  goToDashBoard() {
-    this.searchKey = "";
-    this.refService.universalSearchKey = "";
-    this.saveSearchKeyToLocalStorage(this.refService.universalSearchKey);
-    this.refService.goToRouter(this.refService.homeRouter);
-  }
-  /** XNFR-574 */
+   /** XNFR-574 */
 }

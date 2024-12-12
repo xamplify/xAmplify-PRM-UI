@@ -23,6 +23,8 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
   teamMemberId: any;
   selectedTrackType: any = "";
   selectedAssetType: any = "";
+  toDateFilter: any;
+  fromDateFilter: any;
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -64,4 +66,9 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
     this.teamMemberId = teamMemberId;
   }
 
+  getDateFilterOptions(event: any) {
+    this.fromDateFilter = event.fromDate;
+    this.toDateFilter = event.toDate;
+  }
+  
 }

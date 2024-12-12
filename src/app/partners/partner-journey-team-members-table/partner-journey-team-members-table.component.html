@@ -12,7 +12,7 @@
           <i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
     </span>
-    <span class="pull-right mt25m mobilesearchdisplay">
+    <span class="pull-right mt25m mobilesearchdisplay mr5">
       <select class="form-control" [(ngModel)]="teamMemberId" [ngModelOptions]="{standalone: true}" placeholder="teamMemberId"
         id="teamMemberId" (ngModelChange)="onChangeTeamMember()">
         <option [value]="0">Select a Member</option>
@@ -20,9 +20,15 @@
         </option>
       </select>
     </span>
+    <button class="pull-right mt25m btn btn-xs l-g-view" data-placement="bottom"
+      [disabled]="pagination.totalRecords==0" (click)="downloadTeamMembersReport()">
+      <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+        data-original-title="Export to Excel"></i>
+    </button>
   </div>
   <div class="panel-body">
-    <div class="scroll table-responsive">
+    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
+    <div class="scroll table-responsive" *ngIf="!httpRequestLoader.isLoading">
       <table class="table">
         <thead>
           <tr>

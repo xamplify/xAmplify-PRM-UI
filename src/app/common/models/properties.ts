@@ -173,7 +173,7 @@ export class Properties {
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
 	saml2SSOsettings = "SAML 2.0 SSO Settings";
-	leadFieldSettings = "Lead Fields Settings";
+	leadFieldSettings = "Custom Fields";
 	oauthSSOConfiguration = "oAuth SSO Settings";
 
 
@@ -196,14 +196,14 @@ export class Properties {
 	notifyPartners = "Onboarding Configurations";
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
-	vendorJourney = "Vendor Journey";
-	landingPages = "Vendor Pages";
+	vendorJourney = "Vendor Showcase";
+	landingPages = "Vendor Shared Pages";
 	masterLandingPages = "Partner Landscape"
 	masterLandingPageCategories = "Landscape Categories"
 	welcomePages = "Welcome Pages"
 	/*****XNFR-712******/
-	partnerJourneyPages = "Partner Journey Pages";
-	vendorPartnerJourneyPages = "Partner Pages"
+	partnerJourneyPages = "Partner Showcase";
+	vendorPartnerJourneyPages = "Partner Shared Pages"
 	vendorMarketplacePages = "Vendor Landscape"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
@@ -478,6 +478,11 @@ export class Properties {
 	SIGNUP_PROCESS_NOT_COMPLETED = "The sign-up process is not yet complete.";
 	COMPANY_PROFILE_NOT_COMPLETED = "The company profile has not been completed yet.";
 	SIGNUP_PROCESS_COMPLETED = "The sign-up process is completed.";
-	COMPANY_PROFILE_COMPLETED = "The company profile has been completed.";		
+	COMPANY_PROFILE_COMPLETED = "The company profile has been completed.";	
+	
+	/***** XNFR-763 *****/
+	COMPANY_NAME_INFO = "Represents the name of the company, displayed on the dashboard and used as a merge tag across the platform."
+	COMPANY_PROFILE_NAME_INFO ="Non-editable alphanumeric field, also used as a vanity URL to ensure uniqueness and validate duplicates."
+	COMPANY_PROFILE_NAME_PARTNER_INFO = "Non-editable alphanumeric field to ensure unique partner profiles and prevent duplicates."
 }
 

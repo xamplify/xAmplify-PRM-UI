@@ -97,10 +97,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isSingUpPendingDiv = false;
     incompleteCompanyProfileAndPendingSingupPagination: Pagination = new Pagination();
     companyProfileIncompletePartnersList :any= [];
+
     selectedEmailTemplateId: any;
     sendTestEmailIconClicked: boolean;
     vanityTemplates : boolean = false;
     selectedEmailId: String;
+  partnerfromDateFilter: any = "";
+    partnertoDateFilter: any = "";
+    totalPartnersCountLoader: boolean;
+    totalPartnersCount: any;
+
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -758,6 +764,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.findInActivePartnersCount();
                 this.findApprovePartnersCount();
                 this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+                this.findTotalPartnersCount();
             if(tabIndex != undefined){
                 if(tabIndex == 1){
                 this.goToInActivePartnersDiv()
@@ -870,6 +877,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.approvePartnersCountLoader = true;
         this.throughPartnerCampaignsCountLoader = true;
         this.PendingSignupAndCompanyProfilePartnersLoader = true;
+        this.totalPartnersCountLoader = true;
         this.selectedPartnerCompanyIds = [];
         if(this.selectedTabIndex==0){
             this.loadAllCharts = true;
@@ -885,6 +893,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         self.findInActivePartnersCount();
         self.findApprovePartnersCount();
         self.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+        self.findTotalPartnersCount();
         if(self.selectedTabIndex==0){
             self.reloadWithFilter = true;
             self.getPartnersRedistributedCampaignsData();
@@ -983,9 +992,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
     findPendingSignupAndCompanyProfileIncompletePartnersCount() {
-        if(!this.authenticationService.isTeamMember()){
-            this.applyFilter = false;
-        }
         this.PendingSignupAndCompanyProfilePartnersLoader = true;
         this.parterService.findPendingSignupAndCompanyProfilePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
             (data: any) => {
@@ -1080,10 +1086,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = true;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
-        if(!this.authenticationService.isTeamMember()){
-            this.applyFilter = false;
-        }
-
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
         this.incompleteCompanyProfileAndPendingSingupPagination.maxResults = 12;
         this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'pSignUp';
@@ -1164,6 +1166,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
+
     
     openSendTestEmailModalPopup(item : any){
         this.selectedItem = item;
@@ -1212,4 +1215,24 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.sendmail(event);
         }
       }
+
+    getDateFilterOptions(event: any) {
+        this.partnerfromDateFilter = event.fromDate;
+        this.partnertoDateFilter = event.toDate;
+    }
+
+
+    findTotalPartnersCount() {
+        this.totalPartnersCountLoader = true;
+        this.parterService.findTotalPartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
+            (result: any) => {
+                this.totalPartnersCount = result.data.totalPartnersCount;
+                this.totalPartnersCountLoader = false;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.totalPartnersCountLoader = false;
+            });
+    }
+
 }

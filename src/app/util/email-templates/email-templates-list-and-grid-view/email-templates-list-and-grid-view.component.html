@@ -5,7 +5,7 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0">
+        <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0 light_bg_removal remove_space">
             <!--List View / Grid View-->
             <div *ngIf="modulesDisplayType?.isListView || modulesDisplayType?.isGridView">
                 <ng-template *ngIf="!httpRequestLoader?.isLoading" [ngTemplateOutlet]="manageEmailTemplateHeaderOptions"></ng-template>
@@ -326,7 +326,7 @@
                                     <button class="glyphicon glyphicon-remove search-box-item-clear"
                                         *ngIf="sortOption.searchKey"
                                         (click)="sortOption.searchKey='';searchEmailTemplates();"></button>
-                                    <button type="submit" class="search-box-item-click"
+                                    <button type="submit" class="search-box-item-click only_content"
                                         (click)="searchEmailTemplates()">
                                         <i class="fa fa-search" aria-hidden="true"></i>
                                     </button>

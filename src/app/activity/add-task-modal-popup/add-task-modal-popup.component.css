@@ -1,0 +1,32 @@
+.left_aligned_input_field {
+    padding: 0px 4px 0px 0px;
+}
+.right_aligned_input_field {
+    padding: 0px 0px 0px 2px;
+}
+.option_user_icon {
+    font-family: 'FontAwesome', 'Gantari';
+}
+.hide_remainder_date {
+    display: none;
+}
+.custom-file-label {
+    color: white !important;
+}
+select option[data-class="info"] {
+    color: rgb(37, 160, 221);
+    font-weight: 600;
+  }
+  
+select option[data-class="warning"] {
+    color: orange;
+    font-weight: 600;
+  }
+  
+select option[data-class="red"] {
+    color: red;
+    font-weight: 600;
+  }
+  /* select {
+    font-family: 'FontAwesome', 'sans-serif';
+  } */

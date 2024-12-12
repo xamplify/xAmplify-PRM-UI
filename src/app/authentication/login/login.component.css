@@ -206,5 +206,9 @@ a.forget-password:hover {
 	justify-content: center;
     align-items: center;
     margin: auto;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
+}
+.text_center{
+display: flex;
+justify-content: center;
 }

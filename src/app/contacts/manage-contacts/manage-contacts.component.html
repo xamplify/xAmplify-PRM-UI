@@ -276,7 +276,7 @@
                      </div>
                   </div>
                   <!-- End tile here-->
-                  <div [ngClass]="{'page-bar remove_cardBgcolor p10': showListOfContactList}">
+                  <div [ngClass]="{'page-bar remove_cardBgcolor p0 light_bg_removal': showListOfContactList}">
                      <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                         <div class="tab-pane active">
                            <div class="row mr0 ml0">
@@ -296,9 +296,9 @@
                                     (click)="zohoAuthenticationThroughExpiredAccessTokenMessage('zoho')"
                                     class="badge badge-primary"> ReLogin</a></h4>
                            </span>
-                           <div [className]="checkingContactTypeName=='Contact' ? 'row':'m0' "
+                           <div [className]="checkingContactTypeName=='Contact' ? 'row mb10':'m0' "
                               *ngIf="showListOfContactList">
-                              <div [className]="checkingContactTypeName=='Contact' ? 'colxs-12 col-sm-6 col-md-6':''">
+                              <div [className]="checkingContactTypeName=='Contact' ? 'col-xs-12 col-sm-6 col-md-6':''">
                                  <ul *ngIf="checkingContactTypeName=='Contact'" class="mix-filter">
                                     <li class="filter" (click)="filterContacts('MY-CONTACTS',0)"
                                        [class.contact-filter-selected]="0 == selectedFilterIndex" translate>My Contacts
@@ -316,7 +316,7 @@
                                  <ul class="page-breadcrumb" style="padding-left: 0px;"
                                     *ngIf="checkingContactTypeName!='Contact'">
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
-                                       <span class="fs-16" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span translate>Groups</span>
+                                       <span class="fs-16" id="col-black" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span  class="fs-16" id="col-black" translate>Groups</span>
                                     </li>
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
                                        Your {{checkingContactTypeName | translate}} Lists
@@ -950,11 +950,11 @@
                                        </a>
                                        <a class="Iconhover custom-grid-icon"
                                           [class.disabled]="!contactList.emailValidationInd || (contactList.noOfContacts == 0 && contactList.formList)"
-                                          *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
-                     (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
+                                          *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm ||authenticationService.module.isPrmAndPartner || (hasAllAccess && loggedInUserId == contactList.uploadedUserId) || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
+                                                                           (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
                                           (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.isPartnerUserList,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList)"
-                                          data-toggle="tooltip" data-placement="top"
-                                          title="{{actionsDescription.contact_list_edit}}" data-rel="fancybox-button">
+                                          data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"
+                                          data-rel="fancybox-button">
                                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                           <div class="clickicons"></div>
                                        </a>
@@ -1005,7 +1005,7 @@
                                        <ng-container
                                           *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList && !contactList?.teamMemberPartnerList">
                                           <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
-                                             *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
+                                             *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmAndPartner  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
                                                 || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                                    && !contactList.defaultPartnerList &&  !contactList.isDefaultContactList  && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList && !contactList.companyList)"
                                              (click)="showAlert(contactList.id)" data-toggle="tooltip"
@@ -1097,8 +1097,8 @@
       </div>
       <div class="row">
          <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="page-bar remove_cardBgcolor neg_mrg_top14">
-               <div class="tab-content table-padding">
+            <div class="page-bar remove_cardBgcolor neg_mrg_top14 light_bg_removal">
+               <div class="tab-content table-padding p0">
                   <!-- BEGIN PAGE HEADER-->
                   <div class="" style="">
                      <div style="float:left;padding: 10px 0px 0px 0px">
@@ -1170,7 +1170,7 @@
                         </div>
                         <app-list-loader *ngIf="contactsByType?.isLoading"></app-list-loader>
                         <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
-                           <div class="portlet-title pb_8 pb_4" style="border:none; margin-top: 10px;">
+                           <div class="portlet-title pb_8 pb_4 remove_border mt5" style="border:none;">
                               <div class="caption pd_lft4">
                                  <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
                                  <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'

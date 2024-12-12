@@ -1395,7 +1395,7 @@ getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:b
   let URL_PREFIX = "";
   let vendorOrPartnerJourneyVar ="";
   let partnerOrVendorMarketplace = "";
-  let vanityCompanyProfile = "&vanityCompanyProfile="+this.getSubDomain();
+  let vanityCompanyProfile = "&vanityCompanyProfileName="+this.getSubDomain();
   if(isPartnerLandingPagePreview || vendorJourney || isPartnerJourneyPage){
     URL_PREFIX = this.REST_URL+"landing-page/partner/";
     vendorOrPartnerJourneyVar = vendorJourney? "&vendorJourney=true":isPartnerJourneyPage? "&partnerJourneyPage=true":"";
@@ -1485,16 +1485,33 @@ vanityWelcomePageRequired(userId) {
 
   publishContentToPartnerCompanyByModuleName(userListId:number,partnerUserId:number,inputId:number,moduleName:string){
     let userId = this.getUserId();
-    let urlPrefix = "";
-    if(moduleName==this.properties.dashboardButtons){
-      urlPrefix = "dashboardButtons";
-    }else if(moduleName=="dam"){
-      urlPrefix = "dam";
-    }else if(moduleName=="lms"){
-      urlPrefix = "lms";
-    }
+    let urlPrefix = this.getUrlPrefix(moduleName);
     let url = this.REST_URL + urlPrefix+"/publish/userListId/"+userListId+"/partnerUserId/"+partnerUserId+"/id/"+inputId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
     return this.callGetMethod(url);
   }
 
+  addPartnerGroupByModuleName(userListId:number,partnershipId:number,inputId:number,moduleName:string){
+    let userId = this.getUserId();
+    let urlPrefix = this.getUrlPrefix(moduleName);
+    let url = this.REST_URL + urlPrefix+"/addPartnerGroup/userListId/"+userListId+"/partnershipId/"+partnershipId+"/id/"+inputId+"/loggedInUserId/"+userId+"?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  private getUrlPrefix(moduleName: string) {
+    let urlPrefix = "";
+    if (moduleName == this.properties.dashboardButtons) {
+      urlPrefix = "dashboardButtons";
+    } else if (moduleName == "dam") {
+      urlPrefix = "dam";
+    } else if (moduleName == "lms") {
+      urlPrefix = "lms";
+    }
+    return urlPrefix;
+  }
+  
+  /**** XNFR-599 ****/
+  shareSelectedDashboardButtons(requestDto: any) {
+    let url = this.REST_URL + "dashboardButtons/sharedashboardbuttons?access_token=" + this.access_token;
+    return this.callPutMethod(url, requestDto);
+  }
 }

@@ -36,6 +36,7 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   isLmsModule = false;
   isPlayBooksModule = false;
   isDashboardButtonsModule = false;
+  partnershipIds:Array<Number> = new Array<Number>();
   constructor(public referenceService:ReferenceService,public contactService:ContactService,public properties:Properties,
     public pagerService:PagerService,private authenticationService:AuthenticationService,private router:Router) { }
 
@@ -44,9 +45,11 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
     if(this.userListId!=undefined && this.userListId>0){
       let isValidInputId = this.inputId!=undefined && this.inputId>0;
       this.isAssetsModule = this.moduleName=="dam";
-      this.isLmsModule = this.moduleName=="lms";
+      let currentUrl = this.referenceService.getCurrentRouteUrl();
+      this.isLmsModule = this.moduleName=="lms" && currentUrl.includes("tracks");
+      this.isPlayBooksModule = this.moduleName=="lms" && currentUrl.includes("playbook");
       this.isDashboardButtonsModule = this.moduleName== this.properties.dashboardButtons;
-      let isModuleMatched = this.isAssetsModule || this.isLmsModule  || this.isDashboardButtonsModule;
+      let isModuleMatched = this.isAssetsModule || this.isLmsModule || this.isPlayBooksModule  || this.isDashboardButtonsModule;
       if(isModuleMatched && isValidInputId){
         this.findPublishedPartnerIdsByUserListIdAndId();
       } else{
@@ -66,6 +69,10 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
     .subscribe(
       response=>{
         this.publishedPartnerIds = response.data;
+        let map = response.map;
+        if(map!=undefined && map['partnershipIds']!=undefined){
+          this.partnershipIds = map['partnershipIds'];
+        }
         this.showTickMark = true;
       },error=>{
         this.findUsersByUserListId(this.pagination);
@@ -145,6 +152,31 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
       isPublishingCompleted = false;
     },()=>{
       if(isPublishingCompleted){
+        this.findPublishedPartnerIdsByUserListIdAndId();
+      }
+    });
+ }
+
+ addGroup(user:any){
+  let isAddingGroupCompleted = false;
+  this.referenceService.showSweetAlertProcessingLoader("Addging group is in progress");
+  this.authenticationService.addPartnerGroupByModuleName(user.userListId,user.partnershipId,this.inputId,this.moduleName).
+  subscribe(
+    response=>{
+      let statusCode = response.statusCode;
+      let message = response.message;
+      if(statusCode==200){
+        this.referenceService.showSweetAlertSuccessMessage(message);
+        isAddingGroupCompleted = true;
+      }else{
+        this.referenceService.showSweetAlertErrorMessage(message);
+        isAddingGroupCompleted = false;
+      }
+    },error=>{
+      this.referenceService.showSweetAlertServerErrorMessage();
+      isAddingGroupCompleted = false;
+    },()=>{
+      if(isAddingGroupCompleted){
         this.findPublishedPartnerIdsByUserListIdAndId();
       }
     });

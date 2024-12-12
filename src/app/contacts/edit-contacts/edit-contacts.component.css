@@ -185,10 +185,10 @@ a.disabled {
 .ellipsis {
   width: auto !important;
 }
-.row {
+/* .row {
   margin-right: -10px;
   margin-left: -10px;
-}
+} */
 .pr2 {
   padding-right: 2px;
 }

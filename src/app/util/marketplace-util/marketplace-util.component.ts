@@ -83,9 +83,9 @@ export class MarketplaceUtilComponent implements OnInit {
     );
   }
 
-  navigateToParent(event: Event, openInNewTab: boolean): void {
+  navigateToParent(event: any, openInNewTab: boolean): void {
     event.preventDefault();
-    const newUrl = (event.target as HTMLAnchorElement).href;
+    const newUrl = event.currentTarget.href;
 
     if (openInNewTab) {
       const newTab = window.open(newUrl, '_blank');
@@ -96,9 +96,12 @@ export class MarketplaceUtilComponent implements OnInit {
 
   setParentIframeHeight() {
     const componentHeight = this.elementRef.nativeElement.offsetHeight;
-    (window.parent as any).$('#frame-full-height').height(componentHeight +20);
+    if(this.categories != null && this.categories.length >0){
+      (window.parent as any).$('#frame-full-height').height(componentHeight +20);
+    }else{
+      (window.parent as any).$('#frame-full-height').height(componentHeight +5);
+
+    }
   }
-
-
 
 }

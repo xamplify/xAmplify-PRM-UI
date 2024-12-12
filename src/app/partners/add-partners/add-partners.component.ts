@@ -308,6 +308,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 	activeCrmType: any;
+	dashboardButtonsAcess: boolean;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -865,7 +866,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						});
 						this.newPartnerUser.length = 0;
 						this.allselectedUsers.length = 0;
-						if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+						if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
 							this.pagination.partnerTeamMemberGroupFilter = true;
 						}
 						this.loadPartnerList(this.pagination);
@@ -2414,7 +2415,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					try {
 						this.downloadAssociatedPagination.userListId = this.partnerListId;
 						this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
-						if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+						if (this.isPartner && this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
 							this.referenceService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination, this.selectedFilterIndex);
 						}
 						this.downloadAssociatedPagination.searchKey = this.searchKey;
@@ -2640,7 +2641,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
-			if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+			if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
 			}
 			this.defaultPartnerList(this.loggedInUserId);
@@ -2701,7 +2702,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
-		this.getActiveCrmType();
+		this.getActiveCrmType();                                                    
 	}
 
 
@@ -4049,7 +4050,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	getSelectedIndex(index: number) {
 		this.isLoadingList = true;
 		this.selectedFilterIndex = index;
-		this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
+		this.pagination = this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
 		this.defaultPartnerList(this.loggedInUserId);
 	}
 

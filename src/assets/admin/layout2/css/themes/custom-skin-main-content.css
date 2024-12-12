@@ -175,7 +175,8 @@ ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
 .mix-filter li.contact-filter-selected,.mix-filter li.vanity-template-selected {
-  background-color: var(--page-content) !important;
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
 }
 
 .re-distributed-high-level,
@@ -190,7 +191,7 @@ ul.alt-row-style1 li:hover,
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
 .filter-button-color {
-  background-color: var(--page-content) !important;
+  background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
 }
@@ -250,7 +251,7 @@ fieldset,
 .table-bordered > thead > tr > th {
   border: 1px solid var(--border-color) !important ;
 }
-.table thead > tr > th,
+/* .table thead > tr > th, */
 .ng2-tag-input,
 .tborders > tbody > tr > td {
   border-bottom: 1px solid var(--border-color) !important;
@@ -260,7 +261,7 @@ fieldset,
 .table > tfoot > tr > td,
 .table > tfoot > tr > th,
 .table > thead > tr > td,
-.table > thead > tr > th,
+/* .table > thead > tr > th, */
 .modal-footer,
 .list__item .item__actions,
 .folder-modal-footer,
@@ -278,7 +279,7 @@ fieldset,
   color: var(---text-color) !important;
 }
 .tgrid > thead {
-  background-color: var(--page-content) !important;
+  background-color: var(--div-bg-color) !important;
 }
 
 /* 04-07-2023 Templates privew background */
@@ -914,14 +915,15 @@ textarea:focus {
 }
 .mix-filter li {
   color: var(---text-color) !important;
-  background-color: var(--div-bg-color);
+  background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
 }
 .mix-filter li:hover,
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
 .mix-filter li.emailtemplate-selected,.mix-filter-li-selected {
-  background: var(--page-content) !important;
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
 }
 .filter-box-selected {
   background-color: var(--page-content) !important;
@@ -2284,7 +2286,7 @@ button.btn.Btn-Gray.btn-hvr-text.neg_mrg_top4 {
   background-color: var(--page-content) !important;
   border-radius: 3px!important;
 }
-.lead-label{
+.lead-label,.folder_count{
   color: var(---text-color) !important;
 }
 legend.scheduler-borders{
@@ -2344,7 +2346,7 @@ color: var(--icon-color) !important;
 .edit_contact {
   border-bottom: 1.4px var(--border-color) dashed !important;
 }
-.lead_details h3 {
+.lead_details h3,.deals_card {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
@@ -2367,7 +2369,7 @@ color: var(--icon-color) !important;
   color: var(--icon-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.activity_card {
+.activity_card,.activity_bgcolor,.view_emailcard,.email_content{
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }
@@ -2395,3 +2397,47 @@ text.highcharts-axis-title,g.highcharts-axis-labels.highcharts-yaxis-labels text
 ,g.highcharts-axis-labels.highcharts-coloraxis-labels text{
   fill: var(---text-color) !important;
 }
+table tr#uploaded-csv-tr.alert-success{
+  background-color: #dff0d8 !important;
+}
+table tr#uploaded-csv-tr.alert-danger{
+  background-color: #f2dede !important;
+  border-color: #ebccd1 !important;
+}
+.tgrid>tbody>tr#uploaded-csv-tr>td {
+  color: unset !important;
+}
+/* .tgrid>tbody>tr#uploaded-csv-tr>td:hover {
+color: #fff !important;
+} */
+table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-danger:hover{
+background-color: #22313a !important;
+}
+/*app-searchable-dropdown */
+.e-ddl.e-popup {
+  background-color:var(--page-content)!important;
+}
+/* Sudha Sri(27-11-2024) */
+.portlet.light.remove_cardBgcolor.padding_0.light_bg_removal,
+.page-bar.remove_cardBgcolor.p10.light_bg_removal,
+.page-bar.remove_cardBgcolor.neg_mrg_top14.light_bg_removal,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal,
+.page-bar.camp_card_removal.light_bg_removal,
+.portlet.light.remove_cardBgcolor.light_bg_removal,
+.page-bar.m10.bg-none.light_bg_removal,.page-bar.light_bg_removal{background: none !important; border:none !important;}
+.portlet-title.pb_8.pb_4.b-b_none, .portlet-title.pt0, .portlet-title.remove_border{border-bottom:none !important;}
+tbody{background: transparent;}
+button.search-box-item-click.only_partner{top: 0.7px !important;}
+button.search-box-item-click.only_content{top: 1.2px !important;}
+button.search-box-item-click.only_design{top: 6.2px !important;}
+button.search-box-item-click.only_mdf{top: 0.8px !important;}
+.border_btn{
+  border-left:1px solid var(--border-color) !important;
+}
+.only_custom_mar_rgt4{margin-right: 4px !important;}
+.only_custom_mrg_top8{margin-top: -8px !important;}
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.register_bg{background: none !important;}

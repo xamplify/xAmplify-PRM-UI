@@ -132,6 +132,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
             this.setTrackContentFinishedValue();
           }
           this.trackViewLoader = false;
+        } else if (result.statusCode == 403) {
+          this.referenceService.goToAccessDeniedPage();
+          this.trackViewLoader = false;
         } else {
           this.router.navigate(['/home/error/', 403]);
           this.trackViewLoader = false;

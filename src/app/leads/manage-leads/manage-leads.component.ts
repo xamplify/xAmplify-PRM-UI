@@ -238,7 +238,11 @@ triggerUniversalSearch(){
               () => { }
             );
           } else {
+            if(this.referenceService.universalSearchVendorOrPartnerView === 'Partner'){
+              this.showPartner()
+            } else {
             this.showVendor();
+            }
           }
         } else {
           this.showPartner();
@@ -261,12 +265,14 @@ triggerUniversalSearch(){
   ngOnDestroy() {
     this.referenceService.isCreated = false; 
     this.referenceService.universalId = 0; //XNFR-574
+    this.referenceService.universalSearchVendorOrPartnerView = "";
   }
 
   showVendor() {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      //this.referenceService.universalSearchVendorOrPartnerView = 'Vendor';//XNFR-574
       this.getActiveCRMDetails();
       this.showLeads();
       if (this.prm) {

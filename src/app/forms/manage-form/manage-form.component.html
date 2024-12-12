@@ -43,7 +43,7 @@
     <div class="row" *ngIf="statusCode==200">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="col-md-12" *ngIf="!detailedResponse">
-            <div class="portlet light remove_cardBgcolor padding_0 clearfix">
+            <div class="portlet light remove_cardBgcolor padding_0 clearfix light_bg_removal remove_space">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject"
                         (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
@@ -163,7 +163,7 @@
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive pd_top10">
-                            <table class='table tgrid table-hover table-sm' id="manage-form-list-table"
+                            <table class='table tgrid table-hover table-sm mt10' id="manage-form-list-table"
                                 *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
                                 <thead>
                                     <tr>
@@ -508,7 +508,9 @@
         </div>
     </div>
     <app-scroll-top></app-scroll-top>
-    <app-preview-popup #previewPopUpComponent [isVendorJourney]="isVendorJourney" [isMasterLandingPage]="isMasterLandingPage" [isWelcomePage]="isWelcomePage"></app-preview-popup>
+    <app-preview-popup #previewPopUpComponent [isVendorJourney]="isVendorJourney"
+        [isMasterLandingPage]="isMasterLandingPage" [isWelcomePage]="isWelcomePage"
+        [isPartnerJourneyPages]="isPartnerJourneyPages"></app-preview-popup>
 
     <div class="col-xs-12 p5" *ngIf="statusCode==403">
         <div class="alert alert-danger">

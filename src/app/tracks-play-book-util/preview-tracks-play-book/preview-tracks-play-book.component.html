@@ -306,7 +306,7 @@
                     <!-- XNFR-745 -->
                     <section *ngIf="modulesDisplayType.isFolderListView && !trackViewLoader">
                         <div class="table-responsive" style="display: inline;">
-                            <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                            <table class='table tgrid table-hover table-sm border_collapse' id="manage-assets-table"
                                 *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
                                 <tbody class="pointer">
                                     <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
@@ -323,7 +323,7 @@
                                                                 <span data-toggle="tooltip" data-placement="top" aria-hidden="true"
                                                                     title="{{content.categoryName.length > 36 ? content.categoryName : ''}}">{{content.categoryName.length > 36 ?
                                                                     content.categoryName.substring(0,33)+'...' : content.categoryName}} </span>
-                                                                <span style="padding-right: 8px; float: right; font-size: 13px; color: #8b8989;">
+                                                                <span  class="folder_count">
                                                                     Total: {{content.count}}
                                                                 </span>
                                                             </a>
@@ -332,7 +332,7 @@
                                                     <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="leadDetails">
                                                         <div class="br-unset pt0 pb0">
                                                             <div class="card-bgcolors h-260 pl0 pr0">
-                                                                <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                                                                <table class='table tgrid table-hover table-sm border_collapse' id="manage-assets-table"
                                                                     aria-describedby="manageAssetTables">
                                                                     <thead [hidden]="content.isCollapsed">
                                                                         <tr>

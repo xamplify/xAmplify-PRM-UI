@@ -2,7 +2,7 @@
 <div style="position: relative; top: -10px">
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
-<div class="portlet light remove_cardBgcolor padding_0">
+<div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space">
   <div class="row">
     <div class="col-md-12">
       <div class=" clearfix">
@@ -18,7 +18,7 @@
                         (keypress)="eventHandler($event.keyCode)">
                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
                         (click)="sortOption.searchKey='';search();"></button>
-                      <button type="submit" class="search-box-item-click" (click)="search()">
+                      <button type="submit" class="search-box-item-click only_content" (click)="search()">
                         <i class="fa fa-search" aria-hidden="true"></i></button>
                     </div>
                   </div>
@@ -37,7 +37,7 @@
         </app-list-loader>
         <ng-container *ngIf="!httpRequestLoader.isLoading">
           <div class="table-responsive pos_pd_top6">
-            <table class='table tgrid table-hover table-sm' id="lms-analytics-list-table"
+            <table class='table tgrid table-hover table-sm mt10' id="lms-analytics-list-table"
               *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
               <thead>
                 <tr>
@@ -118,7 +118,7 @@
         </ng-container>
         <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
           <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-            (notifyParentDropDown)="getAnalytics($event)" [hidden]="httpRequestLoader.isLoading">
+            (notifyParentDropDown)="getPartnerAnalytics($event)" [hidden]="httpRequestLoader.isLoading">
           </app-pagination>
         </div>
         <!-- End of 24 -->

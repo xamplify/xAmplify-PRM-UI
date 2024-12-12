@@ -152,7 +152,8 @@ export class UtilService {
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
-            localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey,"");//XNFR-574
+            localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey,JSON.stringify(''));//XNFR-574
+            localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchFilterBy,JSON.stringify('All'));//XNFR-574
     }
 
     isLoggedAsTeamMember(){
@@ -232,6 +233,16 @@ export class UtilService {
         // Set a timestamp to notify all tabs
         localStorage.setItem('reloadApp', new Date().toISOString());
       }
+
+      fetchImageAsBlob(imageUrl: string): Promise<Blob> {
+        return fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            });
+    }
 
 
 }

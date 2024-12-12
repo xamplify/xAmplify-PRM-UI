@@ -30,8 +30,9 @@
         <strong [innerHTML]="customResponse.responseMessage"></strong>
       </div>
     </div>
+    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader> 
     <div class="panel-body">    
-      <div class="scroll table-responsive">
+      <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
             <tr>              
@@ -101,8 +102,8 @@
       </div>
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
-        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="getLeadDetails($event)">
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getPartnerJourneyTeamInfo($event)">
         </app-pagination>
       </div>
     </div>

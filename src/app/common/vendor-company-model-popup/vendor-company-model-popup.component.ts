@@ -38,7 +38,7 @@ export class VendorCompanyModelPopupComponent implements OnInit {
 	@Input() loggedInUserId: any;
   	customResponse: CustomResponse = new CustomResponse();
   	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-
+	@Input() isPublished: boolean =false;
 	constructor(public authenticationService: AuthenticationService, private partnerService:ParterService,
     public referenceService: ReferenceService,public pagerService:PagerService, private landingPageService:LandingPageService,
    ) { }
@@ -107,11 +107,7 @@ export class VendorCompanyModelPopupComponent implements OnInit {
 			this.landingPageService.sharePartnerJourneyLandingPageToPartners(shareLandingPageDTO).subscribe((data: any) => {
 				this.referenceService.scrollToModalBodyTopByClass();
 				if (data.access) {
-					if (data.statusCode == 200) {
-						this.responseMessage = "Published Successfully";
-					} else {
-						this.responseMessage = data.message;
-					}
+					this.responseMessage = data.message;
 					this.closePopupEmit(this.responseMessage)
 				} else {
 					this.authenticationService.forceToLogout();

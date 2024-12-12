@@ -374,6 +374,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isVendorMarketplacePages:boolean = false;
 	partnerJourneyPageEnabled:boolean =false;
 	isEditOrDeleteAccessForFolder = false;
+	forLandscapeVendorAccess  :boolean = false;
+	forLandscapePartnerAccess :boolean = false;
+	isOrgAdmin: boolean;
+	isPartner: boolean;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -642,7 +646,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.validateUpdatePasswordForm();
 			this.validateUpdateUserProfileForm();
 			this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+			this.isPartner = this.authenticationService.isPartner();
 			this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
+			this.isOrgAdmin = this.authenticationService.isOrgAdmin();
 			if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
 				if (!this.authenticationService.isOnlyPartner()) {
 					this.getOrgAdminsCount(this.loggedInUserId);
@@ -705,6 +711,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.vendorMarketplace = result.vendorMarketplace;
 			this.partnerJourneyPageEnabled = result.partnerJourneyPageEnabled;
 			this.ngxloading = false;
+			this.getForLandscapeAccessforVendorandPartner();
 		}, _error => {
 			this.ngxloading = false;
 		});
@@ -1909,6 +1916,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	themeName = "Light Theme";
 	showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
+		this.resetVendorJourneyAndPartnerJourneyFunctionality()
 		this.activeTabName = activeTabName;
 		if (this.activeTabName != 'playerSettings') {
 			if (this.videoJSplayer) {
@@ -2114,7 +2122,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.vendorJourney = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.vendorJourney;
+			this.activeTabHeader = this.properties.vendorJourney + " Pages for your Partners";
 
 		}
 		else if (this.activeTabName == "landingPages") {
@@ -2147,8 +2155,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 		/*****XNFR-592 ******/
 		else if (this.activeTabName == "leadFieldSettings") {
+			this.startNgxLoader();
+			this.updateLeadFieldSettingsOption(false);
+			let self = this;
+			setTimeout(() => {
+				self.updateLeadFieldSettingsOption(true);
+				self.stopNgxLoader();
+			}, 500);
 			this.activeTabHeader = this.properties.leadFieldSettings;
-			this.showleadFieldSettings = true;
 		}
 		/*****XNFR-609 ******/
 		else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER) {
@@ -2198,7 +2212,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isPartnerJourneyPages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.partnerJourneyPages;
+			this.activeTabHeader = this.properties.partnerJourneyPages + " Pages for your Vendors";
 		}else if (this.activeTabName == "vendorPartnerJourneyPages") {
 			this.ngxloading = true;
 			this.isVendorPartnerJourneyPages = false;
@@ -2255,6 +2269,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	stopNgxLoader(){
 		this.ngxloading = false;
+	}
+
+	updateLeadFieldSettingsOption(option:boolean){
+		this.showleadFieldSettings = option;
 	}
 
 	ngOnDestroy() {
@@ -5039,4 +5057,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		)
 	}
 
+	resetVendorJourneyAndPartnerJourneyFunctionality(){
+		this.vendorJourney =false;
+		this.isLandingPages = false;
+		this.isMasterLandingPages = false;
+		this.isPartnerJourneyPages = false;
+		this.isVendorPartnerJourneyPages =false;
+		this.isVendorMarketplacePages = false;
+		this.welcomePages = false;
+	}
+	/**XNFR-771**/
+	getForLandscapeAccessforVendorandPartner() {
+		this.forLandscapeVendorAccess = (this.vendorMarketplace || this.vendorJourneyAccess) && ((this.authenticationService.isVendorTeamMember || this.authenticationService.isOrgAdminTeamMember || this.authenticationService.module.isPrmTeamMember) && this.authenticationService.module.adminOrSuperVisor || this.authenticationService.module.isVendor || this.authenticationService.isOrgAdmin() || this.authenticationService.module.isPrm);
+
+		this.forLandscapePartnerAccess = ((this.masterLandingPageOrVendorPages || this.partnerJourneyPageEnabled) &&
+			(this.authenticationService.isPartner() || (this.authenticationService.module.isTeamMember && this.authenticationService.module.vendorPagesEnabled) ||
+				this.authenticationService.module.adminOrSuperVisor) && !this.authenticationService.module.loggedInThroughOwnVanityUrl) ||
+			(this.partnerJourneyPageEnabled && (this.authenticationService.isPartner() || (this.authenticationService.module.isTeamMember && this.authenticationService.module.adminOrSuperVisor)));
+	}
 }
+
+

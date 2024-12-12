@@ -21,7 +21,7 @@ span.ui-column-resizer {
   padding: 0;
   cursor: e-resize;
   border: 1px solid transparent;
-  background: lightgrey;
+  background: #bdbfcb;
 }
 
 .gray {

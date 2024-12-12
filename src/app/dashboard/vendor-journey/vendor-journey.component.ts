@@ -47,12 +47,12 @@ export class VendorJourneyComponent implements OnInit {
 
   ngOnInit() {
     this.resetVendorJourney();
-    this.vendorJourney = this.moduleType == "Vendor Journey";
-    this.isLandingPages = this.moduleType == "Vendor Pages";
+    this.vendorJourney = this.moduleType == "Vendor Showcase";
+    this.isLandingPages = this.moduleType == "Vendor Shared Pages";
     this.isMasterLandingPages = this.moduleType == "Partner Landscape";
     this.welcomePages = this.moduleType == "Welcome Pages";
-    this.isPartnerJourneyPages = this.moduleType == "Partner Journey Pages";
-    this.isVendorPartnerJourneyPages = this.moduleType == "Partner Pages";
+    this.isPartnerJourneyPages = this.moduleType == "Partner Showcase";
+    this.isVendorPartnerJourneyPages = this.moduleType == "Partner Shared Pages";
     this.isVendorMarketplacePages = this.moduleType == "Vendor Landscape";
   }
 
@@ -86,12 +86,12 @@ export class VendorJourneyComponent implements OnInit {
     this.isMasterLandingPages = false;
     this.welcomePages = false;
     this.isVendorPartnerJourneyPages =false;
-    this.vendorJourney = this.moduleType == "Vendor Journey";
-    this.isLandingPages = this.moduleType == "Vendor Pages";
+    this.vendorJourney = this.moduleType == "Vendor Showcase";
+    this.isLandingPages = this.moduleType == "Vendor Shared Pages";
     this.isMasterLandingPages = this.moduleType == "Partner Landscape";
     this.welcomePages = this.moduleType == "Welcome Pages";
-    this.isPartnerJourneyPages = this.moduleType == "Partner Journey Pages"
-    this.isVendorPartnerJourneyPages = this.moduleType == "Partner Pages";
+    this.isPartnerJourneyPages = this.moduleType == "Partner Showcase"
+    this.isVendorPartnerJourneyPages = this.moduleType == "Partner Shared Pages";
     this.isVendorMarketplacePages = this.moduleType == "Vendor Landscape";
     this.isFormAnalytics = false;
     this.isManageForms = false;

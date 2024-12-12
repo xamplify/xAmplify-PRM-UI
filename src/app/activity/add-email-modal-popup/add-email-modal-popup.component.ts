@@ -51,6 +51,8 @@ export class AddEmailModalPopupComponent implements OnInit {
   showFilePathError: boolean = false;
   restrictedFileTypes = ["exe"];
   showFileTypeError: boolean = false;
+  showCCEmailInputField:boolean = false;
+  showBCCEmailInputField:boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties) {}

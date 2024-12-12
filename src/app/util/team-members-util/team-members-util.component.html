@@ -69,8 +69,8 @@
     <!---Team Members---->
     <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && !showAnalytics">
       <!--List Of Team members---->
-      <div class="portlet light remove_cardBgcolor">
-        <div class="portlet-title">
+      <div class="portlet light remove_cardBgcolor light_bg_removal remove_space">
+        <div class="portlet-title remove_border">
           <div class="row flex_unset" style="display:flex;align-items: center;">
             <div class="col-xs-3 col-sm-2 col-md-2 col-lg-3 mb_width100">
               <div class="caption mg-top7 team_header">Team Members
@@ -169,9 +169,9 @@
             </a>
             <div class="table-responsive">
               <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-              <table class="table table-striped silvertm" id="team-members" *ngIf="!httpRequestLoader.isLoading"
+              <table class="table table-striped silvertm tgrid" id="team-members" *ngIf="!httpRequestLoader.isLoading"
                 aria-describedby="TeamMemberList">
-                <thead>
+                <thead class="hash-table-color">
                   <tr>
                     <th scope="row">
                       <h4 class="user-permission-min-width TopBottomMZ">
@@ -196,7 +196,7 @@
                   </tr>
                 </thead>
                 <ng-container *ngIf="pagination.totalRecords>0">
-                  <tbody>
+                  <tbody class="table_body_color">
                     <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}"
                       class="list-team-member-class">
                       <td class="pdl-15">
@@ -399,8 +399,8 @@
 
     <!--Add a Team Member Div-->
     <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
-      <div class="portlet light remove_cardBgcolor">
-        <div class="portlet-title">
+      <div class="portlet light remove_cardBgcolor light_bg_removal remove_space">
+        <div class="portlet-title remove_border">
           <div class="caption">
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
             <span *ngIf="editTeamMember">Edit Team Member</span>
@@ -578,7 +578,7 @@
       <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
 
         <div class="table-responsive">
-          <table class="table table-striped silvertm" id="add-team-member-table" aria-describedby="TeamMemberList">
+          <table class="table table-striped silvertm tgrid" id="add-team-member-table" aria-describedby="TeamMemberList">
             <thead>
               <tr>
                 <th scope="row">

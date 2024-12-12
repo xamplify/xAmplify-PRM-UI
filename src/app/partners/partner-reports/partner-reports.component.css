@@ -230,7 +230,7 @@ img.brand-logo-custom {
   margin-left: -15px;
 }
 
-.dashboard-stat .visual > i {
+.dashboard-stat .visual .fontCustom {
   font-size: 26px !important;
   line-height: 1px !important;
 }
@@ -240,4 +240,26 @@ img.brand-logo-custom {
 }
 /* Sudha Sri(24-07-2024) */
 .dashboard-stat{border-radius: 10px !important;} 
+
+.cardCustomStyle {
+  height: 100px;
+  padding-top: 5px;
+  cursor: not-allowed;
+}
+
+.visualCustom {
+  width: 80px;
+  display: block;
+  float: left;
+  padding-top: 10px;
+  padding-left: 15px;
+  margin-bottom: 15px;
+  font-size: 35px;
+  line-height: 35px;
+}
+
+.dbiconscss {
+  margin-left: 0px !important;
+  font-size: 60px;
+}
 

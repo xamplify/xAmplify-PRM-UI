@@ -1135,6 +1135,7 @@ input#copy-link {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background-color: rgba(16 18 27/40%)!important;
   color: white !important;
+  box-shadow: none!important;
 }
 .list-area {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -3996,7 +3997,8 @@ button.swal2-confirm.styled:hover {
   border: 1px solid #026deb !important;
 }
 /***** Sudha Sri(04-07-2024) *****/
-.portlet.light.remove_cardBgcolor.glass_Bgcolor {background: rgb(0 0 0 / 18%) !important;}
+.portlet.light.remove_cardBgcolor.glass_Bgcolor,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white {background: rgb(0 0 0 / 18%) !important;}
 
 .modal-body {
   max-height: calc(100vh - 113px);
@@ -4156,7 +4158,7 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
   background: rgb(0 0 0 / 23%) !important;
   border-left: 1px solid #ffffff33 !important;
 }
-.icons_colors,.profile_info span,.profile_info p,.lead_details li i,.address_title,.lead_details li,.icon-label,.panel-headings>.panel-title a,.activity-body{
+.icons_colors,.profile_info span,.profile_info p,.lead_details li i,.address_title,.lead_details li,.icon-label,.panel-headings>.panel-title a,.activity-body,.folder_count{
   color: #ffffff!important;
 }
 .lead_details h3{
@@ -4167,9 +4169,9 @@ border: 1px solid #ffffff33 !important;
 border: 1px solid rgb(96 96 96 / 30%) !important;
 background: rgba(16 18 27 / 40%) !important;
 }
-.activity_card{
-border: 1px solid #ffffff33!important;
-background-color: rgb(0 0 0 / 18%) !important;
+.activity_card,.activity_bgcolor,.deals_card,.view_emailcard,.email_content{
+  background-color: rgba(16 18 27 / 28%) !important;
+  border: 1px solid #ffffff33 !important;
 }
 .edit_contact{
 border-bottom: 1.4px rgba(255, 255, 255, 0.1) dashed!important;
@@ -4183,4 +4185,46 @@ background-color: #dee2e5!important;
 i.fa.fa-edit.ml_6{
 background-color: #eaf0f6!important;
 color: #555 !important;
+}
+.e-ddl.e-popup {
+  background: rgba(16 18 27 / 40%)!important;
+}
+.tgrid>tbody>tr#uploaded-csv-tr>td:hover {
+  color: #fff !important;
+}
+.tgrid>tbody>tr#uploaded-csv-tr>td {
+  color: #272626 !important;
+}
+
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  background: rgba(16 18 27 / 40%) !important;
+  color: #ffffff !important;
+}
+.universal-search-input {
+color: #fff !important;
+}
+.universal-dropdown-menu {
+  background-color: rgb(16 18 27 / 93%) !important;
+  border: 1px solid #ffffff33 !important;
+  border-radius: 10px !important;
+}
+.universal-dropdown-menu li {
+  border-bottom: 1px solid hsla(0, 0%, 100%, .1) !important;
+}
+.universal-dropdown-menu li:hover {
+  background-color: rgb(146 151 179 / 13%) !important;
+  color: #ffffff !important;
+}
+.clear-icon,.universal-search-input {
+  color:#fff;
+}
+/*** XNFR-758 ***/
+.portlet.light.remove_space,.light_bg_removal.remove_space {
+  padding: 10px!important;
+}
+.border_btn{
+  border-left: 1px solid #026deb !important;
 }

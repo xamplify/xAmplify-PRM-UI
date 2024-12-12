@@ -37,8 +37,8 @@
          <div class="page-top" [ngClass]="cskin.defaultSkin?'':'customskin-top'" [class.active]="isNavbarBackgroundVisible">
             <div class="top-menu">
                <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
-                  <li class="topnav-button-css">
-                     <app-universal-search-bar *ngIf="authenticationService.vanityURLEnabled"></app-universal-search-bar>
+                  <li class="topnav-button-css" style="margin-right: 0px;">
+                     <app-universal-search-bar *ngIf="!helpGuidesUrl && authenticationService?.user?.hasCompany && userId!=1"></app-universal-search-bar>
                   </li>
                   <!---XNFR-222-->
                   <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css LogedAsBoxTop">
@@ -70,7 +70,7 @@
                      &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                      <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                   </li>
-                  <li style="display: none;" class="btnShare" class="topnav-button-css"
+                  <li class="btnShare" class="topnav-button-css"
                      *ngIf="authenticationService?.module?.socialShareOptionEnabled &&  authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                      <button class="btn btn custom btn_custom_bg" [ngClass]="authenticationService?.isTop?'customskin':''"
                         [routerLink]="['/home/social/update-status']" style="border-radius: 7px;">
@@ -125,13 +125,13 @@
                            <div class="border-bt"></div>
                         </li>
                         <li
-                           *ngIf="(!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner') || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
+                           *ngIf="(!isOnlyUser && !isSuperAdmin) || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                            <a (click)="navigateToCompanyProfile('/home/dashboard/edit-company-profile',authenticationService?.module?.companyProfileCreated)"
                               translate> <i class="fa fa-building-o"></i> Company Profile
                            </a>
                            <div class="border-bt"></div>
                         </li>
-                        <li style="display: none;"
+                        <li
                            *ngIf="(refService.hasAllAccess()
                             || authenticationService.module.hasSocialStatusRole
                             || authenticationService.module.isOrgAdmin
