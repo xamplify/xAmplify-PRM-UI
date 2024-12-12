@@ -131,7 +131,7 @@
       <!-- Created By Field -->
       <h6 *ngIf="quickLink?.createdBy && quickLink?.type != 'Deal'" (click)="preview(quickLink)">
         <span class="pointer">
-          <b *ngIf="quickLink?.navigate === 'Manage' ||  quickLink?.type != 'Asset'">Created By: </b>
+          <b *ngIf="quickLink?.navigate === 'Manage' || (quickLink?.navigate === 'Shared' && quickLink?.type != 'Asset') ">Created By: </b>
           <b *ngIf="quickLink?.navigate === 'Shared' && quickLink?.type === 'Asset'">Published By: </b>
           <b *ngIf="quickLink?.navigate === 'Vendor' || quickLink?.navigate === 'Partner' ">Email Id: </b>
           <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.createdBy)">
@@ -269,7 +269,7 @@
 
 
 <ng-template #searchNgTemplateIcon let-quickLink="quickLink" let-access="access" let-title="title">
-  <div *ngIf="!authenticationService.module.isOnlyPartner || !isPartnerLoggedInThroughVanityUrl " [ngClass]="access ? 'disabled-navigate':''"
+  <div *ngIf="quickLink?.navigate != 'Shared' " [ngClass]="access ? 'disabled-navigate':''"
     data-toggle="tooltip" data-placement="top" title="{{title}}">
     <a class="quicklinks_icons" [ngClass]="access? 'disabled-navigate-none':''"
       (click)="$event.stopPropagation(); navigateToManage(quickLink)">
