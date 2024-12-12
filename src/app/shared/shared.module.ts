@@ -40,15 +40,21 @@ import { AddNoteModalPopupComponent } from 'app/activity/add-note-modal-popup/ad
 import { NoteComponent } from 'app/activity/note/note.component';
 import { ActivityStreamComponent } from 'app/activity/activity-stream/activity-stream.component';
 import { PreviewEmailActivityComponent } from 'app/activity/preview-email-activity/preview-email-activity.component';
+import { AgmCoreModule } from '@agm/core';
+import { MarketplaceUtilComponent } from 'app/util/marketplace-util/marketplace-util.component';
+import { MarketplaceMapUtilComponent } from 'app/util/marketplace-map-util/marketplace-map-util.component';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
                   BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, 
-                  CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule, CKEditorModule],
+                  CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule, CKEditorModule,
+                  AgmCoreModule.forRoot({ apiKey: "AIzaSyC_rv55LIbLQF9TN8TyPMNEP3cZgIAk-EY"
+                  })
+                  ],
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
-                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent],
+                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, MarketplaceUtilComponent, MarketplaceMapUtilComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -57,7 +63,7 @@ import { PreviewEmailActivityComponent } from 'app/activity/preview-email-activi
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent, 
-                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent],
+                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent],
         providers: [FormService],
 })
 
