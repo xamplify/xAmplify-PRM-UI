@@ -63,6 +63,8 @@ export class CustomAddLeadComponent implements OnInit {
   /**XNFR-766**/
   @Input() public isFromFormAnalytics:boolean = false;
   @Input() public formSubmitId;
+  @Input() public formSubmitForCompanyId;
+  
   @Output() notifyFormAnalytics = new EventEmitter();
   
   preview = false;
@@ -515,6 +517,9 @@ export class CustomAddLeadComponent implements OnInit {
     if(this.isFromFormAnalytics){
       this.lead.email = data.emailId;
       this.lead.formSubmitId = this.formSubmitId;
+      if( this.formSubmitForCompanyId > 0){
+        this.lead.createdForCompanyId = this.formSubmitForCompanyId
+      }
     }else{
       this.lead.email = this.selectedContact.emailId;
     }
@@ -1937,6 +1942,9 @@ export class CustomAddLeadComponent implements OnInit {
         data => {
           this.selectedContact = data.data;
           this.setDefaultLeadData(this.selectedContact);
+          if(this.lead.createdForCompanyId > 0){
+            this.findPipeLinesAndStagesBySelectedVendorCompany();
+          }
         },
         (error: any) => {
           this.httpRequestLoader.isServerError = true;

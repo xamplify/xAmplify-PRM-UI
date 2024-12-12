@@ -265,7 +265,7 @@
 			</div>
 			<div class="modal-body">
 			  <app-custom-add-lead *ngIf="showLeadForm" [actionType]="'add'" (notifyFormAnalytics)="showSubmitLeadMessage($event)"
-	  		[formSubmitId]="selectedFormSubmitId" [isFromFormAnalytics] ="true"></app-custom-add-lead>
+	  		[formSubmitId]="selectedFormSubmitId" [formSubmitForCompanyId]="selectFormVendorCompanyId" [isOrgAdmin]="isOrgAdmin" [isFromFormAnalytics] ="true"></app-custom-add-lead>
 			</div>
 		</div>
 	</div>
