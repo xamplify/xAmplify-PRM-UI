@@ -77,7 +77,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     redistributedCampaignsCount = 0;
     reloadWithFilter = true;
     loadAllCharts = false;
-
+    selectedItem : any;
     //XNFR-316
     showDetailedAnalytics = false;
     detailedAnalyticsPartnerCompany: any;
@@ -582,11 +582,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.parterService.sendPartnerReminderEmail(user, this.loggedInUserId).subscribe(
             (response: any) => {
                 if (response.statusCode == 2017) {
-                    this.customResponse = new CustomResponse('SUCCESS', 'Email sent successfully.', true);
+                    this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
                 }
+                this.sendTestEmailIconClicked = false;
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
             (error: any) => {
+                this.sendTestEmailIconClicked = false;
                 this.referenseService.loading(this.httpRequestLoader, false);
                 this.xtremandLogger.showClientErrors("partner-reports", "sendPartnerReminder()", error.error.message);
                 this.customResponse = new CustomResponse('ERROR', 'Something went wrong in sending an email.', true);
@@ -1141,16 +1143,18 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 if (data.access) {
                     this.referenseService.loading(this.httpRequestLoader, false);
                     if (data.statusCode == 200) {
-                        this.customResponse = new CustomResponse('SUCCESS', 'Email sent successfully.', true);
+                        this.referenseService.showSweetAlertSuccessMessage(data.message);
                     } else if (data.statusCode == 400) {
-                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        this.referenseService.showSweetAlertSuccessMessage(data.message);
                     }
+                    this.sendTestEmailIconClicked = false;
                     this.referenseService.goToTop();
                 } else {
                     this.authenticationService.forceToLogout();
                 }
             },
             (error: any) => {
+                this.sendTestEmailIconClicked = false;
                 this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
                 this.xtremandLogger.error(error);
                 this.referenseService.loading(this.httpRequestLoader, false);
@@ -1160,9 +1164,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
-
-    openSendTestEmailModalPopup(emailId : String){
-        this.selectedEmailId = emailId;
+    
+    openSendTestEmailModalPopup(item : any){
+        this.selectedItem = item;
+        this.selectedEmailId = item.emailId;
         if(this.isInactivePartnersDiv){
          this.sendTestEmailIconClicked = true;
             this.vanityTemplates = true;
@@ -1198,5 +1203,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.selectedEmailTemplateId = 0;
         this.sendTestEmailIconClicked = false;
         this.vanityTemplates = false;
+      }
+
+      emittedMethod(event) {
+        if(this.isInactivePartnersDiv) {
+            this.sendPartnerReminder(event);
+        } else {
+            this.sendmail(event);
+        }
       }
 }

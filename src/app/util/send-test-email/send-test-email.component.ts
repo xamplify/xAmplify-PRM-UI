@@ -24,9 +24,10 @@ export class SendTestEmailComponent implements OnInit {
   @Input() fromEmailUserId = 0;
   @Input() campaignSendTestEmail = false;
   @Input() campaign: any;
-  @Input() vanityTemplatesOne: boolean; 
+  @Input() vanityTemplatesPartnerAnalytics: boolean; 
   @Input() toEmailId :any;
-
+  @Input() selectedItem : any;
+  @Output() sendmailNotify =new EventEmitter
   email = "";
   headerTitle = "";
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
@@ -52,7 +53,7 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto.fromName = this.fromName;
     this.referenceService.openModalPopup(this.modalPopupId);
     $('#sendTestEmailHtmlBody').val('');
-    if(this.vanityTemplatesOne){
+    if(this.vanityTemplatesPartnerAnalytics){
       this.getVanityEmailTemplatesPartnerAnalytics();
     }else{
       this.getTemplateHtmlBodyAndMergeTagsInfo();
@@ -122,16 +123,20 @@ export class SendTestEmailComponent implements OnInit {
     this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
     this.validateForm();
     if (this.isValidForm) {
-      if (this.campaignSendTestEmail) {
-        this.sendCampaignTestEmail();
-      } else {
-        this.sendTestEmail();
+      if(this.vanityTemplatesPartnerAnalytics){
+        this.sendmailNotify.emit({'item' : this.selectedItem });
+        this.callEventEmitter();
+      }else{
+        if (this.campaignSendTestEmail) {
+          this.sendCampaignTestEmail();
+        } 
+        else {
+          this.sendTestEmail();
+        }
       }
-
     } else {
       this.showErrorMessage("Please provide valid inputs.");
     }
-
   }
 
   private sendCampaignTestEmail() {
