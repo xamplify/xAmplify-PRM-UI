@@ -1121,7 +1121,58 @@ line-height: 1;
   color: #888;
   vertical-align: super;
 }
-/****** Universal Search *******/ 
+/****** Universal Search *******/
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  top: -.5em;
+} 
+.universal-search-show-button {
+  position: relative;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-radius: 7px;
+  margin-right: 10px;
+  z-index: 99;
+}
+
+.universal-search-show-button .universal-tooltip {
+  visibility: hidden;
+  position: absolute;
+  background-color: #555;
+  color: #fff;
+  top: 110%;
+  left: -30%;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.universal-tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+.universal-search-show-button:hover .universal-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+.clear-icon {
+  padding: 10px !important;
+}
 .universal-search-div {
 float: left;
 position: relative;
@@ -1136,4 +1187,5 @@ top: -1px;
   pointer-events: auto;
   cursor: not-allowed;
 }
+
 

@@ -4,7 +4,7 @@
 </div>
 <div class="row" *ngIf="statusCode==200">
     <div class="col-md-12">
-        <div class="portlet light remove_cardBgcolor padding_0 clearfix light_bg_removal" style="box-shadow: none;">
+        <div class="portlet light remove_cardBgcolor padding_0 clearfix light_bg_removal remove_space" style="box-shadow: none;">
             <!--List View / Grid View-->
             <div *ngIf="modulesDisplayType?.isListView || modulesDisplayType?.isGridView">
                 <ng-template *ngIf="!httpRequestLoader?.isLoading"
@@ -17,7 +17,7 @@
                 <section
                     *ngIf="modulesDisplayType.isListView && !httpRequestLoader?.isLoading  && !vendorJourney && !isLandingPages && !isPartnerJourneyPages && !isVendorPartnerJourneyPages">
                     <div class="table-responsive">
-                        <table class='table tgrid table-hover table-sm' id="manage-page-list"
+                        <table class='table tgrid table-hover table-sm mt10' id="manage-page-list"
                             *ngIf="pagination.pagedItems?.length>0" aria-describedby="landing-page-desc">
                             <thead>
                                 <tr>

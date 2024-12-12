@@ -363,7 +363,7 @@
   (notifyClose)="closeDealForm()"></app-add-deal>
 
 <app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [contactId]="selectedContact.id" [isReloadTab]="isReloadNoteTab"
-(notifySuccess)="showNoteCutomResponse($event)" (notifyClose)="closeAddNoteModalPopup()"></app-add-note-modal-popup>
+(notifySubmitSuccess)="showNoteCutomResponse($event)" (notifyClose)="closeAddNoteModalPopup()"></app-add-note-modal-popup>
 
 <app-add-task-modal-popup *ngIf="showTaskModalPopup" [isReloadTaskActivityTab]="isReloadTaskActivityTab"
   (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)" [userId]="contactId" [actionType]="actionType"

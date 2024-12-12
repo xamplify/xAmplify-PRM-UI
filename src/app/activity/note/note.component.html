@@ -58,9 +58,9 @@
         [ngClass]="note.visibility=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i
           class=" fa fa-lock" *ngIf="note.visibility=='PRIVATE'"></i> {{note.visibility}}</span>
       <span>
-        <span><a class="mr5" (click)="showEditNoteTab(note)" data-toggle="tooltip" data-placement="bottom"
+        <span><a *ngIf="note.editEnabled" class="mr5" (click)="showEditNoteTab(note)" data-toggle="tooltip" data-placement="bottom"
             title="Edit note"><i class="fas fa-pencil-alt task_edit" aria-hidden="true"></i></a>
-          <a (click)="showDeleteConformationAlert(note)" data-toggle="tooltip" data-placement="bottom"
+          <a *ngIf="note.deleteEnabled" (click)="showDeleteConformationAlert(note)" data-toggle="tooltip" data-placement="bottom"
             title="Delete note"><i class="fas fa-trash task_delete" aria-hidden="true"></i></a>
         </span>
       </span>

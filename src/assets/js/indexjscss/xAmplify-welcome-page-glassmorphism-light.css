@@ -76,5 +76,8 @@ color: #000 !important;
 .universal-dropdown-menu li {
     border-bottom: 1px solid #d0d5db;
 }
+.clear-icon,.universal-search-input {
+    color: #000 !important;
+  }
 /*** Universal Search *******/
 

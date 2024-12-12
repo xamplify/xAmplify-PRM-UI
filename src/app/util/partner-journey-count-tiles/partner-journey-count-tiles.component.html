@@ -26,7 +26,7 @@
       </div>
       <!-- card one  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount"
+         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount && authenticationService.module?.isCampaign"
          [scrollTo]="partnerJourneyAnalytics?.redistributedCampaignCount > 0 ? '#pj-redistributed-campaigns-div' : ''"
          [scrollDuration]="1000" [scrollOffset]="-100">
          <div
@@ -86,7 +86,7 @@
       </div>
       <!-- card five  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showLeadCount"
+         *ngIf="partnerJourneyAnalytics?.showLeadCount && authenticationService?.enableLeads"
          [scrollTo]="partnerJourneyAnalytics?.leadCount > 0 ? '#pj-lead-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div
@@ -98,7 +98,7 @@
       </div>
       <!-- card six  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showDealCount"
+         *ngIf="partnerJourneyAnalytics?.showDealCount && authenticationService?.enableLeads"
          [scrollTo]="partnerJourneyAnalytics?.dealCount > 0 ? '#pj-deal-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div
@@ -110,7 +110,7 @@
       </div>
       <!-- card seven  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showMDFAmount"
+         *ngIf="partnerJourneyAnalytics?.showMDFAmount && authenticationService?.mdf"
          [scrollTo]="partnerJourneyAnalytics?.mdfAmount > 0 ? '#pj-mdf-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div
@@ -132,10 +132,23 @@
             <p class="pa-text pa-TextEight">Assets</p>
          </div>
       </div>
-
+      
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
          *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics && !isVendorVersion"
          [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#pj-asset-details-div': ''" [scrollDuration]="1000"
+         [scrollOffset]="-100">
+         <div
+            [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">
+            <i class="fa fa-cogs pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
+            <p class="pa-text pa-TextEight">Assets</p>
+         </div>
+      </div>
+      
+      <!-- card eleven  for partner analytics-->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && !isTeamMemberAnalytics"
+         [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#asset-details-div': ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div
             [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">
@@ -178,18 +191,6 @@
             <i class="fa fa-book pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextTen">{{partnerJourneyAnalytics?.playbookCount}}</p>
             <p class="pa-text pa-TextTen">Playbooks</p>
-         </div>
-      </div>
-      <!-- card eleven  for team analytics-->
-      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount && !isTeamMemberAnalytics"
-         [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#asset-details-div': ''" [scrollDuration]="1000"
-         [scrollOffset]="-100">
-         <div
-            [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">
-            <i class="fa fa-cogs pa-fafaIconCustomization" aria-hidden="true"></i>
-            <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
-            <p class="pa-text pa-TextEight">Assets</p>
          </div>
       </div>
    </div>

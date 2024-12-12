@@ -73,6 +73,7 @@ export class PartnerJourneyCompanyInfoComponent implements OnInit {
         this.showFilterDropDown = true;
       }
     }
+    this.customResponse.isVisible = false;
   }
 
   viewDropDownFilter(){

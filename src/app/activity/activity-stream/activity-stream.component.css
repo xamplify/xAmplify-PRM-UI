@@ -22,7 +22,7 @@
 
 .activity-body {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     margin-top: 8px;
     color: #555;
@@ -155,4 +155,7 @@ fieldset.scheduler-borders {
   }
   .task_view:hover{
     background-color: #c6d5f6;
+  }
+  .task_body_jc {
+    justify-content: space-between;
   }

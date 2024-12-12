@@ -1,7 +1,7 @@
 <div class="row">
 	<!-- <div class="row" id="responsive">  -->
 	<div class="col-xs-12 p5" *ngIf="statusCode==200">
-		<div class="portlet light remove_cardBgcolor padding_0 light_bg_removal">
+		<div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space">
 			<div class="portlet-title remove_border">
 				<div class="col-xs-12">
 					<div class="row">
@@ -39,7 +39,7 @@
 											(keypress)="eventHandler($event.keyCode)">
 										<button class="glyphicon glyphicon-remove search-box-item-clear"
 											*ngIf="searchKey" (click)="searchKey='';search()"></button>
-										<button type="submit" class="search-box-item-click" (click)="search()">
+										<button type="submit" class="search-box-item-click only_content" (click)="search()">
 											<i class="fa fa-search" aria-hidden="true"></i></button>
 									</div>
 								</div>

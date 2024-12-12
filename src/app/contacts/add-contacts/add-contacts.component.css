@@ -254,4 +254,7 @@ i.fa.fa-file-excel-o.IconTopMargin {
   display: flex;
   align-items: center;
 }
+.panel-success > .panel-heading {
+  border-radius: 7px 7px 0px 0px!important;
+}
 

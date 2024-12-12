@@ -4501,4 +4501,9 @@ color: #000 !important;
 .update-activity {
 box-shadow: inset 5px 5px 10px #a19d9d42, inset -5px -5px 10px #7a72721f !important;}
 .neg-mrg-top7{margin-top: -7px !important;}
-
+.portlet.light.remove_space,.light_bg_removal.remove_space {
+  padding: 10px!important;
+}
+.border_btn{
+  border-left: 1px solid #026deb !important;
+}

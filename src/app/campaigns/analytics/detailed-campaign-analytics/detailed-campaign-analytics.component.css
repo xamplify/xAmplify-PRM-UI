@@ -115,9 +115,8 @@ tr > td > h6 {
   text-align: center;
 }
 .table thead tr th {
+  font-weight: 600!important;
   font-size: 14px;
-  font-weight: 600;
-  color: rgba(102, 102, 102, 0.65);
   text-align: center;
 }
 /* Campaign Report Count Block*/
@@ -736,6 +735,14 @@ th.leftAlignTableth {
   }
   }
   .campaign_type{
+  margin-right: -15px!important;
+  margin-left: -15px!important;
   position: relative;
   z-index: 99;
+  }
+  .tiles_aligns{
+    padding: 0px 6px !important;
+  }
+  .camp_response{
+    margin:10px 0px;
   }

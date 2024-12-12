@@ -354,14 +354,14 @@ export class ContactDetailsComponent implements OnInit {
 
   showEmailSubmitSuccessStatus(event) {
     this.isReloadEmailActivityTab = event;
-    this.isReloadActivityTab = event;
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
     this.closeEmailModalPopup();
   }
 
   showEmailFailedErrorStatus(event) {
     this.isReloadEmailActivityTab = event;
-    this.isReloadActivityTab = event;
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
     this.closeEmailModalPopup();
   }
@@ -415,6 +415,7 @@ export class ContactDetailsComponent implements OnInit {
 
   showLeadSubmitSuccess(event) {
     this.showLeadForm = false;
+    this.isReloadActivityTab = !this.isReloadActivityTab
     this.fetchLeadsAndCount();
     this.customResponse = new CustomResponse('SUCCESS', this.properties.leadSubmittedSuccessResponseMessage, true);
   }
@@ -463,6 +464,7 @@ export class ContactDetailsComponent implements OnInit {
 
   showDealSubmitSuccess(event) {
     this.showDealForm = false;
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
     this.customResponse = new CustomResponse('SUCCESS', this.properties.dealSubmittedSuccessResponseMessage, true);
@@ -478,14 +480,14 @@ export class ContactDetailsComponent implements OnInit {
 
   showNoteCutomResponse(event: any) {
     this.isReloadNoteTab = event;
-    this.isReloadActivityTab = event;
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.noteSubmittedSuccessResponseMessage, true);
     this.closeAddNoteModalPopup();
   }
 
   showNoteUpdateCutomResponse(event: any) {
     this.isReloadNoteTab = event;
-    this.isReloadActivityTab = event;
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.noteUpdatedSuccessResponseMessage, true);
     this.closeAddNoteModalPopup();
   }
@@ -553,14 +555,14 @@ export class ContactDetailsComponent implements OnInit {
 
   showTaskSubmitSuccessStatus(event) {
     this.isReloadTaskActivityTab = event;
-    this.isReloadActivityTab = event;
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', 'Task Submitted Succesfully.', true);
     this.closeTaskModalPopup();
   }
 
   showTaskUpdateCutomResponse(event: any) {
     this.isReloadTaskActivityTab = event;
-    this.isReloadActivityTab = event;
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', 'Task Updated Successfully.', true);
     this.closeTaskModalPopup();
   }

@@ -4218,4 +4218,13 @@ color: #fff !important;
   background-color: rgb(146 151 179 / 13%) !important;
   color: #ffffff !important;
 }
+.clear-icon,.universal-search-input {
+  color:#fff;
+}
 /*** XNFR-758 ***/
+.portlet.light.remove_space,.light_bg_removal.remove_space {
+  padding: 10px!important;
+}
+.border_btn{
+  border-left: 1px solid #026deb !important;
+}

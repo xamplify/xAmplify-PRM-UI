@@ -1,7 +1,7 @@
 <div style="display: flex;margin-right: 5px;">
   <div class="universal-dropdown-container">
     <input type="checkbox" id="dropdown-toggle" class="universal-dropdown-checkbox"
-      (change)="updateDropdownVisibility()" [checked]="isDropdownOpen" />
+      (change)="updateDropdownVisibility()" [checked]="isDropdownVisible" />
     <label for="dropdown-toggle" class="universal-dropdown-label">
       {{ refService.universalSearchFilterType ? refService.universalSearchFilterType : 'All' }}
       <span [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'"></span>
@@ -14,8 +14,8 @@
       <li (click)="selectDropdownOption('Assets')" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner">Assets</li>
        <li (click)="selectDropdownOption('Tracks')" *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">Tracks</li>
        <li (click)="selectDropdownOption('PlayBooks')" *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">PlayBooks</li>
-       <li (click)="selectDropdownOption('Lead')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Lead</li>
-       <li (click)="selectDropdownOption('Deal')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Deal</li>
+       <li (click)="selectDropdownOption('Lead')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Leads</li>
+       <li (click)="selectDropdownOption('Deal')" style="border-bottom: none !important;" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Deals</li>
 
 
 

@@ -55,9 +55,9 @@
       <span class="activity-title">Due Date: <span class="activity-date"><i
             class="fa fa-calendar"></i><app-display-date-and-time
             [dateAndTimeUTCString]="taskActivity.dueDate"></app-display-date-and-time></span></span>
-      <span><a class="mr5" (click)="editTask(taskActivity.id)" data-toggle="tooltip" data-placement="bottom" title="Edit task"><i class="fas fa-pencil-alt task_edit"
+      <span><a *ngIf="taskActivity.editEnabled" class="mr5" (click)="editTask(taskActivity.id)" data-toggle="tooltip" data-placement="bottom" title="Edit task"><i class="fas fa-pencil-alt task_edit"
             aria-hidden="true"></i></a>
-        <a (click)="showDeleteConformationAlert(taskActivity.id)" data-toggle="tooltip" data-placement="bottom" title="Delete task"><i class="fas fa-trash task_delete"
+        <a *ngIf="taskActivity.deleteEnabled" (click)="showDeleteConformationAlert(taskActivity.id)" data-toggle="tooltip" data-placement="bottom" title="Delete task"><i class="fas fa-trash task_delete"
             aria-hidden="true"></i></a>
       </span>
     </div>

@@ -149,4 +149,7 @@ h1, h2, h3, h4, h5, h6 {
 .universal-dropdown-menu li:hover {
     background-color: #22313a !important;
 }
+.clear-icon,.universal-search-input {
+    color:#fff;
+  }
 /*** Universal Search *******/
