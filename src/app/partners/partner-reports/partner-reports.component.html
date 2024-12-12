@@ -387,7 +387,7 @@
                       <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                       <h4 *ngIf="!item.time"><strong>-</strong></h4>
                     </td>
-                    <td class="mAlign text-center" (click)="sendPartnerReminder(item)">
+                    <td class="mAlign text-center" (click)="openSendTestEmailModalPopup(item)">
                       <div class="actions-block float-none">
                         <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
                           <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
@@ -861,7 +861,7 @@
                       <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                       <h4 *ngIf="!item.time"><strong>-</strong></h4>
                     </td>
-                    <td class="mAlign text-center" (click)="sendmail(item)">
+                    <td class="mAlign text-center" (click)="openSendTestEmailModalPopup(item)">
                       <div class="actions-block float-none">
                         <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
                           <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
@@ -1176,6 +1176,8 @@
     </div>
   </div>
 </div>
+
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [vanityTemplatesPartnerAnalytics]="vanityTemplates" (sendmailNotify)= "emittedMethod($event.item)"  [selectedItem]="selectedItem" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 
 
 
