@@ -79,6 +79,7 @@ export class UniversalSearchComponent implements OnInit {
     this.findUniversalSearch(this.universalSearchPagination);
   }
   preview(quickLink: any) {
+    this.referenceService.universalModuleType = "";
     if (quickLink.type === 'Lead') {
       this.referenceService.universalId = quickLink.id;
       this.referenceService.goToRouter("/home/leads/manage");
