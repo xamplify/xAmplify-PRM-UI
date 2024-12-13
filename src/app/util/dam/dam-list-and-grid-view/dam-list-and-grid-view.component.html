@@ -101,8 +101,8 @@
 													</h6>
 												</ng-container>
 												<!---XNFR-255-->
-												<h6 *ngIf="asset.tagNames?.length > 0">
-													<ng-container *ngIf="asset.tagNames?.length > 0">
+												<h6 *ngIf="asset.tagNames?.length > 0 ">
+													<ng-container *ngIf="asset.tagNames?.length == 1">
 														<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}" data-toggle="tooltip" data-placement="top">
 															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} 
 																<span *ngIf="asset.tagNames[0]?.length>20">..</span>
@@ -111,15 +111,16 @@
 																 <span *ngIf="asset.tagNames[0]?.length>10">..</span>
 															</ng-container>
 														</div>
-														<ng-container *ngIf="asset.tagNames.length > 1">
-															<div class="tag tablegray-tag" title="{{asset.tagNames[1]}}" data-toggle="tooltip" data-placement="top">
-																{{asset.tagNames[1] | slice:0:10}} 
-																<span *ngIf="asset.tagNames[1]?.length>10">..</span>
+													</ng-container>
+														
+														
+														<ng-container *ngFor="let tag of asset.tagNames;let i =index" >
+															<div class="tag tablegray-tag tag-custom" title="{{tag}}" data-toggle="tooltip" data-placement="top">
+																{{tag | slice:0:10}} 
+																<span *ngIf="tag?.length>10">..</span>
 															</div>
 														</ng-container>
-														<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
-															title="{{asset.toolTipTagNames}}">...</span>
-													</ng-container>
+
 												</h6>
 											</td>
 											<td class="text-center"><span class="assettype-bgcolor">{{asset?.assetType}}</span></td>
@@ -301,42 +302,27 @@
 																			</h6>
 																		</ng-container>
 																		<!---XBI-1993-->
-																		<h6 *ngIf="asset.tagNames?.length > 0">
-																			<ng-container
-																				*ngIf="asset.tagNames?.length > 0">
-																				<div class="tag tablegray-tag"
-																					title="{{asset.tagNames[0]}}"
-																					data-toggle="tooltip"
-																					data-placement="top">
-																					<ng-container
-																						*ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0]
-																						| slice:0:20}} <span
-																							*ngIf="asset.tagNames[0]?.length>20">..</span>
-																					</ng-container>
-																					<ng-container
-																						*ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0]
-																						| slice:0:10}} <span
-																							*ngIf="asset.tagNames[0]?.length>10">..</span>
-																					</ng-container>
-																				</div>
-																				<ng-container
-																					*ngIf="asset.tagNames.length > 1">
-																					<div class="tag tablegray-tag"
-																						title="{{asset.tagNames[1]}}"
-																						data-toggle="tooltip"
-																						data-placement="top">
-																						{{asset.tagNames[1] |
-																						slice:0:10}} <span
-																							*ngIf="asset.tagNames[1]?.length>10">..</span>
-																					</div>
-																				</ng-container>
-																				<span *ngIf="asset.tagNames?.length>2"
-																					class="tag-dots"
-																					data-toggle="tooltip"
-																					data-placement="top"
-																					title="{{asset.toolTipTagNames}}">...</span>
-																			</ng-container>
-																		</h6>
+										<h6 *ngIf="asset.tagNames?.length > 0 ">
+													<ng-container *ngIf="asset.tagNames?.length == 1">
+														<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}" data-toggle="tooltip" data-placement="top">
+															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} 
+																<span *ngIf="asset.tagNames[0]?.length>20">..</span>
+															</ng-container>
+															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}}
+																 <span *ngIf="asset.tagNames[0]?.length>10">..</span>
+															</ng-container>
+														</div>
+													</ng-container>
+														
+														
+														<ng-container *ngFor="let tag of asset.tagNames;let i =index" >
+															<div class="tag tablegray-tag tag-custom" title="{{tag}}" data-toggle="tooltip" data-placement="top">
+																{{tag | slice:0:10}} 
+																<span *ngIf="tag?.length>10">..</span>
+															</div>
+														</ng-container>
+
+												</h6>
 																		<!---XBI-1993-->
 																	</td>
 																	<td class="text-center"><span
