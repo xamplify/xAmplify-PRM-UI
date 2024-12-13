@@ -18,7 +18,7 @@
     </div>
   <div class="mt10">
     <label>Label Name <strong class="required">*</strong> </label>
-    <input type="text" class="form-control" [(ngModel)]="customFieldsDto.label" [ngModelOptions]="{standalone: true}"  placeholder="Label Name">
+    <input type="text" class="form-control" [(ngModel)]="customFieldsDto.label" [ngModelOptions]="{standalone: true}"  maxlength="250" placeholder="Label Name">
   </div>
   <div class="mt10">
     <label for="html">Label Type <strong class="required">*</strong> </label>
@@ -48,7 +48,7 @@
         <li class="list-group-item" id="stage{{x}}">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex">
-              <input type="text" placeholder="Enter Option" [(ngModel)]="option.label"
+              <input type="text" placeholder="Enter Option" [(ngModel)]="option.label" maxlength="250"
                 class="form-control bg-color field-border-customization inputFieldWidth">
               <button *ngIf="customFieldsDto.options.length > 1" type="button" class="btn btn-danger deleteBntAligment"
                 data-toggle="tooltip" data-placement="top" title="Delete" (click)="delete(x)">

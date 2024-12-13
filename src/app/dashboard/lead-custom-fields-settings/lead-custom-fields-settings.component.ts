@@ -477,6 +477,8 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 			response => {
 				if (response.statusCode == 200) {
 					this.customResponse = new CustomResponse('SUCCESS', "Deleted Successfully", true);
+					this.isSortApplied =  false;
+					this.isFilterApplied = false;
 					this.listCustomFields();
 				}
 				this.ngxloading = false;

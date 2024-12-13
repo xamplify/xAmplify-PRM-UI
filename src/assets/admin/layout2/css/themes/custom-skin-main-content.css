@@ -271,11 +271,12 @@ fieldset,
 }
 .table tbody tr.active td,
 .table tbody tr.active th {
-  background-color: var(--page-content) !important;
+  background-color: var(--div-bg-color) !important;
 }
 .tgrid > tbody > tr > td,
 .tgrid > tbody > tr > th,
 .tgrid > thead > tr > td {
+  background-color: var(--page-content) !important;
   color: var(---text-color) !important;
 }
 .tgrid > thead {

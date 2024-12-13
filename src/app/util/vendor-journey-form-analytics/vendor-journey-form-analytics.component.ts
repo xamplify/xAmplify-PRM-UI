@@ -120,9 +120,16 @@ viewLandingPageFormAnalytics(landingPage:any,selectedIndex:number){
     this.analyticsObject['formAlias'] = landingPage.vendorFormAlias;
     this.analyticsObject['masterLandingPageId'] = this.masterLandingPageId;
     this.analyticsObject['vendorLandingPageId'] = landingPage.vendorLandingPageId;
+    if(this.isMasterLandingPageAnalytics){
+        this.analyticsObject['vendorCompanyId'] = landingPage.vendorCompanyId;
+    }
   }else{
     this.analyticsObject['formAlias'] = this.importedObject['formAlias'];
     this.analyticsObject['masterLandingPageId'] = landingPage.partnerMasterLandingPageId;
+    if(this.isPartnerJourneyPage){
+        this.analyticsObject['vendorCompanyId'] = landingPage.partnerCompanyId;
+    }
+
   }
   
   $.each(this.pagination.pagedItems, function (index:number, row:any) {

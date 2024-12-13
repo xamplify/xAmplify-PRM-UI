@@ -28,7 +28,7 @@
                 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offPrivateColor"
                 [size]="callActionSwitch.size" (statusChange)="publicVsPrivateNoteStatusChange($event)">
               </switch> -->
-              <app-custom-ui-switch [customSwitch]="publicNotes" (customUiSwitchEventEmitter)="onChangeVisibility($event)"></app-custom-ui-switch>
+              <app-custom-ui-switch [customSwitch]="publicNotes" (customUiSwitchEventEmitter)="onChangeVisibility($event)" [isSwitchOptionDisabled]="isPreview"></app-custom-ui-switch>
           </span>
         </div>
 

@@ -109,7 +109,7 @@ export class AddTaskModalPopupComponent implements OnInit {
     let isValidDueDate = this.taskActivity.dueDate != undefined && this.taskActivity.dueDate.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ");
     let isValidAssignedTo = this.taskActivity.assignedTo != undefined && this.taskActivity.assignedTo > 0;
     let isValidStatus = this.taskActivity.status != undefined && this.taskActivity.status > 0;
-    let isValidRemainder = (this.taskActivity.remainderType == 'Custom_Date' && this.taskActivity.remainder && this.taskActivity.remainder.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) || this.taskActivity.remainderType != 'Custom_Date'; 
+    let isValidRemainder = (this.taskActivity.remainderType == 'CUSTOMDATE' && this.taskActivity.remainder && this.taskActivity.remainder.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) || this.taskActivity.remainderType != 'CUSTOMDATE'; 
     if (isValidName && isValidDueDate && isValidAssignedTo && isValidStatus && isValidRemainder) {
       this.isValidTask = true;
     } else {
@@ -252,7 +252,7 @@ export class AddTaskModalPopupComponent implements OnInit {
       },
       () => {
         this.initializeRemainderPicker();
-        if (this.taskActivity.remainderType == 'Custom_Date') {
+        if (this.taskActivity.remainderType == 'CUSTOMDATE') {
           this.showRemainderDate = true;
         }
       }

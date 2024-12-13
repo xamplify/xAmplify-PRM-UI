@@ -457,7 +457,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     goToAccessDenied(url:string):boolean{
         if(!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember()) && 
             !url.includes("/home/partners/analytics") && !url.includes("/dam/") 
-            && !url.includes("/home/select-modules")){
+            && !url.includes("/home/select-modules") && !url.includes("/tracks/") && !url.includes("/playbook/")) {
             this.router.navigate( ['/access-denied'] );
             return false;
         } else {
