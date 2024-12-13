@@ -521,6 +521,14 @@ export class SortOption {
 		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
 	];
+
+	sortByDropDownForPartnerJourney = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Company Name(A-Z)', 'value': 'campaign-ASC' },
+		{ 'name': 'Company Name(Z-A)', 'value': 'campaign-DESC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+	];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -610,6 +618,8 @@ export class SortOption {
 
 	/***XNFR-662****/
     public selectedCustomFieldsDropDownOption = this.customFieldsDropDown[0];
+
+	public selectedSortedOptionForPartnerJourney = this.sortByDropDownForPartnerJourney[0];
 
 
 }

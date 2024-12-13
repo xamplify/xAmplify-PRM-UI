@@ -95,7 +95,7 @@ export class ActivePartnersTableComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
-    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
+    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOptionForPartnerJourney, pagination);
     this.getActivePartners(this.pagination);
   }
 
@@ -110,7 +110,7 @@ export class ActivePartnersTableComponent implements OnInit {
   }
 
   getSortedResults(text: any) {
-    this.sortOption.selectedSortedOption = text;
+    this.sortOption.selectedSortedOptionForPartnerJourney = text;
     this.getAllFilteredResults(this.pagination);
   }
 
