@@ -612,7 +612,7 @@
                                         </li>
                                         <!--XNFR-679 Flexi Fields-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
-                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}">
+                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}" style="border-bottom: none !important;">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
                                                 (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':flexiFieldsMenuHeader}"></ng-template>
