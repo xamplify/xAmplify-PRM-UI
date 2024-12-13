@@ -9,6 +9,8 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { TracksPlayBookUtilService } from 'app/tracks-play-book-util/services/tracks-play-book-util.service';
 
+declare var BroadcastChannel: any;
+
 @Component({
   selector: 'app-marketplace-util',
   templateUrl: './marketplace-util.component.html',
@@ -26,11 +28,7 @@ export class MarketplaceUtilComponent implements OnInit {
   isMasterLandingPage: boolean = false;
   filteredCompanies: any[] =[];
 
-
-  lat: number = 0; // default latitude (center of map)
-  lng: number = 0; // default longitude (center of map)
-  zoom: number = 8;
-  private channel: BroadcastChannel;
+  channel;
 
   constructor(
     private route: ActivatedRoute,

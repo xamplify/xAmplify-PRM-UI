@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 
+declare var BroadcastChannel: any;
 @Component({
   selector: 'app-marketplace-map-util',
   templateUrl: './marketplace-map-util.component.html',
@@ -13,12 +14,12 @@ export class MarketplaceMapUtilComponent implements OnInit {
   alias:any;
   isOnlyMap:boolean = false;
 
-  lat: number = 0; // default latitude (center of map)
-  lng: number = 0; // default longitude (center of map)
+  lat: number = 0;
+  lng: number = 0;
   zoom: number = 8;
   receivedData:any[]=[];
-
-  private channel: BroadcastChannel;
+  
+  channel;
 
   constructor(private elementRef: ElementRef, private route: ActivatedRoute,private router:Router,
     private landingPageService: LandingPageService,
@@ -77,11 +78,11 @@ export class MarketplaceMapUtilComponent implements OnInit {
       const lngDiff = maxLng - minLng;
   
       if (latDiff > 10 || lngDiff > 10) {
-        this.zoom = 2;  // Zoom out
+        this.zoom = 2;
       } else if (latDiff > 5 || lngDiff > 5) {
-        this.zoom = 5;  // Moderate zoom
+        this.zoom = 5;
       } else {
-        this.zoom = 7; // Close zoom
+        this.zoom = 7;
       }
     }
   }
