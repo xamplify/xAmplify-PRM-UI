@@ -122,6 +122,7 @@ export class ProcessingCampaignsComponent implements OnInit {
                     this.referenceService.loading(this.httpRequestLoader, false);
                     const deleteMessage = campaignName + ' deleted successfully.';
                     this.referenceService.showSweetAlertSuccessMessage(deleteMessage);
+                    this.refreshList();
                   },
                   error => {
                       this.referenceService.loading(this.httpRequestLoader, false);
