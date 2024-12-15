@@ -103,12 +103,17 @@ export class SendTestEmailComponent implements OnInit {
         this.sendTestEmailDto.body = htmlBody;
         this.sendTestEmailDto.subject = subject;
         this.sendTestEmailDto.toEmail = this.toEmailId;
-        if(this.sendTestEmailDto.subject.length > 0 &&this.sendTestEmailDto.toEmail.length > 0 && this.referenceService.validateEmailId(this.sendTestEmailDto.toEmail)){
+        if (this.sendTestEmailDto.subject.length > 0 && this.sendTestEmailDto.toEmail.length > 0 && this.referenceService.validateEmailId(this.sendTestEmailDto.toEmail)) {
           this.isValidForm = true;
-        }else{
+        } else {
           this.isValidForm = false;
         }
         $('#sendTestEmailHtmlBody').append(htmlBody);
+        $('div.selector, div.selector span, div.checker span, div.radio span, div.uploader, div.uploader span.action, div.button, div.button span')
+          .css('background-image', 'url("path/to/your/new-image.png")');
+        $('div.button span span a').each(function () {
+          this.style.setProperty('opacity', 'unset', 'important');
+        });
         $('tbody').addClass('preview-shown')
         this.processing = false;
       }, error => {
