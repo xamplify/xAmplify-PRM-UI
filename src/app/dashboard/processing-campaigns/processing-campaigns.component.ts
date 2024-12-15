@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
-
+import { SuperAdminService } from '../super-admin.service';
+declare var swal:any;
 @Component({
   selector: 'app-processing-campaigns',
   templateUrl: './processing-campaigns.component.html',
@@ -28,7 +29,7 @@ export class ProcessingCampaignsComponent implements OnInit {
   constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
-		public logger: XtremandLogger, public sortOption: SortOption) {
+		public logger: XtremandLogger, public sortOption: SortOption,private superAdminService:SuperAdminService) {
 		if (this.authenticationService.getUserId() != 1) {
 			this.router.navigate(['/access-denied']);
 		}
@@ -95,7 +96,38 @@ export class ProcessingCampaignsComponent implements OnInit {
 		this.findProcessingCampaigns(this.pagination);
 	}
 
-	
+	 confirmDeleteCampaign(campaign:any) {
+          let self = this;
+          swal({
+              title: 'Are you sure?',
+              text: "You won't be able to undo this action",
+              type: 'warning',
+              showCancelButton: true,
+              swalConfirmButtonColor: '#54a7e9',
+              swalCancelButtonColor: '#999',
+              confirmButtonText: 'Yes, delete it!'
+  
+          }).then(function () {
+              self.deleteCampaign(campaign.campaignId, campaign.campaignName);
+          }, function (dismiss: any) {
+              console.log('you clicked on option' + dismiss);
+          });
+      }
+  
+      deleteCampaign(id: number,campaignName: string) {
+          this.referenceService.loading(this.httpRequestLoader, true);
+          this.superAdminService.deleteCampaign(id)
+              .subscribe(
+                  data => {
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                    const deleteMessage = campaignName + ' deleted successfully.';
+                    this.referenceService.showSweetAlertSuccessMessage(deleteMessage);
+                  },
+                  error => {
+                      this.referenceService.loading(this.httpRequestLoader, false);
+                      this.referenceService.showSweetAlertErrorMessage("This campaign cannot be deleted at this time.Please try after sometime");
+                  });
+      }
 
 	
 

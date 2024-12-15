@@ -46,7 +46,7 @@
                    <tbody>
                      <ng-container *ngFor="let campaign of pagination.pagedItems;let i = index">
                        <tr>
-                        <td style="width: 10%;" class="hidden-xs">
+                        <td style="width: 10%;">
                           <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 " src="assets/images/video-email.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                           <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                           <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" src="assets/images/social-campaign.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
@@ -84,6 +84,9 @@
                           <h5  title="Distinct Users">
                             <span translate> Distinct Users : <strong>{{campaign?.distinctUsers}}</strong>
                             </span>
+                          </h5>
+                          <h5  title="Delete Campaign" *ngIf="pagination?.archived">
+                            <button class="btn btn-danger btn-xs" (click)="confirmDeleteCampaign(campaign)">Delete</button>
                           </h5>
       
                         </td>
