@@ -122,7 +122,7 @@
       </div>
       <!-- card eight  for team member analytics -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics && isVendorVersion"
          [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#ta-asset-details-div': ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div

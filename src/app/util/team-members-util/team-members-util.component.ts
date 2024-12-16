@@ -60,6 +60,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   deletePopupLoader: boolean;
   successMessage: string;
   customResponse: CustomResponse = new CustomResponse();
+  filterResponse: CustomResponse = new CustomResponse();
   selectedItem: any;
   inputChanged: any;
   isLoggedInThroughVanityUrl: boolean;
@@ -129,6 +130,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   csvPagination: any;
   logListName: string = "";
   downloadDataList = [];
+  dateFilterText = "Select Date Filter";
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  fromDateFilterInString: string;
+  toDateFilterInString: string;
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -1117,7 +1123,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.showFilterDropDown = true;
       }
     }
-
+    this.filterResponse.isVisible = false;
   }
 
   getVendorInfoForFilter() {
@@ -1155,10 +1161,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   clearFilter() {
-    this.selectedVendorCompanies = [];
-    this.selectedTeamMembers = [];
-    this.selectedTeamMemberIds = [];
-    this.selectedVendorCompanyIds = [];
+    this.clearFilterdata();
     this.showFilterDropDown = false;
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.filterApplied = false;
@@ -1168,15 +1171,21 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   applyFilters() {
     this.selectedTeamMemberIds = this.selectedTeamMembers;
     this.selectedVendorCompanyIds = this.selectedVendorCompanies;
+    this.fromDateFilter = this.fromDateFilterInString;
+    this.toDateFilter = this.toDateFilterInString;
     this.filterApplied = true;
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
     this.isCollapsed = false;
     this.findAll(this.pagination);
   }
+
   setFilterColor() {
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter.length > 0;
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter.length > 0;
     if ((this.selectedVendorCompanyIds != null && this.selectedVendorCompanyIds.length > 0 && this.selectedVendorCompanyIds != undefined) ||
-      (this.selectedTeamMemberIds != null && this.selectedTeamMemberIds.length > 0 && this.selectedTeamMemberIds != undefined)) {
+      (this.selectedTeamMemberIds != null && this.selectedTeamMemberIds.length > 0 && this.selectedTeamMemberIds != undefined)
+      || isValidFromDateFilter || isValidToDateFilter) {
       this.filterActiveBg = 'filterActiveBg';
       this.filterApplied = true;
     }
@@ -1193,11 +1202,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.selectedCampaignType = "";
   }
 
-  clearAnalytics(){
-    this.selectedVendorCompanies = [];
-    this.selectedTeamMembers = [];
-    this.selectedTeamMemberIds = [];
-    this.selectedVendorCompanyIds = [];
+  clearAnalytics() {
+    this.clearFilterdata();
     this.showFilterDropDown = false;
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.filterApplied = false;
@@ -1261,4 +1267,46 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     document.body.removeChild(link);
   }
 
+  validateDateFilter() {
+    let isValidFromDateFilter = this.fromDateFilterInString != undefined && this.fromDateFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilterInString == undefined || this.fromDateFilterInString == "";
+    let isValidToDateFilter = this.toDateFilterInString != undefined && this.toDateFilterInString != "";
+    let isEmptyToDateFilter = this.toDateFilterInString == undefined || this.toDateFilterInString == "";
+    if (!(this.selectedVendorCompanies.length > 0) && !(this.selectedTeamMembers.length > 0) && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
+      this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else {
+      let validDates = false;
+      if (!(isEmptyFromDateFilter && isEmptyToDateFilter)) {
+        if (isValidFromDateFilter && isEmptyToDateFilter) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+        } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+        } else {
+          var toDate = Date.parse(this.toDateFilterInString);
+          var fromDate = Date.parse(this.toDateFilterInString);
+          if (fromDate <= toDate) {
+            validDates = true;
+          } else {
+            this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+          }
+        }
+      }
+
+      if (validDates || this.selectedTeamMembers.length > 0 || this.selectedVendorCompanies.length > 0) {
+        this.applyFilters();
+      }
+    }
   }
+
+  clearFilterdata() {
+    this.selectedVendorCompanies = [];
+    this.selectedTeamMembers = [];
+    this.selectedTeamMemberIds = [];
+    this.selectedVendorCompanyIds = [];
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.fromDateFilterInString = "";
+    this.toDateFilterInString = "";
+  }
+
+}

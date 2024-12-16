@@ -153,6 +153,9 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
       pagination.vanityUrlFilter = this.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
     }
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getTeamMemberTrackDetailsByInteraction(this.pagination, this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
