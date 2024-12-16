@@ -862,7 +862,8 @@
               <app-userwise-track-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
                 [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-                [applyFilter]="applyFilter"></app-userwise-track-details>
+                [applyFilter]="applyFilter" [fromDateFilter]="fromDateFilter"
+                [toDateFilter]="toDateFilter"></app-userwise-track-details>
             </div>
           </div>
         </span>
@@ -871,16 +872,18 @@
           <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
             <div class="col-sm-12 col-md-12 col-lg-12">
               <!--******************Track Asset Details*******************-->
-              <app-track-asset-details [type]="'TRACK'" [isTeamMemberAnalytics]="true"
-                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-                [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-                [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
-
+              <app-track-asset-details [type]="'TRACK'" [isTeamMemberAnalytics]="true" [vanityUrlFilter]="vanityUrlFilter"
+                [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter"
+                [isVendorVersion]="isVendorVersion" [fromDateFilter]="fromDateFilter"
+                [toDateFilter]="toDateFilter"></app-track-asset-details>
+        
               <!--******************Playbook Asset Details*******************-->
-              <app-track-asset-details [type]="'PLAYBOOK'" [isTeamMemberAnalytics]="true"
-                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-                [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-                [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
+              <app-track-asset-details [type]="'PLAYBOOK'" [isTeamMemberAnalytics]="true" [vanityUrlFilter]="vanityUrlFilter"
+                [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter"
+                [isVendorVersion]="isVendorVersion" [fromDateFilter]="fromDateFilter"
+                [toDateFilter]="toDateFilter"></app-track-asset-details>
             </div>
           </div>
         </span>
@@ -889,16 +892,19 @@
           <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm ) " class="row rowPaddingCustomize6">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
               <app-team-member-asset-analytics [selectedTeamMemberIds]="selectedTeamMemberIds"
-                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-member-asset-analytics>
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
+                [toDateFilter]="toDateFilter"></app-team-member-asset-analytics>
               <app-team-memberwise-assets-detailed-report [selectedTeamMemberIds]="selectedTeamMemberIds"
-                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-detailed-report>
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
+                [toDateFilter]="toDateFilter"></app-team-memberwise-assets-detailed-report>
             </div>
           </div>
         </span>
         <!--******************All Partner Details*******************-->
         <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm )" class="row rowPaddingCustomize4">
           <app-team-member-analytics-all-partners-details [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-member-analytics-all-partners-details>
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
+            [toDateFilter]="toDateFilter"></app-team-member-analytics-all-partners-details>
         </div>
         <!--******************Redistributed Camapign Details*******************-->
         <div
@@ -907,15 +913,15 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
             <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'"
               (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
-              (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)"
-              [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
-              [selectedTeamMemberIds]="selectedTeamMemberIds" [vanityUrlFilter]="vanityUrlFilter"
-              [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-pie-chart>
-            <app-redistributed-campaign-details [campaignTypeFilter]="selectedCampaignType"
-              [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+              (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)" [isTeamMemberAnalytics]="true"
+              [isVendorVersion]="isVendorVersion" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
+              [toDateFilter]="toDateFilter"></app-pie-chart>
+            <app-redistributed-campaign-details [campaignTypeFilter]="selectedCampaignType" [isTeamMemberAnalytics]="true"
+              [selectedTeamMemberIds]="selectedTeamMemberIds" [vanityUrlFilter]="vanityUrlFilter"
+              [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [isVendorVersion]="isVendorVersion" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter">
             </app-redistributed-campaign-details>
           </div>
         </div>
@@ -925,33 +931,34 @@
             <app-share-lead-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [applyFilter]="applyFilter"></app-share-lead-details>
+              [applyFilter]="applyFilter" [fromDateFilter]="fromDateFilter"
+              [toDateFilter]="toDateFilter"></app-share-lead-details>
           </div>
         </span>
         <!--******************Graphs Details*******************-->
         <div *ngIf="!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm"
           class="row rowPaddingCustomization3">
-          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
-            [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [vanityUrlFilter]="vanityUrlFilter"
-            [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'">
-          </app-redistributed-campaigns-and-leads-bar-chart>
-          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
-            [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
+          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
+            [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
             [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [chartId]="'allLeadsAndDealsBarChart'">
+            [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="fromDateFilter"
+            [toDateFilter]="toDateFilter">
           </app-redistributed-campaigns-and-leads-bar-chart>
-          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
-            [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [vanityUrlFilter]="vanityUrlFilter"
-            [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
-          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
-            [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [vanityUrlFilter]="vanityUrlFilter"
-            [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
+            [selectedTeamMemberIds]="selectedTeamMemberIds" [vanityUrlFilter]="vanityUrlFilter"
+            [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            [chartId]="'allLeadsAndDealsBarChart'" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter">
+          </app-redistributed-campaigns-and-leads-bar-chart>
+          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
+            [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+            [chartId]="'redistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="fromDateFilter"
+            [toDateFilter]="toDateFilter"></app-redistributed-campaigns-and-leads-bar-chart>
+          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
+            [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+            [chartId]="'top10LeadsAndDealsBarChart'" [fromDateFilter]="fromDateFilter"
+            [toDateFilter]="toDateFilter"></app-redistributed-campaigns-and-leads-bar-chart>
         </div>
         <!--******************Lead Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService?.enableLeads">
@@ -959,7 +966,8 @@
             <app-partner-journey-lead-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-lead-details>
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
+              [toDateFilter]="toDateFilter"></app-partner-journey-lead-details>
           </div>
         </span>
         <!--******************Deal Details*******************-->
@@ -968,7 +976,8 @@
             <app-partner-journey-deal-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-deal-details>
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [fromDateFilter]="fromDateFilter"
+              [toDateFilter]="toDateFilter"></app-partner-journey-deal-details>
           </div>
         </span>
         <!--******************Contact Details*******************-->
@@ -976,7 +985,8 @@
           *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing "
           class="row rowPaddingCustomize4">
           <app-team-member-analytics-contact-details [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+            [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter">
           </app-team-member-analytics-contact-details>
         </div>
         <!--******************Company Details*******************-->
@@ -984,7 +994,8 @@
           *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing "
           class="row rowPaddingCustomize4">
           <app-team-member-analytics-company-details [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+            [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter">
           </app-team-member-analytics-company-details>
         </div>
         <div *ngIf="!isVendorVersion" class="row rowPaddingCustomization2">

@@ -152,6 +152,9 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.pagination.campaignTypeFilter = this.campaignTypeFilter;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (!this.isVendorVersion) {
       pagination.vanityUrlFilter = this.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;

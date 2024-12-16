@@ -132,6 +132,9 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
                 teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
                 teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
                 teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;
+                teamMemberAnalyticsRequest.fromDateFilterInString = this.fromDateFilter
+                teamMemberAnalyticsRequest.toDateFilterInString = this.toDateFilter;
+                teamMemberAnalyticsRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDealsForTeamMember(teamMemberAnalyticsRequest, this.chartId, this.filterValue).subscribe(
                     response => {
                         this.processResponse(response);
