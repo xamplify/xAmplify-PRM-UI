@@ -850,6 +850,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				}
 			);
 	}
+	
+	filterAssets(tag:string){
+		
+		
+	}
 
 
 }
