@@ -1949,5 +1949,6 @@
    [hasCampaignAccess]="(authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution)"
    [hasDamAccess]="authenticationService?.module?.damAccess && module!='contacts'"
    [hasLmsAccess]="authenticationService?.module?.lmsAccess && module!='contacts'"
-   [hasPlaybookAccess]="authenticationService?.module?.playbookAccess && module!='contacts'">
+   [hasPlaybookAccess]="authenticationService?.module?.playbookAccess && module!='contacts'"
+   [hasDashboardButtonsAccess] ="authenticationService?.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.loggedInThroughOwnVanityUrl && isPartner">
 </app-share-unpublished-content>

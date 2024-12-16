@@ -2136,7 +2136,8 @@
 	[hasCampaignAccess]="(authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution)"
 	[hasDamAccess]="authenticationService?.module?.damAccess && checkingContactTypeName!='Contact'"
 	[hasLmsAccess]="authenticationService?.module?.lmsAccess && checkingContactTypeName!='Contact'"
-	[hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'">
+	[hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'"
+	[hasDashboardButtonsAccess] ="authenticationService?.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.loggedInThroughOwnVanityUrl && isPartner">
 </app-share-unpublished-content>
 
 </div>
