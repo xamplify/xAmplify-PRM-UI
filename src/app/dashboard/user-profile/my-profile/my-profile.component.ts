@@ -378,6 +378,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	forLandscapePartnerAccess :boolean = false;
 	isOrgAdmin: boolean;
 	isPartner: boolean;
+
+	VendorJourneyLabel="My Showcase";
+	partnerJourneyPageLabel="My Showcase";
+	vendorLandscapeLabel="My Landscape";
+	partnerLandscapeLabel="My Landscape";
+	vendorSharedPagesLabel="Vendor Showcase";
+	partnerSharedPagesLabel="Partner Showcase";
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2122,7 +2130,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.vendorJourney = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.vendorJourney + " Pages for your Partners";
+			this.activeTabHeader = this.VendorJourneyLabel;
 
 		}
 		else if (this.activeTabName == "landingPages") {
@@ -2133,7 +2141,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isLandingPages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.landingPages;
+			this.activeTabHeader = this.vendorSharedPagesLabel;
 		} else if (this.activeTabName == "masterLandingPages") {
 			this.ngxloading = true;
 			this.isMasterLandingPages = false;
@@ -2142,7 +2150,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isMasterLandingPages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.masterLandingPages;
+			this.activeTabHeader = this.partnerLandscapeLabel;
 		}else if (this.activeTabName == "masterLandingPageCategories") {
             this.ngxloading = true;
             this.isMasterLandingPageCategories = false;
@@ -2212,7 +2220,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isPartnerJourneyPages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.partnerJourneyPages + " Pages for your Vendors";
+			this.activeTabHeader = this.partnerJourneyPageLabel;
 		}else if (this.activeTabName == "vendorPartnerJourneyPages") {
 			this.ngxloading = true;
 			this.isVendorPartnerJourneyPages = false;
@@ -2221,7 +2229,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isVendorPartnerJourneyPages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.vendorPartnerJourneyPages;
+			this.activeTabHeader = this.partnerSharedPagesLabel;
 		}else if (this.activeTabName == "vendorMarketplacePages") {
 			this.ngxloading = true;
 			this.isVendorMarketplacePages = false;
@@ -2230,7 +2238,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isVendorMarketplacePages = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.vendorMarketplacePages;
+			this.activeTabHeader = this.vendorLandscapeLabel;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
