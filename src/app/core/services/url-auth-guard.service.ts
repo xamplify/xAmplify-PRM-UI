@@ -13,26 +13,12 @@ export class UrlAuthGuardService {
   private checkDamModuleAccessURL = "authorizeDamUrlAccess/";
   roles:Roles = new Roles();
   private AUTH_URL = this.authenticationService.REST_URL + RouterUrlConstants.authorize;
-  constructor(private authenticationService:AuthenticationService) {
-
-   }
+  constructor(private authenticationService:AuthenticationService) {}
 
   authorizeUrlAccess(routerUrl: string) {
-    let isDamRouterUrl = routerUrl.includes("/home/dam") || routerUrl.includes("/home/select-modules");
-    let isTrackRouterUrl = routerUrl.includes("/home/tracks");
-    let isPlaybookRouterUrl = routerUrl.includes("/home/playbook");
-    let moduleId = 0;
-    let moduleName = "";
-    if (isDamRouterUrl) {
-      moduleId = this.roles.damId;
-      moduleName = "dam";
-    } else if (isTrackRouterUrl) {
-      moduleId = this.roles.learningTrackId;
-      moduleName = "tracks";
-    } else if (isPlaybookRouterUrl) {
-      moduleId = this.roles.playbookId;
-      moduleName = "playbook";
-    }
+    const moduleInfo = this.getContentModuleInfo(routerUrl);
+    const moduleId = moduleInfo.moduleId;
+    const moduleName = moduleInfo.moduleName;
     const contentModuleRouterUrlsForPartner = ["modules", "shared", "editp", "pda", "tb", "pb"];
     let componentUrlName = this.getComponentUrlName(routerUrl, contentModuleRouterUrlsForPartner, moduleName);
     let url = this.AUTH_URL + "url/modules/" + moduleId + "/users/" + this.userId + "/routerUrls/" + componentUrlName + this.ACCESS_TOKEN_PARAMETER + this.authenticationService.access_token;
@@ -43,7 +29,18 @@ export class UrlAuthGuardService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  getComponentUrlName(currentUrl:string,routes:any,defaultUrl:string){
+  getContentModuleInfo(routerUrl: string) {
+    if (routerUrl.includes("/home/dam") || routerUrl.includes("/home/select-modules")) {
+      return { moduleId: this.roles.damId, moduleName: "dam" };
+    } else if (routerUrl.includes("/home/tracks")) {
+      return { moduleId: this.roles.learningTrackId, moduleName: "tracks" };
+    } else if (routerUrl.includes("/home/playbook")) {
+      return { moduleId: this.roles.playbookId, moduleName: "playbook" };
+    }
+    return { moduleId: 0, moduleName: "" };
+  }
+
+  getComponentUrlName(currentUrl: string, routes: any, defaultUrl: string) {
     for (const route of routes) {
       if (currentUrl.includes(route)) {
         return route;

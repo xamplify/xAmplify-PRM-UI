@@ -74,8 +74,7 @@
             <!--Lead Details-->
             <div class="panel-group" role="tablist" aria-multiselectable="true"
               *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin)))
-                       && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion && actionType != 'add'))
-                       && (isFromFormAnalytics&& (formSubmitForCompanyId == null || formSubmitForCompanyId == 0))">
+                       && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion && actionType != 'add'))">
               <div class="panel panel-default deal-bgcolor" *ngIf="isLeadDetailsTabDisplayed">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">

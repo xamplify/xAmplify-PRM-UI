@@ -146,8 +146,13 @@ export class AddTaskModalPopupComponent implements OnInit {
     let now: Date = new Date();
     now.setMinutes(now.getMinutes() + 30);
     let defaultDate;
-    if (this.taskActivity.remainder != undefined && this.taskActivity.remainder != null) {
+    if (this.referenceService.checkIsValidString(this.taskActivity.remainder)) {
       defaultDate = new Date(this.taskActivity.remainder);
+    }
+    let maxDate: Date = new Date();
+    if (this.referenceService.checkIsValidString(this.taskActivity.dueDate)) {
+      let dueDate = new Date(this.taskActivity.dueDate);
+      maxDate.setTime(dueDate.setMinutes(dueDate.getMinutes() - 30));
     }
 
     if (this.actionType == 'add') {
@@ -157,7 +162,7 @@ export class AddTaskModalPopupComponent implements OnInit {
         time_24hr: true,
         minDate: now,
         defaultDate: defaultDate,
-        maxDate: Date.parse(this.taskActivity.dueDate)
+        maxDate: maxDate
       })
     } else {
       this.remainderDatePickr = flatpickr('#taskActivityRemainderPicker', {
@@ -166,7 +171,7 @@ export class AddTaskModalPopupComponent implements OnInit {
         time_24hr: true,
         minDate: now,
         defaultDate: defaultDate,
-        maxDate: Date.parse(this.taskActivity.dueDate)
+        maxDate: maxDate
       })
     };
   }
@@ -255,6 +260,7 @@ export class AddTaskModalPopupComponent implements OnInit {
         if (this.taskActivity.remainderType == 'CUSTOMDATE') {
           this.showRemainderDate = true;
         }
+        this.checkRemainderOptionsVisibility();
       }
     )
   }
