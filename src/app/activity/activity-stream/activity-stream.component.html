@@ -13,6 +13,15 @@
                 </option>
               </select>
             </div>
+            <div class="ml5">
+              <input type="text" autocomplete="off" id="sort-text" class="form-control"
+                [(ngModel)]="activitySortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                (keypress)="activityEventHandler($event.keyCode)">
+              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activitySortOption.searchKey"
+                (click)="activitySortOption.searchKey='';clearSearch();"></button>
+              <button type="submit" class="search-box-item-click" (click)="searchActivities();"><i
+                  class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
           </div>
         </div>
       </div>
@@ -30,20 +39,21 @@
       <div>
         <div class="activity-header">
           <span><i class="fas fa-user icon"></i><label
-              class="mr5 activity-title">From:</label>{{activity.schedule}} </span>
+              class="mr5 activity-title">From:</label><span data-toggle="tooltip" data-placement="top" title="{{activity.schedule}}">{{activity.schedule | slice:0:28}}</span><span *ngIf="activity.schedule.length>28">...</span></span>
           <span *ngIf="activity.stage=='DELIVERED'" class="activity-date"><i
               class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
           <span *ngIf="activity.stage=='OPENED'" class="activity-date"><i
               class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.updatedTime"></app-display-date-and-time></span>
         </div>
-        <div class="activity-body">
+        <div class="activity-body mt0">
           <span><i class="fa fa-comment icon"></i><label
-              class="mr3 activity-title">Subject:</label>{{activity.name}}</span>
+              class="mr3 activity-title">Subject:</label><span>{{activity.name | slice:0:100}}<span *ngIf="activity.name.length>100">...</span></span></span>
         </div>
-        <div class="activity-footer">
+        <div class="activity-footer mt0">
           <span class="activity-title">Status: <span
               [ngClass]="activity.stage=='OPENED'?'view-banner activity-updated-status-btn' : 'view-banner activity-created-status-btn'">{{activity.stage}}</span></span>
-          <a (click)="viewEmail(activity.id)"><span>View details</span></a>
+          <a (click)="viewEmail(activity.id)" data-toggle="tooltip" data-placement="bottom" title="View details"><i class="fas fa-eye task_view"
+            aria-hidden="true"></i></a>
         </div>
       </div>
       </fieldset>
@@ -52,42 +62,28 @@
         <legend [ngClass]="activity.activity == 'CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Note {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
       <div>
         <div class="activity-header">
-          <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewNote(activity.id)">
-            <span>{{activity.name}}</span></a></span>
+          <span><label class="activity-title mr5 mb0">Title:</label><a class="underline-on-hover" (click)="viewNote(activity.id)" data-toggle="tooltip" data-placement="top" title="{{activity.name}}">
+            <span>{{activity.name | slice:0:30}}</span><span *ngIf="activity.name.length > 30">...</span></a></span>
           <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
-        <div class="activity-body" *ngIf="activity.schedule == 'PUBLIC'">
+        <div class="activity-body mt0" *ngIf="activity.schedule == 'PUBLIC'">
           <span class=""><i class="fas fa-user icon"></i>{{activity.closeDate}}</span>
-           <!-- <span>Need to handle created by Note.</span> -->
         </div>
-        <div class="note-activity-body">
+        <div class="activity-body text-baseline mt0 mb5">
           <i class="fa fa-comment icon"></i>
-          <span>{{activity.stage | slice:0:100}}<a *ngIf="activity.stage.length>100" (click)="viewNote(activity.id)">
+          <span>{{activity.stage | slice:0:100}}<a *ngIf="activity.stage.length>100" class="underline-on-hover" (click)="viewNote(activity.id)">
             <span>..View More</span></a></span>
         </div>
         <div class="activity-footer">
-          <span [ngClass]="activity.schedule=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i class=" fa fa-lock" *ngIf="activity.schedule=='PRIVATE'"></i> {{activity.schedule}}</span>
+          <span
+            [ngClass]="activity.schedule=='PUBLIC'?'view-banner activity-updated-status-btn' : 'view-banner note-visibility-private-label'"><i
+              class=" fa fa-lock" *ngIf="activity.schedule=='PRIVATE'"></i> {{activity.schedule}}</span>
           <span>
-            <!--1st version-->
-            <a (click)="showEditNoteTab(activity.id)"><span class="mr10">edit</span></a>
-          <a (click)="showDeleteConformationAlert(activity.id)"><span>delete</span></a>
-    
-          <!--2nd version-->
-          <!-- <button type="submit" class="button bgcolor-unset m0 p0" (click)="showEditNoteTab(note)">
-            <span class="view-banner"><i class="fa fa-edit"></i>EDIT</span></button>
-          <button type="submit" class="button bgcolor-unset m0 p0" (click)="showDeleteConformationAlert(note)">
-            <span class="view-banner delete-bg-color"><i class="fa fa-trash-o"></i>DELETE</span></button> -->
-    
-            <!--3rd version-->
-            <!-- <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
-            (click)="showEditNoteTab(note)" data-toggle="tooltip" data-placement="bottom" title="Edit Note" id="note">
-              <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
-              <div class="clickicons"></div>
-            </a>
-            <a class="custom-icon" data-rel="fancybox-button" (click)="showDeleteConformationAlert(note)" data-toggle="tooltip" data-placement="bottom" title="Delete Note" id="note">
-              <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-              <div class="del-icon"></div>
-            </a> -->
+            <span><a *ngIf="activity.editEnabled" class="mr5" (click)="showEditNoteTab(activity.id)" data-toggle="tooltip" data-placement="bottom"
+                title="Edit note"><i class="fas fa-pencil-alt task_edit" aria-hidden="true"></i></a>
+              <a *ngIf="activity.deleteEnabled" (click)="showDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom"
+                title="Delete note"><i class="fas fa-trash task_delete" aria-hidden="true"></i></a>
+            </span>
           </span>
         </div>
       </div>
@@ -97,17 +93,13 @@
         <legend class="scheduler-borders campaign_boxes sent-activity">Campaign Launched</legend>
       <div>
         <div class="activity-header">
-          <span><label class="activity-title mr5 mb0">Title:</label><a (click)="viewCampaignTimeLine(activity.id)">
+          <span><label class="activity-title mr5 mb0">Title:</label><a class="underline-on-hover" data-toggle="tooltip" data-placement="top" title="{{activity.name}}" (click)="viewCampaignTimeLine(activity.id)">
             <span>{{activity.name}}</span></a></span>
           <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
-        <div class="activity-body">
+        <div class="activity-body mt0">
           <span><label class="mr3 activity-title">Type:</label> {{activity.stage}}</span>
         </div>
-        <!-- <div class="activity-footer">
-          <span class="activity-title">Status: <span
-              [ngClass]="activity.schedule=='SCHEDULE'?'view-banner' : 'view-banner published'">{{activity.schedule}}</span></span>
-        </div> -->
       </div>
       </fieldset>
       <!---Lead--->
@@ -116,31 +108,69 @@
       <div>
         <div class="activity-header">
           <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Name:</label><a
-              (click)="viewLead(activity.id)">
+              class="underline-on-hover" (click)="viewLead(activity.id)" data-toggle="tooltip" data-placement="top" title="{{activity.name}}">
               <span> {{activity.name}}</span></a></span>
           <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
-        <div class="activity-body">
+        <div class="activity-body mt0">
           <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
         </div>
       </div>
       </fieldset>
       <!---Deal--->
       <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Deal'">
-        <legend [ngClass]="activity.activity == 'DEAL_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Deal {{activity.activity == 'DEAL_CREATED'?'Created':'Stage Updated'}}</legend>
-      <div>
-        <div class="activity-header">
-          <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Title:</label><a
-              (click)="viewDeal(activity.id)">
-              <span> {{activity.name}}</span></a></span>
-          <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
+        <legend
+          [ngClass]="activity.activity == 'DEAL_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">
+          Deal {{activity.activity == 'DEAL_CREATED'?'Created':'Stage Updated'}}</legend>
+        <div>
+          <div class="activity-header">
+            <span><label class="activity-title mr5 mb0">Title:</label><a
+                class="underline-on-hover" (click)="viewDeal(activity.id)" data-toggle="tooltip" data-placement="top" title="{{activity.name}}">
+                <span> {{activity.name}}</span></a></span>
+            <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time
+                [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
+          </div>
+          <div class="activity-body deal-flex-wrap mt0">
+            <span *ngIf="activity.schedule != undefined"><label class="activity-title">Amount:
+              </label> {{activity.schedule}}</span>
+            <span><i class="fa fa-calendar mr3" aria-hidden="true"></i><label class="activity-title">Close Date:</label>
+              {{activity.closeDate | slice:0:10}}</span>
+            <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
+          </div>
         </div>
-        <div class="activity-body deal-flex-wrap">
-          <span *ngIf="activity.schedule != undefined"><i class="fa fa-usd mr3"></i><label class="activity-title">Amount: </label> {{activity.schedule}}</span>
-          <span><i class="fa fa-calendar mr3" aria-hidden="true"></i><label class="activity-title">Close Date:</label> {{activity.closeDate | slice:0:10}}</span>
-          <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
-        </div>
-      </div>
+      </fieldset>
+      <!--- Task --->
+      <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Task'">
+        <legend
+        [ngClass]="activity.activity == 'CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">
+          Task {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
+          <div>
+            <div class="activity-header">
+              <span><label class="mr5 activity-title">Title:</label><a class="underline-on-hover" (click)="viewTask(activity.id)" data-toggle="tooltip" data-placement="top" title="{{activity.name}}"><span>{{activity.name | slice:0:35}}</span><span *ngIf="activity.name.length > 35">...</span></a></span>
+              <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity.createdTime"></app-display-date-and-time></span>
+            </div>
+            <div class="activity-body task_body_jc mt0">
+              <span class="activity-title">Status: <span
+                  class="view-banner activity-updated-status-btn">{{activity.closeDate}}</span></span>
+              <span><i *ngIf="activity?.stage == 'Medium'" class="fas fa-equals icon medium_priority"></i><i
+                  *ngIf="activity?.stage == 'Low'" class="fas fa-angle-down icon low_priority"></i><i
+                  *ngIf="activity?.stage == 'High'" class="fas fa-angle-up icon danger high_priority"></i><label
+                  class="activity-title">{{activity.stage}}</label></span>
+              <span><label class="mr3 activity-title">Type:</label><span class="view-banner activity-updated-status-btn-v2" >
+                <i *ngIf="activity.schedule == 'Note'" class="fa fa-pencil-square-o fs-10px"></i><i *ngIf="activity.schedule == 'Email'" class="fa fa-envelope-o fs-10px"></i><i *ngIf="activity.schedule == 'Todo'" class="fa fa-list-alt fs-10px"></i>
+                {{activity.schedule == 'Todo' ? 'To Do':activity.schedule}}</span></span>
+            </div>
+            <div class="activity-footer mt0">
+              <span class="activity-title">Due Date: <span class="activity-date"><i
+                    class="fa fa-calendar"></i><app-display-date-and-time
+                    [dateAndTimeUTCString]="activity.dueDateString"></app-display-date-and-time></span></span>
+              <span><a *ngIf="activity.editEnabled" class="mr5" (click)="editTask(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Edit task"><i class="fas fa-pencil-alt task_edit"
+                    aria-hidden="true"></i></a>
+                <a *ngIf="activity.deleteEnabled" (click)="showDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Delete task"><i class="fas fa-trash task_delete"
+                    aria-hidden="true"></i></a>
+              </span>
+            </div>
+          </div>
       </fieldset>
     </div>
     <!-- --------------------Pagination0-------------------- -->
@@ -154,11 +184,16 @@
   </div>
 </div>
 
-<!-- <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
-  [emailActivityId]="emailActivityId" (notifyClose)="closeModalPopup()"></app-add-email-modal-popup> -->
-
-  <app-preview-email-activity *ngIf="showEmailModalPopup" [emailActivityId]="emailActivityId"
+<app-preview-email-activity *ngIf="showEmailModalPopup" [emailActivityId]="emailActivityId"
   (notifyClose)="closeModalPopup()" [contactName]="contactName" [contactEmailId]="contactEmailId"></app-preview-email-activity>
 
 <app-add-note-modal-popup *ngIf="showNoteModalPopup" [noteId]="noteId" [isReloadTab]="reloadTab" [actionType]="actionType"
-  (notifyClose)="closeNoteModalPopup()" (notifySuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>
+  (notifyClose)="closeNoteModalPopup()" (notifyUpdateSuccess)="showNoteCutomResponse($event)"></app-add-note-modal-popup>
+
+<app-add-task-modal-popup *ngIf="showTaskModalPopup" [userId]="contactId" [taskActivityId]="taskActivityId"
+  [actionType]="actionType" (notifyClose)="closeTaskModalPopup()"
+  (notifyUpdateSuccess)="showUpdateSuccessStatus($event)"
+  [isReloadTaskActivityTab]="reloadTab"></app-add-task-modal-popup>
+
+<app-preview-task-activity *ngIf="showPreviewTaskModalPopup" [taskActivityId]="taskActivityId"
+  (notifyClose)="closePreviewTaskModalPopup()"></app-preview-task-activity>

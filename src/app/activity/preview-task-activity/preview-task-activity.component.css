@@ -1,0 +1,25 @@
+.left_aligned_input_field {
+    padding: 0px 4px 0px 0px;
+}
+.right_aligned_input_field {
+    padding: 0px 0px 0px 2px;
+}
+.bg-soft-info {
+    position: relative;
+    display: inline-block;
+    padding: 6px 8px !important;
+    margin: 3px 2px;
+    font-size: 11px !important;
+    background-color: #d7efff;
+    border: 1px solid#ddd;
+    color: #3175af;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+a.bg-soft-info:hover {
+    color: #ffffff;
+    background-color: #257fba;
+}

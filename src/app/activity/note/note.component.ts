@@ -22,8 +22,10 @@ export class NoteComponent implements OnInit {
 
   @Input() contactId:number;
   @Input() reloadTab: boolean;
-  @Output() notifySuccess = new EventEmitter();
+  @Output() notifyUpdateSuccess = new EventEmitter();
   @Output() notifyDeleteSuccess = new EventEmitter();
+  @Output() notifySubmitSuccess = new EventEmitter();
+  @Output() notifySubmitFailed = new EventEmitter();
  
   notePagination: Pagination = new Pagination();
   selectedFilterIndex: number = 1;
@@ -91,6 +93,7 @@ export class NoteComponent implements OnInit {
   getAllFilteredNoteActivityResults() {
     this.notePagination.pageIndex = 1;
     this.notePagination.searchKey = this.noteSortOption.searchKey;
+    this.notePagination = this.utilService.sortOptionValues(this.sortOption.noteActivityDropDownOption, this.notePagination);
     this.fetchAllNoteActivities(this.notePagination);
   }
 
@@ -118,9 +121,9 @@ export class NoteComponent implements OnInit {
     this.showNoteModalPopup = false;
   }
 
-  showNoteCutomResponse(event) {
+  showNoteUpdateSuccessStatus(event) {
     this.showNoteModalPopup = false;
-    this.notifySuccess.emit(event);
+    this.notifyUpdateSuccess.emit(event);
   }
 
   deleteNote(note:any) {
@@ -165,6 +168,26 @@ export class NoteComponent implements OnInit {
     if (keyCode === 13) {
       this.searchNoteActivities();
     }
+  }
+
+  sortBy(text: any) {
+    this.sortOption.noteActivityDropDownOption = text;
+    this.getAllFilteredNoteActivityResults();
+  }
+
+  openAddNoteModalPopup() {
+    this.actionType = 'add';
+    this.showNoteModalPopup = true;
+  }
+
+  showNoteSubmitSuccessStatus(event) {
+    this.showNoteModalPopup = false;
+    this.notifySubmitSuccess.emit(event);
+  }
+
+  showNoteSubmitFailedStatus(event) {
+    this.showNoteModalPopup = false;
+    this.notifySubmitFailed.emit(event);
   }
 
 }

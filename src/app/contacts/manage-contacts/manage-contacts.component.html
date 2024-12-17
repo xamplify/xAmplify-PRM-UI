@@ -276,7 +276,7 @@
                      </div>
                   </div>
                   <!-- End tile here-->
-                  <div [ngClass]="{'page-bar remove_cardBgcolor p10 light_bg_removal': showListOfContactList}">
+                  <div [ngClass]="{'page-bar remove_cardBgcolor p0 light_bg_removal': showListOfContactList}">
                      <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                         <div class="tab-pane active">
                            <div class="row mr0 ml0">
@@ -296,9 +296,9 @@
                                     (click)="zohoAuthenticationThroughExpiredAccessTokenMessage('zoho')"
                                     class="badge badge-primary"> ReLogin</a></h4>
                            </span>
-                           <div [className]="checkingContactTypeName=='Contact' ? 'row':'m0' "
+                           <div [className]="checkingContactTypeName=='Contact' ? 'row mb10':'m0' "
                               *ngIf="showListOfContactList">
-                              <div [className]="checkingContactTypeName=='Contact' ? 'colxs-12 col-sm-6 col-md-6':''">
+                              <div [className]="checkingContactTypeName=='Contact' ? 'col-xs-12 col-sm-6 col-md-6':''">
                                  <ul *ngIf="checkingContactTypeName=='Contact'" class="mix-filter">
                                     <li class="filter" (click)="filterContacts('MY-CONTACTS',0)"
                                        [class.contact-filter-selected]="0 == selectedFilterIndex" translate>My Contacts
@@ -316,7 +316,7 @@
                                  <ul class="page-breadcrumb" style="padding-left: 0px;"
                                     *ngIf="checkingContactTypeName!='Contact'">
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
-                                       <span class="fs-16" id="col-black" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span id="col-black" translate>Groups</span>
+                                       <span class="fs-16" id="col-black" translate>Your</span> {{authenticationService?.partnerModule?.customName | translate}} <span  class="fs-16" id="col-black" translate>Groups</span>
                                     </li>
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
                                        Your {{checkingContactTypeName | translate}} Lists
@@ -1098,7 +1098,7 @@
       <div class="row">
          <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="page-bar remove_cardBgcolor neg_mrg_top14 light_bg_removal">
-               <div class="tab-content table-padding">
+               <div class="tab-content table-padding p0">
                   <!-- BEGIN PAGE HEADER-->
                   <div class="" style="">
                      <div style="float:left;padding: 10px 0px 0px 0px">
@@ -1170,7 +1170,7 @@
                         </div>
                         <app-list-loader *ngIf="contactsByType?.isLoading"></app-list-loader>
                         <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
-                           <div class="portlet-title pb_8 pb_4 remove_border" style="border:none; margin-top: 10px;">
+                           <div class="portlet-title pb_8 pb_4 remove_border mt5" style="border:none;">
                               <div class="caption pd_lft4">
                                  <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
                                  <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'

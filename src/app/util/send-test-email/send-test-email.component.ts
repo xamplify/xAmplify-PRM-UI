@@ -5,6 +5,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { ReferenceService } from 'app/core/services/reference.service';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { ActivatedRoute } from '@angular/router';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 declare var $: any;
 @Component({
   selector: 'app-send-test-email',
@@ -23,6 +24,10 @@ export class SendTestEmailComponent implements OnInit {
   @Input() fromEmailUserId = 0;
   @Input() campaignSendTestEmail = false;
   @Input() campaign: any;
+  @Input() vanityTemplatesPartnerAnalytics: boolean; 
+  @Input() toEmailId :any;
+  @Input() selectedItem : any;
+  @Output() sendmailNotify =new EventEmitter
   email = "";
   headerTitle = "";
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
@@ -38,7 +43,7 @@ export class SendTestEmailComponent implements OnInit {
   isValidSubject = false;
   sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
   clicked = false;
-  constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute) { }
+  constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
     this.processing = true;
@@ -48,7 +53,11 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto.fromName = this.fromName;
     this.referenceService.openModalPopup(this.modalPopupId);
     $('#sendTestEmailHtmlBody').val('');
-    this.getTemplateHtmlBodyAndMergeTagsInfo();
+    if(this.vanityTemplatesPartnerAnalytics){
+      this.getVanityEmailTemplatesPartnerAnalytics();
+    }else{
+      this.getTemplateHtmlBodyAndMergeTagsInfo();
+    }
   }
 
 
@@ -82,21 +91,57 @@ export class SendTestEmailComponent implements OnInit {
     );
   }
 
+  getVanityEmailTemplatesPartnerAnalytics() {
+    this.processing = true;
+    this.vanityURLService.getHtmlBody(this.id).subscribe(
+      response => {
+        let map = response.data;
+        let htmlBody = map.body;
+        let subject = map.subject;
+        let mergeTagsInfo = map['mergeTagsInfo'];
+        htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
+        this.sendTestEmailDto.body = htmlBody;
+        this.sendTestEmailDto.subject = subject;
+        this.sendTestEmailDto.toEmail = this.toEmailId;
+        if (this.sendTestEmailDto.subject.length > 0 && this.sendTestEmailDto.toEmail.length > 0 && this.referenceService.validateEmailId(this.sendTestEmailDto.toEmail)) {
+          this.isValidForm = true;
+        } else {
+          this.isValidForm = false;
+        }
+        $('#sendTestEmailHtmlBody').append(htmlBody);
+        $('div.selector, div.selector span, div.checker span, div.radio span, div.uploader, div.uploader span.action, div.button, div.button span')
+          .css('background-image', 'url("path/to/your/new-image.png")');
+        $('div.button span span a').each(function () {
+          this.style.setProperty('opacity', 'unset', 'important');
+        });
+        $('tbody').addClass('preview-shown')
+        this.processing = false;
+      }, error => {
+        this.processing = false;
+        this.callEventEmitter();
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+  }
 
   send() {
     this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
     this.validateForm();
     if (this.isValidForm) {
-      if (this.campaignSendTestEmail) {
-        this.sendCampaignTestEmail();
-      } else {
-        this.sendTestEmail();
+      if(this.vanityTemplatesPartnerAnalytics){
+        this.sendmailNotify.emit({'item' : this.selectedItem });
+        this.callEventEmitter();
+      }else{
+        if (this.campaignSendTestEmail) {
+          this.sendCampaignTestEmail();
+        } 
+        else {
+          this.sendTestEmail();
+        }
       }
-
     } else {
       this.showErrorMessage("Please provide valid inputs.");
     }
-
   }
 
   private sendCampaignTestEmail() {

@@ -43,7 +43,7 @@
             <span></span>
             <span></span>
           </div>
-          <div class="navbar-navs" *ngIf="!loading && !helpGuidesUrl">
+          <div class="navbar-navs" *ngIf="!loading && !helpGuidesUrl && !refService.isOpenUniversalSearch">
             <i class='fa fa-bars' (click)="openSidebar()"></i>
             <div class="nav-link">
               <!-- logo -->
@@ -128,7 +128,7 @@
         <!-- Btns -->
         <!-- <ng-template [ngTemplateOutlet]="universalSearch"></ng-template> -->
         <div class="xamplify-btn-group xamplify-refer-vendor-button xamplify-right">
-          <ng-template [ngTemplateOutlet]="universalSearchButtonTemplate"></ng-template>
+          <ng-template *ngIf="!helpGuidesUrl && authenticationService?.user?.hasCompany && userId!=1" [ngTemplateOutlet]="universalSearchButtonTemplate"></ng-template>
 
                             <!--Invite A Vendor For Normal Login-->
                             <ng-container *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService?.vanityURLEnabled  &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
@@ -385,19 +385,11 @@
 -------------------------------------------------------------------------------
  -->
 <ng-template #universalSearchButtonTemplate>
-  <div class="universal-search-div" *ngIf="userId!=1">
-    <a class=" universal-search">
-      <div class="universalsearchBox">
-        <input class="universalsearchInput" [(ngModel)]="searchKey" type="text" name="" placeholder="Search"
-          (keypress)="universalSearchOnKeyPress($event.keyCode)">
-        <i class="fa fa-times universal-close" aria-hidden="true" *ngIf="isEmptyOrWhitespace(searchKey)"
-          (click)="searchKey='';goToDashBoard();"></i>
-        <button (click)="universalSearch();" class="universalsearchButton" [disabled]="!isEmptyOrWhitespace(searchKey)"
-          [ngClass]="isEmptyOrWhitespace(searchKey)? '':'xamplify-disabled-div'">
-          <i class="fa fa-search" [ngClass]="isEmptyOrWhitespace(searchKey)?'':'xamplify-disabled'">
-          </i>
-        </button>
-      </div>
-    </a>
+  <button *ngIf="!refService.isOpenUniversalSearch" (click)="showUniversalSearch()" class="universal-search-show-button" >
+    <i class="fa fa-search"></i>
+    <span class="universal-tooltip">Search</span>
+  </button>
+  <div class="universal-search-div" *ngIf="refService.isOpenUniversalSearch">
+  <app-universal-search-bar ></app-universal-search-bar>
   </div>
 </ng-template>

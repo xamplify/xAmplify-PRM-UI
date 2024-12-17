@@ -10,42 +10,44 @@
       </div>
       <div class="modal-body">
         <div>
-          <div class="form-group" *ngIf="!isPreview">
-            <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
+          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex" *ngIf="!isPreview">
+            <label for="exampleInputEmail1" class="display_flex pr45">To <span class="text-danger">*</span></label>
             <input type="text" id="toEmailId" [(ngModel)]="emailActivity.toEmailId" [ngModelOptions]="{standalone: true}"
              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" [disabled]="!isTestMail" />
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">From <span class="text-danger">*</span></label>
+          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">
+            <label for="exampleInputEmail1" class="display_flex pr25">From <span class="text-danger">*</span></label>
             <input type="text" id="toEmailId" [(ngModel)]="emailActivity.senderEmailId" [ngModelOptions]="{standalone: true}"
              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">CC</label>
-            <tag-input *ngIf="!isPreview" [(ngModel)]='ccEmailIds' #tagInput name="emails" #email="ngModel"
+          <div *ngIf="!showCCEmailInputField || !showBCCEmailInputField" class="f_r">
+            <span class="mr5" *ngIf="!showCCEmailInputField" data-toggle="tooltip" data-placement="bottom" title="Add Cc recipients"><a class="underline-on-hover" (click)="showCCEmailInputField = 'true'"><span>Cc</span></a></span>
+            <span *ngIf="!showBCCEmailInputField" data-toggle="tooltip" data-placement="bottom" title="Add Bcc recipients"><a class="underline-on-hover" (click)="showBCCEmailInputField = 'true'"><span>Bcc</span></a></span>
+          </div>
+          <div *ngIf="showCCEmailInputField" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">
+            <label class="display_flex pt12 pr46" for="exampleInputEmail1">CC</label>
+            <tag-input *ngIf="!isPreview" class="col-lg-11 col-md-11 col-sm-11 col-xs-11 p0" [(ngModel)]='ccEmailIds' #tagInput name="emails" #email="ngModel"
                [errorMessages]="errorMessages" [validators]="validators"
                [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
-               [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
+               [secondaryPlaceholder]="'Add Cc recipient(s)'" [clearOnBlur]="true" [addOnPaste]="true"
                [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
                [onTextChangeDebounce]="40">
             </tag-input>
-            <input *ngIf="isPreview" type="text" id="toEmailId" [(ngModel)]="emailActivity.ccEmailIds" [ngModelOptions]="{standalone: true}"
-             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">BCC</label>
-            <tag-input *ngIf="!isPreview" [(ngModel)]='bccEmailIds' #tagInput name="emails" #email="ngModel"
+          <div *ngIf="showBCCEmailInputField" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">
+            <label class="pr36 pt11" for="exampleInputEmail1">BCC</label>
+            <tag-input *ngIf="!isPreview" class="col-lg-11 col-md-11 col-sm-11 col-xs-11 p0" [(ngModel)]='bccEmailIds' #tagInput name="emails" #email="ngModel"
                [errorMessages]="errorMessages" [validators]="validators"
                [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
-               [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
+               [secondaryPlaceholder]="'Add Bcc recipient(s)'" [clearOnBlur]="true" [addOnPaste]="true"
                [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
                [onTextChangeDebounce]="40">
             </tag-input>
             <input *ngIf="isPreview" type="text" id="toEmailId" [(ngModel)]="emailActivity.bccEmailIds" [ngModelOptions]="{standalone: true}"
              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" disabled />
           </div>
-          <div class="form-group">
-            <label for="subjectLine">Email subject <span class="text-danger">*</span></label>
+          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">
+            <label class="display_flex pr7" for="subjectLine">Subject <span class="text-danger">*</span></label>
             <input type="text" id="subjectLine" [(ngModel)]="emailActivity.subject" [ngModelOptions]="{standalone: true}" [disabled]="isPreview"
              placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" (input)="validateEmail()" />
           </div>

@@ -262,3 +262,8 @@
       width: 95% !important;
     }
 }
+
+.tag-custom {
+  display: inline-block !important;
+}
+

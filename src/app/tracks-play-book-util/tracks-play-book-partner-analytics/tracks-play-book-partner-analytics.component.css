@@ -37,7 +37,7 @@
 .table thead tr th {
     font-size: 14px;
     font-weight: 600;
-    color: rgba(102, 102, 102, 0.65);
+    color: rgb(102 102 102);
     text-align: center;
 }
 

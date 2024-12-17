@@ -433,7 +433,8 @@ tr {
   border: dotted 3px #191b1e !important;
   color: white !important;
 }
-.custom-alert {
+.custom-alert,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white {
   background-color: #2b3c46 !important;
   border-color: #2f4857 !important;
 }
@@ -1156,7 +1157,8 @@ input#copy-link {
   border: 1px solid #191b1e !important;
 }
 .portlet.light,
-.feature-img {
+.feature-img,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white {
   background: #2c2f33 !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
@@ -4316,7 +4318,7 @@ i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place{margin-left: 0px !imp
 .profile_info span,.profile_info p,.address_title,.lead_details li,.icon-label,.activity-date,.activity-body,.panel-headings>.panel-title a{
 color: #fff!important;
 }
-.lead_details h3,.activity_bgcolor,.deals_card,.activity_card{
+.lead_details h3,.activity_bgcolor,.deals_card,.activity_card,.view_emailcard,.email_content{
   background: #2d3035 !important;
   border: 1px solid #191b1e!important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
@@ -4365,8 +4367,38 @@ tbody>tr#uploaded-csv-tr>td {
   background-color:#a0a0a0!important;
 }
 
+
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+  color: white !important;
+    background-color: #2c2f33 !important;
+    border: 1px solid #191b1e !important;
+    box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.universal-dropdown-menu {
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.universal-dropdown-menu li {
+  border-bottom: 1px solid #191b1e !important;
+}
+.universal-dropdown-menu li:hover {
+  background-color: #2c2f33 !important;
+  color: #fff;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.clear-icon,.universal-search-input {
+  color:#fff;
+}
+/*** XNFR-758 ***/
+
 /* Sudha Sri(27-11-2024) */
 .ffolder.big.gray.folder-cheight {
   background-color: #54a7e9 !important;
 } 
+.portlet.light.remove_space,.light_bg_removal.remove_space {
+  padding: 10px!important;
+}
 

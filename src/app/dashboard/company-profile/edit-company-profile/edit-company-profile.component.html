@@ -236,7 +236,7 @@
 														<th scope="col">Video Campaign</th>
 														<td><input type="checkbox" [(ngModel)]="campaignAccess.videoCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
-													<tr style="display: none;">
+													<tr>
 														<th scope="col">Social Campaign</th>
 														<td><input type="checkbox" [(ngModel)]="campaignAccess.socialCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
@@ -322,7 +322,7 @@
 													<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
-												<tr style="display: none;">
+												<tr>
 													<th scope="row">Social Share</th>
 													<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialShareOptionEnabled"
 															[ngModelOptions]="{standalone: true}"></td>
@@ -817,11 +817,11 @@
 					</div>
 
 					<div *ngIf="!imageChangedEvent && !!companyLogoImageUrlPath">
-						<img [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath" style="width:100%; margin-bottom: 5px;" />
+						<img [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath" style="width:100%; height: 227px; margin-bottom: 5px;" />
 					</div>	  
 
 				</div>
-				<div class="d-flex justify-content-between">
+				<div class="d-flex justify-content-between" style="padding-top: 5px;">
 					<div class="button-group" style="position: relative;text-align:left">
 						<button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatio()"
 							[disabled]="!showCropper">

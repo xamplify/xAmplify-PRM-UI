@@ -5,6 +5,10 @@
         data-original-title="Refresh" (click)="showAllEmailActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Send Email"
+        data-original-title="Refresh" (click)="openEmailModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">
@@ -32,21 +36,22 @@
   </div>
 </div>
 <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
-<div *ngIf="emailActivityPagination?.totalRecords>0 && !httpRequestLoader?.isLoading">
+<div *ngIf="emailActivityPagination?.pagedItems?.length>0 && !httpRequestLoader?.isLoading">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <div class="activity_card mb10" *ngFor="let emailActivity of emailActivityPagination?.pagedItems">
     <div class="activity-header">
-      <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">From:</label>{{emailActivity.senderEmailId}} </span>
+      <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">From:</label><span data-toggle="tooltip" data-placement="top" title="{{emailActivity.senderEmailId}}">{{emailActivity.senderEmailId | slice:0:28}}</span><span *ngIf="emailActivity.senderEmailId.length>28">...</span></span>
       <span *ngIf="emailActivity.status=='DELIVERED'" class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="emailActivity.createdTime"></app-display-date-and-time></span>
       <span *ngIf="emailActivity.status=='OPENED'" class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="emailActivity.openedTime"></app-display-date-and-time></span>
     </div>
     <div class="activity-body">
-      <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Subject:</label>{{emailActivity.subject}}</span>
+      <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Subject:</label><span>{{emailActivity.subject | slice:0:100}}<span *ngIf="emailActivity.subject.length>100">...</span></span></span>
     </div>
-    <div class="activity-footer">
+    <div class="activity-footer mt0">
       <span class="activity-title">Status: <span [ngClass]="emailActivity.status=='OPENED'?'view-banner activity-updated-status-btn' : 'view-banner published activity-created-status-btn'" >{{emailActivity.status}}</span></span>
-      <a (click)="viewEmail(emailActivity.id)"><span>View details</span></a>
+      <a (click)="viewEmail(emailActivity.id)" data-toggle="tooltip" data-placement="bottom" title="View details"><i class="fas fa-eye task_view"
+        aria-hidden="true"></i></a>
     </div>
   </div>
   <!-- --------------------Pagination0-------------------- -->
@@ -55,12 +60,13 @@
       (notifyParentDropDown)="fetchAllEmailActivities($event)"></app-pagination>
   </div>
 </div>
-<div *ngIf="!httpRequestLoader.isLoading && emailActivityPagination.totalRecords==0" class="alert alert-info">
+<div *ngIf="!httpRequestLoader.isLoading && emailActivityPagination?.pagedItems?.length==0" class="alert alert-info">
   <strong translate>No Data Found.</strong>
 </div>
 
-<!-- <app-add-email-modal-popup *ngIf="showEmailModalPopup" [userId]="contactId" [actionType]="actionType"
-  [emailActivityId]="emailActivityId" (notifyClose)="closeModalPopup()"></app-add-email-modal-popup>  -->
+<app-add-email-modal-popup *ngIf="showAddEmailModalPopup" [userId]="contactId" [actionType]="actionType"
+  (notifyClose)="closeEmailModalPopup()" (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"
+  (notifySubmitFailed)="showEmailSubmitFailedStatus($event)" [userEmailId]="contactEmailId"></app-add-email-modal-popup>
 
 <app-preview-email-activity *ngIf="showEmailModalPopup" [emailActivityId]="emailActivityId"
   (notifyClose)="closeModalPopup()" [contactName]="contactName" [contactEmailId]="contactEmailId"></app-preview-email-activity>

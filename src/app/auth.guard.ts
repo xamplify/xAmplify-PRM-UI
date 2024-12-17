@@ -320,9 +320,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             } else if (urlType == this.dealsUrl) {
                 return true;
             } else if (urlType == this.lmsUrl) {
-                return true;
+                /*** XNFR-696 ***/
+                this.authorizeUrlAccess(url);
             } else if (urlType == this.playbookUrl) {
-                return true;
+                /*** XNFR-695 ***/
+                this.authorizeUrlAccess(url);
             }
             /*******XNFR-83*******/
             else if (urlType == this.agencyUrl) {
@@ -455,7 +457,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     goToAccessDenied(url:string):boolean{
         if(!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember()) && 
             !url.includes("/home/partners/analytics") && !url.includes("/dam/") 
-            && !url.includes("/home/select-modules")){
+            && !url.includes("/home/select-modules") && !url.includes("/tracks/") && !url.includes("/playbook/")) {
             this.router.navigate( ['/access-denied'] );
             return false;
         } else {

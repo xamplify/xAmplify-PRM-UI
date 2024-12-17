@@ -1,7 +1,8 @@
-.maualSPFCardbg {
-    background-color: #e2f0ff;
+.view_emailcard {
+    background-color: #f6f9fc;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 7px;
+    border:1px solid #ddd;
 }
 /*  */
 .profile_header{
@@ -11,8 +12,8 @@
 .avatar2{
     background-color: #007bff;
     color: white;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -33,10 +34,17 @@
 }
 .activity-titles{
     white-space: nowrap;
-    font-size: 10px!important;
+    font-size: 11px!important;
+    color:#333;
 }
 .fs-10{
-    font-size: 10px!important;
+    font-size: 11px!important;
+}
+.mr2{
+    margin-right: 3px;
+}
+.view_subject{
+    margin: 16px 0px;
 }
 /* .email-card{
     background-color: #f1f5f9;
@@ -45,9 +53,10 @@
     border: 1px solid #ddd;
 } */
 .email_content{
-    background-color:#546b812b;
+    background-color: #a9a9a92b;
+    border:1px solid#ddd;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 7px;
     height: 150px;
     overflow-y: auto;
 }
@@ -92,6 +101,17 @@ border-radius: 3px;
 cursor: pointer;
 }
 a.bg-soft-info:hover {
-    color: #ffffff;
+    color: #ffffff!important;
     background-color: #257fba;
+}
+.portlet.light{
+    padding: 8px 12px !important;
+    border-radius:4px!important;
+}
+.fs-13{
+    font-size: 13px;
+}
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
 }

@@ -1,0 +1,124 @@
+<div class="modal fade right" id="addTaskModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeTaskModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">{{ isPreview ? 'View':'Add'}} Task</h4>
+      </div>
+      <div class="modal-body">
+        <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+        <div class="form-group">
+          <label for="subjectLine">Title<span class="text-danger">*</span></label>
+          <input type="text" id="subjectLine" [(ngModel)]="taskActivity.name" [ngModelOptions]="{standalone: true}"
+            (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
+            [disabled]="isPreview" />
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Assign To<span class="text-danger">*</span></label>
+          <app-searchable-dropdown *ngIf="showAssignedToUserDropdown" [searchableDropDownDto]="assignedToUsersSearchableDropDownDto"
+            [id]="taskActivity.assignedTo" [disableDropDown]="false"
+            (searchableDropdownEventEmitter)="getSelectedAssignedToUserId($event)">
+          </app-searchable-dropdown>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 p0">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
+            <label for="subjectLine">Task Type</label>
+            <select class="form-control option_user_icon" [(ngModel)]="taskActivity.taskType"
+              (ngModelChange)="validateTask()" id="select-dropdown">
+              <option [ngValue]="'TODO'">&#xf022; To Do</option>
+              <option [ngValue]="'NOTE'">&#xf044; Note</option>
+              <option [ngValue]="'EMAIL'">&#xf003; Email</option>
+            </select>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field">
+            <label for="subjectLine">Priority</label>
+            <select class="form-control option_user_icon" [(ngModel)]="taskActivity.priority"
+              (ngModelChange)="validateTask()" id="select-dropdown">
+              <option data-class="info"  [ngValue]="'LOW'">Low</option>
+              <option data-class="warning" [ngValue]="'MEDIUM'">Medium</option>
+              <option data-class="red" [ngValue]="'HIGH'">High</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 p0">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
+            <label for="subjectLine">Status<span class="text-danger">*</span></label>
+            <select class="form-control" [(ngModel)]="taskActivity.status"
+              (ngModelChange)="addTaskActivitystatus($event);validateTask()" id="select-dropdown">
+              <option [ngValue]="0">Select a status</option>
+              <option *ngFor="let status of statusDropDownOptions" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field">
+            <label for="subjectLine">Due Date<span class="text-danger">*</span></label>
+            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+              <input type="text" id="taskActivityDueDatePicker" class="form-control flatpickr" placeholder="Due Date"
+              [(ngModel)]="taskActivity.dueDate" [ngModelOptions]="{standalone: true}" (input)="dueDateError();validateTask()">
+              <div class="col-sm-12 text-danger" style="padding:0" *ngIf="isDueDateError">Due Date / Time is already over.</div>
+           </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 p0">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 left_aligned_input_field">
+            <label for="subjectLine">Reminder</label>
+            <select class="form-control" [(ngModel)]="taskActivity.remainderType" [disabled]="taskActivity.dueDate == undefined"
+              (ngModelChange)="handleRemainderType($event);validateTask()" id="select-dropdown">
+              <option [ngValue]="''">Select a reminder</option>
+              <option [ngValue]="'BEFORE30MIN'" [disabled]="isBeforeHalfAnHourEnable">30 Min Before</option>
+              <option [ngValue]="'BEFORE1HOUR'" [disabled]="isBeforeOneHourEnable">1 Hour Before</option>
+              <option [ngValue]="'BEFORE1DAY'" [disabled]="isBeforeOneDayEnable">1 Day Before</option>
+              <option [ngValue]="'BEFORE1WEEK'" [disabled]="isBeforeOneWeekEnable">1 Week Before</option>
+              <option [ngValue]="'CUSTOMDATE'">Custom Date</option>
+            </select>
+          </div>
+          <div [ngClass]="showRemainderDate ? 'form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field' : 'form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field hide_remainder_date'">
+            <label for="subjectLine">Custom Date<span class="text-danger">*</span></label>
+            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+              <input type="text" id="taskActivityRemainderPicker" class="form-control flatpickr" placeholder="Remainder"
+                [disabled]="taskActivity.dueDate == undefined" [(ngModel)]="taskActivity.remainder"
+                [ngModelOptions]="{standalone: true}" (input)="validateTask()">
+              <div class="col-sm-12 text-danger" style="padding:0" *ngIf="isDueDateError">Remainder / Time is already over.</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="subjectLine">Description</label>
+          <ckeditor *ngIf="!isPreview" name="body" [(ngModel)]="taskActivity.description" (change)="validateTask()"
+          [ngModelOptions]="{standalone: true}" [config]="ckeConfig"></ckeditor>
+        </div>
+        <div class="form-group">
+          <label for="attachments">Attachments:</label>
+          <input id="fileInput" class="hide_remainder_date" type="file" (change)="onFileChange($event);validateTask()" multiple>
+          <label for="fileInput" class="btn Btn-Green custom-file-label">
+            Choose a file
+          </label>
+          <div>
+            <ul *ngIf="(taskActivity?.taskAttachmentDTOs?.length > 0)">
+              <li *ngFor="let file of taskActivity?.taskAttachmentDTOs; let i = index">
+                {{ file.fileName }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
+                <button type="button" (click)="removeFileDTO(i);validateTask()"><i class="fa fa-times"></i></button>
+              </li>
+            </ul>
+            <ul *ngIf="(files.length > 0)">
+              <li *ngFor="let file of files; let i = index">
+                {{ file.name }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
+                <button type="button" (click)="removeFile(i);validateTask()"><i class="fa fa-times"></i></button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeTaskModal()" data-dismiss="modal">Cancel</button>
+        <button *ngIf="!isPreview && !isEdit" type="submit" class="button bgcolor-unset" [disabled]="!isValidTask"
+          (click)="save()"><span class="btn Btn-Green transition txt_pd-top3">Save</span></button>
+          <button *ngIf="!isPreview && isEdit" type="submit" class="button bgcolor-unset" [disabled]="!isValidTask"
+          (click)="update()"><span class="btn Btn-Green transition txt_pd-top3">Update</span></button>
+      </div>
+    </div>
+  </div>
+</div>

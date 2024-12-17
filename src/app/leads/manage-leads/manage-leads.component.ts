@@ -156,9 +156,11 @@ export class ManageLeadsComponent implements OnInit {
 }
 triggerUniversalSearch(){
   if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Lead') {
+    if(this.leadsSortOption.searchKey) {
+      this.referenceService.universalSearchKey = this.leadsSortOption.searchKey;
+    }
     this.leadsSortOption.searchKey = this.referenceService.universalSearchKey;
-    let keyCode:any = 13;
-    if (keyCode === 13) { this.searchLeads(); }
+    this.searchLeads();
   }
 }
 
@@ -238,7 +240,11 @@ triggerUniversalSearch(){
               () => { }
             );
           } else {
+            if(this.referenceService.universalSearchVendorOrPartnerView === 'Partner'){
+              this.showPartner()
+            } else {
             this.showVendor();
+            }
           }
         } else {
           this.showPartner();
@@ -261,12 +267,15 @@ triggerUniversalSearch(){
   ngOnDestroy() {
     this.referenceService.isCreated = false; 
     this.referenceService.universalId = 0; //XNFR-574
+    this.referenceService.universalSearchVendorOrPartnerView = "";
+    this.referenceService.universalModuleType = ""; //XNFR-758
   }
 
   showVendor() {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      //this.referenceService.universalSearchVendorOrPartnerView = 'Vendor';//XNFR-574
       this.getActiveCRMDetails();
       this.showLeads();
       if (this.prm) {
@@ -755,6 +764,7 @@ triggerUniversalSearch(){
 
   closeLeadForm(){
     this.showLeadForm = false;
+    this.referenceService.universalSearchKey = this.leadsSortOption.searchKey; //XNFR-758
     this.showLeads();
   }
 

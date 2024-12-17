@@ -10,5 +10,7 @@ export class PartnerJourneyRequest {
     fromDateFilterInString: any;
     toDateFilterInString: any;
     timeZone: any;
-    filterType:any;
+    filterType: any;
+    page: any;
+    size: any;
 }

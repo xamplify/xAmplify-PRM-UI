@@ -3079,12 +3079,12 @@ Page content
 }
 .page-bar .page-breadcrumb > li > a,
 .page-bar .page-breadcrumb > li > span {
-  color: #888;
+  color: #444;
   font-size: 13px;
   text-shadow: none;
 }
 .page-bar .page-breadcrumb > li > i {
-  color: #aaa;
+  color: #7c7c7c;
   font-size: 14px;
   text-shadow: none;
 }

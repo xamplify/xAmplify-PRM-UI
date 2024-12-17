@@ -11,9 +11,9 @@
         <div class="inputs Fullboxmargin">
           <div class="col-xs-6 col-sm-6 col-lg-6 p0 SotybyBoxPosition">
             <div style="float: left;" *ngIf="!isCollapsed">
-              <select class="form-control Shortbyfield" [(ngModel)]="sortOption.selectedSortedOption"
+              <select class="form-control Shortbyfield" [(ngModel)]="sortOption.selectedSortedOptionForPartnerJourney"
                 (ngModelChange)="getSortedResults($event)">
-                <option *ngFor="let option of sortOption.sortByDropDown" [ngValue]="option">{{option.name}}</option>
+                <option *ngFor="let option of sortOption.sortByDropDownForPartnerJourney" [ngValue]="option">{{option.name}}</option>
               </select>
             </div>
           </div>

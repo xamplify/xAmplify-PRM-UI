@@ -152,7 +152,8 @@ export class UtilService {
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
-            localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey,"");//XNFR-574
+            localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey,JSON.stringify(''));//XNFR-574
+            localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchFilterBy,JSON.stringify('All'));//XNFR-574
     }
 
     isLoggedAsTeamMember(){

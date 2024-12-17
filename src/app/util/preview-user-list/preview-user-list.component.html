@@ -63,7 +63,7 @@
                             <span class="required" title="Not Published" >
                               <i class="fa fa-times-circle"></i>
                             </span>
-                            <span *ngIf="isDashboardButtonsModule || isAssetsModule" title="Click here to publish">
+                            <span *ngIf="isDashboardButtonsModule || isAssetsModule || isPlayBooksModule || isLmsModule" title="Click here to publish">
                               <a (click)="publish(user)"><i  class="fa fa-share"></i></a>
                             </span>
                           </ng-container>
@@ -71,7 +71,7 @@
                             <span class="required" title="Already Published Using Another Group" >
                               <i class="fa fa-exclamation-circle"></i>
                             </span>
-                            <span  *ngIf="isDashboardButtonsModule || isAssetsModule" title="Click here to add this group to the selection.">
+                            <span  *ngIf="isDashboardButtonsModule || isAssetsModule || isPlayBooksModule || isLmsModule" title="Click here to add this group to the selection.">
                               <a (click)="addGroup(user)"><i  class="fa fa-plus"></i></a>
                             </span>
                           </ng-container>

@@ -222,6 +222,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
           });
           this.showRefreshNotification = publishingTracks.length>0;
           pagination = this.pagerService.getPagedItems(pagination, data.data);
+        } else if (response.statusCode == 403) {
+          this.referenceService.goToAccessDeniedPage();
         }
         this.referenceService.loading(this.httpRequestLoader, false);
       },

@@ -1509,5 +1509,10 @@ vanityWelcomePageRequired(userId) {
     }
     return urlPrefix;
   }
-
+  
+  /**** XNFR-599 ****/
+  shareSelectedDashboardButtons(requestDto: any) {
+    let url = this.REST_URL + "dashboardButtons/sharedashboardbuttons?access_token=" + this.access_token;
+    return this.callPutMethod(url, requestDto);
+  }
 }

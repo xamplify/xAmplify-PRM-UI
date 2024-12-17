@@ -32,6 +32,7 @@ import { RegionNames } from 'app/common/models/region-names';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { ActivatedRoute, Router } from "@angular/router";
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { FormService } from 'app/forms/services/form.service';
 declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
@@ -59,7 +60,13 @@ export class CustomAddLeadComponent implements OnInit {
   /**XNFR-553**/
   @Input() public isFromCompanyModule:boolean = false;
   @Input() public isFromContactAllLeadsTab:boolean = false;
-
+  /**XNFR-766**/
+  @Input() public isFromFormAnalytics:boolean = false;
+  @Input() public formSubmitId;
+  @Input() public formSubmitForCompanyId;
+  
+  @Output() notifyFormAnalytics = new EventEmitter();
+  
   preview = false;
   edit = false;
   loggedInUserId: number;
@@ -144,21 +151,21 @@ export class CustomAddLeadComponent implements OnInit {
   vendorCompanyName:string = '';
 
 
-  titleFields = ['title','name','symptom','Deal_Name','Title'];
+  titleFields = ['title','name','symptom','Deal_Name','Title','Job_Title'];
   amountFields = ['amount','value','FOppValue','Amount'];
   closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate','Closing_Date'];
-  firstNameFields = ['FirstName'];
-  lastNameFields = ['LastName'];
+  firstNameFields = ['FirstName','First Name','First_Name'];
+  lastNameFields = ['LastName','Last Name','Last_Name'];
   emailFields = ['Email'];
   companyFields = ['Company'];
-  phoneFields = ['Phone'];
+  phoneFields = ['Phone','Phone_Number','Phone Number'];
   websiteFields = ['Website'];
-  streetFields = ['Street'];
+  streetFields = ['Street', 'Address'];
   cityFields = ['City'];
   stateFields = ['State'];
-  postalCodeFields = ['PostalCode'];
-  countryFields = [];
-  regionFields = [];
+  postalCodeFields = ['PostalCode','Postal Code','Postal_Code'];
+  countryFields = ['Country'];
+  regionFields = ['Region'];
   industryFields = ['Industry'];
 
   type = "LEAD";
@@ -229,7 +236,7 @@ export class CustomAddLeadComponent implements OnInit {
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
      public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService, private router: Router,public regions: RegionNames,
-    public route: ActivatedRoute) {
+    public route: ActivatedRoute, public formService:FormService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -329,6 +336,9 @@ export class CustomAddLeadComponent implements OnInit {
     }
     if (this.isConvertingContactToLead) {
       this.setDefaultLeadData(this.selectedContact);
+    }
+    if(this.isFromFormAnalytics){
+      this.getLeadDataByFormSubmitId();
     }
   }
 
@@ -504,7 +514,16 @@ export class CustomAddLeadComponent implements OnInit {
     this.lead.postalCode = data.zipCode;
     this.lead.company = data.contactCompany;
     this.lead.city = data.city;
-    this.lead.email = this.selectedContact.emailId;
+    if(this.isFromFormAnalytics){
+      this.lead.email = data.emailId;
+      this.lead.formSubmitId = this.formSubmitId;
+      if( this.formSubmitForCompanyId > 0){
+        this.lead.createdForCompanyId = this.formSubmitForCompanyId
+      }
+    }else{
+      this.lead.email = this.selectedContact.emailId;
+    }
+
   }
 
   getCampaignLeadPipeline() {
@@ -569,7 +588,9 @@ export class CustomAddLeadComponent implements OnInit {
       this.activeCRMDetails.hasCreatedForPipeline = false;
       this.activeCRMDetails.hasCreatedByPipeline = false;
       this.showTicketTypesDropdown = false;
-      this.resetLeadDetails();
+      if(!this.isFromFormAnalytics){
+        this.resetLeadDetails();
+      }
       this.vendorCompanyName = '';
     }
   }
@@ -911,7 +932,11 @@ export class CustomAddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.showLoadingButton = false;
           if (data.statusCode == 200) {
-            this.notifySubmitSuccess.emit(data.data);
+            if(this.isFromFormAnalytics){
+              this.notifyFormAnalytics.emit(data);
+            }else{
+              this.notifySubmitSuccess.emit(data.data);
+            }
             this.closeLeadModal();
             if (this.isThroughAddUrl) {
               this.referenceService.isCreated = true;
@@ -1399,7 +1424,8 @@ export class CustomAddLeadComponent implements OnInit {
       this.activeCRMDetails = response.data;
       this.setLeadTitle();
       let isSalesforceAsActiveCRM = "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType;
-      if (isSalesforceAsActiveCRM) {
+      let isXamplifyAsActiveCRM = "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType;
+      if (isSalesforceAsActiveCRM || isXamplifyAsActiveCRM) {
         this.showCustomForm = true;
       } else {
         this.getDefaultLeadCustomFields();
@@ -1907,5 +1933,24 @@ export class CustomAddLeadComponent implements OnInit {
       );
 
   }
+
+ 
+
+  getLeadDataByFormSubmitId() {
+    this.formService.getLeadDataByFormSubmitId(this.formSubmitId)
+      .subscribe(
+        data => {
+          this.selectedContact = data.data;
+          this.setDefaultLeadData(this.selectedContact);
+          if(this.lead.createdForCompanyId > 0){
+            this.findPipeLinesAndStagesBySelectedVendorCompany();
+          }
+        },
+        (error: any) => {
+          this.httpRequestLoader.isServerError = true;
+        }
+      );
+  }
+
 
 }

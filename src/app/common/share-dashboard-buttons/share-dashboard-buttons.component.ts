@@ -32,6 +32,8 @@ export class ShareDashboardButtonsComponent implements OnInit {
   lastName = "";
   companyName = "";
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  buttontitle = [];
+  partnerIds = [];;
 
   constructor(private authenticationService:AuthenticationService,
     private referenceService:ReferenceService,private pagerService:PagerService,private utilService:UtilService,
@@ -56,6 +58,9 @@ export class ShareDashboardButtonsComponent implements OnInit {
 
   findDashboardButtons(pagination: Pagination) {
      this.customResponse = new CustomResponse();
+    //  pagination.pageIndex = 1;
+     pagination.searchKey = this.sortOption.searchKey;
+     pagination = this.utilService.sortOptionValues(this.sortOption.selectedDamPartnerDropDownOption, pagination);
     this.referenceService.startLoader(this.httpRequestLoader);
     this.referenceService.scrollToModalBodyTopByClass();
     this.vanityUrlService.findAllPublishedAndUnPublishedDashboardButtons(this.pagination).subscribe(
@@ -78,6 +83,47 @@ export class ShareDashboardButtonsComponent implements OnInit {
       }, error => {
         this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
       });
+  }
+
+  highlightSelectedDashboardButtonOnRowClick(selectedCampaignId: any, event: any) {
+    this.referenceService.highlightRowOnRowCick('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, 'unPublished-dashboardButtons-header-checkbox-id', selectedCampaignId, event);
+    this.sendEmitterValues();
+  }
+  
+  highlightDashboardButtonRowOnCheckBoxClick(selectedCampaignId: any, event: any) {
+    this.referenceService.highlightRowByCheckBox('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, 'unPublished-dashboardButtons-header-checkbox-id', selectedCampaignId, event);
+    this.sendEmitterValues();
+  }
+
+  selectOrUnselectAllRowsOfTheCurrentPage(event: any) {
+    this.selectedDashboardButtonIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('unPublished-dashboardButtons-tr', 'unPublishedDashboardButtonsTable', 'unPublishedDashboardButtonsCheckBox', this.selectedDashboardButtonIds, this.pagination, event);
+		this.sendEmitterValues();
+  }
+
+  sendEmitterValues(){
+		let emitterObject = {};
+		emitterObject['selectedRowIds'] = this.selectedDashboardButtonIds;
+    emitterObject['isPartnerInfoRequried'] = false;
+    if(this.pagination.partnerId>0){
+      emitterObject['partnerId']= this.pagination.partnerId;
+    }
+		this.shareDashboardButtonsEventEmitter.emit(emitterObject);
+	}
+  setPage(event: any) {
+    this.customResponse = new CustomResponse();
+    this.pagination.pageIndex = event.page;
+    this.findDashboardButtons(this.pagination);
+  }
+  searchDashboardButtons(){
+    this.findDashboardButtons(this.pagination);
+  }
+
+  findUnPublishedDashboardButtonsOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchDashboardButtons(); } }
+
+  sortBy(text: any) {
+    // this.sortOption.selectedShareCampaignDropDownOption = text;
+    this.sortOption.selectedDamPartnerDropDownOption = text;
+    this.findDashboardButtons(this.pagination);
   }
 
 }
