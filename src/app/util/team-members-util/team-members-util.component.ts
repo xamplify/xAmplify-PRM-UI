@@ -1177,7 +1177,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.filterApplied = true;
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
-    this.isCollapsed = false;
+    this.showTeamMembersTable();
     this.findAll(this.pagination);
   }
 
@@ -1195,12 +1195,16 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   showVendorView() {
     this.isVendorVersion = true;
     this.isCollapsed = true;
+    this.clearFilter();
+    this.showFilterOption = false;
   }
 
   showPartnerView() {
     this.isVendorVersion = false;
     this.isCollapsed = true;
     this.selectedCampaignType = "";
+    this.clearFilter();
+    this.showFilterOption = false;
   }
 
   clearAnalytics() {
@@ -1210,6 +1214,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.filterApplied = false;
     this.showAnalytics = false;
     this.isCollapsed = false;
+    this.showFilterOption = false;
     this.refreshList();
   }
 
@@ -1269,7 +1274,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   validateDateFilter() {
-    let isValidFromDateFilter = this.fromDateFilterInString != undefined && this.fromDateFilter != "";
+    let isValidFromDateFilter = this.fromDateFilterInString != undefined && this.fromDateFilterInString != "";
     let isEmptyFromDateFilter = this.fromDateFilterInString == undefined || this.fromDateFilterInString == "";
     let isValidToDateFilter = this.toDateFilterInString != undefined && this.toDateFilterInString != "";
     let isEmptyToDateFilter = this.toDateFilterInString == undefined || this.toDateFilterInString == "";
@@ -1293,7 +1298,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         }
       }
 
-      if (validDates || this.selectedTeamMembers.length > 0 || this.selectedVendorCompanies.length > 0) {
+      if (validDates || (this.selectedTeamMembers.length > 0 || this.selectedVendorCompanies.length > 0)) {
         this.applyFilters();
       }
     }
@@ -1320,6 +1325,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.selectedVendorCompanyIds = [];
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.filterApplied = false;
+  }
+
+  showTeamMembersTable() {
+    if (this.selectedTeamMembers.length > 0 || this.selectedVendorCompanies.length > 0) {
+      this.isCollapsed = false;
+    } else {
+      this.isCollapsed = true;
+    }
   }
 
 }

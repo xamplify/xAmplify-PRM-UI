@@ -760,7 +760,7 @@
         <div class="col-lg-5 col-md-5 col-xs-12 col-sm-4 pull-right mb_pl0"
           style="display: flex;justify-content: flex-end ;">
           <span
-            *ngIf="(!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin) && !isVendorVersion"
+            *ngIf="(!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
             class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}} mr5" title="Filter">
             <div class="btn-group">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -1038,7 +1038,7 @@
                 [fields]='vendorInfoFields' [placeholder]='vendorInfoFilterPlaceHolder'>
               </ejs-multiselect>
             </div>
-            <div class="portlet box custom_fiter-asset custom-margin">
+            <div [ngClass]="showAnalytics && isVendorVersion ?'portlet box custom_fiter-asset':'portlet box custom_fiter-asset custom-margin'">
               <div class="row pl10 pr10 pb10">
                 <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
                   <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
