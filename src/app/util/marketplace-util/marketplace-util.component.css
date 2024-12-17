@@ -281,3 +281,7 @@
     min-height: 2.8em;
 }
 
+.map-container {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+  }

@@ -163,9 +163,11 @@ export class ManageDealsComponent implements OnInit {
   }
   triggerUniversalSearch() {
     if (this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Deal') {
+      if(this.dealsSortOption.searchKey) {
+        this.referenceService.universalSearchKey = this.dealsSortOption.searchKey;
+      }
       this.dealsSortOption.searchKey = this.referenceService.universalSearchKey;
-      let keyCode = 13;
-      if (keyCode === 13) { this.searchDeals();}
+      this.searchDeals();
     }
   }
   /** User GUide **/
@@ -202,7 +204,9 @@ export class ManageDealsComponent implements OnInit {
   //XNFR-681
   ngOnDestroy() {
     this.referenceService.isCreated = false;
-    this.referenceService.universalId = 0;
+    this.referenceService.universalId = 0;//XNFR-574
+    this.referenceService.universalSearchVendorOrPartnerView = "";//XNFR-574
+    this.referenceService.universalModuleType = "";//XNFR-758
   }
 
   init() {
@@ -276,7 +280,11 @@ export class ManageDealsComponent implements OnInit {
               () => { }
             );
           } else {
+            if(this.referenceService.universalSearchVendorOrPartnerView === 'Partner') {
+              this.showPartner();
+            } else {
             this.showVendor();
+            }
           }
         } else {
           this.showPartner();
@@ -670,6 +678,7 @@ export class ManageDealsComponent implements OnInit {
 
   closeDealForm() {
     this.showDealForm = false;
+    this.referenceService.universalSearchKey = this.dealsSortOption.searchKey; //XNFR-758
     this.showDeals();
     this.textAreaDisable=false;//xnfr-426
   }

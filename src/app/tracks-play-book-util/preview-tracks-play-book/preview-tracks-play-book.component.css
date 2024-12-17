@@ -644,3 +644,7 @@ button:hover {
   font-size: 13px;
   color: #8b8989;
 }
+.border_collapse{
+  border-radius: 0px !important;
+  border-collapse: collapse!important;
+}

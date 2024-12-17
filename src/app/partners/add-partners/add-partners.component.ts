@@ -308,6 +308,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 	activeCrmType: any;
+	dashboardButtonsAcess: boolean;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2701,7 +2702,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
-		this.getActiveCrmType();
+		this.getActiveCrmType();                                                    
 	}
 
 

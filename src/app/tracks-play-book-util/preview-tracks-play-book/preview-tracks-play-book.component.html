@@ -306,7 +306,7 @@
                     <!-- XNFR-745 -->
                     <section *ngIf="modulesDisplayType.isFolderListView && !trackViewLoader">
                         <div class="table-responsive" style="display: inline;">
-                            <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                            <table class='table tgrid table-hover table-sm border_collapse' id="manage-assets-table"
                                 *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
                                 <tbody class="pointer">
                                     <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
@@ -332,7 +332,7 @@
                                                     <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="leadDetails">
                                                         <div class="br-unset pt0 pb0">
                                                             <div class="card-bgcolors h-260 pl0 pr0">
-                                                                <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                                                                <table class='table tgrid table-hover table-sm border_collapse' id="manage-assets-table"
                                                                     aria-describedby="manageAssetTables">
                                                                     <thead [hidden]="content.isCollapsed">
                                                                         <tr>

@@ -53,8 +53,7 @@
                   </label>
                   <div class="col-sm-8" style="padding-bottom: 10px;">
                     <input class="form-control" placeholder="Add title" [(ngModel)]="tracksPlayBook.title"
-                      maxlength="100" (keypress)="omitSpecialCharacters($event)"
-                      (input)="updateSlug('title'); validateTitle(); validateAllSteps()">
+                      maxlength="100" (input)="updateSlug('title'); validateTitle(); validateAllSteps()">
                     <span *ngIf="!isTitleValid" class="required pull-left"
                       style="position: absolute;">{{titleErrorMessage}}</span>
                   </div>

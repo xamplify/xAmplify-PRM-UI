@@ -6,6 +6,7 @@ import { CustomDomainDto } from './models/custom-domain-dto';
 
 @Injectable()
 export class SuperAdminService {
+  
     
   superAdminUrl =  this.authenticationService.REST_URL+RouterUrlConstants.superAdmin;
   constructor(private authenticationService:AuthenticationService) { }
@@ -45,6 +46,11 @@ updateCustomDomain(customDomainDto:CustomDomainDto){
 findRoleIdsAndNames(selectedTeamMemberUserId: any) {
     const url = this.authenticationService.REST_URL + 'superadmin/findRoleIdsAndNames'+'/'+selectedTeamMemberUserId+'?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
+}
+
+deleteCampaign(id: number) {
+    const url = this.authenticationService.REST_URL + 'superadmin/deleteCampaign/'+id+'?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callDeleteMethod(url);
 }
 
 }

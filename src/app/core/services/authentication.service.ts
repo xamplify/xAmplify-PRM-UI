@@ -33,6 +33,7 @@ import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play
 import { Properties } from 'app/common/models/properties';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
+
 @Injectable()
 export class AuthenticationService {
  
@@ -1507,5 +1508,11 @@ vanityWelcomePageRequired(userId) {
       urlPrefix = "lms";
     }
     return urlPrefix;
+  }
+  
+  /**** XNFR-599 ****/
+  shareSelectedDashboardButtons(requestDto: any) {
+    let url = this.REST_URL + "dashboardButtons/sharedashboardbuttons?access_token=" + this.access_token;
+    return this.callPutMethod(url, requestDto);
   }
 }

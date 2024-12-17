@@ -86,7 +86,7 @@ body {
   background-color: #0276FF;
   border: 1px solid #1ca6f3;
   color: #fff;
-  padding: 6px 14px;
+  padding: 8px 14px;
   cursor: pointer;
   float: left;
   font-size: 14px;
@@ -1121,78 +1121,63 @@ line-height: 1;
   color: #888;
   vertical-align: super;
 }
-/****** Universal Search *******/ 
-.universal-search {
+/****** Universal Search *******/
+sup {
+  font-size: 75%;
+  line-height: 0;
   position: relative;
-  top: -2px !important;
-  margin-right: 5px;
-  z-index: 999;
+  vertical-align: baseline;
+  top: -.5em;
+} 
+.universal-search-show-button {
+  position: relative;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-radius: 7px;
+  margin-right: 10px;
+  z-index: 99;
 }
 
-
-.universalsearchBox {
-  position: relative;
-  top: 50%;
+.universal-search-show-button .universal-tooltip {
+  visibility: hidden;
+  position: absolute;
+  background-color: #555;
+  color: #fff;
+  top: 110%;
+  left: -30%;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.universal-tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
   left: 50%;
-  transform:  translate(-50%,50%);
-  background-color: #0276FF;
-  height: 35px;
-  border-radius: 40px;
-  padding: 8px 11px;
-
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+.universal-search-show-button:hover .universal-tooltip {
+  visibility: visible;
+  opacity: 1;
 }
 
-.universalsearchBox:hover > .universalsearchInput {
-  width: 150px;
-  padding: 0 6px;
-  color: #fff;
-  outline: none !important;
-}
-.universalsearchBox> .universal-close {
-  display: none;
-} 
-.universalsearchBox:hover> .universal-close {
-  display: inline-block;
-  font-size: 17px;
-  margin-right: 7px;
-  color: #fff;
-} 
-.universalsearch:hover > .universalsearchButton {
-  background-color: #0276FF;
-}
 
-.universalsearchButton {
-  float: right;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.4s;
-  display: contents;
-}
-
-.universalsearchInput {
-  border:none;
-  background: none;
-  outline:none;
-  float:left;
-  padding: 0;
-  font-size: 16px;
-  transition: 0.4s;
-  line-height: 20px;
-  width: 0px;
-  color: #fff;
+.clear-icon {
+  padding: 10px !important;
 }
 .universal-search-div {
-  float: left;
-  position: relative;
-  margin-right: 10px;
-  top: -18px;
-  z-index: 999;
+float: left;
+position: relative;
+top: -1px;
 }
-
 .xamplify-disabled-div {
   opacity: 0.5;
   pointer-events: none;
@@ -1202,4 +1187,5 @@ line-height: 1;
   pointer-events: auto;
   cursor: not-allowed;
 }
+
 

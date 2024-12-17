@@ -17,7 +17,7 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { Properties } from 'app/common/models/properties';
-
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 declare var $, swal, Highcharts, CKEDITOR: any;
 
 @Component({
@@ -77,7 +77,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     redistributedCampaignsCount = 0;
     reloadWithFilter = true;
     loadAllCharts = false;
-
+    selectedItem : any;
     //XNFR-316
     showDetailedAnalytics = false;
     detailedAnalyticsPartnerCompany: any;
@@ -97,14 +97,20 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isSingUpPendingDiv = false;
     incompleteCompanyProfileAndPendingSingupPagination: Pagination = new Pagination();
     companyProfileIncompletePartnersList :any= [];
-    partnerfromDateFilter: any = "";
+
+    selectedEmailTemplateId: any;
+    sendTestEmailIconClicked: boolean;
+    vanityTemplates : boolean = false;
+    selectedEmailId: String;
+  partnerfromDateFilter: any = "";
     partnertoDateFilter: any = "";
     totalPartnersCountLoader: boolean;
     totalPartnersCount: any;
+
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
-        public utilService: UtilService,private route: ActivatedRoute,public properties: Properties) {
+        public utilService: UtilService,private route: ActivatedRoute,public properties: Properties, private vanityURLService: VanityURLService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('partnerAnalytics');
         this.isListView = !this.referenseService.isGridView;
@@ -120,7 +126,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         Highcharts.chart('campaign-type-chart', {
             chart: { type: 'bar',backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff" },
             xAxis: {
-                categories: ['VIDEO CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
+                categories: ['VIDEO CAMPAIGN','SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
                 lineWidth: 0,
                 minorTickLength: 0,
                 tickLength: 0,
@@ -169,7 +175,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             (data: any) => {
                 const campaignData = [];
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
-               // campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
+                campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SURVEY);
@@ -582,11 +588,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.parterService.sendPartnerReminderEmail(user, this.loggedInUserId).subscribe(
             (response: any) => {
                 if (response.statusCode == 2017) {
-                    this.customResponse = new CustomResponse('SUCCESS', 'Email sent successfully.', true);
+                    this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
                 }
+                this.sendTestEmailIconClicked = false;
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
             (error: any) => {
+                this.sendTestEmailIconClicked = false;
                 this.referenseService.loading(this.httpRequestLoader, false);
                 this.xtremandLogger.showClientErrors("partner-reports", "sendPartnerReminder()", error.error.message);
                 this.customResponse = new CustomResponse('ERROR', 'Something went wrong in sending an email.', true);
@@ -984,9 +992,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
     findPendingSignupAndCompanyProfileIncompletePartnersCount() {
-        if(!this.authenticationService.isTeamMember()){
-            this.applyFilter = false;
-        }
         this.PendingSignupAndCompanyProfilePartnersLoader = true;
         this.parterService.findPendingSignupAndCompanyProfilePartnersCount(this.loggedInUserId, this.applyFilter).subscribe(
             (data: any) => {
@@ -1081,10 +1086,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isSingUpPendingDiv = true;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
-        if(!this.authenticationService.isTeamMember()){
-            this.applyFilter = false;
-        }
-
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
         this.incompleteCompanyProfileAndPendingSingupPagination.maxResults = 12;
         this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'pSignUp';
@@ -1144,16 +1145,18 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 if (data.access) {
                     this.referenseService.loading(this.httpRequestLoader, false);
                     if (data.statusCode == 200) {
-                        this.customResponse = new CustomResponse('SUCCESS', 'Email sent successfully.', true);
+                        this.referenseService.showSweetAlertSuccessMessage(data.message);
                     } else if (data.statusCode == 400) {
-                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        this.referenseService.showSweetAlertSuccessMessage(data.message);
                     }
+                    this.sendTestEmailIconClicked = false;
                     this.referenseService.goToTop();
                 } else {
                     this.authenticationService.forceToLogout();
                 }
             },
             (error: any) => {
+                this.sendTestEmailIconClicked = false;
                 this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
                 this.xtremandLogger.error(error);
                 this.referenseService.loading(this.httpRequestLoader, false);
@@ -1163,6 +1166,55 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
+
+    
+    openSendTestEmailModalPopup(item : any){
+        this.selectedItem = item;
+        this.selectedEmailId = item.emailId;
+        if(this.isInactivePartnersDiv){
+         this.sendTestEmailIconClicked = true;
+            this.vanityTemplates = true;
+            this.selectedEmailTemplateId=26;
+        }
+        else if(this.isIncompleteCompanyProfileDiv)
+        {
+            this.sendTestEmailIconClicked = true;
+            this.vanityTemplates = true;
+            this.selectedEmailTemplateId=27;
+        }
+        else if(this.isSingUpPendingDiv){
+            this.vanityURLService.getTemplateId(this.selectedEmailId).subscribe(
+                response =>  {
+                    if (response.statusCode === 200) {
+                        this.selectedEmailTemplateId = response.data;
+                        this.sendTestEmailIconClicked = true;
+                        this.vanityTemplates = true;
+                    } else if (response.statusCode === 400) {
+                        console.error("Error: Invalid email ID or other bad request.");
+                    } else {
+                        console.error("Unexpected status code:", response.statusCode);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching template ID:", error);
+                }
+            );
+        } 
+      }
+
+      sendTestEmailModalPopupEventReceiver(){
+        this.selectedEmailTemplateId = 0;
+        this.sendTestEmailIconClicked = false;
+        this.vanityTemplates = false;
+      }
+
+      emittedMethod(event) {
+        if(this.isInactivePartnersDiv) {
+            this.sendPartnerReminder(event);
+        } else {
+            this.sendmail(event);
+        }
+      }
 
     getDateFilterOptions(event: any) {
         this.partnerfromDateFilter = event.fromDate;
@@ -1182,4 +1234,5 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.totalPartnersCountLoader = false;
             });
     }
+
 }

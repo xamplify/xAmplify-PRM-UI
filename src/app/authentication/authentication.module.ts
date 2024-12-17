@@ -33,7 +33,6 @@ import { PreviewLoginComponent } from "app/common/preview-login/preview-login.co
     SharedModule,
     CommonComponentModule,
     SharedLibraryModule,
-    AgmCoreModule.forRoot({ apiKey: "AIzaSyDDdgixbmMAkOIcujVZpwsguQXefh1-Kqw" })
   ],
   declarations: [
     SignupComponent,

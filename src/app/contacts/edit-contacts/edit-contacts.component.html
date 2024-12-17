@@ -333,10 +333,10 @@
 					<div *ngIf="showEditContactData">
 						<div class="col-xs-12 p0">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
-							<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal"
+							<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal remove_space" [ngClass]="{ 'bg-color-white' : uploadCsvUsingFile}"
 								[ngStyle]="{'margin-top' :
 				((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads)) ? '-9px !important' : '2px !important'}">
-								<div class="portlet-title remove_border" style="padding-bottom: 6px !important;">
+								<div class="portlet-title remove_border">
 									<div class="caption" translate style="font-size: 2;padding-top: 8px !important;">
 										<i class="fa fa-edit" aria-hidden="true"
 											style="font-size: 20px;"></i>{{isPartner ? 'Group of' : 'List of'}}
@@ -410,7 +410,7 @@
 										</button>
 									</div>
 									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
-										style="margin-right: 5px;">
+										style="margin-right: 5px;" [ngClass]="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) && isPartner ? 'media-btn' : 'no-media-btn'">
 										<div *ngIf="!clickBoard && !filePrevew"
 											class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
 											<div *ngIf="!isSegmentation" (click)="modelForSeg()"
@@ -864,7 +864,7 @@
 											<div class="table-responsive">
 												<table class='table tgrid'
 													*ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading || (isValidClipBoardData)"
-													aria-describedby="" style="padding-top: 9px;">
+													aria-describedby="">
 													<thead>
 														<tr>
 															<th class='text-center' scope="col"><input type="checkbox"
@@ -1018,11 +1018,11 @@
 																	{{contact.category | slice:0:14}}
 																	<span *ngIf="contact.category?.length>14">..</span>
 																</td> -->
-																<td [ngClass]="(isContactModule && isLocalhostOrQADomain)?'text-line':''" *ngIf="!isPartner" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''">
+																<td [ngClass]="(isContactModule)?'text-line':''" *ngIf="!isPartner" (click)="(isContactModule)?showContactDetails(contact):''">
 																	<app-user-info [isContactCompanyInfo]="true"
 																		[userInfo]="contact"> </app-user-info>
 																</td>
-																<td [ngClass]="(isContactModule && isLocalhostOrQADomain)?'hidden-xs text-line':'hidden-xs'" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''" *ngIf="!isPartner">
+																<td [ngClass]="(isContactModule)?'hidden-xs text-line':'hidden-xs'" (click)="(isContactModule)?showContactDetails(contact):''" *ngIf="!isPartner">
 																	<h5 class='mb0 ellipsis' data-toggle="tooltip"
 																		data-placement="bottom"
 																		title="{{contact.jobTitle}}">{{contact.jobTitle
@@ -1031,7 +1031,7 @@
 																			*ngIf="contact.jobTitle?.length>25">...</span>
 																	</h5>
 																</td>
-																<td align="center" [ngClass]="(isContactModule && isLocalhostOrQADomain)?'hidden-xs text-line':'hidden-xs'" (click)="(isContactModule && isLocalhostOrQADomain)?showContactDetails(contact):''">
+																<td align="center" [ngClass]="(isContactModule)?'hidden-xs text-line':'hidden-xs'" (click)="(isContactModule)?showContactDetails(contact):''">
 																	<h5 *ngIf="contact?.address" class='mb0'>
 																		{{contact.address | slice:0:30}}
 																		<span
@@ -1286,8 +1286,8 @@
 					</div>
 					<div class="valid-list" id="hidingListOfUsersTable">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
-						<div class="portlet light remove_cardBgcolor share_leads_mrgn">
-							<div class="portlet-title">
+						<div class="portlet light remove_cardBgcolor share_leads_mrgn light_bg_removal remove_space">
+							<div class="portlet-title remove_border">
 								<div class="caption" style="padding-top: 8px !important;">
 									<span class="capitalize"
 										*ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory !='invalid'">
@@ -1410,7 +1410,7 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="page-bar remove_table_bg" *ngIf="!showEditContactData"
+								<div class="page-bar remove_table_bg register_bg mb10" *ngIf="!showEditContactData"
 									style="border:none !important;">
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									</div>
@@ -2117,7 +2117,7 @@
 <!---XNFR-278-->
 <ng-container *ngIf="mergeOptionClicked">
 	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging"
-		[moduleName]="module"
+		[moduleName]="module" [selectedUsers] = "selectedContactForSave"
 		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
 

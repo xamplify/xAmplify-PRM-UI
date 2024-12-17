@@ -173,7 +173,7 @@ export class Properties {
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
 	saml2SSOsettings = "SAML 2.0 SSO Settings";
-	leadFieldSettings = "Lead Fields Settings";
+	leadFieldSettings = "Custom Fields";
 	oauthSSOConfiguration = "oAuth SSO Settings";
 
 
@@ -196,13 +196,13 @@ export class Properties {
 	notifyPartners = "Onboarding Configurations";
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
-	vendorJourney = "Vendor Journey for Partners";
+	vendorJourney = "Vendor Showcase";
 	landingPages = "Vendor Shared Pages";
 	masterLandingPages = "Partner Landscape"
 	masterLandingPageCategories = "Landscape Categories"
 	welcomePages = "Welcome Pages"
 	/*****XNFR-712******/
-	partnerJourneyPages = "Partner Journey for Vendors";
+	partnerJourneyPages = "Partner Showcase";
 	vendorPartnerJourneyPages = "Partner Shared Pages"
 	vendorMarketplacePages = "Vendor Landscape"
 	/********Error Messages************* */
@@ -373,6 +373,7 @@ export class Properties {
 	SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE = "Send an email notification to {{partnersMergeTag}} who have made progress";
 	TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED = "To enable this option, please turn on 'Published Track Email Notifications' in your 'Email Notification Settings' located in your 'My Profile' section.";
 	MANAGE_ASSETS = "Manage Assets";
+	ACCESS_SHARED_ASSETS = "Access Shared Assets";
 
 	dashboardButton = "Dashboard Button";
 

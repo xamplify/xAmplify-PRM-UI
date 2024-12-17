@@ -11,7 +11,7 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="email-card">
-              <div class="maualSPFCardbg">
+              <div class="view_emailcard">
                 <!-- Cards -->
                 <div class="profile_header">
                   <div class="avatar2">
@@ -30,19 +30,19 @@
                     <div class="text_email">
                       <h5 class="m0 fs-10" *ngIf="emailActivity.ccEmailIdsString != undefined">
                         <span class="d-flex">
-                          <label class="mr5 activity-titles">CC:</label>
+                          <label class="mr2 activity-titles">CC:</label>
                           {{emailActivity.ccEmailIdsString}}
                         </span>
                       </h5>
                       <h5 class="m0 fs-10" *ngIf="emailActivity.bccEmailIdsString != undefined">
                         <span class="d-flex">
-                          <label class="mr5 activity-titles">BCC:</label>
+                          <label class="mr2 activity-titles">BCC:</label>
                           {{emailActivity.bccEmailIdsString}}
                         </span>
                       </h5>
                       <h5 class="m0 fs-10">
                         <span class="d-flex">
-                          <label class="mr5 activity-titles">From:</label>
+                          <label class="mr2 activity-titles">From:</label>
                           {{emailActivity.senderEmailId}}
                         </span>
                       </h5>
@@ -50,19 +50,21 @@
                   </div>
                 </div>
               </div>
-              <h5>
-                <span class="d-flex">
-                  <label class="mr5 activity-title">Subject:</label>
+              <h5 class="view_subject">
+                <span>
+                  <label class="mr2 activity-title">Subject:</label>
                   {{emailActivity.subject}}
                 </span>
+                <hr class="mt5">
               </h5>
               <div class="email_content">
-                <span>
+                <span class="fs-13">
                   <div [innerHTML]="emailActivity.body"></div>
                 </span>
               </div>
               <h5 *ngIf="emailActivity?.emailAttachmentDTOs?.length > 0">
                 <label class="mr5 activity-title">Attachments:</label>
+                <div class="portlet light">
                 <h6 class="m0">
                   <span *ngFor="let emailAttachmentDTO of emailActivity.emailAttachmentDTOs; let i = index">
                     <span><a *ngIf="emailAttachmentDTO.filePath != undefined" target="_blank" href="{{emailAttachmentDTO.filePath}}" class="bg-soft-info">{{emailAttachmentDTO.fileName}}</a>
@@ -70,6 +72,7 @@
                       <span *ngIf="emailAttachmentDTO.uploadedFile" class="text-danger" id="filePathError">Unable to load the file. <p (click)="emailAttachmentDTO.uploadedFile = 'false'"><i class="fa fa-times"></i></p></span>
                   </span>
                 </h6>
+              </div>
               </h5>
             </div>
           </div>

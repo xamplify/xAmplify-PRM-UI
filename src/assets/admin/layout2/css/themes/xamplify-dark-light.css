@@ -17,8 +17,9 @@ body,
 .page-bar,
 .dashboard-stat2,
 .tabbable-custom > .tab-content ,
-.portlet.light.remove_cardBgcolor.glass_Bgcolor{
-  background-color: #2b3c46 !important;
+.portlet.light.remove_cardBgcolor.glass_Bgcolor,
+.portlet.light.remove_cardBgcolor.share_leads_mrgn.light_bg_removal.bg-color-white{
+  background: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
 .page-container-bg-solid .page-content,
@@ -289,7 +290,7 @@ fieldset,
 .table-bordered > thead > tr > th {
   border: 1px solid #2f4857 !important ;
 }
-.table thead > tr > th,
+/* .table thead > tr > th, */
 .ng2-tag-input,
 .nav-tabs,
 .nav-pills {
@@ -300,7 +301,7 @@ fieldset,
 .table > tfoot > tr > td,
 .table > tfoot > tr > th,
 .table > thead > tr > td,
-.table > thead > tr > th,
+/* .table > thead > tr > th, */
 .modal-footer,
 .folder-modal-footer,
 .table > tbody + tbody,
@@ -2492,7 +2493,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
   background-color: #22313a!important;
   border-right: 1px solid #2f4857 !important;
   }
-  .activity_card{
+  .activity_card,.view_emailcard,.email_content{
     background-color: #22313a!important;
     border: 1px solid #2f4857 !important;
   }
@@ -2542,6 +2543,29 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
 table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-danger:hover{
   background-color: #22313a !important;
 }
+
+/*** XNFR-758 ***/
+.universal-search-bar-container,
+.universal-dropdown-label {
+    background-color: #2b3c46 !important;
+    color: #fff !important;
+    border: 1px solid #2f4857 !important;
+}
+.universal-dropdown-menu {
+    background-color: #2b3c46 !important;
+    border: 1px solid #2f4857;
+}
+.universal-dropdown-menu li {
+    border-bottom: 1px solid #2f4857;
+}
+.universal-dropdown-menu li:hover {
+    background-color: #22313a !important;
+}
+.clear-icon {
+  /* padding: 10px  0px; */
+  color: #fff !important;
+}
+/*** XNFR-758 ***/
 .activity_bgcolor{
   background-color: #22313a !important;
 }
@@ -2569,7 +2593,7 @@ table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-dang
 .portlet.light.remove_cardBgcolor,
 .page-bar.remove_cardBgcolor.neg_mrg_top14.light_bg_removal,
 .page-bar.camp_card_removal.light_bg_removal,
-.p10.remobe_bg{
+.p10.remobe_bg,.page-bar.light_bg_removal{
   background: none !important;
   border: none !important;
 }

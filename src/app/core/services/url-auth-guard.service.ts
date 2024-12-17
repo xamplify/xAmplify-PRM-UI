@@ -13,30 +13,34 @@ export class UrlAuthGuardService {
   private checkDamModuleAccessURL = "authorizeDamUrlAccess/";
   roles:Roles = new Roles();
   private AUTH_URL = this.authenticationService.REST_URL + RouterUrlConstants.authorize;
-  constructor(private authenticationService:AuthenticationService) {
+  constructor(private authenticationService:AuthenticationService) {}
 
-   }
-
-   authorizeUrlAccess(routerUrl:string){
-    let isDamRouterUrl = routerUrl.includes("/home/dam") || routerUrl.includes("/home/select-modules");
-    let moduleId =  0;
-    if(isDamRouterUrl){
-      moduleId = this.roles.damId;
-    }
-    const damModuleRouterUrlsForPartner = ["modules", "shared","editp","pda"];
-    let componentUrlName = this.getComponentUrlName(routerUrl,damModuleRouterUrlsForPartner,"dam");
-    let url = this.AUTH_URL+"url/modules/"+moduleId+"/users/"+this.userId+"/routerUrls/"+componentUrlName+this.ACCESS_TOKEN_PARAMETER+this.authenticationService.access_token;
+  authorizeUrlAccess(routerUrl: string) {
+    const moduleInfo = this.getContentModuleInfo(routerUrl);
+    const moduleId = moduleInfo.moduleId;
+    const moduleName = moduleInfo.moduleName;
+    const contentModuleRouterUrlsForPartner = ["modules", "shared", "editp", "pda", "tb", "pb"];
+    let componentUrlName = this.getComponentUrlName(routerUrl, contentModuleRouterUrlsForPartner, moduleName);
+    let url = this.AUTH_URL + "url/modules/" + moduleId + "/users/" + this.userId + "/routerUrls/" + componentUrlName + this.ACCESS_TOKEN_PARAMETER + this.authenticationService.access_token;
     let subDomain = this.authenticationService.getSubDomain();
-    if(subDomain.length>0){
-      url+="&subDomain="+subDomain;
+    if (subDomain.length > 0) {
+      url += "&subDomain=" + subDomain;
     }
     return this.authenticationService.callGetMethod(url);
+  }
 
-   }
+  getContentModuleInfo(routerUrl: string) {
+    if (routerUrl.includes("/home/dam") || routerUrl.includes("/home/select-modules")) {
+      return { moduleId: this.roles.damId, moduleName: "dam" };
+    } else if (routerUrl.includes("/home/tracks")) {
+      return { moduleId: this.roles.learningTrackId, moduleName: "tracks" };
+    } else if (routerUrl.includes("/home/playbook")) {
+      return { moduleId: this.roles.playbookId, moduleName: "playbook" };
+    }
+    return { moduleId: 0, moduleName: "" };
+  }
 
- 
-
-  getComponentUrlName(currentUrl:string,routes:any,defaultUrl:string){
+  getComponentUrlName(currentUrl: string, routes: any, defaultUrl: string) {
     for (const route of routes) {
       if (currentUrl.includes(route)) {
         return route;

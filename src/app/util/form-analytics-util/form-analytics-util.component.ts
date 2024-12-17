@@ -14,6 +14,7 @@ import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { FormSubmit } from 'app/forms/models/form-submit';
+import { Roles } from 'app/core/models/roles';
 
 declare var $: any, swal: any;
 
@@ -59,7 +60,13 @@ export class FormAnalyticsUtilComponent implements OnInit {
     @Input() isPartnerJourneyPage: boolean;
     @Input() isVendorMarketplacePage: boolean;
     @Input() isVendorMarketplacePageAnalytics:boolean;
-
+    isEmailFieldExists: boolean = false;
+    showLeadForm:boolean = false;
+    addLeadsOptionPermissionRequired:boolean = false;
+    selectedFormSubmitId:number;
+    selectFormVendorCompanyId:number=0;
+    roleName: Roles = new Roles();
+    isOrgAdmin: boolean = false;  
     constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -72,6 +79,10 @@ export class FormAnalyticsUtilComponent implements OnInit {
 
     ngOnInit() {
         let objectLength = Object.keys(this.importedObject).length;
+        const roles = this.authenticationService.getRoles();
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+            this.isOrgAdmin = true;
+        }
         if (objectLength > 0) {
             this.alias = this.importedObject['formAlias'];
             this.campaignAlias = this.importedObject['campaignAlias'];
@@ -79,6 +90,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
             this.formId = this.importedObject['formId'];
             this.partnerId = this.importedObject['partnerId'];
             this.title = this.importedObject['title'];
+            this.selectFormVendorCompanyId = this.importedObject['vendorCompanyId'];
             if (this.campaignAlias != undefined) {
                 this.campaignFormAnalyticsDownload = true;
                 this.pagination.campaignId = parseInt(this.campaignAlias);
@@ -151,6 +163,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
                     this.selectedSortedOption = this.columns[0];
                     this.formDataRows = data.submittedData;
                     pagination.totalRecords = data.totalRecords;
+                    this.isEmailFieldExists = data.isEmailFieldExists;
                     pagination = this.pagerService.getPagedItems(pagination, this.formDataRows);
                 } else {
                     this.referenceService.goToPageNotFound();
@@ -289,6 +302,33 @@ export class FormAnalyticsUtilComponent implements OnInit {
             }
         );
     }
+    addLeadsOptionRequired(){
+        //orgadmin,orgadminteammenber, partner, partnerTeammenber
+        this.addLeadsOptionPermissionRequired = this.authenticationService.module.isContact
+    }   
 
 
+    addLeadsForm(formDataRow:any){
+        this.showLeadForm = true;
+        this.selectedFormSubmitId = formDataRow.formSubmittedId;
+        if(this.isOrgAdmin){
+            this.selectFormVendorCompanyId = this.authenticationService.user.campaignAccessDto.companyId;
+        }
+        $("#addLeadsPopup").modal("show");
+
+    }
+    hideModal(){
+        $("#addLeadsPopup").modal("hide");
+        this.showLeadForm = false;
+
+    }
+    showSubmitLeadMessage(event:any){
+        this.hideModal();
+        if(event.statusCode=200){
+            swal("Lead Created Successfully", "", "success"); 
+        }else{
+            swal(event.message, "", "error"); 
+
+        }
+    }
 }

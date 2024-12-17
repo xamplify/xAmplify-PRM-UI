@@ -545,14 +545,14 @@
 
 <ng-template #leadFields let-leadCustomField="leadCustomField">
   <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0">
-    <div *ngIf="leadCustomField.labelId =='first_name'" class="form-group" [attr.class]="firstName">
+    <div *ngIf="leadCustomField.labelId =='First_Name'" class="form-group" [attr.class]="firstName">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <input type="text" maxlength="100" name="firstName" class="form-control"
         placeholder="{{leadCustomField.placeholder}}" [(ngModel)]="lead.firstName" [ngModelOptions]="{standalone: true}"
         id="firstName" [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
 
-    <div *ngIf="leadCustomField.labelId =='last_name'" class="form-group" [attr.class]="lastNameDivClass">
+    <div *ngIf="leadCustomField.labelId =='Last_Name'" class="form-group" [attr.class]="lastNameDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <span><strong class="required">*</strong></span>
       </label>
@@ -560,7 +560,7 @@
         placeholder="{{leadCustomField.placeholder}}" (input)="validateField('lastName',false)"
         [ngModelOptions]="{standalone: true}" id="lastName" [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
-    <div *ngIf="leadCustomField.labelId =='company'" class="form-group" [attr.class]="companyDivClass">
+    <div *ngIf="leadCustomField.labelId =='Company'" class="form-group" [attr.class]="companyDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <span><strong class="required">*</strong></span>
       </label>
@@ -569,35 +569,35 @@
         [ngModelOptions]="{standalone: true}" id="company" [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='email'" [attr.class]="emailDivClass">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Email'" [attr.class]="emailDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <span><strong class="required">*</strong></span>
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.email"
         [ngModelOptions]="{standalone: true}" id="email" (input)="validateField('email',false)"
-        placeholder="{{leadCustomField.placeholder}}" [disabled]="preview || edit || (lead.campaignId > 0) || isConvertingContactToLead" aria-autocomplete="none" autocomplete="off" />
+        placeholder="{{leadCustomField.placeholder}}" [disabled]="preview || edit || (lead.campaignId > 0) || isConvertingContactToLead ||isFromFormAnalytics " aria-autocomplete="none" autocomplete="off" />
       <span class="required" *ngIf="inValidEmailId">{{errorMessage}}</span>
     </div>
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='phone'" [attr.class]="phoneDivClass">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Phone_Number'" [attr.class]="phoneDivClass">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <input type="text" maxlength="20" class="form-control" [(ngModel)]=" lead.phone"
         placeholder="{{leadCustomField.placeholder}}" [ngModelOptions]="{standalone: true}" [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='website'" [attr.class]="websiteClass">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Website'" [attr.class]="websiteClass">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <input type="text" maxlength="20" class="form-control" [(ngModel)]=" lead.website"
         placeholder="{{leadCustomField.placeholder}}" [ngModelOptions]="{standalone: true}" [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='title'" [attr.class]="websiteClass">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Title'" [attr.class]="websiteClass">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <input type="text" maxlength="20" class="form-control" [(ngModel)]=" lead.title"
         placeholder="{{leadCustomField.placeholder}}" [ngModelOptions]="{standalone: true}" [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='industry'" [attr.class]="industry">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Industry'" [attr.class]="industry">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
       </span>
@@ -607,19 +607,19 @@
       </select>
     </div>
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='address'" [attr.class]="leadStreet">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Address'" [attr.class]="leadStreet">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <textarea type="text" maxlength="100" rows="4" cols="4" class="form-control" name="leadstreet"
         [(ngModel)]=" lead.street" [ngModelOptions]="{standalone: true}" id="street"
         placeholder="{{leadCustomField.placeholder}}" [disabled]="preview" aria-autocomplete="none" autocomplete="off"></textarea>
     </div>
-    <div class="form-group" *ngIf="leadCustomField.labelId =='city'" [attr.class]="leadCity">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='City'" [attr.class]="leadCity">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <input type="text" maxlength="100" name="city" class="form-control" [(ngModel)]=" lead.city"
         placeholder="{{leadCustomField.placeholder}}" [ngModelOptions]="{standalone: true}" id="city"
         [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
-    <div class="form-group" *ngIf="leadCustomField.labelId =='state'" [attr.class]="leadState" style="margin-bottom: 20px">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='State'" [attr.class]="leadState" style="margin-bottom: 20px">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
       </span>
@@ -628,14 +628,14 @@
         <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
       </select>
     </div>
-    <div class="form-group" *ngIf="leadCustomField.labelId =='postalCode'" [attr.class]="leadPostalCode">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Postal_Code'" [attr.class]="leadPostalCode">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <input type="text" maxlength="10" name="companyName" class="form-control"
         placeholder="{{leadCustomField.placeholder}}" [(ngModel)]=" lead.postalCode"
         [ngModelOptions]="{standalone: true}" id="postalCode" [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='country'" [attr.class]="country">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Country'" [attr.class]="country">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
       </span>
@@ -645,7 +645,7 @@
       </select>
     </div>
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='region'" [attr.class]="region" style="margin-bottom: 20px">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='Region'" [attr.class]="region" style="margin-bottom: 20px">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
       </span>

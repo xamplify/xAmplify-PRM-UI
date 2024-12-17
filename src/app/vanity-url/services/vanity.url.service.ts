@@ -394,4 +394,22 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
       return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
 
+  getHtmlBody(id: number) {
+    const userId = this.authenticationService.getUserId();
+    const accessToken = this.authenticationService.access_token;
+
+    const url = `${this.URL}v_url/getHtmlBody/${id}?userId=${userId}&access_token=${accessToken}`;
+
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getTemplateId(emailId: any) {
+    const url = this.authenticationService.REST_URL + "v_url/get-template-id" + '?emailId=' + emailId;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
+    
+    
+
 }

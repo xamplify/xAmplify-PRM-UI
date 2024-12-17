@@ -398,6 +398,9 @@ nav a.active {
 .default {
   cursor: default;
 }
+.portlet.light.remove_space,.light_bg_removal.remove_space{
+  padding: 0px!important;
+}
 
 .portlet.light,
 .dashboard-stat2 {
@@ -1234,13 +1237,15 @@ strong {
 }
 
 .l-g-view {
-  background-color: #f1f3fa;
+  background-color: #fdfdfd;
   border-radius: 3px !important;
   border: 1px solid #e0e0e0 !important;
   padding: 0 !important;
   height: 34px;
 }
-
+.l-g-view:hover {
+  background-color: #ebedf3;
+}
 .lt-blue-c:hover {
   color: #008fd5 !important;
   border-color: #008fd5 !important;
@@ -3120,7 +3125,7 @@ button.fa.fa-th-large.btn-xs.l-g-view,
 button.btn-xs.l-g-view.fa.fa-folder,
 button.btn-xs.l-g-view.fa.fa-th,
 button.btn.btn-xs.hidden-xs.l-g-view {
-  background: #f1f3fa;
+  background: #fdfdfd;
   border-color: #ddd;
 }
 h4.txt_color{color:#fff !important;}
@@ -3285,7 +3290,7 @@ a.quicklinks_icons:hover {
 }
 .activity-updated-status-btn {
   padding: 2px 6px !important;
-  font-size: 9px !important;
+  font-size: 10px !important;
   color: #00a6e8;
   border: 1px solid #00a6e8;
   font-weight: 800;
@@ -3299,36 +3304,74 @@ a.quicklinks_icons:hover {
   border-radius: 3px !important;
   border: 1px solid #e87e04;
 }
+
+.underline-on-hover :hover {
+  text-decoration: underline;
+}
+.low_priority {
+  color: #0ea5e9;
+  font-size: 16px !important;
+  position: relative;
+  top: 2px;
+}
+.medium_priority {
+  color: #f4b135;
+}
+.high_priority {
+  font-size: 16px !important;
+}
+
 /* Sudha Sri(19-11-2024) */
 .light_bg_removal{
   Background: none !important;
   Border: none !important;
 }
 thead>tr {
-  background-color: #c3c7d2b0 !important;
+  background-color:  #ebedf3 !important;
 }
 .tgrid, .form-control, .l-g-view, 
 .close-circle, .pagination>li>a {
   border: 1px solid #c3c7d2d6 !important;
 }
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, 
-.table>thead>tr>th {
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td {
   border-top: 1px solid #c3c7d2d6 !important;
 }
 table {
   background-color: transparent !important;
 }
 .table-responsive {
-  border-radius: 10px;
+  border-radius: 0px;
 }
 #col-black{color:#333;}
 .remove_border{border-bottom: none !important;}
 .pb_5{padding-bottom: 5px;}
-tbody{background: #fff;}
+/* Sudha Sri(16-12-2024) */
+.tgrid > tbody > tr{background: #fff;}
 .break-word{
   word-wrap: break-word;
 }
+
+.fs-10px {
+  font-size: 10px !important;
+}
+
 button.search-box-item-click.only_partner{top: 0.7px !important;}
 button.search-box-item-click.only_content{top: 1.2px !important;}
 button.search-box-item-click.only_design{top: 6.2px !important;}
 button.search-box-item-click.only_mdf{top: 0.8px !important;}
+.pos_mar_rgt4{
+  margin-right: 4px !important;
+}
+.neg_mrg_top8{
+  margin-top: -8px !important;
+}
+.bg-color-white{background-color: #fff !important;border: 1px solid #ddd !important;border-radius: 8px !important;}
+.register_bg{background: none !important;}
+.portlet.light.bg-color-white{
+  padding: 10px!important;
+}
+table.table.tgrid {
+  border-collapse: separate;
+  border-radius: 7px;
+  overflow: hidden;
+}
