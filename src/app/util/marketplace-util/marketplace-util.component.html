@@ -2,6 +2,7 @@
   <img width="100%" src="https://xamplify.s3.amazonaws.com/images/deafult-master-lading-page.jpg"
   alt="No Image Found">
 </div>
+
 <div class="flexbody" *ngIf="categories != null && categories?.length>0">
   <div class="menu">
     <input type="text" class="searchField" [(ngModel)]="searchTerm" placeholder="Search" (keyup)="getFilteredCompanies()">
@@ -12,6 +13,7 @@
         {{ category.name }}
       </li>
     </ul>
+
   </div>
   <div class="tileContent">
     <div *ngFor="let category of filteredCategories" class="category-section" [attr.id]="category.name">

@@ -66,7 +66,8 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   categoryId: number = 0;
   vanitySubjectLines: any[] = [];
   isSubjectDuplicate: boolean = false;
-
+  categoriesAndCompaniesImage  = "https://xamplify.s3.amazonaws.com/images/deafult-master-lading-page.jpg";
+  googleMapsImage= "https://xamplify.s3.amazonaws.com/dev/images/bee-1305/f-7f38af0f-f5ed-4ee6-a6f6-c4d9909ceb4e-94151676035396555.jpeg";
   constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,private logger: XtremandLogger,
     private landingPageService: LandingPageService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -705,6 +706,11 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                               swal("", "Whoops! We're unable to save this page because you deleted the co-branding logo. You'll need to select a new page and start over.", "error");
                               return false;
                           }
+                      }
+                      if(self.isVendorMarketplacePages && (jsonContent.indexOf(self.categoriesAndCompaniesImage) < 0 
+                       && jsonContent.indexOf(self.googleMapsImage) < 0)){
+                        swal("", "Whoops! We're unable to save this page because you deleted the Company Tiles Logo and Google Maps Logo. You'll need to select a new page and start over.", "error");
+                        return false;
                       }
 
                       if (!defaultLandingPage) {

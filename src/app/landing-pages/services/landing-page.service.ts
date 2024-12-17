@@ -336,4 +336,11 @@ export class LandingPageService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+
+    getPartnerCompanyDetailsByVendorLandscapePageAlias(alias:any) {
+        let vanityUrlFilter  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        let vanityCompnayProfileName = this.authenticationService.companyProfileName;
+        const url = this.authenticationService.REST_URL + "/getPartnerCompanyDetailsByVendorLandscapePageAlias?alias="+alias+"&vanityUrlFilter=" + vanityUrlFilter + "&vanityCompnayProfileName=" + vanityCompnayProfileName;
+        return this.authenticationService.callGetMethod(url);
+    }
 }
