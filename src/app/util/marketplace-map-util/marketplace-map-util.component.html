@@ -1,0 +1,15 @@
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [minZoom]="2" 
+[maxZoom]="15"  style="width: 100%; height: 400px;">
+  <agm-marker *ngFor="let company of filteredCompanies" [latitude]="company.latitude" [longitude]="company.longitude"
+    [label]="company.name">
+    <agm-info-window>
+      <div style="max-width: 250px; max-height: 230px;">
+        <p class ="map-company-name"><strong>{{ company.name }}</strong></p>
+        <p><strong>Address: </strong>{{ company.address }}</p>
+        <p><strong>Contact: </strong>{{ company.phone }}</p>
+        <p><strong>Website: </strong>{{ company.website }}</p>
+        <a href="{{company.link}}"  (click)="navigateToParent($event, company.openInNewTab)">View Details</a>
+      </div>
+    </agm-info-window>
+  </agm-marker>
+</agm-map>

@@ -49,6 +49,7 @@ import { PreviewPageComponent } from './util/preview-page/preview-page.component
 import { PreviewAssetPdfComponent } from './common/preview-asset-pdf/preview-asset-pdf.component';
 import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
 import { MarketplaceUtilComponent } from './util/marketplace-util/marketplace-util.component';
+import { MarketplaceMapUtilComponent } from './util/marketplace-map-util/marketplace-map-util.component';
 
 
 export const routes: Routes = [
@@ -201,6 +202,10 @@ export const routes: Routes = [
 
 	{ path: 'vmpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'vmpjpl/:alias', component: ShowLandingPageComponent },
+
+	{ path: 'mapsUtil', component: MarketplaceMapUtilComponent },
+	{ path: 'marketplaceMap/:alias', component: MarketplaceMapUtilComponent },
+	
 
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
