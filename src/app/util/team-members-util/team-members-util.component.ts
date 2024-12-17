@@ -314,6 +314,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.teamInfo = teamMember;
       this.selectedTeamMembers.push(teamMemberId);
       this.selectedTeamMemberIds = this.selectedTeamMembers;
+      this.clearFilterforDetailedView();
       this.showAnalytics = true;
     }
 
@@ -1307,6 +1308,18 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.toDateFilter = "";
     this.fromDateFilterInString = "";
     this.toDateFilterInString = "";
+  }
+
+  clearFilterforDetailedView() {
+    this.showFilterOption = false;
+    this.fromDateFilterInString = "";
+    this.toDateFilterInString = "";
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.selectedVendorCompanies = [];
+    this.selectedVendorCompanyIds = [];
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.filterApplied = false;
   }
 
 }
