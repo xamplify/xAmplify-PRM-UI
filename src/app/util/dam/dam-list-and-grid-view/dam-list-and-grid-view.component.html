@@ -103,11 +103,11 @@
 												<!---XNFR-255-->
 												<h6 *ngIf="asset.tagNames?.length > 0 ">
 													<ng-container *ngIf="asset.tagNames?.length == 1">
-														<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}" data-toggle="tooltip" data-placement="top">
-															<ng-container *ngIf="asset.tagNames?.length == 1" (click)="filterAssets(tag)">{{asset.tagNames[0] | slice:0:20}} 
+														<div class="tag tablegray-tag tag-custom" title="{{asset.tagNames[0]}}" (click)="filterAssets(asset.tagNames[0])" data-toggle="tooltip" data-placement="top">
+															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} 
 																<span *ngIf="asset.tagNames[0]?.length>20">..</span>
 															</ng-container>
-															<ng-container *ngIf="asset.tagNames?.length > 1" (click)="filterAssets(tag)">{{asset.tagNames[0] | slice:0:10}}
+															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}}
 																 <span *ngIf="asset.tagNames[0]?.length>10">..</span>
 															</ng-container>
 														</div>

@@ -852,8 +852,18 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 	
 	filterAssets(tag:string){
-		
-		
+		let criteriaConditionsArray = new Array<Criteria>();
+		let criteriaObject = new Criteria();
+		criteriaObject.operation = "like";
+		criteriaObject.property = "tags";
+		criteriaObject.value1 = tag;
+		criteriaConditionsArray.push(criteriaObject);
+		this.pagination.criterias = criteriaConditionsArray;
+		this.pagination.filterOptionEnable = true ;
+		this.pagination.customFilterOption = true;
+		this.pagination.pageIndex = 1;
+		this.listItems(this.pagination);
+
 	}
 
 
