@@ -134,7 +134,7 @@
                         </div>
                       </div>
                       <div [ngStyle]="{ 'margin-bottom': isCRMIdCopiedToClipboard ? '2px' : '20px' }"
-                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
+                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion && deal?.activeCRM">
                         <div> <label class="control-label">CRM ID</label></div>
                         <div style="display:flex; height:35px;">
                           <input type="text" maxlength="100" name="crmIdInput" class="form-control" [(ngModel)]="deal.crmId"
