@@ -114,6 +114,7 @@ export class SendTestEmailComponent implements OnInit {
         $('div.button span span a').each(function () {
           this.style.setProperty('opacity', 'unset', 'important');
         });
+        $('div.button span').css('padding','1px 15px 0px 2px')
         $('tbody').addClass('preview-shown')
         this.processing = false;
       }, error => {

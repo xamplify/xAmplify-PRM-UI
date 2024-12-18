@@ -378,7 +378,7 @@
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorMarketplacePages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorMarketplacePages'}"
                                                         (click)="activateTab('vendorMarketplacePages');clearCustomResponse()">
-                                                        {{properties.vendorMarketplacePages | translate }}
+                                                        {{vendorLandscapeLabel | translate }}
                                                         <ng-template [ngTemplateOutlet]="activeIcon"
                                                             [ngTemplateOutletContext]="{'moduleName':'vendorMarketplacePages'}"></ng-template>
                                                     </a>
@@ -390,7 +390,7 @@
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorPartnerJourneyPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorPartnerJourneyPages'}"
                                                         (click)="activateTab('vendorPartnerJourneyPages');clearCustomResponse()">
-                                                        {{properties.vendorPartnerJourneyPages | translate }}
+                                                        {{partnerSharedPagesLabel | translate }}
                                                         <ng-template [ngTemplateOutlet]="activeIcon"
                                                             [ngTemplateOutletContext]="{'moduleName':'vendorPartnerJourneyPages'}"></ng-template>
                                                     </a>
@@ -402,7 +402,7 @@
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
                                                         (click)="activateTab('vendorJourney');clearCustomResponse()">
-                                                        {{properties.vendorJourney | translate}}
+                                                        {{VendorJourneyLabel | translate}}
                                                         <ng-template [ngTemplateOutlet]="activeIcon"
                                                             [ngTemplateOutletContext]="{'moduleName':'vendorJourney'}"></ng-template>
                                                     </a>
@@ -429,7 +429,7 @@
                                                 <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
                                                         (click)="activateTab('masterLandingPages');clearCustomResponse()">
-                                                        {{properties.masterLandingPages | translate}}
+                                                        {{partnerLandscapeLabel | translate}}
                                                         <ng-template [ngTemplateOutlet]="activeIcon"
                                                             [ngTemplateOutletContext]="{'moduleName':'masterLandingPages'}"></ng-template>
                                                     </a>
@@ -442,7 +442,7 @@
                                                 <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
                                                         (click)="activateTab('landingPages');clearCustomResponse()">
-                                                        {{properties.landingPages | translate }}
+                                                        {{vendorSharedPagesLabel | translate }}
                                                         <ng-template [ngTemplateOutlet]="activeIcon"
                                                             [ngTemplateOutletContext]="{'moduleName':'landingPages'}"></ng-template>
                                                     </a>
@@ -454,7 +454,7 @@
                                                 <li [ngClass]="{'active-tab': activeTabName == 'partnerJourneyPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'partnerJourneyPages'}"
                                                         (click)="activateTab('partnerJourneyPages');clearCustomResponse()">
-                                                        {{properties.partnerJourneyPages | translate }}
+                                                        {{partnerJourneyPageLabel | translate }}
                                                         <ng-template [ngTemplateOutlet]="activeIcon"
                                                             [ngTemplateOutletContext]="{'moduleName':'partnerJourneyPages'}"></ng-template>
                                                     </a>
