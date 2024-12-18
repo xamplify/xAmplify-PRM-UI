@@ -31,6 +31,7 @@ import { DashboardService } from 'app/dashboard/dashboard.service';
 import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 import { FlexiFieldService } from './../../dashboard/user-profile/flexi-fields/services/flexi-field.service';
 import { CustomCsvMappingComponent } from '../custom-csv-mapping/custom-csv-mapping.component';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var swal: any, $: any, Papa: any;
 
@@ -253,6 +254,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     @ViewChild('customCsvMapping') customCsvMapping: CustomCsvMappingComponent;
     emailIds = ['Email','EmailId','Email-Id','Email-Address','EmailAddress', 'Mail', 'MailId', 'ElectronicMail', 'ContactMail'];
     /***** XNFR-671 *****/
+    downloadDataList = [];
+    logListName = "";
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         public properties: Properties,
@@ -4893,6 +4896,35 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /***** XNFR-718 *****/
     csvCustomResponse() {
         this.customResponse = new CustomResponse('ERROR', "We couldn't find any valid email id(s) in the records. Please ensure that the email id(s) are correctly formatted and try again.", true);
+    }
+
+    /***** XNFR-772 *****/
+    downloadUploadCsv() {
+        this.logListName = "UPLOAD_CSV_DATA.csv";
+        this.downloadDataList.length = 0;
+        for (let i = 0; i < this.contacts.length; i++) {
+            var parentObject = {
+                "FIRSTNAME": this.contacts[i].firstName,
+                "LASTNAME": this.contacts[i].lastName,
+                "EMAILID": this.contacts[i].emailId,
+                "COMPANY": this.contacts[i].contactCompany,
+                "JOBTITLE": this.contacts[i].jobTitle,
+                "ADDRESS": this.contacts[i].address,
+                "CITY": this.contacts[i].city,
+                "STATE": this.contacts[i].state,
+                "ZIP CODE": this.contacts[i].zipCode,
+                "COUNTRY": this.contacts[i].country,
+                "MOBILE NUMBER": this.contacts[i].mobileNumber,
+            }
+            if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
+                this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
+                    let dto = this.contacts[i].flexiFields.find(dto => dto.fieldName == flexiField.fieldName);
+                    parentObject[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
+                });
+            }
+            this.downloadDataList.push(parentObject);
+        }
+        this.referenceService.isDownloadCsvFile = true;
     }
 
 }

@@ -801,7 +801,15 @@
 							<div class="portlet light remove_cardBgcolor share_leads_mrgn">
 								<div class="portlet-title">
 									<div class="caption" style="padding-top: 7px !important; font-size: 20px;">
-										<i class="fa fa-edit" style="font-size: 19px;"></i>File	Preview
+										<i class="fa fa-edit" style="font-size: 19px;"></i>File Preview
+									</div>
+									<div *ngIf="isUploadCsvOptionEnabled" class="hidden-xs dwnload-csv_btn">
+										<a (click)="downloadUploadCsv()" [ngClass]="{'disabled': contacts.length == 0}">
+											<button type="button" class="button p-rgt_p-top bgcolor-unset pull-right" [disabled]="contacts.length == 0" translate>
+												<span class="btn Btn-Green transition" translate>Download CSV <i
+														class="fa fa-download icon_color" aria-hidden="true" style="margin-left: 5px"></i></span>
+											</button>
+										</a>
 									</div>
 								</div>
 								<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled">
@@ -1462,6 +1470,9 @@
 		</div>
 	</div>
 </div>
+
+<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"
+		[downloadListName]="logListName"> </app-export-csv>
 
 <app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)"></app-share-leads>
 
