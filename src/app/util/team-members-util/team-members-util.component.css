@@ -578,3 +578,21 @@ border-radius:7px 0px 0px 7px !important;
 .team_downlaod{
 border-radius: 7px;
 }
+
+.custom_fiter-asset {
+  background-color: #f1f5f9;
+  padding: 10px 5px 10px 5px !important;
+}
+
+.createdOnRow{
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.custom-margin{
+  margin-top: 40px;
+}

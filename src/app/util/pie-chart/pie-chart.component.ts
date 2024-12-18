@@ -187,6 +187,9 @@ export class PieChartComponent implements OnInit {
     teamMemberAnalyticsRequest.loggedInUserId = this.authenticationService.getUserId();
     teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
     teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    teamMemberAnalyticsRequest.fromDateFilterInString = this.fromDateFilter
+    teamMemberAnalyticsRequest.toDateFilterInString = this.toDateFilter;
+    teamMemberAnalyticsRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (!this.isVendorVersion) {
       teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
       teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;

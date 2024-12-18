@@ -146,6 +146,9 @@ export class ShareLeadDetailsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if(!this.isVendorVersion){
       pagination.vanityUrlFilter = this.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;

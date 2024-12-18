@@ -20,6 +20,8 @@ export class TeamMemberwiseAssetsDetailedReportComponent implements OnInit {
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
   @Input() isVendorVersion : boolean =  false;
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -48,8 +50,11 @@ export class TeamMemberwiseAssetsDetailedReportComponent implements OnInit {
     this.pagination.maxResults = 6;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getTeamMemberWiseTrackAssetDetails(this.pagination).subscribe(
-			(response: any) => {	
+      (response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
