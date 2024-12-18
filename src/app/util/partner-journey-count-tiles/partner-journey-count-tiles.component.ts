@@ -91,6 +91,9 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
       teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
       teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;
     }
+    teamMemberAnalyticsRequest.fromDateFilterInString = this.fromDateFilter
+    teamMemberAnalyticsRequest.toDateFilterInString = this.toDateFilter;
+    teamMemberAnalyticsRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.parterService.getTeamMemberAnalyticsCounts(teamMemberAnalyticsRequest,this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
