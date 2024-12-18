@@ -114,7 +114,31 @@ export class SendTestEmailComponent implements OnInit {
         $('div.button span span a').each(function () {
           this.style.setProperty('opacity', 'unset', 'important');
         });
-        $('div.button span').css('padding','1px 15px 0px 2px')
+        $('div.button span').css({
+          'padding': '1px 15px 0px 2px',
+          'cursor': 'not-allowed'         
+        });
+        $('div.plspx').css({
+          'cursor': 'not-allowed' ,
+          'href':'<login_url>'     
+        });
+        $('table.social-table').css({
+          'padding': '0 5px 0 0',
+          'cursor': 'not-allowed',
+        });
+        $('table.social-table a').css('pointer-events', 'none'); 
+        
+        $('table.social-table a').removeAttr('href'); 
+        
+        $('div.button').css({
+          'padding': '1px 15px 0px 2px',  
+          'cursor': 'not-allowed'       
+        }).prop('disabled', true);  
+        
+        $('div.button').on('click', function(e) {
+          e.preventDefault(); 
+          return false;       
+        });
         $('tbody').addClass('preview-shown')
         this.processing = false;
       }, error => {
