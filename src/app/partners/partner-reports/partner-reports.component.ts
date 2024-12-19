@@ -589,6 +589,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             (response: any) => {
                 if (response.statusCode == 2017) {
                     this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
+                    this.goToInActivePartnersDiv();
                 }
                 this.sendTestEmailIconClicked = false;
                 this.referenseService.loading(this.httpRequestLoader, false);
