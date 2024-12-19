@@ -3761,4 +3761,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isLocalhostOrQADomain = (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain());
 	}
 
+	/***** XNFR-772 *****/
+	downloadUploadCsv() {
+		this.logListName = "UPLOAD_CSV_DATA.csv";
+		this.downloadDataList.length = 0;
+		for (let i = 0; i < this.users.length; i++) {
+			var object = {
+				"FIRSTNAME": this.users[i].firstName,
+				"LASTNAME": this.users[i].lastName,
+				"EMAILID": this.users[i].emailId,
+				"COMPANY": this.users[i].contactCompany,
+				"JOBTITLE": this.users[i].jobTitle,
+				"ADDRESS": this.users[i].address,
+				"CITY": this.users[i].city,
+				"STATE": this.users[i].state,
+				"ZIP CODE": this.users[i].zipCode,
+				"COUNTRY": this.users[i].country,
+				"MOBILE NUMBER": this.users[i].mobileNumber,
+			}
+			if (this.checkingContactTypeName == XAMPLIFY_CONSTANTS.contact && this.flexiFieldsRequestAndResponseDto.length > 0) {
+				this.flexiFieldsRequestAndResponseDto.forEach(flexiField => {
+					let dto = this.users[i].flexiFields.find(dto => dto.fieldName == flexiField.fieldName);
+					object[flexiField.fieldName] = dto != undefined ? dto.fieldValue : "";
+				});
+			}
+			this.downloadDataList.push(object);
+		}
+		this.refService.isDownloadCsvFile = true;
+	}
+
 }
