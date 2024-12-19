@@ -299,6 +299,7 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               })),
               { condition: () => jsonContent.indexOf("<<LoginLink>>") < 0 && emailTemplateType === "JOIN_MY_TEAM", message: "Whoops! We are unable to save this template because you deleted 'LoginLink' tag." },
               { condition: () => jsonContent.indexOf("<login_url>") < 0 && emailTemplateType === "JOIN_VENDOR_COMPANY", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
+              { condition: () => jsonContent.indexOf("login_url") < 0 && emailTemplateType === "COMPANY_PROFILE_INCOMPLETE", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("pageLink") < 0 && ["SOCIAL_CAMPAIGN", "PAGE_CAMPAIGN_CONTACT", "ADD_DEAL", "DEAL_UPDATE"].includes(emailTemplateType), message: "Whoops! We are unable to save this template because you deleted 'Button' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length < 2, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },

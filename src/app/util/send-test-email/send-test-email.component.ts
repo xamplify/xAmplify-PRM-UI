@@ -116,29 +116,45 @@ export class SendTestEmailComponent implements OnInit {
         });
         $('div.button span').css({
           'padding': '1px 15px 0px 2px',
-          'cursor': 'not-allowed'         
+          'cursor': 'not-allowed'
         });
         $('div.plspx').css({
-          'cursor': 'not-allowed' ,
-          'href':'<login_url>'     
+          'cursor': 'not-allowed',
         });
         $('table.social-table').css({
           'padding': '0 5px 0 0',
           'cursor': 'not-allowed',
         });
-        $('table.social-table a').css('pointer-events', 'none'); 
-        
-        $('table.social-table a').removeAttr('href'); 
-        
+        $('table.social-table a').css('pointer-events', 'none');
+
+        $('table.social-table a').removeAttr('href');
+
         $('div.button').css({
-          'padding': '1px 15px 0px 2px',  
-          'cursor': 'not-allowed'       
-        }).prop('disabled', true);  
-        
-        $('div.button').on('click', function(e) {
-          e.preventDefault(); 
-          return false;       
+          'padding': '1px 15px 0px 2px',
+          'cursor': 'not-allowed'
+        }).prop('disabled', true);
+
+        $('div.button').on('click', function (e) {
+          e.preventDefault();
+          return false;
         });
+        $('div.button a').css({
+          'padding': '1px 15px 0px 2px',
+          'cursor': 'not-allowed'
+        }).prop('disabled', true);
+        $('div.alignment a').css({
+          'cursor': 'not-allowed',
+          'pointer-events': 'none'
+        });
+        $('div.button-container a').css({
+          'cursor': 'not-allowed',
+          'pointer-events': 'none'
+        });
+        $('td.pad a').css({
+          'cursor': 'not-allowed',
+          'pointer-events': 'none'
+        });
+    
         $('tbody').addClass('preview-shown')
         this.processing = false;
       }, error => {
