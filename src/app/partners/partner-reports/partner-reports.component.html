@@ -846,7 +846,7 @@
                 <thead>
                   <tr>
                     <th class="center-aligned">partners</th>
-                    <th style="text-align: center;">LAST REMINDER SENT</th>
+                    <th *ngIf="isIncompleteCompanyProfileDiv && isSingUpPendingDiv" style="text-align: center;">LAST REMINDER SENT</th>
                     <th style="text-align: center;">Actions</th>
                   </tr>
                 </thead>
@@ -857,7 +857,7 @@
                       <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
                       </app-user-info>
                     </td>
-                    <td class="hidden-xs text-center">
+                    <td *ngIf="isIncompleteCompanyProfileDiv && isSingUpPendingDiv" class="hidden-xs text-center">
                       <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                       <h4 *ngIf="!item.time"><strong>-</strong></h4>
                     </td>
