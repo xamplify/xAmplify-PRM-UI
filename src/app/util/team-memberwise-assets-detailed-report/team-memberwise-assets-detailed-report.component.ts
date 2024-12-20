@@ -46,13 +46,7 @@ export class TeamMemberwiseAssetsDetailedReportComponent implements OnInit {
 
   getTeamMemberWiseTrackAssetDetails(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
-    this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 6;
-    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
-    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.pagination.fromDateFilterString = this.fromDateFilter;
-    this.pagination.toDateFilterString = this.toDateFilter;
-    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.setPaginationValuesForTeamMember();
     this.parterService.getTeamMemberWiseTrackAssetDetails(this.pagination).subscribe(
       (response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -73,6 +67,15 @@ export class TeamMemberwiseAssetsDetailedReportComponent implements OnInit {
         this.xtremandLogger.error(_error);
 			}
 		);
+  }
+
+  private setPaginationValuesForTeamMember() {
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 
   search() {		
@@ -106,5 +109,15 @@ export class TeamMemberwiseAssetsDetailedReportComponent implements OnInit {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
   } 
+
+  downloadAssetDetailsReport() {
+    this.setPaginationValuesForTeamMember();
+    let teamMemberAnalyticsUrl = this.referenseService.getTeamMemberAnalyticsUrl(this.pagination);
+    let isVendorVersionRequestParam = this.isVendorVersion ? "&vendorVersion=" + this.isVendorVersion : "";
+    let urlSuffix = "teamMemberAnalytics/download/asset-details-report"
+    let url = this.authenticationService.REST_URL + urlSuffix + "?access_token=" + this.authenticationService.access_token + teamMemberAnalyticsUrl
+      + isVendorVersionRequestParam;
+    this.referenseService.openWindowInNewTab(url);
+  }
 
 }
