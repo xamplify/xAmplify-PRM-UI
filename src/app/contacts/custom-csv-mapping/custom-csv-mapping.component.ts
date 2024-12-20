@@ -788,12 +788,13 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   /***** XNFR-772 *****/
   validateZipCode(inputString: string): boolean {
-    return inputString && /^\d+$/.test(inputString);
+    const regex = /^[^0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/;
+    return inputString && (regex.test(inputString) || inputString.length > 10);
   }
 
   /***** XNFR-772 *****/
   validateMobileNumber(inputString: string): boolean {
-    return inputString && /^\d+$/.test(inputString) && inputString.length > 7;
+    return inputString && (!/^\d+$/.test(inputString) || inputString.length > 20);
   }
 
   /***** XNFR-772 *****/
@@ -804,6 +805,20 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-772 *****/
   capitalizeFirstLetter(inputString: string) {
     return inputString ? inputString.charAt(0).toUpperCase() + inputString.slice(1) : inputString;
+  }
+
+  /***** XNFR-775 *****/
+  allowNumericAndSpecial(event: KeyboardEvent): boolean {
+    const charCode = event.charCode;
+    if (charCode >= 48 && charCode <= 57) {
+      return true;
+    }
+    const allowedSpecialChars = [32, 33, 35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 96, 123, 124, 125, 126];
+    if (allowedSpecialChars.includes(charCode)) {
+      return true;
+    }
+    event.preventDefault();
+    return false;
   }
 
 }
