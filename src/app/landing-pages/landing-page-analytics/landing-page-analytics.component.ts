@@ -61,6 +61,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     @Input() vendorPartnerJourneyPages = false;
     campaignTitle = "";
     barChartViewPopUpSortValue:any;
+    islandscapePages:boolean = false;
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService,private campaignService:CampaignService) {
@@ -69,6 +70,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     }
 
     ngOnInit() {
+        this.islandscapePages = this.vendorJourney||this.masterLandingPages || this.isPartnerJourneyPages || this.isVendorMarketplacePages;
         this.pageLoader = true;
         this.landingPageId = this.route.snapshot.params['landingPageId'];
         this.campaignTitle = this.route.snapshot.params['campaignTitle'];

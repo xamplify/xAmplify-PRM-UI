@@ -19,6 +19,7 @@
 				<strong translate>No Data Found.</strong>
 			</div>
 			<div class="modal-body" *ngIf = "vendorLogoDetails.length!=0 && ((!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember) || isVendorMarketplace)">
+				<div class="table-responsive">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
@@ -62,10 +63,12 @@
 					</tbody>
 				</table>
 			</div>
+			</div>
 			<div *ngIf="sharedVendorLogoDetails.length==0 && !isVendorMarketplace" class="alert alert-info">
 				<strong translate>No Data Found.</strong>
 			</div>
 			<div class="modal-body" *ngIf = "sharedVendorLogoDetails.length!=0 && (authenticationService?.module?.isAnyAdminOrSupervisor && !isVendorMarketplace)">
+				<div class="table-responsive">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
@@ -106,7 +109,7 @@
 							  <div class="table-responsive x-hidden">
 								<div>
 								  <ng-container>
-									<table class="table tgrid table-condensed table-bordered child-table-xamp"
+									<table class="table tgrid table-condensed table-bordered child-table-xamp table-overflow"
 									  aria-describedby="team-members-info"
 									  id="admin-and-team-members-{{vendorLogo?.companyId}}">
 									  <thead>
@@ -153,6 +156,7 @@
 						</ng-container>
 					</tbody>
 				</table>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn Btn-Gray" id="bottom-right" (click)="hideModal()">
