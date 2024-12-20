@@ -50,10 +50,15 @@
               <!-- Conditions Dropdown-->
               <div class="col-md-4 mobileTopandBottomSpace">
                 <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
-                  [ngModelOptions]="{standalone: true}"
+                  [ngModelOptions]="{standalone: true}" (change)="setConditionsForCriteria(criterias[i],i)"
                   [disabled]="criterias[i].property === 'From' || criterias[i].property === 'Type'">
                   <ng-container *ngIf="criterias[i].property !== 'From' && criterias[i].property !== 'Type' ">
-                    <option *ngFor="let filterCondition of filterConditions" value="{{filterCondition.value}}">
+                 <!--  ll -->
+                  <option *ngIf="criterias[i].operation === 'Condition*'">Condition*</option>
+                  <option *ngIf="criterias[i].operation === 'Condition*' &&  selectedConditionArray.length > 0 ">
+                    {{selectedConditionArray[i]}}</option>
+                  <!-- ll -->
+                    <option *ngFor="let filterCondition of filterConditions; let i = index">
                       {{filterCondition.value}}</option>
                   </ng-container>
                   <ng-container *ngIf="criterias[i].property === 'From' || criterias[i].property === 'Type'">

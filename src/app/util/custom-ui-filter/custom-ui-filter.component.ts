@@ -22,7 +22,6 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	@Output() closeFilterEmitter = new EventEmitter();
 	filterOptions: any[] = [];
 	filterConditions = [
-		{ 'name': '', 'value': 'Condition*' },
 		{ 'name': 'eq', 'value': '=' },
 		{ 'name': 'like', 'value': 'Contains' },
 	];
@@ -37,17 +36,20 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	dropdownDisabled: boolean[] = [];
 	allfilterOptions: any[] = [];
 	seletedFiterArray: any[] = [];
+	selectedConditionArray: any[] = [];
+	@Input() criteria: Criteria ;
+
+
 	constructor(private router: Router) {
 	}
 	ngOnDestroy(): void {
 	}
 	ngOnInit() {
-		this.addFilterOptionsValues(this.type)
+		this.addFilterOptionsValues(this.type);
 	}
 	addFilterOptionsValues(type: string) {
 		if (type === "Assets") {
 			this.filterOptions.push(
-				// { 'name': '', 'value': 'Field Name*' },
 				{ 'name': 'assetsname', 'value': 'Asset Name' },
 				{ 'name': 'folder', 'value': 'Folder' },
 				{ 'name': 'type', 'value': 'Type' },
@@ -70,7 +72,18 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			}
 			this.allfilterOptions = this.filterOptions;
 		}
-		this.addNewRow();
+		
+		if (this.criteria) {
+			this.selectedConditionArray[0] = this.criteria.operation;
+			this.seletedFiterArray[0] = this.criteria.property;
+			this.criterias.push(this.criteria);
+			this.onSelection(this.criteria, 0);
+			this.isclearFilter = true;
+			this.submittFilterData();
+		}else{
+			this.addNewRow();
+		}
+		
 	}
 	addNewRow() {
 		let criteria = new Criteria();
@@ -88,6 +101,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 		if (removedOption) {
 			this.seletedFiterArray.splice(index, 1);
 			this.compareArrays();
+		}
+	    let removedCondition = this.criterias[index].operation;
+		if (removedCondition) {
+			this.selectedConditionArray.splice(index, 1);
 		}
 		this.criterias.splice(index, 1);
 		this.dropdownDisabled.splice(index, 1);
@@ -241,7 +258,6 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.criterias[index].operation = "=";
 			this.criterias[index].value1 = "undefined";
 		} else {
-			this.criterias[index].operation = "Condition*";
 			this.criterias[index].value1 = "";
 		}
 		this.onSelection(criteria, index);
@@ -261,5 +277,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			}
 		});
 		this.filterOptions = resultArray;
+	}
+
+
+	setConditionsForCriteria(criteria: any, index: number) {
+		this.selectedConditionArray[index] = criteria.operation;
 	}
 }

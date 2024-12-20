@@ -671,7 +671,7 @@
 <!---XNFR-381-->
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
-	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'"
+	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'" [criteria] = "criteria"
 		[isWhiteLabeledAsset]="isWhiteLabeledAsset"
 		[whiteLableContentSharedByVendorCompanies]="whiteLableContentSharedByVendorCompanies" [fileTypes]="fileTypes"
 		(filterConditionsEmitter)="assetsFilter($event)"
