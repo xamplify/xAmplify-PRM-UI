@@ -35,6 +35,8 @@ export class CustomSkinComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
   @Output() updateEvent = new EventEmitter<any>();
   isValidDivBgColor = true;
+  isValidTableHeaderColor = true;
+  isValidTableBodyColor = true;
   isValidHeaderTextColor = true;
   isValidBackgroundColor = true;
   isValidButtonValueColor = true;
@@ -65,6 +67,8 @@ export class CustomSkinComponent implements OnInit {
   /*******Header Color*************/
   /*******Main_Content******** */
   mainBgColor: string;
+  tableHeaderColor: string;
+  tableBodyColor: string;
   mainDivColor: string;
   mainBorderColor: string;
   mainTextColor: string;
@@ -280,6 +284,10 @@ export class CustomSkinComponent implements OnInit {
       this.mainContentForm.backgroundColor = colorCode; this.isValidBackgroundColor = true;
     } else if (type === "mainDivColor") {
       this.mainContentForm.divBgColor = colorCode; this.isValidDivBgColor = true;
+    }else if(type === "tableHeaderColor"){
+      this.mainContentForm.tableHeaderColor = colorCode; this.isValidTableHeaderColor = true;
+    } else if(type === "tableBodyColor"){
+      this.mainContentForm.tableBodyColor = colorCode; this.isValidTableBodyColor = true;
     } else if (type === "mainBorderColor") {
       this.mainContentForm.buttonBorderColor = colorCode; this.isValidButtonBorderColor = true;
     } else if (type === "mainTextColor") {
@@ -449,6 +457,10 @@ export class CustomSkinComponent implements OnInit {
       this.mainContentForm.backgroundColor = ""; this.isValidBackgroundColor = true;
     } else if (type === "mainDivColor") {
       this.mainContentForm.divBgColor = ""; this.isValidDivBgColor = true;
+    } else if(type === "tableHeaderColor"){
+      this.mainContentForm.tableHeaderColor = ""; this.isValidTableHeaderColor = true;
+    } else if(type === "tableBodyColor"){
+      this.mainContentForm.tableBodyColor = ""; this.isValidTableBodyColor = true;
     } else if (type === "mainBorderColor") {
       this.mainContentForm.buttonBorderColor = ""; this.isValidButtonBorderColor = true;
     } else if (type === "mainTextColor") {
@@ -548,6 +560,12 @@ export class CustomSkinComponent implements OnInit {
       } else if (type === "mainDivColor") {
         this.mainDivColor = event
         this.mainContentForm.divBgColor = event; this.isValidDivBgColor = true;
+      } else if(type === "tableHeaderColor") {
+        this.tableHeaderColor = event;
+        this.mainContentForm.tableHeaderColor = event; this.isValidTableHeaderColor = true;
+      } else if(type === "tableBodyColor"){
+        this.tableBodyColor = event;
+        this.mainContentForm.tableBodyColor = event; this.isValidTableBodyColor = true;
       } else if (type === "mainBorderColor") {
         this.mainBorderColor = event;
         this.mainContentForm.buttonBorderColor = event; this.isValidButtonBorderColor = true;
@@ -714,6 +732,8 @@ export class CustomSkinComponent implements OnInit {
           /**********Main Colors********* */
           this.mainBgColor = this.mainContentForm.backgroundColor;
           this.mainDivColor = this.mainContentForm.divBgColor;
+          this.tableHeaderColor = this.mainContentForm.tableHeaderColor;
+          this.tableBodyColor = this.mainContentForm.tableBodyColor;
           this.mainBorderColor = this.mainContentForm.buttonBorderColor;
           this.mainTextColor = this.mainContentForm.textColor;
           this.iconBorderColor = this.mainContentForm.iconBorderColor;
