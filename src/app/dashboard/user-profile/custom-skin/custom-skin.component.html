@@ -22,7 +22,7 @@
 		<div class="btn-group" [ngClass]="isValidContactName || name.hasError('required') ? 'm-top-70':'m-top-50'"
 			style="float: right;" *ngIf="themeDTO?.parentThemeName === 'LIGHT' || themeDTO?.parentThemeName === 'DARK'">
 			<button class="button_blue padding align bgcolor-unset" [ngClass]="(isValid  || isValidContactName || headerBg.hasError('required')|| footerText.hasError('required') || footerBg.hasError('required') || name.hasError('required')) ||
-			mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
+			mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || tableHeader.hasError('required') || tableBody.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
 			|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') || btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required')
 			?'disabled':''" [disabled]="isValid || isValidContactName || name.hasError('required') " id="sample_editable_1_new"
 				style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme"
@@ -30,7 +30,7 @@
 					class="btn btn-primary transition text_pd-top1">Save</span></button>
 			<button class="button_blue padding align bgcolor-unset" [ngClass]="isValid ?'disabled':''"
 				[disabled]="isValid || isValidContactName || headerBg.hasError('required')|| footerText.hasError('required') || footerBg.hasError('required') || name.hasError('required') || 
-			mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
+			mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || tableHeader.hasError('required') || tableBody.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
 			|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') ||btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required')"
 				style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()"><span
 					class="btn btn-primary transition text_pd-top1">Update</span></button>
@@ -316,6 +316,42 @@
 									</div>
 								</div>
 								<div *ngIf="mainCardBg.hasError('required')" style="padding-left: 13px;">
+									<p class="danger" translate>Color is Required.</p>
+								</div>
+								<div class="col-md-12 col-lg-12">
+									<div class="form-group">
+										<label>Table Header Color</label> <input class="form-control"
+											[value]="tableHeaderColor" [(ngModel)]="tableHeaderColor"
+											style="padding-left: 40px;"
+											(input)="checkValidColorCode(tableHeaderColor,'tableHeaderColor')" maxlength="7"
+											tableHeader="tableHeader" #tableHeader="ngModel" id="tableHeader" required />
+										<span class="input-group-addon color-pick"
+											[(colorPicker)]="mainContentForm.tableHeaderColor"
+											[style.background]="mainContentForm.tableHeaderColor" [cpWidth]="'200px'"
+											[cpHeight]="'265px'"
+											(colorPickerChange)="changeControllerColor($event,mainContentForm,'tableHeaderColor')"
+											[cpPosition]="'top'" readonly></span>
+									</div>
+								</div>
+								<div *ngIf="tableHeader.hasError('required')" style="padding-left: 13px;">
+									<p class="danger" translate>Color is Required.</p>
+								</div>
+								<div class="col-md-12 col-lg-12">
+									<div class="form-group">
+										<label>Table Body Color</label> <input class="form-control"
+											[value]="tableBodyColor" [(ngModel)]="tableBodyColor"
+											style="padding-left: 40px;"
+											(input)="checkValidColorCode(tableBodyColor,'tableBodyColor')" maxlength="7"
+											tableBody="tableBody" #tableBody="ngModel" id="tableBody" required />
+										<span class="input-group-addon color-pick"
+											[(colorPicker)]="mainContentForm.tableBodyColor"
+											[style.background]="mainContentForm.tableBodyColor" [cpWidth]="'200px'"
+											[cpHeight]="'265px'"
+											(colorPickerChange)="changeControllerColor($event,mainContentForm,'tableBodyColor')"
+											[cpPosition]="'top'" readonly></span>
+									</div>
+								</div>
+								<div *ngIf="tableBody.hasError('required')" style="padding-left: 13px;">
 									<p class="danger" translate>Color is Required.</p>
 								</div>
 								<div class="col-md-12 col-lg-12">

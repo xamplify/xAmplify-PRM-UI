@@ -30,17 +30,17 @@
       <tbody>
         <ng-container *ngFor="let user of pagedItems;let i=index">
           <tr id="mapped-csv-column-row{{i}}">
-            <td class="text-center" [ngClass]="{'danger': !user.firstName}">
-              <input type="text" class="form-control" [(ngModel)]="user.firstName"
+            <td class="text-center">
+              <input type="text" class="form-control" [(ngModel)]="user.firstName" placeholder="Firstname (optional)"
                 (ngModelChange)="user.firstName = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
             </td>
-            <td class="text-center" [ngClass]="{'danger': !user.lastName}">
-              <input type="text" class="form-control" [(ngModel)]="user.lastName"
+            <td class="text-center">
+              <input type="text" class="form-control" [(ngModel)]="user.lastName" placeholder="Lastname (optional)"
                 (ngModelChange)="user.lastName = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
             </td>
-            <td class="text-center" [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
+            <td class="text-center" [ngClass]="user?.isValidEmailIdPattern ? 'green':'red'">
               <input type="text" class="form-control" [(ngModel)]="user.emailId" [ngModelOptions]="{standalone: true}"
-                (input)="validateEmailAddressPattern(user)">
+                (input)="validateEmailAddressPattern(user)" placeholder="Email address (required)">
             </td>
             <td class="text-center">
               <button class="lightgray-btn" id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
@@ -61,50 +61,50 @@
                 <tbody>
                   <tr>
                     <td class='bold'>Company</td>
-                    <td [ngClass]="{'danger': !user.contactCompany}">
-                      <input type="text" class="form-control" [(ngModel)]="user.contactCompany"
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="user.contactCompany" placeholder="Company (optional)"
                         (ngModelChange)="user.contactCompany = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
                     </td>
                   </tr>
                   <tr>
                     <td class='bold'>Job Title</td>
-                    <td [ngClass]="{'danger': !user.jobTitle}">
-                      <input type="text" class="form-control" [(ngModel)]="user.jobTitle"
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="user.jobTitle" placeholder="Job Title (optional)"
                         (ngModelChange)="user.jobTitle = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
                     </td>
                   </tr>
                   <tr>
                     <td class='bold'>Address</td>
-                    <td [ngClass]="{'danger': !user.address}">
-                      <input type="text" class="form-control" [(ngModel)]="user.address"
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="user.address" placeholder="Address (optional)"
                         (ngModelChange)="user.address = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
                     </td>
                   </tr>
                   <tr>
                     <td class='bold'>City</td>
-                    <td [ngClass]="{'danger': !user.city}">
-                      <input type="text" class="form-control" [(ngModel)]="user.city"
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="user.city" placeholder="City (optional)"
                         (ngModelChange)="user.city = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
                     </td>
                   </tr>
                   <tr>
                     <td class='bold'>State</td>
-                    <td [ngClass]="{'danger': !user.state}">
-                      <input type="text" class="form-control" [(ngModel)]="user.state"
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="user.state" placeholder="State (optional)"
                         (ngModelChange)="user.state = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
                     </td>
                   </tr>
                   <tr>
                     <td class='bold'>Zip Code</td>
-                    <td [ngClass]="validateZipCode(user.zipCode) ? '':'danger'">
-                      <input type="text" class="form-control" [(ngModel)]="user.zipCode" maxlength="10"
-                        [ngModelOptions]="{standalone: true}" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    <td [ngClass]="validateZipCode(user.zipCode) ? 'red':''">
+                      <input type="text" class="form-control" [(ngModel)]="user.zipCode" maxlength="10" placeholder="Zip Code (optional)"
+                        [ngModelOptions]="{standalone: true}" (keypress)="allowNumericAndSpecial($event)">
                     </td>
                   </tr>
                   <tr>
                     <td class='bold' style="width: 35%;">Country</td>
-                    <td [ngClass]="{'danger': !user.country}" style="display: flex;">
-                      <input type="text" class="form-control" [(ngModel)]="user.country"
+                    <td style="display: flex;">
+                      <input type="text" class="form-control" [(ngModel)]="user.country" placeholder="Country (optional)"
                         (ngModelChange)="user.country = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
                       <select class="form-control" [(ngModel)]="user.territory" (ngModelChange)="dropDownCountryValue(user, $event)">
                         <option *ngFor="let country of countryNames.countries" [ngValue]="country">{{country}}</option>
@@ -113,17 +113,19 @@
                   </tr>
                   <tr>
                     <td class='bold'>Mobile Number</td>
-                    <td [ngClass]="validateMobileNumber(user.mobileNumber) ? '':'danger'">
+                    <td [ngClass]="validateMobileNumber(user.mobileNumber) ? 'red':''">
                       <input type="text" class="form-control" [(ngModel)]="user.mobileNumber" maxlength="20"
-                        [ngModelOptions]="{standalone: true}" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                        placeholder="Mobile Number (optional)" [ngModelOptions]="{standalone: true}"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                     </td>
                   </tr>
 
                   <!----- XNFR-680 Flexi Fields ----->
                   <tr *ngFor="let flexiField of user.flexiFields">
                     <td class='bold'>{{flexiField.fieldName}}</td>
-                    <td [ngClass]="{'danger': !flexiField.fieldValue}">
+                    <td>
                       <input type="text" class="form-control" [(ngModel)]="flexiField.fieldValue"
+                        placeholder="{{flexiField.fieldName}} (optional)"
                         (ngModelChange)="flexiField.fieldValue = capitalizeFirstLetter($event)" [ngModelOptions]="{standalone: true}">
                     </td>
                   </tr>

@@ -2444,9 +2444,9 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
 .register_bg{background: none !important;}
 /* Sudha Sri(16-12-2024) */
 .tgrid > tbody > tr{
-  background-color:var(--page-content)!important;
+  background-color:var(--table-body-color)!important;
   color: var(---text-color) !important;
 }
 .tgrid > tbody > tr:hover{
-  background-color: var(--div-bg-color) !important;
+  background-color: var(--table-header) !important;
 }
