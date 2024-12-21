@@ -166,8 +166,8 @@ export class ManageDealsComponent implements OnInit {
       if(this.dealsSortOption.searchKey) {
         this.referenceService.universalSearchKey = this.dealsSortOption.searchKey;
       }
-      this.dealsSortOption.searchKey = this.referenceService.universalSearchKey;
-      this.searchDeals();
+      this.dealsSortOption.searchKey = this.listView ? this.referenceService.universalSearchKey:'';
+      //this.dealsPagination.searchKey = this.dealsSortOption.searchKey;
     }
   }
   /** User GUide **/
@@ -327,6 +327,7 @@ export class ManageDealsComponent implements OnInit {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      this.dealsSortOption.searchKey = '';//XNFR-799
       this.getActiveCRMDetails();
       this.showDeals();
       if (this.prm) {
@@ -342,6 +343,7 @@ export class ManageDealsComponent implements OnInit {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
     this.statusSearchableDropDownDto = new SearchableDropdownDto();
+    this.dealsSortOption.searchKey = '';//XNFR-799
     this.showDeals();
     this.getActiveCRMDetails();
     this.findAllRegisteredByUsersForPartnerView();
@@ -397,7 +399,9 @@ export class ManageDealsComponent implements OnInit {
     this.titleHeading = "Total ";
     this.resetDealsPagination();
     this.triggerUniversalSearch(); //XNFR-574
+    this.dealsPagination.searchKey = this.dealsSortOption.searchKey;//XBI-3668
     this.campaignPagination = new Pagination;
+    this.campaignPagination.searchKey = this.dealsSortOption.searchKey;//XBI-3668
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if(this.vanityLoginDto.vanityUrlFilter){
       this.dealsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
@@ -1218,6 +1222,7 @@ export class ManageDealsComponent implements OnInit {
 
   clearSearch() {
     this.dealsSortOption.searchKey='';
+    this.referenceService.universalModuleType = '';
     this.getAllFilteredResultsDeals(this.dealsPagination);
   }
 

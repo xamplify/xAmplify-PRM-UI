@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
@@ -14,7 +14,8 @@ declare var $: any;
 export class UniversalSearchBarComponent implements OnInit {
   searchKey: string = "";
   isShowDropdown: boolean = false;
-  selectedOption: string | null = "";
+  selectedOption: string = 'All';
+  selectedIcon: string = 'fa-universal-access';  
   isDropdownVisible: boolean = false;
   currentUser: any;
   isWelcomePageEnabled: boolean = false;
@@ -27,6 +28,29 @@ export class UniversalSearchBarComponent implements OnInit {
     if (this.isWelcomePageEnabled) {
       this.refService.universalSearchKey = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchKey);
       this.refService.universalSearchFilterType = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.universalSearchFilterBy);
+    }
+    this.setFafaIcons(this.refService.universalSearchFilterType);
+  }
+  setFafaIcons(value: string) {
+    switch (value) {
+      case 'Assets':
+        this.selectedIcon = "fa-tasks";
+        break;
+      case 'Tracks':
+        this.selectedIcon = "fa-graduation-cap";
+        break;
+      case 'PlayBooks':
+        this.selectedIcon = "fa-book";
+        break;
+      case 'Leads':
+        this.selectedIcon = "fa-user-circle";
+        break;
+      case 'Deals':
+        this.selectedIcon = 'fa-tags';
+        break;
+      default:
+        this.selectedIcon = 'fa-universal-access';
+        break;
     }
   }
 
@@ -107,10 +131,12 @@ export class UniversalSearchBarComponent implements OnInit {
     return this.isWelcomePageEnabled ? true : this.isEmptyOrWhitespace(value);
   }
   // Filter function
-  selectDropdownOption(label: string): void {
+  selectDropdownOption(label: string,icon:string): void {
     this.refService.universalSearchFilterType = label;
+    this.selectedIcon = icon;
     this.isDropdownVisible = false;
   }
+  
   saveSearchKeyToLocalStorage(searchKey: string) {
     localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey, searchKey);
   }
@@ -125,5 +151,12 @@ export class UniversalSearchBarComponent implements OnInit {
     //   { label: 'Deal', index: 5, condition: this.authenticationService.module.hasOpportunityRole || this.authenticationService.module.opportunitiesAccessAsPartner, }
     // ];
     this.isDropdownVisible = !this.isDropdownVisible;
+  }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const clickedInside = (event.target as HTMLElement).closest('.universal-dropdown-container');
+    if (!clickedInside) {
+      this.isDropdownVisible = false; // Close the dropdown if clicked outside
+    }
   }
 }
