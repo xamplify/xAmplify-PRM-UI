@@ -5,12 +5,24 @@
          <div class="team-member-login-alert team-member-login-info">
             <strong>
                <span title="{{vendorAdminCompanyUserEmailId}}">You</span> are logged in as
-               <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId | slice:0:25 }}
-                 <span *ngIf="loggedInAsUserEmailId?.length>25">...</span>
+               <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId}}
+                 <!-- <span *ngIf="loggedInAsUserEmailId?.length>25">...</span> -->
                </strong>
              </strong>
              <app-login-as-partner [showLogOutButton]="isLoggedInAsPartner || isLoggedInAsTeamMember"
              [showLoginAsButton]="false"></app-login-as-partner>
+         </div>
+      </div>
+      <div class="team-member-login-btn" *ngIf="isLoggedInFromAdminSection">
+         <div class="team-member-login-alert team-member-login-info">
+            <strong (click)="goBackToAdminPanel()">
+               <span>Go back to admin panel</span>
+            </strong>
+            <button (click)="goBackToAdminPanel()"
+               class="btn-danger btn-xs margin-left-one-per IconsidesCu xAmplify-btn-danger" data-toggle="tooltip"
+               data-placement="bottom" title="Go back to admin panel" translate>
+               <i class="fa fa-power-off" aria-hidden="true"></i>
+            </button>
          </div>
       </div>
    <div class="page-header navbar navbar-fixed-top zero-padding" style="top: unset;">
@@ -66,12 +78,12 @@
                      </div>
                   </li> -->
                   <!---XNFR-222-->
-                  <li *ngIf="isLoggedInFromAdminSection" class="topnav-button-css">
+                  <!-- <li *ngIf="isLoggedInFromAdminSection" class="topnav-button-css">
                      <button class="btn btn-primary" (click)="goBackToAdminPanel()">
                         <span class="hidden-xs">Go back to admin panel</span>
                         <i class="fa fa-power-off" aria-hidden="true"></i>
                      </button>
-                  </li>
+                  </li> -->
                   <!--Invite A Vendor For Normal Login-->
                   <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService?.vanityURLEnabled  &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                      &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
