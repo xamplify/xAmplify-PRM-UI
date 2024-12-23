@@ -485,5 +485,18 @@ export class Properties {
 	COMPANY_NAME_INFO = "Represents the name of the company, displayed on the dashboard and used as a merge tag across the platform."
 	COMPANY_PROFILE_NAME_INFO ="Non-editable alphanumeric field, also used as a vanity URL to ensure uniqueness and validate duplicates."
 	COMPANY_PROFILE_NAME_PARTNER_INFO = "Non-editable alphanumeric field to ensure unique partner profiles and prevent duplicates."
+
+	/***** XNFR-807 *****/
+	redistributed_campaigns = "Total Redistributed Campaigns by";
+    teamMembers_Info = "Total Team Members of";
+    contacts_Info = "Total Contacts Added by";
+    share_Leads_Info = "Total Assigned Share Leads to ";
+    leads_Info = "Total Leads Added by" ;
+    deals_Info = "Total Deals Added by";
+    mdf_Amount_Info = "Total MDF Balance";
+    assets_Info =" Total Assets Published to ";
+    track_Assets_Info = "Total Assets of Published Tracks" ;
+    tracks_Info = "Total Tracks Published to";
+    playbooks_Info = "Total Playbooks Published to"; 
 }
 
