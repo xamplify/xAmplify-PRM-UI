@@ -43,8 +43,12 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   }
 
   ngOnInit() {    
+    this.getInfoname();
+  }
+
+  private getInfoname() {
     const customName = this.authenticationService.partnerModule.customName;
-    const isCustomNameDefined = customName != null && customName.length>0;
+    const isCustomNameDefined = customName != null && customName.length > 0;
 
     this.partnerModuleName = isCustomNameDefined ? customName : " Partner";
 
