@@ -13,6 +13,12 @@
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
+      <button
+        class="pull-right mt25m btn btn-xs l-g-view neg_mrg_top8 pos_mar_rgt4 only_custom_mar_rgt4 only_custom_mrg_top8"
+        data-placement="bottom" [disabled]="pagination.totalRecords==0" (click)="downloadCompanyDetailsReport()">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
     </div>
     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
     <div class="panel-body" *ngIf="!httpRequestLoader.isLoading">    

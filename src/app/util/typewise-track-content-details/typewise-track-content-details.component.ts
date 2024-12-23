@@ -92,18 +92,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
 
   getTypeWiseTrackContentDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
-    this.pagination.userId = this.loggedInUserId;
-    this.pagination.trackTypeFilter = this.trackType;
-    this.pagination.assetTypeFilter = this.assetType;
-    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
-    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.pagination.fromDateFilterString = this.fromDateFilter;
-    this.pagination.toDateFilterString = this.toDateFilter;
-    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if(!this.isVendorVersion){
-      pagination.vanityUrlFilter = this.vanityUrlFilter;
-      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
-    } 
+    this.setPaginationValuesForTeamMember();
     this.parterService.getTypeWiseTrackContentDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -185,6 +174,14 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   }
 
   downloadTypeWiseTrackContentReport() {
+    if (!this.isTeamMemberAnalytics) {
+      this.downloadTypeWiseTrackContentReportForPartnerJourney();
+    } else {
+      this.downloadTypeWiseTrackContentReportForTeamMember();
+    }
+  }
+
+  downloadTypeWiseTrackContentReportForPartnerJourney() {
     let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
     let trackTypeFilterRequestParam = this.trackType != undefined ? this.trackType : "";
     let assertTypeFilterRequestParm = this.assetType != undefined ? this.assetType : "";
@@ -203,6 +200,31 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam
       + timeZoneRequestParm;
+    this.referenseService.openWindowInNewTab(url);
+  }
+
+
+  setPaginationValuesForTeamMember() {
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.trackTypeFilter = this.trackType;
+    this.pagination.assetTypeFilter = this.assetType;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if(!this.isVendorVersion){
+      this.pagination.vanityUrlFilter = this.vanityUrlFilter;
+      this.pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    } 
+  }
+
+  downloadTypeWiseTrackContentReportForTeamMember() {
+    this.setPaginationValuesForTeamMember();
+    let teamMemberAnalyticsUrl = this.referenseService.getTeamMemberAnalyticsUrl(this.pagination);
+    let isVendorVersionRequestParam = this.isVendorVersion ? "&vendorVersion=" + this.isVendorVersion : "";
+    let url = this.authenticationService.REST_URL + "teamMemberAnalytics/download/typewise-asset-details-report?access_token=" + this.authenticationService.access_token + teamMemberAnalyticsUrl
+      + isVendorVersionRequestParam;
     this.referenseService.openWindowInNewTab(url);
   }
 
