@@ -161,7 +161,7 @@ export class ReferenceService {
   universalSearchKey:string = ""; //XNFR-574
   universalId:number = 0; //XNFR-574
   universalModuleType:string = ""; //XNFR-574
-  universalSearchFilterType:string = 'All'
+  universalSearchFilterType:string = 'All';
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
   constructor(
