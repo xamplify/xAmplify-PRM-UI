@@ -4401,4 +4401,18 @@ tbody>tr#uploaded-csv-tr>td {
 .portlet.light.remove_space,.light_bg_removal.remove_space {
   padding: 10px!important;
 }
+/* vendor landscape view css */
+.box-shadow-unset.portlet.light.light_bg_removal.remove_space,.portlet.light.light_bg_removal.remove_space.padding-0,.portlet.light.light_bg_removal.remove_space.remove_bgcolor{
+  background-color: unset!important;
+  border: unset !important;
+  box-shadow:unset !important;
+  padding: 0px !important;
+}
+.portlet.light.light_bg_removal.remove_space.form-label-landscape{
+  border: 1px solid #191b1e!important; 
+  background-color: unset !important;
+  box-shadow:unset !important;
+  margin: 15px 0px;
+}
+
 

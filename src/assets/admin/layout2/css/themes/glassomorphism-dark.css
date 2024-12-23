@@ -4228,3 +4228,15 @@ color: #fff !important;
 .border_btn{
   border-left: 1px solid #026deb !important;
 }
+/* vendor landscape view css */
+.box-shadow-unset.portlet.light.light_bg_removal.remove_space,.portlet.light.light_bg_removal.remove_space.padding-0,.portlet.light.light_bg_removal.remove_space.remove_bgcolor{
+  background-color: unset!important;
+  border: unset !important;
+  box-shadow:unset !important;
+  padding: 0px !important;
+}
+.portlet.light.light_bg_removal.remove_space.form-label-landscape{
+  background-color: unset !important;
+  border: 1px solid #ffffff33 !important;
+  margin: 15px 0px;
+}

@@ -3378,4 +3378,5 @@ table.table.tgrid {
 .portlet.light.light_bg_removal.remove_space.form-label-landscape{
   border: 1px solid #ccc !important;
   padding: 10px !important;
+  margin: 15px 0px;
 }
