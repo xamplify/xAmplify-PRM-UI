@@ -150,7 +150,7 @@ export class TrackAssetDetailsComponent implements OnInit {
     );
   }
 
-  downloadTrackAssetsDetailsReport(pagination: Pagination) {
+  downloadTrackAssetsDetailsReport() {
     if (!this.isTeamMemberAnalytics) {
       this.downloadTrackAssetsDetailsReportForPartnerJourney();
     } else {
