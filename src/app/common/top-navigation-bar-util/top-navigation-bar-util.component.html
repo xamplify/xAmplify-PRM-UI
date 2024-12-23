@@ -372,11 +372,11 @@
    </div>
 
 <ng-template #referVendorTemplate>
-     <button [ngClass]="authenticationService?.isTop?'customskin':''"
-        (click)="openRequestAsVendorModal()" class=""
+     <button  [ngClass]="authenticationService?.isTop?'customskin':''"
+        (click)="openRequestAsVendorModal()" class="xamplify-height-padding"
         style="border-radius: 7px 0px 0px 7px;" translate>{{properties?.inviteAVendor | translate }}</button>
      <button [ngClass]="authenticationService?.isTop?'customskin':''"
-        [routerLink]="['/home/dashboard/vendor-request']" class="xamplify-mr5"
+        [routerLink]="['/home/dashboard/vendor-request']" class="xamplify-mr5 xamplify-height-padding"
         style="border-radius: 0px 7px 7px 0px;">
         <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"
            data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
@@ -385,7 +385,7 @@
 -------------------------------------------------------------------------------
  -->
 <ng-template #universalSearchButtonTemplate>
-  <button *ngIf="!refService.isOpenUniversalSearch" (click)="showUniversalSearch()" class="universal-search-show-button" >
+  <button *ngIf="!refService.isOpenUniversalSearch" (click)="showUniversalSearch()" class="universal-search-show-button xamplify-height-padding" >
     <i class="fa fa-search"></i>
     <span class="universal-tooltip">Search</span>
   </button>
