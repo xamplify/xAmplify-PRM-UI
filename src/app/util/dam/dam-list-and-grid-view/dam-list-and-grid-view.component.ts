@@ -99,6 +99,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	isEditVideo = false;
 	isPreviewVideo = false;
 	/****XNFR-381*****/
+	criteria: Criteria = new Criteria();
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -852,8 +853,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 	
 	filterAssets(tag:string){
-		
-		
+		this.criteria = new Criteria();
+		this.criteria .operation = "Contains";
+		this.criteria .property = "Tags";
+		this.criteria .value1 = tag;
+		this.toggleFilterOption(); 
+
 	}
 
 
