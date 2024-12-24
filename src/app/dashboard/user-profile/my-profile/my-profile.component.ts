@@ -385,6 +385,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	partnerLandscapeLabel="My Landscape";
 	vendorSharedPagesLabel="Vendor Showcase";
 	partnerSharedPagesLabel="Partner Showcase";
+	showCalendarIntegrations: boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2239,6 +2240,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.vendorLandscapeLabel;
+		} else if (this.activeTabName == 'calendarIntegrations') {
+			this.showCalendarIntegrations = true;
+			this.activeTabHeader = this.properties.calendarIntegrations;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}

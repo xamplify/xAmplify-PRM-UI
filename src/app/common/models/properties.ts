@@ -175,6 +175,7 @@ export class Properties {
 	saml2SSOsettings = "SAML 2.0 SSO Settings";
 	leadFieldSettings = "Custom Fields";
 	oauthSSOConfiguration = "oAuth SSO Settings";
+	calendarIntegrations = "Calendar Integrations";
 
 
 	/************XNFR-426**********/
