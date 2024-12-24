@@ -137,20 +137,14 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
 
   getLeadDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
-    this.pagination.userId = this.loggedInUserId;
-    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
-    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    if (!this.isVendorVersion) {
-      pagination.vanityUrlFilter = this.vanityUrlFilter;
-      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
-    }
+    this.setPaginationValuesForTeamMember();
     this.parterService.getLeadDetailsForTeamMember(this.pagination, this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
+          if (pagination.totalRecords == 0) {
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'
@@ -166,6 +160,14 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
   }
 
   downloadLeadDetailsReport() {
+    if (!this.isTeamMemberAnalytics) {
+      this.downloadLeadDetailsReportForPartnerJourney();
+    } else {
+      this.downloadLeadDetailsReportForTeamMember();
+    }
+  }
+
+  downloadLeadDetailsReportForPartnerJourney() {
     let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
     let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
     let searchKeyRequestParm = this.searchKey != undefined ? this.sortOption.searchKey : "";
@@ -181,6 +183,29 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
     this.referenseService.openWindowInNewTab(url);
+  }
+
+  downloadLeadDetailsReportForTeamMember() {
+    this.setPaginationValuesForTeamMember();
+    let teamMemberAnalyticsUrl = this.referenseService.getTeamMemberAnalyticsUrl(this.pagination);
+    let isVendorVersionRequestParam = this.isVendorVersion ? "&vendorVersion=" + this.isVendorVersion : "";
+    let urlSuffix = "teamMemberAnalytics/download/leads-details-report"
+    let url = this.authenticationService.REST_URL + urlSuffix + "?access_token=" + this.authenticationService.access_token + teamMemberAnalyticsUrl
+      + isVendorVersionRequestParam;
+    this.referenseService.openWindowInNewTab(url);
+  }
+
+  setPaginationValuesForTeamMember() {
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (!this.isVendorVersion) {
+      this.pagination.vanityUrlFilter = this.vanityUrlFilter;
+      this.pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
   }
 
 }

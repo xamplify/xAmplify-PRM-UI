@@ -29,6 +29,7 @@
   <div class="details_flex">
     <div class="profile-sidebar d-flex">
       <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="profile-leftsidebar">
         <div class="edit_contact">
           <!-- Header 1 -->
@@ -85,9 +86,10 @@
               </div>
               <div class="icon-label">Task</div>
             </div>
-            <div class="icon-item" *ngIf="isLocalhost">
-              <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Add a Meeting">
-                <i class="glyphicon glyphicon-calendar"></i>
+            <div class="icon-item" (click)="openMeetingModalPopup()">
+              <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Schedule Meeting">
+                <i *ngIf="!ngxLoading" class="glyphicon glyphicon-calendar"></i>
+                <img *ngIf="ngxLoading" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
               </div>
               <div class="icon-label">Meeting</div>
             </div>
@@ -199,7 +201,7 @@
                     (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
-                  dcsddcscde
+                  <app-meeting-activity [contactId]="contactId" [calendarType]="activeCalendarDetails?.type"></app-meeting-activity>
                 </div>
               </div>
               <!-- END -->
@@ -369,3 +371,7 @@
   (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)" [userId]="contactId" [actionType]="actionType"
   (notifyClose)="closeTaskModalPopup()"></app-add-task-modal-popup>
 
+<app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri"
+  [calendarType]="activeCalendarDetails?.type" (notifyClose)="closeMeetingModalPopup()"></app-add-meeting-modal-popup>
+
+<app-calendar-integration-modal-popup *ngIf="showCalendarIntegrationsModalPopup" (notifyClose)="closeCalendarIntegrationsModalPopup()"></app-calendar-integration-modal-popup>

@@ -161,7 +161,7 @@ export class ReferenceService {
   universalSearchKey:string = ""; //XNFR-574
   universalId:number = 0; //XNFR-574
   universalModuleType:string = ""; //XNFR-574
-  universalSearchFilterType:string = 'All'
+  universalSearchFilterType:string = 'All';
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
   constructor(
@@ -3947,9 +3947,26 @@ getFirstLetter(inputString:any) {
 
   showUIError(methodName:string){
     return this.showSweetAlertErrorMessage("Error In "+methodName+"(). Please Contact Admin");
-   
-
  }
+
+  getTeamMemberAnalyticsUrl(pagination: Pagination) {
+    let loggedInUserIdRequestParam = pagination.userId != undefined && pagination.userId > 0 ? "&loggedInUserId=" + pagination.userId : 0;
+    let trackTypeFilterRequestParam = pagination.trackTypeFilter != undefined ? "&trackTypeFilter=" + pagination.trackTypeFilter : "";
+    let assetTypeFilterRequestParam = pagination.assetTypeFilter != undefined ? "&assetType=" + pagination.assetTypeFilter : "";
+    let campaignTypeFilterRequestParam = pagination.campaignTypeFilter != undefined ? "&campaignTypeFilter=" + pagination.campaignTypeFilter : "";
+    let selectedTeamMemberIdsRequestParam = pagination.selectedTeamMemberIds != undefined && pagination.selectedTeamMemberIds.length > 0 ? "&selectedTeamMemberIds=" + pagination.selectedTeamMemberIds : "";
+    let selectedVendorCompanyIdsRequestParam = pagination.selectedVendorCompanyIds != undefined && pagination.selectedVendorCompanyIds.length > 0 ? "&selectedVendorCompanyIds=" + pagination.selectedVendorCompanyIds : "";
+    let fromDateFilterRequestParam = pagination.fromDateFilterString != undefined && $.trim(pagination.fromDateFilterString) != null ? "&fromDateFilterInString=" + pagination.fromDateFilterString : "";
+    let toDateFilterRequestParam = pagination.toDateFilterString != undefined && $.trim(pagination.toDateFilterString) != null ? "&toDateFilterInString=" + pagination.toDateFilterString : "";
+    let timeZoneParamRequestParam = pagination.timeZone != null ? "&timeZone=" + pagination.timeZone : "";
+    let vendorCompanyProfileNameRequestParam = pagination.vendorCompanyProfileName != undefined && $.trim(pagination.vendorCompanyProfileName) != null ? "&vendorCompanyProfileName=" + pagination.vendorCompanyProfileName : "";
+    let vanityUrlFilterRequestParam = pagination.vanityUrlFilter ? "&vanityUrlFilter=" + pagination.vanityUrlFilter : "";
+    let searchKeyRequestParm = pagination.searchKey != null ? "&searchKey=" + pagination.searchKey : "";
+    return $.trim(loggedInUserIdRequestParam + trackTypeFilterRequestParam + selectedTeamMemberIdsRequestParam + selectedVendorCompanyIdsRequestParam
+      + fromDateFilterRequestParam + toDateFilterRequestParam + timeZoneParamRequestParam + vendorCompanyProfileNameRequestParam + vanityUrlFilterRequestParam
+      + searchKeyRequestParm + assetTypeFilterRequestParam + campaignTypeFilterRequestParam
+    );
+  }
 
   
 }

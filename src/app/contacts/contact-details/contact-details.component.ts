@@ -19,13 +19,14 @@ import { EmailActivityService } from 'app/activity/services/email-activity-servi
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { ActivityService } from 'app/activity/services/activity-service';
+import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService]
+  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -105,11 +106,16 @@ export class ContactDetailsComponent implements OnInit {
   showImageTag:boolean = false;
   imageSourcePath:any = '';
   isLocalhost:boolean = false;
+  showMeetingModalPopup: boolean = false;
+  activeCalendarDetails: any;
+  ngxLoading: boolean = false;
+  showCalendarIntegrationsModalPopup: boolean = false;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService ) {
+    public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService,
+    public calendarIntegratonService: CalendarIntegrationService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -133,6 +139,7 @@ export class ContactDetailsComponent implements OnInit {
       this.isFromCompanyModule = true;
     }
     this.getContact();
+    this.getActiveCalendarDetails();
     this.referenceService.goToTop();
     this.checkTermsAndConditionStatus();
     this.getLegalBasisOptions();
@@ -586,5 +593,49 @@ export class ContactDetailsComponent implements OnInit {
       }
     )
   }
+
+  openMeetingModalPopup() {
+    this.actionType = 'add';
+    if (this.activeCalendarDetails != undefined) {
+      this.showMeetingModalPopup = true;
+    } else {
+      this.showCalendarIntegrationsModalPopup = true;
+    }
+  }
+
+  closeCalendarIntegrationsModalPopup() {
+    this.showCalendarIntegrationsModalPopup = false;
+  }
+
+  closeMeetingModalPopup() {
+    this.showMeetingModalPopup = false;
+  }
+
+  getActiveCalendarDetails() {
+    this.ngxLoading = true;
+    this.calendarIntegratonService.getActiveCalendarDetails().subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.activeCalendarDetails = response.data;
+        }
+        this.ngxLoading = false;
+      },
+      error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  ngAfterViewChecked() {
+		let tempCheckCalendlyAuth = localStorage.getItem('isCalendlyAuth');
+		localStorage.removeItem('isCalendlyAuth');
+
+		if (tempCheckCalendlyAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+	}
   
 }

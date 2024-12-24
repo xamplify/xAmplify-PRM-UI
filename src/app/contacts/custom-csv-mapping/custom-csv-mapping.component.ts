@@ -10,6 +10,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { User } from 'app/core/models/user';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { CountryNames } from 'app/common/models/country-names';
 
 declare var swal: any, $: any;
 
@@ -69,12 +70,12 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   csvCustomResponse = new CustomResponse();
 
   constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
-    public xtremandLogger: XtremandLogger) { 
-      this.notifyParent = new EventEmitter(); 
-      this.notifyParentCancel = new EventEmitter(); 
-      this.notifyParentSave = new EventEmitter(); 
-      this.notifyParentCustomResponse = new EventEmitter(); 
-    }
+    public xtremandLogger: XtremandLogger, public countryNames: CountryNames) {
+    this.notifyParent = new EventEmitter();
+    this.notifyParentCancel = new EventEmitter();
+    this.notifyParentSave = new EventEmitter();
+    this.notifyParentCustomResponse = new EventEmitter();
+  }
 
   ngOnInit() {
     this.loadParsedCsvDtoPagination();
@@ -82,6 +83,11 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resetCustomUploadCsvFields();
+  }
+
+  transform(value: string): string {
+    if (!value) return value;
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
   /***** XNFR-671 *****/
@@ -414,6 +420,8 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       this.addCountries(countryRows, user, i);
       /**Mobile Number****/
       this.addMobileNumbers(mobileNumberRows, user, i);
+      /***Territory***/
+      this.addTerritory(user, i);
       /****Flexi-Fields****/
       this.addFlexiFields(flexiFieldRows, user, i);
       user.id = i+1;
@@ -432,13 +440,17 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
           if (flexiField.fieldName == this.removeDoubleQuotes(mappedFlexiFields['headerColumn'])) {
             let mappedFlexiFieldValues = mappedFlexiFields['value'];
             if (mappedFlexiFieldValues != undefined && mappedFlexiFieldValues.length > 0) {
-              flexiFieldsData.fieldValue = mappedFlexiFieldValues[0][i];
+              flexiFieldsData.fieldValue = this.capitalizeFirstLetter(mappedFlexiFieldValues[0][i]);
             }
           }
         });
         user.flexiFields.push(flexiFieldsData);
       });
     }
+  }
+
+  private addTerritory(user: User, i: number) {
+    user.territory = this.countryNames.countries[0];
   }
 
   /***** XNFR-671 *****/
@@ -453,7 +465,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addCountries(countryRows: any[][], user: User, i: number) {
     if (countryRows != undefined && countryRows.length > 0) {
       let countries = countryRows[0];
-      user.country = countries[i];
+      user.country = this.capitalizeFirstLetter(countries[i]);
     }
   }
 
@@ -469,7 +481,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addStates(stateRows: any[][], user: User, i: number) {
     if (stateRows != undefined && stateRows.length > 0) {
       let states = stateRows[0];
-      user.state = states[i];
+      user.state = this.capitalizeFirstLetter(states[i]);
     }
   }
 
@@ -477,7 +489,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addCities(cityRows: any[][], user: User, i: number) {
     if (cityRows != undefined && cityRows.length > 0) {
       let cities = cityRows[0];
-      user.city = cities[i];
+      user.city = this.capitalizeFirstLetter(cities[i]);
     }
   }
 
@@ -485,7 +497,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addJobTitles(jobTitleRows: any[][], user: User, i: number) {
     if (jobTitleRows != undefined && jobTitleRows.length > 0) {
       let jobTitles = jobTitleRows[0];
-      user.jobTitle = jobTitles[i];
+      user.jobTitle = this.capitalizeFirstLetter(jobTitles[i]);
     }
   }
 
@@ -493,7 +505,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addAddress(jobTitleRows: any[][], user: User, i: number) {
     if (jobTitleRows != undefined && jobTitleRows.length > 0) {
       let jobTitles = jobTitleRows[0];
-      user.address = jobTitles[i];
+      user.address = this.capitalizeFirstLetter(jobTitles[i]);
     }
   }
 
@@ -513,7 +525,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addCompanyNames(companyRows: any[][], user: User, i: number) {
     if (companyRows != undefined && companyRows.length > 0) {
       let companyNames = companyRows[0];
-      user.contactCompany = companyNames[i];
+      user.contactCompany = this.capitalizeFirstLetter(companyNames[i]);
     }
   }
 
@@ -521,7 +533,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addLastNames(lastNameRows: any[][], user: User, i: number) {
     if (lastNameRows != undefined && lastNameRows.length > 0) {
       let lastNames = lastNameRows[0];
-      user.lastName = lastNames[i];
+      user.lastName = this.capitalizeFirstLetter(lastNames[i]);
     }
   }
 
@@ -529,7 +541,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   private addFirstNames(firstNameRows: any[][], user: User, i: number) {
     if (firstNameRows != undefined && firstNameRows.length > 0) {
       let firstNames = firstNameRows[0];
-      user.firstName = firstNames[i];
+      user.firstName = this.capitalizeFirstLetter(firstNames[i]);
     }
   }
 
@@ -773,5 +785,40 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.isListLoader = false;
     this.mappingLoader = false;
   }
-  
+
+  /***** XNFR-772 *****/
+  validateZipCode(inputString: string): boolean {
+    const regex = /^[^0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/;
+    return inputString && (regex.test(inputString) || inputString.length > 10);
+  }
+
+  /***** XNFR-772 *****/
+  validateMobileNumber(inputString: string): boolean {
+    return inputString && (!/^\d+$/.test(inputString) || inputString.length > 20);
+  }
+
+  /***** XNFR-772 *****/
+  dropDownCountryValue(user: User, event: any) {
+    user.country = event == 'Select Country' ? "" : event;
+  }
+
+  /***** XNFR-772 *****/
+  capitalizeFirstLetter(inputString: string) {
+    return inputString ? inputString.charAt(0).toUpperCase() + inputString.slice(1) : inputString;
+  }
+
+  /***** XNFR-775 *****/
+  allowNumericAndSpecial(event: KeyboardEvent): boolean {
+    const charCode = event.charCode;
+    if (charCode >= 48 && charCode <= 57) {
+      return true;
+    }
+    const allowedSpecialChars = [32, 33, 35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 96, 123, 124, 125, 126];
+    if (allowedSpecialChars.includes(charCode)) {
+      return true;
+    }
+    event.preventDefault();
+    return false;
+  }
+
 }

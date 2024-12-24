@@ -20,6 +20,8 @@ export class TeamMemberwiseAssetAnalyticsComponent implements OnInit {
   @Input() isVendorVersion: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -45,11 +47,9 @@ export class TeamMemberwiseAssetAnalyticsComponent implements OnInit {
 
   getTeamMemberWiseAssetsCount(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
-    this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 6; 
-    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.setPaginationValuesForTeamMember();
     this.parterService.getTeamMemberWiseAssetsCount(this.pagination).subscribe(
-			(response: any) => {	
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
@@ -67,6 +67,14 @@ export class TeamMemberwiseAssetAnalyticsComponent implements OnInit {
         this.xtremandLogger.error(_error);
 			}
 		);
+  }
+
+  private setPaginationValuesForTeamMember() {
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 
   search() {		
@@ -99,6 +107,16 @@ export class TeamMemberwiseAssetAnalyticsComponent implements OnInit {
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
+  }
+
+  downloadAssetAnalyticsReport(){
+    this.setPaginationValuesForTeamMember();
+    let teamMemberAnalyticsUrl = this.referenseService.getTeamMemberAnalyticsUrl(this.pagination);
+    let isVendorVersionRequestParam = this.isVendorVersion ? "&vendorVersion=" + this.isVendorVersion : "";
+    let urlSuffix = "teamMemberAnalytics/download/asset-analytics-report"
+    let url = this.authenticationService.REST_URL + urlSuffix + "?access_token=" + this.authenticationService.access_token + teamMemberAnalyticsUrl
+      + isVendorVersionRequestParam;
+    this.referenseService.openWindowInNewTab(url);
   }
 
 }

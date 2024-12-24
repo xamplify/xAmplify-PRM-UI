@@ -67,6 +67,20 @@ export class AddCustomFieldsComponent implements OnInit {
         }
       }
     }
+    if (this.customFieldsDto.type === 'select') {
+      const label = new Set<string>();
+      const duplicates = this.customFieldsDto.options.some(option => {
+        const lowerCaseLabel = option.label.trim().toLowerCase();
+        if (label.has(lowerCaseLabel)) {
+          this.isValid = false;
+          this.errorMessage = 'Please remove duplicate options from Drop Down.';
+          return true;
+        } else {
+          label.add(lowerCaseLabel);
+          return false;
+        }
+      });
+    }
 
     if (this.isValid) {
      this.saveCustomField();

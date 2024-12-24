@@ -8,4 +8,7 @@ export class TeamMemberAnalyticsRequest {
     selectedTeamMemberIds: any[] = [];
     vanityUrlFilter: boolean;
     vendorCompanyProfileName: string;
+    fromDateFilterInString: any;
+    toDateFilterInString: any;
+    timeZone: any;
 }

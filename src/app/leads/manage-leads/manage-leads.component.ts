@@ -159,8 +159,7 @@ triggerUniversalSearch(){
     if(this.leadsSortOption.searchKey) {
       this.referenceService.universalSearchKey = this.leadsSortOption.searchKey;
     }
-    this.leadsSortOption.searchKey = this.referenceService.universalSearchKey;
-    this.searchLeads();
+    this.leadsSortOption.searchKey = this.listView ? this.referenceService.universalSearchKey:'';
   }
 }
 
@@ -275,7 +274,7 @@ triggerUniversalSearch(){
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
-      //this.referenceService.universalSearchVendorOrPartnerView = 'Vendor';//XNFR-574
+      this.leadsSortOption.searchKey = "";//XNFR=799
       this.getActiveCRMDetails();
       this.showLeads();
       if (this.prm) {
@@ -290,6 +289,7 @@ triggerUniversalSearch(){
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
+    this.leadsSortOption.searchKey = "";//XNFR=799
     this.showLeads();
     this.getActiveCRMDetails();
     this.mergeTagForUserGuide();
@@ -381,7 +381,9 @@ triggerUniversalSearch(){
     this.titleHeading = "Total ";
     this.resetLeadsPagination();
     this.triggerUniversalSearch();//XNFR-574
+    this.leadsPagination.searchKey = this.leadsSortOption.searchKey;//XNFR-799
     this.campaignPagination = new Pagination;
+    this.campaignPagination.searchKey = this.leadsSortOption.searchKey;//XNFR-799
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if (this.vanityLoginDto.vanityUrlFilter) {
       this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
@@ -586,6 +588,7 @@ triggerUniversalSearch(){
 
   clearSearch() {
     this.leadsSortOption.searchKey='';
+    this.referenceService.universalModuleType = '';//XNFR-799
     this.getAllFilteredResultsLeads(this.leadsPagination);
   }
 

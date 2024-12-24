@@ -1,0 +1,19 @@
+<div class="modal fade right" id="addMeetingModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeMeetingModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Schedule Meeting</h4>
+      </div>
+      <div class="modal-body">
+        <div class="calendly-inline-widget" [attr.data-url]="schedulingUrl"
+          style="min-width:320px; height:700px;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeMeetingModal()" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -171,6 +171,9 @@ export class DonutPieChartComponent implements OnInit {
       teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
       teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;
     }
+    teamMemberAnalyticsRequest.fromDateFilterInString = this.fromDateFilter
+    teamMemberAnalyticsRequest.toDateFilterInString = this.toDateFilter;
+    teamMemberAnalyticsRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.partnerService.getTeamMemberAnalyticsInteractedAndNotInteractedCounts(teamMemberAnalyticsRequest, this.isVendorVersion).subscribe(
       response => {
         this.processResponse(response);
@@ -186,6 +189,9 @@ export class DonutPieChartComponent implements OnInit {
     teamMemberAnalyticsRequest.trackTypeFilter = this.trackType;
     teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
     teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    teamMemberAnalyticsRequest.fromDateFilterInString = this.fromDateFilter
+    teamMemberAnalyticsRequest.toDateFilterInString = this.toDateFilter;
+    teamMemberAnalyticsRequest.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (!this.isVendorVersion) {
       teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
       teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;

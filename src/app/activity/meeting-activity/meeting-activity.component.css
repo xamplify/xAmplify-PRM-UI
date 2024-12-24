@@ -1,0 +1,66 @@
+.total-meetings-count {
+    width: max-content;
+    margin-top: 7px;
+    float: right;
+}
+
+.align-item-left {
+    float: left;
+}
+
+.border-none {
+    border: none !important;
+}
+
+.activity_pagination {
+    display: flex;
+    padding-left: 0px;
+    padding-right: 0px;
+    justify-content: space-between;
+}
+
+.activity_card {
+    border: 1px solid #ddd;
+    padding: 10px 15px 10px 15px;
+    border-radius: 7px;
+    background-color: #ffffff;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-title {
+    font-weight: 400;
+}
+
+.activity-date {
+    color: #666;
+    margin-top: -5px;
+    font-size: 12px;
+}
+
+.activity-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    color: #555;
+}
+
+.activity-footer {
+    text-align: right;
+    margin: 5px 0px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.activity-footer a {
+    color: #578ebe;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: capitalize;
+}

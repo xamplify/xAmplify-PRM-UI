@@ -155,14 +155,7 @@ export class UserwiseTrackCountsComponent implements OnInit {
 
   getUserWiseTrackCountsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
-    this.pagination.userId = this.loggedInUserId;
-    this.pagination.lmsType = this.type;
-    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
-    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    if (!this.isVendorVersion) {
-      pagination.vanityUrlFilter = this.vanityUrlFilter;
-      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
-    }
+    this.setPaginationValuesForTeamMember();
     this.parterService.getUserWiseTrackCountsForTeamMember(this.pagination, this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -186,6 +179,14 @@ export class UserwiseTrackCountsComponent implements OnInit {
   }
 
   downloadUserWiseTrackCountsReport() {
+    if (!this.isTeamMemberAnalytics) {
+      this.downloadUserWiseTrackCountsReportForPartnerJourney();
+    } else {
+      this.downloadUserWiseTrackCountsReportForTeamMember();
+    }
+  }
+
+  downloadUserWiseTrackCountsReportForPartnerJourney() {
     let loggedInUserIdRequestParam = this.loggedInUserId != undefined && this.loggedInUserId > 0 ? this.loggedInUserId : 0;
     let partnerCompanyIdsRequestParam = this.selectedPartnerCompanyIds && this.selectedPartnerCompanyIds.length > 0 ? this.selectedPartnerCompanyIds : [];
     let searchKeyRequestParm = this.searchKey != undefined ? this.sortOption.searchKey : "";
@@ -204,6 +205,33 @@ export class UserwiseTrackCountsComponent implements OnInit {
       + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
+    this.referenseService.openWindowInNewTab(url);
+  }
+
+  setPaginationValuesForTeamMember() {
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.lmsType = this.type;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (!this.isVendorVersion) {
+      this.pagination.vanityUrlFilter = this.vanityUrlFilter;
+      this.pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+  }
+
+  downloadUserWiseTrackCountsReportForTeamMember() {
+    this.setPaginationValuesForTeamMember();
+    let teamMemberAnalyticsUrl = this.referenseService.getTeamMemberAnalyticsUrl(this.pagination);
+    let isVendorVersionRequestParam = this.isVendorVersion ? "&vendorVersion=" + this.isVendorVersion : "";
+    let urlSuffix = "teamMemberAnalytics/download/track-counts-report"
+    if (this.type === 'PLAYBOOK') {
+      urlSuffix = "teamMemberAnalytics/download/playbook-counts-report"
+    }
+    let url = this.authenticationService.REST_URL + urlSuffix + "?access_token=" + this.authenticationService.access_token + teamMemberAnalyticsUrl
+      + isVendorVersionRequestParam;
     this.referenseService.openWindowInNewTab(url);
   }
 

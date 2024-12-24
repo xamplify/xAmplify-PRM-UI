@@ -175,6 +175,7 @@ export class Properties {
 	saml2SSOsettings = "SAML 2.0 SSO Settings";
 	leadFieldSettings = "Custom Fields";
 	oauthSSOConfiguration = "oAuth SSO Settings";
+	calendarIntegrations = "Calendar Integrations";
 
 
 	/************XNFR-426**********/
@@ -491,5 +492,17 @@ export class Properties {
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Assets registered by your Team Tembers.";
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Assets that are neither rejected nor approved will be automatically Approved!";
 
+	/***** XNFR-807 *****/
+	redistributed_campaigns = "Total Redistributed Campaigns by";
+    teamMembers_Info = "Total Team Members of";
+    contacts_Info = "Total Contacts Added by";
+    share_Leads_Info = "Total Assigned Share Leads to ";
+    leads_Info = "Total Leads Added by" ;
+    deals_Info = "Total Deals Added by";
+    mdf_Amount_Info = "Total MDF Balance";
+    assets_Info =" Total Assets Published to ";
+    track_Assets_Info = "Total Assets of Published Tracks" ;
+    tracks_Info = "Total Tracks Published to";
+    playbooks_Info = "Total Playbooks Published to"; 
 }
 

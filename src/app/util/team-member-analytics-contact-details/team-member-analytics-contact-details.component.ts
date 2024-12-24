@@ -20,6 +20,8 @@ export class TeamMemberAnalyticsContactDetailsComponent implements OnInit {
   @Input() isVendorVersion: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
+  @Input() fromDateFilter: string = '';
+  @Input() toDateFilter: string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -44,16 +46,18 @@ export class TeamMemberAnalyticsContactDetailsComponent implements OnInit {
   
   getContactDetails(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
-    this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 6; 
-    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
-    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getContactDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
-			(response: any) => {	
+    this.setPaginationValuesForTeamMember();
+    this.parterService.getContactDetailsForTeamMember(this.pagination, this.isVendorVersion).subscribe(
+      (response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
+          if (pagination.totalRecords == 0) {
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }    
 			},
@@ -62,6 +66,15 @@ export class TeamMemberAnalyticsContactDetailsComponent implements OnInit {
         this.xtremandLogger.error(_error);
 			}
 		);
+  }
+
+  private setPaginationValuesForTeamMember() {
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 
   search() {		
@@ -94,6 +107,16 @@ export class TeamMemberAnalyticsContactDetailsComponent implements OnInit {
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
+  }
+
+  downloadContactDetailsReport() {
+    this.setPaginationValuesForTeamMember();
+    let teamMemberAnalyticsUrl = this.referenseService.getTeamMemberAnalyticsUrl(this.pagination);
+    let isVendorVersionRequestParam = this.isVendorVersion ? "&vendorVersion=" + this.isVendorVersion : "";
+    let urlSuffix = "teamMemberAnalytics/download/contact-details-report"
+    let url = this.authenticationService.REST_URL + urlSuffix + "?access_token=" + this.authenticationService.access_token + teamMemberAnalyticsUrl
+      + isVendorVersionRequestParam;
+    this.referenseService.openWindowInNewTab(url);
   }
 
 

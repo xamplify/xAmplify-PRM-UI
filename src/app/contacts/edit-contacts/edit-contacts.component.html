@@ -627,6 +627,15 @@
 													<div class="caption" translate>
 														<i class="fa fa-edit" aria-hidden="true"></i>File Preview
 													</div>
+													<div *ngIf="isUploadCsvOptionEnabled" class="hidden-xs dwnload-csv_btn">
+														<a (click)="downloadUploadCsv()" [ngClass]="{'disabled': users.length == 0}">
+															<button type="button" class="button p-rgt_p-top bgcolor-unset pull-right" [disabled]="users.length == 0"
+																translate>
+																<span class="btn Btn-Green transition" translate>Download CSV <i class="fa fa-download icon_color"
+																		aria-hidden="true" style="margin-left: 5px"></i></span>
+															</button>
+														</a>
+													</div>
 												</div>
 												<div class="portlet-body" *ngIf="!isUploadCsvOptionEnabled && users?.length != 0">
 													<table class="table tgrid" id="sample_editable_2"
@@ -2136,7 +2145,8 @@
 	[hasCampaignAccess]="(authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution)"
 	[hasDamAccess]="authenticationService?.module?.damAccess && checkingContactTypeName!='Contact'"
 	[hasLmsAccess]="authenticationService?.module?.lmsAccess && checkingContactTypeName!='Contact'"
-	[hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'">
+	[hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'"
+	[hasDashboardButtonsAccess] ="authenticationService?.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.loggedInThroughOwnVanityUrl && isPartner">
 </app-share-unpublished-content>
 
 </div>
