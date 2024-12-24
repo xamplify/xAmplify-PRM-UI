@@ -7,13 +7,15 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { EnvService } from 'app/env.service';
+import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 
 declare var swal: any;
 
 @Component({
   selector: 'app-vanity-social-contacts-callback',
   templateUrl: './vanity-social-contacts-callback.component.html',
-  styleUrls: ['./vanity-social-contacts-callback.component.css']
+  styleUrls: ['./vanity-social-contacts-callback.component.css'],
+  providers: [CalendarIntegrationService]
 })
 export class VanitySocialContactsCallbackComponent implements OnInit {
 
@@ -25,7 +27,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 
 	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router,
 			private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService,
-			private integrationService: IntegrationService,public env: EnvService) {
+			private integrationService: IntegrationService,public env: EnvService, public calendarIntegrationService: CalendarIntegrationService) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.currentModule = 'contacts';
@@ -169,6 +171,8 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
                                     this.postingMessage = "isMicrosoftAuth";
                                 } else if(type === 'zoho') {
 									this.postingMessage = "isZohoAuth";
+								} else if (type == 'calendly') {
+									this.postingMessage = "isCalendlyAuth";
 								}
                                 this.postingMessageToParentWindow(this.postingMessage);
                         }
@@ -229,6 +233,8 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 			} else if (this.router.url.includes("dashboard/zoho-callback")) {
 				code += "domain" + domain;
 				this.integrationCallback(code, "zoho");
+			} else if (this.router.url.includes("dashboard/calendly-callback")) {
+				this.calendarIntegrationCallback(code, "calendly");
 			} else {
 				this.socialContactsCallback(queryParam, domain);
 			}
@@ -237,6 +243,37 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 			this.xtremandLogger.error(err);
 		}
 	}
+
+	calendarIntegrationCallback(code: string, type: string) {
+		try {
+			this.calendarIntegrationService.handleCalendarCallbackByType(code, type)
+				.subscribe(
+					result => {
+						this.referenceService.integrationCallBackStatus = true;
+						this.xtremandLogger.info("Calendar Integration Callback :: " + result);
+						localStorage.removeItem("userAlias");
+						localStorage.removeItem("currentModule");
+						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
+						if (vanityUrlFilter == 'true') {
+							if (type == 'calendly') {
+								this.postingMessage = "isCalendlyAuth";
+							}
+							this.postingMessageToParentWindow(this.postingMessage);
+						}
+						else {
+							this.referenceService.integrationCallBackStatus = true;
+							this.router.navigate(['/home/dashboard/myprofile']);
+						}
+					},
+					error => {
+						localStorage.removeItem("userAlias");
+						this.xtremandLogger.info(error)
+					});
+		} catch (error) {
+			this.xtremandLogger.error(error, "SocialCallbackcomponent()", "calendarIntegrationCallback()");
+		}
+	}
+
 
 
 }

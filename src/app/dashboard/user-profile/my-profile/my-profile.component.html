@@ -318,6 +318,15 @@
                                                     [ngTemplateOutletContext]="{'moduleName':'integrations'}"></ng-template>
                                             </a>
                                         </li>
+                                        <!---Calender Integration--->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'calendarIntegrations'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'calendarIntegrations'}"
+                                                (click)="activateTab('calendarIntegrations');clearCustomResponse()">{{properties.calendarIntegrations | translate}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'calendarIntegrations'}"></ng-template>
+                                            </a>
+                                        </li>
+                                        
                                         <!--Saml Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
                                             *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
@@ -2220,6 +2229,12 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'oauthSSOConfiguration'}"
                                          *ngIf="showOauthSSOConfiguration">
                                             <app-oauth-sso-configuration></app-oauth-sso-configuration>
+                                        </div>
+
+                                        <!-- Calendar Integration settings -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'calendarIntegrations'}"
+                                         *ngIf="showCalendarIntegrations">
+                                            <app-calendar-integrations></app-calendar-integrations>
                                         </div>
 
                                         <!-- Your Templates TAB -->
