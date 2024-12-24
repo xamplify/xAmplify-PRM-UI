@@ -155,4 +155,6 @@ export class Pagination {
 	vendorPartnerJourneyPage:boolean = false;
 
 	vendorMarketplacePageAnalytics:boolean = false;
+
+	hideRejectedAssets: boolean = false;
 }

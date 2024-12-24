@@ -5,6 +5,7 @@ import { ReferenceService } from "app/core/services/reference.service";
 import { ActionsDescription } from '../../../common/models/actions-description';
 import { ActivatedRoute } from '@angular/router';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 
 declare var $:any,swal:any;
 @Component({
@@ -21,6 +22,8 @@ export class AssetGridViewActionsComponent implements OnInit {
   @Output()assetGridViewActionsPdfEmitter = new EventEmitter();
   @Output() assetGridViewActionsDeleteActionEmitter = new EventEmitter();
   @Output() assetGridViewRefreshListEmitter = new EventEmitter();
+  @Output() assetGridViewCommentStatusHistoryEmitter = new EventEmitter();
+
   hasCampaignRole = false;
   hasAllAccess = false;
   loggedInUserId: number = 0;
@@ -32,6 +35,7 @@ export class AssetGridViewActionsComponent implements OnInit {
   /***XNFR-381***/
   isChildTemplatesRouter = false;
 
+  fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
   
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger, public actionsDescription:ActionsDescription,private route: ActivatedRoute) {
@@ -119,6 +123,10 @@ export class AssetGridViewActionsComponent implements OnInit {
 	let url = "/home/dam/sharedp/view/"+asset.id;
 	this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 	}
+
+  showCommentsAndHistoryModalPopup(asset :any) {
+    this.assetGridViewCommentStatusHistoryEmitter.emit(asset);
+  }
 
   /*******Delete Asset ********/
   confirmDelete(asset:any){

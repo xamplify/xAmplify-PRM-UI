@@ -262,6 +262,17 @@
                                                         [ngTemplateOutletContext]="{'moduleName':'leadDealApprove'}"></ng-template>
                                                 </a>
                                             </li>
+
+                                            <li [ngClass]="{'active-tab': activeTabName == 'assetApprovalConfigurationSettings'}"
+                                                *ngIf="authenticationService?.module?.isAdmin">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'assetApprovalConfigurationSettings'}"
+                                                    (click)="activateTab('assetApprovalConfigurationSettings');clearCustomResponse()">{{properties.assetApprovalConfigurationSettings
+                                                    | translate}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'assetApprovalConfigurationSettings'}"></ng-template>
+                                                </a>
+                                            </li>
+
                                             <!-- XNFR-592 -->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadFieldSettings'}"
                                                 *ngIf="!authenticationService.isOnlyPartner()">
@@ -1149,6 +1160,12 @@
                                                 </div>
                                             </form>
                                         </div>
+
+                                        <!-- Asset Approval/Rejection -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'assetApprovalConfigurationSettings'}">
+                                            <app-asset-approval-configuration-settings></app-asset-approval-configuration-settings>
+                                        </div>
+
                                         <!---Integrations-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
                                             <section class="pricing py-5 border-none" *ngIf="integrationTabIndex == 0">
