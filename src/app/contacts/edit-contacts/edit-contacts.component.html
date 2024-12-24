@@ -510,7 +510,7 @@
 														<div class="btn-group mt buttonalign"
 															*ngIf="!isSynchronizationList && !isFormList ">
 															<div class="fileUpload marg-lft" id="upload_csv"
-																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)|| (contactsCompanyListSync  && !this.isPartnerUserList))"
+																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)|| (contactsCompanyListSync  && !this.isPartnerUserList))"
 																translate>
 																<button class="button bgcolor-unset">
 																	<span
@@ -522,9 +522,8 @@
 																		(click)="input.value = null;resetResponse();"
 																		(change)="fileChange(input)" accept=".csv"
 																		#input
-																		[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
+																		[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9" />
 																</button>
-
 															</div>
 														</div>
 													</ng-container>
