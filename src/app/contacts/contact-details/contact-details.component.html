@@ -147,6 +147,13 @@
                   <span *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</span>
                 </div>
               </li>
+              <li *ngFor="let flexiField of selectedContact?.flexiFields">
+                <i class="fas fa-globe"></i>
+                <div class="user_details">
+                  <span class="address_title">{{flexiField.fieldName}}:</span>
+                  <span class="mb0">{{flexiField.fieldValue}}</span>
+                </div>
+              </li>
             </ul>
           </h3>
         </div>
