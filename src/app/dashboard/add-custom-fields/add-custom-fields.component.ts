@@ -27,7 +27,7 @@ export class AddCustomFieldsComponent implements OnInit {
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     if(this.customField.objectType === undefined){
-      this.customField.objectType = 'LEAD';
+      this.customField.objectType = null;
       this.customFieldsDto.type = null;
     }
   }

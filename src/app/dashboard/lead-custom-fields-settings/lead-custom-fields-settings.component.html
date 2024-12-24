@@ -2,6 +2,15 @@
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="table-responsive" *ngIf="!isAddCustomFieldsModelPopUp">
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
+    <div class="scrollbar-x">
+      <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
+        <li><a (click)="setActiveTab('menu1')" data-toggle="tab" href="#menu1">Lead Custom
+            fields</a>
+        </li>
+        <li><a (click)="setActiveTab('menu2')" data-toggle="tab" href="#menu2">Deal Custom fields</a>
+        </li>
+      </ul>
+    </div>
     <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
       <div class="row m0">
         <div class="col-md-12 p0 mb10 mt10">
