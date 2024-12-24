@@ -298,11 +298,11 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
                 message: `Whoops! We are unable to save this template because you deleted '${tag}' tag.`
               })),
               { condition: () => jsonContent.indexOf("<<LoginLink>>") < 0 && emailTemplateType === "JOIN_MY_TEAM", message: "Whoops! We are unable to save this template because you deleted 'LoginLink' tag." },
-              { condition: () => jsonContent.indexOf("<login_url>") < 0 && emailTemplateType === "JOIN_VENDOR_COMPANY", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
+              { condition: () => jsonContent.indexOf("<login_url>") < 0 && (emailTemplateType === "JOIN_VENDOR_COMPANY" ||  emailTemplateType === "FORGOT_PASSWORD"), message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("login_url") < 0 && emailTemplateType === "COMPANY_PROFILE_INCOMPLETE", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("pageLink") < 0 && ["SOCIAL_CAMPAIGN", "PAGE_CAMPAIGN_CONTACT", "ADD_DEAL", "DEAL_UPDATE"].includes(emailTemplateType), message: "Whoops! We are unable to save this template because you deleted 'Button' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
-              { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length < 2, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
+              { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match("<Vanity_Company_Logo_Href>") || []).length < 1, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
               { condition: () => emailTemplateType === "ACCOUNT_ACTIVATION" && jsonContent.indexOf('<VerifyEmailLink>') < 0, message: "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag." },
             ]
           },
