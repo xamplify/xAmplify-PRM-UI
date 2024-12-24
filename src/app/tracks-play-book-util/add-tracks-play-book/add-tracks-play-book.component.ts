@@ -719,9 +719,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
           if (result !== "") {
             this.loggedInUserCompanyId = result;
             if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-              this.linkPrefix = this.authenticationService.APP_URL + "home/tracks/tb/" + this.loggedInUserCompanyId + "/";
+              this.linkPrefix = this.authenticationService.DOMAIN_URL + "home/tracks/tb/" + this.loggedInUserCompanyId + "/";
             } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-              this.linkPrefix = this.authenticationService.APP_URL + "home/playbook/pb/" + this.loggedInUserCompanyId + "/";
+              this.linkPrefix = this.authenticationService.DOMAIN_URL + "home/playbook/pb/" + this.loggedInUserCompanyId + "/";
             }
             this.completeLink = this.linkPrefix;
           } else {
