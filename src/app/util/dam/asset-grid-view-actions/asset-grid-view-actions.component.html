@@ -39,6 +39,10 @@
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
 		title="View Details" (click)="viewDetails(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
+	</a> <a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.approvalRequiredForAssets"
+		(click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Comments/History">
+		<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+		<div class="clickicons"></div>
 	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete custom-icon" data-toggle="tooltip"
 		data-placement="top" title="Delete" (click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
 			aria-hidden="true"></i>

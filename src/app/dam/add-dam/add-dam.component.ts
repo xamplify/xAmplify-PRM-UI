@@ -297,6 +297,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
           this.damPostDto.id = this.assetId;
         }
         this.damPostDto.saveAs = saveAs;
+        /** XNFR-781 **/
+        this.damPostDto.admin = this.authenticationService.module.isAdmin;
         this.damService.save(this.damPostDto).subscribe(
           (result: any) => {
             this.hidePopup();

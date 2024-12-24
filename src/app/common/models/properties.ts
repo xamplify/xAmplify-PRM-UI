@@ -485,5 +485,11 @@ export class Properties {
 	COMPANY_NAME_INFO = "Represents the name of the company, displayed on the dashboard and used as a merge tag across the platform."
 	COMPANY_PROFILE_NAME_INFO ="Non-editable alphanumeric field, also used as a vanity URL to ensure uniqueness and validate duplicates."
 	COMPANY_PROFILE_NAME_PARTNER_INFO = "Non-editable alphanumeric field to ensure unique partner profiles and prevent duplicates."
+	
+	/** XNFR-781 **/
+	assetApprovalConfigurationSettings: string = "Asset Approval/Rejection";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Assets registered by your Team Tembers.";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Assets that are neither rejected nor approved will be automatically Approved!";
+
 }
 
