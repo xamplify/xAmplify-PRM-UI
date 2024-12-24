@@ -1,0 +1,33 @@
+<div class="modal fade in" id="calendar-integration-modal-popup" data-backdrop="static">
+  <div class="modal-dialog popup-width modal-copy mt_125" role="document">
+    <div class="modal-content mSweetalertWid popup-cu-widthalign">
+      <div class="modal-header alert-info modal_header_br">
+        <h4 class="modal-title f-w-600" id="" translate="">Calendar Integrations</h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-xs-12 integration-row">
+          <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
+            <div class="card mb-5 mb-lg-0 integration_cards">
+              <div class="card-body" style="padding:10px;">
+                <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Calendly</h5>
+                <div class="ribbon draft integration-ribbon" style="left:10px">
+                  <span [style.background-color]="'yello'">configure</span>
+                </div>
+                <div style="height: 120px;">
+                  <div>
+                    <img src="assets/images/calendar/calendly.png"
+                      style="margin-top:20px; text-align: center;width:100%">
+                  </div>
+                </div>
+                <a (click)="configCalendly()" class="btn btn-block btn-primary text-uppercase" translate>configure</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer p-10">
+        <button class="btn Btn-Gray" type="button" name="cancel" (click)="closePopUp()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

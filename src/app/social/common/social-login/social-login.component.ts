@@ -8,6 +8,7 @@ import { HubSpotService } from '../../../core/services/hubspot.service';
 import { SamlSecurityService } from 'app/dashboard/samlsecurity/samlsecurity.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { OauthSsoService } from 'app/dashboard/oauth-sso-configuration/oauth-sso.service';
+import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 //import { AddContactsComponent } from 'app/contacts/add-contacts/add-contacts.component';
 
 
@@ -15,7 +16,7 @@ import { OauthSsoService } from 'app/dashboard/oauth-sso-configuration/oauth-sso
 	selector: 'app-social-login',
 	templateUrl: './social-login.component.html',
 	styleUrls: ['./social-login.component.css'],
-	providers: [SamlSecurityService, OauthSsoService]
+	providers: [SamlSecurityService, OauthSsoService, CalendarIntegrationService]
 })
 export class SocialLoginComponent implements OnInit {
 	error: string;
@@ -28,7 +29,7 @@ export class SocialLoginComponent implements OnInit {
 
 	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService, private hubSpotService: HubSpotService,
 		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, 
-		public samlSecurityService: SamlSecurityService, private vanityURLService: VanityURLService, public oauthSsoService: OauthSsoService) {
+		public samlSecurityService: SamlSecurityService, private vanityURLService: VanityURLService, public oauthSsoService: OauthSsoService, public calendarService: CalendarIntegrationService) {
 		this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');		
 	}
 	login(providerName: string) {
@@ -145,6 +146,15 @@ export class SocialLoginComponent implements OnInit {
 			}, (error: any) => {
 				this.xtremandLogger.error(error);
 			}, () => this.xtremandLogger.log("OAuth SSO Done"));
+		} else if (providerName == 'calendly' && this.isLoggedInVanityUrl == 'true') {
+			this.calendarService.vanityConfigCalendly().subscribe(data => {
+				let response = data;
+				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+					window.location.href = "" + response.data.redirectUrl;
+				}
+			}, (error: any) => {
+				this.xtremandLogger.error(error);
+			}, () => this.xtremandLogger.log("Calendly Configuration Checking done"));
 		} else {
 			this.socialService.login(providerName)
 				.subscribe(
