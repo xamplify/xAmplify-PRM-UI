@@ -13,7 +13,7 @@
             </a>
             <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
          </div>
-         <div class="modal-body" id="comments-modal-body">
+         <div class="modal-body" id="comments-modal-body" style="overflow-y: auto;max-height: 444.75px;min-height: 360px;">
             <app-modal-popup-loader *ngIf="commentModalPopUpLoader"></app-modal-popup-loader>
             <ng-container *ngIf="!commentModalPopUpLoader">
                <div class="comment-details">
@@ -51,13 +51,15 @@
                            <h5 class="mt10 mb0">
                               <span><strong>Status</strong></span>:
                               
-                              <span *ngIf="showStatusBanner" class="view-banner-agency" [ngClass]="{'bgc-green': commentDto?.statusInString === 'APPROVED', 
-                                          'bgc-red': commentDto?.statusInString === 'REJECTED',
-                                          'bgc-orange':commentDto?.statusInString === 'CREATED'}" translate>
-                                 <strong>{{commentDto?.statusInString}}</strong>
-                                 
+                              <span *ngIf="showStatusBanner" class="view-banner-agency" [ngClass]="{
+                                    'bgc-green': commentDto?.statusInString === approvalStatus.APPROVED, 
+                                    'bgc-red': commentDto?.statusInString === approvalStatus.REJECTED,
+                                    'bgc-orange': commentDto?.statusInString === approvalStatus.CREATED
+                                 }" translate>
+                                 <strong>{{ getApprovalStatusText(commentDto?.statusInString) }}</strong>
                                  <a *ngIf="canUpdateStatus && !createdByAnyAdmin" class="white">
-                                    <i class="fa fa-edit fs-13px" (click)="showStatusDropDown=true;showStatusBanner=false"></i></a>
+                                    <i class="fa fa-edit fs-13px" (click)="showStatusDropDown=true; showStatusBanner=false"></i>
+                                 </a>
                               </span>
 
                               <select *ngIf="showStatusDropDown" [(ngModel)]="commentDto.statusInString"
@@ -70,12 +72,13 @@
                                  </option>
                               </select>
 
-                              <span title="View History" class="view-banner-agency ml10"
+                              <span data-toggle="tooltip" data-placement="bottom" title="View History" class="view-banner-agency ml5"
                                  (click)="openTemplateStatusHistoryPopUp()">
-                                 <a class="white"><i class="fa fa-history"></i></a>
+                                 <a class="white"><i class="fa fa-history" style="font-size: 12px;"></i></a>
                               </span>
-                              <span *ngIf="isStatusUpdated && canUpdateStatus && commentDto?.statusInString != 'CREATED' && commentDto?.statusInString != 'OWN'" class="success ml5"><strong>Status Updated
-                                    Successfully</strong></span>
+                              <span *ngIf="commentDto?.isStatusUpdated && canUpdateStatus && 
+                                    commentDto?.statusInString != 'CREATED' && commentDto?.statusInString != 'OWN'"
+                                 class="success ml5"><strong>Status Updated Successfully</strong></span>
                            </h5>
                         </div>
                      </div>
@@ -142,26 +145,32 @@
          <div class="modal-body"  id="comments-modal-content" >
             <app-modal-popup-loader *ngIf="historyPopUpLoader"></app-modal-popup-loader>
             <div class="row" *ngIf="!historyPopUpLoader">
-               <div class="timeline">
+               <div style="margin: 0px 20px;">
+                  <app-response-message  *ngIf="timelineHistoryNotAvailable" [customResponse]="commentsCustomResponse" [showCloseIcon]="false"></app-response-message>
+               </div>
+               <div *ngIf="!timelineHistoryNotAvailable" class="timeline">
                   <div class="line text-muted"></div>
                   <article *ngFor="let timeLine of statusTimeLineHistory" class="panel panel-default panel-outline">
                      <div class="panel-heading icon">
                         <span class="avatar-initial">{{timeLine?.userLogoPathOrFirstLetter}}</span>
-                        <!-- <img class="img-circle mdf-style" onerror="this.src='assets/images/icon-user-default.png';"
-                           src="{{timeLine?.userLogoPathOrFirstLetter}}" alt=""> {{timeLine?.profilePicturePath}} -->
                      </div>
                      <div class="panel-body">
                         <p>
                            <strong style="color:#65b6e4;">{{timeLine?.createdByName}}</strong>
                            <span *ngIf="(timeLine?.status == 'REJECTED' || timeLine?.status == 'APPROVED') && !createdByAnyAdmin">
                               changed the status to </span>
-                           <span class="view-banner-agency" [ngClass]="
-                                    {'bgc-green': timeLine?.status==='APPROVED', 
-                                       'bgc-red': timeLine?.status==='REJECTED',
-                                       'bgc-orange':timeLine?.status==='CREATED',
-                                       'bgc-blue': createdByAnyAdmin && timeLine?.status === 'APPROVED'}" translate>
-                              <strong>{{ (createdByAnyAdmin && timeLine?.status === 'APPROVED') ? 'CREATED': timeLine?.status}}</strong>
-                           </span>
+                              <span class="view-banner-agency" [ngClass]="{
+                                    'bgc-green': timeLine?.status === approvalStatus.APPROVED, 
+                                    'bgc-red': timeLine?.status === approvalStatus.REJECTED,
+                                    'bgc-orange': timeLine?.status === approvalStatus.CREATED,
+                                    'bgc-blue': createdByAnyAdmin && timeLine?.status === approvalStatus.APPROVED
+                                 }" translate>
+                                 <strong>
+                                    {{ (createdByAnyAdmin && timeLine?.status === approvalStatus.APPROVED) ? 'Created' :
+                                    getApprovalStatusText(timeLine?.status) }}
+                                 </strong>
+                              </span>
+                        
                            <strong class="ml5">On
                               <app-display-date-and-time
                                  [dateAndTimeUTCString]="timeLine?.createdTimeInString"></app-display-date-and-time>

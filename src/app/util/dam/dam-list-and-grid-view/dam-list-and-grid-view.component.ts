@@ -109,6 +109,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	selectedDamId: number;
 	createdByAnyAdmin: boolean = false;
 	fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
+	approvalStatus = {
+		APPROVED: 'APPROVED',
+		REJECTED: 'REJECTED',
+		CREATED: 'CREATED',
+		UPDATED: 'UPDATED'
+	};
+	  
 
 
 	/****XNFR-381*****/
@@ -889,5 +896,19 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.callCommentsComponent = false;
 	}
 
+	getApprovalStatusText(status: string): string {
+		switch (status) {
+			case this.approvalStatus.APPROVED:
+				return 'Approved';
+			case this.approvalStatus.REJECTED:
+				return 'Rejected';
+			case this.approvalStatus.CREATED:
+				return 'Created';
+			case this.approvalStatus.UPDATED:
+				return 'Updated';
+			default:
+				return status;
+		}
+	}
 
 }
