@@ -38,7 +38,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   comments: any;
   commentsCustomResponse: CustomResponse = new CustomResponse();
   loggedInUserId:number = 0;
-  // isStatusUpdated = false;  
+  isStatusUpdated = false;  
   showStatusBanner: boolean = false;
   highlightLetter: string = "!";
   imageSourcePath: string = "";
@@ -157,7 +157,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
 
   save(event:any) {
-    // this.isStatusUpdated = false;
+    this.isStatusUpdated = false;
     this.referenceService.disableButton(event);
     this.commentModalPopUpLoader = true;
     this.commentDto.loggedInUserId = this.loggedInUserId;
@@ -174,10 +174,11 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentDto.comment = "";
         this.commentDto.invalidComment = true;
         this.commentModalPopUpLoader = false;
-        // this.isStatusUpdated = true;
         this.refreshModalPopUp();
+        this.isStatusUpdated = response.data;
+        this.showStatusUpdatedMessage();
       },error=>{
-        // this.isStatusUpdated = false;
+        this.isStatusUpdated = false;
         this.commentModalPopUpLoader = false;
         this.referenceService.enableButton(event);
         this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
@@ -227,6 +228,12 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       default:
         return status;
     }
+  }
+
+  showStatusUpdatedMessage() {
+    setTimeout(() => {
+      this.isStatusUpdated = false;
+    }, 3000)
   }
   
 }

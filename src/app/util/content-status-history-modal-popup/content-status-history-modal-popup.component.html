@@ -13,7 +13,7 @@
             </a>
             <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
          </div>
-         <div class="modal-body" id="comments-modal-body" style="overflow-y: auto;max-height: 444.75px;min-height: 360px;">
+         <div class="modal-body" id="comments-modal-body" style="overflow-y: auto;max-height: 320px;min-height: 360px;">
             <app-modal-popup-loader *ngIf="commentModalPopUpLoader"></app-modal-popup-loader>
             <ng-container *ngIf="!commentModalPopUpLoader">
                <div class="comment-details">
@@ -64,11 +64,12 @@
 
                               <select *ngIf="showStatusDropDown" [(ngModel)]="commentDto.statusInString"
                                  (ngModelChange)="showStatusDropDown = false;showStatusBanner=true" class="view-banner-agency"
-                                 [ngClass]="{'bgc-green': commentDto?.statusInString === 'APPROVED', 
-                                          'bgc-red': commentDto?.statusInString === 'REJECTED',
-                                          'bgc-orange':commentDto?.statusInString === 'CREATED'}">
+                                 [ngClass]="{
+                                    'bgc-green': commentDto?.statusInString === approvalStatus.APPROVED, 
+                                    'bgc-red': commentDto?.statusInString === approvalStatus.REJECTED,
+                                    'bgc-orange': commentDto?.statusInString === approvalStatus.CREATED}">
                                  <option *ngFor="let templateStatus of templateStatusArray" [ngValue]="templateStatus">
-                                    {{templateStatus}}
+                                    {{ getApprovalStatusText(templateStatus) }}
                                  </option>
                               </select>
 
@@ -76,7 +77,7 @@
                                  (click)="openTemplateStatusHistoryPopUp()">
                                  <a class="white"><i class="fa fa-history" style="font-size: 12px;"></i></a>
                               </span>
-                              <span *ngIf="commentDto?.isStatusUpdated && canUpdateStatus && 
+                              <span *ngIf="isStatusUpdated && canUpdateStatus && 
                                     commentDto?.statusInString != 'CREATED' && commentDto?.statusInString != 'OWN'"
                                  class="success ml5"><strong>Status Updated Successfully</strong></span>
                            </h5>
