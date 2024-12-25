@@ -855,7 +855,7 @@
 												</div>
 
 												<!----- XNFR-671 Custom CSV Mapped Option ----->
-												<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
+												<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 1">
 													<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
 														#customCsvMapping (notifyParent)="saveCsvMappedColumns($event)" (notifyParentCancel)="cancelContacts()"
 														(notifyParentSave)="updateCsvContactList(contactListId)" (notifyParentCustomResponse)="csvCustomResponse()">
