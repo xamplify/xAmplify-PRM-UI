@@ -29,6 +29,7 @@ export class MarketplaceUtilComponent implements OnInit {
   filteredCompanies: any[] =[];
 
   channel;
+  flippedCards: { [key: string]: boolean } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -100,6 +101,7 @@ export class MarketplaceUtilComponent implements OnInit {
 
   navigateToParent(event: any, openInNewTab: boolean): void {
     event.preventDefault();
+    event.stopPropagation();
     const newUrl = event.currentTarget.href;
 
     if (openInNewTab) {
@@ -153,7 +155,15 @@ getUniqueCompaniesToDisplayInMaps(){
   this.filteredCompanies =uniqueCompanies;
   this.channel.postMessage({ type: 'companies', data: this.filteredCompanies });
 }
+toggleFlip(categoryName: string, index: number): void {
+  const key = `${categoryName}-${index}`;
+  this.flippedCards[key] = !this.flippedCards[key];
+}
 
+isFlipped(categoryName: string, index: number): boolean {
+  const key = `${categoryName}-${index}`;
+  return !!this.flippedCards[key];
+}
 
 }
 
