@@ -408,3 +408,11 @@ all the elements inside the author comments. */
     width: 100%;
     border-radius: 50%;
 }
+
+.view_comments_card{
+    background-color: #f6f9fc;
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid #ddd;
+    margin: 0px 15px;
+}
