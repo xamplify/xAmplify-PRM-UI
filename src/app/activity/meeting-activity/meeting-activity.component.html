@@ -5,6 +5,10 @@
         data-original-title="Refresh" (click)="showAllMeetingActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
+        data-original-title="Refresh" (click)="openMeetingModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">
@@ -101,3 +105,8 @@
     <strong>Total Records :{{meetingActivityPager.totalItems}}</strong>
   </span>
 </div>
+
+<app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri"
+  [calendarType]="activeCalendarDetails?.type" (notifyClose)="closeMeetingModalPopup()"></app-add-meeting-modal-popup>
+
+<app-calendar-integration-modal-popup *ngIf="showCalendarIntegrationsModalPopup" (notifyClose)="closeCalendarIntegrationsModalPopup()"></app-calendar-integration-modal-popup>

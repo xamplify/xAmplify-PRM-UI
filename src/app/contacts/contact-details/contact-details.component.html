@@ -208,7 +208,7 @@
                     (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
-                  <app-meeting-activity [contactId]="contactId" [calendarType]="activeCalendarDetails?.type"></app-meeting-activity>
+                  <app-meeting-activity [contactId]="contactId" [activeCalendarDetails]="activeCalendarDetails"></app-meeting-activity>
                 </div>
               </div>
               <!-- END -->
