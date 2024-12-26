@@ -112,6 +112,15 @@ export class MarketplaceUtilComponent implements OnInit {
     }
   }
 
+  navigateToParentFromButton(newUrl: any, openInNewTab: boolean): void {
+
+    if (openInNewTab) {
+      const newTab = window.open(newUrl, '_blank');
+    } else {
+      window.parent.location.href = newUrl;
+    }
+  }
+
   setParentIframeHeight() {
     const componentHeight = this.elementRef.nativeElement.offsetHeight;
     if(this.categories != null && this.categories.length >0){

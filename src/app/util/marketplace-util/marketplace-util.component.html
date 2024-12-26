@@ -23,21 +23,21 @@
         <div class="columnClass">
           <div *ngFor="let company of category.companies ; let i = index" >
             <!-- (click)="toggleFlip(category.name, i)" -->
-            <div class="flip-card" [class.no-flip]="isHoveringReadMore">
+            <div class="flip-card" [class.no-flip]="!isHoveringReadMore">
               <!-- [class.flipped]="isFlipped(category.name, i)" -->
               <div id="flip-{{category.name}}-{{i}}" class="flip-card-inner" >
             <div class="card">
-              <a class="img-card">
+              <a class="img-card" >
                 <img [src]="company.image" >
               </a>
-              <div class="card-content">
+              <div class="card-content" >
                 <h4 class="card-title">
                   {{ company.name }}
                 </h4>
                 <div class="company-text"  style="-webkit-box-orient:vertical">{{ company.description }}</div>
               </div>
-             <div class="card-read-more"   (mouseenter)="isHoveringReadMore = true" 
-             (mouseleave)="isHoveringReadMore = false">
+             <div class="card-read-more" (mouseenter)="isHoveringReadMore = false" 
+             (mouseleave)="isHoveringReadMore = true">
                 <a href="{{company.link}}"  (click)="navigateToParent($event, company.openInNewTab)" class="btn btn-link btn-block">Know More</a>
               </div>
             </div>
@@ -45,10 +45,7 @@
               <p><strong>Address: </strong>{{ company.address }}</p>
               <p><strong>Contact: </strong>{{ company.phone }}</p>
               <p><strong>Website: </strong>{{ company.website }}</p>
-<!--               <div class="card-read-more">
-                <a href="{{company.link}}"  (click)="navigateToParent($event, company.openInNewTab)" class="btn btn-link btn-block">Know More</a>
-              </div> -->
-              <button class="btn flip-btn"  (click)="navigateToParent($event, company.openInNewTab)" >Know More</button>
+              <button class="btn flip-btn"    (click)="navigateToParentFromButton(company.link, company.openInNewTab)" >Know More</button>
             </div>
           </div>
             </div>
