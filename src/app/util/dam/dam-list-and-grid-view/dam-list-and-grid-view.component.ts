@@ -866,12 +866,31 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 	
 	filterAssets(tag:string){
+		if(this.criteria.value1 != undefined && this.criteria.value1.length >0){
+			//this.criteria.value1 = this.criteria.value1 +","+ tag;
+			console.log("filter value: " + this.showFilterOption);
+			console.log("showRefreshNotification value: " + this.showRefreshNotification);
+			console.log("loader value: "+ this.listLoader.isLoading);
+			
+			
+			$.each(this.pagination.criterias, function (index, criteria) {
+						if (criteria.property === "tags") {
+							criteria.value1 = criteria.value1 +","+ tag;
+						}
+					});
+			this.criteria.value1 = this.criteria.value1 +","+ tag;
+		    this.listItems(this.pagination);
+			this.showRefreshNotification = false;
+			//this.toggleFilterOption();
+		}else{
 		this.criteria = new Criteria();
-		this.criteria .operation = "Contains";
-		this.criteria .property = "Tags";
-		this.criteria .value1 = tag;
+		this.criteria.operation = "Contains";
+		this.criteria.property = "Tags";
+		this.criteria.value1 = tag;
 		this.toggleFilterOption(); 
-
+		console.log("showRefreshNotification value: " + this.showRefreshNotification);
+		console.log("loader value: "+ this.listLoader.isLoading);
+		}
 	}
 
 	/** XNFR-781 **/

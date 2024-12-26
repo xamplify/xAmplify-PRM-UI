@@ -53,11 +53,9 @@
                   [ngModelOptions]="{standalone: true}" (change)="setConditionsForCriteria(criterias[i],i)"
                   [disabled]="criterias[i].property === 'From' || criterias[i].property === 'Type'">
                   <ng-container *ngIf="criterias[i].property !== 'From' && criterias[i].property !== 'Type' ">
-                 <!--  ll -->
                   <option *ngIf="criterias[i].operation === 'Condition*'">Condition*</option>
                   <option *ngIf="criterias[i].operation === 'Condition*' &&  selectedConditionArray.length > 0 ">
                     {{selectedConditionArray[i]}}</option>
-                  <!-- ll -->
                     <option *ngFor="let filterCondition of filterConditions; let i = index">
                       {{filterCondition.value}}</option>
                   </ng-container>
