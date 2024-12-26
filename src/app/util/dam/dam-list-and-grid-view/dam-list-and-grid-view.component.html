@@ -97,11 +97,8 @@
 													[ngClass]="{
 														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
-														'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
-														'bgc-blue': asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === approvalStatus.APPROVED
-													  }" translate>
-													{{(asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus ===
-													approvalStatus.APPROVED) ? 'Own' : getApprovalStatusText(asset.approvalStatus)}}
+														'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+													{{getApprovalStatusText(asset.approvalStatus)}}
 												</span>
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
@@ -492,11 +489,8 @@
 												[ngClass]="{
 											        'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 											        'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
-											        'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
-											        'bgc-blue': asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === approvalStatus.APPROVED
-											      }" translate>
-												{{(asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus ===
-												approvalStatus.APPROVED) ? 'Own' : getApprovalStatusText(asset.approvalStatus)}}
+											        'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+												{{getApprovalStatusText(asset.approvalStatus)}}
 											</span>
 
 										</div>
