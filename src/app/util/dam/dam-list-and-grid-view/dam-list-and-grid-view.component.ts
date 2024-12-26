@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,Renderer } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,Renderer, ViewChild } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 /*****Common Imports**********************/
@@ -27,6 +27,7 @@ import { Criteria } from 'app/contacts/models/criteria';
 import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
+import { CustomUiFilterComponent } from '../../custom-ui-filter/custom-ui-filter.component';
 
 declare var $: any, swal: any, flatpickr;
 @Component({
@@ -120,6 +121,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/****XNFR-381*****/
 	criteria: Criteria = new Criteria();
+	@ViewChild(CustomUiFilterComponent) customUiFilterComponent: CustomUiFilterComponent;
+
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -816,12 +819,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else {
 			this.showFilterOption = true
 		}
+		this.criteria = new Criteria();
 		this.pagination.fromDateFilterString = "";
 		this.pagination.toDateFilterString = "";
 		this.pagination.customFilterOption = false;
 		this.sortOption.searchKey = '';
 		this.pagination.searchKey = this.sortOption.searchKey;
-		this.pagination.criterias = new Array<Criteria>();
+		this.pagination.criterias = null;
 		this.pagination.pageIndex = 1;
 		this.listItems(this.pagination);
 	}
@@ -874,29 +878,30 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	
 	filterAssets(tag:string){
 		if(this.criteria.value1 != undefined && this.criteria.value1.length >0){
-			//this.criteria.value1 = this.criteria.value1 +","+ tag;
-			console.log("filter value: " + this.showFilterOption);
-			console.log("showRefreshNotification value: " + this.showRefreshNotification);
-			console.log("loader value: "+ this.listLoader.isLoading);
-			
-			
 			$.each(this.pagination.criterias, function (index, criteria) {
 						if (criteria.property === "tags") {
 							criteria.value1 = criteria.value1 +","+ tag;
 						}
 					});
-			this.criteria.value1 = this.criteria.value1 +","+ tag;
+			
+			$.each(this.customUiFilterComponent.criterias, function (index, criteria) {
+						if (criteria.property === "Tags") {
+							criteria.value1 = criteria.value1 +","+ tag;
+						}
+					});
+			
+			
 		    this.listItems(this.pagination);
+            this.toggleFilterOption(); 
 			this.showRefreshNotification = false;
-			//this.toggleFilterOption();
 		}else{
 		this.criteria = new Criteria();
 		this.criteria.operation = "Contains";
 		this.criteria.property = "Tags";
 		this.criteria.value1 = tag;
-		this.toggleFilterOption(); 
-		console.log("showRefreshNotification value: " + this.showRefreshNotification);
-		console.log("loader value: "+ this.listLoader.isLoading);
+		if(!this.showFilterOption){
+		  this.toggleFilterOption(); 
+		 }
 		}
 	}
 
