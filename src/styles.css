@@ -3291,6 +3291,7 @@ a.quicklinks_icons:hover {
   border: 1px solid #008000;
   font-weight: 800;
   background: transparent!important;
+  text-transform: capitalize;
 }
 .activity-updated-status-btn {
   padding: 2px 6px !important;

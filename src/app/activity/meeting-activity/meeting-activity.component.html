@@ -47,8 +47,14 @@
         [dateAndTimeUTCString]="meetingActivity.endTime"></app-display-date-and-time></span></span>
   </div>
   <div class="activity-footer">
-    <span class="activity-title">Location: <span class="view-banner activity-updated-status-btn" >{{meetingActivity.type}}</span></span>
-    <span *ngIf="meetingActivity.meetingUrl != undefined"><a class="mr5" href="{{meetingActivity.meetingUrl}}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Join meeting"><i class="fa fa-external-link task_edit"
+    <span class="activity-title">
+      <span [ngClass]="meetingActivity.status == 'active' ? 'activity-title mr_90' : 'activity-title mr_75'">Status: <span
+        [ngClass]="meetingActivity.status == 'active' ? 'view-banner activity-created-status-btn' : 'view-banner meeting-canceled-status-btn'">{{meetingActivity.status}}</span></span>
+      Location: <span
+        class="view-banner activity-updated-status-btn">{{meetingActivity.type}}</span>
+    </span>
+    <span *ngIf="meetingActivity.meetingUrl != undefined"><a href="{{meetingActivity.meetingUrl}}" target="_blank"
+        data-toggle="tooltip" data-placement="bottom" title="Join meeting"><i class="fa fa-external-link task_view"
           aria-hidden="true"></i></a>
     </span>
   </div>
