@@ -163,12 +163,9 @@
                               <span class="view-banner-agency" [ngClass]="{
                                     'bgc-green': timeLine?.status === approvalStatus.APPROVED, 
                                     'bgc-red': timeLine?.status === approvalStatus.REJECTED,
-                                    'bgc-orange': timeLine?.status === approvalStatus.CREATED,
-                                    'bgc-blue': createdByAnyAdmin && timeLine?.status === approvalStatus.APPROVED
-                                 }" translate>
+                                    'bgc-orange': timeLine?.status === approvalStatus.CREATED}" translate>
                                  <strong>
-                                    {{ (createdByAnyAdmin && timeLine?.status === approvalStatus.APPROVED) ? 'Created' :
-                                    getApprovalStatusText(timeLine?.status) }}
+                                    {{getApprovalStatusText(timeLine?.status)}}
                                  </strong>
                               </span>
                         
