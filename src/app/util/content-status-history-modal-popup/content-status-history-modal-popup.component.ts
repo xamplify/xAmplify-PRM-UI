@@ -167,6 +167,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.commentDto.assetCreatedByFullName = this.assetCreatedByFullName;
     if (this.status != this.commentDto.statusInString) {
       this.commentDto.statusUpdated = true;
+      this.status = this.commentDto.statusInString;
     }
     this.damService.saveDamComment(this.commentDto).
     subscribe(
@@ -174,12 +175,14 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentDto.comment = "";
         this.commentDto.invalidComment = true;
         this.commentModalPopUpLoader = false;
+        this.commentDto.statusUpdated = false;
         this.refreshModalPopUp();
         this.isStatusUpdated = response.data;
         this.showStatusUpdatedMessage();
       },error=>{
         this.isStatusUpdated = false;
         this.commentModalPopUpLoader = false;
+        this.commentDto.statusUpdated = false;
         this.referenceService.enableButton(event);
         this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       });
