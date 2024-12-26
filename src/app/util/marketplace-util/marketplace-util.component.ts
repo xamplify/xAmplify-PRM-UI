@@ -31,6 +31,7 @@ export class MarketplaceUtilComponent implements OnInit {
   channel;
   flippedCards: { [key: string]: boolean } = {};
 
+  isHoveringReadMore:boolean = false;
   constructor(
     private route: ActivatedRoute,
     private landingPageService: LandingPageService,

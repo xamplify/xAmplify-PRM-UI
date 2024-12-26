@@ -20,10 +20,12 @@
       <div *ngIf="activeCategory === 'All Categories' || activeCategory === category.name ">
       <div class="category">{{ category.name }}</div>
       <div>
-        <div class="row">
-          <div *ngFor="let company of category.companies ; let i = index" class="col-xs-6 col-sm-6 col-lg-4  columnClass">
-            <div class="flip-card" (click)="toggleFlip(category.name, i)">
-              <div id="flip-{{category.name}}-{{i}}" class="flip-card-inner" [class.flipped]="isFlipped(category.name, i)">
+        <div class="columnClass">
+          <div *ngFor="let company of category.companies ; let i = index" >
+            <!-- (click)="toggleFlip(category.name, i)" -->
+            <div class="flip-card" [class.no-flip]="isHoveringReadMore">
+              <!-- [class.flipped]="isFlipped(category.name, i)" -->
+              <div id="flip-{{category.name}}-{{i}}" class="flip-card-inner" >
             <div class="card">
               <a class="img-card">
                 <img [src]="company.image" >
@@ -34,7 +36,8 @@
                 </h4>
                 <div class="company-text"  style="-webkit-box-orient:vertical">{{ company.description }}</div>
               </div>
-             <div class="card-read-more">
+             <div class="card-read-more"   (mouseenter)="isHoveringReadMore = true" 
+             (mouseleave)="isHoveringReadMore = false">
                 <a href="{{company.link}}"  (click)="navigateToParent($event, company.openInNewTab)" class="btn btn-link btn-block">Know More</a>
               </div>
             </div>
