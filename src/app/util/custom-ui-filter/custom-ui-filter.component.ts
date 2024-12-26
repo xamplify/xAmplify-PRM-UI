@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, SimpleChanges  } from '@angular/core';
 import { Router } from '@angular/router';
 import { Criteria } from 'app/contacts/models/criteria';
 import { Pagination } from 'app/core/models/pagination';
@@ -47,6 +47,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.addFilterOptionsValues(this.type);
 	}
+	ngOnChanges(changes: SimpleChanges){
+		console.log("Hi i have entered------------------------------------------------------------------->");
+	}
 	addFilterOptionsValues(type: string) {
 		if (type === "Assets") {
 			this.filterOptions.push(
@@ -73,11 +76,11 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.allfilterOptions = this.filterOptions;
 		}
 		
-		if (this.criteria) {
-			this.selectedConditionArray[0] = this.criteria.operation;
-			this.seletedFiterArray[0] = this.criteria.property;
+		if(this.criteria) {
+			this.selectedConditionArray[this.criterias.length] = this.criteria.operation;
+			this.seletedFiterArray[this.criterias.length] = this.criteria.property;
 			this.criterias.push(this.criteria);
-			this.onSelection(this.criteria, 0);
+			this.onSelection(this.criteria, this.criterias.length);
 			this.isclearFilter = true;
 			this.submittFilterData();
 		}else{
@@ -238,6 +241,8 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	}
 	closeFilterOption(event: any) {
 		if (event == "clear") {
+			this.selectedConditionArray = [];
+			this.seletedFiterArray = [];
 			this.criterias = new Array<Criteria>();
 			this.isclearFilter = false;
 			this.fromDateFilter = "";
