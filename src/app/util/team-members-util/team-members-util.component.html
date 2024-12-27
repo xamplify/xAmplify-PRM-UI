@@ -92,7 +92,7 @@
                     <button data-placement="bottom" class="hidden-xs btn btn-primary button border_btn" style="border-radius: 0px 7px 7px 0px!important;" data-toggle="tooltip"
                     title="Download TeamMembers Csv Template" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
                     && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
-                    && !authenticationService?.module?.deletedPartner && !isCollapsed ">
+                    && !authenticationService?.module?.deletedPartner">
                     <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download"></i>
                     </button>
                       </div>
@@ -392,7 +392,7 @@
           </div>
         </div>
       </div>
-      <ng-template [ngTemplateOutlet]="analyticsCode"></ng-template>
+      <ng-template *ngIf="isTeamMemberModule" [ngTemplateOutlet]="analyticsCode"></ng-template>
     </ng-container>
     <!---End Of Team Members---->
 
@@ -788,7 +788,7 @@
 
   <ng-template #analyticsCode>
     <span
-      *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin) ">
+      *ngIf="(!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
       <!--******************COUNT TILES******************-->
       <div class="row rowPaddingCustomize2">
         <app-partner-journey-count-tiles [selectedTeamMemberIds]="selectedTeamMemberIds"
@@ -1042,7 +1042,10 @@
               <div class="row pl10 pr10 pb10">
                 <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
                   <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
-                    <div class="control-label" style="font-size:15px">{{dateFilterText}}</div>
+                    <div class="control-label" style="font-size:15px">{{dateFilterText}}
+                      <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+                        title="Select the Date Range to View Analytics"></i>
+                    </div>
                   </div>
                   <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
                     <label class="control-label">

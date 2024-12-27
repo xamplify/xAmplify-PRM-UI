@@ -22,6 +22,4 @@ export class DamPostDto {
 	 loggedInUserId = 0;
  	 addedToQuickLinks = false;
 
-	 admin: boolean = false;
-
 }

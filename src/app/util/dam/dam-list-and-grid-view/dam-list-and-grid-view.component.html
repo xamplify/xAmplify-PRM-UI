@@ -92,14 +92,14 @@
 												<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
 													class="view-banner published" style="margin-right: 5px;">Published
 												</span>
-												
-												<span *ngIf="authenticationService?.approvalRequiredForAssets" class="view-banner" 
-												[ngClass]="{'bgc-green': asset.approvalStatus =='APPROVED', 
-													'bgc-red': asset.approvalStatus==='REJECTED',
-													'bgc-orange':asset.approvalStatus==='CREATED',
-													'bgc-blue': asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === 'APPROVED'}" translate>
-													{{ (asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === 'APPROVED') ? 'Own' : asset.approvalStatus}}</span>
-													<!-- 'bgc-blue':  && asset.approvalStatus === 'APPROVED' -->
+												<!-- XNFR-781 -->
+												<span *ngIf="authenticationService?.approvalRequiredForAssets" class="view-banner"
+													[ngClass]="{
+														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+														'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+													{{getApprovalStatusText(asset.approvalStatus)}}
+												</span>
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
 												<!---XNFR-255-->
@@ -484,12 +484,15 @@
 												<span class="view-banner-white-labeled LableSpaceings">White-Labeled</span>
 											</ng-container>
 											<span class="view-banner-dam assettype-bgcolor LableSpaceings" style="margin-right: 3px;">{{asset?.assetType}}</span>
-											<span *ngIf="authenticationService?.approvalRequiredForAssets" class="view-banner" 
-												[ngClass]="{'bgc-green': asset.approvalStatus =='APPROVED', 
-													'bgc-red': asset.approvalStatus==='REJECTED',
-													'bgc-orange':asset.approvalStatus==='CREATED',
-													'bgc-blue': asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === 'APPROVED'}" translate>
-													{{ (asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === 'APPROVED') ? 'Own' : asset.approvalStatus}}</span>
+											<!-- XNFR-781 -->
+											<span *ngIf="authenticationService?.approvalRequiredForAssets" class="view-banner asset-approval-labele-spacing"
+												[ngClass]="{
+											        'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+											        'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+											        'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+												{{getApprovalStatusText(asset.approvalStatus)}}
+											</span>
+
 										</div>
 										<h6 class="xamplify-ellipsis GridViewCotent pt10">
 											<span *ngIf="isPartnerView"> <b>Published On: </b></span>

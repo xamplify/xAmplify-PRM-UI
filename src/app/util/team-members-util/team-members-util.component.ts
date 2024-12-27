@@ -1278,29 +1278,30 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     let isEmptyFromDateFilter = this.fromDateFilterInString == undefined || this.fromDateFilterInString == "";
     let isValidToDateFilter = this.toDateFilterInString != undefined && this.toDateFilterInString != "";
     let isEmptyToDateFilter = this.toDateFilterInString == undefined || this.toDateFilterInString == "";
+    let isValidSelectedVendors = this.selectedVendorCompanies.length > 0;
+    let isValidSelectedTeamMembers = this.selectedTeamMembers.length > 0;
+    let checkIfToDateIsEmpty = isValidFromDateFilter && isEmptyToDateFilter;
+    let checkIfFromDateIsEmpty = isValidToDateFilter && isEmptyFromDateFilter;
+    let showToDateError = (isValidSelectedTeamMembers && checkIfToDateIsEmpty) || (!isValidSelectedTeamMembers && checkIfToDateIsEmpty)
+      || (isValidSelectedVendors && checkIfToDateIsEmpty) || (!isValidSelectedVendors && checkIfToDateIsEmpty)
+    let showFromDateError = (isValidSelectedTeamMembers && checkIfFromDateIsEmpty) || (!isValidSelectedTeamMembers && checkIfFromDateIsEmpty)
+      || (isValidSelectedVendors && checkIfFromDateIsEmpty) || (!isValidSelectedVendors && checkIfFromDateIsEmpty)
     if (!(this.selectedVendorCompanies.length > 0) && !(this.selectedTeamMembers.length > 0) && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
       this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
-    } else {
-      let validDates = false;
-      if (!(isEmptyFromDateFilter && isEmptyToDateFilter)) {
-        if (isValidFromDateFilter && isEmptyToDateFilter) {
-          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-        } else if (isValidToDateFilter && isEmptyFromDateFilter) {
-          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-        } else {
-          var toDate = Date.parse(this.toDateFilterInString);
-          var fromDate = Date.parse(this.toDateFilterInString);
-          if (fromDate <= toDate) {
-            validDates = true;
-          } else {
-            this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
-          }
-        }
-      }
-
-      if (validDates || (this.selectedTeamMembers.length > 0 || this.selectedVendorCompanies.length > 0)) {
+    } else if (showToDateError) {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+    } else if (showFromDateError) {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    } else if (isValidToDateFilter && isValidFromDateFilter) {
+      var toDate = Date.parse(this.toDateFilterInString);
+      var fromDate = Date.parse(this.fromDateFilterInString);
+      if (fromDate <= toDate) {
         this.applyFilters();
+      } else {
+        this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
       }
+    } else {
+      this.applyFilters();
     }
   }
 

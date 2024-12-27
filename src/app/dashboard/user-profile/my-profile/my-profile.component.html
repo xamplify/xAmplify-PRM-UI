@@ -210,6 +210,16 @@
                                             </a>
 
                                         </li>
+                                        <!-- XNFR-781 -->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'assetApprovalConfigurationSettings'}"
+                                            *ngIf="authenticationService?.module?.isAdmin">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'assetApprovalConfigurationSettings'}"
+                                                (click)="activateTab('assetApprovalConfigurationSettings');clearCustomResponse()">{{properties.assetApprovalConfigurationSettings
+                                                | translate}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'assetApprovalConfigurationSettings'}"></ng-template>
+                                            </a>
+                                        </li>
                                     </ul>
                                     <!--------------Lead/Deal Configuration----------------------->
                                     <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
@@ -260,16 +270,6 @@
                                                     {{properties.leadDealApprove | translate }}
                                                     <ng-template [ngTemplateOutlet]="activeIcon"
                                                         [ngTemplateOutletContext]="{'moduleName':'leadDealApprove'}"></ng-template>
-                                                </a>
-                                            </li>
-
-                                            <li [ngClass]="{'active-tab': activeTabName == 'assetApprovalConfigurationSettings'}"
-                                                *ngIf="authenticationService?.module?.isAdmin">
-                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'assetApprovalConfigurationSettings'}"
-                                                    (click)="activateTab('assetApprovalConfigurationSettings');clearCustomResponse()">{{properties.assetApprovalConfigurationSettings
-                                                    | translate}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon"
-                                                        [ngTemplateOutletContext]="{'moduleName':'assetApprovalConfigurationSettings'}"></ng-template>
                                                 </a>
                                             </li>
 

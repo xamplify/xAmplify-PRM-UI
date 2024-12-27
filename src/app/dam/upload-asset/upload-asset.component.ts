@@ -495,8 +495,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-        /** XNFR-781 start **/
-        this.damUploadPostDto.admin = this.authenticationService.module.isAdmin;
 		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();

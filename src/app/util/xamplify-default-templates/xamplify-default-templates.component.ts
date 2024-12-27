@@ -298,11 +298,11 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
                 message: `Whoops! We are unable to save this template because you deleted '${tag}' tag.`
               })),
               { condition: () => jsonContent.indexOf("<<LoginLink>>") < 0 && emailTemplateType === "JOIN_MY_TEAM", message: "Whoops! We are unable to save this template because you deleted 'LoginLink' tag." },
-              { condition: () => jsonContent.indexOf("<login_url>") < 0 && emailTemplateType === "JOIN_VENDOR_COMPANY", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
+              { condition: () => jsonContent.indexOf("<login_url>") < 0 && (emailTemplateType === "JOIN_VENDOR_COMPANY" ||  emailTemplateType === "FORGOT_PASSWORD"), message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("login_url") < 0 && emailTemplateType === "COMPANY_PROFILE_INCOMPLETE", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("pageLink") < 0 && ["SOCIAL_CAMPAIGN", "PAGE_CAMPAIGN_CONTACT", "ADD_DEAL", "DEAL_UPDATE"].includes(emailTemplateType), message: "Whoops! We are unable to save this template because you deleted 'Button' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
-              { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length < 2, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
+              { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match("<Vanity_Company_Logo_Href>") || []).length < 1, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
               { condition: () => emailTemplateType === "ACCOUNT_ACTIVATION" && jsonContent.indexOf('<VerifyEmailLink>') < 0, message: "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag." },
             ]
           },
@@ -697,8 +697,10 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                             .filter(member=>member.partnerId == logoDetails.partnerId)[0].categoryIds;
                           }
                         }
+                        let message = self.isMasterLandingPages? "Whoops! We're unable to save this page because you haven't selected the vendor details. Click on the â€˜Pick Your Vendorsâ€™ button to choose vendors.":
+                        "Whoops! We're unable to save this page because you haven't selected the partner details. Click on the â€˜Pick Your Partnersâ€™ button to choose partners."
                         if((self.vendorLogoDetails.length == 0 || self.vendorLogoDetails == null  ||(self.vendorLogoDetails != null && self.vendorLogoDetails.length != 0 && self.vendorLogoDetails.every(logo=>(!logo.selected))))){
-                          swal("", "Whoops! We're unable to save this page because you haven't selected the vendor details. Click on the ‘Pick Your Vendors’ button to choose vendors.", "error");
+                          swal("", message, "error");
                           return false;
                         }
                       }

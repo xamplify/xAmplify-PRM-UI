@@ -5,6 +5,10 @@
         data-original-title="Refresh" (click)="showAllMeetingActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
+        data-original-title="Refresh" (click)="openMeetingModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">
@@ -47,8 +51,14 @@
         [dateAndTimeUTCString]="meetingActivity.endTime"></app-display-date-and-time></span></span>
   </div>
   <div class="activity-footer">
-    <span class="activity-title">Location: <span class="view-banner activity-updated-status-btn" >{{meetingActivity.type}}</span></span>
-    <span *ngIf="meetingActivity.meetingUrl != undefined"><a class="mr5" href="{{meetingActivity.meetingUrl}}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Join meeting"><i class="fa fa-external-link task_edit"
+    <span class="activity-title">
+      <span [ngClass]="meetingActivity.status == 'active' ? 'activity-title mr_90' : 'activity-title mr_75'">Status: <span
+        [ngClass]="meetingActivity.status == 'active' ? 'view-banner activity-created-status-btn' : 'view-banner meeting-canceled-status-btn'">{{meetingActivity.status}}</span></span>
+      Location: <span
+        class="view-banner activity-updated-status-btn">{{meetingActivity.type}}</span>
+    </span>
+    <span *ngIf="meetingActivity.meetingUrl != undefined"><a href="{{meetingActivity.meetingUrl}}" target="_blank"
+        data-toggle="tooltip" data-placement="bottom" title="Join meeting"><i class="fa fa-external-link task_view"
           aria-hidden="true"></i></a>
     </span>
   </div>
@@ -95,3 +105,8 @@
     <strong>Total Records :{{meetingActivityPager.totalItems}}</strong>
   </span>
 </div>
+
+<app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri"
+  [calendarType]="activeCalendarDetails?.type" (notifyClose)="closeMeetingModalPopup()"></app-add-meeting-modal-popup>
+
+<app-calendar-integration-modal-popup *ngIf="showCalendarIntegrationsModalPopup" (notifyClose)="closeCalendarIntegrationsModalPopup()"></app-calendar-integration-modal-popup>

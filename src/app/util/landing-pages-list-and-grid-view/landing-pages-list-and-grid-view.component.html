@@ -176,7 +176,7 @@
                                         <b>Page Name:</b> {{landingPage.name | slice:0:54}}
                                         <span *ngIf="landingPage.name?.length >54">...</span>
                                     </h4>
-                                    <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}"
+                                    <h6 *ngIf = "!((vendorJourney || isMasterLandingPages || welcomePages || isVendorMarketplacePages || isPartnerJourneyPages )&& landingPage.defaultLandingPage)" class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}"
                                         data-placement="bottom" data-toggle="tooltip">
                                         <b>Folder:</b> {{landingPage.categoryName}}
                                     </h6>

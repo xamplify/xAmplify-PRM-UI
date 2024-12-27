@@ -539,7 +539,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								return row[emailIdIndex] ? count : count + 1;
 							}, 0);
 						}
-						if (allTextLines.length <= 2) {
+						if (allTextLines[1].length === 1 || allTextLines[1].every(cell => cell.trim() === '')) {
 							self.customResponse = new CustomResponse('ERROR', 'No records found.', true);
 							self.removeCsv();
 						} else if (allTextLines.length > 2 && allTextLines.length == self.emptyUsersCount + 1) {
@@ -2449,7 +2449,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else if (this.isContactModuleType()) {
 			window.location.href = this.authenticationService.REST_URL + "userlists/download-default-contact-csv/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
 		} else {
-			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST_EMPTY.csv";
+			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
 		}
 	}
 

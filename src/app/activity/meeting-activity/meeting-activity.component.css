@@ -64,3 +64,34 @@
     font-size: 13px;
     text-transform: capitalize;
 }
+
+.meeting-canceled-status-btn {
+    padding: 2px 6px !important;
+    font-size: 10px !important;
+    color: #f53535;
+    border: 1px solid #f53535;
+    font-weight: 800;
+    background: transparent !important;
+    text-transform: capitalize;
+}
+
+.mr_90 {
+    margin-right: 90px;
+}
+
+.mr_75 {
+    margin-right: 75px;
+}
+
+.task_view {
+    font-size: 10px;
+    color: #333333;
+    background-color: #ffffff;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    padding: 2px 5px;
+}
+
+.task_view:hover {
+    background-color: #c6d5f6;
+}

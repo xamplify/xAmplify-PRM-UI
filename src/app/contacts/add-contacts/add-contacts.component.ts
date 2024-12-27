@@ -492,7 +492,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     return row[emailIdIndex] ? count : count + 1;
                 }, 0);
             }
-            if (allTextLines.length <= 2) {
+            if (allTextLines[1].length === 1 || allTextLines[1].every(cell => cell.trim() === '')) {
                 self.customResponse = new CustomResponse('ERROR', "No records found.", true);
                 self.isNoResultFound = true;
                 self.cancelContacts();

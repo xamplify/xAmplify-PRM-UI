@@ -1168,24 +1168,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
 
-    
-    openSendTestEmailModalPopup(item : any){
+    openSendTestEmailModalPopup(item: any) {
         this.selectedItem = item;
         this.selectedEmailId = item.emailId;
-        if(this.isInactivePartnersDiv){
-         this.sendTestEmailIconClicked = true;
-            this.vanityTemplates = true;
-            this.selectedEmailTemplateId=26;
-        }
-        else if(this.isIncompleteCompanyProfileDiv)
-        {
-            this.sendTestEmailIconClicked = true;
-            this.vanityTemplates = true;
-            this.selectedEmailTemplateId=27;
-        }
-        else if(this.isSingUpPendingDiv){
-            this.vanityURLService.getTemplateId(this.selectedEmailId).subscribe(
-                response =>  {
+        if (this.isInactivePartnersDiv) {
+            this.vanityURLService.getTemplateId(this.selectedEmailId, "isInactivePartnersDiv").subscribe(
+                response => {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
                         this.sendTestEmailIconClicked = true;
@@ -1200,8 +1188,45 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     console.error("Error fetching template ID:", error);
                 }
             );
-        } 
-      }
+        }
+
+        else if (this.isIncompleteCompanyProfileDiv) {
+            this.vanityURLService.getTemplateId(this.selectedEmailId, "isIncompleteCompanyProfileDiv").subscribe(
+                response => {
+                    if (response.statusCode === 200) {
+                        this.selectedEmailTemplateId = response.data;
+                        this.sendTestEmailIconClicked = true;
+                        this.vanityTemplates = true;
+                    } else if (response.statusCode === 400) {
+                        console.error("Error: Invalid email ID or other bad request.");
+                    } else {
+                        console.error("Unexpected status code:", response.statusCode);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching template ID:", error);
+                }
+            );
+        }
+        else if (this.isSingUpPendingDiv) {
+            this.vanityURLService.getTemplateId(this.selectedEmailId, "isSingUpPendingDiv").subscribe(
+                response => {
+                    if (response.statusCode === 200) {
+                        this.selectedEmailTemplateId = response.data;
+                        this.sendTestEmailIconClicked = true;
+                        this.vanityTemplates = true;
+                    } else if (response.statusCode === 400) {
+                        console.error("Error: Invalid email ID or other bad request.");
+                    } else {
+                        console.error("Unexpected status code:", response.statusCode);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching template ID:", error);
+                }
+            );
+        }
+    }
 
       sendTestEmailModalPopupEventReceiver(){
         this.selectedEmailTemplateId = 0;

@@ -147,6 +147,13 @@
                   <span *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</span>
                 </div>
               </li>
+              <li *ngFor="let flexiField of selectedContact?.flexiFields">
+                <i class="fas fa-highlighter"></i>
+                <div class="user_details">
+                  <span class="address_title">{{flexiField.fieldName}}:</span>
+                  <span class="mb0">{{flexiField.fieldValue}}</span>
+                </div>
+              </li>
             </ul>
           </h3>
         </div>
@@ -172,7 +179,7 @@
                   <li><a data-toggle="tab" (click)="setActiveTab('email1')" href="#email1">Email</a>
                   </li>
                   <li><a data-toggle="tab" (click)="setActiveTab('form1')" href="#form1">Task</a></li>
-                  <li *ngIf="isLocalhost"><a data-toggle="tab" (click)="setActiveTab('meeting')" href="#meeting">Meeting</a></li>
+                  <li><a data-toggle="tab" (click)="setActiveTab('meeting')" href="#meeting">Meeting</a></li>
                 </ul>
               </div>
               <div class="tab-content tab-bg p-13">
@@ -201,7 +208,7 @@
                     (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
-                  <app-meeting-activity [contactId]="contactId" [calendarType]="activeCalendarDetails?.type"></app-meeting-activity>
+                  <app-meeting-activity [contactId]="contactId" [activeCalendarDetails]="activeCalendarDetails"></app-meeting-activity>
                 </div>
               </div>
               <!-- END -->

@@ -43,6 +43,14 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   highlightLetter: string = "!";
   imageSourcePath: string = "";
   showImageTag: boolean = false;
+  timelineHistoryNotAvailable: boolean = false;
+  approvalStatus = {
+		APPROVED: 'APPROVED',
+		REJECTED: 'REJECTED',
+		CREATED: 'CREATED',
+    COMMENTED: 'COMMENTED',
+		UPDATED: 'UPDATED'
+	};
 
   constructor( private referenceService: ReferenceService,
       private authenticationService: AuthenticationService,
@@ -95,7 +103,13 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.historyPopUpLoader = true;
     this.damService.loadDamStatusHistoyTimeline(this.damId).subscribe( 
       response=>{
-        this.statusTimeLineHistory = response.data;
+        if (response.data && response.data.length > 0) {
+          this.statusTimeLineHistory = response.data;
+          this.timelineHistoryNotAvailable = false;
+        } else {
+          this.timelineHistoryNotAvailable = true;
+          this.commentsCustomResponse = new CustomResponse('INFO', "Timeline history is not available for this asset.", true);
+        }        
         this.historyPopUpLoader = false;
       },error=>{
         this.historyPopUpLoader = false;
@@ -153,6 +167,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.commentDto.assetCreatedByFullName = this.assetCreatedByFullName;
     if (this.status != this.commentDto.statusInString) {
       this.commentDto.statusUpdated = true;
+      this.status = this.commentDto.statusInString;
     }
     this.damService.saveDamComment(this.commentDto).
     subscribe(
@@ -160,11 +175,14 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentDto.comment = "";
         this.commentDto.invalidComment = true;
         this.commentModalPopUpLoader = false;
-        this.isStatusUpdated = true;
+        this.commentDto.statusUpdated = false;
         this.refreshModalPopUp();
+        this.isStatusUpdated = response.data;
+        this.showStatusUpdatedMessage();
       },error=>{
         this.isStatusUpdated = false;
         this.commentModalPopUpLoader = false;
+        this.commentDto.statusUpdated = false;
         this.referenceService.enableButton(event);
         this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       });
@@ -196,6 +214,29 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     if (this.referenceService.checkIsValidString(name)) {
       this.highlightLetter = this.referenceService.getFirstLetter(name);
     }
+  }
+
+  getApprovalStatusText(status: string): string {
+    switch (status) {
+      case this.approvalStatus.APPROVED:
+        return 'Approved';
+      case this.approvalStatus.REJECTED:
+        return 'Rejected';
+      case this.approvalStatus.CREATED:
+        return 'Created';
+      case this.approvalStatus.UPDATED:
+        return 'Updated';
+      case this.approvalStatus.COMMENTED:
+        return 'Commented';
+      default:
+        return status;
+    }
+  }
+
+  showStatusUpdatedMessage() {
+    setTimeout(() => {
+      this.isStatusUpdated = false;
+    }, 3000)
   }
   
 }

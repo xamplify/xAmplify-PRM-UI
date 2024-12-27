@@ -385,8 +385,8 @@ export class DamService {
     return this.authenticationService.callPostMethod(url, commentDto);
   }
 
-  getAssetApprovalStatusByCompanyId(companyId: number) {
-    let url = this.authenticationService.REST_URL + "admin/getAssetApprovalStatusByCompanyId/" + companyId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+  getAssetApprovalStatusByUserId(userId: number) {
+    let url = this.authenticationService.REST_URL + "admin/getAssetApprovalStatusByUserId/" + userId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 

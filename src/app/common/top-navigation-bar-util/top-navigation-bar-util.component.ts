@@ -814,6 +814,7 @@ private beforeAdd(tag: any) {
 					}
 					this.authenticationService.module.showAddLeadOrDealButtonInMyProfileSection = data.showAddLeadOrDealButtonInMyProfileSection;
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
+          this.authenticationService.approvalRequiredForAssets = data.approvalRequiredForAssets;
 					//XNFR-276
           this.menuItems = data.menuItems;
 

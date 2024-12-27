@@ -124,8 +124,7 @@ export class PartnerJourneyAssetDetailsComponent implements OnInit {
     let toDateFilterRequestParam = this.toDateFilter != undefined ? this.toDateFilter : "";
     let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
     let url = this.authenticationService.REST_URL + "partner/journey/download/asset-details-report?access_token=" + this.authenticationService.access_token
-      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&trackTypeFilter=" +
-      + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm + "&detailedAnalytics=" + this.isDetailedAnalytics + "&partnerCompanyId=" + partnerCompanyIdRequestParam
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm;
     this.referenseService.openWindowInNewTab(url);

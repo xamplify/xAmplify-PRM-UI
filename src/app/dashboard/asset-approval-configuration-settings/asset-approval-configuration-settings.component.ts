@@ -20,8 +20,8 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
   isChecked: boolean = false;
   isAssetApprovalEnabledForCompany: boolean = false;
   disableSaveChangesButton: boolean = false;
-  companyId: number;
   ngxLoading: boolean = false;
+  loggedInUserId: number;
 
   constructor(private referenceService: ReferenceService,
     private damService: DamService,
@@ -29,23 +29,27 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
     private properties: Properties,
     private authenticationService: AuthenticationService
   ) {
-    this.companyId = this.referenceService.companyId;
+    this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
     this.callActionSwitch.size = 'normal';
-    this.getAssetApprovalStatusByCompanyId();
+    this.getAssetApprovalStatusByUserId();
   }
 
-  getAssetApprovalStatusByCompanyId() {
+  getAssetApprovalStatusByUserId() {
     this.ngxLoading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.damService.getAssetApprovalStatusByCompanyId(this.companyId)
+    this.damService.getAssetApprovalStatusByUserId(this.loggedInUserId)
       .subscribe(
         result => {
+          if (result.data != undefined) {
+            this.isAssetApprovalEnabledForCompany = result.data;
+          } else {
+            this.isAssetApprovalEnabledForCompany = false;
+          }
           this.ngxLoading = false;
           this.referenceService.loading(this.httpRequestLoader, false);
-          this.isAssetApprovalEnabledForCompany = result.data;
           this.isChecked = !this.isAssetApprovalEnabledForCompany;
           this.disableSaveChangesButton = false;
         }, error => {
@@ -71,8 +75,7 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
 
   save() {
     const saveAssetApprovalStatus = {
-      companyId: this.companyId,
-      loggedInUserId: this.authenticationService.getUserId(),
+      loggedInUserId: this.loggedInUserId,
       approvalRequiredForAssetsByCompany: this.isAssetApprovalEnabledForCompany
     };
     this.ngxLoading = true;

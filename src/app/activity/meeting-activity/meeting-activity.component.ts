@@ -18,7 +18,7 @@ import { PaginationComponent } from 'app/common/pagination/pagination.component'
 export class MeetingActivityComponent implements OnInit {
 
   @Input() contactId:number;
-  @Input() calendarType:any;
+  @Input() activeCalendarDetails:any;
 
   meetingActivities = [];
   ngxLoading:boolean = false;
@@ -35,11 +35,15 @@ export class MeetingActivityComponent implements OnInit {
   searchKey: any;
   filteredMeetingActivities: any;
   pageNumber: any;
+  showMeetingModalPopup: boolean = false;
+  showCalendarIntegrationsModalPopup: boolean = false;
+  calendarType:any;
 
   constructor(public meetingActivityService: MeetingActivityService, public referenceService: ReferenceService, public pagerService: PagerService, 
     public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent) { }
 
   ngOnInit() {
+    this.calendarType = this.activeCalendarDetails != undefined ? this.activeCalendarDetails.type : '';
     this.pageNumber = this.paginationComponent.numberPerPage[0];
     this.showAllMeetingActivities();
   }
@@ -163,5 +167,21 @@ export class MeetingActivityComponent implements OnInit {
       this.customResponse = new CustomResponse('ERROR',"Please configure with atleast one calendar integration.",true);
     }
 	}
+
+  openMeetingModalPopup() {
+    if (this.activeCalendarDetails != undefined) {
+      this.showMeetingModalPopup = true;
+    } else {
+      this.showCalendarIntegrationsModalPopup = true;
+    }
+  }
+
+  closeCalendarIntegrationsModalPopup() {
+    this.showCalendarIntegrationsModalPopup = false;
+  }
+
+  closeMeetingModalPopup() {
+    this.showMeetingModalPopup = false;
+  }
 
 }

@@ -48,7 +48,29 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 		this.addFilterOptionsValues(this.type);
 	}
 	ngOnChanges(changes: SimpleChanges){
-		console.log("Hi i have entered------------------------------------------------------------------->");
+		if(this.criteria.property != "Field Name*" && this.criteria.operation != "Condition*"
+		         && this.criterias !=undefined &&  this.criterias.length > 0
+		         && this.criterias[this.criterias.length-1].property ==  "Field Name*" 
+                 &&  this.criterias[this.criterias.length-1].operation ==  "Condition*"){
+	
+	        this.criterias[this.criterias.length-1].property = this.criteria.property;
+	        this.criterias[this.criterias.length-1].operation = this.criteria.operation;
+	        this.criterias[this.criterias.length-1].value1 = this.criteria.value1;
+	
+	        this.selectedConditionArray[this.criterias.length-1] = this.criteria.operation;
+			this.seletedFiterArray[this.criterias.length-1] = this.criteria.property;
+			this.onSelection(this.criteria, this.criterias.length-1);
+			this.isclearFilter = true;
+			this.submittFilterData();
+			
+		}else if(this.criteria.property != "Field Name*" && this.criteria.operation != "Condition*") {
+			this.selectedConditionArray[this.criterias.length] = this.criteria.operation;
+			this.seletedFiterArray[this.criterias.length] = this.criteria.property;
+			this.criterias.push(this.criteria);
+			this.onSelection(this.criteria, this.criterias.length);
+			this.isclearFilter = true;
+			this.submittFilterData();
+		}
 	}
 	addFilterOptionsValues(type: string) {
 		if (type === "Assets") {
@@ -76,15 +98,8 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.allfilterOptions = this.filterOptions;
 		}
 		
-		if(this.criteria) {
-			this.selectedConditionArray[this.criterias.length] = this.criteria.operation;
-			this.seletedFiterArray[this.criterias.length] = this.criteria.property;
-			this.criterias.push(this.criteria);
-			this.onSelection(this.criteria, this.criterias.length);
-			this.isclearFilter = true;
-			this.submittFilterData();
-		}else{
-			this.addNewRow();
+		if(this.criteria.property == "Field Name*" && this.criteria.operation == "Condition*") {
+		   this.addNewRow();
 		}
 		
 	}

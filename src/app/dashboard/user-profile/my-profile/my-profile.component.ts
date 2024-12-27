@@ -697,6 +697,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				else if (e.data == 'isZohoAuth') {
 					localStorage.setItem('isZohoAuth', 'yes');
 				}
+				else if (e.data == 'isCalendlyAuth') {
+					localStorage.setItem('isCalendlyAuth', 'yes');
+				}
 			}, false);
 			this.getModuleAccessByUser();
 			this.findUpgradeRequest();
