@@ -808,10 +808,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempCheckZohoAuth = localStorage.getItem('isZohoAuth');
+		let tempCheckCalendlyAuth = localStorage.getItem('isCalendlyAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
+		localStorage.removeItem('isCalendlyAuth');
 
 		if (tempCheckHubSpotAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
@@ -832,6 +834,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.router.navigate(['/home/dashboard/myprofile']);
 		}
 		else if (tempCheckZohoAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+		else if (tempCheckCalendlyAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
 			localStorage.removeItem("userAlias");
 			localStorage.removeItem("currentModule");
