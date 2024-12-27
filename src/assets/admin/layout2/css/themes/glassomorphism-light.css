@@ -4507,3 +4507,15 @@ box-shadow: inset 5px 5px 10px #a19d9d42, inset -5px -5px 10px #7a72721f !import
 .border_btn{
   border-left: 1px solid #026deb !important;
 }
+/* vendor landscape view css */
+.box-shadow-unset.portlet.light.light_bg_removal.remove_space,.portlet.light.light_bg_removal.remove_space.padding-0,.portlet.light.light_bg_removal.remove_space.remove_bgcolor{
+  background-color: unset!important;
+  border: unset !important;
+  box-shadow:unset !important;
+  padding: 0px !important;
+}
+.portlet.light.light_bg_removal.remove_space.form-label-landscape{
+  background-color: unset !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  margin: 15px 0px;
+}

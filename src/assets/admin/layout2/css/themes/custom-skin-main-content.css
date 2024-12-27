@@ -2447,6 +2447,20 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
   background-color:var(--table-body-color)!important;
   color: var(---text-color) !important;
 }
+
 .tgrid > tbody > tr:hover{
   background-color: var(--table-header) !important;
+}
+
+/* vendor landscape view css */
+.box-shadow-unset.portlet.light.light_bg_removal.remove_space,.portlet.light.light_bg_removal.remove_space.padding-0,.portlet.light.light_bg_removal.remove_space.remove_bgcolor{
+  background-color: unset!important;
+  border: unset !important;
+  box-shadow:unset !important;
+  padding: 0px !important;
+}
+.portlet.light.light_bg_removal.remove_space.form-label-landscape{
+  background-color: unset !important;
+  border: 1px solid var(--border-color) !important;
+  margin: 10px 0px;
 }

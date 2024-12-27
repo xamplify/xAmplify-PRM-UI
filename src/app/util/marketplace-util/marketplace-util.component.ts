@@ -29,7 +29,9 @@ export class MarketplaceUtilComponent implements OnInit {
   filteredCompanies: any[] =[];
 
   channel;
+  flippedCards: { [key: string]: boolean } = {};
 
+  isHoveringReadMore:boolean = false;
   constructor(
     private route: ActivatedRoute,
     private landingPageService: LandingPageService,
@@ -100,7 +102,17 @@ export class MarketplaceUtilComponent implements OnInit {
 
   navigateToParent(event: any, openInNewTab: boolean): void {
     event.preventDefault();
+    event.stopPropagation();
     const newUrl = event.currentTarget.href;
+
+    if (openInNewTab) {
+      const newTab = window.open(newUrl, '_blank');
+    } else {
+      window.parent.location.href = newUrl;
+    }
+  }
+
+  navigateToParentFromButton(newUrl: any, openInNewTab: boolean): void {
 
     if (openInNewTab) {
       const newTab = window.open(newUrl, '_blank');
@@ -153,7 +165,15 @@ getUniqueCompaniesToDisplayInMaps(){
   this.filteredCompanies =uniqueCompanies;
   this.channel.postMessage({ type: 'companies', data: this.filteredCompanies });
 }
+toggleFlip(categoryName: string, index: number): void {
+  const key = `${categoryName}-${index}`;
+  this.flippedCards[key] = !this.flippedCards[key];
+}
 
+isFlipped(categoryName: string, index: number): boolean {
+  const key = `${categoryName}-${index}`;
+  return !!this.flippedCards[key];
+}
 
 }
 

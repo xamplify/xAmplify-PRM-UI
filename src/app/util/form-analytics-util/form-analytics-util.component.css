@@ -72,3 +72,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.form-title{
+	font-size: 14px !important;
+	font-weight: 700 !important;
+}
+
+.form-title-landscape{
+    margin-bottom: 0px !important;
+}

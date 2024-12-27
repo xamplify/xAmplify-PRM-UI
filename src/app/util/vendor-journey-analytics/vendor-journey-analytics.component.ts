@@ -62,6 +62,7 @@ export class VendorJourneyAnalyticsComponent implements OnInit {
   @Input() isVendorMarketplacePages:boolean = false;
 
   moduleLabel:string=""
+  isForLandscapePages:boolean = false;
   constructor(public referenceService: ReferenceService,
       public httpRequestLoader: HttpRequestLoader, public pagerService:
           PagerService, public authenticationService: AuthenticationService,
@@ -86,7 +87,8 @@ export class VendorJourneyAnalyticsComponent implements OnInit {
   ngOnInit() {
       this.selectedFormTypeIndex = 0;
       this.pagination.filterKey = "All";
-      if(this.isVendorJourney || this.isMasterLandingPages || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
+      this.isForLandscapePages = this.isVendorJourney || this.isMasterLandingPages || this.isPartnerJourneyPages || this.isVendorMarketplacePages;
+      if(this.isForLandscapePages){
           this.landingPageId = this.vendorLandingPageId;
           this.pagination.landingPageId = this.landingPageId;
           this.pagination.landingPageForm = true;
