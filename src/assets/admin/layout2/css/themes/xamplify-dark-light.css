@@ -2605,3 +2605,13 @@ table tr#uploaded-csv-tr.alert-success:hover,table tr#uploaded-csv-tr.alert-dang
 .table_body_color{background-color: #263741c7 !important;}
 .page-bar.m10.bg-none.light_bg_removal{background: none !important;}
 tbody{background: transparent;}
+/* vendor landscape view css */
+.box-shadow-unset.portlet.light.light_bg_removal.remove_space,.portlet.light.light_bg_removal.remove_space.padding-0,.portlet.light.light_bg_removal.remove_space.remove_bgcolor{
+  background-color: unset!important;
+  border: unset !important;
+}
+.portlet.light.light_bg_removal.remove_space.form-label-landscape{
+  background-color: unset!important;
+  border: 1px solid #2f4857 !important; 
+  margin: 15px 0px;
+}

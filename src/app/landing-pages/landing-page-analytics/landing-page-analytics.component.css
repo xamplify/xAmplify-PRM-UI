@@ -11,3 +11,13 @@
 #min-height {
   min-height: 308px;
 }
+
+.portlet >.portlet-title.remove-space{  
+  min-height: 0px!important;
+  margin-bottom: 0px!important;
+}
+.analytics-title{
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+}
