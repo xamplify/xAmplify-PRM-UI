@@ -89,8 +89,17 @@
 													<span><b>From: </b>{{asset?.vendorCompanyName}}</span>
 												</h6>
 												<!---XNFR-255-->
-												<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
-													class="view-banner published">Published</h6>
+												<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
+													class="view-banner published" style="margin-right: 5px;">Published
+												</span>
+												
+												<span *ngIf="authenticationService?.approvalRequiredForAssets" class="view-banner" 
+												[ngClass]="{'bgc-green': asset.approvalStatus =='APPROVED', 
+													'bgc-red': asset.approvalStatus==='REJECTED',
+													'bgc-orange':asset.approvalStatus==='CREATED',
+													'bgc-blue': asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === 'APPROVED'}" translate>
+													{{ (asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === 'APPROVED') ? 'Own' : asset.approvalStatus}}</span>
+													<!-- 'bgc-blue':  && asset.approvalStatus === 'APPROVED' -->
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
 												<!---XNFR-255-->
@@ -103,11 +112,11 @@
 												<!---XNFR-255-->
 												<h6 *ngIf="asset.tagNames?.length > 0 ">
 													<ng-container *ngIf="asset.tagNames?.length == 1">
-														<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}" data-toggle="tooltip" data-placement="top">
-															<ng-container *ngIf="asset.tagNames?.length == 1" (click)="filterAssets(tag)">{{asset.tagNames[0] | slice:0:20}} 
+														<div class="tag tablegray-tag tag-custom" title="{{asset.tagNames[0]}}" (click)="filterAssets(asset.tagNames[0])" data-toggle="tooltip" data-placement="top">
+															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} 
 																<span *ngIf="asset.tagNames[0]?.length>20">..</span>
 															</ng-container>
-															<ng-container *ngIf="asset.tagNames?.length > 1" (click)="filterAssets(tag)">{{asset.tagNames[0] | slice:0:10}}
+															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}}
 																 <span *ngIf="asset.tagNames[0]?.length>10">..</span>
 															</ng-container>
 														</div>
@@ -194,6 +203,12 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
+
+															<!-- comment/history -->
+															<a *ngIf="authenticationService?.approvalRequiredForAssets" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Comments/History">
+																	<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+															</a>
+															
 															<!--Delete-->
 															<a class="custom-icon" *ngIf="!isPartnerView && asset?.delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(asset)">
 																<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
@@ -468,7 +483,13 @@
 												</h6>
 												<span class="view-banner-white-labeled LableSpaceings">White-Labeled</span>
 											</ng-container>
-											<span class="view-banner-dam assettype-bgcolor LableSpaceings">{{asset?.assetType}}</span>
+											<span class="view-banner-dam assettype-bgcolor LableSpaceings" style="margin-right: 3px;">{{asset?.assetType}}</span>
+											<span *ngIf="authenticationService?.approvalRequiredForAssets" class="view-banner" 
+												[ngClass]="{'bgc-green': asset.approvalStatus =='APPROVED', 
+													'bgc-red': asset.approvalStatus==='REJECTED',
+													'bgc-orange':asset.approvalStatus==='CREATED',
+													'bgc-blue': asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === 'APPROVED'}" translate>
+													{{ (asset.createdByAnyAdmin && authenticationService?.module?.isAdmin && asset.approvalStatus === 'APPROVED') ? 'Own' : asset.approvalStatus}}</span>
 										</div>
 										<h6 class="xamplify-ellipsis GridViewCotent pt10">
 											<span *ngIf="isPartnerView"> <b>Published On: </b></span>
@@ -503,6 +524,7 @@
 											(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 											(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 											(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
+											(assetGridViewCommentStatusHistoryEmitter)="showCommentsAndHistoryModalPopup($event)"
 											(assetGridViewRefreshListEmitter)="refreshList()">
 										</app-asset-grid-view-actions>
 									</div>
@@ -671,7 +693,7 @@
 <!---XNFR-381-->
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
-	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'"
+	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'" [criteria] = "criteria"
 		[isWhiteLabeledAsset]="isWhiteLabeledAsset"
 		[whiteLableContentSharedByVendorCompanies]="whiteLableContentSharedByVendorCompanies" [fileTypes]="fileTypes"
 		(filterConditionsEmitter)="assetsFilter($event)"
@@ -681,3 +703,10 @@
 <app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked"
 	[parameterDto]="changeAsParentPdfSweetAlertParameterDto"
 	(notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
+
+<!-- XNFR-781  -->
+<app-content-status-history-modal-popup *ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets"
+ [damId]="selectedDamId" [createdByAnyAdmin]="createdByAnyAdmin" [assetName]="assetName" [assetCreatedById]="assetCreatedById"
+  [assetCreatedByFullName]="assetCreatedByFullName"
+	(closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+</app-content-status-history-modal-popup>

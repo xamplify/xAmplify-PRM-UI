@@ -262,6 +262,17 @@
                                                         [ngTemplateOutletContext]="{'moduleName':'leadDealApprove'}"></ng-template>
                                                 </a>
                                             </li>
+
+                                            <li [ngClass]="{'active-tab': activeTabName == 'assetApprovalConfigurationSettings'}"
+                                                *ngIf="authenticationService?.module?.isAdmin">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'assetApprovalConfigurationSettings'}"
+                                                    (click)="activateTab('assetApprovalConfigurationSettings');clearCustomResponse()">{{properties.assetApprovalConfigurationSettings
+                                                    | translate}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'assetApprovalConfigurationSettings'}"></ng-template>
+                                                </a>
+                                            </li>
+
                                             <!-- XNFR-592 -->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadFieldSettings'}"
                                                 *ngIf="!authenticationService.isOnlyPartner()">
@@ -318,6 +329,15 @@
                                                     [ngTemplateOutletContext]="{'moduleName':'integrations'}"></ng-template>
                                             </a>
                                         </li>
+                                        <!---Calender Integration--->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'calendarIntegrations'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'calendarIntegrations'}"
+                                                (click)="activateTab('calendarIntegrations');clearCustomResponse()">{{properties.calendarIntegrations | translate}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'calendarIntegrations'}"></ng-template>
+                                            </a>
+                                        </li>
+                                        
                                         <!--Saml Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
                                             *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
@@ -1141,6 +1161,12 @@
                                                 </div>
                                             </form>
                                         </div>
+
+                                        <!-- Asset Approval/Rejection -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'assetApprovalConfigurationSettings'}">
+                                            <app-asset-approval-configuration-settings></app-asset-approval-configuration-settings>
+                                        </div>
+
                                         <!---Integrations-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
                                             <section class="pricing py-5 border-none" *ngIf="integrationTabIndex == 0">
@@ -2221,6 +2247,12 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'oauthSSOConfiguration'}"
                                          *ngIf="showOauthSSOConfiguration">
                                             <app-oauth-sso-configuration></app-oauth-sso-configuration>
+                                        </div>
+
+                                        <!-- Calendar Integration settings -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'calendarIntegrations'}"
+                                         *ngIf="showCalendarIntegrations">
+                                            <app-calendar-integrations></app-calendar-integrations>
                                         </div>
 
                                         <!-- Your Templates TAB -->

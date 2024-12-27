@@ -119,6 +119,8 @@ import { UniversalSearchComponent } from './universal-search/universal-search.co
 import { XamplifyCustomFieldsSettingsComponent } from './xamplify-custom-fields-settings/xamplify-custom-fields-settings.component';
 import { LeadCustomFieldsSettingsComponent } from './lead-custom-fields-settings/lead-custom-fields-settings.component';
 import { AddCustomFieldsComponent } from './add-custom-fields/add-custom-fields.component';
+import { CalendarIntegrationsComponent } from './calendar-integrations/calendar-integrations.component';
+import { CalendarIntegrationSettingsComponent } from './calendar-integration-settings/calendar-integration-settings.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -206,7 +208,9 @@ import { AddCustomFieldsComponent } from './add-custom-fields/add-custom-fields.
         UniversalSearchComponent,
         XamplifyCustomFieldsSettingsComponent,
         LeadCustomFieldsSettingsComponent,
-        AddCustomFieldsComponent
+        AddCustomFieldsComponent,
+        CalendarIntegrationsComponent,
+        CalendarIntegrationSettingsComponent
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,

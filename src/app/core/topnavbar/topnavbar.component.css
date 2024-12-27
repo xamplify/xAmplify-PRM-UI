@@ -341,3 +341,21 @@ li.divider-bottom {
   display: none;
 }
 }
+.team-member-login-btn {
+  position: sticky;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+  top: 0px;
+  z-index: 9999;
+}
+.team-member-login-info {
+  background-color: #1a1f4a;
+  color: #ffffff;
+}
+.team-member-login-alert {
+  padding: 8px;
+  border-width: 1px;
+}

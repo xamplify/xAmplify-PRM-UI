@@ -55,3 +55,7 @@
 .table>tbody>tr>td {
 	vertical-align: middle !important;
   }
+
+  .custom-icon {
+	margin: -7px 3px 0px 3px;
+  }

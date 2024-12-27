@@ -192,8 +192,8 @@ import { CopyTextComponent } from './copy-text/copy-text.component';
 import { VendorCompanyModelPopupComponent } from './vendor-company-model-popup/vendor-company-model-popup.component';
 import { AccessDeniedUtilComponent } from './access-denied-util/access-denied-util.component';
 import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/universal-search-bar.component';
-
-
+import { ContentStatusHistoryModalPopupComponent } from 'app/util/content-status-history-modal-popup/content-status-history-modal-popup.component';
+import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset-approval-configuration-settings/asset-approval-configuration-settings.component';
 
 
 @NgModule({
@@ -234,7 +234,8 @@ import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/unive
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent
+		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent, 
+		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent
 	],
 
 
@@ -272,7 +273,8 @@ import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/unive
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent
+		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, 
+		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent
 
 	]
 

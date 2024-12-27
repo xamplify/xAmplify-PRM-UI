@@ -2444,12 +2444,14 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
 .register_bg{background: none !important;}
 /* Sudha Sri(16-12-2024) */
 .tgrid > tbody > tr{
-  background-color:var(--page-content)!important;
+  background-color:var(--table-body-color)!important;
   color: var(---text-color) !important;
 }
+
 .tgrid > tbody > tr:hover{
-  background-color: var(--div-bg-color) !important;
+  background-color: var(--table-header) !important;
 }
+
 /* vendor landscape view css */
 .box-shadow-unset.portlet.light.light_bg_removal.remove_space,.portlet.light.light_bg_removal.remove_space.padding-0,.portlet.light.light_bg_removal.remove_space.remove_bgcolor{
   background-color: unset!important;

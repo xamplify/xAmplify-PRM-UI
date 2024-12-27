@@ -5,4 +5,10 @@ export class CommentDto {
 	invalidComment = true;
 	moduleType = "";
 	statusInString = "";
+	loggedInUserId: number;
+	damId: number;
+	statusUpdated: boolean = false;
+	createdBy: number;
+	assetName: string = "";
+	assetCreatedByFullName: string;
 }

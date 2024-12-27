@@ -265,5 +265,6 @@
 
 .tag-custom {
   display: inline-block !important;
+  cursor: pointer;
 }
 

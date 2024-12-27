@@ -2,6 +2,8 @@ export class ThemePropertiesDto {
     id: number;
     themeId: number;
     backgroundColor: string;
+    tableHeaderColor: string;
+    tableBodyColor: string;
     buttonColor: string;
     buttonValueColor: string;
     createdBy: number;

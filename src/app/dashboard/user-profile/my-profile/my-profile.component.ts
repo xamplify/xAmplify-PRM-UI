@@ -386,6 +386,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	vendorSharedPagesLabel="Vendor Showcase";
 	partnerSharedPagesLabel="Partner Showcase";
 
+	assetApprovalConfigurationSettings: boolean = false;
+
+	showCalendarIntegrations: boolean = false;
+
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2239,6 +2244,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.vendorLandscapeLabel;
+		} else if (this.activeTabName == "assetApprovalConfigurationSettings") {
+			this.assetApprovalConfigurationSettings = true;
+			this.activeTabHeader = this.properties.assetApprovalConfigurationSettings;
+		} else if (this.activeTabName == 'calendarIntegrations') {
+			this.showCalendarIntegrations = true;
+			this.activeTabHeader = this.properties.calendarIntegrations;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}

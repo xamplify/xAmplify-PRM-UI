@@ -460,6 +460,8 @@ export class HomeComponent implements OnInit {
               document.documentElement.style.setProperty('--footer-border-color', this.footerSkin.buttonBorderColor);
               require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
               document.documentElement.style.setProperty('--page-content', this.maincontentCustom.backgroundColor);
+              document.documentElement.style.setProperty('--table-header', this.maincontentCustom.tableHeaderColor);
+              document.documentElement.style.setProperty('--table-body-color', this.maincontentCustom.tableBodyColor);
               document.documentElement.style.setProperty('--div-bg-color', this.maincontentCustom.divBgColor);
               document.documentElement.style.setProperty('--title-heading--text', this.maincontentCustom.textColor);
               document.documentElement.style.setProperty('--border-color', this.maincontentCustom.buttonBorderColor);
