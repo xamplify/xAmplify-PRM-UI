@@ -878,6 +878,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	
 	filterAssets(tag:string){
 		if(this.criteria.value1 != undefined && this.criteria.value1.length >0){
+			
 			$.each(this.pagination.criterias, function (index, criteria) {
 						if (criteria.property === "tags") {
 							criteria.value1 = criteria.value1 +","+ tag;
@@ -886,7 +887,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			
 			$.each(this.customUiFilterComponent.criterias, function (index, criteria) {
 						if (criteria.property === "Tags") {
-							criteria.value1 = criteria.value1 +","+ tag;
+					let exists = criteria.value1.toLowerCase().split(',').map(item => item.trim()).includes(tag.toLowerCase().trim());
+							if(!exists){
+								criteria.value1 = criteria.value1 +","+ tag;
+							}
 						}
 					});
 			
@@ -894,6 +898,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		    this.listItems(this.pagination);
             this.toggleFilterOption(); 
 			this.showRefreshNotification = false;
+			
 		}else{
 		this.criteria = new Criteria();
 		this.criteria.operation = "Contains";
