@@ -45,7 +45,6 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	ngOnDestroy(): void {
 	}
 	ngOnInit() {
-		//this.addFilterOptionsValues(this.type);
 	}
 	ngOnChanges(changes: SimpleChanges){
 		
