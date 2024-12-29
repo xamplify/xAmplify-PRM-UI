@@ -212,7 +212,7 @@
                                         </li>
                                         <!-- XNFR-781 -->
                                         <li [ngClass]="{'active-tab': activeTabName == 'assetApprovalConfigurationSettings'}"
-                                            *ngIf="authenticationService?.module?.isAdmin">
+                                            *ngIf="authenticationService?.module?.isAdmin && authenticationService?.module?.damAccess">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'assetApprovalConfigurationSettings'}"
                                                 (click)="activateTab('assetApprovalConfigurationSettings');clearCustomResponse()">{{properties.assetApprovalConfigurationSettings
                                                 | translate}}
