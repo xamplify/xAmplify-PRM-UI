@@ -57,9 +57,14 @@
       <img class="email-template-preview" *ngIf="emailTemplate.imagePath" src="{{emailTemplate.imagePath}}"
         alt="Image Not Found">
       <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top"
-        title="{{selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.subject}}">
-        {{(selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.subject) | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+        title="{{selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.name}}">
+        {{(selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.name) | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
       </h4>
+
+      <!-- <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top"
+           title="{{emailTemplate.name}}">
+           {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+           </h4> -->
       <div class="bar gridIconCustomization">
         <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
           (click)="designTemplate(emailTemplate)">
