@@ -3950,6 +3950,8 @@ getFirstLetter(inputString:any) {
  }
 
   getTeamMemberAnalyticsUrl(pagination: Pagination) {
+    let pagedRequestParam = pagination.pageIndex != undefined && pagination.userId > 0 ? "&page=" + pagination.trackTypeFilter : "";
+    let sizeRequestParam = pagination.maxResults != undefined && pagination.userId > 0 ? "&size=" + pagination.trackTypeFilter : "";
     let loggedInUserIdRequestParam = pagination.userId != undefined && pagination.userId > 0 ? "&loggedInUserId=" + pagination.userId : 0;
     let trackTypeFilterRequestParam = pagination.trackTypeFilter != undefined ? "&trackTypeFilter=" + pagination.trackTypeFilter : "";
     let assetTypeFilterRequestParam = pagination.assetTypeFilter != undefined ? "&assetType=" + pagination.assetTypeFilter : "";
@@ -3964,7 +3966,7 @@ getFirstLetter(inputString:any) {
     let searchKeyRequestParm = pagination.searchKey != null ? "&searchKey=" + pagination.searchKey : "";
     return $.trim(loggedInUserIdRequestParam + trackTypeFilterRequestParam + selectedTeamMemberIdsRequestParam + selectedVendorCompanyIdsRequestParam
       + fromDateFilterRequestParam + toDateFilterRequestParam + timeZoneParamRequestParam + vendorCompanyProfileNameRequestParam + vanityUrlFilterRequestParam
-      + searchKeyRequestParm + assetTypeFilterRequestParam + campaignTypeFilterRequestParam
+      + searchKeyRequestParm + assetTypeFilterRequestParam + campaignTypeFilterRequestParam + pagedRequestParam + sizeRequestParam
     );
   }
 

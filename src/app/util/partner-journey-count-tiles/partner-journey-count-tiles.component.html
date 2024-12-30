@@ -159,7 +159,7 @@
       </div>
       
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showTrackAssetCount && !isTeamMemberAnalytics"
+         *ngIf="partnerJourneyAnalytics?.showTrackAssetCount"
          [scrollTo]="partnerJourneyAnalytics?.trackAssetCount > 0 ? '#pj-asset-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.track_Assets_Info : ''}}">
          <div
