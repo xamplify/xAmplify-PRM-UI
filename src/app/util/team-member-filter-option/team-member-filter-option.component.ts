@@ -18,6 +18,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   showFilterPopup = false;
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
+  ischecked: boolean = false;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -37,6 +38,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
     this.authenticationService.showPartnersFilter().subscribe(
       response => {
         this.showPartners = response.data;
+        this.ischecked= response.data;
         this.loading = false;
       }, _error => {
         this.showPartners = false;
@@ -59,6 +61,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   getSelectedOption(input:any){
     this.showFilterPopup = false;
     this.selectedFilterIndex = input['selectedOptionIndex'];
+    this.ischecked = input['ischecked'];
     this.teamMemberFilterModalPopUpOptionEventEmitter.emit(input);
 
   }
