@@ -367,7 +367,7 @@ export class AddTaskModalPopupComponent implements OnInit {
   }
 
   getSelectedAssignedToUserId(event) {
-    this.taskActivity.assignedTo = event['id'];
+    this.taskActivity.assignedTo = event != undefined ? event['id'] : 0;
     this.validateTask();
   }
 
