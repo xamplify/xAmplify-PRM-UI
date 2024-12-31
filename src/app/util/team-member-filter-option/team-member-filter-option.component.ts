@@ -19,6 +19,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
   ischecked: boolean = false;
+  filterOption: boolean = false;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -38,10 +39,11 @@ export class TeamMemberFilterOptionComponent implements OnInit {
     this.authenticationService.showPartnersFilter().subscribe(
       response => {
         this.showPartners = response.data;
-        this.ischecked= response.data;
+        this.ischecked = response.data;
         this.loading = false;
       }, _error => {
         this.showPartners = false;
+        this.ischecked = false;
         this.loading = false;
       }
     )
@@ -55,7 +57,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   }
 
   openFilterPopup(){
-    this.showFilterPopup = true;
+    this.getfilterOption();
   }
 
   getSelectedOption(input:any){
@@ -63,7 +65,42 @@ export class TeamMemberFilterOptionComponent implements OnInit {
     this.selectedFilterIndex = input['selectedOptionIndex'];
     this.ischecked = input['ischecked'];
     this.teamMemberFilterModalPopUpOptionEventEmitter.emit(input);
+    this.saveSelectedOption();
 
+  }
+  saveSelectedOption() {
+    let filtertype: string;
+    if (this.selectedFilterIndex === 0) {
+      filtertype = 'All';
+    }
+    else {
+      filtertype = 'MYPARTNER';
+    }
+    this.authenticationService.savePartnerFilter(filtertype).subscribe(
+      response => {
+        if (response.data == 200) {
+          console.log("updatedSucessfully");
+        }
+      }, _error => {
+        console.log("error");
+      }
+    )
+  }
+  getfilterOption(){
+    this.loading = true;
+    this.authenticationService.getPartnersFilter().subscribe(
+      response => {
+        this.filterOption =response.data;
+        if(!this.filterOption){
+          this.selectedFilterIndex = 0;
+        }
+        this.showFilterPopup = true;
+        this.loading = false;
+      }, _error => {
+        this.filterOption = false;
+        this.loading = false;
+      }
+    )
   }
 
 }
