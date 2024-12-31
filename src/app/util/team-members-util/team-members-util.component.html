@@ -857,6 +857,13 @@
                 [applyFilter]="applyFilter" [fromDateFilter]="fromDateFilter"
                 [toDateFilter]="toDateFilter"></app-userwise-track-counts>
             </div>
+            <!--******************Asset Details*******************-->
+        <div *ngIf="!isVendorVersion" class="row rowPaddingCustomize3">
+          <app-team-member-wise-asset-details [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [vanityUrlFilter]="vanityUrlFilter"
+            [vendorCompanyProfileName]="vendorCompanyProfileName" [fromDateFilter]="fromDateFilter"
+            [toDateFilter]="toDateFilter"></app-team-member-wise-asset-details>
+        </div>
             <!--****************** TeamMember Wise Track details******************-->
             <div class="row rowPaddingCustomize3">
               <app-userwise-track-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
@@ -867,13 +874,6 @@
             </div>
           </div>
         </span>
-        <!--******************Asset Details*******************-->
-        <div *ngIf="!isVendorVersion" class="row rowPaddingCustomize3">
-          <app-team-member-wise-asset-details [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [vanityUrlFilter]="vanityUrlFilter"
-            [vendorCompanyProfileName]="vendorCompanyProfileName" [fromDateFilter]="fromDateFilter"
-            [toDateFilter]="toDateFilter"></app-team-member-wise-asset-details>
-        </div>
         <!--******************Track & Playbook Asset Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
           <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
