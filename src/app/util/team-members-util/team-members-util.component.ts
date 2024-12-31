@@ -25,8 +25,13 @@ import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-
 import { ParterService } from 'app/partners/services/parter.service';
 import { Roles } from 'app/core/models/roles';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { VendorInvitation } from 'app/dashboard/models/vendor-invitation';
+import { TagInputComponent as SourceTagInput } from 'ngx-chips';
+import { FormControl } from '@angular/forms';
+import { tap} from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-declare var $: any, swal: any;
+declare var $: any, swal: any, CKEDITOR:any;
 @Component({
   selector: 'app-team-members-util',
   templateUrl: './team-members-util.component.html',
@@ -135,6 +140,18 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   toDateFilter: any = "";
   fromDateFilterInString: string;
   toDateFilterInString: string;
+  /***** XNFR-805 *****/
+  vendorInvitation: VendorInvitation = new VendorInvitation();
+  ckeConfig: any;
+  isEditorDisabled: boolean = true;
+  @ViewChild('tagInput') tagInput: SourceTagInput;
+  validators = [this.mustBeEmail.bind(this)];
+  errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
+  onAddedFunc = this.beforeAdd.bind(this);
+  isValidationMessage = false;
+  addFirstAttemptFailed = false;
+  inviteTeamMemberLoading = false;
+  inviteTeamMemberResponse: CustomResponse = new CustomResponse();
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -160,7 +177,13 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     }
 
     this.init();
-
+    this.ckeConfig = {
+      allowedContent: true,
+      contentsCss: [],
+      height: '300px',
+      baseFloatZIndex: 1E5,
+      readOnly: this.isEditorDisabled
+    };
   }
 
   ngOnInit() {
@@ -237,6 +260,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     $('#delete-team-member-popup').modal('hide');
     $('#preview-team-member-popup').modal('hide');
     swal.close();
+    this.isValidationMessage = false;
+    this.inviteTeamMemberLoading = false;
+    $('#invite_team_member_modal').modal('hide');
   }
 
   findAll(pagination: Pagination) {
@@ -1334,6 +1360,129 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     } else {
       this.isCollapsed = true;
     }
+  }
+
+  /***** XNFR-805 *****/
+  openInviteTeamMemberModal() {
+    this.loadInviteTeamMemberEmailBody();
+    this.vendorInvitation.subject = "Check out xAmplify's marketing automation platform"
+    $('#invite_team_member_modal').modal('show');
+  }
+
+  /***** XNFR-805 *****/
+  closeInviteTeamMemberModal() {
+    $('#invite_team_member_modal').modal('hide');
+    this.inviteTeamMemberResponse = new CustomResponse();
+    this.vendorInvitation = new VendorInvitation();
+    this.inviteTeamMemberLoading = false;
+    this.addFirstAttemptFailed = false;
+    this.isValidationMessage = false;
+  }
+
+  /***** XNFR-805 *****/
+  loadInviteTeamMemberEmailBody() {
+    this.inviteTeamMemberLoading = true;
+    const templateId = this.vendorCompanyProfileName === 'versa-networks' ? 26 : 1;
+    this.teamMemberService.getHtmlBody(templateId).subscribe(
+      response => {
+        if (response.statusCode === 200) {
+          let data = response.data;
+          let htmlBody = data.body;
+          const extractedStyles = this.extractStylesFromHtml(htmlBody);
+          if (extractedStyles) {
+            const styleBlob = `data:text/css,${encodeURIComponent(extractedStyles)}`;
+            this.ckeConfig.contentsCss.push(styleBlob);
+          }
+          this.vendorInvitation.message = htmlBody.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+        } else {
+          this.vendorInvitation.message = "";
+          this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
+        }
+        this.inviteTeamMemberLoading = false;
+      },
+      error => {
+        this.logger.errorPage(error);
+        this.vendorInvitation.message = "";
+        this.inviteTeamMemberLoading = false;
+        this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
+      });
+  }
+
+  /***** XNFR-805 *****/
+  extractStylesFromHtml(html: string): string {
+    const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+    const matches = styleRegex.exec(html);
+    return matches ? matches[1] : '';
+  }
+
+  /***** XNFR-805 *****/
+  mustBeEmail(control: FormControl): { [key: string]: boolean } | null {
+    if (this.addFirstAttemptFailed && !this.isValidEmail(control.value)) {
+      return { "must_be_email": true };
+    }
+    return null;
+  }
+
+  /***** XNFR-805 *****/
+  beforeAdd(tag: any): Observable<any> {
+    const isPaste = !!tag['value'];
+    const emailTag = isPaste ? tag.value : tag;
+    if (!this.isValidEmail(emailTag)) {
+      return this.handleInvalidEmail(emailTag, isPaste);
+    }
+    this.addFirstAttemptFailed = false;
+    return Observable.of(emailTag);
+  }
+
+  /***** XNFR-805 *****/
+  private handleInvalidEmail(tag: string, isPaste: boolean): Observable<any> {
+    if (!this.addFirstAttemptFailed) {
+      this.addFirstAttemptFailed = true;
+      if (!isPaste) {
+        this.tagInput.setInputValue(tag);
+      }
+    }
+    return isPaste ? Observable.throw(this.errorMessages['must_be_email'])
+      : Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
+  }
+
+  /***** XNFR-805 *****/
+  private isValidEmail(text: string): boolean {
+    const EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return text ? EMAIL_REGEXP.test(text) : false;
+  }
+
+  /***** XNFR-805 *****/
+  sendTeamMemberInviteEmail() {
+    this.inviteTeamMemberResponse = new CustomResponse();
+    this.inviteTeamMemberLoading = true;
+    this.vendorInvitation.vanityURL = this.vendorCompanyProfileName;
+    this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation).
+      subscribe(
+        data => {
+          if (data.statusCode == 200) {
+            this.isValidationMessage = true;
+            this.inviteTeamMemberResponse = new CustomResponse('SUCCESS', data.message, true);
+          } else if (data.statusCode == 400 || data.statusCode == 401 || data.statusCode == 413) {
+            this.isValidationMessage = false;
+            let duplicateEmailIds = "";
+            $.each(data.data, function (index: number, value: string) {
+              duplicateEmailIds += (index + 1) + "." + value + " ";
+            });
+            let message = data.message + " " + duplicateEmailIds;
+            this.inviteTeamMemberResponse = new CustomResponse('ERROR', message, true);
+          } else {
+            this.isValidationMessage = false;
+            this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
+          }
+          this.inviteTeamMemberLoading = false;
+        },
+        error => {
+          this.logger.errorPage(error);
+          this.isValidationMessage = false;
+          this.inviteTeamMemberLoading = false;
+          this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
+        });
   }
 
 }

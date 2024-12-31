@@ -11,6 +11,7 @@ import {Pagination} from '../../core/models/pagination';
 import {ReferenceService} from "../../core/services/reference.service";
 import { DeleteTeamMemberPartnerRequestDto } from 'app/util/models/delete-team-member-partner-request-dto';
 import { TeamMemberAnalyticsRequest } from '../models/team-member-analytics-request';
+import { VendorInvitation } from 'app/dashboard/models/vendor-invitation';
 
 @Injectable()
 export class TeamMemberService{
@@ -363,6 +364,18 @@ export class TeamMemberService{
     private handleError(error: any) {
         return Observable.throw(error);
         
+    }
+
+    /***** XNFR-805 *****/
+    getHtmlBody(id: number) {
+        let url = this.URL + "v_url/getHtmlBody/" + id + "?userId=" + this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /***** XNFR-805 *****/
+    sendTeamMemberInviteEmail(vendorInvitation: VendorInvitation) {
+        let url = this.URL + "teamMember/invite-teamMember/userId/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, vendorInvitation);
     }
  
 }
