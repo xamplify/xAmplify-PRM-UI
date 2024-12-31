@@ -3950,8 +3950,8 @@ getFirstLetter(inputString:any) {
  }
 
   getTeamMemberAnalyticsUrl(pagination: Pagination) {
-    let pagedRequestParam = pagination.pageIndex != undefined && pagination.userId > 0 ? "&page=" + pagination.trackTypeFilter : "";
-    let sizeRequestParam = pagination.maxResults != undefined && pagination.userId > 0 ? "&size=" + pagination.trackTypeFilter : "";
+    let pagedRequestParam = pagination.pageIndex != undefined ? "&page=" + pagination.pageIndex : "";
+    let sizeRequestParam = pagination.maxResults != undefined ? "&size=" + pagination.maxResults : "";
     let loggedInUserIdRequestParam = pagination.userId != undefined && pagination.userId > 0 ? "&loggedInUserId=" + pagination.userId : 0;
     let trackTypeFilterRequestParam = pagination.trackTypeFilter != undefined ? "&trackTypeFilter=" + pagination.trackTypeFilter : "";
     let assetTypeFilterRequestParam = pagination.assetTypeFilter != undefined ? "&assetType=" + pagination.assetTypeFilter : "";

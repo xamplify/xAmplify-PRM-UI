@@ -135,7 +135,7 @@
       
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
          *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics && !isVendorVersion"
-         [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#pj-asset-details-div': ''" [scrollDuration]="1000"
+         [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#ta-asset-details-div': ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.assets_Info + infoName : ''}}">
          <div
             [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">

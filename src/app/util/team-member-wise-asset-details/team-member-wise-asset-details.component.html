@@ -1,19 +1,19 @@
 <div class="col-sm-12 col-md-12 col-lg-12 ml15m">
   <div class="panel panel-info panel-bgMain panel-card br-10">
-    <div class="panel-heading panel-heading-custom panel-bg" id="pj-share-lead-details-div">
-      <h3 class="panel-title mt7">{{headerText}}</h3>
+    <div class="panel-heading panel-heading-custom panel-bg" id="ta-asset-details-div">
+      <h3 class="panel-title mt7">Asset Details</h3>
       <span class="pull-right mt25m mobilesearchdisplay">
         <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
-          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
-          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-            (click)="sortOption.searchKey='';search()"></button>
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+            (click)="searchKey='';search()"></button>
           <button type="submit" class="search-box-item-click" (click)="search()">
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
       <button class="pull-right mt25m btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
-        [disabled]="pagination.totalRecords==0" (click)="downloadShareLeadsDetailsReport()">
+        [disabled]="pagination.totalRecords==0" (click)="downloadAssetDetailsReport()">
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
           data-original-title="Export to Excel"></i>
       </button>
@@ -24,8 +24,8 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Vendor</th>
-              <th scope="col"> Partner Company</th>
+              <th scope="col"><i class="fa fa-user-circle" aria-hidden="true"></i> Vendor</th>
+              <th scope="col"><i class="fa fa-user-circle" aria-hidden="true"></i> Partner Company</th>
               <th scope="col">Asset Name</th>
               <th scope="col">Asset Type</th>
               <th scope="col">Published On</th>
@@ -45,7 +45,14 @@
                   </span>
                 </p>
               </td>
-              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdTimeInUTC">
+              <td scope="row">
+                <a data-toggle="tooltip" data-placement="top" title="{{item?.emailId}}">
+                  {{item?.emailId | slice:0:15}}<span *ngIf="item?.emailId?.length>15">..</span>
+                </a>
+              </td>
+              <td>{{item?.assetName}}</td>
+              <td>{{item?.assetType}}</td>
+              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
                 </app-timestamp></td>
             </tr>
           </tbody>
@@ -58,7 +65,7 @@
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin"
         [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="getShareLeadDetails($event)">
+          (notifyParentDropDown)="getAssetDetails($event)">
         </app-pagination>
       </div>
     </div>
