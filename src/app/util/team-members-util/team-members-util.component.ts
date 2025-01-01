@@ -1373,7 +1373,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   closeInviteTeamMemberModal() {
     $('#invite_team_member_modal').modal('hide');
     this.inviteTeamMemberResponse = new CustomResponse();
-    this.vendorInvitation = new VendorInvitation();
+    if (this.isValidationMessage) {
+      this.findAll(this.pagination);
+    }
+    this.emailIds = [];
+    this.vendorInvitation.emailIds = [];
     this.inviteTeamMemberLoading = false;
     this.addFirstAttemptFailed = false;
     this.isValidationMessage = false;
@@ -1456,6 +1460,10 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   sendTeamMemberInviteEmail() {
     this.inviteTeamMemberResponse = new CustomResponse();
     this.inviteTeamMemberLoading = true;
+    this.emailIds.forEach((value: any) => {
+      const emailId = value.value;
+      this.vendorInvitation.emailIds.push(emailId);
+    });
     this.vendorInvitation.vanityURL = this.vendorCompanyProfileName;
     this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation).
       subscribe(

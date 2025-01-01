@@ -1104,7 +1104,7 @@
           <div *ngIf="!isValidationMessage && !inviteTeamMemberLoading">
             <div class="form-group">
               <label for="emailInput">To <span class="required">*</span></label>
-              <tag-input [(ngModel)]='vendorInvitation.emailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
+              <tag-input [(ngModel)]='emailIds' #tagInput name="emails" #email="ngModel" [errorMessages]="errorMessages"
                 [validators]="validators" [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
                 [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
                 [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
@@ -1127,7 +1127,7 @@
           <button class="btn Btn-Gray neg_mrg_top4" (click)="closeInviteTeamMemberModal()"
             data-dismiss="modal">Cancel</button>
           <button type="submit" class="button bgcolor-unset"
-            [disabled]="vendorInvitation?.emailIds.length == 0 || !vendorInvitation.subject" (click)="sendTeamMemberInviteEmail()">
+            [disabled]="emailIds.length == 0 || !vendorInvitation.subject" (click)="sendTeamMemberInviteEmail()">
             <span class="btn Btn-Green transition txt_pd-top3">Send
               <i aria-hidden="true" class="fa fa-send"></i></span></button>
         </div>

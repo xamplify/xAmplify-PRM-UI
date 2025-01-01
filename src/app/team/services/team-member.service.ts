@@ -374,7 +374,7 @@ export class TeamMemberService{
 
     /***** XNFR-805 *****/
     sendTeamMemberInviteEmail(vendorInvitation: VendorInvitation) {
-        let url = this.URL + "teamMember/invite-teamMember/userId/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "teamMember/invite-team-member/userId/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url, vendorInvitation);
     }
  
