@@ -396,5 +396,12 @@ export class DamService {
   }
   /** XNFR-781 end **/
 
+  /** XNFR-813 **/
+  getStatusTileCountsByModuleType(moduleType: string) {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.DAM_PREFIX_URL+'/getStatusTileCountsByModuleType/'+loggedInUserId+'/'+moduleType+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 
 }

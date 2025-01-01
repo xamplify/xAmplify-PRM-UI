@@ -28,6 +28,7 @@ import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/wh
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 import { CustomUiFilterComponent } from '../../custom-ui-filter/custom-ui-filter.component';
+import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 
 declare var $: any, swal: any, flatpickr;
 @Component({
@@ -116,7 +117,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		CREATED: 'CREATED',
 		UPDATED: 'UPDATED'
 	};
-	  
+	
+	/** XNFR-813 **/
+	@ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
+
 
 
 	/****XNFR-381*****/
@@ -548,6 +552,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else {
 			this.listAssets(this.pagination);
 		}
+		/** XNFR-813 **/
+		if (this.contentModuleStatusAnalyticsComponent) {
+			this.contentModuleStatusAnalyticsComponent.getTileCounts();
+		}
 	}
 
 
@@ -961,4 +969,20 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	/** XNFR-813 **/
+	filterContentByType(event: any) {
+		if (event == 'APPROVED') {
+			this.pagination.categoryType = 'APPROVED';
+			this.listAssets(this.pagination);
+		} else if (event == 'REJECTED') {
+			this.pagination.categoryType = 'REJECTED';
+			this.listAssets(this.pagination);
+		} else if (event == 'CREATED') {
+			this.pagination.categoryType = 'CREATED';
+			this.listAssets(this.pagination);
+		} else {
+			this.pagination.categoryType = '';
+			this.refreshList();
+		}
+	}
 }

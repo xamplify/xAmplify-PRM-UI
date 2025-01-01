@@ -194,7 +194,7 @@ import { AccessDeniedUtilComponent } from './access-denied-util/access-denied-ut
 import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/universal-search-bar.component';
 import { ContentStatusHistoryModalPopupComponent } from 'app/util/content-status-history-modal-popup/content-status-history-modal-popup.component';
 import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset-approval-configuration-settings/asset-approval-configuration-settings.component';
-
+import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -235,7 +235,7 @@ import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent, 
-		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent
+		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent
 	],
 
 
@@ -274,7 +274,7 @@ import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, 
-		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent
+		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent
 
 	]
 
