@@ -194,6 +194,7 @@ import { AccessDeniedUtilComponent } from './access-denied-util/access-denied-ut
 import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/universal-search-bar.component';
 import { ContentStatusHistoryModalPopupComponent } from 'app/util/content-status-history-modal-popup/content-status-history-modal-popup.component';
 import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset-approval-configuration-settings/asset-approval-configuration-settings.component';
+import { TeamMemberWiseAssetDetailsComponent } from 'app/util/team-member-wise-asset-details/team-member-wise-asset-details.component';
 
 
 @NgModule({
@@ -235,7 +236,7 @@ import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent, 
-		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent
+		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent,TeamMemberWiseAssetDetailsComponent
 	],
 
 
@@ -274,7 +275,7 @@ import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, 
-		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent
+		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent,TeamMemberWiseAssetDetailsComponent
 
 	]
 
