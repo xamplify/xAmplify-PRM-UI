@@ -31,6 +31,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     lmsUrl = 'tracks';
     playbookUrl = 'playbook';
     companyUrl = 'company';
+    approveUrl = 'approve';
     addCompanyProfileUrl = "/home/dashboard/add-company-profile";
     /*** user guide **** */
     userGuideUrl = 'help';
@@ -217,6 +218,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             if (url.indexOf(this.companyUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.companyUrl);
+            }
+            if (url.indexOf(this.approveUrl) > -1) {
+                return this.authorizeUrl(roles, url, this.approveUrl);
             }
             if (url.indexOf(this.lmsUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.lmsUrl);
