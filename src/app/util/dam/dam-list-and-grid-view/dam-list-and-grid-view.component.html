@@ -1,3 +1,7 @@
+<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
+	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView">
+</app-content-module-status-analytics>
+
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
