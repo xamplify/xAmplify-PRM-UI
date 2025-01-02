@@ -1,5 +1,5 @@
 <app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
-	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView">
+	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded">
 </app-content-module-status-analytics>
 
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
