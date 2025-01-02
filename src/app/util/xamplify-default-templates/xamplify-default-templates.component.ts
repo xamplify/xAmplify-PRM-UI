@@ -489,7 +489,7 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
     }
     if("COMPANY_PROFILE_INCOMPLETE"==emailTemplateType){
       mergeTags =[{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
-        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Full Name', value: '{{senderFullName}}' },
         ];
     }
 
