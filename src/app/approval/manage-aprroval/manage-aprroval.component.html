@@ -3,7 +3,7 @@
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home"></i>
-        <a [routerLink]="referenceService?.homeRouter" (click)="homeButton()" translate>Home</a>
+        <a [routerLink]="referenceService?.homeRouter"  translate>Home</a>
         <i class="fa fa-angle-right"></i>
       </li>
       <li>
@@ -35,7 +35,7 @@
                   <b>Asset Name: </b>
                   <span>
                     {{item?.assetName | slice:0:50}}
-                    <span *ngIf="quickLink?.name?.length>50">..</span>
+                    <span *ngIf="item?.name?.length>50">..</span>
                   </span>
                 </h6>
                 <h6>
