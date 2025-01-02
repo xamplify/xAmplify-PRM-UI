@@ -128,6 +128,7 @@ export class AddTaskModalPopupComponent implements OnInit {
 
   private initializeDueDatePicker() {
     let now: Date = new Date();
+    now.setMinutes(now.getMinutes() + 30);
     let defaultDate = now;
     if (this.taskActivity.dueDate != undefined && this.taskActivity.dueDate != null) {
       defaultDate = new Date(this.taskActivity.dueDate);
