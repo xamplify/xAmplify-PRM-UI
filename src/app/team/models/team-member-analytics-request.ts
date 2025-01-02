@@ -11,4 +11,6 @@ export class TeamMemberAnalyticsRequest {
     fromDateFilterInString: any;
     toDateFilterInString: any;
     timeZone: any;
+    page: any;
+    size: any;
 }
