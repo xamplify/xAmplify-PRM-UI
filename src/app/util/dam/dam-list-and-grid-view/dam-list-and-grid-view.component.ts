@@ -900,6 +900,25 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.showRefreshNotification = false;
 			
 		}else{
+			let keyExists = false;
+			
+			 keyExists = this.customUiFilterComponent !=undefined && this.customUiFilterComponent.criterias!=undefined && this.customUiFilterComponent.criterias.length>0 && 
+		                 this.customUiFilterComponent.criterias.some(criteria => criteria.property === 'tags'
+			|| criteria.property === 'Tags');
+			
+			if(keyExists){
+						$.each(this.customUiFilterComponent.criterias, function (index, criteria) {
+						if (criteria.property === "Tags" || criteria.property === "tags" ) {
+					let exists = criteria.value1.toLowerCase().split(',').map(item => item.trim()).includes(tag.toLowerCase().trim());
+							if(!exists){
+								criteria.value1 = criteria.value1 +","+ tag;
+							}
+						}
+					});
+					
+			this.customUiFilterComponent.submittFilterData();
+					
+			}else{
 		this.criteria = new Criteria();
 		this.criteria.operation = "Contains";
 		this.criteria.property = "Tags";
@@ -907,8 +926,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if(!this.showFilterOption){
 		  this.toggleFilterOption(); 
 		 }
-		}
 	}
+	
+ }
+}
 
 	/** XNFR-781 **/
 	showCommentsAndHistoryModalPopup(asset: any){
