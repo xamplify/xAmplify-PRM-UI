@@ -156,5 +156,4 @@ export class Pagination {
 
 	vendorMarketplacePageAnalytics:boolean = false;
 
-	showApprovedAssets: boolean = false;
 }
