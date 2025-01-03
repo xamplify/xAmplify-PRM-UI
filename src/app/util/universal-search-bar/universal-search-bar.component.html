@@ -19,6 +19,8 @@
         <i aria-hidden="true" class="fa fa-user-circle"></i>Leads</li>
        <li (click)="selectDropdownOption('Deals','fa-tags')" style="border-bottom: none !important;" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">
         <i aria-hidden="true" class="fa fa-tags"></i>Deals</li>
+        <li (click)="selectDropdownOption('Partners','fa-handshake-o')" style="border-bottom: none !important;" *ngIf="authenticationService?.module?.isPartner">
+          <i aria-hidden="true" class="fa fa-handshake-o"></i>Partners</li>
     </ul>
   </div>
   <div class="universal-search-bar-container" style="border-left: none !important;">

@@ -2702,7 +2702,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		catch (error) {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
-		this.getActiveCrmType();                                                    
+		this.getActiveCrmType();   
+		this.triggerUniversalSearch()                                                 
 	}
 
 
@@ -2763,6 +2764,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		if (this.selectedAddPartnerOption == 5) {
 			swal.close();
 		}
+		this.referenceService.universalModuleType = "";//XNFR-792
 
 	}
 
@@ -4763,6 +4765,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			);
 
 	}
-
+triggerUniversalSearch(){
+	if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Partners') {
+		this.searchKey = this.referenceService.universalSearchKey;
+		this.search();
+	  }
+}
 
 }

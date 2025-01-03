@@ -160,6 +160,9 @@ export class UniversalSearchComponent implements OnInit {
     } else if (quickLink.type === 'Deal') {
       this.referenceService.universalSearchVendorOrPartnerView = quickLink.navigate;
       this.referenceService.goToRouter('/home/deal/manage');
+    } else if(quickLink.type === 'Partners') {
+      let router ='home/partners/add';
+      this.referenceService.goToRouter(router);
     }
   }
 
@@ -197,6 +200,8 @@ export class UniversalSearchComponent implements OnInit {
         return 'view-banner orange-lable-cu1 mr5';
       case 'Asset':
         return 'view-banner banner-top mr5';
+      case 'Partners':
+        return 'view-banner published mr5';
       default:
         return '';
     }
@@ -209,15 +214,21 @@ export class UniversalSearchComponent implements OnInit {
       this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.universalSearchFilterBy, this.referenceService.universalSearchFilterType);
     }
   }
-  // filterUniversalSearch(type: string, index: number) {
-  //   if (!this.isTeamMember) {
-  //     this.applyFilter = false;
-  //   }
-  //   this.selectedFilterIndex = index;
-  //   this.universalSearchPagination = new Pagination();
-  //   this.universalSearchPagination.partnerTeamMemberGroupFilter = this.applyFilter;
-  //   this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
-  //   this.universalSearchPagination.filterBy = type;
-  //   this.findUniversalSearch(this.universalSearchPagination);
-  // }
+  getLabelText(type: string | undefined): string {
+    return type !== 'Partners' ? 'Stage' : 'Signup Status';
+  }
+  isEmptyOrWhitespace(value: string | null | undefined | ''): boolean {
+    return value != '' && value.trim().length > 0;
+  }
+  changeStatus(value:any) {
+    if(value === 'APPROVE') {
+      return 'Completed';
+    } else if(value === 'UnApproved') {
+      return 'Incomplete';
+    } else if(value === 'active') {
+      return 'Yes';
+    } else if (value === 'inactive') {
+      return 'No';
+    }
+  }
 }

@@ -48,6 +48,9 @@ export class UniversalSearchBarComponent implements OnInit {
       case 'Deals':
         this.selectedIcon = 'fa-tags';
         break;
+      case 'Partners':
+      this.selectedIcon = 'fa-handshake-o';
+      break;
       default:
         this.selectedIcon = 'fa-universal-access';
         break;
