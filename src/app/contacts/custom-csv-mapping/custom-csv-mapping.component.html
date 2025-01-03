@@ -239,7 +239,7 @@
         <app-modal-popup-loader *ngIf="mappingLoader"></app-modal-popup-loader>
         <app-response-message [customResponse]="duplicateColumnsMappedErrorResponse"
           *ngIf="duplicateColumnsMappedErrorResponse.isVisible" [showCloseIcon]="false"></app-response-message>
-        <table class='table tgrid table-hover table-sm' *ngIf="!mappingLoader" style="border-radius: 0%; overflow: inherit;">
+        <table class='table tgrid table-hover table-sm' *ngIf="!mappingLoader" style="overflow: inherit;">
           <thead>
             <tr>
               <th scope="row" class="text-center" style="width: 50%;">Default Columns</th>
