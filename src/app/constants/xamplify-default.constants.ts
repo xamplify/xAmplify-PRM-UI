@@ -16,5 +16,6 @@ export const XAMPLIFY_CONSTANTS = {
     production:'Production',
     universalSearchKey:'universalSearchKey',
     universalSearchFilterBy:'universalSearchFiterBy',
+    filterPartners:'filterPartners'
 
 }

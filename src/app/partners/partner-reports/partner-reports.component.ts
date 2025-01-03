@@ -18,6 +18,7 @@ import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { Properties } from 'app/common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $, swal, Highcharts, CKEDITOR: any;
 
 @Component({
@@ -115,6 +116,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.utilService.setRouterLocalStorage('partnerAnalytics');
         this.isListView = !this.referenseService.isGridView;
         this.getModuleAccess();
+
     }
 
     gotoMange() {
@@ -757,23 +759,32 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
+        let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+        if(filterPartner!=undefined){
+            this.applyFilter = filterPartner == 'true';
+        }
+        this.getCountOfTiles();
+
+    }
+
+    private getCountOfTiles() {
         if (this.loggedInUserId > 0) {
-                let tabIndex = this.route.snapshot.params['id'];
-                this.findActivePartnersCount();
-                this.findRedistributedCampaignsCount();
-                this.findThroughCampaignsCount();
-                this.findInActivePartnersCount();
-                this.findApprovePartnersCount();
-                this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
-                this.findTotalPartnersCount();
-            if(tabIndex != undefined){
-                if(tabIndex == 1){
-                this.goToInActivePartnersDiv()
+            let tabIndex = this.route.snapshot.params['id'];
+            this.findActivePartnersCount();
+            this.findRedistributedCampaignsCount();
+            this.findThroughCampaignsCount();
+            this.findInActivePartnersCount();
+            this.findApprovePartnersCount();
+            this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+            this.findTotalPartnersCount();
+            if (tabIndex != undefined) {
+                if (tabIndex == 1) {
+                    this.goToInActivePartnersDiv();
                 }
                 else {
                     this.goToReDistributedPartnersDiv();
                 }
-            }else{
+            } else {
                 this.loadCountryData();
                 this.getPartnersRedistributedCampaignsData();
                 this.goToActivePartnersDiv();
@@ -784,7 +795,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         } else {
             this.router.navigate(['home/dashboard']);
         }
-
     }
 
     ngOnDestroy() {
@@ -1260,5 +1270,4 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.totalPartnersCountLoader = false;
             });
     }
-
 }

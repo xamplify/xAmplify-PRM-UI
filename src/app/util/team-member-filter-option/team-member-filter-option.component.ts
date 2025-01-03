@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter,Input } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Subject } from 'rxjs';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Component({
   selector: 'app-team-member-filter-option',
@@ -39,11 +40,9 @@ export class TeamMemberFilterOptionComponent implements OnInit {
     this.authenticationService.showPartnersFilter().subscribe(
       response => {
         this.showPartners = response.data;
-        this.ischecked = response.data;
         this.loading = false;
       }, _error => {
         this.showPartners = false;
-        this.ischecked = false;
         this.loading = false;
       }
     )
@@ -57,50 +56,37 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   }
 
   openFilterPopup(){
-    this.getfilterOption();
+    this.filterOption = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if(this.filterOption!=undefined && !this.filterOption){
+      this.selectedFilterIndex = 0;
+    }
+    this.showFilterPopup = true;
   }
 
   getSelectedOption(input:any){
+    let previousSelectedIndex = this.selectedFilterIndex;
     this.showFilterPopup = false;
     this.selectedFilterIndex = input['selectedOptionIndex'];
-    this.ischecked = input['ischecked'];
-    this.teamMemberFilterModalPopUpOptionEventEmitter.emit(input);
-    this.saveSelectedOption();
-
+    if( this.selectedFilterIndex != previousSelectedIndex){
+      this.saveSelectedOption();
+    }
+     this.teamMemberFilterModalPopUpOptionEventEmitter.emit(input);
   }
   saveSelectedOption() {
-    let filtertype: string;
-    if (this.selectedFilterIndex === 0) {
-      filtertype = 'All';
-    }
-    else {
-      filtertype = 'MYPARTNER';
-    }
-    this.authenticationService.savePartnerFilter(filtertype).subscribe(
+    this.authenticationService.savePartnerFilter(this.selectedFilterIndex).subscribe(
       response => {
-        if (response.data == 200) {
+        if (response.statusCode == 200) {
           console.log("updatedSucessfully");
+          (this.selectedFilterIndex == 0) ?  this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners,'false'): this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners,'true');
         }
       }, _error => {
         console.log("error");
       }
     )
   }
-  getfilterOption(){
-    this.loading = true;
-    this.authenticationService.getPartnersFilter().subscribe(
-      response => {
-        this.filterOption =response.data;
-        if(!this.filterOption){
-          this.selectedFilterIndex = 0;
-        }
-        this.showFilterPopup = true;
-        this.loading = false;
-      }, _error => {
-        this.filterOption = false;
-        this.loading = false;
-      }
-    )
+
+  closeFilterPopup(){
+    this.showFilterPopup = false;
   }
 
 }

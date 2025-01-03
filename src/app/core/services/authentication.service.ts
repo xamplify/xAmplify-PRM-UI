@@ -1519,7 +1519,7 @@ vanityWelcomePageRequired(userId) {
     return this.callPutMethod(url, requestDto);
   }
 
-  savePartnerFilter(input: any) {
+  savePartnerFilter(input: number) {
     let url = this.REST_URL + "admin/savePartnerFilter/" + this.getUserId() + "/" +  input + "?access_token=" + this.access_token ;
    return this.callPostMethod(url, "");
 

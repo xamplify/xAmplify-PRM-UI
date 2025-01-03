@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { Properties } from 'app/common/models/properties';
 declare var $;
 @Component({
   selector: 'app-team-member-filter-option-modal-popup',
@@ -9,16 +10,17 @@ declare var $;
 export class TeamMemberFilterOptionModalPopupComponent implements OnInit,OnDestroy {
 
   @Output() teamMemberFilterOptionModalPopupEmitter = new EventEmitter();
+  @Output() teamMemberFilterOptionModalCloseEmitter = new EventEmitter();
   selectedTeamMemberFilterOption = 0;
   @Input()selectedFilterIndex:number;
   @Input() isChecked: boolean ;
-  tooglechecked:boolean;
-  constructor(public authenticationService:AuthenticationService) { }
+  previousSelectedFilterIndex: number;
+  constructor(public authenticationService:AuthenticationService,public properties: Properties) { }
   
 
   ngOnInit() {
     this.selectedTeamMemberFilterOption = this.selectedFilterIndex;
-    this.tooglechecked = this.isChecked;
+    this.previousSelectedFilterIndex = this.selectedFilterIndex;
     $('#teamMemberFilterModalPopup').modal('show');
   }
 
@@ -27,7 +29,6 @@ export class TeamMemberFilterOptionModalPopupComponent implements OnInit,OnDestr
     let input = {};
     input['selectedOptionIndex'] = this.selectedTeamMemberFilterOption;
     input['applyFilter'] = apply;
-    input['ischecked'] =  this.tooglechecked;
     this.teamMemberFilterOptionModalPopupEmitter.emit(input);
     $('#teamMemberFilterModalPopup').modal('hide');
   }
@@ -37,15 +38,7 @@ export class TeamMemberFilterOptionModalPopupComponent implements OnInit,OnDestr
   }
 
   cancel(){
-    let input = {};
-    input['selectedOptionIndex'] = this.selectedFilterIndex;
-    input['ischecked'] =  this.isChecked;
-    // input['applyFilter'] = false;
-    this.teamMemberFilterOptionModalPopupEmitter.emit(input);
+    this.teamMemberFilterOptionModalCloseEmitter.emit();
     $('#teamMemberFilterModalPopup').modal('hide');
   }
-  customUiSwitchEventReceiver(event:any){
-    this.tooglechecked = event;
-  }
-
 }

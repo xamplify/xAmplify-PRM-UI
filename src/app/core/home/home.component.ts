@@ -330,6 +330,9 @@ export class HomeComponent implements OnInit {
       //this.getMainContent(this.userId);  
       this.showLeftSideMenu();
       this.getDisplayViewType();
+      if(this.authenticationService.isTeamMember) {
+        this.getfilterOption();
+      }
     } catch (error) {
       this.xtremandLogger.error("error" + error);
     }
@@ -569,6 +572,20 @@ export class HomeComponent implements OnInit {
             this.loader = false;
           });
     }
+  }
+
+  getfilterOption(){
+    this.loader = true;
+    this.authenticationService.getPartnersFilter().subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, response.data);
+        }
+        this.loader = false;
+      }, _error => {
+        this.loader = false;
+      }
+    )
   }
 
 }

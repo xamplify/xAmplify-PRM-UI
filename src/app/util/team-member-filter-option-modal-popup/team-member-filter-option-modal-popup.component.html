@@ -5,42 +5,28 @@
             <div class="modal-header">
                 <h4 class="modal-title" id="teamMemberFilterLabel">Select Option</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body filter-modal-body">
+                <div _ngcontent-c61="" class="alert alert-info"> {{ selectedTeamMemberFilterOption == 0 ? properties.all_Partners_Info : properties.my_Partner_Info}}</div>
                 <div class="clearfix">
                     <div class="col-xs-12 col-sm-2 col-md-3">
                         <label class="form-check-label border-none">
                             <input class="form-check-input radioButton_shadow" type="radio" name="teamMemberFilter"
                                 [(ngModel)]="selectedTeamMemberFilterOption" [value]="0"> All {{authenticationService?.partnerModule?.customName}}s
                         </label>
+                        <i *ngIf = "selectedTeamMemberFilterOption!=1" class="fa fa-check-circle-o success display-inline" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Active"></i>
                     </div>
                     <div class="col-xs-12 col-sm-10 col-md-9">
                         <label class="form-check-label border-none">
                             <input class="form-check-input radioButton_shadow" type="radio" name="teamMemberFilter"
                                 [(ngModel)]="selectedTeamMemberFilterOption" [value]="1"> My
-                            {{authenticationService?.partnerModule?.customName}}
+                            {{authenticationService?.partnerModule?.customName}}(s)
                         </label>
+                        <i *ngIf = "selectedTeamMemberFilterOption!=0" class="fa fa-check-circle-o success display-inline" aria-hidden="true"></i>
                     </div>
                 </div>
             </div>
-            <div class="portlet light m10">
-                <h4 class="bold-font-weight" translate>Set As Default</h4>
-                <label class="bold-font" translate>
-                    {{ selectedTeamMemberFilterOption == 0 ? 'You have the ability to apply the default filter as All Partners.' :
-                    'You have the ability to apply the default filter as My Partner(s).' }}
-                </label>
-                <div>
-                    <h5 class="bold-font-weight h5-custom-font">{{selectedTeamMemberFilterOption == 0 ? 'Enabling this option will
-                        allow you to view all the partners of your company.
-                        ' : 'Enabling this option will allow you to view the partners assigned
-                        to you.'}}
-                        <br><br>
-                        <app-custom-ui-switch [customSwitch]="isChecked"
-                            (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
-                    </h5>
-                </div>
-            </div>
             <div class="modal-footer">
-                <button *ngIf =tooglechecked type="button" class="btn btn-primary" (click)="applyFilter(true)">Apply</button>
+                <button  type="button" class="btn btn-primary" (click)="applyFilter(true)">{{previousSelectedFilterIndex == selectedTeamMemberFilterOption ? 'Apply' : 'Apply And Save Settings'}}</button>
                 <button type="button" class="btn Btn-Gray" (click)="cancel()">Cancel</button>
             </div>
         </div>
