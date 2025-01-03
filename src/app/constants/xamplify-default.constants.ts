@@ -16,5 +16,7 @@ export const XAMPLIFY_CONSTANTS = {
     production:'Production',
     universalSearchKey:'universalSearchKey',
     universalSearchFilterBy:'universalSearchFiterBy',
+    HTTP_OK: 200,
+    HTTP_UNAUTHORIZED: 401
 
 }
