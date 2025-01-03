@@ -972,16 +972,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/** XNFR-813 **/
 	filterContentByType(event: any) {
 		if (event == 'APPROVED') {
-			this.pagination.categoryType = 'APPROVED';
+			this.pagination.selectedTileCategory = 'APPROVED';
 			this.listAssets(this.pagination);
 		} else if (event == 'REJECTED') {
-			this.pagination.categoryType = 'REJECTED';
+			this.pagination.selectedTileCategory = 'REJECTED';
 			this.listAssets(this.pagination);
 		} else if (event == 'CREATED') {
-			this.pagination.categoryType = 'CREATED';
+			this.pagination.selectedTileCategory = 'CREATED';
 			this.listAssets(this.pagination);
 		} else {
-			this.pagination.categoryType = '';
+			this.pagination.selectedTileCategory = '';
 			this.refreshList();
 		}
 	}

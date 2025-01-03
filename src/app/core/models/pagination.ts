@@ -156,4 +156,6 @@ export class Pagination {
 
 	vendorMarketplacePageAnalytics:boolean = false;
 
+	selectedTileCategory: string = "";
+
 }
