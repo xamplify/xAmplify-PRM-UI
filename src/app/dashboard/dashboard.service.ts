@@ -24,6 +24,7 @@ import { DomainRequestDto } from './models/domain-request-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 @Injectable()
 export class DashboardService {
+    REST_URL = this.authenticationService.REST_URL;
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
@@ -1471,6 +1472,16 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
             .catch(this.handleError);
     }
 
-  
+    loadTeamMembersReportCount() {
+        let loggedInUserId = this.authenticationService.getUserId();
+        const url = this.REST_URL + "teamMember/invite-team-member/count/userId/" + loggedInUserId + this.QUERY_PARAMETERS;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    listOfTeamMemberRequestReports(statusType: any) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        const url = this.REST_URL + "teamMember/invite-team-member-analytics/userId/" + loggedInUserId + "/type/" + statusType + this.QUERY_PARAMETERS;
+        return this.authenticationService.callGetMethod(url);
+    }
     
 }

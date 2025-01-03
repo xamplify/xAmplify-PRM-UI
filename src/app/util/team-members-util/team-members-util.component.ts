@@ -1465,32 +1465,38 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.vendorInvitation.emailIds.push(emailId);
     });
     this.vendorInvitation.vanityURL = this.vendorCompanyProfileName;
-    this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation).
-      subscribe(
-        data => {
-          if (data.statusCode == 200) {
-            this.isValidationMessage = true;
-            this.inviteTeamMemberResponse = new CustomResponse('SUCCESS', data.message, true);
-          } else if (data.statusCode == 400 || data.statusCode == 401 || data.statusCode == 413) {
-            this.isValidationMessage = false;
-            let duplicateEmailIds = "";
-            $.each(data.data, function (index: number, value: string) {
-              duplicateEmailIds += (index + 1) + "." + value + " ";
-            });
-            let message = data.message + " " + duplicateEmailIds;
-            this.inviteTeamMemberResponse = new CustomResponse('ERROR', message, true);
-          } else {
-            this.isValidationMessage = false;
-            this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-          }
-          this.inviteTeamMemberLoading = false;
-        },
-        error => {
-          this.logger.errorPage(error);
+    this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation)
+      .subscribe(data => {
+        if (data.statusCode == 200) {
+          this.isValidationMessage = true;
+          this.inviteTeamMemberResponse = new CustomResponse('SUCCESS', data.message, true);
+        } else if (data.statusCode == 400 || data.statusCode == 401 || data.statusCode == 413) {
           this.isValidationMessage = false;
-          this.inviteTeamMemberLoading = false;
+          let duplicateEmailIds = "";
+          $.each(data.data, function (index: number, value: string) {
+            duplicateEmailIds += (index + 1) + "." + value + " ";
+          });
+          let message = data.message + " " + duplicateEmailIds;
+          this.vendorInvitation.emailIds = [];
+          this.inviteTeamMemberResponse = new CustomResponse('ERROR', message, true);
+        } else {
+          this.isValidationMessage = false;
+          this.vendorInvitation.emailIds = [];
           this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
-        });
+        }
+        this.inviteTeamMemberLoading = false;
+      }, error => {
+        this.logger.errorPage(error);
+        this.isValidationMessage = false;
+        this.vendorInvitation.emailIds = [];
+        this.inviteTeamMemberLoading = false;
+        this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
+      });
+  }
+
+  /***** XNFR-805 *****/
+  navigateToTeamMemberReports() {
+    this.referenceService.goToRouter("/home/team/team-member-request");
   }
 
 }
