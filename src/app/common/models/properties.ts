@@ -504,5 +504,12 @@ export class Properties {
     track_Assets_Info = "Total Assets of Published Tracks" ;
     tracks_Info = "Total Tracks Published to";
     playbooks_Info = "Total Playbooks Published to"; 
+
+	my_Landscape_Vendor=' Vendor Landscape Pages ';
+    My_Landscape_Partner = 'Partner Landscape Pages'; 
+    partner_Showcase = 'Landing Pages Shared by Your Partners';
+    vendor_showcase = 'Landing Pages Shared by Your Vendors';
+    myShowcase_vendor = 'Vendor Showcase Pages for Your Partners';
+    MyShowcase_partner = 'Partner Showcase Pages for Your Vendors';
 }
 
