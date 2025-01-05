@@ -4359,7 +4359,7 @@ button#cancel_button {background-image: linear-gradient(89deg, #2b343a 0, #cbd8d
 /***** Sudha Sri(10-07-2024) *****/
 .disable-btn-text-color{color: #fff;}
 a.button_blue.remove_bg{background: none !important;border: none !important;}
-span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border: 1px solid #026deb !important;}
+/* span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border: 1px solid #026deb !important;} */
 .xamplify-dropdown-option:hover {background-color: #dee1e5 !important;}
 .domainlist{
 padding:10px;
@@ -4486,3 +4486,5 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
     border-bottom: 1px solid #d0d5db;
   }
 }
+/* Sudha Sri(03-01-2025) */
+span.btn.Btn-Green.transition.txt_pd-top3.pd_lft8.only_neo{padding-top: 0px !important;}
