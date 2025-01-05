@@ -54,7 +54,11 @@ export class HomeComponent implements OnInit {
     private vanityURLService: VanityURLService,
     public dashBoardService: DashboardService,
     private renderer: Renderer
+    
   ) {
+    if(this.authenticationService.isTeamMember) {
+      this.getfilterOption();
+    }
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
     /**** XNFR-134 ****/
@@ -330,9 +334,6 @@ export class HomeComponent implements OnInit {
       //this.getMainContent(this.userId);  
       this.showLeftSideMenu();
       this.getDisplayViewType();
-      if(this.authenticationService.isTeamMember) {
-        this.getfilterOption();
-      }
     } catch (error) {
       this.xtremandLogger.error("error" + error);
     }

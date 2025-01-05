@@ -5,7 +5,8 @@ declare var $;
 @Component({
   selector: 'app-team-member-filter-option-modal-popup',
   templateUrl: './team-member-filter-option-modal-popup.component.html',
-  styleUrls: ['./team-member-filter-option-modal-popup.component.css']
+  styleUrls: ['./team-member-filter-option-modal-popup.component.css'],
+  providers: [Properties] 
 })
 export class TeamMemberFilterOptionModalPopupComponent implements OnInit,OnDestroy {
 
