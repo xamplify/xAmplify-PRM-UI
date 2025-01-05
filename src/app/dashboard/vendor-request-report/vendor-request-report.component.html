@@ -111,7 +111,7 @@
                     <app-user-info [userInfo]="item" [isCompanyInfo]="true"></app-user-info>
                   </td>
                   <td style="text-align: center;text-transform: capitalize;">
-                    {{item.status}}
+                    {{ getStatusType(item.status) }}
                   </td>
                   <td style="text-align: center;">
                     <app-timestamp [dateAndTime]="item.referredDateUTC"></app-timestamp>

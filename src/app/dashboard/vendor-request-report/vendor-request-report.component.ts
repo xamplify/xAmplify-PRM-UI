@@ -108,6 +108,7 @@ export class VendorRequestReportComponent implements OnInit {
     /***** XNFR-805 *****/
     listOfRequestReports(statusType: any) {
         if (this.isTeamMemberRequest) {
+            statusType = this.getStatusType(statusType);
             this.listOfTeamMemberReports(statusType);
         } else {
             this.listOfVendorRequestReports(statusType);
@@ -132,7 +133,6 @@ export class VendorRequestReportComponent implements OnInit {
         this.statusType = type;
         this.tableHeader = type + " " + this.properties.invitedTeamMeberAnalytics;
         this.referenceService.loading(this.httpRequestLoader, true);
-        type = type === 'INVITED' ? 'UNAPPROVED' : type;
         this.dashboardService.listOfTeamMemberRequestReports(type)
             .subscribe((data: any) => {
                 console.log(data);
@@ -148,6 +148,15 @@ export class VendorRequestReportComponent implements OnInit {
                 this.referenceService.loading(this.httpRequestLoader, false);
                 this.referenceService.showSweetAlertServerErrorMessage();
             });
+    }
+
+    /***** XNFR-805 *****/
+    getStatusType(status) {
+        const statusMap = {
+            UNAPPROVED: 'INVITED', APPROVE: 'APPROVED', DECLINE: 'DECLINED',
+            INVITED: 'UNAPPROVED', APPROVED: 'APPROVE', DECLINED: 'DECLINE', ALL: 'ALL'
+        };
+        return this.isTeamMemberRequest ? statusMap[status] : status;
     }
 
 }

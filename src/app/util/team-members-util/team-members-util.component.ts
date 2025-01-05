@@ -1386,7 +1386,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   /***** XNFR-805 *****/
   loadInviteTeamMemberEmailBody() {
     this.inviteTeamMemberLoading = true;
-    const templateId = this.vendorCompanyProfileName === 'versa-networks' ? 26 : 1;
+    const templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 1;
     this.teamMemberService.getHtmlBody(templateId).subscribe(
       response => {
         if (response.statusCode === 200) {

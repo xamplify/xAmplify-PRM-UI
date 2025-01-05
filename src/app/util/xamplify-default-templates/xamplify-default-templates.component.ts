@@ -267,6 +267,9 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
           ],
           "COMPANY_PROFILE_INCOMPLETE":[
             '{{senderFullName}}',
+          ],
+          "JOIN_VERSA_TEAM":[
+            '{{senderFullName}}',
           ]
         };
     
@@ -277,7 +280,7 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
             condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages && !self.isVendorMarketplacePages,
             checks: [
               { condition: () => !$.trim(emailTemplate.subject), message: "Whoops! We are unable to save this template because subject line is empty." },
-              { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION", "PARTNER_REMAINDER", "COMPANY_PROFILE_INCOMPLETE"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
+              { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION", "PARTNER_REMAINDER", "COMPANY_PROFILE_INCOMPLETE", "JOIN_VERSA_TEAM"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
               { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN", "ADD_LEAD", "ADD_DEAL", "LEAD_UPDATE", "DEAL_UPDATE", "FORM_COMPLETED", "ADD_SELF_LEAD", "ADD_SELF_DEAL", "UPDATE_SELF_LEAD", "UPDATE_SELF_DEAL", "PRM_ADD_LEAD", "PRM_UPDATED"].includes(emailTemplateType) && !jsonContent.includes('{{customerFullName}}'), message: "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag." },
               { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
               { condition: () => emailTemplateType === "TRACK_PUBLISH" && !jsonContent.includes("{{trackTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag." },
@@ -304,6 +307,8 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match("<Vanity_Company_Logo_Href>") || []).length < 1, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
               { condition: () => emailTemplateType === "ACCOUNT_ACTIVATION" && jsonContent.indexOf('<VerifyEmailLink>') < 0, message: "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag." },
+              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('<<LoginLink>>'), message: "Whoops! We are unable to save this template because you deleted 'RegisterLink' tag." },
+              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('<Registration_Document>'), message: "Whoops! We are unable to save this template because you deleted 'Registration_Document' tag." },
             ]
           },
         ];
@@ -490,6 +495,11 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
     if("COMPANY_PROFILE_INCOMPLETE"==emailTemplateType){
       mergeTags =[{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
         { name: 'Sender Full Name', value: '{{fullName}}' },
+        ];
+    }
+    if("JOIN_VERSA_TEAM"==emailTemplateType){
+      mergeTags =[{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
+        { name: 'Sender Full Name', value: '{{senderFullName}}' },
         ];
     }
 
