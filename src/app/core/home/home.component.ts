@@ -54,7 +54,11 @@ export class HomeComponent implements OnInit {
     private vanityURLService: VanityURLService,
     public dashBoardService: DashboardService,
     private renderer: Renderer
+    
   ) {
+    if(this.authenticationService.isTeamMember) {
+      this.getfilterOption();
+    }
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
     /**** XNFR-134 ****/
@@ -569,6 +573,20 @@ export class HomeComponent implements OnInit {
             this.loader = false;
           });
     }
+  }
+
+  getfilterOption(){
+    this.loader = true;
+    this.authenticationService.getPartnersFilter().subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, response.data);
+        }
+        this.loader = false;
+      }, _error => {
+        this.loader = false;
+      }
+    )
   }
 
 }

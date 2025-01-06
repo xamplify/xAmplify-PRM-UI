@@ -1518,4 +1518,18 @@ vanityWelcomePageRequired(userId) {
     let url = this.REST_URL + "dashboardButtons/sharedashboardbuttons?access_token=" + this.access_token;
     return this.callPutMethod(url, requestDto);
   }
+
+  savePartnerFilter(input: number) {
+    let url = this.REST_URL + "admin/savePartnerFilter/" + this.getUserId() + "/" +  input + "?access_token=" + this.access_token ;
+   return this.callPostMethod(url, "");
+
+  }
+
+  getPartnersFilter() {
+    var url = this.REST_URL + "admin/getTeamMemberPartnerFilter/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
 }
