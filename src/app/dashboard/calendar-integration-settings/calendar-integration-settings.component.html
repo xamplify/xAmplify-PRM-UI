@@ -1,8 +1,10 @@
 <!-- Nav tabs -->
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
 <div class="scrollbar-x">
   <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
-    <li class="active"><a data-toggle="tab" href="#home">User Info</a></li>
+    <li class="active"><a (click)="setActiveTab('home')" data-toggle="tab" href="#home">User Info</a></li>
+    <li><a (click)="setActiveTab('menu1')" data-toggle="tab" href="#menu1">Settings</a></li>
     <div class="d-flex justify-content-end">
       <li class="ml_15"><button type="button" class="btn btn-warning" (click)="closeSettings()">Close</button></li>
     </div>
@@ -28,6 +30,16 @@
         <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color deactivate-btn"
           (click)="unlinkCalendar()" [disabled]="!(calendarDetails?.enableUnlink)">Unlink</button>
       </div>
+    </div>
+  </div>
+  <div id="menu1" *ngIf="showSchedulingUrlTab" class="tab-pane fade in active pt-25 integration-profile">
+    <div class="form-group">
+      <label for="subjectLine">Meeting Scheduling Link</label>
+      <input type="text" (input)="validateURL()" [(ngModel)]="calendarDetails.userUri" placeholder="Enter Scheduling Link" class="form-control">
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="button bgcolor-unset" (click)="submit()" [disabled]="!isValidURL"><span
+          class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
     </div>
   </div>
 </div>
