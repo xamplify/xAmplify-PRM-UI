@@ -17,6 +17,7 @@ import { ThemePropertiesDto } from "app/dashboard/models/theme-properties-dto";
 import { CompanyThemeActivate } from "app/dashboard/models/company-theme-activate";
 import { ThemeDto } from "app/dashboard/models/theme-dto";
 import { XAMPLIFY_CONSTANTS } from "app/constants/xamplify-default.constants";
+import { UtilService } from "../services/util.service";
 
 
 declare var $: any;
@@ -53,10 +54,11 @@ export class HomeComponent implements OnInit {
     public videoUtilService: VideoUtilService,
     private vanityURLService: VanityURLService,
     public dashBoardService: DashboardService,
+    public utilService: UtilService,
     private renderer: Renderer
     
   ) {
-    if(this.authenticationService.isTeamMember) {
+    if(this.utilService.isLoggedAsTeamMember() || this.authenticationService.isTeamMember()) {
       this.getfilterOption();
     }
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
