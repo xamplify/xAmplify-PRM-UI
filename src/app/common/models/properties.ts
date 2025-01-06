@@ -503,7 +503,13 @@ export class Properties {
     assets_Info =" Total Assets Published to ";
     track_Assets_Info = "Total Assets of Published Tracks" ;
     tracks_Info = "Total Tracks Published to";
-    playbooks_Info = "Total Playbooks Published to"; 
+    playbooks_Info = "Total Playbooks Published to";
+	
+	/**** Invite A Team-member ****/
+	inviteATeamMember = "Invite A TeamMember";
+	inviteATeamMemberToJoinxAmplify = "Invite a teammeber to join xAmplify";
+	teamMemberInvites = "TeamMember Invites";
+	invitedTeamMeberAnalytics = "Invited TeamMember Analytics";
   	my_Landscape_Vendor=' Vendor Landscape Pages ';
     My_Landscape_Partner = 'Partner Landscape Pages'; 
     partner_Showcase = 'Landing Pages Shared by Your Partners';
