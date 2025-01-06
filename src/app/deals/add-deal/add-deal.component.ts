@@ -1197,10 +1197,10 @@ export class AddDealComponent implements OnInit {
       let formLabelDTOs = this.sfDealComponent.form.formLabelDTOs;
       if (formLabelDTOs.length !== 0) {
         this.deal.amount = 0;
-        if (this.activeCRMDetails.type === "SALESFORCE") {
+        if (this.activeCRMDetails.type === "SALESFORCE" || this.activeCRMDetails.createdForActiveCRMType === "XAMPLIFY") {
           let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
           for (let formLabel of sfDefaultFields) {
-            if (formLabel.labelId === "Name") {
+            if (formLabel.labelId === "Name" || formLabel.labelId === "Deal_Name") {
               this.deal.title = formLabel.value;
             } else if (formLabel.labelId === "Description") {
               this.deal.description = formLabel.value;
@@ -1210,7 +1210,7 @@ export class AddDealComponent implements OnInit {
               this.deal.leadSource = formLabel.value;
             } else if (formLabel.labelId === "Amount" || formLabel.labelId === "amount") {
               this.deal.amount = formLabel.value;
-            } else if (formLabel.labelId === "CloseDate") {
+            } else if (formLabel.labelId === "CloseDate" || formLabel.labelId === "Close_Date") {
               this.deal.closeDateString = formLabel.value;
             } else if (formLabel.labelId === "NextStep") {
               this.deal.nextStep = formLabel.value;
@@ -1221,7 +1221,12 @@ export class AddDealComponent implements OnInit {
             }
           }
         }
-        let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
+        let sfCustomFields = [];
+        if (this.activeCRMDetails.createdForActiveCRMType === "XAMPLIFY") {
+          sfCustomFields = formLabelDTOs;
+        } else {
+          sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
+        }        
         let sfCfDataList = [];
         for (let formLabel of sfCustomFields) {
           if (this.activeCRMDetails.type === "HUBSPOT") {
@@ -1364,7 +1369,7 @@ export class AddDealComponent implements OnInit {
             }
             if (this.activeCRMDetails.hasCustomForm
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
-                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
+                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type || "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType)) {
               this.showCustomForm = true;
             } else if ("HALOPSA" === this.activeCRMDetails.type  || "ZOHO" === this.activeCRMDetails.type
             && (this.actionType === "edit" || this.actionType === "view")) {
