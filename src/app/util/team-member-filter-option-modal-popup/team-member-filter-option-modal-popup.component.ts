@@ -14,7 +14,6 @@ export class TeamMemberFilterOptionModalPopupComponent implements OnInit,OnDestr
   @Output() teamMemberFilterOptionModalCloseEmitter = new EventEmitter();
   selectedTeamMemberFilterOption = 0;
   @Input()selectedFilterIndex:number;
-  @Input() isChecked: boolean ;
   previousSelectedFilterIndex: number;
   constructor(public authenticationService:AuthenticationService,public properties: Properties) { }
   

@@ -12,4 +12,4 @@
     <i class="fa fa-filter" aria-hidden="true"></i>
   </a>
 </div>
-<app-team-member-filter-option-modal-popup *ngIf="showFilterPopup" [selectedFilterIndex]="selectedFilterIndex" [isChecked]="ischecked" (teamMemberFilterOptionModalPopupEmitter)="getSelectedOption($event)" (teamMemberFilterOptionModalCloseEmitter)="closeFilterPopup()"></app-team-member-filter-option-modal-popup>
+<app-team-member-filter-option-modal-popup *ngIf="showFilterPopup" [selectedFilterIndex]="selectedFilterIndex"  (teamMemberFilterOptionModalPopupEmitter)="getSelectedOption($event)" (teamMemberFilterOptionModalCloseEmitter)="closeFilterPopup()"></app-team-member-filter-option-modal-popup>

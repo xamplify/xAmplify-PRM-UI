@@ -19,7 +19,6 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   showFilterPopup = false;
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
-  ischecked: boolean = false;
   filterOption: boolean = false;
   constructor(public authenticationService: AuthenticationService) { }
 
