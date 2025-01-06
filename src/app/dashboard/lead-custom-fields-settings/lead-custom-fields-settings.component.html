@@ -2,7 +2,7 @@
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="table-responsive" *ngIf="!isAddCustomFieldsModelPopUp">
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
-    <div class="scrollbar-x">
+    <div class="scrollbar-x" *ngIf="!customFieldsDtosLoader && !ngxloading">
       <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
         <li class="{{isLeadActive}}"><a (click)="setActiveTab('menu1')" data-toggle="tab" href="#menu1">Lead Custom
             fields</a>
@@ -140,6 +140,9 @@
           <option *ngIf="sfcfPager.totalItems>24" [ngValue]="paginationComponent.numberPerPage[2]">
             {{paginationComponent.numberPerPage[2].name}}</option>
         </select>
+      </div>
+      <div class="text-center" *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
+        <span *ngIf="isFilterApplied">No Custom fields found</span>
       </div>
       <div class="modal-footer border-none pr0 pt0 pl0">
         <span *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="align-item-left">
