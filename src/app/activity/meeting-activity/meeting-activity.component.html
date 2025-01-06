@@ -100,10 +100,14 @@
     </select>
   </div>
 </div>
-<div class="modal-footer border-none pr0 pt0 pl0">
-  <span *ngIf="meetingActivityPager.pages && meetingActivityPager.pages.length" class="align-item-left">
+<div class="modal-footer border-none pr0 pt0 pl0" *ngIf="meetingActivityPager.pages && meetingActivityPager.pages.length">
+  <span class="align-item-left">
     <strong>Total Records :{{meetingActivityPager.totalItems}}</strong>
   </span>
+</div>
+
+<div *ngIf="!(meetingActivityPager.pages && meetingActivityPager.pages.length)" class="alert alert-info mb0">
+  <strong translate>No Data Found.</strong>
 </div>
 
 <app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri"

@@ -280,6 +280,8 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION", "PARTNER_REMAINDER", "COMPANY_PROFILE_INCOMPLETE"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
               { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN", "ADD_LEAD", "ADD_DEAL", "LEAD_UPDATE", "DEAL_UPDATE", "FORM_COMPLETED", "ADD_SELF_LEAD", "ADD_SELF_DEAL", "UPDATE_SELF_LEAD", "UPDATE_SELF_DEAL", "PRM_ADD_LEAD", "PRM_UPDATED"].includes(emailTemplateType) && !jsonContent.includes('{{customerFullName}}'), message: "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag." },
               { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{senderFullName}}"), message: "Whoops! We are unable to save this template because you deleted '{{senderFullName}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{VENDOR_COMPANY_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{VENDOR_COMPANY_NAME}}' tag." },
               { condition: () => emailTemplateType === "TRACK_PUBLISH" && !jsonContent.includes("{{trackTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag." },
               { condition: () => emailTemplateType === "PLAYBOOK_PUBLISH" && !jsonContent.includes("{{playbookTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{playbookTitle}}' tag." },
               { condition: () => emailTemplateType === "ASSET_PUBLISH" && !jsonContent.includes("{{assetName}}"), message: "Whoops! We are unable to save this template because you deleted '{{assetName}}' tag." },
@@ -326,8 +328,10 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
     if("FORGOT_PASSWORD"==emailTemplateType || "ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType){
       var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
       { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
       { name: 'Sender Email Id', value: '{{emailId}}' },
+      { name: 'Sender Partner Name', value: '{{PARTNER_NAME}}' },
+      { name: 'Sender Full Name', value: '{{senderFullName}}' },
+      { name: 'Vendor Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
       ];
     }
    if("TRACK_PUBLISH"==emailTemplateType){
@@ -697,8 +701,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                             .filter(member=>member.partnerId == logoDetails.partnerId)[0].categoryIds;
                           }
                         }
-                        let message = self.isMasterLandingPages? "Whoops! We're unable to save this page because you haven't selected the vendor details. Click on the â€˜Pick Your Vendorsâ€™ button to choose vendors.":
-                        "Whoops! We're unable to save this page because you haven't selected the partner details. Click on the â€˜Pick Your Partnersâ€™ button to choose partners."
+                        let message = self.isMasterLandingPages? "Whoops! We're unable to save this page because you haven't selected the vendor details. Click on the Pick Your Vendors button to choose vendors.":
+                        "Whoops! We're unable to save this page because you haven't selected the partner details. Click on the Pick Your Partners button to choose partners."
                         if((self.vendorLogoDetails.length == 0 || self.vendorLogoDetails == null  ||(self.vendorLogoDetails != null && self.vendorLogoDetails.length != 0 && self.vendorLogoDetails.every(logo=>(!logo.selected))))){
                           swal("", message, "error");
                           return false;

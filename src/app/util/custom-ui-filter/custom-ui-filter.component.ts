@@ -67,11 +67,15 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 			this.submittFilterData();
 			
 		}else if(this.criteria.property != "Field Name*" && this.criteria.operation != "Condition*") {
+			let keyExists = this.criterias.some(criteria => criteria.property === 'tags');  
+			if(!keyExists){
 			this.selectedConditionArray[this.criterias.length] = this.criteria.operation;
 			this.onSelection(this.criteria, this.criterias.length);
 			this.criterias.push(this.criteria);
 			this.isclearFilter = true;
 			this.submittFilterData();
+			}
+			
 		}
 	}
 	addFilterOptionsValues(type: string) {
@@ -244,6 +248,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	}
 	submittFilterData() {
 		this.validateDateFilters();
+	 if(this.pagination.criterias==null || this.pagination.criterias==undefined || this.pagination.criterias.length ==0){
+				this.closeFilterOption('close');
+		}else{
+		// this.validateDateFilters();
 		let input = {};
 		input['fromDate'] = this.pagination.fromDateFilterString;
 		input['toDate'] = this.pagination.toDateFilterString;
@@ -255,6 +263,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 			this.isclearFilter = true;
 			this.filterConditionsEmitter.emit(input);
 		}
+	  }
 	}
 	closeFilterOption(event: any) {
 		if (event == "clear") {

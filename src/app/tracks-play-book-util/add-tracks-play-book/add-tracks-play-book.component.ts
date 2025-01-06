@@ -504,8 +504,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     pagination.userId = this.loggedInUserId;
     pagination.companyId = this.loggedInUserCompanyId;
     pagination.excludeBeePdf = this.isAssestPopUpOpen;
-    /** XNFR-781  **/
-    pagination.showApprovedAssets = true;
+    /** XNFR-813  **/
+    pagination.categoryType = 'APPROVED';
     this.referenceService.goToTop();
     this.startLoaders();
     this.referenceService.loading(this.assetLoader, true);
