@@ -725,8 +725,10 @@
 	(notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
 
 <!-- XNFR-781  -->
-<app-content-status-history-modal-popup *ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
- [damId]="selectedDamId" [createdByAnyAdmin]="createdByAnyAdmin" [assetName]="assetName" [assetCreatedById]="assetCreatedById"
-  [assetCreatedByFullName]="assetCreatedByFullName"
-	(closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+<app-content-status-history-modal-popup
+	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName"
+	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
 </app-content-status-history-modal-popup>

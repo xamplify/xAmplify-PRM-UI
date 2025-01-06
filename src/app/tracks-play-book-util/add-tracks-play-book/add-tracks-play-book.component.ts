@@ -1673,4 +1673,42 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.tracksPlayBook.groupByAssets = event;
   }
 
+  /** XNFR-824 start */
+  checkIfPublishingIsDisabled(tracksPlayBook : any): boolean {
+    let approvalRequired = false;
+
+    if(this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+      approvalRequired = this.authenticationService.approvalRequiredForTracks;
+    } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
+      approvalRequired = this.authenticationService.approvalRequiredForPlaybooks;
+    }
+   
+    const isAdmin = this.authenticationService.module.isAdmin;
+  
+    return !tracksPlayBook.isValid || 
+           (this.isAdd && approvalRequired && !isAdmin) || 
+           (!this.isAdd && approvalRequired && tracksPlayBook.approvalStatus !== 'APPROVED');
+  }
+
+  getApprovalTooltipMessage(tracksPlayBook: any): string {
+    let approvalRequired = false;
+    if (this.type === TracksPlayBookType[TracksPlayBookType.TRACK]) {
+      approvalRequired = this.authenticationService.approvalRequiredForTracks;
+    } else if (this.type === TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+      approvalRequired = this.authenticationService.approvalRequiredForPlaybooks;
+    }
+  
+    if (this.isAdd && approvalRequired && !this.authenticationService.module.isAdmin) {
+      return 'Requires admin approval for publishing.';
+    } else if (!this.isAdd && approvalRequired && tracksPlayBook.approvalStatus !== 'APPROVED') {
+      return this.type === TracksPlayBookType[TracksPlayBookType.TRACK] ? 
+        "Unapproved tracks can't be published" : 
+        "Unapproved playbooks can't be published";
+    }
+    return '';
+  }
+  /** XNFR-824 end */
+
+  
+
 }

@@ -156,4 +156,14 @@ export class Pagination {
 
 	vendorMarketplacePageAnalytics:boolean = false;
 
+	selectedTileCategory: string = "";
+
+	approvalStatus: string = "";
+
+	approvalStatusUpdatedBy: number;
+
+	approvalStatusUpdatedTimeInString: string = "";
+	
+	createdById: number;
+
 }

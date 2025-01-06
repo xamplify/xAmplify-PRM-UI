@@ -11,4 +11,5 @@ export class CommentDto {
 	createdBy: number;
 	assetName: string = "";
 	assetCreatedByFullName: string;
+	entityId: number;
 }
