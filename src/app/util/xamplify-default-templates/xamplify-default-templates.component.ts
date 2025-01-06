@@ -307,8 +307,9 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match("<Vanity_Company_Logo_Href>") || []).length < 1, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
               { condition: () => emailTemplateType === "ACCOUNT_ACTIVATION" && jsonContent.indexOf('<VerifyEmailLink>') < 0, message: "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag." },
-              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('<<LoginLink>>'), message: "Whoops! We are unable to save this template because you deleted 'RegisterLink' tag." },
-              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('<Registration_Document>'), message: "Whoops! We are unable to save this template because you deleted 'Registration_Document' tag." },
+              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('LoginLink'), message: "Whoops! We are unable to save this template because you deleted 'RegisterLink' tag." },
+              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('Registration_Document'), message: "Whoops! We are unable to save this template because you deleted 'Registration_Document' tag." },
+              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('Request_Account'), message: "Whoops! We are unable to save this template because you deleted 'Request_Account' tag." },
             ]
           },
         ];

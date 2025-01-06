@@ -1363,13 +1363,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-805 *****/
-  openInviteTeamMemberModal() {
-    this.loadInviteTeamMemberEmailBody();
-    this.vendorInvitation.subject = "Check out xAmplify's marketing automation platform"
-    $('#invite_team_member_modal').modal('show');
-  }
-
-  /***** XNFR-805 *****/
   closeInviteTeamMemberModal() {
     $('#invite_team_member_modal').modal('hide');
     this.inviteTeamMemberResponse = new CustomResponse();
@@ -1384,7 +1377,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   /***** XNFR-805 *****/
-  loadInviteTeamMemberEmailBody() {
+  openInviteTeamMemberModal() {
     this.inviteTeamMemberLoading = true;
     const templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 1;
     this.teamMemberService.getHtmlBody(templateId).subscribe(
@@ -1398,16 +1391,20 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
             this.ckeConfig.contentsCss.push(styleBlob);
           }
           this.vendorInvitation.message = htmlBody.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+          this.vendorInvitation.subject = this.vendorCompanyProfileName === 'versa-networks'
+            ? data.subject : "Check out xAmplify's marketing automation platform";
         } else {
           this.vendorInvitation.message = "";
           this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
         }
         this.inviteTeamMemberLoading = false;
+        $('#invite_team_member_modal').modal('show');
       },
       error => {
         this.logger.errorPage(error);
         this.vendorInvitation.message = "";
         this.inviteTeamMemberLoading = false;
+        $('#invite_team_member_modal').modal('show');
         this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
       });
   }

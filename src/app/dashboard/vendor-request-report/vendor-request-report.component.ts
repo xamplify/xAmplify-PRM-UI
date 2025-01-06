@@ -106,7 +106,6 @@ export class VendorRequestReportComponent implements OnInit {
     /***** XNFR-805 *****/
     listOfRequestReports(statusType: any) {
         if (this.isTeamMemberRequest) {
-            statusType = this.getStatusType(statusType);
             this.listOfTeamMemberReports(statusType);
         } else {
             this.listOfVendorRequestReports(statusType);
@@ -129,9 +128,10 @@ export class VendorRequestReportComponent implements OnInit {
     /***** XNFR-805 *****/
     listOfTeamMemberReports(type: string) {
         this.statusType = type;
-        this.tableHeader = type + " " + this.properties.invitedTeamMeberAnalytics;
+        this.tableHeader = "INVITED" === type ? this.properties.invitedTeamMeberAnalytics
+            : type + " " + this.properties.invitedTeamMeberAnalytics;
         this.referenceService.loading(this.httpRequestLoader, true);
-        this.dashboardService.listOfTeamMemberRequestReports(type)
+        this.dashboardService.listOfTeamMemberRequestReports(this.getStatusType(type))
             .subscribe((data: any) => {
                 console.log(data);
                 if (data.inviteTeamMembers.length === 0) {
