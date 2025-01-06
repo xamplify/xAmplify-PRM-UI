@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { Pagination } from 'app/core/models/pagination';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { MultiSelectCommentDto } from '../models/multi-select-comment-dto';
 
 @Injectable()
 export class ApproveService {
@@ -16,11 +17,26 @@ export class ApproveService {
   ) { }
 
 
-  getPendingApprovalDamAndLMS(pagination: Pagination) {
+  getAllApprovalList(pagination: Pagination) {
     let userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    let findAllUrl = this.approveUrl + "/getPendingApprovalList/" + userId + this.QUERY_PARAMETERS + pageableUrl;
+    let filterKeyRequestParam = pagination.filterKey != undefined && pagination.filterKey != null ?
+      "&filterKey=" + pagination.filterKey : "";
+    let findAllUrl = this.approveUrl + "/getAllApprovalList/" + userId + this.QUERY_PARAMETERS + pageableUrl + filterKeyRequestParam;
     return this.authenticationService.callGetMethod(findAllUrl);
+  }
+
+  getStatusTileCounts(filterType: any) {
+    let userId = this.authenticationService.getUserId();
+    let filterByRequestParameter = filterType != undefined ? '&filterType=' + filterType : '';
+    let findAllUrl = this.approveUrl + "/getStatusTileCounts/" + userId + this.QUERY_PARAMETERS + filterByRequestParameter;
+    return this.authenticationService.callGetMethod(findAllUrl);
+  }
+
+  updateApprovalStatusAndComment(commentDto: MultiSelectCommentDto) {
+    let userId = this.authenticationService.getUserId();
+    let updateApprovalStatusUrl = this.approveUrl + "/updateApprovalStatus/" + userId + this.QUERY_PARAMETERS;
+    return this.authenticationService.callPostMethod(updateApprovalStatusUrl, commentDto);
   }
 
 

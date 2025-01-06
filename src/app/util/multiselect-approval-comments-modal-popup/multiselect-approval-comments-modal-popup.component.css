@@ -1,0 +1,11 @@
+.custom-align-modal{
+    transform: translate(-50%, -50%) !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+@media screen and (min-width: 1180px) {
+    .widthAlign{
+        width: 40% !important;
+    }
+}
