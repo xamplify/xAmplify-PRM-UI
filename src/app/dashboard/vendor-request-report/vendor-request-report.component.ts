@@ -33,9 +33,7 @@ export class VendorRequestReportComponent implements OnInit {
         public dashboardService: DashboardService, public pagerService: PagerService,
         public pagination: Pagination, public properties: Properties) {
         let currentUrl = this.referenceService.getCurrentRouteUrl();
-        if (currentUrl.includes('team-member-request')) {
-            this.isTeamMemberRequest = true;
-        }
+        this.isTeamMemberRequest = currentUrl.includes('team-member-request') ? true : false;
     }
 
     paginationDropDown(event: Pagination) {

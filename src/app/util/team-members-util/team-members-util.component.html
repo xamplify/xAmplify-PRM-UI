@@ -80,7 +80,7 @@
               style="padding-right: 10px;">
               <div class="row mr-21">
                 <div class="clearfix" *ngIf="isTeamMemberModule &&!isNavigatedFromSuperAdminScreen">
-                  <section class="clearfix" style="display: flex;">
+                  <section class="clearfix" style="display: flex; justify-content: end;">
                     <ng-container
                       *ngIf="!authenticationService?.module?.deletedPartner && !(authenticationService?.companyProfileName === 'versa-networks' && authenticationService?.module?.loggedInThroughVendorVanityUrl)">
                       <div class="pull-right mr5">
@@ -101,13 +101,12 @@
                         <button data-placement="bottom" class="hidden-xs btn btn-primary button border_btn"
                           style="border-radius: 0px 7px 7px 0px!important;" data-toggle="tooltip"
                           title="Download TeamMembers Csv Template" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
-                                                                        && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
-                                                                        && !authenticationService?.module?.deletedPartner">
+                            && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download"></i>
                         </button>
                       </div>
                     </ng-container>
-                    <ng-template [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
+                    <ng-template *ngIf="vendorCompanyProfileName" [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
                   </section>
                 </div>
               </div>
