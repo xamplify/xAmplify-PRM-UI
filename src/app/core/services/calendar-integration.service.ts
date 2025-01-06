@@ -52,4 +52,12 @@ export class CalendarIntegrationService {
     return this.authenticationService.callGetMethod(this.authenticationService.REST_URL + "calendar/active/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token);
   }
 
+  checkAssociationAndUpdateSchedulingURL(schedulingUrl:any) {
+    let meetingSchedulingUrlDTO = {
+      'loggedInUserId':this.authenticationService.getUserId(),
+      'schedulingUrl':schedulingUrl
+    }
+    return this.authenticationService.callPutMethod(this.authenticationService.REST_URL + 'calendar/check-and-update/scheduling-url?access_token=' + this.authenticationService.access_token, meetingSchedulingUrlDTO);
+  }
+
 }

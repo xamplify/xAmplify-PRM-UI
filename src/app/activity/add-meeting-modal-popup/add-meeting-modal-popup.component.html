@@ -1,18 +1,40 @@
 <div class="modal fade right" id="addMeetingModalPopup" role="dialog" aria-labelledby="myModalLabel"
   data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div *ngIf="!showMeetingSchedulingInputField" class="modal-content">
       <div class="modal-header">
         <a class="close-circle" (click)="closeMeetingModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
         <h4 class="modal-title left" id="myModalLabel">Schedule Meeting</h4>
       </div>
       <div class="modal-body">
-        <div class="calendly-inline-widget" [attr.data-url]="schedulingUrl"
-          style="min-width:320px; height:700px;">
+        <div class="calendly-inline-widget" [attr.data-url]="schedulingUrl" style="min-width:320px; height:700px;">
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeMeetingModal()" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+    <div *ngIf="showMeetingSchedulingInputField" class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeMeetingModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Add Link</h4>
+      </div>
+      <div class="modal-body">
+        <app-response-message class="pg8" [customResponse]="customResponse"
+          *ngIf="customResponse?.isVisible"></app-response-message>
+        <div>
+          <div class="alert alert-info">
+            <p>Please provide your Calendly Meeting Scheduling Link, To schedule meetings with others through xAmplify.</p>
+          </div>
+          <label for="subjectLine">Calendly Meeting Scheduling Link<span class="text-danger">*</span></label>
+          <input type="text" (input)="validateURL()" [(ngModel)]="schedulingUrl"
+            placeholder="Enter calendly meeting scheduling link" class="form-control">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="button bgcolor-unset" (click)="submit()"><span
+            class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
       </div>
     </div>
   </div>
