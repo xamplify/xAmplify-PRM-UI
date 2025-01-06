@@ -9,7 +9,7 @@ export class CommentDto {
 	damId: number;
 	statusUpdated: boolean = false;
 	createdBy: number;
-	assetName: string = "";
-	assetCreatedByFullName: string;
+	name: string = "";
+	createdByName: string;
 	entityId: number;
 }

@@ -173,8 +173,8 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.commentDto.loggedInUserId = this.loggedInUserId;
     this.commentDto.entityId = this.entityId;
     this.commentDto.createdBy = this.createdById;
-    this.commentDto.assetName = this.title;
-    this.commentDto.assetCreatedByFullName = this.createdByName;
+    this.commentDto.name = this.title;
+    this.commentDto.createdByName = this.createdByName;
     this.commentDto.moduleType = this.moduleType;
     if (this.status != this.commentDto.statusInString) {
       this.commentDto.statusUpdated = true;
