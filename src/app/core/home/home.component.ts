@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
     private renderer: Renderer
     
   ) {
-    if(this.utilService.isLoggedAsTeamMember()) {
+    if(this.utilService.isLoggedAsTeamMember() || this.authenticationService.isTeamMember()) {
       this.getfilterOption();
     }
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
