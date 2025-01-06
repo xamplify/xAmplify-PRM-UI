@@ -2752,6 +2752,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
+		this.referenceService.universalModuleType = "";//XNFR-792
 		this.contactService.socialProviderName = "";
 		this.referenceService.callBackURLCondition = '';
 		this.hideModal();
@@ -2764,8 +2765,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		if (this.selectedAddPartnerOption == 5) {
 			swal.close();
 		}
-		this.referenceService.universalModuleType = "";//XNFR-792
-
+	
 	}
 
 

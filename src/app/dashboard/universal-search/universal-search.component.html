@@ -270,7 +270,7 @@
       </div>
     </td>
     <td style="width: 90%;">
-      <h6 *ngIf="isEmptyOrWhitespace(quickLink?.slug)" (click)="preview(quickLink)">
+      <h6 *ngIf="isEmptyOrWhitespace(quickLink?.slug)" (click)="navigateToManage(quickLink)">
         <span class="pointer">
           <b>Name: </b>
           <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.slug)">
@@ -278,7 +278,7 @@
           </span>
         </span>
       </h6>
-      <h6 *ngIf="quickLink?.tag" (click)="preview(quickLink)">
+      <h6 *ngIf="quickLink?.tag" (click)="navigateToManage(quickLink)">
         <span class="pointer">
           <b>Company Name: </b>
           <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.tag)">
@@ -286,7 +286,7 @@
           </span>
         </span>
       </h6>
-      <h6 *ngIf="quickLink?.name" (click)="preview(quickLink)">
+      <h6 *ngIf="quickLink?.name" (click)="navigateToManage(quickLink)">
         <span class="pointer">
           <b>Email Id: </b>
           <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.name)">
@@ -294,7 +294,7 @@
           </span>
         </span>
       </h6>
-      <h6 *ngIf="quickLink?.stage" (click)="preview(quickLink)">
+      <h6 *ngIf="quickLink?.stage" (click)="navigateToManage(quickLink)">
         <span class="pointer">
           <b>Signup Status: </b>
           <span data-toggle="tooltip" data-placement="top" [title]="changeStatus(quickLink?.stage)">
@@ -302,7 +302,7 @@
           </span>
         </span>
       </h6>
-      <h6 *ngIf="quickLink?.createdBy" (click)="preview(quickLink)">
+      <h6 *ngIf="quickLink?.createdBy" (click)="navigateToManage(quickLink)">
         <span class="pointer">
           <b>Company Profile: </b>
           <span data-toggle="tooltip" data-placement="top" [title]="changeStatus(quickLink?.createdBy)">
@@ -319,12 +319,6 @@
           <ng-template [ngTemplateOutlet]="searchNgTemplateIcon" [ngTemplateOutletContext]="{quickLink:quickLink,
           title: 'Navigate To Onboarding Partner'}">
           </ng-template>
-
-          <!-- Preview Icon -->
-          <!-- <a class="quicklinks_icons" data-toggle="tooltip" data-placement="top" title="Preview"
-            (click)="$event.stopPropagation();preview(quickLink)">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-          </a> -->
         </div>
       </div>
     </td>

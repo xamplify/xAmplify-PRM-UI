@@ -67,9 +67,9 @@ export class UniversalSearchComponent implements OnInit {
     this.findUniversalSearch(this.universalSearchPagination);
   }
   searchUniversally() {
-    if (!this.utilService.isLoggedAsTeamMember()) {
-      this.applyFilter = false;
-    }
+  if (!(this.utilService.isLoggedAsTeamMember() || this.authenticationService.module.isTeamMember)) {
+    this.applyFilter = false;
+  }
     console.log(this.utilService.isLoggedAsTeamMember() + "  loginAsTeammember")
     this.universalSearchPagination.pageIndex = 1;
     this.universalSearchPagination.maxResults = 12;
