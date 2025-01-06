@@ -1297,3 +1297,7 @@ top: opx;
   width: 0;
   height: 0
 }
+
+.universal-dropdown-menu li {
+  padding: 6px 10px !important;
+}

@@ -315,7 +315,7 @@
       <div class="col">
         <div class="instant-links-type">
           <!-- Label -->
-          <span [ngClass]="getLabelClass(quickLink)">{{quickLink?.navigate}} {{quickLink?.type}}</span>
+          <span [ngClass]="getLabelClass(quickLink)">{{authenticationService?.partnerModule?.customName}}</span>
           <ng-template [ngTemplateOutlet]="searchNgTemplateIcon" [ngTemplateOutletContext]="{quickLink:quickLink,
           title: 'Navigate To Onboarding Partner'}">
           </ng-template>
