@@ -1,0 +1,61 @@
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home"></i>
+        <a [routerLink]="referenceService?.homeRouter"  translate>Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+        <a translate>Manage Approval</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="panel-body">
+      <div class="portlet light">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th scope="col">Details</th>
+              <th scope="col" class="pull-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td style="width: 10%;">
+                <div class="col">
+                  <img style="height: 50px;" [src]="getImageSrc(item)" />
+                </div>
+              </td>
+              <td>
+                <!-- Name Field -->
+                <h6>
+                  <b>Asset Name: </b>
+                  <span>
+                    {{item?.assetName | slice:0:50}}
+                    <span *ngIf="item?.name?.length>50">..</span>
+                  </span>
+                </h6>
+                <h6>
+                  <b>Type : </b>
+                  <span>
+                    {{item?.type}}
+                  </span>
+                </h6>
+              </td>
+              <td>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--Pagination-->
+      <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
+        <app-pagination [pagination]="pagination" (notifyParentDropDown)="getPendingApprovalDamAndLMS($event)"
+          (notifyParent)="paginateList($event)"></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

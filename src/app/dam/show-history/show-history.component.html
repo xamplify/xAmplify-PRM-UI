@@ -77,7 +77,16 @@
 									</h6>
 									<span class="view-banner-white-labeled LableSpaceings">White-Labeled</span>
 								</ng-container>
-								<span class="view-banner-dam assettype-bgcolor LableSpaceings">{{asset?.assetType}}</span>
+								<span class="view-banner-dam assettype-bgcolor LableSpaceings" style="margin-right: 3px;">{{asset?.assetType}}</span>
+								
+								<!-- XNFR-781 -->
+								<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner asset-approval-lable-spacing"
+									[ngClass]="{
+										'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+										'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+										'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+									{{getApprovalStatusText(asset.approvalStatus)}}
+								</span>
 							 </div>
 							 <h6  class="xamplify-ellipsis GridViewCotent pt10">
 								<span *ngIf="isPartnerView"> <b>Published On: </b></span>
@@ -104,6 +113,7 @@
 							(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 							(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 							(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
+							(assetGridViewCommentStatusHistoryEmitter)="showCommentsAndHistoryModalPopup($event)"
 							(assetGridViewRefreshListEmitter)="refreshList()">
 							</app-asset-grid-view-actions>
 						 </div>
@@ -141,3 +151,10 @@
 
  <!---XNFR-381-->
 <app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked" [parameterDto]="changeAsParentPdfSweetAlertParameterDto" (notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
+
+<!-- XNFR-781  -->
+<app-content-status-history-modal-popup
+	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView" [damId]="selectedDamId"
+	[createdByAnyAdmin]="createdByAnyAdmin" [assetName]="assetName" [assetCreatedById]="assetCreatedById"
+	[assetCreatedByFullName]="assetCreatedByFullName" (closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+</app-content-status-history-modal-popup>

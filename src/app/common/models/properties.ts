@@ -510,5 +510,16 @@ export class Properties {
 	inviteATeamMemberToJoinxAmplify = "Invite a teammeber to join xAmplify";
 	teamMemberInvites = "TeamMember Invites";
 	invitedTeamMeberAnalytics = "Invited TeamMember Analytics";
+  	my_Landscape_Vendor=' Vendor Landscape Pages ';
+    My_Landscape_Partner = 'Partner Landscape Pages'; 
+    partner_Showcase = 'Landing Pages Shared by Your Partners';
+    vendor_showcase = 'Landing Pages Shared by Your Vendors';
+    myShowcase_vendor = 'Vendor Showcase Pages for Your Partners';
+    MyShowcase_partner = 'Partner Showcase Pages for Your Vendors';
+
+	/***** XNFR-809 *****/
+	my_Partner_Info = 'You have the ability to apply the default filter as My Partner(s).Enabling this option will allow you to view the partners assigned to you.';
+	all_Partners_Info = 'You have the ability to apply the default filter as All Partners.Enabling this option will allow you to view all the partners of your company.';
+
 }
 

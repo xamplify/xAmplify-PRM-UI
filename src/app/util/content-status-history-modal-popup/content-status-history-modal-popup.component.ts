@@ -37,6 +37,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   statusTimeLineHistory: any;
   comments: any;
   commentsCustomResponse: CustomResponse = new CustomResponse();
+  timelineCustomResponse: CustomResponse = new CustomResponse();
   loggedInUserId:number = 0;
   isStatusUpdated = false;  
   showStatusBanner: boolean = false;
@@ -75,15 +76,17 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.damService.loadUserDetailsWithDamApprovalStatus(this.damId).subscribe( 
       (response: any) =>{
         this.commentModalPopUpLoader = false;
-        this.userDetailsDto = response.data;
-        this.commentDto.statusInString  = this.userDetailsDto.status;
-        this.status = this.commentDto.statusInString;
-        if(this.commentDto.statusInString != this.templateStatusArray[0] && this.templateStatusArray.length == 3){
-          this.templateStatusArray.shift();
-        }
-        if(this.commentDto.createdBy != this.loggedInUserId && this.authenticationService.module.isAdmin &&
-          this.commentDto.statusInString != 'OWN') {
-          this.canUpdateStatus = true;
+        if(response && response.data) {
+          this.userDetailsDto = response.data;
+          this.commentDto.statusInString  = this.userDetailsDto.status;
+          this.status = this.commentDto.statusInString;
+          if(this.commentDto.statusInString != this.templateStatusArray[0] && this.templateStatusArray.length == 3){
+            this.templateStatusArray.shift();
+          }
+          if(this.commentDto.createdBy != this.loggedInUserId && this.authenticationService.module.isAdmin &&
+            this.commentDto.statusInString != 'OWN') {
+            this.canUpdateStatus = true;
+          }
         }
       },error=>{
         this.commentModalPopUpLoader = false;
@@ -108,7 +111,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
           this.timelineHistoryNotAvailable = false;
         } else {
           this.timelineHistoryNotAvailable = true;
-          this.commentsCustomResponse = new CustomResponse('INFO', "Timeline history is not available for this asset.", true);
+          this.timelineCustomResponse = new CustomResponse('INFO', "Timeline history is not available for this asset.", true);
         }        
         this.historyPopUpLoader = false;
       },error=>{
@@ -132,7 +135,6 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
 
   findComments() {
-    this.commentsCustomResponse = new CustomResponse();
     this.commentModalPopUpLoader = true;
     this.damService.loadDamComents(this.damId).subscribe(
         response => {
@@ -172,12 +174,17 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.damService.saveDamComment(this.commentDto).
     subscribe(
       response=>{
+        this.commentModalPopUpLoader = false;
+        if (response.statusCode === 200 && response.data != undefined) {
+          this.isStatusUpdated = response.data;
+        } else if (response.statusCode === 401 && response.data != undefined) {
+          let message = this.referenceService.iterateNamesAndGetErrorMessage(response);
+          this.commentsCustomResponse = new CustomResponse('ERROR', message, true);
+        }
         this.commentDto.comment = "";
         this.commentDto.invalidComment = true;
-        this.commentModalPopUpLoader = false;
         this.commentDto.statusUpdated = false;
         this.refreshModalPopUp();
-        this.isStatusUpdated = response.data;
         this.showStatusUpdatedMessage();
       },error=>{
         this.isStatusUpdated = false;
@@ -189,7 +196,6 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
 
   refreshModalPopUp() {
-    this.findComments();
     this.loadUserDeailsWithCurrentStatus();
   }
   

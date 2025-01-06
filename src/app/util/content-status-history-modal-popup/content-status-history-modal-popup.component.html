@@ -13,10 +13,13 @@
             </a>
             <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
          </div>
+         <div style="margin: 0px 20px;">
+            <app-response-message [customResponse]="commentsCustomResponse" *ngIf="commentsCustomResponse?.isVisible" [showCloseIcon]="true"></app-response-message>
+         </div>
          <div class="modal-body" id="comments-modal-body" style="overflow-y: auto;max-height: 320px;min-height: 360px;">
             <app-modal-popup-loader *ngIf="commentModalPopUpLoader"></app-modal-popup-loader>
             <ng-container *ngIf="!commentModalPopUpLoader">
-               <div class="view_emailcard" style="margin: 0px 15px;">
+               <div class="view_emailcard" style="margin: 0px 15px;border: 1px solid #ddd;" >
                   <div class="row mix-grid p10">
                      <div class="col-md-2">
                         <div class="frame">
@@ -130,7 +133,7 @@
 
 <div id="historyModalPopUp" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
    data-backdrop="static" data-keyboard="false">
-   <div class="modal-dialog modal-css" role="document">
+   <div class="modal-dialog modal-css history_popup" role="document">
       <!-- Modal content-->
       <div class="modal-content" style="overflow-x: hidden;">
          <ngx-loading [show]="historyPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -147,7 +150,7 @@
             <app-modal-popup-loader *ngIf="historyPopUpLoader"></app-modal-popup-loader>
             <div class="row" *ngIf="!historyPopUpLoader">
                <div style="margin: 0px 20px;">
-                  <app-response-message  *ngIf="timelineHistoryNotAvailable" [customResponse]="commentsCustomResponse" [showCloseIcon]="false"></app-response-message>
+                  <app-response-message  *ngIf="timelineHistoryNotAvailable" [customResponse]="timelineCustomResponse" [showCloseIcon]="false"></app-response-message>
                </div>
                <div *ngIf="!timelineHistoryNotAvailable" class="timeline">
                   <div class="line text-muted"></div>
@@ -155,8 +158,8 @@
                      <div class="panel-heading icon">
                         <span class="avatar-initial">{{timeLine?.userLogoPathOrFirstLetter}}</span>
                      </div>
-                     <div class="panel-body">
-                        <p>
+                     <div class="panel-body" style="padding-left: 5px;">
+                        <p class="mb0">
                            <strong style="color:#65b6e4;">{{timeLine?.createdByName}}</strong>
                            <span *ngIf="(timeLine?.status == 'REJECTED' || timeLine?.status == 'APPROVED') && !createdByAnyAdmin">
                               changed the status to </span>

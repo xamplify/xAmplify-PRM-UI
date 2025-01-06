@@ -3,6 +3,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { UserService } from 'app/core/services/user.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Component({
   selector: 'app-detailed-dashboard',
@@ -18,6 +19,10 @@ export class DetailedDashboardComponent implements OnInit {
 
   ngOnInit() {
 	const currentUser = localStorage.getItem( 'currentUser' );
+  let partnerFilterOption = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+      if(partnerFilterOption!=undefined){
+        this.applyFilter = partnerFilterOption;
+      }
     if(currentUser!=undefined){
       this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
       this.getDashboardType();

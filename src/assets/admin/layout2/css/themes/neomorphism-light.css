@@ -4359,7 +4359,7 @@ button#cancel_button {background-image: linear-gradient(89deg, #2b343a 0, #cbd8d
 /***** Sudha Sri(10-07-2024) *****/
 .disable-btn-text-color{color: #fff;}
 a.button_blue.remove_bg{background: none !important;border: none !important;}
-span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border: 1px solid #026deb !important;}
+/* span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border: 1px solid #026deb !important;} */
 .xamplify-dropdown-option:hover {background-color: #dee1e5 !important;}
 .domainlist{
 padding:10px;
@@ -4419,7 +4419,7 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 .neo{margin-left:65px !important;}
   /* contact-journey */
-  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor,.view_emailcard,.email_content{
+  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor,.view_emailcard,.email_content,.view_task_card{
     background: #f0f5fa !important;
     border: 1px solid #d0d5db !important;
     box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
@@ -4476,3 +4476,15 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
   border: 1px solid #d0d5db!important; 
   margin: 15px 0px;
 }
+.activity-updated-status-btn-v2{
+  border: 1px solid #d0d5db !important;
+}
+@media (min-width: 657px) and (max-width: 870px) {
+  .tab_navbar {
+    background: #f0f5fa !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+    border-bottom: 1px solid #d0d5db;
+  }
+}
+/* Sudha Sri(03-01-2025) */
+span.btn.Btn-Green.transition.txt_pd-top3.pd_lft8.only_neo{padding-top: 0px !important;}

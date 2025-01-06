@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, SimpleChanges  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges, SimpleChanges  } from '@angular/core';
 import { Router } from '@angular/router';
 import { Criteria } from 'app/contacts/models/criteria';
 import { Pagination } from 'app/core/models/pagination';
@@ -9,7 +9,7 @@ import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/wh
 	templateUrl: './custom-ui-filter.component.html',
 	styleUrls: ['./custom-ui-filter.component.css']
 })
-export class CustomUiFilterComponent implements OnInit, OnDestroy {
+export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 
 	@Input() type: any
 	@Input() fileTypes = [];
@@ -45,9 +45,13 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 	}
 	ngOnInit() {
-		this.addFilterOptionsValues(this.type);
 	}
 	ngOnChanges(changes: SimpleChanges){
+		
+		if(this.allfilterOptions.length==0){
+		   this.addFilterOptionsValues(this.type);
+		}
+		
 		if(this.criteria.property != "Field Name*" && this.criteria.operation != "Condition*"
 		         && this.criterias !=undefined &&  this.criterias.length > 0
 		         && this.criterias[this.criterias.length-1].property ==  "Field Name*" 
@@ -58,18 +62,20 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	        this.criterias[this.criterias.length-1].value1 = this.criteria.value1;
 	
 	        this.selectedConditionArray[this.criterias.length-1] = this.criteria.operation;
-			this.seletedFiterArray[this.criterias.length-1] = this.criteria.property;
 			this.onSelection(this.criteria, this.criterias.length-1);
 			this.isclearFilter = true;
 			this.submittFilterData();
 			
 		}else if(this.criteria.property != "Field Name*" && this.criteria.operation != "Condition*") {
+			let keyExists = this.criterias.some(criteria => criteria.property === 'tags');  
+			if(!keyExists){
 			this.selectedConditionArray[this.criterias.length] = this.criteria.operation;
-			this.seletedFiterArray[this.criterias.length] = this.criteria.property;
-			this.criterias.push(this.criteria);
 			this.onSelection(this.criteria, this.criterias.length);
+			this.criterias.push(this.criteria);
 			this.isclearFilter = true;
 			this.submittFilterData();
+			}
+			
 		}
 	}
 	addFilterOptionsValues(type: string) {
@@ -98,7 +104,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.allfilterOptions = this.filterOptions;
 		}
 		
-		if(this.criteria.property == "Field Name*" && this.criteria.operation == "Condition*") {
+		if( this.criteria.property == "Field Name*" && this.criteria.operation == "Condition*") {
 		   this.addNewRow();
 		}
 		
@@ -242,6 +248,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	}
 	submittFilterData() {
 		this.validateDateFilters();
+	 if(this.pagination.criterias==null || this.pagination.criterias==undefined || this.pagination.criterias.length ==0){
+				this.closeFilterOption('close');
+		}else{
+		// this.validateDateFilters();
 		let input = {};
 		input['fromDate'] = this.pagination.fromDateFilterString;
 		input['toDate'] = this.pagination.toDateFilterString;
@@ -253,6 +263,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.isclearFilter = true;
 			this.filterConditionsEmitter.emit(input);
 		}
+	  }
 	}
 	closeFilterOption(event: any) {
 		if (event == "clear") {
@@ -268,8 +279,8 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.pagination.filterOptionEnable = false;
 			this.isValidationErrorMessage = false;
 			this.dropdownDisabled = [];
-			this.filterOptions = this.allfilterOptions;
-			this.addNewRow();
+			this.filterOptions = [];
+			this.allfilterOptions = [];
 		}
 		this.closeFilterEmitter.emit(event);
 	}

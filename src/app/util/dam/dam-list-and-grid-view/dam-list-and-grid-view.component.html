@@ -1,3 +1,7 @@
+<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
+	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded">
+</app-content-module-status-analytics>
+
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
@@ -93,7 +97,7 @@
 													class="view-banner published" style="margin-right: 5px;">Published
 												</span>
 												<!-- XNFR-781 -->
-												<span *ngIf="authenticationService?.approvalRequiredForAssets" class="view-banner"
+												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner"
 													[ngClass]="{
 														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
@@ -205,8 +209,9 @@
 															</a>
 
 															<!-- comment/history -->
-															<a *ngIf="authenticationService?.approvalRequiredForAssets" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Comments/History">
-																	<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+																	<div class="clickicons"></div>
 															</a>
 															
 															<!--Delete-->
@@ -304,6 +309,14 @@
 																		<span *ngIf="asset.viewBy=='DRAFT'"
 																			class="draft-video mb0">DRAFT</span>
 																		<!---XNFR-255-->
+																		
+																		<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner asset-approval-labele-spacing"
+																			[ngClass]="{
+																				'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+																				'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+																				'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+																			{{getApprovalStatusText(asset.approvalStatus)}}
+																		</span>
 																		<ng-container
 																			*ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 																			<span
@@ -407,6 +420,12 @@
 																					aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
+
+																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			
 																			<a *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
 																				data-placement="top" title="Delete"
 																				(click)="confirmDelete(asset)">
@@ -485,7 +504,7 @@
 											</ng-container>
 											<span class="view-banner-dam assettype-bgcolor LableSpaceings" style="margin-right: 3px;">{{asset?.assetType}}</span>
 											<!-- XNFR-781 -->
-											<span *ngIf="authenticationService?.approvalRequiredForAssets" class="view-banner asset-approval-labele-spacing"
+											<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner asset-approval-labele-spacing"
 												[ngClass]="{
 											        'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 											        'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
@@ -708,7 +727,7 @@
 	(notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
 
 <!-- XNFR-781  -->
-<app-content-status-history-modal-popup *ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets"
+<app-content-status-history-modal-popup *ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
  [damId]="selectedDamId" [createdByAnyAdmin]="createdByAnyAdmin" [assetName]="assetName" [assetCreatedById]="assetCreatedById"
   [assetCreatedByFullName]="assetCreatedByFullName"
 	(closeModalPopup)="closeCommentsAndHistoryModalPopup()">

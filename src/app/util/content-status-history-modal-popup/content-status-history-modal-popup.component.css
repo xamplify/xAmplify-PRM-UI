@@ -416,3 +416,9 @@ all the elements inside the author comments. */
     border: 1px solid #ddd;
     margin: 0px 15px;
 }
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.history_popup { width : 48% !important;}

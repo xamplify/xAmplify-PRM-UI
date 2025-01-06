@@ -128,6 +128,7 @@ export class AddTaskModalPopupComponent implements OnInit {
 
   private initializeDueDatePicker() {
     let now: Date = new Date();
+    now.setMinutes(now.getMinutes() + 30);
     let defaultDate = now;
     if (this.taskActivity.dueDate != undefined && this.taskActivity.dueDate != null) {
       defaultDate = new Date(this.taskActivity.dueDate);
@@ -143,37 +144,41 @@ export class AddTaskModalPopupComponent implements OnInit {
   }
 
   private initializeRemainderPicker() {
-    let now: Date = new Date();
-    now.setMinutes(now.getMinutes() + 30);
-    let defaultDate;
-    if (this.referenceService.checkIsValidString(this.taskActivity.remainder)) {
-      defaultDate = new Date(this.taskActivity.remainder);
-    }
-    let maxDate: Date = new Date();
-    if (this.referenceService.checkIsValidString(this.taskActivity.dueDate)) {
-      let dueDate = new Date(this.taskActivity.dueDate);
-      maxDate.setTime(dueDate.setMinutes(dueDate.getMinutes() - 30));
-    }
+    try {
+      let now: Date = new Date();
+      now.setMinutes(now.getMinutes() + 30);
+      let defaultDate;
+      if (this.referenceService.checkIsValidString(this.taskActivity.remainder)) {
+        defaultDate = new Date(this.taskActivity.remainder);
+      }
+      let maxDate: Date = new Date();
+      if (this.referenceService.checkIsValidString(this.taskActivity.dueDate)) {
+        let dueDate = new Date(this.taskActivity.dueDate);
+        maxDate.setTime(dueDate.setMinutes(dueDate.getMinutes() - 30));
+      }
 
-    if (this.actionType == 'add') {
-      this.remainderDatePickr = flatpickr('#taskActivityRemainderPicker', {
-        enableTime: true,
-        dateFormat: 'Y-m-d H:i',
-        time_24hr: true,
-        minDate: now,
-        defaultDate: defaultDate,
-        maxDate: maxDate
-      })
-    } else {
-      this.remainderDatePickr = flatpickr('#taskActivityRemainderPicker', {
-        enableTime: true,
-        dateFormat: 'Y-m-d H:i',
-        time_24hr: true,
-        minDate: now,
-        defaultDate: defaultDate,
-        maxDate: maxDate
-      })
-    };
+      if (this.actionType == 'add') {
+        this.remainderDatePickr = flatpickr('#taskActivityRemainderPicker', {
+          enableTime: true,
+          dateFormat: 'Y-m-d H:i',
+          time_24hr: true,
+          minDate: now,
+          defaultDate: defaultDate,
+          maxDate: maxDate
+        })
+      } else {
+        this.remainderDatePickr = flatpickr('#taskActivityRemainderPicker', {
+          enableTime: true,
+          dateFormat: 'Y-m-d H:i',
+          time_24hr: true,
+          minDate: now,
+          defaultDate: defaultDate,
+          maxDate: maxDate
+        })
+      };
+    } catch (error) {
+      console.error('Error initializing remainder picker.');
+    }
   }
 
   fetchAssignToDropDownOptions() {
@@ -237,6 +242,7 @@ export class AddTaskModalPopupComponent implements OnInit {
     }
     this.initializeRemainderPicker();
     this.checkRemainderOptionsVisibility();
+    this.checkAndRefreshRemainder();
   }
 
   fetchTaskActivityByIdForEdit() {
@@ -367,7 +373,23 @@ export class AddTaskModalPopupComponent implements OnInit {
   }
 
   getSelectedAssignedToUserId(event) {
-    this.taskActivity.assignedTo = event['id'];
+    this.taskActivity.assignedTo = event != undefined ? event['id'] : 0;
+    this.validateTask();
+  }
+
+  checkAndRefreshRemainder() {
+    if (this.taskActivity.remainderType == "CUSTOMDATE") {
+      return;
+    }
+    const remainderChecks = {
+      'BEFORE30MIN': this.isDueDateLessThanHalfAnHour(),
+      'BEFORE1HOUR': this.isDueDateLessThanOneHour(),
+      'BEFORE1DAY': this.isDueDateLessThanOneDay(),
+      'BEFORE1WEEK': this.isDueDateLessThanOneWeek()
+    };
+    if (remainderChecks[this.taskActivity.remainderType]) {
+      this.taskActivity.remainderType = '';
+    }
   }
 
 }
