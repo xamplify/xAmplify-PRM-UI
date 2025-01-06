@@ -289,6 +289,9 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               { condition: () => emailTemplateType === "ONE_CLICK_LAUNCH" && !jsonContent.includes("{{campaignName}}"), message: "Whoops! We are unable to save this template because you deleted '{{campaignName}}' tag." },
               { condition: () => emailTemplateType === "ONE_CLICK_LAUNCH" && !jsonContent.includes("{{campaignType}}"), message: "Whoops! We are unable to save this template because you deleted '{{campaignType}}' tag." },
               { condition: () => emailTemplateType === "PAGE_CAMPAIGN_PARTNER" && !jsonContent.includes("{{pageName}}"), message: "Whoops! We are unable to save this template because you deleted '{{pageName}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_PRM_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_PRM_COMPANY" && !jsonContent.includes("{{senderFullName}}"), message: "Whoops! We are unable to save this template because you deleted '{{senderFullName}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_PRM_COMPANY" && !jsonContent.includes("{{VENDOR_COMPANY_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{VENDOR_COMPANY_NAME}}' tag." },
               { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH"].includes(emailTemplateType) && !jsonContent.includes("{{publishedDate}}"), message: "Whoops! We are unable to save this template because you deleted '{{publishedDate}}' tag." },
               { condition: () => ["ASSET_PUBLISH", "SHARE_LEAD", "PAGE_CAMPAIGN_PARTNER"].includes(emailTemplateType) && !jsonContent.includes("{{sharedDate}}"), message: "Whoops! We are unable to save this template because you deleted '{{sharedDate}}' tag." },
               { condition: () => ["SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN"].includes(emailTemplateType) && !jsonContent.includes("{{socialStatusContent}}"), message: "Whoops! We are unable to save this template because you deleted '{{socialStatusContent}}' tag." },
@@ -300,7 +303,7 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
                 message: `Whoops! We are unable to save this template because you deleted '${tag}' tag.`
               })),
               { condition: () => jsonContent.indexOf("<<LoginLink>>") < 0 && emailTemplateType === "JOIN_MY_TEAM", message: "Whoops! We are unable to save this template because you deleted 'LoginLink' tag." },
-              { condition: () => jsonContent.indexOf("<login_url>") < 0 && (emailTemplateType === "JOIN_VENDOR_COMPANY" ||  emailTemplateType === "FORGOT_PASSWORD"), message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
+              { condition: () => jsonContent.indexOf("<login_url>") < 0 && (emailTemplateType === "JOIN_VENDOR_COMPANY" ||  emailTemplateType === "FORGOT_PASSWORD" || emailTemplateType === "JOIN_PRM_COMPANY"), message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("login_url") < 0 && emailTemplateType === "COMPANY_PROFILE_INCOMPLETE", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("pageLink") < 0 && ["SOCIAL_CAMPAIGN", "PAGE_CAMPAIGN_CONTACT", "ADD_DEAL", "DEAL_UPDATE"].includes(emailTemplateType), message: "Whoops! We are unable to save this template because you deleted 'Button' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
@@ -325,14 +328,22 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
     };
     let emailTemplateType = emailTemplate.typeInString
 
-    if("FORGOT_PASSWORD"==emailTemplateType || "ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType){
+    if("FORGOT_PASSWORD"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType){
       var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
       { name: 'Sender Last Name', value: '{{lastName}}' },
       { name: 'Sender Email Id', value: '{{emailId}}' },
+      { name: 'Sender Full Name', value: '{{fullName}}' },
       { name: 'Sender Partner Name', value: '{{PARTNER_NAME}}' },
-      { name: 'Sender Full Name', value: '{{senderFullName}}' },
-      { name: 'Vendor Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
       ];
+    }
+    if("ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_PRM_COMPANY"==emailTemplateType){
+      var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Partner Name', value: '{{PARTNER_NAME}}' },
+        { name: 'Sender Full Name', value: '{{senderFullName}}' },
+        { name: 'Sender Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
+        ];
     }
    if("TRACK_PUBLISH"==emailTemplateType){
       mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
