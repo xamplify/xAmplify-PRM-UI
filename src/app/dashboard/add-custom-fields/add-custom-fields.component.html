@@ -6,7 +6,8 @@
     </div>
     <div class="mt10">
       <label for="html">Object Type <strong class="required">*</strong> </label>
-      <select class="form-control" [(ngModel)]="customField.objectType" [ngModelOptions]="{standalone: true}">
+      <select class="form-control" [(ngModel)]="customField.objectType" [ngModelOptions]="{standalone: true}"
+        [disabled]="true">
         <option [ngValue]="null">None</option>
         <option [ngValue]="'LEAD'">Lead
         </option>

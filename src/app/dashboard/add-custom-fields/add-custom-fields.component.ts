@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { CustomFields } from '../models/custom-fields';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -12,6 +12,7 @@ import { CustomFieldsDto } from '../models/custom-fields-dto';
 export class AddCustomFieldsComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
   @Output() notifySubmitSuccess = new EventEmitter<any>();
+  @Input() opportunityType: any;
   customField = new CustomFields;
   customFieldsDto = new CustomFieldsDto;
   ngxloading: boolean = false;
@@ -27,7 +28,7 @@ export class AddCustomFieldsComponent implements OnInit {
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     if(this.customField.objectType === undefined){
-      this.customField.objectType = null;
+      this.customField.objectType = this.opportunityType;
       this.customFieldsDto.type = null;
     }
   }

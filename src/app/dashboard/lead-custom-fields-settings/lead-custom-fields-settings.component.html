@@ -4,10 +4,10 @@
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
     <div class="scrollbar-x">
       <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
-        <li><a (click)="setActiveTab('menu1')" data-toggle="tab" href="#menu1">Lead Custom
+        <li class="{{isLeadActive}}"><a (click)="setActiveTab('menu1')" data-toggle="tab" href="#menu1">Lead Custom
             fields</a>
         </li>
-        <li><a (click)="setActiveTab('menu2')" data-toggle="tab" href="#menu2">Deal Custom fields</a>
+        <li class="{{isDealActive}}"><a (click)="setActiveTab('menu2')" data-toggle="tab" href="#menu2">Deal Custom fields</a>
         </li>
       </ul>
     </div>
@@ -161,6 +161,6 @@
   </div>
   <div *ngIf="isAddCustomFieldsModelPopUp">
     <app-add-custom-fields (closeEvent)="closeAddCustomFieldsModal($event)"
-      (notifySubmitSuccess)="showCustomFieldSubmitSuccess()"></app-add-custom-fields>
+      (notifySubmitSuccess)="showCustomFieldSubmitSuccess()" [opportunityType]="opportunityType"></app-add-custom-fields>
   </div>
 </div>

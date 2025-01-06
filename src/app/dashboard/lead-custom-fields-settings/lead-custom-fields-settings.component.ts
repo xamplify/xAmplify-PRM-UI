@@ -62,6 +62,8 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
     customFields = new CustomFields;
 	activeTab: string = 'menu1';
 	opportunityType: any;
+	isLeadActive: string = '';
+	isDealActive: string = '';
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -82,12 +84,20 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 
 	setActiveTab(tabName: string) {
 		this.activeTab = tabName;
+		this.isLeadActive = '';
+		this.isDealActive = '';
+		this.isFilterApplied = false;
+		this.isSortApplied = false;
+		this.searchKey = '';
+		this.sortOption = this.sortOptions[0].value;
 		if (tabName === 'menu1') {
 			this.opportunityType = 'LEAD';
+			this.isLeadActive = "active";
 			this.listCustomFields(this.opportunityType);
 		}
 		if (tabName === 'menu2') {
 			this.opportunityType = 'DEAL';
+			this.isDealActive = "active";
 			this.listCustomFields(this.opportunityType);
 		}
 	}
@@ -450,26 +460,34 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
     this.isAddCustomFieldsModelPopUp = true;
   }
 
-  closeAddCustomFieldsModal(event: any) {
-    if (event === "0") {
-      this.isAddCustomFieldsModelPopUp = false;
-      this.listCustomFields(this.opportunityType);
-    }
-  }
+	closeAddCustomFieldsModal(event: any) {
+		if (event === "0") {
+			this.isAddCustomFieldsModelPopUp = false;
+			if (this.opportunityType === 'LEAD') {
+				this.setActiveTab('menu1');
+			} else {
+				this.setActiveTab('menu2');
+			}
+		}
+	}
 
-  showCustomFieldSubmitSuccess(){
-	this.isAddCustomFieldsModelPopUp = false;
-	this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-	this.isFilterApplied = false;
-	this.isSortApplied = false;
-	this.listCustomFields(this.opportunityType);
-  }
+	showCustomFieldSubmitSuccess() {
+		this.isAddCustomFieldsModelPopUp = false;
+		this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+		this.isFilterApplied = false;
+		this.isSortApplied = false;
+		if (this.opportunityType === 'LEAD') {
+			this.setActiveTab('menu1');
+		} else {
+			this.setActiveTab('menu2');
+		}
+	}
 
   confirmDelete(customFieldId: number) {
 	let self = this;
 	this.integrationService.getLeadCountForCustomField(customFieldId).subscribe(data => {
-	  let leadText = data.data > 0 ? `Deleting this Custom Field will also remove the data of ${data.data} lead(s) linked to it.` 
-								   : "This Custom Field will be deleted, with no impact on any leads.";
+	  let leadText = data.data > 0 ? `Deleting this Custom Field will also remove the data of ${data.data} ${this.opportunityType}'s linked to it.` 
+								   : `This Custom Field will be deleted, with no impact on any ${this.opportunityType}'s.`;
 	  swal({
 		title: 'Are you sure?',
 		text: leadText,
