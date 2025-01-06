@@ -1,0 +1,15 @@
+#pdf-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pdf-page {
+    margin-bottom: 20px;
+  }
+  
+  canvas {
+    cursor: pointer;
+  }
+  
