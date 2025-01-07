@@ -53,7 +53,7 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
     this.partnerModuleName = isCustomNameDefined ? customName : " Partner";
 
     if (!this.isDetailedAnalytics) {
-      this.infoName = (this.applyFilter && this.authenticationService.isTeamMember() ? " My " : " All ") +  this.partnerModuleName;
+      this.infoName = `${this.applyFilter && this.authenticationService.isTeamMember() ? " My " : " All "}${this.partnerModuleName}s`;
     } else {
       this.infoName = ` the ${this.partnerModuleName}`;
     }
