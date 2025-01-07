@@ -1,0 +1,96 @@
+<div class="modal fade right" id="previewMeetingModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeMeetingModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">View Meeting</h4>
+      </div>
+      <div class="modal-body">
+        <app-response-message class="pg8" [customResponse]="customResponse"
+          *ngIf="customResponse?.isVisible"></app-response-message>
+        <div class="my-container">
+          <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        </div>
+        <!-- calender -->
+        <div class="event-container" *ngIf="!ngxLoading && !customResponse?.isVisible">
+          <div class="event-header">
+            <div [ngClass]="meetingActivity?.status == 'active' ? 'active-event-icon':'canceled-event-icon'"></div>
+            <div>
+              <span class="event-title">{{meetingActivity?.name}}</span>
+              <div *ngIf="meetingActivity != undefined" class="activity-title"><span class="activity-date"><i
+                    class="fa fa-calendar"></i><app-date-range-display [startDate]="meetingActivity?.startTime"
+                    [endDate]="meetingActivity?.endTime"></app-date-range-display>
+                </span></div>
+            </div>
+          </div>
+          <div class="event-header" *ngIf="meetingActivity?.meetingUrl != undefined">
+            <svg class="vid_m" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="20" height="20"
+              fill="currentColor">
+              <path
+                d="M336.2 64H47.5C21.3 64 0 85.3 0 111.5v289C0 426.7 21.3 448 47.5 448h288.8c26.2 0 47.5-21.3 47.5-47.5V111.5c0-26.2-21.3-47.5-47.5-47.5zm225.6 51.2l-104 70.7V326l104 70.7c15.9 10.8 38.2-.1 38.2-19.8V135c0-19.8-22.3-30.7-38.2-19.8z">
+              </path>
+            </svg>
+            <span>
+              <a href="{{meetingActivity?.meetingUrl}}" class="btn btn-primary" target="_blank">
+                Join Meeting
+              </a>
+            </span>
+            <button class="copy-btn" #meetingUrl value="{{meetingActivity?.meetingUrl}}"
+              (click)="copyMeetingUrl(meetingUrl)">
+              <i *ngIf="isMeetingUrlCopied" class="fa fa-check copy_icon p10" aria-hidden="true"></i><i
+                *ngIf="!isMeetingUrlCopied" class="fa fa-clone copy_icon p10" aria-hidden="true"></i></button>
+          </div>
+
+          <div class="event-header">
+            <i aria-hidden="true" class="fa fa-clock meet_duration mr25"></i>
+            <span>
+              {{meetingActivity?.duration}}
+              <span
+                [ngClass]="meetingActivity?.status == 'active' ? 'view-banner meeting-active-status-btn' : 'view-banner meeting-canceled-status-btn'">{{meetingActivity?.status}}</span>
+            </span>
+          </div>
+
+          <div class="event-header">
+            <svg focusable="false" width="20" height="20" viewBox="0 0 24 24" class="mr25">
+              <path
+                d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
+              </path>
+            </svg>
+            <div class="guest-list" *ngIf="meetingActivity?.guests?.length > 0">
+              <p><strong>{{meetingActivity?.guests?.length}} guest(s)</strong></p>
+              <div class="guest-item" *ngFor="let guest of meetingActivity.guests; let i = index"
+                [class.hidden]="!showAllGuests && i >= 3">
+                <span *ngIf="guest?.iconUrl?.length == 0" class="avatar-initial">{{guest?.firstLetter}}</span>
+                <img *ngIf="guest?.iconUrl?.length > 0" src="{{guest?.iconUrl}}" alt="Guest i" class="guest-avatar">
+                <div>
+                  <p *ngIf="guest.name != undefined" data-toggle="tooltip" data-placement="bottom"
+                    title="{{guest?.name}}" class="guest-name">{{guest?.name}}</p>
+                  <p *ngIf="guest.name == undefined" data-toggle="tooltip" data-placement="bottom"
+                    title="{{guest?.emailId}}" class="guest-role m0">{{guest?.emailId}}</p>
+                  <p *ngIf="guest?.type != undefined" class="organizer-role m0">({{guest?.type}})</p>
+                </div>
+              </div>
+              <div *ngIf="meetingActivity?.guests?.length > 3">
+                <button class="btn btn-link" (click)="toggleGuests()"><i *ngIf="!showAllGuests"
+                    class="fas fa-angle-down icon"></i><i *ngIf="showAllGuests" class="fas fa-angle-up icon"></i>
+                  {{ showAllGuests ? 'Show Less' : 'Show More' }} Guests
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="meeting_desc" *ngIf="meetingActivity?.description != undefined">
+            <span class="fs-13">
+              <div [innerHTML]="meetingActivity?.description"></div>
+            </span>
+          </div>
+        </div>
+        <!-- End -->
+      </div>
+      <div class="modal-footer meeting_footer">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeMeetingModal()" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+</div>

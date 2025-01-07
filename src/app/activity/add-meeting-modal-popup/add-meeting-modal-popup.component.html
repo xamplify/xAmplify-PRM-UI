@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeMeetingModal()" data-dismiss="modal">Cancel</button>
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeMeetingModal()" data-dismiss="modal">Close</button>
       </div>
     </div>
     <div *ngIf="showMeetingSchedulingInputField" class="modal-content">
@@ -25,11 +25,11 @@
           *ngIf="customResponse?.isVisible"></app-response-message>
         <div>
           <div class="alert alert-info">
-            <p>Please provide your Calendly Meeting Scheduling Link, To schedule meetings with others through xAmplify.</p>
+            <p>Please provide your Calendly link to facilitate scheduling meetings with others.</p>
           </div>
-          <label for="subjectLine">Calendly Meeting Scheduling Link<span class="text-danger">*</span></label>
+          <label for="subjectLine">Calendly Scheduling Link<span class="text-danger">*</span></label>
           <input type="text" (input)="validateURL()" [(ngModel)]="schedulingUrl"
-            placeholder="Enter calendly meeting scheduling link" class="form-control">
+            placeholder="Enter calendly scheduling link" class="form-control">
         </div>
       </div>
       <div class="modal-footer">
