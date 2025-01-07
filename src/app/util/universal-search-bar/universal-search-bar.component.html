@@ -13,7 +13,7 @@
       }} </span>
       <span [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'" class="dropdown-arrow"></span>
     </div>
-    <ul class="universal-dropdown-menu" [class.show]="isDropdownVisible">
+    <ul class="universal-dropdown-menu mb_search" [class.show]="isDropdownVisible">
       <li (click)="selectDropdownOption('All','fa-solid fa-universal-access')"  data-toggle="tooltip" data-placement="bottom" title="All"><i class="fa fa-solid fa-universal-access" >‌</i>All</li>
       <li (click)="selectDropdownOption('Assets','fa-tasks')" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner" data-toggle="tooltip" data-placement="bottom" title="Assets"><i aria-hidden="true" class="fa fa-tasks"></i>Assets</li>
        <li (click)="selectDropdownOption('Tracks','fa-graduation-cap')" *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner" data-toggle="tooltip" data-placement="bottom" title="Tracks"><i class="fa fa-graduation-cap"></i>Tracks</li>

@@ -922,7 +922,7 @@ textarea:focus {
 .mix-filter li:hover,
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,.mix-filter-li-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter li.mix-filter-li-selected {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
@@ -2370,7 +2370,7 @@ color: var(--icon-color) !important;
   color: var(--icon-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.activity_card,.activity_bgcolor,.view_emailcard,.email_content{
+.activity_card,.activity_bgcolor,.view_emailcard,.email_content,.view_task_card{
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }
@@ -2463,4 +2463,20 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
   background-color: unset !important;
   border: 1px solid var(--border-color) !important;
   margin: 10px 0px;
+}
+.activity-updated-status-btn-v2{
+  color: var(---text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+@media (min-width: 657px) and (max-width: 870px) {
+  .tab_navbar {
+    background-color: var(--top-bg-color) !important;
+    border-bottom:none!important;
+    box-shadow: none !important;
+  }
+}
+@media (max-width: 767px) {
+  .page-header.navbar {
+    background-color: var(--top-bg-color) !important; 
+  }
 }

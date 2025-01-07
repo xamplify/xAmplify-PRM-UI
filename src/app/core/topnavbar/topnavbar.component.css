@@ -359,3 +359,24 @@ li.divider-bottom {
   padding: 8px;
   border-width: 1px;
 }
+/* mobile view  */
+@media screen and (max-width:570px){
+  .mb_notify{
+    position: fixed !important;
+    inset: 0px auto auto 0px;
+    margin: 0px;
+    transform: translate3d(-83.25px, 132.25px, 0px);
+  }
+  .mb_profiles{
+    position: fixed !important;
+    inset: 0px auto auto 0px;
+    margin: 0px;
+    transform: translate3d(-32.25px, 135.25px, 0px);
+  }
+  .mb_lang{
+    position: fixed !important;
+    inset: 0px auto auto 0px;
+    margin: 0px;
+    transform: translate3d(-4.25px, 137.25px, 0px);
+  }
+  }

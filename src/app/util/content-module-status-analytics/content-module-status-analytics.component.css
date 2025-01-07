@@ -1,0 +1,62 @@
+.dashboard-stat {
+    border-radius: 10px !important;
+    margin-bottom: 0px !important;
+}
+
+.sky-blue {
+    color: #00a6e8;
+}
+
+.dashboard-stat .visual {
+    height: 60px;
+}
+
+.details {
+    right: -7px !important;
+}
+
+.dashboard-stat .details .number {
+    padding-top: 10px;
+}
+
+.numberCss {
+    font-weight: 300 !important;
+}
+
+.filterNumber {
+    position: absolute;
+    left: 0;
+    top: 7px;
+}
+
+@media (max-width: 768px) {
+    .pb6 {
+        padding-bottom: 6px;
+    }
+
+    .fz-16 {
+        font-size: 16px !important;
+    }
+}
+
+.dashboard-stat .more {
+    bottom: -5px;
+    position: relative;
+}
+
+.view-banner-green {
+    background-color: #26a69a;
+}
+
+.grey {
+    background-color: #8a8282c4;
+}
+
+.danger {
+    color: red;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}

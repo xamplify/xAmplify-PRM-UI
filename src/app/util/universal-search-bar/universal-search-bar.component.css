@@ -1,0 +1,8 @@
+@media screen and (max-width:570px){
+.mb_search{
+    position: fixed !important;
+    inset: 0px auto auto 0px;
+    margin: 0px;
+    transform: translate3d(5.75px, 124.25px, 0px);
+  }
+}

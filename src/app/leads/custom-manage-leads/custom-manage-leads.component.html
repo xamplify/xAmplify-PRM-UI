@@ -1,5 +1,5 @@
 <div class="page-content" *ngIf="!showLeadForm && !showDealForm">
-  <div class="page-bar" style="height:48px;">
+  <div class="page-bar mb-height_auto" style="height:48px;">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i>
         <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
@@ -19,7 +19,7 @@
       </li>
       <li>
         <a (click)="goBackToContactDetailsPage()" translate>
-          <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Details
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Journey
         </a>
       </li>
       <li>
