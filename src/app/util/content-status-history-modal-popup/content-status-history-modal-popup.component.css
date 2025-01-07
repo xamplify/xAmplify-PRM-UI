@@ -421,4 +421,15 @@ all the elements inside the author comments. */
     width: 7px;
     height: 7px;
 }
+
+.view-banner-content {
+    background-color: #00a6e8;
+    color: #fff !important;
+    padding: 5px 6px;
+    text-align: center;
+    font-size: 10px !important;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
 .history_popup { width : 48% !important;}

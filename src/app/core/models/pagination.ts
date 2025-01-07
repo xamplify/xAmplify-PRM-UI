@@ -158,4 +158,12 @@ export class Pagination {
 
 	selectedTileCategory: string = "";
 
+	approvalStatus: string = "";
+
+	approvalStatusUpdatedBy: number;
+
+	approvalStatusUpdatedTimeInString: string = "";
+	
+	createdById: number;
+
 }

@@ -488,10 +488,16 @@ export class Properties {
 	COMPANY_PROFILE_NAME_PARTNER_INFO = "Non-editable alphanumeric field to ensure unique partner profiles and prevent duplicates."
 	
 	/** XNFR-781 **/
-	assetApprovalConfigurationSettings: string = "Asset Approval/Rejection";
-	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Assets registered by your Team Tembers.";
+	assetApprovalConfigurationSettings: string = "Content Approval Settings";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Assets created by your Team Tembers.";
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Assets that are neither rejected nor approved will be automatically Approved!";
-
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject assets submitted by your team before they are available for use. An email will be sent accordingly."
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Tracks created by your Team Tembers.";
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Tracks that are neither rejected nor approved will be automatically Approved!";
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject tracks submitted by your team before they are available for use. An email will be sent accordingly."
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Playbooks created by your Team Tembers.";
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Playbooks that are neither rejected nor approved will be automatically Approved!";
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject playbooks submitted by your team before they are available for use. An email will be sent accordingly."
 	/***** XNFR-807 *****/
 	redistributed_campaigns = "Total Redistributed Campaigns by";
     teamMembers_Info = "Total Team Members of";
