@@ -1,10 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { UtilService } from 'app/core/services/util.service';
 import { ImageCropperComponent } from 'app/common/image-cropper/component/image-cropper.component';
 import { ImageCroppedEvent } from 'app/common/image-cropper-v2/interfaces/image-cropped-event.interface';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { MY_PROFILE_MENU_CONSTANTS } from 'app/constants/my-profile-menu-constants';
 
 @Component({
   selector: 'app-upload-image',
@@ -14,6 +16,7 @@ import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfac
 export class UploadImageComponent implements OnInit {
 
   @Input() moduleName: string;
+  @Output() uploadImageCloseModalPopUpEventEmitter = new EventEmitter();
   squareCropperSettings: any;
   squareData: any;
   cropRounded = false;
@@ -31,9 +34,14 @@ export class UploadImageComponent implements OnInit {
   minScale: number = 0.1;
   canvasRotation = 0;
   rotation = 0;
-  constructor(private authenticationService: AuthenticationService, private utilService: UtilService) { }
+  signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
+  constructor(private authenticationService: AuthenticationService, private utilService: UtilService,private referenceService:ReferenceService) { }
 
   ngOnInit() {
+    this.referenceService.openModalPopup("uploadImage-modal");
+    if(this.signatureMenuHeader==this.moduleName){
+      this.headerText = "Upload Your Signature";
+    }
   }
 
   closeModalAndResetValues() {
@@ -43,6 +51,7 @@ export class UploadImageComponent implements OnInit {
     this.croppedImage = '';
     this.showCropper = false;
     this.isCropperVisible = false;
+    this.uploadImageCloseModalPopUpEventEmitter.emit();
   }
 
   reCropImage() {
