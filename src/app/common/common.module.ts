@@ -199,6 +199,7 @@ import { TeamMemberWiseAssetDetailsComponent } from 'app/util/team-member-wise-a
 import { DigitalSignatureComponent } from 'app/util/digital-signature/digital-signature.component';
 import { SignatureComponent } from 'app/util/signature/signature.component';
 import { UploadImageComponent } from 'app/util/upload-image/upload-image.component';
+import { SignatureModalComponent } from 'app/util/signature-modal/signature-modal.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -240,7 +241,7 @@ import { UploadImageComponent } from 'app/util/upload-image/upload-image.compone
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
-		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent
+		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,SignatureModalComponent
 	],
 
 
@@ -280,7 +281,7 @@ import { UploadImageComponent } from 'app/util/upload-image/upload-image.compone
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
-		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent
+		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,SignatureModalComponent
 
 	]
 
