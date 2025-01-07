@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 @Component({
   selector: 'app-digital-signature',
   templateUrl: './digital-signature.component.html',
-  styleUrls: ['./digital-signature.component.css']
+  styleUrls: ['./digital-signature.component.css'],
 })
 export class DigitalSignatureComponent implements OnInit {
 
@@ -30,6 +30,7 @@ export class DigitalSignatureComponent implements OnInit {
     }
   }
   isDrawing: boolean = false; // To track mouse press state
+  
   getPosition(event: MouseEvent | TouchEvent): { x: number; y: number } {
     const canvas = this.canvasRef.nativeElement as HTMLCanvasElement;
     const rect = canvas.getBoundingClientRect();
