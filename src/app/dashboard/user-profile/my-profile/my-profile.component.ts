@@ -386,7 +386,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	vendorSharedPagesLabel="Vendor Showcase";
 	partnerSharedPagesLabel="Partner Showcase";
 
-	assetApprovalConfigurationSettings: boolean = false;
+	approvalConfigurationSettings: boolean = false;
 
 	showCalendarIntegrations: boolean = false;
 	islandScapeLabel: boolean;
@@ -2276,9 +2276,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.vendorLandscapeLabel;
 			this.landscapeLabel = this.properties.my_Landscape_Vendor;
-		} else if (this.activeTabName == "assetApprovalConfigurationSettings") {
-			this.assetApprovalConfigurationSettings = true;
-			this.activeTabHeader = this.properties.assetApprovalConfigurationSettings;
+		} else if (this.activeTabName == "approvalConfigurationSettings") {
+			this.approvalConfigurationSettings = true;
+			this.activeTabHeader = this.properties.approvalConfigurationSettings;
 		} else if (this.activeTabName == 'calendarIntegrations') {
 			this.showCalendarIntegrations = true;
 			this.activeTabHeader = this.properties.calendarIntegrations;
