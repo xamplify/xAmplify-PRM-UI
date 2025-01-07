@@ -1,0 +1,79 @@
+
+<div class="modal right fade" id="cropLogoImage" tabindex="-1" role="dialog" aria-labelledby="cropLogoImage"
+	data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog imgCrop-modal" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+        <a class="close-circle" data-dismiss="modal" (click)="closeModalAndResetValues()"><i class="fa fa-times"
+            aria-hidden="true"></i></a>
+				<h4 class="modal-title" id="cropLogoImage">{{headerText}}</h4>
+			</div>
+			<div class="modal-body" style="overflow-y: unset !important;">
+        <button class="btn btn-primary fileinput-button-css pd_left1" *ngIf="!imageChangedEvent; else uploadButton">
+          Upload Image <input style="height: 36px;" id="custom-input" type="file"
+            (change)="uploadImage($event)">
+        </button>
+        <button class="btn btn-primary" (click)="reCropImage()" [disabled]="isCropperVisible">Re-crop</button>
+				<ng-template #uploadButton>
+          <button class="btn btn-primary fileinput-button-css pd_left1">
+              Upload Image <input style="height: 36px;" id="custom-input" type="file" (change)="uploadImage($event)">
+          </button>
+        </ng-template>
+				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
+				<div>
+					<ngx-loading [show]="loadingcrop"	[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
+					<div [hidden]="!imageChangedEvent">
+						<app-img-croppr-v2 [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="3 / 1"
+							[resizeToWidth]="800" [cropperMinWidth]="500" [onlyScaleDown]="true" [roundCropper]="false"
+							[alignImage]="'left'" [style.display]="showCropper ? null : 'none'" format="png"
+							[transform]="transform" (imageCropped)="cropImage($event)"
+							(imageLoaded)="loadImage()" (cropperReady)="loadCropperReady($event)"
+							(loadImageFailed)="loadImageFailed()">
+						</app-img-croppr-v2>
+					</div>
+
+					<div *ngIf="!imageChangedEvent && !!imageUrl">
+						<img [src]="authenticationService.MEDIA_URL + imageUrl" style="width:100%; height: 227px; margin-bottom: 5px;" />
+					</div>	  
+				</div>
+				<div class="d-flex justify-content-between" style="padding-top: 5px;">
+					<div class="button-group" style="position: relative;text-align:left">
+						<button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatio()"	[disabled]="!showCropper">
+							{{containWithinAspectRatio? 'Fill Aspect Ratio'	: 'Contain Within Aspect Ratio'}}
+						</button>
+						<button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper || scale <= minScale">
+              <i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
+						</button>
+						<button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper">
+              <i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
+						</button>
+						<button class="btn-info aspect_ratio" (click)="resetImage()" [disabled]="!showCropper">
+              <i class="fa fa-refresh" title="reset" data-toggle="tooltip"	aria-hidden="true"></i></button>
+					</div>
+					<div>
+						<button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="saveCroppedImage()">
+              <span class="btn btn-primary transition txt_pd-top3">Save	Changes</span>
+            </button>
+					</div>
+				</div>
+				<div>
+					<ul style="padding: 0 15px;">
+						<li>For optimal results, your logo should fit within the
+							white rectangle.</li>
+						<li>If you would like to use a different logo in an email
+							template, you can change it during the template design process.</li>
+						<li>
+							Please Upload .jpg, .jpeg, .png, .webp files only.
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<svg id="svg-filter">
+		<filter id="svg-blur">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+		</filter>
+	</svg>
+</div>
