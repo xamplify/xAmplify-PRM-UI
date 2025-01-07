@@ -1485,5 +1485,12 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         const url = this.REST_URL + "teamMember/invite-team-member/analytics/type/" + statusType + "?userId=" + loggedInUserId + "&access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
+
+    getPartnersFilter() {
+        var url = this.REST_URL + "admin/getTeamMemberPartnerFilter/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+      }
     
 }

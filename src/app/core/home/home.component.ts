@@ -579,15 +579,20 @@ export class HomeComponent implements OnInit {
 
   getfilterOption(){
     this.loader = true;
-    this.authenticationService.getPartnersFilter().subscribe(
+    let partnerFilterOption ;
+    this.dashBoardService.getPartnersFilter().subscribe(
       response => {
         if (response.statusCode == 200) {
-          this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, response.data);
+          partnerFilterOption = response.data;
+          // localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, JSON.stringify(response.data));
+          // this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, response.data);
         }
         this.loader = false;
       }, _error => {
         this.loader = false;
-      }
+    },()=>{
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, partnerFilterOption);
+    }
     )
   }
 

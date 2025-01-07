@@ -7,15 +7,15 @@
             </div>
             <div class="modal-body filter-modal-body">
                 <div _ngcontent-c61="" class="alert alert-info"> {{ selectedTeamMemberFilterOption == 0 ? properties?.all_Partners_Info : properties?.my_Partner_Info}}</div>
-                <div class="clearfix">
-                    <div class="col-xs-12 col-sm-2 col-md-3">
+                <div class="clearfix teamfilter_select">
+                    <div class="teamcol-auto">
                         <label class="form-check-label border-none">
                             <input class="form-check-input radioButton_shadow" type="radio" name="teamMemberFilter"
                                 [(ngModel)]="selectedTeamMemberFilterOption" [value]="0"> All {{authenticationService?.partnerModule?.customName}}s
                         </label>
                         <i *ngIf = "selectedTeamMemberFilterOption!=1" class="fa fa-check-circle-o success display-inline" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Active"></i>
                     </div>
-                    <div class="col-xs-12 col-sm-10 col-md-9">
+                    <div class="teamcol-auto">
                         <label class="form-check-label border-none">
                             <input class="form-check-input radioButton_shadow" type="radio" name="teamMemberFilter"
                                 [(ngModel)]="selectedTeamMemberFilterOption" [value]="1"> My
