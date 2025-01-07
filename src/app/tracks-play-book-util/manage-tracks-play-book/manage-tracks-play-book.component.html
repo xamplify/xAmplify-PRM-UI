@@ -183,6 +183,11 @@
                                                     'bgc-orange': learningTrack?.approvalStatus === approvalStatus.CREATED}" style="white-space: nowrap;" translate>
                                                 {{getApprovalStatusText(learningTrack.approvalStatus)}}
                                             </span>
+                                            <span style="white-space: nowrap;"
+												*ngIf="!isApprovalRequiredForType() && !isPartnerView && learningTrack.approvalStatus == approvalStatus.REJECTED"
+												class="view-banner asset-approval-labele-spacing bgc-red" translate>
+												{{getApprovalStatusText(learningTrack.approvalStatus)}}
+											</span>
 
                                         </td>
                                         <td class="hidden-xs text-center">
@@ -264,7 +269,8 @@
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <!-- XNFR-824 -->
-                                                <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+                                                <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)" data-toggle="tooltip" data-placement="top"
+                                                title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
                                                     <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
                                                 </a>
                                                 <a class="custom-icon" *ngIf="learningTrack.canDelete && !isPartnerView"
@@ -344,6 +350,10 @@
                                     'bgc-orange': learningTrack?.approvalStatus === approvalStatus.CREATED}" style="white-space: nowrap; margin-left: 13px;float: left;" translate>
                                     {{getApprovalStatusText(learningTrack.approvalStatus)}}
                                 </span>
+                                <span style="white-space: nowrap; margin-left: 13px;float: left;" *ngIf="!isApprovalRequiredForType() && !isPartnerView && learningTrack.approvalStatus == approvalStatus.REJECTED"
+                                    class="view-banner asset-approval-labele-spacing bgc-red" translate>
+                                    {{getApprovalStatusText(learningTrack.approvalStatus)}}
+                                </span>
                             </div>
                             <!---XNFR-327--->
                             <div class="ribbon tab-ribbon">
@@ -397,7 +407,9 @@
                                     </a>
                                 </div>
                                 <!-- XNFR-824 -->
-                                <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+                                <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
                                     <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
                                 </a>
 

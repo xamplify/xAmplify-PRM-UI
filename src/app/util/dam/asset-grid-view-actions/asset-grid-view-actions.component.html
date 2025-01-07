@@ -40,7 +40,8 @@
 		title="View Details" (click)="viewDetails(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView"
-		(click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+		(click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top"
+		title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
 		<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete custom-icon" data-toggle="tooltip"

@@ -87,6 +87,12 @@
 										'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
 									{{getApprovalStatusText(asset.approvalStatus)}}
 								</span>
+								<span
+									*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED"
+									class="view-banner asset-approval-labele-spacing bgc-red" translate>
+									{{getApprovalStatusText(asset.approvalStatus)}}
+								</span>
+								
 							 </div>
 							 <h6  class="xamplify-ellipsis GridViewCotent pt10">
 								<span *ngIf="isPartnerView"> <b>Published On: </b></span>

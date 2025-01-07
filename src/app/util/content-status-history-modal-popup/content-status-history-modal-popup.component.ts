@@ -57,7 +57,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 	};
 
   constructor( private referenceService: ReferenceService,
-      private authenticationService: AuthenticationService,
+      public authenticationService: AuthenticationService,
       private damService: DamService,
       public httpRequestLoader: HttpRequestLoader,
       public properties: Properties,
