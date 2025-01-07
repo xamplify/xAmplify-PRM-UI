@@ -17,6 +17,7 @@ import { ThemePropertiesDto } from "app/dashboard/models/theme-properties-dto";
 import { CompanyThemeActivate } from "app/dashboard/models/company-theme-activate";
 import { ThemeDto } from "app/dashboard/models/theme-dto";
 import { XAMPLIFY_CONSTANTS } from "app/constants/xamplify-default.constants";
+import { UtilService } from "../services/util.service";
 
 
 declare var $: any;
@@ -53,8 +54,13 @@ export class HomeComponent implements OnInit {
     public videoUtilService: VideoUtilService,
     private vanityURLService: VanityURLService,
     public dashBoardService: DashboardService,
+    public utilService: UtilService,
     private renderer: Renderer
+    
   ) {
+    if(this.utilService.isLoggedAsTeamMember() || this.authenticationService.isTeamMember()) {
+      this.getfilterOption();
+    }
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
     /**** XNFR-134 ****/
@@ -569,6 +575,20 @@ export class HomeComponent implements OnInit {
             this.loader = false;
           });
     }
+  }
+
+  getfilterOption(){
+    this.loader = true;
+    this.authenticationService.getPartnersFilter().subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, response.data);
+        }
+        this.loader = false;
+      }, _error => {
+        this.loader = false;
+      }
+    )
   }
 
 }

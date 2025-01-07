@@ -80,7 +80,8 @@ button.search-box-item-click:hover{color: initial !important;}
 i.IconCustomization, 
 .gridIconCustomization a,
 .IconCustomizationcondition a i,
-.setting-icon-cu {
+.setting-icon-cu,
+.dropdown-menu li > a > [class*=" fa-"] {
   color : var(--custom-icon-color) !important;
   border: 1px solid var(--custom-icon-border-color) !important;
   background-color: var(--custom-icon-hover-color) !important;
@@ -95,6 +96,7 @@ i.fa[class*="fa-"].IconCustomization:hover {
 background: var(--custom-icon-color) !important;
 border: 1px solid var(--custom-icon-border-color) !important; 
 color : var(--custom-icon-hover-color) !important;
+box-shadow: none !important;
 }
 /*** Sudha Sri(20-6-2024)***/
 .setting-icon-cu .gearDropdownMenu:hover, i.fa.fa-envelope-o:hover,
@@ -119,7 +121,7 @@ button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, but
 button.fa.fa-th-list.btn-xs.l-g-view.mr_4, button.fa.fa-th-large.btn-xs.l-g-view.mr_4, 
 button.fa.fa-th-list.btn-xs.l-g-view, button.fa.fa-th-large.btn-xs.l-g-view,
 button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th, 
-button.btn.btn-xs.hidden-xs.l-g-view{color:#fff !important;}
+button.btn.btn-xs.hidden-xs.l-g-view{color: #000 !important;}
 .clickicons, .del-icon {
   animation: none !important;
   background: none !important;}
@@ -141,3 +143,4 @@ button.btn.btn-xs.hidden-xs.l-g-view{color:#fff !important;}
     box-shadow: none !important;
   }
   /*** XNFR-758 ***/
+  

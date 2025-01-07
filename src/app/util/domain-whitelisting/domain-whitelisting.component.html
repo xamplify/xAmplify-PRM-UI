@@ -69,8 +69,8 @@
           <div style="display:flex; height:45px;">
             <input type="text" [ngModel]="signUpUrl" class="form-control" readonly="readonly" #signUpUrlInput><br>
             <div>
-              <a class="button_blue" id="right" (click)="copySignUpUrl(signUpUrlInput)">
-                <span class="btn btn-primary transition copy_link">Copy Url</span>
+              <a class="btn btn-primary" id="right" (click)="copySignUpUrl(signUpUrlInput)">
+                Copy Url
               </a>
             </div>
           </div>
@@ -82,10 +82,9 @@
           <app-response-message *ngIf="isTeamMemberDomains || isPartnerDomains" [customResponse]="customResponse"></app-response-message>
           <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align mt10">
             <!--Add a Domain-->
-            <button id="add_domain" class="button bgcolor-unset mrgn_lft0 p0 px-9" (click)="addDomainModalOpen()">
-              <span class="btn Btn-Green transition txt_pd-top3 pd_lft8">Add Domain
+            <button id="add_domain" class="btn Btn-Green" (click)="addDomainModalOpen()">
+             Add Domain
                 <i class="fa fa-plus" style="font-size: 12px; margin-left: 2px;"></i>
-              </span>
             </button>
           </div>
           <!--Search Option-->

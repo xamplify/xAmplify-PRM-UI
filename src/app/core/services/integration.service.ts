@@ -260,9 +260,9 @@ export class IntegrationService {
         return this.authenticationService.callPostMethod(url, request);
     }
 
-    getCustomFields() {
+    getCustomFields(opportunityType: any) {
         let loggedInUserId = this.authenticationService.getUserId();
-        let url = this.authenticationService.REST_URL + `/customFields/${loggedInUserId}?access_token=${this.authenticationService.access_token}`
+        let url = this.authenticationService.REST_URL + `/customFields/${loggedInUserId}/${opportunityType}?access_token=${this.authenticationService.access_token}`
         return this.authenticationService.callGetMethod(url);
     }
 

@@ -1,5 +1,5 @@
 <app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
-	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView">
+	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded">
 </app-content-module-status-analytics>
 
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
@@ -209,8 +209,9 @@
 															</a>
 
 															<!-- comment/history -->
-															<a *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
-																	<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+																	<div class="clickicons"></div>
 															</a>
 															
 															<!--Delete-->
@@ -420,8 +421,9 @@
 																				<div class="clickicons"></div>
 																			</a>
 
-																			<a *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
-																				<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+																				<div class="clickicons"></div>
 																			</a>
 																			
 																			<a *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
@@ -725,8 +727,10 @@
 	(notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
 
 <!-- XNFR-781  -->
-<app-content-status-history-modal-popup *ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
- [damId]="selectedDamId" [createdByAnyAdmin]="createdByAnyAdmin" [assetName]="assetName" [assetCreatedById]="assetCreatedById"
-  [assetCreatedByFullName]="assetCreatedByFullName"
-	(closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+<app-content-status-history-modal-popup
+	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName"
+	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
 </app-content-status-history-modal-popup>

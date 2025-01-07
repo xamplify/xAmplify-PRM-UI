@@ -1,119 +1,129 @@
-  <div class="page-content">
-  	<div class="page-bar">
-		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
-				<i class="fa fa-angle-right"></i></li>
-			<li><a>{{properties?.vendorInvites}}</a></li>
-		</ul>
-	</div>
-    <div class="row">
-    
-    
-     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-      <a class="dashboard-stat dashboard-stat blue" [class.disabled]="allVendorsCount == 0" (click)="listOfVendorRequestReports('ALL')"
-      [class.grey]="statusType != 'ALL'">
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li *ngIf="!isTeamMemberRequest"><a>{{properties?.vendorInvites}}</a></li>
+      <li *ngIf="isTeamMemberRequest">
+        <a [routerLink]="['/home/team/add-team']">Add/Manage Team Members</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li *ngIf="isTeamMemberRequest"><a>{{properties?.teamMemberInvites}}</a></li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+      <a class="dashboard-stat dashboard-stat blue" [class.disabled]="allVendorsCount == 0"
+        (click)="listOfRequestReports('ALL')" [class.grey]="statusType != 'ALL'">
         <div class="visual">
-          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"  [ngStyle]="{'color': statusType == 'ALL' ? '#white' : '#ccc' }"
-              *ngIf="statusType == 'ALL'" ></i>
+          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"
+            [ngStyle]="{'color': statusType == 'ALL' ? '#white' : '#ccc' }" *ngIf="statusType == 'ALL'"></i>
         </div>
         <div class="details">
           <div class="number white">{{allVendorsCount}}</div>
           <div class="desc white">All</div>
         </div>
         <span class="morePadding">
-          <a class="more white" [class.grey]="statusType != 'ALL'"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+          <a class="more white" [class.grey]="statusType != 'ALL'"> Detailed view <i
+              class="m-icon-swapright m-icon-white"></i></a>
         </span>
       </a>
     </div>
-     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-      <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.disabled]="approvedVendorsCount == 0" (click)="listOfVendorRequestReports('APPROVED')"
-      [class.grey]="statusType != 'APPROVED'">
+
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+      <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.disabled]="approvedVendorsCount == 0"
+        (click)="listOfRequestReports('APPROVED')" [class.grey]="statusType != 'APPROVED'">
         <div class="visual">
-          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"  [ngStyle]="{'color': statusType == 'APPROVED' ? '#white' : '#ccc' }"
-              *ngIf="statusType == 'APPROVED'" ></i>
+          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"
+            [ngStyle]="{'color': statusType == 'APPROVED' ? '#white' : '#ccc' }" *ngIf="statusType == 'APPROVED'"></i>
         </div>
         <div class="details">
           <div class="number white">{{approvedVendorsCount}}</div>
           <div class="desc white"> Approved</div>
         </div>
         <span class="morePadding">
-          <a class="more white" [class.grey]="statusType != 'APPROVED'"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+          <a class="more white" [class.grey]="statusType != 'APPROVED'"> Detailed view <i
+              class="m-icon-swapright m-icon-white"></i></a>
         </span>
       </a>
     </div>
-     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-      <a class="dashboard-stat dashboard-stat purple" [class.disabled]="invitedVendorsCount == 0" (click)="listOfVendorRequestReports('INVITED')"
-      [class.grey]="statusType != 'INVITED'">
+
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+      <a class="dashboard-stat dashboard-stat purple" [class.disabled]="invitedVendorsCount == 0"
+        (click)="listOfRequestReports('INVITED')" [class.grey]="statusType != 'INVITED'">
         <div class="visual">
-           <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"  [ngStyle]="{'color': statusType == 'INVITED' ? '#white' : '#ccc' }"
-              *ngIf="statusType == 'INVITED'" ></i>
+          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"
+            [ngStyle]="{'color': statusType == 'INVITED' ? '#white' : '#ccc' }" *ngIf="statusType == 'INVITED'"></i>
         </div>
         <div class="details">
           <div class="number">{{invitedVendorsCount}}</div>
           <div class="desc">Invited</div>
         </div>
         <span class="morePadding">
-          <a class="more" [class.grey]="statusType != 'INVITED'"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+          <a class="more" [class.grey]="statusType != 'INVITED'"> Detailed view <i
+              class="m-icon-swapright m-icon-white"></i></a>
         </span>
       </a>
     </div>
-     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-      <a class="dashboard-stat dashboard-stat yellow-gold" [class.disabled]="declinedVendorsCount == 0" (click)="listOfVendorRequestReports('DECLINED')"
-       [class.grey]="statusType != 'DECLINED'">
+
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+      <a class="dashboard-stat dashboard-stat yellow-gold" [class.disabled]="declinedVendorsCount == 0"
+        (click)="listOfRequestReports('DECLINED')" [class.grey]="statusType != 'DECLINED'">
         <div class="visual">
-          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"  [ngStyle]="{'color': statusType == 'DECLINED' ? '#white' : '#ccc' }"
-              *ngIf="statusType == 'DECLINED'" ></i>
+          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"
+            [ngStyle]="{'color': statusType == 'DECLINED' ? '#white' : '#ccc' }" *ngIf="statusType == 'DECLINED'"></i>
         </div>
         <div class="details">
           <div class="number">{{declinedVendorsCount}}</div>
           <div class="desc">Declined</div>
         </div>
         <span class="morePadding">
-          <a class="more" [class.grey]="statusType != 'DECLINED'"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+          <a class="more" [class.grey]="statusType != 'DECLINED'"> Detailed view <i
+              class="m-icon-swapright m-icon-white"></i></a>
         </span>
       </a>
     </div>
     
-    
-    
-      <div class="col-xs-12 p5">
-        <div class="portlet light">
-          <div class="portlet-title">
-            <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">{{tableHeader}}</span>
-            </div>
+    <div class="col-xs-12 p5">
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption">
+            <span class="caption-subject font-red-sunglo uppercase">{{tableHeader}}</span>
           </div>
-          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-          <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+        </div>
+        <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
           <div class="table-responsive">
             <table class="table tgrid" *ngIf="pagination.pagedItems.length != 0">
               <thead>
-              <tr>
-                <th class="table-header-alignment">Name</th>
-                <th style="text-align: center;">status</th>
-                <th style="text-align: center;">date and time</th>
-              </tr>
+                <tr>
+                  <th class="table-header-alignment">Name</th>
+                  <th style="text-align: center;">status</th>
+                  <th style="text-align: center;">date and time</th>
+                </tr>
               </thead>
-              <tbody> 
+              <tbody>
                 <tr *ngFor="let item of vendorRequestReport" style="cursor: pointer;">
                   <td>
                     <app-user-info [userInfo]="item" [isCompanyInfo]="true"></app-user-info>
                   </td>
                   <td style="text-align: center;text-transform: capitalize;">
-                   {{item.status}}
+                    {{ getStatusType(item.status) }}
                   </td>
                   <td style="text-align: center;">
-                  <app-timestamp [dateAndTime]="item.referredDateUTC"></app-timestamp>
-                  </td> 
+                    <app-timestamp [dateAndTime]="item.referredDateUTC"></app-timestamp>
+                  </td>
                 </tr>
               </tbody>
             </table>
-            </div>
           </div>
-          <app-pagination class="pg8" [pagination]="pagination" [type]="'pagination'" (notifyParentDropDown)="paginationDropDown($event)"
-            (notifyParent)="setPage($event)"></app-pagination>
         </div>
+        <app-pagination class="pg8" [pagination]="pagination" [type]="'pagination'"
+          (notifyParentDropDown)="paginationDropDown($event)" (notifyParent)="setPage($event)"></app-pagination>
       </div>
     </div>
   </div>
+</div>

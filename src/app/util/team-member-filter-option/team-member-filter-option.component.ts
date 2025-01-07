@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter,Input } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Subject } from 'rxjs';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Component({
   selector: 'app-team-member-filter-option',
@@ -18,6 +19,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   showFilterPopup = false;
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
+  filterOption: boolean = false;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -53,14 +55,37 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   }
 
   openFilterPopup(){
+    this.filterOption = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if(this.filterOption!=undefined && !this.filterOption){
+      this.selectedFilterIndex = 0;
+    }
     this.showFilterPopup = true;
   }
 
   getSelectedOption(input:any){
+    let previousSelectedIndex = this.selectedFilterIndex;
     this.showFilterPopup = false;
     this.selectedFilterIndex = input['selectedOptionIndex'];
-    this.teamMemberFilterModalPopUpOptionEventEmitter.emit(input);
+    if( this.selectedFilterIndex != previousSelectedIndex){
+      this.saveSelectedOption();
+    }
+     this.teamMemberFilterModalPopUpOptionEventEmitter.emit(input);
+  }
+  saveSelectedOption() {
+    this.authenticationService.savePartnerFilter(this.selectedFilterIndex).subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          console.log("updatedSucessfully");
+          (this.selectedFilterIndex == 0) ?  this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners,'false'): this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners,'true');
+        }
+      }, _error => {
+        console.log("error");
+      }
+    )
+  }
 
+  closeFilterPopup(){
+    this.showFilterPopup = false;
   }
 
 }

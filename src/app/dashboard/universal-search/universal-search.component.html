@@ -65,22 +65,14 @@
                     <th></th>
                   </thead>
                   <tbody>
-                    <ng-container>
+                    <ng-container *ngIf="quickLink?.type != 'Partners'">
                       <ng-template [ngTemplateOutlet]="detalsOfSerach"
                         [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
                     </ng-container>
-                    <!-- <ng-container *ngIf="quickLink?.type=='Track' || quickLink?.type=='Play Book'">
-                      <ng-template [ngTemplateOutlet]="trackDetails"
+                    <ng-container *ngIf="quickLink?.type === 'Partners'">
+                      <ng-template [ngTemplateOutlet]="partnersDetails"
                         [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
                     </ng-container>
-                    <ng-container *ngIf="quickLink?.type=='Lead'">
-                      <ng-template [ngTemplateOutlet]="leadDetails"
-                        [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="quickLink?.type=='Deal'">
-                      <ng-template [ngTemplateOutlet]="dealDetails"
-                        [ngTemplateOutletContext]="{quickLink:quickLink}"></ng-template>
-                    </ng-container> -->
                   </tbody>
                 </table>
               </div>
@@ -152,15 +144,6 @@
         <div class="instant-links-type">
           <!-- Label -->
           <span [ngClass]="getLabelClass(quickLink)">{{quickLink?.navigate}} {{quickLink?.type}}s</span>
-
-          <!-- Navigation Icon -->
-          <!-- <div [ngClass]="quickLink?.navigate === 'Shared'? 'disabled-div':''">
-            <a *ngIf="!authenticationService.module.isOnlyPartner " class="quicklinks_icons"
-              [ngClass]="quickLink?.navigate === 'Shared'? 'disabled-div':''" data-toggle="tooltip" data-placement="top"
-              title="Click here to Navigate" (click)="$event.stopPropagation();navigateToManage(quickLink)">
-              <i class="fas fa-route" aria-hidden="true" [ngClass]="quickLink?.navigate === 'Shared'?'disabled':''"></i>
-            </a>
-          </div> -->
           <ng-template [ngTemplateOutlet]="searchNgTemplateIcon" [ngTemplateOutletContext]="{quickLink:quickLink,
           access:quickLink?.navigate === 'Shared',
           title: quickLink?.navigate != 'Shared'? 'Navigate To Manage'
@@ -276,4 +259,68 @@
       <i class="fas fa-route"></i>
     </a>
   </div>
+</ng-template>
+<ng-template #partnersDetails let-quickLink="quickLink">
+  <tr>
+    <td style="width: 10%;">
+      <div class="col">
+        <div class="instant-links-type">
+          <img [alt]="quickLink?.type || 'Image'" style="height: 50px;" [src]="getImageSrc(quickLink)" />
+        </div>
+      </div>
+    </td>
+    <td style="width: 90%;">
+      <h6 *ngIf="isEmptyOrWhitespace(quickLink?.slug)" (click)="navigateToManage(quickLink)">
+        <span class="pointer">
+          <b>Name: </b>
+          <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.slug)">
+            {{quickLink?.slug}}
+          </span>
+        </span>
+      </h6>
+      <h6 *ngIf="quickLink?.tag" (click)="navigateToManage(quickLink)">
+        <span class="pointer">
+          <b>Company Name: </b>
+          <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.tag)">
+            {{quickLink?.tag}}
+          </span>
+        </span>
+      </h6>
+      <h6 *ngIf="quickLink?.name" (click)="navigateToManage(quickLink)">
+        <span class="pointer">
+          <b>Email Id: </b>
+          <span data-toggle="tooltip" data-placement="top" [title]="getTooltipTitle(quickLink?.name)">
+            {{quickLink?.name}}
+          </span>
+        </span>
+      </h6>
+      <h6 *ngIf="quickLink?.stage" (click)="navigateToManage(quickLink)">
+        <span class="pointer">
+          <b>Signup Status: </b>
+          <span data-toggle="tooltip" data-placement="top" [title]="changeStatus(quickLink?.stage)">
+            {{changeStatus(quickLink?.stage)}}
+          </span>
+        </span>
+      </h6>
+      <h6 *ngIf="quickLink?.createdBy" (click)="navigateToManage(quickLink)">
+        <span class="pointer">
+          <b>Company Profile: </b>
+          <span data-toggle="tooltip" data-placement="top" [title]="changeStatus(quickLink?.createdBy)">
+            {{changeStatus(quickLink?.createdBy)}}
+          </span>
+        </span>
+      </h6>
+    </td>
+    <td>
+      <div class="col">
+        <div class="instant-links-type">
+          <!-- Label -->
+          <span [ngClass]="getLabelClass(quickLink)">{{authenticationService?.partnerModule?.customName}}</span>
+          <ng-template [ngTemplateOutlet]="searchNgTemplateIcon" [ngTemplateOutletContext]="{quickLink:quickLink,
+          title: 'Navigate To Onboarding Partner'}">
+          </ng-template>
+        </div>
+      </div>
+    </td>
+  </tr>
 </ng-template>
