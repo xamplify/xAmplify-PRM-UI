@@ -111,6 +111,7 @@ export class ContactDetailsComponent implements OnInit {
   activeCalendarDetails: any;
   ngxLoading: boolean = false;
   showCalendarIntegrationsModalPopup: boolean = false;
+  flexiFields: any;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -245,6 +246,7 @@ export class ContactDetailsComponent implements OnInit {
     this.contactService.findContactByUserIdAndUserListId(this.contactId, this.selectedContactListId).subscribe(
       data => {
         this.selectedContact = data.data;
+        this.flexiFields = data.data.flexiFields;
         this.isLoading = false;
       },
       error => {
