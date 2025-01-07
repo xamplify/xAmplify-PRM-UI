@@ -11,6 +11,7 @@ import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name'
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 import { MultiSelectCommentDto } from '../models/multi-select-comment-dto';
 import { CustomResponse } from '../../common/models/custom-response';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var $:any;
 
 @Component({
@@ -43,11 +44,16 @@ export class ManageAprrovalComponent implements OnInit {
   isHeaderCheckBoxChecked: boolean = false;
   displayApproveAndRejectButton: boolean = false;
   selectedDamIds = [];
+  selectedTrackIds = [];
+  selectedPlayBookIds = [];
   multiSelectComment = '';
   showCommentsPopUp: boolean = false;
   isApproveOrRejectStatus : any = '';
   commentDto:MultiSelectCommentDto = new MultiSelectCommentDto();
   customResponse: CustomResponse = new CustomResponse();
+  selectedIds: any;
+  selectedTypeIds = [];
+  moduleType: any;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService,public utilService: UtilService,public xtremandLogger: XtremandLogger,
@@ -56,7 +62,23 @@ export class ManageAprrovalComponent implements OnInit {
 
   ngOnInit() {
     this.getAllApprovalList(this.pagination);
+    let message = this.referenceService.assetResponseMessage;
+    if (message != undefined && message.length > 0) {
+      this.customResponse = new CustomResponse('SUCCESS', message, true);
+    }
+    if (this.referenceService.isUpdated) {
+      let message = "Updated Successfully"
+      this.customResponse = new CustomResponse('SUCCESS', message, true);
+    }
   }
+
+  ngOnDestroy() {
+		this.referenceService.isCreated = false;
+		this.referenceService.isUpdated = false;
+		this.referenceService.isUploaded = false;
+		this.referenceService.isAssetDetailsUpldated = false;
+		this.referenceService.assetResponseMessage = "";
+	}
 
   getAllApprovalList(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
@@ -171,6 +193,23 @@ export class ManageAprrovalComponent implements OnInit {
       this.assetCreatedById = item.createdById;
       this.assetCreatedByFullName = item.createdBy;
       this.selectedDamId = item.id;
+      this.moduleType = 'DAM';
+    }
+    if (item.type === 'Track') {
+      this.callCommentsComponent = true;
+      this.assetName = item.name;
+      this.assetCreatedById = item.createdById;
+      this.assetCreatedByFullName = item.createdBy;
+      this.selectedDamId = item.id;
+      this.moduleType = 'TRACK';
+    }
+    if (item.type === 'PlayBook') {
+      this.callCommentsComponent = true;
+      this.assetName = item.name;
+      this.assetCreatedById = item.createdById;
+      this.assetCreatedByFullName = item.createdBy;
+      this.selectedDamId = item.id;
+      this.moduleType = 'PLAYBOOK';
     }
   }
 
@@ -203,11 +242,12 @@ export class ManageAprrovalComponent implements OnInit {
 
   handleAssetEdit(item: any) {
     setTimeout(() => {
+      let prefixurl =  RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['approval']
       if (item.beeTemplate && this.referenceService.isVideo(item.slug)) {
-        let url = "/home/dam/editVideo/" + item.videoId + "/" + item.id;
+        let url = prefixurl + "editVideo/" + item.videoId + "/" + item.id;
         this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
       } else {
-        let url = "/home/dam/editDetails/" + item.id;
+        let url = prefixurl + "editDetails/" + item.id;
         this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
       }
     }, 300);
@@ -219,10 +259,10 @@ export class ManageAprrovalComponent implements OnInit {
     let companyId = item.createdByCompanyId
     switch (item.type) {
       case 'Track':
-        router = `home/tracks/tb/${companyId}/${item.slug}${viewType}`;
+        router = `home/tracks/approval/tb/${companyId}/${item.slug}${viewType}`;
         break;
       case 'PlayBook':
-        router = `home/playbook/pb/${companyId}/${item.slug}${viewType}`;
+        router = `home/playbook/approval/pb/${companyId}/${item.slug}${viewType}`;
         break;
     }
     if (router) {
@@ -232,10 +272,10 @@ export class ManageAprrovalComponent implements OnInit {
 
   handleTrackAndPlayBookEdit(item: any) {
     if (item.type === 'Track') {
-      let url = "/home/tracks/edit/" + item.id;
+      let url = "/home/tracks/approval/edit/" + item.id;
       this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
     } else if (item.type === 'PlayBook') {
-      let url = "/home/playbook/edit/" + item.id;
+      let url = "/home/playbook/approval/edit/" + item.id;
       this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
     }
   }
@@ -243,10 +283,28 @@ export class ManageAprrovalComponent implements OnInit {
   checkAll(ev: any) {
     if (ev.target.checked) {
       $('[name="pendingList"]').prop('checked', true);
-      this.displayApproveAndRejectButton = true;
+      let self = this;
+      $('[name="pendingList"]:checked').each(function () {
+        var id = $(this).val();
+        $.each(self.approveList, function (index: number, value: any) {
+          if (value.id == id) {
+            self.pushIdsBasedOnType(value, id);
+          }
+        });
+      });
+      this.showApproveAndRejectButton();
     } else {
       $('[name="pendingList"]').prop('checked', false);
-      this.displayApproveAndRejectButton = false;
+      let self = this;
+      $('[name="pendingList"]').each(function () {
+        var id = $(this).val();
+        $.each(self.approveList, function (index: number, value: any) {
+          if (value.id == id) {
+            self.unSelectIdsBasedOnType(value, id);
+          }
+        });
+      });
+      this.showApproveAndRejectButton();
     }
     ev.stopPropagation();
   }
@@ -255,10 +313,10 @@ export class ManageAprrovalComponent implements OnInit {
     let id = item.id;
     let isChecked = $('#' + id).is(':checked');
     if (isChecked) {
-      this.pushIdsBasedOnType(item,id);
+      this.pushIdsBasedOnType(item, id);
       this.showApproveAndRejectButton();
     } else {
-      this.unSelectIdsBasedOnType(item,id);
+      this.unSelectIdsBasedOnType(item, id);
       this.showApproveAndRejectButton();
     }
   }
@@ -270,11 +328,29 @@ export class ManageAprrovalComponent implements OnInit {
         this.selectedDamIds.splice(indexInSelectedIds, 1);
       }
     }
+    if (item.type == 'Track') {
+      let indexInSelectedIds = this.selectedTrackIds.indexOf(id);
+      if (indexInSelectedIds !== -1) {
+        this.selectedTrackIds.splice(indexInSelectedIds, 1);
+      }
+    }
+    if (item.type == 'PlayBook') {
+      let indexInSelectedIds = this.selectedPlayBookIds.indexOf(id);
+      if (indexInSelectedIds !== -1) {
+        this.selectedPlayBookIds.splice(indexInSelectedIds, 1);
+      }
+    }
   }
 
   pushIdsBasedOnType(item: any, id: any) {
     if (item.type == 'Asset') {
       this.selectedDamIds.push(id);
+    }
+    if (item.type == 'Track') {
+      this.selectedTrackIds.push(id);
+    }
+    if (item.type == 'PlayBook') {
+      this.selectedPlayBookIds.push(id);
     }
   }
 
@@ -290,21 +366,27 @@ export class ManageAprrovalComponent implements OnInit {
   }
 
   updateStatusForSelectedIds() {
-    this.commentDto.status = this.isApproveOrRejectStatus;
-    this.commentDto.damIds = this.selectedDamIds;
-    this.approveService.updateApprovalStatusAndComment(this.commentDto).subscribe(
-      response => {
-        if (response.statusCode == 200) {
-          this.getAllApprovalList(this.pagination);
-          this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
-        }
-      }, error => {
-        this.xtremandLogger.errorPage(error);
-      });
+    if (this.multiSelectComment != undefined && this.multiSelectComment.length > 0) {
+      this.commentDto.status = this.isApproveOrRejectStatus;
+      this.commentDto.comment = this.multiSelectComment;
+      this.commentDto.damIds = this.selectedDamIds;
+      this.commentDto.trackIds = this.selectedTrackIds;
+      this.commentDto.playBooksIds = this.selectedPlayBookIds;
+      this.approveService.updateApprovalStatusAndComment(this.commentDto).subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            this.isHeaderCheckBoxChecked = false;
+            this.getAllApprovalList(this.pagination);
+            this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
+          }
+        }, error => {
+          this.xtremandLogger.errorPage(error);
+        });
+    }
   }
 
   showApproveAndRejectButton() {
-    if (this.selectedDamIds.length > 0) {
+    if (this.selectedDamIds.length > 0 || this.selectedTrackIds.length > 0 || this.selectedPlayBookIds.length > 0) {
       this.displayApproveAndRejectButton = true;
     } else {
       this.displayApproveAndRejectButton = false;

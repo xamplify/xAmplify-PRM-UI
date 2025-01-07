@@ -184,10 +184,11 @@
 
 <app-content-status-history-modal-popup
   *ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
-  [damId]="selectedDamId" [createdByAnyAdmin]="createdByAnyAdmin" [assetName]="assetName"
-  [assetCreatedById]="assetCreatedById" [assetCreatedByFullName]="assetCreatedByFullName"
+  [entityId]="selectedDamId" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+  [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
   (closeModalPopup)="closeCommentsAndHistoryModalPopup()">
 </app-content-status-history-modal-popup>
 
-<app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp" (comment)="getComment($event)">
+<app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
+  [isApproveOrRejectStatus]="isApproveOrRejectStatus" (comment)="getComment($event)">
 </app-multiselect-approval-comments-modal-popup>

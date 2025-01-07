@@ -28,10 +28,10 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.contentModuleStatusAnalyticsDTO.selectedCategory = 'ALL';
-    if (this.moduleType == 'DAM') {
-      this.getTileCounts();
-    }else if(this.moduleType == 'APPROVE'){
+    if (this.moduleType == 'APPROVE') {
       this.getTileCountsForApproveModule();
+    } else {
+      this.getTileCounts();
     }
   }
 
