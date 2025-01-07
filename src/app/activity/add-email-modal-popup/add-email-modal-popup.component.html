@@ -88,9 +88,9 @@
       <div class="modal-footer" style="border: none">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Cancel</button>
         <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="showFileTypeError || !isValidEmail"
-          (click)="sendTestEmailToUser()"><span class="btn Btn-Green transition txt_pd-top3">Send Test Mail</span></button>
+          (click)="sendTestEmailToUser()"><span class="btn btn-primary transition txt_pd-top3">Send Test Mail</span></button>
         <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="showFileTypeError || !isValidEmail"
-          (click)="sendEmailToUser()"><span class="btn Btn-Green transition txt_pd-top3">Send Mail</span></button>
+          (click)="sendEmailToUser()"><span class="btn btn-primary transition txt_pd-top3">Send Mail</span></button>
       </div>
     </div>
   </div>
@@ -112,7 +112,7 @@
       </div>
       <div class="modal-footer p-10">
         <button class="btn Btn-Gray" type="button" name="cancel" (click)="closeTestMailPopup()">Cancel</button>
-        <button class="btn Btn-Green" type="button" name="ok" [disabled]="!isValidTestEmailId"
+        <button class="btn btn-primary" type="button" name="ok" [disabled]="!isValidTestEmailId"
           (click)="sendTestEmail()">Send Test Mail</button>
       </div>
     </div>

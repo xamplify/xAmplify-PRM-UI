@@ -3414,3 +3414,7 @@ border-bottom-left-radius: 7px;
 table.table.tgrid tbody tr:last-child td:last-child {
 border-bottom-right-radius: 7px;
 }
+@media(min-width: 1200px) and (max-width: 1264px) {
+  .search_width50 { width: 50%  !important;}
+  
+}
