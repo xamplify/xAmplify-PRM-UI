@@ -40,12 +40,14 @@
   padding: 0;
   display: none;
   border-radius: 5px;
-  min-width: 115px;
+  min-width: 125px;
   font-size: 14px;
+  max-height: 190px; /* Set the maximum height for the dropdown */
+  overflow-y: auto; 
 }
 
 .universal-dropdown-menu li {
-  padding: 6px 10px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 .universal-dropdown-menu li i {
@@ -126,4 +128,7 @@ opacity: unset;
   appearance: none; /* Removes default styling in some browsers */
   font-family: "Gantari", Arial, Helvetica, sans-serif;
   height: 34px;
+}
+.universal-dropdown-menu::-webkit-scrollbar {
+  width: 8px;
 }

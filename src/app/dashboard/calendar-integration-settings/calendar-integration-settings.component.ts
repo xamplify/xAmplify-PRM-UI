@@ -1,55 +1,60 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { Properties } from 'app/common/models/properties';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-declare var swal:any, $:any;
+declare var swal: any, $: any;
 
 @Component({
-  selector: 'app-calendar-integration-settings',
-  templateUrl: './calendar-integration-settings.component.html',
-  styleUrls: ['./calendar-integration-settings.component.css'],
-  providers: [CalendarIntegrationService]
+	selector: 'app-calendar-integration-settings',
+	templateUrl: './calendar-integration-settings.component.html',
+	styleUrls: ['./calendar-integration-settings.component.css'],
+	providers: [CalendarIntegrationService]
 })
 export class CalendarIntegrationSettingsComponent implements OnInit {
 
-  @Input() integrationType: string;
+	@Input() integrationType: string;
 	@Output() closeEvent = new EventEmitter<any>();
 	@Output() unlinkEvent = new EventEmitter<any>();
 	@Output() refreshEvent = new EventEmitter<any>();
 
-  customResponse: CustomResponse = new CustomResponse();
+	customResponse: CustomResponse = new CustomResponse();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 
-  ngxloading: boolean;
-  activeCalendarDetails: any;
+	ngxloading: boolean;
+	activeCalendarDetails: any;
 	calendarDetails: any;
+	schedulingUrl: string;
+	showSchedulingUrlTab: boolean = false;
+	isValidURL: boolean = false;
 
-  constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public calendarIntegrationService: CalendarIntegrationService) { }
+	constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public calendarIntegrationService: CalendarIntegrationService, public properties:Properties) { }
 
-  ngOnInit() {
-    this.getIntegrationDetails();
-  }
+	ngOnInit() {
+		this.getIntegrationDetails();
+	}
 
-  getIntegrationDetails() {
-    this.ngxloading = true;
-    let self = this;
-    self.calendarIntegrationService.getIntegrationDetails(this.integrationType.toLowerCase())
-      .subscribe(
-        data => {
-          this.ngxloading = false;
-          if (data.statusCode == 200) {
-            this.calendarDetails = data.data;
-          }
-        },
-        error => {
-          this.ngxloading = false;
-        }
-      );
-  }
+	getIntegrationDetails() {
+		this.ngxloading = true;
+		let self = this;
+		self.calendarIntegrationService.getIntegrationDetails(this.integrationType.toLowerCase())
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+						this.calendarDetails = data.data;
+					}
+				},
+				error => {
+					this.ngxloading = false;
+				}
+			);
+	}
 
-  activateCalendar() {
+	activateCalendar() {
 		try {
 			let self = this;
 			swal({
@@ -73,20 +78,20 @@ export class CalendarIntegrationSettingsComponent implements OnInit {
 		}
 	}
 
-  setActiveCalendar(request: any) {
+	setActiveCalendar(request: any) {
 		this.ngxloading = true;
 		this.calendarIntegrationService.setActiveCalendar(request)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
-					if (data.statusCode == 200) {
+					if (data.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
 						this.getIntegrationDetails();
 						this.refreshEvent.emit();
 					}
 				});
 	}
 
-  unlinkCalendar() {
+	unlinkCalendar() {
 		try {
 			let self = this;
 			swal({
@@ -103,10 +108,10 @@ export class CalendarIntegrationSettingsComponent implements OnInit {
 				self.calendarIntegrationService.unlinkCalendar(self.integrationType.toLowerCase())
 					.subscribe(
 						data => {
-							if (data.statusCode == 200) {
+							if (data.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
 								self.unlinkEvent.emit(data.message);
-								self.ngxloading = false;
 							}
+							self.ngxloading = false;
 						});
 			}, function (dismiss: any) {
 				console.log('you clicked on option' + dismiss);
@@ -116,8 +121,41 @@ export class CalendarIntegrationSettingsComponent implements OnInit {
 		}
 	}
 
-  closeSettings() {
+	closeSettings() {
 		this.closeEvent.emit();
+	}
+
+	setActiveTab(tabName: string) {
+		if(tabName === 'menu1'){
+			this.showSchedulingUrlTab = true;
+		}
+	}
+
+	validateURL() {
+		if (this.referenceService.checkIsValidString(this.calendarDetails.userUri)) {
+			this.isValidURL = true;
+		} else {
+			this.isValidURL = false;
+		}
+	}
+
+	submit() {
+		this.ngxloading = true;
+		this.calendarIntegrationService.checkAssociationAndUpdateSchedulingURL(this.calendarDetails.userUri).subscribe(
+			response => {
+				if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+					this.customResponse = new CustomResponse('SUCCESS', 'Meeting Scheduling Link updated successfully.', true);
+				} else if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_UNAUTHORIZED) {
+					this.customResponse = new CustomResponse('ERROR', response.message, true);
+				} else {
+					this.customResponse = new CustomResponse('ERROR', 'Failed to update Meeting Scheduling link.', true);
+				}
+				this.ngxloading = false;
+			}, error => {
+				this.ngxloading = false;
+				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			}
+		)
 	}
 
 }
