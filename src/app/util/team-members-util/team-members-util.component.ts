@@ -1457,6 +1457,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   sendTeamMemberInviteEmail() {
     this.inviteTeamMemberResponse = new CustomResponse();
     this.inviteTeamMemberLoading = true;
+    this.isValidationMessage = true;
     this.emailIds.forEach((value: any) => {
       const emailId = value.value;
       this.vendorInvitation.emailIds.push(emailId);
