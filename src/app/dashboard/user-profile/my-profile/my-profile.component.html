@@ -108,6 +108,13 @@
                                                 [ngTemplateOutletContext]="{'moduleName':'password'}"></ng-template>
                                         </a>
                                     </li>
+                                    <!--Signature (XNFR-812)-->
+                                    <li  [ngClass]="{'active-tab': activeTabName == signatureMenuHeader}">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == signatureMenuHeader}" (click)="activateTab(signatureMenuHeader);clearCustomResponse()">
+                                            {{signatureMenuHeader | translate}}
+                                            <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':signatureMenuHeader}"></ng-template>
+                                        </a>
+                                     </li>
                                 </ul>
                                 <ng-container *ngIf="!isUser">
                                     <!--------------Settings----------------------->
