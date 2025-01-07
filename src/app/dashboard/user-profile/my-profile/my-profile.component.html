@@ -665,7 +665,10 @@
                                     <div class="caption caption-md col-xs-12">
                                         <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                         <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName}} Invitation</span>
-                                        <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate }}</span>
+                                        <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader |
+                                            translate }}
+                                            <i *ngIf="islandScapeLabel" class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                                data-placement="bottom" title="{{landscapeLabel?.length>0 ? landscapeLabel :''}}"></i></span>
                                         <div class="btn-toolbar" style="float: right;" *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
                                         || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                             <div class="btn-group" style="padding-top: 7px;">

@@ -17,16 +17,27 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
 
   assetApprovalCustomResponse: CustomResponse = new CustomResponse();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-  isChecked: boolean = false;
-  isAssetApprovalEnabledForCompany: boolean = false;
+  assetApprovalEnabledForCompany: boolean = false;
+  tracksApprovalEnabledForCompany: boolean = false;
+  playbooksApprovalEnabledForCompany: boolean = false;
   disableSaveChangesButton: boolean = false;
   ngxLoading: boolean = false;
   loggedInUserId: number;
+  approvalStatusSettingsDto: any;
+
+  isAssetCheckBoxEnabled: boolean = false;
+  isTracksCheckBoxEnabled: boolean = false;
+  isPlaybooksCheckBoxEnabled: boolean = false;
+
+  isValidAssetSettings: boolean = false;
+  isValidPlaybooksSettings: boolean = false;
+  isValidTracksSettings: boolean = false;
+
 
   constructor(private referenceService: ReferenceService,
     private damService: DamService,
     private callActionSwitch: CallActionSwitch,
-    private properties: Properties,
+    public properties: Properties,
     private authenticationService: AuthenticationService
   ) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -34,53 +45,83 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.callActionSwitch.size = 'normal';
-    this.getAssetApprovalStatusByUserId();
+    this.getApprovalConfigurationSettings();
   }
 
-  getAssetApprovalStatusByUserId() {
+  getApprovalConfigurationSettings() {
     this.ngxLoading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.damService.getAssetApprovalStatusByUserId(this.loggedInUserId)
+    this.damService.getApprovalConfigurationSettingsByUserId(this.loggedInUserId)
       .subscribe(
         result => {
-          if (result.data != undefined) {
-            this.isAssetApprovalEnabledForCompany = result.data;
-          } else {
-            this.isAssetApprovalEnabledForCompany = false;
+          if (result.data && result.statusCode == 200) {
+            this.approvalStatusSettingsDto = result.data;
+            this.assetApprovalEnabledForCompany = this.approvalStatusSettingsDto.approvalRequiredForAssets;
+            this.tracksApprovalEnabledForCompany = this.approvalStatusSettingsDto.approvalRequiredForTracks;
+            this.playbooksApprovalEnabledForCompany = this.approvalStatusSettingsDto.approvalRequiredForPlaybooks;
           }
           this.ngxLoading = false;
           this.referenceService.loading(this.httpRequestLoader, false);
-          this.isChecked = !this.isAssetApprovalEnabledForCompany;
-          this.disableSaveChangesButton = false;
+          this.isAssetCheckBoxEnabled = !this.assetApprovalEnabledForCompany;
+          this.isTracksCheckBoxEnabled = !this.tracksApprovalEnabledForCompany;
+          this.isPlaybooksCheckBoxEnabled = !this.playbooksApprovalEnabledForCompany;
         }, error => {
           this.ngxLoading = false;
-          this.isAssetApprovalEnabledForCompany = false;
           this.referenceService.loading(this.httpRequestLoader, false);
+        },() => {
+          this.validteSaveButton();
         });
   }
 
-  onToggleChange(event: any) {
-    this.isAssetApprovalEnabledForCompany = event;
-    if (event) {
-      this.disableSaveChangesButton = false;
-    } else {
-      this.isChecked = false;
-      this.disableSaveChangesButton = true;
+  onToggleChange(event: any, moduleType: string): void {
+    if (moduleType.toUpperCase() === 'DAM') {
+      this.assetApprovalEnabledForCompany = event;
+      this.isAssetCheckBoxEnabled = false;
+    } else if (moduleType.toUpperCase() === 'TRACKS') {
+      this.tracksApprovalEnabledForCompany = event;
+      this.isTracksCheckBoxEnabled = false;
+    } else if (moduleType.toUpperCase() === 'PLAYBOOKS') {
+      this.playbooksApprovalEnabledForCompany = event;
+      this.isPlaybooksCheckBoxEnabled = false;
     }
+    this.validteSaveButton();
+  }  
+
+
+  validteSaveButton(): void {
+    this.isValidAssetSettings = this.assetApprovalEnabledForCompany || (!this.assetApprovalEnabledForCompany && this.isAssetCheckBoxEnabled);
+    this.isValidTracksSettings = this.tracksApprovalEnabledForCompany || (!this.tracksApprovalEnabledForCompany && this.isTracksCheckBoxEnabled);
+    this.isValidPlaybooksSettings = this.playbooksApprovalEnabledForCompany || (!this.playbooksApprovalEnabledForCompany && this.isPlaybooksCheckBoxEnabled);
+
+    this.disableSaveChangesButton = !(this.isValidAssetSettings && this.isValidTracksSettings && this.isValidPlaybooksSettings);
   }
 
-  updateCheckBox(event: any): void {
-    this.disableSaveChangesButton = !event.target.checked;
+  updateCheckBox(event: any, moduleType: string): void {
+    const isChecked = event.target.checked;
+    if (moduleType.toUpperCase() === 'DAM') {
+      this.isAssetCheckBoxEnabled = isChecked;
+      this.isValidAssetSettings = !isChecked;
+    } else if (moduleType.toUpperCase() === 'TRACKS') {
+      this.isTracksCheckBoxEnabled = isChecked;
+      this.isValidTracksSettings = !isChecked;
+    } else if (moduleType.toUpperCase() === 'PLAYBOOKS') {
+      this.isPlaybooksCheckBoxEnabled = isChecked;
+      this.isValidPlaybooksSettings = !isChecked;
+    }
+    this.validteSaveButton();
   }
-
+  
+  
   save() {
     const saveAssetApprovalStatus = {
       loggedInUserId: this.loggedInUserId,
-      approvalRequiredForAssetsByCompany: this.isAssetApprovalEnabledForCompany
+      assetApprovalEnabledForCompany: this.assetApprovalEnabledForCompany,
+      tracksApprovalEnabledForCompany: this.tracksApprovalEnabledForCompany,
+      playbooksApprovalEnabledForCompany: this.playbooksApprovalEnabledForCompany
     };
     this.ngxLoading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.damService.updateAssetApprovalStatus(saveAssetApprovalStatus)
+    this.damService.updateApprovalConfigurationSettings(saveAssetApprovalStatus)
       .subscribe(
         result => {
           this.ngxLoading = false;
@@ -90,6 +131,7 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
           } else {
             this.assetApprovalCustomResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
           }
+          this.referenceService.scrollSmoothToTop();
         }, error => {
           this.ngxLoading = false;
           this.referenceService.loading(this.httpRequestLoader, false);

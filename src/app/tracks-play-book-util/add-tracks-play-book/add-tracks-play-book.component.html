@@ -517,12 +517,13 @@
       <div class="pull-right">
         <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid"
           (click)="save()"><span class="btn btn-primary transition txt_pd-top3">{{SubmitButtonValue}}</span></button>
-        <button class="button_blue bgcolor-unset txt_pd-top3" type="submit" [disabled]="!tracksPlayBook.isValid"
-          *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()"><span
-            class="btn btn-primary transition text_pd5">{{SubmitAndPublishButtonValue}}</span></button>
+        <button class="button_blue bgcolor-unset txt_pd-top3" type="submit"
+          [disabled]="checkIfPublishingIsDisabled(tracksPlayBook)" *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()"
+          data-placement="top" data-toggle="tooltip" [title]="getApprovalTooltipMessage(tracksPlayBook)"><span
+          class="btn btn-primary transition text_pd5">{{SubmitAndPublishButtonValue}}</span>
+        </button>
       </div>
     </div>
-
   </div>
 </div>
 

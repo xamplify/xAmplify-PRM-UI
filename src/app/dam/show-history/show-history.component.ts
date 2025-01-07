@@ -499,11 +499,21 @@ export class ShowHistoryComponent implements OnInit {
 			case this.approvalStatus.REJECTED:
 				return 'Rejected';
 			case this.approvalStatus.CREATED:
-				return 'Created';
+				return 'Pending Approval';
 			case this.approvalStatus.UPDATED:
 				return 'Updated';
 			default:
 				return status;
 		}
+	}
+
+	/** XNFR-824 **/
+	closeCommentsAndHistoryModalPopup() {
+		this.callCommentsComponent = false;
+	}
+
+	closeCommentsAndHistoryModalPopupAndRefreshList() {
+		this.refreshList();
+		this.callCommentsComponent = false;
 	}
 }

@@ -1,3 +1,7 @@
+<app-content-module-status-analytics [moduleType]="type" (filterContentByType)="filterContentByType($event)"
+    *ngIf="isApprovalRequiredForType() && !isPartnerView && !folderListViewExpanded">
+</app-content-module-status-analytics>
+
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
@@ -172,6 +176,14 @@
                                                     {{learningTrack.createdByName}}
                                                 </span>
                                             </h6>
+                                            <!-- XNFR-824 -->
+                                            <span *ngIf="isApprovalRequiredForType() && !isPartnerView" class="view-banner" [ngClass]="{
+                                                    'bgc-green': learningTrack?.approvalStatus === approvalStatus.APPROVED,
+                                                    'bgc-red': learningTrack?.approvalStatus === approvalStatus.REJECTED,
+                                                    'bgc-orange': learningTrack?.approvalStatus === approvalStatus.CREATED}" style="white-space: nowrap;" translate>
+                                                {{getApprovalStatusText(learningTrack.approvalStatus)}}
+                                            </span>
+
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <ng-container *ngIf="learningTrack.tagNames?.length > 0">
@@ -233,9 +245,10 @@
                                                 </a>
                                                 <a class="custom-icon"
                                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                                    data-toggle="tooltip" data-placement="top" title="Publish"
-                                                    (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
-                                                    <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
+                                                    data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
+                                                    (click)="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                                    <i class="fa fa-share IconCustomization" aria-hidden="true"
+                                                    [ngClass]="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'disabled gray':''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -249,6 +262,10 @@
                                                     <i class="fa fa-line-chart IconCustomization"
                                                         aria-hidden="true"></i>
                                                     <div class="clickicons"></div>
+                                                </a>
+                                                <!-- XNFR-824 -->
+                                                <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+                                                    <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
                                                 </a>
                                                 <a class="custom-icon" *ngIf="learningTrack.canDelete && !isPartnerView"
                                                     id="template-delete" data-toggle="tooltip" data-placement="top"
@@ -283,7 +300,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid GridviewSidePaddings"
                         *ngFor="let learningTrack of pagination.pagedItems ;let i =index"
                         id="LearningTrackListDiv_{{learningTrack.id}}">
-                        <div class="grid-box" id="box-dark-defalut-clr">
+                        <div class="grid-box" id="box-dark-defalut-clr" style="min-height: 345px;">
                             <img class="img-grid-track" [src]="learningTrack.featuredImage"
                                 onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
                             <h4 class="assest-name GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip"
@@ -320,6 +337,13 @@
                                     <b> Created On: </b><app-timestamp [isOnlyDate]="true"
                                         [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
                                 </h6>
+                                <!-- XNFR-824 -->
+                                <span *ngIf="isApprovalRequiredForType() && !isPartnerView" class="view-banner" [ngClass]="{
+                                    'bgc-green': learningTrack?.approvalStatus === approvalStatus.APPROVED,
+                                    'bgc-red': learningTrack?.approvalStatus === approvalStatus.REJECTED,
+                                    'bgc-orange': learningTrack?.approvalStatus === approvalStatus.CREATED}" style="white-space: nowrap; margin-left: 13px;float: left;" translate>
+                                    {{getApprovalStatusText(learningTrack.approvalStatus)}}
+                                </span>
                             </div>
                             <!---XNFR-327--->
                             <div class="ribbon tab-ribbon">
@@ -349,8 +373,9 @@
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                        data-toggle="tooltip" data-placement="top" title="Publish"
-                                        (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                        data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : Publish}}"
+                                        (click)="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
+                                        [ngClass]="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'disabled gray':''">
                                         <i class="fa fa-share" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>
@@ -371,6 +396,10 @@
                                         <div class="clickicons"></div>
                                     </a>
                                 </div>
+                                <!-- XNFR-824 -->
+                                <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+                                    <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+                                </a>
 
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
@@ -460,3 +489,12 @@
         </div>
     </div>
 </div>
+
+<!-- XNFR-824 -->
+<app-content-status-history-modal-popup
+    *ngIf="callCommentsComponent && isApprovalRequiredForType() && !isPartnerView"
+    [entityId]="selectedDamId" [moduleType]="type" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+    [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName"
+    (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+    (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
+</app-content-status-history-modal-popup>

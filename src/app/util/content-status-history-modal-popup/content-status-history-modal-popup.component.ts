@@ -18,12 +18,14 @@ declare var $: any;
 })
 export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
-  @Input() damId:number = 0;
+  @Input() moduleType: string;
+  @Input() entityId:number = 0;
   @Input() createdByAnyAdmin: boolean = false;
-  @Input() assetName: string = "";
-  @Input() assetCreatedById: number;
-  @Input() assetCreatedByFullName: string;
+  @Input() title: string = "";
+  @Input() createdById: number;
+  @Input() createdByName: string;
   @Output() closeModalPopup = new EventEmitter();
+  @Output() closeModalPopupAndRefresh = new EventEmitter();
 
   commentModalPopUpLoader:boolean = false;
   commentDto:CommentDto = new CommentDto();
@@ -45,6 +47,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   imageSourcePath: string = "";
   showImageTag: boolean = false;
   timelineHistoryNotAvailable: boolean = false;
+  reloadAfterClose: boolean =  false;
   approvalStatus = {
 		APPROVED: 'APPROVED',
 		REJECTED: 'REJECTED',
@@ -73,7 +76,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   loadUserDeailsWithCurrentStatus() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadUserDetailsWithDamApprovalStatus(this.damId).subscribe( 
+    this.damService.loadUserDetailsWithApprovalStatus(this.entityId, this.moduleType).subscribe( 
       (response: any) =>{
         this.commentModalPopUpLoader = false;
         if(response && response.data) {
@@ -104,7 +107,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   refreshTimeLineHistory(){
     this.historyPopUpLoader = true;
-    this.damService.loadDamStatusHistoyTimeline(this.damId).subscribe( 
+    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType).subscribe( 
       response=>{
         if (response.data && response.data.length > 0) {
           this.statusTimeLineHistory = response.data;
@@ -127,7 +130,12 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   closeModalPopUp() {
     this.referenceService.closeModalPopup(this.commentsModalPopUpId);
-    this.closeModalPopup.emit();
+    if(this.reloadAfterClose) {
+      this.closeModalPopupAndRefresh.emit();
+    } else {
+      this.closeModalPopup.emit();
+    }
+    this.reloadAfterClose = false;
   }
 
   ngOnDestroy(): void {
@@ -136,7 +144,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   findComments() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadDamComents(this.damId).subscribe(
+    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType).subscribe(
         response => {
           this.comments = response.data;
           this.commentModalPopUpLoader = false;
@@ -163,15 +171,17 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.referenceService.disableButton(event);
     this.commentModalPopUpLoader = true;
     this.commentDto.loggedInUserId = this.loggedInUserId;
-    this.commentDto.damId = this.damId;
-    this.commentDto.createdBy = this.assetCreatedById;
-    this.commentDto.assetName = this.assetName;
-    this.commentDto.assetCreatedByFullName = this.assetCreatedByFullName;
+    this.commentDto.entityId = this.entityId;
+    this.commentDto.createdBy = this.createdById;
+    this.commentDto.name = this.title;
+    this.commentDto.createdByName = this.createdByName;
+    this.commentDto.moduleType = this.moduleType;
     if (this.status != this.commentDto.statusInString) {
       this.commentDto.statusUpdated = true;
       this.status = this.commentDto.statusInString;
+      this.reloadAfterClose = true;
     }
-    this.damService.saveDamComment(this.commentDto).
+    this.damService.updateApprovalStatusAndSaveComment(this.commentDto).
     subscribe(
       response=>{
         this.commentModalPopUpLoader = false;
@@ -180,6 +190,8 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         } else if (response.statusCode === 401 && response.data != undefined) {
           let message = this.referenceService.iterateNamesAndGetErrorMessage(response);
           this.commentsCustomResponse = new CustomResponse('ERROR', message, true);
+        } else if (response.statusCode === 403 && response.message != undefined){
+          this.commentsCustomResponse = new CustomResponse('ERROR', response.message, true);
         }
         this.commentDto.comment = "";
         this.commentDto.invalidComment = true;
@@ -200,7 +212,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
   
   fetchLogoFromExternalSource() {
-    this.activityService.fetchLogoFromExternalSource(this.assetCreatedById).subscribe(
+    this.activityService.fetchLogoFromExternalSource(this.createdById).subscribe(
       response => {
         const data = response.data;
         if (response.statusCode == 200 && data != '') {
@@ -216,7 +228,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
 
   setHighlightLetter() {
-    const name = this.assetCreatedByFullName;
+    const name = this.createdByName;
     if (this.referenceService.checkIsValidString(name)) {
       this.highlightLetter = this.referenceService.getFirstLetter(name);
     }
@@ -229,7 +241,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       case this.approvalStatus.REJECTED:
         return 'Rejected';
       case this.approvalStatus.CREATED:
-        return 'Created';
+        return 'Pending Approval';
       case this.approvalStatus.UPDATED:
         return 'Updated';
       case this.approvalStatus.COMMENTED:
