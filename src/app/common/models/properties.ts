@@ -512,10 +512,10 @@ export class Properties {
     playbooks_Info = "Total Playbooks Published to";
 	
 	/**** Invite A Team-member ****/
-	inviteATeamMember = "Invite A TeamMember";
-	inviteATeamMemberToJoinxAmplify = "Invite a teammeber to join xAmplify";
-	teamMemberInvites = "TeamMember Invites";
-	invitedTeamMeberAnalytics = "Invited TeamMember Analytics";
+	inviteATeamMember = "Invite A Team Member";
+	inviteATeamMemberToJoinxAmplify = "Invite a Team Member to join xAmplify";
+	teamMemberInvites = "Team Member Invites";
+	invitedTeamMeberAnalytics = "Invited Team Member Analytics";
   	my_Landscape_Vendor=' Vendor Landscape Pages ';
     My_Landscape_Partner = 'Partner Landscape Pages'; 
     partner_Showcase = 'Landing Pages Shared by Your Partners';
