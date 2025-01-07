@@ -12,4 +12,7 @@ export class SignatureComponent implements OnInit {
   ngOnInit() {
   }
 
+  openModalPopUp(){
+    alert("Clciked");
+  }
 }
