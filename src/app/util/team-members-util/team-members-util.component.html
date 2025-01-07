@@ -81,21 +81,8 @@
               <div class="row mr-21">
                 <div class="clearfix" *ngIf="isTeamMemberModule &&!isNavigatedFromSuperAdminScreen">
                   <section class="clearfix" style="display: flex; justify-content: end;">
-                    <ng-container *ngIf="!authenticationService?.module?.deletedPartner && !(authenticationService?.companyProfileName === 'versa-networks' && authenticationService?.module?.loggedInThroughVendorVanityUrl)">
-                      <div class="hidden-xs pull-right downloadteam" style="padding:0px">
-                        <button class=" btn btn-primary fileinput-button rounded-0 button position-relative team-member-icon" 
-                        [disabled]="isLoggedInAsTeamMember" [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''">
-                     Upload a CSV
-                      <input *ngIf="!isLoggedInAsTeamMember" type="file" title="" class="file-upload" #fileImportInput name="File Upload"
-                        id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
-                    </button>
-                    <button data-placement="bottom" class="hidden-xs btn btn-primary button border_btn" style="border-radius: 0px 7px 7px 0px!important;" data-toggle="tooltip"
-                    title="Download TeamMembers Csv Template" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
-                    && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
-                    && !authenticationService?.module?.deletedPartner">
-                    <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download"></i>
-                    </button>
-                      </div>
+                    <ng-container
+                      *ngIf="!authenticationService?.module?.deletedPartner && !(authenticationService?.companyProfileName === 'versa-networks' && authenticationService?.module?.loggedInThroughVendorVanityUrl)">
                       <div class="pull-right mr5">
                         <button class="btn-xs btn-block rounded-0 button_blue bgcolor-unset" style="padding:1px;"
                           (click)="!isLoggedInAsTeamMember && goToAddTeamMemberDiv()" [disabled]="isLoggedInAsTeamMember"
@@ -112,9 +99,9 @@
                             name="File Upload" id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
                         </button>
                         <button data-placement="bottom" class="hidden-xs btn btn-primary button border_btn"
-                          style="border-radius: 0px 7px 7px 0px!important;" data-toggle="tooltip"
-                          title="Download TeamMembers Csv Template" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
-                            && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
+                          style="border-radius: 0px 7px 7px 0px!important;" data-toggle="tooltip" title="Download TeamMembers Csv Template"
+                          (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
+                                && !authenticationService?.module?.deletedPartner">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download"></i>
                         </button>
                       </div>
