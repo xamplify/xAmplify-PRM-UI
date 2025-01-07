@@ -196,8 +196,7 @@ import { ContentStatusHistoryModalPopupComponent } from 'app/util/content-status
 import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset-approval-configuration-settings/asset-approval-configuration-settings.component';
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 import { TeamMemberWiseAssetDetailsComponent } from 'app/util/team-member-wise-asset-details/team-member-wise-asset-details.component';
-
-
+import { DigitalSignatureComponent } from 'app/util/digital-signature/digital-signature.component';
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,
@@ -238,7 +237,7 @@ import { TeamMemberWiseAssetDetailsComponent } from 'app/util/team-member-wise-a
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
-		TeamMemberWiseAssetDetailsComponent
+		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent
 	],
 
 
@@ -278,7 +277,7 @@ import { TeamMemberWiseAssetDetailsComponent } from 'app/util/team-member-wise-a
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
-		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent
+		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent
 
 	]
 

@@ -1,0 +1,133 @@
+.portlet.light .portlet-body {
+    padding-top: 0px !important;
+  }
+  .text {
+    text-align: center;
+  }
+  h4 {
+    font-weight: 500 !important;
+    font-size: 15px !important;
+  }
+  h5 {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+  }
+  .img-responsive {
+    padding-top: 30px;
+    display: block;
+    max-width: 64px;
+    height: auto;
+    padding-bottom: 30px;
+  }
+  .hover-effect:hover {
+    border: 1px solid #4eafd6;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+    box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
+  }
+  .pointer {
+    cursor: pointer;
+  }
+  .design-name {
+    color: #008fd5;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 5px;
+  }
+  .mtop {
+    margin-top: 28px !important;
+  }
+  .cpad {
+    padding: 0px;
+  }
+  .mauto {
+    margin: 0 auto;
+  }
+  .header-text-css {
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    cursor: auto;
+  }
+  .header-description-css {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    padding: 10px 10px;
+    height: auto;
+    cursor: auto;
+  }
+  .prfpx {
+    padding-right: 40px;
+  }
+  .prtfpx {
+    padding-right: 24px;
+  }
+  .prspx {
+    padding-right: 60px;
+  }
+  .col-centered {
+    float: none;
+    margin: 0 auto;
+  }
+  @media (min-width: 1200px) and (max-width: 1261px) {
+    .header-description-css {
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 1000px) and (max-width: 1200px) {
+    .header-description-css {
+      font-size: 10px;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .mPageBar {
+      margin-top: -6px;
+      margin-bottom: 10px;
+    }
+    .mDisableColor {
+      color: #888 !important;
+    }
+  }
+  .portlet > .portlet-title > .caption {
+    line-height: 30px;
+  }
+  .padding {
+    padding: 0px 5px !important;
+  }
+  .portlet .light {
+    padding: 0px !important;
+  }
+  .img1:hover {
+    background-position: 100%;
+    background-color: #b8def1;
+    transition-duration: 500ms;
+  }
+  p {
+    margin: 0px;
+  }
+  .text-border {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  
+  .modal {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .modal-dialog {
+    max-width: 600px;
+  }
+  canvas {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #ccc;
+  }
+  .typed-preview {
+    font-family: "Cursive", sans-serif;
+    font-size: 24px;
+  }
+  
