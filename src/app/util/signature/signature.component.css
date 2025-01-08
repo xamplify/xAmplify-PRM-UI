@@ -1,0 +1,79 @@
+.nav-tabs>li>a {
+    font-size: 12px;
+}
+
+.tab-bg {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px !important;
+    padding-bottom: 0px;
+}
+
+
+.portlet.light .portlet-body {
+    padding-top: 0px !important;
+}
+
+.text {
+    text-align: center;
+}
+
+h4 {
+    font-weight: 500 !important;
+    font-size: 15px !important;
+}
+
+h5 {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+}
+
+.img-responsive {
+    padding-top: 30px;
+    display: block;
+    max-width: 64px;
+    height: auto;
+    padding-bottom: 30px;
+}
+
+
+
+.portlet>.portlet-title>.caption {
+    line-height: 30px;
+}
+
+.padding {
+    padding: 0px 5px !important;
+}
+
+.portlet .light {
+    padding: 0px !important;
+}
+
+.img1:hover {
+    background-position: 100%;
+    background-color: #b8def1;
+    transition-duration: 500ms;
+}
+
+p {
+    margin: 0px;
+}
+
+.text-border {
+    border-bottom: 1px solid #ddd;
+}
+
+
+
+canvas {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #ccc;
+}
+
+.typed-preview {
+    font-family: "Cursive", sans-serif;
+    font-size: 24px;
+}

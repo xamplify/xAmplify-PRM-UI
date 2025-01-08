@@ -1,1 +1,38 @@
-<app-digital-signature></app-digital-signature>
+
+<ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
+    <!--Draw-->
+    <li  [class.active]="activeTab === 'draw'">
+      <a class="teamMemberDomainC" id="width-205px"
+        (click)="switchTab('draw')" data-toggle="tab"  href="#">Draw
+        <i *ngIf="activeTab === 'draw'" id="tick-mark" class="fa fa-check-circle-o success"></i>
+      </a>
+    </li>
+
+    <!--Type-->
+    <li  [class.active]="activeTab === 'type'">
+        <a id="width-205px"  (click)="switchTab('type')" data-toggle="tab"  href="#">Type
+            <i *ngIf="activeTab === 'type'" id="tick-mark" class="fa fa-check-circle-o success"></i>
+        </a>
+    </li>
+    <!--Upload-->
+    <li  [class.active]="activeTab === 'upload'">
+        <a id="width-205px"  (click)="switchTab('upload')" data-toggle="tab"  href="#">Upload
+            <i *ngIf="activeTab === 'upload'" id="tick-mark" class="fa fa-check-circle-o success"></i>
+        </a>
+    </li>
+  </ul>
+
+  <div class="panel-body tab-bg">
+    <div class="tab-content">
+        <!---Type-->
+        <div [hidden]="activeTab !='draw'" class="tab-pane active">
+            <canvas #sigPad class="border signature-canvas" width="400" height="200" (mousedown)="onMouseDown($event)"
+            (mousemove)="onMouseMove($event)"></canvas>
+        </div>
+    </div>  
+  </div>
+
+  <div class="float-right mt10">
+    <button type="button" class="btn btn-primary" (click)="submitSignature()">Save</button>
+    <button type="button" class="btn btn-danger" (click)="clearCanvas()">Clear</button>
+  </div>
