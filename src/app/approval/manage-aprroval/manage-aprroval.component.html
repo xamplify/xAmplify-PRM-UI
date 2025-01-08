@@ -12,12 +12,12 @@
     </ul>
   </div>
   <app-content-module-status-analytics [moduleType]="'APPROVE'" (filterContentByType)="filterByStatus($event)"
-    [filterType]="selectedFilterType" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView">
+    [filterType]="selectedFilterType">
   </app-content-module-status-analytics>
   <div class="row">
-    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
     <div class="col-md-12">
       <div class="portlet light light_bg_removal remove_space">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         <div class="portlet-title">
           <ng-template [ngTemplateOutlet]="headerOptions"></ng-template>
         </div>
@@ -27,10 +27,9 @@
             <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
               <thead>
                 <tr>
-                  <th *ngIf="selectedFilterStatus === 'PENDING'" class="mr5"><input type="checkbox"
-                      class="checkBox_shadow" value="selectAllPendingList" id="selectAllPendingList"
-                      name="pendingListSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"
-                      class="pointer" />
+                  <th *ngIf="selectedFilterStatus === 'PENDING'" class="mr5"><input type="checkbox" class="checkBox_shadow"
+                      value="selectAllPendingList" id="selectAllPendingList" name="pendingListSelectAll"
+                      [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="pointer" />
                   </th>
                   <th *ngIf="selectedFilterStatus != 'PENDING'"></th>
                   <th scope="col">Details</th>
@@ -67,11 +66,14 @@
     <ul class="mix-filter mb10">
       <li class="filter" (click)="filterByType('ALL',1)" [class.type-selected]="1 == selectedTypeIndex">All<i
           class="fa fa-check-circle-o check-icons" *ngIf="1 == selectedTypeIndex"></i></li>
-      <li class="filter" (click)="filterByType('ASSETS',2)" [class.type-selected]="2 == selectedTypeIndex">Assets<i
-          class="fa fa-check-circle-o check-icons" *ngIf="2 == selectedTypeIndex"></i></li>
-      <li class="filter" (click)="filterByType('TRACKS',3)" [class.type-selected]="3 == selectedTypeIndex">Tracks<i
-          class="fa fa-check-circle-o check-icons" *ngIf="3 == selectedTypeIndex"></i></li>
-      <li class="filter" (click)="filterByType('PLAYBOOKS',4)" [class.type-selected]="4 == selectedTypeIndex">Play
+      <li *ngIf="authenticationService?.approvalRequiredForAssets" class="filter" (click)="filterByType('ASSETS',2)"
+        [class.type-selected]="2 == selectedTypeIndex">Assets<i class="fa fa-check-circle-o check-icons"
+          *ngIf="2 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForTracks" class="filter" (click)="filterByType('TRACKS',3)"
+        [class.type-selected]="3 == selectedTypeIndex">Tracks<i class="fa fa-check-circle-o check-icons"
+          *ngIf="3 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForPlaybooks" class="filter" (click)="filterByType('PLAYBOOKS',4)"
+        [class.type-selected]="4 == selectedTypeIndex">Play
         Books<i class="fa fa-check-circle-o check-icons" *ngIf="4 == selectedTypeIndex"></i></li>
     </ul>
   </div>
@@ -103,8 +105,8 @@
       <div class="col">
         <div class="instant-links-type">
           <span class="mr20" *ngIf="selectedFilterStatus === 'PENDING'"><input class="pointer" class="checkBox_shadow"
-              type="checkbox" [checked]="selectedDamIds.indexOf(item.id)>-1" value="{{item.id}}" (click)="selectPendingItem(item)" id="{{item.id}}"
-              name="pendingList"></span>
+              type="checkbox" [checked]="((selectedIds.indexOf(item.id)>-1))" value="{{item.id}}"
+              (click)="selectPendingItem(item)" id="{{item.id}}" name="pendingList[]"></span>
           <img [alt]="item?.type || 'Image'" style="height: 50px;" [src]="getImageSrc(item)" />
         </div>
       </div>
@@ -160,8 +162,7 @@
         </a>
 
         <!-- comment/history -->
-        <a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView"
-          (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
+        <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
           title="Approve/Reject">
           <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
           <div class="clickicons"></div>
@@ -182,10 +183,9 @@
   </h6>
 </ng-template>
 
-<app-content-status-history-modal-popup
-  *ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
-  [entityId]="selectedDamId" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
-  [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
+<app-content-status-history-modal-popup *ngIf="callCommentsComponent" [entityId]="selectedDamId"
+  [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName" [createdById]="assetCreatedById"
+  [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
   (closeModalPopup)="closeCommentsAndHistoryModalPopup()">
 </app-content-status-history-modal-popup>
 

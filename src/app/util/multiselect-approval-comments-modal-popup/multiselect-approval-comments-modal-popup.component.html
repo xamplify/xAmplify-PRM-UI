@@ -10,7 +10,7 @@
         </div>
         <p class="required float-left">Comment is mandatory *</p>
         <textarea class="form-control" rows="4" placeholder="Write your comment here" [(ngModel)]="commentData"
-          [ngModelOptions]="{standalone: true}" (input)="validateComment(commentData)" maxlength="1000"></textarea>
+          [ngModelOptions]="{standalone: true}" (input)="validateComment()" maxlength="1000"></textarea>
       </div>
       <div class="modal-footer">
         <button class="btn Btn-Gray" (click)="closeModelPopup()" type="button">Cancel</button>

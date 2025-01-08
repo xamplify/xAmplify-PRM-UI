@@ -51,9 +51,10 @@ export class ManageAprrovalComponent implements OnInit {
   isApproveOrRejectStatus : any = '';
   commentDto:MultiSelectCommentDto = new MultiSelectCommentDto();
   customResponse: CustomResponse = new CustomResponse();
-  selectedIds: any;
+  selectedIds = [];
   selectedTypeIds = [];
   moduleType: any;
+  selectedPendingIds = [];
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService,public utilService: UtilService,public xtremandLogger: XtremandLogger,
@@ -84,6 +85,7 @@ export class ManageAprrovalComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.pagination.filterKey = this.selectedFilterStatus;
     this.pagination.filterBy = this.selectedFilterType;
+    this.selectedPendingIds = [];
     this.approveService.getAllApprovalList(pagination).subscribe(
       response => {
         let data = response.data;
@@ -91,10 +93,23 @@ export class ManageAprrovalComponent implements OnInit {
         pagination.totalRecords = data.totalRecords;
         pagination = this.pagerService.getPagedItems(pagination, this.approveList);
         pagination = this.utilService.setPaginatedRows(response, pagination);
+        this.isCheckHeader();
         this.referenceService.loading(this.httpRequestLoader, false);
       }, error => {
         this.xtremandLogger.errorPage(error);
       });
+  }
+
+  isCheckHeader() {
+    let self = this;
+    var itemIds = self.approveList.map(function (a) { return a.id; });
+    var items = (self.selectedIds || []).filter(element => itemIds.includes(element));
+    if (items.length == self.approveList.length && items.length > 0) {
+      self.isHeaderCheckBoxChecked = true;
+      self.selectedPendingIds = items;
+    } else {
+      self.isHeaderCheckBoxChecked = false;
+    }
   }
 
   paginateList(event: any) {
@@ -281,26 +296,36 @@ export class ManageAprrovalComponent implements OnInit {
   }
 
   checkAll(ev: any) {
+    let self = this;
     if (ev.target.checked) {
-      $('[name="pendingList"]').prop('checked', true);
-      let self = this;
-      $('[name="pendingList"]:checked').each(function () {
+      $('[name="pendingList[]"]').prop('checked', true);
+      $('[name="pendingList[]"]:checked').each(function () {
         var id = $(this).val();
         $.each(self.approveList, function (index: number, value: any) {
           if (value.id == id) {
-            self.pushIdsBasedOnType(value, id);
+            self.selectedIds.push(value.id);
+            self.selectedPendingIds.push(value.id);
+            self.pushIdsBasedOnType(value);
           }
         });
       });
+      this.selectedIds = this.referenceService.removeDuplicates(this.selectedIds);
       this.showApproveAndRejectButton();
     } else {
-      $('[name="pendingList"]').prop('checked', false);
-      let self = this;
-      $('[name="pendingList"]').each(function () {
+      $('[name="pendingList[]"]').prop('checked', false);
+      $('[name="pendingList[]"]').each(function () {
         var id = $(this).val();
         $.each(self.approveList, function (index: number, value: any) {
           if (value.id == id) {
-            self.unSelectIdsBasedOnType(value, id);
+            let indexInSelectedIds = self.selectedIds.indexOf(value.id);
+            let indexInSelectedPendingIds = self.selectedPendingIds.indexOf(value.id);
+            if (indexInSelectedIds !== -1) {
+              self.selectedIds.splice(indexInSelectedIds, 1);
+            }
+            if (indexInSelectedPendingIds !== -1) {
+              self.selectedPendingIds.splice(indexInSelectedPendingIds, 1);
+            }
+            self.unSelectIdsBasedOnType(value);
           }
         });
       });
@@ -313,44 +338,62 @@ export class ManageAprrovalComponent implements OnInit {
     let id = item.id;
     let isChecked = $('#' + id).is(':checked');
     if (isChecked) {
-      this.pushIdsBasedOnType(item, id);
+      this.selectedPendingIds.push(id);
+      this.selectedIds.push(id);
+      this.pushIdsBasedOnType(item);
       this.showApproveAndRejectButton();
     } else {
-      this.unSelectIdsBasedOnType(item, id);
+      let indexInSelectedIds = this.selectedIds.indexOf(id);
+      let indexInSelectedPendingIds = this.selectedPendingIds.indexOf(id);
+      if (indexInSelectedIds !== -1) {
+        this.selectedIds.splice(indexInSelectedIds, 1);
+      }
+      if (indexInSelectedPendingIds !== -1) {
+        this.selectedPendingIds.splice(indexInSelectedPendingIds, 1);
+      }
+      this.unSelectIdsBasedOnType(item);
       this.showApproveAndRejectButton();
+    }
+    if (this.selectedPendingIds.length == this.approveList.length) {
+      this.isHeaderCheckBoxChecked = true;
+    } else {
+      this.isHeaderCheckBoxChecked = false;
     }
   }
 
-  unSelectIdsBasedOnType(item: any, id: any) {
+  unSelectIdsBasedOnType(item: any) {
     if (item.type == 'Asset') {
-      let indexInSelectedIds = this.selectedDamIds.indexOf(id);
+      let indexInSelectedIds = this.selectedDamIds.indexOf(item.id);
       if (indexInSelectedIds !== -1) {
         this.selectedDamIds.splice(indexInSelectedIds, 1);
       }
     }
     if (item.type == 'Track') {
-      let indexInSelectedIds = this.selectedTrackIds.indexOf(id);
+      let indexInSelectedIds = this.selectedTrackIds.indexOf(item.id);
       if (indexInSelectedIds !== -1) {
         this.selectedTrackIds.splice(indexInSelectedIds, 1);
       }
     }
     if (item.type == 'PlayBook') {
-      let indexInSelectedIds = this.selectedPlayBookIds.indexOf(id);
+      let indexInSelectedIds = this.selectedPlayBookIds.indexOf(item.id);
       if (indexInSelectedIds !== -1) {
         this.selectedPlayBookIds.splice(indexInSelectedIds, 1);
       }
     }
   }
 
-  pushIdsBasedOnType(item: any, id: any) {
+  pushIdsBasedOnType(item: any) {
     if (item.type == 'Asset') {
-      this.selectedDamIds.push(id);
+      this.selectedDamIds.push(item.id);
+      this.selectedDamIds = this.referenceService.removeDuplicates(this.selectedDamIds);
     }
     if (item.type == 'Track') {
-      this.selectedTrackIds.push(id);
+      this.selectedTrackIds.push(item.id);
+      this.selectedTrackIds = this.referenceService.removeDuplicates(this.selectedTrackIds);
     }
     if (item.type == 'PlayBook') {
-      this.selectedPlayBookIds.push(id);
+      this.selectedPlayBookIds.push(item.id);
+      this.selectedPlayBookIds = this.referenceService.removeDuplicates(this.selectedPlayBookIds);
     }
   }
 
@@ -376,8 +419,21 @@ export class ManageAprrovalComponent implements OnInit {
         response => {
           if (response.statusCode == 200) {
             this.isHeaderCheckBoxChecked = false;
+            let message = '';
+            if (this.isApproveOrRejectStatus === 'APPROVED') {
+              message = "Approved Successfully"
+              this.displayApproveAndRejectButton = false;
+              this.customResponse = new CustomResponse('SUCCESS', message, true);
+            } else {
+              message = "Rejected Successfully"
+              this.displayApproveAndRejectButton = false;
+              this.customResponse = new CustomResponse('SUCCESS', message, true);
+            }
             this.getAllApprovalList(this.pagination);
             this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
+          } else if (response.statusCode === 401 && response.data != undefined) {
+            let message = this.referenceService.iterateNamesAndGetErrorMessage(response);
+            this.customResponse = new CustomResponse('ERROR', message, true);
           }
         }, error => {
           this.xtremandLogger.errorPage(error);
