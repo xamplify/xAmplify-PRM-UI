@@ -1,0 +1,23 @@
+<div class="modal fade in" id="commentsModalPopUp" data-backdrop="static">
+  <div class="modal-dialog modal-copy custom-align-modal widthAlign" role="document">
+    <div class="modal-content mSweetalertWid popup-cu-widthalign">
+      <div class="modal-header">
+        <h4 class="modal-title f-w-600" id="" translate="">Add a Comment</h4>
+      </div>
+      <div class="modal-body">
+        <div class="mb10">
+          <p>Please provide comment for {{statusText}} the selected records.</p>
+        </div>
+        <p class="required float-left">Comment is mandatory *</p>
+        <textarea class="form-control" rows="4" placeholder="Write your comment here" [(ngModel)]="commentData"
+          [ngModelOptions]="{standalone: true}" (input)="validateComment()" maxlength="1000"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray" (click)="closeModelPopup()" type="button">Cancel</button>
+        <button class="button bgcolor-unset pd-top2" [disabled]="!isValidComment" type="button" (click)="submitComment()">
+          <span class="btn Btn-Green transition text_pd5">Submit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

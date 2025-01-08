@@ -3,7 +3,7 @@
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home"></i>
-        <a [routerLink]="referenceService?.homeRouter"  translate>Home</a>
+        <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
         <i class="fa fa-angle-right"></i>
       </li>
       <li>
@@ -11,51 +11,184 @@
       </li>
     </ul>
   </div>
+  <app-content-module-status-analytics [moduleType]="'APPROVE'" (filterContentByType)="filterByStatus($event)"
+    [filterType]="selectedFilterType">
+  </app-content-module-status-analytics>
   <div class="row">
-    <div class="panel-body">
-      <div class="portlet light">
-        <table class="table">
-          <thead>
-            <tr>
-              <th></th>
-              <th scope="col">Details</th>
-              <th scope="col" class="pull-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td style="width: 10%;">
-                <div class="col">
-                  <img style="height: 50px;" [src]="getImageSrc(item)" />
-                </div>
-              </td>
-              <td>
-                <!-- Name Field -->
-                <h6>
-                  <b>Asset Name: </b>
-                  <span>
-                    {{item?.assetName | slice:0:50}}
-                    <span *ngIf="item?.name?.length>50">..</span>
-                  </span>
-                </h6>
-                <h6>
-                  <b>Type : </b>
-                  <span>
-                    {{item?.type}}
-                  </span>
-                </h6>
-              </td>
-              <td>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!--Pagination-->
-      <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
-        <app-pagination [pagination]="pagination" (notifyParentDropDown)="getPendingApprovalDamAndLMS($event)"
-          (notifyParent)="paginateList($event)"></app-pagination>
+    <div class="col-md-12">
+      <div class="portlet light light_bg_removal remove_space">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        <div class="portlet-title">
+          <ng-template [ngTemplateOutlet]="headerOptions"></ng-template>
+        </div>
+        <section>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <div>
+            <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
+              <thead>
+                <tr>
+                  <th *ngIf="selectedFilterStatus === 'PENDING'" class="mr5"><input type="checkbox" class="checkBox_shadow"
+                      value="selectAllPendingList" id="selectAllPendingList" name="pendingListSelectAll"
+                      [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="pointer" />
+                  </th>
+                  <th *ngIf="selectedFilterStatus != 'PENDING'"></th>
+                  <th scope="col">Details</th>
+                  <th scope="col" class="align-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of approveList">
+                <ng-container>
+                  <ng-template [ngTemplateOutlet]="allApprovalList"
+                    [ngTemplateOutletContext]="{item:item}"></ng-template>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-info text-center" *ngIf="approveList?.length==0">
+            <strong>No Data Found</strong>
+          </div>
+        </section>
+        <!--Pagination-->
+        <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
+          <app-pagination [pagination]="pagination" (notifyParentDropDown)="getAllApprovalList($event)"
+            (notifyParent)="paginateList($event)"></app-pagination>
+        </div>
       </div>
     </div>
   </div>
+  <!-- Add Comment Modal Popup-->
+
 </div>
+
+<!--Page Bar Option-->
+<ng-template #headerOptions>
+  <div class="colxs-12 col-sm-12 col-md-5 col-lg-6 pl0">
+    <ul class="mix-filter mb10">
+      <li class="filter" (click)="filterByType('ALL',1)" [class.type-selected]="1 == selectedTypeIndex">All<i
+          class="fa fa-check-circle-o check-icons" *ngIf="1 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForAssets" class="filter" (click)="filterByType('ASSETS',2)"
+        [class.type-selected]="2 == selectedTypeIndex">Assets<i class="fa fa-check-circle-o check-icons"
+          *ngIf="2 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForTracks" class="filter" (click)="filterByType('TRACKS',3)"
+        [class.type-selected]="3 == selectedTypeIndex">Tracks<i class="fa fa-check-circle-o check-icons"
+          *ngIf="3 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForPlaybooks" class="filter" (click)="filterByType('PLAYBOOKS',4)"
+        [class.type-selected]="4 == selectedTypeIndex">Play
+        Books<i class="fa fa-check-circle-o check-icons" *ngIf="4 == selectedTypeIndex"></i></li>
+    </ul>
+  </div>
+  <div class="colxs-12 col-sm-12 col-md-5 col-lg-6 pr0">
+    <div class="float-right input-icon right mb10">
+      <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+        placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
+      <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+        (click)="searchKey='';searchData();"></button>
+      <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
+          aria-hidden="true"></i></button>
+    </div>
+    <div *ngIf="displayApproveAndRejectButton" class="btn-group pull-right pt mr5">
+      <button class="btn Btn-Green mb_btn" style="border-radius: 3px !important;box-shadow: none !important;"
+        data-toggle="dropdown" translate>
+        Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
+      </button>
+      <ul class="dropdown-menu pull-right">
+        <li><a id="save_button" (click)="getStausAndCallCommentsPopUp('APPROVED')">Approve Selected</a></li>
+        <li><a id="save_button" (click)="getStausAndCallCommentsPopUp('REJECTED')">Reject Selected</a></li>
+      </ul>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #allApprovalList let-item="item">
+  <tr>
+    <td style="width: 10%;">
+      <div class="col">
+        <div class="instant-links-type">
+          <span class="mr20" *ngIf="selectedFilterStatus === 'PENDING'"><input class="pointer" class="checkBox_shadow"
+              type="checkbox" [checked]="((selectedIds.indexOf(item.id)>-1))" value="{{item.id}}"
+              (click)="selectPendingItem(item)" id="{{item.id}}" name="pendingList[]"></span>
+          <img [alt]="item?.type || 'Image'" style="height: 50px;" [src]="getImageSrc(item)" />
+        </div>
+      </div>
+    </td>
+    <td style="width: 50%;">
+      <!-- Name Field -->
+      <h6 *ngIf="item?.name">
+        <span class="pointer">
+          <b>{{item?.type || 'Item'}} Name: </b>
+          <span data-toggle="tooltip" data-placement="top" title="{{item.name}}">
+            {{item?.name | slice:0:50}}
+            <span *ngIf="item?.name?.length>50">..</span>
+          </span>
+        </span>
+      </h6>
+      <!-- Created By Field -->
+      <h6 *ngIf="item?.createdBy">
+        <span class="pointer">
+          <b>{{item?.type || 'Item'}} Created By: </b>
+          <span data-toggle="tooltip" data-placement="top" title="{{item.createdBy}}">
+            {{item?.createdBy | slice:0:50}}
+            <span *ngIf="item?.createdBy?.length>50">..</span>
+          </span>
+        </span>
+      </h6>
+      <!-- Tags, Folders, and Additional Details -->
+      <ng-template [ngTemplateOutlet]="extraDetails" [ngTemplateOutletContext]="{ item: item }"></ng-template>
+      <span *ngIf="item?.type" class="view-banner" [ngClass]="{
+        'bgc-asset': item.type === 'Asset',
+        'bgc-track' : item.type === 'Track',
+        'bgc-playbook' : item.type === 'PlayBook'}" translate>
+        {{getTypeText(item.type)}}
+      </span>
+      <span *ngIf="item?.status" class="view-banner ml5" [ngClass]="{
+        'bgc-green': item.status === 'APPROVED',
+        'bgc-red': item.status === 'REJECTED',
+        'bgc-orange': item.status === 'CREATED'}" translate>
+        {{getApprovalStatusText(item.status)}}
+      </span>
+    </td>
+    <td>
+      <div class="actions-block override-actions" style="float:none !important;">
+        <!-- Edit Icon -->
+        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(item)">
+          <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+
+        <!-- Preview Icon -->
+        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(item)">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+
+        <!-- comment/history -->
+        <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
+          title="Approve/Reject">
+          <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+
+<ng-template #extraDetails let-item="item">
+  <!-- Folder Field -->
+  <h6 *ngIf="item?.folder">
+    <span class="pointer"><b>Folder: </b>
+      <span data-toggle="tooltip" data-placement="top" title="{{item.folder}}">
+        {{item?.folder}}
+      </span>
+    </span>
+  </h6>
+</ng-template>
+
+<app-content-status-history-modal-popup *ngIf="callCommentsComponent" [entityId]="selectedDamId"
+  [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName" [createdById]="assetCreatedById"
+  [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
+  (closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+</app-content-status-history-modal-popup>
+
+<app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
+  [isApproveOrRejectStatus]="isApproveOrRejectStatus" (comment)="getComment($event)">
+</app-multiselect-approval-comments-modal-popup>

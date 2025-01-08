@@ -466,7 +466,12 @@
 									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.vendorMarketplace"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
-
+								<!--XNFR-820-->
+								<tr>
+									<th scope="row">Approval Hub</th>
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.approvals"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
