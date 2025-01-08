@@ -57,7 +57,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 	};
 
   constructor( private referenceService: ReferenceService,
-      private authenticationService: AuthenticationService,
+      public authenticationService: AuthenticationService,
       private damService: DamService,
       public httpRequestLoader: HttpRequestLoader,
       public properties: Properties,
@@ -94,7 +94,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       },error=>{
         this.commentModalPopUpLoader = false;
         this.closeModalPopUp();
-        this.referenceService.showSweetAlertServerErrorMessage();
+        this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       },()=>{
         this.findComments();
       });
@@ -114,12 +114,18 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
           this.timelineHistoryNotAvailable = false;
         } else {
           this.timelineHistoryNotAvailable = true;
-          this.timelineCustomResponse = new CustomResponse('INFO', "Timeline history is not available for this asset.", true);
+          let message = "Timeline history is not available for this asset."
+          if (this.moduleType == 'TRACK') {
+            message = "Timeline history is not available for this track."
+          } else if (this.moduleType == 'PLAYBOOK') {
+            message = "Timeline history is not available for this playbook."
+          }
+          this.timelineCustomResponse = new CustomResponse('INFO', message, true);
         }        
         this.historyPopUpLoader = false;
       },error=>{
         this.historyPopUpLoader = false;
-        this.referenceService.showSweetAlertErrorMessage("Unable to find history.Please contact admin.");
+        this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       }
     );
   }

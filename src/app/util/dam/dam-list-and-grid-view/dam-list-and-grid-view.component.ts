@@ -553,7 +553,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listAssets(this.pagination);
 		}
 		/** XNFR-813 **/
-		if (this.contentModuleStatusAnalyticsComponent) {
+		if (this.contentModuleStatusAnalyticsComponent && this.authenticationService.approvalRequiredForAssets) {
 			this.contentModuleStatusAnalyticsComponent.getTileCounts();
 		}
 	}

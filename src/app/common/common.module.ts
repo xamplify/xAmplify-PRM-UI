@@ -197,6 +197,8 @@ import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 import { TeamMemberWiseAssetDetailsComponent } from 'app/util/team-member-wise-asset-details/team-member-wise-asset-details.component';
 import { MultiselectApprovalCommentsModalPopupComponent } from 'app/util/multiselect-approval-comments-modal-popup/multiselect-approval-comments-modal-popup.component';
+import { DateRangeDisplayComponent } from './date-range-display/date-range-display.component';
+
 
 
 @NgModule({
@@ -239,7 +241,7 @@ import { MultiselectApprovalCommentsModalPopupComponent } from 'app/util/multise
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
-		TeamMemberWiseAssetDetailsComponent,MultiselectApprovalCommentsModalPopupComponent
+		TeamMemberWiseAssetDetailsComponent, DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent
 	],
 
 
@@ -279,7 +281,7 @@ import { MultiselectApprovalCommentsModalPopupComponent } from 'app/util/multise
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
-		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,MultiselectApprovalCommentsModalPopupComponent
+		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent, DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent
 
 	]
 

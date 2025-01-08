@@ -80,8 +80,9 @@ button.search-box-item-click:hover{color: initial !important;}
 i.IconCustomization, 
 .gridIconCustomization a,
 .IconCustomizationcondition a i,
-.setting-icon-cu,
-.dropdown-menu li > a > [class*=" fa-"] {
+.setting-icon-cu,.dropdown-menu li > a >i.dropdown-listicon,#download-template,
+.dropdown-menu li > a >i.IconCustomization.download_file,
+.downloadicon {
   color : var(--custom-icon-color) !important;
   border: 1px solid var(--custom-icon-border-color) !important;
   background-color: var(--custom-icon-hover-color) !important;
@@ -91,8 +92,9 @@ i.IconCustomization,
 i.IconCustomization:hover,
 .gridIconCustomization a.Iconhover:hover,
 .IconCustomizationcondition a i:hover,
-.setting-icon-cu:hover,
-i.fa[class*="fa-"].IconCustomization:hover {
+.setting-icon-cu:hover,#download-template:hover,
+i.fa[class*="fa-"].IconCustomization:hover,
+#download-template-grid:hover {
 background: var(--custom-icon-color) !important;
 border: 1px solid var(--custom-icon-border-color) !important; 
 color : var(--custom-icon-hover-color) !important;
@@ -120,7 +122,7 @@ label.btn.Btn-Green.mBtnAlign.button-border, .btn.Btn-Green.mBtnAlign.button-bor
 button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4,
 button.fa.fa-th-list.btn-xs.l-g-view.mr_4, button.fa.fa-th-large.btn-xs.l-g-view.mr_4, 
 button.fa.fa-th-list.btn-xs.l-g-view, button.fa.fa-th-large.btn-xs.l-g-view,
-button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th, 
+button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th,button.btn.btn-xs.l-g-view, 
 button.btn.btn-xs.hidden-xs.l-g-view{color: #000 !important;}
 .clickicons, .del-icon {
   animation: none !important;
@@ -143,4 +145,9 @@ button.btn.btn-xs.hidden-xs.l-g-view{color: #000 !important;}
     box-shadow: none !important;
   }
   /*** XNFR-758 ***/
-  
+  #download-template-grid, ul.dropdown-menu.pull-right.custome-dropdown-changs li a i {color : var(--custom-icon-color) !important;}  
+  ul.dropdown-menu.pull-right.custome-dropdown-changs li a i:hover{color : var(--custom-icon-hover-color) !important;}
+  ul.dropdown-menu.pull-right.custome-dropdown-changs li a:hover{background: var(--custom-icon-color) !important;
+    border: 1px solid var(--custom-icon-border-color) !important; }
+    a>i.download_file:hover{background: var(--custom-icon-color) !important;}
+    i.fa.fa-trash-o.trashIconCustomization.bgcolor_change{box-shadow: none !important;background: none  !important;}

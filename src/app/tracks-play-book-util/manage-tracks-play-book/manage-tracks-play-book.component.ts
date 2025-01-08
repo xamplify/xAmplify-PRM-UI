@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, OnDestroy, EventEmitter, Renderer } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy, EventEmitter, Renderer, ViewChild } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
@@ -18,6 +18,7 @@ import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
 import { Roles } from 'app/core/models/roles';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
+import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 
 
 declare var swal:any, $: any;
@@ -75,6 +76,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     CREATED: 'CREATED',
     UPDATED: 'UPDATED'
   };
+  @ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
+  
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
@@ -462,6 +465,10 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   refreshPage() {
     this.listLearningTracks(this.pagination);
+    if (this.contentModuleStatusAnalyticsComponent && (this.authenticationService.approvalRequiredForTracks
+      || this.authenticationService.approvalRequiredForPlaybooks)) {
+      this.contentModuleStatusAnalyticsComponent.getTileCounts();
+    }
   }
 
   callFolderListViewEmitter(){

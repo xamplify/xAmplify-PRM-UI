@@ -111,6 +111,8 @@ export class ContactDetailsComponent implements OnInit {
   activeCalendarDetails: any;
   ngxLoading: boolean = false;
   showCalendarIntegrationsModalPopup: boolean = false;
+  flexiFields: any;
+  isReloadMeetingTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -245,6 +247,7 @@ export class ContactDetailsComponent implements OnInit {
     this.contactService.findContactByUserIdAndUserListId(this.contactId, this.selectedContactListId).subscribe(
       data => {
         this.selectedContact = data.data;
+        this.flexiFields = data.data.flexiFields;
         this.isLoading = false;
       },
       error => {
@@ -608,8 +611,10 @@ export class ContactDetailsComponent implements OnInit {
     this.showCalendarIntegrationsModalPopup = false;
   }
 
-  closeMeetingModalPopup() {
-    if (!this.referenceService.checkIsValidString(this.activeCalendarDetails.userUri)) {
+  closeMeetingModalPopup(event) {
+    if (this.referenceService.checkIsValidString(this.activeCalendarDetails.userUri)) {
+      this.isReloadMeetingTab = event;
+    } else {
       this.getActiveCalendarDetails();
     }
     this.showMeetingModalPopup = false;
@@ -641,5 +646,9 @@ export class ContactDetailsComponent implements OnInit {
 			this.router.navigate(['/home/dashboard/myprofile']);
 		}
 	}
+
+  reloadMeetingTab(event) {
+    this.isReloadMeetingTab = event;
+  }
   
 }
