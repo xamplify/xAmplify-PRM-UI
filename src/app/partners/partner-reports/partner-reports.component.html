@@ -427,7 +427,7 @@
             *ngIf="customResponse.isVisible"></app-response-message>
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
             <div class="table-responsive">
-              <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0">
+              <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0" style="overflow: inherit;">
                 <thead>
                   <tr>
                     <th class="center-aligned">partners</th>

@@ -31,6 +31,7 @@ import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { Properties } from 'app/common/models/properties';
+import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 Properties
 declare var $, swal, CKEDITOR: any;
 @Component({
@@ -505,7 +506,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     pagination.companyId = this.loggedInUserCompanyId;
     pagination.excludeBeePdf = this.isAssestPopUpOpen;
     /** XNFR-813  **/
-    pagination.categoryType = 'APPROVED';
+    pagination.selectedTileCategory = ApprovalStatusType[ApprovalStatusType.APPROVED];
     this.referenceService.goToTop();
     this.startLoaders();
     this.referenceService.loading(this.assetLoader, true);

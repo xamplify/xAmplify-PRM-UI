@@ -38,7 +38,7 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
     private damService: DamService,
     private callActionSwitch: CallActionSwitch,
     public properties: Properties,
-    private authenticationService: AuthenticationService
+    public authenticationService: AuthenticationService
   ) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }

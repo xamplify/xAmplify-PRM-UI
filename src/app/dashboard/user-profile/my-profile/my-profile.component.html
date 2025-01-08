@@ -211,13 +211,14 @@
 
                                         </li>
                                         <!-- XNFR-781 -->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'assetApprovalConfigurationSettings'}"
-                                            *ngIf="authenticationService?.module?.isAdmin && authenticationService?.module?.damAccess">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'assetApprovalConfigurationSettings'}"
-                                                (click)="activateTab('assetApprovalConfigurationSettings');clearCustomResponse()">{{properties.assetApprovalConfigurationSettings
+                                        <li [ngClass]="{'active-tab': activeTabName == 'approvalConfigurationSettings'}"
+                                            *ngIf="authenticationService?.module?.isAdmin && (authenticationService?.module?.damAccess || 
+                                            authenticationService?.module?.lmsAccess || authenticationService?.module?.playbookAccess)">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'approvalConfigurationSettings'}"
+                                                (click)="activateTab('approvalConfigurationSettings');clearCustomResponse()">{{properties.approvalConfigurationSettings
                                                 | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
-                                                    [ngTemplateOutletContext]="{'moduleName':'assetApprovalConfigurationSettings'}"></ng-template>
+                                                    [ngTemplateOutletContext]="{'moduleName':'approvalConfigurationSettings'}"></ng-template>
                                             </a>
                                         </li>
                                     </ul>
@@ -1165,8 +1166,8 @@
                                             </form>
                                         </div>
 
-                                        <!-- Asset Approval/Rejection -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'assetApprovalConfigurationSettings'}">
+                                        <!--Content Approval/Rejection -->
+                                        <div class="tab-pane" *ngIf="activeTabName == 'approvalConfigurationSettings'" [ngClass]="{'active': activeTabName == 'approvalConfigurationSettings'}">
                                             <app-asset-approval-configuration-settings></app-asset-approval-configuration-settings>
                                         </div>
 
@@ -2942,7 +2943,7 @@
                                                                             (click)="cancelCSVFilePreview('exclude-users')"
                                                                             translate>Cancel</button>
                                                                     </div>
-                                                                    <div class="portlet-body">
+                                                                    <div class="portlet-body table_radius">
                                                                         <app-list-loader
                                                                             *ngIf="isListLoader"></app-list-loader>
                                                                         <app-response-message
@@ -3177,7 +3178,7 @@
                                                                             (click)="cancelCSVFilePreview('exclude-domains')"
                                                                             translate>Cancel</button>
                                                                     </div>
-                                                                    <div class="portlet-body">
+                                                                    <div class="portlet-body table_radius">
                                                                         <app-list-loader
                                                                             *ngIf="isListLoader"></app-list-loader>
                                                                         <app-response-message
