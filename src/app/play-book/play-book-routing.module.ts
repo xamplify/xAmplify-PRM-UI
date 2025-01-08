@@ -5,6 +5,9 @@ import { ManagePlayBookComponent } from './manage-play-book/manage-play-book.com
 import { PlayBookAnalyticsComponent } from './play-book-analytics/play-book-analytics.component';
 import { PlayBookPartnerAnalyticsComponent } from './play-book-partner-analytics/play-book-partner-analytics.component';
 import { PreviewPlayBookComponent } from './preview-play-book/preview-play-book.component';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+
+const approvalRouterUrl = RouterUrlConstants['approval'];
 
 
 export const routes: Routes = [
@@ -28,6 +31,8 @@ export const routes: Routes = [
   { path: 'partnerAnalytics/:ltId/:id', component: PlayBookPartnerAnalyticsComponent },
   { path: 'partnerAnalytics/:ltId/:id/:viewType', component: PlayBookPartnerAnalyticsComponent },
   { path: 'partnerAnalytics/:ltId/:id/:viewType/:categoryId/:folderViewType', component: PlayBookPartnerAnalyticsComponent },
+  { path: approvalRouterUrl + 'pb/:companyId/:slug/:viewType', component: PreviewPlayBookComponent },
+  { path: approvalRouterUrl + "edit/:id/:viewType", component: AddPlayBookComponent }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

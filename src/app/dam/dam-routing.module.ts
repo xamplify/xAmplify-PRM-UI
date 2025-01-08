@@ -13,6 +13,7 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 const damPartnerCompanyAnalyticsRouterUrl = RouterUrlConstants['damPartnerCompanyAnalytics'];
 const damPartnerAnalyticsRouterUrl = RouterUrlConstants['damPartnerAnalytics'];
+const approvalRouterUrl = RouterUrlConstants['approval'];
 
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
@@ -72,6 +73,9 @@ export const routes: Routes = [
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId", component: DamPartnerCompanyAnalyticsComponent },
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType/:categoryId/:folderViewType", component: DamPartnerCompanyAnalyticsComponent },
+	/************XNFR-820*********/
+	{ path: approvalRouterUrl + "editDetails/:id/:viewType", component: UploadAssetComponent },
+	{ path: approvalRouterUrl +"editVideo/:videoId/:damId/:viewType", component: ManageDamComponent }
 ];
 
 @NgModule({

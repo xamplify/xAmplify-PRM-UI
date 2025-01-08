@@ -31,6 +31,7 @@ import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { Properties } from 'app/common/models/properties';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 Properties
 declare var $, swal, CKEDITOR: any;
@@ -195,6 +196,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   sendEmailNotificationOptionToolTipMessage = "";
   isSwitchOptionDisabled = false;
   customSwitchToolTipMessage = "";
+  isFromApprovalModule: boolean = false;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties) {
@@ -217,6 +219,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activeTabName = "step-1";
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     if (this.router.url.indexOf('/edit') > -1) {
       this.learningTrackId = parseInt(this.route.snapshot.params['id']);
       if (this.learningTrackId > 0) {
@@ -1324,10 +1327,17 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.referenceService.isCreated = false;
             }
             if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-              this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+              if (this.isFromApprovalModule) {
+                this.goBackToManageApproval();
+              } else {
+                this.referenceService.navigateToManageTracksByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+              }
             } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-              this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
-
+              if (this.isFromApprovalModule) {
+                this.goBackToManageApproval();
+              } else {
+                this.referenceService.navigateToPlayBooksByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+              }
             }
           } else {
             this.referenceService.showSweetAlertErrorMessage(data.message);
@@ -1710,6 +1720,11 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
   /** XNFR-824 end */
 
+  /****XNFR-820****/
+  goBackToManageApproval() {
+    let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
+    this.referenceService.goToRouter(url);
+  }
   
 
 }

@@ -3,6 +3,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { AddTracksPlayBookComponent } from 'app/tracks-play-book-util/add-tracks-play-book/add-tracks-play-book.component';
 import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum'
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 @Component({
   selector: 'app-add-play-book',
@@ -18,6 +19,7 @@ export class AddPlayBookComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
   mergeTagForGuide:any;
+  isFromApprovalModule: boolean = false;
   constructor(public referenceService: ReferenceService, private router: Router,public route:ActivatedRoute) {
     /****XNFR-171****/
     this.viewType = this.route.snapshot.params["viewType"];
@@ -26,6 +28,7 @@ export class AddPlayBookComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     if (this.router.url.indexOf('/edit') > -1) {
       this.isAdd = false;
     } else {

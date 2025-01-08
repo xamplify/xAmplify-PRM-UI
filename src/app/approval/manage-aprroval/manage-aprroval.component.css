@@ -1,15 +1,54 @@
 /* table header bgcolor */
-.panel-bgMain > .panel-bg{
-    background-color: #d9edf7b0;
-    border-bottom: 1px solid #ddd;
+.panel-bgMain>.panel-bg {
+  background-color: #d9edf7b0;
+  border-bottom: 1px solid #ddd;
 }
+
 .panel-bgMain {
-	border-color: #ddd;
+  border-color: #ddd;
 }
+
 /* table header bgcolor end */
 .panel-heading {
-    padding: 11px 15px !important;
+  padding: 11px 15px !important;
 }
+
 .table>tbody>tr>td {
-	vertical-align: middle !important;
+  vertical-align: middle !important;
+}
+
+.type-selected {
+  background-color: #0276ff;
+  color: white;
+}
+
+.bgc-asset {
+  background-color: #3564b9 !important;
+}
+
+.bgc-track {
+  background-color: #7f2ca3 !important;
+}
+
+.instant-links-type {
+  height: 37px;
+  border-radius: 50%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.mr20 {
+  margin-right: 20px;
+}
+
+.bgc-playbook {
+  background-color: #369 !important;
 }
