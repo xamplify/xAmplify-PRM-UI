@@ -116,9 +116,9 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     localStorage.removeItem('assetName');
     localStorage.removeItem('campaignReport');
     localStorage.removeItem('saveVideoFile');
-    let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    let partnerFilter = localStorage.getItem(XAMPLIFY_CONSTANTS.filterPartners);
     if (partnerFilter != undefined) {
-        this.applyFilter = partnerFilter;
+        this.applyFilter = partnerFilter === 'true';
     }
     this.getMainContent(this.userId);
     let companyProfileName = this.authenticationService.companyProfileName;
