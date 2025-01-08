@@ -12,6 +12,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 export class AddMeetingModalPopupComponent implements OnInit {
   @Input() calendarType:any;
   @Input() schedulingUrl: string;
+  @Input() isReloadTab:boolean;
 
   @Output() notifyClose = new EventEmitter();
 
@@ -63,7 +64,7 @@ export class AddMeetingModalPopupComponent implements OnInit {
 
   closeMeetingModal() {
     this.referenceService.closeModalPopup('addMeetingModalPopup');
-    this.notifyClose.emit();
+    this.notifyClose.emit(!this.isReloadTab);
   }
 
   ngOnDestroy(): void {

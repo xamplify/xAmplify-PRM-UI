@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
@@ -19,6 +19,9 @@ export class MeetingActivityComponent implements OnInit {
 
   @Input() contactId:number;
   @Input() activeCalendarDetails:any;
+  @Input() isReloadTab:boolean;
+
+  @Output() notifyClose = new EventEmitter();
 
   meetingActivities = [];
   ngxLoading:boolean = false;
@@ -38,6 +41,9 @@ export class MeetingActivityComponent implements OnInit {
   showMeetingModalPopup: boolean = false;
   showCalendarIntegrationsModalPopup: boolean = false;
   calendarType:any;
+  showPreviewMeeting:boolean = false;
+  eventUrl: any;
+  showConfigureMessage: boolean = false;
 
   constructor(public meetingActivityService: MeetingActivityService, public referenceService: ReferenceService, public pagerService: PagerService, 
     public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent) { }
@@ -48,12 +54,18 @@ export class MeetingActivityComponent implements OnInit {
     this.showAllMeetingActivities();
   }
 
+  ngOnChanges() {
+    this.calendarType = this.activeCalendarDetails != undefined ? this.activeCalendarDetails.type : '';
+    this.pageNumber = this.paginationComponent.numberPerPage[0];
+    this.showAllMeetingActivities();
+  }
+
   showAllMeetingActivities() {
     this.resetTaskActivityPagination();
     if (this.referenceService.checkIsValidString(this.calendarType)) {
       this.fetchAllMeetingActivities(this.meetingActivityPagination);
     } else {
-      this.customResponse = new CustomResponse('ERROR',"Please configure with atleast one calendar integration.",true);
+      this.showConfigureMessage = true;
     }
   }
 
@@ -180,8 +192,18 @@ export class MeetingActivityComponent implements OnInit {
     this.showCalendarIntegrationsModalPopup = false;
   }
 
-  closeMeetingModalPopup() {
+  closeMeetingModalPopup(event) {
     this.showMeetingModalPopup = false;
+    this.notifyClose.emit(event);
+  }
+
+  openPreviewModalPopup(eventUrl:any) {
+    this.eventUrl = eventUrl;
+    this.showPreviewMeeting =true;
+  }
+
+  closePreviewMeetingModalPopup() {
+    this.showPreviewMeeting = false;
   }
 
 }

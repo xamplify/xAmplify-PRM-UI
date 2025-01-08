@@ -42,15 +42,15 @@
               <div>
                 <i class="fas fa-user mr_6 icons_colors" aria-hidden="true"></i>
                 <span *ngIf="contactName != undefined && contactName != ''" data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
-                  {{contactName | slice:0:9}}<span *ngIf="contactName != undefined && contactName?.length>9">..</span>
+                  {{referenceService?.isHarizontalNavigationBar ? (contactName | slice:0:15) : (contactName | slice:0:10)}}<span *ngIf="contactName != undefined && (referenceService?.isHarizontalNavigationBar ? contactName?.length>15 : contactName?.length>10)">..</span>
                 </span>
                 <span *ngIf="contactName == undefined || contactName == ''" class="anonymous-text">Anonymous</span>
                 <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
               </div>
               <span class="email-id">
                 <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.emailId}}">
-                  <i class="fa fa-envelope mr_6 icons_colors"></i>{{selectedContact?.emailId | slice:0:16}}<span
-                    *ngIf="selectedContact?.emailId?.length>16">..</span>
+                  <i class="fa fa-envelope mr_6 icons_colors"></i>{{referenceService?.isHarizontalNavigationBar ?( selectedContact?.emailId | slice:0:21) : (selectedContact?.emailId | slice:0:16)}}<span
+                    *ngIf="(referenceService?.isHarizontalNavigationBar ? selectedContact?.emailId?.length>21 : selectedContact?.emailId?.length>16)">..</span>
                 </p>
                 <button class="copy-btn" #textEmail value="{{selectedContact?.emailId}}" (click)="copyEmail(textEmail)">
                   <i *ngIf="isEmailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isEmailCopied"
@@ -117,8 +117,8 @@
                   <span *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</span>
                 </div>
               </li>
-              <li><i class="fas fa-map-marker-alt"></i>
-                <div class="user_details">
+              <li><i class="fas fa-map-marker-alt pd_lft2"></i>
+                <div class="user_details pd_lft2">
                   <span class="address_title">Address:</span>
                   <span *ngIf="selectedContact?.address != undefined" class="mb0">{{selectedContact?.address}}</span>
                 </div>
@@ -208,7 +208,7 @@
                     (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
-                  <app-meeting-activity [contactId]="contactId" [activeCalendarDetails]="activeCalendarDetails"></app-meeting-activity>
+                  <app-meeting-activity [contactId]="contactId" [isReloadTab]="isReloadMeetingTab" [activeCalendarDetails]="activeCalendarDetails" (notifyClose)="reloadMeetingTab($event)"></app-meeting-activity>
                 </div>
               </div>
               <!-- END -->
@@ -379,7 +379,7 @@
   (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)" [userId]="contactId" [actionType]="actionType"
   (notifyClose)="closeTaskModalPopup()"></app-add-task-modal-popup>
 
-<app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri"
-  [calendarType]="activeCalendarDetails?.type" (notifyClose)="closeMeetingModalPopup()"></app-add-meeting-modal-popup>
+<app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri" [isReloadTab]="isReloadMeetingTab"
+  [calendarType]="activeCalendarDetails?.type" (notifyClose)="closeMeetingModalPopup($event)"></app-add-meeting-modal-popup>
 
 <app-calendar-integration-modal-popup *ngIf="showCalendarIntegrationsModalPopup" (notifyClose)="closeCalendarIntegrationsModalPopup()"></app-calendar-integration-modal-popup>
