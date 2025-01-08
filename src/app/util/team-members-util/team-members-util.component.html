@@ -106,7 +106,7 @@
                         </button>
                       </div>
                     </ng-container>
-                    <ng-template *ngIf="vendorCompanyProfileName" [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
+                    <ng-template *ngIf="(vendorCompanyProfileName && authenticationService?.module?.loggedInThroughVendorVanityUrl)" [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
                   </section>
                 </div>
               </div>
