@@ -331,7 +331,7 @@
                                             </a>
                                         </li>
                                         <!---Calender Integration--->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'calendarIntegrations'}">
+                                        <li [ngClass]="{'active-tab': activeTabName == 'calendarIntegrations'}" *ngIf="authenticationService?.module?.isContact">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'calendarIntegrations'}"
                                                 (click)="activateTab('calendarIntegrations');clearCustomResponse()">{{properties.calendarIntegrations | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"

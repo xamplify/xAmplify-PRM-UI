@@ -500,6 +500,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     getApprovePartnerReports(pagination: Pagination) {
         this.referenseService.loading(this.httpRequestLoader, true);
         pagination.userId = this.loggedInUserId;
+        pagination.partnerTeamMemberGroupFilter = this.applyFilter;
         if (this.authenticationService.isSuperAdmin()) {
             pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
         }
