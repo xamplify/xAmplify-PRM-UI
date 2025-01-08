@@ -26,8 +26,11 @@
     <div class="tab-content">
         <!---Type-->
         <div [hidden]="activeTab !='draw'" class="tab-pane active">
-            <canvas #sigPad class="border signature-canvas" width="400" height="200" (mousedown)="onMouseDown($event)"
-            (mousemove)="onMouseMove($event)"></canvas>
+            <div style = "text-align:center;">
+                <canvas #sigPad width="300"  height="150" (mousedown)="onMouseDown($event)"
+                (mousemove)="onMouseMove($event)"></canvas>
+             </div>   
+           
         </div>
     </div>  
   </div>
