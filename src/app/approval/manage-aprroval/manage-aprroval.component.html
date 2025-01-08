@@ -186,7 +186,8 @@
 <app-content-status-history-modal-popup *ngIf="callCommentsComponent" [entityId]="selectedDamId"
   [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName" [createdById]="assetCreatedById"
   [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
-  (closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+  (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+  (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopup()">
 </app-content-status-history-modal-popup>
 
 <app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
