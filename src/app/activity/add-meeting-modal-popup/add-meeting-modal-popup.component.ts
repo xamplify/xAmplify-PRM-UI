@@ -30,10 +30,11 @@ export class AddMeetingModalPopupComponent implements OnInit {
 
   ngOnInit() {
     if (this.calendarType == 'CALENDLY') {
-      if (!this.referenceService.checkIsValidString(this.schedulingUrl)) {
-        this.showMeetingSchedulingInputField = true;
-      } else {
+      this.validateURL();
+      if (this.isValidURL) {
         this.addCalendlyScript();
+      } else {
+        this.showMeetingSchedulingInputField = true;
       }
     }
     this.referenceService.openModalPopup('addMeetingModalPopup');
