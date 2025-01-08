@@ -24,6 +24,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   @Input() title: string = "";
   @Input() createdById: number;
   @Input() createdByName: string;
+  @Input() videoId: number;
   @Output() closeModalPopup = new EventEmitter();
   @Output() closeModalPopupAndRefresh = new EventEmitter();
 
@@ -182,6 +183,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.commentDto.name = this.title;
     this.commentDto.createdByName = this.createdByName;
     this.commentDto.moduleType = this.moduleType;
+    this.commentDto.videoId = this.videoId;
     if (this.status != this.commentDto.statusInString) {
       this.commentDto.statusUpdated = true;
       this.status = this.commentDto.statusInString;

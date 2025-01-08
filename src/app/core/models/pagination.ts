@@ -156,7 +156,7 @@ export class Pagination {
 
 	vendorMarketplacePageAnalytics:boolean = false;
 
-	selectedTileCategory: string = "";
+	selectedApprovalStatusCategory: string = "";
 
 	approvalStatus: string = "";
 

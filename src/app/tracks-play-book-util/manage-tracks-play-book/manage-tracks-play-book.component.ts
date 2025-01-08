@@ -76,6 +76,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     CREATED: 'CREATED',
     UPDATED: 'UPDATED'
   };
+  videoId: number;
   @ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
   
 
@@ -502,6 +503,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.assetCreatedByFullName = asset.createdByName;
     this.selectedDamId = asset.id;
     this.createdByAnyAdmin = asset.createdByAnyAdmin;
+    this.videoId = asset.videoId;
   }
 
   closeCommentsAndHistoryModalPopup() {
@@ -515,16 +517,16 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   filterContentByType(event: any) {
     if (event == this.approvalStatus.APPROVED) {
-      this.pagination.selectedTileCategory = this.approvalStatus.APPROVED;
+      this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
       this.listLearningTracks(this.pagination);
     } else if (event == this.approvalStatus.REJECTED) {
-      this.pagination.selectedTileCategory = this.approvalStatus.REJECTED;
+      this.pagination.selectedApprovalStatusCategory = this.approvalStatus.REJECTED;
       this.listLearningTracks(this.pagination);
     } else if (event == this.approvalStatus.CREATED) {
-      this.pagination.selectedTileCategory = this.approvalStatus.CREATED;
+      this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
       this.listLearningTracks(this.pagination);
     } else {
-      this.pagination.selectedTileCategory = '';
+      this.pagination.selectedApprovalStatusCategory = '';
       this.refreshPage();
     }
   }

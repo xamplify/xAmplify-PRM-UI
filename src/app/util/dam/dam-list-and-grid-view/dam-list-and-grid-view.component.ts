@@ -117,7 +117,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		CREATED: 'CREATED',
 		UPDATED: 'UPDATED'
 	};
-	
+	videoId: number;
 	/** XNFR-813 **/
 	@ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
 
@@ -947,6 +947,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.assetCreatedByFullName = asset.fullName;
 		this.selectedDamId = asset.id;
 		this.createdByAnyAdmin = asset.createdByAnyAdmin;
+		this.videoId = asset.videoId;
 	}
 
 	closeCommentsAndHistoryModalPopup() {
@@ -976,16 +977,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/** XNFR-813 **/
 	filterContentByType(event: any) {
 		if (event == this.approvalStatus.APPROVED) {
-			this.pagination.selectedTileCategory = this.approvalStatus.APPROVED;
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.REJECTED) {
-			this.pagination.selectedTileCategory = this.approvalStatus.REJECTED;
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.REJECTED;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.CREATED) {
-			this.pagination.selectedTileCategory = this.approvalStatus.CREATED;
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
 			this.listAssets(this.pagination);
 		} else {
-			this.pagination.selectedTileCategory = '';
+			this.pagination.selectedApprovalStatusCategory = '';
 			this.refreshList();
 		}
 	}

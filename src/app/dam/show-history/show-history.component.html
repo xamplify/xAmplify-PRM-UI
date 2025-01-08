@@ -162,7 +162,7 @@
 <app-content-status-history-modal-popup
 	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
 	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
-	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
 	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
 	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
 </app-content-status-history-modal-popup>

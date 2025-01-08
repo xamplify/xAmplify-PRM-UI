@@ -506,7 +506,7 @@
 <app-content-status-history-modal-popup
     *ngIf="callCommentsComponent && isApprovalRequiredForType() && !isPartnerView"
     [entityId]="selectedDamId" [moduleType]="type" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
-    [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName"
+    [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
     (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
     (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
 </app-content-status-history-modal-popup>
