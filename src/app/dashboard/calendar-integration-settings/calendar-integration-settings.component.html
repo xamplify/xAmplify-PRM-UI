@@ -1,6 +1,7 @@
 <!-- Nav tabs -->
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+<app-response-message class="pg8" [customResponse]="customResponse"
+  *ngIf="customResponse?.isVisible"></app-response-message>
 <div class="scrollbar-x">
   <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <li class="active"><a (click)="setActiveTab('home')" data-toggle="tab" href="#home">User Info</a></li>
@@ -22,8 +23,8 @@
         <h5>Email: {{calendarDetails?.externalEmailId}}</h5>
       </div>
       <div class="btn-groups active-btns mb_right0" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary activate-btn integration-btn"
-          *ngIf="!(calendarDetails?.active)" (click)="activateCalendar()">Activate</button>
+        <button type="button" class="btn btn-primary activate-btn integration-btn" *ngIf="!(calendarDetails?.active)"
+          (click)="activateCalendar()">Activate</button>
         <button type="button" class="btn btn-primary inetgrations_activate_bgcolor activated-btn ActivatedBtn"
           *ngIf="calendarDetails?.active"><i class="fa fa-star"
             style="font-size: 15px !important;"></i>Activated</button>
@@ -35,11 +36,29 @@
   <div id="menu1" *ngIf="showSchedulingUrlTab" class="tab-pane fade in active pt-25 integration-profile">
     <div class="form-group">
       <label for="subjectLine">Meeting Scheduling Link</label>
-      <input type="text" (input)="validateURL()" [(ngModel)]="calendarDetails.userUri" placeholder="Enter Scheduling Link" class="form-control">
+      <input type="text" (input)="validateURL()" [(ngModel)]="calendarDetails.userUri"
+        placeholder="Enter Scheduling Link" class="form-control">
     </div>
-    <div class="modal-footer">
+    <div class="d-flex justify-content-end">
       <button type="submit" class="button bgcolor-unset" (click)="submit()" [disabled]="!isValidURL"><span
           class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
     </div>
+
+    <div class="row" *ngIf="calendarDetails.userUri == undefined">
+      <div class="col-lg-8 col-md-7 col-sm-8 col-xs-12 order-sm-2 d-f-pb7px">
+        <h4 class="bold">Steps to get the Meeting scheduling link:</h4>
+      </div>
+      <div class="col-lg-8 col-md-7 col-sm-8 col-xs-12 order-sm-2 d-f-pb7px mb5">
+        <div class="pt7px">Step 1 : Click On
+          <button type="submit" class="btn btn-primary"><a class="white" href="https://calendly.com/event_types/user/me"
+              target="_blank"> Login to Calendly Account </a></button>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <p> Step 2: The Event Types section displays Your Calendly scheduling link.</p>
+        <p> Step 3: Copy the Link and insert in the above field.</p>
+      </div>
+    </div>
+
   </div>
 </div>
