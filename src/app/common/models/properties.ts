@@ -513,7 +513,7 @@ export class Properties {
 	
 	/**** Invite A Team-member ****/
 	inviteATeamMember = "Invite A Team Member";
-	inviteATeamMemberToJoinxAmplify = "Invite a Team Member to join xAmplify";
+	inviteATeamMemberToJoinxAmplify = "Invite a Team Member to Join ";
 	teamMemberInvites = "Team Member Invites";
 	invitedTeamMeberAnalytics = "Invited Team Member Analytics";
   	my_Landscape_Vendor=' Vendor Landscape Pages ';

@@ -1391,8 +1391,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
             this.ckeConfig.contentsCss.push(styleBlob);
           }
           this.vendorInvitation.message = htmlBody.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
-          this.vendorInvitation.subject = this.vendorCompanyProfileName === 'versa-networks'
-            ? data.subject : "Check out xAmplify's marketing automation platform";
+          this.vendorInvitation.subject = data.subject;
         } else {
           this.vendorInvitation.message = "";
           this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
