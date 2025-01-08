@@ -32,14 +32,14 @@
               </path>
             </svg>
             <span>
-              <a href="{{meetingActivity?.meetingUrl}}" class="btn btn-primary" target="_blank">
+              <a href="{{meetingActivity?.meetingUrl}}" class="btn btn-primary meeting-link" target="_blank">
                 Join Meeting
               </a>
             </span>
             <button class="copy-btn" #meetingUrl value="{{meetingActivity?.meetingUrl}}"
               (click)="copyMeetingUrl(meetingUrl)">
-              <i *ngIf="isMeetingUrlCopied" class="fa fa-check copy_icon p10" aria-hidden="true"></i><i
-                *ngIf="!isMeetingUrlCopied" class="fa fa-clone copy_icon p10" aria-hidden="true"></i></button>
+              <i *ngIf="isMeetingUrlCopied" class="fa fa-check copy_icon p10 ml5" aria-hidden="true"></i><i
+                *ngIf="!isMeetingUrlCopied" class="fa fa-clone copy_icon p10 ml5" aria-hidden="true"></i></button>
           </div>
 
           <div class="event-header">

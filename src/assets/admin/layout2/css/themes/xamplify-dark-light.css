@@ -2628,3 +2628,5 @@ tbody{background: transparent;}
 .user_guest_icon{
   fill: #fff!important;
 }
+.copy_icon:hover {
+  background-color: #53585b!important;}
