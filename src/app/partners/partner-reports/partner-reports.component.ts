@@ -540,7 +540,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.inactivePartnerList);
                 this.referenseService.loading(this.httpRequestLoader, false);
-                this.inActivePartnersPagination.searchKey = "";
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
@@ -1132,14 +1131,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 pagination.totalRecords = response.totalRecords;
                 if (response.list.length === 0) {
                     this.customResponse = new CustomResponse('INFO', 'No records found', true);
+                }else {
+                    this.customResponse = new CustomResponse();
                 }
-
                 for (var i in response.approvePartnerList) {
                     response.list[i].contactCompany = response.list[i].partnerCompanyName;
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.list);
                 this.referenseService.loading(this.httpRequestLoader, false);
-                this.incompleteCompanyProfileAndPendingSingupPagination.searchKey = "";
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
