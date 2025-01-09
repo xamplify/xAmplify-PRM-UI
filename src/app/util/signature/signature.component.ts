@@ -20,6 +20,10 @@ export class SignatureComponent implements OnInit {
   img:any;
 
   typedSignature: string = "";
+  fontStyles: string[] = ['Cursive', 'Brush Script MT', 'Great Vibes', 'fantasy', 'math','monospace'];
+  selectedFont: string = this.fontStyles[0]; // Default font
+
+
   uploadedImage: string | ArrayBuffer | null = null;
 
 
@@ -99,4 +103,15 @@ export class SignatureComponent implements OnInit {
       
     }
   }
+
+
+  /***Type Signature****/
+  updateSignaturePreview(){
+
+  }
+
+  selectFont(font: string) {
+    this.selectedFont = font;
+  }
+
 }

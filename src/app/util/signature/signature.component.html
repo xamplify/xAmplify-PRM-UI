@@ -34,8 +34,21 @@
 
         <!--Type-->
         <div *ngIf="activeTab === 'type'" class="tab-pane active">
-          <input type="text" class="form-control" [(ngModel)]="typedSignature" placeholder="Type your signature" />
-          <div class="typed-preview mt-3">{{ typedSignature }}</div>
+          <input type="text" class="form-control" [(ngModel)]="typedSignature" (input)="updateSignaturePreview()" placeholder="Type your signature" />
+          <h3>Choose a Font Style:</h3>
+          <div class="font-options">
+            <button *ngFor="let font of fontStyles" 
+                    [ngStyle]="{'font-family': font}" 
+                    (click)="selectFont(font)">
+              {{ typedSignature || 'Your Name' }}
+            </button>
+          </div>
+
+          <h3>Preview:</h3>
+          <div class="signature-preview mb10" [ngStyle]="{'font-family': selectedFont}">
+            {{ typedSignature || 'Your Name' }}
+          </div>
+          
         </div>
 
         <!--Upload-->

@@ -21,3 +21,33 @@ canvas {
 span {
     width: 300px;
 }
+
+.signature-container {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .font-options button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    background: #f0f0f0;
+    transition: transform 0.2s;
+  }
+  
+  .font-options button:hover {
+    transform: scale(1.1);
+  }
+  
+  .signature-preview {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 30px;
+    color: #555;
+  }
+  
