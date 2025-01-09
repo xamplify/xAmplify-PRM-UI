@@ -474,7 +474,7 @@
                         <div class="form-check pointer mt15">
                             <input class="pointer radioButton_shadow" type="radio" (click)="selectedOption=true"
                                 name="rdaction" value="Assets_or_Quiz">
-                            <label class="option-color">Want to update Assets/Quiz</label><br>
+                            <label class="option-color">{{type.toLowerCase() === 'track' ? ' Want to update Assets/Quiz' : ' Want to update Assets' }}</label><br>
                             <input class="pointer radioButton_shadow" type="radio" (click)="selectedOption=true"
                                 name="rdaction" value="Partner_List">
                             <label class="option-color">Want to update the
