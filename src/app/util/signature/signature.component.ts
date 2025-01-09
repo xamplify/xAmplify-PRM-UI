@@ -13,11 +13,16 @@ export class SignatureComponent implements OnInit {
 
   /***Draw Signature***/
   @Input() name: string;
-  @ViewChild('sigPad') sigPad;
-  sigPadElement;
-  context;
+  @ViewChild('sigPad') sigPad:any;
+  sigPadElement:any;
+  context:any;
   isDrawing = false;
-  img;
+  img:any;
+
+  typedSignature: string = "";
+  uploadedImage: string | ArrayBuffer | null = null;
+
+
 
 
   constructor() { }
@@ -75,5 +80,23 @@ export class SignatureComponent implements OnInit {
 
   uploadImageCloseModalPopUpEventReceiver(event: any) {
     this.uploadSignatureButtonClicked = false;
+  }
+
+  saveSignature() {
+    let signatureData: string | null = null;
+
+    if (this.activeTab === "draw") {
+      const canvas = this.sigPad.nativeElement as HTMLCanvasElement;
+      signatureData = canvas.toDataURL("image/png");
+      const base64Image = canvas.toDataURL(); // Convert canvas to base64
+      console.log(base64Image);
+    } else if (this.activeTab === "type") {
+      signatureData = this.typedSignature;
+    } else if (this.activeTab === "upload") {
+    }
+
+    if (signatureData) {
+      
+    }
   }
 }

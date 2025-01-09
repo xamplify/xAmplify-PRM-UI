@@ -24,18 +24,30 @@
 
   <div class="panel-body tab-bg">
     <div class="tab-content">
-        <!---Type-->
-        <div [hidden]="activeTab !='draw'" class="tab-pane active">
-            <div style = "text-align:center;">
+        <!---Draw-->
+        <div [hidden]="activeTab !='draw'" class="tab-pane" [class.active]="activeTab === 'draw'">
+            <div class="text-center">
                 <canvas #sigPad width="300"  height="150" (mousedown)="onMouseDown($event)"
                 (mousemove)="onMouseMove($event)"></canvas>
              </div>   
-           
         </div>
+
+        <!--Type-->
+        <div *ngIf="activeTab === 'type'" class="tab-pane active">
+          <input type="text" class="form-control" [(ngModel)]="typedSignature" placeholder="Type your signature" />
+          <div class="typed-preview mt-3">{{ typedSignature }}</div>
+        </div>
+
+        <!--Upload-->
+        <div *ngIf="activeTab === 'upload'" class="tab-pane active">
+          <input type="file" (change)="onFileUpload($event)" />
+          <img *ngIf="uploadedImage" [src]="uploadedImage" alt="Uploaded Signature" class="mt-3 img-thumbnail" />
+        </div>
+
     </div>  
   </div>
 
   <div class="float-right mt10">
-    <button type="button" class="btn btn-primary" (click)="submitSignature()">Save</button>
+    <button type="button" class="btn btn-primary" (click)="saveSignature()">Save</button>
     <button type="button" class="btn btn-danger" (click)="clearCanvas()">Clear</button>
   </div>
