@@ -10,6 +10,7 @@ import { SignatureService } from './../../dashboard/services/signature.service';
   styleUrls: ['./signature.component.css', '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css']
 })
 export class SignatureComponent implements OnInit {
+  ngxLoading = false;
   uploadSignatureButtonClicked = false;
   signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
   activeTab = "draw";
@@ -27,7 +28,8 @@ export class SignatureComponent implements OnInit {
   typedSignature: string = "";
   fontStyles: string[] = ['Cursive', 'Brush Script MT', 'Great Vibes', 'fantasy', 'math','monospace'];
   selectedFont: string = this.fontStyles[0]; // Default font
-  isMaximumLengthReached = false;
+  isValidSignatureText = false;
+  signatureTextErrorMessage = "Please Type Your Signature";
 
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
@@ -112,8 +114,11 @@ export class SignatureComponent implements OnInit {
   /***Type Signature****/
   updateSignaturePreview(){
     this.typedSignature = this.referenceService.getTrimmedData(this.typedSignature);
-    this.isMaximumLengthReached = this.typedSignature.length>25;
-    
+    this.isValidSignatureText = this.typedSignature.length>0 && this.typedSignature.length<=25;
+    if(this.isValidSignatureText ){
+      let isLimitReached = this.typedSignature.length>25;
+      this.signatureTextErrorMessage = isLimitReached ? 'Maximum length is 25 characters':'Please Type Your Signature';
+    }
   }
 
   selectFont(font: string) {
@@ -121,17 +126,29 @@ export class SignatureComponent implements OnInit {
   }
 
   saveTypedSignature(){
-    let typedSignature = this.typedSignature.slice(0,24);
-    this.signatureDto = new SignatureDto();
-    this.signatureDto.typedSignatureFont = this.selectedFont;
-    this.signatureDto.typedSignatureText = typedSignature;
-    this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
-      response=>{
-       this.referenceService.showSweetAlertSuccessMessage(response.message);
-      },error=>{
-        this.referenceService.showSweetAlertServerErrorMessage();
-      });
+    if(this.typedSignature.length==0){
 
+    }else{
+      this.ngxLoading = true;
+      let typedSignature = this.typedSignature.slice(0,24);
+      this.signatureDto = new SignatureDto();
+      this.signatureDto.typedSignatureFont = this.selectedFont;
+      this.signatureDto.typedSignatureText = typedSignature;
+      this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
+        response=>{
+         let statusCode = response.statusCode;
+         if(statusCode==200){
+          this.referenceService.showSweetAlertSuccessMessage(response.message);
+          
+         }else{
+          this.referenceService.showSweetAlertErrorMessage(response.message);
+         }
+         this.ngxLoading = false;
+        },error=>{
+          this.ngxLoading = false;
+          this.referenceService.showSweetAlertServerErrorMessage();
+        });
+    }
   }
 
 }

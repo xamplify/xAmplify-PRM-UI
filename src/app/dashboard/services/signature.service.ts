@@ -13,6 +13,7 @@ export class SignatureService {
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService) { }
 
   saveTypedSignature(signatureDto:SignatureDto){
+    signatureDto.loggedInUserId = this.authenticationService.getUserId();
     const url = this.signatureUrl+'saveTypedSignature?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPostMethod(url,signatureDto);
   }

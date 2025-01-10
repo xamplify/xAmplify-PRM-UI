@@ -1,3 +1,4 @@
+<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
 <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <!--Draw-->
@@ -35,7 +36,7 @@
         <!--Type-->
         <div *ngIf="activeTab === 'type'" class="tab-pane active">
           <input type="text" class="form-control" [(ngModel)]="typedSignature" (input)="updateSignaturePreview()" placeholder="Type your signature" />
-          <span class="required" *ngIf="isMaximumLengthReached">Maximum length is 25 characters</span>
+          <span class="required" *ngIf="isValidSignatureText">{{signatureTextErrorMessage}}</span>
           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
             <!--DropDown-->
             <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
