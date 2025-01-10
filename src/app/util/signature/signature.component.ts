@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, ViewChild,ElementRef,HostListener } from '@angular/core';
 import { MY_PROFILE_MENU_CONSTANTS } from 'app/constants/my-profile-menu-constants';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { SignatureDto } from 'app/dashboard/models/signature-dto';
+import { SignatureService } from './../../dashboard/services/signature.service';
 
 @Component({
   selector: 'app-signature',
@@ -11,6 +13,7 @@ export class SignatureComponent implements OnInit {
   uploadSignatureButtonClicked = false;
   signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
   activeTab = "draw";
+  signatureDto:SignatureDto = new SignatureDto();
 
   /***Draw Signature***/
   @Input() name: string;
@@ -32,7 +35,7 @@ export class SignatureComponent implements OnInit {
 
 
 
-  constructor(private referenceService:ReferenceService) { }
+  constructor(private referenceService:ReferenceService,private signatureService:SignatureService) { }
 
   
 
@@ -98,13 +101,11 @@ export class SignatureComponent implements OnInit {
       const base64Image = canvas.toDataURL(); // Convert canvas to base64
       console.log(base64Image);
     } else if (this.activeTab === "type") {
-      signatureData = this.typedSignature;
+      this.saveTypedSignature();
     } else if (this.activeTab === "upload") {
     }
 
-    if (signatureData) {
-      
-    }
+    
   }
 
 
@@ -117,6 +118,20 @@ export class SignatureComponent implements OnInit {
 
   selectFont(font: string) {
     this.selectedFont = font;
+  }
+
+  saveTypedSignature(){
+    let typedSignature = this.typedSignature.slice(0,24);
+    this.signatureDto = new SignatureDto();
+    this.signatureDto.typedSignatureFont = this.selectedFont;
+    this.signatureDto.typedSignatureText = typedSignature;
+    this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
+      response=>{
+       this.referenceService.showSweetAlertSuccessMessage(response.message);
+      },error=>{
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
+
   }
 
 }

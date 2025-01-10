@@ -42,7 +42,7 @@
               <h4>Choose a Font Style:</h4>
               <select class="form-control" [(ngModel)]="selectedFont" (change)="updateSignaturePreview()">
                 <option *ngFor="let font of fontStyles" [ngValue]="font" [ngStyle]="{'font-family': font}">
-                  {{ typedSignature || 'Your Signature' }}
+                  {{ typedSignature  || 'Your Signature' | slice:0:24 }}
                 </option>
               </select>
             </div>
@@ -50,7 +50,7 @@
             <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
               <h4>Preview:</h4>
               <div class="signature-preview mb10" [ngStyle]="{'font-family': selectedFont}">
-                {{ typedSignature || 'Your Signature' }}
+                {{ typedSignature|| 'Your Signature'  | slice:0:24 }}
               </div>
             </div>
           </div>
