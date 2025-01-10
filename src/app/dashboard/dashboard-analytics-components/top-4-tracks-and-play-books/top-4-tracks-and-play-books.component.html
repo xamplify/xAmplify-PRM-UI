@@ -58,6 +58,19 @@
                                 title="{{learningTrack.createdByName}}">
                                 <b>By: </b>{{learningTrack.createdByName}}
                             </h6>
+                            <!-- XNFR-824 -->
+                            <span *ngIf="isApprovalRequiredForType() && !isPartnerView" class="view-banner" [ngClass]="{
+                                    'bgc-green': learningTrack?.approvalStatus === approvalStatus.APPROVED,
+                                    'bgc-red': learningTrack?.approvalStatus === approvalStatus.REJECTED,
+                                    'bgc-orange': learningTrack?.approvalStatus === approvalStatus.CREATED}"
+                                style="white-space: nowrap; float: left; margin-left: 12px;" translate>
+                                {{getApprovalStatusText(learningTrack.approvalStatus)}}
+                            </span>
+                            <span style="white-space: nowrap; float: left; margin-left: 12px;"
+                                *ngIf="!isApprovalRequiredForType() && !isPartnerView && learningTrack.approvalStatus == approvalStatus.REJECTED"
+                                class="view-banner asset-approval-labele-spacing bgc-red" translate>
+                                {{getApprovalStatusText(learningTrack.approvalStatus)}}
+                            </span>
                             <h6 class="xamplify-ellipsis GridViewCotent">
                                 <b> Created On: </b><app-timestamp [isOnlyDate]="true"
                                     [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
@@ -91,8 +104,9 @@
                                 </a>
                                 <a class="Iconhover custom-grid-icon"
                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                    data-toggle="tooltip" data-placement="top" title="Publish"
-                                    (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                    data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
+                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '' : confirmChangePublish(learningTrack.id, true, learningTrack)"
+                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''">
                                     <i class="fa fa-share" aria-hidden="true"></i>
                                     <div class="clickicons"></div>
                                 </a>
@@ -105,6 +119,12 @@
                                     title="View Analytics" (click)="goToAnalytics(learningTrack)">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                     <div class="clickicons"></div>
+                                </a>
+                                <!-- XNFR-824 -->
+                                <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
+                                    <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
                                 </a>
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
                                     data-placement="top" title="Delete" class="delete custom-icon"
@@ -133,3 +153,11 @@
     [selectedTrackOrPlayBookId]="selectedTrackOrPlayBookId" [isPublishing]="isPublishing"
     (eventOutput)="toCallChangePublishFromUnpublishPopup($event)" [type]="type" (cancelEmitter)="resetUnPublishOptionInputValues()">
 </app-confirm-unpublish-tracks-or-playbooks-model-popup>
+
+<app-content-status-history-modal-popup
+    *ngIf="callCommentsComponent && isApprovalRequiredForType() && !isPartnerView"
+    [entityId]="entityId" [moduleType]="moduleType" [createdByAnyAdmin]="createdByAnyAdmin" [title]="trackOrPlaybookTitle"
+    [createdById]="trackOrPlaybookCreatedById" [createdByName]="trackOrPlaybookCreatedByFullName" [videoId]="videoId"
+    (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+    (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
+</app-content-status-history-modal-popup>

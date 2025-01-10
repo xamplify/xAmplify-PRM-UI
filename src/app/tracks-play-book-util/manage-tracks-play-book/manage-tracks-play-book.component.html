@@ -251,9 +251,9 @@
                                                 <a class="custom-icon"
                                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                                     data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
-                                                    (click)="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-share IconCustomization" aria-hidden="true"
-                                                    [ngClass]="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'disabled gray':''"></i>
+                                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -384,8 +384,8 @@
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                         data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : Publish}}"
-                                        (click)="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
-                                        [ngClass]="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'disabled gray':''">
+                                        (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
+                                        [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''">
                                         <i class="fa fa-share" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>
