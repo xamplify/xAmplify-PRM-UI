@@ -67,7 +67,7 @@ export class ManageAprrovalComponent implements OnInit {
     if (message != undefined && message.length > 0) {
       this.customResponse = new CustomResponse('SUCCESS', message, true);
     }
-    if (this.referenceService.isUpdated) {
+    if (this.referenceService.isUpdated || this.referenceService.isAssetDetailsUpldated) {
       let message = "Updated Successfully"
       this.customResponse = new CustomResponse('SUCCESS', message, true);
     }
@@ -192,7 +192,8 @@ export class ManageAprrovalComponent implements OnInit {
 
   handleAssetPreview(item: any) {
     if (this.referenceService.isVideo(item.slug)) {
-      const videoUrl = `/home/dam/previewVideo/${item.videoId}/${item.id}`;
+      let prefixurl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['approval']
+      const videoUrl = `${prefixurl}/previewVideo/${item.videoId}/${item.id}`;
       this.referenceService.navigateToRouterByViewTypes(videoUrl, 0, undefined, undefined, undefined);
     } else if (item.beeTemplate) {
       this.referenceService.previewAssetPdfInNewTab(item.id);
@@ -258,7 +259,7 @@ export class ManageAprrovalComponent implements OnInit {
   handleAssetEdit(item: any) {
     setTimeout(() => {
       let prefixurl =  RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['approval']
-      if (item.beeTemplate && this.referenceService.isVideo(item.slug)) {
+      if (!item.beeTemplate && this.referenceService.isVideo(item.slug)) {
         let url = prefixurl + "editVideo/" + item.videoId + "/" + item.id;
         this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
       } else {
