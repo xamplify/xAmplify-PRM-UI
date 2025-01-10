@@ -35,18 +35,24 @@
         <!--Type-->
         <div *ngIf="activeTab === 'type'" class="tab-pane active">
           <input type="text" class="form-control" [(ngModel)]="typedSignature" (input)="updateSignaturePreview()" placeholder="Type your signature" />
-          <h3>Choose a Font Style:</h3>
-          <div class="font-options">
-            <button *ngFor="let font of fontStyles" 
-                    [ngStyle]="{'font-family': font}" 
-                    (click)="selectFont(font)">
-              {{ typedSignature || 'Your Name' }}
-            </button>
-          </div>
-
-          <h3>Preview:</h3>
-          <div class="signature-preview mb10" [ngStyle]="{'font-family': selectedFont}">
-            {{ typedSignature || 'Your Name' }}
+          <span class="required" *ngIf="isMaximumLengthReached">Maximum length is 25 characters</span>
+          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+            <!--DropDown-->
+            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+              <h4>Choose a Font Style:</h4>
+              <select class="form-control" [(ngModel)]="selectedFont" (change)="updateSignaturePreview()">
+                <option *ngFor="let font of fontStyles" [ngValue]="font" [ngStyle]="{'font-family': font}">
+                  {{ typedSignature || 'Your Signature' }}
+                </option>
+              </select>
+            </div>
+            <!--Preview-->
+            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+              <h4>Preview:</h4>
+              <div class="signature-preview mb10" [ngStyle]="{'font-family': selectedFont}">
+                {{ typedSignature || 'Your Signature' }}
+              </div>
+            </div>
           </div>
           
         </div>

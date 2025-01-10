@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild,ElementRef,HostListener } from '@angular/core';
 import { MY_PROFILE_MENU_CONSTANTS } from 'app/constants/my-profile-menu-constants';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
   selector: 'app-signature',
@@ -19,17 +20,19 @@ export class SignatureComponent implements OnInit {
   isDrawing = false;
   img:any;
 
+  /****Type****/
   typedSignature: string = "";
   fontStyles: string[] = ['Cursive', 'Brush Script MT', 'Great Vibes', 'fantasy', 'math','monospace'];
   selectedFont: string = this.fontStyles[0]; // Default font
+  isMaximumLengthReached = false;
 
-
+  /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
 
 
 
 
-  constructor() { }
+  constructor(private referenceService:ReferenceService) { }
 
   
 
@@ -107,7 +110,9 @@ export class SignatureComponent implements OnInit {
 
   /***Type Signature****/
   updateSignaturePreview(){
-
+    this.typedSignature = this.referenceService.getTrimmedData(this.typedSignature);
+    this.isMaximumLengthReached = this.typedSignature.length>25;
+    
   }
 
   selectFont(font: string) {
