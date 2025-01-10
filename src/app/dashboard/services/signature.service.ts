@@ -18,4 +18,9 @@ export class SignatureService {
     return this.authenticationService.callPostMethod(url,signatureDto);
   }
 
+  getTypedSignature(){
+    const url = this.signatureUrl+'getTypedSignature/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

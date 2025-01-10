@@ -25,11 +25,10 @@ export class SignatureComponent implements OnInit {
   img:any;
 
   /****Type****/
-  typedSignature: string = "";
   fontStyles: string[] = ['Cursive', 'Brush Script MT', 'Great Vibes', 'fantasy', 'math','monospace'];
-  selectedFont: string = this.fontStyles[0]; // Default font
-  isValidSignatureText = false;
-  signatureTextErrorMessage = "Please Type Your Signature";
+  isValidSignatureText = true;
+  signatureTextErrorMessage = "Maximum length is 25 characters";
+  typedSignatureLoader = true;
 
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
@@ -42,11 +41,35 @@ export class SignatureComponent implements OnInit {
   
 
   ngOnInit() {
+    /***Draw****/
+    this.loadSignaturePad();
+
+    /*Type*/
+    this.getTypedSignature();
+
+    
+  }
+
+  private getTypedSignature() {
+    this.signatureService.getTypedSignature().subscribe(
+      response => {
+        this.signatureDto = response.data;
+        let isValidFont = this.signatureDto.typedSignatureFont!=undefined && this.signatureDto.typedSignatureFont.length>0;
+        if(!isValidFont){
+          this.signatureDto.typedSignatureFont = this.fontStyles[0]; // Default font
+
+        }
+        this.typedSignatureLoader = false;
+      }, error => {
+        this.typedSignatureLoader = false;
+        this.referenceService.showSweetAlertErrorMessage("Unable to load type");
+      });
+  }
+
+  private loadSignaturePad() {
     this.sigPadElement = this.sigPad.nativeElement;
     this.context = this.sigPadElement.getContext('2d');
     this.context.strokeStyle = '#000';
-
-    
   }
 
   switchTab(tabName: string) {
@@ -112,43 +135,35 @@ export class SignatureComponent implements OnInit {
 
 
   /***Type Signature****/
-  updateSignaturePreview(){
-    this.typedSignature = this.referenceService.getTrimmedData(this.typedSignature);
-    this.isValidSignatureText = this.typedSignature.length>0 && this.typedSignature.length<=25;
-    if(this.isValidSignatureText ){
-      let isLimitReached = this.typedSignature.length>25;
-      this.signatureTextErrorMessage = isLimitReached ? 'Maximum length is 25 characters':'Please Type Your Signature';
+  validateTypedSignature(){
+    this.previewSignature();
+    this.isValidSignatureText = this.signatureDto.typedSignatureText.length<=25;
+    if(!this.isValidSignatureText){
+      this.signatureTextErrorMessage = 'Maximum length is 25 characters';
+    }else{
+      this.signatureTextErrorMessage = "";
     }
+  }
+
+  previewSignature(){
+    this.signatureDto.typedSignatureText = this.referenceService.getTrimmedData(this.signatureDto.typedSignatureText);
   }
 
   selectFont(font: string) {
-    this.selectedFont = font;
+    this.signatureDto.typedSignatureFont = font;
   }
 
   saveTypedSignature(){
-    if(this.typedSignature.length==0){
-
-    }else{
-      this.ngxLoading = true;
-      let typedSignature = this.typedSignature.slice(0,24);
-      this.signatureDto = new SignatureDto();
-      this.signatureDto.typedSignatureFont = this.selectedFont;
-      this.signatureDto.typedSignatureText = typedSignature;
-      this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
-        response=>{
-         let statusCode = response.statusCode;
-         if(statusCode==200){
-          this.referenceService.showSweetAlertSuccessMessage(response.message);
-          
-         }else{
-          this.referenceService.showSweetAlertErrorMessage(response.message);
-         }
-         this.ngxLoading = false;
-        },error=>{
-          this.ngxLoading = false;
-          this.referenceService.showSweetAlertServerErrorMessage();
-        });
+    this.previewSignature();
+    this.ngxLoading = true;
+    this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
+      response => {
+        this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
     }
-  }
 
 }

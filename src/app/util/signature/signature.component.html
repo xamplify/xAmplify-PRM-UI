@@ -34,29 +34,7 @@
         </div>
 
         <!--Type-->
-        <div *ngIf="activeTab === 'type'" class="tab-pane active">
-          <input type="text" class="form-control" [(ngModel)]="typedSignature" (input)="updateSignaturePreview()" placeholder="Type your signature" />
-          <span class="required" *ngIf="isValidSignatureText">{{signatureTextErrorMessage}}</span>
-          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-            <!--DropDown-->
-            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-              <h4>Choose a Font Style:</h4>
-              <select class="form-control" [(ngModel)]="selectedFont" (change)="updateSignaturePreview()">
-                <option *ngFor="let font of fontStyles" [ngValue]="font" [ngStyle]="{'font-family': font}">
-                  {{ typedSignature  || 'Your Signature' | slice:0:24 }}
-                </option>
-              </select>
-            </div>
-            <!--Preview-->
-            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-              <h4>Preview:</h4>
-              <div class="signature-preview mb10" [ngStyle]="{'font-family': selectedFont}">
-                {{ typedSignature|| 'Your Signature'  | slice:0:24 }}
-              </div>
-            </div>
-          </div>
-          
-        </div>
+        <ng-template [ngTemplateOutlet]="typeSignatureTemplate"></ng-template>
 
         <!--Upload-->
         <div *ngIf="activeTab === 'upload'" class="tab-pane active">
@@ -71,3 +49,37 @@
     <button type="button" class="btn btn-primary" (click)="saveSignature()">Save</button>
     <button type="button" class="btn btn-danger" (click)="clearCanvas()">Clear</button>
   </div>
+
+
+
+
+  <ng-template #typeSignatureTemplate>
+    <div *ngIf="activeTab === 'type'" class="tab-pane active">
+      <div class="mb10" *ngIf="typedSignatureLoader" >
+        <app-modal-popup-loader  [height]="130"></app-modal-popup-loader>
+      </div>
+      <div *ngIf="!typedSignatureLoader">
+        <input type="text" class="form-control" [(ngModel)]="signatureDto.typedSignatureText" (input)="validateTypedSignature()" placeholder="Type your signature" />
+        <span class="required" *ngIf="!isValidSignatureText">{{signatureTextErrorMessage}}</span>
+        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+          <!--DropDown-->
+          <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+            <h4>Choose a Font Style:</h4>
+            <select class="form-control" [(ngModel)]="signatureDto.typedSignatureFont" (change)="previewSignature()">
+              <option *ngFor="let font of fontStyles" [ngValue]="font" [ngStyle]="{'font-family': font}">
+                {{ signatureDto.typedSignatureText  || 'Your Signature' | slice:0:25 }}
+              </option>
+            </select>
+          </div>
+          <!--Preview-->
+          <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+            <h4>Preview:</h4>
+            <div class="signature-preview mb10" [ngStyle]="{'font-family': signatureDto.typedSignatureFont}">
+              {{ signatureDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-template>
