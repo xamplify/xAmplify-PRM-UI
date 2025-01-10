@@ -151,7 +151,7 @@ export class VendorRequestReportComponent implements OnInit {
     /***** XNFR-805 *****/
     getStatusType(status) {
         const statusMap = {
-            UNAPPROVED: 'INVITED', APPROVE: 'APPROVED', DECLINE: 'DECLINED',
+            UNAPPROVED: 'INVITED', APPROVE: 'ACTIVATED', DECLINE: 'DEACTIVATED',
             INVITED: 'UNAPPROVED', APPROVED: 'APPROVE', DECLINED: 'DECLINE', ALL: 'ALL'
         };
         return this.isTeamMemberRequest ? statusMap[status] : status;
