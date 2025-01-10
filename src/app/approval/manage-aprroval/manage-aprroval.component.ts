@@ -208,6 +208,7 @@ export class ManageAprrovalComponent implements OnInit {
       this.assetName = item.name;
       this.assetCreatedById = item.createdById;
       this.assetCreatedByFullName = item.createdBy;
+      this.createdByAnyAdmin = item.createdByAnyAdmin;
       this.selectedDamId = item.id;
       this.moduleType = 'DAM';
     }
@@ -216,6 +217,7 @@ export class ManageAprrovalComponent implements OnInit {
       this.assetName = item.name;
       this.assetCreatedById = item.createdById;
       this.assetCreatedByFullName = item.createdBy;
+      this.createdByAnyAdmin = item.createdByAnyAdmin;
       this.selectedDamId = item.id;
       this.moduleType = 'TRACK';
     }
@@ -224,6 +226,7 @@ export class ManageAprrovalComponent implements OnInit {
       this.assetName = item.name;
       this.assetCreatedById = item.createdById;
       this.assetCreatedByFullName = item.createdBy;
+      this.createdByAnyAdmin = item.createdByAnyAdmin;
       this.selectedDamId = item.id;
       this.moduleType = 'PLAYBOOK';
     }
