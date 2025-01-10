@@ -46,7 +46,7 @@
   </div>
 
   <div class="float-right mt10">
-    <button type="button" class="btn btn-primary" (click)="saveSignature()">Save</button>
+    <button type="button" class="btn btn-primary" (click)="saveSignature()">Submit</button>
     <button type="button" class="btn btn-danger" (click)="clearCanvas()">Clear</button>
   </div>
 
@@ -75,7 +75,7 @@
           <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
             <h4>Preview:</h4>
             <div class="signature-preview mb10" [ngStyle]="{'font-family': signatureDto.typedSignatureFont}">
-              {{ signatureDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}
+              <div id="typedSignaturePreview">{{ signatureDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}</div>
             </div>
           </div>
         </div>

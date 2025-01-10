@@ -3,6 +3,7 @@ import { MY_PROFILE_MENU_CONSTANTS } from 'app/constants/my-profile-menu-constan
 import { ReferenceService } from 'app/core/services/reference.service';
 import { SignatureDto } from 'app/dashboard/models/signature-dto';
 import { SignatureService } from './../../dashboard/services/signature.service';
+import * as domtoimage from 'dom-to-image';
 
 @Component({
   selector: 'app-signature',
@@ -33,38 +34,20 @@ export class SignatureComponent implements OnInit {
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
 
-
-
-
   constructor(private referenceService:ReferenceService,private signatureService:SignatureService) { }
 
-  
+  switchTab(tabName: string) {
+    this.activeTab = tabName;
+  }
 
   ngOnInit() {
     /***Draw****/
     this.loadSignaturePad();
-
     /*Type*/
     this.getTypedSignature();
-
-    
   }
 
-  private getTypedSignature() {
-    this.signatureService.getTypedSignature().subscribe(
-      response => {
-        this.signatureDto = response.data;
-        let isValidFont = this.signatureDto.typedSignatureFont!=undefined && this.signatureDto.typedSignatureFont.length>0;
-        if(!isValidFont){
-          this.signatureDto.typedSignatureFont = this.fontStyles[0]; // Default font
-
-        }
-        this.typedSignatureLoader = false;
-      }, error => {
-        this.typedSignatureLoader = false;
-        this.referenceService.showSweetAlertErrorMessage("Unable to load type");
-      });
-  }
+  
 
   private loadSignaturePad() {
     this.sigPadElement = this.sigPad.nativeElement;
@@ -72,9 +55,7 @@ export class SignatureComponent implements OnInit {
     this.context.strokeStyle = '#000';
   }
 
-  switchTab(tabName: string) {
-    this.activeTab = tabName;
-  }
+ 
 
   @HostListener('document:mouseup', ['$event'])
   onMouseUp(event:any) {
@@ -107,34 +88,53 @@ export class SignatureComponent implements OnInit {
     this.context.clearRect(0, 0, this.sigPadElement.width, this.sigPadElement.height);
     this.context.beginPath();
   }
-
-
-  callUploadImageComponent() {
-    this.uploadSignatureButtonClicked = true;
-  }
-
-  uploadImageCloseModalPopUpEventReceiver(event: any) {
-    this.uploadSignatureButtonClicked = false;
-  }
+ 
 
   saveSignature() {
+    this.ngxLoading = true;
     let signatureData: string | null = null;
-
     if (this.activeTab === "draw") {
       const canvas = this.sigPad.nativeElement as HTMLCanvasElement;
       signatureData = canvas.toDataURL("image/png");
       const base64Image = canvas.toDataURL(); // Convert canvas to base64
-      console.log(base64Image);
+      this.uploadDrawSignature(base64Image);
     } else if (this.activeTab === "type") {
       this.saveTypedSignature();
     } else if (this.activeTab === "upload") {
     }
+  }
 
-    
+  /***Draw***/
+  uploadDrawSignature(base64Image:string){
+    this.signatureDto.drawSignatureEncodedImage = base64Image;
+    this.signatureService.uploadDrawSignature(this.signatureDto).subscribe(
+      response => {
+        this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
   }
 
 
   /***Type Signature****/
+  private getTypedSignature() {
+    this.signatureService.getTypedSignature().subscribe(
+      response => {
+        this.signatureDto = response.data;
+        let isValidFont = this.signatureDto.typedSignatureFont!=undefined && this.signatureDto.typedSignatureFont.length>0;
+        if(!isValidFont){
+          this.signatureDto.typedSignatureFont = this.fontStyles[0]; // Default font
+
+        }
+        this.typedSignatureLoader = false;
+      }, error => {
+        this.typedSignatureLoader = false;
+        this.referenceService.showSweetAlertErrorMessage("Unable to load type");
+      });
+  }
+
   validateTypedSignature(){
     this.previewSignature();
     this.isValidSignatureText = this.signatureDto.typedSignatureText.length<=25;
@@ -156,6 +156,7 @@ export class SignatureComponent implements OnInit {
   saveTypedSignature(){
     this.previewSignature();
     this.ngxLoading = true;
+    this.saveTypedSignatureTextAsImage();
     this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
       response => {
         this.referenceService.showSweetAlertSuccessMessage(response.message);
@@ -165,5 +166,14 @@ export class SignatureComponent implements OnInit {
         this.referenceService.showSweetAlertServerErrorMessage();
       });
     }
+
+    saveTypedSignatureTextAsImage() {
+      const element = document.getElementById('typedSignaturePreview');
+      domtoimage.toPng(element).then((dataUrl) => {
+        console.log(dataUrl);
+      });
+    }
+
+  /*******End Of Type***********/  
 
 }
