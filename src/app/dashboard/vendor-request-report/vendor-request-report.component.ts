@@ -38,12 +38,12 @@ export class VendorRequestReportComponent implements OnInit {
 
     paginationDropDown(event: Pagination) {
         this.pagination = event;
-        this.listOfVendorRequestReports(this.statusType);
+        this.listOfRequestReports(this.statusType);
     }
 
     setPage(event: any) {
         this.pagination.pageIndex = event.page;
-        this.listOfVendorRequestReports(this.statusType);
+        this.listOfRequestReports(this.statusType);
     }
 
     requestVendorsReportCount() {
@@ -131,13 +131,13 @@ export class VendorRequestReportComponent implements OnInit {
         this.tableHeader = "INVITED" === type ? this.properties.invitedTeamMeberAnalytics
             : type + " " + this.properties.invitedTeamMeberAnalytics;
         this.referenceService.loading(this.httpRequestLoader, true);
-        this.dashboardService.listOfTeamMemberRequestReports(this.getStatusType(type))
+        this.dashboardService.listOfTeamMemberRequestReports(this.pagination, this.getStatusType(type))
             .subscribe((data: any) => {
                 console.log(data);
-                if (data.inviteTeamMembers.length === 0) {
+                if (data.list.length === 0) {
                     this.customResponse = new CustomResponse('INFO', 'No records found', true);
                 }
-                this.vendorRequestReport = data.inviteTeamMembers;
+                this.vendorRequestReport = data.list;
                 this.pagination.totalRecords = data.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.vendorRequestReport);
                 this.referenceService.loading(this.httpRequestLoader, false);

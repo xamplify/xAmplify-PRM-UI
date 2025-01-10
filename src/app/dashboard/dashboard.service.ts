@@ -1480,9 +1480,10 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
     }
 
     /***** XNFR-805 *****/
-    listOfTeamMemberRequestReports(statusType: any) {
+    listOfTeamMemberRequestReports(pagination: Pagination, statusType: any) {
         let loggedInUserId = this.authenticationService.getUserId();
-        const url = this.REST_URL + "teamMember/invite-team-member/analytics/type/" + statusType + "?userId=" + loggedInUserId + "&access_token=" + this.authenticationService.access_token;
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        const url = this.REST_URL + "teamMember/invite-team-member/analytics/type/" + statusType + "?userId=" + loggedInUserId + "&access_token=" + this.authenticationService.access_token + pageableUrl;
         return this.authenticationService.callGetMethod(url);
     }
 
