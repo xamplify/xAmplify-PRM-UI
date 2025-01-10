@@ -760,8 +760,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-        if(filterPartner!=undefined){
-            this.applyFilter = filterPartner;
+        if (filterPartner!=null && filterPartner != undefined &&  (!filterPartner || filterPartner === 'false')) {
+            this.applyFilter = false;
         }
         this.getCountOfTiles();
 
