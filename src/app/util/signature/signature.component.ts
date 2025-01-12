@@ -53,8 +53,6 @@ export class SignatureComponent implements OnInit {
     this.getTypedSignature();
   }
 
-
-
   
 
   private loadSignaturePad() {
@@ -149,7 +147,6 @@ export class SignatureComponent implements OnInit {
         let isValidFont = this.signatureDto.typedSignatureFont!=undefined && this.signatureDto.typedSignatureFont.length>0;
         if(!isValidFont){
           this.signatureDto.typedSignatureFont = this.fontStyles[0]; // Default font
-
         }
         this.typedSignatureLoader = false;
       }, error => {
@@ -203,6 +200,7 @@ export class SignatureComponent implements OnInit {
 
   /********Upload Signature*******/
   onFileSelected(event: Event): void {
+    this.ngxLoading = true;
     const input = event.target as HTMLInputElement | null;
     if (input && input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -228,9 +226,11 @@ export class SignatureComponent implements OnInit {
         this.imagePreview = reader.result;
       };
       reader.readAsDataURL(this.selectedFile);
+      this.ngxLoading = false;
     } else {
       this.fileName = 'No file chosen';
       this.imagePreview = null;
+      this.ngxLoading = false;
     }
   }
 
@@ -242,6 +242,7 @@ export class SignatureComponent implements OnInit {
     if (fileInput) {
       fileInput.value = '';
     }
+    this.ngxLoading = false;
   }
 
 
@@ -263,7 +264,15 @@ export class SignatureComponent implements OnInit {
       this.referenceService.showSweetAlertErrorMessage('No file selected. Please choose a file first.')
       return;
     }else{
-
+      this.ngxLoading = true;
+      this.signatureService.saveUploadedSignature(this.selectedFile).subscribe(
+        response => {
+          this.referenceService.showSweetAlertSuccessMessage(response);
+          this.ngxLoading = false;
+        }, error => {
+          this.ngxLoading = false;
+          this.referenceService.showSweetAlertServerErrorMessage();
+        });
     }
   }
   

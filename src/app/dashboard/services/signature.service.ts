@@ -30,4 +30,14 @@ export class SignatureService {
     return this.authenticationService.callPostMethod(url,signatureDto);
   }
 
+  saveUploadedSignature(selectedFile:any){
+    const formData = new FormData();
+    formData.append('file', selectedFile); // Append the file
+    formData.append('userId', this.authenticationService.getUserId().toString()); // Append the userId
+    const url = this.signatureUrl+'saveUploadedSignature?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url,formData);
+
+
+  }
+
 }
