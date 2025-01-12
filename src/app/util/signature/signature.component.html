@@ -21,37 +21,43 @@
             <i *ngIf="activeTab === 'upload'" id="tick-mark" class="fa fa-check-circle-o success"></i>
         </a>
     </li>
-  </ul>
+</ul>
 
-  <div class="panel-body tab-bg">
-    <div class="tab-content">
-        <!---Draw-->
-        <div [hidden]="activeTab !='draw'" class="tab-pane" [class.active]="activeTab === 'draw'">
-            <div class="text-center">
-                <canvas #sigPad width="300"  height="150" (mousedown)="onMouseDown($event)"
-                (mousemove)="onMouseMove($event)"></canvas>
-             </div>   
+<div class="panel-body tab-bg">
+  <div class="tab-content">
+      <!---Draw-->
+      <div [hidden]="activeTab !='draw'" class="tab-pane" [class.active]="activeTab === 'draw'">
+        <div [hidden]="signatureResponseDto?.drawSignatureExits">
+          <div class="text-center">
+            <canvas #sigPad width="300"  height="150" (mousedown)="onMouseDown($event)"
+            (mousemove)="onMouseMove($event)"></canvas>
+        </div>  
+        <ng-template [ngTemplateOutlet]="buttonsTemplate"></ng-template>
         </div>
-        <!--Type-->
-        <ng-template [ngTemplateOutlet]="typeSignatureTemplate"></ng-template>
-        <!--Upload-->
-        <ng-template [ngTemplateOutlet]="uploadSignatureTemplate"></ng-template>
+        <div *ngIf="signatureResponseDto?.drawSignatureExits">
+          <div class="text-center" >
+            <img [src]="signatureResponseDto?.drawSignatureImagePath" alt="Image Preview" class="preview-img" />
+          </div>
+          <div class="float-right mt10 mb10">
+            <button type="button" class="btn btn-primary" (click)="editSignature()">Edit</button>
+          </div>
+        </div>
+      </div>
+      <!--Type-->
+      <ng-template [ngTemplateOutlet]="typeSignatureTemplate"></ng-template>
+      <!--Upload-->
+      <ng-template [ngTemplateOutlet]="uploadSignatureTemplate"></ng-template>
 
-    </div>  
-  </div>
-
-  <div class="float-right mt10">
-    <button type="button" class="btn btn-primary" (click)="saveSignature()">Submit</button>
-    <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
-  </div>
+  </div>  
+</div>
 
  <!--Type-->
   <ng-template #typeSignatureTemplate>
     <div *ngIf="activeTab === 'type'" class="tab-pane active">
-      <div class="mb10" *ngIf="typedSignatureLoader" >
+      <div class="mb10" *ngIf="signaturesLoader" >
         <app-modal-popup-loader  [height]="130"></app-modal-popup-loader>
       </div>
-      <div *ngIf="!typedSignatureLoader">
+      <div *ngIf="!signaturesLoader">
         <input type="text" class="form-control" [(ngModel)]="signatureDto.typedSignatureText" (input)="validateTypedSignature()" placeholder="Type your signature" />
         <span class="required" *ngIf="!isValidSignatureText">{{signatureTextErrorMessage}}</span>
         <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
@@ -73,6 +79,7 @@
           </div>
         </div>
       </div>
+      <ng-template [ngTemplateOutlet]="buttonsTemplate"></ng-template>
     </div>
   </ng-template>
 
@@ -96,5 +103,14 @@
           </div>
         </div>
       </div>
+      <ng-template [ngTemplateOutlet]="buttonsTemplate"></ng-template>
     </div>
+  </ng-template>
+
+  <!--Button-->
+  <ng-template #buttonsTemplate>
+      <div class="float-right mt10 mb10">
+        <button type="button" class="btn btn-primary" (click)="saveSignature()">Submit</button>
+        <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
+      </div> 
   </ng-template>

@@ -1,3 +1,4 @@
+import { SignatureResponseDto } from './../../dashboard/models/signature-response-dto';
 import { Component, Input, OnInit, ViewChild,ElementRef,HostListener } from '@angular/core';
 import { MY_PROFILE_MENU_CONSTANTS } from 'app/constants/my-profile-menu-constants';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -16,7 +17,7 @@ export class SignatureComponent implements OnInit {
   signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
   activeTab = "draw";
   signatureDto:SignatureDto = new SignatureDto();
-
+  signatureResponseDto:SignatureResponseDto = new SignatureResponseDto();
   /***Draw Signature***/
   @Input() name: string;
   @ViewChild('sigPad') sigPad:any;
@@ -31,7 +32,7 @@ export class SignatureComponent implements OnInit {
   fontStyles: string[] = ['Cursive', 'Brush Script MT', 'Great Vibes', 'fantasy', 'math','monospace'];
   isValidSignatureText = true;
   signatureTextErrorMessage = "Maximum length is 25 characters";
-  typedSignatureLoader = true;
+  signaturesLoader = true;
 
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
@@ -47,10 +48,32 @@ export class SignatureComponent implements OnInit {
   }
 
   ngOnInit() {
-    /***Draw****/
     this.loadSignaturePad();
-    /*Type*/
-    this.getTypedSignature();
+    this.getExistingSignatures();
+  }
+
+  private getExistingSignatures() {
+    this.signatureService.getExistingSignatures().subscribe(
+      response => {
+        let data = response.data;
+        if(data!=undefined){
+          this.signatureResponseDto = data;
+          this.setExistingDataForDrawSignature();
+        }
+        this.signaturesLoader = false;
+      }, error => {
+        this.signaturesLoader = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
+  }
+
+  private setExistingDataForDrawSignature() {
+    this.signatureDto.typedSignatureFont = this.signatureResponseDto.typedSignatureFont;
+    this.signatureDto.typedSignatureText = this.signatureResponseDto.typedSignatureText;
+    let isValidFont = this.signatureDto.typedSignatureFont != undefined && this.signatureDto.typedSignatureFont.length > 0;
+    if (!isValidFont) {
+      this.signatureDto.typedSignatureFont = this.fontStyles[0];
+    }
   }
 
   
@@ -139,21 +162,9 @@ export class SignatureComponent implements OnInit {
   }
 
 
-  /***Type Signature****/
-  private getTypedSignature() {
-    this.signatureService.getTypedSignature().subscribe(
-      response => {
-        this.signatureDto = response.data;
-        let isValidFont = this.signatureDto.typedSignatureFont!=undefined && this.signatureDto.typedSignatureFont.length>0;
-        if(!isValidFont){
-          this.signatureDto.typedSignatureFont = this.fontStyles[0]; // Default font
-        }
-        this.typedSignatureLoader = false;
-      }, error => {
-        this.typedSignatureLoader = false;
-        this.referenceService.showSweetAlertErrorMessage("Unable to load type");
-      });
-  }
+  
+
+
 
   validateTypedSignature(){
     this.previewSignature();
