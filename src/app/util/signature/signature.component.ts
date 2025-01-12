@@ -24,6 +24,8 @@ export class SignatureComponent implements OnInit {
   context:any;
   isDrawing = false;
   img:any;
+  signatureError = false;
+  hasSignature = false;
 
   /****Type****/
   fontStyles: string[] = ['Cursive', 'Brush Script MT', 'Great Vibes', 'fantasy', 'math','monospace'];
@@ -33,7 +35,11 @@ export class SignatureComponent implements OnInit {
 
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
-
+  fileName: string = 'No file chosen';
+  imagePreview: string | ArrayBuffer | null = null;
+  uploadSignatureLoader = false;
+  selectedFile: File | null = null;
+  maxFileSize: number = 100; // 100 KB
   constructor(private referenceService:ReferenceService,private signatureService:SignatureService) { }
 
   switchTab(tabName: string) {
@@ -46,6 +52,8 @@ export class SignatureComponent implements OnInit {
     /*Type*/
     this.getTypedSignature();
   }
+
+
 
   
 
@@ -64,6 +72,7 @@ export class SignatureComponent implements OnInit {
 
   onMouseDown(event:any) {
     this.isDrawing = true;
+    this.signatureError = false; // Reset error if user starts drawing
     const coords = this.relativeCoords(event);
     this.context.moveTo(coords.x, coords.y);
   }
@@ -73,6 +82,7 @@ export class SignatureComponent implements OnInit {
       const coords = this.relativeCoords(event);
       this.context.lineTo(coords.x, coords.y);
       this.context.stroke();
+      this.hasSignature = true; // Mark that something was drawn
     }
   }
 
@@ -84,24 +94,37 @@ export class SignatureComponent implements OnInit {
   }
 
 
-  clearCanvas(){
-    this.context.clearRect(0, 0, this.sigPadElement.width, this.sigPadElement.height);
-    this.context.beginPath();
+  clear(){
+    if(this.activeTab=="draw"){
+      this.context.clearRect(0, 0, this.sigPadElement.width, this.sigPadElement.height);
+      this.context.beginPath();
+      this.hasSignature = false; // Reset signature validation
+    }else if(this.activeTab=="type"){
+      this.signatureDto.typedSignatureText="";
+      this.signatureDto.typedSignatureFont = this.fontStyles[0];
+    }else if(this.activeTab=="upload"){
+      this.clearImage();
+    }
+   
+    
   }
  
 
-  saveSignature() {
-    this.ngxLoading = true;
-    let signatureData: string | null = null;
-    if (this.activeTab === "draw") {
-      const canvas = this.sigPad.nativeElement as HTMLCanvasElement;
+  
+
+  private validateAndUploadDrawSignature(signatureData: string) {
+    const canvas = this.sigPad.nativeElement as HTMLCanvasElement;
+    const pixelData = this.context.getImageData(0, 0, canvas.width, canvas.height).data;
+    let isCanvasEmpty = !pixelData.some((pixel:any) => pixel !== 0); // Check if any pixel is not transparent
+    if (!isCanvasEmpty) {
       signatureData = canvas.toDataURL("image/png");
       const base64Image = canvas.toDataURL(); // Convert canvas to base64
       this.uploadDrawSignature(base64Image);
-    } else if (this.activeTab === "type") {
-      this.saveTypedSignature();
-    } else if (this.activeTab === "upload") {
+    } else {
+      this.referenceService.showSweetAlertErrorMessage("Please draw signature");
+      this.ngxLoading = false;
     }
+    return signatureData;
   }
 
   /***Draw***/
@@ -174,6 +197,75 @@ export class SignatureComponent implements OnInit {
       });
     }
 
-  /*******End Of Type***********/  
+  /*******End Of Type Signature***********/  
+
+
+
+  /********Upload Signature*******/
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    if (input && input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.fileName = file.name;
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        this.referenceService.showSweetAlertErrorMessage('Please upload a valid image file.');
+        this.imagePreview = null;
+        return;
+      }
+      const fileSizeInKB = file.size / 1024; // Convert bytes to KB
+      if (fileSizeInKB > this.maxFileSize) {
+        this.referenceService.showSweetAlertErrorMessage(
+          `File size exceeds the maximum limit of ${this.maxFileSize} KB. Please upload a smaller file.`
+        );
+        this.clearImage();
+        return;
+      }
+      this.selectedFile = file;
+      // Read the file and set the image preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    } else {
+      this.fileName = 'No file chosen';
+      this.imagePreview = null;
+    }
+  }
+
+  clearImage(): void {
+    this.selectedFile = null;
+    this.fileName = 'No file chosen';
+    this.imagePreview = null;
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+
+
+
+  saveSignature() {
+    let signatureData: string | null = null;
+    if (this.activeTab === "draw") {
+      this.ngxLoading = true;
+      signatureData = this.validateAndUploadDrawSignature(signatureData);
+    } else if (this.activeTab === "type") {
+      this.ngxLoading = true;
+      this.saveTypedSignature();
+    } else if (this.activeTab === "upload") {
+      this.saveUploadedSignature();
+    }
+  }
+  saveUploadedSignature() {
+    if (!this.selectedFile) {
+      this.referenceService.showSweetAlertErrorMessage('No file selected. Please choose a file first.')
+      return;
+    }else{
+
+    }
+  }
+  
 
 }

@@ -32,27 +32,20 @@
                 (mousemove)="onMouseMove($event)"></canvas>
              </div>   
         </div>
-
         <!--Type-->
         <ng-template [ngTemplateOutlet]="typeSignatureTemplate"></ng-template>
-
         <!--Upload-->
-        <div *ngIf="activeTab === 'upload'" class="tab-pane active">
-          <input type="file" (change)="onFileUpload($event)" />
-          <img *ngIf="uploadedImage" [src]="uploadedImage" alt="Uploaded Signature" class="mt-3 img-thumbnail" />
-        </div>
+        <ng-template [ngTemplateOutlet]="uploadSignatureTemplate"></ng-template>
 
     </div>  
   </div>
 
   <div class="float-right mt10">
     <button type="button" class="btn btn-primary" (click)="saveSignature()">Submit</button>
-    <button type="button" class="btn btn-danger" (click)="clearCanvas()">Clear</button>
+    <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
   </div>
 
-
-
-
+ <!--Type-->
   <ng-template #typeSignatureTemplate>
     <div *ngIf="activeTab === 'type'" class="tab-pane active">
       <div class="mb10" *ngIf="typedSignatureLoader" >
@@ -81,5 +74,27 @@
         </div>
       </div>
     </div>
+  </ng-template>
 
+  <!--Upload-->
+  <ng-template #uploadSignatureTemplate>
+    <div *ngIf="activeTab === 'upload'" class="tab-pane active">
+      <div class="mb10" *ngIf="uploadSignatureLoader" >
+        <app-modal-popup-loader  [height]="130"></app-modal-popup-loader>
+      </div>
+      <div *ngIf="!uploadSignatureLoader">
+        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+          <!--DropDown-->
+          <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+            <div>
+              <input type="file" title="{{fileName}}"  id="fileInput"   accept="image/*"  (change)="onFileSelected($event)"  class="file-input" />
+              <label for="fileInput" class="file-label"><span>Select an Image</span></label>
+            </div>
+            <div *ngIf="imagePreview">
+              <img [src]="imagePreview" alt="Image Preview" class="preview-img" title="{{fileName}}" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </ng-template>
