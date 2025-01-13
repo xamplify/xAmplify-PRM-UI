@@ -38,6 +38,7 @@ export class SignatureComponent implements OnInit {
   signaturesLoader = true;
   typeSignatureHeaderText = "Type a name to generate a digital signature with various handwriting-style fonts for document signing.";
   isTypeTabActive = false;
+  previewingTypedSignature = false;
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
   fileName: string = 'No file chosen';
@@ -48,6 +49,7 @@ export class SignatureComponent implements OnInit {
   uploadSignatureHeaderText = "Upload an existing signature image to use for signing documents.";
   isUploadTabActive = false;
   headerTextMessage = "";
+  previewingUploadedSignature = false;
   constructor(private referenceService:ReferenceService,private signatureService:SignatureService,private sanitizer: DomSanitizer) { }
 
   switchTab(tabName: string) {
@@ -98,6 +100,8 @@ export class SignatureComponent implements OnInit {
       this.signatureDto.typedSignatureFont = this.fontStyles[0];
     }
     this.previewingExistingDrawSignature = this.signatureResponseDto.drawSignatureExits;
+    /***Type***/
+    this.previewingTypedSignature = this.signatureResponseDto.typedSignatureExists;
   }
 
   
@@ -188,11 +192,6 @@ export class SignatureComponent implements OnInit {
       });
   }
 
-
-  
-
-
-
   validateTypedSignature(){
     this.previewSignature();
     this.isValidSignatureText = this.signatureDto.typedSignatureText.length<=25;
@@ -240,6 +239,11 @@ export class SignatureComponent implements OnInit {
     getSanitizedImageUrl(imagePath:any){
       const uniquePath = `${imagePath}?v=${new Date().getTime()}`;
       return this.sanitizer.bypassSecurityTrustUrl(uniquePath);
+    }
+
+
+    removeExistingDrawSignature(){
+
     }
 
   /*******End Of Type Signature***********/  

@@ -1,6 +1,6 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
-<app-modal-popup-loader *ngIf="signaturesLoader"  [height]="130"></app-modal-popup-loader>
+<app-modal-popup-loader *ngIf="signaturesLoader"></app-modal-popup-loader>
 
 <div [hidden]="signaturesLoader">
   <div class="alert alert-info">{{headerTextMessage}}</div>
@@ -44,6 +44,7 @@
             </div>
             <div class="float-right mt10 mb10">
               <button type="button" class="btn btn-primary" (click)="previewingExistingDrawSignature=false">Re-Draw</button>
+              <button type="button" class="btn btn-danger" (click)="removeExistingDrawSignature()">Remove</button>
             </div>
           </div>
         </div>
@@ -59,32 +60,40 @@
  <!--Type-->
   <ng-template #typeSignatureTemplate>
     <div *ngIf="isTypeTabActive" class="tab-pane active">
-      <div class="mb10" *ngIf="signaturesLoader" >
-        <app-modal-popup-loader  [height]="130"></app-modal-popup-loader>
-      </div>
-      <div *ngIf="!signaturesLoader">
-        <input type="text" class="form-control" [(ngModel)]="signatureDto.typedSignatureText" (input)="validateTypedSignature()" placeholder="Type your signature" />
-        <span class="required" *ngIf="!isValidSignatureText">{{signatureTextErrorMessage}}</span>
-        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-          <!--DropDown-->
-          <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-            <h4>Choose a Font Style:</h4>
-            <select class="form-control" [(ngModel)]="signatureDto.typedSignatureFont" (change)="previewSignature()">
-              <option *ngFor="let font of fontStyles" [ngValue]="font" [ngStyle]="{'font-family': font}">
-                {{ signatureDto.typedSignatureText  || 'Your Signature' | slice:0:25 }}
-              </option>
-            </select>
-          </div>
-          <!--Preview-->
-          <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-            <h4>Preview:</h4>
+        <div *ngIf="previewingTypedSignature">
+          <div class="center-div">
             <div class="signature-preview mb10" [ngStyle]="{'font-family': signatureDto.typedSignatureFont}">
               <div id="typedSignaturePreview">{{ signatureDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}</div>
-            </div>
+            </div> 
+          </div>
+          <div class="float-right mt10 mb10">
+            <button type="button" class="btn btn-primary" (click)="previewingTypedSignature=false">Edit</button>
+            <button type="button" class="btn btn-danger" (click)="removeExistingTypedSignature()">Remove</button>
           </div>
         </div>
-      </div>
-      <ng-template [ngTemplateOutlet]="buttonsTemplate"></ng-template>
+        <div *ngIf="!previewingTypedSignature">
+          <input type="text" class="form-control" [(ngModel)]="signatureDto.typedSignatureText" (input)="validateTypedSignature()" placeholder="Type your signature" />
+          <span class="required" *ngIf="!isValidSignatureText">{{signatureTextErrorMessage}}</span>
+          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+            <!--DropDown-->
+            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+              <h4>Choose a Font Style:</h4>
+              <select class="form-control" [(ngModel)]="signatureDto.typedSignatureFont" (change)="previewSignature()">
+                <option *ngFor="let font of fontStyles" [ngValue]="font" [ngStyle]="{'font-family': font}">
+                  {{ signatureDto.typedSignatureText  || 'Your Signature' | slice:0:25 }}
+                </option>
+              </select>
+            </div>
+            <!--Preview-->
+            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+              <h4>Preview:</h4>
+              <div class="signature-preview mb10" [ngStyle]="{'font-family': signatureDto.typedSignatureFont}">
+                <div id="typedSignaturePreview">{{ signatureDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}</div>
+              </div>
+            </div>
+          </div>
+          <ng-template [ngTemplateOutlet]="buttonsTemplate"></ng-template>
+        </div>
     </div>
   </ng-template>
 
@@ -112,10 +121,10 @@
     </div>
   </ng-template>
 
-  <!--Button-->
+  <!--Buttons-->
   <ng-template #buttonsTemplate>
       <div class="float-right mt10 mb10">
-        <button type="button" class="btn btn-info" (click)="previewingExistingDrawSignature=true;clear()">Back</button>
+        <button *ngIf="signatureResponseDto?.drawSignatureExits && isDrawTabActive"  type="button" class="btn btn-default" (click)="previewingExistingDrawSignature=true;clear()">Back</button>
         <button type="button" class="btn btn-primary" (click)="saveSignature()">Submit</button>
         <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
       </div> 
