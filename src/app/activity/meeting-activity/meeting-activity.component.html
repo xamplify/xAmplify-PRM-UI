@@ -1,15 +1,23 @@
 <div class="inputs display row" align="right">
   <div class="col-xs-12 col-sm-12 col-lg-12 mb10">
     <div class="page-toolbar">
-      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Refresh"
+      <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Refresh"
         data-original-title="Refresh" (click)="showAllMeetingActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
+      <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
         data-original-title="Refresh" (click)="openMeetingModalPopup()">
         <i aria-hidden="true" class="fa fa-plus"></i>
       </a>
-      <div class="btn-group pull-right">
+      <a class="close-circle ml3" *ngIf="showCalendarView" 
+        data-original-title="Refresh" (click)="showCalendarViewModalPopup()">
+        <i class="fa fa-th-list" data-placement="bottom" data-toggle="tooltip" title="List View" aria-hidden="true"></i>
+      </a>
+      <a class="close-circle ml3" *ngIf="!showCalendarView"
+        data-original-title="Refresh" (click)="showCalendarViewModalPopup()">
+        <i class="fa fa-calendar" data-placement="bottom" data-toggle="tooltip" title="Calendar View" aria-hidden="true"></i>
+      </a>
+      <div class="btn-group pull-right" *ngIf="!showCalendarView">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">
             <select class="form-control" [(ngModel)]="meetingSortOption.calendlyDropDownOption"
@@ -41,20 +49,6 @@
   *ngIf="customResponse?.isVisible"></app-response-message>
 
 <div class="pg8 mt5" *ngIf="showConfigureMessage">
-  <!-- <div [@fadeInOut]>
-    <div class="alert alert-dismissible m0 alert-danger" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"
-        (click)="showConfigureMessage = false">
-        <span aria-hidden="true">x</span>
-      </button>
-      <h4 style="padding-top: 6px;">
-        <span style="word-wrap: break-word;" class="text alert-message-fw login-error pre-wrap-next-line">
-          Please <a (click)="openMeetingModalPopup()">configure</a> with atleast one calendar integration.
-        </span>
-      </h4>
-    </div>
-  </div> -->
-
   <div class="" *ngIf="showConfigureMessage">
     <div class="alert m0 p13" role="alert" [ngClass]="{'alert-success': !showConfigureMessage,
    'alert-danger': showConfigureMessage,
@@ -72,30 +66,32 @@
   </div>
 </div>
 
-<div class="activity_card mb10" *ngFor="let meetingActivity of meetingActivityPagedItems">
-  <div class="activity-header">
-    <span><label class="mr5 activity-title">Name:</label><a class="underline-on-hover" data-toggle="tooltip" data-placement="bottom" title="View meeting"
-        (click)="openPreviewModalPopup(meetingActivity.uri)"><span>{{meetingActivity.name |
-          slice:0:35}}</span></a></span>
-    <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time
-        [dateAndTimeUTCString]="meetingActivity.createdTime"></app-display-date-and-time></span>
-  </div>
-  <div class="activity-body mt0">
-    <span class="activity-title"><span class="activity-date"><i class="fa fa-calendar"></i><app-date-range-display
-          [startDate]="meetingActivity.startTime" [endDate]="meetingActivity.endTime"></app-date-range-display>
-      </span></span>
-  </div>
-  <div class="activity-footer">
-    <span class="activity-title">
-      <span [ngClass]="meetingActivity.status == 'active' ? 'activity-title mr_90' : 'activity-title mr_75'">Status:
-        <span
-          [ngClass]="meetingActivity.status == 'active' ? 'view-banner activity-created-status-btn' : 'view-banner meeting-canceled-status-btn'">{{meetingActivity.status}}</span></span>
-      Location: <span class="view-banner activity-updated-status-btn">{{meetingActivity.type}}</span>
-      <span class="pl10" *ngIf="meetingActivity.meetingUrl != undefined"><a href="{{meetingActivity.meetingUrl}}" target="_blank"
-        data-toggle="tooltip" data-placement="bottom" title="Join meeting"><i class="fa fa-external-link task_view"
-          aria-hidden="true"></i></a>
-    </span>
-    </span>
+<div *ngIf="!showCalendarView">
+  <div class="activity_card mb10" *ngFor="let meetingActivity of meetingActivityPagedItems">
+    <div class="activity-header">
+      <span><label class="mr5 activity-title">Name:</label><a class="underline-on-hover" data-toggle="tooltip" data-placement="bottom" title="View meeting"
+          (click)="openPreviewModalPopup(meetingActivity.uri)"><span>{{meetingActivity.name |
+            slice:0:35}}</span></a></span>
+      <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time
+          [dateAndTimeUTCString]="meetingActivity.createdTime"></app-display-date-and-time></span>
+    </div>
+    <div class="activity-body mt0">
+      <span class="activity-title"><span class="activity-date"><i class="fa fa-calendar"></i><app-date-range-display
+            [startDate]="meetingActivity.startTime" [endDate]="meetingActivity.endTime"></app-date-range-display>
+        </span></span>
+    </div>
+    <div class="activity-footer">
+      <span class="activity-title">
+        <span [ngClass]="meetingActivity.status == 'active' ? 'activity-title mr_90' : 'activity-title mr_75'">Status:
+          <span
+            [ngClass]="meetingActivity.status == 'active' ? 'view-banner activity-created-status-btn' : 'view-banner meeting-canceled-status-btn'">{{meetingActivity.status}}</span></span>
+        Location: <span class="view-banner activity-updated-status-btn">{{meetingActivity.type}}</span>
+        <span class="pl10" *ngIf="meetingActivity.meetingUrl != undefined"><a href="{{meetingActivity.meetingUrl}}" target="_blank"
+          data-toggle="tooltip" data-placement="bottom" title="Join meeting"><i class="fa fa-external-link task_view"
+            aria-hidden="true"></i></a>
+      </span>
+      </span>
+    </div>
   </div>
 </div>
 
@@ -145,7 +141,9 @@
   </span>
 </div>
 
-<div *ngIf="!(meetingActivityPager.pages && meetingActivityPager.pages.length) && !ngxLoading"
+<app-calendar-v2 *ngIf="showCalendarView" [calendarType]="calendarType" [contactId]="contactId" (notifyClose)="closeCalendarViewModalPopup()"></app-calendar-v2>
+
+<div *ngIf="!(meetingActivityPager.pages && meetingActivityPager.pages.length) && !this.httpRequestLoader.isLoading"
   class="alert alert-info mb0">
   <strong translate>No Data Found.</strong>
 </div>
