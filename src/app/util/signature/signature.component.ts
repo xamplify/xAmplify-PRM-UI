@@ -38,7 +38,7 @@ export class SignatureComponent implements OnInit {
   signaturesLoader = true;
   typeSignatureHeaderText = "Type a name to generate a digital signature with various handwriting-style fonts for document signing.";
   isTypeTabActive = false;
-  previewingTypedSignature = false;
+  previewingExistingTypeSignature = false;
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
   fileName: string = 'No file chosen';
@@ -49,7 +49,7 @@ export class SignatureComponent implements OnInit {
   uploadSignatureHeaderText = "Upload an existing signature image to use for signing documents.";
   isUploadTabActive = false;
   headerTextMessage = "";
-  previewingUploadedSignature = false;
+  previewingExistingExistingUploadedSignature = false;
   constructor(private referenceService:ReferenceService,private signatureService:SignatureService,private sanitizer: DomSanitizer) { }
 
   switchTab(tabName: string) {
@@ -71,9 +71,9 @@ export class SignatureComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.addHeaderTitle();
     this.loadSignaturePad();
     this.getExistingSignatures();
-    this.addHeaderTitle();
   }
 
   private getExistingSignatures() {
@@ -101,7 +101,7 @@ export class SignatureComponent implements OnInit {
     }
     this.previewingExistingDrawSignature = this.signatureResponseDto.drawSignatureExits;
     /***Type***/
-    this.previewingTypedSignature = this.signatureResponseDto.typedSignatureExists;
+    this.previewingExistingTypeSignature = this.signatureResponseDto.typedSignatureExists;
   }
 
   
@@ -221,6 +221,8 @@ export class SignatureComponent implements OnInit {
       }, error => {
         this.ngxLoading = false;
         this.referenceService.showSweetAlertServerErrorMessage();
+      },()=>{
+        this.getExistingSignatures();
       });
     }
 
@@ -243,7 +245,13 @@ export class SignatureComponent implements OnInit {
 
 
     removeExistingDrawSignature(){
+      this.ngxLoading = true;
+      this.signatureService.removeDrawSignature().subscribe(
+        response=>{
 
+        },error=>{
+
+        });
     }
 
   /*******End Of Type Signature***********/  
@@ -305,8 +313,14 @@ export class SignatureComponent implements OnInit {
       this.ngxLoading = true;
       signatureData = this.validateAndUploadDrawSignature(signatureData);
     } else if (this.activeTab === "type") {
-      this.ngxLoading = true;
-      this.saveTypedSignature();
+      let typedSignature = this.referenceService.getTrimmedData(this.signatureDto.typedSignatureText);
+      if(typedSignature!=undefined && typedSignature.length>0){
+        this.referenceService.showSweetAlertErrorMessage("Please type your signature")
+      }else{
+        this.ngxLoading = true;
+        this.saveTypedSignature();
+      }
+      
     } else if (this.activeTab === "upload") {
       this.saveUploadedSignature();
     }
@@ -324,6 +338,8 @@ export class SignatureComponent implements OnInit {
         }, error => {
           this.ngxLoading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        },()=>{
+          this.getExistingSignatures();
         });
     }
   }

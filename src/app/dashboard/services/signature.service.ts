@@ -36,8 +36,10 @@ export class SignatureService {
     formData.append('userId', this.authenticationService.getUserId().toString()); // Append the userId
     const url = this.signatureUrl+'saveUploadedSignature?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPostMethod(url,formData);
+  }
 
-
+  removeDrawSignature(){
+    const url = this.signatureUrl+'removeDrawSignature?access_token=' + this.authenticationService.access_token;
   }
 
 }
