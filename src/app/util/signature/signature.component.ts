@@ -1,3 +1,4 @@
+import { inject } from '@angular/core/testing';
 import { SignatureResponseDto } from './../../dashboard/models/signature-response-dto';
 import { Component, Input, OnInit, ViewChild,ElementRef,HostListener } from '@angular/core';
 import { MY_PROFILE_MENU_CONSTANTS } from 'app/constants/my-profile-menu-constants';
@@ -27,29 +28,49 @@ export class SignatureComponent implements OnInit {
   img:any;
   signatureError = false;
   hasSignature = false;
-
+  drawSignatureHeaderText = "Draw a personalized signature directly in the application for signing documents.";
+  isDrawTabActive = true;
   /****Type****/
   fontStyles: string[] = ['Cursive', 'Brush Script MT', 'Great Vibes', 'fantasy', 'math','monospace'];
   isValidSignatureText = true;
   signatureTextErrorMessage = "Maximum length is 25 characters";
   signaturesLoader = true;
-
+  typeSignatureHeaderText = "Type a name to generate a digital signature with various handwriting-style fonts for document signing.";
+  isTypeTabActive = false;
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
   fileName: string = 'No file chosen';
   imagePreview: string | ArrayBuffer | null = null;
-  uploadSignatureLoader = false;
+  signatureLoader = false;
   selectedFile: File | null = null;
   maxFileSize: number = 100; // 100 KB
+  uploadSignatureHeaderText = "Upload an existing signature image to use for signing documents.";
+  isUploadTabActive = false;
+  headerTextMessage = "";
   constructor(private referenceService:ReferenceService,private signatureService:SignatureService) { }
 
   switchTab(tabName: string) {
     this.activeTab = tabName;
+    this.isDrawTabActive = this.activeTab==='draw';
+    this.isTypeTabActive = this.activeTab=='type';
+    this.isUploadTabActive = this.activeTab=='upload';
+    this.addHeaderTitle();
+  }
+
+  private addHeaderTitle() {
+    if (this.isDrawTabActive) {
+      this.headerTextMessage = this.drawSignatureHeaderText;
+    } else if (this.isTypeTabActive) {
+      this.headerTextMessage = this.typeSignatureHeaderText;
+    } else if (this.isUploadTabActive) {
+      this.headerTextMessage = this.uploadSignatureHeaderText;
+    }
   }
 
   ngOnInit() {
     this.loadSignaturePad();
     this.getExistingSignatures();
+    this.addHeaderTitle();
   }
 
   private getExistingSignatures() {
