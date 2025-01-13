@@ -1,4 +1,4 @@
-import { inject } from '@angular/core/testing';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { SignatureResponseDto } from './../../dashboard/models/signature-response-dto';
 import { Component, Input, OnInit, ViewChild,ElementRef,HostListener } from '@angular/core';
 import { MY_PROFILE_MENU_CONSTANTS } from 'app/constants/my-profile-menu-constants';
@@ -30,6 +30,7 @@ export class SignatureComponent implements OnInit {
   hasSignature = false;
   drawSignatureHeaderText = "Draw a personalized signature directly in the application for signing documents.";
   isDrawTabActive = true;
+  previewingExistingDrawSignature = false;
   /****Type****/
   fontStyles: string[] = ['Cursive', 'Brush Script MT', 'Great Vibes', 'fantasy', 'math','monospace'];
   isValidSignatureText = true;
@@ -47,7 +48,7 @@ export class SignatureComponent implements OnInit {
   uploadSignatureHeaderText = "Upload an existing signature image to use for signing documents.";
   isUploadTabActive = false;
   headerTextMessage = "";
-  constructor(private referenceService:ReferenceService,private signatureService:SignatureService) { }
+  constructor(private referenceService:ReferenceService,private signatureService:SignatureService,private sanitizer: DomSanitizer) { }
 
   switchTab(tabName: string) {
     this.activeTab = tabName;
@@ -74,12 +75,13 @@ export class SignatureComponent implements OnInit {
   }
 
   private getExistingSignatures() {
+    this.signaturesLoader = true;
     this.signatureService.getExistingSignatures().subscribe(
       response => {
         let data = response.data;
         if(data!=undefined){
           this.signatureResponseDto = data;
-          this.setExistingDataForDrawSignature();
+          this.setExistingData();
         }
         this.signaturesLoader = false;
       }, error => {
@@ -88,13 +90,14 @@ export class SignatureComponent implements OnInit {
       });
   }
 
-  private setExistingDataForDrawSignature() {
+  private setExistingData() {
     this.signatureDto.typedSignatureFont = this.signatureResponseDto.typedSignatureFont;
     this.signatureDto.typedSignatureText = this.signatureResponseDto.typedSignatureText;
     let isValidFont = this.signatureDto.typedSignatureFont != undefined && this.signatureDto.typedSignatureFont.length > 0;
     if (!isValidFont) {
       this.signatureDto.typedSignatureFont = this.fontStyles[0];
     }
+    this.previewingExistingDrawSignature = this.signatureResponseDto.drawSignatureExits;
   }
 
   
@@ -137,14 +140,14 @@ export class SignatureComponent implements OnInit {
 
 
   clear(){
-    if(this.activeTab=="draw"){
+    if(this.isDrawTabActive){
       this.context.clearRect(0, 0, this.sigPadElement.width, this.sigPadElement.height);
       this.context.beginPath();
       this.hasSignature = false; // Reset signature validation
-    }else if(this.activeTab=="type"){
+    }else if(this.isTypeTabActive){
       this.signatureDto.typedSignatureText="";
       this.signatureDto.typedSignatureFont = this.fontStyles[0];
-    }else if(this.activeTab=="upload"){
+    }else if(this.isUploadTabActive){
       this.clearImage();
     }
    
@@ -175,10 +178,13 @@ export class SignatureComponent implements OnInit {
     this.signatureService.uploadDrawSignature(this.signatureDto).subscribe(
       response => {
         this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.clear();
         this.ngxLoading = false;
       }, error => {
         this.ngxLoading = false;
         this.referenceService.showSweetAlertServerErrorMessage();
+      },()=>{
+        this.getExistingSignatures();
       });
   }
 
@@ -224,6 +230,16 @@ export class SignatureComponent implements OnInit {
       domtoimage.toPng(element).then((dataUrl) => {
         console.log(dataUrl);
       });
+    }
+
+
+    reDrawSignature(){
+      this.previewingExistingDrawSignature = false;
+    }
+
+    getSanitizedImageUrl(imagePath:any){
+      const uniquePath = `${imagePath}?v=${new Date().getTime()}`;
+      return this.sanitizer.bypassSecurityTrustUrl(uniquePath);
     }
 
   /*******End Of Type Signature***********/  
