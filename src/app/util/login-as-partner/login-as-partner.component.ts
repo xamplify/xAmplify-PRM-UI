@@ -218,6 +218,7 @@ setLoggedInTeamMemberData(isLoggedInAsAdmin: boolean, emailId: string, response:
   if (isLoggedInAsAdmin) {
     localStorage.removeItem('adminId');
     localStorage.removeItem('adminEmailId');
+    localStorage.removeItem(XAMPLIFY_CONSTANTS.filterPartners);
     this.isLoggedInAsTeamMember = false;
   } else {
     let adminId = JSON.parse(localStorage.getItem('adminId'));
