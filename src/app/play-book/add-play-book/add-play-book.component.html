@@ -1,7 +1,7 @@
 <div class="page-content">
     <div class="page-bar mb-height_auto" style="height: 48px;">
         <ul class="page-breadcrumb">
-            <li>
+            <li *ngIf="!isFromApprovalModule">
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -10,6 +10,14 @@
                 <a *ngIf="!isAdd" (click)="goToManagePlayBooks()">Manage Play Books</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="isAdd">Add Play Book</a>
+                <a *ngIf="!isAdd">Edit Play Book</a>
+            </li>
+            <li *ngIf="isFromApprovalModule">
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="!isAdd">Edit Play Book</a>
             </li>
         </ul>

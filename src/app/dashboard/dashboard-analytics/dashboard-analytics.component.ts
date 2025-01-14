@@ -116,7 +116,10 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     localStorage.removeItem('assetName');
     localStorage.removeItem('campaignReport');
     localStorage.removeItem('saveVideoFile');
-
+    let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (partnerFilter!=null && partnerFilter != undefined &&  (!partnerFilter || partnerFilter === 'false')) {
+        this.applyFilter = false;
+    }
     this.getMainContent(this.userId);
     let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined){
@@ -136,10 +139,10 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
       /** User Guide **/
       this.getMergeTagForGuide();
         /** User Guide **/
-      let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-      if (partnerFilter != undefined) {
-          this.applyFilter = partnerFilter;
-      }
+    //   let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    //   if (partnerFilter != undefined) {
+    //       this.applyFilter = partnerFilter;
+    //   }
   }
     /** User Guide **/
     getMergeTagForGuide() {

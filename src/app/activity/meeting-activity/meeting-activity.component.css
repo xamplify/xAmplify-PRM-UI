@@ -33,7 +33,7 @@
 }
 
 .activity-title {
-    font-weight: 400;
+    font-weight: 600;
 }
 
 .activity-date {
@@ -94,4 +94,48 @@
 
 .task_view:hover {
     background-color: #c6d5f6;
+}
+
+.alert-dismissible .close {
+    top: 0px !important;
+    right: 0px !important;
+}
+
+.alert-danger {
+    background-color: #f2dede !important;
+    border-radius: 3px !important;
+    color: #a94442 !important;
+}
+
+.alert-message-fw {
+    font-weight: 600 !important;
+}
+
+.login-error {
+    color: #a94442;
+}
+
+.text {
+    padding-top: 12px;
+}
+
+.alert-danger>h5 {
+    font-size: 14px;
+}
+
+.alert-danger .close {
+    position: relative;
+    top: 10px !important;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
+.p13 {
+    padding: 13px;
+}
+
+.login-error a:hover {
+    text-decoration: underline;
 }

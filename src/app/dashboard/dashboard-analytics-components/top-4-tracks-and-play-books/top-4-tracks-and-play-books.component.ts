@@ -9,6 +9,7 @@ import {TracksPlayBookUtilService} from 'app/tracks-play-book-util/services/trac
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
 import { TracksPlayBook } from 'app/tracks-play-book-util/models/tracks-play-book';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 declare var $:any, swal:any;
 @Component({
   selector: 'app-top-4-tracks-and-play-books',
@@ -38,6 +39,22 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   isOptionClicked = false;
   type = "";
 
+  trackOrPlaybookTitle: string = "";
+  trackOrPlaybookCreatedById: number;
+  trackOrPlaybookCreatedByFullName: string = "";
+  callCommentsComponent: boolean = false;
+  entityId: number;
+  createdByAnyAdmin: boolean = false;
+  fontAwesomeClassName: FontAwesomeClassName = new FontAwesomeClassName();
+  approvalStatus = {
+    APPROVED: 'APPROVED',
+    REJECTED: 'REJECTED',
+    CREATED: 'CREATED',
+    UPDATED: 'UPDATED'
+  };
+  videoId: number;
+  moduleType: string = "";
+
   constructor(public referenceService: ReferenceService,  public tracksPlayBookUtilService:TracksPlayBookUtilService, public authenticationService: AuthenticationService,public xtremandLogger:XtremandLogger,public pagerService:PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
@@ -52,12 +69,14 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.addButtonText = "Add Tracks";
       this.titleHeader = "Tracks";
       this.type = "track";
+      this.moduleType = TracksPlayBookType[TracksPlayBookType.TRACK];
     }else{
       this.headerTitle = this.isPartnerView ? 'Shared Play Books':'Play Books';
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared play books' : 'Click here to manage play books'
       this.addButtonText = "Add Play Books";
       this.titleHeader = "Play Books";
       this.type = "play book";
+      this.moduleType = TracksPlayBookType[TracksPlayBookType.PLAYBOOK];
     }
     this.listLearningTracks(this.pagination);
   }
@@ -307,6 +326,51 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     this.referenceService.goToRouter(route);
   }
 
+  getApprovalStatusText(status: string): string {
+    switch (status) {
+      case this.approvalStatus.APPROVED:
+        return 'Approved';
+      case this.approvalStatus.REJECTED:
+        return 'Rejected';
+      case this.approvalStatus.CREATED:
+        return 'Pending Approval';
+      case this.approvalStatus.UPDATED:
+        return 'Updated';
+      default:
+        return status;
+    }
+  }
+
+  showCommentsAndHistoryModalPopup(trackOrPlaybook: any) {
+    this.callCommentsComponent = true;
+    this.trackOrPlaybookTitle = trackOrPlaybook.title;
+    this.trackOrPlaybookCreatedById = trackOrPlaybook.createdById;
+    this.trackOrPlaybookCreatedByFullName = trackOrPlaybook.createdByName;
+    this.entityId = trackOrPlaybook.id;
+    this.createdByAnyAdmin = trackOrPlaybook.createdByAnyAdmin;
+    this.videoId = trackOrPlaybook.videoId;
+  }
+
+  closeCommentsAndHistoryModalPopup() {
+    this.callCommentsComponent = false;
+  }
+
+  closeCommentsAndHistoryModalPopupAndRefreshList() {
+    this.refresh();
+    this.callCommentsComponent = false;
+  }
+
+  isApprovalRequiredForType(): boolean {
+    if (this.moduleType == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+      return this.authenticationService && this.authenticationService.approvalRequiredForTracks
+        ? this.authenticationService.approvalRequiredForTracks
+        : false;
+    } else if (this.moduleType == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+      return this.authenticationService && this.authenticationService.approvalRequiredForPlaybooks
+        ? this.authenticationService.approvalRequiredForPlaybooks
+        : false;
+    }
+  }
 
   
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, OnDestroy, EventEmitter, Renderer } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy, EventEmitter, Renderer, ViewChild } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
@@ -17,6 +17,8 @@ import { TracksPlayBook } from '../models/tracks-play-book'
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
 import { Roles } from 'app/core/models/roles';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
+import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
 
 
 declare var swal:any, $: any;
@@ -60,6 +62,24 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   trackOrPlayBookText = "";
   /****XNFR-327****/
   showRefreshNotification = false;
+
+  assetName: string = "";
+  assetCreatedById: number;
+  assetCreatedByFullName: string = "";
+  callCommentsComponent: boolean = false;
+  selectedDamId: number;
+  createdByAnyAdmin: boolean = false;
+  fontAwesomeClassName: FontAwesomeClassName = new FontAwesomeClassName();
+  approvalStatus = {
+    APPROVED: 'APPROVED',
+    REJECTED: 'REJECTED',
+    CREATED: 'CREATED',
+    UPDATED: 'UPDATED'
+  };
+  videoId: number;
+  @ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
+  
+
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
@@ -446,6 +466,10 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   refreshPage() {
     this.listLearningTracks(this.pagination);
+    if (this.contentModuleStatusAnalyticsComponent && (this.authenticationService.approvalRequiredForTracks
+      || this.authenticationService.approvalRequiredForPlaybooks)) {
+      this.contentModuleStatusAnalyticsComponent.getTileCounts();
+    }
   }
 
   callFolderListViewEmitter(){
@@ -455,5 +479,69 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       this.updatedItemsCountEmitter.emit(this.exportObject);
 		}
 	 }
+
+  /** XNFR-824 start **/
+  getApprovalStatusText(status: string): string {
+    switch (status) {
+      case this.approvalStatus.APPROVED:
+        return 'Approved';
+      case this.approvalStatus.REJECTED:
+        return 'Rejected';
+      case this.approvalStatus.CREATED:
+        return 'Pending Approval';
+      case this.approvalStatus.UPDATED:
+        return 'Updated';
+      default:
+        return status;
+    }
+  }
+
+  showCommentsAndHistoryModalPopup(asset: any) {
+    this.callCommentsComponent = true;
+    this.assetName = asset.title;
+    this.assetCreatedById = asset.createdById;
+    this.assetCreatedByFullName = asset.createdByName;
+    this.selectedDamId = asset.id;
+    this.createdByAnyAdmin = asset.createdByAnyAdmin;
+    this.videoId = asset.videoId;
+  }
+
+  closeCommentsAndHistoryModalPopup() {
+    this.callCommentsComponent = false;
+  }
+
+  closeCommentsAndHistoryModalPopupAndRefreshList() {
+    this.refreshPage();
+    this.callCommentsComponent = false;
+  }
+
+  filterContentByType(event: any) {
+    if (event == this.approvalStatus.APPROVED) {
+      this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
+      this.listLearningTracks(this.pagination);
+    } else if (event == this.approvalStatus.REJECTED) {
+      this.pagination.selectedApprovalStatusCategory = this.approvalStatus.REJECTED;
+      this.listLearningTracks(this.pagination);
+    } else if (event == this.approvalStatus.CREATED) {
+      this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
+      this.listLearningTracks(this.pagination);
+    } else {
+      this.pagination.selectedApprovalStatusCategory = '';
+      this.refreshPage();
+    }
+  }
+
+  isApprovalRequiredForType(): boolean {
+    if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+      return this.authenticationService && this.authenticationService.approvalRequiredForTracks
+        ? this.authenticationService.approvalRequiredForTracks
+        : false;
+    } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+      return this.authenticationService && this.authenticationService.approvalRequiredForPlaybooks
+        ? this.authenticationService.approvalRequiredForPlaybooks
+        : false;
+    }
+  }
+  /** XNFR-824 end **/
 
 }

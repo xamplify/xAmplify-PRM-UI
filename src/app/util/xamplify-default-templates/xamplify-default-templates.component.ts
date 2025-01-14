@@ -267,6 +267,9 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
           ],
           "COMPANY_PROFILE_INCOMPLETE":[
             '{{senderFullName}}',
+          ],
+          "JOIN_VERSA_TEAM":[
+            '{{senderFullName}}',
           ]
         };
     
@@ -277,10 +280,10 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
             condition: () => !self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages && !self.isPartnerJourneyPages && !self.isVendorMarketplacePages,
             checks: [
               { condition: () => !$.trim(emailTemplate.subject), message: "Whoops! We are unable to save this template because subject line is empty." },
-              { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION", "PARTNER_REMAINDER", "COMPANY_PROFILE_INCOMPLETE"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
+              { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION", "PARTNER_REMAINDER", "COMPANY_PROFILE_INCOMPLETE", "JOIN_VERSA_TEAM"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
               { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN", "ADD_LEAD", "ADD_DEAL", "LEAD_UPDATE", "DEAL_UPDATE", "FORM_COMPLETED", "ADD_SELF_LEAD", "ADD_SELF_DEAL", "UPDATE_SELF_LEAD", "UPDATE_SELF_DEAL", "PRM_ADD_LEAD", "PRM_UPDATED"].includes(emailTemplateType) && !jsonContent.includes('{{customerFullName}}'), message: "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag." },
               { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
-              { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{senderFullName}}"), message: "Whoops! We are unable to save this template because you deleted '{{senderFullName}}' tag." },
+              { condition: () => (emailTemplateType === "JOIN_VENDOR_COMPANY" || "JOIN_MY_TEAM"==emailTemplateType) && !jsonContent.includes("{{senderFullName}}"), message: "Whoops! We are unable to save this template because you deleted '{{senderFullName}}' tag." },
               { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{VENDOR_COMPANY_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{VENDOR_COMPANY_NAME}}' tag." },
               { condition: () => emailTemplateType === "TRACK_PUBLISH" && !jsonContent.includes("{{trackTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag." },
               { condition: () => emailTemplateType === "PLAYBOOK_PUBLISH" && !jsonContent.includes("{{playbookTitle}}"), message: "Whoops! We are unable to save this template because you deleted '{{playbookTitle}}' tag." },
@@ -289,6 +292,9 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               { condition: () => emailTemplateType === "ONE_CLICK_LAUNCH" && !jsonContent.includes("{{campaignName}}"), message: "Whoops! We are unable to save this template because you deleted '{{campaignName}}' tag." },
               { condition: () => emailTemplateType === "ONE_CLICK_LAUNCH" && !jsonContent.includes("{{campaignType}}"), message: "Whoops! We are unable to save this template because you deleted '{{campaignType}}' tag." },
               { condition: () => emailTemplateType === "PAGE_CAMPAIGN_PARTNER" && !jsonContent.includes("{{pageName}}"), message: "Whoops! We are unable to save this template because you deleted '{{pageName}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_PRM_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_PRM_COMPANY" && !jsonContent.includes("{{senderFullName}}"), message: "Whoops! We are unable to save this template because you deleted '{{senderFullName}}' tag." },
+              { condition: () => emailTemplateType === "JOIN_PRM_COMPANY" && !jsonContent.includes("{{VENDOR_COMPANY_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{VENDOR_COMPANY_NAME}}' tag." },
               { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH"].includes(emailTemplateType) && !jsonContent.includes("{{publishedDate}}"), message: "Whoops! We are unable to save this template because you deleted '{{publishedDate}}' tag." },
               { condition: () => ["ASSET_PUBLISH", "SHARE_LEAD", "PAGE_CAMPAIGN_PARTNER"].includes(emailTemplateType) && !jsonContent.includes("{{sharedDate}}"), message: "Whoops! We are unable to save this template because you deleted '{{sharedDate}}' tag." },
               { condition: () => ["SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN"].includes(emailTemplateType) && !jsonContent.includes("{{socialStatusContent}}"), message: "Whoops! We are unable to save this template because you deleted '{{socialStatusContent}}' tag." },
@@ -300,12 +306,15 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
                 message: `Whoops! We are unable to save this template because you deleted '${tag}' tag.`
               })),
               { condition: () => jsonContent.indexOf("<<LoginLink>>") < 0 && emailTemplateType === "JOIN_MY_TEAM", message: "Whoops! We are unable to save this template because you deleted 'LoginLink' tag." },
-              { condition: () => jsonContent.indexOf("<login_url>") < 0 && (emailTemplateType === "JOIN_VENDOR_COMPANY" ||  emailTemplateType === "FORGOT_PASSWORD"), message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
+              { condition: () => jsonContent.indexOf("<login_url>") < 0 && (emailTemplateType === "JOIN_VENDOR_COMPANY" ||  emailTemplateType === "FORGOT_PASSWORD" || emailTemplateType === "JOIN_PRM_COMPANY"), message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("login_url") < 0 && emailTemplateType === "COMPANY_PROFILE_INCOMPLETE", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("pageLink") < 0 && ["SOCIAL_CAMPAIGN", "PAGE_CAMPAIGN_CONTACT", "ADD_DEAL", "DEAL_UPDATE"].includes(emailTemplateType), message: "Whoops! We are unable to save this template because you deleted 'Button' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match("<Vanity_Company_Logo_Href>") || []).length < 1, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
               { condition: () => emailTemplateType === "ACCOUNT_ACTIVATION" && jsonContent.indexOf('<VerifyEmailLink>') < 0, message: "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag." },
+              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('LoginLink'), message: "Whoops! We are unable to save this template because you deleted 'RegisterLink' tag." },
+              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('Registration_Document'), message: "Whoops! We are unable to save this template because you deleted 'Registration_Document' tag." },
+              { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('Request_Account'), message: "Whoops! We are unable to save this template because you deleted 'Request_Account' tag." },
             ]
           },
         ];
@@ -325,14 +334,22 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
     };
     let emailTemplateType = emailTemplate.typeInString
 
-    if("FORGOT_PASSWORD"==emailTemplateType || "ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType){
+    if("FORGOT_PASSWORD"==emailTemplateType){
       var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
       { name: 'Sender Last Name', value: '{{lastName}}' },
       { name: 'Sender Email Id', value: '{{emailId}}' },
+      { name: 'Sender Full Name', value: '{{fullName}}' },
       { name: 'Sender Partner Name', value: '{{PARTNER_NAME}}' },
-      { name: 'Sender Full Name', value: '{{senderFullName}}' },
-      { name: 'Vendor Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
       ];
+    }
+    if("ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_PRM_COMPANY"==emailTemplateType){
+      var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Partner Name', value: '{{PARTNER_NAME}}' },
+        { name: 'Sender Full Name', value: '{{senderFullName}}' },
+        { name: 'Sender Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
+        ];
     }
    if("TRACK_PUBLISH"==emailTemplateType){
       mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
@@ -495,6 +512,9 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
       mergeTags =[{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
         { name: 'Sender Full Name', value: '{{senderFullName}}' },
         ];
+    }
+    if("JOIN_VERSA_TEAM"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType) {
+      mergeTags =[{ name: 'Sender Full Name', value: '{{senderFullName}}' },];
     }
 
       var beeUserId = "bee-"+emailTemplate.companyId;

@@ -104,6 +104,11 @@
 														'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
 													{{getApprovalStatusText(asset.approvalStatus)}}
 												</span>
+												<span *ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED" 
+												class="view-banner asset-approval-labele-spacing bgc-red" translate>
+												   {{getApprovalStatusText(asset.approvalStatus)}}
+											   </span>
+
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
 												<!---XNFR-255-->
@@ -165,8 +170,10 @@
 															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
 																<!--Create Campaign-->
 																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
-																	(click)="campaignRouter(asset.alias, asset.viewBy)" data-toggle="tooltip" data-placement="top" title="Create campaign">
-																	<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+																	(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset.alias, asset.viewBy) : ''" data-toggle="tooltip" data-placement="top" 
+																	title="{{asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign'}}">
+																	<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"
+																	[ngClass]="(asset?.approvalStatus != 'APPROVED') ? 'disabled gray' : ''"></i>
 																	<div class="clickicons"></div>
 																</a>
 																<!--Campaign-->
@@ -209,7 +216,8 @@
 															</a>
 
 															<!-- comment/history -->
-															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" 
+																data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
@@ -317,6 +325,10 @@
 																				'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
 																			{{getApprovalStatusText(asset.approvalStatus)}}
 																		</span>
+																		<span *ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED" 
+																		 class="view-banner asset-approval-labele-spacing bgc-red" translate>
+																			{{getApprovalStatusText(asset.approvalStatus)}}
+																		</span>
 																		<ng-container
 																			*ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 																			<span
@@ -421,7 +433,8 @@
 																				<div class="clickicons"></div>
 																			</a>
 
-																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top" title="Approve/Reject">
+																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)"
+																			 data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
 																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
@@ -509,6 +522,11 @@
 											        'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 											        'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
 											        'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+												{{getApprovalStatusText(asset.approvalStatus)}}
+											</span>
+											<span
+												*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED"
+												class="view-banner asset-approval-labele-spacing bgc-red" translate>
 												{{getApprovalStatusText(asset.approvalStatus)}}
 											</span>
 
@@ -727,8 +745,10 @@
 	(notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
 
 <!-- XNFR-781  -->
-<app-content-status-history-modal-popup *ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
- [damId]="selectedDamId" [createdByAnyAdmin]="createdByAnyAdmin" [assetName]="assetName" [assetCreatedById]="assetCreatedById"
-  [assetCreatedByFullName]="assetCreatedByFullName"
-	(closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+<app-content-status-history-modal-popup
+	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
+	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
 </app-content-status-history-modal-popup>

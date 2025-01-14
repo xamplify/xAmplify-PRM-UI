@@ -87,6 +87,12 @@
 										'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
 									{{getApprovalStatusText(asset.approvalStatus)}}
 								</span>
+								<span
+									*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED"
+									class="view-banner asset-approval-labele-spacing bgc-red" translate>
+									{{getApprovalStatusText(asset.approvalStatus)}}
+								</span>
+								
 							 </div>
 							 <h6  class="xamplify-ellipsis GridViewCotent pt10">
 								<span *ngIf="isPartnerView"> <b>Published On: </b></span>
@@ -154,7 +160,9 @@
 
 <!-- XNFR-781  -->
 <app-content-status-history-modal-popup
-	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView" [damId]="selectedDamId"
-	[createdByAnyAdmin]="createdByAnyAdmin" [assetName]="assetName" [assetCreatedById]="assetCreatedById"
-	[assetCreatedByFullName]="assetCreatedByFullName" (closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
+	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
 </app-content-status-history-modal-popup>

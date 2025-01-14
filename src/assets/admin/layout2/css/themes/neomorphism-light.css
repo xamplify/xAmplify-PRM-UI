@@ -4419,7 +4419,7 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 .neo{margin-left:65px !important;}
   /* contact-journey */
-  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor,.view_emailcard,.email_content,.view_task_card{
+  .activity_card,.lead_details h3,.deals_card,.activity_bgcolor,.view_emailcard,.email_content,.view_task_card,.event-container{
     background: #f0f5fa !important;
     border: 1px solid #d0d5db !important;
     box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
@@ -4488,3 +4488,7 @@ i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
 }
 /* Sudha Sri(03-01-2025) */
 span.btn.Btn-Green.transition.txt_pd-top3.pd_lft8.only_neo{padding-top: 0px !important;}
+a.Iconhover.custom-grid-icon.icon_margin{
+  margin: 2px 2px !important;
+}
+.lead-details-border{border: 2px solid #cfd6de !important;}

@@ -102,7 +102,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 		}
 	}
 
-	listCustomFields(opportunityType : any) {
+	listCustomFields(opportunityType: any) {
 		this.ngxloading = true;
 		let self = this;
 		this.customFieldsDtosLoader = true;

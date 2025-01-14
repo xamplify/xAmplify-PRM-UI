@@ -68,6 +68,7 @@ export class ShowHistoryComponent implements OnInit {
 		CREATED: 'CREATED',
 		UPDATED: 'UPDATED'
 	};
+	videoId: number;
 
 	/****XNFR-381*****/
 	constructor(public damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -490,6 +491,7 @@ export class ShowHistoryComponent implements OnInit {
 		this.assetCreatedByFullName = asset.fullName;
 		this.selectedDamId = asset.id;
 		this.createdByAnyAdmin = asset.createdByAnyAdmin;
+		this.videoId = asset.videoId;
 	}
 	
 	getApprovalStatusText(status: string): string {
@@ -499,11 +501,21 @@ export class ShowHistoryComponent implements OnInit {
 			case this.approvalStatus.REJECTED:
 				return 'Rejected';
 			case this.approvalStatus.CREATED:
-				return 'Created';
+				return 'Pending Approval';
 			case this.approvalStatus.UPDATED:
 				return 'Updated';
 			default:
 				return status;
 		}
+	}
+
+	/** XNFR-824 **/
+	closeCommentsAndHistoryModalPopup() {
+		this.callCommentsComponent = false;
+	}
+
+	closeCommentsAndHistoryModalPopupAndRefreshList() {
+		this.refreshList();
+		this.callCommentsComponent = false;
 	}
 }

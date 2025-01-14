@@ -173,6 +173,8 @@ export class AuthenticationService {
   
   /** XNFR-781  **/
   approvalRequiredForAssets: boolean = false;
+  approvalRequiredForTracks: boolean = false;
+  approvalRequiredForPlaybooks: boolean = false;
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
@@ -1524,12 +1526,4 @@ vanityWelcomePageRequired(userId) {
    return this.callPostMethod(url, "");
 
   }
-
-  getPartnersFilter() {
-    var url = this.REST_URL + "admin/getTeamMemberPartnerFilter/" + this.getUserId() + "?access_token=" + this.access_token;
-    return this.http.get(url)
-      .map(this.extractData)
-      .catch(this.handleError);
-  }
-
 }

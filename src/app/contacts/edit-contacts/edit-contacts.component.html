@@ -1635,7 +1635,7 @@
 
 													<td
 														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">
-														<button class="btn Btn-Green"
+														<button class="btn-primary"
 															*ngIf="contactsByType.selectedCategory == 'unsubscribed' && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
 															[disabled]="assignLeads"
 															(click)="resubscribeUser(allcontacts)" translate>

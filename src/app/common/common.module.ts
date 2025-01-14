@@ -201,6 +201,12 @@ import { SignatureComponent } from 'app/util/signature/signature.component';
 import { UploadImageComponent } from 'app/util/upload-image/upload-image.component';
 import { SignatureModalComponent } from 'app/util/signature-modal/signature-modal.component';
 
+import { MultiselectApprovalCommentsModalPopupComponent } from 'app/util/multiselect-approval-comments-modal-popup/multiselect-approval-comments-modal-popup.component';
+import { DateRangeDisplayComponent } from './date-range-display/date-range-display.component';
+
+
+
+
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,
@@ -241,7 +247,8 @@ import { SignatureModalComponent } from 'app/util/signature-modal/signature-moda
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
-		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,SignatureModalComponent
+		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,SignatureModalComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent
+
 	],
 
 
@@ -281,7 +288,8 @@ import { SignatureModalComponent } from 'app/util/signature-modal/signature-moda
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
-		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,SignatureModalComponent
+		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,SignatureModalComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent
+
 
 	]
 

@@ -11,7 +11,8 @@
             <a title="Refresh" class="close-circle mr5" (click)="refreshModalPopUp()">
                <i class="fa fa-refresh" aria-hidden="true"></i>
             </a>
-            <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
+            <h4 class="modal-title" style="font-weight: 600;" translate>
+               {{(!authenticationService.module.isAdmin || createdByAnyAdmin) ? 'Comments or History' : 'Approve or Reject'}}</h4>
          </div>
          <div style="margin: 0px 20px;">
             <app-response-message [customResponse]="commentsCustomResponse" *ngIf="commentsCustomResponse?.isVisible" [showCloseIcon]="true"></app-response-message>
@@ -54,19 +55,19 @@
                            <h5 class="mt10 mb0">
                               <span><strong>Status</strong></span>:
                               
-                              <span *ngIf="showStatusBanner" class="view-banner-agency" [ngClass]="{
+                              <span *ngIf="showStatusBanner" class="view-banner-content" [ngClass]="{
                                     'bgc-green': commentDto?.statusInString === approvalStatus.APPROVED, 
                                     'bgc-red': commentDto?.statusInString === approvalStatus.REJECTED,
                                     'bgc-orange': commentDto?.statusInString === approvalStatus.CREATED
                                  }" translate>
                                  <strong>{{ getApprovalStatusText(commentDto?.statusInString) }}</strong>
                                  <a *ngIf="canUpdateStatus && !createdByAnyAdmin" class="white">
-                                    <i class="fa fa-edit fs-13px" (click)="showStatusDropDown=true; showStatusBanner=false"></i>
+                                    <i class="fa fa-edit fs-13px" style="margin-left: 3px;" (click)="showStatusDropDown=true; showStatusBanner=false"></i>
                                  </a>
                               </span>
 
                               <select *ngIf="showStatusDropDown" [(ngModel)]="commentDto.statusInString"
-                                 (ngModelChange)="showStatusDropDown = false;showStatusBanner=true" class="view-banner-agency"
+                                 (ngModelChange)="showStatusDropDown = false;showStatusBanner=true" class="view-banner-content"
                                  [ngClass]="{
                                     'bgc-green': commentDto?.statusInString === approvalStatus.APPROVED, 
                                     'bgc-red': commentDto?.statusInString === approvalStatus.REJECTED,
@@ -76,7 +77,7 @@
                                  </option>
                               </select>
 
-                              <span data-toggle="tooltip" data-placement="bottom" title="View History" class="view-banner-agency ml5"
+                              <span data-toggle="tooltip" data-placement="bottom" title="View History" class="view-banner-content ml5"
                                  (click)="openTemplateStatusHistoryPopUp()">
                                  <a class="white"><i class="fa fa-history" style="font-size: 12px;"></i></a>
                               </span>
@@ -133,7 +134,7 @@
 
 <div id="historyModalPopUp" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
    data-backdrop="static" data-keyboard="false">
-   <div class="modal-dialog modal-css history_popup" role="document">
+   <div class="modal-dialog modal-css" role="document">
       <!-- Modal content-->
       <div class="modal-content" style="overflow-x: hidden;">
          <ngx-loading [show]="historyPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -163,14 +164,14 @@
                            <strong style="color:#65b6e4;">{{timeLine?.createdByName}}</strong>
                            <span *ngIf="(timeLine?.status == 'REJECTED' || timeLine?.status == 'APPROVED') && !createdByAnyAdmin">
                               changed the status to </span>
-                              <span class="view-banner-agency" [ngClass]="{
-                                    'bgc-green': timeLine?.status === approvalStatus.APPROVED, 
-                                    'bgc-red': timeLine?.status === approvalStatus.REJECTED,
-                                    'bgc-orange': timeLine?.status === approvalStatus.CREATED}" translate>
-                                 <strong>
-                                    {{getApprovalStatusText(timeLine?.status)}}
-                                 </strong>
-                              </span>
+                           <span class="view-banner-content" [ngClass]="{
+                              'bgc-green': timeLine?.status === approvalStatus.APPROVED, 
+                              'bgc-red': timeLine?.status === approvalStatus.REJECTED,
+                              'bgc-orange': timeLine?.status === approvalStatus.CREATED}" translate>
+                              <strong>
+                                 {{getApprovalStatusText(timeLine?.status)}}
+                              </strong>
+                           </span>
                         
                            <strong class="ml5">On
                               <app-display-date-and-time

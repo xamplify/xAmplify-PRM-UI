@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 @Component({
   selector: 'app-preview-lms',
@@ -19,7 +20,8 @@ export class PreviewLmsComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
-  constructor(public referenceService: ReferenceService,private route: ActivatedRoute) {
+  isFromApprovalModule: boolean = false;
+  constructor(public referenceService: ReferenceService,private route: ActivatedRoute,private router : Router) {
     /****XNFR-170****/
     this.viewType = this.route.snapshot.params["viewType"];
     this.categoryId = this.route.snapshot.params["categoryId"];
@@ -27,6 +29,7 @@ export class PreviewLmsComponent implements OnInit {
   }
 
   ngOnInit() {
+     this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
   }
 
   changeShowTracksPlayBook(showTracksPlayBook: any){

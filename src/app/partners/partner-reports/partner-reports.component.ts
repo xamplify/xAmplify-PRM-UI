@@ -500,6 +500,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     getApprovePartnerReports(pagination: Pagination) {
         this.referenseService.loading(this.httpRequestLoader, true);
         pagination.userId = this.loggedInUserId;
+        pagination.partnerTeamMemberGroupFilter = this.applyFilter;
         if (this.authenticationService.isSuperAdmin()) {
             pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
         }
@@ -539,7 +540,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.inactivePartnerList);
                 this.referenseService.loading(this.httpRequestLoader, false);
-                this.inActivePartnersPagination.searchKey = "";
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
@@ -760,8 +760,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-        if(filterPartner!=undefined){
-            this.applyFilter = filterPartner;
+        if (filterPartner!=null && filterPartner != undefined &&  (!filterPartner || filterPartner === 'false')) {
+            this.applyFilter = false;
         }
         this.getCountOfTiles();
 
@@ -1131,14 +1131,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 pagination.totalRecords = response.totalRecords;
                 if (response.list.length === 0) {
                     this.customResponse = new CustomResponse('INFO', 'No records found', true);
+                }else {
+                    this.customResponse = new CustomResponse();
                 }
-
                 for (var i in response.approvePartnerList) {
                     response.list[i].contactCompany = response.list[i].partnerCompanyName;
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.list);
                 this.referenseService.loading(this.httpRequestLoader, false);
-                this.incompleteCompanyProfileAndPendingSingupPagination.searchKey = "";
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)

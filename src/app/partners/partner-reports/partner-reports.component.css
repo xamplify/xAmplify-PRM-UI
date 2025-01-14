@@ -262,4 +262,9 @@ img.brand-logo-custom {
   margin-left: 0px !important;
   font-size: 60px;
 }
-
+.filteralign {
+  padding: 0.4em!important;
+}
+.page-bar .page-breadcrumb {
+  padding: 8px !important;
+}

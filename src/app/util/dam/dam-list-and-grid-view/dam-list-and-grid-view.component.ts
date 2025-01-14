@@ -117,7 +117,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		CREATED: 'CREATED',
 		UPDATED: 'UPDATED'
 	};
-	
+	videoId: number;
 	/** XNFR-813 **/
 	@ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
 
@@ -553,7 +553,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listAssets(this.pagination);
 		}
 		/** XNFR-813 **/
-		if (this.contentModuleStatusAnalyticsComponent) {
+		if (this.contentModuleStatusAnalyticsComponent && this.authenticationService.approvalRequiredForAssets) {
 			this.contentModuleStatusAnalyticsComponent.getTileCounts();
 		}
 	}
@@ -947,9 +947,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.assetCreatedByFullName = asset.fullName;
 		this.selectedDamId = asset.id;
 		this.createdByAnyAdmin = asset.createdByAnyAdmin;
+		this.videoId = asset.videoId;
 	}
 
 	closeCommentsAndHistoryModalPopup() {
+		this.callCommentsComponent = false;
+	}
+
+	closeCommentsAndHistoryModalPopupAndRefreshList() {
 		this.refreshList();
 		this.callCommentsComponent = false;
 	}
@@ -961,7 +966,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			case this.approvalStatus.REJECTED:
 				return 'Rejected';
 			case this.approvalStatus.CREATED:
-				return 'Created';
+				return 'Pending Approval';
 			case this.approvalStatus.UPDATED:
 				return 'Updated';
 			default:
@@ -971,17 +976,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/** XNFR-813 **/
 	filterContentByType(event: any) {
-		if (event == 'APPROVED') {
-			this.pagination.selectedTileCategory = 'APPROVED';
+		if (event == this.approvalStatus.APPROVED) {
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
 			this.listAssets(this.pagination);
-		} else if (event == 'REJECTED') {
-			this.pagination.selectedTileCategory = 'REJECTED';
+		} else if (event == this.approvalStatus.REJECTED) {
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.REJECTED;
 			this.listAssets(this.pagination);
-		} else if (event == 'CREATED') {
-			this.pagination.selectedTileCategory = 'CREATED';
+		} else if (event == this.approvalStatus.CREATED) {
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
 			this.listAssets(this.pagination);
 		} else {
-			this.pagination.selectedTileCategory = '';
+			this.pagination.selectedApprovalStatusCategory = '';
 			this.refreshList();
 		}
 	}

@@ -12,6 +12,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 export class AddMeetingModalPopupComponent implements OnInit {
   @Input() calendarType:any;
   @Input() schedulingUrl: string;
+  @Input() isReloadTab:boolean;
 
   @Output() notifyClose = new EventEmitter();
 
@@ -29,10 +30,11 @@ export class AddMeetingModalPopupComponent implements OnInit {
 
   ngOnInit() {
     if (this.calendarType == 'CALENDLY') {
-      if (!this.referenceService.checkIsValidString(this.schedulingUrl)) {
-        this.showMeetingSchedulingInputField = true;
-      } else {
+      this.validateURL();
+      if (this.isValidURL) {
         this.addCalendlyScript();
+      } else {
+        this.showMeetingSchedulingInputField = true;
       }
     }
     this.referenceService.openModalPopup('addMeetingModalPopup');
@@ -63,7 +65,7 @@ export class AddMeetingModalPopupComponent implements OnInit {
 
   closeMeetingModal() {
     this.referenceService.closeModalPopup('addMeetingModalPopup');
-    this.notifyClose.emit();
+    this.notifyClose.emit(!this.isReloadTab);
   }
 
   ngOnDestroy(): void {

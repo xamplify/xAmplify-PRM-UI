@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AddTracksPlayBookComponent } from 'app/tracks-play-book-util/add-tracks-play-book/add-tracks-play-book.component';
 import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum'
 import { ActivatedRoute } from '@angular/router';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 @Component({
   selector: 'app-add-lms',
@@ -19,6 +20,7 @@ export class AddLmsComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
   mergeTagForGuide:any;
+  isFromApprovalModule: boolean = false;
   constructor(public referenceService: ReferenceService, private router: Router,private route: ActivatedRoute) {
     /****XNFR-170****/
     this.viewType = this.route.snapshot.params["viewType"];
@@ -27,6 +29,7 @@ export class AddLmsComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     if (this.router.url.indexOf('/edit') > -1) {
       this.isAdd = false;
     } else {

@@ -10,6 +10,7 @@ import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileEventEmitter } from '../models/video-file-event-emitter';
 import { Properties } from 'app/common/models/properties';
 import { DamService } from '../services/dam.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class ManageDamComponent implements OnInit {
 	damId: number;
     /*** user guides **** */
     mergeTagForGuide:any;
+    isFromApprovalModule: boolean = false;
 
 	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, 
 		private router: Router,private route: ActivatedRoute, public videoFileService: VideoFileService,
@@ -51,6 +53,7 @@ export class ManageDamComponent implements OnInit {
 	}
 
     ngOnInit() {
+        this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
         this.isPartnerView = this.router.url.indexOf('/shared') > -1;
         if (this.router.url.indexOf('/editVideo') > -1) {
             this.validateVideoId(this.videoId, 'editVideo');
@@ -140,8 +143,13 @@ export class ManageDamComponent implements OnInit {
         let folderViewType = videoFileEventEmitter.folderViewType;
         let viewType = videoFileEventEmitter.viewType;
         let categoryId = videoFileEventEmitter.categoryId;
-        this.referenceService.navigateToManageAssetsByViewType(folderViewType,viewType,categoryId,this.isPartnerView);
+        if (this.isFromApprovalModule) {
+            this.goBackToManageApproval();
+        } else {
+            this.referenceService.navigateToManageAssetsByViewType(folderViewType, viewType, categoryId, this.isPartnerView);
+        }
     }
+
     /*** XNFR-512 ****/
     getRoleByUserId() {
         this.authenticationService.getRoleByUserId().subscribe(
@@ -165,5 +173,10 @@ export class ManageDamComponent implements OnInit {
         }
     }
     /*** XNFR-512 ****/
+
+    goBackToManageApproval() {
+        let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
+        this.referenceService.goToRouter(url);
+    }
     
 }

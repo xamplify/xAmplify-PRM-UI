@@ -2297,7 +2297,7 @@ button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: -1px;m
 .createFolderAlignment{padding-top: 5px !important;}
 #folder-margin-xamp{margin-top: 5px !important;}
 .btn_custom_bg{margin-top: 0px !important;}
-.lead-details-border{border: 1px solid var(--border-color) !important;}
+.lead-details-border{border: 2px solid var(--border-color) !important;}
 button.filter.btn-hvr-text.emailtemplate-selected{
   border: 1px solid #3d94c5;
 }
@@ -2358,8 +2358,8 @@ color: var(--icon-color) !important;
 .lead_details li,
 .icon-label,
 .activity-date,
-.activity-body {
-  color: var(--title-heading--text) !important;
+.activity-body,.guest-name,.organizer-role,.guest-role {
+  color: var(---text-color) !important;
 }
 .icons_colors,
 .lead_details li i {
@@ -2370,7 +2370,7 @@ color: var(--icon-color) !important;
   color: var(--icon-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.activity_card,.activity_bgcolor,.view_emailcard,.email_content,.view_task_card{
+.activity_card,.activity_bgcolor,.view_emailcard,.email_content,.view_task_card,.event-container{
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }
@@ -2384,7 +2384,7 @@ i.fa.fa-edit.ml_6 {
   color: var(--icon-color) !important;
 }
 .icon-btns:hover,
-i.fa.fa-edit.ml_6:hover {
+i.fa.fa-edit.ml_6:hover,.copy_icon:hover{
   border: 1px solid var(--icon-border-color) !important;
   background: var(--icon-hover-color) !important;
   color: var(--div-bg-color) !important;
@@ -2395,7 +2395,7 @@ i.fa.fa-edit.ml_6:hover {
 /* charts related css */
 g.highcharts-axis-labels.highcharts-xaxis-labels text,text.highcharts-subtitle,
 text.highcharts-axis-title,g.highcharts-axis-labels.highcharts-yaxis-labels text,text.highcharts-title
-,g.highcharts-axis-labels.highcharts-coloraxis-labels text{
+,g.highcharts-axis-labels.highcharts-coloraxis-labels text,.user_guest_icon{
   fill: var(---text-color) !important;
 }
 table tr#uploaded-csv-tr.alert-success{
