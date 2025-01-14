@@ -108,6 +108,13 @@
                                                 [ngTemplateOutletContext]="{'moduleName':'password'}"></ng-template>
                                         </a>
                                     </li>
+                                    <!--Signature (XNFR-812)-->
+                                    <li  [ngClass]="{'active-tab': activeTabName == signatureMenuHeader}">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == signatureMenuHeader}" (click)="activateTab(signatureMenuHeader);clearCustomResponse()">
+                                            {{signatureMenuHeader | translate}}
+                                            <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':signatureMenuHeader}"></ng-template>
+                                        </a>
+                                     </li>
                                 </ul>
                                 <ng-container *ngIf="!isUser">
                                     <!--------------Settings----------------------->
@@ -3371,6 +3378,8 @@
                                         <app-flexi-field *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-flexi-field>
                                         <app-module-access *ngIf="isUpdateModuleOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == updateModulesMenuHeader}" [isNavigatedFromMyProfileSection]="true"></app-module-access>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
+                                        <!--Signature (XNFR-812)-->
+                                        <app-signature *ngIf="isSignatureOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == signatureMenuHeader}"></app-signature>
                                     </div>
                                 </div>
                             </div>
