@@ -49,7 +49,8 @@ export class SignatureComponent implements OnInit {
   uploadSignatureHeaderText = "Upload an existing signature image to use for signing documents.";
   isUploadTabActive = false;
   headerTextMessage = "";
-  previewingExistingExistingUploadedSignature = false;
+  previewingExistingUploadedSignature = false;
+  exisitingUploadedImagePath = "";
   constructor(private referenceService:ReferenceService,private signatureService:SignatureService,private sanitizer: DomSanitizer) { }
 
   switchTab(tabName: string) {
@@ -104,6 +105,9 @@ export class SignatureComponent implements OnInit {
     this.previewingExistingDrawSignature = this.signatureResponseDto.drawSignatureExits;
     /***Type***/
     this.previewingExistingTypeSignature = this.signatureResponseDto.typedSignatureExists;
+    /**Upload***/
+    this.previewingExistingUploadedSignature = this.signatureResponseDto.uploadedSignatureExits;
+    this.exisitingUploadedImagePath = this.signatureResponseDto.uploadedSignatureImagePath;
   }
 
   
@@ -274,7 +278,7 @@ export class SignatureComponent implements OnInit {
       const file = input.files[0];
       this.fileName = file.name;
       // Validate file type
-      if (!file.type.startsWith('image/')) {
+      if (!file.type.startsWith('image/') || file.type === 'image/gif') {
         this.referenceService.showSweetAlertErrorMessage('Please upload a valid image file.');
         this.imagePreview = null;
         return;
@@ -337,7 +341,7 @@ export class SignatureComponent implements OnInit {
 
   saveUploadedSignature() {
     if (!this.selectedFile) {
-      this.referenceService.showSweetAlertErrorMessage('No file selected. Please choose a file first.')
+      this.referenceService.showSweetAlertErrorMessage('Please select a file')
       return;
     }else{
       this.signatureService.saveUploadedSignature(this.selectedFile).subscribe(
@@ -353,5 +357,16 @@ export class SignatureComponent implements OnInit {
     }
   }
   
+
+  back(){
+    if(this.isDrawTabActive){
+      this.previewingExistingDrawSignature=true;
+      this.clear();
+    }else if(this.isTypeTabActive){
+      this.previewExistingTypeSignature();
+    }else if(this.isUploadTabActive){
+      this.previewingExistingUploadedSignature = true;
+    }
+  }
 
 }

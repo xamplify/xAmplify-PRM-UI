@@ -97,7 +97,8 @@
         <app-modal-popup-loader  [height]="130"></app-modal-popup-loader>
       </div>
       <div *ngIf="!signatureLoader">
-        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <div *ngIf="!previewingExistingUploadedSignature">
+        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" >
           <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
             <div>
               <input type="file" title="{{fileName}}"  id="fileInput"   accept="image/*"  (change)="onFileSelected($event)"  class="file-input" />
@@ -108,18 +109,29 @@
             </div>
           </div>
         </div>
+        <ng-template [ngTemplateOutlet]="buttonsTemplate"></ng-template>
       </div>
-      <ng-template [ngTemplateOutlet]="buttonsTemplate"></ng-template>
+        <!--Preview Image-->
+        <div *ngIf="previewingExistingUploadedSignature">
+          <div>
+            <img [src]="exisitingUploadedImagePath" alt="Image Preview" class="preview-img"/>
+          </div>
+          <div class="float-right mt10 mb10">
+            <button type="button" class="btn btn-primary" (click)="previewingExistingUploadedSignature=false">Re-Upload</button>
+            <button type="button" class="btn btn-danger" (click)="removeExisitingSignature()">Remove</button>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </ng-template>
 
   <!--Buttons-->
   <ng-template #buttonsTemplate>
       <div class="float-right mt10 mb10">
-        <button *ngIf="signatureResponseDto?.drawSignatureExits && isDrawTabActive"  type="button" class="btn btn-default" (click)="previewingExistingDrawSignature=true;clear()">Back</button>
-        <button *ngIf="signatureResponseDto?.typedSignatureExists && isTypeTabActive"  type="button" class="btn btn-default" (click)="previewExistingTypeSignature()">Back</button>
-        <button *ngIf="signatureResponseDto?.uploadedSignatureExits && isUploadTabActive"  type="button" class="btn btn-default" (click)="previewExistingTypeSignature()">Back</button>
-
+        <ng-container *ngIf="(signatureResponseDto?.drawSignatureExits && isDrawTabActive) || (signatureResponseDto?.typedSignatureExists && isTypeTabActive) || (signatureResponseDto?.uploadedSignatureExits && isUploadTabActive)">
+          <button type="button" class="btn btn-default" (click)="back()"></button>
+        </ng-container>
         <button type="button" class="btn btn-primary" (click)="saveSignature()">Submit</button>
         <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
       </div> 
