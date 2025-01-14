@@ -1,7 +1,4 @@
-<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
 <app-modal-popup-loader *ngIf="signaturesLoader"></app-modal-popup-loader>
-
 <div [hidden]="signaturesLoader">
   <div class="alert alert-info">{{headerTextMessage}}</div>
   <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
@@ -44,7 +41,7 @@
             </div>
             <div class="float-right mt10 mb10">
               <button type="button" class="btn btn-primary" (click)="previewingExistingDrawSignature=false">Re-Draw</button>
-              <button type="button" class="btn btn-danger" (click)="removeExistingDrawSignature()">Remove</button>
+              <button type="button" class="btn btn-danger" (click)="removeExisitingSignature()">Remove</button>
             </div>
           </div>
         </div>
@@ -66,7 +63,7 @@
           </div>
           <div class="float-right mt10 mb10">
             <button type="button" class="btn btn-primary" (click)="previewingExistingTypeSignature=false">Edit</button>
-            <button type="button" class="btn btn-danger" (click)="removeExistingTypedSignature()">Remove</button>
+            <button type="button" class="btn btn-danger" (click)="removeExisitingSignature()">Remove</button>
           </div>
         </div>
         <div *ngIf="!previewingExistingTypeSignature">
@@ -101,7 +98,6 @@
       </div>
       <div *ngIf="!signatureLoader">
         <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-          <!--DropDown-->
           <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
             <div>
               <input type="file" title="{{fileName}}"  id="fileInput"   accept="image/*"  (change)="onFileSelected($event)"  class="file-input" />
@@ -121,7 +117,9 @@
   <ng-template #buttonsTemplate>
       <div class="float-right mt10 mb10">
         <button *ngIf="signatureResponseDto?.drawSignatureExits && isDrawTabActive"  type="button" class="btn btn-default" (click)="previewingExistingDrawSignature=true;clear()">Back</button>
-        <button *ngIf="signatureResponseDto?.typedSignatureExists && isTypeTabActive"  type="button" class="btn btn-default" (click)="previewingExistingTypeSignature=true;">Back</button>
+        <button *ngIf="signatureResponseDto?.typedSignatureExists && isTypeTabActive"  type="button" class="btn btn-default" (click)="previewExistingTypeSignature()">Back</button>
+        <button *ngIf="signatureResponseDto?.uploadedSignatureExits && isUploadTabActive"  type="button" class="btn btn-default" (click)="previewExistingTypeSignature()">Back</button>
+
         <button type="button" class="btn btn-primary" (click)="saveSignature()">Submit</button>
         <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
       </div> 

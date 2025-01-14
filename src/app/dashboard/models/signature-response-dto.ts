@@ -6,6 +6,6 @@ export class SignatureResponseDto {
     typedSignatureFont = "";
     typedSignatureExists = false;
 
-    uploadedSignatureBase64Image = "";
+    uploadedSignatureImagePath = "";
     uploadedSignatureExits = false;
 }

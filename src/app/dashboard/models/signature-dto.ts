@@ -3,4 +3,5 @@ export class SignatureDto {
     typedSignatureFont = "";
     loggedInUserId = 0;
     drawSignatureEncodedImage = "";
+    signatureType = "";
 }

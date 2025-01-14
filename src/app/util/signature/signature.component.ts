@@ -13,7 +13,6 @@ import * as domtoimage from 'dom-to-image';
   styleUrls: ['./signature.component.css', '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css']
 })
 export class SignatureComponent implements OnInit {
-  ngxLoading = false;
   uploadSignatureButtonClicked = false;
   signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
   activeTab = "draw";
@@ -39,6 +38,7 @@ export class SignatureComponent implements OnInit {
   typeSignatureHeaderText = "Type a name to generate a digital signature with various handwriting-style fonts for document signing.";
   isTypeTabActive = false;
   previewingExistingTypeSignature = false;
+  existingTypedSignature:SignatureResponseDto = new SignatureResponseDto();
   /***Upload Image****/
   uploadedImage: string | ArrayBuffer | null = null;
   fileName: string = 'No file chosen';
@@ -95,6 +95,8 @@ export class SignatureComponent implements OnInit {
   private setExistingData() {
     this.signatureDto.typedSignatureFont = this.signatureResponseDto.typedSignatureFont;
     this.signatureDto.typedSignatureText = this.signatureResponseDto.typedSignatureText;
+    this.existingTypedSignature.typedSignatureFont = this.signatureResponseDto.typedSignatureFont;
+    this.existingTypedSignature.typedSignatureText = this.signatureResponseDto.typedSignatureText;
     let isValidFont = this.signatureDto.typedSignatureFont != undefined && this.signatureDto.typedSignatureFont.length > 0;
     if (!isValidFont) {
       this.signatureDto.typedSignatureFont = this.fontStyles[0];
@@ -154,14 +156,17 @@ export class SignatureComponent implements OnInit {
     }else if(this.isUploadTabActive){
       this.clearImage();
     }
-   
-    
   }
- 
 
-  
+  previewExistingTypeSignature(){
+    this.previewingExistingTypeSignature = true;
+    this.signatureDto.typedSignatureFont = this.existingTypedSignature.typedSignatureFont;
+    this.signatureDto.typedSignatureText = this.existingTypedSignature.typedSignatureText;
+  }
 
-  private validateAndUploadDrawSignature(signatureData: string) {
+  private validateAndUploadDrawSignature() {
+    
+    let signatureData: string | null = null;
     const canvas = this.sigPad.nativeElement as HTMLCanvasElement;
     const pixelData = this.context.getImageData(0, 0, canvas.width, canvas.height).data;
     let isCanvasEmpty = !pixelData.some((pixel:any) => pixel !== 0); // Check if any pixel is not transparent
@@ -171,9 +176,8 @@ export class SignatureComponent implements OnInit {
       this.uploadDrawSignature(base64Image);
     } else {
       this.referenceService.showSweetAlertErrorMessage("Please draw signature");
-      this.ngxLoading = false;
+      
     }
-    return signatureData;
   }
 
   /***Draw***/
@@ -183,15 +187,26 @@ export class SignatureComponent implements OnInit {
       response => {
         this.referenceService.showSweetAlertSuccessMessage(response.message);
         this.clear();
-        this.ngxLoading = false;
+        
       }, error => {
-        this.ngxLoading = false;
+        
         this.referenceService.showSweetAlertServerErrorMessage();
       },()=>{
         this.getExistingSignatures();
       });
   }
 
+  reDrawSignature(){
+    this.previewingExistingDrawSignature = false;
+  }
+
+  getSanitizedImageUrl(imagePath:any){
+    const uniquePath = `${imagePath}?v=${new Date().getTime()}`;
+    return this.sanitizer.bypassSecurityTrustUrl(uniquePath);
+  }
+
+
+  /***Type Signature***/
   validateTypedSignature(){
     this.previewSignature();
     this.isValidSignatureText = this.signatureDto.typedSignatureText.length<=25;
@@ -212,14 +227,14 @@ export class SignatureComponent implements OnInit {
 
   saveTypedSignature(){
     this.previewSignature();
-    this.ngxLoading = true;
+    
     this.saveTypedSignatureTextAsImage();
     this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
       response => {
         this.referenceService.showSweetAlertSuccessMessage(response.message);
-        this.ngxLoading = false;
+        
       }, error => {
-        this.ngxLoading = false;
+        
         this.referenceService.showSweetAlertServerErrorMessage();
       },()=>{
         this.getExistingSignatures();
@@ -232,35 +247,28 @@ export class SignatureComponent implements OnInit {
         console.log(dataUrl);
       });
     }
+    /***End Of Type Signature***/
 
-
-    reDrawSignature(){
-      this.previewingExistingDrawSignature = false;
-    }
-
-    getSanitizedImageUrl(imagePath:any){
-      const uniquePath = `${imagePath}?v=${new Date().getTime()}`;
-      return this.sanitizer.bypassSecurityTrustUrl(uniquePath);
-    }
-
-
-    removeExistingDrawSignature(){
-      this.ngxLoading = true;
-      this.signatureService.removeDrawSignature().subscribe(
+    removeExisitingSignature(){
+      let signatureDto = new SignatureDto();
+      signatureDto.signatureType = this.activeTab;
+      
+      this.signatureService.removeExistingSignature(signatureDto).subscribe(
         response=>{
-
+          this.referenceService.showSweetAlertSuccessMessage(response.message);
+          
         },error=>{
-
+          
+          this.referenceService.showSweetAlertServerErrorMessage();
+        },()=>{
+          this.getExistingSignatures();
         });
     }
-
-  /*******End Of Type Signature***********/  
-
 
 
   /********Upload Signature*******/
   onFileSelected(event: Event): void {
-    this.ngxLoading = true;
+    
     const input = event.target as HTMLInputElement | null;
     if (input && input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -286,11 +294,11 @@ export class SignatureComponent implements OnInit {
         this.imagePreview = reader.result;
       };
       reader.readAsDataURL(this.selectedFile);
-      this.ngxLoading = false;
+      
     } else {
       this.fileName = 'No file chosen';
       this.imagePreview = null;
-      this.ngxLoading = false;
+      
     }
   }
 
@@ -302,41 +310,42 @@ export class SignatureComponent implements OnInit {
     if (fileInput) {
       fileInput.value = '';
     }
-    this.ngxLoading = false;
+    
   }
 
 
 
   saveSignature() {
-    let signatureData: string | null = null;
-    if (this.activeTab === "draw") {
-      this.ngxLoading = true;
-      signatureData = this.validateAndUploadDrawSignature(signatureData);
-    } else if (this.activeTab === "type") {
-      let typedSignature = this.referenceService.getTrimmedData(this.signatureDto.typedSignatureText);
-      if(typedSignature!=undefined && typedSignature.length>0){
-        this.referenceService.showSweetAlertErrorMessage("Please type your signature")
-      }else{
-        this.ngxLoading = true;
-        this.saveTypedSignature();
-      }
-      
-    } else if (this.activeTab === "upload") {
+    if (this.isDrawTabActive) {
+      this.validateAndUploadDrawSignature();
+    } else if (this.isTypeTabActive) {
+      this.validateAndSaveTypedSignature();
+    } else if (this.isUploadTabActive) {
       this.saveUploadedSignature();
     }
   }
+
+  private validateAndSaveTypedSignature() {
+    let typedSignature = this.referenceService.getTrimmedData(this.signatureDto.typedSignatureText);
+    if (typedSignature != undefined && typedSignature.length > 0) {
+      
+      this.saveTypedSignature();
+    } else {
+      this.referenceService.showSweetAlertErrorMessage("Please type your signature");
+    }
+  }
+
   saveUploadedSignature() {
     if (!this.selectedFile) {
       this.referenceService.showSweetAlertErrorMessage('No file selected. Please choose a file first.')
       return;
     }else{
-      this.ngxLoading = true;
       this.signatureService.saveUploadedSignature(this.selectedFile).subscribe(
         response => {
           this.referenceService.showSweetAlertSuccessMessage(response);
-          this.ngxLoading = false;
+          
         }, error => {
-          this.ngxLoading = false;
+          
           this.referenceService.showSweetAlertServerErrorMessage();
         },()=>{
           this.getExistingSignatures();

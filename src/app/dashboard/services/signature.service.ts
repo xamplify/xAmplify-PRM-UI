@@ -38,8 +38,10 @@ export class SignatureService {
     return this.authenticationService.callPostMethod(url,formData);
   }
 
-  removeDrawSignature(){
-    const url = this.signatureUrl+'removeDrawSignature?access_token=' + this.authenticationService.access_token;
+  removeExistingSignature(signatureDto:SignatureDto){
+    signatureDto.loggedInUserId = this.authenticationService.getUserId();
+    const url = this.signatureUrl+'removeExistingSignature?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url,signatureDto);
   }
 
 }
