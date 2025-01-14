@@ -43,7 +43,6 @@ export class SignatureComponent implements OnInit {
   uploadedImage: string | ArrayBuffer | null = null;
   fileName: string = 'No file chosen';
   imagePreview: string | ArrayBuffer | null = null;
-  signatureLoader = false;
   selectedFile: File | null = null;
   maxFileSize: number = 100; // 100 KB
   uploadSignatureHeaderText = "Upload an existing signature image to use for signing documents.";
@@ -51,6 +50,7 @@ export class SignatureComponent implements OnInit {
   headerTextMessage = "";
   previewingExistingUploadedSignature = false;
   exisitingUploadedImagePath = "";
+  isDelete = false;
   constructor(private referenceService:ReferenceService,private signatureService:SignatureService,private sanitizer: DomSanitizer) { }
 
   switchTab(tabName: string) {
@@ -58,6 +58,7 @@ export class SignatureComponent implements OnInit {
     this.isDrawTabActive = this.activeTab==='draw';
     this.isTypeTabActive = this.activeTab=='type';
     this.isUploadTabActive = this.activeTab=='upload';
+    this.isDelete = false;
     this.addHeaderTitle();
   }
 
@@ -253,26 +254,27 @@ export class SignatureComponent implements OnInit {
     }
     /***End Of Type Signature***/
 
-    removeExisitingSignature(){
-      let signatureDto = new SignatureDto();
-      signatureDto.signatureType = this.activeTab;
+    removeExisitingSignature(event:any){
+      if(event){
+        let signatureDto = new SignatureDto();
+        signatureDto.signatureType = this.activeTab;
+        this.signatureService.removeExistingSignature(signatureDto).subscribe(
+          response=>{
+            this.referenceService.showSweetAlertSuccessMessage(response.message);
+          },error=>{
+            this.referenceService.showSweetAlertServerErrorMessage();
+          },()=>{
+            this.getExistingSignatures();
+          });
+      }else{
+        this.isDelete = false;
+      }
       
-      this.signatureService.removeExistingSignature(signatureDto).subscribe(
-        response=>{
-          this.referenceService.showSweetAlertSuccessMessage(response.message);
-          
-        },error=>{
-          
-          this.referenceService.showSweetAlertServerErrorMessage();
-        },()=>{
-          this.getExistingSignatures();
-        });
     }
 
 
   /********Upload Signature*******/
   onFileSelected(event: Event): void {
-    
     const input = event.target as HTMLInputElement | null;
     if (input && input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -344,12 +346,13 @@ export class SignatureComponent implements OnInit {
       this.referenceService.showSweetAlertErrorMessage('Please select a file')
       return;
     }else{
+      this.signaturesLoader = true;
       this.signatureService.saveUploadedSignature(this.selectedFile).subscribe(
         response => {
           this.referenceService.showSweetAlertSuccessMessage(response);
-          
+          this.imagePreview=null;
         }, error => {
-          
+          this.signaturesLoader = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         },()=>{
           this.getExistingSignatures();

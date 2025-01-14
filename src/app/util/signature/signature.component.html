@@ -40,8 +40,9 @@
               <img [src]="getSanitizedImageUrl(signatureResponseDto?.drawSignatureImagePath)" alt="Image Preview" class="preview-img" />
             </div>
             <div class="float-right mt10 mb10">
+             
               <button type="button" class="btn btn-primary" (click)="previewingExistingDrawSignature=false">Re-Draw</button>
-              <button type="button" class="btn btn-danger" (click)="removeExisitingSignature()">Remove</button>
+              <ng-template [ngTemplateOutlet]="deleteTemplate"></ng-template>
             </div>
           </div>
         </div>
@@ -49,7 +50,6 @@
         <ng-template [ngTemplateOutlet]="typeSignatureTemplate"></ng-template>
         <!--Upload-->
         <ng-template [ngTemplateOutlet]="uploadSignatureTemplate"></ng-template>
-
     </div>  
   </div>
 </div>
@@ -63,7 +63,7 @@
           </div>
           <div class="float-right mt10 mb10">
             <button type="button" class="btn btn-primary" (click)="previewingExistingTypeSignature=false">Edit</button>
-            <button type="button" class="btn btn-danger" (click)="removeExisitingSignature()">Remove</button>
+            <ng-template [ngTemplateOutlet]="deleteTemplate"></ng-template>
           </div>
         </div>
         <div *ngIf="!previewingExistingTypeSignature">
@@ -93,10 +93,6 @@
   <!--Upload-->
   <ng-template #uploadSignatureTemplate>
     <div *ngIf="isUploadTabActive" class="tab-pane active">
-      <div class="mb10" *ngIf="signatureLoader" >
-        <app-modal-popup-loader  [height]="130"></app-modal-popup-loader>
-      </div>
-      <div *ngIf="!signatureLoader">
         <div *ngIf="!previewingExistingUploadedSignature">
         <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" >
           <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
@@ -118,11 +114,9 @@
           </div>
           <div class="float-right mt10 mb10">
             <button type="button" class="btn btn-primary" (click)="previewingExistingUploadedSignature=false">Re-Upload</button>
-            <button type="button" class="btn btn-danger" (click)="removeExisitingSignature()">Remove</button>
+            <ng-template [ngTemplateOutlet]="deleteTemplate"></ng-template>
           </div>
         </div>
-      </div>
-      
     </div>
   </ng-template>
 
@@ -130,11 +124,17 @@
   <ng-template #buttonsTemplate>
       <div class="float-right mt10 mb10">
         <ng-container *ngIf="(signatureResponseDto?.drawSignatureExits && isDrawTabActive) || (signatureResponseDto?.typedSignatureExists && isTypeTabActive) || (signatureResponseDto?.uploadedSignatureExits && isUploadTabActive)">
-          <button type="button" class="btn btn-default" (click)="back()"></button>
+          <button type="button" class="btn btn-default" (click)="back()">Back</button>
         </ng-container>
         <button type="button" class="btn btn-primary" (click)="saveSignature()">Submit</button>
-        <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
+        <ng-container *ngIf="(isDrawTabActive && hasSignature) || (isTypeTabActive && signatureDto?.typedSignatureText?.length>0) || (imagePreview && isUploadTabActive)">
+          <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
+        </ng-container>
       </div> 
+  </ng-template>
+
+  <ng-template #deleteTemplate>
+    <button type="button" class="btn btn-danger" (click)="isDelete=true;">Delete</button>
   </ng-template>
 
   <ng-template #previewTypedSignatureTemplate>
@@ -142,3 +142,5 @@
       <div id="typedSignaturePreview">{{ signatureDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}</div>
     </div> 
   </ng-template>
+
+  <app-confirm-sweet-alert-util *ngIf="isDelete" (notifyComponent)="removeExisitingSignature($event)"></app-confirm-sweet-alert-util>
