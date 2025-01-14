@@ -121,6 +121,7 @@ import { LeadCustomFieldsSettingsComponent } from './lead-custom-fields-settings
 import { AddCustomFieldsComponent } from './add-custom-fields/add-custom-fields.component';
 import { CalendarIntegrationsComponent } from './calendar-integrations/calendar-integrations.component';
 import { CalendarIntegrationSettingsComponent } from './calendar-integration-settings/calendar-integration-settings.component';
+import { ApprovalControlManagementSettingsComponent } from './approval-control-management-settings/approval-control-management-settings.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -210,7 +211,8 @@ import { CalendarIntegrationSettingsComponent } from './calendar-integration-set
         LeadCustomFieldsSettingsComponent,
         AddCustomFieldsComponent,
         CalendarIntegrationsComponent,
-        CalendarIntegrationSettingsComponent
+        CalendarIntegrationSettingsComponent,
+        ApprovalControlManagementSettingsComponent
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,

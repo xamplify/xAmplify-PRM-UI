@@ -210,17 +210,6 @@
                                             </a>
 
                                         </li>
-                                        <!-- XNFR-781 -->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'approvalConfigurationSettings'}"
-                                            *ngIf="authenticationService?.module?.isAdmin && (authenticationService?.module?.damAccess || 
-                                            authenticationService?.module?.lmsAccess || authenticationService?.module?.playbookAccess)">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'approvalConfigurationSettings'}"
-                                                (click)="activateTab('approvalConfigurationSettings');clearCustomResponse()">{{properties.approvalConfigurationSettings
-                                                | translate}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon"
-                                                    [ngTemplateOutletContext]="{'moduleName':'approvalConfigurationSettings'}"></ng-template>
-                                            </a>
-                                        </li>
                                     </ul>
                                     <!--------------Lead/Deal Configuration----------------------->
                                     <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
@@ -484,6 +473,45 @@
                                         </ul>
                                     </ng-container>
                                     <!-- XNFR-771 End -->
+
+                                    <!-- XNFR-821 -->
+                                    <ng-container
+                                        *ngIf="authenticationService?.module?.isAdmin && (authenticationService?.module?.damAccess || 
+                                                authenticationService?.module?.lmsAccess || authenticationService?.module?.playbookAccess)">
+                                        <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
+                                            [ngClass]="[ activeTabName == 'approvalConfigurationSettings' ? 'show':'',
+                                                        activeTabName == 'approvalControlManagementSettings' ? 'show':'']">
+                                            <span translate>Approval Settings</span>
+                                            <a data-toggle="collapse" style="float: right;" href="javascript:;#approvalSettingsTabIcon"
+                                                (click)="toggleClass('approval-settings-tab-icon')">
+                                                <i id="approval-settings-tab-icon" class="fa fa-minus" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <ul id="approvalSettingsTabIcon" class="nav collapse in">
+                                            <ng-container>
+                                                <!-- XNFR-781 -->
+                                                <li [ngClass]="{'active-tab': activeTabName == 'approvalConfigurationSettings'}">
+                                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'approvalConfigurationSettings'}"
+                                                        (click)="activateTab('approvalConfigurationSettings');clearCustomResponse()">{{properties.approvalConfigurationSettings
+                                                        | translate}}
+                                                        <ng-template [ngTemplateOutlet]="activeIcon"
+                                                            [ngTemplateOutletContext]="{'moduleName':'approvalConfigurationSettings'}"></ng-template>
+                                                    </a>
+                                                </li>
+                                            </ng-container>
+                                            <ng-container>
+                                                <li [ngClass]="{'active-tab': activeTabName == 'approvalControlManagementSettings'}">
+                                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'approvalControlManagementSettings'}"
+                                                        (click)="activateTab('approvalControlManagementSettings');clearCustomResponse()">{{properties.approvalControlManagementSettings
+                                                        | translate}}
+                                                        <ng-template [ngTemplateOutlet]="activeIcon"
+                                                            [ngTemplateOutletContext]="{'moduleName':'approvalControlManagementSettings'}"></ng-template>
+                                                    </a>
+                                                </li>
+                                            </ng-container>
+                                        </ul>
+                                    </ng-container>
+
                                     <!--------------Admin----------------------->
                                     <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
                                         [ngClass]="[
@@ -1169,6 +1197,11 @@
                                         <!--Content Approval/Rejection -->
                                         <div class="tab-pane" *ngIf="activeTabName == 'approvalConfigurationSettings'" [ngClass]="{'active': activeTabName == 'approvalConfigurationSettings'}">
                                             <app-asset-approval-configuration-settings></app-asset-approval-configuration-settings>
+                                        </div>
+
+                                        <!-- Approval Team member assignment control -->
+                                        <div class="tab-pane" *ngIf="activeTabName == 'approvalControlManagementSettings'" [ngClass]="{'active': activeTabName == 'approvalControlManagementSettings'}">
+                                            <app-approval-control-management-settings></app-approval-control-management-settings>
                                         </div>
 
                                         <!---Integrations-->

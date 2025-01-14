@@ -489,6 +489,7 @@ export class Properties {
 	
 	/** XNFR-781 **/
 	approvalConfigurationSettings: string = "Content Approval Settings";
+	approvalControlManagementSettings: string = "Team Member Assignment";
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Assets created by your Team Members.";
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Assets that are neither rejected nor approved will be automatically Approved!";
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject assets submitted by your team before they are available for use. An email will be sent accordingly."
