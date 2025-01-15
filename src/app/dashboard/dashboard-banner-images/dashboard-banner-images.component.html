@@ -10,6 +10,8 @@
           <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>2" data-slide-to="2"></li>
           <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>3" data-slide-to="3"></li>
           <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>4" data-slide-to="4"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>5" data-slide-to="5"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>6" data-slide-to="6"></li>
       </ol>
       <!-- Items -->
       <div class="carousel-inner">
@@ -27,6 +29,12 @@
         </div>
         <div class="item" *ngIf="dashboardBanners?.length>4">
             <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[4]}"></ng-template>
+        </div>
+        <div class="item" *ngIf="dashboardBanners?.length>5">
+            <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[5]}"></ng-template>
+        </div>
+        <div class="item" *ngIf="dashboardBanners?.length>6">
+            <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[6]}"></ng-template>
         </div>
     </div>
     <ng-container *ngIf="dashboardBanners?.length>1">
