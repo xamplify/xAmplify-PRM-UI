@@ -1,7 +1,7 @@
 <app-modal-popup-loader *ngIf="signaturesLoader"></app-modal-popup-loader>
 <div [hidden]="signaturesLoader">
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  <ul class="nav nav-tabs hideBorder">
+  <ul class="nav nav-tabs hideBorder" style="margin-bottom: 0;">
       <!--Draw-->
       <li  [class.active]="isDrawTabActive">
         <a class="teamMemberDomainC" id="width-205px"
