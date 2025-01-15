@@ -170,7 +170,6 @@ export class SignatureComponent implements OnInit {
   }
 
   private validateAndUploadDrawSignature() {
-    
     let signatureData: string | null = null;
     const canvas = this.sigPad.nativeElement as HTMLCanvasElement;
     const pixelData = this.context.getImageData(0, 0, canvas.width, canvas.height).data;
@@ -187,15 +186,16 @@ export class SignatureComponent implements OnInit {
 
   /***Draw***/
   uploadDrawSignature(base64Image:string){
+    this.signaturesLoader = true;
     this.signatureDto.drawSignatureEncodedImage = base64Image;
     this.signatureService.uploadDrawSignature(this.signatureDto).subscribe(
       response => {
         this.referenceService.showSweetAlertSuccessMessage(response.message);
         this.clear();
-        
+        this.signaturesLoader = false;
       }, error => {
-        
         this.referenceService.showSweetAlertServerErrorMessage();
+        this.signaturesLoader = false;
       },()=>{
         this.getExistingSignatures();
       });
@@ -231,16 +231,16 @@ export class SignatureComponent implements OnInit {
   }
 
   saveTypedSignature(){
+    this.signaturesLoader = true;
     this.previewSignature();
-    
     this.saveTypedSignatureTextAsImage();
     this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
       response => {
         this.referenceService.showSweetAlertSuccessMessage(response.message);
-        
+        this.signaturesLoader = false;
       }, error => {
-        
         this.referenceService.showSweetAlertServerErrorMessage();
+        this.signaturesLoader = false;
       },()=>{
         this.getExistingSignatures();
       });
@@ -256,13 +256,16 @@ export class SignatureComponent implements OnInit {
 
     removeExisitingSignature(event:any){
       if(event){
+        this.signaturesLoader = true;
         let signatureDto = new SignatureDto();
         signatureDto.signatureType = this.activeTab;
         this.signatureService.removeExistingSignature(signatureDto).subscribe(
           response=>{
             this.referenceService.showSweetAlertSuccessMessage(response.message);
+            this.signaturesLoader = false;
           },error=>{
             this.referenceService.showSweetAlertServerErrorMessage();
+            this.signaturesLoader = false;
           },()=>{
             this.getExistingSignatures();
           });
@@ -334,7 +337,6 @@ export class SignatureComponent implements OnInit {
   private validateAndSaveTypedSignature() {
     let typedSignature = this.referenceService.getTrimmedData(this.signatureDto.typedSignatureText);
     if (typedSignature != undefined && typedSignature.length > 0) {
-      
       this.saveTypedSignature();
     } else {
       this.referenceService.showSweetAlertErrorMessage("Please type your signature");
