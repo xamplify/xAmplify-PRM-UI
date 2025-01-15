@@ -6,6 +6,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { SignatureDto } from 'app/dashboard/models/signature-dto';
 import { SignatureService } from './../../dashboard/services/signature.service';
 import * as domtoimage from 'dom-to-image';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 @Component({
   selector: 'app-signature',
@@ -51,6 +52,7 @@ export class SignatureComponent implements OnInit {
   previewingExistingUploadedSignature = false;
   exisitingUploadedImagePath = "";
   isDelete = false;
+  customResponse: CustomResponse = new CustomResponse();
   constructor(private referenceService:ReferenceService,private signatureService:SignatureService,private sanitizer: DomSanitizer) { }
 
   switchTab(tabName: string) {
@@ -60,6 +62,7 @@ export class SignatureComponent implements OnInit {
     this.isUploadTabActive = this.activeTab=='upload';
     this.isDelete = false;
     this.addHeaderTitle();
+    this.customResponse = new CustomResponse();
   }
 
   private addHeaderTitle() {
@@ -170,12 +173,11 @@ export class SignatureComponent implements OnInit {
   }
 
   private validateAndUploadDrawSignature() {
-    let signatureData: string | null = null;
     const canvas = this.sigPad.nativeElement as HTMLCanvasElement;
     const pixelData = this.context.getImageData(0, 0, canvas.width, canvas.height).data;
     let isCanvasEmpty = !pixelData.some((pixel:any) => pixel !== 0); // Check if any pixel is not transparent
     if (!isCanvasEmpty) {
-      signatureData = canvas.toDataURL("image/png");
+      canvas.toDataURL("image/png");
       const base64Image = canvas.toDataURL(); // Convert canvas to base64
       this.uploadDrawSignature(base64Image);
     } else {
@@ -186,11 +188,12 @@ export class SignatureComponent implements OnInit {
 
   /***Draw***/
   uploadDrawSignature(base64Image:string){
+    this.customResponse = new CustomResponse();
     this.signaturesLoader = true;
     this.signatureDto.drawSignatureEncodedImage = base64Image;
     this.signatureService.uploadDrawSignature(this.signatureDto).subscribe(
       response => {
-        this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.customResponse = new CustomResponse('SUCCESS',response.message,true);
         this.clear();
         this.signaturesLoader = false;
       }, error => {
@@ -231,12 +234,13 @@ export class SignatureComponent implements OnInit {
   }
 
   saveTypedSignature(){
+    this.customResponse = new CustomResponse();
     this.signaturesLoader = true;
     this.previewSignature();
     this.saveTypedSignatureTextAsImage();
     this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
       response => {
-        this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.customResponse = new CustomResponse('SUCCESS',response.message,true);
         this.signaturesLoader = false;
       }, error => {
         this.referenceService.showSweetAlertServerErrorMessage();
@@ -256,13 +260,14 @@ export class SignatureComponent implements OnInit {
 
     removeExisitingSignature(event:any){
       if(event){
+        this.customResponse = new CustomResponse();
         this.signaturesLoader = true;
         let signatureDto = new SignatureDto();
         signatureDto.signatureType = this.activeTab;
         this.signatureService.removeExistingSignature(signatureDto).subscribe(
           response=>{
-            this.referenceService.showSweetAlertSuccessMessage(response.message);
             this.signaturesLoader = false;
+            this.customResponse = new CustomResponse('SUCCESS',response.message,true);
           },error=>{
             this.referenceService.showSweetAlertServerErrorMessage();
             this.signaturesLoader = false;
@@ -349,9 +354,10 @@ export class SignatureComponent implements OnInit {
       return;
     }else{
       this.signaturesLoader = true;
+      this.customResponse = new CustomResponse();
       this.signatureService.saveUploadedSignature(this.selectedFile).subscribe(
         response => {
-          this.referenceService.showSweetAlertSuccessMessage(response);
+          this.customResponse = new CustomResponse('SUCCESS',response,true);
           this.imagePreview=null;
         }, error => {
           this.signaturesLoader = false;
