@@ -287,7 +287,7 @@ export class CustomLinksUtilComponent implements OnInit {
           }
           pagination = this.pagerService.getPagedItems(pagination, this.customLinkDtos);
           if(this.moduleType==this.properties.dashboardBanners){
-            this.isAddDashboardBannersDivHidden = pagination.totalRecords==5;
+            this.isAddDashboardBannersDivHidden = pagination.totalRecords==7;
             this.dashboardBannersInfoMessage = new CustomResponse('INFO',this.properties.maximumDashboardBannersLimitReached,true);
             this.isDropDownLoading = false;
           }else{
@@ -622,7 +622,7 @@ export class CustomLinksUtilComponent implements OnInit {
       this.isDropDownLoading = false;
     }, 100);
     if(this.moduleType==this.properties.dashboardBanners){
-      this.isAddDashboardBannersDivHidden = this.customLinkDtos.length==5;
+      this.isAddDashboardBannersDivHidden = this.customLinkDtos.length==7;
       this.dashboardBannersInfoMessage = new CustomResponse('INFO',this.properties.maximumDashboardBannersLimitReached,true);
     }else{
       this.isAddDashboardBannersDivHidden = false;
