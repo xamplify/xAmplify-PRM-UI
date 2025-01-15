@@ -10,13 +10,17 @@
                      <a [routerLink]="referenceService.homeRouter">Home</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
-                  <li>
+                  <li *ngIf="!isFromApprovalModule">
                      <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
-                  <li>
+                  <li *ngIf="!isFromApprovalModule">
                      <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
                      <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>
+                     <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  </li>
+                  <li *ngIf="isFromApprovalModule">
+                     <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
                   <li>

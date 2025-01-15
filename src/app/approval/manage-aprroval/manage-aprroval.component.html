@@ -149,23 +149,48 @@
     </td>
     <td>
       <div class="actions-block override-actions" style="float:none !important;">
+        <!--Design-->
+        <a class="custom-icon" *ngIf="item?.type === 'Asset' && item?.beeTemplate" data-toggle="tooltip" data-placement="top"
+          title="Design" (click)="addOrEdit(item.id)">
+          <i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
         <!-- Edit Icon -->
         <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(item)">
           <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-
+        <!-- Publish Icon -->
+        <a class="custom-icon" *ngIf="!item.published && item?.type != 'Asset'" data-toggle="tooltip" data-placement="top"
+          title="{{(!item?.createdByAnyAdmin && item?.status != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
+          (click)="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyAdmin && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? '': confirmChangePublish(item.id, true, item)">
+          <i class="fa fa-share IconCustomization" aria-hidden="true"
+            [ngClass]="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyAdmin && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? 'disabled gray':''"></i>
+          <div class="clickicons"></div>
+        </a>
         <!-- Preview Icon -->
         <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(item)">
           <i class="fa fa-eye" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-
+      
+        <!-- Downlaod Icon -->
+        <a *ngIf="item?.type === 'Asset'" class="custom-icon" data-toggle="tooltip" data-placement="top" title="Downlaod"
+          (click)="download(item)">
+          <i class="fa fa-download IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+      
         <!-- comment/history -->
         <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
           title="Approve/Reject">
           <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
           <div class="clickicons"></div>
+        </a>
+        <!--Delete-->
+        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(item)">
+          <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+          <div class="del-icon"></div>
         </a>
       </div>
     </td>
@@ -193,3 +218,18 @@
 <app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
   [isApproveOrRejectStatus]="isApproveOrRejectStatus" (comment)="getComment($event)">
 </app-multiselect-approval-comments-modal-popup>
+
+<!--Download Pdf Modal Popup-->
+<ng-container *ngIf="showPdfModalPopup">
+	<app-download-asset-popup [asset]="asset" 
+  (downloadAssetPopupEventEmitter)="downloadPopupEventEmitter()"></app-download-asset-popup>
+</ng-container>
+
+<!--Delete Asset-->
+<ng-container *ngIf="deleteAsset">
+	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
+		(deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)"
+		(deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"
+		(deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
+	</app-delete-assets>
+</ng-container>

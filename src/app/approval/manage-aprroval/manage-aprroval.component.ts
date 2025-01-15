@@ -12,13 +12,18 @@ import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-s
 import { MultiSelectCommentDto } from '../models/multi-select-comment-dto';
 import { CustomResponse } from '../../common/models/custom-response';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
-declare var $:any;
+import { DamService } from 'app/dam/services/dam.service';
+import { ManageTracksPlayBookComponent } from 'app/tracks-play-book-util/manage-tracks-play-book/manage-tracks-play-book.component';
+import { TracksPlayBook } from 'app/tracks-play-book-util/models/tracks-play-book';
+import { TracksPlayBookUtilService } from 'app/tracks-play-book-util/services/tracks-play-book-util.service';
+import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
+declare var swal:any, $: any;
 
 @Component({
   selector: 'app-manage-aprroval',
   templateUrl: './manage-aprroval.component.html',
   styleUrls: ['./manage-aprroval.component.css'],
-  providers: [HttpRequestLoader,ApproveService]
+  providers: [HttpRequestLoader,ApproveService,DamService,TracksPlayBookUtilService]
 })
 export class ManageAprrovalComponent implements OnInit {
 
@@ -36,6 +41,7 @@ export class ManageAprrovalComponent implements OnInit {
   selectedDamId: any;
   createdByAnyAdmin: any;
   @ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
+  @ViewChild(ManageTracksPlayBookComponent) manageTracksPlayBookComponent: ManageTracksPlayBookComponent;
   searchKey: any;
   categoryId: number;
   defaultDisplayType: string = 'l';
@@ -55,10 +61,14 @@ export class ManageAprrovalComponent implements OnInit {
   selectedTypeIds = [];
   moduleType: any;
   selectedPendingIds = [];
+  showPdfModalPopup: boolean;
+  asset: any;
+  lmsType :any;
+  deleteAsset: boolean;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService,public utilService: UtilService,public xtremandLogger: XtremandLogger,
-    public pagerService: PagerService,
+    public pagerService: PagerService,public tracksPlayBookUtilService: TracksPlayBookUtilService,
   ) { }
 
   ngOnInit() {
@@ -452,5 +462,175 @@ export class ManageAprrovalComponent implements OnInit {
       this.displayApproveAndRejectButton = false;
     }
   }
+
+  download(asset: any) {
+		this.showPdfModalPopup = true;
+		this.asset = asset;
+	}
+
+	downloadPopupEventEmitter() {
+		this.showPdfModalPopup = false;
+		this.asset = {};
+	}
+
+  confirmDelete(item: any) {
+    if (item.type == 'Asset') {
+      this.handleAssetDeletion(item);
+    } else if (item.type == 'Track') {
+      this.lmsType = TracksPlayBookType.TRACK;
+      this.handleTrackAndPlayBookDeletion(item);
+    } else if (item.type == 'PlayBook') {
+      this.lmsType = TracksPlayBookType.PLAYBOOK;
+      this.handleTrackAndPlayBookDeletion(item);
+    }
+  }
+
+  handleAssetDeletion(item: any) {
+    this.deleteAsset = true;
+    this.asset = item;
+  }
+
+  deleteAssetSuccessEmitter(response: any) {
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
+    if (response.statusCode == 200) {
+      this.customResponse = new CustomResponse('SUCCESS', this.asset.name + " Deleted Successfully", true);
+      this.deleteAsset = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.asset = {};
+      this.pagination.pageIndex = 1;
+      this.getAllApprovalList(this.pagination);
+    } else if (response.statusCode == 401) {
+      this.customResponse = new CustomResponse('ERROR', response.message, true);
+    }
+  }
+
+  deleteAssetFailEmitter(message: any) {
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse('ERROR', message, true);
+    this.deleteAsset = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
+    this.asset = {};
+  }
+
+  deleteAssetLoaderEmitter() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+  }
+
+  deleteAssetCancelEmitter() {
+    this.deleteAsset = false;
+    this.asset = {};
+  }
+
+  handleTrackAndPlayBookDeletion(item: any) {
+    try {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes, delete it!'
+
+      }).then(function () {
+        self.deleteTrackAndPlayBook(item);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.referenceService.showServerError(this.httpRequestLoader);
+    }
+  }
+
+  deleteTrackAndPlayBook(item: any) {
+    let tracksPlayBook: TracksPlayBook = new TracksPlayBook();
+    tracksPlayBook.id = item.id;
+    tracksPlayBook.userId = this.authenticationService.getUserId();
+    tracksPlayBook.type = this.lmsType;
+    this.customResponse = new CustomResponse();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.goToTop();
+    this.tracksPlayBookUtilService.deleteById(tracksPlayBook).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          this.customResponse = new CustomResponse('SUCCESS', item.name + " Deleted Successfully", true);
+          this.pagination.pageIndex = 1;
+          this.getAllApprovalList(this.pagination);
+        } else {
+          swal("Please Contact Admin!", response.message, "error");
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+      },
+      (error: string) => {
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      });
+  }
+
+  addOrEdit(id: any) {
+    this.referenceService.navigateToRouterByViewTypes("/home/dam/approval/edit/" + id, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
+  }
+
+  isApprovalRequiredForType(type: any): boolean {
+    if (type == 'Track') {
+      return this.authenticationService && this.authenticationService.approvalRequiredForTracks
+        ? this.authenticationService.approvalRequiredForTracks
+        : false;
+    } else if (type == 'PlayBook') {
+      return this.authenticationService && this.authenticationService.approvalRequiredForPlaybooks
+        ? this.authenticationService.approvalRequiredForPlaybooks
+        : false;
+    }
+  }
+
+  confirmChangePublish(id: number, isPublish: boolean, item: any) {
+    let text = "";
+    if (isPublish) {
+      text = "You want to publish.";
+    }
+    try {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: text,
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes'
+
+      }).then(function () {
+        self.ChangePublish(id, isPublish, item.type);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.referenceService.showServerError(this.httpRequestLoader);
+    }
+  }
+
+  ChangePublish(learningTrackId: number, isPublish: boolean, type: any) {
+    this.customResponse = new CustomResponse();
+    this.referenceService.goToTop();
+    this.referenceService.startLoader(this.httpRequestLoader);
+    this.tracksPlayBookUtilService.changePublish(learningTrackId, isPublish).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let message = isPublish ? type + " Published Successsfully" : type + " Unpublished Successfully";
+          this.customResponse = new CustomResponse('SUCCESS', message, true);
+          this.getAllApprovalList(this.pagination);
+        } else if (response.statusCode == 401) {
+          this.referenceService.showSweetAlertErrorMessage(response.message);
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+      },
+      (error: string) => {
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      })
+  }
+
 
 }

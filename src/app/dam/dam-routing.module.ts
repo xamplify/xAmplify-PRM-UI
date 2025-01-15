@@ -75,9 +75,10 @@ export const routes: Routes = [
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType/:categoryId/:folderViewType", component: DamPartnerCompanyAnalyticsComponent },
 	/************XNFR-820*********/
 	{ path: approvalRouterUrl + "editDetails/:id/:viewType", component: UploadAssetComponent },
-	{ path: approvalRouterUrl +"editVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
-	{ path: approvalRouterUrl +"previewVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
-	{ path: approvalRouterUrl +"previewVideo/:videoId/:damId", component: ManageDamComponent },
+	{ path: approvalRouterUrl + "editVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
+	{ path: approvalRouterUrl + "previewVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
+	{ path: approvalRouterUrl + "previewVideo/:videoId/:damId", component: ManageDamComponent },
+	{ path: approvalRouterUrl + "edit/:id/:viewType", component: AddDamComponent },
 ];
 
 @NgModule({
