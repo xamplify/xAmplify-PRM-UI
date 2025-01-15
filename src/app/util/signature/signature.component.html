@@ -1,7 +1,7 @@
 <app-modal-popup-loader *ngIf="signaturesLoader"></app-modal-popup-loader>
 <div [hidden]="signaturesLoader">
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
+  <ul class="nav nav-tabs hideBorder">
       <!--Draw-->
       <li  [class.active]="isDrawTabActive">
         <a class="teamMemberDomainC" id="width-205px"
@@ -41,7 +41,6 @@
               <img [src]="getSanitizedImageUrl(signatureResponseDto?.drawSignatureImagePath)" alt="Image Preview" class="preview-img" />
             </div>
             <div class="float-right mt10 mb10">
-             
               <button type="button" class="btn btn-primary" (click)="previewingExistingDrawSignature=false">Re-Draw</button>
               <ng-template [ngTemplateOutlet]="deleteTemplate"></ng-template>
             </div>

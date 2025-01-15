@@ -62,7 +62,7 @@ export class SignatureComponent implements OnInit {
     this.isUploadTabActive = this.activeTab=='upload';
     this.isDelete = false;
     this.addHeaderTitle();
-    this.customResponse = new CustomResponse();
+    this.clearSucessOrErrorMessage();
   }
 
   private addHeaderTitle() {
@@ -112,6 +112,7 @@ export class SignatureComponent implements OnInit {
     /**Upload***/
     this.previewingExistingUploadedSignature = this.signatureResponseDto.uploadedSignatureExits;
     this.exisitingUploadedImagePath = this.signatureResponseDto.uploadedSignatureImagePath;
+    this.isDelete = false;
   }
 
   
@@ -181,19 +182,17 @@ export class SignatureComponent implements OnInit {
       const base64Image = canvas.toDataURL(); // Convert canvas to base64
       this.uploadDrawSignature(base64Image);
     } else {
-      this.referenceService.showSweetAlertErrorMessage("Please draw signature");
-      
+      this.showErrorMessage('Please draw signature');
     }
   }
 
   /***Draw***/
   uploadDrawSignature(base64Image:string){
-    this.customResponse = new CustomResponse();
     this.signaturesLoader = true;
     this.signatureDto.drawSignatureEncodedImage = base64Image;
     this.signatureService.uploadDrawSignature(this.signatureDto).subscribe(
       response => {
-        this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+        this.showSuccessMessage(response.message);
         this.clear();
         this.signaturesLoader = false;
       }, error => {
@@ -234,13 +233,12 @@ export class SignatureComponent implements OnInit {
   }
 
   saveTypedSignature(){
-    this.customResponse = new CustomResponse();
     this.signaturesLoader = true;
     this.previewSignature();
     this.saveTypedSignatureTextAsImage();
     this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
       response => {
-        this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+        this.showSuccessMessage(response.message);
         this.signaturesLoader = false;
       }, error => {
         this.referenceService.showSweetAlertServerErrorMessage();
@@ -260,14 +258,16 @@ export class SignatureComponent implements OnInit {
 
     removeExisitingSignature(event:any){
       if(event){
-        this.customResponse = new CustomResponse();
         this.signaturesLoader = true;
         let signatureDto = new SignatureDto();
         signatureDto.signatureType = this.activeTab;
         this.signatureService.removeExistingSignature(signatureDto).subscribe(
           response=>{
             this.signaturesLoader = false;
-            this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+            if(this.isUploadTabActive){
+              this.clearImage();
+            }
+            this.showSuccessMessage(response.message);
           },error=>{
             this.referenceService.showSweetAlertServerErrorMessage();
             this.signaturesLoader = false;
@@ -289,15 +289,13 @@ export class SignatureComponent implements OnInit {
       this.fileName = file.name;
       // Validate file type
       if (!file.type.startsWith('image/') || file.type === 'image/gif') {
-        this.referenceService.showSweetAlertErrorMessage('Please upload a valid image file.');
+        this.showErrorMessage('Please upload a valid image file.');
         this.imagePreview = null;
         return;
       }
       const fileSizeInKB = file.size / 1024; // Convert bytes to KB
       if (fileSizeInKB > this.maxFileSize) {
-        this.referenceService.showSweetAlertErrorMessage(
-          `File size exceeds the maximum limit of ${this.maxFileSize} KB. Please upload a smaller file.`
-        );
+        this.showErrorMessage(`File size exceeds the maximum limit of ${this.maxFileSize} KB. Please upload a smaller file.`);
         this.clearImage();
         return;
       }
@@ -316,6 +314,28 @@ export class SignatureComponent implements OnInit {
     }
   }
 
+  private clearSucessOrErrorMessage() {
+    this.customResponse = new CustomResponse(); 
+  }
+
+  private showErrorMessage(message:any){
+    this.clearSucessOrErrorMessage();
+    setTimeout(() => {
+      this.customResponse = new CustomResponse('ERROR',message,true);
+      this.referenceService.scrollSmoothToTop();
+    }, 100);
+    
+  }
+
+  private showSuccessMessage(message:any){
+    this.clearSucessOrErrorMessage();
+    setTimeout(() => {
+      this.customResponse = new CustomResponse('SUCCESS',message,true);
+      this.referenceService.scrollSmoothToTop();
+    }, 100);
+    
+  }
+
   clearImage(): void {
     this.selectedFile = null;
     this.fileName = 'No file chosen';
@@ -324,10 +344,7 @@ export class SignatureComponent implements OnInit {
     if (fileInput) {
       fileInput.value = '';
     }
-    
   }
-
-
 
   saveSignature() {
     if (this.isDrawTabActive) {
@@ -342,22 +359,24 @@ export class SignatureComponent implements OnInit {
   private validateAndSaveTypedSignature() {
     let typedSignature = this.referenceService.getTrimmedData(this.signatureDto.typedSignatureText);
     if (typedSignature != undefined && typedSignature.length > 0) {
-      this.saveTypedSignature();
+      if(typedSignature.length>25){
+        this.showErrorMessage("Maximum length is 25 characters");
+      }else{
+        this.saveTypedSignature();
+      }
     } else {
-      this.referenceService.showSweetAlertErrorMessage("Please type your signature");
+      this.showErrorMessage("Please type your signature");
     }
   }
 
   saveUploadedSignature() {
     if (!this.selectedFile) {
-      this.referenceService.showSweetAlertErrorMessage('Please select a file')
+      this.showErrorMessage('Please select a file');
       return;
     }else{
-      this.signaturesLoader = true;
-      this.customResponse = new CustomResponse();
       this.signatureService.saveUploadedSignature(this.selectedFile).subscribe(
         response => {
-          this.customResponse = new CustomResponse('SUCCESS',response,true);
+          this.showSuccessMessage(response);
           this.imagePreview=null;
         }, error => {
           this.signaturesLoader = false;
