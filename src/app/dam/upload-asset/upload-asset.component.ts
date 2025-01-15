@@ -24,6 +24,7 @@ import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfac
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 import { DamPostDto } from '../models/dam-post-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 
 
@@ -130,6 +131,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     cropRounded = false;
     imageChangedEvent: any = '';
     fileObj: any;
+    isFromApprovalModule : boolean = false;
     @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
 
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
@@ -187,6 +189,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.showDefaultLogo = this.isAdd;
 		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
         this.referenceService.assetResponseMessage = "";
+        this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
 		if (!this.isAdd) {
 			this.id = this.route.snapshot.params['id'];
 			this.getAssetDetailsById(this.id);
@@ -495,8 +498,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-        /** XNFR-781 start **/
-        this.damUploadPostDto.admin = this.authenticationService.module.isAdmin;
 		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();
@@ -510,9 +511,13 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 					}else{
 						this.referenceService.isAssetDetailsUpldated = true;
 					} 
-                    if(this.damService.uploadAssetInProgress){
+                    if (this.damService.uploadAssetInProgress) {
                         this.damService.uploadAssetInProgress = false;
-                        this.goToManageDam();
+                        if (this.isFromApprovalModule) {
+                            this.goBackToManageApproval();
+                        } else {
+                            this.goToManageDam();
+                        }
                     }                   
 				} else if (result.statusCode == 400) {
 					this.customResponse = new CustomResponse('ERROR', result.message, true);
@@ -677,14 +682,16 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.referenceService.goToRouter("home/dam/select");
 	}
 
-	closeCircle(){
-		if(this.isAdd){
+    closeCircle() {
+        if (this.isAdd) {
             this.loading = true;
-			this.referenceService.goToRouter("home/dam/select");
-		}else{
-			this.goToManageDam();
-		}
-	}
+            this.referenceService.goToRouter("home/dam/select");
+        } else if (this.isFromApprovalModule) {
+            this.goBackToManageApproval();
+        } else {
+            this.goToManageDam();
+        }
+    }
 
  /*****************List Tags*******************/
  listTags(pagination: Pagination) {
@@ -1421,5 +1428,11 @@ zoomOut() {
     /****XNFR-586****/
     setAddToQuickLinks(event){
         this.damUploadPostDto.addedToQuickLinks = event;
+    }
+
+    /****XNFR-820****/
+    goBackToManageApproval() {
+        let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
+        this.referenceService.goToRouter(url);
     }
 }

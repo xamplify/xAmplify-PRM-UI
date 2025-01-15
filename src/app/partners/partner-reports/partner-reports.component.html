@@ -6,7 +6,7 @@
 
 <div *ngIf="!showDetailedAnalytics" class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
   <!-- --------------------Breadcrumb-------- -->
-  <div class="page-bar">
+  <div class="page-bar filteralign mb-height_auto" style="height:48px;">
     <ul class="page-breadcrumb">
       <li *ngIf="!authenticationService.isSuperAdmin()">
         <i class="fa fa-home" aria-hidden="true"></i>
@@ -24,7 +24,7 @@
     </ul>
     <app-team-member-filter-option [filterIcon]="true"
       (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
-    <div *ngIf="authenticationService?.module?.showWorkFlow" style="margin-top: 3px;" class="float-right">
+    <div *ngIf="authenticationService?.module?.showWorkFlow" class="float-right">
       <a [routerLink]="['/home/partners/partner-workflow']">
         <button type="button" class="btn Btn-Green" style="margin-right: 3px;">
           Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
@@ -427,7 +427,7 @@
             *ngIf="customResponse.isVisible"></app-response-message>
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
             <div class="table-responsive">
-              <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0">
+              <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0" style="overflow: inherit;">
                 <thead>
                   <tr>
                     <th class="center-aligned">partners</th>

@@ -971,7 +971,7 @@ export class ContactService {
 
     /***XNFR-553***/
     findContactByUserIdAndUserListId(userId:any, userListId:any) {
-        let url = this.contactsUrl + "findUserByUserIdAndUserListId/"+userId+"/"+userListId+"?access_token="+this.authenticationService.access_token;
+        let url = this.contactsUrl + "findUserByUserIdAndUserListId/"+userId+"/"+userListId+"?loggedInUserId="+this.authenticationService.getUserId()+"&access_token="+this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

@@ -130,7 +130,7 @@
             <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time
                 [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
           </div>
-          <div class="activity-body deal-flex-wrap mt0">
+          <div class="activity-body task_body_jc deal-flex-wrap mt0">
             <span *ngIf="activity.schedule != undefined"><label class="activity-title">Amount:
               </label> {{activity.schedule}}</span>
             <span><i class="fa fa-calendar mr3" aria-hidden="true"></i><label class="activity-title">Close Date:</label>
@@ -166,7 +166,7 @@
                     [dateAndTimeUTCString]="activity.dueDateString"></app-display-date-and-time></span></span>
               <span><a *ngIf="activity.editEnabled" class="mr5" (click)="editTask(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Edit task"><i class="fas fa-pencil-alt task_edit"
                     aria-hidden="true"></i></a>
-                <a *ngIf="activity.deleteEnabled" (click)="showDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Delete task"><i class="fas fa-trash task_delete"
+                <a *ngIf="activity.deleteEnabled" (click)="showTaskDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Delete task"><i class="fas fa-trash task_delete"
                     aria-hidden="true"></i></a>
               </span>
             </div>

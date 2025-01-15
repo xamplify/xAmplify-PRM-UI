@@ -997,6 +997,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	loadPartnerList(pagination: Pagination) {
 		try {
 			this.isLoadingList = true;
+			this.triggerUniversalSearch();//XNFR-792
 			this.referenceService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
 			this.contactListObj = new ContactList;
@@ -2751,6 +2752,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
+		this.referenceService.universalModuleType = "";//XNFR-792
 		this.contactService.socialProviderName = "";
 		this.referenceService.callBackURLCondition = '';
 		this.hideModal();
@@ -2763,7 +2765,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		if (this.selectedAddPartnerOption == 5) {
 			swal.close();
 		}
-
+	
 	}
 
 
@@ -4763,6 +4765,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			);
 
 	}
-
+triggerUniversalSearch(){
+	if(this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Partners') {
+		if(this.searchKey) {
+			this.referenceService.universalSearchKey = this.searchKey;
+		} else if( this.searchKey === '') {
+			this.referenceService.universalSearchKey = '';
+		}
+		this.searchKey = this.referenceService.universalSearchKey;
+		this.pagination.searchKey = this.searchKey;
+	  }
+}
 
 }

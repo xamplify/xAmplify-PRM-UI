@@ -14,6 +14,7 @@ import { SortOption } from '../../core/models/sort-option';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 
 declare var $: any;
 
@@ -52,6 +53,23 @@ export class ShowHistoryComponent implements OnInit {
 	isChangeAsParentPdfIconClicked = false;
 	changeAsParentPdfSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
 	childAssetId = 0;
+
+	/** XNFR-781 **/
+	assetName: string = "";
+	assetCreatedById: number;
+	assetCreatedByFullName: string = "";
+	callCommentsComponent: boolean = false;
+	selectedDamId: number;
+	createdByAnyAdmin: boolean = false;
+	fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
+	approvalStatus = {
+		APPROVED: 'APPROVED',
+		REJECTED: 'REJECTED',
+		CREATED: 'CREATED',
+		UPDATED: 'UPDATED'
+	};
+	videoId: number;
+
 	/****XNFR-381*****/
 	constructor(public damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
 		public referenceService: ReferenceService, public utilService: UtilService, public pagerService: PagerService, private router: Router,
@@ -463,5 +481,41 @@ export class ShowHistoryComponent implements OnInit {
 	resetChangeAsParentPdfValues(){
 		this.childAssetId = 0;
 		this.isChangeAsParentPdfIconClicked = false;
+	}
+
+	/** XNFR-781 **/
+	showCommentsAndHistoryModalPopup(asset: any){
+		this.callCommentsComponent = true;
+		this.assetName = asset.assetName;
+		this.assetCreatedById = asset.createdBy;
+		this.assetCreatedByFullName = asset.fullName;
+		this.selectedDamId = asset.id;
+		this.createdByAnyAdmin = asset.createdByAnyAdmin;
+		this.videoId = asset.videoId;
+	}
+	
+	getApprovalStatusText(status: string): string {
+		switch (status) {
+			case this.approvalStatus.APPROVED:
+				return 'Approved';
+			case this.approvalStatus.REJECTED:
+				return 'Rejected';
+			case this.approvalStatus.CREATED:
+				return 'Pending Approval';
+			case this.approvalStatus.UPDATED:
+				return 'Updated';
+			default:
+				return status;
+		}
+	}
+
+	/** XNFR-824 **/
+	closeCommentsAndHistoryModalPopup() {
+		this.callCommentsComponent = false;
+	}
+
+	closeCommentsAndHistoryModalPopupAndRefreshList() {
+		this.refreshList();
+		this.callCommentsComponent = false;
 	}
 }

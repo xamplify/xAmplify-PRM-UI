@@ -24,6 +24,7 @@ import { DomainRequestDto } from './models/domain-request-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 @Injectable()
 export class DashboardService {
+    REST_URL = this.authenticationService.REST_URL;
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
@@ -1471,6 +1472,26 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
             .catch(this.handleError);
     }
 
-  
+    /***** XNFR-805 *****/
+    loadTeamMembersReportCount() {
+        let loggedInUserId = this.authenticationService.getUserId();
+        const url = this.REST_URL + "teamMember/invite-team-member/count?userId=" + loggedInUserId + "&access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /***** XNFR-805 *****/
+    listOfTeamMemberRequestReports(pagination: Pagination, statusType: any) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        const url = this.REST_URL + "teamMember/invite-team-member/analytics/type/" + statusType + "?userId=" + loggedInUserId + "&access_token=" + this.authenticationService.access_token + pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getPartnersFilter() {
+        var url = this.REST_URL + "admin/getTeamMemberPartnerFilter/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+      }
     
 }

@@ -201,6 +201,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.showAddLeadOrDealButtonInMyProfileSection = data.showAddLeadOrDealButtonInMyProfileSection;
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					this.authenticationService.approvalRequiredForAssets = data.approvalRequiredForAssets;
+					this.authenticationService.approvalRequiredForTracks = data.approvalRequiredForTracks;
+          			this.authenticationService.approvalRequiredForPlaybooks = data.approvalRequiredForPlaybooks;
 					//XNFR-276
 					this.menuItems = data.menuItems;
 				},
@@ -490,7 +492,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}
 		else if(this.router.url.includes('company')){
 			this.mergeTag = "company";
-		}		
+		}
+		else if(this.router.url.includes('approve')){
+			this.mergeTag = "approve";
+		}	
 	}
 	
 	

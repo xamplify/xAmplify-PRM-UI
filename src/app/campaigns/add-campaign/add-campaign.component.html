@@ -594,7 +594,7 @@
                             <div *ngIf="!videosLoader">
                                 <div class="tab_flex" *ngIf="!isNavigatedFromManageContent">
                                     <!--Search Key Icon-->
-                                    <div class="input-icon right pull-right pr-epx">
+                                    <div class="input-icon right pull-right pr-epx mb_10">
                                         <input type="text" [(ngModel)]="videosSortOption.searchKey"
                                             [ngModelOptions]="{standalone: true}" class="form-control"
                                             placeholder="Search here"
@@ -608,7 +608,7 @@
                                             <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                     </div>
                                     <!--Sort DropDown-->
-                                    <div class="input-icon right pull-right pr-epx">
+                                    <div class="input-icon right pull-right pr-epx mb_10">
                                         <select class="form-control"
                                             [(ngModel)]="videosSortOption.selectedVideoDropDownOption"
                                             (ngModelChange)="sortVideos($event)" id="select-dropdown"

@@ -12,6 +12,7 @@ export class WorldmapComponent implements OnInit {
   @Input() worldMapData: any;
   @Output() notifyParent: EventEmitter<any>;
   @Input() partnerModuleName = "";
+  @Input() isFromLandscapPages: boolean = false;
   worldmapMessage: string;
   titleName = 'Views';
 
@@ -101,7 +102,11 @@ export class WorldmapComponent implements OnInit {
         this.titleName = 'Viewers';
     }
     else {
-      this.worldmapMessage = 'Check out where your videos are being watched';
+      if(this.isFromLandscapPages){
+        this.worldmapMessage = 'Check out where your pages are viewed';
+      }else{
+        this.worldmapMessage = 'Check out where your videos are being watched';
+      }
     }
     this.renderWorldMap(this.worldMapData,this.worldmapMessage);
   }

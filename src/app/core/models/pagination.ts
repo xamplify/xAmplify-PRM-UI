@@ -156,5 +156,14 @@ export class Pagination {
 
 	vendorMarketplacePageAnalytics:boolean = false;
 
-	hideRejectedAssets: boolean = false;
+	selectedApprovalStatusCategory: string = "";
+
+	approvalStatus: string = "";
+
+	approvalStatusUpdatedBy: number;
+
+	approvalStatusUpdatedTimeInString: string = "";
+	
+	createdById: number;
+
 }

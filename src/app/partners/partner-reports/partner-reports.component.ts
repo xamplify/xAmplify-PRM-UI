@@ -18,6 +18,7 @@ import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { Properties } from 'app/common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $, swal, Highcharts, CKEDITOR: any;
 
 @Component({
@@ -115,6 +116,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.utilService.setRouterLocalStorage('partnerAnalytics');
         this.isListView = !this.referenseService.isGridView;
         this.getModuleAccess();
+
     }
 
     gotoMange() {
@@ -498,6 +500,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     getApprovePartnerReports(pagination: Pagination) {
         this.referenseService.loading(this.httpRequestLoader, true);
         pagination.userId = this.loggedInUserId;
+        pagination.partnerTeamMemberGroupFilter = this.applyFilter;
         if (this.authenticationService.isSuperAdmin()) {
             pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
         }
@@ -537,7 +540,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.inactivePartnerList);
                 this.referenseService.loading(this.httpRequestLoader, false);
-                this.inActivePartnersPagination.searchKey = "";
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
@@ -757,23 +759,32 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
+        let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+        if (filterPartner!=null && filterPartner != undefined &&  (!filterPartner || filterPartner === 'false')) {
+            this.applyFilter = false;
+        }
+        this.getCountOfTiles();
+
+    }
+
+    private getCountOfTiles() {
         if (this.loggedInUserId > 0) {
-                let tabIndex = this.route.snapshot.params['id'];
-                this.findActivePartnersCount();
-                this.findRedistributedCampaignsCount();
-                this.findThroughCampaignsCount();
-                this.findInActivePartnersCount();
-                this.findApprovePartnersCount();
-                this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
-                this.findTotalPartnersCount();
-            if(tabIndex != undefined){
-                if(tabIndex == 1){
-                this.goToInActivePartnersDiv()
+            let tabIndex = this.route.snapshot.params['id'];
+            this.findActivePartnersCount();
+            this.findRedistributedCampaignsCount();
+            this.findThroughCampaignsCount();
+            this.findInActivePartnersCount();
+            this.findApprovePartnersCount();
+            this.findPendingSignupAndCompanyProfileIncompletePartnersCount();
+            this.findTotalPartnersCount();
+            if (tabIndex != undefined) {
+                if (tabIndex == 1) {
+                    this.goToInActivePartnersDiv();
                 }
                 else {
                     this.goToReDistributedPartnersDiv();
                 }
-            }else{
+            } else {
                 this.loadCountryData();
                 this.getPartnersRedistributedCampaignsData();
                 this.goToActivePartnersDiv();
@@ -784,7 +795,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         } else {
             this.router.navigate(['home/dashboard']);
         }
-
     }
 
     ngOnDestroy() {
@@ -1121,14 +1131,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 pagination.totalRecords = response.totalRecords;
                 if (response.list.length === 0) {
                     this.customResponse = new CustomResponse('INFO', 'No records found', true);
+                }else {
+                    this.customResponse = new CustomResponse();
                 }
-
                 for (var i in response.approvePartnerList) {
                     response.list[i].contactCompany = response.list[i].partnerCompanyName;
                 }
                 pagination = this.pagerService.getPagedItems(pagination, response.list);
                 this.referenseService.loading(this.httpRequestLoader, false);
-                this.incompleteCompanyProfileAndPendingSingupPagination.searchKey = "";
             },
             (error: any) => {
                 this.xtremandLogger.errorPage(error)
@@ -1168,24 +1178,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
 
-    
-    openSendTestEmailModalPopup(item : any){
+    openSendTestEmailModalPopup(item: any) {
         this.selectedItem = item;
         this.selectedEmailId = item.emailId;
-        if(this.isInactivePartnersDiv){
-         this.sendTestEmailIconClicked = true;
-            this.vanityTemplates = true;
-            this.selectedEmailTemplateId=26;
-        }
-        else if(this.isIncompleteCompanyProfileDiv)
-        {
-            this.sendTestEmailIconClicked = true;
-            this.vanityTemplates = true;
-            this.selectedEmailTemplateId=27;
-        }
-        else if(this.isSingUpPendingDiv){
-            this.vanityURLService.getTemplateId(this.selectedEmailId).subscribe(
-                response =>  {
+        if (this.isInactivePartnersDiv) {
+            this.vanityURLService.getTemplateId(this.selectedEmailId, "isInactivePartnersDiv").subscribe(
+                response => {
                     if (response.statusCode === 200) {
                         this.selectedEmailTemplateId = response.data;
                         this.sendTestEmailIconClicked = true;
@@ -1200,8 +1198,45 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     console.error("Error fetching template ID:", error);
                 }
             );
-        } 
-      }
+        }
+
+        else if (this.isIncompleteCompanyProfileDiv) {
+            this.vanityURLService.getTemplateId(this.selectedEmailId, "isIncompleteCompanyProfileDiv").subscribe(
+                response => {
+                    if (response.statusCode === 200) {
+                        this.selectedEmailTemplateId = response.data;
+                        this.sendTestEmailIconClicked = true;
+                        this.vanityTemplates = true;
+                    } else if (response.statusCode === 400) {
+                        console.error("Error: Invalid email ID or other bad request.");
+                    } else {
+                        console.error("Unexpected status code:", response.statusCode);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching template ID:", error);
+                }
+            );
+        }
+        else if (this.isSingUpPendingDiv) {
+            this.vanityURLService.getTemplateId(this.selectedEmailId, "isSingUpPendingDiv").subscribe(
+                response => {
+                    if (response.statusCode === 200) {
+                        this.selectedEmailTemplateId = response.data;
+                        this.sendTestEmailIconClicked = true;
+                        this.vanityTemplates = true;
+                    } else if (response.statusCode === 400) {
+                        console.error("Error: Invalid email ID or other bad request.");
+                    } else {
+                        console.error("Unexpected status code:", response.statusCode);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching template ID:", error);
+                }
+            );
+        }
+    }
 
       sendTestEmailModalPopupEventReceiver(){
         this.selectedEmailTemplateId = 0;
@@ -1235,5 +1270,4 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.totalPartnersCountLoader = false;
             });
     }
-
 }

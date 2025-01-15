@@ -1,0 +1,122 @@
+.nav-tabs>li>a {
+    font-size: 12px;
+}
+
+.tab-bg {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px !important;
+    padding-bottom: 0px;
+}
+
+
+canvas {
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid #000;
+    overflow: hidden;
+}
+
+span {
+    width: 300px;
+}
+
+.signature-container {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .font-options button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    background: #f0f0f0;
+    transition: transform 0.2s;
+  }
+  
+  .font-options button:hover {
+    transform: scale(1.1);
+  }
+  
+  .signature-preview {
+    border: 1px solid #000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 50px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 20px;
+    color: #000;
+    width: 50%;
+  }
+  
+/* Hide the default file input */
+.file-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Custom label styling */
+.file-label {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+/* Hover and active styles for label */
+.file-label:hover {
+  background-color: #0056b3;
+}
+
+.file-label:active {
+  background-color: #004085;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* File name display */
+.file-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Image preview styles */
+.image-preview {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.preview-img {
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  max-height: 150px;
+  border-radius: 10px;
+  background-color: white;
+  border: 1px solid #000;
+  overflow: hidden;
+  margin-bottom: 10px;
+  width: 300px;
+  height: 150px;
+}
+
+.center-div{
+  display: flex; justify-content: center;
+}
+
+  

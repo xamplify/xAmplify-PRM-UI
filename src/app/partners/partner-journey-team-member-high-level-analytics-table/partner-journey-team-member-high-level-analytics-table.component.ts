@@ -107,7 +107,7 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
 
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
-    pagination.searchKey = this.sortOption.searchKey;
+    pagination.searchKey = this.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
     this.getPartnerJourneyTeamInfo(this.pagination);
   }

@@ -22,6 +22,7 @@
                         <div *ngIf="!isAddTag">
                             <input class="form-control" type="text" [(ngModel)]="tag.tagName" (keyup)="validateTagName($event)">
                         </div>
+                        <span *ngIf="maxlengthError" style="color: red;">{{maxlengthErrorMessage}}</span>
                     </div>
                 </ng-container>
             </div>

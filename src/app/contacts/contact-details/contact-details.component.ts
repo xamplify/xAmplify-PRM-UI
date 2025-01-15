@@ -20,6 +20,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { ActivityService } from 'app/activity/services/activity-service';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, swal: any;
 
 @Component({
@@ -110,6 +111,8 @@ export class ContactDetailsComponent implements OnInit {
   activeCalendarDetails: any;
   ngxLoading: boolean = false;
   showCalendarIntegrationsModalPopup: boolean = false;
+  flexiFields: any;
+  isReloadMeetingTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -244,6 +247,7 @@ export class ContactDetailsComponent implements OnInit {
     this.contactService.findContactByUserIdAndUserListId(this.contactId, this.selectedContactListId).subscribe(
       data => {
         this.selectedContact = data.data;
+        this.flexiFields = data.data.flexiFields;
         this.isLoading = false;
       },
       error => {
@@ -263,7 +267,7 @@ export class ContactDetailsComponent implements OnInit {
 			this.userService.getGdprSettingByCompanyId(this.companyId)
 				.subscribe(
 					response => {
-						if (response.statusCode == 200) {
+						if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
 							this.gdprSetting = response.data;
 							this.gdprStatus = this.gdprSetting.gdprStatus;
 							this.termsAndConditionStatus = this.gdprSetting.termsAndConditionStatus;
@@ -383,7 +387,7 @@ export class ContactDetailsComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName).subscribe(
       response => {
         const data = response.data;
-        let isSuccess = response.statusCode === 200;
+        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.leadsCount = data.totalRecords;
           this.contactLeads = data.list;
@@ -433,7 +437,7 @@ export class ContactDetailsComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName).subscribe(
       response => {
         const data = response.data;
-        let isSuccess = response.statusCode === 200;
+        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.dealsCount = data.totalRecords;
           this.contactDeals = data.list;
@@ -513,7 +517,7 @@ export class ContactDetailsComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName).subscribe(
       response => {
         const data = response.data;
-        let isSuccess = response.statusCode === 200;
+        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.campaignsCount = data.totalRecords;
           this.contactCampaigns = data.list;
@@ -582,7 +586,7 @@ export class ContactDetailsComponent implements OnInit {
     this.activityService.fetchLogoFromExternalSource(this.contactId).subscribe(
       response => {
         const data = response.data;
-        if (response.statusCode == 200 && data != '') {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK && data != '') {
           this.imageSourcePath = data;
           this.showImageTag = true;
         } else {
@@ -607,7 +611,12 @@ export class ContactDetailsComponent implements OnInit {
     this.showCalendarIntegrationsModalPopup = false;
   }
 
-  closeMeetingModalPopup() {
+  closeMeetingModalPopup(event) {
+    if (this.referenceService.checkIsValidString(this.activeCalendarDetails.userUri)) {
+      this.isReloadMeetingTab = event;
+    } else {
+      this.getActiveCalendarDetails();
+    }
     this.showMeetingModalPopup = false;
   }
 
@@ -615,7 +624,7 @@ export class ContactDetailsComponent implements OnInit {
     this.ngxLoading = true;
     this.calendarIntegratonService.getActiveCalendarDetails().subscribe(
       response => {
-        if (response.statusCode == 200) {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.activeCalendarDetails = response.data;
         }
         this.ngxLoading = false;
@@ -637,5 +646,9 @@ export class ContactDetailsComponent implements OnInit {
 			this.router.navigate(['/home/dashboard/myprofile']);
 		}
 	}
+
+  reloadMeetingTab(event) {
+    this.isReloadMeetingTab = event;
+  }
   
 }

@@ -108,6 +108,13 @@
                                                 [ngTemplateOutletContext]="{'moduleName':'password'}"></ng-template>
                                         </a>
                                     </li>
+                                    <!--Signature (XNFR-812)-->
+                                    <li  [ngClass]="{'active-tab': activeTabName == signatureMenuHeader}">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == signatureMenuHeader}" (click)="activateTab(signatureMenuHeader);clearCustomResponse()">
+                                            {{signatureMenuHeader | translate}}
+                                            <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':signatureMenuHeader}"></ng-template>
+                                        </a>
+                                     </li>
                                 </ul>
                                 <ng-container *ngIf="!isUser">
                                     <!--------------Settings----------------------->
@@ -210,6 +217,17 @@
                                             </a>
 
                                         </li>
+                                        <!-- XNFR-781 -->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'approvalConfigurationSettings'}"
+                                            *ngIf="authenticationService?.module?.isAdmin && (authenticationService?.module?.damAccess || 
+                                            authenticationService?.module?.lmsAccess || authenticationService?.module?.playbookAccess)">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'approvalConfigurationSettings'}"
+                                                (click)="activateTab('approvalConfigurationSettings');clearCustomResponse()">{{properties.approvalConfigurationSettings
+                                                | translate}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'approvalConfigurationSettings'}"></ng-template>
+                                            </a>
+                                        </li>
                                     </ul>
                                     <!--------------Lead/Deal Configuration----------------------->
                                     <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
@@ -260,16 +278,6 @@
                                                     {{properties.leadDealApprove | translate }}
                                                     <ng-template [ngTemplateOutlet]="activeIcon"
                                                         [ngTemplateOutletContext]="{'moduleName':'leadDealApprove'}"></ng-template>
-                                                </a>
-                                            </li>
-
-                                            <li [ngClass]="{'active-tab': activeTabName == 'assetApprovalConfigurationSettings'}"
-                                                *ngIf="authenticationService?.module?.isAdmin">
-                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'assetApprovalConfigurationSettings'}"
-                                                    (click)="activateTab('assetApprovalConfigurationSettings');clearCustomResponse()">{{properties.assetApprovalConfigurationSettings
-                                                    | translate}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon"
-                                                        [ngTemplateOutletContext]="{'moduleName':'assetApprovalConfigurationSettings'}"></ng-template>
                                                 </a>
                                             </li>
 
@@ -330,7 +338,7 @@
                                             </a>
                                         </li>
                                         <!---Calender Integration--->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'calendarIntegrations'}">
+                                        <li [ngClass]="{'active-tab': activeTabName == 'calendarIntegrations'}" *ngIf="authenticationService?.module?.isContact">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'calendarIntegrations'}"
                                                 (click)="activateTab('calendarIntegrations');clearCustomResponse()">{{properties.calendarIntegrations | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
@@ -665,7 +673,10 @@
                                     <div class="caption caption-md col-xs-12">
                                         <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                         <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName}} Invitation</span>
-                                        <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate }}</span>
+                                        <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader |
+                                            translate }}
+                                            <i *ngIf="islandScapeLabel" class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                                data-placement="bottom" title="{{landscapeLabel?.length>0 ? landscapeLabel :''}}"></i></span>
                                         <div class="btn-toolbar" style="float: right;" *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
                                         || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                             <div class="btn-group" style="padding-top: 7px;">
@@ -1162,8 +1173,8 @@
                                             </form>
                                         </div>
 
-                                        <!-- Asset Approval/Rejection -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'assetApprovalConfigurationSettings'}">
+                                        <!--Content Approval/Rejection -->
+                                        <div class="tab-pane" *ngIf="activeTabName == 'approvalConfigurationSettings'" [ngClass]="{'active': activeTabName == 'approvalConfigurationSettings'}">
                                             <app-asset-approval-configuration-settings></app-asset-approval-configuration-settings>
                                         </div>
 
@@ -2939,7 +2950,7 @@
                                                                             (click)="cancelCSVFilePreview('exclude-users')"
                                                                             translate>Cancel</button>
                                                                     </div>
-                                                                    <div class="portlet-body">
+                                                                    <div class="portlet-body table_radius">
                                                                         <app-list-loader
                                                                             *ngIf="isListLoader"></app-list-loader>
                                                                         <app-response-message
@@ -3174,7 +3185,7 @@
                                                                             (click)="cancelCSVFilePreview('exclude-domains')"
                                                                             translate>Cancel</button>
                                                                     </div>
-                                                                    <div class="portlet-body">
+                                                                    <div class="portlet-body table_radius">
                                                                         <app-list-loader
                                                                             *ngIf="isListLoader"></app-list-loader>
                                                                         <app-response-message
@@ -3367,6 +3378,8 @@
                                         <app-flexi-field *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-flexi-field>
                                         <app-module-access *ngIf="isUpdateModuleOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == updateModulesMenuHeader}" [isNavigatedFromMyProfileSection]="true"></app-module-access>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
+                                        <!--Signature (XNFR-812)-->
+                                        <app-signature *ngIf="isSignatureOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == signatureMenuHeader}"></app-signature>
                                     </div>
                                 </div>
                             </div>

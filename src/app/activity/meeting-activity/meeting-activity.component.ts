@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
@@ -18,7 +18,10 @@ import { PaginationComponent } from 'app/common/pagination/pagination.component'
 export class MeetingActivityComponent implements OnInit {
 
   @Input() contactId:number;
-  @Input() calendarType:any;
+  @Input() activeCalendarDetails:any;
+  @Input() isReloadTab:boolean;
+
+  @Output() notifyClose = new EventEmitter();
 
   meetingActivities = [];
   ngxLoading:boolean = false;
@@ -35,11 +38,24 @@ export class MeetingActivityComponent implements OnInit {
   searchKey: any;
   filteredMeetingActivities: any;
   pageNumber: any;
+  showMeetingModalPopup: boolean = false;
+  showCalendarIntegrationsModalPopup: boolean = false;
+  calendarType:any;
+  showPreviewMeeting:boolean = false;
+  eventUrl: any;
+  showConfigureMessage: boolean = false;
 
   constructor(public meetingActivityService: MeetingActivityService, public referenceService: ReferenceService, public pagerService: PagerService, 
     public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent) { }
 
   ngOnInit() {
+    this.calendarType = this.activeCalendarDetails != undefined ? this.activeCalendarDetails.type : '';
+    this.pageNumber = this.paginationComponent.numberPerPage[0];
+    this.showAllMeetingActivities();
+  }
+
+  ngOnChanges() {
+    this.calendarType = this.activeCalendarDetails != undefined ? this.activeCalendarDetails.type : '';
     this.pageNumber = this.paginationComponent.numberPerPage[0];
     this.showAllMeetingActivities();
   }
@@ -49,7 +65,7 @@ export class MeetingActivityComponent implements OnInit {
     if (this.referenceService.checkIsValidString(this.calendarType)) {
       this.fetchAllMeetingActivities(this.meetingActivityPagination);
     } else {
-      this.customResponse = new CustomResponse('ERROR',"Please configure with atleast one calendar integration.",true);
+      this.showConfigureMessage = true;
     }
   }
 
@@ -163,5 +179,31 @@ export class MeetingActivityComponent implements OnInit {
       this.customResponse = new CustomResponse('ERROR',"Please configure with atleast one calendar integration.",true);
     }
 	}
+
+  openMeetingModalPopup() {
+    if (this.activeCalendarDetails != undefined) {
+      this.showMeetingModalPopup = true;
+    } else {
+      this.showCalendarIntegrationsModalPopup = true;
+    }
+  }
+
+  closeCalendarIntegrationsModalPopup() {
+    this.showCalendarIntegrationsModalPopup = false;
+  }
+
+  closeMeetingModalPopup(event) {
+    this.showMeetingModalPopup = false;
+    this.notifyClose.emit(event);
+  }
+
+  openPreviewModalPopup(eventUrl:any) {
+    this.eventUrl = eventUrl;
+    this.showPreviewMeeting =true;
+  }
+
+  closePreviewMeetingModalPopup() {
+    this.showPreviewMeeting = false;
+  }
 
 }

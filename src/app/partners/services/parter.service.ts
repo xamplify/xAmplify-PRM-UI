@@ -694,4 +694,11 @@ export class ParterService {
             .catch(this.handleError);
     }
 
+    getAssetDetailsForTeamMember(pagination: Pagination) {
+        let teamMemberAnalyticsUrl = this.referenceService.getTeamMemberAnalyticsUrl(pagination);
+        const url = this.URL + 'teamMemberAnalytics/assets/details?access_token=' + this.authenticationService.access_token + teamMemberAnalyticsUrl;
+        return this.httpClient.get(url)
+            .catch(this.handleError);
+    }
+
 }

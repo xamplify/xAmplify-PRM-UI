@@ -364,37 +364,39 @@ export class DamService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  /** XNFR-781 start **/
-  loadUserDetailsWithDamApprovalStatus(damId: number) {
-    let url = this.COMMENTS_PREFIX_URL + '/loadUserDetailsWithDamApprovalStatus/'+damId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+  /** XNFR-824 start **/
+  loadUserDetailsWithApprovalStatus(entityId: number, moduleType: string) {
+    let url = this.COMMENTS_PREFIX_URL + '/loadUserDetailsWithApprovalStatus/'+entityId+'/'+moduleType+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
-  loadDamStatusHistoyTimeline(damId: number) {
-    let url = this.COMMENTS_PREFIX_URL + '/loadDamStatusHistoyTimeline/'+damId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+  loadCommentsAndTimelineHistory(entityId: number, moduleType: string) {
+    let url = this.COMMENTS_PREFIX_URL + '/loadCommentsAndTimelineHistory/'+entityId+'/'+moduleType+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
-  loadDamComents(damId: number) {
-    let url = this.COMMENTS_PREFIX_URL + '/loadDamStatusHistoyTimeline/'+damId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
-    return this.authenticationService.callGetMethod(url);
-  }
-
-  saveDamComment(commentDto:CommentDto) {
-    let url = this.DAM_PREFIX_URL + `/updateAssetApprovalStatusAndSaveComment?access_token=${this.authenticationService.access_token}`;
+  updateApprovalStatusAndSaveComment(commentDto:CommentDto) {
+    let url = this.COMMENTS_PREFIX_URL + `/updateApprovalStatusAndSaveComment?access_token=${this.authenticationService.access_token}`;
     return this.authenticationService.callPostMethod(url, commentDto);
   }
 
-  getAssetApprovalStatusByCompanyId(companyId: number) {
-    let url = this.authenticationService.REST_URL + "admin/getAssetApprovalStatusByCompanyId/" + companyId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+  getApprovalConfigurationSettingsByUserId(userId: number) {
+    let url = this.authenticationService.REST_URL + "admin/getApprovalConfigurationSettingsByUserId/" + userId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
-  updateAssetApprovalStatus(saveAssetApprovalStatus: any) {
-    let url = this.authenticationService.REST_URL + "admin/updateAssetApprovalStatus" + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+  updateApprovalConfigurationSettings(saveAssetApprovalStatus: any) {
+    let url = this.authenticationService.REST_URL + "admin/updateApprovalConfigurationSettings" + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, saveAssetApprovalStatus);
   }
-  /** XNFR-781 end **/
+  /** XNFR-824 end **/
+
+  /** XNFR-813 **/
+  getStatusTileCountsByModuleType(moduleType: string) {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.DAM_PREFIX_URL+'/getStatusTileCountsByModuleType/'+loggedInUserId+'/'+moduleType+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
 
 
 }

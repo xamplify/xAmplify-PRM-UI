@@ -18,4 +18,10 @@ export class MeetingActivityService {
     return this.authenticationService.callGetMethod(url);
   }
 
+  fetchCalendlyEvent(eventUrl:any, contactId:any) {
+    let eventUrlUri = this.referenceService.checkIsValidString(eventUrl) ? "&eventUrl="+eventUrl : "&eventUrl:''";
+    let url = this.URL + "/fetchCalendlyMeeting/" + this.authenticationService.getUserId() + "/" + contactId + this.ACCESS_TOKEN_URL + eventUrlUri;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

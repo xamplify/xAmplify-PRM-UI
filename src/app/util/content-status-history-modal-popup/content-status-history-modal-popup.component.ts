@@ -18,12 +18,15 @@ declare var $: any;
 })
 export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
-  @Input() damId:number = 0;
+  @Input() moduleType: string;
+  @Input() entityId:number = 0;
   @Input() createdByAnyAdmin: boolean = false;
-  @Input() assetName: string = "";
-  @Input() assetCreatedById: number;
-  @Input() assetCreatedByFullName: string;
+  @Input() title: string = "";
+  @Input() createdById: number;
+  @Input() createdByName: string;
+  @Input() videoId: number;
   @Output() closeModalPopup = new EventEmitter();
+  @Output() closeModalPopupAndRefresh = new EventEmitter();
 
   commentModalPopUpLoader:boolean = false;
   commentDto:CommentDto = new CommentDto();
@@ -37,15 +40,25 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   statusTimeLineHistory: any;
   comments: any;
   commentsCustomResponse: CustomResponse = new CustomResponse();
+  timelineCustomResponse: CustomResponse = new CustomResponse();
   loggedInUserId:number = 0;
   isStatusUpdated = false;  
   showStatusBanner: boolean = false;
   highlightLetter: string = "!";
   imageSourcePath: string = "";
   showImageTag: boolean = false;
+  timelineHistoryNotAvailable: boolean = false;
+  reloadAfterClose: boolean =  false;
+  approvalStatus = {
+		APPROVED: 'APPROVED',
+		REJECTED: 'REJECTED',
+		CREATED: 'CREATED',
+    COMMENTED: 'COMMENTED',
+		UPDATED: 'UPDATED'
+	};
 
   constructor( private referenceService: ReferenceService,
-      private authenticationService: AuthenticationService,
+      public authenticationService: AuthenticationService,
       private damService: DamService,
       public httpRequestLoader: HttpRequestLoader,
       public properties: Properties,
@@ -64,23 +77,25 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   loadUserDeailsWithCurrentStatus() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadUserDetailsWithDamApprovalStatus(this.damId).subscribe( 
+    this.damService.loadUserDetailsWithApprovalStatus(this.entityId, this.moduleType.toUpperCase()).subscribe( 
       (response: any) =>{
         this.commentModalPopUpLoader = false;
-        this.userDetailsDto = response.data;
-        this.commentDto.statusInString  = this.userDetailsDto.status;
-        this.status = this.commentDto.statusInString;
-        if(this.commentDto.statusInString != this.templateStatusArray[0] && this.templateStatusArray.length == 3){
-          this.templateStatusArray.shift();
-        }
-        if(this.commentDto.createdBy != this.loggedInUserId && this.authenticationService.module.isAdmin &&
-          this.commentDto.statusInString != 'OWN') {
-          this.canUpdateStatus = true;
+        if(response && response.data) {
+          this.userDetailsDto = response.data;
+          this.commentDto.statusInString  = this.userDetailsDto.status;
+          this.status = this.commentDto.statusInString;
+          if(this.commentDto.statusInString != this.templateStatusArray[0] && this.templateStatusArray.length == 3){
+            this.templateStatusArray.shift();
+          }
+          if(this.commentDto.createdBy != this.loggedInUserId && this.authenticationService.module.isAdmin &&
+            this.commentDto.statusInString != 'OWN') {
+            this.canUpdateStatus = true;
+          }
         }
       },error=>{
         this.commentModalPopUpLoader = false;
         this.closeModalPopUp();
-        this.referenceService.showSweetAlertServerErrorMessage();
+        this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       },()=>{
         this.findComments();
       });
@@ -93,13 +108,25 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   refreshTimeLineHistory(){
     this.historyPopUpLoader = true;
-    this.damService.loadDamStatusHistoyTimeline(this.damId).subscribe( 
+    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe( 
       response=>{
-        this.statusTimeLineHistory = response.data;
+        if (response.data && response.data.length > 0) {
+          this.statusTimeLineHistory = response.data;
+          this.timelineHistoryNotAvailable = false;
+        } else {
+          this.timelineHistoryNotAvailable = true;
+          let message = "Timeline history is not available for this asset."
+          if (this.moduleType.toUpperCase() == 'TRACK') {
+            message = "Timeline history is not available for this track."
+          } else if (this.moduleType.toUpperCase() == 'PLAYBOOK') {
+            message = "Timeline history is not available for this playbook."
+          }
+          this.timelineCustomResponse = new CustomResponse('INFO', message, true);
+        }        
         this.historyPopUpLoader = false;
       },error=>{
         this.historyPopUpLoader = false;
-        this.referenceService.showSweetAlertErrorMessage("Unable to find history.Please contact admin.");
+        this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       }
     );
   }
@@ -110,7 +137,12 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   closeModalPopUp() {
     this.referenceService.closeModalPopup(this.commentsModalPopUpId);
-    this.closeModalPopup.emit();
+    if(this.reloadAfterClose) {
+      this.closeModalPopupAndRefresh.emit();
+    } else {
+      this.closeModalPopup.emit();
+    }
+    this.reloadAfterClose = false;
   }
 
   ngOnDestroy(): void {
@@ -118,9 +150,8 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
 
   findComments() {
-    this.commentsCustomResponse = new CustomResponse();
     this.commentModalPopUpLoader = true;
-    this.damService.loadDamComents(this.damId).subscribe(
+    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe(
         response => {
           this.comments = response.data;
           this.commentModalPopUpLoader = false;
@@ -147,36 +178,49 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.referenceService.disableButton(event);
     this.commentModalPopUpLoader = true;
     this.commentDto.loggedInUserId = this.loggedInUserId;
-    this.commentDto.damId = this.damId;
-    this.commentDto.createdBy = this.assetCreatedById;
-    this.commentDto.assetName = this.assetName;
-    this.commentDto.assetCreatedByFullName = this.assetCreatedByFullName;
+    this.commentDto.entityId = this.entityId;
+    this.commentDto.createdBy = this.createdById;
+    this.commentDto.name = this.title;
+    this.commentDto.createdByName = this.createdByName;
+    this.commentDto.moduleType = this.moduleType.toUpperCase();
+    this.commentDto.videoId = this.videoId;
     if (this.status != this.commentDto.statusInString) {
       this.commentDto.statusUpdated = true;
+      this.status = this.commentDto.statusInString;
+      this.reloadAfterClose = true;
     }
-    this.damService.saveDamComment(this.commentDto).
+    this.damService.updateApprovalStatusAndSaveComment(this.commentDto).
     subscribe(
       response=>{
+        this.commentModalPopUpLoader = false;
+        if (response.statusCode === 200 && response.data != undefined) {
+          this.isStatusUpdated = response.data;
+        } else if (response.statusCode === 401 && response.data != undefined) {
+          let message = this.referenceService.iterateNamesAndGetErrorMessage(response);
+          this.commentsCustomResponse = new CustomResponse('ERROR', message, true);
+        } else if (response.statusCode === 403 && response.message != undefined){
+          this.commentsCustomResponse = new CustomResponse('ERROR', response.message, true);
+        }
         this.commentDto.comment = "";
         this.commentDto.invalidComment = true;
-        this.commentModalPopUpLoader = false;
-        this.isStatusUpdated = true;
+        this.commentDto.statusUpdated = false;
         this.refreshModalPopUp();
+        this.showStatusUpdatedMessage();
       },error=>{
         this.isStatusUpdated = false;
         this.commentModalPopUpLoader = false;
+        this.commentDto.statusUpdated = false;
         this.referenceService.enableButton(event);
         this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       });
   }
 
   refreshModalPopUp() {
-    this.findComments();
     this.loadUserDeailsWithCurrentStatus();
   }
   
   fetchLogoFromExternalSource() {
-    this.activityService.fetchLogoFromExternalSource(this.assetCreatedById).subscribe(
+    this.activityService.fetchLogoFromExternalSource(this.createdById).subscribe(
       response => {
         const data = response.data;
         if (response.statusCode == 200 && data != '') {
@@ -192,10 +236,33 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
 
   setHighlightLetter() {
-    const name = this.assetCreatedByFullName;
+    const name = this.createdByName;
     if (this.referenceService.checkIsValidString(name)) {
       this.highlightLetter = this.referenceService.getFirstLetter(name);
     }
+  }
+
+  getApprovalStatusText(status: string): string {
+    switch (status) {
+      case this.approvalStatus.APPROVED:
+        return 'Approved';
+      case this.approvalStatus.REJECTED:
+        return 'Rejected';
+      case this.approvalStatus.CREATED:
+        return 'Pending Approval';
+      case this.approvalStatus.UPDATED:
+        return 'Updated';
+      case this.approvalStatus.COMMENTED:
+        return 'Commented';
+      default:
+        return status;
+    }
+  }
+
+  showStatusUpdatedMessage() {
+    setTimeout(() => {
+      this.isStatusUpdated = false;
+    }, 3000)
   }
   
 }

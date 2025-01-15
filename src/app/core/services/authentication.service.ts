@@ -173,6 +173,8 @@ export class AuthenticationService {
   
   /** XNFR-781  **/
   approvalRequiredForAssets: boolean = false;
+  approvalRequiredForTracks: boolean = false;
+  approvalRequiredForPlaybooks: boolean = false;
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
@@ -1517,5 +1519,11 @@ vanityWelcomePageRequired(userId) {
   shareSelectedDashboardButtons(requestDto: any) {
     let url = this.REST_URL + "dashboardButtons/sharedashboardbuttons?access_token=" + this.access_token;
     return this.callPutMethod(url, requestDto);
+  }
+
+  savePartnerFilter(input: number) {
+    let url = this.REST_URL + "admin/savePartnerFilter/" + this.getUserId() + "/" +  input + "?access_token=" + this.access_token ;
+   return this.callPostMethod(url, "");
+
   }
 }

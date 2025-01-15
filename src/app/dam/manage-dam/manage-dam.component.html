@@ -2,20 +2,23 @@
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <div class="page-bar">
       <ul class="page-breadcrumb">
-         <li><i class="fa fa-home" aria-hidden="true"></i> 
-            <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
+         <li><i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li>
-            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+         <li *ngIf="!isFromApprovalModule">
+            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li>
+         <li *ngIf="!isFromApprovalModule">
             <a *ngIf="!isPartnerView" (click)="goToDam()" translate>{{properties?.MANAGE_ASSETS}}</a>
             <a *ngIf="isPartnerView" (click)="goToDam()" translate>{{properties?.ACCESS_SHARED_ASSETS}}</a>
          </li>
-         <li *ngIf="editVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a></li>
-         <li *ngIf="playVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
+         <li *ngIf="isFromApprovalModule">
+            <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
+         </li>
+         <li *ngIf="editVideo"><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a></li>
+         <li *ngIf="playVideo"><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
       </ul>
       <div style="padding: 3px 3px 0px 0px;">
       <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>

@@ -550,9 +550,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         fileObj = this.utilService.blobToFile(fileObj);
         this.fileUploadCode(fileObj);
       }else{
-        //   this.refService.showSweetAlertErrorMessage("Please upload an image");
         this.errorUploadCropper = false;
-            this.showCropper = false;
+        this.showCropper = false;
       }
       
     }

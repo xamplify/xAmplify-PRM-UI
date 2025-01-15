@@ -1,0 +1,11 @@
+.filter-modal-body{
+    overflow: visible;
+}
+.teamfilter_select{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.teamcol-auto{
+padding-right: 18px;
+}
