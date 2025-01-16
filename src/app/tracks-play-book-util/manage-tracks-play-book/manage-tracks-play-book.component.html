@@ -251,9 +251,9 @@
                                                 <a class="custom-icon"
                                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                                     data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
-                                                    (click)="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-share IconCustomization" aria-hidden="true"
-                                                    [ngClass]="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'disabled gray':''"></i>
+                                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -384,8 +384,8 @@
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                         data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : Publish}}"
-                                        (click)="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
-                                        [ngClass]="(isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'disabled gray':''">
+                                        (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
+                                        [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''">
                                         <i class="fa fa-share" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>
@@ -474,7 +474,7 @@
                         <div class="form-check pointer mt15">
                             <input class="pointer radioButton_shadow" type="radio" (click)="selectedOption=true"
                                 name="rdaction" value="Assets_or_Quiz">
-                            <label class="option-color">Want to update Assets/Quiz</label><br>
+                            <label class="option-color">{{type.toLowerCase() === 'track' ? ' Want to update Assets/Quiz' : ' Want to update Assets' }}</label><br>
                             <input class="pointer radioButton_shadow" type="radio" (click)="selectedOption=true"
                                 name="rdaction" value="Partner_List">
                             <label class="option-color">Want to update the
@@ -506,7 +506,7 @@
 <app-content-status-history-modal-popup
     *ngIf="callCommentsComponent && isApprovalRequiredForType() && !isPartnerView"
     [entityId]="selectedDamId" [moduleType]="type" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
-    [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName"
+    [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
     (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
     (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
 </app-content-status-history-modal-popup>

@@ -359,8 +359,8 @@ export class Properties {
 	domainWhitelistingDescription = "A whitelist is a list of domains approved for authorized {{moduleName}} to signup and access the platform.";
 	domainWhitelistingUrlDescription = "Please share the below URL with users who need to sign up as your {{moduleName}}.";
 	noDataFound = "No Data Found";
-	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 5 dashboard banners. You cannot add any more banners.";
-	maximumDashboardBannersLimitMessage = "You can upload maximum 5 dashboard banners"
+	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 7 dashboard banners. You cannot add any more banners.";
+	maximumDashboardBannersLimitMessage = "You can upload maximum 7 dashboard banners"
 	instantNavigation = "Quick Links";
 	pageNotFound = "Oops, the page you're looking for does not exist.";
 
@@ -513,7 +513,7 @@ export class Properties {
 	
 	/**** Invite A Team-member ****/
 	inviteATeamMember = "Invite A Team Member";
-	inviteATeamMemberToJoinxAmplify = "Invite a Team Member to join xAmplify";
+	inviteATeamMemberToJoinxAmplify = "Invite a Team Member to Join ";
 	teamMemberInvites = "Team Member Invites";
 	invitedTeamMeberAnalytics = "Invited Team Member Analytics";
   	my_Landscape_Vendor=' Vendor Landscape Pages ';

@@ -26,8 +26,11 @@
           <div class="desc white">All</div>
         </div>
         <span class="morePadding">
-          <a class="more white" [class.grey]="statusType != 'ALL'"> Detailed view <i
-              class="m-icon-swapright m-icon-white"></i></a>
+          <a class="more white" [class.grey]="statusType != 'ALL'"> Detailed view
+            <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
+            <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
+            <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle"
+              title="Total Invited, Activated, Deactivated Team Members"></i></a>
         </span>
       </a>
     </div>
@@ -41,11 +44,13 @@
         </div>
         <div class="details">
           <div class="number white">{{approvedVendorsCount}}</div>
-          <div class="desc white"> Approved</div>
+          <div class="desc white">{{ isTeamMemberRequest ? 'Activated' : 'Approved' }}</div>
         </div>
         <span class="morePadding">
-          <a class="more white" [class.grey]="statusType != 'APPROVED'"> Detailed view <i
-              class="m-icon-swapright m-icon-white"></i></a>
+          <a class="more white" [class.grey]="statusType != 'APPROVED'"> Detailed view
+            <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
+            <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
+            <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Activated Team Members"></i></a>
         </span>
       </a>
     </div>
@@ -62,8 +67,10 @@
           <div class="desc">Invited</div>
         </div>
         <span class="morePadding">
-          <a class="more" [class.grey]="statusType != 'INVITED'"> Detailed view <i
-              class="m-icon-swapright m-icon-white"></i></a>
+          <a class="more" [class.grey]="statusType != 'INVITED'"> Detailed view
+            <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
+            <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
+            <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Invited Team Members"></i></a>
         </span>
       </a>
     </div>
@@ -77,11 +84,14 @@
         </div>
         <div class="details">
           <div class="number">{{declinedVendorsCount}}</div>
-          <div class="desc">Declined</div>
+          <div class="desc">{{ isTeamMemberRequest ? 'Deactivated' : 'Declined' }}</div>
         </div>
         <span class="morePadding">
-          <a class="more" [class.grey]="statusType != 'DECLINED'"> Detailed view <i
-              class="m-icon-swapright m-icon-white"></i></a>
+          <a class="more" [class.grey]="statusType != 'DECLINED'"> Detailed view
+            <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
+            <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
+            <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Deactivated Team Members"></i>
+          </a>
         </span>
       </a>
     </div>

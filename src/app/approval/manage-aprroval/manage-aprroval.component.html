@@ -27,9 +27,9 @@
             <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
               <thead>
                 <tr>
-                  <th *ngIf="selectedFilterStatus === 'PENDING'" class="mr5"><input type="checkbox" class="checkBox_shadow"
-                      value="selectAllPendingList" id="selectAllPendingList" name="pendingListSelectAll"
-                      [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="pointer" />
+                  <th *ngIf="selectedFilterStatus === 'PENDING' && authenticationService?.module?.isAdmin" class="mr5"><input
+                      type="checkbox" class="checkBox_shadow" value="selectAllPendingList" id="selectAllPendingList"
+                      name="pendingListSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="pointer" />
                   </th>
                   <th *ngIf="selectedFilterStatus != 'PENDING'"></th>
                   <th scope="col">Details</th>
@@ -104,7 +104,7 @@
     <td style="width: 10%;">
       <div class="col">
         <div class="instant-links-type">
-          <span class="mr20" *ngIf="selectedFilterStatus === 'PENDING'"><input class="pointer" class="checkBox_shadow"
+          <span class="mr20" *ngIf="selectedFilterStatus === 'PENDING' && authenticationService?.module?.isAdmin"><input class="pointer" class="checkBox_shadow"
               type="checkbox" [checked]="((selectedIds.indexOf(item.id)>-1))" value="{{item.id}}"
               (click)="selectPendingItem(item)" id="{{item.id}}" name="pendingList[]"></span>
           <img [alt]="item?.type || 'Image'" style="height: 50px;" [src]="getImageSrc(item)" />
@@ -185,8 +185,9 @@
 
 <app-content-status-history-modal-popup *ngIf="callCommentsComponent" [entityId]="selectedDamId"
   [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName" [createdById]="assetCreatedById"
-  [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
-  (closeModalPopup)="closeCommentsAndHistoryModalPopup()">
+  [createdByName]="assetCreatedByFullName" [moduleType]="moduleType" [createdByAnyAdmin]="createdByAnyAdmin"
+  (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+  (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopup()">
 </app-content-status-history-modal-popup>
 
 <app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"

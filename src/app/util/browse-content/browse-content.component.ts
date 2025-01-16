@@ -11,6 +11,7 @@ import { VideoFileService } from 'app/videos/services/video-file.service';
 import { DamUploadPostDto } from 'app/dam/models/dam-upload-post-dto';
 import { DamService } from 'app/dam/services/dam.service';
 import { HttpEventType,HttpResponse} from "@angular/common/http";
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var $:any, swal:any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
 
 @Component({
@@ -75,6 +76,7 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
   folderViewType: string;
   @Input() assetType:string;
   @Input()assetDetailsDto:DamUploadPostDto;
+  isFromApprovalModule: boolean = false;
   constructor(public referenceService:ReferenceService,public sanitizer: DomSanitizer,private router: Router,public properties:Properties,
     public deviceService: Ng2DeviceService,private xtremandLogger:XtremandLogger,private authenticationService:AuthenticationService,
     private videoFileService:VideoFileService,private damService:DamService,private route:ActivatedRoute) {
@@ -115,6 +117,7 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
     this.isAdd = this.router.url.indexOf('/upload') > -1;
     this.isEdit = this.router.url.indexOf('/editDetails') > -1;
     this.isReplaceVideo = this.router.url.indexOf('/editVideo')>-1;
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     if(this.isReplaceVideo){
       this.clearUploadedFile();
     }
@@ -740,7 +743,11 @@ processVideo(result: any){
                       if(this.damService.uploadAssetInProgress){
                           this.damService.uploadAssetInProgress = false;
                           this.loading = true;
-                          this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+                          if(this.isFromApprovalModule){
+                            this.goBackToManageApproval();
+                          }else{
+                            this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+                          }
                       }
                     }
                 } else if (result.statusCode == 400) {
@@ -768,6 +775,10 @@ goToEditVideoDetailsPage(){
 }
 /********End Of Replace Video*****/
  
+goBackToManageApproval() {
+  let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
+  this.referenceService.goToRouter(url);
+}
 
 callEmitter(){
   if(!this.isReplaceVideo){

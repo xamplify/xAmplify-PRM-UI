@@ -121,6 +121,7 @@ import { LeadCustomFieldsSettingsComponent } from './lead-custom-fields-settings
 import { AddCustomFieldsComponent } from './add-custom-fields/add-custom-fields.component';
 import { CalendarIntegrationsComponent } from './calendar-integrations/calendar-integrations.component';
 import { CalendarIntegrationSettingsComponent } from './calendar-integration-settings/calendar-integration-settings.component';
+import { SignatureService } from './services/signature.service';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -214,6 +215,6 @@ import { CalendarIntegrationSettingsComponent } from './calendar-integration-set
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
-        SuperAdminService,MyProfileService,ChatGptSettingsService,FlexiFieldService]
+        SuperAdminService,MyProfileService,ChatGptSettingsService,FlexiFieldService,SignatureService]
 })
 export class DashboardModule { }

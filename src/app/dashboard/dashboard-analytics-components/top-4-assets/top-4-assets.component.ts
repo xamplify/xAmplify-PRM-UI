@@ -13,6 +13,7 @@ import { VideoFileService } from 'app/videos/services/video-file.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { UserService } from 'app/core/services/user.service';
 import { Router } from '@angular/router';
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 
 
 declare var $:any,swal: any;
@@ -42,6 +43,24 @@ export class Top4AssetsComponent implements OnInit {
   selectedAssetId: number;
   showPdfModalPopup: boolean;
   deleteAsset = false;
+
+
+  /** XNFR-781 **/
+  assetName: string = "";
+  assetCreatedById: number;
+  assetCreatedByFullName: string = "";
+  callCommentsComponent: boolean = false;
+  selectedDamId: number;
+  createdByAnyAdmin: boolean = false;
+  fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
+  approvalStatus = {
+    APPROVED: 'APPROVED',
+    REJECTED: 'REJECTED',
+    CREATED: 'CREATED',
+    UPDATED: 'UPDATED'
+  };
+  videoId: number;
+
   constructor(public properties: Properties, public damService: DamService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,private pagerService: PagerService,
   			  public videoFileService: VideoFileService, public userService:UserService, private router: Router) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -363,5 +382,38 @@ isVideo(filename: any) {
     }
     return false;
 }
+
+  showCommentsAndHistoryModalPopup(asset: any){
+    this.callCommentsComponent = true;
+    this.assetName = asset.assetName;
+    this.assetCreatedById = asset.createdBy;
+    this.assetCreatedByFullName = asset.fullName;
+    this.selectedDamId = asset.id;
+    this.createdByAnyAdmin = asset.createdByAnyAdmin;
+    this.videoId = asset.videoId;
+  }
+
+  closeCommentsAndHistoryModalPopup() {
+    this.callCommentsComponent = false;
+  }
+
+  closeCommentsAndHistoryModalPopupAndRefreshList() {
+    this.refresh();
+    this.callCommentsComponent = false;
+  }
+  getApprovalStatusText(status: string): string {
+    switch (status) {
+      case this.approvalStatus.APPROVED:
+        return 'Approved';
+      case this.approvalStatus.REJECTED:
+        return 'Rejected';
+      case this.approvalStatus.CREATED:
+        return 'Pending Approval';
+      case this.approvalStatus.UPDATED:
+        return 'Updated';
+      default:
+        return status;
+    }
+  }
 
 }

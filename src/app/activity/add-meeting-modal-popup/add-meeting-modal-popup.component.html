@@ -32,9 +32,25 @@
             placeholder="Enter calendly scheduling link" class="form-control">
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="submit" class="button bgcolor-unset" (click)="submit()"><span
+      <div class="d-flex justify-content-end">
+        <button type="submit" class="button bgcolor-unset" (click)="submit()" [disabled]="!isValidURL"><span
             class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
+      </div>
+      <div *ngIf="!isValidURL">
+        <div class="col-lg-8 col-md-7 col-sm-8 col-xs-12 order-sm-2 d-f-pb7px">
+          <h4 class="bold">Steps to get the Meeting scheduling link:</h4>
+        </div>
+        <div class="col-lg-8 col-md-7 col-sm-8 col-xs-12 order-sm-2 d-f-pb7px mb5">
+          <div class="pt7px">Step 1 : Click On
+            <button type="submit" class="btn btn-primary"><a class="white" href="https://calendly.com/event_types/user/me"
+                target="_blank"> Login to Calendly Account </a></button>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <p> Step 2: The Event Types section displays Your Calendly scheduling link.</p>
+          <p> Scheduling link will look similar to this: <strong>https://calendly.com/*********</strong></p>
+          <p> Step 3: Copy the Link and insert in the above field.</p>
+        </div>
       </div>
     </div>
   </div>

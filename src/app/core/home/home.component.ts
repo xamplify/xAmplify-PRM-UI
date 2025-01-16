@@ -579,7 +579,7 @@ export class HomeComponent implements OnInit {
 
   getfilterOption(){
     this.loader = true;
-    let partnerFilterOption ;
+    let partnerFilterOption: any ;
     this.dashBoardService.getPartnersFilter().subscribe(
       response => {
         if (response.statusCode == 200) {

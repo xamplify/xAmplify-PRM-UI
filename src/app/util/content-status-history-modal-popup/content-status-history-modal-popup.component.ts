@@ -24,6 +24,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   @Input() title: string = "";
   @Input() createdById: number;
   @Input() createdByName: string;
+  @Input() videoId: number;
   @Output() closeModalPopup = new EventEmitter();
   @Output() closeModalPopupAndRefresh = new EventEmitter();
 
@@ -76,7 +77,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   loadUserDeailsWithCurrentStatus() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadUserDetailsWithApprovalStatus(this.entityId, this.moduleType).subscribe( 
+    this.damService.loadUserDetailsWithApprovalStatus(this.entityId, this.moduleType.toUpperCase()).subscribe( 
       (response: any) =>{
         this.commentModalPopUpLoader = false;
         if(response && response.data) {
@@ -107,7 +108,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   refreshTimeLineHistory(){
     this.historyPopUpLoader = true;
-    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType).subscribe( 
+    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe( 
       response=>{
         if (response.data && response.data.length > 0) {
           this.statusTimeLineHistory = response.data;
@@ -115,9 +116,9 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         } else {
           this.timelineHistoryNotAvailable = true;
           let message = "Timeline history is not available for this asset."
-          if (this.moduleType == 'TRACK') {
+          if (this.moduleType.toUpperCase() == 'TRACK') {
             message = "Timeline history is not available for this track."
-          } else if (this.moduleType == 'PLAYBOOK') {
+          } else if (this.moduleType.toUpperCase() == 'PLAYBOOK') {
             message = "Timeline history is not available for this playbook."
           }
           this.timelineCustomResponse = new CustomResponse('INFO', message, true);
@@ -150,7 +151,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   findComments() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType).subscribe(
+    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe(
         response => {
           this.comments = response.data;
           this.commentModalPopUpLoader = false;
@@ -181,7 +182,8 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     this.commentDto.createdBy = this.createdById;
     this.commentDto.name = this.title;
     this.commentDto.createdByName = this.createdByName;
-    this.commentDto.moduleType = this.moduleType;
+    this.commentDto.moduleType = this.moduleType.toUpperCase();
+    this.commentDto.videoId = this.videoId;
     if (this.status != this.commentDto.statusInString) {
       this.commentDto.statusUpdated = true;
       this.status = this.commentDto.statusInString;

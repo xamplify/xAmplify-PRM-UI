@@ -31,7 +31,7 @@ import { FormControl } from '@angular/forms';
 import { tap} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-declare var $: any, swal: any, CKEDITOR:any;
+declare var $: any, swal: any;
 @Component({
   selector: 'app-team-members-util',
   templateUrl: './team-members-util.component.html',
@@ -142,7 +142,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   toDateFilterInString: string;
   /***** XNFR-805 *****/
   vendorInvitation: VendorInvitation = new VendorInvitation();
-  ckeConfig: any;
   isEditorDisabled: boolean = true;
   @ViewChild('tagInput') tagInput: SourceTagInput;
   validators = [this.mustBeEmail.bind(this)];
@@ -152,6 +151,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addFirstAttemptFailed = false;
   inviteTeamMemberLoading = false;
   inviteTeamMemberResponse: CustomResponse = new CustomResponse();
+  /***** XNFR-805 *****/
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -177,13 +177,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     }
 
     this.init();
-    this.ckeConfig = {
-      allowedContent: true,
-      contentsCss: [],
-      height: '300px',
-      baseFloatZIndex: 1E5,
-      readOnly: this.isEditorDisabled
-    };
   }
 
   ngOnInit() {
@@ -1379,20 +1372,18 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   /***** XNFR-805 *****/
   openInviteTeamMemberModal() {
     this.inviteTeamMemberLoading = true;
+    this.emailIds = [];
+    this.vendorInvitation.emailIds = [];
     const templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 1;
     this.teamMemberService.getHtmlBody(templateId).subscribe(
       response => {
         if (response.statusCode === 200) {
           let data = response.data;
-          let htmlBody = data.body;
-          const extractedStyles = this.extractStylesFromHtml(htmlBody);
-          if (extractedStyles) {
-            const styleBlob = `data:text/css,${encodeURIComponent(extractedStyles)}`;
-            this.ckeConfig.contentsCss.push(styleBlob);
-          }
-          this.vendorInvitation.message = htmlBody.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
-          this.vendorInvitation.subject = this.vendorCompanyProfileName === 'versa-networks'
-            ? data.subject : "Check out xAmplify's marketing automation platform";
+          $('#invite_team_member_modal').on('shown.bs.modal', () => {
+            const divElement = document.getElementById('inviteTeamMemberHtmlBody');
+            divElement.innerHTML = data.body;
+          });
+          this.vendorInvitation.subject = data.subject;
         } else {
           this.vendorInvitation.message = "";
           this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);

@@ -53,10 +53,13 @@
 		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
 		<a class="Iconhover custom-grid-icon"
 			*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
-			(click)="campaignRouter(asset)" data-toggle="tooltip" data-placement="top" title="Create campaign">
+			(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset) : ''" data-toggle="tooltip" data-placement="top" 
+			title="{{asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign'}}"
+			[ngClass]="(asset?.approvalStatus != 'APPROVED') ? 'disabled gray' : ''">
 			<i class="fa fa-bullhorn" aria-hidden="true"></i>
 			<div class="clickicons"></div>
-		</a> <a class="disabled Iconhover custom-grid-icon"
+		</a>
+		<a class="disabled Iconhover custom-grid-icon"
 			*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 			data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft"> <i
 				class="fa fa-bullhorn" aria-hidden="true"></i>

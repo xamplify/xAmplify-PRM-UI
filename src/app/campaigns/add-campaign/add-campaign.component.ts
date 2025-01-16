@@ -36,6 +36,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 import { OpportunityTypes } from 'app/dashboard/models/opportunity-types';
+import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
 var moment = require('moment-timezone');
@@ -814,6 +815,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     /***********Videos********************/
     findVideos(videosPagination: Pagination) {
         this.videosLoader = true;
+        videosPagination.selectedApprovalStatusCategory = ApprovalStatusType[ApprovalStatusType.APPROVED];
         this.campaignService.findVideos(videosPagination).subscribe(
             response=>{
                 const data = response.data;
