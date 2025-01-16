@@ -194,7 +194,7 @@
     <ng-container *ngIf="pagination?.totalRecords>0 && !isLoadingBanners && !isDeleteOptionClicked && !httpRequestLoader?.isLoading">
       <ng-container *ngIf="moduleType==properties?.dashboardBanners">
         <div class="alert alert-info text-center" *ngIf="!isAddDashboardBannersDivHidden">{{properties?.maximumDashboardBannersLimitMessage}}</div>
-         <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 5</strong></span>
+         <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 7</strong></span>
       </ng-container>
       <div  class="table-responsive">
         <table class='table tgrid table-hover'>

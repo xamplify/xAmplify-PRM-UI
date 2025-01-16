@@ -210,10 +210,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if (url.indexOf(this.damUrl) > -1 || url.indexOf('select-modules')>-1 || url.indexOf("/content/")>-1) {
                 return this.authorizeUrl(roles, url, this.damUrl);
             }
-            if (url.indexOf(this.leadsUrl) > -1) {
+            if (url.indexOf("/home/lead")>-1) {
                 return this.authorizeUrl(roles, url, this.leadsUrl);
             }
-            if (url.indexOf(this.dealsUrl) > -1) {
+            if (url.indexOf("/home/deal") > -1) {
                 return this.authorizeUrl(roles, url, this.dealsUrl);
             }
             if (url.indexOf(this.companyUrl) > -1) {

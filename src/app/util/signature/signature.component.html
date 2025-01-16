@@ -1,7 +1,7 @@
 <app-modal-popup-loader *ngIf="signaturesLoader"></app-modal-popup-loader>
 <div [hidden]="signaturesLoader">
-  <div class="alert alert-info">{{headerTextMessage}}</div>
-  <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <ul class="nav nav-tabs hideBorder" style="margin-bottom: 0;">
       <!--Draw-->
       <li  [class.active]="isDrawTabActive">
         <a class="teamMemberDomainC" id="width-205px"
@@ -26,6 +26,7 @@
 
   <div class="panel-body tab-bg">
     <div class="tab-content">
+      <div class="alert alert-info">{{headerTextMessage}}</div>
         <!---Draw-->
         <div [hidden]="activeTab !='draw'" class="tab-pane" [class.active]="isDrawTabActive">
           <div [hidden]="previewingExistingDrawSignature">
@@ -40,7 +41,6 @@
               <img [src]="getSanitizedImageUrl(signatureResponseDto?.drawSignatureImagePath)" alt="Image Preview" class="preview-img" />
             </div>
             <div class="float-right mt10 mb10">
-             
               <button type="button" class="btn btn-primary" (click)="previewingExistingDrawSignature=false">Re-Draw</button>
               <ng-template [ngTemplateOutlet]="deleteTemplate"></ng-template>
             </div>
@@ -59,7 +59,7 @@
     <div *ngIf="isTypeTabActive" class="tab-pane active">
         <div *ngIf="previewingExistingTypeSignature">
           <div>
-            <ng-template [ngTemplateOutlet]="previewTypedSignatureTemplate"></ng-template>
+            <ng-template [ngTemplateOutlet]="previewTypedSignatureTemplate" [ngTemplateOutletContext]="{'class':'signature-preview mb10'}"></ng-template>
           </div>
           <div class="float-right mt10 mb10">
             <button type="button" class="btn btn-primary" (click)="previewingExistingTypeSignature=false">Edit</button>
@@ -67,22 +67,25 @@
           </div>
         </div>
         <div *ngIf="!previewingExistingTypeSignature">
-          <input type="text" class="form-control" [(ngModel)]="signatureDto.typedSignatureText" (input)="validateTypedSignature()" placeholder="Plesae type your signature" />
-          <span class="required" *ngIf="!isValidSignatureText">{{signatureTextErrorMessage}}</span>
-          <div>
-            <!--DropDown-->
-            <div>
-              <h4>Choose a Font Style:</h4>
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <div  class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+              <h4>Type your signature:</h4>
+              <input type="text" class="form-control" [(ngModel)]="signatureDto.typedSignatureText" (input)="validateTypedSignature()" placeholder="Plesae type your signature" />
+              <span class="required" *ngIf="!isValidSignatureText">{{signatureTextErrorMessage}}</span>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+              <h4>Choose a font style:</h4>
               <select class="form-control" [(ngModel)]="signatureDto.typedSignatureFont" (change)="previewSignature()">
                 <option *ngFor="let font of fontStyles" [ngValue]="font" [ngStyle]="{'font-family': font}">
                   {{ signatureDto.typedSignatureText  || 'Your Signature' | slice:0:25 }}
                 </option>
               </select>
             </div>
-            <!--Preview-->
-            <div>
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
               <h4>Preview:</h4>
-              <ng-template [ngTemplateOutlet]="previewTypedSignatureTemplate"></ng-template>
+              <ng-template [ngTemplateOutlet]="previewTypedSignatureTemplate" [ngTemplateOutletContext]="{'class':'signature-preview mb10'}" ></ng-template>
             </div>
           </div>
           <ng-template [ngTemplateOutlet]="buttonsTemplate"></ng-template>
@@ -137,8 +140,8 @@
     <button type="button" class="btn btn-danger" (click)="isDelete=true;">Delete</button>
   </ng-template>
 
-  <ng-template #previewTypedSignatureTemplate>
-    <div class="signature-preview mb10" [ngStyle]="{'font-family': signatureDto.typedSignatureFont}">
+  <ng-template #previewTypedSignatureTemplate let-class="class">
+    <div class="{{class}}" [ngStyle]="{'font-family': signatureDto.typedSignatureFont}">
       <div id="typedSignaturePreview">{{ signatureDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}</div>
     </div> 
   </ng-template>

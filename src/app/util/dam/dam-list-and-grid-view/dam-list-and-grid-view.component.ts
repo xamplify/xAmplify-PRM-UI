@@ -978,15 +978,19 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	filterContentByType(event: any) {
 		if (event == this.approvalStatus.APPROVED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
+			this.pagination.pageIndex = 1;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.REJECTED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.REJECTED;
+			this.pagination.pageIndex = 1;
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.CREATED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
+			this.pagination.pageIndex = 1;
 			this.listAssets(this.pagination);
 		} else {
 			this.pagination.selectedApprovalStatusCategory = '';
+			this.pagination.pageIndex = 1;
 			this.refreshList();
 		}
 	}

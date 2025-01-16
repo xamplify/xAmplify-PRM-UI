@@ -99,7 +99,7 @@ export class MeetingActivityComponent implements OnInit {
       }, error => {
         let message = this.referenceService.getApiErrorMessage(error);
         if (message.includes("401 UnAuthorized from External API")) {
-          this.customResponse = new CustomResponse('ERROR',"Your "+ this.calendarType.toLowerCase()+" integration is invalid. Please recofigure.",true);
+          this.customResponse = new CustomResponse('ERROR',"Your "+ this.calendarType.toLowerCase()+" integration is invalid. Please Re-configure.",true);
         } else {
           this.customResponse = new CustomResponse('ERROR',message,true);
         }
