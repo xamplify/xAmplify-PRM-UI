@@ -240,7 +240,6 @@ export class SignatureComponent implements OnInit {
     this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
       response => {
         this.showSuccessMessage(response.message);
-        this.signaturesLoader = false;
       }, error => {
         this.referenceService.showSweetAlertServerErrorMessage();
         this.signaturesLoader = false;
@@ -332,9 +331,8 @@ export class SignatureComponent implements OnInit {
     this.clearSucessOrErrorMessage();
     setTimeout(() => {
       this.customResponse = new CustomResponse('SUCCESS',message,true);
-      this.referenceService.scrollSmoothToTop();
     }, 100);
-    
+    this.referenceService.goToTop();
   }
 
   clearImage(): void {
