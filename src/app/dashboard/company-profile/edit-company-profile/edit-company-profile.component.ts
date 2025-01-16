@@ -220,7 +220,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     companyLogoSourceLink: any;
 
     isSuperAdmin: boolean = false;
-
+    orgAdmin = false;
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -1888,6 +1888,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.prm = roleId==20;
           this.vendorTier = roleId==19;
           this.marketing = roleId==18;
+          this.orgAdmin = roleId==2;
           if(this.prm){
             this.campaignAccess.emailCampaign = false;
             this.campaignAccess.videoCampaign = false;
@@ -1906,6 +1907,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.oneClickLaunch = false;
             this.campaignAccess.referVendor = false;
             this.campaignAccess.ssoEnabled = false;
+            this.campaignAccess.unlockMdfFundingEnabled = false;
           }else if(this.marketing){
               this.campaignAccess.loginAsPartner = false;
               this.campaignAccess.shareWhiteLabeledContent = false;
@@ -1994,6 +1996,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     customUiSwitchEventReceiver(event:any){
         this.campaignAccess.paymentOverDue = event;
     }
+   
 
     setSSOValue(event:any){
         this.campaignAccess.ssoEnabled = event;
@@ -2095,4 +2098,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
     /** XNFR-760 - end **/
   
+
+    /**XNFR-832***/
+    unlockMdfFundingUiSwitchEventReceiver(event:any){
+        this.campaignAccess.unlockMdfFundingEnabled = event;
+    }
 }

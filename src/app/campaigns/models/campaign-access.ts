@@ -56,5 +56,6 @@ export class CampaignAccess {
   vendorMarketplace:boolean = false;
   socialShareOptionEnabled:boolean = false;
   approvals = false;
+  unlockMdfFundingEnabled = false;
 
 }

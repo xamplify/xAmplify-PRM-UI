@@ -472,6 +472,13 @@
 									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.approvals"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
+								<!--XNFR-832-->
+								<tr *ngIf="marketing || orgAdmin">
+									<th scope="row">Unlock MDF Funding</th>
+									<td class="pt0">
+										<app-custom-ui-switch [customSwitch]="campaignAccess.unlockMdfFundingEnabled" (customUiSwitchEventEmitter)="unlockMdfFundingUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
