@@ -32,7 +32,9 @@ export const routes: Routes = [
   { path: 'partnerAnalytics/:ltId/:id/:viewType', component: PlayBookPartnerAnalyticsComponent },
   { path: 'partnerAnalytics/:ltId/:id/:viewType/:categoryId/:folderViewType', component: PlayBookPartnerAnalyticsComponent },
   { path: approvalRouterUrl + 'pb/:companyId/:slug/:viewType', component: PreviewPlayBookComponent },
-  { path: approvalRouterUrl + "edit/:id/:viewType", component: AddPlayBookComponent }
+  { path: approvalRouterUrl + "edit/:id/:viewType", component: AddPlayBookComponent },
+  { path: approvalRouterUrl + 'analytics/:id/:viewType', component: PlayBookAnalyticsComponent },
+  { path: approvalRouterUrl + 'partnerAnalytics/:ltId/:id/:viewType', component: PlayBookPartnerAnalyticsComponent },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

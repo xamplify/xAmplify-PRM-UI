@@ -57,6 +57,7 @@ export class ManageAprrovalComponent implements OnInit {
   isApproveOrRejectStatus : any = '';
   commentDto:MultiSelectCommentDto = new MultiSelectCommentDto();
   customResponse: CustomResponse = new CustomResponse();
+  filterResponse : CustomResponse = new CustomResponse();
   selectedIds = [];
   selectedTypeIds = [];
   moduleType: any;
@@ -65,6 +66,17 @@ export class ManageAprrovalComponent implements OnInit {
   asset: any;
   lmsType :any;
   deleteAsset: boolean;
+  UnPublishedId: number;
+  selectedOption: boolean;
+  trackOrPlayBookText: string;
+  itemType: any;
+  filterActiveBg = "";
+  filterApplied: any;
+  showFilterOption: boolean  = false;
+  showFilterDropDown: boolean  = false;
+  toDateFilter: string;
+  fromDateFilter: string;
+  dateFilterText = "Select Date Filter";
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService,public utilService: UtilService,public xtremandLogger: XtremandLogger,
@@ -602,7 +614,7 @@ export class ManageAprrovalComponent implements OnInit {
         confirmButtonText: 'Yes'
 
       }).then(function () {
-        self.ChangePublish(id, isPublish, item.type);
+        self.changePublish(id, isPublish, item.type);
       }, function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
       });
@@ -611,7 +623,7 @@ export class ManageAprrovalComponent implements OnInit {
     }
   }
 
-  ChangePublish(learningTrackId: number, isPublish: boolean, type: any) {
+  changePublish(learningTrackId: number, isPublish: boolean, type: any) {
     this.customResponse = new CustomResponse();
     this.referenceService.goToTop();
     this.referenceService.startLoader(this.httpRequestLoader);
@@ -632,5 +644,126 @@ export class ManageAprrovalComponent implements OnInit {
       })
   }
 
+  UnpublishedModalPopUp(item: any) {
+    this.UnPublishedId = item.id;
+    this.itemType = item.type;
+    if (item.type === 'Track') {
+      this.trackOrPlayBookText = "Track";
+    } else {
+      this.trackOrPlayBookText = "Play Book";
+    }
+    $('#unpublished-modal').modal('show');
+  }
+
+  unPublishAction(id: number, isPublish: boolean) {
+    if (this.UnPublishedId != 0) {
+      this.changePublish(this.UnPublishedId, isPublish, this.itemType);
+      this.selectedOption = false;
+    }
+    this.closePopUp()
+  }
+
+  closePopUp() {
+    $('#unpublished-modal').modal('hide');
+    $('input[name="rdaction"]').prop('checked', false);
+    this.selectedOption = false;
+  }
+
+  viewAnalytics(item :any){
+    if(item.type === 'Asset'){
+      this.handleAssetAnalytics(item);
+    }else if(item.type === 'Track'){
+      this.handleTracksAnalytics(item);
+    }else if(item.type === 'PlayBook'){
+      this.handlePlayBooksAnalytics(item);
+    }
+  }
+
+  handleTracksAnalytics(item: any) {
+    let route = "";
+    route = "/home/tracks/approval/analytics/" + item.id;
+    this.referenceService.navigateToRouterByViewTypes(route, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
+  }
+
+  handlePlayBooksAnalytics(item: any) {
+    let route = "";
+    route = "/home/playbook/approval/analytics/" + item.id;
+    this.referenceService.navigateToRouterByViewTypes(route, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
+  }
+
+  handleAssetAnalytics(item: any) {
+    this.navigateToPartnerAnalytics(item.id);
+  }
+
+  navigateToPartnerAnalytics(id: number) {
+    let url = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['approval'] + RouterUrlConstants['damPartnerCompanyAnalytics'] + this.referenceService.encodePathVariable(id);
+    this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
+  }
+
+
+  clickFilter() {
+    if (!this.filterApplied) {
+      this.showFilterOption = !this.showFilterOption;
+    } else {
+      if (this.showFilterOption) {
+        this.showFilterOption = false;
+      } else {
+        this.showFilterDropDown = true;
+      }
+    }
+    this.filterResponse.isVisible = false;
+  }
+
+  viewDropDownFilter() {
+    this.showFilterOption = true;
+    this.showFilterDropDown = false;
+  }
+
+  clearFilter() {
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.showFilterDropDown = false;
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.filterApplied = false;
+  }
+
+  validateDateFilter() {
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    if (isEmptyFromDateFilter && isEmptyToDateFilter) {
+      this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else {
+      let validDates = false;
+      if (isValidFromDateFilter && isEmptyToDateFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
+        var toDate = Date.parse(this.toDateFilter);
+        var fromDate = Date.parse(this.fromDateFilter);
+        if (fromDate <= toDate) {
+          validDates = true;
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+        }
+      }
+
+      if (validDates) {
+        this.applyFilters();
+      }
+    }
+  }
+
+  applyFilters() {
+    this.filterApplied = true;
+    this.showFilterOption = false;
+    this.filterActiveBg = 'filterActiveBg';
+  }
+
+  closeFilterOption() {
+    this.showFilterOption = false;
+  }
 
 }
