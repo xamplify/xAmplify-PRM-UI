@@ -20,16 +20,25 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
   filterOption: boolean = false;
+  @Input() isPartnerModule: boolean = false;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.showPartnersFilterOption();
+    if (this.isPartnerModule) {
+    let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
+      this.selectedFilterIndex = 0;
+    }
+  }
     if (this.customSelectedIndex !== undefined && this.customSelectedIndex !== null) {
       this.selectedFilterIndex = this.customSelectedIndex;
     }
     this.resetTMSelectedFilterIndex.subscribe(response => {
         if (response) {
         	this.selectedFilterIndex = 1;
+        }else{
+          this.selectedFilterIndex = 0;
         }
       });
   }

@@ -1960,8 +1960,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactsByType.selectedCategory = contactType;
 		this.selectedFilterIndex = 1;
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-			this.resetTMSelectedFilterIndex.next(true);
+			// this.resetTMSelectedFilterIndex.next(true);
 			this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+			let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners)
+				if( TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter===false || TeamMemberGroupFilter==='false') ){
+					this.selectedFilterIndex=0;
+					this.contactsByType.pagination.partnerTeamMemberGroupFilter = false;
+					this.resetTMSelectedFilterIndex.next(false);
+				}else{
+					// this.selectedFilterIndex = 1;
+					this.resetTMSelectedFilterIndex.next(true);
+				}
 		}
 		this.listOfSelectedContactListByType(contactType);
 	}
@@ -3008,6 +3017,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.currentContactType = "all_contacts";
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
+				let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners)
+				if (TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) {
+					this.pagination.partnerTeamMemberGroupFilter = false;
+				}
 			}
 			if (this.router.url.includes('home/contacts')) {
 				this.checkSyncStatus();

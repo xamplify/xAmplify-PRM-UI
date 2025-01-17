@@ -37,6 +37,7 @@ import { UserUserListWrapper } from 'app/contacts/models/user-userlist-wrapper';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
 import { ContactList } from 'app/contacts/models/contact-list';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, Papa: any, swal: any;
 
 @Component({
@@ -2643,7 +2644,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
 			if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
-				this.pagination.partnerTeamMemberGroupFilter = true;
+				let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners)
+				if( TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter===true || TeamMemberGroupFilter==='true') ){
+					this.selectedFilterIndex=1;
+					this.pagination.partnerTeamMemberGroupFilter = true;
+				}else{
+					this.selectedFilterIndex=0;
+					this.pagination.partnerTeamMemberGroupFilter = false;
+				}
 			}
 			this.defaultPartnerList(this.loggedInUserId);
 			if (this.contactService.socialProviderName == 'google') {
