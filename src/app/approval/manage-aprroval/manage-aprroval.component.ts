@@ -77,6 +77,8 @@ export class ManageAprrovalComponent implements OnInit {
   toDateFilter: string;
   fromDateFilter: string;
   dateFilterText = "Select Date Filter";
+  fromDateFilterString: string;
+  toDateFilterString: string;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService,public utilService: UtilService,public xtremandLogger: XtremandLogger,
@@ -107,6 +109,9 @@ export class ManageAprrovalComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.pagination.filterKey = this.selectedFilterStatus;
     this.pagination.filterBy = this.selectedFilterType;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.selectedPendingIds = [];
     this.approveService.getAllApprovalList(pagination).subscribe(
       response => {
@@ -512,6 +517,7 @@ export class ManageAprrovalComponent implements OnInit {
       this.asset = {};
       this.pagination.pageIndex = 1;
       this.getAllApprovalList(this.pagination);
+      this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
     } else if (response.statusCode == 401) {
       this.customResponse = new CustomResponse('ERROR', response.message, true);
     }
@@ -720,18 +726,24 @@ export class ManageAprrovalComponent implements OnInit {
   }
 
   clearFilter() {
-    this.fromDateFilter = "";
-    this.toDateFilter = "";
     this.showFilterDropDown = false;
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.filterApplied = false;
+    this.showFilterOption = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.fromDateFilterString = "";
+    this.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
+    this.pagination.pageIndex = 1;
+    this.getAllApprovalList(this.pagination);
   }
 
   validateDateFilter() {
-    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
-    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
-    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
-    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    let isValidFromDateFilter = this.fromDateFilterString != undefined && this.fromDateFilterString != "";
+    let isEmptyFromDateFilter = this.fromDateFilterString == undefined || this.fromDateFilterString == "";
+    let isValidToDateFilter = this.toDateFilterString != undefined && this.toDateFilterString != "";
+    let isEmptyToDateFilter = this.toDateFilterString == undefined || this.toDateFilterString == "";
     if (isEmptyFromDateFilter && isEmptyToDateFilter) {
       this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
     } else {
@@ -741,8 +753,8 @@ export class ManageAprrovalComponent implements OnInit {
       } else if (isValidToDateFilter && isEmptyFromDateFilter) {
         this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
       } else {
-        var toDate = Date.parse(this.toDateFilter);
-        var fromDate = Date.parse(this.fromDateFilter);
+        var toDate = Date.parse(this.toDateFilterString);
+        var fromDate = Date.parse(this.fromDateFilterString);
         if (fromDate <= toDate) {
           validDates = true;
         } else {
@@ -760,6 +772,11 @@ export class ManageAprrovalComponent implements OnInit {
     this.filterApplied = true;
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
+    this.fromDateFilter = this.fromDateFilterString;
+    this.toDateFilter = this.toDateFilterString;
+    this.pagination.pageIndex = 1;
+    this.pagination.maxResults = 12;
+    this.getAllApprovalList(this.pagination);
   }
 
   closeFilterOption() {

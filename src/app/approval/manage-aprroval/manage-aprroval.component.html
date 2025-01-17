@@ -12,7 +12,7 @@
     </ul>
   </div>
   <app-content-module-status-analytics [moduleType]="'APPROVE'" (filterContentByType)="filterByStatus($event)"
-    [filterType]="selectedFilterType">
+    [filterType]="selectedFilterType" [toDateFilter]="toDateFilter" [fromDateFilter]="fromDateFilter">
   </app-content-module-status-analytics>
   <div class="row">
     <div class="col-md-12">
@@ -25,16 +25,17 @@
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <div>
             <ng-template [ngTemplateOutlet]="filter"></ng-template>
+            <!-- Table Header-->
             <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
               <thead>
                 <tr>
                   <th *ngIf="selectedFilterStatus === 'PENDING' && authenticationService?.module?.isAdmin" class="mr5">
-                    <input type="checkbox" class="checkBox_shadow" value="selectAllPendingList"
-                      id="selectAllPendingList" name="pendingListSelectAll" [(ngModel)]="isHeaderCheckBoxChecked"
-                      (change)="checkAll($event)" class="pointer" />
+                    <input type="checkbox" class="checkBox_shadow" value="selectAllPendingList" id="selectAllPendingList"
+                      name="pendingListSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="pointer" />
                   </th>
                   <th *ngIf="selectedFilterStatus != 'PENDING'"></th>
                   <th scope="col">Details</th>
+                  <th>Created On</th>
                   <th scope="col" class="align-center">Actions</th>
                 </tr>
               </thead>
@@ -130,9 +131,9 @@
       <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
           aria-hidden="true"></i></button>
     </div>
-    <div *ngIf="displayApproveAndRejectButton" class="btn-group pull-right pt mr5">
+    <div *ngIf="selectedFilterStatus === 'PENDING'" class="btn-group pull-right pt mr5">
       <button class="btn Btn-Green mb_btn" style="border-radius: 3px !important;box-shadow: none !important;"
-        data-toggle="dropdown" translate>
+        data-toggle="dropdown" [disabled]="!displayApproveAndRejectButton" translate>
         Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
       </button>
       <ul class="dropdown-menu pull-right">
@@ -167,14 +168,14 @@
         </div>
       </div>
     </td>
-    <td style="width: 50%;">
+    <td style="width: 40%;">
       <!-- Name Field -->
       <h6 *ngIf="item?.name">
         <span class="pointer">
           <b>{{item?.type || 'Item'}} Name: </b>
           <span data-toggle="tooltip" data-placement="top" title="{{item.name}}">
-            {{item?.name | slice:0:50}}
-            <span *ngIf="item?.name?.length>50">..</span>
+            {{item?.name | slice:0:25}}
+            <span *ngIf="item?.name?.length>25">..</span>
           </span>
         </span>
       </h6>
@@ -183,8 +184,8 @@
         <span class="pointer">
           <b>{{item?.type || 'Item'}} Created By: </b>
           <span data-toggle="tooltip" data-placement="top" title="{{item.createdBy}}">
-            {{item?.createdBy | slice:0:50}}
-            <span *ngIf="item?.createdBy?.length>50">..</span>
+            {{item?.createdBy | slice:0:25}}
+            <span *ngIf="item?.createdBy?.length>25">..</span>
           </span>
         </span>
       </h6>
@@ -203,6 +204,8 @@
         {{getApprovalStatusText(item.status)}}
       </span>
     </td>
+    <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdDateInUTC">
+      </app-timestamp></td>
     <td>
       <div class="actions-block override-actions" style="float:none !important;">
         <!--Design-->
@@ -216,7 +219,7 @@
           <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-         <!-- UnPublish Icon -->
+        <!-- UnPublish Icon -->
         <a class="custom-icon" *ngIf="item?.published" data-toggle="tooltip" data-placement="top" title="Unpublish"
           (click)=" UnpublishedModalPopUp(item)">
           <i class="fa fa-reply IconCustomization" aria-hidden="true"></i>
@@ -331,13 +334,13 @@
                   <label class="control-label">
                     From Date &nbsp;
                   </label>
-                  <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                  <app-date-picker [(dataField)]="fromDateFilterString" [isFromFilter]='true'>
                   </app-date-picker>
                 </div>
                 <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
                   <label class="control-label">To Date &nbsp;
                   </label>
-                  <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                  <app-date-picker [(dataField)]="toDateFilterString" [isFromFilter]='true'>
                   </app-date-picker>
                 </div>
               </div>

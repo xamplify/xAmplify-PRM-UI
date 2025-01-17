@@ -28,4 +28,5 @@ export class Roles {
   campaignId = 5;
   landingPageId = 16;
   formId = 15;
+  approveId = 33;
 }

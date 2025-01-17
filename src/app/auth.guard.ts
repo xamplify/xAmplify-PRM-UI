@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     lmsUrl = 'tracks';
     playbookUrl = 'playbook';
     companyUrl = 'company';
-    approveUrl = 'approve';
+    approvalHubUrl = 'approval-hub';
     addCompanyProfileUrl = "/home/dashboard/add-company-profile";
     /*** user guide **** */
     userGuideUrl = 'help';
@@ -219,8 +219,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if (url.indexOf(this.companyUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.companyUrl);
             }
-            if (url.indexOf(this.approveUrl) > -1) {
-                return this.authorizeUrl(roles, url, this.approveUrl);
+            if (url.indexOf(this.approvalHubUrl) > -1) {
+                return this.authorizeUrl(roles, url, this.approvalHubUrl);
             }
             if (url.indexOf(this.lmsUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.lmsUrl);
@@ -329,6 +329,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             } else if (urlType == this.playbookUrl) {
                 /*** XNFR-695 ***/
                 this.authorizeUrlAccess(url);
+            } else if (urlType == this.approvalHubUrl) {
+                this.authorizeUrlAccess(url);
+                if (campaignAccessDto != undefined) {
+                    let hasApprovalHubAccess = campaignAccessDto.approvalHub;
+                    return hasApprovalHubAccess;
+                }
             }
             /*******XNFR-83*******/
             else if (urlType == this.agencyUrl) {
@@ -385,10 +391,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                     } else {
                         return this.goToAccessDenied(url);
                     }
-                }else{
+                } else {
                     return true;
                 }
-                
+
             }
         } catch (error) { console.log('error' + error); }
     }
