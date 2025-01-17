@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,Renderer } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,Renderer, ViewChild } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 /*****Common Imports**********************/
@@ -26,6 +26,10 @@ import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-
 import { Criteria } from 'app/contacts/models/criteria';
 import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
+import { CustomUiFilterComponent } from '../../custom-ui-filter/custom-ui-filter.component';
+import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
+
 declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -98,7 +102,31 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	childAssetId = 0;
 	isEditVideo = false;
 	isPreviewVideo = false;
+
+	/** XNFR-781 **/
+	assetName: string = "";
+	assetCreatedById: number;
+	assetCreatedByFullName: string = "";
+	callCommentsComponent: boolean = false;
+	selectedDamId: number;
+	createdByAnyAdmin: boolean = false;
+	fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
+	approvalStatus = {
+		APPROVED: 'APPROVED',
+		REJECTED: 'REJECTED',
+		CREATED: 'CREATED',
+		UPDATED: 'UPDATED'
+	};
+	videoId: number;
+	/** XNFR-813 **/
+	@ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
+
+
+
 	/****XNFR-381*****/
+	criteria: Criteria = new Criteria();
+	@ViewChild(CustomUiFilterComponent) customUiFilterComponent: CustomUiFilterComponent;
+
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -524,6 +552,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else {
 			this.listAssets(this.pagination);
 		}
+		/** XNFR-813 **/
+		if (this.contentModuleStatusAnalyticsComponent && this.authenticationService.approvalRequiredForAssets) {
+			this.contentModuleStatusAnalyticsComponent.getTileCounts();
+		}
 	}
 
 
@@ -795,12 +827,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else {
 			this.showFilterOption = true
 		}
+		this.criteria = new Criteria();
 		this.pagination.fromDateFilterString = "";
 		this.pagination.toDateFilterString = "";
 		this.pagination.customFilterOption = false;
 		this.sortOption.searchKey = '';
 		this.pagination.searchKey = this.sortOption.searchKey;
-		this.pagination.criterias = new Array<Criteria>();
+		this.pagination.criterias = null;
 		this.pagination.pageIndex = 1;
 		this.listItems(this.pagination);
 	}
@@ -852,9 +885,109 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 	
 	filterAssets(tag:string){
-		
-		
+		if(this.criteria.value1 != undefined && this.criteria.value1.length >0){
+			
+			$.each(this.pagination.criterias, function (index, criteria) {
+						if (criteria.property === "tags") {
+							criteria.value1 = criteria.value1 +","+ tag;
+						}
+					});
+			
+			$.each(this.customUiFilterComponent.criterias, function (index, criteria) {
+						if (criteria.property === "Tags") {
+					let exists = criteria.value1.toLowerCase().split(',').map(item => item.trim()).includes(tag.toLowerCase().trim());
+							if(!exists){
+								criteria.value1 = criteria.value1 +","+ tag;
+							}
+						}
+					});
+			
+			
+		    this.listItems(this.pagination);
+            this.toggleFilterOption(); 
+			this.showRefreshNotification = false;
+			
+		}else{
+			let keyExists = false;
+			
+			 keyExists = this.customUiFilterComponent !=undefined && this.customUiFilterComponent.criterias!=undefined && this.customUiFilterComponent.criterias.length>0 && 
+		                 this.customUiFilterComponent.criterias.some(criteria => criteria.property === 'tags'
+			|| criteria.property === 'Tags');
+			
+			if(keyExists){
+						$.each(this.customUiFilterComponent.criterias, function (index, criteria) {
+						if (criteria.property === "Tags" || criteria.property === "tags" ) {
+					let exists = criteria.value1.toLowerCase().split(',').map(item => item.trim()).includes(tag.toLowerCase().trim());
+							if(!exists){
+								criteria.value1 = criteria.value1 +","+ tag;
+							}
+						}
+					});
+					
+			this.customUiFilterComponent.submittFilterData();
+					
+			}else{
+		this.criteria = new Criteria();
+		this.criteria.operation = "Contains";
+		this.criteria.property = "Tags";
+		this.criteria.value1 = tag;
+		if(!this.showFilterOption){
+		  this.toggleFilterOption(); 
+		 }
+	}
+	
+ }
+}
+
+	/** XNFR-781 **/
+	showCommentsAndHistoryModalPopup(asset: any){
+		this.callCommentsComponent = true;
+		this.assetName = asset.assetName;
+		this.assetCreatedById = asset.createdBy;
+		this.assetCreatedByFullName = asset.fullName;
+		this.selectedDamId = asset.id;
+		this.createdByAnyAdmin = asset.createdByAnyAdmin;
+		this.videoId = asset.videoId;
 	}
 
+	closeCommentsAndHistoryModalPopup() {
+		this.callCommentsComponent = false;
+	}
 
+	closeCommentsAndHistoryModalPopupAndRefreshList() {
+		this.refreshList();
+		this.callCommentsComponent = false;
+	}
+
+	getApprovalStatusText(status: string): string {
+		switch (status) {
+			case this.approvalStatus.APPROVED:
+				return 'Approved';
+			case this.approvalStatus.REJECTED:
+				return 'Rejected';
+			case this.approvalStatus.CREATED:
+				return 'Pending Approval';
+			case this.approvalStatus.UPDATED:
+				return 'Updated';
+			default:
+				return status;
+		}
+	}
+
+	/** XNFR-813 **/
+	filterContentByType(event: any) {
+		if (event == this.approvalStatus.APPROVED) {
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.APPROVED;
+			this.listAssets(this.pagination);
+		} else if (event == this.approvalStatus.REJECTED) {
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.REJECTED;
+			this.listAssets(this.pagination);
+		} else if (event == this.approvalStatus.CREATED) {
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
+			this.listAssets(this.pagination);
+		} else {
+			this.pagination.selectedApprovalStatusCategory = '';
+			this.refreshList();
+		}
+	}
 }

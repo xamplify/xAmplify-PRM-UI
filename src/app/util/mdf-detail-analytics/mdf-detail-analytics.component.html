@@ -13,7 +13,7 @@
               <i class="fa fa-search" aria-hidden="true"></i></button>
           </div>
         </span>
-        <button *ngIf="!isTeamMemberAnalytics" class="pull-right mt25m btn btn-xs l-g-view neg_mrg_top8 pos_mar_rgt4 only_custom_mar_rgt4 only_custom_mrg_top8" data-placement="bottom"
+        <button class="pull-right mt25m btn btn-xs l-g-view neg_mrg_top8 pos_mar_rgt4 only_custom_mar_rgt4 only_custom_mrg_top8" data-placement="bottom"
         [disabled]="pagination.totalRecords==0" (click)="downloadMDFDetailsReport()">
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
           data-original-title="Export to Excel"></i>
@@ -28,7 +28,7 @@
             <tr>
               <th scope="col" *ngIf = "!isTeamMemberAnalytics">Company Name</th>
               <th scope="col" *ngIf = "isTeamMemberAnalytics">Vendor</th>
-              <th scope="col" *ngIf = "isTeamMemberAnalytics">Partner Company</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics">Partner Team Member</th>
               <th scope="col" *ngIf = "!isTeamMemberAnalytics">Total Balance</th>              
               <th scope="col" *ngIf = "!isTeamMemberAnalytics">Used Balance</th>
               <th scope="col" *ngIf = "!isTeamMemberAnalytics">Available Balance</th>

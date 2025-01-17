@@ -1,5 +1,5 @@
 <div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !viewCampaigns">
-  <div class="page-bar" style="height:48px;">
+  <div class="page-bar mb-height_auto" style="height:48px;">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i>
         <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
@@ -19,7 +19,7 @@
       </li>
       <li>
         <a translate>
-          <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Details
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Journey
         </a>
       </li>
     </ul>
@@ -29,6 +29,7 @@
   <div class="details_flex">
     <div class="profile-sidebar d-flex">
       <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="profile-leftsidebar">
         <div class="edit_contact">
           <!-- Header 1 -->
@@ -41,15 +42,15 @@
               <div>
                 <i class="fas fa-user mr_6 icons_colors" aria-hidden="true"></i>
                 <span *ngIf="contactName != undefined && contactName != ''" data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
-                  {{contactName | slice:0:9}}<span *ngIf="contactName != undefined && contactName?.length>9">..</span>
+                  {{referenceService?.isHarizontalNavigationBar ? (contactName | slice:0:15) : (contactName | slice:0:10)}}<span *ngIf="contactName != undefined && (referenceService?.isHarizontalNavigationBar ? contactName?.length>15 : contactName?.length>10)">..</span>
                 </span>
                 <span *ngIf="contactName == undefined || contactName == ''" class="anonymous-text">Anonymous</span>
                 <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
               </div>
               <span class="email-id">
                 <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.emailId}}">
-                  <i class="fa fa-envelope mr_6 icons_colors"></i>{{selectedContact?.emailId | slice:0:16}}<span
-                    *ngIf="selectedContact?.emailId?.length>16">..</span>
+                  <i class="fa fa-envelope mr_6 icons_colors"></i>{{referenceService?.isHarizontalNavigationBar ?( selectedContact?.emailId | slice:0:21) : (selectedContact?.emailId | slice:0:16)}}<span
+                    *ngIf="(referenceService?.isHarizontalNavigationBar ? selectedContact?.emailId?.length>21 : selectedContact?.emailId?.length>16)">..</span>
                 </p>
                 <button class="copy-btn" #textEmail value="{{selectedContact?.emailId}}" (click)="copyEmail(textEmail)">
                   <i *ngIf="isEmailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isEmailCopied"
@@ -85,9 +86,10 @@
               </div>
               <div class="icon-label">Task</div>
             </div>
-            <div class="icon-item" *ngIf="isLocalhost">
-              <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Add a Meeting">
-                <i class="glyphicon glyphicon-calendar"></i>
+            <div class="icon-item" (click)="openMeetingModalPopup()">
+              <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Schedule Meeting">
+                <i *ngIf="!ngxLoading" class="glyphicon glyphicon-calendar"></i>
+                <img *ngIf="ngxLoading" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
               </div>
               <div class="icon-label">Meeting</div>
             </div>
@@ -115,8 +117,8 @@
                   <span *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</span>
                 </div>
               </li>
-              <li><i class="fas fa-map-marker-alt"></i>
-                <div class="user_details">
+              <li><i class="fas fa-map-marker-alt pd_lft2"></i>
+                <div class="user_details pd_lft2">
                   <span class="address_title">Address:</span>
                   <span *ngIf="selectedContact?.address != undefined" class="mb0">{{selectedContact?.address}}</span>
                 </div>
@@ -145,6 +147,13 @@
                   <span *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</span>
                 </div>
               </li>
+              <li *ngFor="let flexiField of selectedContact?.flexiFields">
+                <i class="fas fa-highlighter"></i>
+                <div class="user_details">
+                  <span class="address_title">{{flexiField.fieldName}}:</span>
+                  <span class="mb0">{{flexiField.fieldValue}}</span>
+                </div>
+              </li>
             </ul>
           </h3>
         </div>
@@ -170,7 +179,7 @@
                   <li><a data-toggle="tab" (click)="setActiveTab('email1')" href="#email1">Email</a>
                   </li>
                   <li><a data-toggle="tab" (click)="setActiveTab('form1')" href="#form1">Task</a></li>
-                  <li *ngIf="isLocalhost"><a data-toggle="tab" (click)="setActiveTab('meeting')" href="#meeting">Meeting</a></li>
+                  <li><a data-toggle="tab" (click)="setActiveTab('meeting')" href="#meeting">Meeting</a></li>
                 </ul>
               </div>
               <div class="tab-content tab-bg p-13">
@@ -199,7 +208,7 @@
                     (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
-                  dcsddcscde
+                  <app-meeting-activity [contactId]="contactId" [isReloadTab]="isReloadMeetingTab" [activeCalendarDetails]="activeCalendarDetails" (notifyClose)="reloadMeetingTab($event)"></app-meeting-activity>
                 </div>
               </div>
               <!-- END -->
@@ -341,6 +350,7 @@
   <app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [gdprInput]="gdprInput"
     [totalUsers]="contacts" [contactDetails]="contactAllDetails" [isUpdateUser]="isUpdateUser"
     [selectedCompanyId]="selectedCompanyContactId" [isCompanyContact]="isCompanyContact"
+    [flexiFieldsRequestAndResponseDto]="flexiFields"
     (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>
 
@@ -369,3 +379,7 @@
   (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)" [userId]="contactId" [actionType]="actionType"
   (notifyClose)="closeTaskModalPopup()"></app-add-task-modal-popup>
 
+<app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri" [isReloadTab]="isReloadMeetingTab"
+  [calendarType]="activeCalendarDetails?.type" (notifyClose)="closeMeetingModalPopup($event)"></app-add-meeting-modal-popup>
+
+<app-calendar-integration-modal-popup *ngIf="showCalendarIntegrationsModalPopup" (notifyClose)="closeCalendarIntegrationsModalPopup()"></app-calendar-integration-modal-popup>

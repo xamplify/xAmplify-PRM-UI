@@ -175,6 +175,7 @@ export class Properties {
 	saml2SSOsettings = "SAML 2.0 SSO Settings";
 	leadFieldSettings = "Custom Fields";
 	oauthSSOConfiguration = "oAuth SSO Settings";
+	calendarIntegrations = "Calendar Integrations";
 
 
 	/************XNFR-426**********/
@@ -485,5 +486,46 @@ export class Properties {
 	COMPANY_NAME_INFO = "Represents the name of the company, displayed on the dashboard and used as a merge tag across the platform."
 	COMPANY_PROFILE_NAME_INFO ="Non-editable alphanumeric field, also used as a vanity URL to ensure uniqueness and validate duplicates."
 	COMPANY_PROFILE_NAME_PARTNER_INFO = "Non-editable alphanumeric field to ensure unique partner profiles and prevent duplicates."
+	
+	/** XNFR-781 **/
+	approvalConfigurationSettings: string = "Content Approval Settings";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Assets created by your Team Members.";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Assets that are neither rejected nor approved will be automatically Approved!";
+	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject assets submitted by your team before they are available for use. An email will be sent accordingly."
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Tracks created by your Team Members.";
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Tracks that are neither rejected nor approved will be automatically Approved!";
+	TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject tracks submitted by your team before they are available for use. An email will be sent accordingly."
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Playbooks created by your Team Members.";
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Playbooks that are neither rejected nor approved will be automatically Approved!";
+	PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject playbooks submitted by your team before they are available for use. An email will be sent accordingly."
+	/***** XNFR-807 *****/
+	redistributed_campaigns = "Total Redistributed Campaigns by";
+    teamMembers_Info = "Total Team Members of";
+    contacts_Info = "Total Contacts Added by";
+    share_Leads_Info = "Total Assigned Share Leads to ";
+    leads_Info = "Total Leads Added by" ;
+    deals_Info = "Total Deals Added by";
+    mdf_Amount_Info = "Total MDF Balance";
+    assets_Info =" Total Assets Published to ";
+    track_Assets_Info = "Total Assets of Published Tracks" ;
+    tracks_Info = "Total Tracks Published to";
+    playbooks_Info = "Total Playbooks Published to";
+	
+	/**** Invite A Team-member ****/
+	inviteATeamMember = "Invite A Team Member";
+	inviteATeamMemberToJoinxAmplify = "Invite a Team Member to Join ";
+	teamMemberInvites = "Team Member Invites";
+	invitedTeamMeberAnalytics = "Invited Team Member Analytics";
+  	my_Landscape_Vendor=' Vendor Landscape Pages ';
+    My_Landscape_Partner = 'Partner Landscape Pages'; 
+    partner_Showcase = 'Landing Pages Shared by Your Partners';
+    vendor_showcase = 'Landing Pages Shared by Your Vendors';
+    myShowcase_vendor = 'Vendor Showcase Pages for Your Partners';
+    MyShowcase_partner = 'Partner Showcase Pages for Your Vendors';
+
+	/***** XNFR-809 *****/
+	my_Partner_Info = 'You have the ability to apply the default filter as My Partner(s).Enabling this option will allow you to view the partners assigned to you.';
+	all_Partners_Info = 'You have the ability to apply the default filter as All Partners.Enabling this option will allow you to view all the partners of your company.';
+
 }
 

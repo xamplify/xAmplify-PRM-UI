@@ -5,4 +5,12 @@ export class CommentDto {
 	invalidComment = true;
 	moduleType = "";
 	statusInString = "";
+	loggedInUserId: number;
+	damId: number;
+	statusUpdated: boolean = false;
+	createdBy: number;
+	name: string = "";
+	createdByName: string;
+	entityId: number;
+	videoId: number;
 }

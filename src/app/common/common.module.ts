@@ -192,6 +192,17 @@ import { CopyTextComponent } from './copy-text/copy-text.component';
 import { VendorCompanyModelPopupComponent } from './vendor-company-model-popup/vendor-company-model-popup.component';
 import { AccessDeniedUtilComponent } from './access-denied-util/access-denied-util.component';
 import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/universal-search-bar.component';
+import { ContentStatusHistoryModalPopupComponent } from 'app/util/content-status-history-modal-popup/content-status-history-modal-popup.component';
+import { AssetApprovalConfigurationSettingsComponent } from 'app/dashboard/asset-approval-configuration-settings/asset-approval-configuration-settings.component';
+import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
+import { TeamMemberWiseAssetDetailsComponent } from 'app/util/team-member-wise-asset-details/team-member-wise-asset-details.component';
+import { DigitalSignatureComponent } from 'app/util/digital-signature/digital-signature.component';
+import { SignatureComponent } from 'app/util/signature/signature.component';
+import { UploadImageComponent } from 'app/util/upload-image/upload-image.component';
+import { SignatureModalComponent } from 'app/util/signature-modal/signature-modal.component';
+
+import { MultiselectApprovalCommentsModalPopupComponent } from 'app/util/multiselect-approval-comments-modal-popup/multiselect-approval-comments-modal-popup.component';
+import { DateRangeDisplayComponent } from './date-range-display/date-range-display.component';
 
 
 
@@ -234,7 +245,10 @@ import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/unive
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent
+		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
+		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
+		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,SignatureModalComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent
+
 	],
 
 
@@ -272,7 +286,10 @@ import { UniversalSearchBarComponent } from 'app/util/universal-search-bar/unive
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent
+		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
+		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
+		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,SignatureModalComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent
+
 
 	]
 

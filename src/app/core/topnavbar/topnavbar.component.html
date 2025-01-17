@@ -1,7 +1,31 @@
 <ng-container *ngIf="!refService.loaderFromAdmin">
    <ngx-loading [show]="authenticationService?.module?.topNavBarLoader"
       [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-   <div class="page-header navbar navbar-fixed-top zero-padding">
+      <div class="team-member-login-btn" *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember">
+         <div class="team-member-login-alert team-member-login-info">
+            <strong>
+               <span title="{{vendorAdminCompanyUserEmailId}}">You</span> are logged in as
+               <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId}}
+                 <!-- <span *ngIf="loggedInAsUserEmailId?.length>25">...</span> -->
+               </strong>
+             </strong>
+             <app-login-as-partner [showLogOutButton]="isLoggedInAsPartner || isLoggedInAsTeamMember"
+             [showLoginAsButton]="false"></app-login-as-partner>
+         </div>
+      </div>
+      <div class="team-member-login-btn" *ngIf="isLoggedInFromAdminSection">
+         <div class="team-member-login-alert team-member-login-info">
+            <strong (click)="goBackToAdminPanel()">
+               <span>Go back to admin panel</span>
+            </strong>
+            <button (click)="goBackToAdminPanel()"
+               class="btn-danger btn-xs margin-left-one-per IconsidesCu xAmplify-btn-danger" data-toggle="tooltip"
+               data-placement="bottom" title="Go back to admin panel" translate>
+               <i class="fa fa-power-off" aria-hidden="true"></i>
+            </button>
+         </div>
+      </div>
+   <div class="page-header navbar navbar-fixed-top zero-padding" style="top: unset;">
       <ng2-slim-loading-bar [color]="'#00a6e8'" [height]="'2px'" style="position: fixed; top: 0px;
        margin: 0px; padding: 0px; z-index: 10000; width: 100%;">
       </ng2-slim-loading-bar>
@@ -35,13 +59,13 @@
          <!-- END PAGE ACTIONS -->
          <!-- BEGIN PAGE TOP -->
          <div class="page-top" [ngClass]="cskin.defaultSkin?'':'customskin-top'" [class.active]="isNavbarBackgroundVisible">
-            <div class="top-menu">
+            <div class="top-menu tab_navbar">
                <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
                   <li class="topnav-button-css" style="margin-right: 0px;">
                      <app-universal-search-bar *ngIf="!helpGuidesUrl && authenticationService?.user?.hasCompany && userId!=1"></app-universal-search-bar>
                   </li>
                   <!---XNFR-222-->
-                  <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css LogedAsBoxTop">
+                  <!-- <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css LogedAsBoxTop">
                      <div class="alert alert-info LogedAsBox" style="position: relative;bottom: 5px;">
                         <strong>
                            <span title="{{vendorAdminCompanyUserEmailId}}">You</span> are logged in as
@@ -52,14 +76,14 @@
                               [showLoginAsButton]="false"></app-login-as-partner>
                         </strong>
                      </div>
-                  </li>
+                  </li> -->
                   <!---XNFR-222-->
-                  <li *ngIf="isLoggedInFromAdminSection" class="topnav-button-css">
+                  <!-- <li *ngIf="isLoggedInFromAdminSection" class="topnav-button-css">
                      <button class="btn btn-primary" (click)="goBackToAdminPanel()">
                         <span class="hidden-xs">Go back to admin panel</span>
                         <i class="fa fa-power-off" aria-hidden="true"></i>
                      </button>
-                  </li>
+                  </li> -->
                   <!--Invite A Vendor For Normal Login-->
                   <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService?.vanityURLEnabled  &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                      &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
@@ -88,7 +112,7 @@
                      </a>
                      <span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default notify_count"
                         style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
-                     <ul class="dropdown-menu">
+                     <ul class="dropdown-menu mb_notify">
                         <li class="external">
                            <h3><span class="bold">{{userService.unreadNotificationsCount}} pending</span> notifications
                            </h3>
@@ -115,7 +139,7 @@
                            {{model.displayName | slice:0:7}}<span *ngIf="model.displayName?.length>7">..</span></span>
                         <i class="fa fa-angle-down"></i>
                      </a>
-                     <ul class="dropdown-menu dropdown-menu-default">
+                     <ul class="dropdown-menu dropdown-menu-default mb_profiles">
                         <li
                            *ngIf="userId!=1 && ((authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner)">
                            <a (click)="goToRouter('/home/dashboard/myprofile')" translate>
@@ -220,7 +244,7 @@
                         <!-- <i class="fa fa-angle-down"></i> -->
                         <div class="clickicons"></div>
                      </a>
-                     <ul class="dropdown-menu dropdown-menu-default">
+                     <ul class="dropdown-menu dropdown-menu-default mb_lang">
                         <li *ngFor="let language of authenticationService.allLanguagesList">
                            <a (click)="selectedLanguage(language.id)"> {{language.name}}
                            </a>

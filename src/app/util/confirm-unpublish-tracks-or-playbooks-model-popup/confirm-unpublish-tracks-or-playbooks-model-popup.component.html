@@ -13,7 +13,7 @@
 
                     <input class="pointer radioButton_shadow" type="radio" name="rdaction" value="Assets_or_Quiz"
                         (click)="selectedOption=true">
-                    <label class="option-color">Want to update Assets/Quiz</label><br>
+                    <label class="option-color">{{type.toLowerCase() === 'track' ? ' Want to update Assets/Quiz' : ' Want to update Assets'}}</label><br>
                     <input class="pointer radioButton_shadow" type="radio" name="rdaction" value="Partner_List"
                         (click)="selectedOption=true">
                     <label class="option-color">Want to update the

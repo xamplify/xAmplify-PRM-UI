@@ -1,0 +1,141 @@
+.total-meetings-count {
+    width: max-content;
+    margin-top: 7px;
+    float: right;
+}
+
+.align-item-left {
+    float: left;
+}
+
+.border-none {
+    border: none !important;
+}
+
+.activity_pagination {
+    display: flex;
+    padding-left: 0px;
+    padding-right: 0px;
+    justify-content: space-between;
+}
+
+.activity_card {
+    border: 1px solid #ddd;
+    padding: 10px 15px 10px 15px;
+    border-radius: 7px;
+    background-color: #ffffff;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-title {
+    font-weight: 600;
+}
+
+.activity-date {
+    color: #666;
+    margin-top: -5px;
+    font-size: 12px;
+}
+
+.activity-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    color: #555;
+}
+
+.activity-footer {
+    text-align: right;
+    margin: 5px 0px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.activity-footer a {
+    color: #578ebe;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: capitalize;
+}
+
+.meeting-canceled-status-btn {
+    padding: 2px 6px !important;
+    font-size: 10px !important;
+    color: #f53535;
+    border: 1px solid #f53535;
+    font-weight: 800;
+    background: transparent !important;
+    text-transform: capitalize;
+}
+
+.mr_90 {
+    margin-right: 90px;
+}
+
+.mr_75 {
+    margin-right: 75px;
+}
+
+.task_view {
+    font-size: 10px;
+    color: #333333;
+    background-color: #ffffff;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    padding: 2px 5px;
+}
+
+.task_view:hover {
+    background-color: #c6d5f6;
+}
+
+.alert-dismissible .close {
+    top: 0px !important;
+    right: 0px !important;
+}
+
+.alert-danger {
+    background-color: #f2dede !important;
+    border-radius: 3px !important;
+    color: #a94442 !important;
+}
+
+.alert-message-fw {
+    font-weight: 600 !important;
+}
+
+.login-error {
+    color: #a94442;
+}
+
+.text {
+    padding-top: 12px;
+}
+
+.alert-danger>h5 {
+    font-size: 14px;
+}
+
+.alert-danger .close {
+    position: relative;
+    top: 10px !important;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
+.p13 {
+    padding: 13px;
+}
+
+.login-error a:hover {
+    text-decoration: underline;
+}

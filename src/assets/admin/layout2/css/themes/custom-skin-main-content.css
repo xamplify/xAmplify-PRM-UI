@@ -922,7 +922,7 @@ textarea:focus {
 .mix-filter li:hover,
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,.mix-filter-li-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter li.mix-filter-li-selected {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
@@ -2297,7 +2297,7 @@ button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: -1px;m
 .createFolderAlignment{padding-top: 5px !important;}
 #folder-margin-xamp{margin-top: 5px !important;}
 .btn_custom_bg{margin-top: 0px !important;}
-.lead-details-border{border: 1px solid var(--border-color) !important;}
+.lead-details-border{border: 2px solid var(--border-color) !important;}
 button.filter.btn-hvr-text.emailtemplate-selected{
   border: 1px solid #3d94c5;
 }
@@ -2358,8 +2358,8 @@ color: var(--icon-color) !important;
 .lead_details li,
 .icon-label,
 .activity-date,
-.activity-body {
-  color: var(--title-heading--text) !important;
+.activity-body,.guest-name,.organizer-role,.guest-role {
+  color: var(---text-color) !important;
 }
 .icons_colors,
 .lead_details li i {
@@ -2370,7 +2370,7 @@ color: var(--icon-color) !important;
   color: var(--icon-color) !important;
   border: 1px solid var(--border-color) !important;
 }
-.activity_card,.activity_bgcolor,.view_emailcard,.email_content{
+.activity_card,.activity_bgcolor,.view_emailcard,.email_content,.view_task_card,.event-container{
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }
@@ -2384,7 +2384,7 @@ i.fa.fa-edit.ml_6 {
   color: var(--icon-color) !important;
 }
 .icon-btns:hover,
-i.fa.fa-edit.ml_6:hover {
+i.fa.fa-edit.ml_6:hover,.copy_icon:hover{
   border: 1px solid var(--icon-border-color) !important;
   background: var(--icon-hover-color) !important;
   color: var(--div-bg-color) !important;
@@ -2395,7 +2395,7 @@ i.fa.fa-edit.ml_6:hover {
 /* charts related css */
 g.highcharts-axis-labels.highcharts-xaxis-labels text,text.highcharts-subtitle,
 text.highcharts-axis-title,g.highcharts-axis-labels.highcharts-yaxis-labels text,text.highcharts-title
-,g.highcharts-axis-labels.highcharts-coloraxis-labels text{
+,g.highcharts-axis-labels.highcharts-coloraxis-labels text,.user_guest_icon{
   fill: var(---text-color) !important;
 }
 table tr#uploaded-csv-tr.alert-success{
@@ -2444,12 +2444,14 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
 .register_bg{background: none !important;}
 /* Sudha Sri(16-12-2024) */
 .tgrid > tbody > tr{
-  background-color:var(--page-content)!important;
+  background-color:var(--table-body-color)!important;
   color: var(---text-color) !important;
 }
+
 .tgrid > tbody > tr:hover{
-  background-color: var(--div-bg-color) !important;
+  background-color: var(--table-header) !important;
 }
+
 /* vendor landscape view css */
 .box-shadow-unset.portlet.light.light_bg_removal.remove_space,.portlet.light.light_bg_removal.remove_space.padding-0,.portlet.light.light_bg_removal.remove_space.remove_bgcolor{
   background-color: unset!important;
@@ -2461,4 +2463,20 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
   background-color: unset !important;
   border: 1px solid var(--border-color) !important;
   margin: 10px 0px;
+}
+.activity-updated-status-btn-v2{
+  color: var(---text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+@media (min-width: 657px) and (max-width: 870px) {
+  .tab_navbar {
+    background-color: var(--top-bg-color) !important;
+    border-bottom:none!important;
+    box-shadow: none !important;
+  }
+}
+@media (max-width: 767px) {
+  .page-header.navbar {
+    background-color: var(--top-bg-color) !important; 
+  }
 }

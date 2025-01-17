@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <app-worldmap *ngIf="landingPageViewsData" [worldMapData]='landingPageViewsData' (notifyParent)="getViewsByCountryCode($event)"></app-worldmap>
+                    <app-worldmap *ngIf="landingPageViewsData" [worldMapData]='landingPageViewsData' [isFromLandscapPages]="(vendorJourney||masterLandingPages || welcomePages|| isPartnerJourneyPages || isVendorMarketplacePages)" (notifyParent)="getViewsByCountryCode($event)"></app-worldmap>
                 </div>
             </div>
         </div>

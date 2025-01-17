@@ -60,4 +60,9 @@ export class TaskActivityService {
     return this.authenticationService.callDeleteMethod(url);
   }
 
+  fetchTaskActivityForPreviewById(taskActivityId:any) {
+    let url = this.URL + "/fetchTaskActivityForPreviewById/" + taskActivityId + this.ACCESS_TOKEN_URL;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

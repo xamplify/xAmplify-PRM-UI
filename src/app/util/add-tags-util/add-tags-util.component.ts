@@ -29,6 +29,8 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
   loggedInUserId = 0;
   customResponse: CustomResponse = new CustomResponse();
   tags: Array<Tag> = new Array<Tag>();
+  maxlengthError: boolean = false;
+  maxlengthErrorMessage = "Please note: The maximum allowed length for the tag is 55 characters."
 
   @Input() pagination: Pagination;
   @Input() isAddTag:boolean;
@@ -77,6 +79,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.isAddTag = false;
     this.tagNames = [];
     this.tag.isTagNameValid = false;
+    this.maxlengthError = false;
     this.notifyParent.emit();
   }
 
@@ -89,6 +92,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.tag.isValid = true;
     //this.tagResponse = new CustomResponse();
     this.tagErrorMessage = "";
+    this.maxlengthError = false;
   }
 
   validateTagName(event: any) {
@@ -110,6 +114,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
       }
     } else {
       if (this.isAddTag) {
+        this.maxlengthError = (event.target.value != undefined && event.target.value.length > 55) ? true : false;
         if (this.tagNames == undefined || this.tagNames.length < 1) {
           this.tag.isTagNameValid = false;
         } else {
@@ -123,7 +128,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
           event.target.value = value;
         }
       } else {
-        this.tag.tagName = $.trim(this.tag.tagName);
+        this.maxlengthError = (this.tag.tagName != undefined && this.tag.tagName.length > 55) ? true : false;
         if (this.tag.tagName == undefined || this.tag.tagName.length < 1) {
           this.tag.isTagNameValid = false;
         } else {

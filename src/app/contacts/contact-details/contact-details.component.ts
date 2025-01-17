@@ -19,13 +19,15 @@ import { EmailActivityService } from 'app/activity/services/email-activity-servi
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { ActivityService } from 'app/activity/services/activity-service';
+import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService]
+  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -105,11 +107,18 @@ export class ContactDetailsComponent implements OnInit {
   showImageTag:boolean = false;
   imageSourcePath:any = '';
   isLocalhost:boolean = false;
+  showMeetingModalPopup: boolean = false;
+  activeCalendarDetails: any;
+  ngxLoading: boolean = false;
+  showCalendarIntegrationsModalPopup: boolean = false;
+  flexiFields: any;
+  isReloadMeetingTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
-    public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService ) {
+    public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService,
+    public calendarIntegratonService: CalendarIntegrationService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -133,6 +142,7 @@ export class ContactDetailsComponent implements OnInit {
       this.isFromCompanyModule = true;
     }
     this.getContact();
+    this.getActiveCalendarDetails();
     this.referenceService.goToTop();
     this.checkTermsAndConditionStatus();
     this.getLegalBasisOptions();
@@ -237,6 +247,7 @@ export class ContactDetailsComponent implements OnInit {
     this.contactService.findContactByUserIdAndUserListId(this.contactId, this.selectedContactListId).subscribe(
       data => {
         this.selectedContact = data.data;
+        this.flexiFields = data.data.flexiFields;
         this.isLoading = false;
       },
       error => {
@@ -256,7 +267,7 @@ export class ContactDetailsComponent implements OnInit {
 			this.userService.getGdprSettingByCompanyId(this.companyId)
 				.subscribe(
 					response => {
-						if (response.statusCode == 200) {
+						if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
 							this.gdprSetting = response.data;
 							this.gdprStatus = this.gdprSetting.gdprStatus;
 							this.termsAndConditionStatus = this.gdprSetting.termsAndConditionStatus;
@@ -376,7 +387,7 @@ export class ContactDetailsComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName).subscribe(
       response => {
         const data = response.data;
-        let isSuccess = response.statusCode === 200;
+        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.leadsCount = data.totalRecords;
           this.contactLeads = data.list;
@@ -426,7 +437,7 @@ export class ContactDetailsComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName).subscribe(
       response => {
         const data = response.data;
-        let isSuccess = response.statusCode === 200;
+        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.dealsCount = data.totalRecords;
           this.contactDeals = data.list;
@@ -506,7 +517,7 @@ export class ContactDetailsComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName).subscribe(
       response => {
         const data = response.data;
-        let isSuccess = response.statusCode === 200;
+        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.campaignsCount = data.totalRecords;
           this.contactCampaigns = data.list;
@@ -575,7 +586,7 @@ export class ContactDetailsComponent implements OnInit {
     this.activityService.fetchLogoFromExternalSource(this.contactId).subscribe(
       response => {
         const data = response.data;
-        if (response.statusCode == 200 && data != '') {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK && data != '') {
           this.imageSourcePath = data;
           this.showImageTag = true;
         } else {
@@ -585,6 +596,59 @@ export class ContactDetailsComponent implements OnInit {
         this.showImageTag = false;
       }
     )
+  }
+
+  openMeetingModalPopup() {
+    this.actionType = 'add';
+    if (this.activeCalendarDetails != undefined) {
+      this.showMeetingModalPopup = true;
+    } else {
+      this.showCalendarIntegrationsModalPopup = true;
+    }
+  }
+
+  closeCalendarIntegrationsModalPopup() {
+    this.showCalendarIntegrationsModalPopup = false;
+  }
+
+  closeMeetingModalPopup(event) {
+    if (this.referenceService.checkIsValidString(this.activeCalendarDetails.userUri)) {
+      this.isReloadMeetingTab = event;
+    } else {
+      this.getActiveCalendarDetails();
+    }
+    this.showMeetingModalPopup = false;
+  }
+
+  getActiveCalendarDetails() {
+    this.ngxLoading = true;
+    this.calendarIntegratonService.getActiveCalendarDetails().subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.activeCalendarDetails = response.data;
+        }
+        this.ngxLoading = false;
+      },
+      error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  ngAfterViewChecked() {
+		let tempCheckCalendlyAuth = localStorage.getItem('isCalendlyAuth');
+		localStorage.removeItem('isCalendlyAuth');
+
+		if (tempCheckCalendlyAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+	}
+
+  reloadMeetingTab(event) {
+    this.isReloadMeetingTab = event;
   }
   
 }

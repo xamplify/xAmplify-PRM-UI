@@ -17,6 +17,7 @@ import { ThemePropertiesDto } from "app/dashboard/models/theme-properties-dto";
 import { CompanyThemeActivate } from "app/dashboard/models/company-theme-activate";
 import { ThemeDto } from "app/dashboard/models/theme-dto";
 import { XAMPLIFY_CONSTANTS } from "app/constants/xamplify-default.constants";
+import { UtilService } from "../services/util.service";
 
 
 declare var $: any;
@@ -53,8 +54,13 @@ export class HomeComponent implements OnInit {
     public videoUtilService: VideoUtilService,
     private vanityURLService: VanityURLService,
     public dashBoardService: DashboardService,
+    public utilService: UtilService,
     private renderer: Renderer
+    
   ) {
+    if(this.utilService.isLoggedAsTeamMember() || this.authenticationService.isTeamMember() || this.authenticationService.module.isTeamMember) {
+      this.getfilterOption();
+    }
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
     /**** XNFR-134 ****/
@@ -460,6 +466,8 @@ export class HomeComponent implements OnInit {
               document.documentElement.style.setProperty('--footer-border-color', this.footerSkin.buttonBorderColor);
               require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
               document.documentElement.style.setProperty('--page-content', this.maincontentCustom.backgroundColor);
+              document.documentElement.style.setProperty('--table-header', this.maincontentCustom.tableHeaderColor);
+              document.documentElement.style.setProperty('--table-body-color', this.maincontentCustom.tableBodyColor);
               document.documentElement.style.setProperty('--div-bg-color', this.maincontentCustom.divBgColor);
               document.documentElement.style.setProperty('--title-heading--text', this.maincontentCustom.textColor);
               document.documentElement.style.setProperty('--border-color', this.maincontentCustom.buttonBorderColor);
@@ -567,6 +575,25 @@ export class HomeComponent implements OnInit {
             this.loader = false;
           });
     }
+  }
+
+  getfilterOption(){
+    this.loader = true;
+    let partnerFilterOption: any ;
+    this.dashBoardService.getPartnersFilter().subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          partnerFilterOption = response.data;
+          // localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, JSON.stringify(response.data));
+          // this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, response.data);
+        }
+        this.loader = false;
+      }, _error => {
+        this.loader = false;
+    },()=>{
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, partnerFilterOption);
+    }
+    )
   }
 
 }

@@ -29,6 +29,10 @@ export const RouterUrlConstants = {
     ccd:'ccd',
     cd:'cd',
     timeline:'timeline/',
-    universalSearch:'universal-search'
+    universalSearch:'universal-search',
+    signature:'signature/',
+    approval : 'approval/',
+    manageApproval : 'approve/manage/'
+
 
 }

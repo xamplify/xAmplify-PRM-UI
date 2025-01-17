@@ -386,6 +386,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	vendorSharedPagesLabel="Vendor Showcase";
 	partnerSharedPagesLabel="Partner Showcase";
 
+	approvalConfigurationSettings: boolean = false;
+
+	showCalendarIntegrations: boolean = false;
+	islandScapeLabel: boolean;
+	landscapeLabel: any;
+
+	/***XNFR-812****/
+	signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
+	isSignatureOptionClicked = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -692,6 +702,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				else if (e.data == 'isZohoAuth') {
 					localStorage.setItem('isZohoAuth', 'yes');
 				}
+				else if (e.data == 'isCalendlyAuth') {
+					localStorage.setItem('isCalendlyAuth', 'yes');
+				}
 			}, false);
 			this.getModuleAccessByUser();
 			this.findUpgradeRequest();
@@ -800,10 +813,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempCheckZohoAuth = localStorage.getItem('isZohoAuth');
+		let tempCheckCalendlyAuth = localStorage.getItem('isCalendlyAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
+		localStorage.removeItem('isCalendlyAuth');
 
 		if (tempCheckHubSpotAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
@@ -824,6 +839,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.router.navigate(['/home/dashboard/myprofile']);
 		}
 		else if (tempCheckZohoAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+		else if (tempCheckCalendlyAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
 			localStorage.removeItem("userAlias");
 			localStorage.removeItem("currentModule");
@@ -1926,6 +1947,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	activateTab(activeTabName: any) {
 		this.resetVendorJourneyAndPartnerJourneyFunctionality()
 		this.activeTabName = activeTabName;
+		this.islandScapeLabel = false;
 		if (this.activeTabName != 'playerSettings') {
 			if (this.videoJSplayer) {
 				this.videoJSplayer.pause();
@@ -2125,32 +2147,41 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		else if (this.activeTabName == "vendorJourney") {
 			this.ngxloading = true;
 			this.vendorJourney = false;
+			this.islandScapeLabel = false;
 			let self = this;
 			setTimeout(() => {
 				self.vendorJourney = true;
 				self.ngxloading = false;
+				self.islandScapeLabel = true;
 			}, 500);
 			this.activeTabHeader = this.VendorJourneyLabel;
+			this.landscapeLabel = this.properties.myShowcase_vendor;
 
 		}
 		else if (this.activeTabName == "landingPages") {
 			this.ngxloading = true;
 			this.isLandingPages = false;
+			this.islandScapeLabel = false;
 			let self = this;
 			setTimeout(() => {
 				self.isLandingPages = true;
 				self.ngxloading = false;
+				self.islandScapeLabel = true;
 			}, 500);
 			this.activeTabHeader = this.vendorSharedPagesLabel;
+			this.landscapeLabel = this.properties.vendor_showcase;
 		} else if (this.activeTabName == "masterLandingPages") {
 			this.ngxloading = true;
 			this.isMasterLandingPages = false;
+			this.islandScapeLabel = false;
 			let self = this;
 			setTimeout(() => {
 				self.isMasterLandingPages = true;
 				self.ngxloading = false;
+				self.islandScapeLabel = true;
 			}, 500);
 			this.activeTabHeader = this.partnerLandscapeLabel;
+			this.landscapeLabel = this.properties.My_Landscape_Partner;
 		}else if (this.activeTabName == "masterLandingPageCategories") {
             this.ngxloading = true;
             this.isMasterLandingPageCategories = false;
@@ -2215,30 +2246,54 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		else if (this.activeTabName == "partnerJourneyPages") {
 			this.ngxloading = true;
 			this.isPartnerJourneyPages = false;
+			this.islandScapeLabel = false;
 			let self = this;
 			setTimeout(() => {
 				self.isPartnerJourneyPages = true;
 				self.ngxloading = false;
+				self.islandScapeLabel = true;
 			}, 500);
 			this.activeTabHeader = this.partnerJourneyPageLabel;
+			this.landscapeLabel = this.properties.MyShowcase_partner;
 		}else if (this.activeTabName == "vendorPartnerJourneyPages") {
 			this.ngxloading = true;
 			this.isVendorPartnerJourneyPages = false;
+			this.islandScapeLabel = false;
 			let self = this;
 			setTimeout(() => {
 				self.isVendorPartnerJourneyPages = true;
 				self.ngxloading = false;
+				self.islandScapeLabel = true;
 			}, 500);
 			this.activeTabHeader = this.partnerSharedPagesLabel;
+			this.landscapeLabel = this.properties.partner_Showcase;
 		}else if (this.activeTabName == "vendorMarketplacePages") {
 			this.ngxloading = true;
 			this.isVendorMarketplacePages = false;
+			this.islandScapeLabel = false;
 			let self = this;
 			setTimeout(() => {
 				self.isVendorMarketplacePages = true;
 				self.ngxloading = false;
+				self.islandScapeLabel = true;
 			}, 500);
 			this.activeTabHeader = this.vendorLandscapeLabel;
+			this.landscapeLabel = this.properties.my_Landscape_Vendor;
+		} else if (this.activeTabName == "approvalConfigurationSettings") {
+			this.approvalConfigurationSettings = true;
+			this.activeTabHeader = this.properties.approvalConfigurationSettings;
+		} else if (this.activeTabName == 'calendarIntegrations') {
+			this.showCalendarIntegrations = true;
+			this.activeTabHeader = this.properties.calendarIntegrations;
+		}else if (this.activeTabName == this.signatureMenuHeader) {
+			this.startNgxLoader();
+			this.updateSignatureSettingsOption(false);
+			let self = this;
+			setTimeout(() => {
+				self.updateSignatureSettingsOption(true);
+				self.stopNgxLoader();
+			}, 500);
+			this.activeTabHeader = this.signatureMenuHeader;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
@@ -2269,6 +2324,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*****XNFR-628******/
 	updateChatGptSettingsOption(option:boolean){
 		this.isChatGptSettingsOptionClicked = option;
+	}
+
+	/*****XNFR-812******/
+	updateSignatureSettingsOption(option:boolean){
+		this.isSignatureOptionClicked = option;
 	}
 
 

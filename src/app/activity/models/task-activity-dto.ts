@@ -14,4 +14,5 @@ export class TaskActivity {
     createdTime:any;
     remainderType:any = '';
     taskAttachmentDTOs:any;
+    assignedToEmailId:any;
 }

@@ -2158,3 +2158,4 @@ button.btn-info.aspect_ratio:disabled {
   opacity: .5; /* Change the opacity to make the button look disabled */
   cursor: not-allowed; /* Change the cursor to indicate it's disabled */
 }
+.portlet-body.table_radius {border-radius: 7px !important;}

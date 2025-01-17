@@ -67,6 +67,7 @@ export const routes: Routes = [
 	{ path: 'home/dashboard/isalesforce-callback', component: VanitySocialContactsCallbackComponent },
 	{ path: 'home/dashboard/microsoft-callback', component: VanitySocialContactsCallbackComponent },
 	{ path: 'home/dashboard/zoho-callback', component: VanitySocialContactsCallbackComponent},
+	{ path: 'home/dashboard/calendly-callback', component: VanitySocialContactsCallbackComponent},
     
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'expired', component: LogoutComponent },
@@ -111,7 +112,8 @@ export const routes: Routes = [
 			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule',  data: { preload: true } },
 			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule',  data: { preload: true } },
 			
-			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } }
+			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } },
+			{ path: 'approve', loadChildren: 'app/approval/approval.module#ApprovalModule', data: { preload: true } },
 		]
 	},
 	{ path: 'terms-conditions', component: TermsConditonComponent },

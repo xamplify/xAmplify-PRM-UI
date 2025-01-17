@@ -502,6 +502,9 @@ fieldset {
   .Launch-btns{
     margin: 4px 2px !important;
   }
+  .tab_flex{
+    flex-wrap: wrap;
+  }
 }
 #download-drop {
   box-shadow: none;

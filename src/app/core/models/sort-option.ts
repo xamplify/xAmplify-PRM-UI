@@ -529,6 +529,12 @@ export class SortOption {
 		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
 	];
+
+	/***XNFR-783***/
+	calendlyDropDownOptions = [
+		{ 'name': 'Created On(Desc)', 'value': 'desc' },
+		{ 'name': 'Created On(Asc)', 'value': 'asc' }
+	]
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -621,5 +627,7 @@ export class SortOption {
 
 	public selectedSortedOptionForPartnerJourney = this.sortByDropDownForPartnerJourney[0];
 
+	/**XNFR-783**/
+	public calendlyDropDownOption = this.calendlyDropDownOptions[0].value;
 
 }

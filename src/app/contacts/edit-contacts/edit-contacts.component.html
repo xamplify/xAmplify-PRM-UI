@@ -61,7 +61,7 @@
 		</li>
 		<li *ngIf="showContactDetailsTab">
 			<a translate>
-				<i class="fa fa-angle-right" aria-hidden="true"></i>Contact Details
+				<i class="fa fa-angle-right" aria-hidden="true"></i>Contact Journey
 			</a>
 		</li>
 	</ul>
@@ -510,7 +510,7 @@
 														<div class="btn-group mt buttonalign"
 															*ngIf="!isSynchronizationList && !isFormList ">
 															<div class="fileUpload marg-lft" id="upload_csv"
-																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)|| (contactsCompanyListSync  && !this.isPartnerUserList))"
+																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)|| (contactsCompanyListSync  && !this.isPartnerUserList))"
 																translate>
 																<button class="button bgcolor-unset">
 																	<span
@@ -522,9 +522,8 @@
 																		(click)="input.value = null;resetResponse();"
 																		(change)="fileChange(input)" accept=".csv"
 																		#input
-																		[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
+																		[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9" />
 																</button>
-
 															</div>
 														</div>
 													</ng-container>
@@ -856,7 +855,7 @@
 												</div>
 
 												<!----- XNFR-671 Custom CSV Mapped Option ----->
-												<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 2">
+												<div *ngIf="isUploadCsvOptionEnabled && csvRows?.length > 1">
 													<app-custom-csv-mapping [csvRows]="csvRows" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
 														#customCsvMapping (notifyParent)="saveCsvMappedColumns($event)" (notifyParentCancel)="cancelContacts()"
 														(notifyParentSave)="updateCsvContactList(contactListId)" (notifyParentCustomResponse)="csvCustomResponse()">
@@ -1636,7 +1635,7 @@
 
 													<td
 														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">
-														<button class="btn Btn-Green"
+														<button class="btn-primary"
 															*ngIf="contactsByType.selectedCategory == 'unsubscribed' && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
 															[disabled]="assignLeads"
 															(click)="resubscribeUser(allcontacts)" translate>

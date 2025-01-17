@@ -16,6 +16,7 @@ import { CustomSkin } from '../models/custom-skin';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { Roles } from 'app/core/models/roles';
 import { UserGuideDashboardDto } from 'app/guides/models/user-guide-dashboard-dto';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $:any;
 
@@ -201,20 +202,26 @@ export class WelcomeComponent implements OnInit, OnDestroy {
           }catch(error){ console.log(error);}
     }
 
-    ngOnInit() {
-      try{
-          const currentUser = localStorage.getItem( 'currentUser' );
-          this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
-          this.loggedInUserId = this.authenticationService.getUserId();
-        this.getDefaultPage(this.loggedInUserId);
-        this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
-        this.getWelcomePageItems();
-        this.getMainContent(this.userId);
-        /** User Guide **/
-      this.getMergeTagForGuide();
+  ngOnInit() {
+    try {
+      const currentUser = localStorage.getItem('currentUser');
+      this.logedInCustomerCompanyName = JSON.parse(currentUser)['logedInCustomerCompanyNeme'];
+      this.loggedInUserId = this.authenticationService.getUserId();
+      this.getDefaultPage(this.loggedInUserId);
+      this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text : this.vendor_welcome_text;
+      this.getWelcomePageItems();
+      this.getMainContent(this.userId);
       /** User Guide **/
-      }catch(error){ console.log(error);this.xtremandLogger.error(error);
-        this.xtremandLogger.errorPage(error);}
+      this.getMergeTagForGuide();
+      let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+      if (filterPartner!=null && filterPartner != undefined && (!filterPartner || filterPartner === 'false')) {
+        this.applyFilter = false;
+      }
+      /** User Guide **/
+    } catch (error) {
+      console.log(error); this.xtremandLogger.error(error);
+      this.xtremandLogger.errorPage(error);
+    }
   }
 
     ngOnDestroy(){

@@ -37,4 +37,5 @@ export class DamUploadPostDto {
 
     /***XNFR-586 */
     addedToQuickLinks = false;
+
 }

@@ -155,4 +155,15 @@ export class Pagination {
 	vendorPartnerJourneyPage:boolean = false;
 
 	vendorMarketplacePageAnalytics:boolean = false;
+
+	selectedApprovalStatusCategory: string = "";
+
+	approvalStatus: string = "";
+
+	approvalStatusUpdatedBy: number;
+
+	approvalStatusUpdatedTimeInString: string = "";
+	
+	createdById: number;
+
 }

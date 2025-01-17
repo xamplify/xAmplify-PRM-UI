@@ -7,6 +7,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { PartnerJourneyRequest } from '../../partners/models/partner-journey-request';
 import { TeamMemberAnalyticsRequest } from 'app/team/models/team-member-analytics-request';
+import { Properties } from 'app/common/models/properties';
 
 @Component({
   selector: 'app-partner-journey-count-tiles',
@@ -32,14 +33,30 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   partnerJourneyAnalytics: any;
+  partnerModuleName: string;
+  infoName: string;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
-    public utilService: UtilService, public xtremandLogger: XtremandLogger) {
+    public utilService: UtilService, public xtremandLogger: XtremandLogger,public properties: Properties) {
       this.loggedInUserId = this.authenticationService.getUserId(); 
   }
 
   ngOnInit() {    
+    this.getInfoname();
+  }
+
+  private getInfoname() {
+    const customName = this.authenticationService.partnerModule.customName;
+    const isCustomNameDefined = customName != null && customName.length > 0;
+
+    this.partnerModuleName = isCustomNameDefined ? customName : " Partner";
+
+    if (!this.isDetailedAnalytics) {
+      this.infoName = `${this.applyFilter && (this.authenticationService.isTeamMember() || this.authenticationService.module.isTeamMember)? " My " : " All "}${this.partnerModuleName}s`;
+    } else {
+      this.infoName = ` the ${this.partnerModuleName}`;
+    }
   }
 
   ngOnChanges() {

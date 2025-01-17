@@ -405,11 +405,11 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
       .catch(this.handleError);
   }
 
-  getTemplateId(emailId: any) {
-    const url = this.authenticationService.REST_URL + "v_url/get-template-id" + '?emailId=' + emailId;
+  getTemplateId(emailId: any, isInactivePartnersDiv: any) {
+    const userId = this.authenticationService.getUserId();
+    const url = this.authenticationService.REST_URL + "v_url/get-template-id"
+      + '?emailId=' + emailId + '&userId=' + userId + '&isInactivePartnersDiv=' + isInactivePartnersDiv
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
-    
-    
-
+  
 }

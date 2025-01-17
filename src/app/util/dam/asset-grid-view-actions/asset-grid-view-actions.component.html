@@ -39,6 +39,11 @@
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
 		title="View Details" (click)="viewDetails(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
+	</a> <a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView"
+		(click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top"
+		title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
+		<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+		<div class="clickicons"></div>
 	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete custom-icon" data-toggle="tooltip"
 		data-placement="top" title="Delete" (click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
 			aria-hidden="true"></i>
@@ -48,10 +53,13 @@
 		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
 		<a class="Iconhover custom-grid-icon"
 			*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
-			(click)="campaignRouter(asset)" data-toggle="tooltip" data-placement="top" title="Create campaign">
+			(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset) : ''" data-toggle="tooltip" data-placement="top" 
+			title="{{asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign'}}"
+			[ngClass]="(asset?.approvalStatus != 'APPROVED') ? 'disabled gray' : ''">
 			<i class="fa fa-bullhorn" aria-hidden="true"></i>
 			<div class="clickicons"></div>
-		</a> <a class="disabled Iconhover custom-grid-icon"
+		</a>
+		<a class="disabled Iconhover custom-grid-icon"
 			*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 			data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft"> <i
 				class="fa fa-bullhorn" aria-hidden="true"></i>

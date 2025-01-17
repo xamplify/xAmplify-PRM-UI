@@ -1,33 +1,41 @@
 <div style="display: flex;margin-right: 5px;">
   <div class="universal-dropdown-container">
-    <input type="checkbox" id="dropdown-toggle" class="universal-dropdown-checkbox"
+    <!-- <input type="checkbox" id="dropdown-toggle" class="universal-dropdown-checkbox"
       (change)="updateDropdownVisibility()" [checked]="isDropdownVisible" />
     <label for="dropdown-toggle" class="universal-dropdown-label">
       {{ refService.universalSearchFilterType ? refService.universalSearchFilterType : 'All' }}
       <span [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'"></span>
-    </label>
-    <ul class="universal-dropdown-menu" [class.show]="isDropdownVisible">
-      <!-- <li *ngFor="let option of dropdownOptions" (click)="selectDropdownOption(option.label)">
-        {{ option.label }}
-      </li> -->
-      <li (click)="selectDropdownOption('All')">All</li>
-      <li (click)="selectDropdownOption('Assets')" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner">Assets</li>
-       <li (click)="selectDropdownOption('Tracks')" *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">Tracks</li>
-       <li (click)="selectDropdownOption('PlayBooks')" *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">PlayBooks</li>
-       <li (click)="selectDropdownOption('Lead')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Leads</li>
-       <li (click)="selectDropdownOption('Deal')" style="border-bottom: none !important;" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner">Deals</li>
-
-
-
+    </label> -->
+    <div class="universal-dropdown-label" (click)="updateDropdownVisibility()">
+      <i [class]="'fa ' + selectedIcon+' mr5'"></i> <span style="white-space: nowrap;">{{refService.universalSearchFilterType ?
+        (refService.universalSearchFilterType === 'Partners' && authenticationService?.partnerModule?.customName)
+        ? (authenticationService.partnerModule.customName | slice:0:11) + (authenticationService.partnerModule.customName.length > 11 ? '...' : '') : refService.universalSearchFilterType:'All'
+      }} </span>
+      <span [ngClass]="isDropdownVisible? 'fa fa-caret-up' : 'fa fa-caret-down'" class="dropdown-arrow"></span>
+    </div>
+    <ul class="universal-dropdown-menu mb_search" [class.show]="isDropdownVisible">
+      <li (click)="selectDropdownOption('All','fa-solid fa-universal-access')"  data-toggle="tooltip" data-placement="bottom" title="All"><i class="fa fa-solid fa-universal-access" >‌</i>All</li>
+      <li (click)="selectDropdownOption('Assets','fa-tasks')" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner" data-toggle="tooltip" data-placement="bottom" title="Assets"><i aria-hidden="true" class="fa fa-tasks"></i>Assets</li>
+       <li (click)="selectDropdownOption('Tracks','fa-graduation-cap')" *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner" data-toggle="tooltip" data-placement="bottom" title="Tracks"><i class="fa fa-graduation-cap"></i>Tracks</li>
+       <li (click)="selectDropdownOption('PlayBooks','fa-book')" *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner" data-toggle="tooltip" data-placement="bottom" title="PlayBooks"><i aria-hidden="true" class="fa fa-book"></i>PlayBooks</li>
+       <li (click)="selectDropdownOption('Leads','fa-user-circle')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner" data-toggle="tooltip" data-placement="top" title="Leads">
+        <i aria-hidden="true" class="fa fa-user-circle"></i>Leads</li>
+       <li (click)="selectDropdownOption('Deals','fa-tags')" *ngIf="authenticationService?.module?.hasOpportunityRole || authenticationService?.module?.opportunitiesAccessAsPartner" data-toggle="tooltip" data-placement="top" title="Deals">
+        <i aria-hidden="true" class="fa fa-tags"></i>Deals</li>
+        <li (click)="selectDropdownOption('Partners','fa-handshake-o')" style="border-bottom: none !important;white-space: nowrap;" *ngIf="authenticationService?.module?.isPartner" data-toggle="tooltip" data-placement="top" title="{{authenticationService?.partnerModule?.customName}}">
+          <i aria-hidden="true" class="fa fa-handshake-o"></i>{{(authenticationService.partnerModule.customName | slice:0:11) + (authenticationService.partnerModule.customName.length > 11 ? '...' : '')}}</li>
     </ul>
   </div>
-  <div class="universal-search-bar-container">
+  <div class="universal-search-bar-container" style="border-left: none !important;">
     <input type="text" class="universal-search-input" placeholder="Search..." [(ngModel)]="searchKey"
       (keypress)="universalSearchOnKeyPress($event.keyCode)" />
-    <i *ngIf="isEmptyOrWhitespace(searchKey? searchKey :'')" class="clear-icon fa fa-times"
+    <i [ngStyle]="{ 'visibility': isEmptyOrWhitespace(searchKey ? searchKey : '') ? 'visible': 'hidden'  }" class="clear-icon fa fa-times"
       (click)="searchKey=''; goToDashBoard();"></i>
-    <button class="universal-search-button" [disabled]="!disabledButton(searchKey? searchKey :'')"
-      [ngClass]="disabledButton(searchKey? searchKey :'')? '':'disabled-div'" (click)="universalSearch()">
+    <button class="universal-search-button remove-opcity" [disabled]="!disabledButton(searchKey? searchKey :'')"
+      [ngClass]="disabledButton(searchKey? searchKey :'')? '':'disabled-div'" (click)="universalSearch()"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Search">
       <i aria-hidden="true" class="fa fa-search" [ngClass]="disabledButton(searchKey? searchKey :'')?'':'disabled'"></i>
     </button>
   </div>

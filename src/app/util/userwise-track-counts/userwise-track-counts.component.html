@@ -12,7 +12,7 @@
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
       </span>
-      <button *ngIf="!isTeamMemberAnalytics" class="pull-right mt25m btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
+      <button class="pull-right mt25m btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
         [disabled]="pagination.totalRecords==0" (click)="downloadUserWiseTrackCountsReport()">
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
           data-original-title="Export to Excel"></i>
@@ -40,7 +40,7 @@
               <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle"
                   aria-hidden="true"></i> Vendor</th>
               <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle"
-                  aria-hidden="true"></i> Partner Company</th>
+                  aria-hidden="true"></i> Partner Team Member</th>
               <th scope="col"><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i> {{type | titlecase }} Count
               </th>
             </tr>
