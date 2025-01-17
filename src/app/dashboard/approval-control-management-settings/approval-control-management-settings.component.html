@@ -1,3 +1,106 @@
-<p>
-  approval-control-management-settings works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light light_bg_removal remove_space">
+      <!-- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message> -->
+      <!-- <div class="portlet-title"> -->
+        <div class="float-right input-icon right mb10">
+          <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+            placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
+          <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+            (click)="searchKey='';searchData();"></button>
+          <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
+              aria-hidden="true"></i></button>
+        </div>
+      <!-- </div> -->
+
+
+
+
+      <section>
+        <!-- <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
+        <div>
+          <table class="table tgrid table-hover table-sm">
+            <!-- *ngIf="!httpRequestLoader.isLoading"  -->
+            <thead>
+              <tr>
+                <th scope="col" style="width: 60%;">Team Member Details</th>
+                <th scope="col" class="check-box-alignment">Assets</th>
+                <th scope="col" class="check-box-alignment">Tracks</th>
+                <th scope="col" class="check-box-alignment">Playbooks</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let approvalSettings of approvalControlSettingsDTOs">
+              <tr>
+                <td style="width: 60%;">
+                  <div>
+                    <span class="pointer">
+                      <b>Name: </b>
+                      <span data-toggle="tooltip" data-placement="top" title="{{approvalSettings.fullName}}">
+                        {{approvalSettings?.fullName | slice:0:50}}
+                        <span *ngIf="approvalSettings?.fullName?.length>50">...</span>
+                      </span>
+                      <span *ngIf="approvalSettings?.id == loggedInUserId"> (You)</span>
+                    </span>
+                  </div>
+
+                  <div>
+                    <span class="pointer">
+                      <b>Email Id: </b>
+                      <span data-toggle="tooltip" data-placement="top" title="{{approvalSettings.emailId}}">
+                        {{approvalSettings?.emailId | slice:0:50}}
+                        <span *ngIf="approvalSettings?.emailId?.length>50">...</span>
+                      </span>
+                    </span>
+                  </div>
+                </td>
+                <td>
+                 
+                  <div id="text-color-my-profile" class="check-box-alignment">
+                    <input type="checkbox" [ngModelOptions]="{standalone: true}"
+                     [disabled]="approvalSettings?.role == 'admin'"
+                       class="pointer checkBox_shadow" [(ngModel)]="approvalSettings.assetApprover" value=""
+                       (change)="updateCheckBox($event, approvalSettings, 'assetApprover')">
+                  </div>
+                </td>
+                <td>
+                  <div id="text-color-my-profile" class="check-box-alignment">
+                    <!-- [disabled]="assetApprovalEnabledForCompany" (change)="updateCheckBox($event, 'DAM')" -->
+                    <input type="checkbox" [ngModelOptions]="{standalone: true}"
+                    [disabled]="approvalSettings?.role == 'admin'" class="pointer checkBox_shadow"
+                    [(ngModel)]="approvalSettings.trackApprover" value=""
+                    (change)="updateCheckBox($event, approvalSettings, 'trackApprover')">
+                  </div>
+                </td>
+                <td>
+                  <div id="text-color-my-profile" class="check-box-alignment">
+                    <!-- [disabled]="assetApprovalEnabledForCompany" (change)="updateCheckBox($event, 'DAM')" -->
+                    <input type="checkbox" [ngModelOptions]="{standalone: true}"
+                    [disabled]="approvalSettings?.role == 'admin'" class="pointer checkBox_shadow"
+                    [(ngModel)]="approvalSettings.playbookApprover" value=""
+                    (change)="updateCheckBox($event, approvalSettings, 'playbookApprover')">
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div>
+        <button (click)="saveOrUpdate()" [disabled]="pagination?.totalRecords == 0"
+         class="btn btn-primary">Submit</button>
+      </div>
+
+
+    <div class="alert alert-info text-center" *ngIf="pagination?.totalRecords == 0">
+      <strong>No Data Found</strong>
+    </div>
+
+      <!--Pagination-->
+      <div class="pdl-mgt" *ngIf="pagination?.totalRecords > 0">
+        <app-pagination [pagination]="pagination" (notifyParentDropDown)="listTeamMembersForApprovalControlManagement($event)"
+        (notifyParent)="paginateList($event)"></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

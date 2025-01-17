@@ -5,6 +5,7 @@ import { Pagination } from 'app/core/models/pagination';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { MultiSelectCommentDto } from '../models/multi-select-comment-dto';
+import { ApprovalControlSettingsDTO } from '../models/approval-control-settings-dto';
 
 @Injectable()
 export class ApproveService {
@@ -39,5 +40,29 @@ export class ApproveService {
     return this.authenticationService.callPostMethod(updateApprovalStatusUrl, commentDto);
   }
 
+
+
+  listTeamMembersForApprovalControlManagement(pagination: Pagination) {
+    let userId = this.authenticationService.getUserId();
+    let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+    let filterKeyRequestParam = pagination.filterKey != undefined && pagination.filterKey != null ?
+      "&filterKey=" + pagination.filterKey : "";
+    let findAllUrl = this.approveUrl + "/listTeamMembersForApprovalControlManagement/" + userId + this.QUERY_PARAMETERS + pageableUrl + filterKeyRequestParam;
+    return this.authenticationService.callGetMethod(findAllUrl);
+  }
+
+  // listTeamMembersForApprovalControlManagement() {
+  //   let userId = this.authenticationService.getUserId();
+  //   let findAllUrl = this.approveUrl + "/listTeamMembersForApprovalControlManagement/" + userId + this.QUERY_PARAMETERS;
+  //   return this.authenticationService.callGetMethod(findAllUrl);
+  // }
+
+
+
+  saveOrUpdateApprovalControlSettings(approvalControlSettingsDTOs: Array<ApprovalControlSettingsDTO>) {
+    let userId = this.authenticationService.getUserId();
+    let url = this.approveUrl + `/saveOrUpdateApprovalControlSettings`+`/`+userId+`?access_token=${this.authenticationService.access_token}`;
+    return this.authenticationService.callPostMethod(url, approvalControlSettingsDTOs);
+  }
 
 }
