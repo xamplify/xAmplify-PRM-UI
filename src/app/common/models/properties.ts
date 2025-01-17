@@ -527,5 +527,6 @@ export class Properties {
 	my_Partner_Info = 'You have the ability to apply the default filter as My Partner(s).Enabling this option will allow you to view the partners assigned to you.';
 	all_Partners_Info = 'You have the ability to apply the default filter as All Partners.Enabling this option will allow you to view all the partners of your company.';
 
+	UNLOCK_MDF_FUNDING = "UNLOCK_MDF_FUNDING";
 }
 
