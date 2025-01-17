@@ -134,7 +134,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     gearIconOptions: boolean = false;
     campaignViewType: string = "";
     campaignAnalyticsSettingsOptionEnabled = false;
-
+    /*XNFR-832*/
+    isUnlockMdfFundsOptionEnabled = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -178,7 +179,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showMessageOnTop() {
         $(window).scrollTop(0);
         this.customResponse = new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
-        // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
     }
 
     listCampaign(pagination: Pagination) {
@@ -347,6 +347,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 let campaignAnalyticsSettingsOptionEnabled = map['isCampaignAnalyticsSettingsOptionEnabled'];
                 self.campaignAnalyticsSettingsOptionEnabled = campaignAnalyticsSettingsOptionEnabled != undefined ? campaignAnalyticsSettingsOptionEnabled : false;
                 self.pagination.campaignAnalyticsSettingsOptionEnabled = self.campaignAnalyticsSettingsOptionEnabled;
+                /**XNFR-832***/
+                self.isUnlockMdfFundsOptionEnabled =map['isUnlockMdfFundsOptionEnabled'];
             }, _error => {
                 self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 self.isloading = false;
