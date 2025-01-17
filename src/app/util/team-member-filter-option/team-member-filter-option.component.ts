@@ -25,12 +25,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
 
   ngOnInit() {
     this.showPartnersFilterOption();
-    if (this.isPartnerModule) {
-    let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-    if (filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
-      this.selectedFilterIndex = 0;
-    }
-  }
+    this.checkPartnerTeamMemberFilter();
     if (this.customSelectedIndex !== undefined && this.customSelectedIndex !== null) {
       this.selectedFilterIndex = this.customSelectedIndex;
     }
@@ -41,6 +36,15 @@ export class TeamMemberFilterOptionComponent implements OnInit {
           this.selectedFilterIndex = 0;
         }
       });
+  }
+
+  private checkPartnerTeamMemberFilter() {
+    if (this.isPartnerModule) {
+      let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+      if (filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
+        this.selectedFilterIndex = 0;
+      }
+    }
   }
 
   showPartnersFilterOption() {
