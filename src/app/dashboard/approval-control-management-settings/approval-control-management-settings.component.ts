@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
 import { ApproveService } from 'app/approval/service/approve.service';
+import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -8,12 +9,13 @@ import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { CustomResponse } from '../../common/models/custom-response';
 
 @Component({
   selector: 'app-approval-control-management-settings',
   templateUrl: './approval-control-management-settings.component.html',
   styleUrls: ['./approval-control-management-settings.component.css'],
-  providers: [HttpRequestLoader, ApproveService]
+  providers: [HttpRequestLoader, ApproveService, Properties]
 })
 export class ApprovalControlManagementSettingsComponent implements OnInit {
 
@@ -24,37 +26,64 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
   loggedInUserId: number = 0;
   searchKey: string;
   approvalControlSettingsDTOs: Array<ApprovalControlSettingsDTO> = new Array<ApprovalControlSettingsDTO>();
+  customResponse: CustomResponse = new CustomResponse();
 
   selectedList: Array<ApprovalControlSettingsDTO> = new Array<ApprovalControlSettingsDTO>();
   selectedCheckBoxState: { [key: string]: ApprovalControlSettingsDTO } = {};
 
+  assetApprovalEnabledForCompany: boolean = false;
+  tracksApprovalEnabledForCompany: boolean = false;
+  playbooksApprovalEnabledForCompany: boolean = false;
+  approvalStatusSettingsDto: any;
+
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
-    public pagerService: PagerService,
+    public pagerService: PagerService, public properties:Properties
   ) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
     this.listTeamMembersForApprovalControlManagement(this.pagination);
+    this.getApprovalConfigurationSettings();
   }
 
   listTeamMembersForApprovalControlManagement(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.approveService.listTeamMembersForApprovalControlManagement(pagination).subscribe(
       response => {
-        let data = response.data;
-        this.approvalControlSettingsDTOs = data.list.map(item => {
-          const existingState = this.selectedCheckBoxState[item.id];
-          return existingState ? { ...item, ...existingState } : item;
-        });
-        pagination.totalRecords = data.totalRecords;
-        pagination = this.pagerService.getPagedItems(pagination, this.teamMemberList);
-        pagination = this.utilService.setPaginatedRows(response, pagination);
+        if(response.statusCode === 200 && response.data) {
+          let data = response.data;
+          this.approvalControlSettingsDTOs = data.list.map(item => {
+            const existingState = this.selectedCheckBoxState[item.id];
+            return existingState ? { ...item, ...existingState } : item;
+          });
+          pagination.totalRecords = data.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, this.teamMemberList);
+          pagination = this.utilService.setPaginatedRows(response, pagination);
+        }
         this.referenceService.loading(this.httpRequestLoader, false);
       }, error => {
-        this.xtremandLogger.errorPage(error);
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
       });
+  }
+
+  getApprovalConfigurationSettings() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.approveService.getApprovalConfigurationSettingsByUserId(this.loggedInUserId)
+      .subscribe(
+        result => {
+          if (result.data && result.statusCode == 200) {
+            this.approvalStatusSettingsDto = result.data;
+            this.assetApprovalEnabledForCompany = this.approvalStatusSettingsDto.approvalRequiredForAssets;
+            this.tracksApprovalEnabledForCompany = this.approvalStatusSettingsDto.approvalRequiredForTracks;
+            this.playbooksApprovalEnabledForCompany = this.approvalStatusSettingsDto.approvalRequiredForPlaybooks;
+          }
+          this.referenceService.loading(this.httpRequestLoader, false);
+        }, error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+        });
   }
 
   updateCheckBox(event: any, approvalSettings: ApprovalControlSettingsDTO, moduleType: string) {
@@ -65,12 +94,8 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
     } else {
       existingState = { ...approvalSettings };
     }
-
     existingState[moduleType] = isChecked;
-
-    this.setFieldUpdated(existingState, moduleType);
     this.selectedCheckBoxState[approvalSettings.id] = existingState;
-
     const index = this.selectedList.findIndex(item => item.id === approvalSettings.id);
     if (index === -1) {
       this.selectedList.push(existingState);
@@ -79,68 +104,27 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
     }
   }
 
-  setFieldUpdated(setting: ApprovalControlSettingsDTO, moduleType: string) {
-    switch (moduleType) {
-      case 'assetApprover':
-        setting.assetApproverFieldUpdated = true;
-        break;
-      case 'trackApprover':
-        setting.trackApproverFieldUpdated = true;
-        break;
-      case 'playbookApprover':
-        setting.playbookApproverFieldUpdated = true;
-        break;
-    }
-  }
-
   saveOrUpdate() {
-    console.log(this.selectedList);
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.approveService.saveOrUpdateApprovalControlSettings(this.selectedList).subscribe(
       response => {
-        let data = response.data;
-        this.approvalControlSettingsDTOs = data.list;
+        if (response.statusCode === 200) {
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+        } else {
+          this.customResponse = new CustomResponse('ERROR', this.properties.UNABLE_TO_PROCESS_REQUEST, true);
+        }
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.referenceService.scrollSmoothToTop();
       }, error => {
-        this.xtremandLogger.errorPage(error);
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
+        this.referenceService.scrollSmoothToTop();
       }, () => {
         this.selectedList = [];
         this.selectedCheckBoxState = {};
+        this.referenceService.loading(this.httpRequestLoader, false);
       });
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   paginateList(event: any) {
     this.pagination.pageIndex = event.page;

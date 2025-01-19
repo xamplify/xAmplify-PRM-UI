@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivityService } from 'app/activity/services/activity-service';
+import { ApproveService } from 'app/approval/service/approve.service';
 import { CommentDto } from 'app/common/models/comment-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { DamService } from 'app/dam/services/dam.service';
 
 declare var $: any;
 
@@ -14,7 +14,7 @@ declare var $: any;
   selector: 'app-content-status-history-modal-popup',
   templateUrl: './content-status-history-modal-popup.component.html',
   styleUrls: ['./content-status-history-modal-popup.component.css'],
-  providers: [DamService, HttpRequestLoader, Properties, ActivityService]
+  providers: [HttpRequestLoader, Properties, ActivityService, ApproveService]
 })
 export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
@@ -59,7 +59,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   constructor( private referenceService: ReferenceService,
       public authenticationService: AuthenticationService,
-      private damService: DamService,
+      private approveService: ApproveService,
       public httpRequestLoader: HttpRequestLoader,
       public properties: Properties,
       public activityService:ActivityService
@@ -77,7 +77,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   loadUserDeailsWithCurrentStatus() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadUserDetailsWithApprovalStatus(this.entityId, this.moduleType.toUpperCase()).subscribe( 
+    this.approveService.loadUserDetailsWithApprovalStatus(this.entityId, this.moduleType.toUpperCase()).subscribe( 
       (response: any) =>{
         this.commentModalPopUpLoader = false;
         if(response && response.data) {
@@ -108,7 +108,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   refreshTimeLineHistory(){
     this.historyPopUpLoader = true;
-    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe( 
+    this.approveService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe( 
       response=>{
         if (response.data && response.data.length > 0) {
           this.statusTimeLineHistory = response.data;
@@ -151,7 +151,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   findComments() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe(
+    this.approveService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe(
         response => {
           this.comments = response.data;
           this.commentModalPopUpLoader = false;
@@ -189,7 +189,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       this.status = this.commentDto.statusInString;
       this.reloadAfterClose = true;
     }
-    this.damService.updateApprovalStatusAndSaveComment(this.commentDto).
+    this.approveService.updateApprovalStatusAndSaveComment(this.commentDto).
     subscribe(
       response=>{
         this.commentModalPopUpLoader = false;

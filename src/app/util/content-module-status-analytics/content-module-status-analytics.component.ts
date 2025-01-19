@@ -43,7 +43,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
   getTileCounts() {
     this.countsLoader = true;
-    this.damService.getStatusTileCountsByModuleType(this.moduleType)
+    this.approveService.getStatusTileCountsByModuleType(this.moduleType)
       .subscribe(
         response => {
           this.countsLoader = false;

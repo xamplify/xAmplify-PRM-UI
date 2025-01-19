@@ -1,32 +1,30 @@
 <div class="row">
   <div class="col-md-12">
     <div class="portlet light light_bg_removal remove_space">
-      <!-- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message> -->
-      <!-- <div class="portlet-title"> -->
-        <div class="float-right input-icon right mb10">
-          <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-            placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
-          <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
-            (click)="searchKey='';searchData();"></button>
-          <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
-              aria-hidden="true"></i></button>
-        </div>
-      <!-- </div> -->
-
-
-
+      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+      <div class="alert alert-info" style="padding: 10px;">
+        {{properties.TEAM_MEMBER_APPROVAL_PREVILEGES_SETTING_HELPER_TEXT}}
+      </div>
+      <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+      <div class="float-right input-icon right mb10">
+        <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+          placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
+        <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+          (click)="searchKey='';searchData();"></button>
+        <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
+            aria-hidden="true"></i></button>
+      </div>
 
       <section>
-        <!-- <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
-        <div>
+        <div *ngIf="!httpRequestLoader.isLoading">
           <table class="table tgrid table-hover table-sm">
-            <!-- *ngIf="!httpRequestLoader.isLoading"  -->
             <thead>
               <tr>
                 <th scope="col" style="width: 60%;">Team Member Details</th>
-                <th scope="col" class="check-box-alignment">Assets</th>
-                <th scope="col" class="check-box-alignment">Tracks</th>
-                <th scope="col" class="check-box-alignment">Playbooks</th>
+                <th scope="col" class="check-box-alignment" *ngIf="authenticationService?.module?.damAccess">Assets</th>
+                <th scope="col" class="check-box-alignment" *ngIf="authenticationService?.module?.lmsAccess">Tracks</th>
+                <th scope="col" class="check-box-alignment" *ngIf="authenticationService?.module?.playbookAccess">
+                  Playbooks</th>
               </tr>
             </thead>
             <tbody *ngFor="let approvalSettings of approvalControlSettingsDTOs">
@@ -52,32 +50,36 @@
                       </span>
                     </span>
                   </div>
+                  <span *ngIf="approvalSettings?.role == 'admin'" class="view-banner" translate> Admin </span>
                 </td>
-                <td>
-                 
+                <td *ngIf="authenticationService?.module?.damAccess">
                   <div id="text-color-my-profile" class="check-box-alignment">
                     <input type="checkbox" [ngModelOptions]="{standalone: true}"
-                     [disabled]="approvalSettings?.role == 'admin'"
-                       class="pointer checkBox_shadow" [(ngModel)]="approvalSettings.assetApprover" value=""
-                       (change)="updateCheckBox($event, approvalSettings, 'assetApprover')">
+                      [disabled]="approvalSettings?.role == 'admin' || !approvalSettings?.hasDamRole || !assetApprovalEnabledForCompany"
+                      data-toggle="tooltip" data-placement="top"
+                      title="{{!assetApprovalEnabledForCompany ? properties.ASSET_REVIEW_DISABLED_TOOLTIP : (!approvalSettings?.hasDamRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_ASSETS_TOOLTIP : '')}}"
+                      class="pointer checkBox_shadow" [(ngModel)]="approvalSettings.assetApprover" value=""
+                      (change)="updateCheckBox($event, approvalSettings, 'assetApprover')">
                   </div>
                 </td>
-                <td>
+                <td *ngIf="authenticationService?.module?.lmsAccess">
                   <div id="text-color-my-profile" class="check-box-alignment">
-                    <!-- [disabled]="assetApprovalEnabledForCompany" (change)="updateCheckBox($event, 'DAM')" -->
                     <input type="checkbox" [ngModelOptions]="{standalone: true}"
-                    [disabled]="approvalSettings?.role == 'admin'" class="pointer checkBox_shadow"
-                    [(ngModel)]="approvalSettings.trackApprover" value=""
-                    (change)="updateCheckBox($event, approvalSettings, 'trackApprover')">
+                      [disabled]="approvalSettings?.role == 'admin' || !approvalSettings?.hasTrackRole || !tracksApprovalEnabledForCompany"
+                      data-toggle="tooltip" data-placement="top"
+                      title="{{!tracksApprovalEnabledForCompany ? properties.TRACK_REVIEW_DISABLED_TOOLTIP : (!approvalSettings?.hasTrackRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_TRACKS_TOOLTIP : '')}}"
+                      class="pointer checkBox_shadow" [(ngModel)]="approvalSettings.trackApprover" value=""
+                      (change)="updateCheckBox($event, approvalSettings, 'trackApprover')">
                   </div>
                 </td>
-                <td>
+                <td *ngIf="authenticationService?.module?.playbookAccess">
                   <div id="text-color-my-profile" class="check-box-alignment">
-                    <!-- [disabled]="assetApprovalEnabledForCompany" (change)="updateCheckBox($event, 'DAM')" -->
                     <input type="checkbox" [ngModelOptions]="{standalone: true}"
-                    [disabled]="approvalSettings?.role == 'admin'" class="pointer checkBox_shadow"
-                    [(ngModel)]="approvalSettings.playbookApprover" value=""
-                    (change)="updateCheckBox($event, approvalSettings, 'playbookApprover')">
+                      [disabled]="approvalSettings?.role == 'admin' || !approvalSettings?.hasPlaybookRole || !playbooksApprovalEnabledForCompany"
+                      data-toggle="tooltip" data-placement="top"
+                      title="{{!playbooksApprovalEnabledForCompany ? properties.PLAYBOOK_REVIEW_DISABLED_TOOLTIP : (!approvalSettings?.hasPlaybookRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP : '')}}"
+                      class="pointer checkBox_shadow" [(ngModel)]="approvalSettings.playbookApprover" value=""
+                      (change)="updateCheckBox($event, approvalSettings, 'playbookApprover')">
                   </div>
                 </td>
               </tr>
@@ -86,20 +88,20 @@
         </div>
       </section>
 
-      <div>
-        <button (click)="saveOrUpdate()" [disabled]="pagination?.totalRecords == 0"
-         class="btn btn-primary">Submit</button>
+      <div class="alert alert-info text-center" *ngIf="pagination?.totalRecords == 0">
+        <strong>No Data Found</strong>
       </div>
-
-
-    <div class="alert alert-info text-center" *ngIf="pagination?.totalRecords == 0">
-      <strong>No Data Found</strong>
-    </div>
 
       <!--Pagination-->
       <div class="pdl-mgt" *ngIf="pagination?.totalRecords > 0">
-        <app-pagination [pagination]="pagination" (notifyParentDropDown)="listTeamMembersForApprovalControlManagement($event)"
-        (notifyParent)="paginateList($event)"></app-pagination>
+        <app-pagination [pagination]="pagination"
+          (notifyParentDropDown)="listTeamMembersForApprovalControlManagement($event)"
+          (notifyParent)="paginateList($event)"></app-pagination>
+      </div>
+
+      <div *ngIf="!httpRequestLoader.isLoading" style="padding: 10px 0px;float: right;">
+        <button (click)="saveOrUpdate()" [disabled]="pagination?.totalRecords == 0 || selectedList.length == 0"
+          class="btn btn-primary">Submit</button>
       </div>
     </div>
   </div>
