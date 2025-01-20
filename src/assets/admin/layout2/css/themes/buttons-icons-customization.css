@@ -6,7 +6,7 @@ button#copyFromClipBoard {
 }
 button.btn.custom, .btn-group button, .selectRecord, button#save\&delete_button,button.group-name-cclass.btn-primary.default-btn-cursor.white-co,
 .btn-success, .btn-primary, .color-flow-button, .button_blue, button.button_blue:disabled, button.button:disabled,
-button.btn.btn-primary, .mix-filter li:hover, .mix-filter li.active, .mix-filter li.campaign-type-selected, .mix-filter li.emailtemplate-selected,
+button.btn.btn-primary, .mix-filter li:hover, .mix-filter li.active, .mix-filter li.campaign-type-selected, .mix-filter li.emailtemplate-selected,.mix-filter li.type-selected,
 button.group-name-cclass.btn-primary.default-btn-cursor,
 .color-flow-button.Btn-Green, li.mix-filter-li-selected {
     background-color: var(--custom-buttonbg-color) !important;
