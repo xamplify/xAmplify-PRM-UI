@@ -34,6 +34,7 @@
                       name="pendingListSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="pointer" />
                   </th>
                   <th *ngIf="selectedFilterStatus != 'PENDING'"></th>
+                  <th *ngIf="selectedFilterStatus == 'PENDING' && !authenticationService?.module?.isAdmin"></th>
                   <th scope="col">Details</th>
                   <th>Created On</th>
                   <th scope="col" class="align-center">Actions</th>
@@ -291,6 +292,14 @@
     <span class="pointer"><b>Folder: </b>
       <span data-toggle="tooltip" data-placement="top" title="{{item.folder}}">
         {{item?.folder}}
+      </span>
+    </span>
+  </h6>
+  <!-- Version Field -->
+  <h6 *ngIf="item?.beeTemplate">
+    <span class="pointer"><b>Version: </b>
+      <span data-toggle="tooltip" data-placement="top" title="{{item.versionInString}}">
+        {{item?.versionInString}}
       </span>
     </span>
   </h6>

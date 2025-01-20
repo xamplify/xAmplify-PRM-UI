@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageAprrovalComponent } from './manage-aprroval.component';
+import { ManageAprrovalComponent } from './manage-approval.component';
 
 describe('ManageAprrovalComponent', () => {
   let component: ManageAprrovalComponent;

@@ -23,12 +23,12 @@ import { Router } from '@angular/router';
 declare var swal:any, $: any;
 
 @Component({
-  selector: 'app-manage-aprroval',
-  templateUrl: './manage-aprroval.component.html',
-  styleUrls: ['./manage-aprroval.component.css'],
+  selector: 'app-manage-approval',
+  templateUrl: './manage-approval.component.html',
+  styleUrls: ['./manage-approval.component.css'],
   providers: [HttpRequestLoader,ApproveService,DamService,TracksPlayBookUtilService,VideoFileService]
 })
-export class ManageAprrovalComponent implements OnInit {
+export class ManageApprovalComponent implements OnInit {
 
   pagination: Pagination = new Pagination();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
