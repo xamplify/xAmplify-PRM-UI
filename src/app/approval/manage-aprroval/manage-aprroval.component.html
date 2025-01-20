@@ -215,18 +215,19 @@
           <div class="clickicons"></div>
         </a>
         <!-- Edit Icon -->
-        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(item)">
+        <a *ngIf="item?.canEdit" class="custom-icon" data-toggle="tooltip"
+          data-placement="top" title="Edit" (click)="edit(item)">
           <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
         <!-- UnPublish Icon -->
-        <a class="custom-icon" *ngIf="item?.published" data-toggle="tooltip" data-placement="top" title="Unpublish"
-          (click)=" UnpublishedModalPopUp(item)">
+        <a class="custom-icon" *ngIf="item?.published && item?.canUnPublish" data-toggle="tooltip" data-placement="top"
+          title="Unpublish" (click)=" UnpublishedModalPopUp(item)">
           <i class="fa fa-reply IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
         <!-- Publish Icon -->
-        <a class="custom-icon" *ngIf="!item.published && item?.type != 'Asset'" data-toggle="tooltip"
+        <a class="custom-icon" *ngIf="!item.published && item?.type != 'Asset' && item?.canPublish" data-toggle="tooltip"
           data-placement="top"
           title="{{(!item?.createdByAnyAdmin && item?.status != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
           (click)="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyAdmin && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? '': confirmChangePublish(item.id, true, item)">
@@ -239,29 +240,43 @@
           <i class="fa fa-eye" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-
+        <ng-container
+          *ngIf="item?.videoId && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==item.createdById) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
+          <!--Create Campaign-->
+          <a class="custom-icon"
+            *ngIf="item?.viewBy!='DRAFT' && authenticationService?.module?.showCampaignOptionInManageVideos"
+            (click)="(item?.status == 'APPROVED') ? campaignRouter(item.videoAlias, item.viewBy) : ''" data-toggle="tooltip"
+            data-placement="top"
+            title="{{item?.status != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign'}}">
+            <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"
+              [ngClass]="(item?.status != 'APPROVED') ? 'disabled gray' : ''"></i>
+            <div class="clickicons"></div>
+          </a>
+        </ng-container>
+    
         <!-- Downlaod Icon -->
-        <a *ngIf="item?.type === 'Asset'" class="custom-icon" data-toggle="tooltip" data-placement="top"
-          title="Downlaod" (click)="download(item)">
+        <a *ngIf="item?.type === 'Asset'" class="custom-icon" data-toggle="tooltip" data-placement="top" title="Downlaod"
+          (click)="download(item)">
           <i class="fa fa-download IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-
+    
         <!--View Analytics-->
         <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
           *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(item)">
           <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-
+    
         <!-- comment/history -->
-        <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip"
-          data-placement="top" title="Approve/Reject">
+        <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
+          title="{{(!authenticationService?.module?.isAdmin || item?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
           <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
         <!--Delete-->
-        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(item)">
+        <a *ngIf="item?.canDelete" class="custom-icon" data-toggle="tooltip"
+          data-placement="top" title="Delete" (click)="confirmDelete(item)">
           <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
           <div class="del-icon"></div>
         </a>

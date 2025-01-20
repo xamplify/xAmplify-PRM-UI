@@ -31,6 +31,6 @@ export const RouterUrlConstants = {
     timeline:'timeline/',
     universalSearch:'universal-search',
     approval : 'approval/',
-    manageApproval : 'approve/manage/'
+    manageApproval : 'approval-hub/manage/'
 
 }

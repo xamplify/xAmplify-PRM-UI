@@ -17,13 +17,16 @@ import { ManageTracksPlayBookComponent } from 'app/tracks-play-book-util/manage-
 import { TracksPlayBook } from 'app/tracks-play-book-util/models/tracks-play-book';
 import { TracksPlayBookUtilService } from 'app/tracks-play-book-util/services/tracks-play-book-util.service';
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
+import { SaveVideoFile } from 'app/videos/models/save-video-file';
+import { VideoFileService } from 'app/videos/services/video-file.service';
+import { Router } from '@angular/router';
 declare var swal:any, $: any;
 
 @Component({
   selector: 'app-manage-aprroval',
   templateUrl: './manage-aprroval.component.html',
   styleUrls: ['./manage-aprroval.component.css'],
-  providers: [HttpRequestLoader,ApproveService,DamService,TracksPlayBookUtilService]
+  providers: [HttpRequestLoader,ApproveService,DamService,TracksPlayBookUtilService,VideoFileService]
 })
 export class ManageAprrovalComponent implements OnInit {
 
@@ -79,13 +82,17 @@ export class ManageAprrovalComponent implements OnInit {
   dateFilterText = "Select Date Filter";
   fromDateFilterString: string;
   toDateFilterString: string;
+  hasVideoRole: boolean;
+  hasCampaignRole: boolean;
+  hasAllAccess: boolean;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
-    public approveService: ApproveService,public utilService: UtilService,public xtremandLogger: XtremandLogger,
-    public pagerService: PagerService,public tracksPlayBookUtilService: TracksPlayBookUtilService,
+    public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
+    public pagerService: PagerService, public tracksPlayBookUtilService: TracksPlayBookUtilService, public videoFileService: VideoFileService, private router: Router
   ) { }
 
   ngOnInit() {
+    this.callInitMethos();
     this.getAllApprovalList(this.pagination);
     let message = this.referenceService.assetResponseMessage;
     if (message != undefined && message.length > 0) {
@@ -95,6 +102,13 @@ export class ManageAprrovalComponent implements OnInit {
       let message = "Updated Successfully"
       this.customResponse = new CustomResponse('SUCCESS', message, true);
     }
+  }
+
+  callInitMethos() {
+    localStorage.removeItem('saveVideoFile');
+    this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
+    this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+    this.hasAllAccess = this.referenceService.hasAllAccess();
   }
 
   ngOnDestroy() {
@@ -781,6 +795,30 @@ export class ManageAprrovalComponent implements OnInit {
 
   closeFilterOption() {
     this.showFilterOption = false;
+  }
+
+  campaignRouter(alias: string, viewBy: string) {
+    try {
+      this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
+      this.videoFileService.getVideo(alias, viewBy)
+        .subscribe((videoFile: SaveVideoFile) => {
+          if (videoFile.access) {
+            this.referenceService.campaignVideoFile = videoFile;
+            this.referenceService.selectedCampaignType = 'video';
+            this.referenceService.isCampaignFromVideoRouter = true;
+            this.router.navigateByUrl('/home/campaigns/create/' + this.referenceService.selectedCampaignType);
+            this.referenceService.closeSweetAlertWithDelay();
+          } else {
+            this.referenceService.closeSweetAlert();
+            this.authenticationService.forceToLogout();
+          }
+        },
+          (error: string) => {
+            this.referenceService.closeSweetAlert();
+            this.xtremandLogger.error('Error In: show campaign videos ():' + error);
+            this.xtremandLogger.errorPage(error);
+          });
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
 }
