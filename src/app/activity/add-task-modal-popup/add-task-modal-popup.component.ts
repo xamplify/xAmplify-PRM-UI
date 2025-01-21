@@ -6,6 +6,7 @@ import { Properties } from 'app/common/models/properties';
 import { SortOption } from 'app/core/models/sort-option';
 import { TaskActivityService } from '../services/task-activity.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 
 declare var flatpickr:any;
 
@@ -49,7 +50,7 @@ export class AddTaskModalPopupComponent implements OnInit {
   file: File;
   formData: any = new FormData();
   assignedToUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
-  showAssignedToUserDropdown:boolean = false;
+  assignToLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(public referenceService:ReferenceService, public taskService:TaskActivityService, public properties:Properties) { }
 
@@ -182,20 +183,19 @@ export class AddTaskModalPopupComponent implements OnInit {
   }
 
   fetchAssignToDropDownOptions() {
-    this.ngxLoading = true;
+    this.referenceService.loading(this.assignToLoader, true);
     this.taskService.fetchAssignToDropDownOptions().subscribe(
       response => {
         if (response.statusCode == 200) {
           this.assignedToUsersSearchableDropDownDto.data = response.data;
           this.assignedToUsersSearchableDropDownDto.placeHolder = "Select a member";
-          this.showAssignedToUserDropdown = true;
         } else {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
         }
-        this.ngxLoading = false;
+        this.referenceService.loading(this.assignToLoader, false);
       }, error => {
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-        this.ngxLoading = false;
+        this.referenceService.loading(this.assignToLoader, false);
       }
     )
   }

@@ -33,7 +33,7 @@
             <a (click)="goBackToManageCompanies()">Manage Companies</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li *ngIf="isDealFromContact">
+          <li *ngIf="isDealFromContact && isFromEditContacts">
             <a (click)="goBackToEditContacts()">Edit Contacts</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>

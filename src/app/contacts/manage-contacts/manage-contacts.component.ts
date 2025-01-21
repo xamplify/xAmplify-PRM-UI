@@ -31,6 +31,7 @@ import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fie
 import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { Location } from '@angular/common';
 
 
 declare var $: any, swal: any;
@@ -253,10 +254,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	/***** XNFR-671 *****/
 	flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto> = new Array<FlexiFieldsRequestAndResponseDto>();
+	isFromCompanyModule: boolean;
+	isContactModule: boolean;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService) {
+		public route: ActivatedRoute, private flexiFieldService : FlexiFieldService, private location: Location) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -384,6 +387,18 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
 		if (campaginAccessDto != undefined) {
 			this.companyId = campaginAccessDto.companyId;
+		}
+		/**XNFR-836**/
+		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company)) {
+			this.isFromCompanyModule = true;
+		}
+		if (this.module == 'contacts') {
+			this.isContactModule = true;
+		}
+		if (currentUrl.includes(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage+'/all')) {
+			this.contactsByType.selectedCategory = 'all';
+			this.loadContactsByType(this.contactsByType.selectedCategory);
+			this.updateUrl();
 		}
 
 	}
@@ -3050,12 +3065,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	isContactsByTypeAllVaildUnsubscribed() {
-		return (this.isContactModule() && (this.contactsByType.selectedCategory == 'all' 
+		return (this.isContactModule && (this.contactsByType.selectedCategory == 'all' 
 			|| this.contactsByType.selectedCategory == 'valid' || this.contactsByType.selectedCategory == 'unsubscribed'));
 	}
 
-	isContactModule() {
-		return (this.module == 'contacts');
+	/**XNFR-836**/
+	showContactJourney(contact) {
+		let encodedUserListId = this.referenceService.encodePathVariable(contact.userListId);
+		let encodeUserId = this.referenceService.encodePathVariable(contact.id);
+		if (this.isFromCompanyModule) {
+			this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.manage+'/'+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+		} else {
+			this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage+'/'+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+		}
+	}
+
+	updateUrl() {
+		this.location.replaceState('/home/contacts/manage');
 	}
 
 }

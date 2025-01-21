@@ -32,7 +32,8 @@ export const RouterUrlConstants = {
     universalSearch:'universal-search',
     signature:'signature/',
     approval : 'approval/',
-    manageApproval : 'approve/manage/'
+    manageApproval : 'approve/manage/',
+    action: ':action/',
 
 
 }
