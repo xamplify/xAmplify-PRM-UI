@@ -21,6 +21,7 @@ import { CustomAnimation } from 'app/core/models/custom-animation';
 import { Properties } from 'app/common/models/properties';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -131,6 +132,11 @@ export class ManageLeadsComponent implements OnInit {
     } else {
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = false;
+    }
+    
+    let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
+      this.selectedFilterIndex = 0;
     }
     this.init();
   }
