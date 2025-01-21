@@ -3,6 +3,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { ReferenceService } from "app/core/services/reference.service";
 import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum'
 import {AuthenticationService} from 'app/core/services/authentication.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 @Component({
   selector: 'app-lms-partner-analytics',
   templateUrl: './lms-partner-analytics.component.html',
@@ -15,6 +16,7 @@ export class LmsPartnerAnalyticsComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  isFromApprovalModule: boolean = false;
   constructor(public referenceService: ReferenceService, public router: Router,
     public authenticationService:AuthenticationService,public route:ActivatedRoute) {
   /****XNFR-170****/
@@ -24,6 +26,7 @@ export class LmsPartnerAnalyticsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
   }
 
   goToManageTracks(){
@@ -34,13 +37,22 @@ export class LmsPartnerAnalyticsComponent implements OnInit {
     this.analyticsRouter = analyticsRouter;
   }
 
-  routeToAnalytics(){
+  routeToAnalytics() {
     let learningTrackId = parseInt(this.route.snapshot.params['ltId']);
+    let prefix = "";
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-      this.analyticsRouter = "/home/tracks/analytics/" + learningTrackId;
+      prefix = "/home/tracks/analytics/";
+      if (this.isFromApprovalModule) {
+        prefix = "/home/tracks/approval/analytics/";
+      }
+      this.analyticsRouter = prefix + learningTrackId;
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-      this.analyticsRouter = "/home/playbook/analytics/" + learningTrackId;
+      prefix = "/home/playbook/analytics/";
+      if (this.isFromApprovalModule) {
+        prefix = "/home/playbook/approval/analytics/";
+      }
+      this.analyticsRouter = prefix + learningTrackId;
     }
-    this.referenceService.navigateToRouterByViewTypes(this.analyticsRouter,this.categoryId,this.viewType,this.folderViewType,this.folderViewType=="fl");
+    this.referenceService.navigateToRouterByViewTypes(this.analyticsRouter, this.categoryId, this.viewType, this.folderViewType, this.folderViewType == "fl");
   }
 }

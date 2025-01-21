@@ -164,7 +164,7 @@ export class ReferenceService {
   universalSearchFilterType:string = 'All';
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
-  approvalModuleRouter = "/home/approve/manage";
+  approvalModuleRouter = "/home/approval-hub/manage";
   
   constructor(
     private http: Http,

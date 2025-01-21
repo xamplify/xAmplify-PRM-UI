@@ -17,10 +17,13 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
   @Input() moduleType: string;
   @Input() filterType: string;
+  @Input() toDateFilter : string;
+  @Input() fromDateFilter : string;
   @Output() filterContentByType = new EventEmitter();
 
   contentModuleStatusAnalyticsDTO: ContentModuleStatusAnalyticsDTO = new ContentModuleStatusAnalyticsDTO();
   countsLoader: boolean = false;
+  timeZone: string;
 
   constructor(private damService: DamService,private approveService: ApproveService) {
 
@@ -72,7 +75,8 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
   getTileCountsForApproveModule() {
     this.countsLoader = true;
-    this.approveService.getStatusTileCounts(this.filterType)
+    this.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.approveService.getStatusTileCounts(this.filterType, this.toDateFilter, this.fromDateFilter, this.timeZone)
       .subscribe(
         response => {
           this.countsLoader = false;

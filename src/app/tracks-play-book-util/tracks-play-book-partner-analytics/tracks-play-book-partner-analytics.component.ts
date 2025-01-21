@@ -19,6 +19,7 @@ import { TracksPlayBook } from '../models/tracks-play-book';
 import { FormService } from '../../forms/services/form.service';
 import { ColumnInfo } from '../../forms/models/column-info';
 import { FormOption } from '../../forms/models/form-option';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var $, swal: any;
 
@@ -57,6 +58,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  isFromApprovalModule: boolean;
   constructor(private route: ActivatedRoute, private utilService: UtilService,
     private pagerService: PagerService, public authenticationService: AuthenticationService,
     public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,private formService: FormService,
@@ -73,6 +75,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
     this.initLoader = true;
     this.learningTrackId = parseInt(this.route.snapshot.params['ltId']);
     this.partnerCompanyId = parseInt(this.route.snapshot.params['id']);
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
       this.analyticsRouter = "/home/tracks/analytics/" + this.learningTrackId;
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
@@ -204,20 +207,28 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   goBack() {
     let urlSuffix = "";
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-      urlSuffix = "tracks";
-      this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+      if (this.isFromApprovalModule) {
+        urlSuffix = "tracks/approval";
+      } else {
+        urlSuffix = "tracks";
+      }
+      this.referenceService.navigateToManageTracksByViewType(this.folderViewType, this.viewType, this.categoryId, false);
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-      urlSuffix = "playbook";
-      this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+      if (this.isFromApprovalModule) {
+        urlSuffix = "playbook/approval";
+      } else {
+        urlSuffix = "playbook";
+      }
+      this.referenceService.navigateToPlayBooksByViewType(this.folderViewType, this.viewType, this.categoryId, false);
     }
     if (this.learningTrackId != undefined && this.learningTrackId > 0) {
-      let url = "/home/"+urlSuffix+"/analytics/" + this.learningTrackId;
-      this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderViewType=='fl');
+      let url = "/home/" + urlSuffix + "/analytics/" + this.learningTrackId;
+      this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderViewType == 'fl');
     } else if (this.learningTrackId == undefined || this.learningTrackId < 1) {
-      if(urlSuffix=="tracks"){
-        this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
-      }else if(urlSuffix=="playbook"){
-        this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+      if (urlSuffix == "tracks") {
+        this.referenceService.navigateToManageTracksByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+      } else if (urlSuffix == "playbook") {
+        this.referenceService.navigateToPlayBooksByViewType(this.folderViewType, this.viewType, this.categoryId, false);
       }
     }
   }

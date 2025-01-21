@@ -14,6 +14,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
 import { TracksPlayBook } from '../models/tracks-play-book'
 import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum'
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 @Component({
   selector: 'app-tracks-play-book-analytics',
@@ -35,6 +36,7 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  isFromApprovalModule: boolean = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService,
     private pagerService: PagerService, public authenticationService: AuthenticationService,
     public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
@@ -50,6 +52,7 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.initLoader = true;
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     this.learningTrackId = parseInt(this.route.snapshot.params['id']);
     if (this.learningTrackId < 1) {
       this.goBack();
@@ -120,10 +123,12 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 
   goBack() {
-    if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+    if ((this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) && !this.isFromApprovalModule) {
       this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
-    } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+    } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]  && !this.isFromApprovalModule) {
       this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+    }else if(this.isFromApprovalModule){
+      this.goBackToManageApproval();
     }
   }
 
@@ -134,17 +139,30 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
   viewAnalytics(company: any) {
     let route = "";
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-      route = "home/tracks/partnerAnalytics/" + this.learningTrackId + "/" + company.id;
+      let prefixUrl = "home/tracks/partnerAnalytics/"
+      if (this.isFromApprovalModule) {
+        prefixUrl = "home/tracks/approval/partnerAnalytics/";
+      }
+      route = prefixUrl + this.learningTrackId + "/" + company.id;
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-      route = "home/playbook/partnerAnalytics/" + this.learningTrackId + "/" + company.id;
+      let prefixUrl = "home/playbook/partnerAnalytics/";
+      if (this.isFromApprovalModule) {
+        prefixUrl = "home/playbook/approval/partnerAnalytics/"
+      }
+      route = prefixUrl + this.learningTrackId + "/" + company.id;
     }
-    let folderListView = this.folderViewType=="fl";
-    this.referenceService.navigateToRouterByViewTypes(route,this.categoryId,this.viewType,this.folderViewType,folderListView);
+    let folderListView = this.folderViewType == "fl";
+    this.referenceService.navigateToRouterByViewTypes(route, this.categoryId, this.viewType, this.folderViewType, folderListView);
   }
 
   getSelectedIndex(index: any) {
     this.pagination.partnerTeamMemberGroupFilter = index == 1;
     this.getAnalytics(this.pagination);
+  }
+
+  goBackToManageApproval() {
+    let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
+    this.referenceService.goToRouter(url);
   }
 
 }

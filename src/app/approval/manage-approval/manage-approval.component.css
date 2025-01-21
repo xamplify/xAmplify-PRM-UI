@@ -50,5 +50,40 @@
 }
 
 .bgc-playbook {
-  background-color: #369 !important;
+  background-color: #00a6e8 !important;
+}
+
+p.warning-red-textcolor {
+  color: #f00;
+  font-size: 16px;
+}
+
+.popup-cu-widthalign {
+  width: 84%;
+  top: 118px;
+  left: 40px;
+}
+
+span.filterActiveBg {
+  background-color: #10ad39;
+}
+span.filterActiveBg i {
+  color: #fff;
+}
+.defaultFilterACtiveBg{
+  background-color: #f1f3fa;
+}
+
+.custom_fiter-asset {
+  background-color: #f1f5f9;
+  padding: 10px 5px 10px 5px !important;
+}
+
+.createdOnRow{
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
 }
