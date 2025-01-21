@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ManageApprovalComponent } from './manage-approval.component';
 
-describe('ManageAprrovalComponent', () => {
+describe('ManageApprovalComponent', () => {
   let component: ManageApprovalComponent;
   let fixture: ComponentFixture<ManageApprovalComponent>;
 
