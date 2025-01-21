@@ -20,13 +20,14 @@ import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { Router } from '@angular/router';
+import { SortOption } from 'app/core/models/sort-option';
 declare var swal:any, $: any;
 
 @Component({
   selector: 'app-manage-approval',
   templateUrl: './manage-approval.component.html',
   styleUrls: ['./manage-approval.component.css'],
-  providers: [HttpRequestLoader,ApproveService,DamService,TracksPlayBookUtilService,VideoFileService]
+  providers: [HttpRequestLoader, ApproveService, DamService, TracksPlayBookUtilService, VideoFileService, SortOption]
 })
 export class ManageApprovalComponent implements OnInit {
 
@@ -88,7 +89,8 @@ export class ManageApprovalComponent implements OnInit {
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
-    public pagerService: PagerService, public tracksPlayBookUtilService: TracksPlayBookUtilService, public videoFileService: VideoFileService, private router: Router
+    public pagerService: PagerService, public tracksPlayBookUtilService: TracksPlayBookUtilService, public videoFileService: VideoFileService,
+    private router: Router, public sortOption: SortOption
   ) { }
 
   ngOnInit() {
@@ -819,6 +821,17 @@ export class ManageApprovalComponent implements OnInit {
             this.xtremandLogger.errorPage(error);
           });
     } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
+
+  sortList(text: any) {
+    this.sortOption.approvalHubSortOption = text;
+    this.getAllFilteredResults();
+  }
+
+  getAllFilteredResults() {
+    this.pagination.pageIndex = 1;
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.approvalHubSortOption, this.pagination);
+    this.getAllApprovalList(this.pagination);
   }
 
 }
