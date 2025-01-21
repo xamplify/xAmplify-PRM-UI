@@ -21,6 +21,13 @@ export class MarketplaceMapUtilComponent implements OnInit {
   
   channel;
 
+  categories: any[] = [];
+  filteredCategories: any[] = [];
+
+  searchTerm: string = '';
+  activeCategory: string = 'All Categories';
+
+
   constructor(private elementRef: ElementRef, private route: ActivatedRoute,private router:Router,
     private landingPageService: LandingPageService,
   ) {
@@ -31,7 +38,7 @@ export class MarketplaceMapUtilComponent implements OnInit {
     this.isOnlyMap = this.router.url.includes("marketplaceMap")
     this.alias = this.route.snapshot.params['alias'];
     if(this.isOnlyMap){
-      this.getPartnerCompaniesByAlias();
+      this.getVendorCompaniesByAlias();
     }else{
       this.getBrodcastData();
     }
@@ -51,6 +58,17 @@ export class MarketplaceMapUtilComponent implements OnInit {
     const componentHeight = this.elementRef.nativeElement.offsetHeight;
     (window.parent as any).$('#map-frame').height(componentHeight +20);
 
+  }
+
+  showContent(section: string) {
+    this.activeCategory = section;
+    this.getUniqueCompaniesToDisplayInMaps()
+
+  }
+
+  showAllCategories() {
+    this.activeCategory = 'All Categories';
+    this.getUniqueCompaniesToDisplayInMaps();
   }
 
   calculateMapCenterAndZoom() {
@@ -108,5 +126,66 @@ export class MarketplaceMapUtilComponent implements OnInit {
         this.filteredCompanies = [];
       },
     );
+  }
+
+  getVendorCompaniesByAlias() {
+    this.landingPageService.getVendorCompaniesByAlias(this.alias, false).subscribe(
+      response => {
+        this.categories = response.data;
+        this.getFilteredCompanies();
+      },
+      error => {
+        this.categories = [];
+      },()=>{
+      }
+    );
+  }
+
+  getFilteredCompanies() {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredCategories = this.categories
+      .map(category => ({
+        ...category,
+        companies: category.companies.filter(
+          company => company.name.toLowerCase().includes(term) || company.description.toLowerCase().includes(term)
+        )
+      }))
+      .filter(category => category.companies.length > 0);
+      this.getUniqueCompaniesToDisplayInMaps()
+  }
+
+  getUniqueCompaniesToDisplayInMaps(){
+    let uniqueCompanies;
+    if (this.activeCategory == 'All Categories') {
+      uniqueCompanies = Array.from(
+        this.filteredCategories
+          .map((category) => category.companies || [])
+          .reduce((acc, companies) => acc.concat(companies), [])
+          .reduce((map, company) => {
+            if (!map.has(company.companyId)) {
+              map.set(company.companyId, company); // Add company only if not already in the map
+            }
+            return map;
+          }, new Map())
+          .values()
+      );
+    }else{
+      uniqueCompanies = 
+      Array.from(
+        this.filteredCategories
+        .filter((category)=>category.name == this.activeCategory)
+          .map((category) => category.companies || [])
+          .reduce((acc, companies) => acc.concat(companies), [])
+          .reduce((map, company) => {
+            if (!map.has(company.companyId)) {
+              map.set(company.companyId, company); // Add company only if not already in the map
+            }
+            return map;
+          }, new Map())
+          .values()
+      );
+    }
+    this.filteredCompanies =uniqueCompanies;
+    this.calculateMapCenterAndZoom();
   }
 }

@@ -47,6 +47,7 @@ export class DamAnalyticsComponent implements OnInit {
   folderViewType: string;
   folderListView = false;
   partnerModuleCustomName = "";
+  isFromApprovalModule: boolean;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-169****/
@@ -60,6 +61,7 @@ export class DamAnalyticsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     this.initLoader = true;
     this.callApis();
   }
@@ -223,13 +225,17 @@ export class DamAnalyticsComponent implements OnInit {
     this.referenceService.loading(this.analyticsLoader, false);
     this.initLoader = false;
   }
-  goBack(){
+
+  goBack() {
     this.loading = true;
-    if(this.router.url.indexOf("vda")>-1){
-      let url = "/home/dam/partner-analytics/"+this.referenceService.encodePathVariable(this.damId)+"/"+this.referenceService.encodePathVariable(this.pagination.campaignId);
-      this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
-    }else{
-      this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,!this.vendorView);
+    if (this.router.url.indexOf("vda") > -1 && !this.isFromApprovalModule) {
+      let url = "/home/dam/partner-analytics/" + this.referenceService.encodePathVariable(this.damId) + "/" + this.referenceService.encodePathVariable(this.pagination.campaignId);
+      this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+    } else if (this.router.url.indexOf("vda") > -1 && this.isFromApprovalModule) {
+      let url = "/home/dam/approval/partner-analytics/" + this.referenceService.encodePathVariable(this.damId) + "/" + this.referenceService.encodePathVariable(this.pagination.campaignId);
+      this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+    } else {
+      this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, !this.vendorView);
     }
   }
   refreshPage(){
@@ -240,9 +246,14 @@ export class DamAnalyticsComponent implements OnInit {
     this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,!this.vendorView);
   }
 
-  goBackToPartnerCompanies(){
-    let prefixUrl = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics'];
-    let url = prefixUrl+this.referenceService.encodePathVariable(this.damId);
+  goBackToPartnerCompanies() {
+    let prefixUrl = "";
+    if (this.isFromApprovalModule) {
+      prefixUrl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['approval'] + RouterUrlConstants['damPartnerCompanyAnalytics'];
+    } else {
+      prefixUrl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['damPartnerCompanyAnalytics'];
+    }
+    let url = prefixUrl + this.referenceService.encodePathVariable(this.damId);
     this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
   }
 

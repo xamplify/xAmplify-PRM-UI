@@ -36,6 +36,8 @@ export class UrlAuthGuardService {
       return { moduleId: this.roles.learningTrackId, moduleName: "tracks" };
     } else if (routerUrl.includes("/home/playbook")) {
       return { moduleId: this.roles.playbookId, moduleName: "playbook" };
+    } else if (routerUrl.includes("/home/approval-hub")) {
+      return { moduleId: this.roles.approveId, moduleName: "approval-hub" };
     }
     return { moduleId: 0, moduleName: "" };
   }

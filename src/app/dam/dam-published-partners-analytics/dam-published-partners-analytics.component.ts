@@ -41,6 +41,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   loading: boolean;
   partnerModuleCustomName = "";
   damPartnerId:any;
+  isFromApprovalModule: boolean = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService,
               private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, 
               public referenceService: ReferenceService,private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
@@ -57,6 +58,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.referenceService.loading(this.listLoader, true);
+    this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     this.damId = atob(this.route.snapshot.params['damId']);
     this.damPartnerId = atob(this.route.snapshot.params['damPartnerId']);
     this.pagination.id = this.damPartnerId;
@@ -133,10 +135,14 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
 
   viewDetailedAnalytics(partner: any) {
     this.loading = true;
+    let prefixUrl = RouterUrlConstants['home'] + RouterUrlConstants['dam'];
+    if (this.isFromApprovalModule) {
+      prefixUrl = prefixUrl + RouterUrlConstants['approval'];
+    }
     let encodedDamId = this.referenceService.encodePathVariable(this.damId);
     let encodedDamPartnerId = this.referenceService.encodePathVariable(partner.damPartnerId);
     let encodedUserId = this.referenceService.encodePathVariable(partner.userId);
-    this.referenceService.navigateToRouterByViewTypes("/home/dam/vda/" + encodedDamId + "/" + encodedDamPartnerId + "/" + encodedUserId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+    this.referenceService.navigateToRouterByViewTypes(prefixUrl + "vda/" + encodedDamId + "/" + encodedDamPartnerId + "/" + encodedUserId, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
   }
 
   getSelectedIndex(index: any) {
@@ -144,11 +150,15 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.findAllPartnerCompanyUsers(this.pagination);
   }
 
-  goBackToPartnerCompanies(){
-    let prefixUrl = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics'];
-    let url = prefixUrl+this.referenceService.encodePathVariable(this.damId);
+  goBackToPartnerCompanies() {
+    let prefixUrl = "";
+    if (this.isFromApprovalModule) {
+      prefixUrl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['approval'] + RouterUrlConstants['damPartnerCompanyAnalytics'];
+    } else {
+      prefixUrl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['damPartnerCompanyAnalytics'];
+    }
+    let url = prefixUrl + this.referenceService.encodePathVariable(this.damId);
     this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
-
   }
 
 }
