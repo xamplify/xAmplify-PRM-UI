@@ -201,6 +201,7 @@ export class MeetingActivityComponent implements OnInit {
 
   closeMeetingModalPopup(event) {
     this.showMeetingModalPopup = false;
+    this.isReloadTab = event;
     this.notifyClose.emit(event);
   }
 

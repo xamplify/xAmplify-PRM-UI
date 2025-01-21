@@ -137,14 +137,13 @@
       <strong>Total Records :{{meetingActivityPager.totalItems}}</strong>
     </span>
   </div>
+  <div *ngIf="!(meetingActivityPager.pages && meetingActivityPager.pages.length) && !this.httpRequestLoader.isLoading"
+    class="alert alert-info mb0">
+    <strong translate>No Data Found.</strong>
+  </div>
 </div>
 
-<app-event-calendar *ngIf="showCalendarView" [calendarType]="calendarType" [contactId]="contactId" (notifyClose)="closeCalendarViewModalPopup()"></app-event-calendar>
-
-<div *ngIf="!(meetingActivityPager.pages && meetingActivityPager.pages.length) && !this.httpRequestLoader.isLoading"
-  class="alert alert-info mb0">
-  <strong translate>No Data Found.</strong>
-</div>
+<app-event-calendar *ngIf="showCalendarView" [calendarType]="calendarType" [contactId]="contactId" (notifyClose)="closeCalendarViewModalPopup()" [isReloadCalendar]="isReloadTab"></app-event-calendar>
 
 <app-add-meeting-modal-popup *ngIf="showMeetingModalPopup" [schedulingUrl]="activeCalendarDetails?.userUri" [isReloadTab]="isReloadTab"
   [calendarType]="activeCalendarDetails?.type" (notifyClose)="closeMeetingModalPopup($event)"></app-add-meeting-modal-popup>

@@ -15,6 +15,7 @@ export class EventCalendarComponent implements OnInit {
 
   @Input() contactId: any;
   @Input() calendarType:any;
+  @Input() isReloadCalendar:boolean;
   @Output() notifyClose = new EventEmitter();
 
   showConfigureMessage:boolean = false;
@@ -24,11 +25,11 @@ export class EventCalendarComponent implements OnInit {
   meetingActivities: any;
   eventUrl: any;
   showCalendarIntegrationsModalPopup:boolean = false;
+  isFirstChange:boolean = true;
 
   constructor(private referenceService: ReferenceService, private meetingService: MeetingActivityService) { }
 
   ngOnInit() {
-    this.referenceService.openModalPopup('calendar-integration-modal-popup');
     if (this.referenceService.checkIsValidString(this.calendarType)) {
       this.renderCalendar();
     } else {
@@ -36,9 +37,16 @@ export class EventCalendarComponent implements OnInit {
     }
   }
 
+  ngOnChanges() {
+    if (this.isFirstChange) {
+      this.isFirstChange = !this.isFirstChange;
+    } else {
+      this.getMeetingCalendarView();
+    }
+  }
+
   closePopup() {
-    this.referenceService.closeModalPopup('calendar-integration-modal-popup');
-    this.notifyClose.emit();
+    this.notifyClose.emit(!this.isReloadCalendar);
   }
 
   closePreviewMeetingModalPopup() {
