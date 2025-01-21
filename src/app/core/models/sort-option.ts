@@ -535,6 +535,13 @@ export class SortOption {
 		{ 'name': 'Created On(Desc)', 'value': 'desc' },
 		{ 'name': 'Created On(Asc)', 'value': 'asc' }
 	]
+
+	approvalHubSortDropDownOptions = [
+		{ 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+	];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -629,5 +636,8 @@ export class SortOption {
 
 	/**XNFR-783**/
 	public calendlyDropDownOption = this.calendlyDropDownOptions[0].value;
+
+	/**XNFR-834**/
+	public approvalHubSortOption: any = this.approvalHubSortDropDownOptions[this.approvalHubSortDropDownOptions.length - 1];
 
 }
