@@ -12,15 +12,23 @@ import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-s
 import { MultiSelectCommentDto } from '../models/multi-select-comment-dto';
 import { CustomResponse } from '../../common/models/custom-response';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
-declare var $:any;
+import { DamService } from 'app/dam/services/dam.service';
+import { ManageTracksPlayBookComponent } from 'app/tracks-play-book-util/manage-tracks-play-book/manage-tracks-play-book.component';
+import { TracksPlayBook } from 'app/tracks-play-book-util/models/tracks-play-book';
+import { TracksPlayBookUtilService } from 'app/tracks-play-book-util/services/tracks-play-book-util.service';
+import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
+import { SaveVideoFile } from 'app/videos/models/save-video-file';
+import { VideoFileService } from 'app/videos/services/video-file.service';
+import { Router } from '@angular/router';
+declare var swal:any, $: any;
 
 @Component({
-  selector: 'app-manage-aprroval',
-  templateUrl: './manage-aprroval.component.html',
-  styleUrls: ['./manage-aprroval.component.css'],
-  providers: [HttpRequestLoader,ApproveService]
+  selector: 'app-manage-approval',
+  templateUrl: './manage-approval.component.html',
+  styleUrls: ['./manage-approval.component.css'],
+  providers: [HttpRequestLoader,ApproveService,DamService,TracksPlayBookUtilService,VideoFileService]
 })
-export class ManageAprrovalComponent implements OnInit {
+export class ManageApprovalComponent implements OnInit {
 
   pagination: Pagination = new Pagination();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -36,6 +44,7 @@ export class ManageAprrovalComponent implements OnInit {
   selectedDamId: any;
   createdByAnyAdmin: any;
   @ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
+  @ViewChild(ManageTracksPlayBookComponent) manageTracksPlayBookComponent: ManageTracksPlayBookComponent;
   searchKey: any;
   categoryId: number;
   defaultDisplayType: string = 'l';
@@ -51,17 +60,39 @@ export class ManageAprrovalComponent implements OnInit {
   isApproveOrRejectStatus : any = '';
   commentDto:MultiSelectCommentDto = new MultiSelectCommentDto();
   customResponse: CustomResponse = new CustomResponse();
+  filterResponse : CustomResponse = new CustomResponse();
   selectedIds = [];
   selectedTypeIds = [];
   moduleType: any;
   selectedPendingIds = [];
+  showPdfModalPopup: boolean;
+  asset: any;
+  lmsType :any;
+  deleteAsset: boolean;
+  UnPublishedId: number;
+  selectedOption: boolean;
+  trackOrPlayBookText: string;
+  itemType: any;
+  filterActiveBg = "";
+  filterApplied: any;
+  showFilterOption: boolean  = false;
+  showFilterDropDown: boolean  = false;
+  toDateFilter: string;
+  fromDateFilter: string;
+  dateFilterText = "Select Date Filter";
+  fromDateFilterString: string;
+  toDateFilterString: string;
+  hasVideoRole: boolean;
+  hasCampaignRole: boolean;
+  hasAllAccess: boolean;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
-    public approveService: ApproveService,public utilService: UtilService,public xtremandLogger: XtremandLogger,
-    public pagerService: PagerService,
+    public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
+    public pagerService: PagerService, public tracksPlayBookUtilService: TracksPlayBookUtilService, public videoFileService: VideoFileService, private router: Router
   ) { }
 
   ngOnInit() {
+    this.callInitMethos();
     this.getAllApprovalList(this.pagination);
     let message = this.referenceService.assetResponseMessage;
     if (message != undefined && message.length > 0) {
@@ -71,6 +102,13 @@ export class ManageAprrovalComponent implements OnInit {
       let message = "Updated Successfully"
       this.customResponse = new CustomResponse('SUCCESS', message, true);
     }
+  }
+
+  callInitMethos() {
+    localStorage.removeItem('saveVideoFile');
+    this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
+    this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+    this.hasAllAccess = this.referenceService.hasAllAccess();
   }
 
   ngOnDestroy() {
@@ -85,6 +123,9 @@ export class ManageAprrovalComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.pagination.filterKey = this.selectedFilterStatus;
     this.pagination.filterBy = this.selectedFilterType;
+    this.pagination.fromDateFilterString = this.fromDateFilter;
+    this.pagination.toDateFilterString = this.toDateFilter;
+    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.selectedPendingIds = [];
     this.approveService.getAllApprovalList(pagination).subscribe(
       response => {
@@ -451,6 +492,333 @@ export class ManageAprrovalComponent implements OnInit {
     } else {
       this.displayApproveAndRejectButton = false;
     }
+  }
+
+  download(asset: any) {
+		this.showPdfModalPopup = true;
+		this.asset = asset;
+	}
+
+	downloadPopupEventEmitter() {
+		this.showPdfModalPopup = false;
+		this.asset = {};
+	}
+
+  confirmDelete(item: any) {
+    if (item.type == 'Asset') {
+      this.handleAssetDeletion(item);
+    } else if (item.type == 'Track') {
+      this.lmsType = TracksPlayBookType.TRACK;
+      this.handleTrackAndPlayBookDeletion(item);
+    } else if (item.type == 'PlayBook') {
+      this.lmsType = TracksPlayBookType.PLAYBOOK;
+      this.handleTrackAndPlayBookDeletion(item);
+    }
+  }
+
+  handleAssetDeletion(item: any) {
+    this.deleteAsset = true;
+    this.asset = item;
+  }
+
+  deleteAssetSuccessEmitter(response: any) {
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
+    if (response.statusCode == 200) {
+      this.customResponse = new CustomResponse('SUCCESS', this.asset.name + " Deleted Successfully", true);
+      this.deleteAsset = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.asset = {};
+      this.pagination.pageIndex = 1;
+      this.getAllApprovalList(this.pagination);
+      this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
+    } else if (response.statusCode == 401) {
+      this.customResponse = new CustomResponse('ERROR', response.message, true);
+    }
+  }
+
+  deleteAssetFailEmitter(message: any) {
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse('ERROR', message, true);
+    this.deleteAsset = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
+    this.asset = {};
+  }
+
+  deleteAssetLoaderEmitter() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+  }
+
+  deleteAssetCancelEmitter() {
+    this.deleteAsset = false;
+    this.asset = {};
+  }
+
+  handleTrackAndPlayBookDeletion(item: any) {
+    try {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes, delete it!'
+
+      }).then(function () {
+        self.deleteTrackAndPlayBook(item);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.referenceService.showServerError(this.httpRequestLoader);
+    }
+  }
+
+  deleteTrackAndPlayBook(item: any) {
+    let tracksPlayBook: TracksPlayBook = new TracksPlayBook();
+    tracksPlayBook.id = item.id;
+    tracksPlayBook.userId = this.authenticationService.getUserId();
+    tracksPlayBook.type = this.lmsType;
+    this.customResponse = new CustomResponse();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.goToTop();
+    this.tracksPlayBookUtilService.deleteById(tracksPlayBook).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          this.customResponse = new CustomResponse('SUCCESS', item.name + " Deleted Successfully", true);
+          this.pagination.pageIndex = 1;
+          this.getAllApprovalList(this.pagination);
+        } else {
+          swal("Please Contact Admin!", response.message, "error");
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+      },
+      (error: string) => {
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      });
+  }
+
+  addOrEdit(id: any) {
+    this.referenceService.navigateToRouterByViewTypes("/home/dam/approval/edit/" + id, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
+  }
+
+  isApprovalRequiredForType(type: any): boolean {
+    if (type == 'Track') {
+      return this.authenticationService && this.authenticationService.approvalRequiredForTracks
+        ? this.authenticationService.approvalRequiredForTracks
+        : false;
+    } else if (type == 'PlayBook') {
+      return this.authenticationService && this.authenticationService.approvalRequiredForPlaybooks
+        ? this.authenticationService.approvalRequiredForPlaybooks
+        : false;
+    }
+  }
+
+  confirmChangePublish(id: number, isPublish: boolean, item: any) {
+    let text = "";
+    if (isPublish) {
+      text = "You want to publish.";
+    }
+    try {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: text,
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes'
+
+      }).then(function () {
+        self.changePublish(id, isPublish, item.type);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.referenceService.showServerError(this.httpRequestLoader);
+    }
+  }
+
+  changePublish(learningTrackId: number, isPublish: boolean, type: any) {
+    this.customResponse = new CustomResponse();
+    this.referenceService.goToTop();
+    this.referenceService.startLoader(this.httpRequestLoader);
+    this.tracksPlayBookUtilService.changePublish(learningTrackId, isPublish).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let message = isPublish ? type + " Published Successsfully" : type + " Unpublished Successfully";
+          this.customResponse = new CustomResponse('SUCCESS', message, true);
+          this.getAllApprovalList(this.pagination);
+        } else if (response.statusCode == 401) {
+          this.referenceService.showSweetAlertErrorMessage(response.message);
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+      },
+      (error: string) => {
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      })
+  }
+
+  UnpublishedModalPopUp(item: any) {
+    this.UnPublishedId = item.id;
+    this.itemType = item.type;
+    if (item.type === 'Track') {
+      this.trackOrPlayBookText = "Track";
+    } else {
+      this.trackOrPlayBookText = "Play Book";
+    }
+    $('#unpublished-modal').modal('show');
+  }
+
+  unPublishAction(id: number, isPublish: boolean) {
+    if (this.UnPublishedId != 0) {
+      this.changePublish(this.UnPublishedId, isPublish, this.itemType);
+      this.selectedOption = false;
+    }
+    this.closePopUp()
+  }
+
+  closePopUp() {
+    $('#unpublished-modal').modal('hide');
+    $('input[name="rdaction"]').prop('checked', false);
+    this.selectedOption = false;
+  }
+
+  viewAnalytics(item :any){
+    if(item.type === 'Asset'){
+      this.handleAssetAnalytics(item);
+    }else if(item.type === 'Track'){
+      this.handleTracksAnalytics(item);
+    }else if(item.type === 'PlayBook'){
+      this.handlePlayBooksAnalytics(item);
+    }
+  }
+
+  handleTracksAnalytics(item: any) {
+    let route = "";
+    route = "/home/tracks/approval/analytics/" + item.id;
+    this.referenceService.navigateToRouterByViewTypes(route, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
+  }
+
+  handlePlayBooksAnalytics(item: any) {
+    let route = "";
+    route = "/home/playbook/approval/analytics/" + item.id;
+    this.referenceService.navigateToRouterByViewTypes(route, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
+  }
+
+  handleAssetAnalytics(item: any) {
+    this.navigateToPartnerAnalytics(item.id);
+  }
+
+  navigateToPartnerAnalytics(id: number) {
+    let url = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['approval'] + RouterUrlConstants['damPartnerCompanyAnalytics'] + this.referenceService.encodePathVariable(id);
+    this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
+  }
+
+
+  clickFilter() {
+    if (!this.filterApplied) {
+      this.showFilterOption = !this.showFilterOption;
+    } else {
+      if (this.showFilterOption) {
+        this.showFilterOption = false;
+      } else {
+        this.showFilterDropDown = true;
+      }
+    }
+    this.filterResponse.isVisible = false;
+  }
+
+  viewDropDownFilter() {
+    this.showFilterOption = true;
+    this.showFilterDropDown = false;
+  }
+
+  clearFilter() {
+    this.showFilterDropDown = false;
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.filterApplied = false;
+    this.showFilterOption = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    this.fromDateFilterString = "";
+    this.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
+    this.pagination.pageIndex = 1;
+    this.getAllApprovalList(this.pagination);
+  }
+
+  validateDateFilter() {
+    let isValidFromDateFilter = this.fromDateFilterString != undefined && this.fromDateFilterString != "";
+    let isEmptyFromDateFilter = this.fromDateFilterString == undefined || this.fromDateFilterString == "";
+    let isValidToDateFilter = this.toDateFilterString != undefined && this.toDateFilterString != "";
+    let isEmptyToDateFilter = this.toDateFilterString == undefined || this.toDateFilterString == "";
+    if (isEmptyFromDateFilter && isEmptyToDateFilter) {
+      this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else {
+      let validDates = false;
+      if (isValidFromDateFilter && isEmptyToDateFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
+        var toDate = Date.parse(this.toDateFilterString);
+        var fromDate = Date.parse(this.fromDateFilterString);
+        if (fromDate <= toDate) {
+          validDates = true;
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+        }
+      }
+
+      if (validDates) {
+        this.applyFilters();
+      }
+    }
+  }
+
+  applyFilters() {
+    this.filterApplied = true;
+    this.showFilterOption = false;
+    this.filterActiveBg = 'filterActiveBg';
+    this.fromDateFilter = this.fromDateFilterString;
+    this.toDateFilter = this.toDateFilterString;
+    this.pagination.pageIndex = 1;
+    this.pagination.maxResults = 12;
+    this.getAllApprovalList(this.pagination);
+  }
+
+  closeFilterOption() {
+    this.showFilterOption = false;
+  }
+
+  campaignRouter(alias: string, viewBy: string) {
+    try {
+      this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
+      this.videoFileService.getVideo(alias, viewBy)
+        .subscribe((videoFile: SaveVideoFile) => {
+          if (videoFile.access) {
+            this.referenceService.campaignVideoFile = videoFile;
+            this.referenceService.selectedCampaignType = 'video';
+            this.referenceService.isCampaignFromVideoRouter = true;
+            this.router.navigateByUrl('/home/campaigns/create/' + this.referenceService.selectedCampaignType);
+            this.referenceService.closeSweetAlertWithDelay();
+          } else {
+            this.referenceService.closeSweetAlert();
+            this.authenticationService.forceToLogout();
+          }
+        },
+          (error: string) => {
+            this.referenceService.closeSweetAlert();
+            this.xtremandLogger.error('Error In: show campaign videos ():' + error);
+            this.xtremandLogger.errorPage(error);
+          });
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
 }
