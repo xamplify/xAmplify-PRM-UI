@@ -17,6 +17,14 @@
   vertical-align: middle !important;
 }
 
+.mDamSort {
+  width: 90%;
+  padding: 0px !important;
+}
+.justify-content-end{
+  justify-content: end;
+}
+
 .type-selected {
   background-color: #0276ff;
   color: white;
