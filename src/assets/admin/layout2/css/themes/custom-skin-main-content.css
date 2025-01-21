@@ -922,7 +922,7 @@ textarea:focus {
 .mix-filter li:hover,
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,.mix-filter li.mix-filter-li-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter li.mix-filter-li-selected,.mix-filter li.type-selected {
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }

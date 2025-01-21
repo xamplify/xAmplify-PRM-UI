@@ -2106,7 +2106,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .mix-filter li:hover,
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter li.type-selected {
   background: #222528  !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }

@@ -2049,7 +2049,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   color:#fff !important;
 }
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,
+.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,.mix-filter li.type-selected,
 .mix-filter li.active {
   /* background: rgba(16 18 27 / 40%) !important; */
   background-color: #0276FF !important;

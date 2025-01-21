@@ -496,27 +496,24 @@
 													<div class="btn-group mb_pt"
 														*ngIf="!isSynchronizationList && !isFormList">
 														<button id="add_contact"
-															class="button mar-rgt_mar-lft bgcolor-unset"
+															class="btn btn-primary"
 															(click)="addContactModalOpen()"
 															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)|| (contactsCompanyListSync  && !this.isPartnerUserList))"
 															translate>
-															<span class="btn Btn-Green transition txt_pd-top3 btn-copy">One at a
-																Time<i class="fa fa-plus"
+															One at a Time<i class="fa fa-plus"
 																	style="font-size: 12px; margin-left: 5px;"
-																	aria-hidden="true"></i></span>
+																	aria-hidden="true"></i>
 														</button>
 													</div>
 													<ng-container *ngIf="!refService.isMobileScreenSize()">
-														<div class="btn-group mt buttonalign"
+														<div class="btn-group"
 															*ngIf="!isSynchronizationList && !isFormList ">
-															<div class="fileUpload marg-lft" id="upload_csv"
+															<div class="fileUpload" id="upload_csv"
 																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)|| (contactsCompanyListSync  && !this.isPartnerUserList))"
 																translate>
-																<button class="button bgcolor-unset">
-																	<span
-																		class="btn Btn-Green transition txt_pd-top3 btn-copy">Upload
-																		CSV <i class="fa fa-upload" aria-hidden="true"
-																			style="font-size: 12px; margin-left: 5px;"></i></span>
+																<button class="btn btn-primary">
+																	Upload CSV <i class="fa fa-upload" aria-hidden="true"
+																			style="font-size: 12px; margin-left: 5px;"></i>
 																	<input type="file" ng2FileSelect class="upload"
 																		[uploader]="uploader" title=" "
 																		(click)="input.value = null;resetResponse();"
