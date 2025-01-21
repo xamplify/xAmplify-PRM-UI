@@ -328,7 +328,7 @@
 					</div>
 					<app-team-member-filter-option *ngIf="isPartner && showFilter"
 						[resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()"
-						(teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+						(teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isPartnerModule]="isPartner"></app-team-member-filter-option>
 					<br />
 					<div *ngIf="showEditContactData">
 						<div class="col-xs-12 p0">
