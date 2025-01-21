@@ -366,7 +366,8 @@ export class ReferenceService {
     }
   }
   validateEmailId(emailId: string) {
-    return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
+    const emails = emailId.split(' ').filter(email => email.trim() !== ''); 
+  return emails.every(email => this.regularExpressions.EMAIL_ID_PATTERN.test(email));
   }
 
   validateFirstName(firstName:string){
