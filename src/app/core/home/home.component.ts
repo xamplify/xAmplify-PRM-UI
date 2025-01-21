@@ -591,7 +591,7 @@ export class HomeComponent implements OnInit {
       }, _error => {
         this.loader = false;
     },()=>{
-      localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, JSON.stringify(partnerFilterOption));
+      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, partnerFilterOption);
     }
     )
   }

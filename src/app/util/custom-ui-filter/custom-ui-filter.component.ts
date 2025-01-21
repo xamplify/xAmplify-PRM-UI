@@ -155,6 +155,11 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 			}
 		} else {
 			this.isValidationErrorMessage = false;
+			this.pagination.fromDateFilterString = this.fromDateFilter;
+			this.pagination.toDateFilterString   = this.toDateFilter;
+			if(this.pagination.fromDateFilterString == "" && this.pagination.toDateFilterString == ""){
+				this.pagination.dateFilterOpionEnable = false;
+			}
 		}
 		if (!this.isValidationErrorMessage) {
 			this.criteriaValidation();
@@ -248,7 +253,11 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	}
 	submittFilterData() {
 		this.validateDateFilters();
-	 if(this.pagination.criterias==null || this.pagination.criterias==undefined || this.pagination.criterias.length ==0){
+		if(this.isValidationErrorMessage){
+			console.log(this.isValidationErrorMessage);
+		}else if(!this.isValidationErrorMessage && this.pagination.criterias==null || this.pagination.criterias==undefined ||
+		 this.pagination.criterias.length == 0 && this.pagination.fromDateFilterString.length == 0 &&
+	     this.pagination.toDateFilterString.length==0){
 				this.closeFilterOption('close');
 		}else{
 		// this.validateDateFilters();

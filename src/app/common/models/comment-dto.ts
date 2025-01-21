@@ -12,4 +12,5 @@ export class CommentDto {
 	name: string = "";
 	createdByName: string;
 	entityId: number;
+	videoId: number;
 }

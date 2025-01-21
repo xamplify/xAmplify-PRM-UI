@@ -55,6 +55,21 @@
 									class="view-banner-dam assettype-bgcolor LableSpaceings">{{asset?.assetType}}</span>
 							</div>
 
+							<div style="float: left;margin: 2px 0px 0px 13px;">
+								<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner"
+								 [ngClass]="{
+									'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+									'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+									'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+									{{getApprovalStatusText(asset.approvalStatus)}}
+								</span>
+								<span
+									*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED"
+									class="view-banner asset-approval-labele-spacing bgc-red" translate>
+									{{getApprovalStatusText(asset.approvalStatus)}}
+								</span>
+							</div>
+
 							<h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"
 								title="{{asset?.displayName}}"><b>By:</b> {{asset?.displayName}}</h6>
 							<h6 class="xamplify-ellipsis GridViewCotent">
@@ -87,6 +102,7 @@
 								(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 								(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 								(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
+								(assetGridViewCommentStatusHistoryEmitter)="showCommentsAndHistoryModalPopup($event)"
 								(assetGridViewRefreshListEmitter)="refresh()">
 							</app-asset-grid-view-actions>
 						</div>
@@ -117,3 +133,11 @@
 		(deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
 </ng-container>
+
+<app-content-status-history-modal-popup
+	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
+	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
+</app-content-status-history-modal-popup>
