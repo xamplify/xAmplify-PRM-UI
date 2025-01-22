@@ -608,6 +608,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         selectedPartners.forEach(partner => {
             this.sendPartnerReminder(partner);
         });
+        this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
     }
     
     sendPartnerReminder(item: any) {
@@ -620,7 +621,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.parterService.sendPartnerReminderEmail(user, this.loggedInUserId).subscribe(
             (response: any) => {
                 if (response.statusCode == 2017) {
-                    this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
                     const partnerIndex = this.allItems.findIndex(p => p.partnerId === item.partnerId);
                     if (partnerIndex !== -1) {
                         this.allItems[partnerIndex].isSelected = false;
