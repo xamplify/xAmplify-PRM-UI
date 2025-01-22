@@ -868,7 +868,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						this.newPartnerUser.length = 0;
 						this.allselectedUsers.length = 0;
 						if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
-							this.pagination.partnerTeamMemberGroupFilter = true;
+							this.selectedFilterIndex == 1 ? this.pagination.partnerTeamMemberGroupFilter = true : this.pagination.partnerTeamMemberGroupFilter = false;
 						}
 						this.loadPartnerList(this.pagination);
 						this.clipBoard = false;
