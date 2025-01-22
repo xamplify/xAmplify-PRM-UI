@@ -23,8 +23,8 @@
         </div>
         <section>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <ng-template [ngTemplateOutlet]="filter"></ng-template>
           <div class="table-responsive">
-            <ng-template [ngTemplateOutlet]="filter"></ng-template>
             <!-- Table Header-->
             <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
               <thead>
