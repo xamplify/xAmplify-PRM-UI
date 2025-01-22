@@ -3417,3 +3417,6 @@ border-bottom-right-radius: 7px;
   .search_width50 { width: 50%  !important;}
   
 }
+.portlet-title.border-bottom-1px {
+  border-bottom: none !important;
+}

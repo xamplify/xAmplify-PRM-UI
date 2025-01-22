@@ -51,6 +51,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	isFromContactDetails:boolean = false;
 	userListId:any;
 	isFromCompanyModule: boolean = false;
+	isFromEditContacts: boolean;
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -78,11 +79,14 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		}else{
 			this.validatePartnerOrContactIdForCampaignAnalytics();
 		}
-		if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd") {
+		if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd" || this.navigatedFrom == "mcd" || this.navigatedFrom == "mccd") {
 			this.userListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
 			this.isFromContactDetails = true;
 			if (this.navigatedFrom == "ccd") {
 				this.isFromCompanyModule = true;
+			}
+			if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd") {
+				this.isFromEditContacts = true;
 			}
 		}
 	}
@@ -372,9 +376,12 @@ setAutoResponsesPage(event: any,campaign:any) {
 				let encodedUserListId = this.referenceService.encodePathVariable(this.userListId);
 				let encodeUserId = this.referenceService.encodePathVariable(this.userIdParameter);
 				if (this.isFromCompanyModule) {
-					this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.company + RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId);
+					let url = RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.company + RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId;
+					this.referenceService.goToRouter(url);
 				} else {
-					this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId);
+					let url = RouterUrlConstants.home + RouterUrlConstants.contacts;
+					url += this.isFromEditContacts ? RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId : RouterUrlConstants.manage + '/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId;
+					this.referenceService.goToRouter(url);
 				}
 			} else{
 				url = url+"contacts/";

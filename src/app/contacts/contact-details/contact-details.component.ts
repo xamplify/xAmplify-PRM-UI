@@ -113,6 +113,8 @@ export class ContactDetailsComponent implements OnInit {
   showCalendarIntegrationsModalPopup: boolean = false;
   flexiFields: any;
   isReloadMeetingTab:boolean;
+  isFromEditContacts:boolean = false;
+  imgPathLoading: boolean =  false;
   isSidebarOpen:boolean = true;
   isProfileSidebarOpen: boolean = true;
 
@@ -140,6 +142,7 @@ export class ContactDetailsComponent implements OnInit {
   ngOnInit() {
     this.selectedContactListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
     this.contactId = this.referenceService.decodePathVariable(this.route.snapshot.params['id']);
+    this.isFromEditContacts = this.route.snapshot.params['action'] == 'edit';
     if (this.router.url.includes(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.company)) {
       this.isFromCompanyModule = true;
     }
@@ -315,7 +318,9 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   backToManageContacts() {
-    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+    let url = RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage;
+    url += this.isFromEditContacts ? '' : '/all';
+    this.referenceService.goToRouter(url);
   }
 
   setContactNameToDisplay() {
@@ -510,6 +515,7 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   showNoteDeleteSuccessStatus(event) {
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', event, true);
   }
 
@@ -540,9 +546,12 @@ export class ContactDetailsComponent implements OnInit {
     let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
     if (this.isFromCompanyModule) {
-      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd);
+      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd;
+      this.referenceService.goToRouter(url);
     } else {
-      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.cd);
+      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId;
+      url += this.isFromEditContacts ? "/" + RouterUrlConstants.cd : "/mcd";
+      this.referenceService.goToRouter(url);
     }
   }
 
@@ -551,9 +560,12 @@ export class ContactDetailsComponent implements OnInit {
     let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
     if (this.isFromCompanyModule) {
-      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd);
+      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd;
+      this.referenceService.goToRouter(url);
     } else {
-      this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.cd);
+      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId;
+      url += this.isFromEditContacts ? "/"+RouterUrlConstants.cd : "/mcd";
+      this.referenceService.goToRouter(url);
     }
 	}
 
@@ -581,10 +593,12 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   showTaskDeleteSuccessStatus(event) {
+    this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', event, true);
   }
 
   fetchLogoFromExternalSource() {
+    this.imgPathLoading = true;
     this.activityService.fetchLogoFromExternalSource(this.contactId).subscribe(
       response => {
         const data = response.data;
@@ -594,8 +608,10 @@ export class ContactDetailsComponent implements OnInit {
         } else {
           this.showImageTag = false;
         }
+        this.imgPathLoading = false;
       }, error => {
         this.showImageTag = false;
+        this.imgPathLoading = false;
       }
     )
   }

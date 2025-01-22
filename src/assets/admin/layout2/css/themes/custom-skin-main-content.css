@@ -130,7 +130,8 @@ h6 {
 }
 .partners-text,
 .user-company,
-ul.alt-row-style1 li a {
+ul.alt-row-style1 li a,
+.signature-preview {
   color: var(---text-color) !important;
 }
 .close-circle,
@@ -156,7 +157,9 @@ ul.alt-row-style1 li a {
 }
 .td-new,
 th,
-.div.thembgc {
+.div.thembgc,
+canvas,
+.signature-preview {
   border: 1px solid var(--border-color) !important;
 }
 .list-group-item,
@@ -338,7 +341,8 @@ tr {
 }
 
 /* sudha sri (28-8-2023) */
-.border-bottom-1px {
+.border-bottom-1px,
+.portlet-title.border-bottom-1px {
   border-bottom: none !important;
 }
 .modal .modal-header,
@@ -2480,3 +2484,4 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
     background-color: var(--top-bg-color) !important; 
   }
 }
+a{color: var(--title-heading--text)  !important;}

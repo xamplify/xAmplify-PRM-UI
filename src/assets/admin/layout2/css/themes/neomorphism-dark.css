@@ -1388,7 +1388,8 @@ ul.alt-row-style1 li:nth-child(even) {
   border: 1px solid #191b1e !important;
 }
 /* 14-6-2023 sudha sri */
-.dropdown-menu li > a > [class*=" fa-"] {
+.dropdown-menu li > a > [class*=" fa-"],
+.signature-preview {
   color: white !important;
 }
 .table tr.row-selected td {

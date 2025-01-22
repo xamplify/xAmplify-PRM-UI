@@ -184,6 +184,7 @@ export class ManageApprovalComponent implements OnInit {
   filterByStatus(event: any) {
     this.pagination.pageIndex = 1;
     this.pagination.maxResults = 12;
+    this.clearFilterOptions();
     if (event == 'APPROVED') {
       this.selectedFilterStatus = 'APPROVED';
       this.getAllApprovalList(this.pagination);
@@ -742,6 +743,11 @@ export class ManageApprovalComponent implements OnInit {
   }
 
   clearFilter() {
+    this.clearFilterOptions();
+    this.getAllApprovalList(this.pagination);
+  }
+
+  clearFilterOptions() {
     this.showFilterDropDown = false;
     this.filterActiveBg = 'defaultFilterACtiveBg';
     this.filterApplied = false;
@@ -752,7 +758,6 @@ export class ManageApprovalComponent implements OnInit {
     this.toDateFilterString = "";
     this.filterResponse.isVisible = false;
     this.pagination.pageIndex = 1;
-    this.getAllApprovalList(this.pagination);
   }
 
   validateDateFilter() {

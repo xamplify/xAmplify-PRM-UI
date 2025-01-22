@@ -109,7 +109,7 @@
 									</span>
 									<span *ngIf=" manageCompanies" class="col-xs-6 col-md-6">
 										<span class="pull-right" style="font-size: 16px;">Associated
-											Company:{{companyName}}
+											Company Name:{{companyName}}
 										</span>
 									</span>
 									<button *ngIf="isDefaultContactList"
@@ -1519,17 +1519,19 @@
 															</span>
 														</ng-container>
 													</td>
-													<td *ngIf="!isPartner">
+													<td [ngClass]="(isContactModule)?'text-line':''" *ngIf="!isPartner"
+														(click)="(isContactModule)?showContactDetails(allcontacts):''">
 														<app-user-info [isContactCompanyInfo]="true"
 															[userInfo]="allcontacts"> </app-user-info>
 													</td>
-													<td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner"
-														class="hidden-xs">{{allcontacts.emailCategory}}
-														<span
-															*ngIf="!allcontacts.emailCategory"><strong>-</strong></span>
+													<td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs"
+														[ngClass]="(isContactModule)?'text-line':''" (click)="(isContactModule)?showContactDetails(allcontacts):''">
+														<span>{{allcontacts.emailCategory}}</span>
+														<span *ngIf="!allcontacts.emailCategory"><strong>-</strong></span>
 													</td>
-													<td *ngIf="contactsByType.selectedCategory =='excluded' && !isPartner"
-														class="hidden-xs">{{allcontacts.excludedCatagory}}
+													<td *ngIf="contactsByType.selectedCategory =='excluded' && !isPartner" class="hidden-xs"
+														[ngClass]="(isContactModule)?'text-line':''" (click)="(isContactModule)?showContactDetails(allcontacts):''">
+														<span>{{allcontacts.excludedCatagory}}</span>
 													</td>
 													<td *ngIf="isPartner">{{allcontacts.vertical | slice:0:14}}
 														<span *ngIf="allcontacts.vertical?.length>14">..</span>
@@ -1543,12 +1545,16 @@
 													<td *ngIf="isPartner">{{allcontacts.category | slice:0:14}}
 														<span *ngIf="allcontacts.category?.length>14">..</span>
 													</td> -->
-													<td class="hidden-xs" *ngIf="!isPartner">
+													<td class="hidden-xs" [ngClass]="(isContactModule)?'text-line':''"
+														*ngIf="!isPartner"
+														(click)="(isContactModule)?showContactDetails(allcontacts):''">
 														<h5 class='mb0 ellipsis'>{{allcontacts.jobTitle | slice:0:25}}
 															<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
 														</h5>
 													</td>
-													<td class="hidden-xs center" *ngIf="!isPartner">
+													<td class="hidden-xs center" [ngClass]="(isContactModule)?'text-line':''"
+														*ngIf="!isPartner"
+														(click)="(isContactModule)?showContactDetails(allcontacts):''">
 														<h5 *ngIf="allcontacts?.address" class='mb0'>
 															{{allcontacts.address | slice:0:30}}
 															<span *ngIf="allcontacts.address?.length>30">..</span>
