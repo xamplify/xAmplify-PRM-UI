@@ -32,7 +32,9 @@ body,
 }
 .div.thembgc,
 .div.thembg-color,
-.calendar-border {
+.calendar-border,
+canvas,
+.signature-preview {
   border: 1px solid #2f4857 !important;
 }
 .tborders > tbody > tr > td,
@@ -50,7 +52,8 @@ body,
 }
 .add-options .portlet-title,
 .cloud-services.portlet.light,
-.header-description-css {
+.header-description-css,
+.signature-preview {
   color: white !important;
 }
 
@@ -1843,7 +1846,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 
 /* sudha sri (28-8-2023) */
-.border-bottom-1px {
+.border-bottom-1px,
+.portlet-title.border-bottom-1px {
   border-bottom: none !important;
 }
 
