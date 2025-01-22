@@ -51,8 +51,7 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
   getApprovalConfigurationSettings() {
     this.ngxLoading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.approveService.getApprovalConfigurationSettingsByUserId(this.loggedInUserId)
-      .subscribe(
+    this.approveService.getApprovalConfigurationSettingsByUserId().subscribe(
         result => {
           if (result.data && result.statusCode == 200) {
             this.approvalStatusSettingsDto = result.data;

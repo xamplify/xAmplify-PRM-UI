@@ -68,7 +68,8 @@ export class ApproveService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  getApprovalConfigurationSettingsByUserId(userId: number) {
+  getApprovalConfigurationSettingsByUserId() {
+    let userId = this.authenticationService.getUserId();
     let url = this.authenticationService.REST_URL + "admin/getApprovalConfigurationSettingsByUserId/" + userId + this.QUERY_PARAMETERS;
     return this.authenticationService.callGetMethod(url);
   }
@@ -91,6 +92,17 @@ export class ApproveService {
     let userId = this.authenticationService.getUserId();
     let url = this.approveUrl + `/saveOrUpdateApprovalControlSettings`+`/`+userId+`?access_token=${this.authenticationService.access_token}`;
     return this.authenticationService.callPostMethod(url, approvalControlSettingsDTOs);
+  }
+
+  getApprovalPrivileges(loggedInUserId: number, createdById: number) {
+    let url = this.approveUrl + "/getApprovalPrivileges/" + loggedInUserId + "/" + createdById + this.QUERY_PARAMETERS;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  checkApprovalPrivilegeManager() {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.approveUrl + "/checkApprovalPrivilegeManager/" + loggedInUserId + this.QUERY_PARAMETERS;
+    return this.authenticationService.callGetMethod(url);
   }
 
 }

@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Properties } from 'app/common/models/properties';
 import { ContentModuleStatusAnalyticsDTO } from 'app/contacts/models/ContentModuleStatusAnalyticsDTO';
-import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ReferenceService } from 'app/core/services/reference.service';
 import { DamService } from 'app/dam/services/dam.service';
 import { ApproveService } from 'app/approval/service/approve.service';
 
@@ -22,7 +18,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   contentModuleStatusAnalyticsDTO: ContentModuleStatusAnalyticsDTO = new ContentModuleStatusAnalyticsDTO();
   countsLoader: boolean = false;
 
-  constructor(private damService: DamService,private approveService: ApproveService) {
+  constructor(private approveService: ApproveService) {
 
   }
 

@@ -4,17 +4,15 @@ export class ApprovalControlSettingsDTO {
     loggedInUserId: number;
     companyId: number;
     role: string;
-    fullName: string;
+    firstName: string;
     emailId: string;
-
     assetApprover:boolean;
     trackApprover: boolean;
     playbookApprover: boolean;
-
     hasDamRole: boolean;
     hasTrackRole: boolean;
     hasPlaybookRole: boolean;
-
-    isAnyApprover: boolean = false;
+    anyApprover: boolean = false;
+    anyAdminOrSupervisor: boolean = false;
         
 }

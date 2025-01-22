@@ -476,7 +476,7 @@
 
                                     <!-- XNFR-821 -->
                                     <ng-container
-                                        *ngIf="authenticationService?.module?.isAdmin && (authenticationService?.module?.damAccess || 
+                                        *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && (authenticationService?.module?.damAccess || 
                                                 authenticationService?.module?.lmsAccess || authenticationService?.module?.playbookAccess)">
                                         <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
                                             [ngClass]="[ activeTabName == 'approvalConfigurationSettings' ? 'show':'',

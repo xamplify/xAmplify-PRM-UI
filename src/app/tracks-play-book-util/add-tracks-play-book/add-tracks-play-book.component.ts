@@ -1710,7 +1710,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     }
   
     if (this.isAdd && approvalRequired && !this.authenticationService.module.isAdmin) {
-      return 'Requires admin approval for publishing.';
+      return 'Requires approval for publishing.';
     } else if (!this.isAdd && approvalRequired && tracksPlayBook.approvalStatus !== 'APPROVED') {
       return this.type === TracksPlayBookType[TracksPlayBookType.TRACK] ? 
         "Unapproved tracks can't be published" : 

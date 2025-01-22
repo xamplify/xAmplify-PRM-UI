@@ -8,7 +8,6 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
-import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
 
 @Component({
@@ -19,10 +18,8 @@ import { CustomResponse } from '../../common/models/custom-response';
 })
 export class ApprovalControlManagementSettingsComponent implements OnInit {
 
-  teamMemberList: Array<any> = new Array<any>();
   pagination: Pagination = new Pagination();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-  selectedTypeIndex = 1;
   loggedInUserId: number = 0;
   searchKey: string;
   approvalControlSettingsDTOs: Array<ApprovalControlSettingsDTO> = new Array<ApprovalControlSettingsDTO>();
@@ -35,17 +32,22 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
   tracksApprovalEnabledForCompany: boolean = false;
   playbooksApprovalEnabledForCompany: boolean = false;
   approvalStatusSettingsDto: any;
+  isApprovalPrivilegeManager: boolean = false;
 
-  constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
-    public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
-    public pagerService: PagerService, public properties:Properties
+  constructor(
+    public authenticationService: AuthenticationService, 
+    public referenceService: ReferenceService,
+    public approveService: ApproveService, 
+    public utilService: UtilService,
+    public pagerService: PagerService, 
+    public properties: Properties
   ) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.getApprovalConfigurationSettings();
   }
 
   ngOnInit() {
     this.listTeamMembersForApprovalControlManagement(this.pagination);
-    this.getApprovalConfigurationSettings();
   }
 
   listTeamMembersForApprovalControlManagement(pagination: Pagination) {
@@ -59,7 +61,7 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
             return existingState ? { ...item, ...existingState } : item;
           });
           pagination.totalRecords = data.totalRecords;
-          pagination = this.pagerService.getPagedItems(pagination, this.teamMemberList);
+          pagination = this.pagerService.getPagedItems(pagination, this.approvalControlSettingsDTOs);
           pagination = this.utilService.setPaginatedRows(response, pagination);
         }
         this.referenceService.loading(this.httpRequestLoader, false);
@@ -71,7 +73,7 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
 
   getApprovalConfigurationSettings() {
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.approveService.getApprovalConfigurationSettingsByUserId(this.loggedInUserId)
+    this.approveService.getApprovalConfigurationSettingsByUserId()
       .subscribe(
         result => {
           if (result.data && result.statusCode == 200) {
@@ -113,6 +115,7 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
         } else {
           this.customResponse = new CustomResponse('ERROR', this.properties.UNABLE_TO_PROCESS_REQUEST, true);
         }
+        this.pagination.pageIndex = 1;
         this.referenceService.loading(this.httpRequestLoader, false);
         this.referenceService.scrollSmoothToTop();
       }, error => {
@@ -122,6 +125,7 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
       }, () => {
         this.selectedList = [];
         this.selectedCheckBoxState = {};
+        this.listTeamMembersForApprovalControlManagement(this.pagination);
         this.referenceService.loading(this.httpRequestLoader, false);
       });
   }
@@ -137,4 +141,23 @@ export class ApprovalControlManagementSettingsComponent implements OnInit {
     this.pagination.searchKey = this.searchKey;
     this.listTeamMembersForApprovalControlManagement(this.pagination);
   }
+
+  searchDataOnKeyPress(keyCode: any) {
+    if (keyCode === 13) {
+      this.searchData();
+    }
+  }
+
+  checkApprovalPrivilegeManager() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.approveService.checkApprovalPrivilegeManager()
+      .subscribe(
+        result => {
+          this.isApprovalPrivilegeManager = result.data;
+          this.referenceService.loading(this.httpRequestLoader, false);
+        }, error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+        });
+  }
+
 }
