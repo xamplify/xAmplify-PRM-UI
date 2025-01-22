@@ -32,6 +32,9 @@ export class CustomManageDealsComponent implements OnInit {
   @Input() isFromCompanyModule:boolean = false;
   @Output() notifyClose = new EventEmitter();
 
+  /**XNFR-836**/
+  @Input() public isFromEditContacts: boolean = false;
+
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   updateCurrentStage: boolean = false;
   showDealForm: boolean = false;
@@ -543,7 +546,9 @@ export class CustomManageDealsComponent implements OnInit {
   }
 
   goBackToManageContacts() {
-    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+    let url = RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage;
+    url += this.isFromEditContacts ? '' : '/all';
+    this.referenceService.goToRouter(url);
   }
 
   goBackToEditContacts() {

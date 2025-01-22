@@ -1519,7 +1519,8 @@
 															</span>
 														</ng-container>
 													</td>
-													<td *ngIf="!isPartner">
+													<td [ngClass]="(isContactModule && contactsByType.selectedCategory =='valid')?'text-line':''" *ngIf="!isPartner"
+														(click)="(isContactModule && contactsByType.selectedCategory =='valid')?showContactDetails(allcontacts):''">
 														<app-user-info [isContactCompanyInfo]="true"
 															[userInfo]="allcontacts"> </app-user-info>
 													</td>
@@ -1543,12 +1544,16 @@
 													<td *ngIf="isPartner">{{allcontacts.category | slice:0:14}}
 														<span *ngIf="allcontacts.category?.length>14">..</span>
 													</td> -->
-													<td class="hidden-xs" *ngIf="!isPartner">
+													<td class="hidden-xs" [ngClass]="(isContactModule && contactsByType.selectedCategory =='valid')?'text-line':''"
+														*ngIf="!isPartner"
+														(click)="(isContactModule && contactsByType.selectedCategory =='valid')?showContactDetails(allcontacts):''">
 														<h5 class='mb0 ellipsis'>{{allcontacts.jobTitle | slice:0:25}}
 															<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
 														</h5>
 													</td>
-													<td class="hidden-xs center" *ngIf="!isPartner">
+													<td class="hidden-xs center" [ngClass]="(isContactModule && contactsByType.selectedCategory =='valid')?'text-line':''"
+														*ngIf="!isPartner"
+														(click)="(isContactModule && contactsByType.selectedCategory =='valid')?showContactDetails(allcontacts):''">
 														<h5 *ngIf="allcontacts?.address" class='mb0'>
 															{{allcontacts.address | slice:0:30}}
 															<span *ngIf="allcontacts.address?.length>30">..</span>

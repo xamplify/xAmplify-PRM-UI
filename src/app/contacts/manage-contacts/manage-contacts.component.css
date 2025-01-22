@@ -437,3 +437,7 @@ h6 {
 .fs-16{
   font-size: 16px!important;
 }
+/**XNFR-836**/
+.text-line :hover{
+  text-decoration-line: underline;
+}

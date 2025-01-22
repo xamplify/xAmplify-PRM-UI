@@ -60,6 +60,7 @@ export class UserLevelTimelineComponent implements OnInit {
   isFromContactDetails: boolean = false;
   userListId: number = 0;
   isFromCampaignList:boolean = false;
+  isFromEditContacts: boolean;
   constructor(private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -85,12 +86,15 @@ export class UserLevelTimelineComponent implements OnInit {
     if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
       this.isOrgAdmin = true;
     }
-    if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd") {
+    if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd" || this.navigatedFrom == "mcd" || this.navigatedFrom == "mccd") {
       this.isFromContactDetails = true;
       this.userListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
       let parentNavigation = this.route.snapshot.params['parent'];
       if (parentNavigation != undefined) {
         this.isFromCampaignList = true;
+      }
+      if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd") {
+        this.isFromEditContacts = true;
       }
     }
   }
@@ -176,11 +180,20 @@ export class UserLevelTimelineComponent implements OnInit {
       let encodedUserListId = this.referenceService.encodePathVariable(this.userListId);
       if (this.isFromCampaignList) {
         destination = RouterUrlConstants.campaigns + RouterUrlConstants.userCampaigns + "c/" + encodedUserId + "/" + encodedUserListId;
-        destination += (this.navigatedFrom == "ccd") ? "/" + RouterUrlConstants.ccd : "/" + RouterUrlConstants.cd;
+        if (this.isFromEditContacts) {
+          destination += (this.navigatedFrom == "ccd") ? "/" + RouterUrlConstants.ccd : "/" + RouterUrlConstants.cd;
+        } else {
+          destination += (this.navigatedFrom == "mccd") ? "/mccd" : "/mcd";
+        }
       } else {
         destination = RouterUrlConstants.contacts;
-        let contactDetailsUrl = RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodedUserId;
-        destination += (this.navigatedFrom == "ccd") ? RouterUrlConstants.company+contactDetailsUrl : contactDetailsUrl;
+        if (this.isFromEditContacts) {
+          let contactDetailsUrl = RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId;
+          destination += (this.navigatedFrom == "ccd") ? RouterUrlConstants.company + contactDetailsUrl : contactDetailsUrl;
+        } else {
+          let contactDetailsUrl = RouterUrlConstants.manage + '/' + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId;
+          destination += (this.navigatedFrom == "mccd") ? RouterUrlConstants.company + contactDetailsUrl : contactDetailsUrl;
+        }
       }
       this.referenceService.goToRouter(baseUrl+destination);
     }else if(this.navigatedFrom!=undefined && encodedCampaignId==undefined){

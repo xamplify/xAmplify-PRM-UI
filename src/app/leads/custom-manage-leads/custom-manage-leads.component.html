@@ -12,7 +12,7 @@
       <li *ngIf="isFromCompanyModule">
         <a translate (click)="goBackToManageCompanies()">Manage Companies</a>
       </li>
-      <li>
+      <li *ngIf="isFromEditContacts">
         <a (click)="goBackToEditContacts()" translate>
           <i class="fa fa-angle-right" aria-hidden="true"></i>Edit Contacts
         </a>
@@ -348,7 +348,7 @@
   <div [ngClass]="selectedContact != undefined ? '' : 'page-content'">
     <app-custom-add-lead [leadId]="leadId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
       [isFromCompanyModule]="isFromCompanyModule" [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()"
-      [selectedContact]="selectedContact" [isConvertingContactToLead]="isConvertingContactToLead"
+      [selectedContact]="selectedContact" [isConvertingContactToLead]="isConvertingContactToLead" [isFromEditContacts]="isFromEditContacts"
       (notifyClose)="closeLeadForm()" [isFromContactAllLeadsTab]="'true'"></app-custom-add-lead>
   </div>
 </section>
@@ -356,7 +356,7 @@
 <!-- Deal Form-->
 <app-add-deal *ngIf="showDealForm" [leadId]="leadId" [actionType]="actionType" [selectedContact]="selectedContact"
   (notifySubmitSuccess)="showSubmitDealSuccess()" [hideAttachLeadButton]="true" [isVendorVersion]="isVendorVersion"
-  [isDealFromContact]="isConvertingContactToLead" [isFromCompanyModule]="isFromCompanyModule"
+  [isDealFromContact]="isConvertingContactToLead" [isFromCompanyModule]="isFromCompanyModule" [isFromEditContacts]="isFromEditContacts"
   (notifyClose)="closeDealForm()" [isFromContactAllLeadsTab]="'true'"></app-add-deal>
 
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [leadApprovalStatusType]="leadApprovalStatusType"
