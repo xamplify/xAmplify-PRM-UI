@@ -22,6 +22,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var swal, $, videojs: any;
 
 
@@ -138,6 +139,12 @@ export class ManageDealsComponent implements OnInit {
       } else {
         this.vanityLoginDto.userId = this.loggedInUserId;
         this.vanityLoginDto.vanityUrlFilter = false;
+      }
+    let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
+      this.selectedFilterIndex = 0;
+    }else{
+      this.selectedFilterIndex = 1;
       }
       this.init();
   }
@@ -470,7 +477,7 @@ export class ManageDealsComponent implements OnInit {
     this.dealsService.listDealsForVendor(pagination)
     .subscribe(
         response => {
-            this.referenceService.loading(this.httpRequestLoader, false);
+          this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.totalRecords;
             this.dealsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
