@@ -29,6 +29,7 @@ export class MultiselectApprovalCommentsModalPopupComponent implements OnInit {
 
   closeModelPopup() {
     this.referenceService.closeModalPopup(this.commentsModalPopUpId);
+    this.commentData = "";
     this.comment.emit(this.commentData);
   }
 

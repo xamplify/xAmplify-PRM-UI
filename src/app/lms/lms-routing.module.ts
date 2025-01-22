@@ -31,7 +31,9 @@ export const routes: Routes = [
   { path: 'partnerAnalytics/:ltId/:id/:viewType', component: LmsPartnerAnalyticsComponent },
   { path: 'partnerAnalytics/:ltId/:id/:viewType/:categoryId/:folderViewType', component: LmsPartnerAnalyticsComponent },
   { path: approvalRouterUrl + "tb/:companyId/:slug/:viewType", component: PreviewLmsComponent },
-  { path: approvalRouterUrl + "edit/:id/:viewType", component: AddLmsComponent }
+  { path: approvalRouterUrl + "edit/:id/:viewType", component: AddLmsComponent },
+  { path: approvalRouterUrl + 'analytics/:id/:viewType', component: LmsAnalyticsComponent },
+  { path: approvalRouterUrl + 'partnerAnalytics/:ltId/:id/:viewType', component: LmsPartnerAnalyticsComponent },
 
 ];
 @NgModule({

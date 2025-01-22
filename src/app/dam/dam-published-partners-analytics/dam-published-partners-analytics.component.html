@@ -7,12 +7,18 @@
                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <li>
+            <li *ngIf="!isFromApprovalModule">
                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <li><a translate (click)="goBack()">{{properties?.MANAGE_ASSETS}}</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
-            <li><a translate (click)="goBackToPartnerCompanies()">{{partnerModuleCustomName}} Companies</a><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+            <li *ngIf="!isFromApprovalModule"><a translate (click)="goBack()">{{properties?.MANAGE_ASSETS}}</a> <i
+                  class="fa fa-angle-right" aria-hidden="true"></i> </li>
+            <li *ngIf="isFromApprovalModule">
+               <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a translate (click)="goBackToPartnerCompanies()">{{partnerModuleCustomName}} Companies</a><i
+                  class="fa fa-angle-right" aria-hidden="true"></i></li>
             <li><a class="default-cursor">{{partnerModuleCustomName}} Analytics</a>
             </li>
          </ul>

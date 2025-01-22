@@ -1104,7 +1104,7 @@
                      <div style="float:left;padding: 10px 0px 0px 0px">
                         <app-team-member-filter-option *ngIf="isPartner && showFilter"
                            [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()"
-                           (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                           (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isPartnerModule]="isPartner"></app-team-member-filter-option>
                      </div>
                      <div class="page-toolbar">
                         <div class="pull-right"

@@ -5,9 +5,11 @@
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a (click)="goToManageTracks()">Manage Tracks</a>
+                <a *ngIf="!isFromApprovalModule" [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+                <i *ngIf="!isFromApprovalModule" class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isFromApprovalModule" (click)="goToManageTracks()">Manage Tracks</a>
+                <a *ngIf="isFromApprovalModule" [routerLink]="referenceService?.approvalModuleRouter" translate>Manage
+                    Approval</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a>Analytics</a>
             </li>

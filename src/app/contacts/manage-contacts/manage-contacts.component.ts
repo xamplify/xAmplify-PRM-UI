@@ -1510,9 +1510,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.contactsByType.pagination.pageIndex = 1;
 		this.contactsByType.pagination.maxResults = 12;
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-			this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
-			this.selectedFilterIndex = 1;
-			this.resetTMSelectedFilterIndex.next(true);
+			let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+			if (TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) {
+				this.resetTMSelectedFilterIndex.next(false);
+				this.selectedFilterIndex = 0;
+				this.contactsByType.pagination.partnerTeamMemberGroupFilter = false;
+			} else {
+				this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+				this.selectedFilterIndex = 1;
+				this.resetTMSelectedFilterIndex.next(true);
+			}
 		}
 		this.listContactsByType(contactType);
 	}

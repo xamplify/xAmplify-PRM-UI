@@ -26,8 +26,8 @@
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="portlet light card1_p0 overflow_scroll">
-  <div class="details_flex">
-    <div class="profile-sidebar d-flex">
+  <div class="details_flex details_profile_b">
+    <div class="profile-sidebar d-flex" [ngClass]="{ 'asidebar-closed': !isProfileSidebarOpen }">
       <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="profile-leftsidebar">
@@ -161,7 +161,7 @@
       </div>
     </div>
     <!-- End -->
-    <div class="profile-content card-shadow d-flex">
+    <div class="profile-content card-shadow d-flex details_profile_b">
       <div class="row m0">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 contact_jounrey">
           <div class="portlet light border-unset contact_bgcolor">
@@ -209,17 +209,25 @@
                     (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
-                  <app-meeting-activity [contactId]="contactId" [isReloadTab]="isReloadMeetingTab" [activeCalendarDetails]="activeCalendarDetails" (notifyClose)="reloadMeetingTab($event)"></app-meeting-activity>
+                  <app-meeting-activity [contactId]="contactId" [isReloadTab]="isReloadMeetingTab" [activeCalendarDetails]="activeCalendarDetails" (notifyClose)="reloadMeetingTab($event)" (notifyCloseSideBar)="closeLeftSideBarWhenCalendarViewActivated()"></app-meeting-activity>
                 </div>
               </div>
               <!-- END -->
             </div>
           </div>
+          <!--- icon added for transitions to open and close asidebar --->
+          <button class="expand_row" [ngClass]="{ 'expand_row_open': !isSidebarOpen }" (click)="toggleSidebar()">
+            <i class="fa fa-angle-double-right"></i>
+          </button>
+          <!--- icon added for transitions to open and close profile-sidebar --->
+          <button class="expand_profile_row" [ngClass]="{ 'expand_row_open': !isProfileSidebarOpen }" (click)="toggleProfileSidebar()">
+            <i class="fa fa-angle-double-left"></i>
+          </button>
         </div>
       </div>
     </div>
     <!-- END -->
-    <div class="asidebar">
+    <div class="asidebar" [ngClass]="{ 'asidebar-closed': !isSidebarOpen }">
       <!--  -->
       <div class="panel-group" id="accordion">
         <!-- Accordion Item 1 -->

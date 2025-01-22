@@ -115,6 +115,8 @@ export class ContactDetailsComponent implements OnInit {
   isReloadMeetingTab:boolean;
   isFromEditContacts:boolean = false;
   imgPathLoading: boolean =  false;
+  isSidebarOpen:boolean = true;
+  isProfileSidebarOpen: boolean = true;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -665,6 +667,20 @@ export class ContactDetailsComponent implements OnInit {
 
   reloadMeetingTab(event) {
     this.isReloadMeetingTab = event;
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeLeftSideBarWhenCalendarViewActivated() {
+    if (this.isSidebarOpen) {
+      this.toggleSidebar();
+    }
+  }
+
+  toggleProfileSidebar() {
+    this.isProfileSidebarOpen = !this.isProfileSidebarOpen;
   }
   
 }

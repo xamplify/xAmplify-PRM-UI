@@ -380,3 +380,17 @@ li.divider-bottom {
     transform: translate3d(-4.25px, 137.25px, 0px);
   }
   }
+  .count_align{   
+    padding: 1px 4px !important;
+    position: relative;
+    font-weight: bold;
+    z-index: 1;
+    background-clip: padding-box;
+    border: 2px solid #eaf1fb;
+    color: #fff;
+    margin: 0;
+    top: -28px;
+    height: 18px !important;
+    min-width: 8px !important;
+    left: 20px;
+  }
