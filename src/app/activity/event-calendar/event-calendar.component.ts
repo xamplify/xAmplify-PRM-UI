@@ -112,8 +112,8 @@ export class EventCalendarComponent implements OnInit {
     var view = $('#calendar').fullCalendar('getView');
     this.ngxLoading = true;
     let pagination = new Pagination();
-    pagination.fromDateFilterString = view.start._d.toLocaleDateString() + " " + view.start._d.toLocaleTimeString();
-    pagination.toDateFilterString = view.end._d.toLocaleDateString() + " " + view.end._d.toLocaleTimeString();
+    pagination.fromDateFilterString = view.start._d.toDateString();
+    pagination.toDateFilterString = view.end._d.toDateString();
     pagination.contactId = this.contactId;
     this.meetingService.fetchAllMeetingActivities(pagination, 'calendly').subscribe(
       response => {
