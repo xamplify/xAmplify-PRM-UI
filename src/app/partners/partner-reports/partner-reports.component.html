@@ -346,6 +346,12 @@
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
             <div class="inputs" style="float: right">
+              <!-- XNFR-835 -->
+              <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: -12px 0 0 0;" (click)="downloadInActivePartnersReport()">
+                <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+                  data-original-title="Export to Excel"></i>
+              </button>
+              <!-- XNFR-835 -->
               <div class="portlet-input input-inline">
                 <div class="input-icon right mTop" style="position: relative; margin: -12px 0 0 0;">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"
@@ -816,6 +822,12 @@
                 {{ isSingUpPendingDiv ? '' : authenticationService?.partnerModule?.customName }} </span>
             </div>
             <div class="inputs" style="float: right">
+              <!-- XNFR-835 -->
+              <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: -12px 0 0 0;" (click)="downloadIncompleteCompanyProfilePartnersReport()">
+                <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+                  data-original-title="Export to Excel"></i>
+              </button>
+              <!-- XNFR-835 -->
               <div class="portlet-input input-inline">
                 <div class="input-icon right mTop" style="position: relative; margin: -12px 0 0 0;">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"

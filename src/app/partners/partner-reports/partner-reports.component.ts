@@ -1270,4 +1270,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.totalPartnersCountLoader = false;
             });
     }
+    /**  XNFR-835 **/
+    downloadInActivePartnersReport() {
+        this.referenseService.downloadPartnesReports(this.loggedInUserId, this.selectedPartnerCompanyIds, this.inActivePartnersPagination, this.applyFilter, this.fromDateFilter, this.toDateFilter, "inactive-partners-report")
+    }
+    downloadIncompleteCompanyProfilePartnersReport() {
+        this.referenseService.downloadPartnesReports(this.loggedInUserId, this.selectedPartnerCompanyIds, this.incompleteCompanyProfileAndPendingSingupPagination, this.applyFilter, this.fromDateFilter, this.toDateFilter, "company-profile-incomplete-partners-report")
+    }
+    /**  XNFR-835 **/
 }
