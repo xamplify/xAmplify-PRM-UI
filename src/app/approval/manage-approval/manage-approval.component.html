@@ -22,8 +22,8 @@
           <ng-template [ngTemplateOutlet]="headerOptions"></ng-template>
         </div>
         <section>
-          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <ng-template [ngTemplateOutlet]="filter"></ng-template>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <div class="table-responsive">
             <!-- Table Header-->
             <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
