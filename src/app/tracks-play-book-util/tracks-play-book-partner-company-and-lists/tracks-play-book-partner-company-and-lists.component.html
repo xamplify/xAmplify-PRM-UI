@@ -24,7 +24,7 @@
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
               <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany"
-                (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"  [isAssetOrLms] ="moduleName == 'lms'"></app-team-member-filter-option>
             </div>
             <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 col-md-6 mb-flex">
               <div class="pull-right">
