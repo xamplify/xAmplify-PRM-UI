@@ -12,8 +12,6 @@ import { HttpClient, HttpRequest } from "@angular/common/http";
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { CommentDto } from 'app/common/models/comment-dto';
-
 
 @Injectable()
 export class DamService {
@@ -26,7 +24,6 @@ export class DamService {
   DAM_URL = this.DAM_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
   ispreviousAssetIsProcessing = false;
   uploadAssetInProgress : boolean = false;
-  COMMENTS_PREFIX_URL = this.authenticationService.REST_URL+'/comments';
   
   constructor(private http: HttpClient, private authenticationService: AuthenticationService, 
     private logger: XtremandLogger,private utilService:UtilService,private referenceService:ReferenceService) { }
@@ -363,40 +360,5 @@ export class DamService {
     let url = this.DAM_PREFIX_URL+'/validateVideoId/videoId/'+videoId+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
-
-  /** XNFR-824 start **/
-  loadUserDetailsWithApprovalStatus(entityId: number, moduleType: string) {
-    let url = this.COMMENTS_PREFIX_URL + '/loadUserDetailsWithApprovalStatus/'+entityId+'/'+moduleType+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
-    return this.authenticationService.callGetMethod(url);
-  }
-
-  loadCommentsAndTimelineHistory(entityId: number, moduleType: string) {
-    let url = this.COMMENTS_PREFIX_URL + '/loadCommentsAndTimelineHistory/'+entityId+'/'+moduleType+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
-    return this.authenticationService.callGetMethod(url);
-  }
-
-  updateApprovalStatusAndSaveComment(commentDto:CommentDto) {
-    let url = this.COMMENTS_PREFIX_URL + `/updateApprovalStatusAndSaveComment?access_token=${this.authenticationService.access_token}`;
-    return this.authenticationService.callPostMethod(url, commentDto);
-  }
-
-  getApprovalConfigurationSettingsByUserId(userId: number) {
-    let url = this.authenticationService.REST_URL + "admin/getApprovalConfigurationSettingsByUserId/" + userId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
-    return this.authenticationService.callGetMethod(url);
-  }
-
-  updateApprovalConfigurationSettings(saveAssetApprovalStatus: any) {
-    let url = this.authenticationService.REST_URL + "admin/updateApprovalConfigurationSettings" + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
-    return this.authenticationService.callPutMethod(url, saveAssetApprovalStatus);
-  }
-  /** XNFR-824 end **/
-
-  /** XNFR-813 **/
-  getStatusTileCountsByModuleType(moduleType: string) {
-    let loggedInUserId = this.authenticationService.getUserId();
-    let url = this.DAM_PREFIX_URL+'/getStatusTileCountsByModuleType/'+loggedInUserId+'/'+moduleType+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
-    return this.authenticationService.callGetMethod(url);
-  }
-
 
 }

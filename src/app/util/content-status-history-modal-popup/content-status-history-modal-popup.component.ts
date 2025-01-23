@@ -1,12 +1,13 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivityService } from 'app/activity/services/activity-service';
+import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
+import { ApproveService } from 'app/approval/service/approve.service';
 import { CommentDto } from 'app/common/models/comment-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { DamService } from 'app/dam/services/dam.service';
 
 declare var $: any;
 
@@ -14,13 +15,14 @@ declare var $: any;
   selector: 'app-content-status-history-modal-popup',
   templateUrl: './content-status-history-modal-popup.component.html',
   styleUrls: ['./content-status-history-modal-popup.component.css'],
-  providers: [DamService, HttpRequestLoader, Properties, ActivityService]
+  providers: [HttpRequestLoader, Properties, ActivityService, ApproveService]
 })
 export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   @Input() moduleType: string;
   @Input() entityId:number = 0;
   @Input() createdByAnyAdmin: boolean = false;
+  @Input() createdByAnyApprovalManagerOrApprover: boolean = false;
   @Input() title: string = "";
   @Input() createdById: number;
   @Input() createdByName: string;
@@ -34,7 +36,6 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   historyModalPopUpId = "historyModalPopUp";
   userDetailsDto:any;
   status:string="";
-  canUpdateStatus = false
   templateStatusArray = ['CREATED','APPROVED','REJECTED'];
   historyPopUpLoader:boolean = false;
   statusTimeLineHistory: any;
@@ -57,9 +58,14 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 		UPDATED: 'UPDATED'
 	};
 
+  approverControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
+  createrControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
+  canApprove: boolean = false;
+  createdByAnyApprover: boolean = false;
+
   constructor( private referenceService: ReferenceService,
       public authenticationService: AuthenticationService,
-      private damService: DamService,
+      private approveService: ApproveService,
       public httpRequestLoader: HttpRequestLoader,
       public properties: Properties,
       public activityService:ActivityService
@@ -77,7 +83,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   loadUserDeailsWithCurrentStatus() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadUserDetailsWithApprovalStatus(this.entityId, this.moduleType.toUpperCase()).subscribe( 
+    this.approveService.loadUserDetailsWithApprovalStatus(this.entityId, this.moduleType.toUpperCase()).subscribe( 
       (response: any) =>{
         this.commentModalPopUpLoader = false;
         if(response && response.data) {
@@ -87,16 +93,13 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
           if(this.commentDto.statusInString != this.templateStatusArray[0] && this.templateStatusArray.length == 3){
             this.templateStatusArray.shift();
           }
-          if(this.commentDto.createdBy != this.loggedInUserId && this.authenticationService.module.isAdmin &&
-            this.commentDto.statusInString != 'OWN') {
-            this.canUpdateStatus = true;
-          }
         }
       },error=>{
         this.commentModalPopUpLoader = false;
         this.closeModalPopUp();
         this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       },()=>{
+        this.getApprovalPrivileges(this.loggedInUserId, this.createdById);
         this.findComments();
       });
   }
@@ -108,7 +111,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   refreshTimeLineHistory(){
     this.historyPopUpLoader = true;
-    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe( 
+    this.approveService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe( 
       response=>{
         if (response.data && response.data.length > 0) {
           this.statusTimeLineHistory = response.data;
@@ -151,7 +154,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   findComments() {
     this.commentModalPopUpLoader = true;
-    this.damService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe(
+    this.approveService.loadCommentsAndTimelineHistory(this.entityId, this.moduleType.toUpperCase()).subscribe(
         response => {
           this.comments = response.data;
           this.commentModalPopUpLoader = false;
@@ -189,7 +192,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       this.status = this.commentDto.statusInString;
       this.reloadAfterClose = true;
     }
-    this.damService.updateApprovalStatusAndSaveComment(this.commentDto).
+    this.approveService.updateApprovalStatusAndSaveComment(this.commentDto).
     subscribe(
       response=>{
         this.commentModalPopUpLoader = false;
@@ -263,6 +266,44 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     setTimeout(() => {
       this.isStatusUpdated = false;
     }, 3000)
+  }
+
+  getApprovalPrivileges(loggedInUserId: number, createdById: number) {
+    this.commentModalPopUpLoader = true;
+    this.approveService.getApprovalPrivileges(loggedInUserId, createdById).subscribe(
+        response => {
+          if (response.statusCode === 200 && response.data) {
+            this.approverControlSettingsDTO = response.data.loggedInUserPrivileges;
+            this.createrControlSettingsDTO = response.data.createdByUserPrivileges;
+            this.checkIsApprover(this.approverControlSettingsDTO);
+            this.checkIsCreatedByAnyApprover(this.createrControlSettingsDTO);
+          }
+          this.commentModalPopUpLoader = false;
+        }, error => {
+          this.commentModalPopUpLoader = false;
+          this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        }
+      );
+  }
+
+  checkIsApprover(approverControlSettingsDTO: ApprovalControlSettingsDTO) {
+    if (approverControlSettingsDTO.assetApprover && this.moduleType.toUpperCase() == 'DAM') {
+      this.canApprove = true;
+    } else if (approverControlSettingsDTO.trackApprover && this.moduleType.toUpperCase() == 'TRACK') {
+      this.canApprove = true;
+    } else if (approverControlSettingsDTO.playbookApprover && this.moduleType.toUpperCase() == 'PLAYBOOK') {
+      this.canApprove = true;
+    }
+  }
+
+  checkIsCreatedByAnyApprover(createrControlSettingsDTO: ApprovalControlSettingsDTO) {
+    if (createrControlSettingsDTO.assetApprover && this.moduleType.toUpperCase() == 'DAM') {
+      this.createdByAnyApprover = true;
+    } else if (createrControlSettingsDTO.trackApprover && this.moduleType.toUpperCase() == 'TRACK') {
+      this.createdByAnyApprover = true;
+    } else if (createrControlSettingsDTO.playbookApprover && this.moduleType.toUpperCase() == 'PLAYBOOK') {
+      this.createdByAnyApprover = true;
+    }
   }
   
 }
