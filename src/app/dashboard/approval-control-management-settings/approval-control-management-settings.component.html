@@ -6,17 +6,20 @@
         {{properties.TEAM_MEMBER_APPROVAL_PREVILEGES_SETTING_HELPER_TEXT}}
       </div>
       <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-      <div class="float-right input-icon right mb10">
-        <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-          placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
-        <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
-          (click)="searchKey='';searchData();"></button>
-        <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
-            aria-hidden="true"></i></button>
+      
+      <div class="row m0">
+        <div class="float-right input-icon right mb10">
+          <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+            placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
+          <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+            (click)="searchKey='';searchData();"></button>
+          <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
+              aria-hidden="true"></i></button>
+        </div>
       </div>
 
       <section>
-        <div *ngIf="!httpRequestLoader.isLoading">
+        <div *ngIf="!httpRequestLoader.isLoading" class="table-responsive">
           <table class="table tgrid table-hover table-sm">
             <thead>
               <tr>
