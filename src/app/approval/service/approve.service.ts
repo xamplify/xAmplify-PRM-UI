@@ -11,19 +11,17 @@ export class ApproveService {
 
   QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
   approveUrl = this.authenticationService.REST_URL + "approve";
+  damUrl = this.authenticationService.REST_URL + "dam";
 
-  constructor(private http: Http, public httpClient: HttpClient,private authenticationService: AuthenticationService,
-     private referenceService:ReferenceService
+  constructor(private http: Http, public httpClient: HttpClient, private authenticationService: AuthenticationService,
+    private referenceService: ReferenceService
   ) { }
 
 
   getAllApprovalList(pagination: Pagination) {
     let userId = this.authenticationService.getUserId();
-    let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    let filterKeyRequestParam = pagination.filterKey != undefined && pagination.filterKey != null ?
-      "&filterKey=" + pagination.filterKey : "";
-    let findAllUrl = this.approveUrl + "/getAllApprovalList/" + userId + this.QUERY_PARAMETERS + pageableUrl + filterKeyRequestParam;
-    return this.authenticationService.callGetMethod(findAllUrl);
+    let findAllUrl = this.approveUrl + "/getAllApprovalList/" + userId + this.QUERY_PARAMETERS;
+    return this.authenticationService.callPostMethod(findAllUrl, pagination);
   }
 
   getStatusTileCounts(filterType: any) {
@@ -39,5 +37,13 @@ export class ApproveService {
     return this.authenticationService.callPostMethod(updateApprovalStatusUrl, commentDto);
   }
 
+
+  getFileTypes(loggedInUserCompanyId: any, categoryId: number) {
+    if (undefined == categoryId) {
+      categoryId = 0;
+    }
+    let url = this.damUrl + "/findFileTypes/" + loggedInUserCompanyId + "/" + categoryId + this.QUERY_PARAMETERS;
+    return this.authenticationService.callGetMethod(url);
+  }
 
 }
