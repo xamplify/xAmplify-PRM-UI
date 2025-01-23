@@ -1694,7 +1694,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       approvalRequired = this.authenticationService.approvalRequiredForPlaybooks;
     }
    
-    const isAdmin = this.authenticationService.module.isAdmin;
+    const isAdmin = this.authenticationService.module.isAnyAdminOrSupervisor;
   
     return !tracksPlayBook.isValid || 
            (this.isAdd && approvalRequired && !isAdmin) || 
@@ -1709,7 +1709,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       approvalRequired = this.authenticationService.approvalRequiredForPlaybooks;
     }
   
-    if (this.isAdd && approvalRequired && !this.authenticationService.module.isAdmin) {
+    if (this.isAdd && approvalRequired && !this.authenticationService.module.isAnyAdminOrSupervisor) {
       return 'Requires approval for publishing.';
     } else if (!this.isAdd && approvalRequired && tracksPlayBook.approvalStatus !== 'APPROVED') {
       return this.type === TracksPlayBookType[TracksPlayBookType.TRACK] ? 
