@@ -250,10 +250,10 @@
                                                 </a>
                                                 <a class="custom-icon"
                                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                                    data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
-                                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                                    data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
+                                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-share IconCustomization" aria-hidden="true"
-                                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''"></i>
+                                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -270,7 +270,7 @@
                                                 </a>
                                                 <!-- XNFR-824 -->
                                                 <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)" data-toggle="tooltip" data-placement="top"
-                                                title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
+                                                title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
                                                     <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
                                                 </a>
                                                 <a class="custom-icon" *ngIf="learningTrack.canDelete && !isPartnerView"
@@ -383,9 +383,9 @@
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                        data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : Publish}}"
-                                        (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
-                                        [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyAdmin && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''">
+                                        data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : Publish}}"
+                                        (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
+                                        [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''">
                                         <i class="fa fa-share" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>
@@ -409,7 +409,7 @@
                                 <!-- XNFR-824 -->
                                 <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)"
                                     data-toggle="tooltip" data-placement="top"
-                                    title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
+                                    title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
                                     <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
                                 </a>
 
@@ -505,7 +505,7 @@
 <!-- XNFR-824 -->
 <app-content-status-history-modal-popup
     *ngIf="callCommentsComponent && isApprovalRequiredForType() && !isPartnerView"
-    [entityId]="selectedDamId" [moduleType]="type" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+    [entityId]="selectedDamId" [moduleType]="type" [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover" [title]="assetName"
     [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
     (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
     (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">

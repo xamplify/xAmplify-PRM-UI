@@ -109,7 +109,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	assetCreatedByFullName: string = "";
 	callCommentsComponent: boolean = false;
 	selectedDamId: number;
-	createdByAnyAdmin: boolean = false;
+	createdByAnyApprovalManagerOrApprover: boolean = false;
 	fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
 	approvalStatus = {
 		APPROVED: 'APPROVED',
@@ -946,7 +946,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.assetCreatedById = asset.createdBy;
 		this.assetCreatedByFullName = asset.fullName;
 		this.selectedDamId = asset.id;
-		this.createdByAnyAdmin = asset.createdByAnyAdmin;
+		this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
 		this.videoId = asset.videoId;
 	}
 
