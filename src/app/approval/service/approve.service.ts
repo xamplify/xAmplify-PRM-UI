@@ -31,10 +31,14 @@ export class ApproveService {
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 
-  getStatusTileCounts(filterType: any) {
+  getStatusTileCounts(filterType: any, toDateFilter: string, fromDateFilter: string, timeZone: string) {
     let userId = this.authenticationService.getUserId();
-    let filterByRequestParameter = filterType != undefined ? '&filterType=' + filterType : '';
-    let findAllUrl = this.approveUrl + "/getStatusTileCounts/" + userId + this.QUERY_PARAMETERS + filterByRequestParameter;
+    let filterByRequestParameter = filterType != undefined ? '&filterBy=' + filterType : '';
+    let fromDateFilterStringParam = fromDateFilter != undefined && fromDateFilter.length > 0 ? "&fromDateFilterString=" + fromDateFilter : "";
+    let toDateFilterStringParam = toDateFilter != undefined && toDateFilter.length > 0 ? "&toDateFilterString=" + toDateFilter : "";
+    let timeZoneParam = timeZone != null ? "&timeZone=" + timeZone : "";
+    let findAllUrl = this.approveUrl + "/getStatusTileCounts/" + userId + this.QUERY_PARAMETERS + filterByRequestParameter
+      + fromDateFilterStringParam + toDateFilterStringParam + timeZoneParam;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 

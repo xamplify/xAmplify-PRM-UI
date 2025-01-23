@@ -1104,7 +1104,7 @@
                      <div style="float:left;padding: 10px 0px 0px 0px">
                         <app-team-member-filter-option *ngIf="isPartner && showFilter"
                            [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()"
-                           (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                           (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isPartnerModule]="isPartner"></app-team-member-filter-option>
                      </div>
                      <div class="page-toolbar">
                         <div class="pull-right"
@@ -1374,23 +1374,26 @@
                                                    </span>
                                                 </ng-container>
                                              </td>
-                                             <td *ngIf="!isPartner">
-                                                <app-user-info [isContactCompanyInfo]="true"
-                                                   [userInfo]="contact"></app-user-info>
+                                             <td *ngIf="!isPartner" [ngClass]="(isContactModule)?'text-line':''"
+                                                (click)="(isContactModule)?showContactJourney(contact):''">
+                                                <app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"></app-user-info>
                                              </td>
-                                             <td *ngIf="(contactsByType.selectedCategory =='invalid' ) && !isPartner"
-                                                class="hidden-xs">
-                                                {{contact.emailCategory}}
+                                             <td *ngIf="(contactsByType.selectedCategory =='invalid' ) && !isPartner" class="hidden-xs"
+                                                [ngClass]="(isContactModule)?'text-line':''" (click)="(isContactModule)?showContactJourney(contact):''">
+                                                <span>{{contact.emailCategory}}</span>
                                                 <span *ngIf="!contact.emailCategory"><strong>-</strong></span>
                                              </td>
-                                             <td *ngIf="(contactsByType.selectedCategory =='excluded') && !isPartner"
-                                                class="hidden-xs">
-                                                {{contact.excludedCatagory}}
+                                             <td *ngIf="(contactsByType.selectedCategory =='excluded') && !isPartner" class="hidden-xs"
+                                                [ngClass]="(isContactModule)?'text-line':''" (click)="(isContactModule)?showContactJourney(contact):''">
+                                                <span>{{contact.excludedCatagory}}</span>
                                                 <span *ngIf="!contact.excludedCatagory"><strong>-</strong></span>
                                              </td>
-                                             <td class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()">{{contact.jobTitle}}
+                                             <td class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()"
+                                                [ngClass]="(isContactModule)?'text-line':''" (click)="(isContactModule)?showContactJourney(contact):''">
+                                                <span>{{contact.jobTitle}}</span>
                                              </td>
-                                             <td class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()">
+                                             <td class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()"
+                                                [ngClass]="(isContactModule)?'text-line':''" (click)="(isContactModule)?showContactJourney(contact):''">
                                                 <h5 *ngIf="contact?.address" title="{{contact.address}}" class='mb0'>
                                                    {{contact.address |
                                                    slice:0:30}}
@@ -1427,7 +1430,7 @@
                                                    translate><span class="btn markas transition txt_pd-top8">Mark as
                                                       valid</span></button>
                                              </td>
-                                             <td *ngIf="isPartner || isContactModule()">
+                                             <td *ngIf="isPartner || isContactModule">
                                                 <button class="border-btn-small lightgray-btn"
                                                    id='more_less_button_{{i}}'
                                                    (click)="contact.isShowDetails = ! contact.isShowDetails">

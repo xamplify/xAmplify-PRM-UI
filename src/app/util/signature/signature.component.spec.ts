@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageAprrovalComponent } from './manage-aprroval.component';
+import { SignatureComponent } from './signature.component';
 
-describe('ManageAprrovalComponent', () => {
-  let component: ManageAprrovalComponent;
-  let fixture: ComponentFixture<ManageAprrovalComponent>;
+describe('SignatureComponent', () => {
+  let component: SignatureComponent;
+  let fixture: ComponentFixture<SignatureComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManageAprrovalComponent ]
+      declarations: [ SignatureComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManageAprrovalComponent);
+    fixture = TestBed.createComponent(SignatureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

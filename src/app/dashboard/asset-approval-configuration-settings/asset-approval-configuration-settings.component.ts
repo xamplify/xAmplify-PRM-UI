@@ -126,7 +126,9 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
           this.ngxLoading = false;
           this.referenceService.loading(this.httpRequestLoader, false);
           if (result.statusCode == 200) {
+            this.referenceService.scrollSmoothToTop();
             this.assetApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
+            window.location.reload();
           } else {
             this.assetApprovalCustomResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
           }

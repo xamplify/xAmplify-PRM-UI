@@ -1,0 +1,391 @@
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home"></i>
+        <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+        <a translate>Manage Approval</a>
+      </li>
+    </ul>
+  </div>
+  <app-content-module-status-analytics [moduleType]="'APPROVE'" (filterContentByType)="filterByStatus($event)"
+    [filterType]="selectedFilterType" [toDateFilter]="toDateFilter" [fromDateFilter]="fromDateFilter">
+  </app-content-module-status-analytics>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0 light_bg_removal remove_space">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        <div class="portlet-title remove_border">
+          <ng-template [ngTemplateOutlet]="headerOptions"></ng-template>
+        </div>
+        <section>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <div class="table-responsive">
+            <ng-template [ngTemplateOutlet]="filter"></ng-template>
+            <!-- Table Header-->
+            <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
+              <thead>
+                <tr>
+                  <th *ngIf="selectedFilterStatus === 'PENDING' && authenticationService?.module?.isAdmin" class="mr5">
+                    <input type="checkbox" class="checkBox_shadow" value="selectAllPendingList" id="selectAllPendingList"
+                      name="pendingListSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="pointer" />
+                  </th>
+                  <th *ngIf="selectedFilterStatus != 'PENDING'"></th>
+                  <th *ngIf="selectedFilterStatus == 'PENDING' && !authenticationService?.module?.isAdmin"></th>
+                  <th scope="col">Details</th>
+                  <th>Created On</th>
+                  <th scope="col" class="align-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of approveList">
+                <ng-container>
+                  <ng-template [ngTemplateOutlet]="allApprovalList"
+                    [ngTemplateOutletContext]="{item:item}"></ng-template>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-info text-center" *ngIf="approveList?.length==0">
+            <strong>No Data Found</strong>
+          </div>
+        </section>
+        <!--Pagination-->
+        <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
+          <app-pagination [pagination]="pagination" (notifyParentDropDown)="getAllApprovalList($event)"
+            (notifyParent)="paginateList($event)"></app-pagination>
+        </div>
+      </div>
+      <!-- UnPublish Modal Popup-->
+      <div class="modal fade in" id="unpublished-modal" data-backdrop="static">
+        <div class="modal-dialog modal-copy" role="document">
+          <div class="modal-content mSweetalertWid popup-cu-widthalign">
+            <div class="modal-header">
+              <h4 class="modal-title f-w-600" id="" translate="">Are you sure you want to unpublish this
+                {{trackOrPlayBookText}}?</h4>
+            </div>
+            <div class="modal-body">
+              <div>
+                <h4 class="modal-title">Please share your reason for unpublishing this {{trackOrPlayBookText}}.</h4>
+              </div>
+              <div class="form-check pointer mt15">
+                <input class="pointer radioButton_shadow" type="radio" (click)="selectedOption=true" name="rdaction"
+                  value="Assets_or_Quiz">
+                <label class="option-color">{{itemType === 'Track' ? ' Want to update Assets/Quiz' : ' Want to
+                  update Assets' }}</label><br>
+                <input class="pointer radioButton_shadow" type="radio" (click)="selectedOption=true" name="rdaction"
+                  value="Partner_List">
+                <label class="option-color">Want to update the
+                  {{authenticationService?.partnerModule?.customName}}/Group of
+                  {{authenticationService?.partnerModule?.customName}}</label><br>
+                <input class="pointer radioButton_shadow" type="radio" (click)="selectedOption=true" name="rdaction"
+                  value="Other">
+                <label class="option-color">Other</label><br>
+              </div>
+              <div>
+                <p class="warning-red-textcolor">* When you unpublish the {{trackOrPlayBookText}},all the related
+                  analytics
+                  will no longer exists.</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn Btn-Gray" type="button" (click)="closePopUp()">Cancel</button>
+              <button class="button bgcolor-unset pd-top2" type="button" [disabled]="!selectedOption"
+                (click)="unPublishAction(UnPublishedId, false)">
+                <span class="btn Btn-Green transition text_pd5">Unpublish</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Add Comment Modal Popup-->
+
+</div>
+
+<!--Page Bar Option-->
+<ng-template #headerOptions>
+  <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6 pl0">
+    <ul class="mix-filter mb0">
+      <li class="filter" (click)="filterByType('ALL',1)" [class.type-selected]="1 == selectedTypeIndex">All<i
+          class="fa fa-check-circle-o check-icons" *ngIf="1 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForAssets" class="filter" (click)="filterByType('ASSETS',2)"
+        [class.type-selected]="2 == selectedTypeIndex">Assets<i class="fa fa-check-circle-o check-icons"
+          *ngIf="2 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForTracks" class="filter" (click)="filterByType('TRACKS',3)"
+        [class.type-selected]="3 == selectedTypeIndex">Tracks<i class="fa fa-check-circle-o check-icons"
+          *ngIf="3 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForPlaybooks" class="filter"
+        (click)="filterByType('PLAYBOOKS',4)" [class.type-selected]="4 == selectedTypeIndex">Play
+        Books<i class="fa fa-check-circle-o check-icons" *ngIf="4 == selectedTypeIndex"></i></li>
+    </ul>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6 pr0">
+    <div class="d-flex justify-content-end">
+      <span class="btn btn-xs hidden-xs l-g-view FliterAlignment pull-right {{filterActiveBg}}" title="Filter">
+        <div class="btn-group">
+          <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+            (click)="clickFilter()">
+            <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+          </a>
+          <ul *ngIf="showFilterDropDown" class="dropdown-menu pull-right">
+            <li><a (click)="viewDropDownFilter()">View Filter</a></li>
+            <li><a (click)="clearFilter()">Clear Filter</a></li>
+          </ul>
+        </div>
+      </span>
+      <!-- Sort start -->
+      <div class="mr5">
+        <select class="form-control SeclectBoxPaddingsAbj pull-left mr5" id="alignline-m-width"
+          [(ngModel)]="sortOption.approvalHubSortOption" (ngModelChange)="sortList($event)"
+          style="position: relative; right: -3px;">
+          <option *ngFor="let option of sortOption.approvalHubSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
+        </select>
+      </div>
+      <div class="float-right input-icon right mb10 mr5">
+        <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+          placeholder="Search..." (keypress)="searchDataOnKeyPress($event.keyCode)">
+        <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+          (click)="searchKey='';searchData();"></button>
+        <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
+            aria-hidden="true"></i></button>
+      </div>
+      <div *ngIf="selectedFilterStatus === 'PENDING'" class="btn-group pull-right pt">
+        <button class="btn Btn-Green mb_btn" style="border-radius: 3px !important;box-shadow: none !important;"
+          data-toggle="dropdown" [disabled]="!displayApproveAndRejectButton" translate>
+          Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu pull-right">
+          <li><a id="save_button" (click)="getStausAndCallCommentsPopUp('APPROVED')">Approve Selected</a></li>
+          <li><a id="save_button" (click)="getStausAndCallCommentsPopUp('REJECTED')">Reject Selected</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #allApprovalList let-item="item">
+  <tr>
+    <td style="width: 10%;">
+      <div class="col">
+        <div class="instant-links-type">
+          <span class="mr20" *ngIf="selectedFilterStatus === 'PENDING' && authenticationService?.module?.isAdmin"><input
+              class="pointer" class="checkBox_shadow" type="checkbox" [checked]="((selectedIds.indexOf(item.id)>-1))"
+              value="{{item.id}}" (click)="selectPendingItem(item)" id="{{item.id}}" name="pendingList[]"></span>
+          <img [alt]="item?.type || 'Image'" style="height: 50px;" [src]="getImageSrc(item)" />
+        </div>
+      </div>
+    </td>
+    <td style="width: 40%;">
+      <!-- Name Field -->
+      <h6 *ngIf="item?.name">
+        <span class="pointer">
+          <b>{{item?.type || 'Item'}} Name: </b>
+          <span data-toggle="tooltip" data-placement="top" title="{{item.name}}">
+            {{item?.name | slice:0:25}}
+            <span *ngIf="item?.name?.length>25">..</span>
+          </span>
+        </span>
+      </h6>
+      <!-- Created By Field -->
+      <h6 *ngIf="item?.createdBy">
+        <span class="pointer">
+          <b>{{item?.type || 'Item'}} Created By: </b>
+          <span data-toggle="tooltip" data-placement="top" title="{{item.createdBy}}">
+            {{item?.createdBy | slice:0:25}}
+            <span *ngIf="item?.createdBy?.length>25">..</span>
+          </span>
+        </span>
+      </h6>
+      <!-- Tags, Folders, and Additional Details -->
+      <ng-template [ngTemplateOutlet]="extraDetails" [ngTemplateOutletContext]="{ item: item }"></ng-template>
+      <span *ngIf="item?.type" class="view-banner" [ngClass]="{
+        'bgc-asset': item.type === 'Asset',
+        'bgc-track' : item.type === 'Track',
+        'bgc-playbook' : item.type === 'PlayBook'}" translate>
+        {{getTypeText(item.type)}}
+      </span>
+      <span *ngIf="item?.status" class="view-banner ml5" [ngClass]="{
+        'bgc-green': item.status === 'APPROVED',
+        'bgc-red': item.status === 'REJECTED',
+        'bgc-orange': item.status === 'CREATED'}" translate>
+        {{getApprovalStatusText(item.status)}}
+      </span>
+    </td>
+    <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdDateInUTC">
+      </app-timestamp></td>
+    <td>
+      <div class="actions-block override-actions" style="float:none !important;">
+        <!--Design-->
+        <a class="custom-icon" *ngIf="item?.type === 'Asset' && item?.beeTemplate" data-toggle="tooltip"
+          data-placement="top" title="Design" (click)="addOrEdit(item.id)">
+          <i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+        <!-- Edit Icon -->
+        <a *ngIf="item?.canEdit" class="custom-icon" data-toggle="tooltip"
+          data-placement="top" title="Edit" (click)="edit(item)">
+          <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+        <!-- UnPublish Icon -->
+        <a class="custom-icon" *ngIf="item?.published && item?.canUnPublish" data-toggle="tooltip" data-placement="top"
+          title="Unpublish" (click)=" UnpublishedModalPopUp(item)">
+          <i class="fa fa-reply IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+        <!-- Publish Icon -->
+        <a class="custom-icon" *ngIf="!item.published && item?.type != 'Asset' && item?.canPublish" data-toggle="tooltip"
+          data-placement="top"
+          title="{{(!item?.createdByAnyAdmin && item?.status != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
+          (click)="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyAdmin && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? '': confirmChangePublish(item.id, true, item)">
+          <i class="fa fa-share IconCustomization" aria-hidden="true"
+            [ngClass]="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyAdmin && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? 'disabled gray':''"></i>
+          <div class="clickicons"></div>
+        </a>
+        <!-- Preview Icon -->
+        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(item)">
+          <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+        <ng-container
+          *ngIf="item?.videoId && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==item.createdById) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
+          <!--Create Campaign-->
+          <a class="custom-icon"
+            *ngIf="item?.viewBy!='DRAFT' && authenticationService?.module?.showCampaignOptionInManageVideos"
+            (click)="(item?.status == 'APPROVED') ? campaignRouter(item.videoAlias, item.viewBy) : ''" data-toggle="tooltip"
+            data-placement="top"
+            title="{{item?.status != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign'}}">
+            <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"
+              [ngClass]="(item?.status != 'APPROVED') ? 'disabled gray' : ''"></i>
+            <div class="clickicons"></div>
+          </a>
+        </ng-container>
+    
+        <!-- Downlaod Icon -->
+        <a *ngIf="item?.type === 'Asset'" class="custom-icon" data-toggle="tooltip" data-placement="top" title="Downlaod"
+          (click)="download(item)">
+          <i class="fa fa-download IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+    
+        <!--View Analytics-->
+        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
+          *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(item)">
+          <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+    
+        <!-- comment/history -->
+        <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
+          title="{{(!authenticationService?.module?.isAdmin || item?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
+          <i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+        <!--Delete-->
+        <a *ngIf="item?.canDelete" class="custom-icon" data-toggle="tooltip"
+          data-placement="top" title="Delete" (click)="confirmDelete(item)">
+          <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+          <div class="del-icon"></div>
+        </a>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+
+<ng-template #extraDetails let-item="item">
+  <!-- Folder Field -->
+  <h6 *ngIf="item?.folder">
+    <span class="pointer"><b>Folder: </b>
+      <span data-toggle="tooltip" data-placement="top" title="{{item.folder}}">
+        {{item?.folder}}
+      </span>
+    </span>
+  </h6>
+  <!-- Version Field -->
+  <h6 *ngIf="item?.beeTemplate">
+    <span class="pointer"><b>Version: </b>
+      <span data-toggle="tooltip" data-placement="top" title="{{item.versionInString}}">
+        {{item?.versionInString}}
+      </span>
+    </span>
+  </h6>
+</ng-template>
+
+<app-content-status-history-modal-popup *ngIf="callCommentsComponent" [entityId]="selectedDamId"
+  [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName" [createdById]="assetCreatedById"
+  [createdByName]="assetCreatedByFullName" [moduleType]="moduleType" [createdByAnyAdmin]="createdByAnyAdmin"
+  (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
+  (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopup()">
+</app-content-status-history-modal-popup>
+
+<app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
+  [isApproveOrRejectStatus]="isApproveOrRejectStatus" (comment)="getComment($event)">
+</app-multiselect-approval-comments-modal-popup>
+
+<!--Download Pdf Modal Popup-->
+<ng-container *ngIf="showPdfModalPopup">
+  <app-download-asset-popup [asset]="asset"
+    (downloadAssetPopupEventEmitter)="downloadPopupEventEmitter()"></app-download-asset-popup>
+</ng-container>
+
+<!--Delete Asset-->
+<ng-container *ngIf="deleteAsset">
+  <app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
+    (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)"
+    (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()" (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
+  </app-delete-assets>
+</ng-container>
+
+<ng-template #filter>
+  <div class="portlet light ht125 mt10" *ngIf="showFilterOption && !showFilterDropDown">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <!-- Alert Message Box -->
+        <app-response-message class="pg8" [customResponse]="filterResponse"
+          *ngIf="filterResponse?.isVisible"></app-response-message>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8 pl0">
+          <h4 translate>Apply Filter</h4>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
+          <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()" data-toggle="tooltip"
+            data-placement="top" title="Close Filter Box">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+          <div class="portlet box custom_fiter-asset mt10">
+            <div class="row pl10 pr10 pb10">
+              <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+                <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                  <div class="control-label" style="font-size:15px">{{dateFilterText}}
+                  </div>
+                </div>
+                <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                  <label class="control-label">
+                    From Date &nbsp;
+                  </label>
+                  <app-date-picker [(dataField)]="fromDateFilterString" [isFromFilter]='true'>
+                  </app-date-picker>
+                </div>
+                <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
+                  <label class="control-label">To Date &nbsp;
+                  </label>
+                  <app-date-picker [(dataField)]="toDateFilterString" [isFromFilter]='true'>
+                  </app-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="btn-aligmntCu pull-right">
+            <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+            <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

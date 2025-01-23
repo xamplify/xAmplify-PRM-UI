@@ -15,6 +15,7 @@ import { Tag } from 'app/dashboard/models/tag'
 import { UserService } from '../../core/services/user.service';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 
 declare var $:any, CKEDITOR: any;
@@ -73,6 +74,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
    isAssetPublishedEmailNotification = false;
    assetPublishEmailNotificationLoader = true;
    isDownloaButtonClicked = false;
+  isFromApprovalModule: boolean = false;
 
   constructor(
     private xtremandLogger: XtremandLogger,
@@ -96,6 +98,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.ngxloading = true;
+      this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
       this.referenceService.assetResponseMessage = "";
       this.beeContainerInput["module"] = "dam";
       /*******XNFR-255***/
@@ -287,29 +290,33 @@ export class AddDamComponent implements OnInit, OnDestroy {
   saveOrUpdate(saveAs: boolean) {
     this.customResponse = new CustomResponse();
     this.getCkEditorData();
-      this.nameErrorMessage = "";
-      this.modalPopupLoader = true;
-      this.damPostDto.createdBy = this.loggedInUserId;
-      if (this.isPartnerView) {
-        this.updatePublishedAsset();
-      } else {
-        if (!this.isAdd && !saveAs) {
-          this.damPostDto.id = this.assetId;
-        }
-        this.damPostDto.saveAs = saveAs;
-        this.damService.save(this.damPostDto).subscribe(
-          (result: any) => {
-            this.hidePopup();
-            this.referenceService.isCreated = true;
-            this.referenceService.assetResponseMessage = result.message;
-            this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
-            this.modalPopupLoader = false;
-          },
-          (error) => {
-            this.showErrorMessageOnSaveOrUpdate(error);
-          }
-        );
+    this.nameErrorMessage = "";
+    this.modalPopupLoader = true;
+    this.damPostDto.createdBy = this.loggedInUserId;
+    if (this.isPartnerView) {
+      this.updatePublishedAsset();
+    } else {
+      if (!this.isAdd && !saveAs) {
+        this.damPostDto.id = this.assetId;
       }
+      this.damPostDto.saveAs = saveAs;
+      this.damService.save(this.damPostDto).subscribe(
+        (result: any) => {
+          this.hidePopup();
+          this.referenceService.isCreated = true;
+          this.referenceService.assetResponseMessage = result.message;
+          if (this.isFromApprovalModule) {
+            this.goBackToManageApproval();
+          } else {
+            this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+          }
+          this.modalPopupLoader = false;
+        },
+        (error) => {
+          this.showErrorMessageOnSaveOrUpdate(error);
+        }
+      );
+    }
   }
 
   updatePublishedAsset() {
@@ -345,7 +352,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.goToManageDam();
+    if (this.isFromApprovalModule) {
+      this.goBackToManageApproval();
+    } else {
+      this.goToManageDam();
+    }
   }
   /******XNFR-169********/
   goToManageDam() {
@@ -543,5 +554,9 @@ downloadPdf(){
 
 }
 
+  goBackToManageApproval() {
+    let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
+    this.referenceService.goToRouter(url);
+  }
 
 }

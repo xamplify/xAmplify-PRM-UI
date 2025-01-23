@@ -12,7 +12,7 @@
       <li *ngIf="isFromCompanyModule">
         <a translate [routerLink]="companyRouter">Manage Companies</a>
       </li>
-      <li>
+      <li *ngIf="isFromEditContacts">
         <a (click)="backToEditContacts()" translate>
           <i class="fa fa-angle-right" aria-hidden="true"></i>Edit Contacts
         </a>
@@ -26,8 +26,8 @@
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="portlet light card1_p0 overflow_scroll">
-  <div class="details_flex">
-    <div class="profile-sidebar d-flex">
+  <div class="details_flex details_profile_b">
+    <div class="profile-sidebar d-flex" [ngClass]="{ 'asidebar-closed': !isProfileSidebarOpen }">
       <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="profile-leftsidebar">
@@ -35,8 +35,9 @@
           <!-- Header 1 -->
           <div class="profile_header">
             <div [ngClass]="showImageTag ? 'avatar2_v2' : 'avatar2'">
-              <span *ngIf="!showImageTag" class="avatar-initial">{{highlightLetter}}</span>
-              <img *ngIf="showImageTag" class="img_wdt" src="{{imageSourcePath}}" alt="">
+              <span *ngIf="!showImageTag && !imgPathLoading" class="avatar-initial">{{highlightLetter}}</span>
+              <img *ngIf="showImageTag && !imgPathLoading" class="img_wdt" src="{{imageSourcePath}}" alt="">
+              <img *ngIf="imgPathLoading" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
             </div>
             <div class="profile_info">
               <div>
@@ -45,7 +46,7 @@
                   {{referenceService?.isHarizontalNavigationBar ? (contactName | slice:0:15) : (contactName | slice:0:10)}}<span *ngIf="contactName != undefined && (referenceService?.isHarizontalNavigationBar ? contactName?.length>15 : contactName?.length>10)">..</span>
                 </span>
                 <span *ngIf="contactName == undefined || contactName == ''" class="anonymous-text">Anonymous</span>
-                <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
+                <i *ngIf="isFromEditContacts" class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
               </div>
               <span class="email-id">
                 <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.emailId}}">
@@ -160,7 +161,7 @@
       </div>
     </div>
     <!-- End -->
-    <div class="profile-content card-shadow d-flex">
+    <div class="profile-content card-shadow d-flex details_profile_b">
       <div class="row m0">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 contact_jounrey">
           <div class="portlet light border-unset contact_bgcolor">
@@ -208,17 +209,25 @@
                     (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-task-activity>
                 </div>
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
-                  <app-meeting-activity [contactId]="contactId" [isReloadTab]="isReloadMeetingTab" [activeCalendarDetails]="activeCalendarDetails" (notifyClose)="reloadMeetingTab($event)"></app-meeting-activity>
+                  <app-meeting-activity [contactId]="contactId" [isReloadTab]="isReloadMeetingTab" [activeCalendarDetails]="activeCalendarDetails" (notifyClose)="reloadMeetingTab($event)" (notifyCloseSideBar)="closeLeftSideBarWhenCalendarViewActivated()"></app-meeting-activity>
                 </div>
               </div>
               <!-- END -->
             </div>
           </div>
+          <!--- icon added for transitions to open and close asidebar --->
+          <button class="expand_row" [ngClass]="{ 'expand_row_open': !isSidebarOpen }" (click)="toggleSidebar()">
+            <i class="fa fa-angle-double-right"></i>
+          </button>
+          <!--- icon added for transitions to open and close profile-sidebar --->
+          <button class="expand_profile_row" [ngClass]="{ 'expand_row_open': !isProfileSidebarOpen }" (click)="toggleProfileSidebar()">
+            <i class="fa fa-angle-double-left"></i>
+          </button>
         </div>
       </div>
     </div>
     <!-- END -->
-    <div class="asidebar">
+    <div class="asidebar" [ngClass]="{ 'asidebar-closed': !isSidebarOpen }">
       <!--  -->
       <div class="panel-group" id="accordion">
         <!-- Accordion Item 1 -->
@@ -359,18 +368,18 @@
   (notifyClose)="closeEmailModalPopup()" [isReloadEmailActivityTab]="isReloadEmailActivityTab" (notifySubmitFailed)="showEmailFailedErrorStatus($event)"></app-add-email-modal-popup>
 
 <app-custom-manage-leads *ngIf="viewLeads" [listView]="true" [isConvertingContactToLead]="true" [isFromCompanyModule]="isFromCompanyModule"
-  [selectedContact]="selectedContact" (notifyClose)="closeViewMoreLeadsTab()"></app-custom-manage-leads>
+  [selectedContact]="selectedContact" [isFromEditContacts]="isFromEditContacts" (notifyClose)="closeViewMoreLeadsTab()"></app-custom-manage-leads>
 
-<app-custom-add-lead *ngIf="showLeadForm" [actionType]="actionType" [leadId]="leadId"
+<app-custom-add-lead *ngIf="showLeadForm" [actionType]="actionType" [leadId]="leadId" [isFromEditContacts]="isFromEditContacts"
   [selectedContact]="selectedContact" [isFromCompanyModule]="isFromCompanyModule" [isConvertingContactToLead]="true"
   (notifyClose)="closeLeadForm()" (notifySubmitSuccess)="showLeadSubmitSuccess($event)"></app-custom-add-lead>
 
-<app-custom-manage-deals *ngIf="viewDeals" [selectedContact]="selectedContact" [isDealFromContact]="true"
+<app-custom-manage-deals *ngIf="viewDeals" [selectedContact]="selectedContact" [isDealFromContact]="true" [isFromEditContacts]="isFromEditContacts"
   (notifyClose)="closeViewMoreDealsTab()" [isFromCompanyModule]="isFromCompanyModule"></app-custom-manage-deals>
 
 <app-add-deal *ngIf="showDealForm" [dealId]="dealId" [actionType]="actionType" [selectedContact]="selectedContact"
   [isDealFromContact]="true" (notifySubmitSuccess)="showDealSubmitSuccess()" [isFromCompanyModule]="isFromCompanyModule"
-  (notifyClose)="closeDealForm()"></app-add-deal>
+  [isFromEditContacts]="isFromEditContacts" (notifyClose)="closeDealForm()"></app-add-deal>
 
 <app-add-note-modal-popup *ngIf="showAddNoteModalPopup" [contactId]="selectedContact.id" [isReloadTab]="isReloadNoteTab"
 (notifySubmitSuccess)="showNoteCutomResponse($event)" (notifyClose)="closeAddNoteModalPopup()"></app-add-note-modal-popup>

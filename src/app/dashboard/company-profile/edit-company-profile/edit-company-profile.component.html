@@ -1,4 +1,5 @@
-<div class="page-content" style="padding: 15px 15px 15px 15px!important;"
+<app-modal-popup-loader *ngIf="autoSaveCompanyProfileLoader"></app-modal-popup-loader>
+<div class="page-content" style="padding: 15px 15px 15px 15px!important;"  *ngIf="!autoSaveCompanyProfileLoader"
 	[class.ml0]="!authenticationService.user.hasCompany || authenticationService.isSuperAdmin()">
 	<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar" style="margin-bottom:0px!important">
@@ -414,7 +415,7 @@
 												<!--XNFR-820-->
 												<tr>
 													<th scope="row">Approval Hub</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.approvals" [ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.approvalHub" [ngModelOptions]="{standalone: true}"></td>
 												</tr>
 
 											</table>

@@ -393,6 +393,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	islandScapeLabel: boolean;
 	landscapeLabel: any;
 
+	/***XNFR-812****/
+	signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
+	isSignatureOptionClicked = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2286,6 +2289,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}	else if (this.activeTabName == "approvalControlManagementSettings") {
 			this.approvalControlManagementSettings = true;
 			this.activeTabHeader = this.properties.approvalControlManagementSettings;
+		} else if (this.activeTabName == this.signatureMenuHeader) {
+			this.startNgxLoader();
+			this.updateSignatureSettingsOption(false);
+			let self = this;
+			setTimeout(() => {
+				self.updateSignatureSettingsOption(true);
+				self.stopNgxLoader();
+			}, 500);
+			this.activeTabHeader = this.signatureMenuHeader;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
@@ -2316,6 +2328,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*****XNFR-628******/
 	updateChatGptSettingsOption(option:boolean){
 		this.isChatGptSettingsOptionClicked = option;
+	}
+
+	/*****XNFR-812******/
+	updateSignatureSettingsOption(option:boolean){
+		this.isSignatureOptionClicked = option;
 	}
 
 
