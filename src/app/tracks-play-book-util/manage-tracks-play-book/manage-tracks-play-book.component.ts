@@ -68,7 +68,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   assetCreatedByFullName: string = "";
   callCommentsComponent: boolean = false;
   selectedDamId: number;
-  createdByAnyAdmin: boolean = false;
+  createdByAnyApprovalManagerOrApprover: boolean = false;
   fontAwesomeClassName: FontAwesomeClassName = new FontAwesomeClassName();
   approvalStatus = {
     APPROVED: 'APPROVED',
@@ -502,7 +502,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.assetCreatedById = asset.createdById;
     this.assetCreatedByFullName = asset.createdByName;
     this.selectedDamId = asset.id;
-    this.createdByAnyAdmin = asset.createdByAnyAdmin;
+    this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
     this.videoId = asset.videoId;
   }
 
