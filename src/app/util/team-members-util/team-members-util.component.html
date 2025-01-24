@@ -1080,9 +1080,7 @@
         <div class="modal-header">
           <a class="close-circle" (click)="closeInviteTeamMemberModal()" data-dismiss="modal">
             <i class="fa fa-times"></i></a>
-            <h4 class="modal-title left" id="myModalLabel">
-              {{ properties?.inviteATeamMemberToJoinxAmplify}}{{ vendorCompanyProfileName ?? 'xAmplify' }}
-            </h4>
+          <h4 class="modal-title left" id="myModalLabel"> {{ tableHeader }} </h4>
         </div>
         <div class="modal-body">
           <app-modal-popup-loader *ngIf="inviteTeamMemberLoading"></app-modal-popup-loader>
