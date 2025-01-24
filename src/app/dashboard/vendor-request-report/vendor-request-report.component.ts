@@ -128,8 +128,8 @@ export class VendorRequestReportComponent implements OnInit {
     /***** XNFR-805 *****/
     listOfTeamMemberReports(type: string) {
         this.statusType = type;
-        this.tableHeader = "INVITED" === type ? this.properties.invitedTeamMeberAnalytics
-            : type + " " + this.properties.invitedTeamMeberAnalytics;
+        const statusMap = { ALL: 'ALL', APPROVED: 'ACTIVATED', INVITED: '', DECLINED: 'DEACTIVATED' };
+        this.tableHeader = statusMap[type] + ' ' + this.properties.invitedTeamMeberAnalytics;
         this.referenceService.loading(this.httpRequestLoader, true);
         this.dashboardService.listOfTeamMemberRequestReports(this.pagination, this.getStatusType(type))
             .subscribe((data: any) => {

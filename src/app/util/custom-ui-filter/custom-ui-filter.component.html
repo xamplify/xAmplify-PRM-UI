@@ -32,67 +32,7 @@
       <div class="portlet box custom_fiter-asset" style="margin-bottom: 10px !important;">
         <div class="">
           <div class="row">
-
-            <div class="col-md-12 mb10" *ngFor="let addRow of criterias; let i = index">
-              <div class="col-md-4 pl0" style="display: flex">
-                <!-- Field Name DropDown -->
-                <b style="margin: 7px;">{{i+1}}</b>
-                <select class="form-control" [(ngModel)]="criterias[i].property"
-                  [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)="getOptionsForCriteria(criterias[i],i)"
-                  [disabled]="dropdownDisabled[i]">
-                  <option *ngIf="criterias[i].property === 'Field Name*'">Field Name*</option>
-                  <option *ngIf="criterias[i].property !== 'Field Name*' &&  seletedFiterArray.length > 0 ">
-                    {{seletedFiterArray[i]}}</option>
-                  <option *ngFor="let filterOption of filterOptions; let i = index">
-                    {{filterOption.value}}</option>
-                </select>
-              </div>
-              <!-- Conditions Dropdown-->
-              <div class="col-md-4 mobileTopandBottomSpace">
-                <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
-                  [ngModelOptions]="{standalone: true}" (change)="setConditionsForCriteria(criterias[i],i)"
-                  [disabled]="criterias[i].property === 'From' || criterias[i].property === 'Type'">
-                  <ng-container *ngIf="criterias[i].property !== 'From' && criterias[i].property !== 'Type' ">
-                  <option *ngIf="criterias[i].operation === 'Condition*'">Condition*</option>
-                  <option *ngIf="criterias[i].operation === 'Condition*' &&  selectedConditionArray.length > 0 ">
-                    {{selectedConditionArray[i]}}</option>
-                    <option *ngFor="let filterCondition of filterConditions; let i = index">
-                      {{filterCondition.value}}</option>
-                  </ng-container>
-                  <ng-container *ngIf="criterias[i].property === 'From' || criterias[i].property === 'Type'">
-                    <option>{{filterConditions[1].value}}</option>
-                  </ng-container>
-                </select>
-              </div>
-
-              <div class="col-md-3" *ngIf="criterias[i].property !== 'Type' && criterias[i].property !== 'From'">
-                <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
-                  (keypress)="eventEnterKeyHandler($event.keyCode)">
-              </div>
-              <div class="col-md-3" *ngIf="criterias[i].property === 'Type' ||  criterias[i].property === 'From'">
-                <select class="form-control" [(ngModel)]="criterias[i].value1">
-                  <ng-container *ngIf="criterias[i].property === 'Type' ">
-                    <option [value]="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Asset Type</option>
-                    <option [value]="fileType" *ngFor="let fileType of fileTypes;">{{fileType}}</option>
-                  </ng-container>
-                  <ng-container *ngIf="criterias[i].property === 'From'">
-                    <option value="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Company Name</option>
-                    <option *ngFor="let vendorCompany of whiteLableContentSharedByVendorCompanies"
-                      [value]="vendorCompany.sharedByVendorCompanyId">
-                      {{vendorCompany.sharedByVendorCompanyName}}
-                    </option>
-                  </ng-container>
-                </select>
-              </div>
-
-              <div class="col-md-1 p0 positionForAddandDelete" style="display: flex;">
-                <span (click)="cancelSegmentationRow(i)" type="button">
-                  <i class="fa fa-trash-o trashIconCustimization trash_bgcolor" aria-hidden="true" data-toggle="tooltip"
-                    data-placement="top" title="Remove a condition"></i>
-                </span>
-                <ng-template [ngTemplateOutlet]="addIcon" *ngIf="i === criterias.length-1"></ng-template>
-              </div>
-            </div>
+            <ng-template [ngTemplateOutlet]="fieldsDropdown" *ngIf="!isFromApprovalHub || isAssetTabSelected"></ng-template>
             <ng-template #addIcon>
               <button [disabled]="criterias.length > allfilterOptions.length-1"
                 [ngClass]="criterias.length <= 0 ? 'plus_icon_low':'plus_icon_high' " (click)="addNewRow()"
@@ -139,3 +79,66 @@
     </div>
   </div>
 </div>
+
+<ng-template #fieldsDropdown>
+  <div class="col-md-12 mb10" *ngFor="let addRow of criterias; let i = index">
+    <div class="col-md-4 pl0" style="display: flex">
+      <!-- Field Name DropDown -->
+      <b style="margin: 7px;">{{i+1}}</b>
+      <select class="form-control" [(ngModel)]="criterias[i].property" [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}"
+        (change)="getOptionsForCriteria(criterias[i],i)" [disabled]="dropdownDisabled[i]">
+        <option *ngIf="criterias[i].property === 'Field Name*'">Field Name*</option>
+        <option *ngIf="criterias[i].property !== 'Field Name*' &&  seletedFiterArray.length > 0 ">
+          {{seletedFiterArray[i]}}</option>
+        <option *ngFor="let filterOption of filterOptions; let i = index">
+          {{filterOption.value}}</option>
+      </select>
+    </div>
+    <!-- Conditions Dropdown-->
+    <div class="col-md-4 mobileTopandBottomSpace">
+      <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
+        [ngModelOptions]="{standalone: true}" (change)="setConditionsForCriteria(criterias[i],i)"
+        [disabled]="criterias[i].property === 'From' || criterias[i].property === 'Type'">
+        <ng-container *ngIf="criterias[i].property !== 'From' && criterias[i].property !== 'Type' ">
+          <option *ngIf="criterias[i].operation === 'Condition*'">Condition*</option>
+          <!-- XNFR-837  -->
+          <!-- <option *ngIf="criterias[i].operation === 'Condition*' &&  selectedConditionArray.length > 0 ">
+            {{selectedConditionArray[i]}}</option> -->
+          <option *ngFor="let filterCondition of filterConditions; let i = index">
+            {{filterCondition.value}}</option>
+        </ng-container>
+        <ng-container *ngIf="criterias[i].property === 'From' || criterias[i].property === 'Type'">
+          <option>{{filterConditions[1].value}}</option>
+        </ng-container>
+      </select>
+    </div>
+
+    <div class="col-md-3" *ngIf="criterias[i].property !== 'Type' && criterias[i].property !== 'From'">
+      <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
+        (keypress)="eventEnterKeyHandler($event.keyCode)">
+    </div>
+    <div class="col-md-3" *ngIf="criterias[i].property === 'Type' ||  criterias[i].property === 'From'">
+      <select class="form-control" [(ngModel)]="criterias[i].value1">
+        <ng-container *ngIf="criterias[i].property === 'Type' ">
+          <option [value]="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Asset Type</option>
+          <option [value]="fileType" *ngFor="let fileType of fileTypes;">{{fileType}}</option>
+        </ng-container>
+        <ng-container *ngIf="criterias[i].property === 'From'">
+          <option value="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Company Name</option>
+          <option *ngFor="let vendorCompany of whiteLableContentSharedByVendorCompanies"
+            [value]="vendorCompany.sharedByVendorCompanyId">
+            {{vendorCompany.sharedByVendorCompanyName}}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+
+    <div class="col-md-1 p0 positionForAddandDelete" style="display: flex;">
+      <span (click)="cancelSegmentationRow(i)" type="button">
+        <i class="fa fa-trash-o trashIconCustimization trash_bgcolor" aria-hidden="true" data-toggle="tooltip"
+          data-placement="top" title="Remove a condition"></i>
+      </span>
+      <ng-template [ngTemplateOutlet]="addIcon" *ngIf="i === criterias.length-1"></ng-template>
+    </div>
+  </div>
+</ng-template>
