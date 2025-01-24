@@ -214,7 +214,7 @@
     <td>
       <div class="actions-block override-actions" style="float:none !important;">
         <!--Design-->
-        <a class="custom-icon" *ngIf="item?.type === 'Asset' && item?.beeTemplate" data-toggle="tooltip"
+        <a class="custom-icon" *ngIf="item?.type === 'Asset' && item?.beeTemplate && item?.canEdit" data-toggle="tooltip"
           data-placement="top" title="Design" (click)="addOrEdit(item.id)">
           <i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
