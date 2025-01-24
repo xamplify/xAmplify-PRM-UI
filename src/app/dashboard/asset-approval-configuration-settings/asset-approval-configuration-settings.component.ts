@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { ApproveService } from 'app/approval/service/approve.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { DamService } from 'app/dam/services/dam.service';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 
 @Component({
   selector: 'app-asset-approval-configuration-settings',
   templateUrl: './asset-approval-configuration-settings.component.html',
   styleUrls: ['./asset-approval-configuration-settings.component.css'],
-  providers: [HttpRequestLoader, CallActionSwitch, Properties, DamService]
+  providers: [HttpRequestLoader, CallActionSwitch, Properties, ApproveService]
 })
 export class AssetApprovalConfigurationSettingsComponent implements OnInit {
 
@@ -35,7 +35,7 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
 
 
   constructor(private referenceService: ReferenceService,
-    private damService: DamService,
+    private approveService: ApproveService,
     private callActionSwitch: CallActionSwitch,
     public properties: Properties,
     public authenticationService: AuthenticationService
@@ -51,8 +51,7 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
   getApprovalConfigurationSettings() {
     this.ngxLoading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.damService.getApprovalConfigurationSettingsByUserId(this.loggedInUserId)
-      .subscribe(
+    this.approveService.getApprovalConfigurationSettingsByUserId().subscribe(
         result => {
           if (result.data && result.statusCode == 200) {
             this.approvalStatusSettingsDto = result.data;
@@ -121,13 +120,15 @@ export class AssetApprovalConfigurationSettingsComponent implements OnInit {
     };
     this.ngxLoading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.damService.updateApprovalConfigurationSettings(saveAssetApprovalStatus)
+    this.approveService.updateApprovalConfigurationSettings(saveAssetApprovalStatus)
       .subscribe(
         result => {
           this.ngxLoading = false;
           this.referenceService.loading(this.httpRequestLoader, false);
           if (result.statusCode == 200) {
+            this.referenceService.scrollSmoothToTop();
             this.assetApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
+            window.location.reload();
           } else {
             this.assetApprovalCustomResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
           }

@@ -39,7 +39,9 @@ body,
 .div.thembgc,
 .div.thembg-color,
 .calendar-border,
-.img-circle {
+.img-circle,
+canvas,
+.signature-preview {
   border: 1px solid #d0d5db !important;
 }
 .dashboard-stat.green-soft {
@@ -1986,7 +1988,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected{
+.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,.mix-filter li.type-selected{
   background: #0276FF !important;
   box-shadow: none !important;
 }
@@ -4492,3 +4494,4 @@ a.Iconhover.custom-grid-icon.icon_margin{
   margin: 2px 2px !important;
 }
 .lead-details-border{border: 2px solid #cfd6de !important;}
+.file-label{color: #fff !important;}

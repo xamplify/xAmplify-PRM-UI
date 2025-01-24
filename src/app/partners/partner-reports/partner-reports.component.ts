@@ -107,7 +107,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     partnertoDateFilter: any = "";
     totalPartnersCountLoader: boolean;
     totalPartnersCount: any;
-
+	isHeaderCheckBoxChecked: boolean = false;
+    isSendReminderEnabled: boolean = false;
+    selectedPartnerIds: number[] = [];
+    allItems: any[] = []; 
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -460,6 +463,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     /************************InActive Partners Tab********************/
     goToInActivePartnersDiv() {
+        this.isHeaderCheckBoxChecked = false;
+        this.isSendReminderEnabled = false;
         this.sortOption = new SortOption();
         this.customResponse = new CustomResponse();
         this.selectedTabIndex = 1;
@@ -477,7 +482,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.inActivePartnersPagination.pageIndex = 1;
         this.inActivePartnersPagination.maxResults = 12;
         this.inActivePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+        this.inActivePartnersPagination.searchKey = "";
         this.getInActivePartnerReports(this.inActivePartnersPagination);
+        this.selectedPartnerIds = [];
     }
 
     goToApprovePartnersDiv() {
@@ -538,11 +545,24 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 for (var i in response.inactivePartnerList) {
                     response.inactivePartnerList[i].contactCompany = response.inactivePartnerList[i].partnerCompanyName;
                 }
+                response.inactivePartnerList.forEach((partner: any) => {
+                    const existingIndex = this.allItems.findIndex(item => item.partnerId === partner.partnerId);
+                    if (existingIndex === -1) {
+                        this.allItems.push(partner);
+                    } else {
+                        this.allItems[existingIndex] = partner;
+                    }
+                    partner.isSelected = this.selectedPartnerIds.includes(partner.partnerId);
+                });
+
+                this.isHeaderCheckBoxChecked = response.inactivePartnerList.every((partner: any) => partner.isSelected);
+
+
                 pagination = this.pagerService.getPagedItems(pagination, response.inactivePartnerList);
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
             (error: any) => {
-                this.xtremandLogger.errorPage(error)
+                this.xtremandLogger.errorPage(error);
             });
     }
 
@@ -580,6 +600,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.getApprovePartnerReports(this.approvePartnersPagination);
     }
 
+    sendRemindersForAllSelectedPartners(): void {
+        const selectedPartners = this.selectedPartnerIds
+            .map(partnerId => this.allItems.find(item => item.partnerId === partnerId))
+            .filter(partner => partner && !partner.isActive && partner.emailId);
+
+        selectedPartners.forEach(partner => {
+            this.sendPartnerReminder(partner);
+        });
+    }
+    
     sendPartnerReminder(item: any) {
         let user = new User();
         user.emailId = item.emailId;
@@ -591,7 +621,15 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             (response: any) => {
                 if (response.statusCode == 2017) {
                     this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
-                    this.goToInActivePartnersDiv();
+                    const partnerIndex = this.allItems.findIndex(p => p.partnerId === item.partnerId);
+                    if (partnerIndex !== -1) {
+                        this.allItems[partnerIndex].isSelected = false;
+                        this.selectedPartnerIds = this.selectedPartnerIds.filter(id => id !== item.partnerId);
+                    }
+
+                    this.isSendReminderEnabled = false;
+                    this.isHeaderCheckBoxChecked = false;
+                    this.getInActivePartnerReports(this.inActivePartnersPagination);
                 }
                 this.sendTestEmailIconClicked = false;
                 this.referenseService.loading(this.httpRequestLoader, false);
@@ -1081,6 +1119,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.incompleteCompanyProfileAndPendingSingupPagination.maxResults = 12;
         this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'PendingCompanyProfile';
         this.incompleteCompanyProfileAndPendingSingupPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+        this.incompleteCompanyProfileAndPendingSingupPagination.searchKey ="";
         this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
     }
     goToSignupPendingPartnersDiv() {
@@ -1101,6 +1140,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.incompleteCompanyProfileAndPendingSingupPagination.maxResults = 12;
         this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'pSignUp';
         this.incompleteCompanyProfileAndPendingSingupPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+        this.incompleteCompanyProfileAndPendingSingupPagination.searchKey ="";
         this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
     }
     CompanyProfileIncompleteAndSignupPendingList(event) {
@@ -1238,19 +1278,101 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         }
     }
 
+         
+    sendReminder(): void {
+        const selectedPartners = this.selectedPartnerIds
+            .map(partnerId => this.allItems.find(item => item.partnerId === partnerId))
+            .filter(partner => partner && !partner.isActive && partner.emailId);
+
+        const emailIds = selectedPartners.map(partner => partner.emailId);
+        const emailIdsString = emailIds.join('  ');
+
+        this.modelPopUpMultipleSelectedEmails(emailIdsString);
+    }
+
+    updateSelectionState(): void {
+        const currentPageItems = this.inActivePartnersPagination.pagedItems;
+
+        currentPageItems
+            .filter(item => item.isSelected)
+            .forEach(item => {
+                if (!this.selectedPartnerIds.includes(item.partnerId)) {
+                    this.selectedPartnerIds.push(item.partnerId);
+                }
+            });
+
+        currentPageItems
+            .filter(item => !item.isSelected)
+            .forEach(item => {
+                const index = this.selectedPartnerIds.indexOf(item.partnerId);
+                if (index !== -1) {
+                    this.selectedPartnerIds.splice(index, 1);
+                }
+            });
+
+        this.isSendReminderEnabled = this.selectedPartnerIds.length > 0;
+        this.isHeaderCheckBoxChecked = currentPageItems.every(item => item.isSelected);
+        this.selectedItem = currentPageItems;
+    }
+
+    toggleSelectAll(event: Event): void {
+        const checked = (event.target as HTMLInputElement).checked;
+        const currentPageItems = this.inActivePartnersPagination.pagedItems;
+
+        currentPageItems.forEach(item => {
+            item.isSelected = checked;
+
+            if (checked) {
+                if (!this.selectedPartnerIds.includes(item.partnerId)) {
+                    this.selectedPartnerIds.push(item.partnerId);
+                }
+            } else {
+                const index = this.selectedPartnerIds.indexOf(item.partnerId);
+                if (index !== -1) {
+                    this.selectedPartnerIds.splice(index, 1);
+                }
+            }
+        });
+        this.updateSelectionState();
+    }         
+
+    modelPopUpMultipleSelectedEmails(emailIds: any) {
+        this.selectedEmailId = emailIds;
+        if (this.isInactivePartnersDiv) {
+            this.vanityURLService.getTemplateId(this.selectedEmailId, "isInactivePartnersDiv").subscribe(
+                response => {
+                    if (response.statusCode === 200) {
+                        this.selectedEmailTemplateId = response.data;
+                        this.sendTestEmailIconClicked = true;
+                        this.vanityTemplates = true;
+                    } else if (response.statusCode === 400) {
+                        console.error("Error: Invalid email ID or other bad request.");
+                    } else {
+                        console.error("Unexpected status code:", response.statusCode);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching template ID:", error);
+                }
+            );
+        }
+    }
       sendTestEmailModalPopupEventReceiver(){
         this.selectedEmailTemplateId = 0;
         this.sendTestEmailIconClicked = false;
         this.vanityTemplates = false;
       }
-
-      emittedMethod(event) {
-        if(this.isInactivePartnersDiv) {
-            this.sendPartnerReminder(event);
+    emittedMethod(event: any) {
+        if (this.isInactivePartnersDiv) {
+            if (Array.isArray(event)) {
+                this.sendRemindersForAllSelectedPartners();
+            } else {
+                this.sendPartnerReminder(event);
+            }
         } else {
             this.sendmail(event);
         }
-      }
+    }   
 
     getDateFilterOptions(event: any) {
         this.partnerfromDateFilter = event.fromDate;

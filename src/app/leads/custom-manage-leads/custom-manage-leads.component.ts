@@ -38,6 +38,8 @@ export class CustomManageLeadsComponent implements OnInit {
   /**XNFR-553**/
   @Output() notifyClose = new EventEmitter();
   @Input() public isFromCompanyModule: boolean = false;
+  /**XNFR-836**/
+  @Input() public isFromEditContacts: boolean = false;
   showDealForm: boolean;
   leadId: number;
   leadApprovalStatusType: string;
@@ -506,7 +508,9 @@ export class CustomManageLeadsComponent implements OnInit {
   }
 
   goBackToManageContacts() {
-    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+    let url = RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage;
+    url += this.isFromEditContacts ? '' : '/all';
+    this.referenceService.goToRouter(url);
   }
 
   goBackToContactDetailsPage() {

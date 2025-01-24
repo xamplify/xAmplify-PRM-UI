@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ManageAprrovalComponent } from './manage-aprroval/manage-aprroval.component';
+import { ManageApprovalComponent } from './manage-approval/manage-approval.component';
 
 const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
-  { path: 'manage', component: ManageAprrovalComponent }
+  { path: 'manage', component: ManageApprovalComponent }
 ];
 
 @NgModule({

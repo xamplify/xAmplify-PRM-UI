@@ -22,6 +22,7 @@ export class MeetingActivityComponent implements OnInit {
   @Input() isReloadTab:boolean;
 
   @Output() notifyClose = new EventEmitter();
+  @Output() notifyCloseSideBar = new EventEmitter();
 
   meetingActivities = [];
   ngxLoading:boolean = false;
@@ -44,6 +45,8 @@ export class MeetingActivityComponent implements OnInit {
   showPreviewMeeting:boolean = false;
   eventUrl: any;
   showConfigureMessage: boolean = false;
+  showCalendarView: boolean = false;
+  isFirstChange: boolean = true;
 
   constructor(public meetingActivityService: MeetingActivityService, public referenceService: ReferenceService, public pagerService: PagerService, 
     public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent) { }
@@ -55,9 +58,13 @@ export class MeetingActivityComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.calendarType = this.activeCalendarDetails != undefined ? this.activeCalendarDetails.type : '';
-    this.pageNumber = this.paginationComponent.numberPerPage[0];
-    this.showAllMeetingActivities();
+    if (this.isFirstChange) {
+      this.isFirstChange = false;
+    } else {
+      this.calendarType = this.activeCalendarDetails != undefined ? this.activeCalendarDetails.type : '';
+      this.pageNumber = this.paginationComponent.numberPerPage[0];
+      this.showAllMeetingActivities();
+    }
   }
 
   showAllMeetingActivities() {
@@ -155,7 +162,7 @@ export class MeetingActivityComponent implements OnInit {
     if (this.referenceService.checkIsValidString(this.calendarType)) {
       this.setMeetingActivitiesPage(1);
     } else {
-      this.customResponse = new CustomResponse('ERROR',"Please configure with atleast one calendar integration.",true);
+      this.showConfigureMessage = true;
     }
 	}
 
@@ -176,7 +183,7 @@ export class MeetingActivityComponent implements OnInit {
 		if (this.referenceService.checkIsValidString(this.calendarType)) {
       this.setMeetingActivitiesPage(1);
     } else {
-      this.customResponse = new CustomResponse('ERROR',"Please configure with atleast one calendar integration.",true);
+      this.showConfigureMessage = true;
     }
 	}
 
@@ -194,6 +201,7 @@ export class MeetingActivityComponent implements OnInit {
 
   closeMeetingModalPopup(event) {
     this.showMeetingModalPopup = false;
+    this.isReloadTab = event;
     this.notifyClose.emit(event);
   }
 
@@ -204,6 +212,17 @@ export class MeetingActivityComponent implements OnInit {
 
   closePreviewMeetingModalPopup() {
     this.showPreviewMeeting = false;
+  }
+
+  showCalendarViewModalPopup() {
+    if (!this.showCalendarView) {
+      this.notifyCloseSideBar.emit();
+    }
+    this.showCalendarView = !this.showCalendarView;
+  }
+
+  closeCalendarViewModalPopup() {
+    this.showCalendarView = false;
   }
 
 }

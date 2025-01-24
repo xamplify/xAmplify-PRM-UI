@@ -139,3 +139,7 @@
 .login-error a:hover {
     text-decoration: underline;
 }
+
+.ml3 {
+    margin-left: 3px;
+}

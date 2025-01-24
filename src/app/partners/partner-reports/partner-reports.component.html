@@ -346,14 +346,14 @@
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
             <div class="inputs" style="float: right">
-              <!-- XNFR-835 -->
-              <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: -12px 0 0 0;" (click)="downloadInActivePartnersReport()">
+              <div class="portlet-input d-flex">
+                 <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" (click)="downloadInActivePartnersReport()">
                 <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
                   data-original-title="Export to Excel"></i>
               </button>
-              <!-- XNFR-835 -->
-              <div class="portlet-input input-inline">
-                <div class="input-icon right mTop" style="position: relative; margin: -12px 0 0 0;">
+                <button class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()"
+                   >Send Reminder</button>
+                <div class="input-icon right mTop">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"
                     [ngModelOptions]="{standalone: true}" placeholder="Search"
                     (keypress)="inActivePartnersSearch($event.keyCode)">
@@ -377,6 +377,9 @@
               <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
                 <thead>
                   <tr>
+                    <th class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                        [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAll($event)" />
+                    </th>
                     <th class="center-aligned" style="width:50%" scope="col">
                       {{authenticationService?.partnerModule?.customName}}</th>
                     <th class="hidden-xs text-center" scope="col">LAST REMINDER SENT</th>
@@ -385,6 +388,9 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
+                    <td class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                        [(ngModel)]="item.isSelected" (change)="updateSelectionState()">
+                    </td>
                     <td>
                       <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
                       </app-user-info>

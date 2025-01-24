@@ -9,7 +9,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReferenceService } from 'app/core/services/reference.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { DamService } from '../services/dam.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UtilService } from 'app/core/services/util.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileService } from 'app/videos/services/video-file.service';
@@ -41,8 +41,9 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   breadCrumb  = "Analytics";
   isVideoAnalyticsLoaded = false;
   isVideoFile = false;
+  isFromApprovalModule: boolean = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,
+    public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,public router: Router,
     public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService,public renderer:Renderer) { 
       this.referenceService.renderer = this.renderer;
     }
@@ -50,6 +51,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   ngOnInit() {
     this.referenceService.startLoader(this.httpRequestLoader);
      /****XNFR-169****/
+     this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
      this.viewType = this.route.snapshot.params['viewType'];
      this.categoryId = this.route.snapshot.params['categoryId'];
      this.folderViewType = this.route.snapshot.params['folderViewType'];
@@ -149,9 +151,12 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   }
 
   goBack() {
-    this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+    if (this.isFromApprovalModule) {
+      this.goBackToManageApproval();
+    } else {
+      this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+    }
   }
-
   refreshList() {
     this.findPartnerCompanies(this.pagination);
   }
@@ -168,11 +173,21 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.findPartnerCompanies(this.pagination);
   }
 
-  viewAnalytics(company:any){
+  viewAnalytics(company: any) {
     let damPartnerId = company.damPartnerId;
-    let prefixUrl = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerAnalytics'];
-    let url = prefixUrl+'/'+this.referenceService.encodePathVariable(this.damId)+'/'+this.referenceService.encodePathVariable(damPartnerId);
-		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+    let prefixUrl = "";
+    if (this.isFromApprovalModule) {
+      prefixUrl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['approval'] + RouterUrlConstants['damPartnerAnalytics'];
+    } else {
+      prefixUrl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['damPartnerAnalytics'];
+    }
+    let url = prefixUrl + '/' + this.referenceService.encodePathVariable(this.damId) + '/' + this.referenceService.encodePathVariable(damPartnerId);
+    this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+  }
+
+  goBackToManageApproval() {
+    let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
+    this.referenceService.goToRouter(url);
   }
 
 }

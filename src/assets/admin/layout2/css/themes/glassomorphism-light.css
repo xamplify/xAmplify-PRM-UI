@@ -47,7 +47,9 @@ body.light-mode::before{
 .div.thembgc,
 .div.thembg-color,
 .calendar-border,
-.img-circle {
+.img-circle,
+canvas,
+.signature-preview {
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 .dashboard-stat.green-soft,
@@ -2049,7 +2051,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   color:#fff !important;
 }
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,
+.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,.mix-filter li.type-selected,
 .mix-filter li.active {
   /* background: rgba(16 18 27 / 40%) !important; */
   background-color: #0276FF !important;
@@ -4536,3 +4538,4 @@ border: 1px solid rgb(255 255 255 / 41%) !important;
 a.meeting-link{
 color: #fff!important;
 }
+.file-label{color: #fff !important;}

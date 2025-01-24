@@ -1388,7 +1388,8 @@ ul.alt-row-style1 li:nth-child(even) {
   border: 1px solid #191b1e !important;
 }
 /* 14-6-2023 sudha sri */
-.dropdown-menu li > a > [class*=" fa-"] {
+.dropdown-menu li > a > [class*=" fa-"],
+.signature-preview {
   color: white !important;
 }
 .table tr.row-selected td {
@@ -2106,7 +2107,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .mix-filter li:hover,
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter li.type-selected {
   background: #222528  !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }

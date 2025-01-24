@@ -164,7 +164,7 @@ export class ReferenceService {
   universalSearchFilterType:string = 'All';
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
-  approvalModuleRouter = "/home/approve/manage";
+  approvalModuleRouter = "/home/approval-hub/manage";
   
   constructor(
     private http: Http,
@@ -366,7 +366,8 @@ export class ReferenceService {
     }
   }
   validateEmailId(emailId: string) {
-    return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
+    const emails = emailId.split(' ').filter(email => email.trim() !== ''); 
+  return emails.every(email => this.regularExpressions.EMAIL_ID_PATTERN.test(email));
   }
 
   validateFirstName(firstName:string){

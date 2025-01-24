@@ -217,7 +217,7 @@
 
 															<!-- comment/history -->
 															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" 
-																data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
+																data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
@@ -434,7 +434,7 @@
 																			</a>
 
 																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)"
-																			 data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
+																			 data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
@@ -747,7 +747,7 @@
 <!-- XNFR-781  -->
 <app-content-status-history-modal-popup
 	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
-	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName"
+	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover" [title]="assetName"
 	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
 	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
 	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">

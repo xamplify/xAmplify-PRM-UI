@@ -12,7 +12,7 @@
       <li *ngIf="isFromCompanyModule">
         <a translate (click)="goBackToManageCompanies()">Manage Companies</a>
       </li>
-      <li>
+      <li *ngIf="isFromEditContacts">
         <a (click)="goBackToEditContacts()" translate>
           <i class="fa fa-angle-right" aria-hidden="true"></i>Edit Contacts
         </a>
@@ -297,7 +297,7 @@
 </div>
 
 <app-add-deal *ngIf="showDealForm" [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
-  [selectedContact]="selectedContact" [isOrgAdmin]="isOrgAdmin" [isDealFromContact]="isDealFromContact"
+  [selectedContact]="selectedContact" [isOrgAdmin]="isOrgAdmin" [isDealFromContact]="isDealFromContact" [isFromEditContacts]="isFromEditContacts"
   (notifySubmitSuccess)="showSubmitDealSuccess()" (notifyClose)="closeDealForm()" [isFromContactAllDealsTab]="'true'"></app-add-deal>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"

@@ -14,6 +14,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
   styleUrls: ['./signature.component.css', '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css']
 })
 export class SignatureComponent implements OnInit {
+  @Input() isFromModalPopUp = false;
   uploadSignatureButtonClicked = false;
   signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
   activeTab = "draw";
@@ -28,7 +29,7 @@ export class SignatureComponent implements OnInit {
   img:any;
   signatureError = false;
   hasSignature = false;
-  drawSignatureHeaderText = "Draw a personalized signature directly in the application for signing documents.";
+  drawSignatureHeaderText = "Draw a personalized signature for signing documents.";
   isDrawTabActive = true;
   previewingExistingDrawSignature = false;
   /****Type****/
@@ -36,7 +37,7 @@ export class SignatureComponent implements OnInit {
   isValidSignatureText = true;
   signatureTextErrorMessage = "Maximum length is 25 characters";
   signaturesLoader = true;
-  typeSignatureHeaderText = "Type a name to generate a digital signature with various handwriting-style fonts for document signing.";
+  typeSignatureHeaderText = "Enter a name to create a digital signature in fonts for signing documents.";
   isTypeTabActive = false;
   previewingExistingTypeSignature = false;
   existingTypedSignature:SignatureResponseDto = new SignatureResponseDto();
@@ -239,7 +240,6 @@ export class SignatureComponent implements OnInit {
     this.signatureService.saveTypedSignature(this.signatureDto).subscribe(
       response => {
         this.showSuccessMessage(response.message);
-        this.signaturesLoader = false;
       }, error => {
         this.referenceService.showSweetAlertServerErrorMessage();
         this.signaturesLoader = false;
@@ -331,9 +331,8 @@ export class SignatureComponent implements OnInit {
     this.clearSucessOrErrorMessage();
     setTimeout(() => {
       this.customResponse = new CustomResponse('SUCCESS',message,true);
-      this.referenceService.scrollSmoothToTop();
     }, 100);
-    
+    this.referenceService.goToTop();
   }
 
   clearImage(): void {
