@@ -46,6 +46,7 @@ export class SendTestEmailComponent implements OnInit {
   clicked = false;
   /**XNFR-832***/
   @Input() moduleName = "";
+  @Input() campaignName="";
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
@@ -75,6 +76,7 @@ export class SendTestEmailComponent implements OnInit {
         if(statusCode==200){
           let data = response.data;
           let body = data.body;
+          body = this.referenceService.replaceCampaignMDFFundingTemplateMergeTags(this.campaignName,this.sendTestEmailDto.firstName,body);
           this.sendTestEmailDto.body = body;
           $('#sendTestEmailHtmlBody').append(body);
           $('tbody').addClass('preview-shown');

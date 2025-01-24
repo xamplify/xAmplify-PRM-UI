@@ -3972,6 +3972,16 @@ getFirstLetter(inputString:any) {
     );
   }
 
+
+  replaceCampaignMDFFundingTemplateMergeTags(campaignName: string,receiverFirstName:string,updatedBody: string) {
+    if (campaignName != undefined) {
+       updatedBody = updatedBody.replace(this.senderMergeTag.campaignNameGlobal,campaignName);
+    }
+    if(receiverFirstName!=undefined){
+      updatedBody = updatedBody.replace(this.senderMergeTag.firstNameGlobal,receiverFirstName);
+    }
+    return updatedBody;
+  }
   
 }
 

@@ -8,4 +8,5 @@ export class SendTestEmailDto {
   channelCampaign = false;
   preHeader = "";
   emailCampaign = false;
+  firstName = "";
 }

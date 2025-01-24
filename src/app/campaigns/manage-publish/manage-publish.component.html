@@ -2109,5 +2109,5 @@
    </ng-container>
 </ng-template>
 
-<app-send-test-email *ngIf="sendMdfRequestButtonClicked" [moduleName]="unlockMdfFundingModuleName" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<app-send-test-email *ngIf="sendMdfRequestButtonClicked" [moduleName]="unlockMdfFundingModuleName" [campaignName]="campaignName" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 <!--XNFR-832-->
