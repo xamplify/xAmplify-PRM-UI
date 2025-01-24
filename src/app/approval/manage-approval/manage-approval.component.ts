@@ -180,6 +180,8 @@ export class ManageApprovalComponent implements OnInit {
 
   filterByType(type: string, index: number) {
     this.selectedTypeIndex = index;
+    this.showFilterOption = false;
+    this.clearFilterOptions();
     this.isAssetTabSelected = false;
     if (type === 'ASSETS') {
       this.isAssetTabSelected = true;
