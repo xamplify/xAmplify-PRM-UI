@@ -1,5 +1,5 @@
-<app-modal-popup-loader *ngIf="autoSaveCompanyProfileLoader"></app-modal-popup-loader>
-<div class="page-content" style="padding: 15px 15px 15px 15px!important;"  *ngIf="!autoSaveCompanyProfileLoader"
+<ngx-loading [show]="autoSaveLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content" style="padding: 15px 15px 15px 15px!important;"
 	[class.ml0]="!authenticationService.user.hasCompany || authenticationService.isSuperAdmin()">
 	<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar" style="margin-bottom:0px!important">

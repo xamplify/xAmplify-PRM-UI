@@ -16,6 +16,7 @@ import { UserService } from "app/core/services/user.service";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, swal: any;
 
 @Component({
@@ -108,7 +109,12 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 	private initializeTabs() {
 		if (this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
-			this.pagination.partnerTeamMemberGroupFilter = true;
+			let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+			if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')){
+				this.pagination.partnerTeamMemberGroupFilter = false;
+			} else{
+				this.pagination.partnerTeamMemberGroupFilter = true;
+			}
 			this.showFilter = true;
 			if (this.inputId != undefined && this.inputId > 0) {
 				this.selectTabsByGroupIdOrCompanyId();

@@ -51,7 +51,7 @@
           <!--Team Member Filter-->
           <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 p0" [ngClass]="httpRequestLoader?.isLoading ? 'zero-opacity':''">
             <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany"
-              (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+              (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isAssetOrLms]="moduleName == 'dam'"></app-team-member-filter-option>
           </div>
           <!--Search Bar-->
           <div class="page-toolbar col-xs-12 col-sm-7 col-lg-7 col-md-7 pr0 d-flex justify-end" *ngIf="!httpRequestLoader.isLoading">

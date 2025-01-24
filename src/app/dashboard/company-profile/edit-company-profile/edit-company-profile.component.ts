@@ -221,8 +221,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     companyLogoSourceLink: any;
 
     isSuperAdmin: boolean = false;
-    autoSaveCompanyProfileLoader: boolean = false;
-
+    autoSaveLoader: boolean = false;
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -395,7 +394,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
     
     ngOnInit() {
-        this.autoSaveCompanyProfileLoader = true;
         this.isLocalHost = this.authenticationService.isLocalHost();
         this.isSuperAdmin = this.authenticationService.isSuperAdmin();
         let firstName = this.authenticationService.user.firstName;
@@ -433,7 +431,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.squareDataForBgImage = {};
         }
         this.getCompanyNameandProfileInfo();
-        this.autoSaveCompanyProfileLoader = false;
     } 
 
     uploadFileConfiguration() {
@@ -571,16 +568,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 $('#cropLogoImage').modal('hide');
                 this.closeModal();
                 this.validateCompanyLogo();
-                if (this.autofillCompanyProfile != undefined) {
-                    this.saveCompanyProfile();
-                }
             }, (error) => {
                 console.log(error); $('#cropLogoImage').modal('hide');
                 this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
-                if (this.autofillCompanyProfile != undefined) {
-                    this.saveCompanyProfile();
-                }
-                this.autoSaveCompanyProfileLoader = false;
             }, () => {
                 this.loadingcrop = false;
                 if (this.companyProfile.website) {
@@ -633,13 +623,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     //this.fileChangeEvent();
    }
 
-    getUserByUserName( userName: string ) {
-        try{
-           this.authenticationService.getUserByUserName( userName )
-              .subscribe(
-              data => {
-                this.authenticationService.user = data;
-                this.authenticationService.userProfile = data;
+    getUserByUserName(userName: string) {
+        try {
+            this.authenticationService.getUserByUserName(userName)
+                .subscribe(
+                    data => {
+                        this.authenticationService.user = data;
+                        this.authenticationService.userProfile = data;
                         const currentUser = localStorage.getItem('currentUser');
                         const userToken = {
                             'userName': userName,
@@ -651,21 +641,21 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             'roles': data.roles,
                             'campaignAccessDto': data.campaignAccessDto,
                             'logedInCustomerCompanyNeme': JSON.parse(currentUser)['companyName'],
-							'source':data.source,
-                            'isWelcomePageEnabled':JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
+                            'source': data.source,
+                            'isWelcomePageEnabled': JSON.parse(currentUser)[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]
                         };
                         localStorage.clear();
                         if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles) {
                             userToken['roles'] = this.authenticationService.vanityURLUserRoles;
                         }
                         localStorage.setItem('currentUser', JSON.stringify(userToken));
-                        localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
-              },
-              error => {console.log( error ); this.router.navigate(['/su'])},
-              () => { }
-              );
-          }catch(error){ console.log('error'+error); }
-      }
+                        localStorage.setItem('defaultDisplayType', data.modulesDisplayType);
+                    },
+                    error => { this.autoSaveLoader = false; console.log(error); this.router.navigate(['/su']) },
+                    () => { }
+                );
+        } catch (error) { console.log('error' + error); }
+    }
     
     
     save() {
@@ -693,7 +683,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
     
     saveCompanyProfile() {
-        this.autoSaveCompanyProfileLoader = true;
         this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
             .subscribe(
                 data => {
@@ -750,12 +739,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         self.homeComponent.getTeamMembersDetails();
 
                     }, 3000);
-                    this.autoSaveCompanyProfileLoader = false;
                 },
                 error => {
                     this.ngxloading = false;
-                    this.autoSaveCompanyProfileLoader = false;
+                    this.autoSaveLoader = false;
                     this.logger.errorPage(error)
+                    let message = this.refService.getApiErrorMessage(error);
+                    this.customResponse = new CustomResponse('ERROR',message,true);
                 },
                 () => {
                     this.saveVideoBrandLog();
@@ -881,7 +871,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     
     getCompanyProfileByUserId(userId: any) {
         if (userId != undefined) {
-            this.autoSaveCompanyProfileLoader = true;
             this.companyProfileService.getByUserId(userId).subscribe(
                 (data) => {
                     if (data.data != undefined) {
@@ -894,7 +883,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         this.isDisable = false;
                     }
                 }, (error) => {
-                    this.autoSaveCompanyProfileLoader = false;
                     this.logger.errorPage(error)
                 }, () => {
                     this.logger.info("Completed getCompanyProfileByUserId()");
@@ -1604,7 +1592,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
        $('#cropLogoImage').modal('hide');
        this.isLoading = false;
        this.ngxloading = false;
-       this.autoSaveCompanyProfileLoader = false;
+       this.autoSaveLoader = false;
    }
    checkUser(){
        this.isLoading = true;
@@ -2082,7 +2070,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     /*** XNFR-760 ***/
     autoFillCompanyProfile() {
-        this.autoSaveCompanyProfileLoader = true;
+        this.isLoading = true;
+        this.autoSaveLoader = true;
         this.companyProfileService.autoFillCompanyProfile().subscribe(
             (result: any) => {
                 if (result.statusCode == 200) {
@@ -2100,10 +2089,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     this.companyProfile.twitterLink = this.autofillCompanyProfile.twitterLink;
                     this.companyProfile.googlePlusLink = this.autofillCompanyProfile.googlePlusLink;
                     this.companyProfile.linkedInLink = this.autofillCompanyProfile.linkedInLink;
-                    this.autofillCompanyLogoFromUrl(this.companyLogoSourceLink);
+                    this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath = this.autofillCompanyProfile.companyLogoPath;
+                    this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
+                    this.validateCompanyLogo();
+                    this.saveCompanyProfile();
                 }
             }, (error: any) => {
-                this.autoSaveCompanyProfileLoader = false;
+                this.isLoading = false;
+                this.autoSaveLoader = false;
+                let message = this.refService.getApiErrorMessage(error);
+                this.customResponse = new CustomResponse('ERROR', message, true);
                 console.log('Error Occured while retriving the company profile automatically :', error);
             });
     }
