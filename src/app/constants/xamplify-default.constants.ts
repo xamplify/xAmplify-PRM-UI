@@ -18,6 +18,7 @@ export const XAMPLIFY_CONSTANTS = {
     universalSearchFilterBy:'universalSearchFiterBy',
     filterPartners:'filterPartners',
     HTTP_OK: 200,
-    HTTP_UNAUTHORIZED: 401
+    HTTP_UNAUTHORIZED: 401,
+    unlockMdfFunding:'unlockMdfFunding'
 
 }

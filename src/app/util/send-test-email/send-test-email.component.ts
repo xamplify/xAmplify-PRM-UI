@@ -6,6 +6,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { ActivatedRoute } from '@angular/router';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any;
 @Component({
   selector: 'app-send-test-email',
@@ -43,6 +44,8 @@ export class SendTestEmailComponent implements OnInit {
   isValidSubject = false;
   sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
   clicked = false;
+  /**XNFR-832***/
+  @Input() moduleName = "";
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
@@ -55,9 +58,38 @@ export class SendTestEmailComponent implements OnInit {
     $('#sendTestEmailHtmlBody').val('');
     if(this.vanityTemplatesPartnerAnalytics){
       this.getVanityEmailTemplatesPartnerAnalytics();
+    }else if(XAMPLIFY_CONSTANTS.unlockMdfFunding==this.moduleName){
+      this.getFundingTemplateHtmlBody();
     }else{
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
+  }
+
+  /***XNFR-832****/
+  getFundingTemplateHtmlBody() {
+    this.processing = true;
+    this.sendTestEmailDto = new SendTestEmailDto();
+    this.authenticationService.getFundingTemplateHtmlBody().subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        if(statusCode==200){
+          let data = response.data;
+          let body = data.body;
+          this.sendTestEmailDto.body = body;
+          $('#sendTestEmailHtmlBody').append(body);
+          $('tbody').addClass('preview-shown');
+          this.processing = false;
+        }else{
+          this.processing = false;
+          this.callEventEmitter();
+          this.referenceService.showSweetAlertErrorMessage("The requested default template for MDF funding is unavailable. Please verify the template ID or ensure it has been configured correctly.")
+        }
+      }, error => {
+        this.processing = false;
+        this.callEventEmitter();
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
   }
 
 
@@ -81,7 +113,7 @@ export class SendTestEmailComponent implements OnInit {
         htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
         this.sendTestEmailDto.body = htmlBody;
         $('#sendTestEmailHtmlBody').append(htmlBody);
-        $('tbody').addClass('preview-shown')
+        $('tbody').addClass('preview-shown');
         this.processing = false;
       }, error => {
         this.processing = false;

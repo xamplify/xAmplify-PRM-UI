@@ -2108,3 +2108,6 @@
       </a>
    </ng-container>
 </ng-template>
+
+<app-send-test-email *ngIf="sendMdfRequestButtonClicked" [moduleName]="unlockMdfFundingModuleName" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<!--XNFR-832-->

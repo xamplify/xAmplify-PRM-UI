@@ -1526,4 +1526,9 @@ vanityWelcomePageRequired(userId) {
    return this.callPostMethod(url, "");
 
   }
+
+  getFundingTemplateHtmlBody() {
+    let url = this.REST_URL + 'v_url/unlockMdfFundingTemplate/' + this.getUserId()+"/htmlBody?access_token="+this.access_token;
+    return this.callGetMethod(url);
+  }
 }
