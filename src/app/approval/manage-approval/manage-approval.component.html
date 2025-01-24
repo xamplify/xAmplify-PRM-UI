@@ -234,10 +234,10 @@
         <!-- Publish Icon -->
         <a class="custom-icon" *ngIf="!item.published && item?.type != 'Asset' && item?.canPublish" data-toggle="tooltip"
           data-placement="top"
-          title="{{(!item?.createdByAnyAdmin && item?.status != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
-          (click)="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyAdmin && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? '': confirmChangePublish(item.id, true, item)">
+          title="{{(!item?.createdByAnyApprovalManagerOrApprover && item?.status != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
+          (click)="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyApprovalManagerOrApprover && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? '': confirmChangePublish(item.id, true, item)">
           <i class="fa fa-share IconCustomization" aria-hidden="true"
-            [ngClass]="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyAdmin && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? 'disabled gray':''"></i>
+            [ngClass]="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyApprovalManagerOrApprover && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? 'disabled gray':''"></i>
           <div class="clickicons"></div>
         </a>
         <!-- Preview Icon -->
@@ -275,7 +275,7 @@
     
         <!-- comment/history -->
         <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
-          title="{{(!authenticationService?.module?.isAdmin || item?.createdByAnyAdmin) ? 'Comments/History' : 'Approve/Reject'}}">
+          title="{{(!authenticationService?.module?.isAdmin || item?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
           <i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
@@ -309,9 +309,9 @@
   </h6>
 </ng-template>
 
-<app-content-status-history-modal-popup *ngIf="callCommentsComponent" [entityId]="selectedDamId"
-  [createdByAnyAdmin]="createdByAnyAdmin" [title]="assetName" [createdById]="assetCreatedById"
-  [createdByName]="assetCreatedByFullName" [moduleType]="moduleType" [createdByAnyAdmin]="createdByAnyAdmin"
+<app-content-status-history-modal-popup *ngIf="callCommentsComponent" [entityId]="selectedDamId" [title]="assetName"
+  [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
+  [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover"
   (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
   (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopup()">
 </app-content-status-history-modal-popup>
