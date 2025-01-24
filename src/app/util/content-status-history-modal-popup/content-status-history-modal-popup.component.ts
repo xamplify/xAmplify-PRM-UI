@@ -305,5 +305,27 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       this.createdByAnyApprover = true;
     }
   }
+
+  sendReminderToApprovers() {
+    this.historyPopUpLoader = true;
+    this.approveService.sendReminderToApprovers(this.entityId, this.moduleType).subscribe(
+      (response: any) =>{
+        if (response.statusCode === 200) {
+          
+        } else if (response.statusCode === 200) { 
+
+        } else {
+
+        }
+        this.historyPopUpLoader = false;
+      }, error => {
+        this.historyPopUpLoader = false;
+        this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+      }, () => {
+        this.historyPopUpLoader = false;
+
+      }
+    );
+  }
   
 }

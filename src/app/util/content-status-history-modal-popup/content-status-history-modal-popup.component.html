@@ -81,6 +81,10 @@
                                  (click)="openTemplateStatusHistoryPopUp()">
                                  <a class="white"><i class="fa fa-history" style="font-size: 12px;"></i></a>
                               </span>
+                              <span data-toggle="tooltip" data-placement="bottom" title="send a reminder to approvers" class="view-banner-content ml5"
+                                 (click)="sendReminderToApprovers()" *ngIf="loggedInUserId == createdById && commentDto?.statusInString === approvalStatus.CREATED">
+                                 <a class="white"><i class="fa fa-share" style="font-size: 12px;"></i></a>
+                              </span>
                               <span *ngIf="isStatusUpdated && canApprove && commentDto?.statusInString != 'CREATED'"
                                  class="success ml5"><strong>Status Updated Successfully</strong></span>
                            </h5>
