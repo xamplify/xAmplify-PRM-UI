@@ -13,6 +13,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CommentDto } from 'app/common/models/comment-dto';
+import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 
 
 @Injectable()
@@ -396,6 +397,12 @@ export class DamService {
     let loggedInUserId = this.authenticationService.getUserId();
     let url = this.DAM_PREFIX_URL+'/getStatusTileCountsByModuleType/'+loggedInUserId+'/'+moduleType+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
+  }
+
+    /** XNFR-833 **/
+  uploadSignature(assetDetailsViewDto: AssetDetailsViewDto) {
+    let url = this.URL + `/p/upload/signature?access_token=${this.authenticationService.access_token}`;
+    return this.authenticationService.callPostMethod(url, assetDetailsViewDto);
   }
 
 

@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-       <app-signature [isFromModalPopUp]="true"></app-signature>
+       <app-signature [isFromModalPopUp]="true" [isFromDam]="isFromDam" (notifyAddImageToPdf)="notifyAddSignatureImageToPdf($event)"></app-signature>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>

@@ -318,6 +318,44 @@
                                              </div>
                                           </div>
 
+                                          <!---vendor signature-- XNFR-833-->
+                                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
+                                             <div class="form-group">
+                                                <label class="control-label col-sm-2" translate>Vendor Signature</label>
+                                                <div class="col-sm-10">
+                                                   <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || !isAdd" [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
+                                                   (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
+                                                   <span class="info-color-xampc">
+                                                      <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                         [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
+                                                      </i>
+                                                   </span>
+                                                   <span *ngIf="damUploadPostDto.vendorSignatureRequired && isAdd" class="choose-signature-text"
+                                                      (click)="openAddSignatureModalPopUp()">
+                                                       Add your signature <span class="required">*</span>
+                                                   </span>
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <!---vendor signature-- XNFR-833-->
+
+                                           <!---partner signature-- XNFR-833-->
+                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
+                                           <div class="form-group">
+                                              <label class="control-label col-sm-2" translate>Partner Signature</label>
+                                              <div class="col-sm-10">
+                                                 <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption" [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                 (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
+                                                 <span class="info-color-xampc">
+                                                    <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                       [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
+                                                    </i>
+                                                 </span>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <!---partner signature-- XNFR-833-->
+
                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                              <div class="form-group" style="margin-bottom: 0;">
                                                 <label class="control-label col-sm-2" translate>Tags
@@ -736,3 +774,12 @@
 <!-- record video modal popup end  -->
 <app-add-folder-modal-popup #addFolderModalPopupComponent
    (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
+
+<!-- XNFR-833  -->
+   <div class="modal-body" *ngIf="openDigitalSignatureModelPopup">
+      <app-digital-signature  [isFromDam]="true" (notifyAddImageToPdf)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)" ></app-digital-signature>
+   </div>
+
+   <div class="modal-body" *ngIf="openSelectDigitalSignatureModalPopUp">
+      <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)"></app-select-digital-signature>
+   </div>

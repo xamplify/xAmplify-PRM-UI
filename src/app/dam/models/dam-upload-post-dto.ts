@@ -38,4 +38,12 @@ export class DamUploadPostDto {
     /***XNFR-586 */
     addedToQuickLinks = false;
 
+    /***XNFR-833 */
+    partnerSignatureRequired = false;
+    disablePartnerSignatureOption = false;
+    partnerSignatureToolTipMessage = "";
+    vendorSignatureRequired = false;
+    disableVendorSignatuerOption = false;
+    vendorSignatureToolTipMessage = "";
+    selectedSignatureImagePath = "";
 }

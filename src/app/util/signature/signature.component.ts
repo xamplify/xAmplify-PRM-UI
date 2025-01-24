@@ -1,6 +1,6 @@
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { SignatureResponseDto } from './../../dashboard/models/signature-response-dto';
-import { Component, Input, OnInit, ViewChild,ElementRef,HostListener } from '@angular/core';
+import { Component, Input, OnInit, ViewChild,ElementRef,HostListener, Output, EventEmitter } from '@angular/core';
 import { MY_PROFILE_MENU_CONSTANTS } from 'app/constants/my-profile-menu-constants';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { SignatureDto } from 'app/dashboard/models/signature-dto';
@@ -15,6 +15,8 @@ import { CustomResponse } from 'app/common/models/custom-response';
 })
 export class SignatureComponent implements OnInit {
   @Input() isFromModalPopUp = false;
+  @Input() isFromDam = false;
+  @Output() notifyAddImageToPdf = new EventEmitter();
   uploadSignatureButtonClicked = false;
   signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
   activeTab = "draw";
@@ -114,6 +116,20 @@ export class SignatureComponent implements OnInit {
     this.previewingExistingUploadedSignature = this.signatureResponseDto.uploadedSignatureExits;
     this.exisitingUploadedImagePath = this.signatureResponseDto.uploadedSignatureImagePath;
     this.isDelete = false;
+
+       /**Add Image To PDF***/
+    if (this.isFromDam) {
+      if (this.signatureResponseDto.drawSignatureExits && this.signatureResponseDto.drawSignatureImagePath) {
+        this.notifyAddImageToPdf.emit(this.signatureResponseDto.drawSignatureImagePath);
+      }
+      else if (this.signatureResponseDto.typedSignatureExists && this.signatureResponseDto.typedSignatureImagePath) {
+        this.notifyAddImageToPdf.emit(this.signatureResponseDto.typedSignatureImagePath);
+      }
+      else if (this.signatureResponseDto.uploadedSignatureExits && this.signatureResponseDto.uploadedSignatureImagePath) {
+        this.notifyAddImageToPdf.emit(this.signatureResponseDto.uploadedSignatureImagePath);
+      }
+    }
+
   }
 
   
@@ -182,6 +198,7 @@ export class SignatureComponent implements OnInit {
       canvas.toDataURL("image/png");
       const base64Image = canvas.toDataURL(); // Convert canvas to base64
       this.uploadDrawSignature(base64Image);
+      console.log(base64Image);
     } else {
       this.showErrorMessage('Please draw signature');
     }
@@ -248,12 +265,33 @@ export class SignatureComponent implements OnInit {
       });
     }
 
-    saveTypedSignatureTextAsImage() {
-      const element = document.getElementById('typedSignaturePreview');
-      domtoimage.toPng(element).then((dataUrl) => {
-        console.log(dataUrl);
-      });
+    // saveTypedSignatureTextAsImage() {
+    //   const element = document.getElementById('typedSignaturePreview');
+    //   domtoimage.toPng(element).then((dataUrl) => {
+    //     console.log(dataUrl);
+    //   });
+    // }
+
+  saveTypedSignatureTextAsImage() {
+    const previewElement = document.getElementById('typedSignaturePreview');
+    if (previewElement) {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = previewElement.offsetWidth;
+      canvas.height = previewElement.offsetHeight;
+      ctx.font = `${'30px'} ${this.signatureDto.typedSignatureFont || 'Montserrat'}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const text = this.signatureDto.typedSignatureText || 'Your Signature';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+      const base64Image = canvas.toDataURL('image/png');
+      this.signatureDto.typedSignatureEncodedImage = base64Image;
+    } else {
+      this.showErrorMessage('Please type your signature');
     }
+  }
+    
     /***End Of Type Signature***/
 
     removeExisitingSignature(event:any){
