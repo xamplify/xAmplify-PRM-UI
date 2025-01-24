@@ -271,7 +271,8 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
             '{{senderFullName}}',
           ],
           "UNLOCK_MDF_FUNDING":[
-            '{{campaignDetails}}',
+            '{{campaignName}}',
+            '{{campaignAnalyticsLink}}'
           ],
         };
     
@@ -317,7 +318,8 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('LoginLink'), message: "Whoops! We are unable to save this template because you deleted 'RegisterLink' tag." },
               { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('Registration_Document'), message: "Whoops! We are unable to save this template because you deleted 'Registration_Document' tag." },
               { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('Request_Account'), message: "Whoops! We are unable to save this template because you deleted 'Request_Account' tag." },
-              { condition: () => emailTemplateType === self.properties.UNLOCK_MDF_FUNDING && !jsonContent.includes('{{campaignDetails}}'), message: "Whoops! We are unable to save this template because you deleted '{{campaignDetails}}' tag." },
+              { condition: () => emailTemplateType === self.properties.UNLOCK_MDF_FUNDING && !jsonContent.includes('{{campaignName}}'), message: "Whoops! We are unable to save this template because you deleted '{{campaignName}}' tag." },
+              { condition: () => emailTemplateType === self.properties.UNLOCK_MDF_FUNDING && !jsonContent.includes('{{campaignAnalyticsLink}}'), message: "Whoops! We are unable to save this template because you deleted '{{campaignAnalyticsLink}}' tag." },
 
             ]
           },
@@ -522,7 +524,7 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
     }
 
     if(self.properties.UNLOCK_MDF_FUNDING==emailTemplateType) {
-      mergeTags =[{ name: 'Campaign Details', value: '{{campaignDetails}}' }];
+      mergeTags =[{ name: 'Campaign Details', value: '{{campaignName}}' }];
     }
 
       var beeUserId = "bee-"+emailTemplate.companyId;
