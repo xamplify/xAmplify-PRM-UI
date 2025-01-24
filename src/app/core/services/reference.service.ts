@@ -3973,6 +3973,24 @@ getFirstLetter(inputString:any) {
     );
   }
 
+  downloadPartnesReports(loggedInUserId: number, selectedPartnerCompanyIds: any[], pagination: Pagination, applyFilter: boolean, fromDateFilter: any, toDateFilter: any, urlString: any) {
+    let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? loggedInUserId : 0;
+    let partnerCompanyIdsRequestParam = selectedPartnerCompanyIds && selectedPartnerCompanyIds.length > 0 ? selectedPartnerCompanyIds : [];
+    let searchKeyRequestParm = pagination.searchKey != undefined ? pagination.searchKey : "";
+    let partnerTeamMemberGroupFilterRequestParm = applyFilter != undefined ? applyFilter : false;
+    let fromDateFilterRequestParam = fromDateFilter != undefined ? fromDateFilter : "";
+    let toDateFilterRequestParam = toDateFilter != undefined ? toDateFilter : "";
+    let timeZoneRequestParm = "&timeZone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let sortcolumn = pagination.sortcolumn ? "&sortcolumn=" + pagination.sortcolumn : "";
+    let sortingOrder = pagination.sortingOrder ? "&sortingOrder=" + pagination.sortingOrder : "";
+    let moduleName = pagination.moduleName ? "&moduleName="+ pagination.moduleName:"";
+    let url = this.authenticationService.REST_URL + "partner/journey/download/" + urlString + "?access_token=" + this.authenticationService.access_token
+      + "&loggedInUserId=" + loggedInUserIdRequestParam + "&selectedPartnerCompanyIds=" + partnerCompanyIdsRequestParam + "&searchKey=" + searchKeyRequestParm
+      + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm
+      + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + sortcolumn + sortingOrder +moduleName+ timeZoneRequestParm;
+    this.openWindowInNewTab(url);
+  }
+
   
 }
 

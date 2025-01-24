@@ -26,7 +26,7 @@
           <div class="desc white">All</div>
         </div>
         <span class="morePadding">
-          <a class="more white" [class.grey]="statusType != 'ALL'"> Detailed view
+          <a class="more"> Detailed view
             <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
             <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
             <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle"
@@ -47,7 +47,7 @@
           <div class="desc white">{{ isTeamMemberRequest ? 'Activated' : 'Approved' }}</div>
         </div>
         <span class="morePadding">
-          <a class="more white" [class.grey]="statusType != 'APPROVED'"> Detailed view
+          <a class="more"> Detailed view
             <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
             <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
             <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Activated Team Members"></i></a>
@@ -67,7 +67,7 @@
           <div class="desc">Invited</div>
         </div>
         <span class="morePadding">
-          <a class="more" [class.grey]="statusType != 'INVITED'"> Detailed view
+          <a class="more"> Detailed view
             <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
             <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
             <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Invited Team Members"></i></a>
@@ -87,7 +87,7 @@
           <div class="desc">{{ isTeamMemberRequest ? 'Deactivated' : 'Declined' }}</div>
         </div>
         <span class="morePadding">
-          <a class="more" [class.grey]="statusType != 'DECLINED'"> Detailed view
+          <a class="more"> Detailed view
             <i *ngIf="!isTeamMemberRequest" class="m-icon-swapright m-icon-white"></i>
             <i *ngIf="isTeamMemberRequest" class="m-icon-swapright m-icon-white detailedarrow"></i>
             <i *ngIf="isTeamMemberRequest" class="fa fa-info-circle" title="Total Deactivated Team Members"></i>

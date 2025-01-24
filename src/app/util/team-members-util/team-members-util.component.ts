@@ -30,6 +30,7 @@ import { TagInputComponent as SourceTagInput } from 'ngx-chips';
 import { FormControl } from '@angular/forms';
 import { tap} from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $: any, swal: any;
 @Component({
@@ -85,7 +86,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   defaultClass: string = this.formGroupClass;
   /************CSV Related************* */
   showUploadedTeamMembers = false;
-  csvErrors: any[];
+  csvErrors: boolean = false;
   errorMessage: string;
   isUploadCsv: boolean;
   @ViewChild('fileImportInput')
@@ -150,6 +151,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   isValidationMessage = false;
   addFirstAttemptFailed = false;
   inviteTeamMemberLoading = false;
+  inviteTeamMemberHtmlBody: any;
   inviteTeamMemberResponse: CustomResponse = new CustomResponse();
   /***** XNFR-805 *****/
 
@@ -157,7 +159,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
     public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties,
-    public regularExpressions: RegularExpressions, public route: ActivatedRoute, public partnerService: ParterService) {
+    public regularExpressions: RegularExpressions, public route: ActivatedRoute, public partnerService: ParterService, 
+    private sanitizer: DomSanitizer) {
 
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
     this.isSuperAdminAccessing = this.authenticationService.isSuperAdmin();
@@ -256,6 +259,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.isValidationMessage = false;
     this.inviteTeamMemberLoading = false;
     $('#invite_team_member_modal').modal('hide');
+    this.csvErrors = false;
   }
 
   findAll(pagination: Pagination) {
@@ -604,7 +608,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   /***********Add Team Member(s) ********************/
   goToAddTeamMemberDiv() {
-    this.referenceService.hideDiv('csv-error-div');
     this.team = new TeamMember();
     this.customResponse = new CustomResponse();
     this.teamMemberUi = new TeamMemberUi();
@@ -785,16 +788,15 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   readCsvFile(event: any) {
     this.customResponse = new CustomResponse();
-    this.csvErrors = [];
     var files = event.srcElement.files;
     if (this.fileUtil.isCSVFile(files[0])) {
       $("#empty-roles-div").hide();
-      $("#csv-error-div").hide();
       var input = event.target;
       var reader = new FileReader();
       reader.readAsText(input.files[0]);
       reader.onload = (data) => {
         this.isUploadCsv = true;
+        this.csvErrors = false;
         let csvData = reader.result;
         let csvRecordsArray = csvData['split'](/\r\n|\n/);
         let headersRow = this.fileUtil
@@ -824,8 +826,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   processCSVData() {
     this.validateCsvData();
-    if (this.csvErrors.length > 0) {
-      $("#csv-error-div").show();
+    if (this.csvErrors) {
       this.fileReset();
       this.isUploadCsv = false;
     } else {
@@ -882,6 +883,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     let duplicateEmailIds = this.referenceService.returnDuplicates(email);
     this.newlyAddedTeamMembers = [];
     if ((email.length > 0) && (firstNames.length > 0)) {
+      let emailIds = [];
       for (let r = 1; r < email.length; r++) {
         let rows = this.csvRecords[r];
         let row = rows[0].split(',');
@@ -890,30 +892,35 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         let lastName = row[2];
         firstName = $.trim(firstName);
         if (firstName.length <= 0 && emailId.length > 0 && emailId !== '') {
-          this.csvErrors.push('First Name is not available for : "' + emailId + '"');
+          emailIds.push(emailId);
+          this.customResponse = new CustomResponse('ERROR', 'First Name is not available for : ' + emailIds, true);
+          this.csvErrors = true;
         }
         if (emailId !== undefined && emailId !== '' && $.trim(emailId.length > 0)) {
           if (duplicateEmailIds.length == 0) {
             if (!this.referenceService.validateEmailId(emailId)) {
-              this.csvErrors.push(emailId + " is invalid email address.");
+              emailIds.push(emailId);
+              this.customResponse = new CustomResponse('ERROR', emailIds + ' is invalid email address.', true);
+              this.csvErrors = true;
             }
-          }
-          else {
+          } else {
             for (let d = 0; d < duplicateEmailIds.length; d++) {
               let duplicateEmailId = duplicateEmailIds[d];
               if (duplicateEmailId != undefined && $.trim(duplicateEmailId).length > 0) {
-                this.csvErrors.push(duplicateEmailId + " is duplicate email address.");
+                emailIds.push(duplicateEmailId);
+                this.customResponse = new CustomResponse('ERROR', emailIds + ' is duplicate email address.', true);
+                this.csvErrors = true;
                 this.isUploadCsv = false;
               }
             }
             duplicateEmailIds = [];
           }
-        }
-        else if (firstName.length > 0 && firstName !== '') {
-          this.csvErrors.push('Email is not available for : " ' + firstName + ' "');
-        }
-        else if (lastName.length > 0 && lastName !== '') {
-          this.csvErrors.push('First Name & Email are mandatory for : " ' + lastName + ' "');
+        } else if (firstName.length > 0 && firstName !== '') {
+          this.customResponse = new CustomResponse('ERROR', 'Email is not available for : ' + firstName, true);
+          this.csvErrors = true;
+        } else if (lastName.length > 0 && lastName !== '') {
+          this.customResponse = new CustomResponse('ERROR', 'First Name & Email are mandatory for : ' + lastName, true);
+          this.csvErrors = true;
         }
       }
     }
@@ -1374,18 +1381,13 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.inviteTeamMemberLoading = true;
     this.emailIds = [];
     this.vendorInvitation.emailIds = [];
-    const templateId = this.vendorCompanyProfileName === 'versa-networks' ? 28 : 1;
-    this.teamMemberService.getHtmlBody(templateId).subscribe(
+    this.teamMemberService.getHtmlBody().subscribe(
       response => {
         if (response.statusCode === 200) {
           let data = response.data;
-          $('#invite_team_member_modal').on('shown.bs.modal', () => {
-            const divElement = document.getElementById('inviteTeamMemberHtmlBody');
-            divElement.innerHTML = data.body;
-          });
+          this.inviteTeamMemberHtmlBody = this.sanitizer.bypassSecurityTrustHtml(data.body);
           this.vendorInvitation.subject = data.subject;
         } else {
-          this.vendorInvitation.message = "";
           this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
         }
         this.inviteTeamMemberLoading = false;
@@ -1449,10 +1451,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.inviteTeamMemberResponse = new CustomResponse();
     this.inviteTeamMemberLoading = true;
     this.isValidationMessage = true;
-    this.emailIds.forEach((value: any) => {
-      const emailId = value.value;
-      this.vendorInvitation.emailIds.push(emailId);
-    });
+    this.vendorInvitation.emailIds = this.emailIds.map(value => value.value);
     this.vendorInvitation.vanityURL = this.vendorCompanyProfileName;
     this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation)
       .subscribe(data => {
@@ -1461,12 +1460,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.inviteTeamMemberResponse = new CustomResponse('SUCCESS', data.message, true);
         } else if (data.statusCode == 400 || data.statusCode == 401 || data.statusCode == 413) {
           this.isValidationMessage = false;
-          let duplicateEmailIds = "";
-          $.each(data.data, function (index: number, value: string) {
-            duplicateEmailIds += (index + 1) + "." + value + " ";
-          });
-          let message = data.message + " " + duplicateEmailIds;
           this.vendorInvitation.emailIds = [];
+          let duplicateEmailIds = data.data.map((value: string, index: number) => `${index + 1}. ${value}`).join(" ");
+          let message = `${data.message} ${duplicateEmailIds}`;
           this.inviteTeamMemberResponse = new CustomResponse('ERROR', message, true);
         } else {
           this.isValidationMessage = false;

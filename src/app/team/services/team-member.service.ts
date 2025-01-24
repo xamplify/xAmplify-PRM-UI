@@ -367,8 +367,8 @@ export class TeamMemberService{
     }
 
     /***** XNFR-805 *****/
-    getHtmlBody(id: number) {
-        let url = this.URL + "teamMember/getHtmlBody/" + id + "?userId=" + this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
+    getHtmlBody() {
+        let url = this.URL + "teamMember/getHtmlBody/" + this.authenticationService.getUserId() + "?companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

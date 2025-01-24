@@ -20,6 +20,8 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	/**** XBI-2133 ***/
 	@Output() filterConditionsEmitter = new EventEmitter();
 	@Output() closeFilterEmitter = new EventEmitter();
+	@Input() isFromApprovalHub: boolean = false;
+	@Input() selectedFilterType: any;
 	filterOptions: any[] = [];
 	filterConditions = [
 		{ 'name': 'eq', 'value': '=' },
@@ -38,6 +40,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	seletedFiterArray: any[] = [];
 	selectedConditionArray: any[] = [];
 	@Input() criteria: Criteria ;
+	isAssetTabSelected: any = false;
 
 
 	constructor(private router: Router) {
@@ -51,7 +54,17 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		if(this.allfilterOptions.length==0){
 		   this.addFilterOptionsValues(this.type);
 		}
-		
+
+		if (this.isFromApprovalHub) {
+			this.isValidationErrorMessage = false;
+			this.filterConditionErrorMessage = "";
+			if (this.selectedFilterType == 'ASSETS') {
+				this.isAssetTabSelected = true;
+			} else {
+				this.isAssetTabSelected = false;
+			}
+		}
+
 		if(this.criteria.property != "Field Name*" && this.criteria.operation != "Condition*"
 		         && this.criterias !=undefined &&  this.criterias.length > 0
 		         && this.criterias[this.criterias.length-1].property ==  "Field Name*" 
@@ -83,9 +96,13 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 			this.filterOptions.push(
 				{ 'name': 'assetsname', 'value': 'Asset Name' },
 				{ 'name': 'folder', 'value': 'Folder' },
-				{ 'name': 'type', 'value': 'Type' },
-				{ 'name': 'tags', 'value': 'Tags' }
+				{ 'name': 'type', 'value': 'Type' }
 			);
+
+			if (!this.isFromApprovalHub) {
+				this.filterOptions.push({ 'name': 'tags', 'value': 'Tags' });
+			}
+
 			if (this.router.url.indexOf('/fl') > -1 || this.router.url.indexOf('/fg') > -1) {
 				this.filterOptions = this.filterOptions.filter(item => item.name !== 'folder'); //XNFR-409
 			}
@@ -251,8 +268,25 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		}
 		return this.isValidationErrorMessage;
 	}
+
 	submittFilterData() {
-		this.validateDateFilters();
+		if (this.isFromApprovalHub && !this.isAssetTabSelected) {
+			this.validateDateFiltersForApprovalHub();
+			if (this.isValidationErrorMessage) {
+				console.log(this.isValidationErrorMessage);
+			} else if (!this.isValidationErrorMessage && this.pagination.fromDateFilterString.length == 0 &&
+				this.pagination.toDateFilterString.length == 0) {
+				this.closeFilterOption('close');
+			} else {
+				this.frameInputValuesForEmit();
+			}
+		} else {
+			this.validateDateFilters();
+			this.validateAndEmitValues();
+		}
+	}
+
+	validateAndEmitValues() {
 		if(this.isValidationErrorMessage){
 			console.log(this.isValidationErrorMessage);
 		}else if(!this.isValidationErrorMessage && this.pagination.criterias==null || this.pagination.criterias==undefined ||
@@ -261,6 +295,11 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				this.closeFilterOption('close');
 		}else{
 		// this.validateDateFilters();
+		this.frameInputValuesForEmit();
+	  }
+	}
+
+	frameInputValuesForEmit() {
 		let input = {};
 		input['fromDate'] = this.pagination.fromDateFilterString;
 		input['toDate'] = this.pagination.toDateFilterString;
@@ -272,8 +311,8 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 			this.isclearFilter = true;
 			this.filterConditionsEmitter.emit(input);
 		}
-	  }
 	}
+	
 	closeFilterOption(event: any) {
 		if (event == "clear") {
 			this.selectedConditionArray = [];
@@ -322,5 +361,41 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 
 	setConditionsForCriteria(criteria: any, index: number) {
 		this.selectedConditionArray[index] = criteria.operation;
+	}
+
+	// XNFR-837
+	validateDateFiltersForApprovalHub() {
+		let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+		let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+		let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+		let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+		if (isEmptyFromDateFilter && isEmptyToDateFilter) {
+			this.isValidationErrorMessage = true;
+			this.filterConditionErrorMessage = "Please provide valid input to filter";
+		} else {
+			let validDates = false;
+			if (isValidFromDateFilter && isEmptyToDateFilter) {
+				this.isValidationErrorMessage = true;
+				this.filterConditionErrorMessage = "Please pick To Date";
+			} else if (isValidToDateFilter && isEmptyFromDateFilter) {
+				this.isValidationErrorMessage = true;
+				this.filterConditionErrorMessage = "Please pick From Date";
+			} else {
+				var toDate = Date.parse(this.toDateFilter);
+				var fromDate = Date.parse(this.fromDateFilter);
+				if (fromDate <= toDate) {
+					validDates = true;
+				} else {
+					this.isValidationErrorMessage = true;
+					this.filterConditionErrorMessage = "From Date should be less than To Date";
+				}
+			}
+
+			if (validDates) {
+				this.isValidationErrorMessage = false;
+				this.pagination.fromDateFilterString = this.fromDateFilter;
+				this.pagination.toDateFilterString = this.toDateFilter;
+			}
+		}
 	}
 }
