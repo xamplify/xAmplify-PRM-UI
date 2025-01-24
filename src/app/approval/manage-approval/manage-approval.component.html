@@ -22,9 +22,9 @@
           <ng-template [ngTemplateOutlet]="headerOptions"></ng-template>
         </div>
         <section>
+          <ng-template [ngTemplateOutlet]="filter"></ng-template>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <div class="table-responsive">
-            <ng-template [ngTemplateOutlet]="filter"></ng-template>
             <!-- Table Header-->
             <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
               <thead>
@@ -125,18 +125,12 @@
   </div>
   <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6 pr0">
     <div class="d-flex justify-content-end">
-      <span class="btn btn-xs hidden-xs l-g-view FliterAlignment pull-right {{filterActiveBg}}" title="Filter">
-        <div class="btn-group">
-          <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
-            (click)="clickFilter()">
-            <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
-          </a>
-          <ul *ngIf="showFilterDropDown" class="dropdown-menu pull-right">
-            <li><a (click)="viewDropDownFilter()">View Filter</a></li>
-            <li><a (click)="clearFilter()">Clear Filter</a></li>
-          </ul>
-        </div>
-      </span>
+      <div class="btn btn-xs l-g-view margin-space {{filterActiveBg}}" (click)="clickFilter()"
+        [ngClass]="showFilterOption?'disabled':''">
+        <span data-placement="left" data-toggle="tooltip" title="Filter">
+          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+        </span>
+      </div>
       <!-- Sort start -->
       <div class="mr5">
         <select class="form-control SeclectBoxPaddingsAbj pull-left mr5" id="alignline-m-width"
@@ -341,51 +335,7 @@
 </ng-container>
 
 <ng-template #filter>
-  <div class="portlet light ht125 mt10" *ngIf="showFilterOption && !showFilterDropDown">
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <!-- Alert Message Box -->
-        <app-response-message class="pg8" [customResponse]="filterResponse"
-          *ngIf="filterResponse?.isVisible"></app-response-message>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8 pl0">
-          <h4 translate>Apply Filter</h4>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
-          <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()" data-toggle="tooltip"
-            data-placement="top" title="Close Filter Box">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
-          <div class="portlet box custom_fiter-asset mt10">
-            <div class="row pl10 pr10 pb10">
-              <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
-                <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
-                  <div class="control-label" style="font-size:15px">{{dateFilterText}}
-                  </div>
-                </div>
-                <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
-                  <label class="control-label">
-                    From Date &nbsp;
-                  </label>
-                  <app-date-picker [(dataField)]="fromDateFilterString" [isFromFilter]='true'>
-                  </app-date-picker>
-                </div>
-                <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
-                  <label class="control-label">To Date &nbsp;
-                  </label>
-                  <app-date-picker [(dataField)]="toDateFilterString" [isFromFilter]='true'>
-                  </app-date-picker>
-                </div>
-              </div>
-            </div>
-          </div>
-          <span class="btn-aligmntCu pull-right">
-            <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
-            <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-custom-ui-filter *ngIf="showFilterOption && !showFilterDropDown" [type]="'Assets'" [criteria]="criteria"
+    (filterConditionsEmitter)="applyFilter($event)" [isFromApprovalHub]=true [selectedFilterType]="selectedFilterType"
+    (closeFilterEmitter)="clearFilter($event)" [fileTypes]="fileTypes"></app-custom-ui-filter>
 </ng-template>

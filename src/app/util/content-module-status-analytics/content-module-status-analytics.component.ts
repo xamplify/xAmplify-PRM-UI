@@ -71,8 +71,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
   getTileCountsForApproveModule() {
     this.countsLoader = true;
-    this.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    this.approveService.getStatusTileCounts(this.filterType, this.toDateFilter, this.fromDateFilter, this.timeZone)
+    this.approveService.getStatusTileCounts(this.filterType)
       .subscribe(
         response => {
           this.countsLoader = false;

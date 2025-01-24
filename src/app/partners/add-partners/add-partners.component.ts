@@ -868,7 +868,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						this.newPartnerUser.length = 0;
 						this.allselectedUsers.length = 0;
 						if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
-							this.pagination.partnerTeamMemberGroupFilter = true;
+							this.selectedFilterIndex == 1 ? this.pagination.partnerTeamMemberGroupFilter = true : this.pagination.partnerTeamMemberGroupFilter = false;
 						}
 						this.loadPartnerList(this.pagination);
 						this.clipBoard = false;
@@ -2644,11 +2644,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
 			if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
-				this.pagination.partnerTeamMemberGroupFilter = true;
-				let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners)
-				if( TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter===false || TeamMemberGroupFilter==='false') ){
-					this.selectedFilterIndex=0;
+				let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+				if (TeamMemberGroupFilter !== null && TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) {
+					this.selectedFilterIndex = 0;
 					this.pagination.partnerTeamMemberGroupFilter = false;
+				} else {
+					this.selectedFilterIndex = 1;
+					this.pagination.partnerTeamMemberGroupFilter = true;
 				}
 			}
 			this.defaultPartnerList(this.loggedInUserId);

@@ -440,18 +440,21 @@ border-bottom:none;
 }
 
 .expand_row {
-  padding: 4px;
   right: -13px;
   position: absolute;
   top: 25px;
   transform: rotate(0deg);
   will-change: transform;
   max-width: unset !important;
-  width: 26px;
   border-radius: 100%;
   background-color: #578ebe;
   color: #fff;
   z-index: 2;
+  width: 22px;
+  height: 22px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }
 
 .expand_row:hover, .expand_profile_row:hover {
@@ -463,17 +466,20 @@ border-bottom:none;
 }
 
 .expand_profile_row {
-  padding: 4px;
   left: -13px;
   position: absolute;
   top: 25px;
   will-change: transform;
   max-width: unset !important;
-  width: 26px;
   border-radius: 100%;
   background-color: #578ebe;
   color: #fff;
   z-index: 2;
+  width: 22px;
+  height: 22px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }
 
 .details_profile_b {

@@ -41,7 +41,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   private checkPartnerTeamMemberFilter() {
     if (this.isPartnerModule) {
       let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-      if (filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
+      if (filterPartner !== null  && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
         this.selectedFilterIndex = 0;
       }
     }
@@ -89,7 +89,8 @@ export class TeamMemberFilterOptionComponent implements OnInit {
       response => {
         if (response.statusCode == 200) {
           console.log("updatedSucessfully");
-          (this.selectedFilterIndex == 0) ?  this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners,'false'): this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners,'true');
+          const filterPartner :boolean = (this.selectedFilterIndex == 0) ? false : true;
+          localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, JSON.stringify(filterPartner));
         }
       }, _error => {
         console.log("error");

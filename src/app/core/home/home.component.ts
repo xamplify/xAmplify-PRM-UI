@@ -577,9 +577,9 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  getfilterOption(){
+  getfilterOption() {
     this.loader = true;
-    let partnerFilterOption: any ;
+    let partnerFilterOption: boolean = true;
     this.dashBoardService.getPartnersFilter().subscribe(
       response => {
         if (response.statusCode == 200) {
@@ -590,9 +590,9 @@ export class HomeComponent implements OnInit {
         this.loader = false;
       }, _error => {
         this.loader = false;
-    },()=>{
-      this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners, partnerFilterOption);
-    }
+      }, () => {
+        localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, JSON.stringify(partnerFilterOption));
+      }
     )
   }
 

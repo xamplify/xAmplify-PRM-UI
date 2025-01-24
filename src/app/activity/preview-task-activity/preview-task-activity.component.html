@@ -28,7 +28,9 @@
           <div class="view_emailcard mb10">
             <div class="profile_header">
               <div class="avatar2_v2">
-                <img class="img_wdt" src="{{taskActivity.profilePath}}" alt="">
+                <img *ngIf="ngxLoading" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
+                <img *ngIf="!ngxLoading" class="img_wdt" src="{{authenticationService.MEDIA_URL+taskActivity.profilePath}}" alt=""
+                  (error)="errorHandler($event)">
               </div>
               <div class="profile_info">
                 <label class="mb0"> Assigned To<span class="text-danger mr2 mb5">*</span></label>

@@ -21,7 +21,8 @@ import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { Router } from '@angular/router';
 import { SortOption } from 'app/core/models/sort-option';
-declare var swal:any, $: any;
+import { Criteria } from 'app/contacts/models/criteria';
+declare var swal: any, $: any;
 
 @Component({
   selector: 'app-manage-approval',
@@ -37,7 +38,7 @@ export class ManageApprovalComponent implements OnInit {
   selectedFilterType: any = 'ALL';
   selectedFilterStatus: any;
   approveList: Array<any> = new Array<any>();
-  fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
+  fontAwesomeClassName: FontAwesomeClassName = new FontAwesomeClassName();
   callCommentsComponent: boolean;
   assetName: any;
   assetCreatedById: any;
@@ -58,17 +59,17 @@ export class ManageApprovalComponent implements OnInit {
   selectedPlayBookIds = [];
   multiSelectComment = '';
   showCommentsPopUp: boolean = false;
-  isApproveOrRejectStatus : any = '';
-  commentDto:MultiSelectCommentDto = new MultiSelectCommentDto();
+  isApproveOrRejectStatus: any = '';
+  commentDto: MultiSelectCommentDto = new MultiSelectCommentDto();
   customResponse: CustomResponse = new CustomResponse();
-  filterResponse : CustomResponse = new CustomResponse();
+  filterResponse: CustomResponse = new CustomResponse();
   selectedIds = [];
   selectedTypeIds = [];
   moduleType: any;
   selectedPendingIds = [];
   showPdfModalPopup: boolean;
   asset: any;
-  lmsType :any;
+  lmsType: any;
   deleteAsset: boolean;
   UnPublishedId: number;
   selectedOption: boolean;
@@ -76,8 +77,8 @@ export class ManageApprovalComponent implements OnInit {
   itemType: any;
   filterActiveBg = "";
   filterApplied: any;
-  showFilterOption: boolean  = false;
-  showFilterDropDown: boolean  = false;
+  showFilterOption: boolean = false;
+  showFilterDropDown: boolean = false;
   toDateFilter: string;
   fromDateFilter: string;
   dateFilterText = "Select Date Filter";
@@ -86,16 +87,22 @@ export class ManageApprovalComponent implements OnInit {
   hasVideoRole: boolean;
   hasCampaignRole: boolean;
   hasAllAccess: boolean;
+  criteria: Criteria = new Criteria();
+  isAssetTabSelected: boolean = false;
+  loggedInUserId: number = 0;
+  loggedInUserCompanyId: any;
+  fileTypes: any;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
     public pagerService: PagerService, public tracksPlayBookUtilService: TracksPlayBookUtilService, public videoFileService: VideoFileService,
     private router: Router, public sortOption: SortOption
-  ) { }
+  ) {
+    this.loggedInUserId = this.authenticationService.getUserId();
+  }
 
   ngOnInit() {
     this.callInitMethos();
-    this.getAllApprovalList(this.pagination);
     let message = this.referenceService.assetResponseMessage;
     if (message != undefined && message.length > 0) {
       this.customResponse = new CustomResponse('SUCCESS', message, true);
@@ -111,25 +118,23 @@ export class ManageApprovalComponent implements OnInit {
     this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
     this.hasAllAccess = this.referenceService.hasAllAccess();
+    this.getCompanyId();
   }
 
   ngOnDestroy() {
-		this.referenceService.isCreated = false;
-		this.referenceService.isUpdated = false;
-		this.referenceService.isUploaded = false;
-		this.referenceService.isAssetDetailsUpldated = false;
-		this.referenceService.assetResponseMessage = "";
-	}
+    this.referenceService.isCreated = false;
+    this.referenceService.isUpdated = false;
+    this.referenceService.isUploaded = false;
+    this.referenceService.isAssetDetailsUpldated = false;
+    this.referenceService.assetResponseMessage = "";
+  }
 
   getAllApprovalList(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.pagination.filterKey = this.selectedFilterStatus;
     this.pagination.filterBy = this.selectedFilterType;
-    this.pagination.fromDateFilterString = this.fromDateFilter;
-    this.pagination.toDateFilterString = this.toDateFilter;
-    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     this.selectedPendingIds = [];
-    this.approveService.getAllApprovalList(pagination).subscribe(
+    this.approveService.getAllApprovalList(this.pagination).subscribe(
       response => {
         let data = response.data;
         this.approveList = data.list;
@@ -175,15 +180,20 @@ export class ManageApprovalComponent implements OnInit {
 
   filterByType(type: string, index: number) {
     this.selectedTypeIndex = index;
-    this.pagination.pageIndex = 1;
-    this.pagination.maxResults = 12;
+    this.isAssetTabSelected = false;
+    if (type === 'ASSETS') {
+      this.isAssetTabSelected = true;
+    }
     this.selectedFilterType = type;
     this.getAllApprovalList(this.pagination);
   }
 
   filterByStatus(event: any) {
+    this.pagination = new Pagination();
     this.pagination.pageIndex = 1;
     this.pagination.maxResults = 12;
+    this.showFilterOption = false;
+    this.clearFilterOptions();
     if (event == 'APPROVED') {
       this.selectedFilterStatus = 'APPROVED';
       this.getAllApprovalList(this.pagination);
@@ -228,7 +238,7 @@ export class ManageApprovalComponent implements OnInit {
   preview(item: any) {
     if (item.type === 'Asset') {
       this.handleAssetPreview(item);
-    }else if(item.type == 'Track' || item.type == 'PlayBook'){
+    } else if (item.type == 'Track' || item.type == 'PlayBook') {
       this.handleTracksAndAssetsPreview(item);
     }
   }
@@ -304,7 +314,7 @@ export class ManageApprovalComponent implements OnInit {
 
   handleAssetEdit(item: any) {
     setTimeout(() => {
-      let prefixurl =  RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['approval']
+      let prefixurl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['approval']
       if (!item.beeTemplate && this.referenceService.isVideo(item.slug)) {
         let url = prefixurl + "editVideo/" + item.videoId + "/" + item.id;
         this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.defaultDisplayType, this.folderViewType, this.folderListView);
@@ -315,7 +325,7 @@ export class ManageApprovalComponent implements OnInit {
     }, 300);
   }
 
-  handleTracksAndAssetsPreview(item :any) {
+  handleTracksAndAssetsPreview(item: any) {
     const viewType = `/${this.defaultDisplayType}`;
     let router = '';
     let companyId = item.createdByCompanyId
@@ -450,7 +460,7 @@ export class ManageApprovalComponent implements OnInit {
     this.updateStatusForSelectedIds();
   }
 
-  getStausAndCallCommentsPopUp(statusType : any){
+  getStausAndCallCommentsPopUp(statusType: any) {
     this.isApproveOrRejectStatus = statusType;
     this.showCommentsPopUp = true;
   }
@@ -497,14 +507,14 @@ export class ManageApprovalComponent implements OnInit {
   }
 
   download(asset: any) {
-		this.showPdfModalPopup = true;
-		this.asset = asset;
-	}
+    this.showPdfModalPopup = true;
+    this.asset = asset;
+  }
 
-	downloadPopupEventEmitter() {
-		this.showPdfModalPopup = false;
-		this.asset = {};
-	}
+  downloadPopupEventEmitter() {
+    this.showPdfModalPopup = false;
+    this.asset = {};
+  }
 
   confirmDelete(item: any) {
     if (item.type == 'Asset') {
@@ -691,12 +701,12 @@ export class ManageApprovalComponent implements OnInit {
     this.selectedOption = false;
   }
 
-  viewAnalytics(item :any){
-    if(item.type === 'Asset'){
+  viewAnalytics(item: any) {
+    if (item.type === 'Asset') {
       this.handleAssetAnalytics(item);
-    }else if(item.type === 'Track'){
+    } else if (item.type === 'Track') {
       this.handleTracksAnalytics(item);
-    }else if(item.type === 'PlayBook'){
+    } else if (item.type === 'PlayBook') {
       this.handlePlayBooksAnalytics(item);
     }
   }
@@ -724,15 +734,7 @@ export class ManageApprovalComponent implements OnInit {
 
 
   clickFilter() {
-    if (!this.filterApplied) {
-      this.showFilterOption = !this.showFilterOption;
-    } else {
-      if (this.showFilterOption) {
-        this.showFilterOption = false;
-      } else {
-        this.showFilterDropDown = true;
-      }
-    }
+    this.showFilterOption = true;
     this.filterResponse.isVisible = false;
   }
 
@@ -741,59 +743,28 @@ export class ManageApprovalComponent implements OnInit {
     this.showFilterDropDown = false;
   }
 
-  clearFilter() {
-    this.showFilterDropDown = false;
-    this.filterActiveBg = 'defaultFilterACtiveBg';
-    this.filterApplied = false;
-    this.showFilterOption = false;
-    this.fromDateFilter = "";
-    this.toDateFilter = "";
-    this.fromDateFilterString = "";
-    this.toDateFilterString = "";
-    this.filterResponse.isVisible = false;
-    this.pagination.pageIndex = 1;
-    this.getAllApprovalList(this.pagination);
-  }
-
-  validateDateFilter() {
-    let isValidFromDateFilter = this.fromDateFilterString != undefined && this.fromDateFilterString != "";
-    let isEmptyFromDateFilter = this.fromDateFilterString == undefined || this.fromDateFilterString == "";
-    let isValidToDateFilter = this.toDateFilterString != undefined && this.toDateFilterString != "";
-    let isEmptyToDateFilter = this.toDateFilterString == undefined || this.toDateFilterString == "";
-    if (isEmptyFromDateFilter && isEmptyToDateFilter) {
-      this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+  clearFilter(event: any) {
+    if (event === 'close') {
+      this.showFilterOption = false;
     } else {
-      let validDates = false;
-      if (isValidFromDateFilter && isEmptyToDateFilter) {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-      } else {
-        var toDate = Date.parse(this.toDateFilterString);
-        var fromDate = Date.parse(this.fromDateFilterString);
-        if (fromDate <= toDate) {
-          validDates = true;
-        } else {
-          this.filterResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
-        }
-      }
-
-      if (validDates) {
-        this.applyFilters();
-      }
+      this.showFilterOption = true
     }
-  }
-
-  applyFilters() {
-    this.filterApplied = true;
-    this.showFilterOption = false;
-    this.filterActiveBg = 'filterActiveBg';
-    this.fromDateFilter = this.fromDateFilterString;
-    this.toDateFilter = this.toDateFilterString;
-    this.pagination.pageIndex = 1;
-    this.pagination.maxResults = 12;
+    this.clearFilterOptions();
     this.getAllApprovalList(this.pagination);
   }
+
+  clearFilterOptions() {
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.criteria = new Criteria();
+    this.pagination.fromDateFilterString = "";
+    this.pagination.toDateFilterString = "";
+    this.pagination.customFilterOption = false;
+    this.sortOption.searchKey = '';
+    this.pagination.searchKey = this.sortOption.searchKey;
+    this.pagination.criterias = null;
+    this.pagination.pageIndex = 1;
+  }
+
 
   closeFilterOption() {
     this.showFilterOption = false;
@@ -833,5 +804,60 @@ export class ManageApprovalComponent implements OnInit {
     this.pagination = this.utilService.sortOptionValues(this.sortOption.approvalHubSortOption, this.pagination);
     this.getAllApprovalList(this.pagination);
   }
+
+  applyFilter(event: any) {
+    let input = event;
+    this.pagination.fromDateFilterString = input['fromDate'];
+    this.pagination.toDateFilterString = input['toDate'];
+    this.pagination.timeZone = input['zone'];
+    this.pagination.criterias = input['criterias'];
+    this.pagination.dateFilterOpionEnable = input['isDateFilter'];
+    this.pagination.filterOptionEnable = input['isCriteriasFilter'];
+    this.pagination.customFilterOption = true;
+    this.pagination.pageIndex = 1;
+    this.filterApplied = true;
+    this.filterActiveBg = 'filterActiveBg';
+    this.getAllApprovalList(this.pagination);
+  }
+
+  getCompanyId() {
+    if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+        (result: any) => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (result !== "") {
+            this.loggedInUserCompanyId = result;
+          } else {
+            this.referenceService.showSweetAlertErrorMessage('Company Id Not Found.Please try aftersometime');
+            this.router.navigate(["/home/dashboard"]);
+          }
+        }, (error: any) => {
+          this.referenceService.showServerError(this.httpRequestLoader);
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        },
+        () => {
+          if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
+            this.pagination.companyId = this.loggedInUserCompanyId;
+            this.findFileTypes();
+            this.getAllApprovalList(this.pagination);
+          }
+        }
+      );
+    } else {
+      this.referenceService.showSweetAlertErrorMessage('UserId Not Found.Please try aftersometime');
+      this.router.navigate(["/home/dashboard"]);
+    }
+  }
+
+  findFileTypes() {
+    this.approveService.getFileTypes(this.loggedInUserCompanyId, this.categoryId).subscribe(
+      response => {
+        this.fileTypes = response.data;
+      }, error => {
+        this.fileTypes = [];
+      });
+  }
+
 
 }

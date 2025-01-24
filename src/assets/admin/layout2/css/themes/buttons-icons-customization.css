@@ -42,7 +42,8 @@ button.button_blue.bgcolor-unset:hover, label.btn.Btn-Green.mBtnAlign.button-bor
   color:  var(--custom-text-color) !important;
   box-shadow: none !important;
 }
-span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition {
+span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition,
+.button_blue.lead_copy_id_btn_blue {
   border: none !important;
 }
 .Btn-Green {

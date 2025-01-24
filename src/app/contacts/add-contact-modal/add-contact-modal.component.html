@@ -150,8 +150,8 @@
                 <div class="form-group mrg0" *ngIf="authenticationService.contactsCount">
                   <label class="control-label col-xs-2 col-sm-2" for="company"
                     style="color: #00bcd4; right: 11px !important">
-                    <span class="star"> *</span>
-                  </label>
+                    <span class="star">  </span>
+                  </label> 
                   <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
                     <input type="number" min="0" style="border: none !important"
                       class="form-control padding-mobile placeholder-bg-color" id="contactsLimit"
@@ -395,7 +395,7 @@
           [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
           ||addContactuser.contactCompany == ''" (click)="addEditContactRow()" translate><span
             class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
-        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset" [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid ||  !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
+        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset" [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
           ||addContactuser.contactCompany == ''" (click)="updateUser()" translate><span
             class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>

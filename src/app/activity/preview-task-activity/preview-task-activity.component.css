@@ -88,8 +88,9 @@
 }
 
 .img_wdt {
-    width: 100%;
+    width: 50px;
     border-radius: 50%;
+    height: 50px;
 }
 
 .avatar2_v2 {
