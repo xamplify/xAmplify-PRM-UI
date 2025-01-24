@@ -141,7 +141,7 @@ export class ManageDealsComponent implements OnInit {
         this.vanityLoginDto.vanityUrlFilter = false;
       }
     let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-    if (filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
+    if (filterPartner!=null && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
       this.selectedFilterIndex = 0;
     }else{
       this.selectedFilterIndex = 1;
