@@ -18,6 +18,12 @@
                            (input)="validateForm()" class="form-control"  [disabled]="vanityTemplatesPartnerAnalytics">
                         <span class="required" *ngIf="!isValidEmailFormat">Please enter a valid email address</span>
                      </div>
+                     <!--XNFR-832-->
+                     <div class="form-group" *ngIf="isSendMdfRequestOptionClicked">
+                        <label>Recipient Name</label>
+                        <input type="text" autocomplete="off" placeholder="Please Enter Recipient Name (Optional)"
+                           [(ngModel)]="sendTestEmailDto.recipientName" [ngModelOptions]="{standalone: true}" class="form-control">
+                     </div>
                      <div class="form-group">
                         <label>Email Subject<span class="required">*</span></label>
                         <input type="text" autocomplete="off" [(ngModel)]="sendTestEmailDto.subject"
@@ -28,7 +34,7 @@
                         <label>Email Body</label>
                      </div>
                   </div>
-                  <ng-container *ngIf="!vanityTemplatesPartnerAnalytics">
+                  <ng-container *ngIf="!vanityTemplatesPartnerAnalytics && !isSendMdfRequestOptionClicked">
                      <p>Please <a (click)="previewEmailTemplate()">click here</a> to view in the browser</p>
                   </ng-container>
                   <div id="sendTestEmailHtmlBody" class="plspx"></div>

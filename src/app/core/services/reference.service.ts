@@ -3973,14 +3973,18 @@ getFirstLetter(inputString:any) {
   }
 
 
-  replaceCampaignMDFFundingTemplateMergeTags(campaignName: string,receiverFirstName:string,updatedBody: string) {
+  replaceCampaignMDFFundingTemplateMergeTags(campaignName: string,recipientName:string,updatedBody: string) {
     if (campaignName != undefined) {
        updatedBody = updatedBody.replace(this.senderMergeTag.campaignNameGlobal,campaignName);
     }
-    if(receiverFirstName!=undefined){
-      updatedBody = updatedBody.replace(this.senderMergeTag.firstNameGlobal,receiverFirstName);
+    if(this.isValidString(recipientName)){
+      updatedBody = updatedBody.replace(this.senderMergeTag.recipientNameGlobal,recipientName);
     }
     return updatedBody;
+  }
+
+  isValidString(input:string){
+    return input!=undefined && $.trim(input).length>0 && $.trim(input)!="";
   }
   
 }

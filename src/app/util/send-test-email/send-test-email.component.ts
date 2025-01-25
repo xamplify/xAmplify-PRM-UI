@@ -47,6 +47,7 @@ export class SendTestEmailComponent implements OnInit {
   /**XNFR-832***/
   @Input() moduleName = "";
   @Input() campaignName="";
+  isSendMdfRequestOptionClicked = false;
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
@@ -55,11 +56,13 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto.subject = this.subject;
     this.sendTestEmailDto.fromEmail = this.fromEmail;
     this.sendTestEmailDto.fromName = this.fromName;
+    this.isSendMdfRequestOptionClicked = XAMPLIFY_CONSTANTS.unlockMdfFunding==this.moduleName;
     this.referenceService.openModalPopup(this.modalPopupId);
     $('#sendTestEmailHtmlBody').val('');
     if(this.vanityTemplatesPartnerAnalytics){
       this.getVanityEmailTemplatesPartnerAnalytics();
-    }else if(XAMPLIFY_CONSTANTS.unlockMdfFunding==this.moduleName){
+    }else if(this.isSendMdfRequestOptionClicked){
+      this.headerTitle = "Unlock MDF Funds for Your Campaign";
       this.getFundingTemplateHtmlBody();
     }else{
       this.getTemplateHtmlBodyAndMergeTagsInfo();
@@ -76,7 +79,7 @@ export class SendTestEmailComponent implements OnInit {
         if(statusCode==200){
           let data = response.data;
           let body = data.body;
-          body = this.referenceService.replaceCampaignMDFFundingTemplateMergeTags(this.campaignName,this.sendTestEmailDto.firstName,body);
+          body = this.referenceService.replaceCampaignMDFFundingTemplateMergeTags(this.campaignName,this.sendTestEmailDto.recipientName,body);
           this.sendTestEmailDto.body = body;
           $('#sendTestEmailHtmlBody').append(body);
           $('tbody').addClass('preview-shown');

@@ -70,6 +70,7 @@ export class SenderMergeTag {
     campaignName = "{{campaignName}}";
     campaignNameGlobal = /{{campaignName}}/g;
 
-    firstName = "{{firstName}}";
-    firstNameGlobal = /{{firstName}}/g;
+    recipientName = "{{recipientName}}";
+    recipientNameGlobal = /{{recipientName}}/g;
+    /**XNFR-832**/
 }
