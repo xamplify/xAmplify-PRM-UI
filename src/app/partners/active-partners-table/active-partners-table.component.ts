@@ -57,7 +57,8 @@ export class ActivePartnersTableComponent implements OnInit {
   }
 
   ngOnChanges(){
-    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;   
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;  
+    this.sortOption.searchKey = "";/*** XNFR-835 ***/
     this.getActivePartners(this.pagination);
     this.findCompanyNames();
     this.setFilterColor();
@@ -95,7 +96,7 @@ export class ActivePartnersTableComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
-    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOptionForPartnerJourney, pagination);
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOptionForPartnerJourney, pagination);
     this.getActivePartners(this.pagination);
   }
 
@@ -245,5 +246,9 @@ export class ActivePartnersTableComponent implements OnInit {
       this.isCollapsed = false;
     }
   }
-
+/*** XNFR-835 ***/
+  downloadActivePatnerReport() {
+    this.referenseService.downloadPartnesReports(this.loggedInUserId,this.selectedPartnerCompanyIds,this.pagination,this.applyFilter,this.fromDateFilter,this.toDateFilter,"active-partners-report")
+  }
+/*** XNFR-835 ***/
 }

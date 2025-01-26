@@ -12,6 +12,7 @@ import { UtilService } from 'app/core/services/util.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ParterService } from "app/partners/services/parter.service";
 import { UserService } from "app/core/services/user.service";
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { TracksPlayBook } from '../models/tracks-play-book'
 
 declare var $: any, swal: any;
@@ -79,6 +80,12 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 			this.pagination.type = this.moduleName;
 			this.partnerGroupsPagination.type = this.moduleName;
 			this.teamMembersPagination.type = this.moduleName;
+			let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+			if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')) {
+				this.pagination.partnerTeamMemberGroupFilter = false;
+			} else {
+				this.pagination.partnerTeamMemberGroupFilter = true;
+			}
 			if(this.inputId != undefined && this.inputId > 0){
 				this.isAdd = false;
 				this.pagination.learningTrackId = this.inputId;
@@ -88,7 +95,7 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 				if(isPartnerCompanySelected){
 					$('#partners-li').addClass('active');
 					$('#partners').addClass('tab-pane fade in active');
-					this.pagination.partnerTeamMemberGroupFilter = true;
+					// this.pagination.partnerTeamMemberGroupFilter = true;
 			        this.findPartnerCompanies(this.pagination);
 				}else{
 					$('#partnerGroups-li').addClass('active');
@@ -100,7 +107,7 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 				this.isAdd = true;
 				$('#partners-li').addClass('active');
 				$('#partners').addClass('tab-pane fade in active');
-				this.pagination.partnerTeamMemberGroupFilter = true;
+				// this.pagination.partnerTeamMemberGroupFilter = true;
 			    this.findPartnerCompanies(this.pagination);
 			}
 			

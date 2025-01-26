@@ -620,7 +620,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.parterService.sendPartnerReminderEmail(user, this.loggedInUserId).subscribe(
             (response: any) => {
                 if (response.statusCode == 2017) {
-                    this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
                     const partnerIndex = this.allItems.findIndex(p => p.partnerId === item.partnerId);
                     if (partnerIndex !== -1) {
                         this.allItems[partnerIndex].isSelected = false;
@@ -1285,7 +1284,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             .filter(partner => partner && !partner.isActive && partner.emailId);
 
         const emailIds = selectedPartners.map(partner => partner.emailId);
-        const emailIdsString = emailIds.join('  ');
+        const emailIdsString = emailIds.join(', ');
 
         this.modelPopUpMultipleSelectedEmails(emailIdsString);
     }
@@ -1369,6 +1368,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             } else {
                 this.sendPartnerReminder(event);
             }
+            this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
         } else {
             this.sendmail(event);
         }
@@ -1392,4 +1392,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.totalPartnersCountLoader = false;
             });
     }
+    /**  XNFR-835 **/
+    downloadInActivePartnersReport() {
+        this.referenseService.downloadPartnesReports(this.loggedInUserId, this.selectedPartnerCompanyIds, this.inActivePartnersPagination, this.applyFilter, this.fromDateFilter, this.toDateFilter, "inactive-partners-report")
+    }
+    downloadIncompleteCompanyProfilePartnersReport() {
+        this.referenseService.downloadPartnesReports(this.loggedInUserId, this.selectedPartnerCompanyIds, this.incompleteCompanyProfileAndPendingSingupPagination, this.applyFilter, this.fromDateFilter, this.toDateFilter, "company-profile-incomplete-partners-report")
+    }
+    /**  XNFR-835 **/
 }

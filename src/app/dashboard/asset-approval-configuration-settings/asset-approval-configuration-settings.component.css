@@ -1,0 +1,10 @@
+.ui-switch-alignment{
+    padding-left:20px;
+    width:20%;
+}
+
+@media only screen and (max-width: 578px) {
+    .ui-switch-alignment{
+        padding-left: 0px !important;
+    }
+}
