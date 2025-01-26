@@ -25,6 +25,8 @@ import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 import { DamPostDto } from '../models/dam-post-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { SignatureService } from 'app/dashboard/services/signature.service';
+import { SignatureResponseDto } from 'app/dashboard/models/signature-response-dto';
 
 
 
@@ -146,10 +148,15 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     showEditPdfButton = false;
     beeContainerInput = {};
     isBeeTemplateComponentCalled = false;
+    openDigitalSignatureModelPopup: boolean = false;
+    signatureResponseDto:SignatureResponseDto = new SignatureResponseDto();
+    openSelectDigitalSignatureModalPopUp: boolean = false;
+    fileType: any;
+    isVendorSignatureToggleClicked: boolean = false;
     
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
-	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch){
+	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch, public signatureService:SignatureService){
         this.isFileDrop = false;
         this.loading = false;
         this.saveVideo = false;
@@ -328,6 +335,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.uploadedAssetName = "";
         this.uploadedCloudAssetName = "";
         this.damUploadPostDto.source = "";
+        this.fileType = file['type'];
         this.customResponse = new CustomResponse();
         this.formData.append("uploadedFile", file, file['name']);
         this.uploadedAssetName = file['name'];
@@ -467,8 +475,14 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if(this.isAdd){
 			let uploadedAssetValue = $('#uploadedAsset').val();
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 );
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath){
+            this.isValidForm = false;
+            }
 		}else{
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
+            if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && !this.damUploadPostDto.vendorSignatureCompleted){
+                this.isValidForm = false;
+                }
 		}
 	}
 
@@ -1435,4 +1449,54 @@ zoomOut() {
         let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
         this.referenceService.goToRouter(url);
     }
+
+     /****XNFR-586****/
+     setPartnerSignatureRequired(event){
+        this.damUploadPostDto.partnerSignatureRequired = event;
+    }
+
+    setVendorSignatureRequired(event){
+        this.damUploadPostDto.vendorSignatureRequired = event;
+        this.isVendorSignatureToggleClicked = true;
+        this.validateAllFields();
+    }
+
+    openAddSignatureModalPopUp() {
+        this.loading = true;
+		this.signatureService.getExistingSignatures().subscribe(
+			response => {
+				let data = response.data;
+                this.loading = false;
+				if (data != undefined) {
+					this.signatureResponseDto = data;
+					if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
+						this.openSelectDigitalSignatureModalPopUp = true;
+					} else {
+						this.openDigitalSignatureModelPopup = true;
+					}
+				} else {
+					this.openDigitalSignatureModelPopup = true;
+				}
+			}, error => {
+                this.loading = false;
+			});
+	}
+
+    notifySelectDigitalSignatureCloseModalPopUp(event){
+		if(event == 'close'){
+			this.openSelectDigitalSignatureModalPopUp = false;
+		}
+	}
+
+	notifyDigitalSignatureCloseModalPopUp(event){
+		if(event == 'close'){
+			this.openDigitalSignatureModelPopup = false;
+		}
+	}
+
+	notifySignatureSelection(event){
+        this.damUploadPostDto.selectedSignatureImagePath = event;
+        this.validateAllFields();
+	}
+
 }

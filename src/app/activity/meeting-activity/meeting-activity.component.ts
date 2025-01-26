@@ -174,7 +174,7 @@ export class MeetingActivityComponent implements OnInit {
     if (this.referenceService.checkIsValidString(this.calendarType)) {
       this.setMeetingActivitiesPage(1);
     } else {
-      this.customResponse = new CustomResponse('ERROR',"Please configure with atleast one calendar integration.",true);
+      this.showConfigureMessage = true;
     }
 	}
 

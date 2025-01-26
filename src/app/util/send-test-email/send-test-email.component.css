@@ -68,3 +68,8 @@ input {
         width: 850px !important;
     }
 }
+.email_textarea {
+    min-height: 34px;
+    max-height: 60px;
+    field-sizing: content;
+}

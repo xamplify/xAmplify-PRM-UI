@@ -1,4 +1,7 @@
+import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
+
 export class AssetDetailsViewDto {
+    id:number;
     assetName = "";
     description = "";
     alias = "";
@@ -6,4 +9,10 @@ export class AssetDetailsViewDto {
     publishedTimeInUTCString = "";
     thumbnailPath = "";
     damId:number;
+    loggedInUserId: number;
+    partnerSignatureRequired: boolean = false;
+    geoLocationDetails:GeoLocationAnalytics = new GeoLocationAnalytics();
+    partnerSignatureCompleted: boolean = false;
+    selectedSignaturePath: any;
+    vendorSignatureCompleted: boolean = false;
 }

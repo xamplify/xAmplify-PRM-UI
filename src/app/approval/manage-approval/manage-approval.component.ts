@@ -44,7 +44,7 @@ export class ManageApprovalComponent implements OnInit {
   assetCreatedById: any;
   assetCreatedByFullName: any;
   selectedDamId: any;
-  createdByAnyAdmin: any;
+  createdByAnyApprovalManagerOrApprover: any = false;
   @ViewChild(ContentModuleStatusAnalyticsComponent) contentModuleStatusAnalyticsComponent: ContentModuleStatusAnalyticsComponent;
   @ViewChild(ManageTracksPlayBookComponent) manageTracksPlayBookComponent: ManageTracksPlayBookComponent;
   searchKey: any;
@@ -180,6 +180,8 @@ export class ManageApprovalComponent implements OnInit {
 
   filterByType(type: string, index: number) {
     this.selectedTypeIndex = index;
+    this.showFilterOption = false;
+    this.clearFilterOptions();
     this.isAssetTabSelected = false;
     if (type === 'ASSETS') {
       this.isAssetTabSelected = true;
@@ -261,7 +263,7 @@ export class ManageApprovalComponent implements OnInit {
       this.assetName = item.name;
       this.assetCreatedById = item.createdById;
       this.assetCreatedByFullName = item.createdBy;
-      this.createdByAnyAdmin = item.createdByAnyAdmin;
+      this.createdByAnyApprovalManagerOrApprover = item.createdByAnyApprovalManagerOrApprover;
       this.selectedDamId = item.id;
       this.moduleType = 'DAM';
     }
@@ -270,7 +272,7 @@ export class ManageApprovalComponent implements OnInit {
       this.assetName = item.name;
       this.assetCreatedById = item.createdById;
       this.assetCreatedByFullName = item.createdBy;
-      this.createdByAnyAdmin = item.createdByAnyAdmin;
+      this.createdByAnyApprovalManagerOrApprover = item.createdByAnyApprovalManagerOrApprover;
       this.selectedDamId = item.id;
       this.moduleType = 'TRACK';
     }
@@ -279,7 +281,7 @@ export class ManageApprovalComponent implements OnInit {
       this.assetName = item.name;
       this.assetCreatedById = item.createdById;
       this.assetCreatedByFullName = item.createdBy;
-      this.createdByAnyAdmin = item.createdByAnyAdmin;
+      this.createdByAnyApprovalManagerOrApprover = item.createdByAnyApprovalManagerOrApprover;
       this.selectedDamId = item.id;
       this.moduleType = 'PLAYBOOK';
     }
@@ -367,6 +369,7 @@ export class ManageApprovalComponent implements OnInit {
         });
       });
       this.selectedIds = this.referenceService.removeDuplicates(this.selectedIds);
+      this.selectedPendingIds = this.referenceService.removeDuplicates(this.selectedPendingIds);
       this.showApproveAndRejectButton();
     } else {
       $('[name="pendingList[]"]').prop('checked', false);
@@ -817,6 +820,8 @@ export class ManageApprovalComponent implements OnInit {
     this.pagination.pageIndex = 1;
     this.filterApplied = true;
     this.filterActiveBg = 'filterActiveBg';
+    this.clearSelectedIems();
+    this.displayApproveAndRejectButton = false;
     this.getAllApprovalList(this.pagination);
   }
 
@@ -858,6 +863,15 @@ export class ManageApprovalComponent implements OnInit {
         this.fileTypes = [];
       });
   }
+
+  clearSelectedIems() {
+    this.selectedDamIds = [];
+    this.selectedPlayBookIds = [];
+    this.selectedTrackIds = [];
+    this.selectedPendingIds = [];
+    this.selectedIds = [];
+  }
+
 
 
 }

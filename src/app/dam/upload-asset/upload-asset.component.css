@@ -195,3 +195,13 @@ border-radius: 4px;
       height: auto !important;
     }
 }
+
+.choose-signature-text {
+  color: #007bff;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.choose-signature-text:hover {
+  color: #0056b3;
+}

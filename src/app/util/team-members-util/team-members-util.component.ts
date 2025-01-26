@@ -153,6 +153,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   inviteTeamMemberLoading = false;
   inviteTeamMemberHtmlBody: any;
   inviteTeamMemberResponse: CustomResponse = new CustomResponse();
+  tableHeader: string = "";
   /***** XNFR-805 *****/
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
@@ -1381,6 +1382,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.inviteTeamMemberLoading = true;
     this.emailIds = [];
     this.vendorInvitation.emailIds = [];
+    this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify';
     this.teamMemberService.getHtmlBody().subscribe(
       response => {
         if (response.statusCode === 200) {
