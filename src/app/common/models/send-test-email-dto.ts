@@ -9,4 +9,6 @@ export class SendTestEmailDto {
   preHeader = "";
   emailCampaign = false;
   recipientName = "";
+  campaignId = 0;
+  loggedInUserId = 0;
 }

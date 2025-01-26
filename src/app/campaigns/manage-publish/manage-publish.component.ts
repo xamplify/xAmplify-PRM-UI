@@ -140,6 +140,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     sendMdfRequestButtonClicked = false;
     unlockMdfFundingModuleName = XAMPLIFY_CONSTANTS.unlockMdfFunding;
     campaignName = "";
+    campaignId: number;
+    /*XNFR-832*/
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -1955,10 +1957,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     openMdfRequestModal(campaign:any){
         this.sendMdfRequestButtonClicked = true;
         this.campaignName = campaign.campaignName;
+        this.campaignId = campaign.campaignId;
     }
     sendTestEmailModalPopupEventReceiver(){
         this.sendMdfRequestButtonClicked = false;
         this.campaignName = "";
+        this.campaignId = 0;
     }
     /**XNFR-832***/
 

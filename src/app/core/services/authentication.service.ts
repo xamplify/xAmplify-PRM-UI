@@ -36,8 +36,7 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Injectable()
 export class AuthenticationService {
- 
-
+  
 
   access_token: string;
   refresh_token: string;
@@ -1527,8 +1526,17 @@ vanityWelcomePageRequired(userId) {
 
   }
 
+  /***XNFR-832***/
   getFundingTemplateHtmlBody() {
     let url = this.REST_URL + 'v_url/unlockMdfFundingTemplate/' + this.getUserId()+"/htmlBody?access_token="+this.access_token;
     return this.callGetMethod(url);
   }
+
+  /***XNFR-832***/
+  sendMdfFundRequestEmail(sendTestEmailDto: SendTestEmailDto) {
+    sendTestEmailDto.loggedInUserId = this.getUserId();
+    let url = this.REST_URL + 'campaign/mdf-request-email?access_token='+this.access_token;
+    return this.callPostMethod(url,sendTestEmailDto);
+  }
+
 }

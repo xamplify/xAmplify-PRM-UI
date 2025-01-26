@@ -47,6 +47,7 @@ export class SendTestEmailComponent implements OnInit {
   /**XNFR-832***/
   @Input() moduleName = "";
   @Input() campaignName="";
+  @Input() campaignId = 0;
   isSendMdfRequestOptionClicked = false;
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
@@ -81,6 +82,8 @@ export class SendTestEmailComponent implements OnInit {
           let body = data.body;
           body = this.referenceService.replaceCampaignMDFFundingTemplateMergeTags(this.campaignName,this.sendTestEmailDto.recipientName,body);
           this.sendTestEmailDto.body = body;
+          this.sendTestEmailDto.subject = data.subject;
+          this.sendTestEmailDto.campaignId = this.campaignId;
           $('#sendTestEmailHtmlBody').append(body);
           $('tbody').addClass('preview-shown');
           this.processing = false;
@@ -96,7 +99,6 @@ export class SendTestEmailComponent implements OnInit {
       }
     );
   }
-
 
   validateForm() {
     let email = $.trim(this.sendTestEmailDto.toEmail);
@@ -204,23 +206,42 @@ export class SendTestEmailComponent implements OnInit {
 
   send() {
     this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
-    this.validateForm();
-    if (this.isValidForm) {
-      if(this.vanityTemplatesPartnerAnalytics){
-        this.sendmailNotify.emit({'item' : this.selectedItem });
-        this.callEventEmitter();
-      }else{
-        if (this.campaignSendTestEmail) {
-          this.sendCampaignTestEmail();
-        } 
-        else {
-          this.sendTestEmail();
-        }
-      }
-    } else {
+    if (!this.isValidForm) {
       this.showErrorMessage("Please provide valid inputs.");
+      this.referenceService.closeSweetAlert();
+      return;
+    }
+    
+    if (this.vanityTemplatesPartnerAnalytics) {
+      this.sendmailNotify.emit({ 'item': this.selectedItem });
+      this.callEventEmitter();
+      return;
+    }
+    
+    if (this.isSendMdfRequestOptionClicked) {
+      this.sendMdfFundRequestEmail();
+    }
+    
+    if (this.campaignSendTestEmail) {
+      this.sendCampaignTestEmail();
+    } else {
+      this.sendTestEmail();
     }
   }
+
+
+  /***XNFR-832****/
+  sendMdfFundRequestEmail() {
+    this.authenticationService.sendMdfFundRequestEmail(this.sendTestEmailDto).subscribe(
+      response => {
+        this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.callEventEmitter();
+      }, error => {
+        this.showErrorMessage("Unable to send test email.Please try after some time.");
+      });
+  }
+
+  /***XNFR-832****/
 
   private sendCampaignTestEmail() {
     let data: Object = {};
