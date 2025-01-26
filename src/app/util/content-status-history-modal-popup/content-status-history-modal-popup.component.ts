@@ -62,6 +62,8 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   createrControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
   canApprove: boolean = false;
   createdByAnyApprover: boolean = false;
+  successMessage: string = 'Status Updated Successfully';
+  disableReminder: boolean = false;
 
   constructor( private referenceService: ReferenceService,
       public authenticationService: AuthenticationService,
@@ -198,6 +200,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentModalPopUpLoader = false;
         if (response.statusCode === 200 && response.data != undefined) {
           this.isStatusUpdated = response.data;
+          this.successMessage = 'Status Updated Successfully';
         } else if (response.statusCode === 401 && response.data != undefined) {
           let message = this.referenceService.iterateNamesAndGetErrorMessage(response);
           this.commentsCustomResponse = new CustomResponse('ERROR', message, true);
@@ -208,7 +211,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentDto.invalidComment = true;
         this.commentDto.statusUpdated = false;
         this.refreshModalPopUp();
-        this.showStatusUpdatedMessage();
+        this.removeSuccessMessage();
       },error=>{
         this.isStatusUpdated = false;
         this.commentModalPopUpLoader = false;
@@ -262,7 +265,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     }
   }
 
-  showStatusUpdatedMessage() {
+  removeSuccessMessage() {
     setTimeout(() => {
       this.isStatusUpdated = false;
     }, 3000)
@@ -307,23 +310,28 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
 
   sendReminderToApprovers() {
-    this.historyPopUpLoader = true;
+    this.commentModalPopUpLoader = true;
     this.approveService.sendReminderToApprovers(this.entityId, this.moduleType).subscribe(
       (response: any) =>{
         if (response.statusCode === 200) {
-          
-        } else if (response.statusCode === 200) { 
-
+          this.successMessage = 'Reminder email sent successfully';
+          this.isStatusUpdated = true;
+          this.removeSuccessMessage();
+          this.disableReminder = true;
+        } else if (response.statusCode === 400) { 
+          this.isStatusUpdated = false;
+          this.commentsCustomResponse = new CustomResponse('ERROR', response.message, true);
         } else {
-
+          this.isStatusUpdated = false;
+          this.commentsCustomResponse = new CustomResponse('ERROR', response.message, true);
         }
-        this.historyPopUpLoader = false;
+        this.commentModalPopUpLoader = false;
       }, error => {
-        this.historyPopUpLoader = false;
+        this.isStatusUpdated = false;
         this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.commentModalPopUpLoader = false;
       }, () => {
-        this.historyPopUpLoader = false;
-
+        this.commentModalPopUpLoader = false;
       }
     );
   }
