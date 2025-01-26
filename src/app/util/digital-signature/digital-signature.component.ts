@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-digital-signature',
@@ -13,6 +13,10 @@ export class DigitalSignatureComponent implements OnInit {
   }
 
   @ViewChild("signatureCanvas") canvasRef: ElementRef;
+   @Output() notifyCloseModalPopUp= new EventEmitter();
+   @Output() notifyAddImageToPdf = new EventEmitter();
+   @Input() isFromDam = false;
+   
   showSignatureModal: boolean = true;
   activeTab: string = "draw";
   typedSignature: string = "";
@@ -114,6 +118,12 @@ export class DigitalSignatureComponent implements OnInit {
 
   closeModal() {
     this.showSignatureModal = false;
+    this.notifyCloseModalPopUp.emit("close");
+  }
+
+  notifyAddSignatureImageToPdf(event){
+  this.notifyAddImageToPdf.emit(event);
+  this.closeModal();
   }
 
 

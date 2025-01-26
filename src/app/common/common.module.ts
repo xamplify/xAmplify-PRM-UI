@@ -201,6 +201,7 @@ import { SignatureComponent } from 'app/util/signature/signature.component';
 import { UploadImageComponent } from 'app/util/upload-image/upload-image.component';
 import { MultiselectApprovalCommentsModalPopupComponent } from 'app/util/multiselect-approval-comments-modal-popup/multiselect-approval-comments-modal-popup.component';
 import { DateRangeDisplayComponent } from './date-range-display/date-range-display.component';
+import { SelectDigitalSignatureComponent } from 'app/util/select-digital-signature/select-digital-signature.component';
 
 
 
@@ -245,7 +246,7 @@ import { DateRangeDisplayComponent } from './date-range-display/date-range-displ
 		OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
-		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent
+		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent
 
 	],
 
@@ -286,7 +287,7 @@ import { DateRangeDisplayComponent } from './date-range-display/date-range-displ
 		OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
-		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent
+		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent
 
 
 	]

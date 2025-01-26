@@ -8,4 +8,6 @@ export class SignatureResponseDto {
 
     uploadedSignatureImagePath = "";
     uploadedSignatureExits = false;
+    typedSignatureImagePath = "";
+
 }
