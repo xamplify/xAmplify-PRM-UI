@@ -46,4 +46,5 @@ export class DamUploadPostDto {
     disableVendorSignatuerOption = false;
     vendorSignatureToolTipMessage = "";
     selectedSignatureImagePath = "";
+    vendorSignatureCompleted = false;
 }

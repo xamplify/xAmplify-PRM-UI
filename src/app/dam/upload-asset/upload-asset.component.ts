@@ -152,6 +152,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     signatureResponseDto:SignatureResponseDto = new SignatureResponseDto();
     openSelectDigitalSignatureModalPopUp: boolean = false;
     fileType: any;
+    isVendorSignatureToggleClicked: boolean = false;
     
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -479,6 +480,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             }
 		}else{
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
+            if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && !this.damUploadPostDto.vendorSignatureCompleted){
+                this.isValidForm = false;
+                }
 		}
 	}
 
@@ -1453,6 +1457,7 @@ zoomOut() {
 
     setVendorSignatureRequired(event){
         this.damUploadPostDto.vendorSignatureRequired = event;
+        this.isVendorSignatureToggleClicked = true;
         this.validateAllFields();
     }
 
