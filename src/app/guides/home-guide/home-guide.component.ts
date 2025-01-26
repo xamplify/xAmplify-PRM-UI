@@ -301,10 +301,13 @@ export class HomeGuideComponent implements OnInit {
 		this.loading = true;
 		this.userGudeTitles = [];
 		this.pagination.moduleName = moduleName;
+		this.pagination.pagedItems = [];
 		this.getGuideTitlesByModuleName(this.pagination);
 	}
+	titleLoadings:boolean = true;
    getGuideTitlesByModuleName(pagination:Pagination){
 	this.loading = true;
+	this.titleLoadings = true;
 	this.dashboardService.getUserGuidesByModuleName(pagination).subscribe(
 		(data) => {
 			if (data.statusCode === 200) {
@@ -314,12 +317,15 @@ export class HomeGuideComponent implements OnInit {
 				this.pager = this.socialPagerService.getPager(this.userGudeTitles.length, this.pagination.pageIndex, this.pagination.maxResults);
 				this.pagination.pagedItems = this.userGudeTitles.slice(this.pager.startIndex, this.pager.endIndex + 1);
 				this.loading = false;
+				this.titleLoadings = false;
 			} else {
 				this.statusCode = 400;
+				this.titleLoadings = false;
 				this.loading = false;
 			}
 		}, (error: any) => {
 			this.loading = false;
+			this.titleLoadings = false;
 		})
    }
 	getGuideLinkByTitle(title:any) {

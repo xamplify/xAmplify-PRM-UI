@@ -34,31 +34,9 @@
   <!--End Of Page-bar---->
 
   <!-- CSV Errors---->
-  <div class="alert alert-danger" id="csv-error-div" style="display: none;">
-    <button (click)="referenceService.hideDiv('csv-error-div')" type="button" class="close" aria-label="Close">
-      <span aria-hidden="true">x</span>
-    </button>
-    <div>
-      <table class="table table-bordered" aria-describedby="csv-error-messages-table">
-        <ng-container *ngFor="let error of csvErrors">
-          <tr class="upload_csv_validate">
-            <th class="align-bold" id="csverror-th">{{error}}</th>
-          </tr>
-        </ng-container>
-      </table>
-    </div>
-  </div>
+  <div *ngIf="csvErrors"><app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
+      [showCloseIcon]="true"></app-response-message><br></div>
   <!-- End Of CSV Errors---->
-
-  <div [@fadeInOut] *ngIf="customResponse.isVisible">
-    <div
-      [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
-      <button (click)="customResponse.isVisible=false" type="button" class="close of-this-component" aria-label="Close">
-        <span aria-hidden="true">x</span>
-      </button>
-      <strong [innerHTML]="customResponse.responseMessage"></strong>
-    </div>
-  </div>
 
   <!-- Team Member Domain Whitelisting #XNFR-549 -->
   <app-domain-whitelisting
@@ -93,7 +71,7 @@
                       <div class="hidden-xs pull-right downloadteam" style="padding:0px">
                         <button class=" btn btn-primary fileinput-button rounded-0 button position-relative"
                           [ngClass]=" !isCollapsed ?'team-member-icon' : 'team_downlaod'" [disabled]="isLoggedInAsTeamMember"
-                          [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''">
+                          [title]="isLoggedInAsTeamMember ? properties?.ADDING_TEAM_MEMBER_IS_NOT_ALLOWED:''"   style="border-radius: 7px 0px 0px 7px!important;">
                           Upload a CSV
                           <input *ngIf="!isLoggedInAsTeamMember" type="file" title="" class="file-upload" #fileImportInput
                             name="File Upload" id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
@@ -106,9 +84,7 @@
                         </button>
                       </div>
                     </ng-container>
-                    <ng-template
-                      *ngIf="(authenticationService?.companyProfileName && authenticationService?.module?.loggedInThroughVendorVanityUrl && !isLoggedInAsTeamMember)"
-                      [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
+                    <ng-template *ngIf="!isLoggedInAsTeamMember" [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
                   </section>
                 </div>
               </div>
@@ -1104,7 +1080,7 @@
         <div class="modal-header">
           <a class="close-circle" (click)="closeInviteTeamMemberModal()" data-dismiss="modal">
             <i class="fa fa-times"></i></a>
-          <h4 class="modal-title left" id="myModalLabel">{{properties?.inviteATeamMemberToJoinxAmplify + vendorCompanyProfileName}}</h4>
+          <h4 class="modal-title left" id="myModalLabel"> {{ tableHeader }} </h4>
         </div>
         <div class="modal-body">
           <app-modal-popup-loader *ngIf="inviteTeamMemberLoading"></app-modal-popup-loader>
@@ -1128,7 +1104,9 @@
             <div class="form-group">
               <label>Message <span class="required">*</span></label>
             </div>
-            <div id="inviteTeamMemberHtmlBody" class="plspx" style="pointer-events: none;"></div>
+            <div class="form-group">
+              <span [innerHTML]="inviteTeamMemberHtmlBody" class="plspx" style="pointer-events: none;"></span>
+            </div>
           </div>
         </div>
         <div class="modal-footer" style="border: none">

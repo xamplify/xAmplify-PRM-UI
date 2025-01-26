@@ -53,6 +53,7 @@ import { AddMeetingModalPopupComponent } from 'app/activity/add-meeting-modal-po
 import { MeetingActivityComponent } from 'app/activity/meeting-activity/meeting-activity.component';
 import { CalendarIntegrationModalPopupComponent } from 'app/activity/calendar-integration-modal-popup/calendar-integration-modal-popup.component';
 import { PreviewMeetingActivityComponent } from 'app/activity/preview-meeting-activity/preview-meeting-activity.component';
+import { EventCalendarComponent } from 'app/activity/event-calendar/event-calendar.component';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
@@ -65,7 +66,7 @@ import { PreviewMeetingActivityComponent } from 'app/activity/preview-meeting-ac
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
                 CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent,
-                AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent],
+                AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -75,7 +76,7 @@ import { PreviewMeetingActivityComponent } from 'app/activity/preview-meeting-ac
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent,
                 CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent, AddTaskModalPopupComponent, TaskActivityComponent,
-                PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent],
+                PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent],
         providers: [FormService],
 })
 

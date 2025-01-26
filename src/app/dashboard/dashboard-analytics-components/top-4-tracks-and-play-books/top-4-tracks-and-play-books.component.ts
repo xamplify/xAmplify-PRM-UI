@@ -44,7 +44,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   trackOrPlaybookCreatedByFullName: string = "";
   callCommentsComponent: boolean = false;
   entityId: number;
-  createdByAnyAdmin: boolean = false;
+  createdByAnyApprovalManagerOrApprover: boolean = false;
   fontAwesomeClassName: FontAwesomeClassName = new FontAwesomeClassName();
   approvalStatus = {
     APPROVED: 'APPROVED',
@@ -347,7 +347,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     this.trackOrPlaybookCreatedById = trackOrPlaybook.createdById;
     this.trackOrPlaybookCreatedByFullName = trackOrPlaybook.createdByName;
     this.entityId = trackOrPlaybook.id;
-    this.createdByAnyAdmin = trackOrPlaybook.createdByAnyAdmin;
+    this.createdByAnyApprovalManagerOrApprover = trackOrPlaybook.createdByAnyApprovalManagerOrApprover;
     this.videoId = trackOrPlaybook.videoId;
   }
 

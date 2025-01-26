@@ -51,7 +51,7 @@ export class Top4AssetsComponent implements OnInit {
   assetCreatedByFullName: string = "";
   callCommentsComponent: boolean = false;
   selectedDamId: number;
-  createdByAnyAdmin: boolean = false;
+  createdByAnyApprovalManagerOrApprover: boolean = false;
   fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
   approvalStatus = {
     APPROVED: 'APPROVED',
@@ -389,7 +389,7 @@ isVideo(filename: any) {
     this.assetCreatedById = asset.createdBy;
     this.assetCreatedByFullName = asset.fullName;
     this.selectedDamId = asset.id;
-    this.createdByAnyAdmin = asset.createdByAnyAdmin;
+    this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
     this.videoId = asset.videoId;
   }
 

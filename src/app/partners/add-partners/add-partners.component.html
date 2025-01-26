@@ -870,7 +870,7 @@
                             *ngIf="!referenceService.isMobileScreenSize()">
                             <!---XNFR-222-->
                             <app-team-member-filter-option *ngIf="showFilter"
-                                (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                                (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isPartnerModule] ="isPartner"></app-team-member-filter-option>
                             <div style="float: left; margin: 3px 10px;">
                                 <select class="form-control SeclectBoxPaddingsAbj search_sort_shadows"
                                     [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">

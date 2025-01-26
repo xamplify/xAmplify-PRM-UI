@@ -1004,15 +1004,14 @@
                         <div class="portlet-title border-none">
                            <div class="col-xs-12 center-block pt20 text-center">
                               <div class="mb_flex">
-                                 <button type="button" class="button bgcolor-unset"
+                                 <button type="button" class="btn btn-primary"
                                     [disabled]="!isCampaignDetailsFormValid"
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
-                                    style="width:10em"><span class="btn Btn-Green transition txt_pd-top3 prev-btn ">Send Test
-                                       Email</span></button>
-                                 <button type="button" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
+                                 >Send Test Email</button>
+                                 <button type="button" class="btn btn-primary"
                                     [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
-                                    style="width:10em" (click)="campaignLaunchForm.valid && isCampaignDetailsFormValid && launchCampaign()">
-                                    <span class="btn Btn-Green transition txt_pd-top3 mrg-left25">{{buttonName}}</span></button>
+                                     (click)="campaignLaunchForm.valid && isCampaignDetailsFormValid && launchCampaign()">
+                                    {{buttonName}}</button>
                               </div>
                            </div>
                         </div>
@@ -1032,7 +1031,9 @@
                </a>
             </div>
             <div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate" style="padding-top: 0px;">
+               <div class="overflow-scroll">
                <app-create-bee-template [partnerEmailTemplate]="campaign.emailTemplate"></app-create-bee-template>
+            </div>
             </div>
          </div>
       </div>

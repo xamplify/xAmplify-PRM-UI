@@ -1,18 +1,23 @@
 <div class="page-content">
    <div class="page-bar mb-height_auto" style="height: 48px;">
       <ul class="page-breadcrumb">
-         <li>
-            <i class="fa fa-home" aria-hidden="true"></i>
-            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li>
-            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><a translate (click)="goBack()">{{properties?.MANAGE_ASSETS}}</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
-         <li><a class="default-cursor">{{breadCrumb}}</a>
-         </li>
+        <li>
+          <i class="fa fa-home" aria-hidden="true"></i>
+          <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li *ngIf="!isFromApprovalModule">
+          <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li *ngIf="!isFromApprovalModule"><a translate (click)="goBack()">{{properties?.MANAGE_ASSETS}}</a> <i
+            class="fa fa-angle-right" aria-hidden="true"></i> </li>
+        <li *ngIf="isFromApprovalModule">
+          <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li><a class="default-cursor">{{breadCrumb}}</a>
+        </li>
       </ul>
       <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
          <i class="fa fa-times" aria-hidden="true"></i>

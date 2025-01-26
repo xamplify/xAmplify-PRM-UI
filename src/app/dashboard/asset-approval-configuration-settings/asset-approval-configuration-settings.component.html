@@ -10,8 +10,8 @@
       </div>
       <table class="table table-light" style="border:0px!important;background-color:transparent!important">
         <tbody class="remove_table_bg display-grid">
-          <tr class="col-md-12 col-lg-12">
-            <div class="flex row">
+          <tr class="col-md-12 col-lg-12 p0 col-sm-12 col-xs-12">
+            <div class="flex">
               <div style="width: 80%;">
                 <h5 class="f-w-600" id="text-color-my-profile" translate>
                   {{properties.ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1}}</h5>
@@ -24,7 +24,7 @@
                     value="">&nbsp; <span class="text-danger"><strong>* </strong></span> {{properties.ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2}}
                 </h5>
               </div>
-              <div style="padding-left:20px; width:20%;">
+              <div class="ui-switch-alignment">
                 <section>
                   <app-custom-ui-switch [customSwitch]="assetApprovalEnabledForCompany"
                    (customUiSwitchEventEmitter)="onToggleChange($event, 'DAM')"></app-custom-ui-switch>
@@ -44,8 +44,8 @@
       </div>
       <table class="table table-light" style="border:0px!important;background-color:transparent!important">
         <tbody class="remove_table_bg display-grid">
-          <tr class="col-md-12 col-lg-12">
-            <div class="flex row">
+          <tr class="col-md-12 col-lg-12 p0 col-sm-12 col-xs-12">
+            <div class="flex">
               <div style="width: 80%;">
                 <h5 class="f-w-600" id="text-color-my-profile" translate>
                   {{properties.TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1}}</h5>
@@ -59,7 +59,7 @@
                     {{properties.TRACKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2}}
                 </h5>
               </div>
-              <div style="padding-left:20px; width:20%;">
+              <div class="ui-switch-alignment">
                 <section>
                   <app-custom-ui-switch [customSwitch]="tracksApprovalEnabledForCompany"
                    (customUiSwitchEventEmitter)="onToggleChange($event, 'TRACKS')"></app-custom-ui-switch>
@@ -79,8 +79,8 @@
       </div>
       <table class="table table-light" style="border:0px!important;background-color:transparent!important">
         <tbody class="remove_table_bg display-grid">
-          <tr class="col-md-12 col-lg-12">
-            <div class="flex row">
+          <tr class="col-md-12 col-lg-12 p0 col-sm-12 col-xs-12">
+            <div class="flex">
               <div style="width: 80%;">
                 <h5 class="f-w-600" id="text-color-my-profile" translate>
                   {{properties.PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1}}</h5>
@@ -94,7 +94,7 @@
                     {{properties.PLAYBOOKS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2}}
                 </h5>
               </div>
-              <div style="padding-left:20px; width:20%;">
+              <div class="ui-switch-alignment">
                 <section>
                   <app-custom-ui-switch [customSwitch]="playbooksApprovalEnabledForCompany"
                    (customUiSwitchEventEmitter)="onToggleChange($event, 'PLAYBOOKS')"></app-custom-ui-switch>

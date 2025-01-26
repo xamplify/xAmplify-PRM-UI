@@ -16,22 +16,36 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   @Output() teamMemberFilterOptionEventEmitter = new EventEmitter();
   @Output() teamMemberFilterModalPopUpOptionEventEmitter = new EventEmitter();
   @Input() filterIcon = false;
+  @Input() isAssetOrLms = false;
   showFilterPopup = false;
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
   filterOption: boolean = false;
+  @Input() isPartnerModule: boolean = false;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.showPartnersFilterOption();
+    this.checkPartnerTeamMemberFilter();
     if (this.customSelectedIndex !== undefined && this.customSelectedIndex !== null) {
       this.selectedFilterIndex = this.customSelectedIndex;
     }
     this.resetTMSelectedFilterIndex.subscribe(response => {
         if (response) {
         	this.selectedFilterIndex = 1;
+        }else{
+          this.selectedFilterIndex = 0;
         }
       });
+  }
+
+  private checkPartnerTeamMemberFilter() {
+    if (this.isPartnerModule || this.isAssetOrLms) {
+      let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+      if (filterPartner !== null  && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
+        this.selectedFilterIndex = 0;
+      }
+    }
   }
 
   showPartnersFilterOption() {
@@ -76,7 +90,8 @@ export class TeamMemberFilterOptionComponent implements OnInit {
       response => {
         if (response.statusCode == 200) {
           console.log("updatedSucessfully");
-          (this.selectedFilterIndex == 0) ?  this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners,'false'): this.authenticationService.setLocalStorageItemByKeyAndValue(XAMPLIFY_CONSTANTS.filterPartners,'true');
+          const filterPartner :boolean = (this.selectedFilterIndex == 0) ? false : true;
+          localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, JSON.stringify(filterPartner));
         }
       }, _error => {
         console.log("error");

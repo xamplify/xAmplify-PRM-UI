@@ -56,6 +56,9 @@ export class AddDealComponent implements OnInit {
   @Input() public isFromContactAllDealsTab:boolean = false;
   @Output() notifyClose = new EventEmitter();
 
+  /**XNFR-836**/
+  @Input() public isFromEditContacts: boolean = false;
+
   preview = false;
   edit = false;
   loggedInUserId: number;
@@ -1929,7 +1932,9 @@ export class AddDealComponent implements OnInit {
   }
 
   goBackToManageContacts() {
-    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage);
+    let url = RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.manage;
+    url += this.isFromEditContacts ? '' : '/all';
+    this.referenceService.goToRouter(url);
   }
 
   goBackToEditContacts() {
@@ -1948,7 +1953,13 @@ export class AddDealComponent implements OnInit {
   goBackToContactDetailsPage() {
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.userListId);
 		let encodeUserId = this.referenceService.encodePathVariable(this.selectedContact.id);
-    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+    if (this.isFromCompanyModule) {
+       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+    } else {
+      let url = RouterUrlConstants.home+RouterUrlConstants.contacts;
+      url += this.isFromEditContacts ? RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId : RouterUrlConstants.manage+'/'+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId;
+      this.referenceService.goToRouter(url);
+    }
   }
 
   checkIfHasAcessForAddDeal() {

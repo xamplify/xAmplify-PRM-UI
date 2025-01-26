@@ -60,7 +60,7 @@ export class ShowHistoryComponent implements OnInit {
 	assetCreatedByFullName: string = "";
 	callCommentsComponent: boolean = false;
 	selectedDamId: number;
-	createdByAnyAdmin: boolean = false;
+	createdByAnyApprovalManagerOrApprover: boolean = false;
 	fontAwesomeClassName:FontAwesomeClassName = new FontAwesomeClassName();
 	approvalStatus = {
 		APPROVED: 'APPROVED',
@@ -490,7 +490,7 @@ export class ShowHistoryComponent implements OnInit {
 		this.assetCreatedById = asset.createdBy;
 		this.assetCreatedByFullName = asset.fullName;
 		this.selectedDamId = asset.id;
-		this.createdByAnyAdmin = asset.createdByAnyAdmin;
+		this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
 		this.videoId = asset.videoId;
 	}
 	

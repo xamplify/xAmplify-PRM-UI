@@ -32,7 +32,7 @@
             <a (click)="goBackToManageCompanies()">Manage Companies</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li *ngIf="isConvertingContactToLead">
+          <li *ngIf="isConvertingContactToLead && isFromEditContacts">
             <a (click)="goBackToEditContacts()">Edit Contacts</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
