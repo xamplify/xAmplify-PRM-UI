@@ -13,6 +13,7 @@ import { UserService } from "../../../app/core/services/user.service";
 import { ParterService } from "../../../app/partners/services/parter.service";
 import { ContactService } from '../../contacts/services/contact.service';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, swal: any;
 
 
@@ -29,6 +30,7 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     customResponse: CustomResponse = new CustomResponse();
 	@Input() companyId: any;
     @Input() inputId: any;
+    @Input() isShareLeadsModule = false;
     @Output() notifyOtherComponent = new EventEmitter();
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     sendSuccess = false;
@@ -59,7 +61,15 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
   ngOnInit() {
       if (this.companyId != undefined && this.companyId > 0 &&(this.vendorJourney  ||(this.inputId != undefined && this.inputId > 0) )) {
               this.pagination.vendorCompanyId = this.companyId;
-              this.pagination.partnerTeamMemberGroupFilter = true;
+              let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+              if(this.isShareLeadsModule != undefined && this.isShareLeadsModule){
+              if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')){
+                this.pagination.partnerTeamMemberGroupFilter = false;
+              }
+              else{
+                this.pagination.partnerTeamMemberGroupFilter = true;
+              }     
+              }
               this.openPopup();
           } else {
               this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");

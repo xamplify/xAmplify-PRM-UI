@@ -17,6 +17,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   @Output() teamMemberFilterModalPopUpOptionEventEmitter = new EventEmitter();
   @Input() filterIcon = false;
   @Input() isAssetOrLms = false;
+  @Input() isShareLeadsModule = false;
   showFilterPopup = false;
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
@@ -40,7 +41,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   }
 
   private checkPartnerTeamMemberFilter() {
-    if (this.isPartnerModule || this.isAssetOrLms) {
+    if (this.isPartnerModule || this.isAssetOrLms || this.isShareLeadsModule) {
       let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
       if (filterPartner !== null  && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
         this.selectedFilterIndex = 0;
