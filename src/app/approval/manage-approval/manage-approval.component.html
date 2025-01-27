@@ -112,14 +112,14 @@
     <ul class="mix-filter mb0">
       <li class="filter" (click)="filterByType('ALL',1)" [class.type-selected]="1 == selectedTypeIndex">All<i
           class="fa fa-check-circle-o check-icons" *ngIf="1 == selectedTypeIndex"></i></li>
-      <li *ngIf="authenticationService?.approvalRequiredForAssets" class="filter" (click)="filterByType('ASSETS',2)"
-        [class.type-selected]="2 == selectedTypeIndex">Assets<i class="fa fa-check-circle-o check-icons"
-          *ngIf="2 == selectedTypeIndex"></i></li>
-      <li *ngIf="authenticationService?.approvalRequiredForTracks" class="filter" (click)="filterByType('TRACKS',3)"
-        [class.type-selected]="3 == selectedTypeIndex">Tracks<i class="fa fa-check-circle-o check-icons"
-          *ngIf="3 == selectedTypeIndex"></i></li>
-      <li *ngIf="authenticationService?.approvalRequiredForPlaybooks" class="filter"
-        (click)="filterByType('PLAYBOOKS',4)" [class.type-selected]="4 == selectedTypeIndex">Play
+      <li *ngIf="authenticationService?.approvalRequiredForAssets && authenticationService.module.damAccess"
+        class="filter" (click)="filterByType('ASSETS',2)" [class.type-selected]="2 == selectedTypeIndex">Assets<i
+          class="fa fa-check-circle-o check-icons" *ngIf="2 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForTracks && authenticationService.module.lmsAccess"
+        class="filter" (click)="filterByType('TRACKS',3)" [class.type-selected]="3 == selectedTypeIndex">Tracks<i
+          class="fa fa-check-circle-o check-icons" *ngIf="3 == selectedTypeIndex"></i></li>
+      <li *ngIf="authenticationService?.approvalRequiredForPlaybooks && authenticationService.module.playbookAccess"
+        class="filter" (click)="filterByType('PLAYBOOKS',4)" [class.type-selected]="4 == selectedTypeIndex">Play
         Books<i class="fa fa-check-circle-o check-icons" *ngIf="4 == selectedTypeIndex"></i></li>
     </ul>
   </div>
