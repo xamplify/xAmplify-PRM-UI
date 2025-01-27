@@ -211,7 +211,6 @@ export class SendTestEmailComponent implements OnInit {
       this.referenceService.closeSweetAlert();
       return;
     }
-    alert("215");
     if (this.vanityTemplatesPartnerAnalytics) {
       this.sendmailNotify.emit({ 'item': this.selectedItem });
       this.callEventEmitter();
