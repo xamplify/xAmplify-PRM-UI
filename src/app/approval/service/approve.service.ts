@@ -110,4 +110,10 @@ export class ApproveService {
     return this.authenticationService.callGetMethod(url);
   }
 
+  sendReminderToApprovers(entityId: number, moduleType: string) { 
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.approveUrl + "/sendReminderToApprovers/" + loggedInUserId + '/' + entityId + '/' + moduleType + this.QUERY_PARAMETERS;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

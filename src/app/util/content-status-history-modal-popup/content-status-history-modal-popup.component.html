@@ -81,8 +81,17 @@
                                  (click)="openTemplateStatusHistoryPopUp()">
                                  <a class="white"><i class="fa fa-history" style="font-size: 12px;"></i></a>
                               </span>
-                              <span *ngIf="isStatusUpdated && canApprove && commentDto?.statusInString != 'CREATED'"
-                                 class="success ml5"><strong>Status Updated Successfully</strong></span>
+                              
+                              <span *ngIf="loggedInUserId == createdById" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{disableReminder ? 'Reminder already sent' : commentDto?.statusInString === approvalStatus.CREATED ? 'Send approval reminder' : 'Sending reminder works for only unapproved content'}}"
+                                 [ngClass]="(commentDto?.statusInString != approvalStatus.CREATED || disableReminder) ? 'view-banner-content ml5 disabled' : 'view-banner-content ml5' "
+                                 (click)="(commentDto?.statusInString != approvalStatus.CREATED || disableReminder) ? '' : sendReminderToApprovers()">
+                                 <a [ngClass]="(commentDto?.statusInString != approvalStatus.CREATED || disableReminder) ? 'white disabled' : 'white'">
+                                    <i class="fa fa-share" style="font-size: 12px;"></i></a>
+                              </span>
+
+                              <span *ngIf="isStatusUpdated"
+                                 class="success ml5"><strong>{{ successMessage }}</strong></span>
                            </h5>
                         </div>
                      </div>
