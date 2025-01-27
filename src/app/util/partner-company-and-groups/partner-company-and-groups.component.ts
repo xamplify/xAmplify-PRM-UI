@@ -108,13 +108,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	private initializeTabs() {
-		if (this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
-			let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-			if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')){
-				this.pagination.partnerTeamMemberGroupFilter = false;
-			} else{
-				this.pagination.partnerTeamMemberGroupFilter = true;
-			}
+		if (this.moduleName != undefined && $.trim(this.moduleName).length > 0) {	
 			this.showFilter = true;
 			if (this.inputId != undefined && this.inputId > 0) {
 				this.selectTabsByGroupIdOrCompanyId();
@@ -154,6 +148,12 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		this.showFilter = true;
 		this.isPartnerCompaniesTabSelected = true;
 		this.isPartnerGroupsTabSelected = false;
+		let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+        if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')) {
+            this.referenceService.setTeamMemberFilterForPagination(this.pagination, 0);
+        } else {
+            this.referenceService.setTeamMemberFilterForPagination(this.pagination, 1);
+        }
 		this.findPartnerCompanies(this.pagination);
 	}
 
