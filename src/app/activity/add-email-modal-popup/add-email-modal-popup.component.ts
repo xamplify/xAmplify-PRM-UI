@@ -154,10 +154,12 @@ export class AddEmailModalPopupComponent implements OnInit {
         this.emailActivity.toEmailId = this.userEmailId;
         this.showTestMailSubmittedStatus();
         this.testToEmailId = '';
+        this.validateTestEmailId();
         this.testEmailLoading = false;
       }, error => {
         this.showTestMailErrorStatus();
         this.testToEmailId = '';
+        this.validateTestEmailId();
         this.testEmailLoading = false;
       }
     )
