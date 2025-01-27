@@ -23,29 +23,45 @@
                       </div>
                   </div>
               </a>
-          </div>
-          <!--Email Template-->
-          <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
-            <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft">
-                <div class="visual icon-cl">
-                    <i class="fa fa-envelope-open" aria-hidden="true"></i>
-                </div>
-                <div class="camp-details">
-                    <div class="camp-title">
-                        Email Info
-                    </div>
-                    <div class="camp-number">
-                        <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
-                        title="{{ campaignDetails?.emailTemplateName }}">{{campaignDetails?.emailTemplateName | slice : 0 : 50}}</strong>
-                        <span *ngIf="campaignDetails?.emailTemplateName?.length > 50">...</span>
-                    </div>
-                    <div class="camp-desc">
-                      <span>Click for preview</span>
-                    </div>
-                </div>
-            </a>
-        </div>
+            </div>
+            <!--Email Template-->
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
+              <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft">
+                  <div class="visual icon-cl">
+                      <i class="fa fa-envelope-open" aria-hidden="true"></i>
+                  </div>
+                  <div class="camp-details">
+                      <div class="camp-title">
+                          Email Info
+                      </div>
+                      <div class="camp-number">
+                          <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
+                          title="{{ campaignDetails?.emailTemplateName }}">{{campaignDetails?.emailTemplateName | slice : 0 : 50}}</strong>
+                          <span *ngIf="campaignDetails?.emailTemplateName?.length > 50">...</span>
+                      </div>
+                      <div class="camp-desc">
+                        <span>Click for preview</span>
+                      </div>
+                  </div>
+              </a>
+            </div>
         </div> 
+        <!--Analytics-->
+        <section class="row campaign_type">
+          <div class="col-xs-12 col-sm-12 emails-info flex-wrap">
+              <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                <button class="portlet light color1-invert crcb lt-blue-c detail_card">
+                  <div class="portlet-body text-center">
+                    <i class="fa fa-user"></i>
+                    <h1>
+                      <b>{{ campaignReport?.totalRecipients }}</b>
+                   </h1>
+                   <h5>Recipients</h5>
+                  </div>
+                </button>
+              </div>
+          </div>
+        </section>
       </div>
   </div>
   <ng-container *ngIf="!success && !processor.isProcessing && apiResponseFinished">

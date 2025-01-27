@@ -21,6 +21,7 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
   success = false;
   apiResponseFinished = false;
   campaignDetails:any;
+  campaignReport:any;
 
   constructor(private route: ActivatedRoute,private authenticationService:AuthenticationService,
     private referenceService:ReferenceService,private logger:XtremandLogger,
@@ -36,8 +37,8 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
   private getCampaignDetails() {
     this.authenticationService.getMdfCampaignDetails(this.alias).subscribe(
       response => {
-        console.log(response);
         this.success = true;
+        this.campaignReport = response.data;
         let map = response.map['campaignMdfDetails'];
         this.campaignDetails = map;
         this.apiResponseFinished = true;
