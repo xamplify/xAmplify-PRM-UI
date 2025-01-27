@@ -1540,4 +1540,10 @@ vanityWelcomePageRequired(userId) {
     return this.callPostMethod(url,sendTestEmailDto);
   }
 
+  getMdfCampaignDetails(alias: any) {
+    let url = this.REST_URL + 'campaign-mdf/analytics/'+alias;
+    return this.callGetMethod(url);
+  }
+  
+
 }

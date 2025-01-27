@@ -1,0 +1,86 @@
+a.dashboard-stat.totalBoxFlex.dashboard-stat-lighter.red-soft.forbidden {
+    height: auto !important;
+    border-radius: 10px !important;
+    margin-bottom: 9px !important;
+}
+
+.dashboard-stat {
+    height: auto !important;
+    border-radius: 10px !important;
+    margin-bottom: 9px !important;
+}
+
+.camp-details {
+    float: left;
+    padding: 10px;
+}
+
+.camp-desc,
+.camp-title,
+.camp-number {
+    color: #fff;
+    font-size: 12px;
+}
+
+.camp-title {
+    font-size: 14px;
+}
+
+.camp-number {
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: 3px;
+    font-weight: bold;
+}
+
+.emails-info i {
+    font-size: 20px;
+    display: block;
+    text-align: center;
+}
+
+.emails-info h1 {
+    margin-bottom: 15px;
+}
+
+.emails-info h5 {
+    margin: 0;
+}
+
+.icon-cl {
+    width: 80px;
+    height: 80px;
+    display: block;
+    float: left;
+    padding-top: 10px;
+    padding-left: 35px;
+    margin-bottom: 15px;
+    font-size: 35px;
+    line-height: 35px;
+}
+
+.dashboard-stat .visual > i {
+    line-height: normal !important;
+    -webkit-transform: rotate(-15deg);
+    -ms-transform: rotate(-15deg);
+    transform: rotate(-15deg);
+    position: absolute;
+    font-size: 65px !important;
+    bottom: 25px !important;
+    margin-left: -29px !important;
+  }
+
+.campaign_type {
+    margin-right: -15px !important;
+    margin-left: -15px !important;
+    position: relative;
+    z-index: 99;
+}
+
+.tiles_aligns {
+    padding: 0px 6px !important;
+}
+
+.camp_response {
+    margin: 10px 0px;
+}
