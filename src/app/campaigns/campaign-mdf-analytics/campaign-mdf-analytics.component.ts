@@ -56,4 +56,8 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
         this.processor.remove(this.processor);
       });
   }
+
+  previewTemplate(){
+    alert("Clicked");
+  }
 }

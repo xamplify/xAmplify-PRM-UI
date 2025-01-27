@@ -25,8 +25,8 @@
               </a>
             </div>
             <!--Email Template-->
-            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
-              <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft">
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6" id="email-template">
+              <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" (click)="previewTemplate()">
                   <div class="visual icon-cl">
                       <i class="fa fa-envelope-open" aria-hidden="true"></i>
                   </div>
@@ -47,19 +47,164 @@
             </div>
         </div> 
         <!--Analytics-->
-        <section class="row campaign_type">
-          <div class="col-xs-12 col-sm-12 emails-info flex-wrap">
+        <section>
+          <div class="col-xs-12 col-sm-12 emails-info flex-wrap disabled-div">
+            <!--Recipients-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
                 <button class="portlet light color1-invert crcb lt-blue-c detail_card">
                   <div class="portlet-body text-center">
                     <i class="fa fa-user"></i>
                     <h1>
-                      <b>{{ campaignReport?.totalRecipients }}</b>
+                      <b>{{campaignReport?.totalRecipients }}</b>
                    </h1>
                    <h5>Recipients</h5>
                   </div>
                 </button>
               </div>
+             <!--Total Emails Sent--> 
+             <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb lt-green-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-o"></i>
+                  <h1>
+                    <b>{{campaignReport?.totalEmailsSent }}</b>
+                 </h1>
+                 <h5>Recipients</h5>
+                </div>
+              </button>
+            </div>
+            <!--Deliverability--> 
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb tk-blue-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope"></i>
+                  <h1>
+                    <b>{{campaignReport?.delivered }}</b>
+                 </h1>
+                 <h5>Deliverability</h5>
+                </div>
+              </button>
+            </div>
+            <!--Active Recipients-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb vlt-blue-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-user-circle-o"></i>
+                  <h1>
+                    <b>{{campaignReport?.activeRecipients}}</b>
+                 </h1>
+                 <h5>Active Recipients</h5>
+                </div>
+              </button>
+            </div>
+            <!--Open Rate-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb pure-blue-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-open-o"></i>
+                  <h1>
+                    <b>{{campaignReport?.openRate}}</b>
+                 </h1>
+                 <h5>Open Rate</h5>
+                </div>
+              </button>
+            </div>
+            <!--Clicked Url-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb black-blue-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-globe"></i>
+                  <h1>
+                    <b>{{campaignReport?.emailClicked}}</b>
+                 </h1>
+                 <h5>Clicked URL</h5>
+                </div>
+              </button>
+            </div>
+             <!--Clickthrough Rate-->
+             <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb y-b-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-open"></i>
+                  <h1>
+                    <b>{{campaignReport?.clickthroughRate}}</b>
+                 </h1>
+                 <h5>Clickthrough Rate</h5>
+                </div>
+              </button>
+            </div>
+            <!--Clicked URL-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" *ngIf="campaignDetails?.campaignType=='VIDEO'">
+              <button class="portlet light color1-invert crcb b-b-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-eye"></i>
+                  <h1>
+                    <b>{{campaignReport?.views}}</b>
+                 </h1>
+                 <h5>Views</h5>
+                </div>
+              </button>
+            </div>
+            <!--Hard Bounce-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb r-b-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-ban"></i>
+                  <h1>
+                    <b>{{campaignReport?.hardBounce}}</b>
+                 </h1>
+                 <h5>Hard Bounce</h5>
+                </div>
+              </button>
+            </div>
+             <!--Soft Bounce-->
+             <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb h-r-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-trash-o"></i>
+                  <h1>
+                    <b>{{campaignReport?.softBounce}}</b>
+                 </h1>
+                 <h5>Soft Bounce</h5>
+                </div>
+              </button>
+            </div>
+            <!--UnSubscribe-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb r-r-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-user-times"></i>
+                  <h1>
+                    <b>{{campaignReport?.unsubscribed}}</b>
+                 </h1>
+                 <h5>Unsubscribe</h5>
+                </div>
+              </button>
+            </div>
+            <!--Leads-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb vlt-b-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-user-circle"></i>
+                  <h1>
+                    <b>{{campaignReport?.leadCount}}</b>
+                 </h1>
+                 <h5>Leads</h5>
+                </div>
+              </button>
+            </div>
+             <!--Deals-->
+             <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+              <button class="portlet light color1-invert crcb lt-g-b-c detail_card">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-tags"></i>
+                  <h1>
+                    <b>{{campaignReport?.dealCount}}</b>
+                 </h1>
+                 <h5>Deals</h5>
+                </div>
+              </button>
+            </div>
           </div>
         </section>
       </div>
