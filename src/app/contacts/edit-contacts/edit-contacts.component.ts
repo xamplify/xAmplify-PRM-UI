@@ -1671,8 +1671,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.currentContactType = "all_contacts";
 		this.selectedFilterIndex = 1
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-			this.resetTMSelectedFilterIndex.next(true);
-			this.pagination.partnerTeamMemberGroupFilter = true;
+			// this.resetTMSelectedFilterIndex.next(true);
+			// this.pagination.partnerTeamMemberGroupFilter = true;
+			this.checkPartnerFilter();
 		}
 		this.showContactDetailsTab = false;
 		this.setPage(1);
@@ -1960,18 +1961,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactsByType.selectedCategory = contactType;
 		this.selectedFilterIndex = 1;
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-			let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners)
-			if (TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) {
-				this.selectedFilterIndex = 0;
-				this.contactsByType.pagination.partnerTeamMemberGroupFilter = false;
-				this.resetTMSelectedFilterIndex.next(false);
-			} else {
-				this.selectedFilterIndex = 1;
-				this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
-				this.resetTMSelectedFilterIndex.next(true);
-			}
+			this.checkPartnerFilter();
 		}
 		this.listOfSelectedContactListByType(contactType);
+	}
+
+	private checkPartnerFilter() {
+		let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+		if (TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) {
+			this.selectedFilterIndex = 0;
+			this.contactsByType.pagination.partnerTeamMemberGroupFilter = false;
+			this.resetTMSelectedFilterIndex.next(false);
+		} else {
+			this.selectedFilterIndex = 1;
+			this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+			this.resetTMSelectedFilterIndex.next(true);
+		}
 	}
 
 	listOfSelectedContactListByType(contactType: string) {
