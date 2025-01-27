@@ -211,22 +211,19 @@ export class SendTestEmailComponent implements OnInit {
       this.referenceService.closeSweetAlert();
       return;
     }
-    
+    alert("215");
     if (this.vanityTemplatesPartnerAnalytics) {
       this.sendmailNotify.emit({ 'item': this.selectedItem });
       this.callEventEmitter();
-      return;
-    }
-    
-    if (this.isSendMdfRequestOptionClicked) {
+    }else if(this.isSendMdfRequestOptionClicked){
       this.sendMdfFundRequestEmail();
-    }
-    
-    if (this.campaignSendTestEmail) {
+    }else if(this.campaignSendTestEmail){
       this.sendCampaignTestEmail();
-    } else {
+    }else{
       this.sendTestEmail();
     }
+    
+  
   }
 
 
@@ -237,7 +234,7 @@ export class SendTestEmailComponent implements OnInit {
         this.referenceService.showSweetAlertSuccessMessage(response.message);
         this.callEventEmitter();
       }, error => {
-        this.showErrorMessage("Unable to send test email.Please try after some time.");
+        this.showErrorMessage("Unable to send MDF request email.Please try after some time.");
       });
   }
 
