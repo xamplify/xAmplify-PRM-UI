@@ -26,6 +26,7 @@ export class DamService {
   DAM_URL = this.DAM_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
   ispreviousAssetIsProcessing = false;
   uploadAssetInProgress : boolean = false;
+  COMMENTS_PREFIX_URL = this.authenticationService.REST_URL+'/comments';
   
   constructor(private http: HttpClient, private authenticationService: AuthenticationService, 
     private logger: XtremandLogger,private utilService:UtilService,private referenceService:ReferenceService) { }
