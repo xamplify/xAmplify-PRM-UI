@@ -33,7 +33,7 @@
                 <!--All/My Partners-->
                 <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0">
                   <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany && isPublished"
-                  (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                  (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isAssetOrLms]="true"></app-team-member-filter-option>
                 </div>
                 <!--Search / Sort / Refresh-->
                 <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0">

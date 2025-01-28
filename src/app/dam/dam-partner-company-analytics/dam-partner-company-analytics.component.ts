@@ -15,6 +15,7 @@ import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { Ng2DeviceService } from 'ng2-device-detector';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Component({
   selector: 'app-dam-partner-company-analytics',
@@ -62,7 +63,14 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
     this.damId = atob(this.route.snapshot.params['damId']);
     this.breadCrumb = this.partnerModuleCustomName+" Companies";
-    this.pagination.partnerTeamMemberGroupFilter = true;
+    let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')) {
+      this.pagination.partnerTeamMemberGroupFilter = false;
+    } else {
+      this.pagination.partnerTeamMemberGroupFilter = true;
+    }
+
+   
     this.findPartnerCompanies(this.pagination);
     this.findVideoDetails();
   }
