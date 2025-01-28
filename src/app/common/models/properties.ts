@@ -528,6 +528,9 @@ export class Properties {
 	my_Partner_Info = 'You have the ability to apply the default filter as My Partner(s).Enabling this option will allow you to view the partners assigned to you.';
 	all_Partners_Info = 'You have the ability to apply the default filter as All Partners.Enabling this option will allow you to view all the partners of your company.';
 
+
+	UNLOCK_MDF_FUNDING = "UNLOCK_MDF_FUNDING";
+
 	/** XNFR-821  **/
 	TEAM_MEMBER_APPROVAL_PREVILEGES_SETTING_HELPER_TEXT = '**You have the authority to grant approval or rejection rights to team members. Based on the granted authority, team members will be able to approve or reject Assets, Tracks, and Playbooks as required.';
 	ASSET_REVIEW_DISABLED_TOOLTIP = 'Asset Review Control is currently disabled.';
@@ -536,6 +539,7 @@ export class Properties {
 	TEAM_MEMBER_NO_ACCESS_ASSETS_TOOLTIP = 'This team member does not have access to assets.';
 	TEAM_MEMBER_NO_ACCESS_TRACKS_TOOLTIP = 'This team member does not have access to tracks.';
 	TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP = 'This team member does not have access to playbooks.';
+
 
 }
 

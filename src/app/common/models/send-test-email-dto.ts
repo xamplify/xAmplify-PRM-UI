@@ -8,4 +8,7 @@ export class SendTestEmailDto {
   channelCampaign = false;
   preHeader = "";
   emailCampaign = false;
+  recipientName = "";
+  campaignId = 0;
+  loggedInUserId = 0;
 }

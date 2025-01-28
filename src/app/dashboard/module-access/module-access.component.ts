@@ -70,7 +70,9 @@ export class ModuleAccessComponent implements OnInit {
   customDomainErrorMessage = "";
   customDomainApiError = false;
   customDomainDto:CustomDomainDto = new CustomDomainDto();
-
+  prm: boolean;
+  marketing: boolean;
+  orgAdmin:boolean;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
     public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminService) { }
@@ -312,6 +314,9 @@ export class ModuleAccessComponent implements OnInit {
       this.companyAndUserDetails = result;
       this.companyProfileName = this.companyAndUserDetails.companyProfileName;
       this.roleId = result.roleId;
+      this.prm = this.roleId==20;
+      this.marketing = this.roleId==18;
+      this.orgAdmin = this.roleId==2;
       this.companyLoader = false;
     }, error => {
       this.companyLoader = false;
@@ -398,7 +403,9 @@ export class ModuleAccessComponent implements OnInit {
   }
 
   setModulesByRole(){
-    if(this.roleId==20){
+    this.prm = this.roleId==20;
+    this.marketing = this.roleId==18;
+    if(this.prm){
       this.campaignAccess.emailCampaign = false;
       this.campaignAccess.videoCampaign = false;
       this.campaignAccess.videoCampaign = false;
@@ -414,7 +421,7 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.dataShare = false;
       this.campaignAccess.referVendor = false;
       this.campaignAccess.ssoEnabled = false;
-    }else if(this.roleId==18){
+    }else if(this.marketing){
       this.campaignAccess.loginAsPartner = false;
       this.campaignAccess.shareWhiteLabeledContent = false;
       this.campaignAccess.createWorkflow = false;
@@ -571,6 +578,10 @@ setReferVendorValue(event:boolean){
   this.campaignAccess.referVendor = event;
 }
 
+/**XNFR-832***/
+unlockMdfFundingUiSwitchEventReceiver(event:any){
+  this.campaignAccess.unlockMdfFundingEnabled = event;
+}
 
 
 }

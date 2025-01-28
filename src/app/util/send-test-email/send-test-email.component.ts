@@ -6,6 +6,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { ActivatedRoute } from '@angular/router';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any;
 @Component({
   selector: 'app-send-test-email',
@@ -43,6 +44,11 @@ export class SendTestEmailComponent implements OnInit {
   isValidSubject = false;
   sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
   clicked = false;
+  /**XNFR-832***/
+  @Input() moduleName = "";
+  @Input() campaignName="";
+  @Input() campaignId = 0;
+  isSendMdfRequestOptionClicked = false;
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
@@ -51,15 +57,48 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto.subject = this.subject;
     this.sendTestEmailDto.fromEmail = this.fromEmail;
     this.sendTestEmailDto.fromName = this.fromName;
+    this.isSendMdfRequestOptionClicked = XAMPLIFY_CONSTANTS.unlockMdfFunding==this.moduleName;
     this.referenceService.openModalPopup(this.modalPopupId);
     $('#sendTestEmailHtmlBody').val('');
     if(this.vanityTemplatesPartnerAnalytics){
       this.getVanityEmailTemplatesPartnerAnalytics();
+    }else if(this.isSendMdfRequestOptionClicked){
+      this.headerTitle = "Unlock MDF Funds for Your Campaign";
+      this.getFundingTemplateHtmlBody();
     }else{
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
   }
 
+  /***XNFR-832****/
+  getFundingTemplateHtmlBody() {
+    this.processing = true;
+    this.sendTestEmailDto = new SendTestEmailDto();
+    this.authenticationService.getFundingTemplateHtmlBody().subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        if(statusCode==200){
+          let data = response.data;
+          let body = data.body;
+          body = this.referenceService.replaceCampaignMDFFundingTemplateMergeTags(this.campaignName,this.sendTestEmailDto.recipientName,body);
+          this.sendTestEmailDto.body = body;
+          this.sendTestEmailDto.subject = data.subject;
+          this.sendTestEmailDto.campaignId = this.campaignId;
+          $('#sendTestEmailHtmlBody').append(body);
+          $('tbody').addClass('preview-shown');
+          this.processing = false;
+        }else{
+          this.processing = false;
+          this.callEventEmitter();
+          this.referenceService.showSweetAlertErrorMessage("The requested default template for MDF funding is unavailable. Please verify the template ID or ensure it has been configured correctly.")
+        }
+      }, error => {
+        this.processing = false;
+        this.callEventEmitter();
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+  }
 
   validateForm() {
     let email = $.trim(this.sendTestEmailDto.toEmail);
@@ -81,7 +120,7 @@ export class SendTestEmailComponent implements OnInit {
         htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
         this.sendTestEmailDto.body = htmlBody;
         $('#sendTestEmailHtmlBody').append(htmlBody);
-        $('tbody').addClass('preview-shown')
+        $('tbody').addClass('preview-shown');
         this.processing = false;
       }, error => {
         this.processing = false;
@@ -167,23 +206,38 @@ export class SendTestEmailComponent implements OnInit {
 
   send() {
     this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
-    this.validateForm();
-    if (this.isValidForm) {
-      if(this.vanityTemplatesPartnerAnalytics){
-        this.sendmailNotify.emit({'item' : this.selectedItem });
-        this.callEventEmitter();
-      }else{
-        if (this.campaignSendTestEmail) {
-          this.sendCampaignTestEmail();
-        } 
-        else {
-          this.sendTestEmail();
-        }
-      }
-    } else {
+    if (!this.isValidForm) {
       this.showErrorMessage("Please provide valid inputs.");
+      this.referenceService.closeSweetAlert();
+      return;
     }
+    if (this.vanityTemplatesPartnerAnalytics) {
+      this.sendmailNotify.emit({ 'item': this.selectedItem });
+      this.callEventEmitter();
+    }else if(this.isSendMdfRequestOptionClicked){
+      this.sendMdfFundRequestEmail();
+    }else if(this.campaignSendTestEmail){
+      this.sendCampaignTestEmail();
+    }else{
+      this.sendTestEmail();
+    }
+    
+  
   }
+
+
+  /***XNFR-832****/
+  sendMdfFundRequestEmail() {
+    this.authenticationService.sendMdfFundRequestEmail(this.sendTestEmailDto).subscribe(
+      response => {
+        this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.callEventEmitter();
+      }, error => {
+        this.showErrorMessage("Unable to send MDF request email.Please try after some time.");
+      });
+  }
+
+  /***XNFR-832****/
 
   private sendCampaignTestEmail() {
     let data: Object = {};
