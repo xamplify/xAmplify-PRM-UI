@@ -53,6 +53,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   showFileTypeError: boolean = false;
   showCCEmailInputField:boolean = false;
   showBCCEmailInputField:boolean = false;
+  showCkEditorLimitErrorMessage:boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties) {}
@@ -103,11 +104,18 @@ export class AddEmailModalPopupComponent implements OnInit {
   }
 
   validateEmail() {
-    if (this.referenceService.validateCkEditorDescription(this.emailActivity.body) &&
+    let trimmedDescription = this.referenceService.getTrimmedCkEditorDescription(this.emailActivity.body);
+    if (this.referenceService.validateCkEditorDescription(trimmedDescription) &&
       this.emailActivity.subject != undefined && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
       this.isValidEmail = true;
     } else {
       this.isValidEmail = false;
+    }
+		let isInValidDescription = $.trim(trimmedDescription) != undefined && $.trim(trimmedDescription).length > 4999;
+    if (isInValidDescription) {
+      this.showCkEditorLimitErrorMessage = true;
+    } else {
+      this.showCkEditorLimitErrorMessage = false;
     }
   }
 

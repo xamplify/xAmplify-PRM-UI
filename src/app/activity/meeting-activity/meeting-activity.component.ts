@@ -20,6 +20,7 @@ export class MeetingActivityComponent implements OnInit {
   @Input() contactId:number;
   @Input() activeCalendarDetails:any;
   @Input() isReloadTab:boolean;
+  @Input() isCompanyJourney:boolean = false;
 
   @Output() notifyClose = new EventEmitter();
   @Output() notifyCloseSideBar = new EventEmitter();

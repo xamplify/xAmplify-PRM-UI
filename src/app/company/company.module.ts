@@ -5,10 +5,11 @@ import { SharedModule } from 'app/shared/shared.module';
 import { ErrorPagesModule } from 'app/error-pages/error-pages.module';
 import { CommonComponentModule } from 'app/common/common.module';
 import { CompanyRoutingModule } from './company-routing.module';
+import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 
 @NgModule({
   imports: [
-    CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, CompanyRoutingModule 
+    CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, CompanyRoutingModule, SharedContactsModule
  ],
   declarations: [ManageCompanyComponent]
 })

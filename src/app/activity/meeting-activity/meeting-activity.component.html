@@ -5,9 +5,9 @@
         data-original-title="Refresh" (click)="showAllMeetingActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
-        data-original-title="Refresh" (click)="openMeetingModalPopup()">
-        <i aria-hidden="true" class="fa fa-plus"></i>
+      <a class="close-circle ml3" [ngClass]="isCompanyJourney ? 'disabled':''" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
+        data-original-title="Refresh" (click)="isCompanyJourney ? '' : openMeetingModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus" [ngClass]="isCompanyJourney ? 'disabled':''"></i>
       </a>
       <a class="close-circle ml3" *ngIf="showCalendarView" 
         data-original-title="Refresh" (click)="showCalendarViewModalPopup()">

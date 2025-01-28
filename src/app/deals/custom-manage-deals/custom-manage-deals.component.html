@@ -5,21 +5,31 @@
         <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-      <li *ngIf="!isFromCompanyModule">
+      <li *ngIf="!isFromCompanyModule && !isCompanyJourney && !isFromCompanyJourneyEditContacts">
         <a (click)="goBackToManageContacts()" translate> Manage Contacts
         </a>
       </li>
-      <li *ngIf="isFromCompanyModule">
+      <li *ngIf="isFromCompanyModule || isCompanyJourney || isFromCompanyJourneyEditContacts">
         <a translate (click)="goBackToManageCompanies()">Manage Companies</a>
       </li>
-      <li *ngIf="isFromEditContacts">
+      <li *ngIf="isFromCompanyJourneyEditContacts">
+        <a (click)="goBackToCompanyJourney()" translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Company Journey
+        </a>
+      </li>
+      <li *ngIf="(isFromEditContacts && !isCompanyJourney) || isFromCompanyJourneyEditContacts">
         <a (click)="goBackToEditContacts()" translate>
           <i class="fa fa-angle-right" aria-hidden="true"></i>Edit Contacts
         </a>
       </li>
+      <li *ngIf="isFromCompanyJourney">
+        <a (click)="goBackToCompanyJourney()" translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Company Journey
+        </a>
+      </li>
       <li>
         <a (click)="goBackToContactDetailsPage()" translate>
-          <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Journey
+          <i class="fa fa-angle-right" aria-hidden="true"></i>{{isCompanyJourney ? 'Company':'Contact'}} Journey
         </a>
       </li>
       <li>
@@ -36,7 +46,7 @@
         <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
           <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 pull-right m_mb8">
             <div class="search-and-filter">
-              <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled"
+              <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled && !isCompanyJourney && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)"
                 (click)="addDeal()">
                 <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                   <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
@@ -216,7 +226,7 @@
                       <span class="comment-color" translate>
                         {{deal.currentStageName}}</span>
 
-                      <a *ngIf="(deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)"
+                      <a *ngIf="((deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)) && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)"
                         data-rel="fancybox-button"
                         (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
                         data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
@@ -234,7 +244,7 @@
                         <span *ngIf="deal.unReadPropertyChatCount > 0 && dealsCount"
                           class="badge badge-default notify-badge"
                           style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
-                        <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                        <ng-container *ngIf="!authenticationService?.module?.deletedPartner && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                           <a class="custom-icon" data-rel="fancybox-button"
                             *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
                             (click)="deal?.showDealActions?editDeal(deal):''" data-toggle="tooltip"
@@ -297,13 +307,17 @@
 </div>
 
 <app-add-deal *ngIf="showDealForm" [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
-  [selectedContact]="selectedContact" [isOrgAdmin]="isOrgAdmin" [isDealFromContact]="isDealFromContact" [isFromEditContacts]="isFromEditContacts"
-  (notifySubmitSuccess)="showSubmitDealSuccess()" (notifyClose)="closeDealForm()" [isFromContactAllDealsTab]="'true'"></app-add-deal>
+  [isFromCompanyJourney]="isFromCompanyJourney" [selectedUserListId]="selectedContactListId"
+  [isCompanyJourney]="isCompanyJourney" [selectedContact]="selectedContact" [isOrgAdmin]="isOrgAdmin"
+  [isDealFromContact]="isDealFromContact" [isFromEditContacts]="isFromEditContacts"
+  (notifySubmitSuccess)="showSubmitDealSuccess()" (notifyClose)="closeDealForm()" [isFromContactAllDealsTab]="'true'"
+  [companyJourneyId]="companyJourneyId"
+  [isFromCompanyJourneyEditContacts]="isFromCompanyJourneyEditContacts"></app-add-deal>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
   [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
 
-<app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="selectedDeal"
+<app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="selectedDeal" [isFromCompanyJourney]="isCompanyJourney"
   [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
   [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments($event)"
   (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">

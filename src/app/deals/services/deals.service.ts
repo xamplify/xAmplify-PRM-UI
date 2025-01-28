@@ -283,13 +283,14 @@ findVendorDetailsWithSelfDealsCount(campaignId:any, loggedInUserId:any) {
   }
 
   /**XNFR-553**/
-  findDealsAndCountByContactId(contactId:number, vanityUrlFilter:boolean, vendorCompanyName:string) {
+  findDealsAndCountByContactId(contactId:number, vanityUrlFilter:boolean, vendorCompanyName:string, isCompanyJourney:boolean) {
     let loggedInUserId = this.authenticationService.getUserId();
     let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:"&loggedInUserId=0";
     let contactIdRequestParam = contactId!=undefined && contactId>0 ? "&contactId="+contactId:"&contactId=0";
     let vanityUrlFilterParam = vanityUrlFilter!=undefined?"&vanityUrlFilter="+vanityUrlFilter:"";
     let vendorCompanyNameParam = vendorCompanyName!=undefined ? "&vendorCompanyName="+vendorCompanyName:"";
-    let dealRequestDtoParam = $.trim(loggedInUserIdRequestParam+contactIdRequestParam+vanityUrlFilterParam+vendorCompanyNameParam);
+    let isCompanyJourneyParam = "&isCompanyJourney="+isCompanyJourney;
+    let dealRequestDtoParam = $.trim(loggedInUserIdRequestParam+contactIdRequestParam+vanityUrlFilterParam+vendorCompanyNameParam+isCompanyJourneyParam);
     let url = this.authenticationService.REST_URL + "deal/fetchContactAssociatedDealsAndCount" + "?access_token="+this.authenticationService.access_token + dealRequestDtoParam;
     return this.authenticationService.callGetMethod(url);
   }

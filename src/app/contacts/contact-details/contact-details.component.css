@@ -486,3 +486,19 @@ border-bottom:none;
   border: 1px solid #f9f6f600;
   border-radius: 8px 8px 8px 8px;
 }
+
+.fa.fa-twitter{
+  font-family:sans-serif;
+}
+
+.fa.fa-twitter::before{
+  content:"𝕏";
+  font-size:1.2em;
+}
+
+.disabled {
+  background-color: #d3d3d3;
+  color: #a9a9a9;
+  opacity: 0.6;
+  cursor: not-allowed;
+}

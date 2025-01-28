@@ -459,7 +459,8 @@ export class Properties {
 
 	ckEditorConfig = {
 		height:'300px',
-		baseFloatZIndex:1E5
+		baseFloatZIndex:1E5,
+		maxLength: 1000
 	}
 
 	UNABLE_TO_PROCESS_REQUEST = "We're currently unable to process this request. Please try again later.";
