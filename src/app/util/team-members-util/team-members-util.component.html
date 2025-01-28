@@ -34,7 +34,7 @@
   <!--End Of Page-bar---->
 
   <!-- CSV Errors---->
-  <div *ngIf="csvErrors"><app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
+  <div><app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
       [showCloseIcon]="true"></app-response-message><br></div>
   <!-- End Of CSV Errors---->
 
@@ -515,7 +515,7 @@
                     <label class="control-label col-sm-3">Status</label>
                     <div class="col-sm-8">
                       <div
-                        [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+                        [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Activate/Deactivate the team member'">
                         <switch *ngIf="team.status=='UNAPPROVED'" [status]="team.enabled"
                           [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                           [onColor]="callActionSwitch.onGreenColorSwitch"
