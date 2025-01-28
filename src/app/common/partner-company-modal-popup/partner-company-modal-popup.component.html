@@ -47,7 +47,7 @@
                      </div>
 
                      <app-team-member-filter-option *ngIf="showFilter"
-                        (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                        (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isShareLeadsModule]="isShareLeadsModule"></app-team-member-filter-option>
                      <br /><br />
                      <ng-container *ngIf="!sendSuccess">
                         <div class="alert alert-success text-center" *ngIf="selectedPartnershipIds?.length>0">
