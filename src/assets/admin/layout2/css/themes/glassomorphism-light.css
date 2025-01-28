@@ -48,7 +48,7 @@ body.light-mode::before{
 .div.thembg-color,
 .calendar-border,
 .img-circle,
-canvas,
+.signature_card,
 .signature-preview {
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }

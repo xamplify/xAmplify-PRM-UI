@@ -80,7 +80,7 @@
           </div>
           <div class="col-xs-7 col-sm-7 col-md-8" style="padding: 0;"
             [hidden]="isVideoChanged">
-            <div
+            <div class="d-flex"
               *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId ) || authenticationService.isOnlyPartner">
               <button *ngIf="shareVideo==true"
                 class="btn btn-primary shareVideoButton" (click)="shareClick()"

@@ -99,15 +99,15 @@
     <div class="col-xs-12 p5">
       <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0 light_bg_removal remove_space">
         <div class="portlet-title remove_border mb0">
-          <div class="caption">
+          <div class="caption mt10">
             <span class="caption-subject font-red-sunglo uppercase">{{tableHeader}}</span>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6 pr0 pull-right" style="margin-right: -50px;" *ngIf="isTeamMemberRequest">
-            <div class="d-flex justify-content-end">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 pr0 pull-right mb_pl0" *ngIf="isTeamMemberRequest">
+            <div class="d-flex justify-content-end mb_flex-wrap">
               <!--- Sort --->
               <div class="mr5">
-                <select class="form-control SeclectBoxPaddingsAbj mr5" id="select-dropdown"
+                <select class="form-control SeclectBoxPaddingsAbj mr5 mb_10" id="select-dropdown"
                   [(ngModel)]="sortOption.teamMemberAnalyticsSortOptions" (ngModelChange)="sortOptionDropdown($event)">
                   <option *ngFor="let option of sortOption.inviteTeamMemberAnalyticsDropDownOptions" [ngValue]="option">
                     {{option.name}}
@@ -123,8 +123,6 @@
                 <button type="submit" class="search-box-item-click" (click)="listOfResults(statusType)">
                   <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
-          
-              <div>
                 <!--- Refresh --->
                 <span class="btn btn-xs l-g-view" data-placement="bottom" data-toggle="tooltip" title="Refresh"
                   (click)="listOfRequestReports(statusType)">
@@ -144,7 +142,6 @@
                     </a>
                   </div>
                 </span>
-              </div>
             </div>
           </div>
         </div>
@@ -204,13 +201,13 @@
           </button>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
             <ejs-multiselect [(ngModel)]='pagination.filterBy' [ngModelOptions]="{standalone: true}" [allowFiltering]='true'
               [ignoreAccent]='true' id='multiselectelement' [dataSource]='teamMemberInfoFilters'
               [placeholder]='multiSelectPlaceholder'>
             </ejs-multiselect>
           </div>
-          <div Class="portlet box custom_fiter-asset">
+          <div Class="portlet box custom_fiter-asset custom-margin">
             <div class="row pl10 pr10 pb10">
               <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
                 <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
