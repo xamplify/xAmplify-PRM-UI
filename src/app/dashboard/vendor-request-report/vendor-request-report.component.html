@@ -129,8 +129,8 @@
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
                 </span>
                 <!--- Export to Excel --->
-                <button class="btn btn-xs l-g-view" data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
-                  (click)="downloadTeamMembersCsv()">
+                <button class="btn btn-xs hidden-xs l-g-view" data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
+                  (click)="downloadTeamMembersCsv()" [disabled]="pagination.totalRecords == 0">
                   <i aria-hidden="true" class="fas fa-file-export p10"></i>
                 </button>
                 <!--- Filter --->
@@ -213,7 +213,7 @@
                 <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
                   <div class="control-label" style="font-size:15px">{{dateFilterText}}
                     <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="bottom"
-                      title="Select the Date Range to View Analytics"></i>
+                      title="Select the Date Range to View Team Members"></i>
                   </div>
                 </div>
                 <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
