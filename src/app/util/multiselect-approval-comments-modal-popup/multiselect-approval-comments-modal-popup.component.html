@@ -5,6 +5,11 @@
         <h4 class="modal-title f-w-600" id="" translate="">Add a Comment</h4>
       </div>
       <div class="modal-body">
+        <div *ngIf="showRecords" class="col-md-12 col-md-12 col-xs-12 col-sm-12 alert alert-danger custom-alert">
+          <strong>Heads Up ! Below Records cannot be {{approveText}} as you don't have the required authorization to
+            {{approveTextForAlert}} the  assets/tracks/playbooks.</strong> <br />
+          <span>{{recordNames}}</span>
+        </div>
         <div class="mb10">
           <p>Please provide comment for {{statusText}} the selected records.</p>
         </div>
@@ -14,7 +19,8 @@
       </div>
       <div class="modal-footer">
         <button class="btn Btn-Gray" (click)="closeModelPopup()" type="button">Cancel</button>
-        <button class="button bgcolor-unset pd-top2" [disabled]="!isValidComment" type="button" (click)="submitComment()">
+        <button class="button bgcolor-unset pd-top2" [disabled]="!isValidComment" type="button"
+          (click)="submitComment()">
           <span class="btn Btn-Green transition text_pd5">Submit</span>
         </button>
       </div>

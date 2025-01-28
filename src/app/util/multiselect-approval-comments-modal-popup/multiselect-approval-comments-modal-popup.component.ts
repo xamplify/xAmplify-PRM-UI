@@ -12,10 +12,15 @@ export class MultiselectApprovalCommentsModalPopupComponent implements OnInit {
 
   @Input() isApproveOrRejectStatus = '';
   @Output() comment = new EventEmitter();
+  @Input() rejectedRecordNames = '';
   commentsModalPopUpId = "commentsModalPopUp";
   commentData: any = "";
-  isValidComment : boolean = false;
-  statusText : any = "";
+  isValidComment: boolean = false;
+  statusText: any = "";
+  approveText: string;
+  recordNames: any = "";
+  showRecords: boolean = false;
+  approveTextForAlert: string;
 
   
   constructor( private referenceService: ReferenceService) { }
@@ -24,6 +29,20 @@ export class MultiselectApprovalCommentsModalPopupComponent implements OnInit {
     this.referenceService.openModalPopup(this.commentsModalPopUpId);
     if (this.isApproveOrRejectStatus.length > 0) {
       this.statusText = this.isApproveOrRejectStatus === 'APPROVED' ? 'Approving' : 'Rejecting';
+      this.approveText = this.isApproveOrRejectStatus === 'APPROVED' ? 'Approved' : 'Rejected';
+      this.approveTextForAlert = this.isApproveOrRejectStatus === 'APPROVED' ? 'approve' : 'reject';
+    }
+
+    if (this.rejectedRecordNames != undefined && this.rejectedRecordNames.length > 0) {
+      let self = this;
+      self.showRecords = true;
+      self.recordNames = "";
+      $.each(this.rejectedRecordNames, function (index: number, value: any) {
+        self.recordNames += value;
+        if (index < self.rejectedRecordNames.length - 1) {
+          self.recordNames += " , ";
+        }
+      });
     }
   }
 
