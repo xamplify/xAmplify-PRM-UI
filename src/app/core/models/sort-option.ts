@@ -547,8 +547,8 @@ export class SortOption {
 	inviteTeamMemberAnalyticsDropDownOptions = [
 		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
 		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
-		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
-		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+		{ 'name': 'Invited On (ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Invited On (DESC)', 'value': 'createdTime-DESC' }
 	];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
