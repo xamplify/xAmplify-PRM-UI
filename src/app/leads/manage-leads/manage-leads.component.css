@@ -71,11 +71,11 @@ i.fa.fa-check-circle-o.check-icons{
     padding: 7px 5px !important;
   }
 }
-@media (max-width: 375px) {
+/* @media (max-width: 375px) {
   .ml {
     margin-left: -64px;
   }
-}
+} */
 @media (max-width: 320px) {
   .mt {
     margin-top: 7px !important;
@@ -196,3 +196,8 @@ select .e-input::-ms-input-placeholder {
 }
 /* Sudha Sri(24-07-2024) */
 .dashboard-stat{border-radius: 10px !important;}
+@media only screen and (min-width: 1190px) {
+.filter_width{
+  width: 43%;
+}
+}

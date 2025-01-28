@@ -6,7 +6,6 @@ import { CropperSettings} from 'ng2-img-cropper';
 import { PagerService } from './pager.service';
 import { ActivatedRoute } from '@angular/router';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
-
 declare var $:any;
 @Injectable()
 export class UtilService {
@@ -154,7 +153,8 @@ export class UtilService {
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
             localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchKey,JSON.stringify(''));//XNFR-574
             localStorage.setItem(XAMPLIFY_CONSTANTS.universalSearchFilterBy,JSON.stringify('All'));//XNFR-574
-    }
+            localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, data.partnerFilter);
+           }
 
     isLoggedAsTeamMember(){
         let adminId = JSON.parse(localStorage.getItem('adminId'));

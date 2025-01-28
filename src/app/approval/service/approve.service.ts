@@ -91,8 +91,8 @@ export class ApproveService {
     return this.authenticationService.callPostMethod(url, approvalControlSettingsDTOs);
   }
 
-  getApprovalPrivileges(loggedInUserId: number, createdById: number) {
-    let url = this.approveUrl + "/getApprovalPrivileges/" + loggedInUserId + "/" + createdById + this.QUERY_PARAMETERS;
+  getApprovalPrivileges(loggedInUserId: number) {
+    let url = this.approveUrl + "/getApprovalPrivileges/" + loggedInUserId + this.QUERY_PARAMETERS;
     return this.authenticationService.callGetMethod(url);
   }
 

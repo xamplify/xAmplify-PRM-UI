@@ -72,3 +72,8 @@
     color:#fff;
     background-color: #0276ff;
   }
+  @media only screen and (max-width:578px){
+    .w85-per {
+      width: 95% !important;
+  }
+  }

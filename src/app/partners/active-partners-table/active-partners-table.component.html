@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!isCollapsed" class="alert alert-info"> List Of 
+    <div *ngIf="!isCollapsed" class="alert alert-info mt10 mb10"> List Of 
       {{authenticationService?.module.isPrm ? properties?.activePartnerTileDescriptionForPrm : properties?.activePartnerTileDescription}}    </div>
     <ng-template [ngTemplateOutlet]="filter"></ng-template>
     <ng-template #filter>

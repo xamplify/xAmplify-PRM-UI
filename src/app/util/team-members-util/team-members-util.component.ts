@@ -899,7 +899,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         }
         if (emailId !== undefined && emailId !== '' && $.trim(emailId.length > 0)) {
           if (duplicateEmailIds.length == 0) {
-            if (!this.referenceService.validateEmailId(emailId)) {
+            if (!this.referenceService.validateEmailId($.trim(emailId))) {
               emailIds.push(emailId);
               this.customResponse = new CustomResponse('ERROR', emailIds + ' is invalid email address.', true);
               this.csvErrors = true;

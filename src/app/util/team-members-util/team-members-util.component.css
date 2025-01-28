@@ -596,3 +596,13 @@ border-radius: 7px;
 .custom-margin{
   margin-top: 40px;
 }
+@media only screen and (min-width:1190px){
+.team-member-btns{
+  display:flex;
+  align-items: center;
+}
+.invite_team_btns{
+  display: flex; 
+  justify-content:center;
+}
+}

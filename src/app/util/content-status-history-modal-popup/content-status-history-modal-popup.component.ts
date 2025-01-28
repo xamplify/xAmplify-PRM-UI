@@ -101,7 +101,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.closeModalPopUp();
         this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       },()=>{
-        this.getApprovalPrivileges(this.loggedInUserId, this.createdById);
+        this.getApprovalPrivileges(this.loggedInUserId);
         this.findComments();
       });
   }
@@ -271,15 +271,13 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     }, 3000)
   }
 
-  getApprovalPrivileges(loggedInUserId: number, createdById: number) {
+  getApprovalPrivileges(loggedInUserId: number) {
     this.commentModalPopUpLoader = true;
-    this.approveService.getApprovalPrivileges(loggedInUserId, createdById).subscribe(
+    this.approveService.getApprovalPrivileges(loggedInUserId).subscribe(
         response => {
           if (response.statusCode === 200 && response.data) {
-            this.approverControlSettingsDTO = response.data.loggedInUserPrivileges;
-            this.createrControlSettingsDTO = response.data.createdByUserPrivileges;
+            this.approverControlSettingsDTO = response.data;
             this.checkIsApprover(this.approverControlSettingsDTO);
-            this.checkIsCreatedByAnyApprover(this.createrControlSettingsDTO);
           }
           this.commentModalPopUpLoader = false;
         }, error => {
@@ -296,16 +294,6 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       this.canApprove = true;
     } else if (approverControlSettingsDTO.playbookApprover && this.moduleType.toUpperCase() == 'PLAYBOOK') {
       this.canApprove = true;
-    }
-  }
-
-  checkIsCreatedByAnyApprover(createrControlSettingsDTO: ApprovalControlSettingsDTO) {
-    if (createrControlSettingsDTO.assetApprover && this.moduleType.toUpperCase() == 'DAM') {
-      this.createdByAnyApprover = true;
-    } else if (createrControlSettingsDTO.trackApprover && this.moduleType.toUpperCase() == 'TRACK') {
-      this.createdByAnyApprover = true;
-    } else if (createrControlSettingsDTO.playbookApprover && this.moduleType.toUpperCase() == 'PLAYBOOK') {
-      this.createdByAnyApprover = true;
     }
   }
 

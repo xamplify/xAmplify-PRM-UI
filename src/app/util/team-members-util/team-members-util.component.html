@@ -34,7 +34,7 @@
   <!--End Of Page-bar---->
 
   <!-- CSV Errors---->
-  <div *ngIf="csvErrors"><app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
+  <div><app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
       [showCloseIcon]="true"></app-response-message><br></div>
   <!-- End Of CSV Errors---->
 
@@ -49,16 +49,15 @@
       <!--List Of Team members---->
       <div class="portlet light remove_cardBgcolor light_bg_removal remove_space">
         <div class="portlet-title remove_border">
-          <div class="row flex_unset" style="display:flex;align-items: center;">
-            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 mb_width100">
-              <div class="caption mg-top7 team_header">Team Members
+          <div class="row flex_unset team-member-btns">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2 mb_width100">
+              <div class="caption mg-top7 team_header mt0">Team Members
               </div>
             </div>
             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-4  moveButtonsCu button_placement mb_width26"
               style="padding-right: 10px;">
-              <div class="row mr-21">
                 <div class="clearfix" *ngIf="isTeamMemberModule &&!isNavigatedFromSuperAdminScreen">
-                  <section class="clearfix" style="display: flex; justify-content: end;">
+                  <section class="clearfix invite_team_btns d-flex">
                     <ng-container
                       *ngIf="!authenticationService?.module?.deletedPartner && !(authenticationService?.companyProfileName === 'versa-networks' && authenticationService?.module?.loggedInThroughVendorVanityUrl)">
                       <div class="pull-right mr5">
@@ -87,7 +86,6 @@
                     <ng-template *ngIf="!isLoggedInAsTeamMember" [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
                   </section>
                 </div>
-              </div>
               <!-- close inner row-->
             </div>
             <div class="col-lg-5 col-md-5 col-xs-12 col-sm-5 pull-right mb_pl0 mb_width74 search_width50"
@@ -380,8 +378,8 @@
 
     <!--Add a Team Member Div-->
     <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
-      <div class="portlet light remove_cardBgcolor light_bg_removal remove_space">
-        <div class="portlet-title remove_border">
+      <div class="portlet light mt5">
+        <div class="portlet-title">
           <div class="caption">
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
             <span *ngIf="editTeamMember">Edit Team Member</span>
@@ -515,7 +513,7 @@
                     <label class="control-label col-sm-3">Status</label>
                     <div class="col-sm-8">
                       <div
-                        [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+                        [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Activate/Deactivate the team member'">
                         <switch *ngIf="team.status=='UNAPPROVED'" [status]="team.enabled"
                           [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                           [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -998,7 +996,7 @@
     </span>
   </ng-template>
   <ng-template #filter>
-    <div class="portlet light ht125 mt10" *ngIf="showFilterOption && !showFilterDropDown">
+    <div class="portlet light ht125 mt10 ml0 mr0" *ngIf="showFilterOption && !showFilterDropDown">
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <!-- Alert Message Box -->

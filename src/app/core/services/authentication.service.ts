@@ -296,6 +296,7 @@ export class AuthenticationService {
           this.userProfile = res.json();
           this.logedInCustomerCompanyNeme = res.json().companyName;
           this.setUserLoggedIn(true);
+          localStorage.setItem(XAMPLIFY_CONSTANTS.filterPartners, res.json().partnerFilter);
         }));
   }
   getUserByUserName(userName: string) {
