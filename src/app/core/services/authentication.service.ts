@@ -36,8 +36,7 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Injectable()
 export class AuthenticationService {
- 
-
+  
 
   access_token: string;
   refresh_token: string;
@@ -1151,6 +1150,7 @@ export class AuthenticationService {
   }
 
   sendTestEmail(sendTestEmailDto: SendTestEmailDto) {
+    alert("Send Test Email Triggers");
     sendTestEmailDto.fromEmail = this.user.emailId;
     let url = this.REST_URL + "email-template/sendTestEmail?access_token=" + this.access_token;
     return this.callPostMethod(url, sendTestEmailDto);
@@ -1526,4 +1526,39 @@ vanityWelcomePageRequired(userId) {
    return this.callPostMethod(url, "");
 
   }
+
+  /***XNFR-832***/
+  getFundingTemplateHtmlBody() {
+    let url = this.REST_URL + 'v_url/unlockMdfFundingTemplate/' + this.getUserId()+"/htmlBody?access_token="+this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /***XNFR-832***/
+  sendMdfFundRequestEmail(sendTestEmailDto: SendTestEmailDto) {
+    sendTestEmailDto.loggedInUserId = this.getUserId();
+    let url = this.REST_URL + 'campaign/mdf-request-email?access_token='+this.access_token;
+    return this.callPostMethod(url,sendTestEmailDto);
+  }
+  
+  /***XNFR-832***/
+  getMdfCampaignDetails(alias: any) {
+    let url = this.REST_URL + 'campaign-mdf/analytics/'+alias;
+    return this.callGetMethod(url);
+  }
+  
+  /***XNFR-832***/
+  getMdfCampaignTemplatePreview(alias:any){
+    let url = this.REST_URL + 'campaign-mdf/template/'+alias;
+    return this.callGetMethod(url);
+  }
+
+  /***XNFR-832***/
+  requestAccount(campaignMdfRequestAccountDto:any){
+    let url = this.REST_URL + 'campaign-mdf/request-account';
+    return this.callPostMethod(url,campaignMdfRequestAccountDto);
+  }
+
+ 
+  
+
 }

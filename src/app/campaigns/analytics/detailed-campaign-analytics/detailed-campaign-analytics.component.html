@@ -59,23 +59,21 @@
                   </div>
                   <!-- ****************campaign info**************** -->
                   <div class="pl10 pr10 col-xs-12 tiles_hover_effect" [ngClass]="{
-              'col-sm-3': campaignType === 'VIDEO',
-              'col-sm-4':
-              campaignType === 'REGULAR' ||
-              campaignType === 'LANDINGPAGE' ||
-              campaignType === 'SURVEY',
-              'col-sm-6': campaignType === 'SOCIAL'
-              }" *ngIf="
-              campaignType === 'REGULAR' ||
-              campaignType === 'LANDINGPAGE' ||
-              campaignType === 'VIDEO' ||
-              campaignType === 'SOCIAL' ||
-              campaignType === 'SURVEY'
-              ">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold forbidden"
-                        style="display: flex" [class.disabled]="
-                 !isPartnerEnabledAnalyticsAccess ? true : null
-                 ">
+                                'col-sm-3': campaignType === 'VIDEO',
+                                'col-sm-4':
+                                campaignType === 'REGULAR' ||
+                                campaignType === 'LANDINGPAGE' ||
+                                campaignType === 'SURVEY',
+                                'col-sm-6': campaignType === 'SOCIAL'
+                                }" *ngIf="
+                                campaignType === 'REGULAR' ||
+                                campaignType === 'LANDINGPAGE' ||
+                                campaignType === 'VIDEO' ||
+                                campaignType === 'SOCIAL' ||
+                                campaignType === 'SURVEY'
+                                ">
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold forbidden" style="display: flex"
+                        [class.disabled]="!isPartnerEnabledAnalyticsAccess ? true : null">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>

@@ -55,6 +55,10 @@ export class CampaignAccess {
 /****XNFR-712****/
   vendorMarketplace:boolean = false;
   socialShareOptionEnabled:boolean = false;
+
+  approvals = false;
+  unlockMdfFundingEnabled = false;
   approvalHub = false;
+
 
 }

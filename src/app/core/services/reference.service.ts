@@ -3973,6 +3973,22 @@ getFirstLetter(inputString:any) {
     );
   }
 
+
+
+  replaceCampaignMDFFundingTemplateMergeTags(campaignName: string,recipientName:string,updatedBody: string) {
+    if (campaignName != undefined) {
+       updatedBody = updatedBody.replace(this.senderMergeTag.campaignNameGlobal,campaignName);
+    }
+    if(this.isValidString(recipientName)){
+      updatedBody = updatedBody.replace(this.senderMergeTag.recipientNameGlobal,recipientName);
+    }
+    return updatedBody;
+  }
+
+  isValidString(input:string){
+    return input!=undefined && $.trim(input).length>0 && $.trim(input)!="";
+  }
+
   downloadPartnesReports(loggedInUserId: number, selectedPartnerCompanyIds: any[], pagination: Pagination, applyFilter: boolean, fromDateFilter: any, toDateFilter: any, urlString: any) {
     let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? loggedInUserId : 0;
     let partnerCompanyIdsRequestParam = selectedPartnerCompanyIds && selectedPartnerCompanyIds.length > 0 ? selectedPartnerCompanyIds : [];
@@ -3990,6 +4006,7 @@ getFirstLetter(inputString:any) {
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + sortcolumn + sortingOrder +moduleName+ timeZoneRequestParm;
     this.openWindowInNewTab(url);
   }
+
 
   
 }

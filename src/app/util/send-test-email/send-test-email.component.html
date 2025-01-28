@@ -13,7 +13,7 @@
                   <div *ngIf="!isPreviewEmailTemplate">
                      <div class="form-group">
                         <label>Email Address<span class="required">*</span></label>
-                  
+                 
                         <input *ngIf="!vanityTemplatesPartnerAnalytics" type="text" autocomplete="off"
                            placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.toEmail"
                            [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
@@ -36,7 +36,7 @@
                         <label>Email Body</label>
                      </div>
                   </div>
-                  <ng-container *ngIf="!vanityTemplatesPartnerAnalytics">
+                  <ng-container *ngIf="!vanityTemplatesPartnerAnalytics && !isSendMdfRequestOptionClicked">
                      <p>Please <a (click)="previewEmailTemplate()">click here</a> to view in the browser</p>
                   </ng-container>
                   <div id="sendTestEmailHtmlBody" class="plspx"></div>
@@ -48,7 +48,7 @@
             <button class="btn Btn-Gray neg_mrg_top4" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
             <button type="submit" class="button bgcolor-unset btn-top3" [disabled]="!isValidForm || clicked"
                (click)="send();clicked = true" *ngIf="!sent && !isPreviewEmailTemplate">
-               <span class="btn Btn-Green transition txt_pd-top3">{{vanityTemplatesPartnerAnalytics ? 'Send' : 'Send Test' }}<i class="fa fa-paper-plane mr5 ml-4"
+               <span class="btn Btn-Green transition txt_pd-top3">{{(vanityTemplatesPartnerAnalytics || isSendMdfRequestOptionClicked) ? 'Send' : 'Send Test' }}<i class="fa fa-paper-plane mr5 ml-4"
                      aria-hidden="true"></i></span>
             </button>
          </div>

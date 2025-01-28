@@ -184,12 +184,13 @@ export class AppComponent implements OnInit, AfterViewInit {
                 let partnerLandscapeCategories = currentUrl.indexOf('mps/')>-1;
                 let mapsUtilUrl = currentUrl.indexOf('mapsUtil')>-1;
                 let marketplaceMapsUrl = currentUrl.indexOf('marketplaceMap/')>-1;
+                let campaignMdfAnalyticsUrl = currentUrl.indexOf('funding-request/')>-1;
                 let exculdeUrls =  ( !loginUrl && !emptyUrl && !signUpUrl && !forgotPasswordUrl && !userLockUrl && !registerUrl &&  !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
                                   !shareUrl && !showCampaignVideoUrl &&  !showCampaignEmail &&  !companyPageUrl && !partnerPageUrl && !logeUrl &&
                                   !unsubscribeUrl && !serviceUnavailableUrl && !accessDeniedUrl &&   !rsvpUrl && !smsShowCampaignUrl && !showEventCampaignUrl &&
                                   !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl
                                    && !samlSecurityUrl && !logoutUrl && !expiredUrl && !teamMemberSignUpUrl && !partnerSignUpUrl && !vendorLandscapCategories && !partnerLandscapeCategories
-                                  && !mapsUtilUrl && !marketplaceMapsUrl);
+                                  && !mapsUtilUrl && !marketplaceMapsUrl && !campaignMdfAnalyticsUrl);
 
                  if(exculdeUrls){
                   this.logoutFromAllTabs();
