@@ -6,7 +6,6 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { Processor } from '../../core/models/processor';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
-import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Component({
   selector: 'app-campaign-mdf-analytics',
@@ -22,7 +21,9 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
   apiResponseFinished = false;
   campaignDetails:any;
   campaignReport:any;
-
+  isOpportunitiesModuleEnabled = false;
+  requestAccountButtonClicked = false;
+  requestAccountButtonText = "Request an Account";
   constructor(private route: ActivatedRoute,private authenticationService:AuthenticationService,
     private referenceService:ReferenceService,private logger:XtremandLogger,
     public processor:Processor,public properties:Properties) { }
@@ -43,6 +44,7 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
           this.campaignReport = response.data;
           let map = response.map['campaignMdfDetails'];
           this.campaignDetails = map;
+          this.isOpportunitiesModuleEnabled = response.map['opportunitiesAccessEnabled'];
         }else{
           if(this.statusCode==403){
             this.statusCode = 404;
@@ -67,5 +69,22 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
 
   previewTemplate(){
    this.referenceService.openWindowInNewTab("/funding-request/"+this.alias+"/preview");
+  }
+
+  requestAccount(){
+    this.requestAccountButtonClicked = true;
+    this.requestAccountButtonText = "Please Wait...";
+    let campaignMdfRequestAccountDto= {};
+    campaignMdfRequestAccountDto['mdfAlias'] = this.alias;
+    this.authenticationService.requestAccount(campaignMdfRequestAccountDto).subscribe(
+      response => {
+        this.referenceService.showSweetAlertSuccessMessage("Your account request has been submitted successfully");
+        this.requestAccountButtonClicked = false;
+        this.requestAccountButtonText = "Request an Account";
+      }, error => {
+        this.requestAccountButtonClicked = false;
+        this.requestAccountButtonText = "Request an Account";
+       this.referenceService.showSweetAlertServerErrorMessage();
+      });
   }
 }

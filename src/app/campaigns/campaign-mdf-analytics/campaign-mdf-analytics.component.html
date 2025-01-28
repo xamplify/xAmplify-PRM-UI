@@ -1,8 +1,12 @@
 
 <div [hidden]="processor.isProcessing">
   <div class="page-content" *ngIf="success && statusCode==200">
+    <button class="btn btn-primary float-right request-account"  [ngClass]="{ 'disabled-div': requestAccountButtonClicked }"
+      [disabled]="requestAccountButtonClicked" (click)="!requestAccountButtonClicked && requestAccount()">
+      <i *ngIf="requestAccountButtonClicked" class="fa fa-spinner fa-spin mr5"></i>{{requestAccountButtonText}}</button>
       <div class="portlet light clearfix remove_cardBgcolor light_bg_removal tiles_aligns">
         <div class="portlet-body">
+         
             <!--Campaign Details-->
             <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
               <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold disabled-div">
@@ -181,30 +185,32 @@
                 </div>
               </button>
             </div>
-            <!--Leads-->
-            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-              <button class="portlet light color1-invert crcb vlt-b-c detail_card">
-                <div class="portlet-body text-center">
-                  <i class="fa fa-user-circle"></i>
-                  <h1>
-                    <b>{{campaignReport?.leadCount}}</b>
-                 </h1>
-                 <h5>Leads</h5>
-                </div>
-              </button>
-            </div>
-             <!--Deals-->
-             <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-              <button class="portlet light color1-invert crcb lt-g-b-c detail_card">
-                <div class="portlet-body text-center">
-                  <i class="fa fa-tags"></i>
-                  <h1>
-                    <b>{{campaignReport?.dealCount}}</b>
-                 </h1>
-                 <h5>Deals</h5>
-                </div>
-              </button>
-            </div>
+            <ng-container *ngIf="isOpportunitiesModuleEnabled">
+              <!--Leads-->
+              <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                <button class="portlet light color1-invert crcb vlt-b-c detail_card">
+                  <div class="portlet-body text-center">
+                    <i class="fa fa-user-circle"></i>
+                    <h1>
+                      <b>{{campaignReport?.leadCount}}</b>
+                  </h1>
+                  <h5>Leads</h5>
+                  </div>
+                </button>
+              </div>
+              <!--Deals-->
+              <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                <button class="portlet light color1-invert crcb lt-g-b-c detail_card">
+                  <div class="portlet-body text-center">
+                    <i class="fa fa-tags"></i>
+                    <h1>
+                      <b>{{campaignReport?.dealCount}}</b>
+                  </h1>
+                  <h5>Deals</h5>
+                  </div>
+                </button>
+              </div>
+            </ng-container>
           </div>
         </section>
       </div>

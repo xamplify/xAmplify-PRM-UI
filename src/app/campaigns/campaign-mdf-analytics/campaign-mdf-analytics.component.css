@@ -455,3 +455,9 @@ th.leftAlignTableth {
 .camp_response {
   margin: 10px 0px;
 }
+
+.request-account{
+  margin-top: 20px; /* Add spacing at the top */
+  margin-bottom: 20px; /* Add spacing at the bottom */
+  margin-right: 20px;
+}

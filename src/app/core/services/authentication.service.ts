@@ -1552,6 +1552,12 @@ vanityWelcomePageRequired(userId) {
     return this.callGetMethod(url);
   }
 
+  /***XNFR-832***/
+  requestAccount(campaignMdfRequestAccountDto:any){
+    let url = this.REST_URL + 'campaign-mdf/request-account';
+    return this.callPostMethod(url,campaignMdfRequestAccountDto);
+  }
+
  
   
 
