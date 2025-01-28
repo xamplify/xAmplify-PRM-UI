@@ -17,3 +17,20 @@
   }
   
 }
+.dashboard-stat.green-soft .more {
+  color: #fff;
+  background-color: #3a9c96;
+}
+.dashboard-stat.blue-soft .more {
+  color: #fff;
+  background-color: #447dad;
+}
+span.filterActiveBg {
+  background-color: #10ad39;
+}
+span.filterActiveBg i {
+  color: #fff;
+}
+.defaultFilterACtiveBg{
+  background-color: #f1f3fa;
+}

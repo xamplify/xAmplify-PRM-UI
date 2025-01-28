@@ -542,6 +542,14 @@ export class SortOption {
 		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
 	];
+
+	/*** XNFR-850 ***/
+	inviteTeamMemberAnalyticsDropDownOptions = [
+		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+	];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -639,5 +647,8 @@ export class SortOption {
 
 	/**XNFR-834**/
 	public approvalHubSortOption: any = this.approvalHubSortDropDownOptions[this.approvalHubSortDropDownOptions.length - 1];
+
+	/*** XNFR-850 ***/
+	public teamMemberAnalyticsSortOptions: any = this.inviteTeamMemberAnalyticsDropDownOptions[this.inviteTeamMemberAnalyticsDropDownOptions.length - 1];
 
 }
