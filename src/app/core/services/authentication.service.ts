@@ -1539,11 +1539,20 @@ vanityWelcomePageRequired(userId) {
     let url = this.REST_URL + 'campaign/mdf-request-email?access_token='+this.access_token;
     return this.callPostMethod(url,sendTestEmailDto);
   }
-
+  
+  /***XNFR-832***/
   getMdfCampaignDetails(alias: any) {
     let url = this.REST_URL + 'campaign-mdf/analytics/'+alias;
     return this.callGetMethod(url);
   }
+  
+  /***XNFR-832***/
+  getMdfCampaignTemplatePreview(alias:any){
+    let url = this.REST_URL + 'campaign-mdf/template/'+alias;
+    return this.callGetMethod(url);
+  }
+
+ 
   
 
 }

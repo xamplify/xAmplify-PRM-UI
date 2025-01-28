@@ -1,6 +1,6 @@
 
 <div [hidden]="processor.isProcessing">
-  <div class="page-content">
+  <div class="page-content" *ngIf="success && statusCode==200">
       <div class="portlet light clearfix remove_cardBgcolor light_bg_removal tiles_aligns">
         <div class="portlet-body">
             <!--Campaign Details-->

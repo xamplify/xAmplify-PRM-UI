@@ -1,48 +1,46 @@
-import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Processor } from '../../core/models/processor';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Component({
-  selector: 'app-campaign-mdf-analytics',
-  templateUrl: './campaign-mdf-analytics.component.html',
-  styleUrls: ['./campaign-mdf-analytics.component.css'],
-  providers: [Processor,Properties]
+  selector: 'app-campaign-mdf-template-preview',
+  templateUrl: './campaign-mdf-template-preview.component.html',
+  styleUrls: ['./campaign-mdf-template-preview.component.css'],
+  providers:[Processor,Properties]
 })
-export class CampaignMdfAnalyticsComponent implements OnInit {
-  alias: any;
-  statusCode = 404;
-  customResponse: CustomResponse = new CustomResponse();
-  success = false;
-  apiResponseFinished = false;
-  campaignDetails:any;
-  campaignReport:any;
+export class CampaignMdfTemplatePreviewComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,private authenticationService:AuthenticationService,
-    private referenceService:ReferenceService,private logger:XtremandLogger,
-    public processor:Processor,public properties:Properties) { }
+  success = false;
+  customResponse:CustomResponse = new CustomResponse();
+  apiResponseFinished = false;
+  alias:any;
+  statusCode: any;
+
+  constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
+    public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
 
   ngOnInit() {
     this.processor.set(this.processor);
     this.alias = this.route.snapshot.params['mdfAlias'];
-    this.getCampaignDetails();
+    this.getEmailTemplatePreviewByAlias();
+    
   }
 
-
-  private getCampaignDetails() {
-    this.authenticationService.getMdfCampaignDetails(this.alias).subscribe(
+  getEmailTemplatePreviewByAlias(){
+    this.authenticationService.getMdfCampaignTemplatePreview(this.alias).subscribe(
       response => {
         this.statusCode = response.statusCode;
+        let data = response.data;
         if(this.statusCode==200){
           this.success = true;
-          this.campaignReport = response.data;
-          let map = response.map['campaignMdfDetails'];
-          this.campaignDetails = map;
+          let htmlBody = data.htmlBody;
+          document.getElementById('html-preview').innerHTML = htmlBody;
         }else{
           if(this.statusCode==403){
             this.statusCode = 404;
@@ -65,7 +63,4 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
       });
   }
 
-  previewTemplate(){
-   this.referenceService.openWindowInNewTab("/funding-request/"+this.alias+"/preview");
-  }
 }
