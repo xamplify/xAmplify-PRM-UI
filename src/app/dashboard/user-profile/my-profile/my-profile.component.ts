@@ -387,6 +387,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	partnerSharedPagesLabel="Partner Showcase";
 
 	approvalConfigurationSettings: boolean = false;
+	approvalControlManagementSettings: boolean = false;
 
 	showCalendarIntegrations: boolean = false;
 	islandScapeLabel: boolean;
@@ -2285,7 +2286,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == 'calendarIntegrations') {
 			this.showCalendarIntegrations = true;
 			this.activeTabHeader = this.properties.calendarIntegrations;
-		}else if (this.activeTabName == this.signatureMenuHeader) {
+		}	else if (this.activeTabName == "approvalControlManagementSettings") {
+			this.approvalControlManagementSettings = true;
+			this.activeTabHeader = this.properties.approvalControlManagementSettings;
+		} else if (this.activeTabName == this.signatureMenuHeader) {
 			this.startNgxLoader();
 			this.updateSignatureSettingsOption(false);
 			let self = this;

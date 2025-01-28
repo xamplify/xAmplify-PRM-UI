@@ -41,4 +41,5 @@ export class LandingPage {
     welcomePages:boolean = false;
     /*XNFR-712*/
     partnerJourneyPages:boolean = false;
+    vendorMarketPlacePage:boolean = false;
 }

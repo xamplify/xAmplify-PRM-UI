@@ -1,3 +1,4 @@
+<ngx-loading [show]="autoSaveLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content" style="padding: 15px 15px 15px 15px!important;"
 	[class.ml0]="!authenticationService.user.hasCompany || authenticationService.isSuperAdmin()">
 	<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -414,7 +415,7 @@
 												<!--XNFR-820-->
 												<tr>
 													<th scope="row">Approval Hub</th>
-													<td><input type="checkbox" [(ngModel)]="campaignAccess.approvals" [ngModelOptions]="{standalone: true}"></td>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.approvalHub" [ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<!--XNFR-832-->
 												<tr *ngIf="marketing || orgAdmin">

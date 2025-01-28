@@ -115,7 +115,7 @@ export const routes: Routes = [
 			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule', data: { preload: true } },
 
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } },
-			{ path: 'approve', loadChildren: 'app/approval/approval.module#ApprovalModule', data: { preload: true } },
+			{ path: 'approval-hub', loadChildren: 'app/approval/approval.module#ApprovalModule', data: { preload: true } },
 		]
 	},
 	{ path: 'terms-conditions', component: TermsConditonComponent },

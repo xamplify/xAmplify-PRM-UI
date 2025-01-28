@@ -1072,6 +1072,7 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
   this.landingPage.welcomePages = this.welcomePages;
   this.landingPage.partnerJourneyPages = this.isPartnerJourneyPages;
+  this.landingPage.vendorMarketPlacePage = this.isVendorMarketplacePages;
   if(this.landingPage.hasVendorJourney || this.welcomePages || this.isPartnerJourneyPages || this.isVendorMarketplacePages){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
   }

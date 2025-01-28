@@ -13,16 +13,19 @@
                   <div *ngIf="!isPreviewEmailTemplate">
                      <div class="form-group">
                         <label>Email Address<span class="required">*</span></label>
-                        <input type="email" autocomplete="off" placeholder="Please Enter Email Address"
-                           [(ngModel)]="sendTestEmailDto.toEmail" [ngModelOptions]="{standalone: true}"
-                           (input)="validateForm()" class="form-control"  [disabled]="vanityTemplatesPartnerAnalytics">
-                        <span class="required" *ngIf="!isValidEmailFormat">Please enter a valid email address</span>
-                     </div>
-                     <!--XNFR-832-->
-                     <div class="form-group" *ngIf="isSendMdfRequestOptionClicked">
-                        <label>Recipient Name</label>
-                        <input type="text" autocomplete="off" placeholder="Please Enter Recipient Name (Optional)" [(ngModel)]="sendTestEmailDto.recipientName" [ngModelOptions]="{standalone: true}" class="form-control">
-                     </div>
+                 
+                        <input *ngIf="!vanityTemplatesPartnerAnalytics" type="text" autocomplete="off"
+                           placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.toEmail"
+                           [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
+                  
+                        <textarea *ngIf="vanityTemplatesPartnerAnalytics" autocomplete="off" placeholder="Please Enter Email Address"
+                           [(ngModel)]="sendTestEmailDto.toEmail" [ngModelOptions]="{standalone: true}" (input)="validateForm()"
+                           class="form-control email_textarea" [disabled]="vanityTemplatesPartnerAnalytics"></textarea>
+                  
+                        <span class="required" *ngIf="!isValidEmailFormat && !vanityTemplatesPartnerAnalytics">
+                           Please enter a valid email address
+                        </span>
+                     </div>     
                      <div class="form-group">
                         <label>Email Subject<span class="required">*</span></label>
                         <input type="text" autocomplete="off" [(ngModel)]="sendTestEmailDto.subject"

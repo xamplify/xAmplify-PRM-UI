@@ -3114,8 +3114,7 @@ button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4 {
   border-color: #e0e0e0;
 }
 button.button.bgcolor-unset,
-button#copyFrom_clipboard,
-button#add_contact {
+button#copyFrom_clipboard{
   background: none !important;
 }
 /***** Sudha Sri(12-06-204) *****/
@@ -3417,4 +3416,7 @@ border-bottom-right-radius: 7px;
 @media(min-width: 1200px) and (max-width: 1264px) {
   .search_width50 { width: 50%  !important;}
   
+}
+.portlet-title.border-bottom-1px {
+  border-bottom: none !important;
 }

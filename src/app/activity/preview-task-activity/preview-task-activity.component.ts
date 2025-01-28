@@ -3,6 +3,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { TaskActivity } from '../models/task-activity-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { TaskActivityService } from '../services/task-activity.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-preview-task-activity',
@@ -19,7 +20,7 @@ export class PreviewTaskActivityComponent implements OnInit {
   taskPriorityOption:SortOption = new SortOption();
   taskActivity:TaskActivity = new TaskActivity();
 
-  constructor(public taskService:TaskActivityService, public referenceService:ReferenceService) { }
+  constructor(public taskService:TaskActivityService, public referenceService:ReferenceService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
     this.referenceService.openModalPopup('viewTaskModalPopup');
@@ -45,6 +46,10 @@ export class PreviewTaskActivityComponent implements OnInit {
   closeTaskModal() {
     this.referenceService.closeModalPopup('viewTaskModalPopup');
     this.notifyClose.emit();
+  }
+
+  errorHandler(event: any) {
+    event.target.src = 'assets/images/icon-user-default.png';
   }
 
 }

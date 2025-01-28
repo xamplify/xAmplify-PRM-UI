@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageAprrovalComponent } from './manage-aprroval.component';
+import { EventCalendarComponent } from './event-calendar.component';
 
-describe('ManageAprrovalComponent', () => {
-  let component: ManageAprrovalComponent;
-  let fixture: ComponentFixture<ManageAprrovalComponent>;
+describe('EventCalendarComponent', () => {
+  let component: EventCalendarComponent;
+  let fixture: ComponentFixture<EventCalendarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManageAprrovalComponent ]
+      declarations: [ EventCalendarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManageAprrovalComponent);
+    fixture = TestBed.createComponent(EventCalendarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

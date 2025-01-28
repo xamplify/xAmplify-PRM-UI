@@ -394,7 +394,7 @@ export class Properties {
 	showDealPipeLineCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Pipeline' option in the deal registration form because \"Show Deal Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
 	showDealPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the deal registration form because \"Show Deal Stage\" is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
 	showLeadPipeLineCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Pipeline' option in the lead registration form because \"Show Lead Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
-	showLeadPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the lead registration form because \"Show Lead Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showLeadPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the lead registration form because \"Show Lead Stage\" is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
 	showRegisterDealOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, your "+this.partnersMergeTag+" will not see the 'Register Deal' button in the opportunities section.";
 	showRegisterDealOnMessage = "Since the \"Show Register Deal\" option is toggled ON, your "+this.partnersMergeTag+" will see the 'Register Deal' option button in the opportunities section.";
 	showRegisterDealForPartnerLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for partner leads.";
@@ -402,7 +402,7 @@ export class Properties {
 	showRegisterDealToSelfLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for self leads.";
 	showRegisterDealToSelfLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for self leads.";
 	showLeadPipeLineCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Pipeline' option in the lead registration form because 'Show Lead Pipeline' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
-	showLeadPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the lead registration form because 'Show Lead Stage' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showLeadPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the lead registration form because 'Show Lead Stage' is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
 	showDealPipeLineCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Pipeline' option in the deal registration form because 'Show Deal Pipeline' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
 	showDealPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the deal registration form because 'Show Deal Stage' is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
 	leadPipelineTooltipTitle = "Enabling this option will allow your partner to view the select pipeline option in the lead registration form";
@@ -489,6 +489,7 @@ export class Properties {
 	
 	/** XNFR-781 **/
 	approvalConfigurationSettings: string = "Content Approval Settings";
+	approvalControlManagementSettings: string = "Team Member Assignment";
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_1 = "You have the ability to Approve or Reject the Assets created by your Team Members.";
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_2 = "By disabling this option, the Assets that are neither rejected nor approved will be automatically Approved!";
 	ASSETS_APPROVAL_STATUS_CONFIGURATION_HELPTEXT_3 = "By enabling this option, you need to manually review and approve or reject assets submitted by your team before they are available for use. An email will be sent accordingly."
@@ -527,6 +528,18 @@ export class Properties {
 	my_Partner_Info = 'You have the ability to apply the default filter as My Partner(s).Enabling this option will allow you to view the partners assigned to you.';
 	all_Partners_Info = 'You have the ability to apply the default filter as All Partners.Enabling this option will allow you to view all the partners of your company.';
 
+
 	UNLOCK_MDF_FUNDING = "UNLOCK_MDF_FUNDING";
+
+	/** XNFR-821  **/
+	TEAM_MEMBER_APPROVAL_PREVILEGES_SETTING_HELPER_TEXT = '**You have the authority to grant approval or rejection rights to team members. Based on the granted authority, team members will be able to approve or reject Assets, Tracks, and Playbooks as required.';
+	ASSET_REVIEW_DISABLED_TOOLTIP = 'Asset Review Control is currently disabled.';
+	TRACK_REVIEW_DISABLED_TOOLTIP = 'Track Review Control is currently disabled.';  
+	PLAYBOOK_REVIEW_DISABLED_TOOLTIP = 'Playbook Review Control is currently disabled.';
+	TEAM_MEMBER_NO_ACCESS_ASSETS_TOOLTIP = 'This team member does not have access to assets.';
+	TEAM_MEMBER_NO_ACCESS_TRACKS_TOOLTIP = 'This team member does not have access to tracks.';
+	TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP = 'This team member does not have access to playbooks.';
+
+
 }
 

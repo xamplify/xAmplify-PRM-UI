@@ -15,4 +15,5 @@ export class TaskActivity {
     remainderType:any = '';
     taskAttachmentDTOs:any;
     assignedToEmailId:any;
+    profilePath:any;
 }

@@ -2144,9 +2144,8 @@
 <ng-template #nextButton>
     <div>
         <button type="button"
-            class="button pull-right mBtnAlign f-w-600 w-10em1 mar-rgt-40 d-justify-end bgcolor-unset pd-top2"
-            [disabled]="!isValidFirstTab" (click)="isValidFirstTab && showLaunchTab()"><span
-                class="btn Btn-Green transition">Next</span></button>
+            class="btn btn-primary pull-right"
+            [disabled]="!isValidFirstTab" (click)="isValidFirstTab && showLaunchTab()">Next</button>
     </div>
 </ng-template>
 <ng-template #filter>
