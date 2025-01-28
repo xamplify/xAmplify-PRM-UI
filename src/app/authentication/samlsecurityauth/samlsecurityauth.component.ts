@@ -7,6 +7,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { Properties } from '../../common/models/properties';
 import { Processor } from '../../core/models/processor';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any;
 
 @Component({
@@ -19,6 +20,7 @@ export class SamlsecurityauthComponent implements OnInit {
   alias: string;
   userName: string;
   moduleToRedirect: any;
+  isWelcomePageEnabled:boolean = false;
   constructor(public authenticationService: AuthenticationService, public processor: Processor,
     public activatedRoute: ActivatedRoute, public router: Router, public xtremandLogger: XtremandLogger,
     public userService: UserService, private vanityURLService: VanityURLService,public referenceService:ReferenceService) { }
@@ -83,6 +85,7 @@ export class SamlsecurityauthComponent implements OnInit {
         this.referenceService.setFavIcon();
         this.authenticationService.getVanityURLUserRoles(this.userName, this.authenticationService.access_token).subscribe(result => {
           this.authenticationService.vanityURLUserRoles = result.data;
+          this.isWelcomePageEnabled = result.map.isWelcomePageEnabled;
           this.getUserNameDetailsByUserName();
         });
       }, error => {
@@ -111,6 +114,7 @@ export class SamlsecurityauthComponent implements OnInit {
 
       if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles) {
         userToken['roles'] = this.authenticationService.vanityURLUserRoles;
+        userToken[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]= this.isWelcomePageEnabled;
       }
 
       localStorage.setItem('currentUser', JSON.stringify(userToken));
