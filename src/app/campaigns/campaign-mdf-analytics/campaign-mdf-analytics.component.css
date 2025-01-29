@@ -1,6 +1,3 @@
-
-
-
 .p0 {
   padding: 0 !important;
 }
@@ -456,20 +453,48 @@ th.leftAlignTableth {
   margin: 10px 0px;
 }
 
-.request-account{
-  margin-top: 20px; /* Add spacing at the top */
-  margin-bottom: 20px; /* Add spacing at the bottom */
+.request-account {
+  margin-top: 20px;
+  /* Add spacing at the top */
+  margin-bottom: 20px;
+  /* Add spacing at the bottom */
   margin-right: 20px;
 }
 
-.page-padding{
+.page-padding {
   padding: 1em 1em 0 1em;
   margin-right: 15px;
-    margin-left: 15px;
+  margin-left: 15px;
 }
 
-.mx-t{
+.mx-t {
   margin-top: 6px;
-    margin-left: -10px;
-    margin-right: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  /* Optional background */
+  border-bottom: 1px solid #ddd;
+  /* Optional border */
+}
+
+.left-image img {
+  max-height: 80px;
+  width: auto;
+}
+
+.right-button button {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.header-image{
+  height: 42px;
+  width: auto;
+  margin: 10px 10px 10px 10px;
 }
