@@ -18,6 +18,7 @@ export class PublicTopNavigationBarComponent implements OnInit {
   requestAccountButtonText = "Request An Account";
   alias = "";
   @Input() companyLogoPath: string;
+  isCompanyLogoLoadedFromAnotherComponent = false;
   @Input() emailAddress: string;
   isCampaignMDF = false;
   processing = false;
@@ -39,6 +40,15 @@ export class PublicTopNavigationBarComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.companyLogoPath!=undefined){
+      this.isCompanyLogoLoadedFromAnotherComponent = true;
+    }else{
+      this.isCompanyLogoLoadedFromAnotherComponent = false;
+      if(this.vanityUrlService.isVanityURLEnabled()){
+        this.vanityUrlService.checkVanityURLDetails();
+      }
+    }
+   
   }
 
   setCountry() {
