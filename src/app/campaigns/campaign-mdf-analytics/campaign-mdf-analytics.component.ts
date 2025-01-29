@@ -6,6 +6,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { Processor } from '../../core/models/processor';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 
 @Component({
   selector: 'app-campaign-mdf-analytics',
@@ -26,11 +27,14 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
   requestAccountButtonText = "Request an Account";
   constructor(private route: ActivatedRoute,private authenticationService:AuthenticationService,
     private referenceService:ReferenceService,private logger:XtremandLogger,
-    public processor:Processor,public properties:Properties) { }
+    public processor:Processor,public properties:Properties,public vanityURLService:VanityURLService) { }
 
   ngOnInit() {
     this.processor.set(this.processor);
     this.alias = this.route.snapshot.params['mdfAlias'];
+    if(this.vanityURLService.isVanityURLEnabled()){
+      this.vanityURLService.checkVanityURLDetails();
+    }
     this.getCampaignDetails();
   }
 
