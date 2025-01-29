@@ -35,7 +35,7 @@ export class VendorRequestReportComponent implements OnInit {
     filterActiveBg: string;
     public teamMemberInfoFilters: Array<any>;
     showFilterOption: boolean = false;
-    public multiSelectPlaceholder: string = "Select Team Members";
+    public multiSelectPlaceholder: string = "Select Invited By";
     public dateFilterText: string = "Select Date Filter";
     filterResponse: CustomResponse = new CustomResponse();
 

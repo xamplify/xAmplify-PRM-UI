@@ -34,8 +34,8 @@
   <!--End Of Page-bar---->
 
   <!-- CSV Errors---->
-  <div><app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
-      [showCloseIcon]="true"></app-response-message><br></div>
+  <div style="margin-bottom: 20px !important;"><app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
+      [showCloseIcon]="true"></app-response-message></div>
   <!-- End Of CSV Errors---->
 
   <!-- Team Member Domain Whitelisting #XNFR-549 -->
@@ -378,7 +378,7 @@
 
     <!--Add a Team Member Div-->
     <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
-      <div class="portlet light mt5">
+      <div class="portlet light mt0">
         <div class="portlet-title">
           <div class="caption">
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
