@@ -52,6 +52,7 @@ import { MarketplaceUtilComponent } from './util/marketplace-util/marketplace-ut
 import { MarketplaceMapUtilComponent } from './util/marketplace-map-util/marketplace-map-util.component';
 import { CampaignMdfAnalyticsComponent } from './campaigns/campaign-mdf-analytics/campaign-mdf-analytics.component';
 import { CampaignMdfTemplatePreviewComponent } from './campaigns/campaign-mdf-template-preview/campaign-mdf-template-preview.component';
+import { CampaignMdfSearchComponent } from './util/campaign-mdf-search/campaign-mdf-search.component';
 
 
 export const routes: Routes = [
@@ -211,6 +212,7 @@ export const routes: Routes = [
 	{ path: 'marketplaceMap/:alias', component: MarketplaceMapUtilComponent },
 	{ path: 'funding-request/:mdfAlias/analytics', component: CampaignMdfAnalyticsComponent },
 	{ path: 'funding-request/:mdfAlias/preview', component: CampaignMdfTemplatePreviewComponent },
+	{ path: 'search', component: CampaignMdfSearchComponent },
 
 
 	{ path: '404', component: PageNotFoundComponent },

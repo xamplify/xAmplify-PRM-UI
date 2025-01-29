@@ -32,6 +32,7 @@ import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
 import { Properties } from 'app/common/models/properties';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { RequestDemo } from 'app/authentication/request-demo/request-demo';
 
 
 @Injectable()
@@ -1554,9 +1555,10 @@ vanityWelcomePageRequired(userId) {
   }
 
   /***XNFR-832***/
-  requestAccount(campaignMdfRequestAccountDto:any){
+  requestAccount(requestDemo:RequestDemo){
+    requestDemo.mdfRequest = true;
     let url = this.REST_URL + 'campaign-mdf/request-account';
-    return this.callPostMethod(url,campaignMdfRequestAccountDto);
+    return this.callPostMethod(url,requestDemo);
   }
 
  

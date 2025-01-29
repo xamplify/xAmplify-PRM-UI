@@ -541,5 +541,8 @@ export class Properties {
 	TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP = 'This team member does not have access to playbooks.';
 	PRIVILEGED_MANAGERS_APPROVAL_DISABLED_TOOLTIP = 'Admin and Supervisor approval authority cannot be modified.';
 
+	/**XNFR-832***/
+	MDF_CAMPAIGN_DESCRIPTION = "This campaign was launched to notify and engage specific contacts regarding an MDF (Market Development Funds) request. The goal is to ensure that recipients are informed about the available funding opportunities and encourage them to take necessary actions, such as submitting a request or reviewing the eligibility criteria.";
+
 }
 

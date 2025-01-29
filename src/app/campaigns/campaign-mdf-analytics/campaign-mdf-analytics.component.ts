@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { Processor } from '../../core/models/processor';
-import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 
@@ -17,7 +16,6 @@ import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 export class CampaignMdfAnalyticsComponent implements OnInit {
   alias: any;
   statusCode = 404;
-  customResponse: CustomResponse = new CustomResponse();
   success = false;
   apiResponseFinished = false;
   campaignDetails:any;
@@ -25,6 +23,8 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
   isOpportunitiesModuleEnabled = false;
   requestAccountButtonClicked = false;
   requestAccountButtonText = "Request an Account";
+  companyLogoPath = "";
+  emailAddress = "csravan@stratapps.com";
   constructor(private route: ActivatedRoute,private authenticationService:AuthenticationService,
     private referenceService:ReferenceService,private logger:XtremandLogger,
     public processor:Processor,public properties:Properties,public vanityURLService:VanityURLService) { }
@@ -49,11 +49,12 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
           let map = response.map['campaignMdfDetails'];
           this.campaignDetails = map;
           this.isOpportunitiesModuleEnabled = response.map['opportunitiesAccessEnabled'];
+          this.companyLogoPath = this.authenticationService.MEDIA_URL+response.map['companyLogoPath'];
+          this.emailAddress = this.campaignDetails.emailAddress;
         }else{
           if(this.statusCode==403){
             this.statusCode = 404;
           }
-          this.customResponse = new CustomResponse('ERROR',this.properties.pageNotFound,true);
         }
         this.apiResponseFinished = true;
         this.processor.remove(this.processor);
@@ -65,7 +66,6 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
           let errorResponse = JSON.parse(error['_body']);
           message = errorResponse['message'];
         }
-        this.customResponse = new CustomResponse('ERROR', message, true);
         this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       });
@@ -75,20 +75,5 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
    this.referenceService.openWindowInNewTab("/funding-request/"+this.alias+"/preview");
   }
 
-  requestAccount(){
-    this.requestAccountButtonClicked = true;
-    this.requestAccountButtonText = "Please Wait...";
-    let campaignMdfRequestAccountDto= {};
-    campaignMdfRequestAccountDto['mdfAlias'] = this.alias;
-    this.authenticationService.requestAccount(campaignMdfRequestAccountDto).subscribe(
-      response => {
-        this.referenceService.showSweetAlertSuccessMessage("Your account request has been submitted successfully");
-        this.requestAccountButtonClicked = false;
-        this.requestAccountButtonText = "Request an Account";
-      }, error => {
-        this.requestAccountButtonClicked = false;
-        this.requestAccountButtonText = "Request an Account";
-       this.referenceService.showSweetAlertServerErrorMessage();
-      });
-  }
+  
 }
