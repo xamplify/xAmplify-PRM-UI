@@ -21,6 +21,7 @@ export class TaskActivityComponent implements OnInit {
 
   @Input() contactId:number;
   @Input() reloadTab: boolean;
+  @Input() isCompanyJourney:boolean = false;
   @Output() notifyTaskUpdatedStatus = new EventEmitter();
   @Output() notifyDeleteSuccess = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();

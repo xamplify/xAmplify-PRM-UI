@@ -8,3 +8,8 @@
     margin: -7px;
   }
   ul.page-breadcrumb.pbc-m3{margin: 0px -30px !important;}
+
+/**XNFR-848**/
+.text-line :hover {
+    text-decoration-line: underline;
+}

@@ -25,20 +25,28 @@
           <li *ngIf="!isDealFromContact">
             <a>Add</a>
           </li>
-          <li *ngIf="isDealFromContact && !isFromCompanyModule">
+          <li *ngIf="isDealFromContact && !isFromCompanyModule && !isCompanyJourney && !isFromCompanyJourney && !isFromCompanyJourneyEditContacts">
             <a (click)="goBackToManageContacts()">Manage Contacts</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li *ngIf="isDealFromContact && isFromCompanyModule">
+          <li *ngIf="isDealFromContact && isFromCompanyModule || isCompanyJourney || isFromCompanyJourney || isFromCompanyJourneyEditContacts">
             <a (click)="goBackToManageCompanies()">Manage Companies</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li *ngIf="isDealFromContact && isFromEditContacts">
+          <li *ngIf="isFromCompanyJourneyEditContacts">
+            <a (click)="goBackToCompanyJourney()">Company Journey</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="(isDealFromContact && isFromEditContacts && !isCompanyJourney && !isFromCompanyJourney) || isFromCompanyJourneyEditContacts">
             <a (click)="goBackToEditContacts()">Edit Contacts</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
+          <li *ngIf="isDealFromContact && isFromCompanyJourney">
+            <a (click)="goBackToCompanyJourney()">Company Journey</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
           <li *ngIf="isDealFromContact">
-            <a (click)="goBackToContactDetailsPage()">Contact Journey</a>
+            <a (click)="((isCompanyJourney || isFromCompanyJourney) && !isFromContactAllDealsTab) ? goBackToContactDetailsAllLeadsPage():goBackToContactDetailsPage()">{{isCompanyJourney ? 'Company':'Contact'}} Journey</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
           <li *ngIf="isDealFromContact && isFromContactAllLeadsTab">

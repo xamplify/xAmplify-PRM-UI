@@ -297,6 +297,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isContactModule: boolean = false;
 	activeCrmType: any;
 	isLocalhostOrQADomain: boolean = false;
+	/**XNFR-848**/
+	isCompanyJourney: boolean;
+	companyJourneyId: any;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -3011,6 +3014,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			/***XNFR-553***/
 			if (RouterUrlConstants.contacts.includes(this.module)) {
 				this.selectedContactListId = this.refService.decodePathVariable(this.route.snapshot.params['userListId']);
+				this.companyJourneyId = this.refService.decodePathVariable(this.route.snapshot.params['companyId']);
 				this.contactListId = this.selectedContactListId;
 				this.showEdit = true;
 				this.setValuesToRequiredInputs();
@@ -3048,6 +3052,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.checkTermsAndConditionStatus();
 			this.contactService.deleteUserSucessMessage = false;
 			this.checkLocalhostOrQADomain();
+			/**XNFR-848**/
+			if (this.companyJourneyId != undefined) {
+				this.isCompanyJourney = true;
+			}
 		}
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
@@ -3705,6 +3713,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		let encodeUserId = this.refService.encodePathVariable(contact.id);
 		if (this.isFromCompanyModule) {
 			this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+		} else if (this.isCompanyJourney) {
+			let encodedUserListId = this.refService.encodePathVariable(this.selectedContactListId);
+			let encodedCompanyId = this.refService.encodePathVariable(this.companyJourneyId);
+			let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'ce/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId + "/" + encodedCompanyId;
+			this.refService.goToRouter(url);
 		} else {
 			this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
 		}
@@ -3806,5 +3819,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		this.refService.isDownloadCsvFile = true;
 	}
+
+	/**XNFR-848**/
+	backToCompanyJourney() {
+		let encodedId = this.refService.encodePathVariable(this.companyJourneyId);
+		let encodedUserListId = this.refService.encodePathVariable(this.selectedContactListId);
+		let url = "home/company/manage/details/"+encodedUserListId+"/"+encodedId;
+		this.refService.goToRouter(url);
+	  }
 
 }

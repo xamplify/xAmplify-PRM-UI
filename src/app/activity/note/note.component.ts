@@ -22,6 +22,7 @@ export class NoteComponent implements OnInit {
 
   @Input() contactId:number;
   @Input() reloadTab: boolean;
+  @Input() isCompanyJourney:boolean = false;
   @Output() notifyUpdateSuccess = new EventEmitter();
   @Output() notifyDeleteSuccess = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();

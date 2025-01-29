@@ -379,13 +379,14 @@ export class LeadsService {
   }
 
   /**XNFR-553**/
-  findLeadsAndCountByContactId(contactId:number, vanityUrlFilter:boolean, vendorCompanyName:string) {
+  findLeadsAndCountByContactId(contactId:number, vanityUrlFilter:boolean, vendorCompanyName:string, isCompanyJourney:boolean) {
     let loggedInUserId = this.authenticationService.getUserId();
     let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:"&loggedInUserId=0";
     let contactIdRequestParam = contactId!=undefined && contactId>0 ? "&contactId="+contactId:"&contactId=0";
     let vanityUrlFilterParam = vanityUrlFilter!=undefined?"&vanityUrlFilter="+vanityUrlFilter:"";
     let vendorCompanyNameParam = vendorCompanyName!=undefined ? "&vendorCompanyName="+vendorCompanyName:"";
-    let leadRequestDtoParam = $.trim(loggedInUserIdRequestParam+contactIdRequestParam+vanityUrlFilterParam+vendorCompanyNameParam);
+    let isCompanyJourneyParam = "&isCompanyJourney="+isCompanyJourney;
+    let leadRequestDtoParam = $.trim(loggedInUserIdRequestParam+contactIdRequestParam+vanityUrlFilterParam+vendorCompanyNameParam+isCompanyJourneyParam);
     let url = this.authenticationService.REST_URL + "lead/fetchContactAssociatedLeadsAndCount" + this.ACCESS_TOKEN_SUFFIX_URL + leadRequestDtoParam;
     return this.authenticationService.callGetMethod(url);
   }
