@@ -164,7 +164,7 @@
                           <ng-container *ngFor='let company of pagination.pagedItems; let i=index'>
                             <tr>
                               <td><img src="{{properties?.companyListImage}}" alt="company" style="height: 54px;"></td>
-                              <td (click)="isLocalOrQAServer ? showCompanyJourney(company):''" class="text-line pointer">
+                              <td (click)="isLocalOrQAServer ? showCompanyJourney(company):''" [ngClass]="isLocalOrQAServer ? 'text-line pointer':''">
                                 <h4>
                                   <span data-toggle="tooltip" data-placement="right" title="{{company.name}}"
                                     class="ListFontCu">
