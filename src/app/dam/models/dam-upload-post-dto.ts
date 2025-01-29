@@ -1,3 +1,5 @@
+import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
+
 export class DamUploadPostDto {
     id:number;
     loggedInUserId:number;
@@ -47,4 +49,5 @@ export class DamUploadPostDto {
     vendorSignatureToolTipMessage = "";
     selectedSignatureImagePath = "";
     vendorSignatureCompleted = false;
+    geoLocationDetails:GeoLocationAnalytics = new GeoLocationAnalytics();
 }

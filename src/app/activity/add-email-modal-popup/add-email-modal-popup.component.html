@@ -56,7 +56,7 @@
             <ckeditor *ngIf="!isPreview" name="body" [(ngModel)]="emailActivity.body" (change)="validateEmail()"
             [ngModelOptions]="{standalone: true}" [config]="ckeConfig"></ckeditor>
             <div class="email-body" *ngIf="isPreview" [innerHTML]="emailActivity.body"></div>
-            <p *ngIf="showCkEditorLimitErrorMessage" class="text-danger">Maximum limit reached.</p>
+            <p *ngIf="showCkEditorLimitErrorMessage" class="text-danger">You have reached the maximum character limit.</p>
           </div>
           <div class="form-group">
             <p *ngIf="showAttachmentErrorMessage" class="text-danger">The attachment exceeds the maximum allowed file size of 20MB. You can upload large files to a cloud storage service (e.g., Amazon S3, Google Drive) and share the download link.</p>
