@@ -18,7 +18,7 @@ import { UtilService } from 'app/core/services/util.service';
   providers: [Properties]
 })
 export class UniversalSearchComponent implements OnInit {
-  selectedFilterIndex = 0;
+  selectedFilterIndex = 1;
   universalSearch: Array<any> = new Array<any>();
   isPartnerLoggedInThroughVanityUrl = false;
   universalSearchApiLoading = true;
@@ -30,6 +30,7 @@ export class UniversalSearchComponent implements OnInit {
   defaultDisplayType: string = 'l';
   isWelcomePageEnabled: boolean;
   isTeamMember: boolean;
+  isUniversalSearch: boolean;
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
     public dashboardService: DashboardService, public router: Router, public utilService: UtilService) {
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
@@ -41,6 +42,18 @@ export class UniversalSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    /** XNFR-853 */
+    let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (TeamMemberGroupFilter) {
+      this.selectedFilterIndex = 1;
+      this.applyFilter = true;
+      this.referenceService.universalSearchFilterValue = 1;
+    } else {
+      this.selectedFilterIndex = 0;
+      this.applyFilter = false;
+      this.referenceService.universalSearchFilterValue = 0;
+    }
+    /** XNFR-853 */
     this.searchUniversally();
   }
   findUniversalSearch(universalSearchPagination: Pagination) {
@@ -67,10 +80,9 @@ export class UniversalSearchComponent implements OnInit {
     this.findUniversalSearch(this.universalSearchPagination);
   }
   searchUniversally() {
-  if (!(this.utilService.isLoggedAsTeamMember() || this.authenticationService.module.isTeamMember)) {
-    this.applyFilter = false;
-  }
-    console.log(this.utilService.isLoggedAsTeamMember() + "  loginAsTeammember")
+  // if (!(this.utilService.isLoggedAsTeamMember() || this.authenticationService.module.isTeamMember)) {
+  //   this.applyFilter = false;
+  // }
     this.universalSearchPagination.pageIndex = 1;
     this.universalSearchPagination.maxResults = 12;
     this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
@@ -231,4 +243,20 @@ export class UniversalSearchComponent implements OnInit {
       return 'No';
     }
   }
+  /** XNFR-853 */
+  getSelectedIndex(index: number) {
+		this.universalSearchApiLoading = true;
+		this.selectedFilterIndex = index;
+		this.universalSearchPagination = this.referenceService.setTeamMemberFilterForPagination(this.universalSearchPagination, index);
+    this.referenceService.universalSearchFilterValue = this.selectedFilterIndex;
+		this.findUniversalSearch(this.universalSearchPagination);
+	}
+  disableTeammemberFilter():boolean{
+    if(this.referenceService.universalSearchFilterType === "Assets" || this.referenceService.universalSearchFilterType === "Tracks" || this.referenceService.universalSearchFilterType === "PlayBooks") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  /** XNFR-853 */
 }

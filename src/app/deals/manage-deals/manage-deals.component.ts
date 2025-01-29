@@ -175,6 +175,8 @@ export class ManageDealsComponent implements OnInit {
       }
       this.dealsSortOption.searchKey = this.listView ? this.referenceService.universalSearchKey:'';
       //this.dealsPagination.searchKey = this.dealsSortOption.searchKey;
+      this.selectedFilterIndex =this.referenceService.universalSearchFilterValue; //XNFR-853
+      this.dealsPagination.partnerTeamMemberGroupFilter = this.referenceService.universalSearchFilterValue === 1;  //XNFR-853
     }
   }
   /** User GUide **/
@@ -401,11 +403,11 @@ export class ManageDealsComponent implements OnInit {
   }
 
   showDeals() {
+    this.triggerUniversalSearch(); //XNFR-574 && XNFR-853
     this.getCounts();
     this.selectedTabIndex = 1;
     this.titleHeading = "Total ";
     this.resetDealsPagination();
-    this.triggerUniversalSearch(); //XNFR-574
     this.dealsPagination.searchKey = this.dealsSortOption.searchKey;//XBI-3668
     this.campaignPagination = new Pagination;
     this.campaignPagination.searchKey = this.dealsSortOption.searchKey;//XBI-3668

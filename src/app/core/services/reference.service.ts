@@ -24,6 +24,7 @@ import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
 import { EnvService } from "app/env.service";
 import { RouterUrlConstants } from "app/constants/router-url.contstants";
+import { XAMPLIFY_CONSTANTS } from "app/constants/xamplify-default.constants";
 
 
 declare var $:any, swal:any, require:any;
@@ -165,7 +166,7 @@ export class ReferenceService {
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
   approvalModuleRouter = "/home/approval-hub/manage";
-  
+  universalSearchFilterValue:number= this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners) ? 1 : 0 ;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
