@@ -19,6 +19,7 @@ export class PublicTopNavigationBarComponent implements OnInit {
   alias = "";
   @Input() companyLogoPath: string;
   @Input() emailAddress: string;
+  isCampaignMDF = false;
   processing = false;
   isValidForm = false;
 
@@ -31,6 +32,7 @@ export class PublicTopNavigationBarComponent implements OnInit {
   errorClass = "success";
   submitted = false;
   isContacted = false;
+  ngxLoading = false;
   constructor(public vanityUrlService: VanityURLService, public authenticationService: AuthenticationService, public referenceService: ReferenceService) {
     this.countries = this.referenceService.getCountries();
     this.setCountry();
@@ -96,22 +98,32 @@ export class PublicTopNavigationBarComponent implements OnInit {
   }
 
 
-  requestAccount() {
-    this.requestAccountButtonClicked = true;
-    this.requestAccountButtonText = "Please Wait...";
-    let campaignMdfRequestAccountDto = {};
-    campaignMdfRequestAccountDto['mdfAlias'] = this.alias;
-    this.authenticationService.requestAccount(campaignMdfRequestAccountDto).subscribe(
+  sendRequest() {
+    this.ngxLoading = true;
+    let timezoneId = $('#demo-timezoneId option:selected').val();
+    let country = $.trim($('#demo-countryName option:selected').text());
+    this.requestDemo.timezone = timezoneId;
+    this.requestDemo.country = country;
+    this.authenticationService.requestAccount(this.requestDemo).subscribe(
       response => {
         this.referenceService.showSweetAlertSuccessMessage("Your account request has been submitted successfully");
         this.requestAccountButtonClicked = false;
+        this.ngxLoading = false;
+        this.referenceService.closeModalPopup("request-account-modal-popup");
       }, error => {
+        this.ngxLoading = false;
         this.requestAccountButtonClicked = false;
         this.referenceService.showSweetAlertServerErrorMessage();
       });
   }
 
   openRequestAccountModal() {
+    this.requestDemo = new RequestDemo();
+    if(this.emailAddress!=undefined){
+      this.isCampaignMDF = true;
+      this.requestDemo.emailId = this.emailAddress;
+      this.validateEmailId();
+    }
     this.referenceService.openModalPopup("request-account-modal-popup");
   }
 

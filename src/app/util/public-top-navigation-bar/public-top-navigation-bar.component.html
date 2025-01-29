@@ -20,6 +20,7 @@
         <h4 class="modal-title left" id="myModalLabel">Enter Your Details</h4>
       </div>
       <div class="modal-body">
+        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div id="modal-content">
           <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
           <div [hidden]="processing">
@@ -34,8 +35,11 @@
              </div>
              <div class="form-group">
                 <label for="email">Email address <span class="required">*</span></label>
-                <input type="email" (input)="validateEmailId()"  maxlength="255" [(ngModel)]="requestDemo.emailId" class="form-control" id="emailId" [ngModelOptions]="{standalone: true}">
-                <span class="required" *ngIf="errorClass=='error'">Please enter a valid email address</span>
+                <input *ngIf="isCampaignMDF" type="email" disabled="disabled"  class="form-control" [(ngModel)]="requestDemo.emailId">
+                 <ng-container *ngIf="!isCampaignMDF">
+                  <input type="email" (input)="validateEmailId()"  maxlength="255" [(ngModel)]="requestDemo.emailId" class="form-control" id="emailId" [ngModelOptions]="{standalone: true}">
+                  <span class="required" *ngIf="errorClass=='error'">Please enter a valid email address</span>
+                 </ng-container>
              </div>
              <div class="form-group">
                 <label for="email">Mobile Number <span class="required">*</span></label>
@@ -77,7 +81,7 @@
       </div>
       <div class="modal-footer" *ngIf="!processing">
         <button type="button" class="btn Btn-Gray neg_mrg_top4"  data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-info" [disabled]="!isValidForm || requestAccountButtonClicked" (click)="send();requestAccountButtonClicked = true">
+        <button type="submit" class="btn btn-info" [disabled]="!isValidForm || requestAccountButtonClicked" (click)="sendRequest();requestAccountButtonClicked = true">
           Send
         </button>
       </div>

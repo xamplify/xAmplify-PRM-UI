@@ -50,6 +50,7 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
           this.campaignDetails = map;
           this.isOpportunitiesModuleEnabled = response.map['opportunitiesAccessEnabled'];
           this.companyLogoPath = this.authenticationService.MEDIA_URL+response.map['companyLogoPath'];
+          this.emailAddress = this.campaignDetails.emailAddress;
         }else{
           if(this.statusCode==403){
             this.statusCode = 404;
@@ -74,20 +75,5 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
    this.referenceService.openWindowInNewTab("/funding-request/"+this.alias+"/preview");
   }
 
-  requestAccount(){
-    this.requestAccountButtonClicked = true;
-    this.requestAccountButtonText = "Please Wait...";
-    let campaignMdfRequestAccountDto= {};
-    campaignMdfRequestAccountDto['mdfAlias'] = this.alias;
-    this.authenticationService.requestAccount(campaignMdfRequestAccountDto).subscribe(
-      response => {
-        this.referenceService.showSweetAlertSuccessMessage("Your account request has been submitted successfully");
-        this.requestAccountButtonClicked = false;
-        this.requestAccountButtonText = "Request an Account";
-      }, error => {
-        this.requestAccountButtonClicked = false;
-        this.requestAccountButtonText = "Request an Account";
-       this.referenceService.showSweetAlertServerErrorMessage();
-      });
-  }
+  
 }
