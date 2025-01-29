@@ -21,13 +21,15 @@ import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { ActivityService } from 'app/activity/services/activity-service';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { CompanyService } from 'app/company/service/company.service';
+import { IntegrationService } from 'app/core/services/integration.service';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService]
+  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService, CompanyService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -36,7 +38,8 @@ export class ContactDetailsComponent implements OnInit {
   @Input() isTeamMemberPartnerList: boolean;
   @Input() contacts: User[];
 
-  title: string = 'Contact Journey'
+  contactTitle: string = 'Contact Journey';
+  companyTitle: string = 'Company Jounrey';
   highlightLetter:string = '';
   selectedCompanyContactId: any;
   isCompanyContact: boolean;
@@ -117,12 +120,24 @@ export class ContactDetailsComponent implements OnInit {
   imgPathLoading: boolean =  false;
   isSidebarOpen:boolean = true;
   isProfileSidebarOpen: boolean = true;
+  isCompanyJourney: boolean = false;
+  showEditCompanyModalPopup:boolean = false;
+  companyIdForEdit: any;
+  contactsLoader:HttpRequestLoader = new HttpRequestLoader();
+  contactsCount:number = 0;
+  companyContacts = [];
+  contactsResponse: CustomResponse = new CustomResponse();
+  isFromCompanyJourney:boolean = false;
+  companyJourneyId:any;
+  isFromCompanyJourneyEditContacts: boolean = false;
+  isRegisterDealEnabled: boolean = true;
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
     public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService,
-    public calendarIntegratonService: CalendarIntegrationService ) {
+    public calendarIntegratonService: CalendarIntegrationService, public companyService: CompanyService, public integrationService: IntegrationService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -142,19 +157,29 @@ export class ContactDetailsComponent implements OnInit {
   ngOnInit() {
     this.selectedContactListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
     this.contactId = this.referenceService.decodePathVariable(this.route.snapshot.params['id']);
+    this.companyJourneyId = this.referenceService.decodePathVariable(this.route.snapshot.params['companyId']);
+    this.isCompanyJourney = this.router.url.includes(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage+'/'+RouterUrlConstants.details);
     this.isFromEditContacts = this.route.snapshot.params['action'] == 'edit';
+    this.isFromCompanyJourney = this.route.snapshot.params['action'] == 'company';
+    this.isFromCompanyJourneyEditContacts = this.route.snapshot.params['action'] == 'ce';
     if (this.router.url.includes(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.company)) {
       this.isFromCompanyModule = true;
     }
-    this.getContact();
-    this.getActiveCalendarDetails();
+    if (this.isCompanyJourney) {
+      this.getCompany();
+      this.fetchContactsAndCount();
+    } else {
+      this.getContact();
+      this.checkTermsAndConditionStatus();
+      this.getLegalBasisOptions();
+      this.fetchLogoFromExternalSource();
+      this.getVendorRegisterDealValue();
+      this.getActiveCalendarDetails();
+      this.fetchCampaignsAndCount();
+    }
     this.referenceService.goToTop();
-    this.checkTermsAndConditionStatus();
-    this.getLegalBasisOptions();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
-    this.fetchCampaignsAndCount();
-    this.fetchLogoFromExternalSource();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -175,12 +200,17 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   editContactDetails(contactDetails) {
-		this.updateContactUser = true;
-		this.isUpdateUser = true;
-		this.contactAllDetails = contactDetails;
-		this.contactService.isContactModalPopup = true;
-		this.isCompanyContact = this.manageCompanies;
-		this.selectedCompanyContactId = this.selectedCompanyId;
+    if (this.isCompanyJourney) {
+      this.companyIdForEdit = contactDetails.id;
+      this.showEditCompanyModalPopup = true;
+    } else {
+      this.updateContactUser = true;
+      this.isUpdateUser = true;
+      this.contactAllDetails = contactDetails;
+      this.contactService.isContactModalPopup = true;
+      this.isCompanyContact = this.manageCompanies;
+      this.selectedCompanyContactId = this.selectedCompanyId;
+    }
 	}
 
   updateContactListUser(event) {
@@ -312,6 +342,9 @@ export class ContactDetailsComponent implements OnInit {
     let encodedURL = this.referenceService.encodePathVariable(this.selectedContactListId);
     if (this.isFromCompanyModule) {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else if (this.isFromCompanyJourneyEditContacts) {
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedURL + '/' + encodedCompanyId);
     } else {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
     }
@@ -390,8 +423,16 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchLeadsAndCount() {
     this.referenceService.loading(this.leadsLoader, true);
-    this.leadsService.findLeadsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+    let id;
+    let isCompanyJourney = false;
+    if (this.isCompanyJourney) {
+      id = this.selectedContactListId;
+      isCompanyJourney = true;
+    } else {
+      id = this.contactId;
+    }
+    this.leadsService.findLeadsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName, isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
@@ -440,8 +481,16 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchDealsAndCount() {
     this.referenceService.loading(this.dealsLoader, true);
-    this.dealsService.findDealsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+    let id;
+    let isCompanyJourney = false;
+    if (this.isCompanyJourney) {
+      id = this.selectedContactListId;
+      isCompanyJourney = true;
+    } else {
+      id = this.contactId;
+    }
+    this.dealsService.findDealsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
@@ -521,8 +570,16 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchCampaignsAndCount() {
     this.referenceService.loading(this.campaignsLoader, true);
-    this.campaignService.fetchCampaignsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+    let id;
+    let isCompanyJourney = false;
+    if (this.isCompanyJourney) {
+      id = this.selectedContactListId;
+      isCompanyJourney = true;
+    } else {
+      id = this.contactId;
+    }
+    this.campaignService.fetchCampaignsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName, isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
@@ -545,8 +602,16 @@ export class ContactDetailsComponent implements OnInit {
     this.viewCampaigns = true;
     let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    if (this.isFromCompanyModule) {
+    if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
       let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd;
+      this.referenceService.goToRouter(url);
+    } else if (this.isFromCompanyJourney) {
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/j/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+'/cjcd';
+      this.referenceService.goToRouter(url);
+    } else if (this.isFromCompanyJourneyEditContacts) {
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/j/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+'/fcjcd';
       this.referenceService.goToRouter(url);
     } else {
       let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId;
@@ -559,8 +624,20 @@ export class ContactDetailsComponent implements OnInit {
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignData.campaignId);
     let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    if (this.isFromCompanyModule) {
+    if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
       let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd;
+      this.referenceService.goToRouter(url);
+    } else if (this.isCompanyJourney) {
+      let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignData.campaignId);
+			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignName.toLowerCase());
+			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
+		} else if (this.isFromCompanyJourneyEditContacts) {
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/c/j/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+"/fcjcd";
+      this.referenceService.goToRouter(url);
+    } else if (this.isFromCompanyJourney) {
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/c/j/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+"/cjcd";
       this.referenceService.goToRouter(url);
     } else {
       let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId;
@@ -681,6 +758,101 @@ export class ContactDetailsComponent implements OnInit {
 
   toggleProfileSidebar() {
     this.isProfileSidebarOpen = !this.isProfileSidebarOpen;
+  }
+
+  getCompany() {
+    this.isLoading = true
+    this.companyService.getCompanyById(this.contactId, this.authenticationService.getUserId()).subscribe(
+      data => {
+        this.selectedContact = data.data;
+        this.selectedContact.mobileNumber = this.selectedContact.phone!=undefined ? this.selectedContact.phone : '';
+        this.selectedContact.emailId = this.selectedContact.email!=undefined ? this.selectedContact.email : '';
+        this.selectedContact.zipCode = this.selectedContact.zip!=undefined ? this.selectedContact.zip:  '';
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+      },
+      () => {
+        this.setHighlightLetter();
+        this.showActivityTab = true;
+        this.contactName = this.selectedContact.name;
+      }
+    )
+  }
+
+  closeCompanyModal() {
+    this.showEditCompanyModalPopup = false;
+  }
+
+  showSubmitCompanySuccess() {
+    this.customResponse = new CustomResponse('SUCCESS', "Company Updated Successfully", true);
+    this.getCompany();
+    this.showEditCompanyModalPopup = false;
+  }
+
+  fetchContactsAndCount() {
+    this.referenceService.loading(this.contactsLoader, true);
+    this.contactService.fetchContactsAndCountByUserListId(this.selectedContactListId).subscribe(
+      response => {
+        const data = response.data;
+        let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
+        if (isSuccess) {
+          this.contactsCount = data.totalRecords;
+          this.companyContacts = data.list;
+        } else {
+          this.contactsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
+        }
+        this.referenceService.loading(this.contactsLoader, false);
+      }, error => {
+        this.referenceService.loading(this.contactsLoader, false);
+        let message = this.referenceService.getApiErrorMessage(error);
+        this.contactsResponse = new CustomResponse('ERROR', message, true);
+      }
+    )
+  }
+
+  viewContactJourney(contactId:any) {
+    let encodedId = this.referenceService.encodePathVariable(contactId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    // let encodedCompanyId = this.referenceService.encodePathVariable(this.contactId);
+    // let url = RouterUrlConstants.home+RouterUrlConstants.contacts+'company/'+RouterUrlConstants.details+encodedUserListId+"/"+encodedId+"/"+encodedCompanyId;
+    // this.referenceService.goToRouter(url);
+    this.referenceService.openWindowInNewTab(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodedId);
+  }
+
+  viewMoreContacts() {
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    let encodedCompanyId = this.referenceService.encodePathVariable(this.contactId);
+    this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedUserListId + '/' + encodedCompanyId);
+  }
+
+  backToCompanyJourney() {
+    let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    let url = "home/company/manage/details/"+encodedUserListId+"/"+encodedId;
+    this.referenceService.goToRouter(url);
+  }
+
+  viewCompanyJourney() {
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    let contactCompanyId = this.referenceService.encodePathVariable(this.selectedContact.contactCompanyId);
+    let url = "home/company/manage/details/"+encodedUserListId+"/"+contactCompanyId;
+    this.referenceService.openWindowInNewTab(url);
+  }
+
+  getVendorRegisterDealValue() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.integrationService.getVendorRegisterDealValue(this.loggedInUserId, this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          this.isRegisterDealEnabled = data.data;
+        }
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }, error => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    );
   }
   
 }

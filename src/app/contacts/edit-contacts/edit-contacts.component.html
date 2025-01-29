@@ -6,15 +6,19 @@
 			<a [routerLink]="refService?.homeRouter" translate>Home</a>
 			<i class="fa fa-angle-right" aria-hidden="true"></i>
 		</li>
-		<li *ngIf="!isFromCompanyModule">
+		<li *ngIf="!isFromCompanyModule && !isCompanyJourney">
 			<a (click)="refresh()" translate> Manage
 				<span
 					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</a>
 		</li>
-		<li *ngIf="isFromCompanyModule">
+		<li *ngIf="isFromCompanyModule || isCompanyJourney">
 			<a translate [routerLink]="companyRouter"> Manage Companies
+			</a>
+		</li>
+		<li *ngIf="isCompanyJourney">
+			<a translate (click)="backToCompanyJourney()"><i class="fa fa-angle-right" aria-hidden="true"></i> Company Journey
 			</a>
 		</li>
 		<li>
