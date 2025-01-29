@@ -8,6 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         <form>
           <div class="form-check" *ngIf="signatureResponseDto?.uploadedSignatureExits">
             <input class="form-check-input" type="radio" name="signatureOption" id="option1" [(ngModel)]="selectedSignature" [value]="signatureResponseDto.uploadedSignatureImagePath">
