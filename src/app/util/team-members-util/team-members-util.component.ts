@@ -1382,7 +1382,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.inviteTeamMemberLoading = true;
     this.emailIds = [];
     this.vendorInvitation.emailIds = [];
-    this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify';
+    this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + (this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify');
     this.teamMemberService.getHtmlBody().subscribe(
       response => {
         if (response.statusCode === 200) {
