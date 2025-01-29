@@ -476,7 +476,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if(this.isAdd){
 			let uploadedAssetValue = $('#uploadedAsset').val();
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 );
-            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath){
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && this.fileType === 'application/pdf'){
             this.isValidForm = false;
             }
 		}else{

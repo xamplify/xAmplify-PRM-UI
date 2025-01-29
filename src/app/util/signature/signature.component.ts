@@ -391,6 +391,14 @@ export class SignatureComponent implements OnInit {
     } else if (this.isUploadTabActive) {
       this.saveUploadedSignature();
     }
+    this.clearImageAfterSave()
+  }
+
+  clearImageAfterSave() {
+    this.clearImage();
+    this.context.clearRect(0, 0, this.sigPadElement.width, this.sigPadElement.height);
+    this.context.beginPath();
+    this.hasSignature = false; 
   }
 
   private validateAndSaveTypedSignature() {
