@@ -81,6 +81,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
 import { CampaignMdfAnalyticsComponent } from './campaigns/campaign-mdf-analytics/campaign-mdf-analytics.component';
 import { CampaignMdfTemplatePreviewComponent } from './campaigns/campaign-mdf-template-preview/campaign-mdf-template-preview.component';
+import { PublicTopNavigationBarComponent } from './util/public-top-navigation-bar/public-top-navigation-bar.component';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
@@ -88,7 +89,7 @@ import { CampaignMdfTemplatePreviewComponent } from './campaigns/campaign-mdf-te
         , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
         VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent,
-        CampaignMdfAnalyticsComponent,CampaignMdfTemplatePreviewComponent
+        CampaignMdfAnalyticsComponent,CampaignMdfTemplatePreviewComponent, PublicTopNavigationBarComponent
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
