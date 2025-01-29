@@ -24,6 +24,7 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
   requestAccountButtonClicked = false;
   requestAccountButtonText = "Request an Account";
   companyLogoPath = "";
+  emailAddress = "csravan@stratapps.com";
   constructor(private route: ActivatedRoute,private authenticationService:AuthenticationService,
     private referenceService:ReferenceService,private logger:XtremandLogger,
     public processor:Processor,public properties:Properties,public vanityURLService:VanityURLService) { }

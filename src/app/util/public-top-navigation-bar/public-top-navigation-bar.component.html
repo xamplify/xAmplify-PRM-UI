@@ -1,7 +1,12 @@
-<div class="page-header navbar navbar-fixed-top zero-padding" style="top: unset;">
-  <div class="page-header-inner">
-    <div class="page-logo pttpx">
-     <img src="https://xamplify.io/assets/images/xamplify-logo.png" alt="No Image">
-   </div>
+<!--Header-->
+<div class="header-container d-flex justify-content-between align-items-center p-3">
+  <!-- Left Side: Image -->
+  <div class="left-image ml10">
+      <img src="{{companyLogoPath}}" alt="No Image" class="header-image">
   </div>
+  <!-- Right Side: Button -->
+    <button type="button" class="btn btn-primary float-right request-account"  [ngClass]="{ 'disabled-div': requestAccountButtonClicked }"
+    [disabled]="requestAccountButtonClicked" (click)="!requestAccountButtonClicked && requestAccount()">
+    <i *ngIf="requestAccountButtonClicked" class="fa fa-spinner fa-spin mr5"></i>{{requestAccountButtonText}}</button>
 </div>
+<!--End Of Header-->

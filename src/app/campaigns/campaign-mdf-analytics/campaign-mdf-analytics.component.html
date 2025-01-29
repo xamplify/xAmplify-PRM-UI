@@ -2,18 +2,19 @@
 <div [hidden]="processor.isProcessing">
   <div *ngIf="success && apiResponseFinished">
     <!--Header-->
-    <div class="header-container d-flex justify-content-between align-items-center p-3">
-      <!-- Left Side: Image -->
-      <div class="left-image ml10">
-          <img src="{{companyLogoPath}}" alt="No Image" class="header-image">
-      </div>
-      <!-- Right Side: Button -->
-        <button type="button" class="btn btn-primary float-right request-account"  [ngClass]="{ 'disabled-div': requestAccountButtonClicked }"
-        [disabled]="requestAccountButtonClicked" (click)="!requestAccountButtonClicked && requestAccount()">
-        <i *ngIf="requestAccountButtonClicked" class="fa fa-spinner fa-spin mr5"></i>{{requestAccountButtonText}}</button>
-    </div>
+    <app-public-top-navigation-bar [emailAddress]="emailAddress" [companyLogoPath]="companyLogoPath"></app-public-top-navigation-bar>
     <!--End Of Header-->
 
+    <!--Description-->
+    <div class="page-content mt10">
+      <div class="page-bar page-bar-shadow page-padding">
+        <div class="row mx-t mb10">
+          <div class="alert alert-info">
+            <strong>{{properties?.MDF_CAMPAIGN_DESCRIPTION}}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
     <!--Campagin & Email Template Details-->
     <div class="page-content mt10">
       <div class="page-bar page-bar-shadow page-padding">
