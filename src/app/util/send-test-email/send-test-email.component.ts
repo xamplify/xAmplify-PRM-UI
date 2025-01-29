@@ -195,6 +195,11 @@ export class SendTestEmailComponent implements OnInit {
         });
     
         $('tbody').addClass('preview-shown')
+
+        $('td a').css({
+          'cursor': 'not-allowed',
+          'pointer-events': 'none'
+        });
         this.processing = false;
       }, error => {
         this.processing = false;
