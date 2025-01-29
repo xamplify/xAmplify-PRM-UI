@@ -461,3 +461,15 @@ th.leftAlignTableth {
   margin-bottom: 20px; /* Add spacing at the bottom */
   margin-right: 20px;
 }
+
+.page-padding{
+  padding: 1em 1em 0 1em;
+  margin-right: 15px;
+    margin-left: 15px;
+}
+
+.mx-t{
+  margin-top: 6px;
+    margin-left: -10px;
+    margin-right: -10px;
+}

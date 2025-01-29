@@ -1,58 +1,52 @@
 
 <div [hidden]="processor.isProcessing">
-  <div class="page-content" *ngIf="success && statusCode==200">
-    <button class="btn btn-primary float-right request-account"  [ngClass]="{ 'disabled-div': requestAccountButtonClicked }"
-      [disabled]="requestAccountButtonClicked" (click)="!requestAccountButtonClicked && requestAccount()">
-      <i *ngIf="requestAccountButtonClicked" class="fa fa-spinner fa-spin mr5"></i>{{requestAccountButtonText}}</button>
-      <div class="portlet light clearfix remove_cardBgcolor light_bg_removal tiles_aligns">
-        <div class="portlet-body">
-         
-            <!--Campaign Details-->
-            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
-              <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold disabled-div">
-                  <div class="visual icon-cl">
-                      <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                  </div>
-                  <div class="camp-details">
-                      <div class="camp-title">
-                          {{campaignDetails?.campaignType}} CAMPAIGN
-                      </div>
-                      <div class="camp-number">
-                          <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
-                          title="{{ campaignDetails?.campaignName }}">{{campaignDetails?.campaignName | slice : 0 : 50}}</strong>
-                          <span *ngIf="campaignDetails?.campaignName?.length > 50">...</span>
-                      </div>
-                      <div class="camp-desc">
-                        <span>{{ campaignDetails?.launchTime | date : "fullDate" }}</span>
-                      </div>
-                  </div>
-              </a>
+  <div class="page-content mt10" *ngIf="success && apiResponseFinished">
+    <div class="page-bar page-bar-shadow page-padding">
+      <div class="row mx-t">
+        <!--Campaign Details-->
+        <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
+        <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold disabled-div">
+            <div class="visual icon-cl">
+                <i class="fa fa-bullhorn" aria-hidden="true"></i>
             </div>
-            <!--Email Template-->
-            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6" id="email-template">
-              <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" (click)="previewTemplate()">
-                  <div class="visual icon-cl">
-                      <i class="fa fa-envelope-open" aria-hidden="true"></i>
-                  </div>
-                  <div class="camp-details">
-                      <div class="camp-title">
-                          Email Info
-                      </div>
-                      <div class="camp-number">
-                          <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
-                          title="{{ campaignDetails?.emailTemplateName }}">{{campaignDetails?.emailTemplateName | slice : 0 : 50}}</strong>
-                          <span *ngIf="campaignDetails?.emailTemplateName?.length > 50">...</span>
-                      </div>
-                      <div class="camp-desc">
-                        <span>Click for preview</span>
-                      </div>
-                  </div>
-              </a>
+            <div class="camp-details">
+                <div class="camp-title">
+                    {{campaignDetails?.campaignType}} CAMPAIGN
+                </div>
+                <div class="camp-number">
+                    <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
+                    title="{{ campaignDetails?.campaignName }}">{{campaignDetails?.campaignName | slice : 0 : 50}}</strong>
+                    <span *ngIf="campaignDetails?.campaignName?.length > 50">...</span>
+                </div>
+                <div class="camp-desc">
+                  <span>{{ campaignDetails?.launchTime | date : "fullDate" }}</span>
+                </div>
             </div>
-        </div> 
-        <!--Analytics-->
+        </a>
+        </div>
+        <!--Email Template-->
+        <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6" id="email-template">
+        <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" (click)="previewTemplate()">
+            <div class="visual icon-cl">
+                <i class="fa fa-envelope-open" aria-hidden="true"></i>
+            </div>
+            <div class="camp-details">
+                <div class="camp-title">
+                    Email Info
+                </div>
+                <div class="camp-number">
+                    <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
+                    title="{{ campaignDetails?.emailTemplateName }}">{{campaignDetails?.emailTemplateName | slice : 0 : 50}}</strong>
+                    <span *ngIf="campaignDetails?.emailTemplateName?.length > 50">...</span>
+                </div>
+                <div class="camp-desc">
+                  <span>Click for preview</span>
+                </div>
+            </div>
+        </a>
+        </div>
         <section>
-          <div class="col-xs-12 col-sm-12 emails-info flex-wrap disabled-div">
+          <div class="emails-info flex-wrap disabled-div">
             <!--Recipients-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
                 <button class="portlet light color1-invert crcb lt-blue-c detail_card">
@@ -60,20 +54,20 @@
                     <i class="fa fa-user"></i>
                     <h1>
                       <b>{{campaignReport?.totalRecipients }}</b>
-                   </h1>
-                   <h5>Recipients</h5>
+                  </h1>
+                  <h5>Recipients</h5>
                   </div>
                 </button>
               </div>
-             <!--Total Emails Sent--> 
-             <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+            <!--Total Emails Sent--> 
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
               <button class="portlet light color1-invert crcb lt-green-c detail_card">
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-o"></i>
                   <h1>
                     <b>{{campaignReport?.totalEmailsSent }}</b>
-                 </h1>
-                 <h5>Recipients</h5>
+                </h1>
+                <h5>Recipients</h5>
                 </div>
               </button>
             </div>
@@ -84,8 +78,8 @@
                   <i class="fa fa-envelope"></i>
                   <h1>
                     <b>{{campaignReport?.delivered }}</b>
-                 </h1>
-                 <h5>Deliverability</h5>
+                </h1>
+                <h5>Deliverability</h5>
                 </div>
               </button>
             </div>
@@ -96,8 +90,8 @@
                   <i class="fa fa-user-circle-o"></i>
                   <h1>
                     <b>{{campaignReport?.activeRecipients}}</b>
-                 </h1>
-                 <h5>Active Recipients</h5>
+                </h1>
+                <h5>Active Recipients</h5>
                 </div>
               </button>
             </div>
@@ -108,8 +102,8 @@
                   <i class="fa fa-envelope-open-o"></i>
                   <h1>
                     <b>{{campaignReport?.openRate}}</b>
-                 </h1>
-                 <h5>Open Rate</h5>
+                </h1>
+                <h5>Open Rate</h5>
                 </div>
               </button>
             </div>
@@ -120,20 +114,20 @@
                   <i class="fa fa-globe"></i>
                   <h1>
                     <b>{{campaignReport?.emailClicked}}</b>
-                 </h1>
-                 <h5>Clicked URL</h5>
+                </h1>
+                <h5>Clicked URL</h5>
                 </div>
               </button>
             </div>
-             <!--Clickthrough Rate-->
-             <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+            <!--Clickthrough Rate-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
               <button class="portlet light color1-invert crcb y-b-c detail_card">
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-open"></i>
                   <h1>
                     <b>{{campaignReport?.clickthroughRate}}</b>
-                 </h1>
-                 <h5>Clickthrough Rate</h5>
+                </h1>
+                <h5>Clickthrough Rate</h5>
                 </div>
               </button>
             </div>
@@ -144,8 +138,8 @@
                   <i class="fa fa-eye"></i>
                   <h1>
                     <b>{{campaignReport?.views}}</b>
-                 </h1>
-                 <h5>Views</h5>
+                </h1>
+                <h5>Views</h5>
                 </div>
               </button>
             </div>
@@ -156,20 +150,20 @@
                   <i class="fa fa-ban"></i>
                   <h1>
                     <b>{{campaignReport?.hardBounce}}</b>
-                 </h1>
-                 <h5>Hard Bounce</h5>
+                </h1>
+                <h5>Hard Bounce</h5>
                 </div>
               </button>
             </div>
-             <!--Soft Bounce-->
-             <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+            <!--Soft Bounce-->
+            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
               <button class="portlet light color1-invert crcb h-r-c detail_card">
                 <div class="portlet-body text-center">
                   <i class="fa fa-trash-o"></i>
                   <h1>
                     <b>{{campaignReport?.softBounce}}</b>
-                 </h1>
-                 <h5>Soft Bounce</h5>
+                </h1>
+                <h5>Soft Bounce</h5>
                 </div>
               </button>
             </div>
@@ -180,8 +174,8 @@
                   <i class="fa fa-user-times"></i>
                   <h1>
                     <b>{{campaignReport?.unsubscribed}}</b>
-                 </h1>
-                 <h5>Unsubscribe</h5>
+                </h1>
+                <h5>Unsubscribe</h5>
                 </div>
               </button>
             </div>
@@ -214,7 +208,9 @@
           </div>
         </section>
       </div>
+    </div>
   </div>
+    
   <ng-container *ngIf="!success && !processor.isProcessing && apiResponseFinished">
     <div *ngIf="statusCode==404">
       <img src="../../../assets/images/404.jpg" alt="No Image Found" style="position: absolute;left: 25%;height: 500px;">
@@ -261,4 +257,7 @@
       </ng-template>
     
   </div>
-  
+
+
+
+
