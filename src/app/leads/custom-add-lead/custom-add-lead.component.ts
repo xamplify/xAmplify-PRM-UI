@@ -68,6 +68,12 @@ export class CustomAddLeadComponent implements OnInit {
   @Output() notifyFormAnalytics = new EventEmitter();
   /**XNFR-836**/
   @Input() public isFromEditContacts: boolean = false;
+  /**XNFR-848**/
+  @Input() public isCompanyJourney: boolean = false;
+  @Input() public selectedUserListId: any;
+  @Input() public isFromCompanyJourney: boolean = false;
+  @Input() public companyJourneyId:any;
+  @Input() public isFromCompanyJourneyEditContacts:boolean = false;
   
   preview = false;
   edit = false;
@@ -1890,8 +1896,20 @@ export class CustomAddLeadComponent implements OnInit {
   goBackToContactDetailsPage() {
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.userListId);
 		let encodeUserId = this.referenceService.encodePathVariable(this.selectedContact.id);
-    if (this.isFromCompanyModule) {
+    if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company +RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+    } else if ((this.isCompanyJourney || this.isFromCompanyJourney) && this.selectedContact.userListId == undefined) {
+      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
+      this.referenceService.goToRouter('home/company/manage/details/'+encodedUserListId+'/'+encodeUserId);
+    } else if (this.isFromCompanyJourney && this.selectedContact.userListId != undefined) {
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'company/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId + "/" + encodedCompanyId;
+      this.referenceService.goToRouter(url);
+    } else if (this.isFromCompanyJourneyEditContacts) {
+      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
+			let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+			let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'ce/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId + "/" + encodedCompanyId;
+			this.referenceService.goToRouter(url);
     } else {
       let url = RouterUrlConstants.home+RouterUrlConstants.contacts;
       url += this.isFromEditContacts ? RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId : RouterUrlConstants.manage+'/'+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId;
@@ -1909,6 +1927,10 @@ export class CustomAddLeadComponent implements OnInit {
     let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
     if (this.isFromCompanyModule) {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else if (this.isFromCompanyJourneyEditContacts) {
+      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedUserListId + '/' + encodedCompanyId);
     } else {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
     }
@@ -1960,6 +1982,13 @@ export class CustomAddLeadComponent implements OnInit {
           this.httpRequestLoader.isServerError = true;
         }
       );
+  }
+
+  goBackToCompanyJourney() {
+    let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
+    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    this.referenceService.goToRouter(url);
   }
 
 

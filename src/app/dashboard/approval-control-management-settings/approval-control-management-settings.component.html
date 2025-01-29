@@ -41,7 +41,7 @@
                     <input type="checkbox" [ngModelOptions]="{standalone: true}"
                       [disabled]="approvalSettings?.anyAdminOrSupervisor || !approvalSettings?.hasDamRole || !assetApprovalEnabledForCompany"
                       data-toggle="tooltip" data-placement="top"
-                      title="{{approvalSettings?.anyAdminOrSupervisor ? 'Approval Privilege Managers cannot be edited.' : (!assetApprovalEnabledForCompany ? properties.ASSET_REVIEW_DISABLED_TOOLTIP : (!approvalSettings?.hasDamRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_ASSETS_TOOLTIP : ''))}}"
+                      title="{{!assetApprovalEnabledForCompany ? properties.ASSET_REVIEW_DISABLED_TOOLTIP : (approvalSettings?.anyAdminOrSupervisor ? properties.PRIVILEGED_MANAGERS_APPROVAL_DISABLED_TOOLTIP : !approvalSettings?.hasDamRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_ASSETS_TOOLTIP : '')}}"
                       class="pointer checkBox_shadow" [(ngModel)]="approvalSettings.assetApprover" value=""
                       (change)="updateCheckBox($event, approvalSettings, 'assetApprover')">
                   </div>
@@ -51,7 +51,7 @@
                     <input type="checkbox" [ngModelOptions]="{standalone: true}"
                       [disabled]="approvalSettings?.anyAdminOrSupervisor || !approvalSettings?.hasTrackRole || !tracksApprovalEnabledForCompany"
                       data-toggle="tooltip" data-placement="top"
-                      title="{{approvalSettings?.anyAdminOrSupervisor ? 'Approval Privilege Managers cannot be edited.' : (!tracksApprovalEnabledForCompany ? properties.TRACK_REVIEW_DISABLED_TOOLTIP : (!approvalSettings?.hasTrackRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_TRACKS_TOOLTIP : ''))}}"
+                      title="{{!tracksApprovalEnabledForCompany ? properties.TRACK_REVIEW_DISABLED_TOOLTIP : (approvalSettings?.anyAdminOrSupervisor ? properties.PRIVILEGED_MANAGERS_APPROVAL_DISABLED_TOOLTIP : !approvalSettings?.hasTrackRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_TRACKS_TOOLTIP : '')}}"
                       class="pointer checkBox_shadow" [(ngModel)]="approvalSettings.trackApprover" value=""
                       (change)="updateCheckBox($event, approvalSettings, 'trackApprover')">
                   </div>
@@ -61,7 +61,7 @@
                     <input type="checkbox" [ngModelOptions]="{standalone: true}"
                       [disabled]="approvalSettings?.anyAdminOrSupervisor || !approvalSettings?.hasPlaybookRole || !playbooksApprovalEnabledForCompany"
                       data-toggle="tooltip" data-placement="top"
-                      title="{{approvalSettings?.anyAdminOrSupervisor ? 'Approval Privilege Managers cannot be edited.' : (!playbooksApprovalEnabledForCompany ? properties.PLAYBOOK_REVIEW_DISABLED_TOOLTIP : (!approvalSettings?.hasPlaybookRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP : ''))}}"
+                      title="{{!playbooksApprovalEnabledForCompany ? properties.PLAYBOOK_REVIEW_DISABLED_TOOLTIP : (approvalSettings?.anyAdminOrSupervisor ? properties.PRIVILEGED_MANAGERS_APPROVAL_DISABLED_TOOLTIP : !approvalSettings?.hasPlaybookRole && approvalSettings?.role != 'admin' ? properties.TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP : '')}}"
                       class="pointer checkBox_shadow" [(ngModel)]="approvalSettings.playbookApprover" value=""
                       (change)="updateCheckBox($event, approvalSettings, 'playbookApprover')">
                   </div>

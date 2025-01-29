@@ -5,9 +5,9 @@
         data-original-title="Refresh" (click)="showAllEmailActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Send Email"
-        data-original-title="Refresh" (click)="openEmailModalPopup()">
-        <i aria-hidden="true" class="fa fa-plus"></i>
+      <a class="close-circle ref-mar ml5" [ngClass]="isCompanyJourney ? 'disabled':''" data-placement="bottom" data-toggle="tooltip" title="Send Email"
+        data-original-title="Refresh" (click)="isCompanyJourney ? '' : openEmailModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus" [ngClass]="isCompanyJourney ? 'disabled':''"></i>
       </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">

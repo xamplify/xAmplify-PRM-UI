@@ -539,7 +539,7 @@ export class Properties {
 	TEAM_MEMBER_NO_ACCESS_ASSETS_TOOLTIP = 'This team member does not have access to assets.';
 	TEAM_MEMBER_NO_ACCESS_TRACKS_TOOLTIP = 'This team member does not have access to tracks.';
 	TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP = 'This team member does not have access to playbooks.';
-
+	PRIVILEGED_MANAGERS_APPROVAL_DISABLED_TOOLTIP = 'Admin and Supervisor approval authority cannot be modified.';
 
 }
 

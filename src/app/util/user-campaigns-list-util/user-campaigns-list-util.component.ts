@@ -52,6 +52,10 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	userListId:any;
 	isFromCompanyModule: boolean = false;
 	isFromEditContacts: boolean;
+	/**XNFR-848**/
+	isFromCompanyJourney: boolean = false;
+	isFromCompanyJourneyEditContacts: boolean = false;
+	companyJourneyId: any;
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -79,14 +83,18 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		}else{
 			this.validatePartnerOrContactIdForCampaignAnalytics();
 		}
-		if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd" || this.navigatedFrom == "mcd" || this.navigatedFrom == "mccd") {
+		if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd" || this.navigatedFrom == "mcd" || this.navigatedFrom == "cjcd" || this.navigatedFrom == "fcjcd") {
 			this.userListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
+			this.companyJourneyId = this.referenceService.decodePathVariable(this.route.snapshot.params['companyId']);
 			this.isFromContactDetails = true;
 			if (this.navigatedFrom == "ccd") {
 				this.isFromCompanyModule = true;
-			}
-			if (this.navigatedFrom == "cd" || this.navigatedFrom == "ccd") {
+			} else if (this.navigatedFrom == "cd") {
 				this.isFromEditContacts = true;
+			} else if (this.navigatedFrom == "cjcd") {
+				this.isFromCompanyJourney = true;
+			} else if (this.navigatedFrom == "fcjcd") {
+				this.isFromCompanyJourneyEditContacts = true;
 			}
 		}
 	}
@@ -374,13 +382,21 @@ setAutoResponsesPage(event: any,campaign:any) {
 				//this.referenceService.goToRouter(campaignAnalyticsUrl);
 			} else if (this.isFromContactDetails) {
 				let encodedUserListId = this.referenceService.encodePathVariable(this.userListId);
-				let encodeUserId = this.referenceService.encodePathVariable(this.userIdParameter);
+				let encodedUserId = this.referenceService.encodePathVariable(this.userIdParameter);
 				if (this.isFromCompanyModule) {
-					let url = RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.company + RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId;
+					let url = RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.company + RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId;
+					this.referenceService.goToRouter(url);
+				} else if (this.isFromCompanyJourney) {
+					let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+					let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'company/' + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId + "/" + encodedCompanyId;
+					this.referenceService.goToRouter(url);
+				} else if (this.isFromCompanyJourneyEditContacts) {
+					let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+					let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'ce/' + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId + "/" + encodedCompanyId;
 					this.referenceService.goToRouter(url);
 				} else {
 					let url = RouterUrlConstants.home + RouterUrlConstants.contacts;
-					url += this.isFromEditContacts ? RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId : RouterUrlConstants.manage + '/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId;
+					url += this.isFromEditContacts ? RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId : RouterUrlConstants.manage + '/' + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId;
 					this.referenceService.goToRouter(url);
 				}
 			} else{

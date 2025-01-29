@@ -34,6 +34,12 @@ export class CustomManageDealsComponent implements OnInit {
 
   /**XNFR-836**/
   @Input() public isFromEditContacts: boolean = false;
+  /**XNFR-848**/
+  @Input() public isCompanyJourney: boolean = false;
+  @Input() public selectedContactListId:any;
+  @Input() public companyJourneyId:any;
+  @Input() public isFromCompanyJourney:boolean = false;
+  @Input() public isFromCompanyJourneyEditContacts:boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   updateCurrentStage: boolean = false;
@@ -152,7 +158,8 @@ export class CustomManageDealsComponent implements OnInit {
 
   listDealsForPartner(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
-    pagination.contactId = this.selectedContact.id;
+    pagination.contactId = this.isCompanyJourney ? this.selectedContactListId : this.selectedContact.id;
+    pagination.isCompanyJourney = this.isCompanyJourney;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.dealsService.listDealsForPartner(pagination)
       .subscribe(
@@ -165,7 +172,9 @@ export class CustomManageDealsComponent implements OnInit {
         error => {
           this.httpRequestLoader.isServerError = true;
         },
-        () => { }
+        () => {
+          this.referenceService.goToTop();
+         }
       );
   }
 
@@ -555,6 +564,10 @@ export class CustomManageDealsComponent implements OnInit {
     let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
     if (this.isFromCompanyModule) {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+encodedURL);
+    } else if (this.isFromCompanyJourneyEditContacts) {
+      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedUserListId + '/' + encodedCompanyId);
     } else {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
     }
@@ -562,6 +575,13 @@ export class CustomManageDealsComponent implements OnInit {
 
   goBackToManageCompanies() {
     this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
+  }
+
+  goBackToCompanyJourney() {
+    let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    this.referenceService.goToRouter(url);
   }
 
 }
