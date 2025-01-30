@@ -22,6 +22,7 @@ declare var  $: any;
 export class DemoRequestComponent implements OnInit {
     @Input() filterType:string;
     divId = "demo-requests";
+    collapsableDivId = "collapsible-demo-requests";
     header = "Demo Request(s)";
     hasError: boolean;
     statusCode: any;
@@ -35,6 +36,7 @@ export class DemoRequestComponent implements OnInit {
     if(SUPER_ADMIN_MODULE_CONTSTANTS.mdfAccountRequests==this.filterType){
         this.divId = "mdf-account-requests";
         this.header = "Campaign MDF Request(s)";
+        this.collapsableDivId = "collapsible-mdf-account-requests";
     }
     this.listDemoRequests(this.pagination);
   }
