@@ -166,7 +166,7 @@ export class ReferenceService {
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
   approvalModuleRouter = "/home/approval-hub/manage";
-  universalSearchFilterValue:number= this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners) ? 1 : 0 ;
+  universalSearchFilterValue:number= this.getUniversalSearchFilterValue() ;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3991,8 +3991,12 @@ getFirstLetter(inputString:any) {
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + sortcolumn + sortingOrder +moduleName+ timeZoneRequestParm;
     this.openWindowInNewTab(url);
   }
-
-  
+  /** XNFR-853 */
+  getUniversalSearchFilterValue():number {
+    let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    return (TeamMemberGroupFilter !== null && TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) ? 0 : 1;
+  }
+  /** XNFR-853 */
 }
 
 

@@ -10,12 +10,12 @@
         <a translate>Universal Search Results</a>
       </li>
     </ul>
-    <div class="mr5 pull-right" style="margin-top: 4px;" *ngIf="!universalSearchApiLoading && disableTeammemberFilter()">
+    <div class="mr5 pull-right" style="margin-top: 4px;" *ngIf="!universalSearchApiLoading && disableTeammemberFilter() && !authenticationService?.module?.isMarketingCompany">
       <app-team-member-filter-option [customSelectedIndex]="referenceService.universalSearchFilterValue"
       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isPartnerModule]="false"></app-team-member-filter-option>
     </div>
   </div>
-  <div class="alert alert-info" *ngIf="(utilService?.isLoggedAsTeamMember() || authenticationService?.module?.isTeamMember) && referenceService?.universalSearchFilterType === 'All'">
+  <div class="alert alert-info" *ngIf="(utilService?.isLoggedAsTeamMember() || authenticationService?.module?.isTeamMember) && referenceService?.universalSearchFilterType === 'All' && !authenticationService?.module?.isMarketingCompany">
     <strong>**The "All Partners/My Partner(s)" filter does not apply to the search results for Assets, Tracks, and Playbooks.</strong>
   </div>
   <div class="row">

@@ -44,7 +44,9 @@ export class TeamMemberFilterOptionComponent implements OnInit {
     if (this.isPartnerModule || this.isAssetOrLms) {
       let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
       if (filterPartner !== null  && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
-        this.selectedFilterIndex = this.referenceService.universalSearchFilterValue == 1 ? 1: 0;
+        this.selectedFilterIndex = (this.referenceService.universalModuleType === "Partners")? this.referenceService.universalSearchFilterValue:0;
+      } else {
+        this.selectedFilterIndex = (this.referenceService.universalModuleType === "Partners")? this.referenceService.universalSearchFilterValue:1;
       }
     }
   }

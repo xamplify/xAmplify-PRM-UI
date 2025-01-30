@@ -26,11 +26,10 @@ export class UniversalSearchComponent implements OnInit {
   companyId: number = 0;
   customResponse: CustomResponse = new CustomResponse();
   searchKey: string;
-  applyFilter = true;
+  applyFilter:boolean = false;
   defaultDisplayType: string = 'l';
   isWelcomePageEnabled: boolean;
   isTeamMember: boolean;
-  isUniversalSearch: boolean;
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
     public dashboardService: DashboardService, public router: Router, public utilService: UtilService) {
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
@@ -42,18 +41,6 @@ export class UniversalSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    /** XNFR-853 */
-    let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-    if (TeamMemberGroupFilter) {
-      this.selectedFilterIndex = 1;
-      this.applyFilter = true;
-      this.referenceService.universalSearchFilterValue = 1;
-    } else {
-      this.selectedFilterIndex = 0;
-      this.applyFilter = false;
-      this.referenceService.universalSearchFilterValue = 0;
-    }
-    /** XNFR-853 */
     this.searchUniversally();
   }
   findUniversalSearch(universalSearchPagination: Pagination) {
@@ -80,9 +67,15 @@ export class UniversalSearchComponent implements OnInit {
     this.findUniversalSearch(this.universalSearchPagination);
   }
   searchUniversally() {
-  // if (!(this.utilService.isLoggedAsTeamMember() || this.authenticationService.module.isTeamMember)) {
-  //   this.applyFilter = false;
-  // }
+    if ((this.utilService.isLoggedAsTeamMember() || this.authenticationService.module.isTeamMember)) {
+      this.selectedFilterIndex = this.referenceService.getUniversalSearchFilterValue();
+      this.referenceService.universalSearchFilterValue = this.selectedFilterIndex;
+      this.applyFilter = this.selectedFilterIndex == 1 ? true : false;
+    } else {
+      this.selectedFilterIndex = 0;
+      this.referenceService.universalSearchFilterValue = this.selectedFilterIndex;
+      this.applyFilter = this.selectedFilterIndex == 1 ? true : false;
+    }
     this.universalSearchPagination.pageIndex = 1;
     this.universalSearchPagination.maxResults = 12;
     this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
@@ -243,7 +236,6 @@ export class UniversalSearchComponent implements OnInit {
       return 'No';
     }
   }
-  /** XNFR-853 */
   getSelectedIndex(index: number) {
 		this.universalSearchApiLoading = true;
 		this.selectedFilterIndex = index;
@@ -258,5 +250,4 @@ export class UniversalSearchComponent implements OnInit {
       return true;
     }
   }
-  /** XNFR-853 */
 }
