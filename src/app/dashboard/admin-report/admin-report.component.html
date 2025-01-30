@@ -45,6 +45,8 @@
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#processing-user-lists', name:SUPER_ADMIN_MODULE_CONTSTANTS.processingUserLists}"></ng-template>
       <!--Demo Requests-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#demo-requests', name:SUPER_ADMIN_MODULE_CONTSTANTS.demoRequests}"></ng-template>
+      <!--MDF Account Requests-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#mdf-account-requests', name:SUPER_ADMIN_MODULE_CONTSTANTS.mdfAccountRequests}"></ng-template>
       <!--Top 10-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#top10-registered-and-logged-in-users', name:SUPER_ADMIN_MODULE_CONTSTANTS.top10recentRegisteredAndLoggedInUsers}"></ng-template>
       <!--Partner Companies-->
@@ -54,9 +56,9 @@
       <!--Marketing Requests-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#marketing-requests', name:SUPER_ADMIN_MODULE_CONTSTANTS.marketingRequests}"></ng-template>
       <!--Processing Campaigns-->
-      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#processing-or-scheduling-campaigns', name:SUPER_ADMIN_MODULE_CONTSTANTS.processingCampaigns}"></ng-template>
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#processing-campaigns', name:SUPER_ADMIN_MODULE_CONTSTANTS.processingCampaigns}"></ng-template>
       <!--Scheduled Campaigns-->
-      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#processing-or-scheduling-campaigns', name:SUPER_ADMIN_MODULE_CONTSTANTS.scheduledCampaigns}"></ng-template>
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#scheduling-campaigns', name:SUPER_ADMIN_MODULE_CONTSTANTS.scheduledCampaigns}"></ng-template>
       <!--Active Queries-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#active-queries', name:SUPER_ADMIN_MODULE_CONTSTANTS.activeQueries}"></ng-template>
       <!--Upload GlassMorphism Images-->
@@ -72,7 +74,9 @@
     <!--Processing User Lists-->
     <app-processing-user-lists></app-processing-user-lists>
     <!--Demo Requests-->
-    <app-demo-request></app-demo-request>
+    <app-demo-request [filterType]="SUPER_ADMIN_MODULE_CONTSTANTS.demoRequests"></app-demo-request>
+    <!--MDF Account Requests-->
+    <app-demo-request [filterType]="SUPER_ADMIN_MODULE_CONTSTANTS.mdfAccountRequests"></app-demo-request>
     <!--Top 10 Recent Registered / Loggedin Users-->
 	  <section>
       <div class="wrap-collabsible" id="top10-registered-and-logged-in-users">

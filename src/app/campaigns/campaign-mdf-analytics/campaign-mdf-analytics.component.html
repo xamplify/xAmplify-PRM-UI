@@ -19,48 +19,31 @@
     <div class="page-content mt10">
       <div class="page-bar page-bar-shadow page-padding">
         <div class="row mx-t mb10">
-          <!--Campaign Details-->
-          <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
-            <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold disabled-div">
-                <div class="visual icon-cl">
-                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                </div>
-                <div class="camp-details">
-                    <div class="camp-title">
-                        {{campaignDetails?.campaignType}} CAMPAIGN
-                    </div>
-                    <div class="camp-number">
-                        <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
-                        title="{{ campaignDetails?.campaignName }}">{{campaignDetails?.campaignName | slice : 0 : 50}}</strong>
-                        <span *ngIf="campaignDetails?.campaignName?.length > 50">...</span>
-                    </div>
-                    <div class="camp-desc">
-                      <span>{{ campaignDetails?.launchTime | date : "fullDate" }}</span>
-                    </div>
-                </div>
-            </a>
-          </div>
-          <!--Email Template-->
-          <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6" id="email-template">
-          <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" (click)="previewTemplate()">
-              <div class="visual icon-cl">
-                  <i class="fa fa-envelope-open" aria-hidden="true"></i>
-              </div>
-              <div class="camp-details">
-                  <div class="camp-title">
-                      Email Info
-                  </div>
-                  <div class="camp-number">
-                      <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
-                      title="{{ campaignDetails?.emailTemplateName }}">{{campaignDetails?.emailTemplateName | slice : 0 : 50}}</strong>
-                      <span *ngIf="campaignDetails?.emailTemplateName?.length > 50">...</span>
-                  </div>
-                  <div class="camp-desc">
-                    <span>Click for preview</span>
-                  </div>
-              </div>
-          </a>
-          </div>
+          <ng-container *ngIf="campaignDetails?.campaignType=='VIDEO'">
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
+              <ng-template  [ngTemplateOutlet]="campaignTab"></ng-template>
+              <ng-template  [ngTemplateOutlet]="emailTemplateTab"></ng-template>
+            </div> 
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
+
+              <div class="portlet light mhtpx">
+                <app-video-play [isPreview]="true" [videoFile]="videoFile" [videoWidth]="'800px'"
+                [videoHeight]="'185px'"></app-video-play>
+							</div>
+            
+            </div>
+          </ng-container>
+          <ng-container *ngIf="campaignDetails?.campaignType!='VIDEO'">
+            <!--Campaign Details-->
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
+              <ng-template  [ngTemplateOutlet]="campaignTab"></ng-template>
+            </div>
+            <!--Email Template-->
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6" id="email-template">
+              <ng-template  [ngTemplateOutlet]="emailTemplateTab"></ng-template>
+            </div>
+          </ng-container>
+          
         </div>
       </div>
     </div>
@@ -70,10 +53,10 @@
       <div class="page-bar page-bar-shadow page-padding">
         <div class="row mx-t mb10">
           <section>
-            <div class="emails-info flex-wrap disabled-div">
+            <div class="emails-info flex-wrap not-allowed">
               <!--Recipients-->
                 <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                  <button class="portlet light color1-invert crcb lt-blue-c detail_card">
+                  <button class="portlet light color1-invert crcb lt-blue-c detail_card not-allowed">
                     <div class="portlet-body text-center">
                       <i class="fa fa-user"></i>
                       <h1>
@@ -85,7 +68,7 @@
                 </div>
               <!--Total Emails Sent--> 
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb lt-green-c detail_card">
+                <button class="portlet light color1-invert crcb lt-green-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-envelope-o"></i>
                     <h1>
@@ -97,7 +80,7 @@
               </div>
               <!--Deliverability--> 
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb tk-blue-c detail_card">
+                <button class="portlet light color1-invert crcb tk-blue-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-envelope"></i>
                     <h1>
@@ -109,7 +92,7 @@
               </div>
               <!--Active Recipients-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb vlt-blue-c detail_card">
+                <button class="portlet light color1-invert crcb vlt-blue-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-user-circle-o"></i>
                     <h1>
@@ -121,7 +104,7 @@
               </div>
               <!--Open Rate-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb pure-blue-c detail_card">
+                <button class="portlet light color1-invert crcb pure-blue-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-envelope-open-o"></i>
                     <h1>
@@ -133,7 +116,7 @@
               </div>
               <!--Clicked Url-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb black-blue-c detail_card">
+                <button class="portlet light color1-invert crcb black-blue-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-globe"></i>
                     <h1>
@@ -145,7 +128,7 @@
               </div>
               <!--Clickthrough Rate-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb y-b-c detail_card">
+                <button class="portlet light color1-invert crcb y-b-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-envelope-open"></i>
                     <h1>
@@ -157,7 +140,7 @@
               </div>
               <!--Clicked URL-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" *ngIf="campaignDetails?.campaignType=='VIDEO'">
-                <button class="portlet light color1-invert crcb b-b-c detail_card">
+                <button class="portlet light color1-invert crcb b-b-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-eye"></i>
                     <h1>
@@ -169,7 +152,7 @@
               </div>
               <!--Hard Bounce-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb r-b-c detail_card">
+                <button class="portlet light color1-invert crcb r-b-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-ban"></i>
                     <h1>
@@ -181,7 +164,7 @@
               </div>
               <!--Soft Bounce-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb h-r-c detail_card">
+                <button class="portlet light color1-invert crcb h-r-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-trash-o"></i>
                     <h1>
@@ -193,7 +176,7 @@
               </div>
               <!--UnSubscribe-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb r-r-c detail_card">
+                <button class="portlet light color1-invert crcb r-r-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-user-times"></i>
                     <h1>
@@ -206,7 +189,7 @@
               <ng-container *ngIf="isOpportunitiesModuleEnabled">
                 <!--Leads-->
                 <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                  <button class="portlet light color1-invert crcb vlt-b-c detail_card">
+                  <button class="portlet light color1-invert crcb vlt-b-c detail_card not-allowed">
                     <div class="portlet-body text-center">
                       <i class="fa fa-user-circle"></i>
                       <h1>
@@ -218,7 +201,7 @@
                 </div>
                 <!--Deals-->
                 <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                  <button class="portlet light color1-invert crcb lt-g-b-c detail_card">
+                  <button class="portlet light color1-invert crcb lt-g-b-c detail_card not-allowed">
                     <div class="portlet-body text-center">
                       <i class="fa fa-tags"></i>
                       <h1>
@@ -285,6 +268,47 @@
     
   </div>
 
+ <ng-template #campaignTab>
+  <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold not-allowed">
+    <div class="visual icon-cl">
+        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+    </div>
+    <div class="camp-details">
+        <div class="camp-title">
+            {{campaignDetails?.campaignType}} CAMPAIGN
+        </div>
+        <div class="camp-number">
+            <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
+            title="{{ campaignDetails?.campaignName }}">{{campaignDetails?.campaignName | slice : 0 : 50}}</strong>
+            <span *ngIf="campaignDetails?.campaignName?.length > 50">...</span>
+        </div>
+        <div class="camp-desc">
+          <span>{{ campaignDetails?.launchTime | date : "fullDate" }}</span>
+        </div>
+    </div>
+</a>
+ </ng-template> 
+
+ <ng-template #emailTemplateTab>
+  <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" (click)="previewTemplate()">
+    <div class="visual icon-cl">
+        <i class="fa fa-envelope-open" aria-hidden="true"></i>
+    </div>
+    <div class="camp-details">
+        <div class="camp-title">
+            Email Info
+        </div>
+        <div class="camp-number">
+            <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
+            title="{{ campaignDetails?.emailTemplateName }}">{{campaignDetails?.emailTemplateName | slice : 0 : 50}}</strong>
+            <span *ngIf="campaignDetails?.emailTemplateName?.length > 50">...</span>
+        </div>
+        <div class="camp-desc">
+          <span>Click for preview</span>
+        </div>
+    </div>
+</a>
+ </ng-template>
 
 
 

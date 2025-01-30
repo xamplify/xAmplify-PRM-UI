@@ -1977,7 +1977,7 @@ h5.view-banner-green.white-labeled-cu1 {
 }
 /* tharak */
 input.field-border-customization {
-  padding: 3px 7px;
+  padding: 3px 7px!important;
 }
 input#copy-link {
   border-radius: 5px;

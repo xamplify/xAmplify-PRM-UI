@@ -272,6 +272,8 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
           ],
           "UNLOCK_MDF_FUNDING":[
             '{{campaignName}}',
+            '{{mdfKey}}',
+            '{{mdfKeySearchLink}}',
             '{{campaignAnalyticsLink}}'
           ],
         };
@@ -320,6 +322,8 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               { condition: () => emailTemplateType === "JOIN_VERSA_TEAM" && !jsonContent.includes('Request_Account'), message: "Whoops! We are unable to save this template because you deleted 'Request_Account' tag." },
               { condition: () => emailTemplateType === self.properties.UNLOCK_MDF_FUNDING && !jsonContent.includes('{{campaignName}}'), message: "Whoops! We are unable to save this template because you deleted '{{campaignName}}' tag." },
               { condition: () => emailTemplateType === self.properties.UNLOCK_MDF_FUNDING && !jsonContent.includes('{{campaignAnalyticsLink}}'), message: "Whoops! We are unable to save this template because you deleted '{{campaignAnalyticsLink}}' tag." },
+              { condition: () => emailTemplateType === self.properties.UNLOCK_MDF_FUNDING && !jsonContent.includes('{{mdfKey}}'), message: "Whoops! We are unable to save this template because you deleted '{{mdfKey}}' tag." },
+              { condition: () => emailTemplateType === self.properties.UNLOCK_MDF_FUNDING && !jsonContent.includes('{{mdfKeySearchLink}}'), message: "Whoops! We are unable to save this template because you deleted '{{mdfKeySearchLink}}' tag." },
 
             ]
           },

@@ -18,9 +18,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <a class="close-circle" data-dismiss="modal"> <i class="fa fa-times"></i></a>
-        <h4 class="modal-title left" id="myModalLabel">Enter Your Details</h4>
+        <h4 class="modal-title left" id="myModalLabel">Request An Account</h4>
       </div>
       <div class="modal-body">
+        <p>Request access to the platform by submitting your details. Our team will review and get back to you shortly.</p>
         <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div id="modal-content">
           <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>

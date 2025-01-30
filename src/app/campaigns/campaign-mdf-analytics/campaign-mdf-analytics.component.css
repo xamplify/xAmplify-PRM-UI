@@ -88,7 +88,6 @@ tr>td>h6 {
   transform: rotate(-15deg);
   position: absolute;
   font-size: 65px !important;
-  bottom: 25px !important;
   margin-left: -29px !important;
 }
 
@@ -497,4 +496,8 @@ th.leftAlignTableth {
   height: 42px;
   width: auto;
   margin: 10px 10px 10px 10px;
+}
+
+.not-allowed{
+  cursor: not-allowed;
 }

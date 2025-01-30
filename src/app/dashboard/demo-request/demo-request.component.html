@@ -1,14 +1,14 @@
 
-<div class="wrap-collabsible" id="demo-requests">
-  <input id="collapsible" class="toggle" name="collapsibleCheckBox" type="checkbox" checked>
-  <label for="collapsible" class="lbl-toggle">Demo Requests</label>
+<div class="wrap-collabsible" [attr.id]="divId">
+  <input id="{{collapsableDivId}}" class="toggle" name="collapsibleCheckBox" type="checkbox" checked>
+  <label for="{{collapsableDivId}}" class="lbl-toggle">{{header}}</label>
   <div class="collapsible-content">
     <div class="content-inner">
       <!--Demo Requests-->
       <div>
         <div class="portlet light">
           <div class="portlet-title">
-            <div class="caption">Demo Request(s)</div>
+            <div class="caption">{{header}}</div>
             <div class="inputs">
           <a [routerLink]="['../admin-company-profile']" class="btn btn-info" id="left">Create An Account</a>
           <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">

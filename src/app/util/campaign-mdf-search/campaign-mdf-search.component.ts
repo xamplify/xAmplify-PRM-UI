@@ -13,7 +13,7 @@ export class CampaignMdfSearchComponent implements OnInit {
   constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
-    
+    this.referenceService.hideVerticalScrollBar();
   }
 
   searchMdfAlias(){
