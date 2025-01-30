@@ -498,3 +498,7 @@ th.leftAlignTableth {
   width: auto;
   margin: 10px 10px 10px 10px;
 }
+
+.not-allowed{
+  cursor: not-allowed;
+}

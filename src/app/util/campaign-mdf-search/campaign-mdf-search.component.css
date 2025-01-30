@@ -1,19 +1,9 @@
-/* Ensure no scrollbar appears */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* Prevents scrolling */
-}
-
 .xAmplify-search-page {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #eceff1, #ffffff);
+    height: 75vh;
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
@@ -124,8 +114,6 @@ html, body {
     }
 }
 
-
-/* Disables vertical scrolling */
-html, body {
-    overflow-y: hidden; /* No vertical scroll */
+.xAmplify_logo img {
+    width: 250px;
 }

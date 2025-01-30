@@ -21,7 +21,7 @@
         <div class="row mx-t mb10">
           <!--Campaign Details-->
           <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
-            <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold disabled-div">
+            <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold not-allowed">
                 <div class="visual icon-cl">
                     <i class="fa fa-bullhorn" aria-hidden="true"></i>
                 </div>
@@ -70,10 +70,10 @@
       <div class="page-bar page-bar-shadow page-padding">
         <div class="row mx-t mb10">
           <section>
-            <div class="emails-info flex-wrap disabled-div">
+            <div class="emails-info flex-wrap not-allowed">
               <!--Recipients-->
                 <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                  <button class="portlet light color1-invert crcb lt-blue-c detail_card">
+                  <button class="portlet light color1-invert crcb lt-blue-c detail_card not-allowed">
                     <div class="portlet-body text-center">
                       <i class="fa fa-user"></i>
                       <h1>
@@ -85,7 +85,7 @@
                 </div>
               <!--Total Emails Sent--> 
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb lt-green-c detail_card">
+                <button class="portlet light color1-invert crcb lt-green-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-envelope-o"></i>
                     <h1>
@@ -97,7 +97,7 @@
               </div>
               <!--Deliverability--> 
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb tk-blue-c detail_card">
+                <button class="portlet light color1-invert crcb tk-blue-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-envelope"></i>
                     <h1>
@@ -109,7 +109,7 @@
               </div>
               <!--Active Recipients-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb vlt-blue-c detail_card">
+                <button class="portlet light color1-invert crcb vlt-blue-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-user-circle-o"></i>
                     <h1>
@@ -121,7 +121,7 @@
               </div>
               <!--Open Rate-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb pure-blue-c detail_card">
+                <button class="portlet light color1-invert crcb pure-blue-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-envelope-open-o"></i>
                     <h1>
@@ -133,7 +133,7 @@
               </div>
               <!--Clicked Url-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb black-blue-c detail_card">
+                <button class="portlet light color1-invert crcb black-blue-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-globe"></i>
                     <h1>
@@ -145,7 +145,7 @@
               </div>
               <!--Clickthrough Rate-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb y-b-c detail_card">
+                <button class="portlet light color1-invert crcb y-b-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-envelope-open"></i>
                     <h1>
@@ -157,7 +157,7 @@
               </div>
               <!--Clicked URL-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2" *ngIf="campaignDetails?.campaignType=='VIDEO'">
-                <button class="portlet light color1-invert crcb b-b-c detail_card">
+                <button class="portlet light color1-invert crcb b-b-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-eye"></i>
                     <h1>
@@ -169,7 +169,7 @@
               </div>
               <!--Hard Bounce-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb r-b-c detail_card">
+                <button class="portlet light color1-invert crcb r-b-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-ban"></i>
                     <h1>
@@ -181,7 +181,7 @@
               </div>
               <!--Soft Bounce-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb h-r-c detail_card">
+                <button class="portlet light color1-invert crcb h-r-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-trash-o"></i>
                     <h1>
@@ -193,7 +193,7 @@
               </div>
               <!--UnSubscribe-->
               <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                <button class="portlet light color1-invert crcb r-r-c detail_card">
+                <button class="portlet light color1-invert crcb r-r-c detail_card not-allowed">
                   <div class="portlet-body text-center">
                     <i class="fa fa-user-times"></i>
                     <h1>
@@ -206,7 +206,7 @@
               <ng-container *ngIf="isOpportunitiesModuleEnabled">
                 <!--Leads-->
                 <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                  <button class="portlet light color1-invert crcb vlt-b-c detail_card">
+                  <button class="portlet light color1-invert crcb vlt-b-c detail_card not-allowed">
                     <div class="portlet-body text-center">
                       <i class="fa fa-user-circle"></i>
                       <h1>
@@ -218,7 +218,7 @@
                 </div>
                 <!--Deals-->
                 <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
-                  <button class="portlet light color1-invert crcb lt-g-b-c detail_card">
+                  <button class="portlet light color1-invert crcb lt-g-b-c detail_card not-allowed">
                     <div class="portlet-body text-center">
                       <i class="fa fa-tags"></i>
                       <h1>
