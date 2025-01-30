@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
+import { SUPER_ADMIN_MODULE_CONTSTANTS } from 'app/constants/super-admin-modules.constants';
 
 declare var  $: any;
 @Component({
@@ -20,6 +20,9 @@ declare var  $: any;
   providers: [Pagination, HttpRequestLoader, Properties,SortOption]
 })
 export class DemoRequestComponent implements OnInit {
+    @Input() filterType:string;
+    divId = "demo-requests";
+    header = "Demo Request(s)";
     hasError: boolean;
     statusCode: any;
     pagination: Pagination = new Pagination();
@@ -29,10 +32,15 @@ export class DemoRequestComponent implements OnInit {
         public logger: XtremandLogger, public sortOption: SortOption,private utilService:UtilService ) { }
 
   ngOnInit() {
-      this.listDemoRequests(this.pagination);
+    if(SUPER_ADMIN_MODULE_CONTSTANTS.mdfAccountRequests==this.filterType){
+        this.divId = "mdf-account-requests";
+        this.header = "Campaign MDF Request(s)";
+    }
+    this.listDemoRequests(this.pagination);
   }
   
   listDemoRequests(pagination:Pagination){
+      pagination.filterKey = this.filterType;
       this.hasError = false;
       this.referenceService.loading( this.httpRequestLoader, true );
       this.dashboardService.listDemoRequests( pagination ).subscribe(

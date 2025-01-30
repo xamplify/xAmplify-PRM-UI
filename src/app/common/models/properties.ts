@@ -542,7 +542,7 @@ export class Properties {
 	PRIVILEGED_MANAGERS_APPROVAL_DISABLED_TOOLTIP = 'Admin and Supervisor approval authority cannot be modified.';
 
 	/**XNFR-832***/
-	MDF_CAMPAIGN_DESCRIPTION = "This campaign was launched to notify and engage specific contacts regarding an MDF (Market Development Funds) request. The goal is to ensure that recipients are informed about the available funding opportunities and encourage them to take necessary actions, such as submitting a request or reviewing the eligibility criteria.";
+	MDF_CAMPAIGN_DESCRIPTION = "This campaign was launched to notify and engage regarding an MDF request. The goal is to provide campaign performance insights, enabling assessment of results and release of funds accordingly.";
 
 }
 
