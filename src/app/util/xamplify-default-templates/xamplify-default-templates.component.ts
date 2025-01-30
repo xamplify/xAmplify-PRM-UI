@@ -274,6 +274,12 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
             '{{campaignName}}',
             '{{campaignAnalyticsLink}}'
           ],
+          "LEAD_APPROVE":[
+            '{{leadName}}',
+            '{{leadAssociatedCampaign}}',
+            '{{leadStage}}',
+            '{leadComment}}'
+          ]
         };
     
         const requiredTags = requiredTagsMap[emailTemplateType] || [];
