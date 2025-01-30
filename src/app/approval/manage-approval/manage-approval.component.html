@@ -18,6 +18,9 @@
     <div class="col-md-12">
       <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0 light_bg_removal remove_space">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        <div *ngIf="showApproveResponse" class="col-md-12 col-md-12 col-xs-12 col-sm-12 alert alert-danger custom-alert">
+          <strong>Auto-approved records cannot be rejected.</strong>
+        </div>
         <div class="portlet-title remove_border">
           <ng-template [ngTemplateOutlet]="headerOptions"></ng-template>
         </div>
@@ -133,7 +136,7 @@
         <ul class="dropdown-menu pull-right">
           <li *ngIf="selectedFilterStatus === 'PENDING' || selectedFilterStatus === 'REJECTED'"><a id="save_button"
               (click)="getStausAndCallCommentsPopUp('APPROVED')">Approve Selected</a></li>
-          <li *ngIf="selectedFilterStatus === 'PENDING'"><a id="save_button"
+          <li *ngIf="selectedFilterStatus === 'PENDING' || selectedFilterStatus === 'APPROVED'"><a id="save_button"
               (click)="getStausAndCallCommentsPopUp('REJECTED')">Reject Selected</a></li>
         </ul>
       </div>
@@ -322,7 +325,8 @@
 
 <app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
   [isApproveOrRejectStatus]="isApproveOrRejectStatus" [rejectedRecordNames]="rejectedRecordNames"
-  (comment)="getComment($event)">
+  (comment)="getComment($event)" [selectedFilterStatus]="selectedFilterStatus"
+  [isSelectedAutoApprovalRecords]="isSelectedAutoApprovalRecords">
 </app-multiselect-approval-comments-modal-popup>
 
 <!--Download Pdf Modal Popup-->

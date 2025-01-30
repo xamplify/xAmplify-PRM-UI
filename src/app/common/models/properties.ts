@@ -537,5 +537,13 @@ export class Properties {
 	TEAM_MEMBER_NO_ACCESS_TRACKS_TOOLTIP = 'This team member does not have access to tracks.';
 	TEAM_MEMBER_NO_ACCESS_PLAYBOOKS_TOOLTIP = 'This team member does not have access to playbooks.';
 
+	AUTHORIZATION_RESPONSE_APPROVAL = "Heads up! The following records cannot be approved because you do not have the required authorization. You can proceed with approving the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_SELF_REJECT = "Heads up! Auto-approved records cannot be rejected. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_REJECT = "Heads up! The following records cannot be rejected because you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_TEAM_MEMBER = "Heads up! The following records cannot be rejected as some are auto-approved, or you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+
+
+
+
 }
 

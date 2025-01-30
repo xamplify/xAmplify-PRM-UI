@@ -97,6 +97,8 @@ export class ManageApprovalComponent implements OnInit {
   isPlayBookApprover: any;
   hasApprovalAccess : boolean = false;
   rejectedRecordNames = [];
+  showApproveResponse : boolean = false;
+  isSelectedAutoApprovalRecords: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
@@ -151,7 +153,7 @@ export class ManageApprovalComponent implements OnInit {
         pagination.totalRecords = data.totalRecords;
         pagination = this.pagerService.getPagedItems(pagination, this.approveList);
         this.isCheckHeader();
-        this.hasApprovalAccess = (this.selectedFilterStatus === 'PENDING' || this.selectedFilterStatus === 'REJECTED')
+        this.hasApprovalAccess = (this.selectedFilterStatus === 'PENDING' || this.selectedFilterStatus === 'REJECTED' || this.selectedFilterStatus === 'APPROVED')
           && (this.isAssetApprover || this.isTrackApprover || this.isPlayBookApprover)
         this.referenceService.loading(this.httpRequestLoader, false);
       }, error => {
@@ -191,6 +193,8 @@ export class ManageApprovalComponent implements OnInit {
 
   filterByType(type: string, index: number) {
     this.selectedTypeIndex = index;
+    this.customResponse.isVisible = false;
+    this.searchKey = "";
     this.clearSelectedItems();
     this.showFilterOption = false;
     this.clearFilterOptions();
@@ -207,6 +211,8 @@ export class ManageApprovalComponent implements OnInit {
     this.pagination.pageIndex = 1;
     this.pagination.maxResults = 12;
     this.showFilterOption = false;
+    this.customResponse.isVisible = false;
+    this.searchKey = "";
     this.clearFilterOptions();
     this.clearSelectedItems();
     if (event == 'APPROVED') {
@@ -368,6 +374,7 @@ export class ManageApprovalComponent implements OnInit {
   }
 
   checkAll(ev: any) {
+    this.showApproveResponse = false;
     let self = this;
     if (ev.target.checked) {
       $('[name="pendingList[]"]').prop('checked', true);
@@ -377,6 +384,9 @@ export class ManageApprovalComponent implements OnInit {
           if (value.id == id) {
             self.selectedIds.push(value.id);
             self.selectedPendingIds.push(value.id);
+            if (self.selectedFilterStatus === 'APPROVED' && value.createdByAnyApprovalManagerOrApprover) {
+              self.isSelectedAutoApprovalRecords = true;
+            }
             self.pushIdsBasedOnType(value);
           }
         });
@@ -384,6 +394,7 @@ export class ManageApprovalComponent implements OnInit {
       this.selectedIds = this.referenceService.removeDuplicates(this.selectedIds);
       this.selectedPendingIds = this.referenceService.removeDuplicates(this.selectedPendingIds);
       this.showApproveAndRejectButton();
+      this.showApproveAndRejectButtonForApprovalTile();
     } else {
       $('[name="pendingList[]"]').prop('checked', false);
       $('[name="pendingList[]"]').each(function () {
@@ -403,19 +414,26 @@ export class ManageApprovalComponent implements OnInit {
         });
       });
       this.showApproveAndRejectButton();
+      this.isSelectedAutoApprovalRecords = false;
     }
     ev.stopPropagation();
   }
 
   selectPendingItem(item: any) {
+    this.showApproveResponse = false;
     let id = item.id;
     let isChecked = $('#' + id).is(':checked');
+    if (this.selectedFilterStatus === 'APPROVED' && item.createdByAnyApprovalManagerOrApprover) {
+      this.isSelectedAutoApprovalRecords = true;
+    }
     if (isChecked) {
       this.selectedPendingIds.push(id);
       this.selectedIds.push(id);
       this.pushIdsBasedOnType(item);
       this.showApproveAndRejectButton();
+      this.showApproveAndRejectButtonForApprovalTile();
     } else {
+      this.isSelectedAutoApprovalRecords = false;
       let indexInSelectedIds = this.selectedIds.indexOf(id);
       let indexInSelectedPendingIds = this.selectedPendingIds.indexOf(id);
       if (indexInSelectedIds !== -1) {
@@ -426,6 +444,7 @@ export class ManageApprovalComponent implements OnInit {
       }
       this.unSelectIdsBasedOnType(item);
       this.showApproveAndRejectButton();
+      this.showApproveAndRejectButtonForApprovalTile();
     }
     if (this.selectedPendingIds.length == this.approveList.length) {
       this.isHeaderCheckBoxChecked = true;
@@ -473,21 +492,21 @@ export class ManageApprovalComponent implements OnInit {
   }
 
   pushIdsBasedOnType(item: any) {
-    if (item.type == 'Asset') {
+    if (item.type == 'Asset' && !item.createdByAnyApprovalManagerOrApprover) {
       this.selectedDamIds.push(item.id);
       this.selectedDamIds = this.referenceService.removeDuplicates(this.selectedDamIds);
       if (!this.isAssetApprover) {
         this.pushRejectedRecords(item);
       }
     }
-    if (item.type == 'Track') {
+    if (item.type == 'Track' && !item.createdByAnyApprovalManagerOrApprover) {
       this.selectedTrackIds.push(item.id);
       this.selectedTrackIds = this.referenceService.removeDuplicates(this.selectedTrackIds);
       if (!this.isTrackApprover) {
         this.pushRejectedRecords(item);
       }
     }
-    if (item.type == 'PlayBook') {
+    if (item.type == 'PlayBook' && !item.createdByAnyApprovalManagerOrApprover) {
       this.selectedPlayBookIds.push(item.id);
       this.selectedPlayBookIds = this.referenceService.removeDuplicates(this.selectedPlayBookIds);
       if (!this.isPlayBookApprover) {
@@ -524,6 +543,7 @@ export class ManageApprovalComponent implements OnInit {
           this.clearSelectedItems();
           this.isHeaderCheckBoxChecked = false;
           if (response.statusCode == 200) {
+            this.pagination.pageIndex = 1;
             let message = '';
             if (this.isApproveOrRejectStatus === 'APPROVED') {
               message = "Approved Successfully"
@@ -551,6 +571,18 @@ export class ManageApprovalComponent implements OnInit {
       this.displayApproveAndRejectButton = true;
     } else {
       this.displayApproveAndRejectButton = false;
+    }
+  }
+
+  showApproveAndRejectButtonForApprovalTile() {
+    if (this.selectedFilterStatus === 'APPROVED') {
+      if (this.selectedDamIds.length > 0 || this.selectedTrackIds.length > 0 || this.selectedPlayBookIds.length > 0) {
+        this.displayApproveAndRejectButton = true;
+        this.showApproveResponse = false;
+      } else {
+        this.displayApproveAndRejectButton = false;
+        this.showApproveResponse = true;
+      }
     }
   }
 
@@ -917,6 +949,8 @@ export class ManageApprovalComponent implements OnInit {
     this.selectedPendingIds = [];
     this.selectedIds = [];
     this.rejectedRecordNames = [];
+    this.isSelectedAutoApprovalRecords = false;
+    this.showApproveResponse = false;
   }
 
   isSelectable(item: any): boolean {
@@ -924,7 +958,7 @@ export class ManageApprovalComponent implements OnInit {
       return true;
     } else if (item.type == 'Track' && this.isTrackApprover) {
       return true;
-    } else if (item.type == 'PlayBook' && this.isTrackApprover) {
+    } else if (item.type == 'PlayBook' && this.isPlayBookApprover) {
       return true;
     } else {
       return false;
