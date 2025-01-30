@@ -583,6 +583,9 @@ export class ManageApprovalComponent implements OnInit {
         this.displayApproveAndRejectButton = false;
         this.showApproveResponse = true;
       }
+      if (!(this.selectedIds.length > 0)) {
+        this.showApproveResponse = false;
+      }
     }
   }
 
