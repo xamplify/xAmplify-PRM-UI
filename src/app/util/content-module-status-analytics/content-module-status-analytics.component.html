@@ -20,10 +20,10 @@
                </div>
             </div>
             <span class="morePadding">
-               <a class="more" style="text-align: left; background: #3480b5; color: white" translate>
-                  Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-               </a>
-            </span>
+               <a class="more" style="text-align: left; background: #3480b5; color: white" translate> Detailed view
+                 <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                 <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle" aria-hidden="true"  title="{{'Total records of ' + (moduleType.toLowerCase() == 'dam' ? 'assets' : moduleType.toLowerCase() + 's')}}"></i></a>           
+             </span>
          </button>
       </div>
       <div class="col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
@@ -43,11 +43,11 @@
                   Approved
                </div>
             </div>
-            <span class="morePadding"> <a class="more" style="text-align: left;background: #268c83; color:white"
-                  translate>
-                  Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-               </a>
-            </span>
+            <span class="morePadding">
+               <a class="more" style="text-align: left;background: #268c83; color:white" translate> Detailed view
+                 <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                 <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle" aria-hidden="true"  title="{{'Total approved ' + (moduleType.toLowerCase() == 'dam' ? 'assets' : moduleType.toLowerCase() + 's')}}"></i></a>           
+             </span>
          </button>
       </div>
       <div class="col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
@@ -67,10 +67,11 @@
                   Pending Approval
                </div>
             </div>
-            <span class="morePadding"> <a class="more" style="text-align: left;" translate> Detailed view
-                  <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-               </a>
-            </span>
+            <span class="morePadding">
+               <a class="more" style="text-align: left;" translate> Detailed view
+                 <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                 <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle" aria-hidden="true"  title="{{'Total pending for approval ' + (moduleType.toLowerCase() == 'dam' ? 'assets' : moduleType.toLowerCase() + 's')}}"></i></a>           
+             </span>
          </button>
       </div>
       <div class="col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
@@ -90,10 +91,11 @@
                   <ng-container>Rejected</ng-container>
                </div>
             </div>
-            <span class="morePadding"> <a class="more" style="text-align: left;" translate> Detailed view
-                  <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-               </a>
-            </span>
+            <span class="morePadding">
+               <a class="more" style="text-align: left;" translate> Detailed view
+                 <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                 <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle" aria-hidden="true"  title="{{'Total rejected ' + (moduleType.toLowerCase() == 'dam' ? 'assets' : moduleType.toLowerCase() + 's')}}"></i></a>           
+             </span>
          </button>
       </div>
    </ng-container>
