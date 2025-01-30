@@ -19,48 +19,31 @@
     <div class="page-content mt10">
       <div class="page-bar page-bar-shadow page-padding">
         <div class="row mx-t mb10">
-          <!--Campaign Details-->
-          <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
-            <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold not-allowed">
-                <div class="visual icon-cl">
-                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                </div>
-                <div class="camp-details">
-                    <div class="camp-title">
-                        {{campaignDetails?.campaignType}} CAMPAIGN
-                    </div>
-                    <div class="camp-number">
-                        <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
-                        title="{{ campaignDetails?.campaignName }}">{{campaignDetails?.campaignName | slice : 0 : 50}}</strong>
-                        <span *ngIf="campaignDetails?.campaignName?.length > 50">...</span>
-                    </div>
-                    <div class="camp-desc">
-                      <span>{{ campaignDetails?.launchTime | date : "fullDate" }}</span>
-                    </div>
-                </div>
-            </a>
-          </div>
-          <!--Email Template-->
-          <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6" id="email-template">
-          <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" (click)="previewTemplate()">
-              <div class="visual icon-cl">
-                  <i class="fa fa-envelope-open" aria-hidden="true"></i>
-              </div>
-              <div class="camp-details">
-                  <div class="camp-title">
-                      Email Info
-                  </div>
-                  <div class="camp-number">
-                      <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
-                      title="{{ campaignDetails?.emailTemplateName }}">{{campaignDetails?.emailTemplateName | slice : 0 : 50}}</strong>
-                      <span *ngIf="campaignDetails?.emailTemplateName?.length > 50">...</span>
-                  </div>
-                  <div class="camp-desc">
-                    <span>Click for preview</span>
-                  </div>
-              </div>
-          </a>
-          </div>
+          <ng-container *ngIf="campaignDetails?.campaignType=='VIDEO'">
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
+              <ng-template  [ngTemplateOutlet]="campaignTab"></ng-template>
+              <ng-template  [ngTemplateOutlet]="emailTemplateTab"></ng-template>
+            </div> 
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
+
+              <div class="portlet light mhtpx">
+                <app-video-play [isPreview]="true" [videoFile]="videoFile" [videoWidth]="'800px'"
+                [videoHeight]="'185px'"></app-video-play>
+							</div>
+            
+            </div>
+          </ng-container>
+          <ng-container *ngIf="campaignDetails?.campaignType!='VIDEO'">
+            <!--Campaign Details-->
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6">
+              <ng-template  [ngTemplateOutlet]="campaignTab"></ng-template>
+            </div>
+            <!--Email Template-->
+            <div class="pl10 pr10 col-xs-12 tiles_hover_effect col-sm-6" id="email-template">
+              <ng-template  [ngTemplateOutlet]="emailTemplateTab"></ng-template>
+            </div>
+          </ng-container>
+          
         </div>
       </div>
     </div>
@@ -285,6 +268,47 @@
     
   </div>
 
+ <ng-template #campaignTab>
+  <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold not-allowed">
+    <div class="visual icon-cl">
+        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+    </div>
+    <div class="camp-details">
+        <div class="camp-title">
+            {{campaignDetails?.campaignType}} CAMPAIGN
+        </div>
+        <div class="camp-number">
+            <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
+            title="{{ campaignDetails?.campaignName }}">{{campaignDetails?.campaignName | slice : 0 : 50}}</strong>
+            <span *ngIf="campaignDetails?.campaignName?.length > 50">...</span>
+        </div>
+        <div class="camp-desc">
+          <span>{{ campaignDetails?.launchTime | date : "fullDate" }}</span>
+        </div>
+    </div>
+</a>
+ </ng-template> 
+
+ <ng-template #emailTemplateTab>
+  <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" (click)="previewTemplate()">
+    <div class="visual icon-cl">
+        <i class="fa fa-envelope-open" aria-hidden="true"></i>
+    </div>
+    <div class="camp-details">
+        <div class="camp-title">
+            Email Info
+        </div>
+        <div class="camp-number">
+            <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" 
+            title="{{ campaignDetails?.emailTemplateName }}">{{campaignDetails?.emailTemplateName | slice : 0 : 50}}</strong>
+            <span *ngIf="campaignDetails?.emailTemplateName?.length > 50">...</span>
+        </div>
+        <div class="camp-desc">
+          <span>Click for preview</span>
+        </div>
+    </div>
+</a>
+ </ng-template>
 
 
 

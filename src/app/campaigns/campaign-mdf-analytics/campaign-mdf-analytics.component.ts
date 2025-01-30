@@ -6,6 +6,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { Processor } from '../../core/models/processor';
 import { Properties } from 'app/common/models/properties';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { SaveVideoFile } from 'app/videos/models/save-video-file';
 
 @Component({
   selector: 'app-campaign-mdf-analytics',
@@ -24,7 +25,8 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
   requestAccountButtonClicked = false;
   requestAccountButtonText = "Request an Account";
   companyLogoPath = "";
-  emailAddress = "csravan@stratapps.com";
+  emailAddress = "";
+  videoFile: SaveVideoFile = new SaveVideoFile();
   constructor(private route: ActivatedRoute,private authenticationService:AuthenticationService,
     private referenceService:ReferenceService,private logger:XtremandLogger,
     public processor:Processor,public properties:Properties,public vanityURLService:VanityURLService) { }
@@ -51,6 +53,7 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
           this.isOpportunitiesModuleEnabled = response.map['opportunitiesAccessEnabled'];
           this.companyLogoPath = this.authenticationService.MEDIA_URL+response.map['companyLogoPath'];
           this.emailAddress = this.campaignDetails.emailAddress;
+          this.videoFile = response.map['campaignVideoFile'];
         }else{
           if(this.statusCode==403){
             this.statusCode = 404;
