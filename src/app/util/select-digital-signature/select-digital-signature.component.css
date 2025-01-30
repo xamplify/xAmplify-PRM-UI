@@ -213,3 +213,13 @@
   width: 300px;
   height: 150px;
 }
+.modal .modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.modal .modal-header .close {
+  margin-top: 4px !important;
+  padding: 1rem 1rem;
+  margin: -1rem -1rem -1rem auto;
+}

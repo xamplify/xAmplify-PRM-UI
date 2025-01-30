@@ -2159,3 +2159,7 @@ button.btn-info.aspect_ratio:disabled {
   cursor: not-allowed; /* Change the cursor to indicate it's disabled */
 }
 .portlet-body.table_radius {border-radius: 7px !important;}
+.stage-field-border{
+  border:1px solid #747474;
+  border-radius: 3px;
+}
