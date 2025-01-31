@@ -154,6 +154,7 @@ export class SaveAsComponent implements OnInit {
               this.contactListObject.socialNetwork = 'MANUAL';
               this.contactListObject.alias = null;
               this.contactListObject.synchronisedList= false;
+              this.contactListObject.moduleName = 'SHARE LEADS';
               
               if (this.editContactsComponent.selectedContactListIds.length == 0) {
                   let listUsers = [];
@@ -193,7 +194,7 @@ export class SaveAsComponent implements OnInit {
 
   saveAssignedLeadsList(userUserListWrapper: UserUserListWrapper) {
       this.loading = true;
-      this.contactService.saveAssignedLeadsList(this.userUserListWrapper)
+      this.contactService.saveContactList(this.userUserListWrapper)
           .subscribe(
           data => {
               if (data.access) {
