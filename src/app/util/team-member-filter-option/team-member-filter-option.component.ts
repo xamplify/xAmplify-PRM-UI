@@ -19,6 +19,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   @Input() filterIcon = false;
   @Input() isAssetOrLms = false;
   @Input() isShareLeadsModule = false;
+  @Input() mdfRequest = false;
   showFilterPopup = false;
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
@@ -42,7 +43,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   }
 
   private checkPartnerTeamMemberFilter() {
-    if (this.isPartnerModule || this.isAssetOrLms || this.isShareLeadsModule) {
+    if (this.isPartnerModule || this.isAssetOrLms || this.isShareLeadsModule || this.mdfRequest) {
       let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
       if (filterPartner !== null  && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
         this.selectedFilterIndex = (this.referenceService.universalModuleType === "Partners")? this.referenceService.universalSearchFilterValue:0;

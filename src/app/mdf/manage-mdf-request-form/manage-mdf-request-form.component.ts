@@ -12,6 +12,7 @@ import { SubmittedFormData } from '../../forms/models/submitted-form-data';
 import { MdfService } from '../services/mdf.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import {MdfRequestCommentDto} from '../models/mdf-request-comment-dto';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $: any, swal: any;
 
@@ -32,6 +33,7 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
   @Input() vendorCompanyId:number;
   @Input() partnerView:boolean;
   @Input() partnershipId:number;
+  @Input() mdfRequest:boolean = false;
   @Output() mdfRequestFormEventEmitter = new EventEmitter();
   formName: string="";
   statusCode:number = 0; 
@@ -88,7 +90,14 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
             if(this.partnershipId!=undefined && this.partnershipId>0){
                 this.pagination.partnershipId = this.partnershipId;
             }
-            this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+            let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+            if(this.mdfRequest != undefined && this.mdfRequest)  {
+            if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')) {
+                  this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 0;
+              } else {
+                  this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+              }
+            }
             this.listSubmittedData(this.pagination);
           }
         }
