@@ -92,30 +92,35 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         () => { this.logger.info("Completed getAllTemplatesDuplicates()") }
     );
 }
-checkForDuplicates(newSubject: string, existingName: string, id:number) {
-  const normalizedNewSubject = this.referenceService.getTrimmedData(newSubject).toLowerCase();
-  const normalizedExistingName =  this.referenceService.getTrimmedData(existingName).toLowerCase();
-  if (normalizedNewSubject === normalizedExistingName) {
-    this.isSubjectDuplicate = false;
-  }else{
-  this.vanitySubjectLines[0].forEach((subjects:any)=>{
-    if(id === subjects[0] && subjects[1].trim().toLowerCase() === normalizedNewSubject){
+  checkForDuplicates(newSubject: string, existingName: string, id: number) {
+    const normalizedNewSubject = this.referenceService.getTrimmedData(newSubject).toLowerCase();
+    const normalizedExistingName = this.referenceService.getTrimmedData(existingName).toLowerCase();
+    if (normalizedNewSubject === normalizedExistingName) {
       this.isSubjectDuplicate = false;
-    }
-    else {
-      if(subjects[1].trim().toLowerCase() === normalizedNewSubject){
-        this.isSubjectDuplicate = true;
+    } else {
+      if (this.vanitySubjectLines != null && this.vanitySubjectLines != undefined && this.vanitySubjectLines.length > 0) {
+        this.vanitySubjectLines[0].forEach((subjects: any) => {
+          if (id === subjects[0] && subjects[1].trim().toLowerCase() === normalizedNewSubject) {
+            this.isSubjectDuplicate = false;
+          }
+          else {
+            if (subjects[1].trim().toLowerCase() === normalizedNewSubject) {
+              this.isSubjectDuplicate = true;
+            }
+          }
+        })
+        this.vanitySubjectLines[1].forEach((name: any) => {
+          if (name.trim().toLowerCase() === normalizedNewSubject) {
+            this.isSubjectDuplicate = true;
+          }
+        })
+      } else {
+        this.logger.error("Vanity Subject Lines Not Loaded");
+        this.logger.error(this.vanitySubjectLines);
       }
     }
-  })
-  this.vanitySubjectLines[1].forEach((name:any)=>{
-    if(name.trim().toLowerCase() === normalizedNewSubject){
-      this.isSubjectDuplicate = true;
-    }
-  })
+    return this.isSubjectDuplicate;
   }
-  return this.isSubjectDuplicate;
-}
 
   editTemplate(){
    let self = this;
