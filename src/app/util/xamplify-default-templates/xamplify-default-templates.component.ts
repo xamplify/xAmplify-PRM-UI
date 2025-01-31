@@ -93,15 +93,11 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
     );
 }
 checkForDuplicates(newSubject: string, existingName: string, id:number) {
-  const normalizedNewSubject = newSubject.trim().toLowerCase();
-  const normalizedExistingName = existingName.trim().toLowerCase();
-
+  const normalizedNewSubject = this.referenceService.getTrimmedData(newSubject).toLowerCase();
+  const normalizedExistingName =  this.referenceService.getTrimmedData(existingName).toLowerCase();
   if (normalizedNewSubject === normalizedExistingName) {
     this.isSubjectDuplicate = false;
   }else{
-    const trimmedSubjects = this.vanitySubjectLines[0].map(item => 
-      item[1].trim().toLowerCase()
-  );
   this.vanitySubjectLines[0].forEach((subjects:any)=>{
     if(id === subjects[0] && subjects[1].trim().toLowerCase() === normalizedNewSubject){
       this.isSubjectDuplicate = false;
