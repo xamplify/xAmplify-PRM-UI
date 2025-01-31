@@ -544,5 +544,13 @@ export class Properties {
 	/**XNFR-832***/
 	MDF_CAMPAIGN_DESCRIPTION = "This campaign was launched to notify and engage regarding an MDF request. The goal is to provide campaign performance insights, enabling assessment of results and release of funds accordingly.";
 
+	AUTHORIZATION_RESPONSE_APPROVAL = "Heads up! The following records cannot be approved because you do not have the required authorization. You can proceed with approving the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_SELF_REJECT = "Heads up! Auto-approved records cannot be rejected. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_REJECT = "Heads up! The following records cannot be rejected because you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_TEAM_MEMBER = "Heads up! The following records cannot be rejected as some are auto-approved, or you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+
+
+
+
 }
 
