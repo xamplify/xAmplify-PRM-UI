@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CustomResponse } from 'app/common/models/custom-response';
 import { SignatureResponseDto } from 'app/dashboard/models/signature-response-dto';
 import { SignatureService } from 'app/dashboard/services/signature.service';
 
@@ -13,6 +14,7 @@ export class SelectDigitalSignatureComponent implements OnInit {
  @Output() notifySignatureSelection= new EventEmitter();
  signatureResponseDto:SignatureResponseDto = new SignatureResponseDto();
  selectedSignature: string = '';
+ customResponse: CustomResponse = new CustomResponse();
   constructor(private signatureService:SignatureService,private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
@@ -33,6 +35,11 @@ export class SelectDigitalSignatureComponent implements OnInit {
       selectedSignatureImagePath = this.signatureResponseDto.drawSignatureImagePath;
     } else if (this.selectedSignature === this.signatureResponseDto.typedSignatureImagePath) {
       selectedSignatureImagePath = this.signatureResponseDto.typedSignatureImagePath;
+    }
+
+    if(selectedSignatureImagePath === ''){
+      this.customResponse = new CustomResponse('ERROR','Please select your signature',true);
+      return;
     }
 
     this.notifySignatureSelection.emit(selectedSignatureImagePath);

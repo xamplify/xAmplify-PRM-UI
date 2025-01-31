@@ -21,6 +21,7 @@ export class EmailActivityComponent implements OnInit {
   @Input() reloadTab: boolean;
   @Input() contactEmailId:any;
   @Input() contactName:any;
+  @Input() isCompanyJourney:boolean = false;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifySubmitFailed = new EventEmitter();
 

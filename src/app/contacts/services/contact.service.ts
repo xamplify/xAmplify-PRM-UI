@@ -993,4 +993,10 @@ export class ContactService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    /***XNFR-848***/
+    fetchContactsAndCountByUserListId(userListId:any) {
+        let url = this.contactsUrl + "fetchContactsAndCountByUserListId/"+userListId+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 }

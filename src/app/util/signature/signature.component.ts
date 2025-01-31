@@ -279,7 +279,7 @@ export class SignatureComponent implements OnInit {
       const ctx = canvas.getContext('2d');
       canvas.width = previewElement.offsetWidth;
       canvas.height = previewElement.offsetHeight;
-      ctx.font = `${'30px'} ${this.signatureDto.typedSignatureFont || 'Montserrat'}`;
+      ctx.font = `${'20px'} ${this.signatureDto.typedSignatureFont || 'Montserrat'}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       const text = this.signatureDto.typedSignatureText || 'Your Signature';
@@ -391,6 +391,14 @@ export class SignatureComponent implements OnInit {
     } else if (this.isUploadTabActive) {
       this.saveUploadedSignature();
     }
+    this.clearImageAfterSave()
+  }
+
+  clearImageAfterSave() {
+    this.clearImage();
+    this.context.clearRect(0, 0, this.sigPadElement.width, this.sigPadElement.height);
+    this.context.beginPath();
+    this.hasSignature = false; 
   }
 
   private validateAndSaveTypedSignature() {

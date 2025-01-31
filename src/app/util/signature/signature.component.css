@@ -11,7 +11,7 @@
 }
 
 
-canvas {
+.signature_card {
     border-radius: 10px;
     background-color: white;
     border: 1px solid #000;
@@ -68,7 +68,7 @@ span {
 .file-label {
   display: inline-block;
   background-color: #007bff;
-  color: #fff;
+  color: #fff!important;
   padding: 10px 20px;
   font-size: 14px;
   font-weight: bold;
@@ -124,4 +124,8 @@ span {
   width: 300px;
   height: 150px;
 }
-  
+@media (max-width:600px) {
+  .signature_card,.signature-preview {
+    width: 100%!important;
+  }
+}

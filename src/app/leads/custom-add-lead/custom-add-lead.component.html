@@ -24,20 +24,28 @@
           <li *ngIf="!isConvertingContactToLead">
             <a>Add</a>
           </li>
-          <li *ngIf="isConvertingContactToLead && !isFromCompanyModule">
+          <li *ngIf="isConvertingContactToLead && !isFromCompanyModule && !isCompanyJourney && !isFromCompanyJourney && !isFromCompanyJourneyEditContacts">
             <a (click)="goBackToManageContacts()">Manage Contacts</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li *ngIf="isConvertingContactToLead && isFromCompanyModule">
+          <li *ngIf="isConvertingContactToLead && isFromCompanyModule || isCompanyJourney || isFromCompanyJourney || isFromCompanyJourneyEditContacts">
             <a (click)="goBackToManageCompanies()">Manage Companies</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
-          <li *ngIf="isConvertingContactToLead && isFromEditContacts">
+          <li *ngIf="isFromCompanyJourneyEditContacts">
+            <a (click)="goBackToCompanyJourney()">Company Journey</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="(isConvertingContactToLead && isFromEditContacts && !isCompanyJourney && !isFromCompanyJourney) || isFromCompanyJourneyEditContacts">
             <a (click)="goBackToEditContacts()">Edit Contacts</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
+          <li *ngIf="isConvertingContactToLead && isFromCompanyJourney">
+            <a (click)="goBackToCompanyJourney()">Company Journey</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
           <li *ngIf="isConvertingContactToLead">
-            <a (click)="goBackToContactDetailsPage()">Contact Journey</a>
+            <a (click)="((isCompanyJourney || isFromCompanyJourney) && !isFromContactAllLeadsTab) ? goBackToContactDetailsAllLeadsPage():goBackToContactDetailsPage()">{{isCompanyJourney ? 'Company':'Contact'}} Journey</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
           <li *ngIf="isConvertingContactToLead && isFromContactAllLeadsTab">

@@ -17,7 +17,7 @@
       <app-modal-popup-loader></app-modal-popup-loader>
    </div>
    <div class="alert alert-info"
-      *ngIf="!authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
+      *ngIf="!authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader && !loadModules">
       <strong>No Modules Found</strong>
    </div>
    <div class="row" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">

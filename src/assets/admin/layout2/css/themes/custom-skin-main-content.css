@@ -158,7 +158,7 @@ ul.alt-row-style1 li a,
 .td-new,
 th,
 .div.thembgc,
-canvas,
+.signature_card,
 .signature-preview {
   border: 1px solid var(--border-color) !important;
 }
@@ -2484,4 +2484,5 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
     background-color: var(--top-bg-color) !important; 
   }
 }
-a{color: var(--title-heading--text)  !important;}
+/* a{color: var(--title-heading--text)  !important;} */
+span.filterActiveBg {background-color: #10ad39 !important;}

@@ -27,6 +27,7 @@ import { DamPostDto } from '../models/dam-post-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { SignatureService } from 'app/dashboard/services/signature.service';
 import { SignatureResponseDto } from 'app/dashboard/models/signature-response-dto';
+import { GeoLocationAnalytics } from 'app/util/geo-location-analytics';
 
 
 
@@ -475,7 +476,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if(this.isAdd){
 			let uploadedAssetValue = $('#uploadedAsset').val();
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 );
-            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath){
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && this.fileType === 'application/pdf'){
             this.isValidForm = false;
             }
 		}else{
@@ -1496,7 +1497,35 @@ zoomOut() {
 
 	notifySignatureSelection(event){
         this.damUploadPostDto.selectedSignatureImagePath = event;
+        this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
+            this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
+        });
         this.validateAllFields();
 	}
+
+    private getGeoLocationAnalytics(callback: (geoLocationDetails: GeoLocationAnalytics) => void) {
+            this.utilService.getJSONLocation().subscribe(
+                (response: any) => {
+                    let geoLocationDetails = new GeoLocationAnalytics();
+                    let deviceInfo = this.deviceService.getDeviceInfo();
+                    if (deviceInfo.device === 'unknown') {
+                        deviceInfo.device = 'computer';
+                    }
+                    geoLocationDetails.city = response.city;
+                    geoLocationDetails.country = response.country;
+                    geoLocationDetails.ipAddress = response.query;
+                    geoLocationDetails.state = response.regionName;
+                    geoLocationDetails.zip = response.zip;
+                    geoLocationDetails.latitude = response.lat;
+                    geoLocationDetails.longitude = response.lon;
+                    geoLocationDetails.countryCode = response.countryCode;
+                    geoLocationDetails.timezone = response.timezone;
+                    callback(geoLocationDetails);
+                },
+                (_error: any) => {
+                    this.xtremandLogger.error("Error In Fetching Location Details");
+                }
+            );
+        }
 
 }

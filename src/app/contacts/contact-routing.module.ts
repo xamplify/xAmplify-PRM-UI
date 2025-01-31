@@ -27,7 +27,9 @@ const routes: Routes = [
     { path: RouterUrlConstants.action+RouterUrlConstants.userListId, component: EditContactsComponent},
     { path: RouterUrlConstants.company+RouterUrlConstants.action+RouterUrlConstants.userListId, component: EditContactsComponent},
     { path: RouterUrlConstants.company+RouterUrlConstants.action+RouterUrlConstants.details+RouterUrlConstants.userListId+'/'+RouterUrlConstants.id, component: ContactDetailsComponent},
-    { path: 'manage/all', component: ManageContactsComponent }
+    { path: 'manage/all', component: ManageContactsComponent },
+    { path: RouterUrlConstants.action+RouterUrlConstants.details+RouterUrlConstants.userListId+'/'+RouterUrlConstants.id+'/:companyId', component: ContactDetailsComponent},
+    { path: RouterUrlConstants.action+RouterUrlConstants.userListId+'/:companyId', component: EditContactsComponent},
 
 ];
 

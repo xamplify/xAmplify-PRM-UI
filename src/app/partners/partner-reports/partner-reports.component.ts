@@ -625,7 +625,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                         this.allItems[partnerIndex].isSelected = false;
                         this.selectedPartnerIds = this.selectedPartnerIds.filter(id => id !== item.partnerId);
                     }
-
                     this.isSendReminderEnabled = false;
                     this.isHeaderCheckBoxChecked = false;
                     this.getInActivePartnerReports(this.inActivePartnersPagination);

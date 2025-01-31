@@ -16,11 +16,16 @@ export class SelectContentModulesComponent implements OnInit {
   loading = false;
   prefixUrl = "home/";
   searchWithModuleName:any;
+  loadModules:boolean = false;
   constructor(public router:Router,public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger, public utilService: UtilService) { }
 
   ngOnInit() {
     this.searchWithModuleName = 4;
+    this.loadModules = true;
+    setTimeout(() => {
+      this.loadModules = false;
+      }, 5000);
   }
   navigate(suffixUrl:string){
     this.loading = true;

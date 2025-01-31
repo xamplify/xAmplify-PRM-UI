@@ -65,5 +65,12 @@ export class SenderMergeTag {
     senderCompanyTwitterUrlGlobal = /{{senderCompanyTwitterUrl}}/g;
     senderCompanyTwitterUrlKey = "Sender Company Twitter Url";
      /*******XNFR-281******/
-    
+
+    /**XNFR-832**/
+    campaignName = "{{campaignName}}";
+    campaignNameGlobal = /{{campaignName}}/g;
+
+    recipientName = "{{recipientName}}";
+    recipientNameGlobal = /{{recipientName}}/g;
+    /**XNFR-832**/
 }

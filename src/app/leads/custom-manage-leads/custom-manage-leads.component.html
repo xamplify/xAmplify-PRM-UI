@@ -5,21 +5,31 @@
         <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-      <li *ngIf="!isFromCompanyModule">
+      <li *ngIf="!isFromCompanyModule && !isCompanyJourney && !isFromCompanyJourneyEditContacts">
         <a (click)="goBackToManageContacts()" translate> Manage Contacts
         </a>
       </li>
-      <li *ngIf="isFromCompanyModule">
+      <li *ngIf="isFromCompanyModule || isCompanyJourney || isFromCompanyJourneyEditContacts">
         <a translate (click)="goBackToManageCompanies()">Manage Companies</a>
       </li>
-      <li *ngIf="isFromEditContacts">
+      <li *ngIf="isFromCompanyJourneyEditContacts">
+        <a (click)="goBackToCompanyJourney()" translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Company Journey
+        </a>
+      </li>
+      <li *ngIf="(isFromEditContacts && !isCompanyJourney) || isFromCompanyJourneyEditContacts">
         <a (click)="goBackToEditContacts()" translate>
           <i class="fa fa-angle-right" aria-hidden="true"></i>Edit Contacts
         </a>
       </li>
+      <li *ngIf="isFromCompanyJourney">
+        <a (click)="goBackToCompanyJourney()" translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Company Journey
+        </a>
+      </li>
       <li>
         <a (click)="goBackToContactDetailsPage()" translate>
-          <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Journey
+          <i class="fa fa-angle-right" aria-hidden="true"></i>{{isCompanyJourney ? 'Company':'Contact'}} Journey
         </a>
       </li>
       <li>
@@ -36,7 +46,7 @@
     <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
       <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
         <div class="btn-group pull-right btn-add-lead" style="width: max-content;">
-          <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
+          <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner && !isCompanyJourney && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)"
             (click)="addLead()" style="padding-left: 4px;">
             <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
               <span class="btn btn-primary transition d-inline">
@@ -290,7 +300,7 @@
                       <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                       <div class="clickicons"></div>
                     </a>
-                    <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                    <ng-container *ngIf="!authenticationService?.module?.deletedPartner && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                       <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
                         *ngIf="lead.canUpdate && lead.enableRegisterDealButton && lead.partnerEditLead"
                         (click)="(lead?.leadApprovalStatusType !== 'REJECTED' && !lead?.associatedCampaignDeleted) ? editLead(lead) : ''"
@@ -347,17 +357,23 @@
 <section *ngIf="showLeadForm">
   <div [ngClass]="selectedContact != undefined ? '' : 'page-content'">
     <app-custom-add-lead [leadId]="leadId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
-      [isFromCompanyModule]="isFromCompanyModule" [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()"
-      [selectedContact]="selectedContact" [isConvertingContactToLead]="isConvertingContactToLead" [isFromEditContacts]="isFromEditContacts"
-      (notifyClose)="closeLeadForm()" [isFromContactAllLeadsTab]="'true'"></app-custom-add-lead>
+      [selectedUserListId]="selectedContactListId" [isFromCompanyModule]="isFromCompanyModule" [isOrgAdmin]="isOrgAdmin"
+      (notifySubmitSuccess)="showSubmitLeadSuccess()" [selectedContact]="selectedContact"
+      [isConvertingContactToLead]="isConvertingContactToLead" [isFromEditContacts]="isFromEditContacts"
+      [isFromCompanyJourney]="isFromCompanyJourney" [companyJourneyId]="companyJourneyId"
+      [isCompanyJourney]="isCompanyJourney" (notifyClose)="closeLeadForm()" [isFromContactAllLeadsTab]="'true'"
+      [isFromCompanyJourneyEditContacts]="isFromCompanyJourneyEditContacts"></app-custom-add-lead>
   </div>
 </section>
 
 <!-- Deal Form-->
 <app-add-deal *ngIf="showDealForm" [leadId]="leadId" [actionType]="actionType" [selectedContact]="selectedContact"
   (notifySubmitSuccess)="showSubmitDealSuccess()" [hideAttachLeadButton]="true" [isVendorVersion]="isVendorVersion"
-  [isDealFromContact]="isConvertingContactToLead" [isFromCompanyModule]="isFromCompanyModule" [isFromEditContacts]="isFromEditContacts"
-  (notifyClose)="closeDealForm()" [isFromContactAllLeadsTab]="'true'"></app-add-deal>
+  [isDealFromContact]="isConvertingContactToLead" [isFromCompanyModule]="isFromCompanyModule"
+  [isFromEditContacts]="isFromEditContacts" [isFromContactAllLeadsTab]="'true'"
+  [selectedUserListId]="selectedContactListId" [isFromCompanyJourney]="isFromCompanyJourney"
+  [companyJourneyId]="companyJourneyId" [isCompanyJourney]="isCompanyJourney"
+  [isFromCompanyJourneyEditContacts]="isFromCompanyJourneyEditContacts" (notifyClose)="closeDealForm()"></app-add-deal>
 
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [leadApprovalStatusType]="leadApprovalStatusType"
   [lead]="selectedLead" [loggedInUserId]="loggedInUserId" (closePopupEmitter)="closeApprovalStatusModelPopup()">

@@ -79,6 +79,10 @@ import { DatePipe } from '@angular/common';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
+import { CampaignMdfAnalyticsComponent } from './campaigns/campaign-mdf-analytics/campaign-mdf-analytics.component';
+import { CampaignMdfTemplatePreviewComponent } from './campaigns/campaign-mdf-template-preview/campaign-mdf-template-preview.component';
+import { PublicTopNavigationBarComponent } from './util/public-top-navigation-bar/public-top-navigation-bar.component';
+import { CampaignMdfSearchComponent } from './util/campaign-mdf-search/campaign-mdf-search.component';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
@@ -86,6 +90,7 @@ import { UrlAuthGuardService } from './core/services/url-auth-guard.service';
         , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
         VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent,
+        CampaignMdfAnalyticsComponent,CampaignMdfTemplatePreviewComponent, PublicTopNavigationBarComponent, CampaignMdfSearchComponent
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,

@@ -923,11 +923,14 @@
                                        <!----Buttons start here----->
                                        <div class="actions-block override-actions IconCustomizationcondition"
                                           style="display: flex;" *ngIf="!campaign?.campaignProcessing">
-                                          <ng-container *ngIf="campaign.launched">
+                                          <ng-container *ngIf="campaign?.launched">
+                                             <!--XNFR-832-->
+                                             <ng-template  [ngTemplateOutlet]="unlockMdfFundingOptionIcon" [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
+                                             <!--XNFR-832-->
                                              <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
                                                 <a class="custom-icon"
                                                    *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-                                             (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0"
+                                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0"
                                                    (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip"
                                                    data-placement="top" title="Show Redistributed Campaigns">
                                                    <i [class.disablednew]="!campaign.hasAccess"
@@ -1525,9 +1528,13 @@
                                                 translate>Saved</span>
                                           </ng-container>
                                        </div>
+                                       <!--Grid Icons-->
                                        <div class="bar auto-height gridIconCustomization"
                                           *ngIf="!campaign?.campaignProcessing">
                                           <!--Buttons Start Here-->
+                                           <!--XNFR-832-->
+                                           <ng-template  [ngTemplateOutlet]="unlockMdfFundingOptionIcon" [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
+                                           <!--XNFR-832-->
                                           <a class="Iconhover custom-grid-icon"
                                              [class.disablednew]="!campaign.hasAccess"
                                              *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
@@ -1696,20 +1703,22 @@
                                                 *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier"
                                                 data-toggle="tooltip" data-placement="top" title="Cancel Event"
                                                 data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
-                                          )">
+                                                    )">
                                                 <i class="fa fa-ban" aria-hidden="true"></i>
                                                 <div class="clickicons"></div>
-                                             </a></span>
+                                             </a>
+                                          </span>
                                           <span
                                              *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
-                                          || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign"
+                                                   || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign"
                                                 data-toggle="tooltip" data-placement="top" title="Update event"
                                                 data-rel="fancybox-button" (click)="updateEvent(campaign)">
                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                                 <div class="clickicons"></div>
-                                             </a></span>
+                                             </a>
+                                          </span>
                                        </div>
                                     </div>
                                  </div>
@@ -2089,3 +2098,16 @@
       </div>
    </div>
 </ng-template>
+
+<!--XNFR-832-->
+<ng-template #unlockMdfFundingOptionIcon let-campaign="campaign">
+   <ng-container *ngIf="campaign?.displayUnlockMdfFundingOption && campaign?.launched">
+      <a class="Iconhover custom-grid-icon" (click)="openMdfRequestModal(campaign)" data-toggle="tooltip" data-placement="top" title="Send MDF Request">
+         <i class="fa fa-money" aria-hidden="true"></i>
+         <div class="clickicons"></div>
+      </a>
+   </ng-container>
+</ng-template>
+
+<app-send-test-email *ngIf="sendMdfRequestButtonClicked" [moduleName]="unlockMdfFundingModuleName" [campaignId]="campaignId" [campaignName]="campaignName" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<!--XNFR-832-->

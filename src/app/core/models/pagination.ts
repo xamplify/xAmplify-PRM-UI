@@ -166,4 +166,7 @@ export class Pagination {
 	
 	createdById: number;
 
+	/**XNFR-848**/
+	isCompanyJourney:boolean;
+
 }
