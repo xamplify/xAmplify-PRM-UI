@@ -85,6 +85,10 @@
                             <span translate> Distinct Users : <strong>{{campaign?.distinctUsers}}</strong>
                             </span>
                           </h5>
+                          <h5  title="Launch Time In IST">
+                            <span translate> Launch Time In IST : <strong class="success">{{campaign?.launchTimeInIST}}</strong>
+                            </span>
+                          </h5>
                           <h5  title="Delete Campaign" *ngIf="pagination?.archived">
                             <button class="btn btn-danger btn-xs" (click)="confirmDeleteCampaign(campaign)">Delete</button>
                           </h5>
