@@ -1495,9 +1495,9 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
           .catch(this.handleError);
       }
 
-      findUserDetailsOrCompanyDetails(userOrCompanyDetailsDto:UserOrCompanyDetailsDto) {
-        const url = this.superAdminUrl + 'findUserDetailsOrCompanyDetails?access_token=' + this.authenticationService.access_token;
-        return this.http.post(url, userOrCompanyDetailsDto)
+      findUserOrCompanyDetails(userOrCompanyDetailsDto:UserOrCompanyDetailsDto) {
+        const url = this.superAdminUrl + 'findUserOrCompanyDetails/filterType/'+userOrCompanyDetailsDto.filterType+'/companyIdOrUserId/'+userOrCompanyDetailsDto.companyIdOrUserId+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url,"")
             .map(this.extractData)
             .catch(this.handleError);
     }

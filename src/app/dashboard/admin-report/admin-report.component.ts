@@ -126,8 +126,8 @@ export class AdminReportComponent implements OnInit {
 
   openUpgradeAccountModal(){
     this.upgradeAccountOrFindUserOrCompanyDetailsHeader = "Upgrade Account";
-    this.isUpgradeAccountOptionClicked = true;
     this.isFindUserOrCompanyDetailsOptionClicked = false;
+    this.isUpgradeAccountOptionClicked = true;
     this.resetEmailIdAndOtherUpgradeAccountValues();
     $('#upgrade-account-modal').modal('show');
   }
@@ -144,6 +144,7 @@ export class AdminReportComponent implements OnInit {
     this.resetEmailIdAndOtherUpgradeAccountValues();
     this.isUpgradeAccountOptionClicked = false;
     this.isFindUserOrCompanyDetailsOptionClicked = false;
+    this.userOrCompanyDetailsDto = new UserOrCompanyDetailsDto();
     $('#upgrade-account-modal').modal('hide');
   }
 
@@ -174,13 +175,14 @@ export class AdminReportComponent implements OnInit {
         let trimmedEmailId = $.trim(this.emailId);
         this.validEmailId = trimmedEmailId.length>0;
         if(this.validEmailId){
+          this.emailId = this.emailId.toLowerCase();
           this.findCompanyInfoByEmailId(trimmedEmailId);
         }
       }else if(this.isFindUserOrCompanyDetailsOptionClicked){
         this.validCompanyOrUserId = this.userOrCompanyDetailsDto.companyIdOrUserId!=undefined && this.userOrCompanyDetailsDto.companyIdOrUserId>0;
         console.log(this.userOrCompanyDetailsDto);
         if(this.validCompanyOrUserId){
-           
+           this.findUserOrCompanyDetails();
         }
       }
      
@@ -188,9 +190,9 @@ export class AdminReportComponent implements OnInit {
 
   private findUserOrCompanyDetails() {
     this.upgradeAccountLoader = true;
-    this.dashboardService.findUserDetailsOrCompanyDetails(this.userOrCompanyDetailsDto).subscribe(
+    this.dashboardService.findUserOrCompanyDetails(this.userOrCompanyDetailsDto).subscribe(
         response => {
-           
+            this.handleUpgradeAccountResponse(response, "");
         }, error => {
             this.upgradeAccountLoader = false;
             this.upgradeAccountResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
@@ -219,12 +221,14 @@ export class AdminReportComponent implements OnInit {
             this.companyInfo = response.data.companyDetails;
             if (statusCode400) {
                 let message = response.message;
-                let companyType = this.companyInfo.companyType;
-                if (companyType == "User") {
-                    let upgradeLink = this.authenticationService.APP_URL + "/home/dashboard/admin-company-profile/" + trimmedEmailId;
-                    message += " <a href=" + upgradeLink + ">Click Here</a> To Create Company Profille & Upgrade This " + companyType + " Account.";
-                } else if (companyType == "Partner") {
-                    message += "Partner Should Complete Filling Company Details For Upgrading To Other Role.";
+                if(this.isUpgradeAccountOptionClicked){
+                    let companyType = this.companyInfo.companyType;
+                    if (companyType == "User") {
+                        let upgradeLink = this.authenticationService.APP_URL + "/home/dashboard/admin-company-profile/" + trimmedEmailId;
+                        message += " <a href=" + upgradeLink + ">Click Here</a> To Create Company Profille & Upgrade This " + companyType + " Account.";
+                    } else if (companyType == "Partner") {
+                        message += "Partner Should Complete Filling Company Details For Upgrading To Other Role.";
+                    }
                 }
                 this.upgradeAccountResponse = new CustomResponse('ERROR', message, true);
             } else if (statusCode200) {

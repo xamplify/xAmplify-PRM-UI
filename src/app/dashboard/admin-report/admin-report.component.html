@@ -211,38 +211,36 @@
       <div class="modal-header">
         <h4 class="modal-title text-center">{{upgradeAccountOrFindUserOrCompanyDetailsHeader}}</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="">
         <table class='table tgrid table-bordered' aria-describedby="">
           <thead>
             <!--Enter Email-->
             <tr *ngIf="isUpgradeAccountOptionClicked">
               <th scope="row">Enter Email</th>
               <th scope="row">
-                <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId"
+                <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId" (input)="emailId = emailId.toLowerCase()"
                  [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
                 <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
               </th>
             </tr>
-            <ng-container *ngIf="isFindUserOrCompanyDetailsOptionClicked">
-              <tr>
-                <th scope="row">Select Company Id / User Id</th>
+            
+              <tr *ngIf="isFindUserOrCompanyDetailsOptionClicked">
+                <th scope="row">Select User Id / Company Id</th>
                 <th scope="row">
-                  <select class="form-control" id="company-or-user-details">
-                    <option *ngFor="let userOrCompanyOption of userOrCompanyOptions" [value]="userOrCompanyOption.value" [(ngModel)]="userOrCompanyDetailsDto.filterType"  [ngModelOptions]="{standalone: true}">
-                      {{userOrCompanyOption.name}}
-                      </option>
+                  <select class="form-control" id="companyIdOrUserId" name="companyIdOrUserId" [(ngModel)]="userOrCompanyDetailsDto.filterType">
+                    <option value="userId">User Id</option>
+                    <option value="companyId">Company Id</option>
                   </select>
                 </th>
               </tr>
-              <tr>
+               <tr *ngIf="isFindUserOrCompanyDetailsOptionClicked">
                 <th scope="row">Enter Value</th>
                 <th scope="row">
-                  <input type="number" class="form-control" placeholder="Enter Number" min="1" autocomplete="off" [(ngModel)]="userOrCompanyDetailsDto.companyIdOrUserId"
-                   [ngModelOptions]="{standalone: true}">
+                  <input type="number" class="form-control" placeholder="Enter Number" min="1" autocomplete="off"
+                   [(ngModel)]="userOrCompanyDetailsDto.companyIdOrUserId">
                   <span *ngIf="!validCompanyOrUserId" class="required"><strong>Please Enter Valid Number</strong></span>
                 </th>
               </tr>
-            </ng-container>
 
             <tr>
               <th></th>
@@ -264,7 +262,7 @@
                   <th>Company Name</th>
                   <th class="text-center">Company Profile Name</th>
                   <th class="text-center">Company Type</th>
-                  <th *ngIf="upgradeAccountStatusCode==200" class="text-center">Upgrade Account</th>
+                  <th *ngIf="upgradeAccountStatusCode==200 && isUpgradeAccountOptionClicked" class="text-center">Upgrade Account</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -273,7 +271,7 @@
                     <td class="text-center">{{companyInfo?.companyProfileName}}</td>
                     <td [className]="(companyInfo?.companyType=='Partner'||companyInfo?.companyType=='Vendor') && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
                       <strong>{{companyInfo?.companyType}}</strong></td>
-                    <td class="text-center" *ngIf="upgradeAccountStatusCode==200">
+                    <td class="text-center" *ngIf="upgradeAccountStatusCode==200 && isUpgradeAccountOptionClicked">
                       <!--Upgrading Partner Account-->
                       <select id="upgrade-account-type" class="form-control" *ngIf="companyInfo?.companyType=='Partner'" (change)="upgradeAccountType()">
                         <option value="0">--Please Select Option--</option>
@@ -312,7 +310,10 @@
                 </th>
               </thead>
               <tbody>
-                <tr *ngFor="let adminOrTeamMember of adminsAndTeamMembers;let i=index">
+                <tr *ngFor="let adminOrTeamMember of adminsAndTeamMembers;let i=index"
+                 [ngClass]="((isUpgradeAccountOptionClicked && emailId==adminOrTeamMember?.emailId)
+                   || (isFindUserOrCompanyDetailsOptionClicked && userOrCompanyDetailsDto?.filterType=='userId'
+                       && userOrCompanyDetailsDto?.companyIdOrUserId==adminOrTeamMember?.teamMemberUserId)) ? 'searched-result':''">
                   <td>
                     <app-user-info [isPartnerEntityInfo]="true" [userInfo]="adminOrTeamMember"></app-user-info>
                     <span class="active-status" *ngIf="adminOrTeamMember?.primaryAdmin">
@@ -344,6 +345,9 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div *ngIf="adminsAndTeamMembers?.length==0" class="alert alert-danger">
+            <strong>No Data Found</strong>
           </div>
         </div>
       </div>
