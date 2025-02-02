@@ -17,6 +17,7 @@ import { UpdatePasswordComponent } from './../super-admin/update-password/update
 import { UpdateEmailAddressComponent } from '../update-email-address/update-email-address.component';
 import { IntegrationDetailsComponent } from '../integration-details/integration-details.component';
 import { SuperAdminService } from '../super-admin.service';
+import { UserOrCompanyDetailsDto } from '../models/user-or-company-details-dto';
 
 declare var swal:any,$:any;
 
@@ -47,7 +48,7 @@ export class AdminReportComponent implements OnInit {
     sortingOrder: string = null;
     sortOptions = [
                    { 'name': 'Sort by', 'value': '' },
-                   { 'name': 'Conpany name (A-Z)', 'value': 'companyName-ASC' },
+                   { 'name': 'Company name (A-Z)', 'value': 'companyName-ASC' },
                    { 'name': 'Company name (Z-A)', 'value': 'companyName-DESC' },
                    { 'name': 'Last login (ASC)', 'value': 'dateLastLogin-ASC'},
                    { 'name': 'Last login (DESC)', 'value': 'dateLastLogin-DESC'},
@@ -81,6 +82,17 @@ export class AdminReportComponent implements OnInit {
     modules:Array<any> = new Array<any>();
     isPreviewRolesButtonClicked = false;
     teamMemberGroupId = 0;
+    upgradeAccountOrFindUserOrCompanyDetailsHeader = "Upgrade Account";
+    isUpgradeAccountOptionClicked = false;
+    isFindUserOrCompanyDetailsOptionClicked: boolean;
+    userOrCompanyOptions = [
+        { 'name': 'User Id', 'value': 'userId' },
+        { 'name': 'Company Id', 'value': 'companyId' },
+
+    ];
+    companyIdOrUserId = 0;
+    validCompanyOrUserId = true;
+    userOrCompanyDetailsDto:UserOrCompanyDetailsDto = new UserOrCompanyDetailsDto();
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , 
     public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router,public superAdminService:SuperAdminService) {
@@ -113,12 +125,25 @@ export class AdminReportComponent implements OnInit {
 
 
   openUpgradeAccountModal(){
+    this.upgradeAccountOrFindUserOrCompanyDetailsHeader = "Upgrade Account";
+    this.isUpgradeAccountOptionClicked = true;
+    this.isFindUserOrCompanyDetailsOptionClicked = false;
+    this.resetEmailIdAndOtherUpgradeAccountValues();
+    $('#upgrade-account-modal').modal('show');
+  }
+
+  openFindUserOrCompanyDetailsModalPopup(){
+    this.upgradeAccountOrFindUserOrCompanyDetailsHeader = "Find User / Company Details";
+    this.isUpgradeAccountOptionClicked = false;
+    this.isFindUserOrCompanyDetailsOptionClicked = true;
     this.resetEmailIdAndOtherUpgradeAccountValues();
     $('#upgrade-account-modal').modal('show');
   }
 
   closeUpgradeAccountModal(){
     this.resetEmailIdAndOtherUpgradeAccountValues();
+    this.isUpgradeAccountOptionClicked = false;
+    this.isFindUserOrCompanyDetailsOptionClicked = false;
     $('#upgrade-account-modal').modal('hide');
   }
 
@@ -135,6 +160,8 @@ export class AdminReportComponent implements OnInit {
         this.upgradeAccountResponse = new CustomResponse();
         this.upgradeAccountStatusCode = 0;
         this.adminsAndTeamMembers = [];
+        this.validCompanyOrUserId = true;
+       
     }
 
   upgradeAccountOnKeyPress(keyCode:any){
@@ -143,44 +170,72 @@ export class AdminReportComponent implements OnInit {
 
   findCompanyInfo(){
       this.resetUpgradeAccountValues();
-      let trimmedEmailId = $.trim(this.emailId);
-      this.validEmailId = trimmedEmailId.length>0;
-      if(this.validEmailId){
-        this.upgradeAccountLoader = true;
-        this.dashboardService.findCompanyInfo(trimmedEmailId).subscribe(
-            response=>{
-              let statusCode = response.statusCode;
-              this.upgradeAccountStatusCode = statusCode;
-              let statusCode200 = statusCode==200;
-              let statusCode400 = statusCode==400;
-              let statusCode404 = statusCode==404;
-              if(statusCode200 || statusCode400){
-                  this.companyInfo = response.data.companyDetails;
-                  if(statusCode400){
-                    let message = response.message;
-                    let companyType = this.companyInfo.companyType;
-                    if(companyType=="User"){
-                        let upgradeLink = this.authenticationService.APP_URL+"/home/dashboard/admin-company-profile/"+trimmedEmailId;
-                        message+= " <a href="+upgradeLink+">Click Here</a> To Create Company Profille & Upgrade This "+companyType+" Account.";
-                     }else if(companyType=="Partner"){
-                        message+="Partner Should Complete Filling Company Details For Upgrading To Other Role.";
-                     }
-                    this.upgradeAccountResponse = new CustomResponse('ERROR',message,true);
-                  }else if(statusCode200){
-                      this.adminsAndTeamMembers = response.data.adminsAndTeamMembers;
-                  }
-              }else if(statusCode404){
-                  this.upgradeAccountResponse = new CustomResponse('ERROR',response.message,true);
-              }
-              this.upgradeAccountLoader = false;
-            },error=>{
-                this.upgradeAccountLoader = false;
-                this.upgradeAccountResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-            });
+      if(this.isUpgradeAccountOptionClicked){
+        let trimmedEmailId = $.trim(this.emailId);
+        this.validEmailId = trimmedEmailId.length>0;
+        if(this.validEmailId){
+          this.findCompanyInfoByEmailId(trimmedEmailId);
+        }
+      }else if(this.isFindUserOrCompanyDetailsOptionClicked){
+        this.validCompanyOrUserId = this.userOrCompanyDetailsDto.companyIdOrUserId!=undefined && this.userOrCompanyDetailsDto.companyIdOrUserId>0;
+        console.log(this.userOrCompanyDetailsDto);
+        if(this.validCompanyOrUserId){
+           
+        }
       }
+     
   }
 
+  private findUserOrCompanyDetails() {
+    this.upgradeAccountLoader = true;
+    this.dashboardService.findUserDetailsOrCompanyDetails(this.userOrCompanyDetailsDto).subscribe(
+        response => {
+           
+        }, error => {
+            this.upgradeAccountLoader = false;
+            this.upgradeAccountResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        });
+}
+
       
+    private findCompanyInfoByEmailId(trimmedEmailId: any) {
+        this.upgradeAccountLoader = true;
+        this.dashboardService.findCompanyInfo(trimmedEmailId).subscribe(
+            response => {
+                this.handleUpgradeAccountResponse(response, trimmedEmailId);
+            }, error => {
+                this.upgradeAccountLoader = false;
+                this.upgradeAccountResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+            });
+    }
+
+    private handleUpgradeAccountResponse(response: any, trimmedEmailId: any) {
+        let statusCode = response.statusCode;
+        this.upgradeAccountStatusCode = statusCode;
+        let statusCode200 = statusCode == 200;
+        let statusCode400 = statusCode == 400;
+        let statusCode404 = statusCode == 404;
+        if (statusCode200 || statusCode400) {
+            this.companyInfo = response.data.companyDetails;
+            if (statusCode400) {
+                let message = response.message;
+                let companyType = this.companyInfo.companyType;
+                if (companyType == "User") {
+                    let upgradeLink = this.authenticationService.APP_URL + "/home/dashboard/admin-company-profile/" + trimmedEmailId;
+                    message += " <a href=" + upgradeLink + ">Click Here</a> To Create Company Profille & Upgrade This " + companyType + " Account.";
+                } else if (companyType == "Partner") {
+                    message += "Partner Should Complete Filling Company Details For Upgrading To Other Role.";
+                }
+                this.upgradeAccountResponse = new CustomResponse('ERROR', message, true);
+            } else if (statusCode200) {
+                this.adminsAndTeamMembers = response.data.adminsAndTeamMembers;
+            }
+        } else if (statusCode404) {
+            this.upgradeAccountResponse = new CustomResponse('ERROR', response.message, true);
+        }
+        this.upgradeAccountLoader = false;
+    }
+
   upgradeAccountType(){
       let upgradingAccountRoleId = $('#upgrade-account-type option:selected').val();
       let upgradingAccountRoleName = $('#upgrade-account-type option:selected').text();
@@ -241,9 +296,7 @@ export class AdminReportComponent implements OnInit {
         this.integrationDetailsComponent.openModalPopup();
     }
 
-    openUpdateCompanyProfileNameModalPopup(){
-        
-    }
+
 
 
 }

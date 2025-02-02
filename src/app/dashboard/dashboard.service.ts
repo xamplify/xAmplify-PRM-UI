@@ -22,6 +22,7 @@ import { GodaddyDetailsDto } from './user-profile/models/godaddy-details-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DomainRequestDto } from './models/domain-request-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { UserOrCompanyDetailsDto } from './models/user-or-company-details-dto';
 @Injectable()
 export class DashboardService {
     REST_URL = this.authenticationService.REST_URL;
@@ -1493,5 +1494,12 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
           .map(this.extractData)
           .catch(this.handleError);
       }
+
+      findUserDetailsOrCompanyDetails(userOrCompanyDetailsDto:UserOrCompanyDetailsDto) {
+        const url = this.superAdminUrl + 'findUserDetailsOrCompanyDetails?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, userOrCompanyDetailsDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     
 }

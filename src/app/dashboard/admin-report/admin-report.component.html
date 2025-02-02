@@ -22,8 +22,8 @@
         <button class="btn btn-primary" (click)="openUpdateEmailAddressModalPopup()"><span>Update Email Address</span></button>
       </li>
        <!--Find Details By UserId / CompanyId-->
-       <li class="mt10 uppercase-text" *ngIf="isLocalHost">
-        <button class="btn btn-primary" (click)="openUpdateCompanyProfileNameModalPopup()"><span>Find Details By UserId / CompanyId</span></button>
+       <li class="mt10 uppercase-text">
+        <button class="btn btn-primary" (click)="openFindUserOrCompanyDetailsModalPopup()"><span>Find Details By UserId / CompanyId</span></button>
       </li>
       <!--Upgrade Account-->
       <li class="mt10 uppercase-text">
@@ -204,31 +204,53 @@
 
 </ng-container>
 
-<!-- ---------------------Upgrade Account------------------ -->
+<!-- ---------------------Upgrade Account/Find User Or Company Details------------------ -->
 <div class="modal fade right" id="upgrade-account-modal" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog full-width">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title text-center">Upgrade Account</h4>
+        <h4 class="modal-title text-center">{{upgradeAccountOrFindUserOrCompanyDetailsHeader}}</h4>
       </div>
       <div class="modal-body">
         <table class='table tgrid table-bordered' aria-describedby="">
           <thead>
-            <tr>
+            <!--Enter Email-->
+            <tr *ngIf="isUpgradeAccountOptionClicked">
               <th scope="row">Enter Email</th>
               <th scope="row">
                 <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId"
                  [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
                 <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
               </th>
+            </tr>
+            <ng-container *ngIf="isFindUserOrCompanyDetailsOptionClicked">
+              <tr>
+                <th scope="row">Select Company Id / User Id</th>
+                <th scope="row">
+                  <select class="form-control" id="company-or-user-details">
+                    <option *ngFor="let userOrCompanyOption of userOrCompanyOptions" [value]="userOrCompanyOption.value" [(ngModel)]="userOrCompanyDetailsDto.filterType"  [ngModelOptions]="{standalone: true}">
+                      {{userOrCompanyOption.name}}
+                      </option>
+                  </select>
+                </th>
               </tr>
               <tr>
-                <th></th>
-                  <th scope="row">
-                    <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
-                    <button [disabled]="upgradeAccountLoader" class="btn btn-primary float-right" (click)="findCompanyInfo()">Search</button>
-                  </th>
+                <th scope="row">Enter Value</th>
+                <th scope="row">
+                  <input type="number" class="form-control" placeholder="Enter Number" min="1" autocomplete="off" [(ngModel)]="userOrCompanyDetailsDto.companyIdOrUserId"
+                   [ngModelOptions]="{standalone: true}">
+                  <span *ngIf="!validCompanyOrUserId" class="required"><strong>Please Enter Valid Number</strong></span>
+                </th>
               </tr>
+            </ng-container>
+
+            <tr>
+              <th></th>
+                <th scope="row">
+                  <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
+                  <button [disabled]="upgradeAccountLoader" class="btn btn-primary float-right" (click)="findCompanyInfo()">Search</button>
+                </th>
+            </tr>
           </thead>
         </table>
         <app-response-message [showCloseIcon]="false" [customResponse]="upgradeAccountResponse" *ngIf="upgradeAccountResponse?.isVisible"></app-response-message>
