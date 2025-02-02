@@ -22,7 +22,7 @@ import { GodaddyDetailsDto } from './user-profile/models/godaddy-details-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DomainRequestDto } from './models/domain-request-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { UserOrCompanyDetailsDto } from './models/user-or-company-details-dto';
+import { AccountDetailsDto } from './models/account-details-dto';
 @Injectable()
 export class DashboardService {
     REST_URL = this.authenticationService.REST_URL;
@@ -1495,8 +1495,9 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
           .catch(this.handleError);
       }
 
-      findUserOrCompanyDetails(userOrCompanyDetailsDto:UserOrCompanyDetailsDto) {
-        const url = this.superAdminUrl + 'findUserOrCompanyDetails/filterType/'+userOrCompanyDetailsDto.filterType+'/companyIdOrUserId/'+userOrCompanyDetailsDto.companyIdOrUserId+'?access_token=' + this.authenticationService.access_token;
+      findAccountDetails(accountDetailsDto:AccountDetailsDto) {
+        const url = this.superAdminUrl + 'findAccountDetails?filterType='+accountDetailsDto.filterType+'&companyIdOrUserId='+
+        accountDetailsDto.companyIdOrUserId+'&emailId='+accountDetailsDto.emailId+'&access_token=' + this.authenticationService.access_token;
         return this.http.get(url,"")
             .map(this.extractData)
             .catch(this.handleError);

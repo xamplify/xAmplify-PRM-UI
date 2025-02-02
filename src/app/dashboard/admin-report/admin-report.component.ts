@@ -17,7 +17,7 @@ import { UpdatePasswordComponent } from './../super-admin/update-password/update
 import { UpdateEmailAddressComponent } from '../update-email-address/update-email-address.component';
 import { IntegrationDetailsComponent } from '../integration-details/integration-details.component';
 import { SuperAdminService } from '../super-admin.service';
-import { UserOrCompanyDetailsDto } from '../models/user-or-company-details-dto';
+import { AccountDetailsDto } from '../models/account-details-dto';
 
 declare var swal:any,$:any;
 
@@ -92,7 +92,8 @@ export class AdminReportComponent implements OnInit {
     ];
     companyIdOrUserId = 0;
     validCompanyOrUserId = true;
-    userOrCompanyDetailsDto:UserOrCompanyDetailsDto = new UserOrCompanyDetailsDto();
+    accountDetailsDto:AccountDetailsDto = new AccountDetailsDto();
+    isValidAccountDetailsEntered = true;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , 
     public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router,public superAdminService:SuperAdminService) {
@@ -133,7 +134,7 @@ export class AdminReportComponent implements OnInit {
   }
 
   openFindUserOrCompanyDetailsModalPopup(){
-    this.upgradeAccountOrFindUserOrCompanyDetailsHeader = "Find User / Company Details";
+    this.upgradeAccountOrFindUserOrCompanyDetailsHeader = "Find Account Details";
     this.isUpgradeAccountOptionClicked = false;
     this.isFindUserOrCompanyDetailsOptionClicked = true;
     this.resetEmailIdAndOtherUpgradeAccountValues();
@@ -144,7 +145,7 @@ export class AdminReportComponent implements OnInit {
     this.resetEmailIdAndOtherUpgradeAccountValues();
     this.isUpgradeAccountOptionClicked = false;
     this.isFindUserOrCompanyDetailsOptionClicked = false;
-    this.userOrCompanyDetailsDto = new UserOrCompanyDetailsDto();
+    this.accountDetailsDto = new AccountDetailsDto();
     $('#upgrade-account-modal').modal('hide');
   }
 
@@ -162,6 +163,7 @@ export class AdminReportComponent implements OnInit {
         this.upgradeAccountStatusCode = 0;
         this.adminsAndTeamMembers = [];
         this.validCompanyOrUserId = true;
+        this.isValidAccountDetailsEntered = true;
        
     }
 
@@ -171,26 +173,37 @@ export class AdminReportComponent implements OnInit {
 
   findCompanyInfo(){
       this.resetUpgradeAccountValues();
-      if(this.isUpgradeAccountOptionClicked){
-        let trimmedEmailId = $.trim(this.emailId);
-        this.validEmailId = trimmedEmailId.length>0;
-        if(this.validEmailId){
-          this.emailId = this.emailId.toLowerCase();
-          this.findCompanyInfoByEmailId(trimmedEmailId);
-        }
-      }else if(this.isFindUserOrCompanyDetailsOptionClicked){
-        this.validCompanyOrUserId = this.userOrCompanyDetailsDto.companyIdOrUserId!=undefined && this.userOrCompanyDetailsDto.companyIdOrUserId>0;
-        console.log(this.userOrCompanyDetailsDto);
-        if(this.validCompanyOrUserId){
-           this.findUserOrCompanyDetails();
-        }
-      }
+      this.findAccountDetailsOrUpgradeAccount();
      
   }
 
-  private findUserOrCompanyDetails() {
+    private findAccountDetailsOrUpgradeAccount() {
+        if (this.isUpgradeAccountOptionClicked) {
+            let trimmedEmailId = $.trim(this.emailId);
+            this.validEmailId = trimmedEmailId.length > 0;
+            if (this.validEmailId) {
+                this.emailId = this.emailId.toLowerCase();
+                this.findCompanyInfoByEmailId(trimmedEmailId);
+            }
+        } else if (this.isFindUserOrCompanyDetailsOptionClicked) {
+            this.isValidAccountDetailsEntered = false;
+            if (this.accountDetailsDto.filterType == 'email') {
+                let trimmedEmailId = $.trim(this.accountDetailsDto.emailId);
+                this.validEmailId = trimmedEmailId.length > 0;
+                this.isValidAccountDetailsEntered = this.validEmailId;
+            } else  {
+                this.validCompanyOrUserId = this.accountDetailsDto.companyIdOrUserId != undefined && this.accountDetailsDto.companyIdOrUserId > 0;
+                this.isValidAccountDetailsEntered = this.validCompanyOrUserId;
+            }
+            if (this.isValidAccountDetailsEntered) {
+                this.findAccountDetails();
+            }
+        }
+    }
+
+  private findAccountDetails() {
     this.upgradeAccountLoader = true;
-    this.dashboardService.findUserOrCompanyDetails(this.userOrCompanyDetailsDto).subscribe(
+    this.dashboardService.findAccountDetails(this.accountDetailsDto).subscribe(
         response => {
             this.handleUpgradeAccountResponse(response, "");
         }, error => {
@@ -213,6 +226,9 @@ export class AdminReportComponent implements OnInit {
 
     private handleUpgradeAccountResponse(response: any, trimmedEmailId: any) {
         let statusCode = response.statusCode;
+        this.companyInfo = {};
+        this.adminsAndTeamMembers = [];
+        this.upgradeAccountResponse = new CustomResponse();
         this.upgradeAccountStatusCode = statusCode;
         let statusCode200 = statusCode == 200;
         let statusCode400 = statusCode == 400;
@@ -301,6 +317,21 @@ export class AdminReportComponent implements OnInit {
     }
 
 
+    setFilterType(event:any){
+        this.accountDetailsDto.companyIdOrUserId = 1;
+        this.accountDetailsDto.emailId = "";
+        if("userId"==event){
+            this.accountDetailsDto.labelName = "User Id";
+        }else if("companyId"==event){
+            this.accountDetailsDto.labelName = "Company Id";
+        }else if("email"==event){
+            this.accountDetailsDto.labelName = "Email";
+        }
+        this.accountDetailsDto.filterType = event;
+        this.upgradeAccountResponse = new CustomResponse();
+        this.findAccountDetailsOrUpgradeAccount();
+       
+    }
 
 
 }

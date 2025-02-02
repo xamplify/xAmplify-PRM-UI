@@ -21,9 +21,9 @@
       <li class="mt10 uppercase-text">
         <button class="btn btn-primary" (click)="openUpdateEmailAddressModalPopup()"><span>Update Email Address</span></button>
       </li>
-       <!--Find Details By UserId / CompanyId-->
+       <!--Find Account Details-->
        <li class="mt10 uppercase-text">
-        <button class="btn btn-primary" (click)="openFindUserOrCompanyDetailsModalPopup()"><span>Find Details By UserId / CompanyId</span></button>
+        <button class="btn btn-primary" (click)="openFindUserOrCompanyDetailsModalPopup()"><span>Find Account Details</span></button>
       </li>
       <!--Upgrade Account-->
       <li class="mt10 uppercase-text">
@@ -223,24 +223,31 @@
                 <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
               </th>
             </tr>
-            
-              <tr *ngIf="isFindUserOrCompanyDetailsOptionClicked">
-                <th scope="row">Select User Id / Company Id</th>
+            <ng-container *ngIf="isFindUserOrCompanyDetailsOptionClicked">
+              <tr>
+                <th scope="row">Select Type</th>
                 <th scope="row">
-                  <select class="form-control" id="companyIdOrUserId" name="companyIdOrUserId" [(ngModel)]="userOrCompanyDetailsDto.filterType">
+                  <select (ngModelChange)="setFilterType($event)" class="form-control" id="companyIdOrUserId" name="companyIdOrUserId" [(ngModel)]="accountDetailsDto.filterType">
                     <option value="userId">User Id</option>
                     <option value="companyId">Company Id</option>
+                    <option value="email">Email Id</option>
                   </select>
                 </th>
               </tr>
-               <tr *ngIf="isFindUserOrCompanyDetailsOptionClicked">
-                <th scope="row">Enter Value</th>
-                <th scope="row">
-                  <input type="number" class="form-control" placeholder="Enter Number" min="1" autocomplete="off"
-                   [(ngModel)]="userOrCompanyDetailsDto.companyIdOrUserId">
-                  <span *ngIf="!validCompanyOrUserId" class="required"><strong>Please Enter Valid Number</strong></span>
+               <tr>
+                <th scope="row">Enter {{accountDetailsDto?.labelName}}</th>
+                <th scope="row" *ngIf="accountDetailsDto?.filterType=='userId' || accountDetailsDto?.filterType=='companyId'">
+                  <input  type="number" class="form-control" placeholder="Enter Number" min="1" autocomplete="off"
+                   [(ngModel)]="accountDetailsDto.companyIdOrUserId">
+                  <span *ngIf="!validCompanyOrUserId" class="required"><strong>Please Enter Valid {{accountDetailsDto?.labelName}}</strong></span>
+                </th>
+                <th scope="row" *ngIf="accountDetailsDto?.filterType=='email'">
+                  <input type="email" class="form-control"  placeholder="Enter Email" autocomplete="off" [(ngModel)]="accountDetailsDto.emailId" (input)="accountDetailsDto.emailId = accountDetailsDto.emailId.toLowerCase()"
+                  [ngModelOptions]="{standalone: true}">
+                  <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
                 </th>
               </tr>
+            </ng-container>
 
             <tr>
               <th></th>
@@ -312,8 +319,9 @@
               <tbody>
                 <tr *ngFor="let adminOrTeamMember of adminsAndTeamMembers;let i=index"
                  [ngClass]="((isUpgradeAccountOptionClicked && emailId==adminOrTeamMember?.emailId)
-                   || (isFindUserOrCompanyDetailsOptionClicked && userOrCompanyDetailsDto?.filterType=='userId'
-                       && userOrCompanyDetailsDto?.companyIdOrUserId==adminOrTeamMember?.teamMemberUserId)) ? 'searched-result':''">
+                   || (isFindUserOrCompanyDetailsOptionClicked && (accountDetailsDto?.filterType=='userId'
+                       && accountDetailsDto?.companyIdOrUserId==adminOrTeamMember?.teamMemberUserId) ||
+                        ( accountDetailsDto?.filterType=='email' && accountDetailsDto?.emailId==adminOrTeamMember?.emailId))) ? 'searched-result':''">
                   <td>
                     <app-user-info [isPartnerEntityInfo]="true" [userInfo]="adminOrTeamMember"></app-user-info>
                     <span class="active-status" *ngIf="adminOrTeamMember?.primaryAdmin">
@@ -345,9 +353,6 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div *ngIf="adminsAndTeamMembers?.length==0" class="alert alert-danger">
-            <strong>No Data Found</strong>
           </div>
         </div>
       </div>
