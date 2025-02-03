@@ -322,9 +322,8 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
               { condition: () => ["LEAD_APPROVE", "LEAD_REJECT", "PRM_LEAD_APPROVE", "PRM_LEAD_REJECT"].includes(emailTemplateType) && !jsonContent.includes('{{leadName}}'), message: "Whoops! We are unable to save this template because you deleted '{{leadName}}' tag." },
               { condition: () => ["LEAD_APPROVE", "LEAD_REJECT"].includes(emailTemplateType) && !jsonContent.includes('{{leadAssociatedCampaign}}'), message: "Whoops! We are unable to save this template because you deleted '{{leadAssociatedCampaign}}' tag." },
               { condition: () => ["LEAD_APPROVE", "LEAD_REJECT", "PRM_LEAD_APPROVE", "PRM_LEAD_REJECT"].includes(emailTemplateType) && !jsonContent.includes('{{leadComment}}'), message: "Whoops! We are unable to save this template because you deleted '{{leadComment}}' tag." },
-              { condition: () => ["LEAD_APPROVE", "LEAD_REJECT", "PRM_LEAD_APPROVE", "PRM_LEAD_REJECT"].includes(emailTemplateType) && !jsonContent.includes('{{VendorCompany}}'), message: "Whoops! We are unable to save this template because you deleted '{{VendorCompany}}' tag." },
+              { condition: () => ["LEAD_APPROVE", "LEAD_REJECT", "PRM_LEAD_APPROVE", "PRM_LEAD_REJECT"].includes(emailTemplateType) && !jsonContent.includes('{{VENDOR_COMPANY_NAME}}'), message: "Whoops! We are unable to save this template because you deleted '{{VENDOR_COMPANY_NAME}}' tag." },
               { condition: () => ["LEAD_APPROVE", "LEAD_REJECT", "PRM_LEAD_APPROVE", "PRM_LEAD_REJECT"].includes(emailTemplateType) && !jsonContent.includes('{{leadStage}}'), message: "Whoops! We are unable to save this template because you deleted '{{leadStage}}' tag." },
-
             ]
           },
         ];
@@ -344,152 +343,152 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
     };
     let emailTemplateType = emailTemplate.typeInString
 
-    if("FORGOT_PASSWORD"==emailTemplateType){
-      var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Partner Name', value: '{{PARTNER_NAME}}' },
-      ];
-    }
-    if("ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_PRM_COMPANY"==emailTemplateType){
-      var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+      if ("FORGOT_PASSWORD" == emailTemplateType) {
+        var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Partner Name', value: '{{PARTNER_NAME}}' },
+        ];
+      }
+      if ("ACCOUNT_ACTIVATION" == emailTemplateType || "JOIN_VENDOR_COMPANY" == emailTemplateType || "JOIN_PRM_COMPANY" == emailTemplateType) {
+        var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
         { name: 'Sender Last Name', value: '{{lastName}}' },
         { name: 'Sender Email Id', value: '{{emailId}}' },
         { name: 'Partner Name', value: '{{PARTNER_NAME}}' },
         { name: 'Sender Full Name', value: '{{senderFullName}}' },
         { name: 'Sender Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
         ];
-    }
-   if("TRACK_PUBLISH"==emailTemplateType){
-      mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
-      { name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Learning Track Title', value: '{{trackTitle}}' },
-      { name: 'Published On', value: '{{publishedDate}}' },
-      ];
-    }
-    if("PLAYBOOK_PUBLISH"==emailTemplateType){
-      mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
-      { name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Playbook Title', value: '{{playbookTitle}}' },
-      { name: 'Published On', value: '{{publishedDate}}' },
-      ];
-    }
-    if("ASSET_PUBLISH"==emailTemplateType){
-      mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
-      { name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Asset Name', value: '{{assetName}}' },
-      { name: 'Shared On', value: '{{sharedDate}}' },
-      ];
-    }
-    if("SHARE_LEAD"==emailTemplateType){
-      mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
-      { name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Share-Lead List Name', value: '{{shareLeadListName}}' },
-      { name: 'Shared On', value: '{{sharedDate}}' },
-      ];
-    }
-    if("ONE_CLICK_LAUNCH"==emailTemplateType){
-      mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
-      { name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Campaign Name', value: '{{campaignName}}' },
-      { name: 'Campaign Type', value: '{{campaignType}}' },
-      ];
-    }
-    if("PAGE_CAMPAIGN_PARTNER"==emailTemplateType){
-      mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
-      { name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Page Name', value: '{{pageName}}' },
-      { name: 'Shared On', value: '{{sharedDate}}' },
-      ];
-    }
-    if("PAGE_CAMPAIGN_CONTACT"==emailTemplateType){
-      mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
-      { name: 'Customer Full Name', value: '{{customerFullName}}' },
-      ];
-    }
-    if("SOCIAL_CAMPAIGN"==emailTemplateType || "TO_SOCIAL_CAMPAIGN"==emailTemplateType){
-      mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
-      { name: 'Sender Last Name', value: '{{lastName}}' },
-      { name: 'Sender Full Name', value: '{{fullName}}' },
-      { name: 'Sender Email Id', value: '{{emailId}}' },
-      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
-      { name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Social Status Content', value: '{{socialStatusContent}}' },
-      ];
-    }
-    if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType) {
-      mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
-      { name: 'Partner Name', value: '{{partnerName}}' },
-      { name: 'Partner Company', value: '{{partnerCompany}}' },
-      { name: 'Lead Name', value: '{{leadName}}' },
-      { name: 'Associated Lead Campaign', value: '{{leadAssociatedCampaign}}' },
-      { name: 'Lead Stage', value: '{{leadStage}}' },
-      { name: 'Lead Comment', value: '{{leadComment}}' },
-      ];
-    }
-    if("ADD_DEAL"==emailTemplateType || "DEAL_UPDATE"==emailTemplateType){
-      mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+      }
+      if ("TRACK_PUBLISH" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Learning Track Title', value: '{{trackTitle}}' },
+        { name: 'Published On', value: '{{publishedDate}}' },
+        ];
+      }
+      if ("PLAYBOOK_PUBLISH" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Playbook Title', value: '{{playbookTitle}}' },
+        { name: 'Published On', value: '{{publishedDate}}' },
+        ];
+      }
+      if ("ASSET_PUBLISH" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Asset Name', value: '{{assetName}}' },
+        { name: 'Shared On', value: '{{sharedDate}}' },
+        ];
+      }
+      if ("SHARE_LEAD" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Share-Lead List Name', value: '{{shareLeadListName}}' },
+        { name: 'Shared On', value: '{{sharedDate}}' },
+        ];
+      }
+      if ("ONE_CLICK_LAUNCH" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Campaign Name', value: '{{campaignName}}' },
+        { name: 'Campaign Type', value: '{{campaignType}}' },
+        ];
+      }
+      if ("PAGE_CAMPAIGN_PARTNER" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Page Name', value: '{{pageName}}' },
+        { name: 'Shared On', value: '{{sharedDate}}' },
+        ];
+      }
+      if ("PAGE_CAMPAIGN_CONTACT" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        ];
+      }
+      if ("SOCIAL_CAMPAIGN" == emailTemplateType || "TO_SOCIAL_CAMPAIGN" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Social Status Content', value: '{{socialStatusContent}}' },
+        ];
+      }
+      if ("ADD_LEAD" == emailTemplateType || "LEAD_UPDATE" == emailTemplateType) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
         { name: 'Partner Name', value: '{{partnerName}}' },
         { name: 'Partner Company', value: '{{partnerCompany}}' },
         { name: 'Lead Name', value: '{{leadName}}' },
-        { name: 'Lead Company', value: '{{leadCompany}}'},
+        { name: 'Associated Lead Campaign', value: '{{leadAssociatedCampaign}}' },
+        { name: 'Lead Stage', value: '{{leadStage}}' },
+        { name: 'Lead Comment', value: '{{leadComment}}' },
+        ];
+      }
+      if ("ADD_DEAL" == emailTemplateType || "DEAL_UPDATE" == emailTemplateType) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
+        { name: 'Partner Name', value: '{{partnerName}}' },
+        { name: 'Partner Company', value: '{{partnerCompany}}' },
+        { name: 'Lead Name', value: '{{leadName}}' },
+        { name: 'Lead Company', value: '{{leadCompany}}' },
         { name: 'Deal Name', value: '{{dealName}}' },
         { name: 'Deal Amount', value: '{{dealAmount}}' },
         { name: 'Deal Stage', value: '{{dealStage}}' },
         { name: 'Deal Comment', value: '{{dealComment}}' },
-      ];
-    }
-      if("FORM_COMPLETED"==emailTemplateType){
-        mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
-          { name: 'Form Name', value: '{{formName}}' },
-          { name: 'Form Table', value: '{{formTable}}' },
-          { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        ];
+      }
+      if ("FORM_COMPLETED" == emailTemplateType) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Form Name', value: '{{formName}}' },
+        { name: 'Form Table', value: '{{formTable}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
 
         ];
-    }
-    if("PRM_ADD_LEAD"==emailTemplateType || "PRM_UPDATED"==emailTemplateType ){
-      mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
-      { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
-      { name: 'Partner Name', value: '{{partnerName}}' },
-      { name: 'Partner Company', value: '{{partnerCompany}}' },
-      { name: 'Lead Name', value: '{{leadName}}' },
-      { name: 'Lead Stage', value: '{{leadStage}}' },
-      { name: 'Lead Comment', value: '{{leadComment}}' },
-      ];
-    }
-    if("ADD_SELF_LEAD"==emailTemplateType || "UPDATE_SELF_LEAD"==emailTemplateType){
-      mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+      }
+      if ("PRM_ADD_LEAD" == emailTemplateType || "PRM_UPDATED" == emailTemplateType) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
+        { name: 'Partner Name', value: '{{partnerName}}' },
+        { name: 'Partner Company', value: '{{partnerCompany}}' },
+        { name: 'Lead Name', value: '{{leadName}}' },
+        { name: 'Lead Stage', value: '{{leadStage}}' },
+        { name: 'Lead Comment', value: '{{leadComment}}' },
+        ];
+      }
+      if ("ADD_SELF_LEAD" == emailTemplateType || "UPDATE_SELF_LEAD" == emailTemplateType) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Created By Name', value: '{{createdByName}}' },
         { name: 'Created By Company', value: '{{createdByCompanyName}}' },
         { name: 'Associated Lead Campaign', value: '{{leadAssociatedCampaign}}' },
@@ -498,38 +497,50 @@ checkForDuplicates(newSubject: string, existingName: string, id:number) {
         { name: 'Company Name', value: '{{companyName}}' },
         { name: 'Lead Comment', value: '{{leadComment}}' },
         ];
-    }
-    if("ADD_SELF_DEAL"==emailTemplateType || "UPDATE_SELF_DEAL"==emailTemplateType){
-      mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+      }
+      if ("ADD_SELF_DEAL" == emailTemplateType || "UPDATE_SELF_DEAL" == emailTemplateType) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Created By Name', value: '{{createdByName}}' },
         { name: 'Created By Company', value: '{{createdByCompanyName}}' },
         { name: 'Lead Name', value: '{{leadName}}' },
-        { name: 'Lead Company', value: '{{leadCompany}}'},
+        { name: 'Lead Company', value: '{{leadCompany}}' },
         { name: 'Deal Name', value: '{{dealName}}' },
         { name: 'Deal Amount', value: '{{dealAmount}}' },
         { name: 'Deal Stage', value: '{{dealStage}}' },
         { name: 'Company Name', value: '{{companyName}}' },
         { name: 'Deal Comment', value: '{{dealComment}}' },
         ];
-    }
-    if("PARTNER_REMAINDER"==emailTemplateType){
-      mergeTags =[{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
+      }
+      if ("PARTNER_REMAINDER" == emailTemplateType) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
         { name: 'Vendor Full Name', value: '{{VENDOR_FULL_NAME}}' },
         { name: 'Vendor Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
         ];
-    }
-    if("COMPANY_PROFILE_INCOMPLETE"==emailTemplateType){
-      mergeTags =[{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
+      }
+      if ("COMPANY_PROFILE_INCOMPLETE" == emailTemplateType) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{_CUSTOMER_FULL_NAME}}' },
         { name: 'Sender Full Name', value: '{{senderFullName}}' },
         ];
-    }
-    if("JOIN_VERSA_TEAM"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType) {
-      mergeTags =[{ name: 'Sender Full Name', value: '{{senderFullName}}' },];
-    }
+      }
+      if ("JOIN_VERSA_TEAM" == emailTemplateType || "JOIN_MY_TEAM" == emailTemplateType) {
+        mergeTags = [{ name: 'Sender Full Name', value: '{{senderFullName}}' },];
+      }
 
-    if(self.properties.UNLOCK_MDF_FUNDING==emailTemplateType) {
-      mergeTags =[{ name: 'Campaign Details', value: '{{campaignName}}' }];
-    }
+      if (self.properties.UNLOCK_MDF_FUNDING == emailTemplateType) {
+        mergeTags = [{ name: 'Campaign Details', value: '{{campaignName}}' }];
+      }
+      if (["LEAD_APPROVE", "LEAD_REJECT", "PRM_LEAD_APPROVE", "PRM_LEAD_REJECT"].includes(emailTemplateType)) {
+        mergeTags = [{ name: 'Lead Name', value: '{{leadName}}' },
+        { name: 'Lead Comment', value: '{{leadComment}}' },
+        { name: 'Vendor Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
+        { name: 'Lead Stage', value: '{{leadStage}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'sender Full Name', value: '{{senderFullName}}' }
+        ];
+      }
+      if (["LEAD_REJECT", "LEAD_APPROVE"].includes(emailTemplateType)) {
+        mergeTags.push({ name: 'Associated Lead Campaign', value: '{{leadAssociatedCampaign}}' });
+      }
 
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
