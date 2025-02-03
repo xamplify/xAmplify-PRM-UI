@@ -166,6 +166,10 @@ export class Pagination {
 	
 	createdById: number;
 
+	selectedPartnerIds:number[] = [];
+
+	singleMail:boolean = false;
+
 	/**XNFR-848**/
 	isCompanyJourney:boolean;
 
