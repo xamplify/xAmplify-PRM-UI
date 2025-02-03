@@ -91,8 +91,8 @@ export class ApproveService {
     return this.authenticationService.callPostMethod(url, approvalControlSettingsDTOs);
   }
 
-  getApprovalPrivileges(loggedInUserId: number, createdById: number) {
-    let url = this.approveUrl + "/getApprovalPrivileges/" + loggedInUserId + "/" + createdById + this.QUERY_PARAMETERS;
+  getApprovalPrivileges(loggedInUserId: number) {
+    let url = this.approveUrl + "/getApprovalPrivileges/" + loggedInUserId + this.QUERY_PARAMETERS;
     return this.authenticationService.callGetMethod(url);
   }
 
@@ -107,6 +107,12 @@ export class ApproveService {
       categoryId = 0;
     }
     let url = this.damUrl + "/findFileTypes/" + loggedInUserCompanyId + "/" + categoryId + this.QUERY_PARAMETERS;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  sendReminderToApprovers(entityId: number, moduleType: string) { 
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.approveUrl + "/sendReminderToApprovers/" + loggedInUserId + '/' + entityId + '/' + moduleType + this.QUERY_PARAMETERS;
     return this.authenticationService.callGetMethod(url);
   }
 

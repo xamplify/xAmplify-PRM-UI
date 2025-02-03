@@ -74,12 +74,18 @@
 									<button class="button_blue bgcolor-unset" [class.disabled]="!showDownload" (click)="downloadContent()">
 										<span class="btn btn-primary transition txt_pd-top3">Download</span>
 									</button>
+									<button *ngIf="assetDetailsViewDto?.partnerSignatureRequired" [disabled]="assetDetailsViewDto?.partnerSignatureCompleted" class="button_blue bgcolor-unset" (click)="openModelpopup()">
+										<span class="btn btn-primary transition txt_pd-top3">Signature</span>
+									</button>
 									<h4>
 										Published On :
 										<app-timestamp [showInLine]="'true'"
 											[dateAndTime]="assetDetailsViewDto?.displayTime">
 										</app-timestamp>
 									</h4>
+									<span *ngIf="assetDetailsViewDto?.partnerSignatureCompleted"
+													class="view-banner bgc-green" style="margin-right: 5px;">Signature added
+												</span>
 								</div>
 							</div>
 						</div>
@@ -93,3 +99,11 @@
 	<app-download-asset-popup [asset]="selectedAsset" [isPartnerView]="true"
 		(downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
 </ng-container>
+
+<div class="modal-body" *ngIf="openDigitalSignatureModelPopup">
+	<app-digital-signature  [isFromDam]="true" (notifyAddImageToPdf)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)" ></app-digital-signature>
+</div>
+
+<div class="modal-body" *ngIf="openSelectDigitalSignatureModalPopUp">
+	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)"></app-select-digital-signature>
+</div>

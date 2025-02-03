@@ -1,0 +1,92 @@
+<!--Header-->
+<div class="header-container d-flex justify-content-between align-items-center p-3">
+  <!-- Left Side: Image -->
+  <div class="left-image ml10">
+    <img *ngIf="isCompanyLogoLoadedFromAnotherComponent" src="{{companyLogoPath}}" alt="No Image" class="header-image">
+    <img *ngIf="!isCompanyLogoLoadedFromAnotherComponent" src="{{authenticationService?.v_companyLogoImagePath}}" alt="No Image" class="header-image"> 
+  </div>
+  <!-- Right Side: Button -->
+  <button type="button" class="btn btn-primary float-right request-account" (click)="openRequestAccountModal()">
+    Request An Account</button>
+</div>
+<!--End Of Header-->
+
+<!--Request An Account Modal PopUp-->
+<div class="modal fade right" id="request-account-modal-popup" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog  modal-sm popup-align" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Request An Account</h4>
+      </div>
+      <div class="modal-body">
+        <p>Request access to the platform by submitting your details. Our team will review and get back to you shortly.</p>
+        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div id="modal-content">
+          <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
+          <div [hidden]="processing">
+            <div>
+              <div class="form-group">
+                <label for="email">First Name</label>
+                <input type="text" [(ngModel)]="requestDemo.firstName"  maxlength="255" class="form-control" id="firstName" [ngModelOptions]="{standalone: true}">
+             </div>
+             <div class="form-group">
+                <label for="email">Last Name</label>
+                <input type="text" [(ngModel)]="requestDemo.lastName"  maxlength="255" class="form-control" id="lastName" [ngModelOptions]="{standalone: true}">
+             </div>
+             <div class="form-group">
+                <label for="email">Email address <span class="required">*</span></label>
+                <input *ngIf="isCampaignMDF" type="email" disabled="disabled"  class="form-control" [(ngModel)]="requestDemo.emailId">
+                 <ng-container *ngIf="!isCampaignMDF">
+                  <input type="email" (input)="validateEmailId()"  maxlength="255" [(ngModel)]="requestDemo.emailId" class="form-control" id="emailId" [ngModelOptions]="{standalone: true}">
+                  <span class="required" *ngIf="errorClass=='error'">Please enter a valid email address</span>
+                 </ng-container>
+             </div>
+             <div class="form-group">
+                <label for="email">Mobile Number <span class="required">*</span></label>
+                <input type="text" (input)="validateMobileNumber()" maxlength="20" class="form-control"  [(ngModel)]="requestDemo.mobileNumber" [ngModelOptions]="{standalone: true}">
+             </div>
+             <div class="form-group">
+                <label for="email">Company Name<span class="required">*</span></label>
+                <input type="text" [(ngModel)]="requestDemo.company" class="form-control" (input)="validateCompany()" id="company" [ngModelOptions]="{standalone: true}">
+             </div>
+             <div class="form-group">
+              <div class="row" style="margin-bottom: 24px;">
+                 <div class="col-md-6 paddingLeftZero">
+                    <label for="sel1">Country</label>
+                    <select class="form-control"  (change)="onSelect($event.target.value)" id="demo-countryName">
+                    <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                    </select>
+                 </div>
+                 <div class="col-md-6 paddingRightZero">
+                    <label for="sel1">Time Zone</label>
+                    <select class="form-control"  id="demo-timezoneId">
+                       <ng-container *ngIf="timezones?.length==1">
+                          <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="requestDemo.countryId==timeZone.countryId">
+                          {{timeZone.cityName}}
+                          </option>
+                       </ng-container>
+                       <ng-container *ngIf="timezones?.length>1">
+                          <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
+                          {{timeZone.cityName}}
+                          </option>
+                       </ng-container>
+                    </select>
+                 </div>
+              </div>
+           </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer" *ngIf="!processing">
+        <button type="button" class="btn Btn-Gray neg_mrg_top4"  data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-info" [disabled]="!isValidForm || requestAccountButtonClicked" (click)="sendRequest();requestAccountButtonClicked = true">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

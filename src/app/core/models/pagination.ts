@@ -170,5 +170,7 @@ export class Pagination {
 
 	singleMail:boolean = false;
 
+	/**XNFR-848**/
+	isCompanyJourney:boolean;
 
 }

@@ -11,6 +11,8 @@ import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
 import { UtilService } from '../../core/services/util.service';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { DomSanitizer } from "@angular/platform-browser";
+import { SignatureService } from 'app/dashboard/services/signature.service';
+import { SignatureResponseDto } from 'app/dashboard/models/signature-response-dto';
 
 declare var $: any;
 
@@ -35,9 +37,13 @@ export class ViewDamComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
   loadVideoPlayer = false;
+  openDigitalSignatureModelPopup: boolean = false;
+  signatureResponseDto:SignatureResponseDto = new SignatureResponseDto();
+  openSelectDigitalSignatureModalPopUp: boolean = false;
+
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
-    public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer) {
+    public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer, public signatureService:SignatureService) {
 		 /****XNFR-169****/
 		 this.viewType = this.activatedRoute.snapshot.params['viewType'];
 		 this.categoryId = this.activatedRoute.snapshot.params['categoryId'];
@@ -120,6 +126,7 @@ export class ViewDamComponent implements OnInit {
 				geoLocationDetails.countryCode = response.countryCode;
 				geoLocationDetails.timezone = response.timezone;
 				damAnalyticsPostDto.geoLocationDetails = geoLocationDetails;
+				this.assetDetailsViewDto.geoLocationDetails = geoLocationDetails;
 				damAnalyticsPostDto.damPartnerId = id;
 				this.saveAnalytics(damAnalyticsPostDto);
 			}, (_error: any) => {
@@ -153,6 +160,92 @@ export class ViewDamComponent implements OnInit {
 	downloadAssetPopupEventEmitter(){
 		this.download =false;
 		this.showDownload = true;
+	}
+
+	openModelpopup() {
+		// this.assetViewLoader = true;
+		this.signatureService.getExistingSignatures().subscribe(
+			response => {
+				let data = response.data;
+				this.assetViewLoader = false;
+				if (data != undefined) {
+					this.signatureResponseDto = data;
+					if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
+						this.openSelectDigitalSignatureModalPopUp = true;
+					} else {
+						this.openDigitalSignatureModelPopup = true;
+					}
+				} else {
+					this.openDigitalSignatureModelPopup = true;
+				}
+			}, error => {
+				this.assetViewLoader = false;
+			});
+	}
+
+	uploadSignature() {
+		this.assetViewLoader = true;
+		this.assetDetailsViewDto.loggedInUserId = this.authenticationService.getUserId();
+		this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
+			this.assetDetailsViewDto.geoLocationDetails = geoLocationDetails;
+			this.damService.uploadSignature(this.assetDetailsViewDto).subscribe(
+				(response: any) => {
+					this.assetViewLoader = false;
+					this.viewDetails(this.assetId);
+				},
+				(error: string) => {
+					this.xtremandLogger.errorPage(error);
+					this.assetViewLoader = false;
+				}
+			);
+		});
+	}
+
+	private getGeoLocationAnalytics(callback: (geoLocationDetails: GeoLocationAnalytics) => void) {
+		this.utilService.getJSONLocation().subscribe(
+			(response: any) => {
+				let geoLocationDetails = new GeoLocationAnalytics();
+				let deviceInfo = this.deviceService.getDeviceInfo();
+				if (deviceInfo.device === 'unknown') {
+					deviceInfo.device = 'computer';
+				}
+				geoLocationDetails.openedTime = new Date();
+				geoLocationDetails.deviceType = deviceInfo.device;
+				geoLocationDetails.os = deviceInfo.os;
+				geoLocationDetails.city = response.city;
+				geoLocationDetails.country = response.country;
+				geoLocationDetails.isp = response.isp;
+				geoLocationDetails.ipAddress = response.query;
+				geoLocationDetails.state = response.regionName;
+				geoLocationDetails.zip = response.zip;
+				geoLocationDetails.latitude = response.lat;
+				geoLocationDetails.longitude = response.lon;
+				geoLocationDetails.countryCode = response.countryCode;
+				geoLocationDetails.timezone = response.timezone;
+				callback(geoLocationDetails);
+			},
+			(_error: any) => {
+				this.xtremandLogger.error("Error In Fetching Location Details");
+			}
+		);
+	}
+	
+
+	notifySelectDigitalSignatureCloseModalPopUp(event){
+		if(event == 'close'){
+			this.openSelectDigitalSignatureModalPopUp = false;
+		}
+	}
+
+	notifyDigitalSignatureCloseModalPopUp(event){
+		if(event == 'close'){
+			this.openDigitalSignatureModelPopup = false;
+		}
+	}
+
+	notifySignatureSelection(event){
+     this.assetDetailsViewDto.selectedSignaturePath = event;
+	 this.uploadSignature();
 	}
 
 }

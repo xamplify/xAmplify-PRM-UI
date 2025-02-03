@@ -14,6 +14,8 @@ import { UtilService } from 'app/core/services/util.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { Ng2DeviceService } from 'ng2-device-detector';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Component({
   selector: 'app-dam-partner-company-analytics',
@@ -44,7 +46,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   isFromApprovalModule: boolean = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,public router: Router,
-    public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService,public renderer:Renderer) { 
+    public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService,public renderer:Renderer, public deviceService: Ng2DeviceService) { 
       this.referenceService.renderer = this.renderer;
     }
 
@@ -61,7 +63,14 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
     this.damId = atob(this.route.snapshot.params['damId']);
     this.breadCrumb = this.partnerModuleCustomName+" Companies";
-    this.pagination.partnerTeamMemberGroupFilter = true;
+    let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')) {
+      this.pagination.partnerTeamMemberGroupFilter = false;
+    } else {
+      this.pagination.partnerTeamMemberGroupFilter = true;
+    }
+
+   
     this.findPartnerCompanies(this.pagination);
     this.findVideoDetails();
   }
@@ -189,5 +198,43 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
     this.referenceService.goToRouter(url);
   }
+
+  //XNFR-833
+  downloadAsset(company:any){
+    this.utilService.getJSONLocation().subscribe(
+      (response: any) => {
+        let param = this.getLocationDetails(response, company.damPartnerAlias, company);
+        param.id = company.partnerDamId;
+        let completeUrl = this.authenticationService.REST_URL + "dam/downloadpc?access_token=" + this.authenticationService.access_token;
+        this.referenceService.post(param, completeUrl);
+      }, (_error: any) => {
+        this.xtremandLogger.error("Error In Fetching Location Details");
+      }
+    );
+  }
+
+  getLocationDetails(response: any, alias: string, company: any) {
+		let deviceInfo = this.deviceService.getDeviceInfo();
+		if (deviceInfo.device === 'unknown') {
+			deviceInfo.device = 'computer';
+		}
+		let param : any = {
+			'alias': alias,
+			'loggedInUserId': company.partnerUserId,
+			'deviceType': deviceInfo.device,
+			'os': deviceInfo.os,
+			'city': response.city,
+			'country': response.country,
+			'isp': response.isp,
+			'ipAddress': response.query,
+			'state': response.regionName,
+			'zip': response.zip,
+			'latitude': response.lat,
+			'longitude': response.lon,
+			'countryCode': response.countryCode,
+			'timezone': response.timezone
+		};
+		return param;
+	}
 
 }

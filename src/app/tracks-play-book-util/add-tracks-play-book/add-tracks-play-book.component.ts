@@ -33,6 +33,8 @@ import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { Properties } from 'app/common/models/properties';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
+import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
+import { ApproveService } from 'app/approval/service/approve.service';
 Properties
 declare var $, swal, CKEDITOR: any;
 @Component({
@@ -40,7 +42,7 @@ declare var $, swal, CKEDITOR: any;
   templateUrl: './add-tracks-play-book.component.html',
   styleUrls: ['./add-tracks-play-book.component.css'],
   providers: [HttpRequestLoader, Pagination, SortOption, FormService, RegularExpressions, DamService, 
-    ContactService,Properties]
+    ContactService,Properties, ApproveService]
 })
 export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
@@ -197,9 +199,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   isSwitchOptionDisabled = false;
   customSwitchToolTipMessage = "";
   isFromApprovalModule: boolean = false;
+
+  approverControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
+  canApprove: boolean = false;
+
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
-    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties) {
+    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService) {
     this.siteKey = this.envService.captchaSiteKey;
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-170****/
@@ -243,7 +249,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
        /****XNFR-326******/
       this.findTrackOrPlaybookPublishEmailNotificationOption();
     }
-   
+    this.getApprovalPrivileges(this.loggedInUserId);
   }
    /****XNFR-326******/
   findTrackOrPlaybookPublishEmailNotificationOption() {
@@ -1694,10 +1700,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       approvalRequired = this.authenticationService.approvalRequiredForPlaybooks;
     }
    
-    const isAdmin = this.authenticationService.module.isAnyAdminOrSupervisor;
+    const canApprove = this.authenticationService.module.isAnyAdminOrSupervisor || this.canApprove ;
   
     return !tracksPlayBook.isValid || 
-           (this.isAdd && approvalRequired && !isAdmin) || 
+           (this.isAdd && approvalRequired && !canApprove) || 
            (!this.isAdd && approvalRequired && tracksPlayBook.approvalStatus !== 'APPROVED');
   }
 
@@ -1708,8 +1714,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     } else if (this.type === TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
       approvalRequired = this.authenticationService.approvalRequiredForPlaybooks;
     }
+    const canApprove = this.authenticationService.module.isAnyAdminOrSupervisor || this.canApprove ;
   
-    if (this.isAdd && approvalRequired && !this.authenticationService.module.isAnyAdminOrSupervisor) {
+    if (this.isAdd && approvalRequired && !canApprove) {
       return 'Requires approval for publishing.';
     } else if (!this.isAdd && approvalRequired && tracksPlayBook.approvalStatus !== 'APPROVED') {
       return this.type === TracksPlayBookType[TracksPlayBookType.TRACK] ? 
@@ -1725,6 +1732,28 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
     this.referenceService.goToRouter(url);
   }
-  
+
+  getApprovalPrivileges(loggedInUserId: number) {
+    this.referenceService.startLoader(this.httpRequestLoader);
+    this.approveService.getApprovalPrivileges(loggedInUserId).subscribe(
+        response => {
+          if (response.statusCode === 200 && response.data) {
+            this.approverControlSettingsDTO = response.data;
+            this.checkIsApprover(this.approverControlSettingsDTO);
+          }
+          this.referenceService.startLoader(this.httpRequestLoader);
+        }, error => {
+          this.referenceService.startLoader(this.httpRequestLoader);
+        }
+      );
+  }
+
+  checkIsApprover(approverControlSettingsDTO: ApprovalControlSettingsDTO) {
+    if (approverControlSettingsDTO.trackApprover && this.type.toUpperCase() == 'TRACK') {
+      this.canApprove = true;
+    } else if (approverControlSettingsDTO.playbookApprover && this.type.toUpperCase() == 'PLAYBOOK') {
+      this.canApprove = true;
+    }
+  }
 
 }

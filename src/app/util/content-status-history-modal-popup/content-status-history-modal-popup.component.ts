@@ -62,6 +62,8 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   createrControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
   canApprove: boolean = false;
   createdByAnyApprover: boolean = false;
+  successMessage: string = 'Status Updated Successfully';
+  disableReminder: boolean = false;
 
   constructor( private referenceService: ReferenceService,
       public authenticationService: AuthenticationService,
@@ -99,7 +101,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.closeModalPopUp();
         this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       },()=>{
-        this.getApprovalPrivileges(this.loggedInUserId, this.createdById);
+        this.getApprovalPrivileges(this.loggedInUserId);
         this.findComments();
       });
   }
@@ -198,6 +200,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentModalPopUpLoader = false;
         if (response.statusCode === 200 && response.data != undefined) {
           this.isStatusUpdated = response.data;
+          this.successMessage = 'Status Updated Successfully';
         } else if (response.statusCode === 401 && response.data != undefined) {
           let message = this.referenceService.iterateNamesAndGetErrorMessage(response);
           this.commentsCustomResponse = new CustomResponse('ERROR', message, true);
@@ -208,7 +211,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentDto.invalidComment = true;
         this.commentDto.statusUpdated = false;
         this.refreshModalPopUp();
-        this.showStatusUpdatedMessage();
+        this.removeSuccessMessage();
       },error=>{
         this.isStatusUpdated = false;
         this.commentModalPopUpLoader = false;
@@ -262,21 +265,19 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     }
   }
 
-  showStatusUpdatedMessage() {
+  removeSuccessMessage() {
     setTimeout(() => {
       this.isStatusUpdated = false;
     }, 3000)
   }
 
-  getApprovalPrivileges(loggedInUserId: number, createdById: number) {
+  getApprovalPrivileges(loggedInUserId: number) {
     this.commentModalPopUpLoader = true;
-    this.approveService.getApprovalPrivileges(loggedInUserId, createdById).subscribe(
+    this.approveService.getApprovalPrivileges(loggedInUserId).subscribe(
         response => {
           if (response.statusCode === 200 && response.data) {
-            this.approverControlSettingsDTO = response.data.loggedInUserPrivileges;
-            this.createrControlSettingsDTO = response.data.createdByUserPrivileges;
+            this.approverControlSettingsDTO = response.data;
             this.checkIsApprover(this.approverControlSettingsDTO);
-            this.checkIsCreatedByAnyApprover(this.createrControlSettingsDTO);
           }
           this.commentModalPopUpLoader = false;
         }, error => {
@@ -296,14 +297,31 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
     }
   }
 
-  checkIsCreatedByAnyApprover(createrControlSettingsDTO: ApprovalControlSettingsDTO) {
-    if (createrControlSettingsDTO.assetApprover && this.moduleType.toUpperCase() == 'DAM') {
-      this.createdByAnyApprover = true;
-    } else if (createrControlSettingsDTO.trackApprover && this.moduleType.toUpperCase() == 'TRACK') {
-      this.createdByAnyApprover = true;
-    } else if (createrControlSettingsDTO.playbookApprover && this.moduleType.toUpperCase() == 'PLAYBOOK') {
-      this.createdByAnyApprover = true;
-    }
+  sendReminderToApprovers() {
+    this.commentModalPopUpLoader = true;
+    this.approveService.sendReminderToApprovers(this.entityId, this.moduleType).subscribe(
+      (response: any) =>{
+        if (response.statusCode === 200) {
+          this.successMessage = 'Reminder email sent successfully';
+          this.isStatusUpdated = true;
+          this.removeSuccessMessage();
+          this.disableReminder = true;
+        } else if (response.statusCode === 400) { 
+          this.isStatusUpdated = false;
+          this.commentsCustomResponse = new CustomResponse('ERROR', response.message, true);
+        } else {
+          this.isStatusUpdated = false;
+          this.commentsCustomResponse = new CustomResponse('ERROR', response.message, true);
+        }
+        this.commentModalPopUpLoader = false;
+      }, error => {
+        this.isStatusUpdated = false;
+        this.commentsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.commentModalPopUpLoader = false;
+      }, () => {
+        this.commentModalPopUpLoader = false;
+      }
+    );
   }
   
 }

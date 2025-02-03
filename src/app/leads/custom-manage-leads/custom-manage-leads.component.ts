@@ -40,6 +40,12 @@ export class CustomManageLeadsComponent implements OnInit {
   @Input() public isFromCompanyModule: boolean = false;
   /**XNFR-836**/
   @Input() public isFromEditContacts: boolean = false;
+  /**XNFR-848**/
+  @Input() public isCompanyJourney: boolean = false;
+  @Input() public selectedContactListId:any;
+  @Input() public companyJourneyId:any;
+  @Input() public isFromCompanyJourney:boolean = false;
+  @Input() public isFromCompanyJourneyEditContacts:boolean = false;
   showDealForm: boolean;
   leadId: number;
   leadApprovalStatusType: string;
@@ -133,10 +139,10 @@ export class CustomManageLeadsComponent implements OnInit {
 
   showRegisterDealButton(lead): boolean {
     let showRegisterDeal = false;
-    if (lead.selfLead && lead.dealBySelfLead && (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
+    if (lead.selfLead && lead.dealBySelfLead && (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined && (this.authenticationService.enableLeads || this.authenticationService.module.opportunitiesAccessAsPartner)) {
       showRegisterDeal = true;
     } else if (((((lead.dealByVendor && this.isVendor || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined)
-      && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED'))) {
+      && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED')) && (this.authenticationService.enableLeads || this.authenticationService.module.opportunitiesAccessAsPartner)) {
       showRegisterDeal = true;
     }
     return showRegisterDeal;
@@ -244,7 +250,8 @@ export class CustomManageLeadsComponent implements OnInit {
   listLeads(pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     pagination.userId = this.loggedInUserId;
-    pagination.contactId = this.selectedContact.id;
+    pagination.contactId = this.isCompanyJourney ? this.selectedContactListId : this.selectedContact.id;
+    pagination.isCompanyJourney = this.isCompanyJourney;
     this.leadsService.listLeadsForPartner(pagination).subscribe(
       response => {
         pagination.totalRecords = response.totalRecords;
@@ -255,7 +262,9 @@ export class CustomManageLeadsComponent implements OnInit {
       error => {
         this.referenceService.loading(this.httpRequestLoader, false);
       }
-    )
+    ), () => {
+      this.referenceService.goToTop();
+    }
   }
 
   setLeadsPage(event) {
@@ -503,8 +512,14 @@ export class CustomManageLeadsComponent implements OnInit {
   }
 
   goBackToEditContacts() {
-    let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
-    this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+encodedURL);
+    if (this.isFromCompanyJourneyEditContacts) {
+      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+      let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+      this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedUserListId + '/' + encodedCompanyId);
+    } else {
+      let encodedURL = this.referenceService.encodePathVariable(this.selectedContact.userListId);
+      this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedURL);
+    }
   }
 
   goBackToManageContacts() {
@@ -519,6 +534,13 @@ export class CustomManageLeadsComponent implements OnInit {
 
   goBackToManageCompanies() {
     this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage);
+  }
+
+  goBackToCompanyJourney() {
+    let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    this.referenceService.goToRouter(url);
   }
 
 }

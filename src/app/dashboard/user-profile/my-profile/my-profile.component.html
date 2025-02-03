@@ -605,7 +605,7 @@
                                         <ng-container>
                                             <!--Welcome-pages-->
                                             <ng-container
-                                                *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember || authenticationService?.module.isPrmTeamMember ) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin() || authenticationService?.module.isPrm)">
+                                                *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember || authenticationService?.module.isPrmTeamMember || authenticationService?.module?.isMarketingTeamMember ) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin() || authenticationService?.module.isPrm  || authenticationService?.module?.isMarketing)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'welcomePages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'welcomePages'}"
                                                         (click)="activateTab('welcomePages');clearCustomResponse()">
@@ -3761,7 +3761,7 @@
                                                 [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name"
                                                 (input)="validateStage(pipelineStage.stageName)"
                                                 (keydown)="pipelineSumbitOnEnter($event)"
-                                                class="bg-color field-border-customization inputFieldWidth">
+                                                class="bg-color field-border-customization inputFieldWidth stage-field-border">
                                         </span>
                                         <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
                                             <div class="mb_mt7 alignEqualtoFields">

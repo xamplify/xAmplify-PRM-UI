@@ -95,7 +95,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <div class="page-bar remove_cardBgcolor padding_0 p10 light_bg_removal" id="header">
+          <div class="page-bar remove_cardBgcolor padding_0 p10 light_bg_removal remove_space" id="header">
             <div class="portlet-title">
               <div>
                 <!-- XNFR-148 -->
@@ -164,7 +164,7 @@
                           <ng-container *ngFor='let company of pagination.pagedItems; let i=index'>
                             <tr>
                               <td><img src="{{properties?.companyListImage}}" alt="company" style="height: 54px;"></td>
-                              <td>
+                              <td (click)="isLocalOrQAServer ? showCompanyJourney(company):''" [ngClass]="isLocalOrQAServer ? 'text-line pointer':''">
                                 <h4>
                                   <span data-toggle="tooltip" data-placement="right" title="{{company.name}}"
                                     class="ListFontCu">

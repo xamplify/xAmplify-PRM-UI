@@ -899,7 +899,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         }
         if (emailId !== undefined && emailId !== '' && $.trim(emailId.length > 0)) {
           if (duplicateEmailIds.length == 0) {
-            if (!this.referenceService.validateEmailId(emailId)) {
+            if (!this.referenceService.validateEmailId($.trim(emailId))) {
               emailIds.push(emailId);
               this.customResponse = new CustomResponse('ERROR', emailIds + ' is invalid email address.', true);
               this.csvErrors = true;
@@ -1379,27 +1379,31 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   /***** XNFR-805 *****/
   openInviteTeamMemberModal() {
-    this.inviteTeamMemberLoading = true;
     this.emailIds = [];
     this.vendorInvitation.emailIds = [];
-    this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify';
+    this.inviteTeamMemberLoading = true;
+    $('#invite_team_member_modal').modal('show');
+    this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + (this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify');
     this.teamMemberService.getHtmlBody().subscribe(
       response => {
         if (response.statusCode === 200) {
           let data = response.data;
           this.inviteTeamMemberHtmlBody = this.sanitizer.bypassSecurityTrustHtml(data.body);
           this.vendorInvitation.subject = data.subject;
+          setTimeout(() => {
+            const button = document.querySelector('div.button');
+            if (button) {
+              button.className = '';
+            }
+          });
         } else {
           this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
         }
         this.inviteTeamMemberLoading = false;
-        $('#invite_team_member_modal').modal('show');
       },
       error => {
         this.logger.errorPage(error);
-        this.vendorInvitation.message = "";
         this.inviteTeamMemberLoading = false;
-        $('#invite_team_member_modal').modal('show');
         this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
       });
   }
@@ -1450,11 +1454,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   /***** XNFR-805 *****/
   sendTeamMemberInviteEmail() {
-    this.inviteTeamMemberResponse = new CustomResponse();
-    this.inviteTeamMemberLoading = true;
     this.isValidationMessage = true;
-    this.vendorInvitation.emailIds = this.emailIds.map(value => value.value);
+    this.inviteTeamMemberLoading = true;
+    this.inviteTeamMemberResponse = new CustomResponse();
     this.vendorInvitation.vanityURL = this.vendorCompanyProfileName;
+    this.vendorInvitation.emailIds = this.emailIds.map(value => value.value);
     this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation)
       .subscribe(data => {
         if (data.statusCode == 200) {

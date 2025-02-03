@@ -1,3 +1,5 @@
+import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
+
 export class DamUploadPostDto {
     id:number;
     loggedInUserId:number;
@@ -38,4 +40,14 @@ export class DamUploadPostDto {
     /***XNFR-586 */
     addedToQuickLinks = false;
 
+    /***XNFR-833 */
+    partnerSignatureRequired = false;
+    disablePartnerSignatureOption = false;
+    partnerSignatureToolTipMessage = "";
+    vendorSignatureRequired = false;
+    disableVendorSignatuerOption = false;
+    vendorSignatureToolTipMessage = "";
+    selectedSignatureImagePath = "";
+    vendorSignatureCompleted = false;
+    geoLocationDetails:GeoLocationAnalytics = new GeoLocationAnalytics();
 }

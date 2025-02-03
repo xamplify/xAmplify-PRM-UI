@@ -24,7 +24,7 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   createdForStages = new Array<PipelineStage>();
   
   @Input()
-  deal: Deal;
+  deal: any;
   @Input()
   lead: Lead;
   @Input()
@@ -46,14 +46,18 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   showCommentsEmitter = new EventEmitter();
   @Output()
   stageUpdateStatusCode = new EventEmitter();
+  /**XNFR-848**/
+  @Input() public isFromCompanyJourney:boolean = false;
 
   constructor(public authenticationService: AuthenticationService,public leadsService: LeadsService,
     public dealsService: DealsService, public referenceService: ReferenceService) { }
 
   ngOnInit() {
-    // if (this.deal != undefined && this.deal.pipelineId > 0) {
-    //   this.findPipelineStagesByPipelineId(this.deal.pipelineId);
-    // }
+    if (this.deal != undefined && this.deal.pipelineId > 0 && this.isFromCompanyJourney) {
+      this.findPipelineStagesByPipelineId(this.deal.pipelineId);
+    } else if (this.deal != undefined && this.deal.pipelineId > 0) {
+      this.createdForStages = this.deal.pipeline.stages;
+    }
     this.referenceService.openModalPopup('changeDealPipelineStageModel');
   }
 

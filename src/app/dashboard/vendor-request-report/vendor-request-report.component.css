@@ -17,3 +17,45 @@
   }
   
 }
+.dashboard-stat.green-soft .more {
+  color: #fff;
+  background-color: #3a9c96;
+}
+.dashboard-stat.blue-soft .more {
+  color: #fff;
+  background-color: #447dad;
+}
+span.filterActiveBg {
+  background-color: #10ad39;
+}
+span.filterActiveBg i {
+  color: #fff;
+}
+.defaultFilterACtiveBg{
+  background-color: #f1f3fa;
+}
+@media ( min-width: 768px) {
+.justify-content-end{
+  justify-content: end;
+}
+}
+@media ( max-width: 600px) {
+.mb_flex-wrap{
+  flex-wrap: wrap;
+}
+.mb_pl0{
+  padding-left: 0px!important;
+}
+}
+.createdOnRow {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+}
+.custom_fiter-asset{
+  background-color: #f1f5f9;
+  padding: 10px 5px 10px 5px !important;
+}
+.custom-margin {
+  margin-top: 40px;
+}

@@ -376,7 +376,8 @@
         (click)="openRequestAsVendorModal()" class="xamplify-height-padding"
         style="border-radius: 7px 0px 0px 7px;" translate>{{properties?.inviteAVendor | translate }}</button>
      <button [ngClass]="authenticationService?.isTop?'customskin':''"
-        [routerLink]="['/home/dashboard/vendor-request']" class="xamplify-mr5 xamplify-height-padding"
+     (click)="navigateToGivenPath('/home/dashboard/vendor-request')"
+         class="xamplify-mr5 xamplify-height-padding"
         style="border-radius: 0px 7px 7px 0px;">
         <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"
            data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>

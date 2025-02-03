@@ -8,4 +8,5 @@ export class RequestDemo {
     countryId: number = 0;
     country: string = "";
     timeZoneId: any;
+    mdfRequest = false;
 }

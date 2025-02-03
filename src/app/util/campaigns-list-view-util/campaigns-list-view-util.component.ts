@@ -22,6 +22,7 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
 import { CustomAnimation } from 'app/core/models/custom-animation';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var swal, $: any, flatpickr;
 
@@ -130,6 +131,14 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     selectedIndex : number;
     gearIconOptions : boolean = false;
     campaignViewType : string = "";
+
+    /*XNFR-832*/
+    isUnlockMdfFundsOptionEnabled = false;
+    sendMdfRequestButtonClicked = false;
+    unlockMdfFundingModuleName = XAMPLIFY_CONSTANTS.unlockMdfFunding;
+    campaignName = "";
+    campaignId: number;
+    /*XNFR-832*/
     
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -1725,6 +1734,19 @@ validateCopyCampaignName(){
                 campaign.totalRecipientsError = true;
             });
     }
+
+     /**XNFR-832***/
+     openMdfRequestModal(campaign:any){
+        this.sendMdfRequestButtonClicked = true;
+        this.campaignName = campaign.campaignName;
+        this.campaignId = campaign.campaignId;
+    }
+    sendTestEmailModalPopupEventReceiver(){
+        this.sendMdfRequestButtonClicked = false;
+        this.campaignName = "";
+        this.campaignId = 0;
+    }
+    /**XNFR-832***/
 
 
  }

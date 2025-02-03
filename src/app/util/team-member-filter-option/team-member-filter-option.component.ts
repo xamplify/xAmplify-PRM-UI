@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter,Input } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Subject } from 'rxjs';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
   selector: 'app-team-member-filter-option',
@@ -17,12 +18,14 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   @Output() teamMemberFilterModalPopUpOptionEventEmitter = new EventEmitter();
   @Input() filterIcon = false;
   @Input() isAssetOrLms = false;
+  @Input() isShareLeadsModule = false;
+  @Input() mdfRequest = false;
   showFilterPopup = false;
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   @Input() customSelectedIndex: number;
   filterOption: boolean = false;
   @Input() isPartnerModule: boolean = false;
-  constructor(public authenticationService: AuthenticationService) { }
+  constructor(public authenticationService: AuthenticationService,public referenceService: ReferenceService) { }
 
   ngOnInit() {
     this.showPartnersFilterOption();
@@ -40,10 +43,12 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   }
 
   private checkPartnerTeamMemberFilter() {
-    if (this.isPartnerModule || this.isAssetOrLms) {
+    if (this.isPartnerModule || this.isAssetOrLms || this.isShareLeadsModule || this.mdfRequest) {
       let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
       if (filterPartner !== null  && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
-        this.selectedFilterIndex = 0;
+        this.selectedFilterIndex = (this.referenceService.universalModuleType === "Partners")? this.referenceService.universalSearchFilterValue:0;
+      } else {
+        this.selectedFilterIndex = (this.referenceService.universalModuleType === "Partners")? this.referenceService.universalSearchFilterValue:1;
       }
     }
   }
@@ -64,6 +69,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
 
   applyFilter(selectedIndex: number) {
     this.selectedFilterIndex = selectedIndex;
+    this.referenceService.universalSearchFilterValue = selectedIndex; //XNFR-853
     this.teamMemberFilterOptionEventEmitter.emit(selectedIndex);
     this.loading = false;
   }

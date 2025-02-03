@@ -33,7 +33,7 @@
                 <!--All/My Partners-->
                 <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0">
                   <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany && isPublished"
-                  (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                  (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isAssetOrLms]="true"></app-team-member-filter-option>
                 </div>
                 <!--Search / Sort / Refresh-->
                 <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0">
@@ -92,6 +92,9 @@
                              <span *ngIf="company?.contactCompany.length>50">...</span>
                           </strong>
                        </h5>
+                       <span *ngIf="company?.partnerSignatureCompleted"
+													class="view-banner bgc-green" style="margin-right: 5px;">Signature added
+												</span>
                       </td>
                       <td class="text-center">{{company?.viewCount}}</td>
                       <td class="text-center">{{company?.downloadCount}}</td>
@@ -99,6 +102,10 @@
                         <div class="actions-block override-actions custom-width-icon float-none">
                           <a class="custom-icon"  data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(company)">
                             <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                          <a *ngIf="company?.partnerSignatureCompleted" class="custom-icon"  data-toggle="tooltip" data-placement="top" title="Download" (click)="downloadAsset(company)">
+                            <i class="fa fa-download IconCustomization" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
                         </div>

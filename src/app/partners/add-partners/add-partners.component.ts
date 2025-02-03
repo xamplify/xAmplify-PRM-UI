@@ -867,8 +867,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						});
 						this.newPartnerUser.length = 0;
 						this.allselectedUsers.length = 0;
-						if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
-							this.selectedFilterIndex == 1 ? this.pagination.partnerTeamMemberGroupFilter = true : this.pagination.partnerTeamMemberGroupFilter = false;
+						if ((this.utilService.isLoggedAsTeamMember() || this.authenticationService.isTeamMember() || this.authenticationService.module.isTeamMember) && !this.authenticationService.isPartnerTeamMember) {
+							this.partnerFilterOption();
 						}
 						this.loadPartnerList(this.pagination);
 						this.clipBoard = false;
@@ -2643,15 +2643,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
-			if (this.authenticationService.module.isTeamMember && !this.authenticationService.isPartnerTeamMember) {
-				let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-				if (TeamMemberGroupFilter !== null && TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) {
-					this.selectedFilterIndex = 0;
-					this.pagination.partnerTeamMemberGroupFilter = false;
-				} else {
-					this.selectedFilterIndex = 1;
-					this.pagination.partnerTeamMemberGroupFilter = true;
-				}
+			if ((this.utilService.isLoggedAsTeamMember() || this.authenticationService.isTeamMember() || this.authenticationService.module.isTeamMember) && !this.authenticationService.isPartnerTeamMember) {
+				this.partnerFilterOption();
 			}
 			this.defaultPartnerList(this.loggedInUserId);
 			if (this.contactService.socialProviderName == 'google') {
@@ -2715,6 +2708,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 
+
+	private partnerFilterOption() {
+		let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+		if (TeamMemberGroupFilter !== null && TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) {
+			this.referenceService.setTeamMemberFilterForPagination(this.pagination, 0);
+		} else {
+			this.referenceService.setTeamMemberFilterForPagination(this.pagination, 1);
+		}
+	}
 
 	checkTermsAndConditionStatus() {
 		if (this.companyId > 0) {
@@ -4782,6 +4784,8 @@ triggerUniversalSearch(){
 		}
 		this.searchKey = this.referenceService.universalSearchKey;
 		this.pagination.searchKey = this.searchKey;
+		this.selectedFilterIndex = this.referenceService.universalSearchFilterValue;
+		this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
 	  }
 }
 

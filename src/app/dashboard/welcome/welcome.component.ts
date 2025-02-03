@@ -214,8 +214,10 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       /** User Guide **/
       this.getMergeTagForGuide();
       let filterPartner = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
-      if (filterPartner != null && (filterPartner === false || filterPartner === 'false')) {
+      if (filterPartner !== null && filterPartner !== undefined && (filterPartner === false || filterPartner === 'false')) {
         this.applyFilter = false;
+      }else{
+        this.applyFilter = true;
       }
       /** User Guide **/
     } catch (error) {

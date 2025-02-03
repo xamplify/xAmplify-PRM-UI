@@ -1858,7 +1858,7 @@
 <!-- END PAGE CONTENT-->
 <!---Share Pop Up-->
 <app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [inputId]="selectedContactListId"
-   *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
+   *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()" [isShareLeadsModule]="assignLeads">
 </app-partner-company-modal-popup>
 <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
 <div class="modal right fade" id="listSharedDetailsModal" tabindex="-1" role="dialog"
