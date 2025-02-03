@@ -27,6 +27,7 @@ export class CampaignMdfTemplatePreviewComponent implements OnInit {
 
   ngOnInit() {
     this.processor.set(this.processor);
+    this.referenceService.clearHeadScriptFiles();
     this.alias = this.route.snapshot.params['mdfAlias'];
     if(this.vanityUrlService.isVanityURLEnabled()){
       this.vanityUrlService.checkVanityURLDetails();

@@ -829,14 +829,18 @@
             </div>
             <div class="inputs" style="float: right">
               <!-- XNFR-835 -->
-              <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: -12px 0 0 0;" (click)="downloadIncompleteCompanyProfilePartnersReport()">
+              <button class="btn btn-xs l-g-view pos_mar_rgt4" data-placement="bottom" style=" margin: 0px 0 0 0;" (click)="downloadIncompleteCompanyProfilePartnersReport()">
                 <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
                   data-original-title="Export to Excel"></i>
               </button>
               <!-- XNFR-835 -->
               <div class="portlet-input input-inline">
-                <div class="input-icon right mTop" style="position: relative; margin: -12px 0 0 0;">
-                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"
+                <button *ngIf="isIncompleteCompanyProfileDiv" class="btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()"
+                >Send Reminder</button>
+                <div class="input-icon right mTop" 
+                [ngClass]="isIncompleteCompanyProfileDiv ? '' : 'input-icon right mTop'" 
+                [ngStyle]="isIncompleteCompanyProfileDiv ? {'position': 'relative', 'margin': '-34px 0 0 131px'} : {'position': 'relative', 'margin': '-12px 0 0 0'}">
+                 <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"
                     [ngModelOptions]="{ standalone: true }" placeholder="Search"
                     (keypress)=" inCompleteCompanyProfileSignupPendingPartnersSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey"
@@ -863,6 +867,9 @@
                 *ngIf="incompleteCompanyProfileAndPendingSingupPagination.pagedItems.length !== 0">
                 <thead>
                   <tr>
+                    <th *ngIf="isIncompleteCompanyProfileDiv" class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                      [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAllForIncompleteProfiles($event)" />
+                  </th>
                     <th class="center-aligned">partners</th>
                     <th *ngIf="isIncompleteCompanyProfileDiv && isSingUpPendingDiv" style="text-align: center;">LAST REMINDER SENT</th>
                     <th style="text-align: center;">Actions</th>
@@ -871,6 +878,9 @@
                 <tbody>
                   <tr *ngFor="let item of incompleteCompanyProfileAndPendingSingupPagination.pagedItems"
                     style="cursor: pointer;">
+                    <td   *ngIf="isIncompleteCompanyProfileDiv"  class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                      [(ngModel)]="item.isSelected" (change)="updateSelectionStateForIncompleteProfiles()">
+                  </td>
                     <td>
                       <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
                       </app-user-info>
