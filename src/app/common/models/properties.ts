@@ -20,6 +20,7 @@ export class Properties {
 	LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed.";
 	CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully";
 	CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
+	LEAD_LIST_SAVE_SUCCESS = "Your lead list has been saved successfully";
 
 	CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
 	CONTACT_LIST_UPDATE_ERROR: "An error occured while updating your contact list.";

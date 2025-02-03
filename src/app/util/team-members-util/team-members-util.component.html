@@ -83,7 +83,7 @@
                         </button>
                       </div>
                     </ng-container>
-                    <ng-template *ngIf="!isLoggedInAsTeamMember" [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
+                    <ng-template *ngIf="!isLoggedInAsTeamMember && !authenticationService?.module?.deletedPartner" [ngTemplateOutlet]="inviteTeamMemberTemplate"></ng-template>
                   </section>
                 </div>
               <!-- close inner row-->

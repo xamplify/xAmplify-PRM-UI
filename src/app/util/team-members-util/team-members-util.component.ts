@@ -1276,9 +1276,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         "FIRSTNAME": item.firstName,
         "LASTNAME": item.lastName,
         "EMAILID": item.emailId,
-        "GROUP": item.primaryAdmin ? "N/A" : item.teamMemberGroupName,
+        "GROUP": item.primaryAdmin ? "N/A" : `"${item.teamMemberGroupName}"`,
         "ADMIN": (item.secondAdmin || item.primaryAdmin) ? "Yes" : "No",
-        "STATUS": (item.status == "APPROVE") ? "Active" : "InActive",
+        "STATUS": (item.status === "APPROVE") ? "Active" : "InActive",
       };
     });
 
@@ -1286,8 +1286,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   downloadCsvFile(data: any[], filename: string) {
-    const header = Object.keys(data[0]).join(',') + '\n';
-    const rows = data.map(row => Object.keys(row).map(key => row[key]).join(',')).join('\n');
+    const escapeCsvValue = (value: any) => {
+      if (typeof value === 'string') {
+        value.replace(/,/g, '');
+      }
+      return value;
+    };
+    const header = Object.keys(data[0]).map(escapeCsvValue).join(',') + '\n';
+    const rows = data.map(row => Object.keys(row).map(key => escapeCsvValue(row[key])).join(',')).join('\n');
     const csvContent = header + rows;
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
