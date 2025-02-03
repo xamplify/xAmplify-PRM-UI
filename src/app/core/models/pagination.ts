@@ -166,4 +166,9 @@ export class Pagination {
 	
 	createdById: number;
 
+	selectedPartnerIds:number[] = [];
+
+	singleMail:boolean = false;
+
+
 }
