@@ -56,6 +56,37 @@
                 </option>
                 <option [ngValue]="'CREATED_BY_NAME'">Created By Name
                 </option>
+                <option *ngIf="opportunityType === 'DEAL' && customFields.type === 'string'" [ngValue]="'CONTACT_FIRST_NAME'">Contact First Name
+                </option>
+                <option *ngIf="opportunityType === 'DEAL' && customFields.type === 'string'" [ngValue]="'CONTACT_LAST_NAME'">Contact Last Name
+                </option>
+                <option *ngIf="opportunityType === 'DEAL' && customFields.type === 'string'" [ngValue]="'CONTACT_TITLE'">Contact Title
+                </option>
+                <option *ngIf="opportunityType === 'DEAL' && customFields.type === 'string'" [ngValue]="'CONTACT_ZIP_CODE'">Contact Zip Code
+                </option>
+                <option *ngIf="opportunityType === 'DEAL' && customFields.type === 'string'" [ngValue]="'CONTACT_STATE'">Contact State
+                </option>
+                <option *ngIf="opportunityType === 'DEAL' && customFields.type === 'string'" [ngValue]="'CONTACT_CITY'">Contact City
+                </option>
+                <option *ngIf="opportunityType === 'DEAL' && customFields.type === 'string'" [ngValue]="'CONTACT_COUNTRY'">Contact Country
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-6" *ngIf="!isDefaultField && (customFields.type === 'date' || customFields.type === 'email' || customFields.type === 'phone' || customFields.type === 'textarea') && opportunityType === 'DEAL'">
+              <label *ngIf="customFields.selected" for="html" style="float: left;">Map As</label>
+              <select class="form-control" [disabled]= "canDisableSelect" *ngIf="customFields.selected" [(ngModel)]="customFields.formDefaultFieldType"
+                [ngModelOptions]="{standalone: true}" (change)="onFieldTypeChange(customFields)">
+                <option [ngValue]="null">None</option>
+                <option *ngIf="customFields.type === 'date'"[ngValue]="'XAMPLIFY_LEAD_CREATED_DATE'">xAmplify Lead Created Date
+                </option>
+                <option *ngIf="customFields.type === 'date'" [ngValue]="'XAMPLIFY_DEAL_REGISTERED_DATE'">xAmplify Deal Registered Date
+                </option>
+                <option *ngIf="customFields.type === 'email'" [ngValue]="'CONTACT_EMAIL'">Contact Email
+                </option>
+                <option *ngIf="customFields.type === 'phone'" [ngValue]="'CONTACT_PHONE_NUMBER'">Contact Phone Number
+                </option>
+                <option *ngIf="customFields.type === 'textarea'" [ngValue]="'CONTACT_STREET'">Contact Street
+                </option>
               </select>
             </div>
           </div>

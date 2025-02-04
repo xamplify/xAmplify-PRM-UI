@@ -283,7 +283,7 @@
             <span *ngIf="campaignDetails?.campaignName?.length > 50">...</span>
         </div>
         <div class="camp-desc">
-          <span>{{ campaignDetails?.launchTime | date : "fullDate" }}</span>
+          <span><app-display-date-and-time [dateAndTimeUTCString]="campaignDetails?.launchTimeInUTCString"></app-display-date-and-time></span>
         </div>
     </div>
 </a>

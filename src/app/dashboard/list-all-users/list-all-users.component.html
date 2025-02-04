@@ -21,7 +21,7 @@
                   </div>
                 </div>
                 <!--Filter Roles-->
-                <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6">
+                <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6" *ngIf="!isVanityUrlEnabled">
                   <div>
                       <app-multi-select-dropdown  [dropdownList]="xAmplifyRoles"
                         [displayText]="'Select Role'" [singleSelection]="true" 
