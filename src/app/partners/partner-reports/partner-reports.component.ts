@@ -640,7 +640,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                         this.allItems[partnerIndex].isSelected = false;
                         this.selectedPartnerIds = this.selectedPartnerIds.filter(id => id !== item.partnerId);
                     }
-                    this.isSendReminderEnabled = false;
+                    if(this.selectedPartnerIds.length >0){
+                        this.isSendReminderEnabled = true;
+                        this.updateSelectionState();
+                    }
+                    else{
+                        this.isSendReminderEnabled = false;
+                    }
                     this.isHeaderCheckBoxChecked = false;
                     this.getInActivePartnerReports(this.inActivePartnersPagination);
                 }
@@ -1232,8 +1238,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.pagination.singleMail = false;
                             this.pagination.selectedPartnerIds = this.pagination.selectedPartnerIds.filter(id => id !== item.partnerId);
                         }
-
-                        this.isSendReminderEnabled = false;
+                        if(this.pagination.selectedPartnerIds.length >0){
+                            this.isSendReminderEnabled = true;
+                            this.updateSelectionStateForIncompleteProfiles();
+                        }
+                        else{
+                            this.isSendReminderEnabled = false;
+                        }
                         this.isHeaderCheckBoxChecked = false;                   
                         this.referenseService.showSweetAlertSuccessMessage(data.message);
                     } else if (data.statusCode == 400) {
@@ -1242,6 +1253,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.allItems[partnerIndex].isSelected = false;
                             this.pagination.singleMail = false;
                             this.pagination.selectedPartnerIds = this.pagination.selectedPartnerIds.filter(id => id !== item.partnerId);
+                        }
+                        if(this.pagination.selectedPartnerIds.length >0){
+                            this.isSendReminderEnabled = true;
+                            this.updateSelectionStateForIncompleteProfiles();
+                        }
+                        else{
+                            this.isSendReminderEnabled = false;
                         }
                         this.referenseService.showSweetAlertSuccessMessage(data.message);
                     }

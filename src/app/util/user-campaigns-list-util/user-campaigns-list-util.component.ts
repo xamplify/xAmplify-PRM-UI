@@ -14,6 +14,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 declare var $:any,swal:any;
 @Component({
@@ -56,6 +57,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	isFromCompanyJourney: boolean = false;
 	isFromCompanyJourneyEditContacts: boolean = false;
 	companyJourneyId: any;
+	customResponse: CustomResponse = new CustomResponse();
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -325,9 +327,13 @@ setAutoResponsesPage(event: any,campaign:any) {
 
 	goToCampaignAnalytics(campaignId: any, campaignTitle: any) {
 		if (this.isFromContactDetails) {
-			let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignId);
-			let encodedTitle = this.referenceService.getEncodedUri(campaignTitle);
-			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
+			if (this.authenticationService.module.isCampaign) {
+				let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignId);
+				let encodedTitle = this.referenceService.getEncodedUri(campaignTitle);
+				this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
+			} else {
+				this.customResponse = new CustomResponse('ERROR', 'Heads up! You don’t have access to the Campaign module.', true);
+			}
 		} else {
 			this.loading = true;
 			let campaign = {};
