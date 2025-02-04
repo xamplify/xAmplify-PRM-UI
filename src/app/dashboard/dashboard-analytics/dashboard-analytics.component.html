@@ -68,7 +68,7 @@
                     (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
                 <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 <button class=" btn btn-primary pull-right" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
-                    title="Customize DashBoard">Customize</button>
+                    title="Customize DashBoard" (click)="enableDragAndDrop()">{{ isDraggingEnabled ? 'Update' : 'Customize' }}</button>
             </div>
         </div>
     </div>
@@ -420,7 +420,14 @@
     *ngIf="!playVideo && !editVideo && ((!showDealForm && !showLeadForm && !isOnlyUser) 
     || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
     <ng-template [ngTemplateOutlet]="sandBoxText"></ng-template>
-    <div>
+    <div *ngIf="isDraggingEnabled" Class="dragula-container" [dragula]="dashBoardAnalytics">
+        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <ng-container *ngFor="let template of templates">
+            <ng-template [ngTemplateOutlet]="template"></ng-template>
+        </ng-container>
+    </div>
+
+    <div *ngIf="!isDraggingEnabled">
         <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <ng-container *ngFor="let template of templates">
             <ng-template [ngTemplateOutlet]="template"></ng-template>

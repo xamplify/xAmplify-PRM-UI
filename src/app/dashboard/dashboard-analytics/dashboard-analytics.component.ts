@@ -116,6 +116,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     @ViewChild('dealStatistics') dealStatistics: TemplateRef<any>;
     @ViewChild('highLevelAnalytics') highLevelAnalytics: TemplateRef<any>;
     templates: TemplateRef<any>[];
+    isDraggingEnabled: boolean = false;
 
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
         public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
@@ -137,14 +138,6 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.showSandboxText = (("https://xamplify.co/" == envService.CLIENT_URL || "http://localhost:4200/" == envService.CLIENT_URL) && !this.authenticationService.vanityURLEnabled);
         
-    }
-
-    ngAfterViewInit() {
-        this.templates = [this.welcomePageHeader, this.dashBoardImages, this.moduleAnalytics, this.newsAndAnnouncement,
-        this.dashBoardButtons, this.opportunityStats, this.vendorActivityAnalytics, this.campaignsGrid, this.campaignStatistics,
-        this.emailStatistics, this.regionalStatistics, this.videoStatistics, this.emailStats, this.prmMdfStatistics,
-        this.prmContent, this.prmAssets, this.prmSharedAssets, this.prmTracks, this.prmSharedTracks, this.prmPlayBooks,
-        this.prmSharedPlayBooks, this.leadStatistics, this.dealStatistics, this.highLevelAnalytics];
     }
 
   ngOnInit() {
@@ -644,5 +637,18 @@ showCampaignDetails(campaign:any){
         this.referenceService.goToRouter("/home/dam/manage");
     }
       
-      
+    /***** XNFR-860 *****/
+    ngAfterViewInit() {
+        this.templates = [this.welcomePageHeader, this.dashBoardImages, this.moduleAnalytics, this.newsAndAnnouncement,
+        this.dashBoardButtons, this.opportunityStats, this.vendorActivityAnalytics, this.campaignsGrid, this.campaignStatistics,
+        this.emailStatistics, this.regionalStatistics, this.videoStatistics, this.emailStats, this.prmMdfStatistics,
+        this.prmContent, this.prmAssets, this.prmSharedAssets, this.prmTracks, this.prmSharedTracks, this.prmPlayBooks,
+        this.prmSharedPlayBooks, this.leadStatistics, this.dealStatistics, this.highLevelAnalytics];
+    }
+
+    /***** XNFR-860 *****/
+    enableDragAndDrop() {
+        this.isDraggingEnabled = !this.isDraggingEnabled;
+    }
+
 }

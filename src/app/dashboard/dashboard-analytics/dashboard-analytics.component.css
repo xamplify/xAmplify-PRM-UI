@@ -153,3 +153,6 @@ a.social-stats {
     padding-top: 3px;
   }
 }
+.dragula-container {
+  cursor: move;
+}
