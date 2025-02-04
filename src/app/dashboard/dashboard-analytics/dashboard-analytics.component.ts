@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -90,27 +90,62 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     roleName: Roles = new Roles();
     userGuideDashboardDto:UserGuideDashboardDto = new UserGuideDashboardDto();
     /** user guide */
-  constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
-    public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
-    public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService,
-    public videoFileService: VideoFileService) {
 
-    this.loggedInUserId = this.authenticationService.getUserId();
-    this.vanityLoginDto.userId = this.loggedInUserId;
-    /***XNFR-134***/
-    let companyProfileName = this.authenticationService.companyProfileName;
-    if (companyProfileName !== undefined && companyProfileName !== "") {
-      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
-      this.vanityLoginDto.vanityUrlFilter = true;
-    }else{
-      this.vanityLoginDto.vanityUrlFilter = false;
+    @ViewChild('welcomePageHeader') welcomePageHeader: TemplateRef<any>;
+    @ViewChild('dashBoardImages') dashBoardImages: TemplateRef<any>;
+    @ViewChild('moduleAnalytics') moduleAnalytics: TemplateRef<any>;
+    @ViewChild('newsAndAnnouncement') newsAndAnnouncement: TemplateRef<any>;
+    @ViewChild('dashBoardButtons') dashBoardButtons: TemplateRef<any>;
+    @ViewChild('opportunityStats') opportunityStats: TemplateRef<any>;
+    @ViewChild('vendorActivityAnalytics') vendorActivityAnalytics: TemplateRef<any>;
+    @ViewChild('campaignsGrid') campaignsGrid: TemplateRef<any>;
+    @ViewChild('campaignStatistics') campaignStatistics: TemplateRef<any>;
+    @ViewChild('emailStatistics') emailStatistics: TemplateRef<any>;
+    @ViewChild('regionalStatistics') regionalStatistics: TemplateRef<any>;
+    @ViewChild('videoStatistics') videoStatistics: TemplateRef<any>;
+    @ViewChild('emailStats') emailStats: TemplateRef<any>;
+    @ViewChild('prmMdfStatistics') prmMdfStatistics: TemplateRef<any>;
+    @ViewChild('prmContent') prmContent: TemplateRef<any>;
+    @ViewChild('prmAssets') prmAssets: TemplateRef<any>;
+    @ViewChild('prmSharedAssets') prmSharedAssets: TemplateRef<any>;
+    @ViewChild('prmTracks') prmTracks: TemplateRef<any>;
+    @ViewChild('prmSharedTracks') prmSharedTracks: TemplateRef<any>;
+    @ViewChild('prmPlayBooks') prmPlayBooks: TemplateRef<any>;
+    @ViewChild('prmSharedPlayBooks') prmSharedPlayBooks: TemplateRef<any>;
+    @ViewChild('leadStatistics') leadStatistics: TemplateRef<any>;
+    @ViewChild('dealStatistics') dealStatistics: TemplateRef<any>;
+    @ViewChild('highLevelAnalytics') highLevelAnalytics: TemplateRef<any>;
+    templates: TemplateRef<any>[];
+
+    constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
+        public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
+        public dashBoardService: DashboardService, public utilService: UtilService, public router: Router, private route: ActivatedRoute, private vanityURLService: VanityURLService,
+        public videoFileService: VideoFileService) {
+
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.vanityLoginDto.userId = this.loggedInUserId;
+        /***XNFR-134***/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        if (companyProfileName !== undefined && companyProfileName !== "") {
+            this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+            this.vanityLoginDto.vanityUrlFilter = true;
+        } else {
+            this.vanityLoginDto.vanityUrlFilter = false;
+        }
+        this.isOnlyUser = this.authenticationService.isOnlyUser();
+        this.utilService.setRouterLocalStorage('dashboard');
+        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+        this.showSandboxText = (("https://xamplify.co/" == envService.CLIENT_URL || "http://localhost:4200/" == envService.CLIENT_URL) && !this.authenticationService.vanityURLEnabled);
+        
     }
-    this.isOnlyUser = this.authenticationService.isOnlyUser();
-    this.utilService.setRouterLocalStorage('dashboard');
-    this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-    this.showSandboxText = (("https://xamplify.co/"==envService.CLIENT_URL||"http://localhost:4200/"==envService.CLIENT_URL) && !this.authenticationService.vanityURLEnabled);
-    
-}
+
+    ngAfterViewInit() {
+        this.templates = [this.welcomePageHeader, this.dashBoardImages, this.moduleAnalytics, this.newsAndAnnouncement,
+        this.dashBoardButtons, this.opportunityStats, this.vendorActivityAnalytics, this.campaignsGrid, this.campaignStatistics,
+        this.emailStatistics, this.regionalStatistics, this.videoStatistics, this.emailStats, this.prmMdfStatistics,
+        this.prmContent, this.prmAssets, this.prmSharedAssets, this.prmTracks, this.prmSharedTracks, this.prmPlayBooks,
+        this.prmSharedPlayBooks, this.leadStatistics, this.dealStatistics, this.highLevelAnalytics];
+    }
 
   ngOnInit() {
     localStorage.removeItem('assetName');
