@@ -4,7 +4,7 @@
       <div class="modal-content">
          <div class="modal-header">
             <a class="close-circle" (click)="callEventEmitter()" data-dismiss="modal"><i class="fa fa-times"></i></a>
-            <a *ngIf="isSendMdfRequestOptionClicked" class="close-circle mr5" (click)="openCampaignMdfRequestHistoryModalPopup()"><i class="fa fa-history"></i></a>
+            <a style="display: none;" *ngIf="isSendMdfRequestOptionClicked" class="close-circle mr5" (click)="openCampaignMdfRequestHistoryModalPopup()"><i class="fa fa-history"></i></a>
             <h4 class="modal-title left" id="myModalLabel">{{headerTitle}}</h4>
          </div>
          <div class="modal-body">

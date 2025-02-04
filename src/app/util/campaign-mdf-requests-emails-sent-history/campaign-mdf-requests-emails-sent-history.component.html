@@ -38,10 +38,10 @@
                 <thead>
                   <tr>
                     <th>Receiver Email Address</th>
-                    <th>Alias</th>
+                    <th>MDF Key</th>
                     <th>Latest Email Sent Time</th>
                     <th>Total Requests Sent</th>
-                    <th class="text-center">View Details</th>
+                    <th class="text-center">View History</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -63,11 +63,24 @@
                   </tr>
                   <tr *ngIf="emailsHistory?.expand">
                     <td colspan="8">
-                      <table  class="table tgrid table-bordered">
+                      <app-auto-response-loader [hidden]="!historyLoader"></app-auto-response-loader>
+                      <table [hidden]="historyLoader" class="table tgrid table-condensed redisbgcolor" aria-describedby="">
+                        <thead>
                           <tr>
-                            <th>Expiry Date</th>
-                            <td>1234</td>
+                            <th scope="row"  class="center-aligned" style="width: 24%">Request Sent By</th>
+                            <th scope="row" class="center-aligned">Request Sent Time</th>
                           </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let requestHistory of requestHistoryPagination.pagedItems">
+                            <td>
+                              <app-user-info [userInfo]="requestHistory" [isPartnerEntityInfo]="false" [isPartnerInfo]="false"></app-user-info>
+                            </td>
+                            <td>
+                              <app-display-date-and-time [dateAndTimeUTCString]="requestHistory.requestEmailSentAtInUTCString"></app-display-date-and-time>
+                            </td>
+                          </tr>
+                        </tbody>
                       </table>
                     </td> 
                   </tr>

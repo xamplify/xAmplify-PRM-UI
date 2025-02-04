@@ -554,8 +554,8 @@ export class SortOption {
 	campaignMdfEmailsHistoryDropDownOptions = [
 		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
 		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
-		{ 'name': 'Alias (ASC)', 'value': 'mdfAlias-ASC' },
-		{ 'name': 'Alias (DESC)', 'value': 'mdfAlias-DESC' },
+		{ 'name': 'MDF Key (ASC)', 'value': 'mdfAlias-ASC' },
+		{ 'name': 'MDF Key (DESC)', 'value': 'mdfAlias-DESC' },
 		{ 'name': 'Count (ASC)', 'value': 'requestsCount-ASC' },
 		{ 'name': 'Count (DESC)', 'value': 'requestsCount-DESC' },
 		{ 'name': 'Sent Time (ASC)', 'value': 'lastEmailSentAt-ASC' },

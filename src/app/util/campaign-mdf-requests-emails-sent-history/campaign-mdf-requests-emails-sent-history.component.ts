@@ -23,10 +23,11 @@ import { CampaignService } from 'app/campaigns/services/campaign.service';
 export class CampaignMdfRequestsEmailsSentHistoryComponent implements OnInit {
 
   emailsHistoryPagination = new Pagination();
+  requestHistoryPagination = new Pagination();
   httpRequestLoader = true;
   customResponse:CustomResponse = new CustomResponse();
   sortOption:SortOption = new SortOption();
-
+  historyLoader = true;
     constructor(public authenticationService:AuthenticationService, public referenceService:ReferenceService,public pagerService:PagerService,
       public properties:Properties,public utilService:UtilService,public campaignService:CampaignService) { }
 
@@ -90,6 +91,8 @@ getAllFilteredResults() {
 }
 
   viewMoreColumns(history:any){
+    this.historyLoader = true;
+    this.requestHistoryPagination = new Pagination();
     this.emailsHistoryPagination.pagedItems.forEach((element) => {
       let id = element.id;
       let clickedId = history.id;
