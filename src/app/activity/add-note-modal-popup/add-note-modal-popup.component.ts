@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NoteService } from '../services/note-service';
@@ -6,8 +6,11 @@ import { NoteDTO } from '../models/note-dto';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { ContactService } from 'app/contacts/services/contact.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
-declare var $: any, CKEDITOR:any;
+declare var $: any, CKEDITOR: any;
 
 @Component({
   selector: 'app-add-note-modal-popup',
@@ -19,25 +22,32 @@ export class AddNoteModalPopupComponent implements OnInit {
 
   @Input() contactId: any;
   @Input() actionType: any;
-  @Input() editNote:NoteDTO;
-  @Input() noteId:number;
-  @Input() isReloadTab:boolean;
-  @Output() notifySubmitSuccess= new EventEmitter();
-  @Output() notifyClose= new EventEmitter();
-  @Output() notifyUpdateSuccess= new EventEmitter();
+  @Input() editNote: NoteDTO;
+  @Input() noteId: number;
+  @Input() isReloadTab: boolean;
+  @Input() selectedUserListId: any;
+  @Input() isCompanyJourney: boolean = false;
+  @Output() notifySubmitSuccess = new EventEmitter();
+  @Output() notifyClose = new EventEmitter();
+  @Output() notifyUpdateSuccess = new EventEmitter();
 
   note: NoteDTO = new NoteDTO();
   customResponse: CustomResponse = new CustomResponse();
   publicNotes: boolean = false;
-  ngxLoading:boolean = false;
+  ngxLoading: boolean = false;
   isEdit: boolean = false;
   isPreview: boolean = false;
-  title:string = 'Add';
+  title: string = 'Add';
   isValidNote: boolean = false;
   ckeConfig: any;
+  userListUsersLoader: HttpRequestLoader = new HttpRequestLoader();
+  dropdownSettings = {};
+  userListUsersData = [];
+  userIds = [];
+  users = [];
 
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService,
-    public noteService: NoteService, public properties:Properties) {}
+    public noteService: NoteService, public properties: Properties, public contactService: ContactService) { }
 
   ngOnInit() {
     this.ckeConfig = this.properties.ckEditorConfig;
@@ -47,8 +57,19 @@ export class AddNoteModalPopupComponent implements OnInit {
       this.isEdit = isEditMode;
       this.isPreview = isViewMode;
       this.isValidNote = isEditMode;
-      this.title = isEditMode ? 'Edit':'View';
+      this.title = isEditMode ? 'Edit' : 'View';
       this.fetchNoteById();
+    }
+    if (this.isCompanyJourney) {
+      this.fetchUsersForCompanyJourney();
+      this.dropdownSettings = {
+        singleSelection: false,
+        text: "Please select",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class"
+      };
     }
     this.referenceService.openModalPopup('addNoteModalPopup');
   }
@@ -69,7 +90,7 @@ export class AddNoteModalPopupComponent implements OnInit {
     );
   }
 
-  closeNoteModalPopup(){
+  closeNoteModalPopup() {
     // $('#addNoteModalPopup').modal('hide');
     this.referenceService.closeModalPopup('addNoteModalPopup');
     this.notifyClose.emit();
@@ -79,8 +100,14 @@ export class AddNoteModalPopupComponent implements OnInit {
     this.ngxLoading = true;
     this.note.associationType = 'CONTACT';
     this.note.contactId = this.contactId;
-    this.note.visibility = this.publicNotes ? 'PUBLIC':'PRIVATE';
+    this.note.visibility = this.publicNotes ? 'PUBLIC' : 'PRIVATE';
     this.note.pinned = false;
+    if (this.isCompanyJourney) {
+      this.note.userIds = this.userIds.map(user => user.id);
+      this.note.isCompanyJourney = this.isCompanyJourney;
+    } else {
+      this.note.userIds.push(this.contactId);
+    }
     this.noteService.saveNote(this.note).subscribe(
       response => {
         let statusCode = response.statusCode;
@@ -95,15 +122,15 @@ export class AddNoteModalPopupComponent implements OnInit {
         this.ngxLoading = false;
       }
     );
-   }
+  }
 
-   publicVsPrivateNoteStatusChange(event: any) {
+  publicVsPrivateNoteStatusChange(event: any) {
     this.note.publicNotes = event;
-   }
+  }
 
-   updateNote() {
+  updateNote() {
     this.ngxLoading = true;
-    this.note.visibility = this.publicNotes ? 'PUBLIC':'PRIVATE';
+    this.note.visibility = this.publicNotes ? 'PUBLIC' : 'PRIVATE';
     this.noteService.updateNote(this.note).subscribe(
       data => {
         if (data.statusCode == 200) {
@@ -117,10 +144,11 @@ export class AddNoteModalPopupComponent implements OnInit {
         this.ngxLoading = false;
       }
     )
-   }
+  }
 
-   validateNote() {
-    if (this.note.title != undefined && this.note.content != undefined 
+  validateNote() {
+    let isValidContactId = this.isCompanyJourney && this.actionType != 'edit' ? (this.userIds != undefined && this.userIds.length > 0) : true;
+    if (this.note.title != undefined && this.note.content != undefined && isValidContactId
       && this.note.title.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.note.content.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
       this.isValidNote = true;
     } else {
@@ -131,5 +159,38 @@ export class AddNoteModalPopupComponent implements OnInit {
   onChangeVisibility(event) {
     this.publicNotes = event;
   }
-   
+
+  fetchUsersForCompanyJourney() {
+    this.referenceService.loading(this.userListUsersLoader, true);
+    this.contactService.fetchUsersForCompanyJourney(this.selectedUserListId).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.userListUsersData = response.data;
+        } else {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
+        }
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }, error => {
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }
+    )
+  }
+
+  onItemSelect(item: any) {
+    this.validateNote();
+  }
+
+  OnItemDeSelect(item: any) {
+    this.validateNote();
+  }
+
+  onSelectAll(items: any) {
+    this.validateNote();
+  }
+
+  onDeSelectAll(items: any) {
+    this.validateNote();
+  }
+
 }

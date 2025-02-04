@@ -39,7 +39,7 @@ export class ContactDetailsComponent implements OnInit {
   @Input() contacts: User[];
 
   contactTitle: string = 'Contact Journey';
-  companyTitle: string = 'Company Jounrey';
+  companyTitle: string = 'Company Journey';
   highlightLetter:string = '';
   selectedCompanyContactId: any;
   isCompanyContact: boolean;
@@ -175,11 +175,11 @@ export class ContactDetailsComponent implements OnInit {
       this.fetchLogoFromExternalSource();
       this.getVendorRegisterDealValue();
       this.getActiveCalendarDetails();
-      this.fetchCampaignsAndCount();
     }
     this.referenceService.goToTop();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchCampaignsAndCount();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -629,7 +629,7 @@ export class ContactDetailsComponent implements OnInit {
       this.referenceService.goToRouter(url);
     } else if (this.isCompanyJourney) {
       let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignData.campaignId);
-			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignName.toLowerCase());
+			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignTitle);
 			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
 		} else if (this.isFromCompanyJourneyEditContacts) {
       let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
