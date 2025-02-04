@@ -20,6 +20,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	/**** XBI-2133 ***/
 	@Output() filterConditionsEmitter = new EventEmitter();
 	@Output() closeFilterEmitter = new EventEmitter();
+	@Output() cancelSegmentationRowEmitter = new EventEmitter();
 	@Input() isFromApprovalHub: boolean = false;
 	@Input() selectedFilterType: any;
 	filterOptions: any[] = [];
@@ -149,6 +150,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		}
 		this.criterias.splice(index, 1);
 		this.dropdownDisabled.splice(index, 1);
+		
+		let input = {};
+        input['property'] = removedOption;
+		this.cancelSegmentationRowEmitter.emit(input);
 	}
 	validateDateFilters() {
 		if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
