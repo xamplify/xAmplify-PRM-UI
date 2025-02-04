@@ -550,6 +550,17 @@ export class SortOption {
 		{ 'name': 'Invited On (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Invited On (DESC)', 'value': 'createdTime-DESC' }
 	];
+
+	campaignMdfEmailsHistoryDropDownOptions = [
+		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Count (ASC)', 'value': 'count-ASC' },
+		{ 'name': 'Count (DESC)', 'value': 'count-DESC' },
+		{ 'name': 'Sent Time (ASC)', 'value': 'sentTime-ASC' },
+		{ 'name': 'Sent Time (DESC)', 'value': 'sentTime-DESC' }
+	];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -650,5 +661,7 @@ export class SortOption {
 
 	/*** XNFR-850 ***/
 	public teamMemberAnalyticsSortOptions: any = this.inviteTeamMemberAnalyticsDropDownOptions[this.inviteTeamMemberAnalyticsDropDownOptions.length - 1];
+
+	public campaignMdfEmailsHistorySortOption: any = this.campaignMdfEmailsHistoryDropDownOptions[this.campaignMdfEmailsHistoryDropDownOptions.length - 1];
 
 }

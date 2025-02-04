@@ -7,6 +7,7 @@ import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { ActivatedRoute } from '@angular/router';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { CampaignMdfRequestsEmailsSentHistoryComponent } from '../campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
 declare var $: any;
 @Component({
   selector: 'app-send-test-email',
@@ -49,6 +50,7 @@ export class SendTestEmailComponent implements OnInit {
   @Input() campaignName="";
   @Input() campaignId = 0;
   isSendMdfRequestOptionClicked = false;
+  @ViewChild('campaignMdfRequestsEmailsSentHistoryComponent') campaignMdfRequestsEmailsSentHistoryComponent: CampaignMdfRequestsEmailsSentHistoryComponent;
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
@@ -312,6 +314,10 @@ export class SendTestEmailComponent implements OnInit {
     } else {
       this.referenceService.previewEmailTemplateInNewTab(this.id);
     }
+  }
+
+  openCampaignMdfRequestHistoryModalPopup(){
+    this.campaignMdfRequestsEmailsSentHistoryComponent.openModalPopup(this.campaignId);
   }
 
 }

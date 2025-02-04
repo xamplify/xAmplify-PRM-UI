@@ -1,0 +1,86 @@
+<!-- ---------------------Integration Details------------------ -->
+<div class="modal fade right" id="campaign-mdf-emails-history-modal" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog full-width">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" (click)="closeModal()"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <h4 class="modal-title text-center">Request Emails History</h4>
+      </div>
+      <div class="modal-body">
+        <!---List Section-->
+        <div [@fadeInOut] class="row">
+          <div class="col-xs-12 p5" style="margin-bottom: -10px;">
+          <div class="portlet light">
+            <!--Search & Filter-->
+            <div class="portlet-title">
+              <div class="float-right">
+                 <!--Sort-->
+                <div class="float-left">
+                    <select class="form-control" [(ngModel)]="sortOption.campaignMdfEmailsHistorySortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let option of sortOption.campaignMdfEmailsHistoryDropDownOptions" [ngValue]="option"> {{option.name}}</option>
+                    </select>
+                </div>
+                <!--Search-->
+                <div class="portlet-input input-inline">
+                    <div class="input-icon right ml10">
+                        <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                            placeholder="Search..." (keypress)="searchOnKeyPress($event.keyCode)" autocomplete="off">
+                        <button *ngIf="sortOption.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"  (click)="sortOption.searchKey='';search();"></button>
+                        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" aria-hidden="true"></i> </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <app-modal-popup-loader *ngIf="httpRequestLoader"></app-modal-popup-loader>
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible" [showCloseIcon]="false"></app-response-message>
+            <div class="table-responsive" *ngIf="!httpRequestLoader">
+              <table class='table tgrid table-bordered' aria-describedby="">
+                <thead>
+                  <tr>
+                    <th>Entity Info</th>
+                    <th class="text-center">View More</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let emailsHistory of emailsHistoryPagination.pagedItems;let i = index;">
+                  <tr>
+                    <td>1234</td>
+                    <!--View More-->
+                    <td class="text-center">
+                      <div class="actions-block float-none">
+                        <a  class ="custom-icon" (click)="viewMoreColumns(emailsHistory)" data-toggle="tooltip" data-placement="top" title="View History">
+                          <i class="fa IconCustomization" aria-hidden="true" [ngClass]="{'fa-plus': !emailsHistory?.expand, 'fa-minus': emailsHistory?.expand}" ></i>
+                          <div class="clickicons"></div>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngIf="emailsHistory?.expand">
+                    <td colspan="8">
+                      <table  class="table tgrid table-bordered">
+                          <tr>
+                            <th>Expiry Date</th>
+                            <td>1234</td>
+                          </tr>
+                      </table>
+                    </td> 
+                  </tr>
+                </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <!--Pagination-->
+            <ng-container *ngIf="!httpRequestLoader">
+              <div *ngIf="emailsHistoryPagination?.totalRecords==0" class="alert alert-info text-center">No Data Found</div>
+              <app-pagination  [pagination]="emailsHistoryPagination" (notifyParent)="navigateIntegrationsByPageNumber($event)" (notifyParentDropDown)="findCampaignMdfEmailsHistory($event)"></app-pagination>
+            </ng-container>
+       </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeModal()"  class="btn btn-danger float-right">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
