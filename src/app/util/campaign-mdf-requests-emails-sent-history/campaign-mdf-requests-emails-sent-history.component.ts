@@ -59,6 +59,48 @@ openModalPopup(campaignId:number){
         });
   }
 
+  navigateHistoryRecordsByPageNumber(event:any){
+    this.emailsHistoryPagination.pageIndex = event.page;
+    this.findCampaignMdfEmailsHistory(this.emailsHistoryPagination);
+  }
+
+  /*************************Sort********************** */
+sortBy(text: any) {
+  this.sortOption.campaignMdfEmailsHistorySortOption = text;
+  this.getAllFilteredResults();
+}
+
+searchOnKeyPress(keyCode:number){
+  if(keyCode==13){
+    this.search();
+  }
+}
+
+
+/*************************Search********************** */
+search() {
+  this.getAllFilteredResults();
+}
+
+getAllFilteredResults() {
+  this.emailsHistoryPagination.pageIndex = 1;
+  this.emailsHistoryPagination.searchKey = this.sortOption.searchKey;
+  this.emailsHistoryPagination = this.utilService.sortOptionValues(this.sortOption.campaignMdfEmailsHistorySortOption, this.emailsHistoryPagination);
+  this.findCampaignMdfEmailsHistory(this.emailsHistoryPagination);
+}
+
+  viewMoreColumns(history:any){
+    this.emailsHistoryPagination.pagedItems.forEach((element) => {
+      let id = element.id;
+      let clickedId = history.id;
+      if(clickedId!=id){
+          element.expand =false;
+      }
+  });
+    history.expand = !history.expand;
+  }
+
+
   closeModal(){
     this.emailsHistoryPagination = new Pagination();
     this.customResponse = new CustomResponse();

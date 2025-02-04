@@ -37,14 +37,20 @@
               <table class='table tgrid table-bordered' aria-describedby="">
                 <thead>
                   <tr>
-                    <th>Entity Info</th>
-                    <th class="text-center">View More</th>
+                    <th>Receiver Email Address</th>
+                    <th>Alias</th>
+                    <th>Latest Email Sent Time</th>
+                    <th>Total Requests Sent</th>
+                    <th class="text-center">View Details</th>
                   </tr>
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let emailsHistory of emailsHistoryPagination.pagedItems;let i = index;">
                   <tr>
-                    <td>1234</td>
+                    <td>{{emailsHistory?.emailId}}</td>
+                    <td>{{emailsHistory?.mdfAlias}}</td>
+                    <td><app-display-date-and-time [dateAndTimeUTCString]="emailsHistory.lastEmailSentAtInUTCString"></app-display-date-and-time></td>
+                    <td>{{emailsHistory?.requestsCount}}</td>
                     <!--View More-->
                     <td class="text-center">
                       <div class="actions-block float-none">
@@ -72,7 +78,7 @@
             <!--Pagination-->
             <ng-container *ngIf="!httpRequestLoader">
               <div *ngIf="emailsHistoryPagination?.totalRecords==0" class="alert alert-info text-center">No Data Found</div>
-              <app-pagination  [pagination]="emailsHistoryPagination" (notifyParent)="navigateIntegrationsByPageNumber($event)" (notifyParentDropDown)="findCampaignMdfEmailsHistory($event)"></app-pagination>
+              <app-pagination  [pagination]="emailsHistoryPagination" (notifyParent)="navigateHistoryRecordsByPageNumber($event)" (notifyParentDropDown)="findCampaignMdfEmailsHistory($event)"></app-pagination>
             </ng-container>
        </div>
           </div>

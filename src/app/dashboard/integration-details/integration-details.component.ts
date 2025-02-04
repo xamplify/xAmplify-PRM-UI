@@ -52,7 +52,7 @@ export class IntegrationDetailsComponent implements OnInit {
 }
 
 closeModal(){
-  this.referenceService.closeModalPopup("integration-details-modal");
+  this.referenceService.closeModalPopup("integration-details-modal")
 }
 
 findAllCompanyNames() {
