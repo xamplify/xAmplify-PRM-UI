@@ -52,7 +52,9 @@ export class AddNoteModalPopupComponent implements OnInit {
     }
     this.referenceService.openModalPopup('addNoteModalPopup');
   }
-
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup('addNoteModalPopup');
+  }
   fetchNoteById() {
     this.ngxLoading = true;
     this.noteService.fetchNoteById(this.noteId).subscribe(
