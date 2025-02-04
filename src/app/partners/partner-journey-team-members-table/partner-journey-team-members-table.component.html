@@ -1,5 +1,5 @@
 <div class="panel panel-info panel-card">
-  <div class="panel-heading panel-heading-custom br-10">
+  <div class="panel-heading panel-heading-custom br-10" id="pj-team-member-details-div">
     <h3 class="panel-title mt7">Team Member Details</h3>
     <span class="pull-right mt25m mobilesearchdisplay">
       <div class="input-icon right serachvoxwidth mobilesearchdisplayTop" >
@@ -20,6 +20,13 @@
         </option>
       </select>
     </span>
+      <span class="pull-right mt25m mobilesearchdisplay mr5">
+      <select class="form-control SeclectBoxPaddingsAbj" class="form-control"  [(ngModel)]="sortOption.activepartnerJourney" (ngModelChange)="sortActivePartnerJourney($event)"
+      id="select-dropdown">  
+           <option *ngFor="let option of sortOption.activePartnerJourneyDropDowns"
+           [ngValue]="option">{{option.name}}</option>
+    </select>
+      </span>
     <button class="pull-right mt25m btn btn-xs l-g-view" data-placement="bottom"
       [disabled]="pagination.totalRecords==0" (click)="downloadTeamMembersReport()">
       <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
@@ -33,6 +40,7 @@
         <thead>
           <tr>
             <th scope="col">Team Member</th>
+            <th scope="col">Recent Login</th>
             <th scope="col" class="text-center">Group</th>
             <th></th>
           </tr>
@@ -43,6 +51,7 @@
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
               <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i class="fa fa-check active-status"></i></strong></span>
             </td>
+              <td><app-display-date-and-time  [dateAndTimeUTCString]="teamMember?.logInTime"></app-display-date-and-time></td>
             <td class="text-center">
               <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
                 <button class="group-name-cclass btn-primary default-btn-cursor" >

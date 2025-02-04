@@ -92,7 +92,7 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
-    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
+    pagination = this.utilService.sortOptionValues(this.sortOption.activepartnerJourney, pagination);
     this.getTeamInfo(this.pagination);
   }
 
@@ -170,6 +170,11 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
       + "&partnerTeamMemberGroupFilter=" + partnerTeamMemberGroupFilterRequestParm + "&teamMemberUserId=" + teamMemberIdRequestParam
       + "&fromDateFilterInString=" + fromDateFilterRequestParam + "&toDateFilterInString=" + toDateFilterRequestParam + timeZoneRequestParm + filterTypeRequestParam;
     this.referenseService.openWindowInNewTab(url);
+  }
+
+  sortActivePartnerJourney(text: any) {
+    this.sortOption.activepartnerJourney = text;
+    this.getAllFilteredResults(this.pagination);
   }
 
 }
