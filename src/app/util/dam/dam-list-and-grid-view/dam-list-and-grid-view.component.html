@@ -737,7 +737,8 @@
 		[isWhiteLabeledAsset]="isWhiteLabeledAsset"
 		[whiteLableContentSharedByVendorCompanies]="whiteLableContentSharedByVendorCompanies" [fileTypes]="fileTypes"
 		(filterConditionsEmitter)="assetsFilter($event)"
-		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
+		(closeFilterEmitter)="closeFilterEmitter($event)"
+		(cancelSegmentationRowEmitter)="cancelSegmentationRowEmitter($event)"></app-custom-ui-filter>
 </ng-template>
 <!-- XNFR-409 -->
 <app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked"
