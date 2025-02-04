@@ -186,21 +186,32 @@
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <fieldset class="border-none">
                         <div>
-                          <app-user-info *ngIf="showContactInfo" [userInfo]="contact"
-                            [isLeadInfo]="true"></app-user-info>
+                          <app-user-info *ngIf="showContactInfoForLead" [userInfo]="contact" [isLeadInfo]="true"></app-user-info>
+                          <app-user-info *ngIf="showContactInfo" [userInfo]="contact"></app-user-info>
                           <span *ngIf="!showContactInfo">Not Available</span>
-                          <span *ngIf="showAttachLeadButton" class="pull-right">
+                          <div *ngIf="showAttachLeadButton" class="btn-group pull-right pt open">
+                            <button class="btn Btn-Green mb_btn" data-toggle="dropdown"
+                              style="border-radius: 3px !important;box-shadow: none !important;" translate>
+                              <i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i> Attach <i aria-hidden="true"
+                                class="fa fa-angle-down"></i>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                              <li><a (click)="openSelectLeadModel()">Attach a Lead</a></li>
+                              <li><a (click)="openSelectContactModel()">Attach a Contact</a></li>
+                            </ul>
+                          </div>
+                          <span *ngIf="showChangeLeadButton || showChangeContactButton" class="pull-right">
                             <a style="padding-left: 4px;">
                               <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
-                                <span (click)="openSelectLeadModel()" class="btn btn-primary transition d-inline">
-                                  <i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>{{attachLeadText}}
+                                <span (click)="openSelectModelByAttachType()" class="btn btn-primary transition d-inline">
+                                  <i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i> {{attachLeadText}}
                                 </span>
                               </button>
                             </a>
                             <a *ngIf="showDetachLeadButton" style="padding-left: 4px;">
                               <button class="btn Btn-Gray neg_mrg_top4" translate>
                                 <span (click)="resetAttachedLeadInfo()"><i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>
-                                   Detach Lead
+                                  {{deAttachText}}
                                 </span>
                               </button>
                             </a>
@@ -315,7 +326,7 @@
                               <!--Lead Created Details-->
                               <div *ngIf="commentDealAndLeadDto?.showLeadInfo" class="lead-details-border mt5">
                                 <h5 class="mt10">
-                                  <span class="ml5 underline"><strong>Lead Details:</strong></span>
+                                  <span class="ml5 underline"><strong>{{detailsTitle}}</strong></span>
                                   <div style="padding:5px">
                                     <app-user-info [userInfo]="commentDealAndLeadDto?.associatedContact" [isLeadInfo]="true"></app-user-info>
                                   </div>
@@ -373,8 +384,12 @@
 
 
 <!-- Select Lead Model-->
-<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead" [selectedContact]="selectedContact"
-  (notifyLeadSelected)="leadSelected($event)"></app-select-lead>
+<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
+  [selectedContact]="selectedContact" (notifyLeadSelected)="leadSelected($event)"></app-select-lead>
+
+<!-- Select Contact Model-->
+<app-select-contact *ngIf="showSelectContactModel" (notifyClose)="closeSelectContactModel()"
+  [attcahContact]="attcahContact" (notifyContactSelected)="contactSelected($event)"></app-select-contact>
 
 
 <!-- END CONTENT -->
