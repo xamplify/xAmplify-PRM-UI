@@ -55,7 +55,7 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   ngOnInit() {
     if (this.deal != undefined && this.deal.pipelineId > 0 && this.isFromCompanyJourney) {
       this.findPipelineStagesByPipelineId(this.deal.pipelineId);
-    } else {
+    } else if (this.deal != undefined && this.deal.pipelineId > 0) {
       this.createdForStages = this.deal.pipeline.stages;
     }
     this.referenceService.openModalPopup('changeDealPipelineStageModel');

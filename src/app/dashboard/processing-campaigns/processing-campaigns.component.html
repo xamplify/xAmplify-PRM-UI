@@ -1,4 +1,4 @@
-<div class="wrap-collabsible" id="processing-or-scheduling-campaigns">
+<div class="wrap-collabsible" [attr.id]="divId">
   <input id="{{collapsableDivId}}" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
   <label for="{{collapsableDivId}}" class="lbl-toggle">{{header}}</label>
   <div class="collapsible-content">
@@ -85,7 +85,11 @@
                             <span translate> Distinct Users : <strong>{{campaign?.distinctUsers}}</strong>
                             </span>
                           </h5>
-                          <h5  title="Delete Campaign" *ngIf="pagination?.archived">
+                          <h5  title="Launch Time In IST">
+                            <span translate> Launch Time In IST : <strong class="success">{{campaign?.launchTimeInIST}}</strong>
+                            </span>
+                          </h5>
+                          <h5  title="Delete Campaign">
                             <button class="btn btn-danger btn-xs" (click)="confirmDeleteCampaign(campaign)">Delete</button>
                           </h5>
       

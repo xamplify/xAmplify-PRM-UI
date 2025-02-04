@@ -1276,9 +1276,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         "FIRSTNAME": item.firstName,
         "LASTNAME": item.lastName,
         "EMAILID": item.emailId,
-        "GROUP": item.primaryAdmin ? "N/A" : item.teamMemberGroupName,
+        "GROUP": item.primaryAdmin ? "N/A" : `"${item.teamMemberGroupName}"`,
         "ADMIN": (item.secondAdmin || item.primaryAdmin) ? "Yes" : "No",
-        "STATUS": (item.status == "APPROVE") ? "Active" : "InActive",
+        "STATUS": (item.status === "APPROVE") ? "Active" : "InActive",
       };
     });
 
@@ -1286,8 +1286,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   downloadCsvFile(data: any[], filename: string) {
-    const header = Object.keys(data[0]).join(',') + '\n';
-    const rows = data.map(row => Object.keys(row).map(key => row[key]).join(',')).join('\n');
+    const escapeCsvValue = (value: any) => {
+      if (typeof value === 'string') {
+        value.replace(/,/g, '');
+      }
+      return value;
+    };
+    const header = Object.keys(data[0]).map(escapeCsvValue).join(',') + '\n';
+    const rows = data.map(row => Object.keys(row).map(key => escapeCsvValue(row[key])).join(',')).join('\n');
     const csvContent = header + rows;
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -1379,9 +1385,10 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   /***** XNFR-805 *****/
   openInviteTeamMemberModal() {
-    this.inviteTeamMemberLoading = true;
     this.emailIds = [];
     this.vendorInvitation.emailIds = [];
+    this.inviteTeamMemberLoading = true;
+    $('#invite_team_member_modal').modal('show');
     this.tableHeader = this.properties.inviteATeamMemberToJoinxAmplify + (this.vendorCompanyProfileName ? this.vendorCompanyProfileName : 'xAmplify');
     this.teamMemberService.getHtmlBody().subscribe(
       response => {
@@ -1389,17 +1396,20 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           let data = response.data;
           this.inviteTeamMemberHtmlBody = this.sanitizer.bypassSecurityTrustHtml(data.body);
           this.vendorInvitation.subject = data.subject;
+          setTimeout(() => {
+            const button = document.querySelector('div.button');
+            if (button) {
+              button.className = '';
+            }
+          });
         } else {
           this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
         }
         this.inviteTeamMemberLoading = false;
-        $('#invite_team_member_modal').modal('show');
       },
       error => {
         this.logger.errorPage(error);
-        this.vendorInvitation.message = "";
         this.inviteTeamMemberLoading = false;
-        $('#invite_team_member_modal').modal('show');
         this.inviteTeamMemberResponse = new CustomResponse('ERROR', 'Oops! something went wrong', true);
       });
   }
@@ -1450,11 +1460,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   /***** XNFR-805 *****/
   sendTeamMemberInviteEmail() {
-    this.inviteTeamMemberResponse = new CustomResponse();
-    this.inviteTeamMemberLoading = true;
     this.isValidationMessage = true;
-    this.vendorInvitation.emailIds = this.emailIds.map(value => value.value);
+    this.inviteTeamMemberLoading = true;
+    this.inviteTeamMemberResponse = new CustomResponse();
     this.vendorInvitation.vanityURL = this.vendorCompanyProfileName;
+    this.vendorInvitation.emailIds = this.emailIds.map(value => value.value);
     this.teamMemberService.sendTeamMemberInviteEmail(this.vendorInvitation)
       .subscribe(data => {
         if (data.statusCode == 200) {

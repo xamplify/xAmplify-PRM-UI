@@ -20,6 +20,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   contentModuleStatusAnalyticsDTO: ContentModuleStatusAnalyticsDTO = new ContentModuleStatusAnalyticsDTO();
   countsLoader: boolean = false;
   timeZone: string;
+  moduleLabel: string;
 
   constructor(private approveService: ApproveService) {
 
@@ -27,6 +28,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.contentModuleStatusAnalyticsDTO.selectedCategory = 'ALL';
+    this.setModuleTypeLabel();
     if (this.moduleType == 'APPROVE') {
       this.getTileCountsForApproveModule();
     } else {
@@ -83,6 +85,20 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
           this.countsLoader = false;
         }
       );
+  }
+
+  setModuleTypeLabel() {
+    if (this.moduleType.toLowerCase() == 'dam') {
+      this.moduleLabel = 'assets';
+    } else if (this.moduleType.toLowerCase() === 'approve') {
+      this.moduleLabel = 'records';
+    } else if (this.moduleType.toLowerCase() === 'track') {
+      this.moduleLabel = 'tracks';
+    } else if (this.moduleType.toLowerCase() === 'playbook') {
+      this.moduleLabel = 'playbooks';
+    } else {
+      this.moduleLabel = '';
+    }
   }
 
 }

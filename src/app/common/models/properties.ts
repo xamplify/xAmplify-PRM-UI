@@ -20,6 +20,7 @@ export class Properties {
 	LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed.";
 	CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully";
 	CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
+	LEAD_LIST_SAVE_SUCCESS = "Your lead list has been saved successfully";
 
 	CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
 	CONTACT_LIST_UPDATE_ERROR: "An error occured while updating your contact list.";
@@ -542,7 +543,15 @@ export class Properties {
 	PRIVILEGED_MANAGERS_APPROVAL_DISABLED_TOOLTIP = 'Admin and Supervisor approval authority cannot be modified.';
 
 	/**XNFR-832***/
-	MDF_CAMPAIGN_DESCRIPTION = "This campaign was launched to notify and engage specific contacts regarding an MDF (Market Development Funds) request. The goal is to ensure that recipients are informed about the available funding opportunities and encourage them to take necessary actions, such as submitting a request or reviewing the eligibility criteria.";
+	MDF_CAMPAIGN_DESCRIPTION = "This campaign was launched to notify and engage regarding an MDF request. The goal is to provide campaign performance insights, enabling assessment of results and release of funds accordingly.";
+
+	AUTHORIZATION_RESPONSE_APPROVAL = "Heads up! The following records cannot be approved because you do not have the required authorization. You can proceed with approving the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_SELF_REJECT = "Heads up! Auto-approved records cannot be rejected. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_REJECT = "Heads up! The following records cannot be rejected because you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_TEAM_MEMBER = "Heads up! The following records cannot be rejected as some are auto-approved, or you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+
+
+
 
 }
 

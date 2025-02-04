@@ -609,6 +609,21 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.sendPartnerReminder(partner);
         });
     }
+
+    sendRemindersForAllSelectedPartnersOne(): void {
+        const selectedPartners = this.pagination.selectedPartnerIds
+            .map(partnerId => this.allItems.find(item => item.partnerId === partnerId))
+            .filter(partner => partner && !partner.isActive && partner.emailId);
+
+        this.sendmail(selectedPartners);
+        selectedPartners.forEach(partner => {
+            partner.isSelected = false;
+        });
+
+        this.pagination.selectedPartnerIds = [];
+        this.isSendReminderEnabled = false;
+        this.isHeaderCheckBoxChecked = false;
+    }
     
     sendPartnerReminder(item: any) {
         let user = new User();
@@ -1098,7 +1113,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           } 
       }
 
-    goToIncompleteCompanyProfilePartnersDiv() {
+      goToIncompleteCompanyProfilePartnersDiv() {
         this.selectedTabIndex = 6;
         this.sortOption = new SortOption();
         this.httpRequestLoader = new HttpRequestLoader();
@@ -1118,8 +1133,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'PendingCompanyProfile';
         this.incompleteCompanyProfileAndPendingSingupPagination.partnerTeamMemberGroupFilter = this.applyFilter;
         this.incompleteCompanyProfileAndPendingSingupPagination.searchKey ="";
+        this.pagination.selectedPartnerIds = [];
+        this.isSendReminderEnabled = false;
+        this.isHeaderCheckBoxChecked = false;
         this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
     }
+    
     goToSignupPendingPartnersDiv() {
         this.selectedTabIndex = 7;
         this.sortOption = new SortOption();
@@ -1175,6 +1194,19 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 for (var i in response.approvePartnerList) {
                     response.list[i].contactCompany = response.list[i].partnerCompanyName;
                 }
+                response.list.forEach((partner: any) => {
+                    const existingIndex = this.allItems.findIndex(item => item.partnerId === partner.partnerId);
+                    if (existingIndex === -1) {
+                        this.allItems.push(partner);
+                    } else {
+                        this.allItems[existingIndex] = partner;
+                    }
+                    partner.isSelected = this.pagination.selectedPartnerIds.includes(partner.partnerId);
+                });
+
+                this.isHeaderCheckBoxChecked = response.list.every((partner: any) => partner.isSelected);
+
+
                 pagination = this.pagerService.getPagedItems(pagination, response.list);
                 this.referenseService.loading(this.httpRequestLoader, false);
             },
@@ -1184,7 +1216,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
     sendmail(item: any) {
-        this.pagination.partnerId = item.partnerId
+        this.pagination.partnerId = item.partnerId;
         this.pagination.userId = this.authenticationService.getUserId();
         this.pagination.vanityUrlFilter = this.authenticationService.vanityURLEnabled;
         this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -1194,8 +1226,23 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 if (data.access) {
                     this.referenseService.loading(this.httpRequestLoader, false);
                     if (data.statusCode == 200) {
+                         const partnerIndex = this.allItems.findIndex(p => p.partnerId === item.partnerId);
+                        if (partnerIndex !== -1) {
+                            this.allItems[partnerIndex].isSelected = false;
+                            this.pagination.singleMail = false;
+                            this.pagination.selectedPartnerIds = this.pagination.selectedPartnerIds.filter(id => id !== item.partnerId);
+                        }
+
+                        this.isSendReminderEnabled = false;
+                        this.isHeaderCheckBoxChecked = false;                   
                         this.referenseService.showSweetAlertSuccessMessage(data.message);
                     } else if (data.statusCode == 400) {
+                        const partnerIndex = this.allItems.findIndex(p => p.partnerId === item.partnerId);
+                        if (partnerIndex !== -1) {
+                            this.allItems[partnerIndex].isSelected = false;
+                            this.pagination.singleMail = false;
+                            this.pagination.selectedPartnerIds = this.pagination.selectedPartnerIds.filter(id => id !== item.partnerId);
+                        }
                         this.referenseService.showSweetAlertSuccessMessage(data.message);
                     }
                     this.sendTestEmailIconClicked = false;
@@ -1277,14 +1324,35 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
          
+  
     sendReminder(): void {
+        if (this.isIncompleteCompanyProfileDiv) {
+            this.sendReminderForIncompleteProfiles();
+        } else {
+            this.sendReminderForInactivePartners();
+        }
+    }
+
+    sendReminderForIncompleteProfiles(): void {
+
+        const selectedPartners = this.pagination.selectedPartnerIds
+        .map(partnerId => this.allItems.find(item => item.partnerId === partnerId))
+        .filter(partner => partner && !partner.isActive && partner.emailId);
+
+        const emailIds = selectedPartners.map(partner => partner.emailId);
+        const emailIdsString = emailIds.join(', ');
+       
+        this.modelPopUpMultipleSelectedEmails(emailIdsString);
+
+    }
+    sendReminderForInactivePartners(): void {
+
         const selectedPartners = this.selectedPartnerIds
             .map(partnerId => this.allItems.find(item => item.partnerId === partnerId))
             .filter(partner => partner && !partner.isActive && partner.emailId);
 
         const emailIds = selectedPartners.map(partner => partner.emailId);
         const emailIdsString = emailIds.join(', ');
-
         this.modelPopUpMultipleSelectedEmails(emailIdsString);
     }
 
@@ -1354,8 +1422,27 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             );
         }
+        else if (this.isIncompleteCompanyProfileDiv) {
+            this.vanityURLService.getTemplateId(this.selectedEmailId, "isIncompleteCompanyProfileDiv").subscribe(
+                response => {
+                    if (response.statusCode === 200) {
+                        this.selectedEmailTemplateId = response.data;
+                        this.sendTestEmailIconClicked = true;
+                        this.vanityTemplates = true;
+                    } else if (response.statusCode === 400) {
+                        console.error("Error: Invalid email ID or other bad request.");
+                    } else {
+                        console.error("Unexpected status code:", response.statusCode);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching template ID:", error);
+                }
+            );
+        }
     }
-      sendTestEmailModalPopupEventReceiver(){
+    
+    sendTestEmailModalPopupEventReceiver(){
         this.selectedEmailTemplateId = 0;
         this.sendTestEmailIconClicked = false;
         this.vanityTemplates = false;
@@ -1368,10 +1455,19 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.sendPartnerReminder(event);
             }
             this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
-        } else {
+        }
+         else if (this.isIncompleteCompanyProfileDiv) {
+            if (Array.isArray(event)) {
+                this.sendRemindersForAllSelectedPartnersOne();
+            } else {
+                this.pagination.singleMail = true;
+                this.sendmail(event);
+            }
+        } 
+        else {
             this.sendmail(event);
         }
-    }   
+    }
 
     getDateFilterOptions(event: any) {
         this.partnerfromDateFilter = event.fromDate;
@@ -1399,4 +1495,57 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.referenseService.downloadPartnesReports(this.loggedInUserId, this.selectedPartnerCompanyIds, this.incompleteCompanyProfileAndPendingSingupPagination, this.applyFilter, this.fromDateFilter, this.toDateFilter, "company-profile-incomplete-partners-report")
     }
     /**  XNFR-835 **/
+
+
+    updateSelectionStateForIncompleteProfiles(): void {
+        this.updateSelectionIncomplete(this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems);
+    }
+
+    toggleSelectAllForIncompleteProfiles(event: Event): void {
+        this.toggleSelectAllIncomplete(event, this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems);
+    }
+    
+    updateSelectionIncomplete(pagedItems: any[]): void {
+        pagedItems
+            .filter(item => item.isSelected)
+            .forEach(item => {
+                if (!this.pagination.selectedPartnerIds.includes(item.partnerId)) {
+                    this.pagination.selectedPartnerIds.push(item.partnerId);
+                }
+            });
+
+        pagedItems
+            .filter(item => !item.isSelected)
+            .forEach(item => {
+                const index = this.pagination.selectedPartnerIds.indexOf(item.partnerId);
+                if (index !== -1) {
+                    this.pagination.selectedPartnerIds.splice(index, 1);
+                }
+            });
+
+        this.isSendReminderEnabled = this.pagination.selectedPartnerIds.length > 0;
+        this.isHeaderCheckBoxChecked = pagedItems.every(item => item.isSelected);
+        this.selectedItem = pagedItems;
+    }
+
+    toggleSelectAllIncomplete(event: Event, pagedItems: any[]): void {
+        const checked = (event.target as HTMLInputElement).checked;
+
+        pagedItems.forEach(item => {
+            item.isSelected = checked;
+
+            if (checked) {
+                if (!this.pagination.selectedPartnerIds.includes(item.partnerId)) {
+                    this.pagination.selectedPartnerIds.push(item.partnerId);
+                }
+            } else {
+                const index = this.pagination.selectedPartnerIds.indexOf(item.partnerId);
+                if (index !== -1) {
+                    this.pagination.selectedPartnerIds.splice(index, 1);
+                }
+            }
+        });
+
+        this.updateSelectionIncomplete(pagedItems);
+    }
 }

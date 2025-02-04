@@ -1,11 +1,27 @@
 <app-public-top-navigation-bar></app-public-top-navigation-bar>
 <!-- xAmplify Logo -->
 <div class="xAmplify-search-page">
-  <!--Search Bar -->
-   <div class="xAmplify_search-container">
-      <input type="text" id="mdfAlias" class="xAmplify_search-box" placeholder="Search MDF Alias">
-      <button  class="xAmplify_search-button" (click)="searchMdfAlias()">
-          <i class="fa fa-search"></i>
-      </button>
-  </div>
-  </div>
+    <div class="xAmplify_logo">
+        <img src="assets/images/mdf-analytics.png" alt="MDF Logo">
+    </div>
+    <!--Search Bar -->
+    <div class="xAmplify_search-container">
+        <input type="text" id="mdfAlias" class="xAmplify_search-box" placeholder="Search with MDF Key">
+        <button class="xAmplify_search-button" (click)="searchMdfAlias()">
+            <i class="fa fa-search"></i>
+        </button>
+    </div>
+
+    <p class="xAmplify_description mt10">
+        Enter the <strong>MDF key</strong> in the search box to find analytics related to your campaign.
+        Click the <strong>search icon</strong> to retrieve detailed insights instantly.
+    </p>
+
+    <!-- Added Note -->
+     <p class="xAmplify_note">
+       Note : Your channel partner has shared the <strong>MDF Key</strong> required for accessing campaign analytics.
+        Please check your inbox for the details.
+    </p> 
+
+
+</div>

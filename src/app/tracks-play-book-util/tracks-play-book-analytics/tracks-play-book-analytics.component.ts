@@ -15,6 +15,7 @@ import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.ser
 import { TracksPlayBook } from '../models/tracks-play-book'
 import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum'
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Component({
   selector: 'app-tracks-play-book-analytics',
@@ -57,7 +58,13 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
     if (this.learningTrackId < 1) {
       this.goBack();
     }
-    this.pagination.partnerTeamMemberGroupFilter = true;
+    // this.pagination.partnerTeamMemberGroupFilter = true;
+    let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    if (partnerFilter != null && partnerFilter != undefined && (partnerFilter === false || partnerFilter === 'false')) {
+      this.referenceService.setTeamMemberFilterForPagination(this.pagination, 0);
+    } else {
+      this.referenceService.setTeamMemberFilterForPagination(this.pagination, 1);
+    }
     this.getAnalytics(this.pagination);
   }
 
