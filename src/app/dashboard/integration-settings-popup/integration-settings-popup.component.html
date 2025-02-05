@@ -72,7 +72,7 @@
                 </option>
               </select>
             </div>
-            <div class="col-sm-6" *ngIf="!isDefaultField && (customFields.type === 'date' || customFields.type === 'email' || customFields.type === 'phone' || customFields.type === 'textarea') && opportunityType === 'DEAL'">
+            <div class="col-sm-6" *ngIf="!isDefaultField && (customFields.type === 'date' || customFields.type === 'email' || customFields.type === 'phone' || customFields.type === 'textarea' || customFields.type === 'picklist') && opportunityType === 'DEAL'">
               <label *ngIf="customFields.selected" for="html" style="float: left;">Map As</label>
               <select class="form-control" [disabled]= "canDisableSelect" *ngIf="customFields.selected" [(ngModel)]="customFields.formDefaultFieldType"
                 [ngModelOptions]="{standalone: true}" (change)="onFieldTypeChange(customFields)">
@@ -86,6 +86,10 @@
                 <option *ngIf="customFields.type === 'phone'" [ngValue]="'CONTACT_PHONE_NUMBER'">Contact Phone Number
                 </option>
                 <option *ngIf="customFields.type === 'textarea'" [ngValue]="'CONTACT_STREET'">Contact Street
+                </option>
+                <option *ngIf="customFields.type === 'picklist'" [ngValue]="'CONTACT_COUNTRY'">Contact Country
+                </option>
+                <option *ngIf="customFields.type === 'picklist'" [ngValue]="'CONTACT_STATE'">Contact State
                 </option>
               </select>
             </div>
