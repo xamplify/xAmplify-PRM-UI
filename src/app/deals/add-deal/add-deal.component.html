@@ -187,7 +187,7 @@
                       <fieldset class="border-none">
                         <div>
                           <app-user-info *ngIf="showContactInfoForLead" [userInfo]="contact" [isLeadInfo]="true"></app-user-info>
-                          <app-user-info *ngIf="showContactInfo" [userInfo]="contact"></app-user-info>
+                          <app-user-info *ngIf="showContactDetails" [userInfo]="contact"></app-user-info>
                           <span *ngIf="!showContactInfo">Not Available</span>
                           <div *ngIf="showAttachLeadButton" class="btn-group pull-right pt open">
                             <button class="btn Btn-Green mb_btn" data-toggle="dropdown"
@@ -698,7 +698,8 @@
   <div *ngIf="showCustomForm && deal.createdForCompanyId">
     <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails" [dealId]="deal.id"
       [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson" [selectedContact]="contactInfo"
-      [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'" [actionType]="actionType"></app-sf-deal>
+      [contactId]="deal.associatedContactId" [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'"
+      [actionType]="actionType"></app-sf-deal>
   </div>
 </ng-template>
 <app-scroll-top></app-scroll-top>

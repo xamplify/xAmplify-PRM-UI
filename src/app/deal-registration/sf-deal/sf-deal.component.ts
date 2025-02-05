@@ -30,6 +30,7 @@ export class SfDealComponent implements OnInit {
   @Input() public opportunityType: any;
   @Input() public selectedContact: any;
   @Input() public actionType: any;
+  @Input() public contactId: any;
   @Output() isFormValid = new EventEmitter();
   form: Form = new Form();
   errorMessage: string;
@@ -249,8 +250,12 @@ export class SfDealComponent implements OnInit {
               columnInfo.hideFieldInfo = true;
             }
           }
-          if(columnInfo.formDefaultFieldType === 'CREATED_BY_NAME' && this.actionType === 'add'){
+          if (columnInfo.formDefaultFieldType === 'CREATED_BY_NAME' && this.actionType === 'add') {
             columnInfo.value = columnInfo.dropDownChoices[0].labelId;
+          }
+          if (columnInfo.value !== undefined && columnInfo.formDefaultFieldType === 'CONTACT_EMAIL'
+            && this.contactId != undefined && this.actionType === 'edit') {
+            columnInfo.columnDisable = true;
           }
         });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
@@ -904,6 +909,7 @@ export class SfDealComponent implements OnInit {
     if (this.opportunityType === 'DEAL' && this.selectedContact !== undefined) {
       for (let column of this.form.formLabelDTOs) {
         let addActionType = this.actionType === 'add';
+        let editActionType = this.actionType === 'edit';
         if (column.formDefaultFieldType === 'CONTACT_FIRST_NAME' && addActionType) {
           column.value = this.selectedContact.firstName;
         } else if (column.formDefaultFieldType === 'CONTACT_LAST_NAME' && addActionType) {

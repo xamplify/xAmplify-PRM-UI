@@ -192,6 +192,7 @@ export class AddDealComponent implements OnInit {
   showChangeContactButton: boolean = false;
   contactInfo: any;
   detailsTitle: any;
+  showContactDetails: boolean = false;
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -376,6 +377,7 @@ export class AddDealComponent implements OnInit {
           if (data.statusCode == 200) {
             self.lead = data.data;
             self.showContactInfoForLead = true;
+            self.showContactInfo = true;
             self.contact.firstName = self.lead.firstName;
             self.contact.lastName = self.lead.lastName;
             self.contact.emailId = self.lead.email;
@@ -408,7 +410,7 @@ export class AddDealComponent implements OnInit {
           if (this.isDealFromContact) {
             this.validateField("attachLead", false);
           }
-         }
+        }
       );
   }
 
@@ -503,12 +505,12 @@ export class AddDealComponent implements OnInit {
             }
 
             if (self.deal.associatedContact != undefined) {
+              self.showContactInfo = true;
               self.showContactInfoForLead = true;
-              self.showContactInfo = false;
               self.detailsTitle = 'Lead Details';
               if (self.deal.associatedContactId != undefined) {
                 self.detailsTitle = 'Contact Details';
-                self.showContactInfo = true;
+                self.showContactDetails = true;
                 self.showContactInfoForLead = false;
               }
               self.showAttachLeadButton = false;
@@ -1805,6 +1807,7 @@ export class AddDealComponent implements OnInit {
   /*** XNFR-476 ***/
   resetAttachedLeadInfo() {
     this.showContactInfoForLead = false;
+    this.showContactDetails = false;
     this.showContactInfo = false;
     this.showAttachLeadButton = true;
     this.showChangeLeadButton = false;
@@ -1817,6 +1820,7 @@ export class AddDealComponent implements OnInit {
     this.leadId = 0;
     this.contactId = 0
     this.isZohoLeadAttached = false;
+    this.deal.associatedContactId = 0;
     this.isZohoLeadAttachedWithoutSelectingDealFor = false;
     this.vendorCompanyName = '';
     if (this.actionType == 'add' && !this.vanityLoginDto.vanityUrlFilter) {
@@ -2073,6 +2077,7 @@ export class AddDealComponent implements OnInit {
   frameContactDetails(event: any) {
     let self = this;
     self.showContactInfo = true;
+    self.showContactDetails = true;
     self.contactInfo = event.contact;
     self.contact.firstName = self.contactInfo.firstName;
     self.contact.lastName = self.contactInfo.lastName;
