@@ -34,6 +34,7 @@ export class PublicTopNavigationBarComponent implements OnInit {
   submitted = false;
   isContacted = false;
   ngxLoading = false;
+  isVanityUrlEnabled = false;
   constructor(public vanityUrlService: VanityURLService, public authenticationService: AuthenticationService, public referenceService: ReferenceService) {
     this.countries = this.referenceService.getCountries();
     this.setCountry();
@@ -44,7 +45,8 @@ export class PublicTopNavigationBarComponent implements OnInit {
       this.isCompanyLogoLoadedFromAnotherComponent = true;
     }else{
       this.isCompanyLogoLoadedFromAnotherComponent = false;
-      if(this.vanityUrlService.isVanityURLEnabled()){
+      this.isVanityUrlEnabled = this.vanityUrlService.isVanityURLEnabled();
+      if(this.isVanityUrlEnabled){
         this.vanityUrlService.checkVanityURLDetails();
       }
     }
