@@ -14,6 +14,7 @@ import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { DuplicateMdfRequest } from '../models/duplicate-mdf-request';
 declare var swal: any, $: any, Promise: any;
 @Injectable()
 export class CampaignService {
@@ -1487,6 +1488,6 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
       }
 
-   
+      
 
 }

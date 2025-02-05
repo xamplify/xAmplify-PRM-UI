@@ -552,14 +552,14 @@ export class SortOption {
 	];
 
 	campaignMdfEmailsHistoryDropDownOptions = [
-		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
-		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+		{ 'name': 'Email Address (A-Z)', 'value': 'emailId-ASC' },
+		{ 'name': 'Email Address (Z-A)', 'value': 'emailId-DESC' },
 		{ 'name': 'MDF Key (ASC)', 'value': 'mdfAlias-ASC' },
 		{ 'name': 'MDF Key (DESC)', 'value': 'mdfAlias-DESC' },
-		{ 'name': 'Count (ASC)', 'value': 'requestsCount-ASC' },
-		{ 'name': 'Count (DESC)', 'value': 'requestsCount-DESC' },
-		{ 'name': 'Sent Time (ASC)', 'value': 'lastEmailSentAt-ASC' },
-		{ 'name': 'Sent Time (DESC)', 'value': 'lastEmailSentAt-DESC' }
+		{ 'name': 'Total Request Sent (ASC)', 'value': 'requestsCount-ASC' },
+		{ 'name': 'Total Request Sent (DESC)', 'value': 'requestsCount-DESC' },
+		{ 'name': 'Latest Email Sent Time (ASC)', 'value': 'lastEmailSentAt-ASC' },
+		{ 'name': 'Latest Email Sent Time (DESC)', 'value': 'lastEmailSentAt-DESC' }
 	];
 
 	teamMemberDropDowns = [
