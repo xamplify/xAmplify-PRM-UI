@@ -695,9 +695,9 @@
 
 <!--Custom CRM Form-->
 <ng-template #customCRMFormTemplate>
-  <div  *ngIf="showCustomForm && deal.createdForCompanyId">
-    <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
-      [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
+  <div *ngIf="showCustomForm && deal.createdForCompanyId">
+    <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails" [dealId]="deal.id"
+      [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson" [selectedContact]="contactInfo"
       [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'" [actionType]="actionType"></app-sf-deal>
   </div>
 </ng-template>

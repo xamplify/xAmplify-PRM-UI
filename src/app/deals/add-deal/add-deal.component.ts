@@ -2044,6 +2044,7 @@ export class AddDealComponent implements OnInit {
   //XNFR-869
   openSelectContactModel() {
     this.showSelectContactModel = true;
+    this.contactInfo = '';
     this.attcahContact = new Object();
     this.attcahContact.dealId = this.dealId;
     this.attcahContact.contactId = this.contactId;
