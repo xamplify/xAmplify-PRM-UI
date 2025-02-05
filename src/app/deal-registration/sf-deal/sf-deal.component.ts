@@ -916,11 +916,11 @@ export class SfDealComponent implements OnInit {
           column.value = this.selectedContact.address;
         } else if (column.formDefaultFieldType === 'CONTACT_ZIP_CODE' && addActionType) {
           column.value = this.selectedContact.zipCode;
-        } else if (column.formDefaultFieldType === 'CONTACT_STATE' && addActionType) {
+        } else if (column.formDefaultFieldType === 'CONTACT_STATE' && addActionType && !column.nonInteractive) {
           column.value = this.selectedContact.state;
         } else if (column.formDefaultFieldType === 'CONTACT_CITY' && addActionType) {
           column.value = this.selectedContact.city;
-        } else if (column.formDefaultFieldType === 'CONTACT_COUNTRY' && addActionType) {
+        } else if (column.formDefaultFieldType === 'CONTACT_COUNTRY' && addActionType && !column.nonInteractive) {
           column.value = this.selectedContact.country;
         } else if (column.formDefaultFieldType === 'CONTACT_TITLE' && addActionType) {
           column.value = this.selectedContact.jobTitle;
