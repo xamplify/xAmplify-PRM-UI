@@ -18,6 +18,7 @@ declare var $,swal: any;
 import { MdfPartnerDto } from '../models/mdf-partner-dto';
 import { MdfDetails } from '../models/mdf-details';
 import {MdfAmountType} from '../models/mdf-amount-type.enum';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 @Component({
   selector: 'app-manage-mdf-details',
   templateUrl: './manage-mdf-details.component.html',
@@ -88,7 +89,12 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
             this.getTilesInfo(this.selectedFilterIndex==1);
             this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
             this.pagination.userId = this.loggedInUserId;
-            this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+            let partnerFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+            if (partnerFilter != null && (partnerFilter === false || partnerFilter === 'false')) {
+              this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 0;
+            } else {
+              this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+            }
             this.listPartners(this.pagination);
           }
         }

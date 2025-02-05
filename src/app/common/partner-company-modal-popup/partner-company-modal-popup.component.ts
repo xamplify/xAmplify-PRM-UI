@@ -76,7 +76,9 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
               this.closePopup();
           }
   }
-  
+  ngOnDestroy(){
+    $('#partnerCompaniesPopup').modal('hide');
+  }
   openPopup() {
       $('#partnerCompaniesPopup').modal('show');
       this.findPartnerCompanies(this.pagination);

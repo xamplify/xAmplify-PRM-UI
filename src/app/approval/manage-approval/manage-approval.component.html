@@ -18,6 +18,9 @@
     <div class="col-md-12">
       <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0 light_bg_removal remove_space">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        <div *ngIf="showApproveResponse" class="col-md-12 col-md-12 col-xs-12 col-sm-12 alert alert-danger custom-alert">
+          <strong>Auto-approved records cannot be rejected.</strong>
+        </div>
         <div class="portlet-title remove_border">
           <ng-template [ngTemplateOutlet]="headerOptions"></ng-template>
         </div>
@@ -29,12 +32,12 @@
             <table *ngIf="!httpRequestLoader.isLoading" class="table tgrid table-hover table-sm">
               <thead>
                 <tr>
-                  <th *ngIf="selectedFilterStatus === 'PENDING' && authenticationService?.module?.isAdmin" class="mr5">
+                  <th *ngIf="hasApprovalAccess" class="mr5">
                     <input type="checkbox" class="checkBox_shadow" value="selectAllPendingList" id="selectAllPendingList"
-                      name="pendingListSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="pointer" />
+                      name="pendingListSelectAll" [disabled]="!isSelectableForCheckAll()" [(ngModel)]="isHeaderCheckBoxChecked"
+                      (change)="checkAll($event)" class="pointer" />
                   </th>
-                  <th *ngIf="selectedFilterStatus != 'PENDING'"></th>
-                  <th *ngIf="selectedFilterStatus == 'PENDING' && !authenticationService?.module?.isAdmin"></th>
+                  <th *ngIf="!hasApprovalAccess"></th>
                   <th scope="col">Details</th>
                   <th>Created On</th>
                   <th scope="col" class="align-center">Actions</th>
@@ -125,6 +128,18 @@
   </div>
   <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6 pr0">
     <div class="d-flex justify-content-end">
+      <div *ngIf="hasApprovalAccess" class="btn-group pull-right pt mr5">
+        <button class="btn Btn-Green mb_btn" style="border-radius: 3px !important;box-shadow: none !important;"
+          data-toggle="dropdown" [disabled]="!displayApproveAndRejectButton" translate>
+          Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu pull-right">
+          <li *ngIf="selectedFilterStatus === 'PENDING' || selectedFilterStatus === 'REJECTED'"><a id="save_button"
+              (click)="getStausAndCallCommentsPopUp('APPROVED')">Approve Selected</a></li>
+          <li *ngIf="selectedFilterStatus === 'PENDING' || selectedFilterStatus === 'APPROVED'"><a id="save_button"
+              (click)="getStausAndCallCommentsPopUp('REJECTED')">Reject Selected</a></li>
+        </ul>
+      </div>
       <div class="btn btn-xs l-g-view margin-space {{filterActiveBg}}" (click)="clickFilter()"
         [ngClass]="showFilterOption?'disabled':''">
         <span data-placement="left" data-toggle="tooltip" title="Filter">
@@ -136,7 +151,8 @@
         <select class="form-control SeclectBoxPaddingsAbj pull-left mr5" id="alignline-m-width"
           [(ngModel)]="sortOption.approvalHubSortOption" (ngModelChange)="sortList($event)"
           style="position: relative; right: -3px;">
-          <option *ngFor="let option of sortOption.approvalHubSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
+          <option *ngFor="let option of sortOption.approvalHubSortDropDownOptions" [ngValue]="option">{{option.name}}
+          </option>
         </select>
       </div>
       <div class="float-right input-icon right mb10 mr5">
@@ -147,16 +163,6 @@
         <button type="submit" class="search-box-item-click" (click)="searchData()"><i class="fa fa-search"
             aria-hidden="true"></i></button>
       </div>
-      <div *ngIf="selectedFilterStatus === 'PENDING'" class="btn-group pull-right pt">
-        <button class="btn Btn-Green mb_btn" style="border-radius: 3px !important;box-shadow: none !important;"
-          data-toggle="dropdown" [disabled]="!displayApproveAndRejectButton" translate>
-          Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
-        </button>
-        <ul class="dropdown-menu pull-right">
-          <li><a id="save_button" (click)="getStausAndCallCommentsPopUp('APPROVED')">Approve Selected</a></li>
-          <li><a id="save_button" (click)="getStausAndCallCommentsPopUp('REJECTED')">Reject Selected</a></li>
-        </ul>
-      </div>
     </div>
   </div>
 </ng-template>
@@ -166,9 +172,10 @@
     <td style="width: 10%;">
       <div class="col">
         <div class="instant-links-type">
-          <span class="mr20" *ngIf="selectedFilterStatus === 'PENDING' && authenticationService?.module?.isAdmin"><input
-              class="pointer" class="checkBox_shadow" type="checkbox" [checked]="((selectedIds.indexOf(item.id)>-1))"
-              value="{{item.id}}" (click)="selectPendingItem(item)" id="{{item.id}}" name="pendingList[]"></span>
+          <span class="mr20" *ngIf="hasApprovalAccess"><input class="pointer" class="checkBox_shadow" type="checkbox"
+              [checked]="((selectedIds.indexOf(item.id)>-1))" value="{{item.id}}" [disabled]="!isSelectable(item)"
+              (click)="selectPendingItem(item)" data-toggle="tooltip" data-placement="right" [title]="getTooltipTitle(item)"
+              id="{{item.id}}" name="pendingList[]"></span>
           <img [alt]="item?.type || 'Image'" style="height: 50px;" [src]="getImageSrc(item)" />
         </div>
       </div>
@@ -317,7 +324,9 @@
 </app-content-status-history-modal-popup>
 
 <app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
-  [isApproveOrRejectStatus]="isApproveOrRejectStatus" (comment)="getComment($event)">
+  [isApproveOrRejectStatus]="isApproveOrRejectStatus" [rejectedRecordNames]="rejectedRecordNames"
+  (comment)="getComment($event)" [selectedFilterStatus]="selectedFilterStatus"
+  [isSelectedAutoApprovalRecords]="isSelectedAutoApprovalRecords">
 </app-multiselect-approval-comments-modal-popup>
 
 <!--Download Pdf Modal Popup-->

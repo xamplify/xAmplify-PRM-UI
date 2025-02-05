@@ -24,6 +24,7 @@ import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
 import { EnvService } from "app/env.service";
 import { RouterUrlConstants } from "app/constants/router-url.contstants";
+import { XAMPLIFY_CONSTANTS } from "app/constants/xamplify-default.constants";
 
 
 declare var $:any, swal:any, require:any;
@@ -165,7 +166,7 @@ export class ReferenceService {
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
   approvalModuleRouter = "/home/approval-hub/manage";
-  
+  universalSearchFilterValue:number= this.getUniversalSearchFilterValue() ;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -4015,6 +4016,13 @@ getFirstLetter(inputString:any) {
     }
     return defaultLogos;
   }
+
+  /** XNFR-853 */
+  getUniversalSearchFilterValue():number {
+    let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    return (TeamMemberGroupFilter !== null && TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) ? 0 : 1;
+  }
+  /** XNFR-853 */
 
 }
 

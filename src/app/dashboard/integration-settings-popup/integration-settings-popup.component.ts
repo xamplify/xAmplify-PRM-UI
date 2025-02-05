@@ -13,7 +13,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   @Input() customFieldsList: any;
   @Input() opportunityType :any;
   customFields = new CustomFieldsDto;
-  defaultFields = ['Name','Last Name']
+  defaultFields = ['Name','Last Name', 'Close Date']
   isDefaultField: boolean = false;
   options: any;
   deleteOptionVisible: boolean = false;
@@ -58,6 +58,9 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     }
     this.customFields.controllerName = this.customField.controllerName;
     this.customFields.formLookUpDefaultFieldType = this.customField.formLookUpDefaultFieldType;
+  }
+  ngOnDestroy(){
+    $("#integrationSettingsForm").modal('hide');
   }
   hideIntegrationSettingForm() {
     $("#integrationSettingsForm").modal('hide');
@@ -167,7 +170,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       if (
         field.label === selectedField.label &&
         (selectedFieldType === 'DEAL_ID' ||
-          selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME')) {
+          selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME' || selectedFieldType === 'XAMPLIFY_LEAD_CREATED_DATE' || selectedFieldType === 'XAMPLIFY_DEAL_REGISTERED_DATE')) {
         countSelectedType++;
         field.formDefaultFieldType = selectedFieldType;
         this.canDisableType = true;
@@ -178,7 +181,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customFieldsList.forEach(field => {
         if (
           field.formDefaultFieldType === selectedFieldType && (selectedFieldType === 'DEAL_ID' ||
-            selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME') &&
+            selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME' || selectedFieldType === 'XAMPLIFY_LEAD_CREATED_DATE' || selectedFieldType === 'XAMPLIFY_DEAL_REGISTERED_DATE') &&
           field !== selectedField
         ) {
           field.formDefaultFieldType = null;

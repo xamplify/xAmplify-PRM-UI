@@ -18,7 +18,7 @@ import { UtilService } from 'app/core/services/util.service';
   providers: [Properties]
 })
 export class UniversalSearchComponent implements OnInit {
-  selectedFilterIndex = 0;
+  selectedFilterIndex = 1;
   universalSearch: Array<any> = new Array<any>();
   isPartnerLoggedInThroughVanityUrl = false;
   universalSearchApiLoading = true;
@@ -26,7 +26,7 @@ export class UniversalSearchComponent implements OnInit {
   companyId: number = 0;
   customResponse: CustomResponse = new CustomResponse();
   searchKey: string;
-  applyFilter = true;
+  applyFilter:boolean = false;
   defaultDisplayType: string = 'l';
   isWelcomePageEnabled: boolean;
   isTeamMember: boolean;
@@ -67,10 +67,15 @@ export class UniversalSearchComponent implements OnInit {
     this.findUniversalSearch(this.universalSearchPagination);
   }
   searchUniversally() {
-  if (!(this.utilService.isLoggedAsTeamMember() || this.authenticationService.module.isTeamMember)) {
-    this.applyFilter = false;
-  }
-    console.log(this.utilService.isLoggedAsTeamMember() + "  loginAsTeammember")
+    if ((this.utilService.isLoggedAsTeamMember() || this.authenticationService.module.isTeamMember)) {
+      this.selectedFilterIndex = this.referenceService.getUniversalSearchFilterValue();
+      this.referenceService.universalSearchFilterValue = this.selectedFilterIndex;
+      this.applyFilter = this.selectedFilterIndex == 1 ? true : false;
+    } else {
+      this.selectedFilterIndex = 0;
+      this.referenceService.universalSearchFilterValue = this.selectedFilterIndex;
+      this.applyFilter = this.selectedFilterIndex == 1 ? true : false;
+    }
     this.universalSearchPagination.pageIndex = 1;
     this.universalSearchPagination.maxResults = 12;
     this.universalSearchPagination.searchKey = this.referenceService.universalSearchKey;
@@ -229,6 +234,20 @@ export class UniversalSearchComponent implements OnInit {
       return 'Yes';
     } else if (value === 'inactive') {
       return 'No';
+    }
+  }
+  getSelectedIndex(index: number) {
+		this.universalSearchApiLoading = true;
+		this.selectedFilterIndex = index;
+		this.universalSearchPagination = this.referenceService.setTeamMemberFilterForPagination(this.universalSearchPagination, index);
+    this.referenceService.universalSearchFilterValue = this.selectedFilterIndex;
+		this.findUniversalSearch(this.universalSearchPagination);
+	}
+  disableTeammemberFilter():boolean{
+    if(this.referenceService.universalSearchFilterType === "Assets" || this.referenceService.universalSearchFilterType === "Tracks" || this.referenceService.universalSearchFilterType === "PlayBooks") {
+      return false;
+    } else {
+      return true;
     }
   }
 }

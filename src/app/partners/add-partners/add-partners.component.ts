@@ -4784,6 +4784,8 @@ triggerUniversalSearch(){
 		}
 		this.searchKey = this.referenceService.universalSearchKey;
 		this.pagination.searchKey = this.searchKey;
+		this.selectedFilterIndex = this.referenceService.universalSearchFilterValue;
+		this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
 	  }
 }
 

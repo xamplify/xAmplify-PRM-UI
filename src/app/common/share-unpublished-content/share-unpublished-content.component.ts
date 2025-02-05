@@ -61,7 +61,9 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isPartnersRouter =  this.router.url.includes("/partners/");
     this.isPublishedSuccessfully = false;
   }
-
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup(this.modalPopUpId);
+}
   openPopUp(userListId: number, contact:any,type:string,userListName:string){
     this.resetValues();
     this.isPublishedSuccessfully = false;

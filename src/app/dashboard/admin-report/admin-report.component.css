@@ -84,3 +84,48 @@ input[name='collapsibleCheckBox'] {
 	margin-bottom: 0;
 }
 /******collapsible*******/
+/* Stripe Background Gradient */
+.stripe-background {
+  background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 20px,
+      white 60px
+    ),
+    linear-gradient(
+      10deg,
+      royalblue,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259,
+      #2fd11259
+    );
+  /* Background Text Clip */
+  /* webkit vendor prefix start */
+  -webkit-text-fill-color: transparent;
+  /* webkit vendor prefix end */
+  background-clip: text;
+  animation: stripe-text-animation 3s alternate infinite;
+}
+
+/* Stripe Text Animation */
+@keyframes stripe-text-animation {
+  from {
+    background-position: 0px 100px;
+  }
+
+  to {
+    background-position: 300px 300px;
+  }
+}
+
+.searched-result{
+	background-color : #2fd11259 !important;
+}

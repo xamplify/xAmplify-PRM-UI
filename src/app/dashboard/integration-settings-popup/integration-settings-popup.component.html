@@ -58,6 +58,17 @@
                 </option>
               </select>
             </div>
+            <div class="col-sm-6" *ngIf="!isDefaultField && customFields.type === 'date' && opportunityType === 'DEAL'">
+              <label *ngIf="customFields.selected" for="html" style="float: left;">Map As</label>
+              <select class="form-control" [disabled]= "canDisableSelect" *ngIf="customFields.selected" [(ngModel)]="customFields.formDefaultFieldType"
+                [ngModelOptions]="{standalone: true}" (change)="onFieldTypeChange(customFields)">
+                <option [ngValue]="null">None</option>
+                <option [ngValue]="'XAMPLIFY_LEAD_CREATED_DATE'">xAmplify Lead Created Date
+                </option>
+                <option [ngValue]="'XAMPLIFY_DEAL_REGISTERED_DATE'">xAmplify Deal Registered Date
+                </option>
+              </select>
+            </div>
           </div>
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-6">

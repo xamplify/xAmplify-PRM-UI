@@ -79,7 +79,9 @@ export class AddTaskModalPopupComponent implements OnInit {
     }
     this.referenceService.openModalPopup('addTaskModalPopup');
   }
-
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup('addTaskModalPopup');
+  }
   save() {
     this.ngxLoading = true;
     this.prepareFormData();
