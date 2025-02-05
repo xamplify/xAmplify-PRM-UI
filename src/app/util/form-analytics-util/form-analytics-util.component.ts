@@ -121,7 +121,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
         }
 
     }
-
+ngOnDestroy(){
+    $("#addLeadsPopup").modal("hide");
+}
     listSubmittedData(pagination: Pagination) {
         pagination.searchKey = this.searchKey;
         this.referenceService.loading(this.httpRequestLoader, true);

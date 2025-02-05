@@ -71,7 +71,9 @@ export class SendTestEmailComponent implements OnInit {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
   }
-
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup(this.modalPopupId);
+}
   /***XNFR-832****/
   getFundingTemplateHtmlBody() {
     this.processing = true;

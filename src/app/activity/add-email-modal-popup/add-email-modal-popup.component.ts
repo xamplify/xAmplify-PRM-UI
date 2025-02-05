@@ -72,7 +72,9 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.referenceService.openModalPopup('addEmailModalPopup');
     }
   }
-
+  ngOnDestroy(){
+    $('#addEmailModalPopup').modal('hide');
+  }
   sendEmailToUser() {
     this.ngxLoading = true;
     this.prepareFormData();

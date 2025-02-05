@@ -108,7 +108,7 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.searchKey;
-    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
+    pagination = this.utilService.sortOptionValues(this.sortOption.teamMember, pagination);
     this.getPartnerJourneyTeamInfo(this.pagination);
   }
 
@@ -218,6 +218,11 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
         this.customResponse = new CustomResponse('ERROR', "Failed to Download", true);
       });
 
+  }
+
+  sortPartnerTeamMembers(text: any) {
+    this.sortOption.teamMember = text;
+    this.getAllFilteredResults(this.pagination);
   }
 
 }

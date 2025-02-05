@@ -561,6 +561,23 @@ export class SortOption {
 		{ 'name': 'Sent Time (ASC)', 'value': 'lastEmailSentAt-ASC' },
 		{ 'name': 'Sent Time (DESC)', 'value': 'lastEmailSentAt-DESC' }
 	];
+
+	teamMemberDropDowns = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name(A-Z)', 'value': 'nameAsc' },
+		{ 'name': 'Name(Z-A)', 'value': 'nameDesc' },
+		{ 'name': 'Recent Login ASC', 'value': 'datelastloginAsc' },
+		{ 'name': 'Recent Login DESC', 'value': 'datelastloginDesc' },
+	];
+
+	activePartnerJourneyDropDowns = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name(A-Z)', 'value': 'name-Asc' },
+		{ 'name': 'Name(Z-A)', 'value': 'name-Desc' },
+		{ 'name': 'Recent Login ASC', 'value': 'logInTime-Asc' },
+		{ 'name': 'Recent Login DESC', 'value': 'logInTime-Desc' },
+	];
+
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -663,5 +680,10 @@ export class SortOption {
 	public teamMemberAnalyticsSortOptions: any = this.inviteTeamMemberAnalyticsDropDownOptions[this.inviteTeamMemberAnalyticsDropDownOptions.length - 1];
 
 	public campaignMdfEmailsHistorySortOption: any = this.campaignMdfEmailsHistoryDropDownOptions[this.campaignMdfEmailsHistoryDropDownOptions.length - 1];
+
+	public teamMember = this.teamMemberDropDowns[0]; 
+
+	public activepartnerJourney = this.activePartnerJourneyDropDowns[0];
+
 
 }

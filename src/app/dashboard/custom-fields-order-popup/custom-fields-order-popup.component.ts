@@ -25,6 +25,7 @@ export class CustomFieldsOrderPopupComponent implements OnInit {
 
   ngOnDestroy() {
     this.dragulaService.destroy('customFieldsDragula');
+    $("#integrationSettingsForm").modal('hide');
   }
 
   hideIntegrationSettingForm() {

@@ -59,6 +59,9 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.customFields.controllerName = this.customField.controllerName;
     this.customFields.formLookUpDefaultFieldType = this.customField.formLookUpDefaultFieldType;
   }
+  ngOnDestroy(){
+    $("#integrationSettingsForm").modal('hide');
+  }
   hideIntegrationSettingForm() {
     $("#integrationSettingsForm").modal('hide');
     this.closeEvent.emit("0");

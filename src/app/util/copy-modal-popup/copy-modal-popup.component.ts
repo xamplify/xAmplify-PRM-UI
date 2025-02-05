@@ -26,7 +26,9 @@ export class CopyModalPopupComponent implements OnInit {
 
   ngOnInit() {
   }
-
+ ngOnDestroy(){
+  this.referenceService.closeModalPopup(this.modalPopupId);
+ }
   openModalPopup(id:number,copiedName:string,moduleName:string,existingNames:any){
     this.customResponse = new CustomResponse();
     this.errorMessage = "";

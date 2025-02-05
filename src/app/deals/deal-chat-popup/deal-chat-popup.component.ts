@@ -58,7 +58,9 @@ export class DealChatPopupComponent implements OnInit {
     }  
     $('#chatModelPopup').modal('show');  
   }
-
+  ngOnDestroy(){
+    $('#chatModelPopup').modal('hide');
+  }
   addCommentModalClose()
   {
     this.isCommentSection.emit(false);
