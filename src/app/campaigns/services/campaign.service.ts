@@ -17,7 +17,6 @@ import { ReferenceService } from 'app/core/services/reference.service';
 declare var swal: any, $: any, Promise: any;
 @Injectable()
 export class CampaignService {
-    
     campaign: Campaign;
     eventCampaign: any;
     reDistributeCampaign: Campaign;
@@ -27,6 +26,7 @@ export class CampaignService {
     reDistributeEvent = false;
     loading = false;
     archived: boolean = false;
+    QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     constructor(private http: Http, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, private utilService: UtilService, public referenceService: ReferenceService) { }
 
@@ -1473,6 +1473,12 @@ export class CampaignService {
         let url = this.URL + "campaign/fetchContactAssociatedCampaignsAndCount" + "?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
         return this.authenticationService.callGetMethod(url);
     }
+
+    findCampaignMdfEmailsHistory(emailsHistoryPagination: Pagination) {
+        let pageableUrl = this.referenceService.getPagebleUrl(emailsHistoryPagination);
+        const url = this.URL + 'campaign/requests/' +emailsHistoryPagination.campaignId+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+      }
 
 
 }
