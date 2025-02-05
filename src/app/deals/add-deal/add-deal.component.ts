@@ -185,7 +185,7 @@ export class AddDealComponent implements OnInit {
   isThroughAddUrl : boolean = false;
   isFromManageDeals : boolean = false;
   attachLeadError: boolean = false;
-  attcahContact: any;
+  attachContact: any;
   showSelectContactModel: boolean = false;
   contactId: any;
   showChangeLeadButton: boolean = false;
@@ -2045,13 +2045,13 @@ export class AddDealComponent implements OnInit {
   openSelectContactModel() {
     this.showSelectContactModel = true;
     this.contactInfo = '';
-    this.attcahContact = new Object();
-    this.attcahContact.dealId = this.dealId;
-    this.attcahContact.contactId = this.contactId;
-    this.attcahContact.dealActionType = this.actionType;
-    this.attcahContact.callingComponent = "DEAL";
-    this.attcahContact.isOrgAdmin = this.isOrgAdmin;
-    this.attcahContact.isVendorVersion = this.isVendorVersion;
+    this.attachContact = new Object();
+    this.attachContact.dealId = this.dealId;
+    this.attachContact.contactId = this.contactId;
+    this.attachContact.dealActionType = this.actionType;
+    this.attachContact.callingComponent = "DEAL";
+    this.attachContact.isOrgAdmin = this.isOrgAdmin;
+    this.attachContact.isVendorVersion = this.isVendorVersion;
   }
 
   closeSelectContactModel() {
