@@ -540,11 +540,11 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Vendor Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
         { name: 'Lead Stage', value: '{{leadStage}}' },
         { name: 'Customer Full Name', value: '{{customerFullName}}' },
-        { name: 'sender Full Name', value: '{{senderFullName}}' }
+        { name: 'Sender Full Name', value: '{{senderFullName}}' }
         ];
       }
       if (["LEAD_REJECT", "LEAD_APPROVE"].includes(emailTemplateType)) {
-        mergeTags.push({ name: 'Associated Lead Campaign', value: '{{leadAssociatedCampaign}}' });
+        mergeTags.push({ name: 'Lead Associated Campaign', value: '{{leadAssociatedCampaign}}' });
       }
 
       var beeUserId = "bee-"+emailTemplate.companyId;
