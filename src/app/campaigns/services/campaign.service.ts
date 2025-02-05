@@ -1474,11 +1474,19 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
-    findCampaignMdfEmailsHistory(emailsHistoryPagination: Pagination) {
+    findMdfRequestsByCampaignId(emailsHistoryPagination: Pagination) {
         let pageableUrl = this.referenceService.getPagebleUrl(emailsHistoryPagination);
         const url = this.URL + 'campaign/requests/' +emailsHistoryPagination.campaignId+this.QUERY_PARAMETERS+pageableUrl;
         return this.authenticationService.callGetMethod(url);
       }
 
+      
+      findMdfRequestHistoriesByMdfKey(pagination: Pagination,mdfAlias:string) {
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        const url = this.URL + 'campaign/requests/history/' +mdfAlias+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+      }
+
+   
 
 }
