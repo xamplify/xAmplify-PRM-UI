@@ -550,6 +550,24 @@ export class SortOption {
 		{ 'name': 'Invited On (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Invited On (DESC)', 'value': 'createdTime-DESC' }
 	];
+
+	teamMemberDropDowns = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name(A-Z)', 'value': 'nameAsc' },
+		{ 'name': 'Name(Z-A)', 'value': 'nameDesc' },
+		{ 'name': 'Recent Login ASC', 'value': 'datelastloginAsc' },
+		{ 'name': 'Recent Login DESC', 'value': 'datelastloginDesc' },
+	]
+
+	activePartnerJourneyDropDowns = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name(A-Z)', 'value': 'name-Asc' },
+		{ 'name': 'Name(Z-A)', 'value': 'name-Desc' },
+		{ 'name': 'Recent Login ASC', 'value': 'logInTime-Asc' },
+		{ 'name': 'Recent Login DESC', 'value': 'logInTime-Desc' },
+	]
+
+
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -650,5 +668,10 @@ export class SortOption {
 
 	/*** XNFR-850 ***/
 	public teamMemberAnalyticsSortOptions: any = this.inviteTeamMemberAnalyticsDropDownOptions[this.inviteTeamMemberAnalyticsDropDownOptions.length - 1];
+
+	public teamMember = this.teamMemberDropDowns[0]; 
+
+	public activepartnerJourney = this.activePartnerJourneyDropDowns[0];
+
 
 }
