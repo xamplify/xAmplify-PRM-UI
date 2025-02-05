@@ -32,7 +32,9 @@ export class MicrosoftAuthenticationPopupComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     $("#microsoftPreSettingsForm").modal('show');
   }
-
+  ngOnDestroy(){
+    $("#microsoftPreSettingsForm").modal('hide');
+  }
   hideMicrosoftPresettingForm() {
     $("#microsoftPreSettingsForm").hide();
     console.log("Closed")
