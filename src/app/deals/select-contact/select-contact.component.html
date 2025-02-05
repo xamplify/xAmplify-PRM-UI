@@ -75,57 +75,57 @@
                                   <table cellpadding="5" cellspacing="0" class="border" style="border:none !important;" aria-describedby="">
                                     <tbody>
                                       <tr *ngIf="gdprStatus" class="d-flex">
-                                        <td class='pt10 pb10 bold mr_10' translate><b>Legal Basis : </b> </td>
-                                        <td class="pt10 pb10 pl10">
+                                        <td class='pt10 bold mr_10' translate><b>Legal Basis : </b> </td>
+                                        <td class="pt10 pl10">
                                           {{contact.legalBasisString}}
                                         </td>
                                       </tr>
                                       <tr *ngIf="contact.jobTitle" class="d-flex">
-                                        <td class='pt10 pb10 bold mr_10' translate>
+                                        <td class='pt10 bold mr_10' translate>
                                           <b>Job Title : </b>
                                         </td>
-                                        <td class='pt10 pb10 pl10'>
+                                        <td class='pt10 pl10'>
                                           {{contact.jobTitle}}</td>
                                       </tr>
                                       <tr *ngIf="contact.address" class="d-flex">
-                                        <td class='pt10 pb10 bold mr_10' translate>
+                                        <td class='pt10 bold mr_10' translate>
                                           <b>Address : </b>
                                         </td>
-                                        <td class='pt10 pb10 pl10'>
+                                        <td class='pt10 pl10'>
                                           {{contact.address}}</td>
                                       </tr>
                                       <tr *ngIf="contact.city" class="d-flex">
-                                        <td class='pt10 pb10 bold mr_10' translate>
+                                        <td class='pt10 bold mr_10' translate>
                                           <b>City : </b>
                                         </td>
-                                        <td class='pt10 pb10 pl10'>
+                                        <td class='pt10 pl10'>
                                           {{contact.city}}</td>
                                       </tr>
                                       <tr *ngIf="contact.state" class="d-flex">
-                                        <td class='pt10 pb10 bold mr_10' translate>
+                                        <td class='pt10 bold mr_10' translate>
                                           <b>State : </b>
                                         </td>
-                                        <td class='pt10 pb10 pl10'>
+                                        <td class='pt10 pl10'>
                                           {{contact.state}}</td>
                                       </tr>
                                       <tr *ngIf="contact.country" class="d-flex">
-                                        <td class='pt10 pb10 bold mr_10' translate>
+                                        <td class='pt10 bold mr_10' translate>
                                           <b>Country : </b>
                                         </td>
-                                        <td class='pt10 pb10 pl10'>
+                                        <td class='pt10 pl10'>
                                           {{contact.country}}</td>
                                       </tr>
                                       <tr *ngIf="contact.zipCode" class="d-flex">
-                                        <td class='pt10 pb10 bold mr_10' translate>
+                                        <td class='pt10 bold mr_10' translate>
                                           <b>ZipCode : </b>
                                         </td>
-                                        <td class='pt10 pb10 pl10'>
+                                        <td class='pt10 pl10'>
                                           {{contact.zipCode}}</td>
                                       </tr>
                                       <tr *ngFor="let flexiField of contact.flexiFields" class="d-flex">
-                                        <td class='pt10 pb10 bold mr_10' *ngIf='flexiField.fieldValue != ""' translate>{{flexiField.fieldName}}:
+                                        <td class='pt10 bold mr_10' *ngIf='flexiField.fieldValue != ""' translate>{{flexiField.fieldName}}:
                                         </td>
-                                        <td align="center" class="pt10 pb10">{{flexiField.fieldValue}}</td>
+                                        <td align="center" class="pt10">{{flexiField.fieldValue}}</td>
                                       </tr>
                                     </tbody>
                                   </table>
