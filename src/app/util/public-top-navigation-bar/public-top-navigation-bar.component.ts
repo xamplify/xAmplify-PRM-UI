@@ -131,10 +131,17 @@ export class PublicTopNavigationBarComponent implements OnInit {
 
   openRequestAccountModal() {
     this.requestDemo = new RequestDemo();
+    this.requestAccountButtonClicked = false;
+    this.isValidForm = false;
+    this.isValidCompany = false;
+    this.isValidMobileNumber = false;
+    this.errorClass = "success";
     if(this.emailAddress!=undefined){
       this.isCampaignMDF = true;
       this.requestDemo.emailId = this.emailAddress;
       this.validateEmailId();
+    }else{
+      this.isValidEmail = false;
     }
     this.referenceService.openModalPopup("request-account-modal-popup");
   }
