@@ -89,6 +89,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   selectedVendorCompanyIdAndStatuses=[];
   @Input() isVendorPartnerJourneyPages = false;
   @Input() isVendorMarketplacePages = false;
+  cacheBuster = '?t=' + new Date().getTime();
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -216,6 +217,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       if((this.vendorJourney || this.isPartnerJourneyPages) && !this.isLandingPages){
         this.pagination.vendorJourneyOnly = true;
       }
+      this.cacheBuster = '?t=' + new Date().getTime();
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
               if(response.access){
@@ -626,7 +628,7 @@ copy(landingPage:any){
           this.pagination.companyId = this.loggedInUserCompanyId;
           this.pagination.searchKey = this.sortOption.searchKey;
           let self = this;
-
+          this.cacheBuster = '?t=' + new Date().getTime();
         this.landingPageService.findPartnerVendorJourneyLandingPages(pagination).subscribe(
             (response: any) => {
                 if(response.access){
@@ -807,7 +809,7 @@ copy(landingPage:any){
           this.pagination.searchKey = this.sortOption.searchKey;
           let self = this;
           this.pagination.vendorPartnerJourneyPage = true;
-
+          this.cacheBuster = '?t=' + new Date().getTime();
         this.landingPageService.findVendorPartnerJourneyLandingPages(pagination).subscribe(
             (response: any) => {
                 if(response.access){

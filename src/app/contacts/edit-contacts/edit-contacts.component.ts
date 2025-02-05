@@ -298,7 +298,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	activeCrmType: any;
 	isLocalhostOrQADomain: boolean = false;
 	/**XNFR-848**/
-	isCompanyJourney: boolean;
+	isCompanyJourney: boolean = false;
 	companyJourneyId: any;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -3015,6 +3015,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (RouterUrlConstants.contacts.includes(this.module)) {
 				this.selectedContactListId = this.refService.decodePathVariable(this.route.snapshot.params['userListId']);
 				this.companyJourneyId = this.refService.decodePathVariable(this.route.snapshot.params['companyId']);
+				/**XNFR-848**/
+				if (this.companyJourneyId != undefined) {
+					this.isCompanyJourney = true;
+					this.manageCompanies = true;
+				}
 				this.contactListId = this.selectedContactListId;
 				this.showEdit = true;
 				this.setValuesToRequiredInputs();
@@ -3052,10 +3057,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.checkTermsAndConditionStatus();
 			this.contactService.deleteUserSucessMessage = false;
 			this.checkLocalhostOrQADomain();
-			/**XNFR-848**/
-			if (this.companyJourneyId != undefined) {
-				this.isCompanyJourney = true;
-			}
 		}
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
@@ -3725,7 +3726,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	setValuesToRequiredInputs() {
 		this.loading = true;
-		this.contactService.findUserListDetials(this.selectedContactListId, this.isFromCompanyModule).subscribe(
+		let isFromCompanyModuleOrJourney = this.isFromCompanyModule || this.isCompanyJourney;
+		this.contactService.findUserListDetials(this.selectedContactListId, isFromCompanyModuleOrJourney).subscribe(
 			result => {
 				if (result.statusCode == 200) {
 					let data = result.data;
@@ -3737,7 +3739,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.selectedCompanyId = data.associatedCompanyId;
 					this.companyName = data.companyName;
 					this.uploadedUserId = data.uploadedUserId;
-					if (this.isFromCompanyModule) {
+					if (isFromCompanyModuleOrJourney) {
 						this.setCompanyModuleFields(data);
 					} else {
 						this.setContactModuleFields(data);

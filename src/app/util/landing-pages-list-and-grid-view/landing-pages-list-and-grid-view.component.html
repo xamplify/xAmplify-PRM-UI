@@ -48,7 +48,7 @@
                                 <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                     <td class="hidden-xs custom-icon-width">
                                         <img id="landing-page-image-preview-custom-css" class="pages_image_border"
-                                            src="{{landingPage.thumbnailPath}}" alt="Image Not Found">
+                                            src="{{landingPage.thumbnailPath+cacheBuster}}" alt="Image Not Found">
                                     </td>
                                     <td>
                                         <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
@@ -168,7 +168,7 @@
                                     <span
                                         *ngIf="landingPage?.published && !landingPage?.publishingOrWhiteLabelingInProgress">Active</span>
                                 </div>
-                                <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
+                                <img class="img-responsive center-block" src="{{landingPage.thumbnailPath+cacheBuster}}"
                                     alt="No Image Found">
                                 <div>
                                     <h4 class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent"

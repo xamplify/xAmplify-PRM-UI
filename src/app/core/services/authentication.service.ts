@@ -37,7 +37,7 @@ import { RequestDemo } from 'app/authentication/request-demo/request-demo';
 
 @Injectable()
 export class AuthenticationService {
-  
+ 
 
   access_token: string;
   refresh_token: string;
@@ -1560,6 +1560,7 @@ vanityWelcomePageRequired(userId) {
     let url = this.REST_URL + 'campaign-mdf/request-account';
     return this.callPostMethod(url,requestDemo);
   }
+
 
  
   
