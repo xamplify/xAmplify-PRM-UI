@@ -1,3 +1,7 @@
 .mr20 {
     margin-right: 20px;
   }
+
+  .show-more {
+    display: table-row;
+  }
