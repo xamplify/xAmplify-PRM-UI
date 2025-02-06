@@ -56,7 +56,7 @@
                 <!--Lead Created Details-->
                 <div *ngIf="lead || showLeadInfo" class="lead-details-border mt5">
                   <h5 class="mt10">
-                    <span class="ml5 underline"><strong>Lead Details:</strong></span>
+                    <span class="ml5 underline"><strong>{{detailsTitle}}</strong></span>
                     <div style="padding:5px">
                       <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                     </div>

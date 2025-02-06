@@ -8,6 +8,7 @@ import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DealDynamicProperties } from 'app/deal-registration/models/deal-dynamic-properties';
 import { UtilService } from 'app/core/services/util.service';
+import { ReferenceService } from 'app/core/services/reference.service';
 declare var $:any;
 
 @Injectable()
@@ -16,7 +17,7 @@ export class DealsService {
   
 	URL = this.authenticationService.REST_URL + "deal/";
 
-  constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,private utilService:UtilService) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,private utilService:UtilService,private referenceService: ReferenceService) { }
   
   listDealsForVendor(pagination: Pagination) {
     return this.http.post(this.URL + `/list/v?access_token=${this.authenticationService.access_token}`, pagination)
@@ -292,6 +293,13 @@ findVendorDetailsWithSelfDealsCount(campaignId:any, loggedInUserId:any) {
     let isCompanyJourneyParam = "&isCompanyJourney="+isCompanyJourney;
     let dealRequestDtoParam = $.trim(loggedInUserIdRequestParam+contactIdRequestParam+vanityUrlFilterParam+vendorCompanyNameParam+isCompanyJourneyParam);
     let url = this.authenticationService.REST_URL + "deal/fetchContactAssociatedDealsAndCount" + "?access_token="+this.authenticationService.access_token + dealRequestDtoParam;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getContactsForContactAttachment(pagination: Pagination) {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+    let url = this.authenticationService.REST_URL + "deal/fetchContactsForDealAttachment/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token + pageableUrl;
     return this.authenticationService.callGetMethod(url);
   }
  

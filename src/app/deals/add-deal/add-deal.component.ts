@@ -87,6 +87,7 @@ export class AddDealComponent implements OnInit {
   properties: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
   showDefaultForm = false;
   showContactInfo = false;
+  showContactInfoForLead = false;
 
   ngxloading: boolean;
   isLoading = false;
@@ -128,6 +129,7 @@ export class AddDealComponent implements OnInit {
   showSelectLeadModel: boolean = false;
   showAttachLeadButton: boolean = false;
   attachLeadText: string = "Attach a Lead";
+  deAttachText: string = "";
 
   createdByPipelines = new Array<Pipeline>();
   createdByStages = new Array<PipelineStage>();
@@ -183,6 +185,14 @@ export class AddDealComponent implements OnInit {
   isThroughAddUrl : boolean = false;
   isFromManageDeals : boolean = false;
   attachLeadError: boolean = false;
+  attachContact: any;
+  showSelectContactModel: boolean = false;
+  contactId: any;
+  showChangeLeadButton: boolean = false;
+  showChangeContactButton: boolean = false;
+  contactInfo: any;
+  detailsTitle: any;
+  showContactDetails: boolean = false;
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -366,6 +376,7 @@ export class AddDealComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
+            self.showContactInfoForLead = true;
             self.showContactInfo = true;
             self.contact.firstName = self.lead.firstName;
             self.contact.lastName = self.lead.lastName;
@@ -399,7 +410,7 @@ export class AddDealComponent implements OnInit {
           if (this.isDealFromContact) {
             this.validateField("attachLead", false);
           }
-         }
+        }
       );
   }
 
@@ -492,8 +503,16 @@ export class AddDealComponent implements OnInit {
             if (self.edit && (!self.isVendorVersion || self.ownDeal)) {
               self.showCommentActions = true;
             }
+
             if (self.deal.associatedContact != undefined) {
               self.showContactInfo = true;
+              self.showContactInfoForLead = true;
+              self.detailsTitle = 'Lead Details';
+              if (self.deal.associatedContactId != undefined) {
+                self.detailsTitle = 'Contact Details';
+                self.showContactDetails = true;
+                self.showContactInfoForLead = false;
+              }
               self.showAttachLeadButton = false;
               self.contact = self.deal.associatedContact;
             }
@@ -1751,8 +1770,11 @@ export class AddDealComponent implements OnInit {
 
   leadSelected(leadId: any) {
     this.showSelectLeadModel = false;
+    this.showAttachLeadButton = false;
+    this.showChangeLeadButton = true;
     this.leadId = leadId;
     this.attachLeadText = "Change Lead";
+    this.deAttachText = "Detach Lead";
     this.showDetachLeadButton = true;
     this.getLead(this.leadId);
   }
@@ -1784,14 +1806,21 @@ export class AddDealComponent implements OnInit {
   holdTicketTypeId: any;
   /*** XNFR-476 ***/
   resetAttachedLeadInfo() {
+    this.showContactInfoForLead = false;
+    this.showContactDetails = false;
     this.showContactInfo = false;
+    this.showAttachLeadButton = true;
+    this.showChangeLeadButton = false;
+    this.showChangeContactButton = false;
     this.deal.associatedLeadId = 0;
     this.attachLeadText = 'Attach Lead';
     this.showDetachLeadButton = false;
     this.deal.campaignId = 0;
     this.deal.campaignName = '';
     this.leadId = 0;
+    this.contactId = 0
     this.isZohoLeadAttached = false;
+    this.deal.associatedContactId = 0;
     this.isZohoLeadAttachedWithoutSelectingDealFor = false;
     this.vendorCompanyName = '';
     if (this.actionType == 'add' && !this.vanityLoginDto.vanityUrlFilter) {
@@ -2014,6 +2043,54 @@ export class AddDealComponent implements OnInit {
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
     let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
     this.referenceService.goToRouter(url);
+  }
+
+  //XNFR-869
+  openSelectContactModel() {
+    this.showSelectContactModel = true;
+    this.contactInfo = '';
+    this.attachContact = new Object();
+    this.attachContact.dealId = this.dealId;
+    this.attachContact.contactId = this.contactId;
+    this.attachContact.dealActionType = this.actionType;
+    this.attachContact.callingComponent = "DEAL";
+    this.attachContact.isOrgAdmin = this.isOrgAdmin;
+    this.attachContact.isVendorVersion = this.isVendorVersion;
+  }
+
+  closeSelectContactModel() {
+    this.showSelectContactModel = false;
+  }
+
+  contactSelected(event: any) {
+    this.showSelectContactModel = false;
+    this.contactId = event.showSelectedContact;
+    this.showDetachLeadButton = true;
+    this.showChangeContactButton = true;
+    this.showAttachLeadButton = false;
+    this.attachLeadText = "Change Contact";
+    this.deAttachText = "Detach Contact"
+    this.frameContactDetails(event);
+  }
+
+
+  frameContactDetails(event: any) {
+    let self = this;
+    self.showContactInfo = true;
+    self.showContactDetails = true;
+    self.contactInfo = event.contact;
+    self.contact.firstName = self.contactInfo.firstName;
+    self.contact.lastName = self.contactInfo.lastName;
+    self.contact.emailId = self.contactInfo.emailId;
+    self.deal.associatedContactId = self.contactId;
+  }
+
+  openSelectModelByAttachType() {
+    if (this.showChangeContactButton) {
+      this.openSelectContactModel();
+    } else {
+      this.openSelectLeadModel();
+    }
   }
 
 }
