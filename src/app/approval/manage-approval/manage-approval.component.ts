@@ -626,6 +626,7 @@ export class ManageApprovalComponent implements OnInit {
       this.asset = {};
       this.pagination.pageIndex = 1;
       this.getAllApprovalList(this.pagination);
+      this.clearSelectedLists();
       this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
     } else if (response.statusCode == 401) {
       this.customResponse = new CustomResponse('ERROR', response.message, true);
@@ -685,6 +686,8 @@ export class ManageApprovalComponent implements OnInit {
           this.customResponse = new CustomResponse('SUCCESS', item.name + " Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.getAllApprovalList(this.pagination);
+          this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
+          this.clearSelectedLists();
         } else {
           swal("Please Contact Admin!", response.message, "error");
           this.referenceService.stopLoader(this.httpRequestLoader);
@@ -714,27 +717,39 @@ export class ManageApprovalComponent implements OnInit {
 
   confirmChangePublish(id: number, isPublish: boolean, item: any) {
     let text = "";
-    if (isPublish) {
-      text = "You want to publish.";
-    }
-    try {
-      let self = this;
+    if (isPublish && item.type == 'PlayBook' && !item.hasDamContent) {
       swal({
-        title: 'Are you sure?',
-        text: text,
+        title: 'Add assets to publish.',
         type: 'warning',
-        showCancelButton: true,
         swalConfirmButtonColor: '#54a7e9',
-        swalCancelButtonColor: '#999',
-        confirmButtonText: 'Yes'
+        confirmButtonText: 'Ok'
 
-      }).then(function () {
-        self.changePublish(id, isPublish, item.type);
-      }, function (dismiss: any) {
+      }).then(function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
       });
-    } catch (error) {
-      this.referenceService.showServerError(this.httpRequestLoader);
+    } else {
+      if (isPublish) {
+        text = "You want to publish.";
+      }
+      try {
+        let self = this;
+        swal({
+          title: 'Are you sure?',
+          text: text,
+          type: 'warning',
+          showCancelButton: true,
+          swalConfirmButtonColor: '#54a7e9',
+          swalCancelButtonColor: '#999',
+          confirmButtonText: 'Yes'
+
+        }).then(function () {
+          self.changePublish(id, isPublish, item.type);
+        }, function (dismiss: any) {
+          console.log('you clicked on option' + dismiss);
+        });
+      } catch (error) {
+        this.referenceService.showServerError(this.httpRequestLoader);
+      }
     }
   }
 
@@ -945,6 +960,11 @@ export class ManageApprovalComponent implements OnInit {
   }
 
   clearSelectedItems() {
+    this.clearSelectedLists();
+    this.showApproveResponse = false;
+  }
+
+  private clearSelectedLists() {
     this.displayApproveAndRejectButton = false;
     this.selectedDamIds = [];
     this.selectedPlayBookIds = [];
@@ -953,7 +973,6 @@ export class ManageApprovalComponent implements OnInit {
     this.selectedIds = [];
     this.rejectedRecordNames = [];
     this.isSelectedAutoApprovalRecords = false;
-    this.showApproveResponse = false;
   }
 
   isSelectable(item: any): boolean {
