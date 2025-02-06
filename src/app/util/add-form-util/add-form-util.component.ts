@@ -755,14 +755,16 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
     /***Remove Column from create form***********/
     removeColumn(columnInfo: ColumnInfo, rowIndex: number, columnIndex: number) {
-        let columnInfos = this.rowInfos[rowIndex].formLabelDTOs;
-        this.rowInfos[rowIndex].formLabelDTOs = this.referenceService.removeObjectFromArrayList(columnInfos, columnInfo.divId, 'divId');
-        $('#' + columnInfo.divId).remove();
-        this.checkAndRemoveEmptyRows();
-        this.isRowClicked = false;
-        this.isColumnClicked = false;
-        // this.highlightByLength(this.columnInfos.length);
-        this.checkForQuizFields(this.rowInfos);
+        if (columnInfo.defaultColumn === false) {
+            let columnInfos = this.rowInfos[rowIndex].formLabelDTOs;
+            this.rowInfos[rowIndex].formLabelDTOs = this.referenceService.removeObjectFromArrayList(columnInfos, columnInfo.divId, 'divId');
+            $('#' + columnInfo.divId).remove();
+            this.checkAndRemoveEmptyRows();
+            this.isRowClicked = false;
+            this.isColumnClicked = false;
+            // this.highlightByLength(this.columnInfos.length);
+            this.checkForQuizFields(this.rowInfos);
+        }
     }
 
     /*********Add Radio Buttons*********/

@@ -33,6 +33,7 @@ import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play
 import { Properties } from 'app/common/models/properties';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RequestDemo } from 'app/authentication/request-demo/request-demo';
+import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
 
 
 @Injectable()
@@ -1560,6 +1561,13 @@ vanityWelcomePageRequired(userId) {
     let url = this.REST_URL + 'campaign-mdf/request-account';
     return this.callPostMethod(url,requestDemo);
   }
+
+  validateDuplicateMdfRequest(duplicateMdfRequestDto:DuplicateMdfRequest) {
+    const url = this.REST_URL + 'campaign/validateDuplicateCampaignMdfRequest?emailAddress='+duplicateMdfRequestDto.emailAddress+'&campaignId='+duplicateMdfRequestDto.campaignId+'&access_token='+this.access_token;
+    return this.callGetMethod(url);
+  }
+
+
 
 
  
