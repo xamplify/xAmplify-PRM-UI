@@ -70,9 +70,12 @@ th.alignItamsleft {
   position: relative;
 }
 }
+/*
+Uncommenting these lines will create an issue.https://xamplify.atlassian.net/issues/XBI-3931
+
 @media (min-width: 768px) {
   div#comments-div{height:0px !important}
 }
 @media (min-width: 360px) and (max-width: 390px) {
   div#comments-div{height:0px !important}
-}
+} */
