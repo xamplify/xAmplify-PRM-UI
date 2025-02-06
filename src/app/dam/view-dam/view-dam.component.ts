@@ -43,7 +43,8 @@ export class ViewDamComponent implements OnInit {
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
-    public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer, public signatureService:SignatureService) {
+    public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer, public signatureService:SignatureService,
+	public properties: Properties) {
 		 /****XNFR-169****/
 		 this.viewType = this.activatedRoute.snapshot.params['viewType'];
 		 this.categoryId = this.activatedRoute.snapshot.params['categoryId'];
