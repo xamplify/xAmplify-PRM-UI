@@ -626,7 +626,7 @@ export class ManageApprovalComponent implements OnInit {
       this.asset = {};
       this.pagination.pageIndex = 1;
       this.getAllApprovalList(this.pagination);
-      this.clearSelectedLists();
+      this.clearSelectedItems();
       this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
     } else if (response.statusCode == 401) {
       this.customResponse = new CustomResponse('ERROR', response.message, true);
@@ -687,7 +687,7 @@ export class ManageApprovalComponent implements OnInit {
           this.pagination.pageIndex = 1;
           this.getAllApprovalList(this.pagination);
           this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
-          this.clearSelectedLists();
+          this.clearSelectedItems();
         } else {
           swal("Please Contact Admin!", response.message, "error");
           this.referenceService.stopLoader(this.httpRequestLoader);
@@ -960,11 +960,6 @@ export class ManageApprovalComponent implements OnInit {
   }
 
   clearSelectedItems() {
-    this.clearSelectedLists();
-    this.showApproveResponse = false;
-  }
-
-  private clearSelectedLists() {
     this.displayApproveAndRejectButton = false;
     this.selectedDamIds = [];
     this.selectedPlayBookIds = [];
@@ -973,6 +968,7 @@ export class ManageApprovalComponent implements OnInit {
     this.selectedIds = [];
     this.rejectedRecordNames = [];
     this.isSelectedAutoApprovalRecords = false;
+    this.showApproveResponse = false;
   }
 
   isSelectable(item: any): boolean {
