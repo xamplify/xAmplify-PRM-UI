@@ -1,7 +1,7 @@
 (function (window) {
 	window.__env = window.__env || {};
 
-	window.__env.domainName = "";
+	window.__env.domainName = "demo";
 	
 	/*************Local*******************************/
 
