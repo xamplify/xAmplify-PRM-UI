@@ -1,18 +1,104 @@
-<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
+  <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="page-bar mb-height_auto" style="height: 48px;">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-
+      <li><a [routerLink]="companyRouter" translate>Manage Companies</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <a (click)="closeCampaignsList()" translate>Company Journey</a><i class="fa fa-angle-right"
+          aria-hidden="true"></i>
+      </li>
+      <li>
+        <a translate>Campaigns</a>
+      </li>
     </ul>
   </div>
+
+  <div class="row" *ngIf="isLocalhost">
+    <div class="col-md-12 col-lg-12">
+      <div class="portlet light mheight">
+        <div class="row" style="margin-left: -9px;">
+          <app-box-loader [countLoader]=3 *ngIf="countsLoader"></app-box-loader>
+          <div *ngIf="!countsLoader" class="col-md-12 col-lg-12 mleft" style="padding-left: 24px;padding-right: 30px;">
+            <div class="row">
+              <div id="vendor-details-tile" class="col-sm-4 col-xs-8 col-lg-4 col-md-4 mBottom mWidth vendor_list"
+                style="padding-left: 19px;border-radius: 5px !important;">
+                <div class="row">
+                  <div class="flex margin-flex card-template">
+                    <span class='img-templates'>
+                      <img class="h-50px" src="assets/admin/pages/media/works/company.png" alt="">
+                    </span>
+                    <span class="margin-left" style="margin-left: 20px;">
+                      <h6 class='m0 user-email' *ngIf="selectedCompany?.companyName?.length>0">
+                        <p class="user-company" data-toggle="tooltip" data-placement="bottom"
+                          title="{{selectedCompany?.companyName}}">
+                          <span>{{selectedCompany?.companyName |slice:0:50}}</span>
+                          <span *ngIf="selectedCompany?.companyName?.length>50">..</span>
+                        </p>
+                      </h6>
+                      <br>
+                      <h5 *ngIf="selectedCompany?.fullName?.length>0" class='ellipsis user-name' data-toggle="tooltip"
+                        data-placement="bottom" title="{{selectedCompany?.fullName}}">
+                        {{selectedCompany?.fullName | slice:0:25}}
+                        <span *ngIf="selectedCompany?.fullName?.length>20">..</span>
+                      </h5>
+                      <a style="display: table;" data-toggle="tooltip" data-placement="bottom"
+                        title="{{selectedCompany?.emailId}}">
+                        {{selectedCompany?.emailId | slice:0:50}}<span
+                          *ngIf="selectedCompany?.emailId?.length>50">...</span></a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 col-xs-8 col-lg-4 col-md-4 pr0 mtop mWidth tiles_hover_effect">
+                <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
+                  <div class="visual">
+                    <i aria-hidden="true" class=""></i>
+                  </div>
+                  <div class="details">
+
+                    <div data-toggle="tooltip" data-placement="bottom" title="{{totalCampaignsCount}}" class="number">
+                      {{totalCampaignsCount}}</div>
+                    <div class="desc">Total Campaigns</div>
+                  </div>
+                  <span class="morePadding">
+                    <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                      <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                  </span>
+                </a>
+              </div>
+              <div class="col-sm-4 col-xs-8 col-lg-4 col-md-4 pr0 mWidth tiles_hover_effect">
+                <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
+                  <div class="visual">
+                    <i aria-hidden="true" class=""></i>
+                  </div>
+                  <div class="details">
+                    <div data-toggle="tooltip" data-placement="bottom" title="{{activeCampaignsCount}}" class="number">
+                      {{activeCampaignsCount}}</div>
+                    <div class="desc">Active Campaigns</div>
+                  </div>
+                  <span class="morePadding">
+                    <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                      <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row" style="padding-top: 10px;">
     <div class="portlet box">
       <div class="clearfix">
         <div class="col-xs-12">
-          <div class="portlet light remove_cardBgcolor padding_0  light_bg_removal remove_space">
+          <div class="portlet light">
             <div class="portlet-title pt0" style="border-bottom: none;padding-top: 6px;">
               <div class="caption" translate style="padding-left: 3px !important;padding-top: 12px !important;">
                 <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
@@ -27,11 +113,13 @@
                     [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
                   <li class="filter p4 p3" (click)="filterCampaigns('VIDEO',2)"
                     [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" translate>Video</li>
+                  <li class="filter p4 p3" (click)="filterCampaigns('SURVEY',3)"
+                    [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" translate>Survey</li>
                 </ul>
                 <div class="mMargin" style="float: left; margin: 1px 10px!important;">
-                  <select class="form-control" [(ngModel)]="sortOption.userLevelCampaignAnalyticsSortOption"
+                  <select class="form-control" [(ngModel)]="sortOption.userListLevelCampaignAnalyticsSortOption"
                     (ngModelChange)="sortBy($event)" style="padding-left: 5px;height: 34px;">
-                    <option *ngFor="let option of sortOption.userLevelCampaignAnalyticsSortDropDownOptions"
+                    <option *ngFor="let option of sortOption.userListLevelCampaignAnalyticsSortDropDownOptions"
                       [ngValue]="option" translate>
                       {{option.name}}</option>
                   </select>
@@ -51,8 +139,8 @@
             </div>
 
             <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px !important;">
-              <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
-              <div class="clearfix" *ngIf="!listLoader.isLoading">
+              <app-list-loader *ngIf="ngxLoading"></app-list-loader>
+              <div class="clearfix" *ngIf="!ngxLoading">
                 <div class="col-xs-12" style="padding: 0px 0;">
                   <div class="table-responsive">
                     <table class='table tgrid' aria-describedby="user-campaigns-list-table">
@@ -60,11 +148,6 @@
                         <tr>
                           <th scope="row" translate>Campaign</th>
                           <th scope="row" translate>Launched On</th>
-                          <th scope="row" translate>Latest View</th>
-                          <th scope="row" translate>Email Opened</th>
-                          <th scope="row" translate>Clicked URLs</th>
-                          <!-- <th scope="row" translate>Auto Responses</th> -->
-                          <th scope="row" translate>History</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -77,56 +160,33 @@
                               <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'"
                                 class="imageClass active image-padding image_effect" src="assets/images/video-email.svg"
                                 alt="Video Campaign Logo Not Found">
+                              <img *ngIf="campaignAnalytics?.campaignType=='SURVEY'"
+                                class="imageClass active image-padding image_effect" src="assets/images/survey.svg"
+                                alt="Survey Campaign Logo Not Found">
                               <a class="campaign-name-padding" data-toggle="tooltip" data-placement="bottom"
                                 title="{{campaignAnalytics?.campaignName}}"
                                 (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId,campaignAnalytics?.campaignTitle)">
-                                {{campaignAnalytics?.campaignName | slice:0:15}}
-                                <span *ngIf="campaignAnalytics?.campaignName?.length>15">...</span>
+                                {{campaignAnalytics?.campaignName | slice:0:30}}
+                                <span *ngIf="campaignAnalytics?.campaignName?.length>30">...</span>
                               </a>
                             </td>
                             <td>
                               <app-timestamp [campaignView]="true"
                                 [dateAndTime]="campaignAnalytics?.launchedDisplayTime"></app-timestamp>
                             </td>
-                            <td>
-                              <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime!='-'">
-                                <app-timestamp [campaignView]="true"
-                                  [dateAndTime]="campaignAnalytics?.latestViewDisplayTime">
-                                </app-timestamp>
-                              </ng-container>
-                              <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime=='-'">
-                                <span>-</span>
-                              </ng-container>
-                            </td>
-                            <td class="center-align">
-                              {{campaignAnalytics?.emailOpenedCount}}
-                            </td>
-                            <td class="center-align">
-                              {{campaignAnalytics?.clickedUrlsCount}}
-                            </td>
-                            <td class="center-align">
-                              <div (click)="viewTimeLine(campaignAnalytics)">
-                                <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
-                                  title="View History">
-                                  <i class="circled-number fa fa-history action-btn IconCustomization pointer"
-                                    aria-hidden="true"></i>
-                                  <div class="clickicons"></div>
-                                </a>
-                              </div>
-                            </td>
                           </tr>
                         </ng-container>
                       </tbody>
                     </table>
-                    <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info">
+                    <div *ngIf="pagination.totalRecords==0 && !ngxLoading" class="alert alert-info">
                       <strong>No Data Found.</strong>
                     </div>
                   </div>
                 </div>
               </div>
-              <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
+              <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="ngxLoading">
                 <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-                  (notifyParentDropDown)="listCampaignAnalytics($event)" [hidden]="listLoader.isLoading">
+                  (notifyParentDropDown)="listCampaignAnalytics($event)" [hidden]="ngxLoading">
                 </app-pagination>
               </div>
             </div>

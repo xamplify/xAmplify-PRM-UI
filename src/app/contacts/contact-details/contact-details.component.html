@@ -1,4 +1,4 @@
-<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !viewCampaigns">
+<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !showCompanyCampaigns">
   <div class="page-bar mb-height_auto" style="height:48px;">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i>
@@ -43,7 +43,7 @@
       <div class="profile-leftsidebar">
         <div class="edit_contact">
           <!-- Header 1 -->
-          <div class="profile_header">
+          <div class="profile_headers">
             <div [ngClass]="showImageTag ? 'avatar2_v2' : 'avatar2'">
               <span *ngIf="!showImageTag && !imgPathLoading && !isCompanyJourney" class="avatar-initial">{{highlightLetter}}</span>
               <img *ngIf="showImageTag && !imgPathLoading && !isCompanyJourney" class="img_wdt" src="{{imageSourcePath}}" alt="">
@@ -55,31 +55,83 @@
                 <i *ngIf="!isCompanyJourney" class="fas fa-user mr_6 icons_colors" aria-hidden="true"></i>
                 <i *ngIf="isCompanyJourney" class="fas fa-building mr_6 icons_colors" aria-hidden="true"></i>
                 <span *ngIf="contactName != undefined && contactName != ''" data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
-                  {{referenceService?.isHarizontalNavigationBar ? (contactName | slice:0:15) : (contactName | slice:0:10)}}<span *ngIf="contactName != undefined && (referenceService?.isHarizontalNavigationBar ? contactName?.length>15 : contactName?.length>10)">..</span>
+                  {{referenceService?.isHarizontalNavigationBar ? (contactName | slice:0:15) : (contactName | slice:0:9)}}<span *ngIf="contactName != undefined && (referenceService?.isHarizontalNavigationBar ? contactName?.length>15 : contactName?.length>9)">..</span>
                 </span>
                 <span *ngIf="contactName == undefined || contactName == ''" class="anonymous-text">Anonymous</span>
                 <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
               </div>
-              <span class="email-id" *ngIf="selectedContact?.emailId">
+              <span class="email-id" *ngIf="selectedContact?.emailId && !isCompanyJourney">
                 <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.emailId}}">
-                  <i class="fa fa-envelope mr_6 icons_colors"></i>{{referenceService?.isHarizontalNavigationBar ?( selectedContact?.emailId | slice:0:21) : (selectedContact?.emailId | slice:0:16)}}<span
-                    *ngIf="(referenceService?.isHarizontalNavigationBar ? selectedContact?.emailId?.length>21 : selectedContact?.emailId?.length>16)">..</span>
+                  <i class="fa fa-envelope mr_6 icons_colors"></i>{{referenceService?.isHarizontalNavigationBar ?(
+                  selectedContact?.emailId | slice:0:21) : (selectedContact?.emailId | slice:0:15)}}<span
+                    *ngIf="(referenceService?.isHarizontalNavigationBar ? selectedContact?.emailId?.length>21 : selectedContact?.emailId?.length>15)">..</span>
+              
+                  <button class="copy-btn" #textEmail value="{{selectedContact?.emailId}}" (click)="copyEmail(textEmail)">
+                    <i *ngIf="isEmailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isEmailCopied"
+                      class="fa fa-clone ml_6" aria-hidden="true"></i></button>
                 </p>
-                <button class="copy-btn" #textEmail value="{{selectedContact?.emailId}}" (click)="copyEmail(textEmail)">
-                  <i *ngIf="isEmailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isEmailCopied"
-                    class="fa fa-clone ml_6" aria-hidden="true"></i></button>
               </span>
+             <span class="email-id" *ngIf="selectedContact?.website && isCompanyJourney">
+                <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.website}}">
+                  <i class="fa fa-globe mr_6 icons_colors"></i><a href="{{selectedContact?.website}}"
+                    target="_blank">{{referenceService?.isHarizontalNavigationBar ?(
+                    selectedContact?.website | slice:0:21) : (selectedContact?.website | slice:0:15)}}<span
+                      *ngIf="(referenceService?.isHarizontalNavigationBar ? selectedContact?.website?.length>21 : selectedContact?.website?.length>15)">..</span></a>
+              
+                  <button class="copy-btn" #textEmail value="{{selectedContact?.website}}" (click)="copyEmail(textEmail)">
+                    <i *ngIf="isEmailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isEmailCopied"
+                      class="fa fa-clone ml_6" aria-hidden="true"></i></button>
+                </p>
+              </span> 
               <span *ngIf="selectedContact?.mobileNumber != undefined && selectedContact?.mobileNumber != ''" class="email-id">
                 <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.mobileNumber}}">
                   <i class="fa fa-phone mr_6 icons_colors"></i>{{selectedContact.mobileNumber}}
+              
+                  <button class="copy-btn" #textMobile value="{{selectedContact?.mobileNumber}}"
+                    (click)="copyMobileNumber(textMobile)">
+                    <i *ngIf="isMobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isMobileNumberCopied"
+                      class="fa fa-clone ml_6" aria-hidden="true"></i></button>
                 </p>
-                <button class="copy-btn" #textMobile value="{{selectedContact?.mobileNumber}}" (click)="copyMobileNumber(textMobile)">
-                  <i *ngIf="isMobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isMobileNumberCopied"
-                    class="fa fa-clone ml_6" aria-hidden="true"></i></button>
               </span>
             </div>
           </div>
           <!--  -->
+          <!-- Start -->
+          <div class="icon_group" *ngIf="isCompanyJourney">
+            <!-- tiles one -->
+            <a class="icon_item count_one" [ngClass]="(contactsCount != undefined && contactsCount > 0) ? '' : 'disabled'" (click)="(contactsCount != undefined && contactsCount > 0) ? viewMoreContacts() : ''">
+              <i aria-hidden="true" class="fa fa-id-card dbiconscss company_icon"></i>
+              <div>
+                <span class="icon_btns count_1">{{contactsCount}}</span>
+                <div class="icon_label">Contacts</div>
+              </div>
+            </a>
+            <!-- tiles two -->
+            <a class="icon_item count_two" [ngClass]="(leadsCount != undefined && leadsCount > 0) ? '' : 'disabled'" (click)="(leadsCount != undefined && leadsCount > 0) ? viewMoreLeads() : ''">
+              <i aria-hidden="true" class="fa fa-user-circle company_icon"></i>
+              <div>
+                <span class="icon_btns count_1">{{leadsCount}}</span>
+                <div class="icon_label">Leads</div>
+              </div>
+            </a>
+            <!-- tiltes three -->
+            <a class="icon_item count-three" [ngClass]="(dealsCount != undefined && dealsCount > 0) ? '' : 'disabled'" (click)="(dealsCount != undefined && dealsCount > 0) ? viewMoreDeals() : ''">
+              <i aria-hidden="true" class="fa fa-tags company_icon"></i>
+              <div>
+                <span class="icon_btns count_1">{{dealsCount}}</span>
+                <div class="icon_label">Deals</div>
+              </div>
+            </a>
+            <!-- tiles four -->
+            <a class="icon_item count_four" [ngClass]="(campaignsCount != undefined && campaignsCount > 0) ? '' : 'disabled'" (click)="(campaignsCount != undefined && campaignsCount > 0) ? viewMoreCampaigns() : ''">
+              <i aria-hidden="true" class="fa fa-bullhorn dbiconscss company_icon"></i>
+              <div>
+                <span class="icon_btns count_1">{{campaignsCount}}</span>
+                <div class="icon_label">Campaigns</div>
+              </div>
+            </a>
+          </div>
+          <!-- End -->
           <div class="icon-group">
             <div class="icon-item" (click)="openAddNoteModalPopup()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Add Notes">
@@ -99,8 +151,8 @@
               </div>
               <div class="icon-label">Task</div>
             </div>
-            <div class="icon-item" (click)="isCompanyJourney ? '' : openMeetingModalPopup()">
-              <div class="icon-btns" [ngClass]="isCompanyJourney ? 'disabled':''" data-toggle="tooltip" data-placement="top" title="Schedule Meeting">
+            <div class="icon-item" (click)="openMeetingModalPopup()">
+              <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Schedule Meeting">
                 <i *ngIf="!ngxLoading" class="glyphicon glyphicon-calendar"></i>
                 <img *ngIf="ngxLoading" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
               </div>
@@ -130,6 +182,13 @@
                   <span class="address_title">Job Title:</span>
                   <span *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</span>
                   <span *ngIf="selectedContact?.jobTitle == undefined" class="mb0"> --</span>
+                </div>
+              </li>
+              <li *ngIf="!isCompanyJourney"><i class="fas fa-envelope"></i>
+                <div class="user_details">
+                  <span class="address_title">Email Id:</span>
+                  <span *ngIf="selectedContact?.emailId != undefined" class="mb0">{{selectedContact?.emailId}}</span>
+                  <span *ngIf="selectedContact?.emailId == undefined" class="mb0"> --</span>
                 </div>
               </li>
               <li><i class="fas fa-map-marker-alt pd_lft2"></i>
@@ -165,13 +224,6 @@
                   <span class="address_title"> Country:</span>
                   <span *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</span>
                   <span *ngIf="selectedContact?.country == undefined" class="mb0"> --</span>
-                </div>
-              </li>
-              <li *ngIf="isCompanyJourney"><i class="fa fa-globe"></i>
-                <div class="user_details">
-                  <span class="address_title"> Website:</span>
-                  <span *ngIf="selectedContact?.website != undefined" class="mb0">{{selectedContact?.website}}</span>
-                  <span *ngIf="selectedContact?.website == undefined" class="mb0"> --</span>
                 </div>
               </li>
               <li *ngIf="isCompanyJourney"><i class="fa fa-facebook-official"></i>
@@ -262,7 +314,7 @@
                 <div *ngIf="showMeetingsTab" id="meeting" class="tab-pane fade pt-top">
                   <app-meeting-activity [contactId]="contactId" [isReloadTab]="isReloadMeetingTab"
                     [activeCalendarDetails]="activeCalendarDetails" [isCompanyJourney]="isCompanyJourney"
-                    (notifyClose)="reloadMeetingTab($event)"
+                    [selectedUserListId]="selectedContactListId" (notifyClose)="reloadMeetingTab($event)"
                     (notifyCloseSideBar)="closeLeftSideBarWhenCalendarViewActivated()"></app-meeting-activity>
                 </div>
               </div>
@@ -296,7 +348,7 @@
           </div>
           <div id="collapse4" class="panel-collapse collapse in">
             <app-response-message [customResponse]="contactsResponse" *ngIf="contactsResponse.isVisible"></app-response-message>
-            <app-dropdown-loader *ngIf="contactsLoader?.isLoading" [text]="'leads'"></app-dropdown-loader>
+            <app-dropdown-loader *ngIf="contactsLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
             <div class="panel-body pt0" *ngIf="companyContacts != undefined && companyContacts.length > 0">
               <div class="deals_card mb10" *ngFor="let contact of companyContacts">
                 <div *ngIf="contact.firstName != undefined || contact.lastName != undefined">
@@ -508,3 +560,6 @@
 
 <app-add-company *ngIf="showEditCompanyModalPopup" (closeEvent)="closeCompanyModal($event)" [actionType]="'edit'"
     [companyId]="companyIdForEdit" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
+  
+<app-company-campaigns-list *ngIf="showCompanyCampaigns"
+  [companyListId]="selectedContactListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>

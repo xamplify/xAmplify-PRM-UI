@@ -550,6 +550,14 @@ export class SortOption {
 		{ 'name': 'Invited On (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Invited On (DESC)', 'value': 'createdTime-DESC' }
 	];
+
+	/**XNFR-867**/
+	userListLevelCampaignAnalyticsSortDropDownOptions = [
+		{ 'name': 'Campaign Name (A-Z)', 'value': 'campaignName-ASC' },
+		{ 'name': 'Campaign Name (Z-A)', 'value': 'campaignName-DESC' },
+		{ 'name': 'Launched On (ASC)', 'value': 'launchTime-ASC' },
+		{ 'name': 'Launched On (DESC)', 'value': 'launchTime-DESC' }
+	];
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -650,5 +658,8 @@ export class SortOption {
 
 	/*** XNFR-850 ***/
 	public teamMemberAnalyticsSortOptions: any = this.inviteTeamMemberAnalyticsDropDownOptions[this.inviteTeamMemberAnalyticsDropDownOptions.length - 1];
+
+	/**XNFR-867**/
+	public userListLevelCampaignAnalyticsSortOption: any = this.userListLevelCampaignAnalyticsSortDropDownOptions[this.userListLevelCampaignAnalyticsSortDropDownOptions.length - 1];
 
 }
