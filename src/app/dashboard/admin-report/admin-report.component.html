@@ -267,6 +267,7 @@
                 <thead>
                   <tr>
                   <th>Company Name</th>
+                  <th class="text-center">Vanity Url Link</th>
                   <th class="text-center">Company Profile Name</th>
                   <th class="text-center">Company Type</th>
                   <th *ngIf="upgradeAccountStatusCode==200 && isUpgradeAccountOptionClicked" class="text-center">Upgrade Account</th>
@@ -275,6 +276,7 @@
                 <tbody>
                   <tr>
                     <td>{{companyInfo?.companyName}}</td>
+                    <td class="pointer"><a href="{{companyInfo?.vanityUrl}}" target="_blank" rel="noopener">Click Here</a></td>
                     <td class="text-center">{{companyInfo?.companyProfileName}}</td>
                     <td [className]="(companyInfo?.companyType=='Partner'||companyInfo?.companyType=='Vendor') && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
                       <strong>{{companyInfo?.companyType}}</strong></td>
