@@ -4495,3 +4495,14 @@ a.Iconhover.custom-grid-icon.icon_margin{
 }
 .lead-details-border{border: 2px solid #cfd6de !important;}
 .file-label{color: #fff !important;}
+  /* Added company profile lefside bar card color */
+  .profile_headers,.icon-group{
+    background: transparent !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+  }
+  .icon-btns,i.fa.fa-edit.ml_6{
+        background-color: #ffffff!important;
+  }
+  .icon-btns:hover,i.fa.fa-edit.ml_6:hover{
+    background-color: #e3edf7!important;
+  }
