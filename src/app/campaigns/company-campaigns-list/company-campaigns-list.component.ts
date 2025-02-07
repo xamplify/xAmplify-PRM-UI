@@ -36,7 +36,6 @@ export class CompanyCampaignsListComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   totalCampaignsCount: any = 0;
   activeCampaignsCount: any = 0;
-  isLocalhost: boolean = false;
 
   constructor(public campaignService: CampaignService, public referenceService: ReferenceService, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public sortOption: SortOption, public utilService: UtilService) { 
@@ -50,10 +49,7 @@ export class CompanyCampaignsListComponent implements OnInit {
 
   ngOnInit() {
     this.showAllCampaignAnalytics();
-    if (this.authenticationService.isLocalHost()) {
-      this.isLocalhost = true;
-      this.fetchTotalAndActiveCampaignsCount();
-    }
+    this.fetchTotalAndActiveCampaignsCount();
   }
 
   resetTaskActivityPagination() {
