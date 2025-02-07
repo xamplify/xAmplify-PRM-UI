@@ -12,8 +12,14 @@
         <div>
           <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex" *ngIf="!isPreview">
             <label for="exampleInputEmail1" class="display_flex pr45">To <span class="text-danger">*</span></label>
-            <input type="text" id="toEmailId" [(ngModel)]="emailActivity.toEmailId" [ngModelOptions]="{standalone: true}"
-             placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" [disabled]="!isTestMail" />
+            <input *ngIf="!isCompanyJourney" type="text" id="toEmailId" [(ngModel)]="emailActivity.toEmailId" [ngModelOptions]="{standalone: true}"
+              placeholder="Email Id" class="form-control" name="toEmailId" maxlength="200" [disabled]="!isTestMail" />
+            <app-dropdown-loader *ngIf="userListUsersLoader?.isLoading && isCompanyJourney" [text]="'contacts'"></app-dropdown-loader>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0" *ngIf="!userListUsersLoader?.isLoading && isCompanyJourney">
+              <angular4-multiselect [data]="userListUsersData" [(ngModel)]="userIds"
+              [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+              (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"></angular4-multiselect>
+            </div>
           </div>
           <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">
             <label for="exampleInputEmail1" class="display_flex pr25">From <span class="text-danger">*</span></label>

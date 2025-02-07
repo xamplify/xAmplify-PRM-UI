@@ -22,6 +22,7 @@ export class EmailActivityComponent implements OnInit {
   @Input() contactEmailId:any;
   @Input() contactName:any;
   @Input() isCompanyJourney:boolean = false;
+  @Input() selectedUserListId:any;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifySubmitFailed = new EventEmitter();
 
@@ -63,6 +64,12 @@ export class EmailActivityComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     emailActivityPagination.contactId = this.contactId;
+    emailActivityPagination.isCompanyJourney = this.isCompanyJourney;
+    if (this.isCompanyJourney) {
+      emailActivityPagination.contactId = this.selectedUserListId;
+    } else {
+      emailActivityPagination.contactId = this.contactId;
+    }
     this.emailActivityService.fetchAllEmailActivities(emailActivityPagination).subscribe(
       response => {
         const data = response.data;

@@ -999,4 +999,10 @@ export class ContactService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    /**XNFR-867**/
+    fetchUsersForCompanyJourney(userListId:any) {
+        let url = this.contactsUrl + "fetchUsersByUserListId/" + userListId +"?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 }

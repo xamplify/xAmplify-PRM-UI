@@ -15,6 +15,14 @@
             (input)="validateTask()" placeholder="Enter Task Name" class="form-control" name="subjectLine" maxlength="200"
             [disabled]="isPreview" />
         </div>
+        <div class="form-group" *ngIf="isCompanyJourney && actionType != 'edit'">          
+          <label for="subjectLine">Pick contact(s)<span class="text-danger">*</span></label>
+          <app-dropdown-loader *ngIf="userListUsersLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
+          <angular4-multiselect *ngIf="!userListUsersLoader?.isLoading" [data]="userListUsersData" [(ngModel)]="userIds" [settings]="dropdownSettings"
+            (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+            (onDeSelectAll)="onDeSelectAll($event)">
+          </angular4-multiselect>
+        </div>
         <div class="form-group">
           <label for="subjectLine">Assign To<span class="text-danger">*</span></label>
           <app-dropdown-loader *ngIf="assignToLoader?.isLoading" [text]="'assign to users'"></app-dropdown-loader>

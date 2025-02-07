@@ -44,8 +44,6 @@ customResponse: CustomResponse = new CustomResponse();
   /*** XBI-2228 ***/
   mergeTagForGuide = "add_a_company";
   /*** XBI-2228 ***/
-  /**XNFR-848**/
-  isLocalOrQAServer:boolean = false;
   constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, 
     public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger,
      public utilService: UtilService, public sortOption: SortOption) 
@@ -53,9 +51,6 @@ customResponse: CustomResponse = new CustomResponse();
 
   ngOnInit() {
     this.showCompanies();
-    if (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()) {
-      this.isLocalOrQAServer = true;
-    }
   } 
 
   showCompanies (){

@@ -18,7 +18,7 @@ export class ActivityService {
         if (vendorCompanyProfileName != undefined && vendorCompanyProfileName != '') {
             pageableUrl = pageableUrl + "&vendorCompanyProfileName="+vendorCompanyProfileName;
         }
-        let url = this.URL + "/fetchRecentActivities/" + activityPagination.contactId + "/" + activityPagination.userId + this.ACCESS_TOKEN_URL + pageableUrl;
+        let url = this.URL + "/fetchRecentActivities/" + activityPagination.contactId + "/" + activityPagination.userId + "/" + activityPagination.isCompanyJourney + this.ACCESS_TOKEN_URL + pageableUrl;
         return this.authenticationService.callGetMethod(url);
     }
 

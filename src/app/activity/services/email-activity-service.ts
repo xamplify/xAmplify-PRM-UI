@@ -25,7 +25,7 @@ export class EmailActivityService {
     fetchAllEmailActivities(emailActivityPagination:Pagination) {
         emailActivityPagination.userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(emailActivityPagination);
-        let url = this.URL + "/fetch-all-email-activities/" + emailActivityPagination.userId + "/" + emailActivityPagination.contactId + this.ACCESS_TOKEN_URL + pageableUrl;
+        let url = this.URL + "/fetch-all-email-activities/" + emailActivityPagination.userId + "/" + emailActivityPagination.contactId + "/" + emailActivityPagination.isCompanyJourney + this.ACCESS_TOKEN_URL + pageableUrl;
         return this.authenticationService.callGetMethod(url);
     }
 

@@ -8,6 +8,10 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { PaginationComponent } from 'app/common/pagination/pagination.component';
+import { ContactService } from 'app/contacts/services/contact.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Properties } from 'app/common/models/properties';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
 @Component({
   selector: 'app-meeting-activity',
@@ -21,6 +25,7 @@ export class MeetingActivityComponent implements OnInit {
   @Input() activeCalendarDetails:any;
   @Input() isReloadTab:boolean;
   @Input() isCompanyJourney:boolean = false;
+  @Input() selectedUserListId:any;
 
   @Output() notifyClose = new EventEmitter();
   @Output() notifyCloseSideBar = new EventEmitter();
@@ -48,14 +53,21 @@ export class MeetingActivityComponent implements OnInit {
   showConfigureMessage: boolean = false;
   showCalendarView: boolean = false;
   isFirstChange: boolean = true;
+  userListUsersLoader:HttpRequestLoader = new HttpRequestLoader();
+  companyUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  contactErrorResponse: CustomResponse = new CustomResponse();
 
   constructor(public meetingActivityService: MeetingActivityService, public referenceService: ReferenceService, public pagerService: PagerService, 
-    public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent) { }
+    public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public contactService: ContactService, public properties: Properties) { }
 
   ngOnInit() {
     this.calendarType = this.activeCalendarDetails != undefined ? this.activeCalendarDetails.type : '';
     this.pageNumber = this.paginationComponent.numberPerPage[0];
-    this.showAllMeetingActivities();
+    if (this.isCompanyJourney) {
+      this.fetchUsersForCompanyJourney();
+    } else {
+      this.showAllMeetingActivities();
+    }
   }
 
   ngOnChanges() {
@@ -69,11 +81,16 @@ export class MeetingActivityComponent implements OnInit {
   }
 
   showAllMeetingActivities() {
-    this.resetTaskActivityPagination();
-    if (this.referenceService.checkIsValidString(this.calendarType)) {
-      this.fetchAllMeetingActivities(this.meetingActivityPagination);
+    if (this.contactId != undefined && this.contactId > 0) {
+      this.resetTaskActivityPagination();
+      this.contactErrorResponse.isVisible = false;
+      if (this.referenceService.checkIsValidString(this.calendarType)) {
+        this.fetchAllMeetingActivities(this.meetingActivityPagination);
+      } else {
+        this.showConfigureMessage = true;
+      }
     } else {
-      this.showConfigureMessage = true;
+      this.contactErrorResponse = new CustomResponse('ERROR', 'Please select contact.', true);
     }
   }
 
@@ -225,5 +242,35 @@ export class MeetingActivityComponent implements OnInit {
   closeCalendarViewModalPopup() {
     this.showCalendarView = false;
   }
+
+  fetchUsersForCompanyJourney() {
+      this.referenceService.loading(this.userListUsersLoader, true);
+      this.contactService.fetchUsersForCompanyJourney(this.selectedUserListId).subscribe(
+        response => {
+          if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+            this.companyUsersSearchableDropDownDto.data = response.data;
+            this.companyUsersSearchableDropDownDto.placeHolder = "Select a contact";
+          } else {
+            this.customResponse = new CustomResponse('ERROR', response.message, true);
+          }
+          this.referenceService.loading(this.userListUsersLoader, false);
+        }, error => {
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+          this.referenceService.loading(this.userListUsersLoader, false);
+        }, () => {
+          if (this.companyUsersSearchableDropDownDto.data != undefined && this.companyUsersSearchableDropDownDto.data.length > 0) {
+            this.contactId = this.companyUsersSearchableDropDownDto.data[0].id;
+            this.showAllMeetingActivities();
+          } else {
+            this.contactErrorResponse = new CustomResponse('ERROR', 'No contact is available', true);
+          }
+        }
+      )
+    }
+
+    getSelectedAssignedToUserId(event) {
+      this.contactId = event != undefined ? event['id'] : 0;
+      this.showAllMeetingActivities();
+    }
 
 }
