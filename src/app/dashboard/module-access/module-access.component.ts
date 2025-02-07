@@ -583,5 +583,10 @@ unlockMdfFundingUiSwitchEventReceiver(event:any){
   this.campaignAccess.unlockMdfFundingEnabled = event;
 }
 
+/**XNFR-878***/
+allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
+  this.campaignAccess.allowVendorToChangePartnerPrimaryAdmin = event;
+}
+
 
 }

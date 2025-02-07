@@ -424,6 +424,13 @@
 														<app-custom-ui-switch [customSwitch]="campaignAccess.unlockMdfFundingEnabled" (customUiSwitchEventEmitter)="unlockMdfFundingUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 													</td>
 												</tr>
+												<!--XNFR-878-->
+												<tr *ngIf="!marketing">
+													<th scope="row">Allow Vendor to Change Partner Primary Admin</th>
+													<td class="pt0">
+														<app-custom-ui-switch [customSwitch]="campaignAccess.allowVendorToChangePartnerPrimaryAdmin" (customUiSwitchEventEmitter)="allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+													</td>
+												</tr>
 											</table>
 										</div>
 										<div class="modal-footer">
