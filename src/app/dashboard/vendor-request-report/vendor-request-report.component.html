@@ -103,7 +103,7 @@
             <span class="caption-subject font-red-sunglo uppercase">{{tableHeader}}</span>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 pr0 pull-right mb_pl0" *ngIf="isTeamMemberRequest">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 pr0 pull-right mb_pl0 btn-group" *ngIf="isTeamMemberRequest">
             <div class="d-flex justify-content-end mb_flex-wrap">
               <!--- Sort --->
               <div class="mr5">
@@ -124,12 +124,12 @@
                   <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
                 <!--- Refresh --->
-                <span class="btn btn-xs l-g-view" data-placement="bottom" data-toggle="tooltip" title="Refresh"
+                <span class="btn btn-xs l-g-view mr5" data-placement="bottom" data-toggle="tooltip" title="Refresh"
                   (click)="listOfRequestReports(statusType)">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
                 </span>
                 <!--- Export to Excel --->
-                <button class="btn btn-xs hidden-xs l-g-view" data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
+                <button class="btn btn-xs hidden-xs l-g-view mr5" data-placement="bottom" data-toggle="tooltip" title="Export to Excel"
                   (click)="downloadTeamMembersCsv()" [disabled]="pagination.totalRecords == 0">
                   <i aria-hidden="true" class="fas fa-file-export p10"></i>
                 </button>

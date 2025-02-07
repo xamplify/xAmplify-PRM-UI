@@ -4257,3 +4257,8 @@ color: #fff !important;
 .copy_icon:hover {
   background-color: #e2e7eb7d!important;
 }
+ /* Added company profile lefside bar card color */
+ .profile_headers,.icon-group{
+  background: rgb(0 0 0 / 18%) !important;
+  border: 1px solid #ffffff33 !important;
+}

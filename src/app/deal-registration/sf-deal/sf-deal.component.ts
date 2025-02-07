@@ -31,6 +31,7 @@ export class SfDealComponent implements OnInit {
   @Input() public selectedContact: any;
   @Input() public actionType: any;
   @Input() public contactId: any;
+  @Input() public campaignId: any;
   @Output() isFormValid = new EventEmitter();
   form: Form = new Form();
   errorMessage: string;
@@ -321,7 +322,13 @@ export class SfDealComponent implements OnInit {
             }
           }
           this.validateAllFields();
+        } else if (this.actionType === 'edit' && this.campaignId !== undefined && this.campaignId > 0) {
+          const emailColumn = this.form.formLabelDTOs.find(column => column.labelId === 'Email');
+          if (emailColumn) {
+            emailColumn.columnDisable = true;
+          }
         }
+        
         /*********XNFR-403*********/
         if (this.dealId > 0) {
           this.forecastItems = this.referenceService.convertJsonStringToJsonObject(this.forecastItemsJson);

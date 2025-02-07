@@ -4432,3 +4432,9 @@ tbody>tr#uploaded-csv-tr>td {
 .copy_icon:hover {
   background-color: #626364!important;
 }
+  /* Added company profile lefside bar card color */
+  .profile_headers,.icon-group{
+    background: transparent !important;
+    border: 1px solid #191b1e !important;
+    box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  }
