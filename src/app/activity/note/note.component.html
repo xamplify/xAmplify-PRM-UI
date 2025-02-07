@@ -5,9 +5,9 @@
         data-original-title="Refresh" (click)="showAllNoteActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <a class="close-circle ref-mar ml5" [ngClass]="isCompanyJourney ? 'disabled':''" data-placement="bottom" data-toggle="tooltip" title="Add Notes"
-        data-original-title="Refresh" (click)="isCompanyJourney ? '' : openAddNoteModalPopup()">
-        <i aria-hidden="true" class="fa fa-plus" [ngClass]="isCompanyJourney ? 'disabled':''"></i>
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Add Notes"
+        data-original-title="Refresh" (click)="openAddNoteModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
       </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
@@ -48,6 +48,9 @@
     <div class="activity-body mt0" *ngIf="note.visibility == 'PUBLIC'">
       <span class=""><i class="fas fa-user icon"></i>{{note.createdByFirstName+" "+note.createdByLastName}}</span>
     </div>
+    <div class="activity-header" *ngIf="isCompanyJourney">
+      <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">Added For:</label><span data-toggle="tooltip" data-placement="top" title="{{note.addedForEmailId}}">{{note.addedForEmailId | slice:0:35}}</span><span *ngIf="note.addedForEmailId.length>35">...</span></span>
+    </div>
     <div class="activity-body mt0">
       <i class="fa fa-comment icon"></i>
       <span>{{note.content | slice:0:100}}<a *ngIf="note.content.length>100" class="underline-on-hover" (click)="viewNote(note)">
@@ -76,5 +79,7 @@
   <strong translate>No Data Found.</strong>
 </div>
 
-<app-add-note-modal-popup *ngIf="showNoteModalPopup" [contactId]="contactId" [noteId]="noteId" [isReloadTab]="reloadTab" [actionType]="actionType"
-  (notifyClose)="closeNoteModalPopup()" (notifyUpdateSuccess)="showNoteUpdateSuccessStatus($event)" (notifySubmitSuccess)="showNoteSubmitSuccessStatus($event)"></app-add-note-modal-popup>
+<app-add-note-modal-popup *ngIf="showNoteModalPopup" [contactId]="contactId" [noteId]="noteId" [isReloadTab]="reloadTab"
+  [actionType]="actionType" [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedUserListId"
+  (notifyClose)="closeNoteModalPopup()" (notifyUpdateSuccess)="showNoteUpdateSuccessStatus($event)"
+  (notifySubmitSuccess)="showNoteSubmitSuccessStatus($event)"></app-add-note-modal-popup>

@@ -20,7 +20,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 8px;
+    /* margin-top: 8px; */
     color: #555;
   } 
   .activity-footer {

@@ -39,7 +39,7 @@ export class ContactDetailsComponent implements OnInit {
   @Input() contacts: User[];
 
   contactTitle: string = 'Contact Journey';
-  companyTitle: string = 'Company Jounrey';
+  companyTitle: string = 'Company Journey';
   highlightLetter:string = '';
   selectedCompanyContactId: any;
   isCompanyContact: boolean;
@@ -103,7 +103,6 @@ export class ContactDetailsComponent implements OnInit {
   contactCampaigns = [];
   campaignsCount:number = 0;
   selectedContactListId:number;
-  viewCampaigns: boolean = false;
   isReloadActivityTab:boolean;
   showTaskModalPopup: boolean = false;
   isReloadTaskActivityTab:boolean;
@@ -132,6 +131,7 @@ export class ContactDetailsComponent implements OnInit {
   isFromCompanyJourneyEditContacts: boolean = false;
   isRegisterDealEnabled: boolean = true;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  showCompanyCampaigns: boolean = false;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -174,12 +174,12 @@ export class ContactDetailsComponent implements OnInit {
       this.getLegalBasisOptions();
       this.fetchLogoFromExternalSource();
       this.getVendorRegisterDealValue();
-      this.getActiveCalendarDetails();
-      this.fetchCampaignsAndCount();
     }
     this.referenceService.goToTop();
+    this.getActiveCalendarDetails();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchCampaignsAndCount();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -599,7 +599,6 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   viewMoreCampaigns() {
-    this.viewCampaigns = true;
     let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
     if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
@@ -613,6 +612,8 @@ export class ContactDetailsComponent implements OnInit {
       let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
       let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/j/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+'/fcjcd';
       this.referenceService.goToRouter(url);
+    } else if (this.isCompanyJourney) {
+      this.showCompanyCampaigns = true;
     } else {
       let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId;
       url += this.isFromEditContacts ? "/" + RouterUrlConstants.cd : "/mcd";
@@ -629,7 +630,7 @@ export class ContactDetailsComponent implements OnInit {
       this.referenceService.goToRouter(url);
     } else if (this.isCompanyJourney) {
       let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignData.campaignId);
-			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignName.toLowerCase());
+			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignTitle);
 			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
 		} else if (this.isFromCompanyJourneyEditContacts) {
       let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
@@ -853,6 +854,10 @@ export class ContactDetailsComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
       }
     );
+  }
+
+  closeCompanyCampaigns() {
+    this.showCompanyCampaigns = false;
   }
   
 }

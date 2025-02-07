@@ -1471,7 +1471,26 @@ export class CampaignService {
         let vendorCompanyNameParam = vendorCompanyName != undefined ? "&vendorCompanyName=" + vendorCompanyName : "";
         let companyJourneyParam = "&isCompanyJourney="+isCompanyJourney;
         let campaignRequestDtoParam = $.trim(loggedInUserIdRequestParam + contactIdRequestParam + vanityUrlFilterParam + vendorCompanyNameParam+companyJourneyParam);
-        let url = this.URL + "campaign/fetchContactAssociatedCampaignsAndCount" + "?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
+        let url = this.URL + "campaign/fetchContactAssociatedCampaignsAndCount?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /**XNFR-867**/
+    fetchCampaignAnalyticsOfCompanyContacts(companyListId:any, pagination:Pagination) {
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        pageableUrl += pagination.campaignType != undefined ? "&campaignType="+pagination.campaignType : "";
+        let url = this.URL + "campaign/fetchCampaignAnalyticsOfCompanyContacts/"+this.authenticationService.getUserId()+"/"+companyListId+"?access_token="+this.authenticationService.access_token+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    fetchTotalAndActiveCampaignsCountForCompanyJourney(userListId: any, isVanityFilterEnabled: boolean, vendorCompanyName: any) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? "&loggedInUserId=" + loggedInUserId : "&loggedInUserId=0";
+        let contactIdRequestParam = userListId != undefined && userListId > 0 ? "&contactId=" + userListId : "&contactId=0";
+        let vanityUrlFilterParam = isVanityFilterEnabled != undefined ? "&vanityUrlFilter=" + isVanityFilterEnabled : "";
+        let vendorCompanyNameParam = vendorCompanyName != undefined ? "&vendorCompanyName=" + vendorCompanyName : "";
+        let campaignRequestDtoParam = $.trim(loggedInUserIdRequestParam + contactIdRequestParam + vanityUrlFilterParam + vendorCompanyNameParam);
+        let url = this.URL + "campaign/fetchTotalAndActiveCampaignsCounts?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
         return this.authenticationService.callGetMethod(url);
     }
 
