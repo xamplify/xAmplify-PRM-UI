@@ -51,6 +51,9 @@ export class AddCompanyComponent implements OnInit {
     this.addCompany.country = this.countryNames.countries[0];
     this.loadModalPopUp();
   }
+  ngOnDestroy(){
+    $('#addCompanyModal').modal('hide');
+  }
   loadModalPopUp() {
     if (this.actionType === "add") {
       this.title = "Add Company"
