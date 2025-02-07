@@ -770,14 +770,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
 
     oneAtTimeSaveAfterGotPermition() {
-        if (this.assignLeads) {
+	   if (this.assignLeads) {
             this.userUserListWrapper = this.getUserUserListWrapperObj(this.newUsers, this.model.contactListName, this.isPartner, true,
                 "CONTACT", "MANUAL", this.alias, false);
-            this.saveAssignedLeadsList();
-        } else {
+        }else{
+	       this.userUserListWrapper = this.getUserUserListWrapperObj(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                "CONTACT", "MANUAL", this.alias, false);	
+       }
             this.loading = true;
-            this.userUserListWrapper = this.getUserUserListWrapperObj(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
-                "CONTACT", "MANUAL", this.alias, false);
+
             this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                     data => {
@@ -788,13 +789,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 this.customResponse = new CustomResponse('ERROR', data.message, true);
                                 this.socialUsers = [];
                             } else if (data.statusCode === 402) {
-                                this.customResponse = new CustomResponse('ERROR', data.message + '<br>' + data.data, true);
+                                this.customResponse = new CustomResponse('ERROR', data.message  + ': [' + data.data+']', true);
                                 this.socialUsers = [];
                             } else {
                                 this.selectedAddContactsOption = 8;
                                 this.contactService.successMessage = true;
                                 this.contactService.saveAsSuccessMessage = "add";
-                                if (this.isPartner == false) {
+                                
+ 								if(this.assignLeads) {
+                                this.router.navigateByUrl('/home/assignleads/manage')
+                                localStorage.setItem('isZohoSynchronization', 'no');
+                                localStorage.removeItem('isZohoSynchronization');
+                           		}else if (!this.isPartner) {
                                     this.router.navigateByUrl('/home/contacts/manage');
                                     localStorage.removeItem('isZohoSynchronization');
                                 } else {
@@ -812,7 +818,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
                 )
-        }
     }
 
     saveAssignedLeadsList() {
@@ -934,19 +939,21 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     saveCsvContactsWithPermission() {
+	    this.loading = true;
         this.referenceService.closeSweetAlert();
         this.userUserListWrapper.isUploadCsvOptionUsed = false;
+
         if (this.assignLeads) {
             this.setLegalBasisOptions(this.contacts);
             this.userUserListWrapper = this.getUserUserListWrapperObj(this.contacts, this.model.contactListName, this.isPartner, true,
                 "CONTACT", "MANUAL", this.alias, false);
-            this.saveAssignedLeadsList();
         } else {
-            this.loading = true;
-            this.setLegalBasisOptions(this.contacts);
+	        this.setLegalBasisOptions(this.contacts);
             this.userUserListWrapper = this.getUserUserListWrapperObj(this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic,
                 "CONTACT", "MANUAL", this.alias, false);
             this.userUserListWrapper.isUploadCsvOptionUsed = true;
+	     }
+            
             this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                     data => {
@@ -963,7 +970,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 this.selectedAddContactsOption = 8;
                                 this.contactService.saveAsSuccessMessage = "add";
                                 this.uploadedCsvFileName = "";
-                                if (this.isPartner == false) {
+								if (this.assignLeads) {
+									 this.router.navigateByUrl('/home/assignleads/manage')
+                                     localStorage.setItem('isZohoSynchronization', 'no');
+                                     localStorage.removeItem('isZohoSynchronization');
+								}else if (!this.isPartner) {
                                     this.router.navigateByUrl('/home/contacts/manage');
                                     localStorage.removeItem('isZohoSynchronization');
                                 } else {
@@ -981,7 +992,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     },
                     () => this.xtremandLogger.info("addcontactComponent saveCsvContactList() finished")
                 )
-        }
     }
 
     validateLegalBasisOptions() {
@@ -2875,6 +2885,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        $("#marketoShowLoginPopup").modal('hide');
     }
 
     private callDestroyMethod() {

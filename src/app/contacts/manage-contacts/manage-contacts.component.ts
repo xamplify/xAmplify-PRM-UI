@@ -1288,6 +1288,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					this.contactListObject.contactType = "CONTACT";
 					this.contactListObject.socialNetwork = "MANUAL";
 					this.contactListObject.publicList = true;
+					this.contactListObject.moduleName = 'SHARE LEADS';
 					this.userUserListWrapper.users = this.allselectedUsers;
 					this.userUserListWrapper.userList = this.contactListObject;
 					this.saveAssignedLeadsList(this.userUserListWrapper);
@@ -1305,7 +1306,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	saveAssignedLeadsList(userUserListWrapper: UserUserListWrapper) {
 		this.loading = true;
-		this.contactService.saveAssignedLeadsList(this.userUserListWrapper)
+		this.contactService.saveContactList(this.userUserListWrapper)
 			.subscribe(
 				data => {
 					if (data.access) {
@@ -1318,6 +1319,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						} else if (data.statusCode === 402) {
 							this.customResponse = new CustomResponse('ERROR', data.message + '<br>' + data.data, true);
 						} else {
+							this.disableSave = false;
 							this.cleareDefaultConditions();
 							this.contactCountLoad = true;
 							this.navigateToManageContacts();
@@ -2172,6 +2174,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					this.validateLegalBasisOptions();
 					if (this.saveAsTypeList === 'manage-contacts') {
 						this.contactListObject.name = this.saveAsListName;
+						this.contactListObject.copyList = true;
+						this.contactListObject.sourceUserListId = this.contactListObject.id;
 						this.saveExistingContactList();
 						this.cleareDefaultConditions();
 					}
@@ -2212,7 +2216,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.validateLegalBasisOptions();
 				if (this.saveAsTypeList === 'manage-contacts') {
 					this.contactListObject.name = name;
-					this.saveAsNewLeadsList();
+				       this.saveAsNewLeadsList();
 				}
 				else if (this.saveAsTypeList === 'manage-all-contacts') {
 					if (this.isValidLegalOptions) {
@@ -2230,6 +2234,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	saveAsNewLeadsList() {
+		this.contactListObject.copyList = true;
+		this.contactListObject.sourceUserListId = this.contactListObject.id;
 		this.loading = true;
 		this.contactService.saveAsNewList(this.contactListObject)
 			.subscribe(
@@ -2243,7 +2249,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.disableSave = false;
 							$('#saveAsModal').modal('hide');
 							this.cleareDefaultConditions();
-							this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+							this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_SAVE_SUCCESS, true);
 							this.loadContactLists(this.pagination);
 						}
 					} else {
@@ -2276,10 +2282,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.saveAsNewList(this.contactListObject)
 				.subscribe(
 					data => {
+						
 						if (data.statusCode == 401) {
 							this.saveAsError = data.message;
+						} else if (data.statusCode == 402) {
+							this.customResponse = new CustomResponse('ERROR', data.message  + ': [' + data.data+']', true);
 						} else if (data.statusCode == 200) {
-							if (this.isPartner) {
+				           if (this.isPartner) {
 								let message = "Your " + this.authenticationService.partnerModule.customName + " group has been saved successfully";
 								this.customResponse = new CustomResponse('SUCCESS', message, true);
 							} else {
@@ -2641,6 +2650,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.flexiFieldsRequestAndResponseDto = [];
 			swal.close();
 			$('#filterModal').modal('hide');
+			$('#saveAsModal').modal('hide');
+			$("#listSharedDetailsModal").modal('hide');
 		} catch (error) {
 			this.xtremandLogger.error("ERROR : MangeContactsComponent onOnDestroy() " + error);
 		}

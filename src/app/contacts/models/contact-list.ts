@@ -42,4 +42,7 @@ export class ContactList {
     companyList:boolean;
     editList = false;
     isDownload : boolean = false;
+    copyList : boolean = false;
+    sourceUserListId : number;
+
 }

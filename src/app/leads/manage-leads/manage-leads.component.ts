@@ -166,6 +166,8 @@ triggerUniversalSearch(){
       this.referenceService.universalSearchKey = this.leadsSortOption.searchKey;
     }
     this.leadsSortOption.searchKey = this.listView ? this.referenceService.universalSearchKey:'';
+    this.selectedFilterIndex =this.referenceService.universalSearchFilterValue; //XNFR-853
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.referenceService.universalSearchFilterValue == 1 ; //XNFR-853
   }
 }
 
@@ -382,11 +384,11 @@ triggerUniversalSearch(){
   }
 
   showLeads() {
+    this.triggerUniversalSearch();//XNFR-574 && XNFR-853
     this.getCounts();
     this.selectedTabIndex = 1;
     this.titleHeading = "Total ";
     this.resetLeadsPagination();
-    this.triggerUniversalSearch();//XNFR-574
     this.leadsPagination.searchKey = this.leadsSortOption.searchKey;//XNFR-799
     this.campaignPagination = new Pagination;
     this.campaignPagination.searchKey = this.leadsSortOption.searchKey;//XNFR-799

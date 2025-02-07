@@ -30,6 +30,7 @@ export class SfDealComponent implements OnInit {
   @Input() public opportunityType: any;
   @Input() public selectedContact: any;
   @Input() public actionType: any;
+  @Input() public contactId: any;
   @Output() isFormValid = new EventEmitter();
   form: Form = new Form();
   errorMessage: string;
@@ -221,6 +222,9 @@ export class SfDealComponent implements OnInit {
           this.getActiveCRMCustomForm();
         }
       }
+      if (this.selectedContact != undefined && this.selectedContact != null) {
+        this.autoFillContactFieldsForDeal();
+      }
     }
   }
 
@@ -246,8 +250,12 @@ export class SfDealComponent implements OnInit {
               columnInfo.hideFieldInfo = true;
             }
           }
-          if(columnInfo.formDefaultFieldType === 'CREATED_BY_NAME' && this.actionType === 'add'){
+          if (columnInfo.formDefaultFieldType === 'CREATED_BY_NAME' && this.actionType === 'add') {
             columnInfo.value = columnInfo.dropDownChoices[0].labelId;
+          }
+          if (columnInfo.value !== undefined && columnInfo.formDefaultFieldType === 'CONTACT_EMAIL'
+            && this.contactId != undefined && this.actionType === 'edit') {
+            columnInfo.columnDisable = true;
           }
         });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
@@ -334,6 +342,8 @@ export class SfDealComponent implements OnInit {
         }
         this.searchableDropDownDtoForLookup.placeHolder = "Please Select Account";
         /*********XNFR-403*********/
+
+        this.autoFillContactFieldsForDeal();
 
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
         this.showSFFormError = true;
@@ -893,6 +903,37 @@ export class SfDealComponent implements OnInit {
       this.showSFFormError = true;
       this.sfFormError = this.referenceService.getApiErrorMessage(error);
     });
+  }
+
+  autoFillContactFieldsForDeal() {
+    if (this.opportunityType === 'DEAL' && this.selectedContact !== undefined) {
+      for (let column of this.form.formLabelDTOs) {
+        let addActionType = this.actionType === 'add';
+        let editActionType = this.actionType === 'edit';
+        if (column.formDefaultFieldType === 'CONTACT_FIRST_NAME' && addActionType) {
+          column.value = this.selectedContact.firstName;
+        } else if (column.formDefaultFieldType === 'CONTACT_LAST_NAME' && addActionType) {
+          column.value = this.selectedContact.lastName;
+        } else if (column.formDefaultFieldType === 'CONTACT_EMAIL' && addActionType) {
+          column.value = this.selectedContact.emailId;
+        } else if (column.formDefaultFieldType === 'CONTACT_PHONE_NUMBER' && addActionType) {
+          column.value = this.selectedContact.mobileNumber;
+        } else if (column.formDefaultFieldType === 'CONTACT_STREET' && addActionType) {
+          column.value = this.selectedContact.address;
+        } else if (column.formDefaultFieldType === 'CONTACT_ZIP_CODE' && addActionType) {
+          column.value = this.selectedContact.zipCode;
+        } else if (column.formDefaultFieldType === 'CONTACT_STATE' && addActionType && !column.nonInteractive) {
+          column.value = this.selectedContact.state;
+        } else if (column.formDefaultFieldType === 'CONTACT_CITY' && addActionType) {
+          column.value = this.selectedContact.city;
+        } else if (column.formDefaultFieldType === 'CONTACT_COUNTRY' && addActionType && !column.nonInteractive) {
+          column.value = this.selectedContact.country;
+        } else if (column.formDefaultFieldType === 'CONTACT_TITLE' && addActionType) {
+          column.value = this.selectedContact.jobTitle;
+        }
+      }
+      this.validateAllFields();
+    }
   }
 
 }

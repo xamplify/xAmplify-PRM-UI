@@ -13,7 +13,11 @@ export class CampaignMdfSearchComponent implements OnInit {
   constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
-    
+    this.referenceService.hideVerticalScrollBar();
+  }
+
+  searchMdfAliasOnKeyPress(keyCode:any){
+    if (keyCode === 13) { this.searchMdfAlias(); } 
   }
 
   searchMdfAlias(){

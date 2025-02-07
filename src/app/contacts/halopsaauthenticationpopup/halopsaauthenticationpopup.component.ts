@@ -45,7 +45,9 @@ export class HalopsaauthenticationpopupComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     $("#haloPSAPreSettingsForm").modal('show');
   }
-
+  ngOnDestroy(){
+    $( "#haloPSAPreSettingsForm" ).modal( 'hide' );
+  }
   checkAuthorization() {
     this.loading = true;
     this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {

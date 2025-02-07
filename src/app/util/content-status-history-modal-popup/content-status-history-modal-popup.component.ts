@@ -152,6 +152,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.closeModalPopUp();
+    this.referenceService.closeModalPopup(this.historyModalPopUpId);
   }
 
   findComments() {

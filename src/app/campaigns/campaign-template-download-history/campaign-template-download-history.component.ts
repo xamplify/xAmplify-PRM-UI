@@ -31,7 +31,9 @@ export class CampaignTemplateDownloadHistoryComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  ngOnDestroy(){
+    $('#campaignTemplateDownloadHistoryPopup').modal('hide');
+  }
   viewHistoryForPartners(campaign:any){
     this.referenceService.startLoader(this.historyLoader);
     $('#campaignTemplateDownloadHistoryPopup').modal('show');

@@ -86,7 +86,9 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.fetchUsersForCompanyJourney();
     }
   }
-
+  ngOnDestroy(){
+    $('#addEmailModalPopup').modal('hide');
+  }
   sendEmailToUser() {
     this.ngxLoading = true;
     this.prepareFormData();

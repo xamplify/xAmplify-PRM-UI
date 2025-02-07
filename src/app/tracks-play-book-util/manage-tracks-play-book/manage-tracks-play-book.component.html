@@ -271,7 +271,7 @@
                                                 <!-- XNFR-824 -->
                                                 <a *ngIf="isApprovalRequiredForType() && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(learningTrack)" data-toggle="tooltip" data-placement="top"
                                                 title="{{(!authenticationService?.module?.isAdmin || learningTrack?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
-                                                    <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+                                                    <i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
                                                 </a>
                                                 <a class="custom-icon" *ngIf="learningTrack.canDelete && !isPartnerView"
                                                     id="template-delete" data-toggle="tooltip" data-placement="top"

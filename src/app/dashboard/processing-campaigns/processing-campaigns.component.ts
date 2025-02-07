@@ -26,6 +26,8 @@ export class ProcessingCampaignsComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   header = "";
   collapsableDivId = "";
+  divId = "";
+  isVanityUrlEnabled = false;
   constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -37,14 +39,18 @@ export class ProcessingCampaignsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
+    this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
     if(this.scheduledCampaigns){
       this.pagination.archived = false;
+      this.divId = "scheduling-campaigns";
       this.collapsableDivId = "collapsible-schedule-campaigns";
       this.header = "Scheduled Campaigns";
     }else{
       this.collapsableDivId = "collapsible-processing-campaigns";
       this.pagination.archived = true;
       this.header = "Processing Campaigns";
+      this.divId = "processing-campaigns";
     }
     this.findProcessingCampaigns(this.pagination);
   }

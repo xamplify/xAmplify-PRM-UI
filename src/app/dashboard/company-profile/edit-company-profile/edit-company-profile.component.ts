@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild,Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, Renderer2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { FormBuilder } from "@angular/forms";
@@ -232,7 +232,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public videoFileService: VideoFileService, public videoUtilService: VideoUtilService,
         public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute,
-        public callActionSwitch: CallActionSwitch, private vanityURLService: VanityURLService, private mdfService:MdfService,private http: HttpClient) {
+        public callActionSwitch: CallActionSwitch, private vanityURLService: VanityURLService, private mdfService:MdfService,
+        private http: HttpClient, private renderer: Renderer2) {
         if(this.router.url.indexOf("/home/dashboard/admin-company-profile")>-1){
             this.userAlias = this.route.snapshot.params['alias'];
             if(this.userAlias!=undefined && $.trim(this.userAlias).length>0){
@@ -375,7 +376,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         }
     }
     
-    addBlur(){
+    addBlur() {
         $('#blur-content-div').removeClass('admin');
         $('#blur-content-div').addClass('admin blur-content');
         $('#image-blur-content-div').removeClass('image');
@@ -383,20 +384,33 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         $('#module-access-blur-content-div').removeClass('module-access');
         $('#module-access-blur-content-div').addClass('module-access blur-content');
     }
-    
-    removeBlur(){
+
+    removeBlur() {
         $('#blur-content-div').removeClass('admin blur-content');
         $('#blur-content-div').addClass('admin');
         $('#image-blur-content-div').removeClass('image blur-content');
         $('#image-blur-content-div').addClass('image');
         this.removeModuleBlur();
     }
-    
-    removeModuleBlur(){
+
+    removeModuleBlur() {
         $('#module-access-blur-content-div').removeClass('module-access blur-content');
         $('#module-access-blur-content-div').addClass('module-access');
     }
-    
+
+    removeBlurContent() {
+        setTimeout(() => {
+            const blurContentDiv = document.getElementById('blur-content-div');
+            const imageBlurContentDiv = document.getElementById('image-blur-content-div');
+            if (blurContentDiv) {
+                this.renderer.removeClass(blurContentDiv, 'blur-content');
+            }
+            if (imageBlurContentDiv) {
+                this.renderer.removeClass(imageBlurContentDiv, 'blur-content');
+            }
+        }, 1000);
+    }
+
     ngOnInit() {
         this.isLocalHost = this.authenticationService.isLocalHost();
         this.isSuperAdmin = this.authenticationService.isSuperAdmin();
@@ -741,7 +755,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         localStorage.setItem('currentUser', JSON.stringify(userToken));
                         self.homeComponent.getVideoDefaultSettings();
                         self.homeComponent.getTeamMembersDetails();
-
                     }, 3000);
                 },
                 error => {
@@ -875,6 +888,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     
     getCompanyProfileByUserId(userId: any) {
         if (userId != undefined) {
+            this.autoSaveLoader = true;
             this.companyProfileService.getByUserId(userId).subscribe(
                 (data) => {
                     if (data.data != undefined) {
@@ -886,9 +900,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                     } else {
                         this.isDisable = false;
                     }
+                    this.autoSaveLoader = false;
                 }, (error) => {
+                    this.autoSaveLoader = false;
                     this.logger.errorPage(error)
                 }, () => {
+                    this.removeBlurContent();
                     this.logger.info("Completed getCompanyProfileByUserId()");
                     this.checkAndAutofillCompanyProfile();
                 }
@@ -2106,6 +2123,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.autoSaveLoader = false;
                 let message = this.refService.getApiErrorMessage(error);
                 this.customResponse = new CustomResponse('ERROR', message, true);
+                this.removeBlurContent();
                 console.log('Error Occured while retriving the company profile automatically :', error);
             });
     }

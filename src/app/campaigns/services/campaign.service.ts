@@ -14,10 +14,10 @@ import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { DuplicateMdfRequest } from '../models/duplicate-mdf-request';
 declare var swal: any, $: any, Promise: any;
 @Injectable()
 export class CampaignService {
-    
     campaign: Campaign;
     eventCampaign: any;
     reDistributeCampaign: Campaign;
@@ -27,6 +27,7 @@ export class CampaignService {
     reDistributeEvent = false;
     loading = false;
     archived: boolean = false;
+    QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     constructor(private http: Http, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, private utilService: UtilService, public referenceService: ReferenceService) { }
 
@@ -1493,5 +1494,19 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    findMdfRequestsByCampaignId(emailsHistoryPagination: Pagination) {
+        let pageableUrl = this.referenceService.getPagebleUrl(emailsHistoryPagination);
+        const url = this.URL + 'campaign/requests/' +emailsHistoryPagination.campaignId+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+      }
+
+      
+      findMdfRequestHistoriesByMdfKey(pagination: Pagination,mdfAlias:string) {
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        const url = this.URL + 'campaign/requests/history/' +mdfAlias+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+      }
+
+      
 
 }

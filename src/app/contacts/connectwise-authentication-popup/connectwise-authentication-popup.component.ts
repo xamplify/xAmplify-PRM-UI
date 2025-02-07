@@ -33,6 +33,9 @@ export class ConnectwiseAuthenticationPopupComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     $("#connectWisePreSettingsForm").modal('show');
   }
+  ngOnDestroy(){
+    $( "#connectWisePreSettingsForm" ).modal( 'hide' );
+  }
   checkAuthorization() {
     this.loading = true;
     this.integrationService.checkConfigurationByType("connectwise").subscribe(data => {

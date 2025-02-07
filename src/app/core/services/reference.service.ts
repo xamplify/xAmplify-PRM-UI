@@ -24,6 +24,7 @@ import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
 import { EnvService } from "app/env.service";
 import { RouterUrlConstants } from "app/constants/router-url.contstants";
+import { XAMPLIFY_CONSTANTS } from "app/constants/xamplify-default.constants";
 
 
 declare var $:any, swal:any, require:any;
@@ -165,7 +166,7 @@ export class ReferenceService {
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
   approvalModuleRouter = "/home/approval-hub/manage";
-  
+  universalSearchFilterValue:number= this.getUniversalSearchFilterValue() ;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -4007,8 +4008,22 @@ getFirstLetter(inputString:any) {
     this.openWindowInNewTab(url);
   }
 
+  addDefaultLogos( isVendorLandscape:boolean) {
+    let defaultLogos=[];
+    defaultLogos.push({ name: "Companies Logo", value: `<img width="100%" src="https://xamplify.s3.amazonaws.com/images/deafult-master-lading-page.jpg">` });
+    if(isVendorLandscape){
+      defaultLogos.push({ name: "Maps Logo", value: `<img width="100%" src="https://xamplify.s3.amazonaws.com/dev/images/bee-1305/f-7f38af0f-f5ed-4ee6-a6f6-c4d9909ceb4e-94151676035396555.jpeg">` });
+    }
+    return defaultLogos;
+  }
 
-  
+  /** XNFR-853 */
+  getUniversalSearchFilterValue():number {
+    let TeamMemberGroupFilter = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.filterPartners);
+    return (TeamMemberGroupFilter !== null && TeamMemberGroupFilter !== undefined && (TeamMemberGroupFilter === false || TeamMemberGroupFilter === 'false')) ? 0 : 1;
+  }
+  /** XNFR-853 */
+
 }
 
 

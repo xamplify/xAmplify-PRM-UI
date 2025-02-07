@@ -2,6 +2,7 @@ export const SUPER_ADMIN_MODULE_CONTSTANTS = {
     allApprovedUsers:'All Approved Users',
     processingUserLists:'Processing User Lists',
     demoRequests:'Demo Requests',
+    mdfAccountRequests:'Campaign MDF Account Requests',
     top10recentRegisteredAndLoggedInUsers:'Top 10 Recent Registered / Logged In Users',
     vendorReport:'Vendor Report',
     partnerCompanies:'Partner Companies',
