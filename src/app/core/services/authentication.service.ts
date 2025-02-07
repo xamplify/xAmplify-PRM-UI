@@ -1570,7 +1570,7 @@ vanityWelcomePageRequired(userId) {
 
   /***XNFR-878****/
   updatePartnerPrimaryAdmin(selectedPrimaryAdminTeamMemberUserId: any) {
-    let url = this.REST_URL +"teamMember/updatePrimaryAdmin/"+this.getUserId()+"/"+selectedPrimaryAdminTeamMemberUserId+"?access_token=" + this.access_token;
+    let url = this.REST_URL +"teamMember/updatePartnerPrimaryAdmin/"+this.getUserId()+"/"+selectedPrimaryAdminTeamMemberUserId+"?access_token=" + this.access_token;
     return this.http.get(url)
     .map(this.extractData)
     .catch(this.handleError);

@@ -11,7 +11,6 @@ import { SortOption } from 'app/core/models/sort-option';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Properties } from '../../common/models/properties';
-import { TeamMemberService } from 'app/team/services/team-member.service';
 
 @Component({
   selector: 'app-partner-journey-team-members-table',
@@ -41,7 +40,7 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
     public xtremandLogger: XtremandLogger, public sortOption: SortOption,
-    public properties:Properties,private teamMemberService:TeamMemberService) {
+    public properties:Properties) {
       this.loggedInUserId = this.authenticationService.getUserId(); 
   }
 
@@ -189,6 +188,7 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     if (teamMember.status == 'APPROVE' && this.authenticationService.module.isAdmin && this.authenticationService.module.isAnyAdminOrSupervisor) {
       this.isEnablePrimaryAdminOptionClicked = true;
       this.selectedPrimaryAdminTeamMemberUserId = teamMember.teamMemberUserId;
+      console.log(this.selectedPrimaryAdminTeamMemberUserId);
     }
   }
   

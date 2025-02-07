@@ -66,7 +66,7 @@
                 <div class="actions-block override-actions custom-width-icon">
                   <a data-toggle="tooltip" data-placement="bottom"
                   [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'"
-                  (click)="enableAsPrimaryAdmin(teamMember)"
+                  (click)="confirmPrimaryAdminChange(teamMember)"
                   [className]="teamMember.status!='APPROVE' && !authenticationService?.module?.isAdmin && !authenticationService?.module?.adminOrSuperVisor ? 'inactive custom-icon':'custom-icon'">
                   <i [className]="teamMember.status=='APPROVE' && authenticationService?.module?.isAdmin && authenticationService?.module?.adminOrSuperVisor ? 'fa fa-user-o IconCustomization':'fa fa-user-o gray IconCustomization'"
                     aria-hidden="true"></i>
