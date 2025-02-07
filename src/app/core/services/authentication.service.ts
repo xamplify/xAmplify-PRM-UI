@@ -39,6 +39,7 @@ import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request'
 @Injectable()
 export class AuthenticationService {
  
+ 
 
   access_token: string;
   refresh_token: string;
@@ -1565,6 +1566,14 @@ vanityWelcomePageRequired(userId) {
   validateDuplicateMdfRequest(duplicateMdfRequestDto:DuplicateMdfRequest) {
     const url = this.REST_URL + 'campaign/validateDuplicateCampaignMdfRequest?emailAddress='+duplicateMdfRequestDto.emailAddress+'&campaignId='+duplicateMdfRequestDto.campaignId+'&access_token='+this.access_token;
     return this.callGetMethod(url);
+  }
+
+  /***XNFR-878****/
+  updatePartnerPrimaryAdmin(selectedPrimaryAdminTeamMemberUserId: any) {
+    let url = this.REST_URL +"teamMember/updatePrimaryAdmin/"+this.getUserId()+"/"+selectedPrimaryAdminTeamMemberUserId+"?access_token=" + this.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
   }
 
 

@@ -9,12 +9,15 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
+import { Properties } from '../../common/models/properties';
+import { TeamMemberService } from 'app/team/services/team-member.service';
 
 @Component({
   selector: 'app-partner-journey-team-members-table',
   templateUrl: './partner-journey-team-members-table.component.html',
   styleUrls: ['./partner-journey-team-members-table.component.css'],
-  providers: [SortOption]
+  providers: [SortOption,Properties]
 })
 export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   @Input() partnerCompanyId: any;
@@ -30,17 +33,21 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   teamMemberId: any = 0;
   showModulesPopup: boolean;
   teamMemberGroupId: number;
- 
+  /***XNFR-878***/
+  primaryAdminSweetAlertParameterDto: SweetAlertParameterDto = new SweetAlertParameterDto();
+  isEnablePrimaryAdminOptionClicked = false;
+  selectedPrimaryAdminTeamMemberUserId: any;
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
-    public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
+    public xtremandLogger: XtremandLogger, public sortOption: SortOption,
+    public properties:Properties,private teamMemberService:TeamMemberService) {
       this.loggedInUserId = this.authenticationService.getUserId(); 
   }
 
   ngOnInit() {    
-    // this.getTeamInfo(this.pagination);
-    // this.getTeamEmails();
+    this.primaryAdminSweetAlertParameterDto.confirmButtonText = this.properties.proceed;
+    this.primaryAdminSweetAlertParameterDto.text = this.properties.confirmPrimaryAdminText;
   } 
 
   ngOnChanges(){
@@ -175,6 +182,29 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   sortActivePartnerJourney(text: any) {
     this.sortOption.activepartnerJourney = text;
     this.getAllFilteredResults(this.pagination);
+  }
+
+  /***XNFR-878*****/
+  confirmPrimaryAdminChange(teamMember:any){
+    if (teamMember.status == 'APPROVE' && this.authenticationService.module.isAdmin && this.authenticationService.module.isAnyAdminOrSupervisor) {
+      this.isEnablePrimaryAdminOptionClicked = true;
+      this.selectedPrimaryAdminTeamMemberUserId = teamMember.teamMemberUserId;
+    }
+  }
+  
+  /********XNFR-878*********/
+  enableAsPrimaryAdmin(event: any) {
+    if (event) {
+      this.authenticationService.updatePartnerPrimaryAdmin(this.selectedPrimaryAdminTeamMemberUserId).
+        subscribe(
+          response => {
+            this.referenseService.showSweetAlertProceesor("Primary Admin Updated Successfully.");
+          }, error => {
+           this.referenseService.showSweetAlertServerErrorMessage();
+          }
+        );
+    }
+    this.isEnablePrimaryAdminOptionClicked = false;
   }
 
 }
