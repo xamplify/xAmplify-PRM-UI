@@ -1,0 +1,52 @@
+<div id="orderFieldPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="orderFieldPopup"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-css" role="document">
+    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content" style="overflow-x: hidden;">
+      <div class="modal-header">
+        <div class="button-container">
+          <!-- Left-aligned Checkbox -->
+          <div class="left-checkbox">
+            <h4 class="modal-title" style="font-weight: 600;" translate>order-fields works!</h4>
+          </div>
+          <!-- Right-aligned Buttons -->
+          <div class="right-buttons">
+            <button class="btn btn-primary" data-dismiss="modal" (click)="selectFieldValues()">Select Fields</button>
+            <a title="Close" class="close-circle" (click)="closeModalClose()">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 add-graph-bg">
+          <div class="alert alert-info">
+            <strong>Drag and reorder the fields as needed. Your report will display them in the same order.</strong>
+          </div>
+          <div class="portlet light border-radius-0 custome-portlet" id="removeborder">
+            <ul class="list-group drag-menu-cu cursor-move" [dragula]='"fieldsDragula"'
+              [dragulaModel]='selectFieldsDtos'>
+              <li class="list-group-item cursor-move" *ngFor="let fieldDto of selectFieldsDtos">
+                <span class="FieldName" data-toggle="tooltip" data-placement="top"
+                  title="{{fieldDto.labelName}}">{{fieldDto.labelName | slice:0:30}}
+                  <span *ngIf="fieldDto.labelName?.length>30">...</span>
+                </span>
+                <i class="fa fa-arrows pull-right drap-arrow-cu" aria-hidden="true"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <div class="">
+          <div class="">
+            <button class="btn Btn-Gray" data-dismiss="modal" (click)="closeModalClose()">Close</button>
+            <button class="btn btn-primary" data-dismiss="modal" (click)="updateMenuItems()">UpdateOrder & Email The
+              Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

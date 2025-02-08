@@ -22,6 +22,7 @@ import { Properties } from 'app/common/models/properties';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { DashboardService } from 'app/dashboard/dashboard.service';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -122,7 +123,7 @@ export class ManageLeadsComponent implements OnInit {
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService,private leadsService: LeadsService,
-    public integrationService: IntegrationService,public properties:Properties) {
+    public integrationService: IntegrationService,public properties:Properties,public dashboardService:DashboardService) {
 
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -1575,7 +1576,82 @@ triggerUniversalSearch(){
         () => { }
       );
   }
+  /*** XNFR-839 */
+  showSlectFieldComponent: boolean = false;
+  showOrderFieldComponent:boolean = false;
+  userType:string;
+  enabledMyPreferances:boolean = false;
+  openSelectFieldPopup(){
+    this.getMyPreferances();
+  }
+  getMyPreferances(){
+    this.dashboardService.isMyPreferances()
+    .subscribe(
+      result => {
+        let isMyPreferances = result.data;
+        if (isMyPreferances) {
+          if (this.isVendorVersion) {
+            this.userType = "v";
+          } else if (this.isPartnerVersion) {
+            this.userType = "p";
+          }
+          this.enabledMyPreferances = isMyPreferances;
+          this.showOrderFieldComponent = true;
+        } else {
+          this.showSlectFieldComponent = true;
+        }
+      },
+      error => console.log(error),
+      () => console.log('finished '));
+  }
+  selectedFields:any[] = [];
+  closeEmitter(event: any) {
+    let input = event;
+    if(input['submit'] === 'submit') {
+      this.selectedFields = input['selectFields'];
+      this.saveSelectedFields();
+      this.showOrderFieldComponent = input['close'];
+      this.showSlectFieldComponent = input['close'];
+    }
+    if(input['update'] === 'update') {
+      this.selectedFields = input['selectFields'];
+      this.showOrderFieldComponent = input['close'];
+      this.showSlectFieldComponent = input['close'];
+    } else if(input['select'] === 'select') {
+      this.showOrderFieldComponent = input['close'];
+      this.showSlectFieldComponent = true;
+      this.selectedFields = input['selectFields'];
+    }else if(input['order'] ==='order' ) {
+      this.showOrderFieldComponent = true;
+      this.showSlectFieldComponent = input['close'];
+      this.selectedFields = input['selectFields'];
+      this.enabledMyPreferances = input['myPreferances'];
 
+    } else if(!input['close']){
+      this.showOrderFieldComponent = input['close'];
+      this.showSlectFieldComponent = input['close'];
+    } 
+    
+    console.log(this.selectedFields);
+  }
+  saveSelectedFields() {
+    let selectedFieldsResponseDto = {};
+    selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+    selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+    selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+    selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+    this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+      .subscribe(
+        data => {
+          if (data.statusCode == 200) {
+            //this.fieldsCustomResponse = new CustomResponse('SUCCESS', data.message, true);
+          }
+          //this.ngxloading = false;
+        },
+        error => console.log(error),
+        () => {  });
+  }
+   /*** XNFR-839 */
 
   
 }

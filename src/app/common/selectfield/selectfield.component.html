@@ -1,0 +1,83 @@
+<div id="exportExcelModalPopup" class="modal fade right" role="dialog" aria-labelledby="exportExcelModalPopup"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="button-container">
+          <!-- Left-aligned Checkbox -->
+          <div class="left-checkbox">
+            <h4 class="modal-title" style="font-weight: 600;" translate>selected-columns-export works!</h4>
+          </div>
+          <!-- Right-aligned Buttons -->
+          <div class="right-buttons">
+            <button class="btn btn-primary" (click)="openOrderComponnet('order')">Order Fields</button>
+            <a title="Close" class="close-circle" (click)="closeModalClose()">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <div class="alert alert-info">
+            <strong>Select the fields for your report. Only the chosen fields will be displayed in the report.</strong>
+          </div>
+          <div>
+            <table class="table tgrid table-hover table-sm">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center" style="width: 10%">
+                    <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
+                      (change)="toggleAllSelection($event)" />
+                  </th>
+                  <th scope="col">Field Label</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let fieldDto of pagination.pagedItems; let i = index">
+                  <tr class="pointer">
+                    <td class="text-center">
+                      <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="fieldDto.selectedColumn"
+                        (change)="toggleSelection(fieldDto)" [checked]="allItems.indexOf(fieldDto)"
+                        [disabled]="isFieldDisabled(fieldDto.labelName)" />
+                    </td>
+                    <td>
+                      <span class="FieldName" data-toggle="tooltip" data-placement="top"
+                        title="{{fieldDto.labelName}}">{{fieldDto.labelName | slice:0:30}}
+                        <span *ngIf="fieldDto.labelName?.length>30">...</span>
+                      </span>
+                      <ul class="textDecoration">
+                        <li>{{fieldDto.displayName}}</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="">
+          <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)"
+            (notifyParentDropDown)="getAllLeadFormColumns($event)"></app-pagination>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="button-container">
+          <!-- Left-aligned Checkbox -->
+          <div class="left-checkbox">
+            <ul class="textDecoration">
+              <li><input type="checkbox" id="setAsDefault" [(ngModel)]="isDefault"
+                  (change)="setMyPreferances($event)" /></li>
+              <li> <label for="setAsDefault"><b>Set as My Preferances</b></label></li>
+            </ul>
+          </div>
+          <!-- Right-aligned Buttons -->
+          <div class="right-buttons">
+            <button class="btn Btn-Gray" (click)="closeModalClose()">Close</button>
+            <button class="btn btn-primary" (click)="submit()">Email The Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
