@@ -71,11 +71,6 @@ export class SelectfieldComponent implements OnInit {
 
   toggleSelection(field: any) {
     const isUnChecked = !field.selectedColumn;
-    // if(this.selectedFields.length > 0) {
-    //   this.unSelectedItems = this.allItems.filter(item =>
-    //     !this.selectedFields.some(unselected => unselected.labelId === item.labelId)
-    //   );
-    // }
     if (isUnChecked) {
       this.unSelectedItems.push(field);
     } else {
@@ -129,7 +124,6 @@ export class SelectfieldComponent implements OnInit {
     const isChecked = (event.target as HTMLInputElement).checked;
     this.selectedFieldsResponseDto['myPreferances'] = isChecked;
     this.isDefault = isChecked;
-
   }
   emitValues(value: string) {
     let input: any = { selectFields: this.selectedItems, myPreferances:this.isDefault};
@@ -140,27 +134,6 @@ export class SelectfieldComponent implements OnInit {
     }
     this.closeEmitter.emit(input);
   }
-
-
-  // emitValues(value: string) {
-  //   let input = {};
-  //   if (value === 'update') {
-  //     input['update'] = 'update';
-  //     input['close'] = false;
-  //     input['selectFields'] = this.selectedItems;
-  //   } else if (value === 'order') {
-  //     input['order'] = value;
-  //     input['selectFields'] = this.selectedItems;
-  //     input['myPreferances'] = this.isDefault;
-  //     input['close'] = false;
-  //   } else if(value === 'submit') {
-  //     input['submit'] = value;
-  //     input['selectFields'] = this.selectedItems;
-  //     input['myPreferances'] = this.isDefault;
-  //   }
-
-  //   this.closeEmitter.emit(input);
-  // }
   combinedItems: any[] = [];
   combineArraysWithoutDuplicatesAndSort() {
     let notCheckItems: any[] = [];

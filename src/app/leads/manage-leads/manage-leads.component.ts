@@ -1417,6 +1417,7 @@ triggerUniversalSearch(){
                 }else if(data.statusCode == 401){
                   this.leadsResponse = new CustomResponse('SUCCESS', data.message, true);
                 }
+                this.selectedFields = [];
             },error => {
               this.httpRequestLoader.isServerError = true;
             },
@@ -1650,12 +1651,11 @@ saveSelectedFields() {
         if (data.statusCode === 200) {
 
         }
-
+        this.leadsPagination.selectedExcelFormFields = this.selectedFields;
+        this.downloadLeads(this.leadsPagination)
       },
       error => console.log(error),
       () => {
-        this.leadsPagination.selectedFormFields = this.selectedFields;
-        this.downloadLeads(this.leadsPagination)
       });
 }
   /*** XNFR-839 */
