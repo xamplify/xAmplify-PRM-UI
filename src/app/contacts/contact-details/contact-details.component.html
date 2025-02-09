@@ -99,34 +99,34 @@
           <!-- Start -->
           <div class="icon_group" *ngIf="isCompanyJourney">
             <!-- tiles one -->
-            <a class="icon_item count_one" [ngClass]="(contactsCount != undefined && contactsCount > 0) ? '' : 'disabled'" (click)="(contactsCount != undefined && contactsCount > 0) ? viewMoreContacts() : ''">
+            <a class="icon_item count_one" [ngClass]="(formattedContactsCount != undefined && formattedContactsCount != '0') ? '' : 'disabled'" (click)="(formattedContactsCount != undefined && formattedContactsCount != '0') ? viewMoreContacts() : ''">
               <i aria-hidden="true" class="fa fa-id-card dbiconscss company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{contactsCount}}</span>
+                <span class="icon_btns count_1">{{formattedContactsCount}}</span>
                 <div class="icon_label">Contacts</div>
               </div>
             </a>
             <!-- tiles two -->
-            <a class="icon_item count_two" [ngClass]="(leadsCount != undefined && leadsCount > 0) ? '' : 'disabled'" (click)="(leadsCount != undefined && leadsCount > 0) ? viewMoreLeads() : ''">
+            <a class="icon_item count_two" [ngClass]="(formattedLeadsCount != undefined && formattedLeadsCount != '0') ? '' : 'disabled'" (click)="(formattedLeadsCount != undefined && formattedLeadsCount != '0') ? viewMoreLeads() : ''">
               <i aria-hidden="true" class="fa fa-user-circle company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{leadsCount}}</span>
+                <span class="icon_btns count_1">{{formattedLeadsCount}}</span>
                 <div class="icon_label">Leads</div>
               </div>
             </a>
             <!-- tiltes three -->
-            <a class="icon_item count-three" [ngClass]="(dealsCount != undefined && dealsCount > 0) ? '' : 'disabled'" (click)="(dealsCount != undefined && dealsCount > 0) ? viewMoreDeals() : ''">
+            <a class="icon_item count-three" [ngClass]="(formattedDealsCount != undefined && formattedDealsCount != '0') ? '' : 'disabled'" (click)="(formattedDealsCount != undefined && formattedDealsCount != '0') ? viewMoreDeals() : ''">
               <i aria-hidden="true" class="fa fa-tags company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{dealsCount}}</span>
+                <span class="icon_btns count_1">{{formattedDealsCount}}</span>
                 <div class="icon_label">Deals</div>
               </div>
             </a>
             <!-- tiles four -->
-            <a class="icon_item count_four" [ngClass]="(campaignsCount != undefined && campaignsCount > 0) ? '' : 'disabled'" (click)="(campaignsCount != undefined && campaignsCount > 0) ? viewMoreCampaigns() : ''">
+            <a class="icon_item count_four" [ngClass]="(formattedCampaignsCount != undefined && formattedCampaignsCount != '0') ? '' : 'disabled'" (click)="(formattedCampaignsCount != undefined && formattedCampaignsCount != '0') ? viewMoreCampaigns() : ''">
               <i aria-hidden="true" class="fa fa-bullhorn dbiconscss company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{campaignsCount}}</span>
+                <span class="icon_btns count_1">{{formattedCampaignsCount}}</span>
                 <div class="icon_label">Campaigns</div>
               </div>
             </a>
