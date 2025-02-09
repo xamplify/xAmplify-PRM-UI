@@ -1,6 +1,6 @@
-<div id="orderFieldPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="orderFieldPopup"
+<div id="orderFieldPopup" class="modal fade right"  role="dialog" aria-labelledby="orderFieldPopup"
   data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-css" role="document">
+  <div class="modal-dialog" role="document">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="modal-content" style="overflow-x: hidden;">
       <div class="modal-header">
@@ -41,8 +41,8 @@
       <div class="modal-footer">
         <div class="">
           <div class="">
-            <button class="btn Btn-Gray" data-dismiss="modal" (click)="closeModalClose()">Close</button>
-            <button class="btn btn-primary" data-dismiss="modal" (click)="updateMenuItems()">UpdateOrder & Email The
+            <button class="btn Btn-Gray" (click)="closeModalClose()">Close</button>
+            <button class="btn btn-primary" (click)="updateMenuItems()">UpdateOrder & Email The
               Report</button>
           </div>
         </div>

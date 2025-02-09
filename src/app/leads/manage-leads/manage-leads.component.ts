@@ -117,6 +117,12 @@ export class ManageLeadsComponent implements OnInit {
   statusLoader = true;
   isStatusLoadedSuccessfully = true;
 
+  /*** XNFR-839 ****/
+  showSlectFieldComponent: boolean = false;
+  showOrderFieldComponent: boolean = false;
+  userType: string;
+  enabledMyPreferances: boolean = false;
+  /*** XNFR-839 ****/
 
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
@@ -1577,81 +1583,82 @@ triggerUniversalSearch(){
       );
   }
   /*** XNFR-839 */
-  showSlectFieldComponent: boolean = false;
-  showOrderFieldComponent:boolean = false;
-  userType:string;
-  enabledMyPreferances:boolean = false;
-  openSelectFieldPopup(){
+  openSelectFieldPopup() {
     this.getMyPreferances();
   }
-  getMyPreferances(){
+  getMyPreferances() {
     this.dashboardService.isMyPreferances()
-    .subscribe(
-      result => {
-        let isMyPreferances = result.data;
-        if (isMyPreferances) {
-          if (this.isVendorVersion) {
-            this.userType = "v";
-          } else if (this.isPartnerVersion) {
-            this.userType = "p";
-          }
-          this.enabledMyPreferances = isMyPreferances;
-          this.showOrderFieldComponent = true;
-        } else {
-          this.showSlectFieldComponent = true;
-        }
-      },
-      error => console.log(error),
-      () => console.log('finished '));
-  }
-  selectedFields:any[] = [];
-  closeEmitter(event: any) {
-    let input = event;
-    if(input['submit'] === 'submit') {
-      this.selectedFields = input['selectFields'];
-      this.saveSelectedFields();
-      this.showOrderFieldComponent = input['close'];
-      this.showSlectFieldComponent = input['close'];
-    }
-    if(input['update'] === 'update') {
-      this.selectedFields = input['selectFields'];
-      this.showOrderFieldComponent = input['close'];
-      this.showSlectFieldComponent = input['close'];
-    } else if(input['select'] === 'select') {
-      this.showOrderFieldComponent = input['close'];
-      this.showSlectFieldComponent = true;
-      this.selectedFields = input['selectFields'];
-    }else if(input['order'] ==='order' ) {
-      this.showOrderFieldComponent = true;
-      this.showSlectFieldComponent = input['close'];
-      this.selectedFields = input['selectFields'];
-      this.enabledMyPreferances = input['myPreferances'];
-
-    } else if(!input['close']){
-      this.showOrderFieldComponent = input['close'];
-      this.showSlectFieldComponent = input['close'];
-    } 
-    
-    console.log(this.selectedFields);
-  }
-  saveSelectedFields() {
-    let selectedFieldsResponseDto = {};
-    selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
-    selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
-    selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
-    selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
-    this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
       .subscribe(
-        data => {
-          if (data.statusCode == 200) {
-            //this.fieldsCustomResponse = new CustomResponse('SUCCESS', data.message, true);
+        result => {
+          let isMyPreferances = result.data;
+          if (isMyPreferances) {
+
+            this.enabledMyPreferances = isMyPreferances;
+            this.showOrderFieldComponent = true;
+          } else {
+            this.showSlectFieldComponent = true;
           }
-          //this.ngxloading = false;
         },
         error => console.log(error),
-        () => {  });
+        () => console.log('finished '));
   }
-   /*** XNFR-839 */
+  selectedFields: any[] = [];
+  closeEmitter(event: any) {
+    // Set selected fields and preferences if available
+    let input = event;
+    if (input['update'] === 'update') {
+      this.showOrderFieldComponent = input['close'];
+      this.showSlectFieldComponent = input['close'];
+      this.enabledMyPreferances = input['myPreferances']
+      this.selectedFields = input['selectFields'];
+    }
+    else if (input['select'] === 'select') {
+      this.showOrderFieldComponent = input['close'];
+      this.showSlectFieldComponent = true;
+      this.enabledMyPreferances = input['myPreferances']
+      this.selectedFields = input['selectFields'];
+    }
+    else if (input['order'] === 'order') {
+      this.showOrderFieldComponent = true;
+      this.showSlectFieldComponent = input['close'];
+      this.enabledMyPreferances = input['myPreferances']
+      this.selectedFields = input['selectFields'];
+    }
+    else if (input['submit'] === 'submit') {
+      this.showOrderFieldComponent = false;
+      this.showSlectFieldComponent = false;
+      this.enabledMyPreferances = input['myPreferances'];
+      this.selectedFields = input['selectFields'];
+      this.saveSelectedFields();
+    }
+    else if (!input['close']) {
+      this.showOrderFieldComponent = false;
+      this.showSlectFieldComponent = false;
+    }
+}
 
-  
+
+saveSelectedFields() {
+  let selectedFieldsResponseDto = {};
+  selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+  selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+  selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+  selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+  this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+    .subscribe(
+      data => {
+        if (data.statusCode === 200) {
+
+        }
+
+      },
+      error => console.log(error),
+      () => {
+        this.leadsPagination.selectedFormFields = this.selectedFields;
+        this.downloadLeads(this.leadsPagination)
+      });
+}
+  /*** XNFR-839 */
+
+
 }

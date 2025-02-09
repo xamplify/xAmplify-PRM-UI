@@ -11,7 +11,7 @@
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">
-            <button class="btn btn-primary" (click)="openOrderComponnet('order')">Order Fields</button>
+            <button class="btn btn-primary" (click)="openOrderComponnet()">Order Fields</button>
             <a title="Close" class="close-circle" (click)="closeModalClose()">
               <i class="fa fa-times" aria-hidden="true"></i>
             </a>
@@ -49,6 +49,7 @@
                       </span>
                       <ul class="textDecoration">
                         <li>{{fieldDto.displayName}}</li>
+                        <li>{{fieldDto.labelId}}</li>
                       </ul>
                     </td>
                   </tr>

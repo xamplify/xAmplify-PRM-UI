@@ -124,7 +124,6 @@ export class SelectfieldComponent implements OnInit {
       !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
     );
     this.emitValues('submit');
-    //this.saveSelectedFields();
   }
   setMyPreferances(event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
@@ -132,38 +131,36 @@ export class SelectfieldComponent implements OnInit {
     this.isDefault = isChecked;
 
   }
-  saveSelectedFields() {
-   // this.ngxloading = true;
-    this.selectedFieldsResponseDto['propertiesList'] = this.selectedItems;
-    this.dashboardService.saveSelectedFields(this.selectedFieldsResponseDto)
-      .subscribe(
-        data => {
-          if (data.statusCode == 200) {
-            this.fieldsCustomResponse = new CustomResponse('SUCCESS', data.message, true);
-          }
-          this.ngxloading = false;
-        },
-        error => console.log(error),
-        () => { this.ngxloading = false; });
-  }
   emitValues(value: string) {
-    let input = {};
-    if (value === 'update') {
-      input['update'] = 'update';
-      input['close'] = false;
-      input['selectFields'] = this.selectedItems;
-    } else if (value === 'order') {
-      input['order'] = value;
-      input['selectFields'] = this.selectedItems;
+    let input: any = { selectFields: this.selectedItems, myPreferances:this.isDefault};
+    if (value === 'update' || value === 'order' || value === 'submit') {
+      input[value] = value;
       input['myPreferances'] = this.isDefault;
       input['close'] = false;
-    } else if(value === 'submit') {
-      input['selectFields'] = this.selectedItems;
-      input['myPreferances'] = this.isDefault;
     }
-  
     this.closeEmitter.emit(input);
   }
+
+
+  // emitValues(value: string) {
+  //   let input = {};
+  //   if (value === 'update') {
+  //     input['update'] = 'update';
+  //     input['close'] = false;
+  //     input['selectFields'] = this.selectedItems;
+  //   } else if (value === 'order') {
+  //     input['order'] = value;
+  //     input['selectFields'] = this.selectedItems;
+  //     input['myPreferances'] = this.isDefault;
+  //     input['close'] = false;
+  //   } else if(value === 'submit') {
+  //     input['submit'] = value;
+  //     input['selectFields'] = this.selectedItems;
+  //     input['myPreferances'] = this.isDefault;
+  //   }
+
+  //   this.closeEmitter.emit(input);
+  // }
   combinedItems: any[] = [];
   combineArraysWithoutDuplicatesAndSort() {
     let notCheckItems: any[] = [];
@@ -188,11 +185,11 @@ export class SelectfieldComponent implements OnInit {
   isFieldDisabled(labelName: string): boolean {
     return this.excludedLabels.includes(labelName);
   }
-  openOrderComponnet(value:string) {
+  openOrderComponnet() {
+    this.referenceService.closeModalPopup('exportExcelModalPopup');
     this.selectedItems = this.allItems.filter(item =>
       !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
     );
-    let valseString = this.selectedFields.length > 0 ? 'order' : 'close';
-    this.emitValues(valseString);
+    this.emitValues('order');
   }
 }

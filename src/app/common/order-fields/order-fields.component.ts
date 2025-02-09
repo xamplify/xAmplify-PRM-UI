@@ -26,8 +26,6 @@ export class OrderFieldsComponent implements OnInit {
   ngOnInit() {
     this.referenceService.openModalPopup('orderFieldPopup');
     this.getFiledsByUserId();
-    console.log("selectedItems :", this.selectedItems);
-
   }
   closeModalClose() {
     this.referenceService.closeModalPopup('orderFieldPopup');
@@ -43,57 +41,29 @@ export class OrderFieldsComponent implements OnInit {
         result => {
           if (result.statusCode == 200) {
             this.selectFieldsDtos = result.data;
-            if(this.selectedItems.length > 0){
+            if(this.selectedItems && this.selectedItems.length > 0 && this.selectedItems != undefined){
             this.selectFieldsDtos = this.selectedItems;
-            console.log("selectFieldsDtos :", this.selectedItems);
             }
           }
           this.ngxloading = false;
         },
         error => console.log(error),
-        () => { console.log('finished'); this.ngxloading = false; });
+        () => { this.ngxloading = false; });
   }
   updateMenuItems() {
     this.referenceService.closeModalPopup('orderFieldPopup');
-    // this.ngxloading = true;
-    // let selectedFieldsResponseDto = {};
-    // selectedFieldsResponseDto['propertiesList'] = this.selectFieldsDtos;
-    // selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
-    // this.dashBoardService.saveSelectedFields(selectedFieldsResponseDto)
-    //   .subscribe(
-    //     data => {
-    //       if (data.statusCode == 200) {
-    //         this.selectFieldsDtos = data.data;
-    //         this.emitValues('update');
-    //       }
-    //       this.ngxloading = false;
-    //     },
-    //     error => console.log(error),
-    //     () => { this.ngxloading = true; });
     this.emitValues('submit');
   }
-  // emitValues(value: string) {
-  //   let input = {};
-  //   if (value === 'update') {
-  //     input['update'] = 'update';
-  //     input['selectFields'] = this.selectFieldsDtos;
-  //   } else if (value === 'select') {
-  //     input['select'] = 'select';
-  //     input['selectFields'] = this.selectFieldsDtos;
-  //   } else if (value === 'close') {
-  //     input['close'] = false;
-  //   }
-  //   this.closeEmitter.emit(input);
-  // }
+ 
   emitValues(value: string) {
     const input: any = value === 'close' 
       ? { close: false } 
-      : { [value]: value, selectFields: this.selectFieldsDtos };
-  
+      : { [value]: value, selectFields: this.selectFieldsDtos,myPreferances:this.enabledMyPreferances };
     // Emit or process input as needed
     this.closeEmitter.emit(input);
   }
   selectFieldValues() {
+    this.referenceService.closeModalPopup('orderFieldPopup');
     this.emitValues('select');
   }
 
