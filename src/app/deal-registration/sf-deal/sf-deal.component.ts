@@ -79,7 +79,7 @@ export class SfDealComponent implements OnInit {
   //XNFR-710
   isSalesForceEnabledAsActiveCRM : boolean = false;
   formLabels: any;
-
+  previousTicketTypeId: any = 0;
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
@@ -215,11 +215,11 @@ export class SfDealComponent implements OnInit {
       if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
         this.isDealRegistrationFormInvalid = true;
         this.isFormValid.emit(this.isDealRegistrationFormInvalid);
-        this.addLoader();
         if ("SALESFORCE" === this.activeCRM.createdForActiveCRMType && this.isPreview && !("CONNECTWISE" === this.activeCRM.createdByActiveCRMType)) {
           this.isSalesForceEnabledAsActiveCRM = true;
           this.getFormLablesValues();
-        } else {
+        } else if (this.ticketTypeId != this.previousTicketTypeId) {
+          this.previousTicketTypeId = this.ticketTypeId;
           this.getActiveCRMCustomForm();
         }
       }
@@ -230,6 +230,7 @@ export class SfDealComponent implements OnInit {
   }
 
   getActiveCRMCustomForm() {
+    this.addLoader();
     let ticketTypeId = 0;
     if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
       ticketTypeId = this.ticketTypeId;
@@ -873,6 +874,7 @@ export class SfDealComponent implements OnInit {
   }
 
   getFormLablesValues() {
+    this.addLoader();
     this.integrationService.getFormLabelsValues(this.dealId, this.opportunityType, this.createdForCompanyId).subscribe(result => {
       this.showSFFormError = false;
       this.removeLoader();

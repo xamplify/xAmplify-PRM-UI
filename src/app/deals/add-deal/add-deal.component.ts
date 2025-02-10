@@ -1201,7 +1201,7 @@ export class AddDealComponent implements OnInit {
 
     /**************** Contact To Deal *********************/
     if (this.isDealFromContact) {
-      if (this.deal.associatedLeadId > 0) 
+      if (this.deal.associatedLeadId > 0 || this.deal.associatedContactId > 0) 
         this.attachLeadError = false;
       else 
         this.attachLeadError = true;
@@ -2047,15 +2047,31 @@ export class AddDealComponent implements OnInit {
 
   //XNFR-869
   openSelectContactModel() {
-    this.showSelectContactModel = true;
-    this.contactInfo = '';
-    this.attachContact = new Object();
-    this.attachContact.dealId = this.dealId;
-    this.attachContact.contactId = this.contactId;
-    this.attachContact.dealActionType = this.actionType;
-    this.attachContact.callingComponent = "DEAL";
-    this.attachContact.isOrgAdmin = this.isOrgAdmin;
-    this.attachContact.isVendorVersion = this.isVendorVersion;
+    if (this.isDealFromContact) {
+      this.attachContactFromContactJourney();
+    } else {
+      this.showSelectContactModel = true;
+      this.contactInfo = '';
+      this.attachContact = new Object();
+      this.attachContact.dealId = this.dealId;
+      this.attachContact.contactId = this.contactId;
+      this.attachContact.dealActionType = this.actionType;
+      this.attachContact.callingComponent = "DEAL";
+      this.attachContact.isOrgAdmin = this.isOrgAdmin;
+      this.attachContact.isVendorVersion = this.isVendorVersion;
+    }
+  }
+
+  attachContactFromContactJourney() {
+    this.contactId = this.selectedContact.userUserListId;
+    const obj = {
+      'contact': this.selectedContact
+    };
+    this.showDetachLeadButton = true;
+    this.showAttachLeadButton = false;
+    this.deAttachText = "Detach Contact";
+    this.frameContactDetails(obj);
+    this.setFieldErrorStates();
   }
 
   closeSelectContactModel() {

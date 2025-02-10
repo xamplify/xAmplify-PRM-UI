@@ -132,6 +132,10 @@ export class ContactDetailsComponent implements OnInit {
   isRegisterDealEnabled: boolean = true;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   showCompanyCampaigns: boolean = false;
+  formattedContactsCount: string = '0';
+  formattedLeadsCount: string = '0';
+  formattedDealsCount: string = '0';
+  formattedCampaignsCount: string = '0';
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -439,6 +443,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.leadsCount = data.totalRecords;
           this.contactLeads = data.list;
+          this.formattedLeadsCount = this.formatNumber(this.leadsCount);
         } else {
           this.leadsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -497,6 +502,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.dealsCount = data.totalRecords;
           this.contactDeals = data.list;
+          this.formattedDealsCount = this.formatNumber(this.dealsCount);
         } else {
           this.dealsResponse = new CustomResponse('Error', this.properties.failedToFetchDealsResponseMessage, true);
         }
@@ -586,6 +592,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.campaignsCount = data.totalRecords;
           this.contactCampaigns = data.list;
+          this.formattedCampaignsCount = this.formatNumber(this.campaignsCount);
         } else {
           this.campaignsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -801,6 +808,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.contactsCount = data.totalRecords;
           this.companyContacts = data.list;
+          this.formattedContactsCount = this.formatNumber(this.contactsCount);
         } else {
           this.contactsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -858,6 +866,20 @@ export class ContactDetailsComponent implements OnInit {
 
   closeCompanyCampaigns() {
     this.showCompanyCampaigns = false;
+  }
+
+  formatNumber(input: number) {
+    if (input >= 1000000) {
+      return Math.floor(input / 1000000) + 'M';
+    } else if (input >= 1000) {
+      const roundedValue = Math.floor(input / 100) / 10;
+      if (input % 1000 !== 0) {
+        return `${roundedValue}k+`;
+      }
+      return `${roundedValue}k`;
+    } else {
+      return input.toString();
+    }
   }
   
 }
