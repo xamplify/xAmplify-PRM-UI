@@ -115,7 +115,8 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     @ViewChild('leadStatistics') leadStatistics: TemplateRef<any>;
     @ViewChild('dealStatistics') dealStatistics: TemplateRef<any>;
     @ViewChild('highLevelAnalytics') highLevelAnalytics: TemplateRef<any>;
-    templates: TemplateRef<any>[];
+    templates = [];
+    defaultDashboardLayout = [];
     isDraggingEnabled: boolean = false;
 
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
@@ -137,7 +138,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
         this.utilService.setRouterLocalStorage('dashboard');
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.showSandboxText = (("https://xamplify.co/" == envService.CLIENT_URL || "http://localhost:4200/" == envService.CLIENT_URL) && !this.authenticationService.vanityURLEnabled);
-        
+
     }
 
   ngOnInit() {
@@ -210,7 +211,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
             );
     }
       /** User Guide */
-  ngOnDestroy(){
+  ngOnDestroy() {
     $('#customizeCampaignModal').modal('hide');
   }
 
@@ -639,16 +640,84 @@ showCampaignDetails(campaign:any){
       
     /***** XNFR-860 *****/
     ngAfterViewInit() {
-        this.templates = [this.welcomePageHeader, this.dashBoardImages, this.moduleAnalytics, this.newsAndAnnouncement,
-        this.dashBoardButtons, this.opportunityStats, this.vendorActivityAnalytics, this.campaignsGrid, this.campaignStatistics,
-        this.emailStatistics, this.regionalStatistics, this.videoStatistics, this.emailStats, this.prmMdfStatistics,
-        this.prmContent, this.prmAssets, this.prmSharedAssets, this.prmTracks, this.prmSharedTracks, this.prmPlayBooks,
-        this.prmSharedPlayBooks, this.leadStatistics, this.dealStatistics, this.highLevelAnalytics];
+        this.templates = [
+            { name: 'welcomePageHeader', ref: this.welcomePageHeader, index: 1 },
+            { name: 'dashBoardImages', ref: this.dashBoardImages, index: 2 },
+            { name: 'moduleAnalytics', ref: this.moduleAnalytics, index: 3 },
+            { name: 'newsAndAnnouncement', ref: this.newsAndAnnouncement, index: 4 },
+            { name: 'dashBoardButtons', ref: this.dashBoardButtons, index: 5 },
+            { name: 'opportunityStats', ref: this.opportunityStats, index: 6 },
+            { name: 'vendorActivityAnalytics', ref: this.vendorActivityAnalytics, index: 7 },
+            { name: 'campaignsGrid', ref: this.campaignsGrid, index: 8 },
+            { name: 'campaignStatistics', ref: this.campaignStatistics, index: 9 },
+            { name: 'emailStatistics', ref: this.emailStatistics, index: 10 },
+            { name: 'regionalStatistics', ref: this.regionalStatistics, index: 11 },
+            { name: 'videoStatistics', ref: this.videoStatistics, index: 12 },
+            { name: 'emailStats', ref: this.emailStats, index: 13 },
+            { name: 'prmMdfStatistics', ref: this.prmMdfStatistics, index: 14 },
+            { name: 'prmContent', ref: this.prmContent, index: 15 },
+            { name: 'prmAssets', ref: this.prmAssets, index: 16 },
+            { name: 'prmSharedAssets', ref: this.prmSharedAssets, index: 17 },
+            { name: 'prmTracks', ref: this.prmTracks, index: 18 },
+            { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 19 },
+            { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 20 },
+            { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 21 },
+            { name: 'leadStatistics', ref: this.leadStatistics, index: 22 },
+            { name: 'dealStatistics', ref: this.dealStatistics, index: 23 },
+            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 24 },
+        ];
+        this.findCustomDashboardLayout();
     }
 
     /***** XNFR-860 *****/
-    enableDragAndDrop() {
-        this.isDraggingEnabled = !this.isDraggingEnabled;
+    findCustomDashboardLayout() {
+        this.defaultDashboardLayout = [];
+        this.dashBoardService.findCustomDashboardLayout(this.vendorCompanyProfileName)
+            .subscribe((response) => {
+                if (response) {
+                    this.defaultDashboardLayout = response.map(dashboardLayoutDto =>
+                        this.templates.find(template => dashboardLayoutDto.divName === template.name))
+                        .filter(template => template);
+
+                } else {
+                    this.defaultDashboardLayout = this.templates.map(template => ({ ...template }));
+                }
+            }, (error) => {
+                console.log(error);
+                this.defaultDashboardLayout = this.templates.map(template => ({ ...template }));
+            });
+    }
+
+    /***** XNFR-860 *****/
+    updateCustomDashBoardLayout() {
+        const dashboardLayoutDtos = this.defaultDashboardLayout.map(template => ({
+            divId: template.index,
+            divName: template.name
+        }));
+        const customDashboardLayout = {
+            userId: this.loggedInUserId,
+            companyProfileName: this.vendorCompanyProfileName,
+            dashboardLayoutDTOs: dashboardLayoutDtos
+        };
+        this.dashBoardService.updateCustomDashBoardLayout(customDashboardLayout).subscribe((response) => {
+            if (response.statusCode == 200) {
+                this.isDraggingEnabled = false;
+                this.userDefaultPage.responseType = 'SUCCESS';
+                this.userDefaultPage.responseMessage = response.message;
+                const newTemplatesOrder = this.defaultDashboardLayout.map(item => this.templates.find(t => t.name === item.name));
+                this.defaultDashboardLayout = newTemplatesOrder;
+                this.isDraggingEnabled = false;
+            } else {
+                this.isDraggingEnabled = true;
+                this.userDefaultPage.responseType = 'ERROR';
+                this.userDefaultPage.responseMessage = response.message;
+            }
+        }, (error) => {
+            console.log(error);
+            this.isDraggingEnabled = true;
+            this.userDefaultPage.responseType = 'ERROR';
+            this.userDefaultPage.responseMessage = this.properties.serverErrorMessage;
+        });
     }
 
 }
