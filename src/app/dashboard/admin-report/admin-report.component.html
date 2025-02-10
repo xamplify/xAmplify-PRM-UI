@@ -267,6 +267,7 @@
                 <thead>
                   <tr>
                   <th>Company Name</th>
+                  <th class="text-center">Vanity Url Link</th>
                   <th class="text-center">Company Profile Name</th>
                   <th class="text-center">Company Type</th>
                   <th *ngIf="upgradeAccountStatusCode==200 && isUpgradeAccountOptionClicked" class="text-center">Upgrade Account</th>
@@ -275,6 +276,7 @@
                 <tbody>
                   <tr>
                     <td>{{companyInfo?.companyName}}</td>
+                    <td class="pointer"><a href="{{companyInfo?.vanityUrl}}" target="_blank" rel="noopener">Click Here</a></td>
                     <td class="text-center">{{companyInfo?.companyProfileName}}</td>
                     <td [className]="(companyInfo?.companyType=='Partner'||companyInfo?.companyType=='Vendor') && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
                       <strong>{{companyInfo?.companyType}}</strong></td>
@@ -315,6 +317,9 @@
                 <th class="text-center">
                   <i class="fa fa-lock" aria-hidden="true"></i><br>Status
                 </th>
+                <th class="text-center">
+                  <i class="fa fa-sign-in" aria-hidden="true"></i><br>Login As
+                </th>
               </thead>
               <tbody>
                 <tr *ngFor="let adminOrTeamMember of adminsAndTeamMembers;let i=index"
@@ -348,6 +353,12 @@
                   <td class="text-center" *ngIf="adminOrTeamMember?.status=='DECLINE'" title="This team member account is declined by admin.">
                     <div class="actions-block float-none">
                       <i class="fa fa-times required" aria-hidden="true"></i>
+                    </div>
+                  </td>
+                  <!--Login As-->
+                  <td class="text-center">
+                    <div class="actions-block float-none">
+                      <a (click)="loginAs(adminOrTeamMember)"><i class="fa fa-sign-in" aria-hidden="true"></i></a>
                     </div>
                   </td>
                 </tr>

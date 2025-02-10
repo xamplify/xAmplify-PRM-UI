@@ -146,5 +146,8 @@ export class Module {
     socialFeedsAccess = false;
     socialFeedsAccessAsPartner = false;
 
+    /**XNFR-878**/
+    allowVendorToChangePartnerPrimaryAdmin = false;
+
 
 }

@@ -184,7 +184,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.primaryAdminSweetAlertParameterDto.confirmButtonText = "Yes, Change It";
+    this.primaryAdminSweetAlertParameterDto.confirmButtonText = this.properties.proceed;
+    this.primaryAdminSweetAlertParameterDto.text = this.properties.confirmPrimaryAdminText;
     this.isTeamMemberModule = this.moduleName == 'teamMember';
     this.moveToTop = "/home/team/add-team" == this.referenceService.getCurrentRouteUrl();
     this.findAll(this.pagination);
