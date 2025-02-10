@@ -294,9 +294,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	validateAndEmitValues() {
 		if(this.isValidationErrorMessage){
 			console.log(this.isValidationErrorMessage);
-		}else if(!this.isValidationErrorMessage && this.pagination.criterias==null || this.pagination.criterias==undefined ||
-		 this.pagination.criterias.length == 0 && this.pagination.fromDateFilterString.length == 0 &&
-	     this.pagination.toDateFilterString.length==0){
+		}else if(!this.isValidationErrorMessage && (this.pagination.criterias==undefined ||this.pagination.criterias==null ||
+		 this.pagination.criterias.length == 0) && (this.pagination.fromDateFilterString == undefined  ||this.pagination.fromDateFilterString.length == 0)
+	  && (this.pagination.toDateFilterString == undefined || this.pagination.toDateFilterString.length==0) ){
 				this.closeFilterOption('close');
 		}else{
 		// this.validateDateFilters();
