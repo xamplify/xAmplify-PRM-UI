@@ -900,6 +900,9 @@ private beforeAdd(tag: any) {
 
     /**XNFR-698**/
 		module.isMyVendorsOptionDisplayed = data.myVendorsOptionDisplayed;
+
+    /**XNFR-878***/
+		module.allowVendorToChangePartnerPrimaryAdmin = data.allowVendorToChangePartnerPrimaryAdmin;
 	}
 
 	setContentMenu(data: any, module: any) {

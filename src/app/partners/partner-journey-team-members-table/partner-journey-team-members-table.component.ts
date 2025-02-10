@@ -49,7 +49,7 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
       this.loggedInUserId = this.authenticationService.getUserId(); 
   }
 
-  ngOnInit() {    
+  ngOnInit() {   
     this.primaryAdminSweetAlertParameterDto.confirmButtonText = this.properties.proceed;
     this.primaryAdminSweetAlertParameterDto.text = this.properties.confirmPrimaryAdminText;
   } 
