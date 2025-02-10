@@ -937,8 +937,6 @@ export class SfDealComponent implements OnInit {
           column.value = this.selectedContact.city;
         } else if (column.formDefaultFieldType === 'CONTACT_COUNTRY' && addActionType && !column.nonInteractive) {
           column.value = this.selectedContact.country;
-        } else if (column.formDefaultFieldType === 'CONTACT_TITLE' && addActionType) {
-          column.value = this.selectedContact.jobTitle;
         }
       }
       this.validateAllFields();

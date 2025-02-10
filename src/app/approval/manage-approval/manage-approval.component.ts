@@ -99,6 +99,7 @@ export class ManageApprovalComponent implements OnInit {
   rejectedRecordNames = [];
   showApproveResponse : boolean = false;
   isSelectedAutoApprovalRecords: boolean = false;
+  hasAllAuthorityAccess: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
@@ -481,6 +482,9 @@ export class ManageApprovalComponent implements OnInit {
         this.unSelectRejectedRecords(item);
       }
     }
+    if (item.createdByAnyApprovalManagerOrApprover) {
+      this.unSelectRejectedRecords(item);
+    }
   }
 
 
@@ -513,6 +517,11 @@ export class ManageApprovalComponent implements OnInit {
         this.pushRejectedRecords(item);
       }
     }
+
+    if (item.createdByAnyApprovalManagerOrApprover) {
+      this.pushRejectedRecords(item);
+    }
+
   }
 
   private pushRejectedRecords(item: any) {
@@ -528,6 +537,9 @@ export class ManageApprovalComponent implements OnInit {
 
   getStausAndCallCommentsPopUp(statusType: any) {
     this.isApproveOrRejectStatus = statusType;
+    if(this.isAssetApprover && this.isTrackApprover && this.isPlayBookApprover){
+      this.hasAllAuthorityAccess = true;
+    }
     this.showCommentsPopUp = true;
   }
 
