@@ -62,6 +62,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   /** XNFR-721 **/
   vanityMicrosoftSSOProvider: any;
 
+  messageKeys = {
+    ACCOUNT_SUSPENDED: 'ACCOUNT_SUSPENDED',
+  };
+  messageMap: { [key: string]: string } = {
+    [this.messageKeys.ACCOUNT_SUSPENDED]: 'This account has been suspended.',
+  };
+  
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
     private route: ActivatedRoute) {
@@ -185,7 +192,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.resendActiveMail = true;
                 this.setCustomeResponse("ERROR", errorDescription);
               }else if(errorDescription==this.properties.ACCOUNT_SUSPENDED){
-                this.setCustomeResponse("ERROR", errorDescription);
+                this.showCustomResponseWithSupportEmailId("ERROR", errorDescription, this.messageKeys.ACCOUNT_SUSPENDED);
               }
             }
             else {
@@ -626,6 +633,39 @@ bgIMage2:any;
     this.hideCloseButton = false;
     this.customResponse.isVisible = false;
     this.showLoginWithCredentials = false;
+  }
+
+  /** XNFR-618  **/
+  showCustomResponseWithSupportEmailId(responseType: string, defaultMessage: string, type: string) {
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (this.referenceService.checkIsValidString(companyProfileName)) {
+      this.loading = true;
+      this.vanityURLService.getSupportEmailIdByCompanyProfileName(companyProfileName).subscribe(
+        response => {
+          if (response.statusCode === 200) {
+            const supportEmailId = response.data;
+            const prefixMessage = this.messageMap[type];
+            const errorMessage = this.constructErrorMessage(supportEmailId, prefixMessage, defaultMessage);
+            this.setCustomeResponse(responseType, errorMessage);
+          } else {
+            this.setCustomeResponse(responseType, defaultMessage);
+          }
+          this.loading = false;
+        },
+        error => {
+          this.loading = false;
+          this.setCustomeResponse(responseType, defaultMessage);
+        });
+    } else {
+      this.setCustomeResponse(responseType, defaultMessage);
+    }
+  }
+
+  private constructErrorMessage(supportEmailId: string, prefixMessage: string, defaultMessage: string) {
+    if (this.referenceService.checkIsValidString(supportEmailId) && this.referenceService.checkIsValidString(prefixMessage)) {
+      return `${prefixMessage} Please contact <a href="mailto:${supportEmailId}">${supportEmailId}</a>`;
+    }
+    return defaultMessage;
   }
   
 }
