@@ -806,12 +806,12 @@ select {
 .wrap-asset-name {
   color: #000 !important;
 }
-.custom {
+/* .custom {
   background: linear-gradient(0deg, rgba(77,54,208,1) 0%, rgba(132,116,254,1) 100%) !important;
   border: 0px solid #0104ff !important;
-}
+}*/
 .item__preview.item__preview--image.custom {
-  background-color: #2b3c46 !important;
+  background-color: #d0d5db !important;
 }
 .item__select-box-wrapper .select-box::before,
 .xamplify-dropdown-content-odd,
