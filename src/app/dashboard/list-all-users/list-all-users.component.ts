@@ -130,6 +130,7 @@ export class ListAllUsersComponent implements OnInit {
 					pagination = this.pagerService.getPagedItems(pagination, data.list);
 				}
 				this.referenceService.loading(this.httpRequestLoader, false);
+				
 			},
 			(error: any) => { this.hasError = true; this.referenceService.loading(this.httpRequestLoader, false); });
 	}
@@ -139,6 +140,7 @@ export class ListAllUsersComponent implements OnInit {
 
 	/*************************Sort********************** */
 	sortBy(text: any) {
+		this.referenceService.goToDiv("allApporvedUsers");
 		this.sortOption.selectedActiveUsersSortOption = text;
 		this.getAllFilteredResults(this.pagination);
 	}
@@ -150,12 +152,14 @@ export class ListAllUsersComponent implements OnInit {
 	}
 
 	paginationDropdown(items: any) {
+		this.referenceService.goToDiv("allApporvedUsers");
 		this.sortOption.itemsSize = items;
 		this.getAllFilteredResults(this.pagination);
 	}
 
 	/************Page************** */
 	setPage(event: any) {
+		this.referenceService.goToDiv("allApporvedUsers");
 		this.pagination.pageIndex = event.page;
 		this.listAllApprovedUsers(this.pagination);
 	}

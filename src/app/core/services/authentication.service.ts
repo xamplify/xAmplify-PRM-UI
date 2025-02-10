@@ -34,10 +34,12 @@ import { Properties } from 'app/common/models/properties';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RequestDemo } from 'app/authentication/request-demo/request-demo';
 import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
+import { PartnerPrimaryAdminUpdateDto } from 'app/partners/models/partner-primary-admin-update-dto';
 
 
 @Injectable()
 export class AuthenticationService {
+ 
  
 
   access_token: string;
@@ -1565,6 +1567,15 @@ vanityWelcomePageRequired(userId) {
   validateDuplicateMdfRequest(duplicateMdfRequestDto:DuplicateMdfRequest) {
     const url = this.REST_URL + 'campaign/validateDuplicateCampaignMdfRequest?emailAddress='+duplicateMdfRequestDto.emailAddress+'&campaignId='+duplicateMdfRequestDto.campaignId+'&access_token='+this.access_token;
     return this.callGetMethod(url);
+  }
+
+  /***XNFR-878****/
+  updatePartnerCompanyPrimaryAdmin(partnerPrimaryAdminUpdateDto:PartnerPrimaryAdminUpdateDto) {
+    partnerPrimaryAdminUpdateDto.vendorCompanyUserId = this.getUserId();
+    let url = this.REST_URL +"teamMember/updatePartnerCompanyPrimaryAdmin?access_token="+this.access_token;
+    return this.http.post(url,partnerPrimaryAdminUpdateDto)
+    .map(this.extractData)
+    .catch(this.handleError);
   }
 
 
