@@ -11,6 +11,8 @@ import { SortOption } from 'app/core/models/sort-option';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Properties } from '../../common/models/properties';
+import { CustomResponse } from '../../common/models/custom-response';
+import { PartnerPrimaryAdminUpdateDto } from '../models/partner-primary-admin-update-dto';
 
 @Component({
   selector: 'app-partner-journey-team-members-table',
@@ -35,7 +37,10 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   /***XNFR-878***/
   primaryAdminSweetAlertParameterDto: SweetAlertParameterDto = new SweetAlertParameterDto();
   isEnablePrimaryAdminOptionClicked = false;
-  selectedPrimaryAdminTeamMemberUserId: any;
+  sucessOrFailureResponse : CustomResponse = new CustomResponse();
+  partnerPrimaryAdminUpdateDto: PartnerPrimaryAdminUpdateDto = new PartnerPrimaryAdminUpdateDto();
+  isLoading = false;
+   /***XNFR-878***/
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
@@ -108,9 +113,15 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   }
 
   setPage(event:any) {
+    this.goToDiv();
 		this.pagination.pageIndex = event.page;
 		this.getTeamInfo(this.pagination);
 	}  
+
+  navigateToDivAndGetAllTeamMembers(pagination:Pagination){
+    this.goToDiv();
+		this.getAllFilteredResults(pagination);
+  }
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
@@ -185,26 +196,53 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
 
   /***XNFR-878*****/
   confirmPrimaryAdminChange(teamMember:any){
+    this.partnerPrimaryAdminUpdateDto =  new PartnerPrimaryAdminUpdateDto();
     if (teamMember.status == 'APPROVE' && this.authenticationService.module.isAdmin && this.authenticationService.module.isAnyAdminOrSupervisor) {
       this.isEnablePrimaryAdminOptionClicked = true;
-      this.selectedPrimaryAdminTeamMemberUserId = teamMember.teamMemberUserId;
-      console.log(this.selectedPrimaryAdminTeamMemberUserId);
+      this.partnerPrimaryAdminUpdateDto.partnerCompanyTeamMemberUserId = teamMember.teamMemberUserId;
     }
   }
   
   /********XNFR-878*********/
   enableAsPrimaryAdmin(event: any) {
     if (event) {
-      this.authenticationService.updatePartnerPrimaryAdmin(this.selectedPrimaryAdminTeamMemberUserId).
+      this.isLoading = true;
+      this.sucessOrFailureResponse = new CustomResponse();
+      let statusCode = 0;
+      this.authenticationService.updatePartnerCompanyPrimaryAdmin(this.partnerPrimaryAdminUpdateDto).
         subscribe(
           response => {
-            this.referenseService.showSweetAlertProceesor("Primary Admin Updated Successfully.");
+            statusCode = response.statusCode;
+            let status = statusCode==200 ? 'SUCCESS':'ERROR';
+            this.sucessOrFailureResponse = new CustomResponse(status,response.message,true);
+            this.goToDiv();
+            this.isEnablePrimaryAdminOptionClicked = false;
+            this.isLoading = false;
           }, error => {
            this.referenseService.showSweetAlertServerErrorMessage();
-          }
-        );
+           this.isEnablePrimaryAdminOptionClicked = false;
+           this.isLoading = false;
+          },()=>{
+            if(statusCode==200){
+              this.referenseService.loading(this.httpRequestLoader, true);
+              this.pagination = new Pagination();
+              this.pagination.userId = this.loggedInUserId;
+              this.pagination.partnerCompanyId = this.partnerCompanyId;
+              this.pagination.partnerJourneyFilter = true;
+              this.pagination.fromDateFilterString = this.fromDateFilter;
+              this.pagination.toDateFilterString = this.toDateFilter;
+              this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+              this.getTeamInfo(this.pagination);
+            }
+          });
+    }else{
+      this.isEnablePrimaryAdminOptionClicked = false;
     }
-    this.isEnablePrimaryAdminOptionClicked = false;
+   
   }
 
+
+  private goToDiv() {
+    this.referenseService.goToDiv("partner-team-members-list");
+  }
 }
