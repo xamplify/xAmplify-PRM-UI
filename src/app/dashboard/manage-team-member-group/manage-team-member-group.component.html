@@ -71,7 +71,7 @@
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
-      <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span>
+      <span *ngIf="groupDto?.defaultGroup" class="default-group-banner" translate>Default Group</span>
       <div class="form-group">
         <label class="control-label" translate>Name</label>
         <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
@@ -181,9 +181,7 @@
           <i class="fa fa-eye" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-        <a data-toggle="tooltip" data-placement="top"
-          [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'"
-          [className]="group?.defaultGroup ? 'inactive custom-icon':'Iconhover custom-icon'"
+        <a data-toggle="tooltip" data-placement="top" title = "Edit" class="Iconhover custom-icon"
           (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           <div class="clickicons"></div>

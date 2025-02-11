@@ -291,9 +291,7 @@ export class ManageTeamMemberGroupComponent implements OnInit {
   }
 
   findGroupDetailsById(group:any) {
-    if(!group.defaultGroup){
-      this.getTeamMemberGroupDetailsById(group,false);
-    }
+    this.getTeamMemberGroupDetailsById(group,false);
   }
 
 
@@ -311,7 +309,6 @@ export class ManageTeamMemberGroupComponent implements OnInit {
         this.groupDto.id = id;
         this.groupDto = map['teamMemberGroupDTO'];
         this.groupDto.saveAs = saveAs;
-        this.groupDto.previewGroup = group.defaultGroup && !saveAs;
         this.defaultModules = map['modules'];
         this.isAdd = saveAs;
         if(saveAs){
