@@ -289,7 +289,10 @@ export class CustomAddLeadComponent implements OnInit {
     this.loadComments();
   }
 
-
+  ngOnDestroy(){
+    $('#leadFormModel').modal('hide');
+  }
+  
   private resetLeadData() {
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;

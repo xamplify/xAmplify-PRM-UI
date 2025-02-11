@@ -66,7 +66,9 @@ export class SelectLeadComponent implements OnInit {
     }
     this.getLeads(this.pagination);
   }
-
+  ngOnDestroy(){
+    $('#selectLeadModel').modal('hide');
+  }
   closeModal() {    
     this.notifyClose.emit();
     $('#selectLeadModel').modal('hide');

@@ -2886,6 +2886,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         $("#marketoShowLoginPopup").modal('hide');
+        $('#settingSocialNetwork').modal('hide');
     }
 
     private callDestroyMethod() {
