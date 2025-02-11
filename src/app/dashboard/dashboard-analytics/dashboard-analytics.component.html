@@ -399,11 +399,11 @@
     *ngIf="!playVideo && !editVideo && ((!showDealForm && !showLeadForm && !isOnlyUser) 
     || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
 
-    <div *ngIf="isDraggingEnabled" Class="dragula-container" [dragula]="dashBoardAnalytics">
+    <div #dragContainer *ngIf="isDraggingEnabled" class="dragula-container" [dragula]="dashBoardAnalytics" [(dragulaModel)]="defaultDashboardLayout">
         <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <ng-container *ngFor="let template of defaultDashboardLayout">
+        <div *ngFor="let template of defaultDashboardLayout" [id]="template.name"> 
             <ng-template [ngTemplateOutlet]="template.ref"></ng-template>
-        </ng-container>
+        </div>
     </div>
 
     <div *ngIf="!isDraggingEnabled">

@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit,OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -25,6 +25,7 @@ import { VideoFileService } from '../../videos/services/video-file.service';
 import { Roles } from 'app/core/models/roles';
 import { UserGuideDashboardDto } from 'app/guides/models/user-guide-dashboard-dto';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { DragulaService } from 'ng2-dragula';
 
 declare var swal, $:any, Highcharts: any;
 @Component({
@@ -115,6 +116,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     @ViewChild('leadStatistics') leadStatistics: TemplateRef<any>;
     @ViewChild('dealStatistics') dealStatistics: TemplateRef<any>;
     @ViewChild('highLevelAnalytics') highLevelAnalytics: TemplateRef<any>;
+    @ViewChild('dragContainer') dragContainer: ElementRef;
     templates = [];
     defaultDashboardLayout = [];
     isDraggingEnabled: boolean = false;
@@ -122,7 +124,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
         public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
         public dashBoardService: DashboardService, public utilService: UtilService, public router: Router, private route: ActivatedRoute, private vanityURLService: VanityURLService,
-        public videoFileService: VideoFileService) {
+        public videoFileService: VideoFileService, private dragulaService: DragulaService, private cdr: ChangeDetectorRef) {
 
         this.loggedInUserId = this.authenticationService.getUserId();
         this.vanityLoginDto.userId = this.loggedInUserId;
@@ -667,6 +669,32 @@ showCampaignDetails(campaign:any){
             { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 24 },
         ];
         this.findCustomDashboardLayout();
+        this.setUpDragEndSubscription();
+        
+    }
+
+    /***** XNFR-860 *****/
+    setUpDragEndSubscription() {
+        this.dragulaService.dragend.subscribe(() => {
+            if (this.dragContainer && this.dragContainer.nativeElement) {
+                const newOrder: any[] = [];
+                const children = this.dragContainer.nativeElement.children;
+                for (let i = 0; i < children.length; i++) {
+                    const child = children[i];
+                    const templateName = child.id;
+                    const template = this.templates.find(t => t.name === templateName);
+                    if (template) {
+                        newOrder.push(template);
+                    }
+                }
+                this.defaultDashboardLayout = [...newOrder];
+                setTimeout(() => {
+                    this.cdr.detectChanges();
+                });
+            } else {
+                console.log("dragContainer or nativeElement is not yet available.");
+            }
+        });
     }
 
     /***** XNFR-860 *****/
@@ -678,7 +706,7 @@ showCampaignDetails(campaign:any){
                     this.defaultDashboardLayout = response.map(dashboardLayoutDto =>
                         this.templates.find(template => dashboardLayoutDto.divName === template.name))
                         .filter(template => template);
-
+                    console.log('Updated Default Dashboard Layout:', this.defaultDashboardLayout);
                 } else {
                     this.defaultDashboardLayout = this.templates.map(template => ({ ...template }));
                 }
