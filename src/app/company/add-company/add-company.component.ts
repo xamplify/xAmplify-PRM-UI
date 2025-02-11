@@ -40,6 +40,9 @@ export class AddCompanyComponent implements OnInit {
   ngxloading: boolean = false;
   isCompanyNameValid: boolean = false;
   isCompanyEmailValid : boolean = true;
+  isCompanyWebsiteValid: boolean = false;
+  websiteErrorMessage: any;
+  isWebsiteError: boolean = false;
   constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService, public referenceService: ReferenceService,) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -47,6 +50,9 @@ export class AddCompanyComponent implements OnInit {
   ngOnInit() {
     this.addCompany.country = this.countryNames.countries[0];
     this.loadModalPopUp();
+  }
+  ngOnDestroy(){
+    $('#addCompanyModal').modal('hide');
   }
   loadModalPopUp() {
     if (this.actionType === "add") {
@@ -75,6 +81,23 @@ export class AddCompanyComponent implements OnInit {
       this.isCompanyNameValid = true;
     } else {
       this.isCompanyNameValid = false;
+    }
+  }
+  validateWebsite(companyWebsite: string){
+    if (!companyWebsite.trim()) {  // Check for empty input
+      this.isCompanyWebsiteValid = false;
+      this.isWebsiteError = true;
+      this.websiteErrorMessage = 'Please add your company URL.';
+      return;
+    } 
+    
+    if (this.referenceService.validateWebsiteURL(companyWebsite)) {
+      this.isCompanyWebsiteValid = true;  
+      this.isWebsiteError = false;   
+    } else {
+      this.websiteErrorMessage = "Please enter a valid company URL.";
+      this.isCompanyWebsiteValid = false;
+      this.isWebsiteError = true;
     }
   }
 
@@ -131,6 +154,11 @@ export class AddCompanyComponent implements OnInit {
             if (data.data.country == null || data.data.country == undefined || data.data.country == '') {
               this.addCompany.country = this.countryNames.countries[0];
             }
+            if((this.addCompany.website == undefined || this.addCompany.website == '') || this.addCompany.website.trim() === ''){
+              this.isCompanyWebsiteValid = false;
+            } else{
+              this.isCompanyWebsiteValid = true;
+            }
           }
         },
         error => {
@@ -144,7 +172,7 @@ export class AddCompanyComponent implements OnInit {
     this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.addCompany.userId = this.loggedInUserId;
-    this.companyService.editCompany(this.addCompany).subscribe(
+    this.companyService.editCompany(this.addCompany).subscribe( 
       (response: any) => {
         this.ngxloading = false;
         this.referenceService.loading(this.httpRequestLoader, false);

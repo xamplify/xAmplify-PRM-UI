@@ -114,9 +114,13 @@
                   <div class="textCss"></div>
                 </div>
                 <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                  <label class="control-label col-xs-2 col-sm-2" for="website" style="color: #53affe;margin-left: -50px;">
+                    <span class="star"> *</span>
+                  </label>
                   <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
                     id="website" [(ngModel)]="addCompany.website" [ngModelOptions]="{standalone: true}"
-                    placeholder="Website" maxlength="100" [disabled]="preview">
+                    placeholder="Website" maxlength="100" [disabled]="preview" (input)="validateWebsite(addCompany.website)">
+                    <span *ngIf="isWebsiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
                   <div class="textCss"></div>
                 </div>
               </div>
@@ -157,9 +161,9 @@
       <div class="modal-footer popup_footer" style="border:none">
         <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addCompanyModalClose()"
           translate>Cancel</button>
-        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" (click)="saveCompany()" [disabled]="!isCompanyNameValid || !isCompanyEmailValid" translate><span
+        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" (click)="saveCompany()" [disabled]="(!isCompanyNameValid || !isCompanyWebsiteValid) || !isCompanyEmailValid" translate><span
             class="btn Btn-Green transition txt_pd-top3" >Add</span></button>
-            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" (click)="editCompany()"  [disabled]="!isCompanyEmailValid" translate><span
+            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" (click)="editCompany()"  [disabled]="!isCompanyEmailValid || !isCompanyWebsiteValid" translate><span
               class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>
