@@ -76,7 +76,7 @@
 }
 
 .lead_details {
-  padding: 20px 12px 10px 12px;
+  padding: 10px 5px;
 }
 
 .lead_details h3 {
@@ -126,7 +126,7 @@
 }
 
 .fa-edit {
-  background-color: #eaf0f6;
+  background-color: #ffffff;
   border: 1px solid #d4d9de;
   cursor: pointer;
   padding: 5px;
@@ -424,8 +424,8 @@ border-bottom:none;
 
 .avatar2_v2 {
   color: white;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -609,4 +609,9 @@ border-bottom:none;
 
 .count_four:hover {
   background: linear-gradient(135deg, #2f9e8e, #21655a);
+}
+
+.total_deal_amount_loader {
+  height: 20px;
+  padding-left: 20px;
 }
