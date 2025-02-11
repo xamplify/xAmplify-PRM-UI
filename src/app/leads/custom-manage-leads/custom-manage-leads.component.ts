@@ -406,7 +406,7 @@ export class CustomManageLeadsComponent implements OnInit {
         }
       }
 
-      if (validDates) {
+      if (validDates || isValidStatusFilter || isValidCompanyIdFilter) {
         this.filterStatus(isValidStatusFilter);
         this.filterVendorCompanyId(isValidCompanyIdFilter);
         this.leadsPagination.pageIndex = 1;
