@@ -242,7 +242,9 @@
                   <span *ngIf="!validCompanyOrUserId" class="required"><strong>Please Enter Valid {{accountDetailsDto?.labelName}}</strong></span>
                 </th>
                 <th scope="row" *ngIf="accountDetailsDto?.filterType=='email'">
-                  <input type="email" class="form-control"  placeholder="Enter Email" autocomplete="off" [(ngModel)]="accountDetailsDto.emailId" (input)="accountDetailsDto.emailId = accountDetailsDto.emailId.toLowerCase()"
+                  <input type="email" class="form-control"  placeholder="Enter Email" autocomplete="off" 
+                  [(ngModel)]="accountDetailsDto.emailId" (input)="accountDetailsDto.emailId = accountDetailsDto.emailId.toLowerCase()"
+                  (keypress)="findCompanyInfoOnKeyPress($event.keyCode)"
                   [ngModelOptions]="{standalone: true}">
                   <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
                 </th>
@@ -276,7 +278,7 @@
                 <tbody>
                   <tr>
                     <td>{{companyInfo?.companyName}}</td>
-                    <td class="pointer"><a href="{{companyInfo?.vanityUrl}}" target="_blank" rel="noopener">Click Here</a></td>
+                    <td class="pointer" class="text-center"><a href="{{companyInfo?.vanityUrl}}" target="_blank" rel="noopener">Click Here</a></td>
                     <td class="text-center">{{companyInfo?.companyProfileName}}</td>
                     <td [className]="(companyInfo?.companyType=='Partner'||companyInfo?.companyType=='Vendor') && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
                       <strong>{{companyInfo?.companyType}}</strong></td>

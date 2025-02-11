@@ -1813,7 +1813,7 @@ export class AddDealComponent implements OnInit {
     this.showChangeLeadButton = false;
     this.showChangeContactButton = false;
     this.deal.associatedLeadId = 0;
-    this.attachLeadText = 'Attach Lead';
+    this.attachLeadText = 'Attach a Lead';
     this.showDetachLeadButton = false;
     this.deal.campaignId = 0;
     this.deal.campaignName = '';

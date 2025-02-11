@@ -351,17 +351,15 @@
             <app-dropdown-loader *ngIf="contactsLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
             <div class="panel-body pt0" *ngIf="companyContacts != undefined && companyContacts.length > 0">
               <div class="deals_card mb10" *ngFor="let contact of companyContacts">
-                <div *ngIf="contact.firstName != undefined || contact.lastName != undefined">
+                <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a class="add-btn underline-on-hover" (click)="viewContactJourney(contact.contactId)">
-                    <span class="activity-title">{{contact.firstName != null ? contact.firstName:''}} {{contact.lastName}}</span>
+                  <a *ngIf="contact.fullName" class="add-btn underline-on-hover" (click)="viewContactJourney(contact.contactId)">
+                    <span class="activity-title">{{contact.fullName | slice:0:20}}</span><span *ngIf="contact?.fullName != undefined && contact?.fullName?.length>20">..</span>
                   </a>
+                  <a class="underline-on-hover"
+                    (click)="viewContactJourney(contact.contactId)"><div class="activity-title" [ngClass]="contact.fullName ? 'pl20' : ''">{{contact.emailId}}</div></a>
                 </div>
-                <div class="activity-body">
-                  <label class="mb0 f-w-600"> Email Id:</label> <a class="underline-on-hover"
-                    (click)="viewContactJourney(contact.contactId)"><span>{{contact.emailId}}</span></a>
-                </div>
-                <div *ngIf="contact.mobileNumber!=undefined" class="activity-body">
+                <div *ngIf="contact?.mobileNumber!=undefined && contact?.mobileNumber?.length > 0" class="activity-body">
                   <label class="mb0 f-w-600"> Phone:</label> {{contact.mobileNumber}}
                 </div>
               </div>
@@ -393,7 +391,7 @@
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
                   <a class="add-btn underline-on-hover" (click)="viewLead(lead.id)">
-                    <span class="activity-title">{{lead.firstName != null ? lead.firstName:''}} {{lead.lastName}}</span>
+                    <span class="activity-title">{{lead.fullName | slice:0:20}}</span><span *ngIf="lead?.fullName != undefined && lead?.fullName?.length>20">..</span>
                   </a>
                 </div>
                 <div class="activity-body">
@@ -429,7 +427,7 @@
               <div class="deals_card mb10" *ngFor="let deal of contactDeals">
                 <div>
                   <a class="add-btn underline-on-hover" (click)="viewDeal(deal.id)">
-                    <span class="activity-title">{{deal.title}}</span>
+                    <span class="activity-title">{{deal.title | slice:0:20}}</span><span *ngIf="deal?.title != undefined && deal?.title?.length>20">..</span>
                   </a>
                 </div>
                 <div class="activity-body">
@@ -472,7 +470,7 @@
                 <div>
                   <i class="fas fa-bullhorn mr5" aria-hidden="true"> </i>
                   <a class="add-btn underline-on-hover" (click)="viewCampaignTimeLine(campaign)">
-                    <span class="activity-title">{{campaign.campaignName}}</span>
+                    <span class="activity-title">{{campaign.campaignName | slice:0:20}}</span><span *ngIf="campaign?.campaignName != undefined && campaign?.campaignName?.length>20">..</span>
                   </a>
                 </div>
                 <div class="activity-body">

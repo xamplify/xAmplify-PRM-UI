@@ -189,8 +189,9 @@
                           <app-user-info *ngIf="showContactInfoForLead" [userInfo]="contact" [isLeadInfo]="true"></app-user-info>
                           <app-user-info *ngIf="showContactDetails" [userInfo]="contact"></app-user-info>
                           <span *ngIf="!showContactInfo">Not Available</span>
-                          <div *ngIf="showAttachLeadButton" class="btn-group pull-right pt open">
-                            <button class="btn Btn-Green mb_btn" data-toggle="dropdown"
+                          <div *ngIf="authenticationService?.module?.isContact && actionType!=='edit'"
+                            class="btn-group pull-right pt">
+                            <button  *ngIf="showAttachLeadButton" class="btn Btn-Green mb_btn" data-toggle="dropdown"
                               style="border-radius: 3px !important;box-shadow: none !important;" translate>
                               <i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i> Attach <i aria-hidden="true"
                                 class="fa fa-angle-down"></i>
@@ -200,6 +201,22 @@
                               <li><a (click)="openSelectContactModel()">Attach a Contact</a></li>
                             </ul>
                           </div>
+                          <span *ngIf="!(actionType!=='edit' && authenticationService?.module?.isContact)" class="pull-right">
+                            <a *ngIf="showAttachLeadButton" style="padding-left: 4px;">
+                              <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                                <span (click)="openSelectLeadModel()" class="btn btn-primary transition d-inline">
+                                  <i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>{{attachLeadText}}
+                                </span>
+                              </button>
+                            </a>
+                            <a *ngIf="showDetachLeadButton" style="padding-left: 4px;">
+                              <button class="btn Btn-Gray neg_mrg_top4" translate>
+                                <span (click)="resetAttachedLeadInfo()"><i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>
+                                  Detach Lead
+                                </span>
+                              </button>
+                            </a>
+                          </span>
                           <span class="pull-right">
                             <a *ngIf="showChangeLeadButton || showChangeContactButton" style="padding-left: 4px;">
                               <button class="button_blue bgcolor-unset p0 btn-transitions" translate>

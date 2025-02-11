@@ -175,6 +175,11 @@ export class AdminReportComponent implements OnInit {
     if (keyCode === 13) { this.findCompanyInfo(); } 
   }
 
+  findCompanyInfoOnKeyPress(keyCode:any){
+    if (keyCode === 13) { this.findCompanyInfo(); } 
+  }
+  
+
   findCompanyInfo(){
       this.resetUpgradeAccountValues();
       this.findAccountDetailsOrUpgradeAccount();

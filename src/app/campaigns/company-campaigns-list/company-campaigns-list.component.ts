@@ -85,7 +85,7 @@ export class CompanyCampaignsListComponent implements OnInit {
 
   showAllCampaignAnalytics() {
     this.resetTaskActivityPagination();
-    this.listCampaignAnalytics(this.pagination);
+    this.getAllFilteredResults();
   }
 
   closeCampaignsList() {
