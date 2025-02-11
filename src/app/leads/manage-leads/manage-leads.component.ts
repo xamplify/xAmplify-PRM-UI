@@ -120,7 +120,7 @@ export class ManageLeadsComponent implements OnInit {
   /*** XNFR-839 ****/
   showSlectFieldComponent: boolean = false;
   showOrderFieldComponent: boolean = false;
-  userType: string;
+  logginUserType: string;
   enabledMyPreferances: boolean = false;
   /*** XNFR-839 ****/
 
@@ -244,6 +244,7 @@ triggerUniversalSearch(){
                   if (response.data === "PartnerView") {
                     this.showPartner();
                   } else if (response.data === "VendorView") {
+                    this.logginUserType = 'v';
                     this.showVendor();
                   }
                 }
@@ -289,6 +290,7 @@ triggerUniversalSearch(){
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      this.logginUserType = 'v';
       this.leadsSortOption.searchKey = "";//XNFR=799
       this.getActiveCRMDetails();
       this.showLeads();
@@ -304,6 +306,7 @@ triggerUniversalSearch(){
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
+    this.logginUserType = 'p';
     this.leadsSortOption.searchKey = "";//XNFR=799
     this.showLeads();
     this.getActiveCRMDetails();
@@ -1584,80 +1587,44 @@ triggerUniversalSearch(){
       );
   }
   /*** XNFR-839 */
-  openSelectFieldPopup() {
-    this.getMyPreferances();
-  }
-  getMyPreferances() {
-    this.dashboardService.isMyPreferances()
-      .subscribe(
-        result => {
-          let isMyPreferances = result.data;
-          if (isMyPreferances) {
-
-            this.enabledMyPreferances = isMyPreferances;
-            this.showOrderFieldComponent = true;
-          } else {
-            this.showSlectFieldComponent = true;
-          }
-        },
-        error => console.log(error),
-        () => console.log('finished '));
-  }
   selectedFields: any[] = [];
+  openSelectFieldPopup() {
+    this.showSlectFieldComponent = true
+  }
   closeEmitter(event: any) {
-    // Set selected fields and preferences if available
     let input = event;
-    if (input['update'] === 'update') {
-      this.showOrderFieldComponent = input['close'];
+    if (input['submit'] === 'submit') {
       this.showSlectFieldComponent = input['close'];
-      this.enabledMyPreferances = input['myPreferances']
-      this.selectedFields = input['selectFields'];
-    }
-    else if (input['select'] === 'select') {
-      this.showOrderFieldComponent = input['close'];
-      this.showSlectFieldComponent = true;
-      this.enabledMyPreferances = input['myPreferances']
-      this.selectedFields = input['selectFields'];
-    }
-    else if (input['order'] === 'order') {
-      this.showOrderFieldComponent = true;
-      this.showSlectFieldComponent = input['close'];
-      this.enabledMyPreferances = input['myPreferances']
-      this.selectedFields = input['selectFields'];
-    }
-    else if (input['submit'] === 'submit') {
-      this.showOrderFieldComponent = false;
-      this.showSlectFieldComponent = false;
       this.enabledMyPreferances = input['myPreferances'];
       this.selectedFields = input['selectFields'];
       this.saveSelectedFields();
     }
-    else if (!input['close']) {
-      this.showOrderFieldComponent = false;
+    else {
       this.showSlectFieldComponent = false;
     }
-}
+  }
 
 
-saveSelectedFields() {
-  let selectedFieldsResponseDto = {};
-  selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
-  selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
-  selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
-  selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
-  this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
-    .subscribe(
-      data => {
-        if (data.statusCode === 200) {
+  saveSelectedFields() {
+    let selectedFieldsResponseDto = {};
+    console.log("this.selectedFields :",this.selectedFields)
+    selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+    selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+    selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+    selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+    this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+      .subscribe(
+        data => {
+          if (data.statusCode === 200) {
 
-        }
-        this.leadsPagination.selectedExcelFormFields = this.selectedFields;
-        this.downloadLeads(this.leadsPagination)
-      },
-      error => console.log(error),
-      () => {
-      });
-}
+          }
+          this.leadsPagination.selectedExcelFormFields = this.selectedFields;
+          this.downloadLeads(this.leadsPagination)
+        },
+        error => console.log(error),
+        () => {
+        });
+  }
   /*** XNFR-839 */
 
 

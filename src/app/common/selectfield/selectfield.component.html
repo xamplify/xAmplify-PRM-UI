@@ -7,11 +7,13 @@
         <div class="button-container">
           <!-- Left-aligned Checkbox -->
           <div class="left-checkbox">
-            <h4 class="modal-title" style="font-weight: 600;" translate>selected-columns-export works!</h4>
+            <h4 class="modal-title" style="font-weight: 600;" *ngIf="isSelectDivOpen" translate>selected-columns-export works!</h4>
+            <!-- <h4 class="modal-title" style="font-weight: 600;" *ngIf="!isSelectDivOpen" translate>order-fields works!</h4> -->
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">
-            <button class="btn btn-primary" (click)="openOrderComponnet()">Order Fields</button>
+            <!-- <button class="btn btn-primary" (click)="openOrderDIV()" *ngIf="isSelectDivOpen">Order Fields</button> -->
+            <!-- <button class="btn btn-primary" data-dismiss="modal" (click)="selectFieldValues()" *ngIf="!isSelectDivOpen">Select Fields</button> -->
             <a title="Close" class="close-circle" (click)="closeModalClose()">
               <i class="fa fa-times" aria-hidden="true"></i>
             </a>
@@ -19,54 +21,84 @@
         </div>
       </div>
       <div class="modal-body">
-        <div class="table-responsive">
-          <div class="alert alert-info">
-            <strong>Select the fields for your report. Only the chosen fields will be displayed in the report.</strong>
-          </div>
-          <div>
-            <table class="table tgrid table-hover table-sm">
-              <thead>
-                <tr>
-                  <th scope="col" class="text-center" style="width: 10%">
-                    <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
-                      (change)="toggleAllSelection($event)" />
-                  </th>
-                  <th scope="col">Field Label</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let fieldDto of pagination.pagedItems; let i = index">
-                  <tr class="pointer">
-                    <td class="text-center">
-                      <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="fieldDto.selectedColumn"
-                        (change)="toggleSelection(fieldDto)" [checked]="allItems.indexOf(fieldDto)"
-                        [disabled]="isFieldDisabled(fieldDto.labelName)" />
-                    </td>
-                    <td>
-                      <span class="FieldName" data-toggle="tooltip" data-placement="top"
-                        title="{{fieldDto.labelName}}">{{fieldDto.labelName | slice:0:30}}
-                        <span *ngIf="fieldDto.labelName?.length>30">...</span>
-                      </span>
-                      <ul class="textDecoration">
-                        <li>{{fieldDto.displayName}}</li>
-                      </ul>
-                    </td>
+        <div *ngIf="isSelectDivOpen">
+          <div class="table-responsive">
+            <div class="alert alert-info">
+              <strong>Select the fields for your report. Only the chosen fields will be displayed in the report.</strong>
+            </div>
+            <div class="float-right input-icon right mb10" *ngIf="isSelectDivOpen">
+              <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+                placeholder="Search..." (keypress)="fieldSearch($event.keyCode)">
+              <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+                (click)="searchKey='';clearSearch()"></button>
+              <button type="submit" class="search-box-item-click" (click)="searchFileds()"><i class="fa fa-search"
+                  aria-hidden="true"></i></button>
+            </div>
+            <div>
+              <table class="table tgrid table-hover table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-center" style="width: 10%">
+                      <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
+                        (change)="toggleAllSelection()" />
+                    </th>
+                    <th scope="col">Field Label</th>
                   </tr>
-                </ng-container>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <div *ngIf="pagination.totalRecords==0" class="alert alert-info"><strong>No Data Found</strong></div>
+                  <ng-container *ngFor="let fieldDto of pagination.pagedItems; let i = index">
+                    <tr class="pointer">
+                      <td class="text-center">
+                        <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="fieldDto.selectedColumn"
+                          (change)="toggleSelection(fieldDto)" [checked]="isCheked(fieldDto.labelId)"
+                          [disabled]="isFieldDisabled(fieldDto.labelName)" />
+                      </td>
+                      <td>
+                        <span class="FieldName" data-toggle="tooltip" data-placement="top"
+                          title="{{fieldDto.labelName}}">{{fieldDto.labelName | slice:0:30}}
+                          <span *ngIf="fieldDto.labelName?.length>30">...</span>
+                        </span>
+                        <ul class="textDecoration">
+                          <li>{{fieldDto.displayName}}</li>
+                        </ul>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="">
+            <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)"
+              (notifyParentDropDown)="getAllLeadFormColumns($event)"></app-pagination>
           </div>
         </div>
-        <div class="">
-          <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)"
-            (notifyParentDropDown)="getAllLeadFormColumns($event)"></app-pagination>
+        <div *ngIf="!isSelectDivOpen">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 add-graph-bg">
+            <div class="alert alert-info">
+              <strong>Drag and reorder the fields as needed. Your report will display them in the same order.</strong>
+            </div>
+            <div class="portlet light border-radius-0 custome-portlet" id="removeborder">
+              <ul class="list-group drag-menu-cu cursor-move" [dragula]='"fieldsDragula"'
+                [dragulaModel]='selectFieldsDtos'>
+                <li class="list-group-item cursor-move" *ngFor="let fieldDto of selectFieldsDtos;let i = index">
+                  <span class="FieldName" data-toggle="tooltip" data-placement="top"
+                    title="{{fieldDto.labelName}}">{{fieldDto.labelName | slice:0:30}}
+                    <span *ngIf="fieldDto.labelName?.length>30">...</span>
+                  </span>
+                  <i class="fa fa-arrows pull-right drap-arrow-cu" aria-hidden="true"></i>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="position: absolute;bottom: 0px;width: 100%;">
         <div class="button-container">
           <!-- Left-aligned Checkbox -->
-          <div class="left-checkbox">
-            <ul class="textDecoration">
+          <div class="left-checkbox" >
+            <ul class="textDecoration" *ngIf="isSelectDivOpen">
               <li><input type="checkbox" id="setAsDefault" [(ngModel)]="isDefault"
                   (change)="setMyPreferances($event)" /></li>
               <li> <label for="setAsDefault"><b>Set as My Preferances</b></label></li>
@@ -74,10 +106,16 @@
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">
+            <div *ngIf="isSelectDivOpen">
             <button class="btn Btn-Gray" (click)="closeModalClose()">Close</button>
             <button class="btn btn-primary" (click)="submit()">Email The Report</button>
+          </div>
+          <div *ngIf="!isSelectDivOpen">
+            <button class="btn Btn-Gray" (click)="selectFieldValues()">Back To Selection</button>
+          </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>

@@ -33,4 +33,16 @@
     display: flex;
     gap: 10px;
   }
-  
+  ul.drag-menu-cu li:hover { background-color: #eeeeee;opacity: 0.5; cursor: pointer;color: #fff;}
+.drag-menu-cu li { margin-bottom: 2px;}
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.cursor-move {
+    cursor: move !important;
+}
