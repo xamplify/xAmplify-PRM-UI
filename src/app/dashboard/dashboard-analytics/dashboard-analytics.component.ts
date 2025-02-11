@@ -215,6 +215,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
       /** User Guide */
   ngOnDestroy() {
     $('#customizeCampaignModal').modal('hide');
+    this.isDraggingEnabled = false;
   }
 
   getDefaultPage(userId: number) {
@@ -643,34 +644,30 @@ showCampaignDetails(campaign:any){
     /***** XNFR-860 *****/
     ngAfterViewInit() {
         this.templates = [
-            { name: 'welcomePageHeader', ref: this.welcomePageHeader, index: 1 },
-            { name: 'dashBoardImages', ref: this.dashBoardImages, index: 2 },
-            { name: 'moduleAnalytics', ref: this.moduleAnalytics, index: 3 },
-            { name: 'newsAndAnnouncement', ref: this.newsAndAnnouncement, index: 4 },
-            { name: 'dashBoardButtons', ref: this.dashBoardButtons, index: 5 },
-            { name: 'opportunityStats', ref: this.opportunityStats, index: 6 },
-            { name: 'vendorActivityAnalytics', ref: this.vendorActivityAnalytics, index: 7 },
-            { name: 'campaignsGrid', ref: this.campaignsGrid, index: 8 },
-            { name: 'campaignStatistics', ref: this.campaignStatistics, index: 9 },
-            { name: 'emailStatistics', ref: this.emailStatistics, index: 10 },
-            { name: 'regionalStatistics', ref: this.regionalStatistics, index: 11 },
-            { name: 'videoStatistics', ref: this.videoStatistics, index: 12 },
-            { name: 'emailStats', ref: this.emailStats, index: 13 },
-            { name: 'prmMdfStatistics', ref: this.prmMdfStatistics, index: 14 },
-            { name: 'prmContent', ref: this.prmContent, index: 15 },
-            { name: 'prmAssets', ref: this.prmAssets, index: 16 },
-            { name: 'prmSharedAssets', ref: this.prmSharedAssets, index: 17 },
-            { name: 'prmTracks', ref: this.prmTracks, index: 18 },
-            { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 19 },
-            { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 20 },
-            { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 21 },
-            { name: 'leadStatistics', ref: this.leadStatistics, index: 22 },
-            { name: 'dealStatistics', ref: this.dealStatistics, index: 23 },
-            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 24 },
+            { name: 'dashBoardImages', ref: this.dashBoardImages, index: 1 },
+            { name: 'moduleAnalytics', ref: this.moduleAnalytics, index: 2 },
+            { name: 'newsAndAnnouncement', ref: this.newsAndAnnouncement, index: 3 },
+            { name: 'dashBoardButtons', ref: this.dashBoardButtons, index: 4 },
+            { name: 'opportunityStats', ref: this.opportunityStats, index: 5 },
+            { name: 'vendorActivityAnalytics', ref: this.vendorActivityAnalytics, index: 6 },
+            { name: 'campaignsGrid', ref: this.campaignsGrid, index: 7 },
+            { name: 'campaignStatistics', ref: this.campaignStatistics, index: 8 },
+            { name: 'regionalStatistics', ref: this.regionalStatistics, index: 9 },
+            { name: 'prmMdfStatistics', ref: this.prmMdfStatistics, index: 10 },
+            { name: 'prmContent', ref: this.prmContent, index: 11 },
+            { name: 'prmAssets', ref: this.prmAssets, index: 12 },
+            { name: 'prmSharedAssets', ref: this.prmSharedAssets, index: 13 },
+            { name: 'prmTracks', ref: this.prmTracks, index: 14 },
+            { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 15 },
+            { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 16 },
+            { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 17 },
+            { name: 'leadStatistics', ref: this.leadStatistics, index: 18 },
+            { name: 'dealStatistics', ref: this.dealStatistics, index: 19 },
+            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 20 },
         ];
         this.findCustomDashboardLayout();
         this.setUpDragEndSubscription();
-        
+
     }
 
     /***** XNFR-860 *****/
@@ -688,9 +685,7 @@ showCampaignDetails(campaign:any){
                     }
                 }
                 this.defaultDashboardLayout = [...newOrder];
-                setTimeout(() => {
-                    this.cdr.detectChanges();
-                });
+                this.cdr.detectChanges();
             } else {
                 console.log("dragContainer or nativeElement is not yet available.");
             }
@@ -724,7 +719,6 @@ showCampaignDetails(campaign:any){
         }));
         const customDashboardLayout = {
             userId: this.loggedInUserId,
-            companyProfileName: this.vendorCompanyProfileName,
             dashboardLayoutDTOs: dashboardLayoutDtos
         };
         this.dashBoardService.updateCustomDashBoardLayout(customDashboardLayout).subscribe((response) => {
@@ -732,9 +726,6 @@ showCampaignDetails(campaign:any){
                 this.isDraggingEnabled = false;
                 this.userDefaultPage.responseType = 'SUCCESS';
                 this.userDefaultPage.responseMessage = response.message;
-                const newTemplatesOrder = this.defaultDashboardLayout.map(item => this.templates.find(t => t.name === item.name));
-                this.defaultDashboardLayout = newTemplatesOrder;
-                this.isDraggingEnabled = false;
             } else {
                 this.isDraggingEnabled = true;
                 this.userDefaultPage.responseType = 'ERROR';

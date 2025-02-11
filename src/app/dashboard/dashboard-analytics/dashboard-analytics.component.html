@@ -221,57 +221,62 @@
 </ng-template>
 
 <ng-template #campaignStatistics>
-    <app-campaign-statistics-analytics *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
+    <div class="clearfix">
+        <!---Campaign Statistics--->
+        <app-campaign-statistics-analytics *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
             && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-campaign-statistics-analytics>
-</ng-template>
 
-<ng-template #emailStatistics>
-    <app-advanced-dashboard-analytics
-        *ngIf="!ngxLoading && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
-        [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
-    <!-- ---Email Statistics---------------->
-    <div *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
-        class="portlet light col-xs-12 col-sm-6 p0" style="margin-bottom: 20px;margin-top: 10px;">
-        <div class="portlet-title">
-            <div class="caption">
-                <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                <span class="caption-subject" translate>Email Statistics</span>
-            </div>
-        </div>
-        <div class="portlet-body" style="min-height: 232px;  max-height: 100%; max-width: auto;">
-            <app-modal-popup-loader [height]=220 [hidden]="!emailStatisticsLoader.isLoading"></app-modal-popup-loader>
-            <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
-                <table id="trellis" aria-describedby="desc">
-                    <tr>
-                        <td class="first"></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
-            <ng-container *ngIf="!emailStatisticsLoader.isLoading">
-                <div *ngIf="categories?.length < 1" style="max-width: 100%;text-align: center;">
-                    <span style="position: absolute;top: 130px;left: 220px;">No data
-                        available</span>
+        <!---Email Statistics--->
+        <app-advanced-dashboard-analytics
+            *ngIf="!ngxLoading && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
+            [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
+        <!-- ---Email Statistics---------------->
+        <div *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
+            class="portlet light col-xs-12 col-sm-6 p0" style="margin-bottom: 20px;margin-top: 10px;">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                    <span class="caption-subject" translate>Email Statistics</span>
                 </div>
-            </ng-container>
+            </div>
+            <div class="portlet-body" style="min-height: 232px;  max-height: 100%; max-width: auto;">
+                <app-modal-popup-loader [height]=220
+                    [hidden]="!emailStatisticsLoader.isLoading"></app-modal-popup-loader>
+                <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
+                    <table id="trellis" aria-describedby="desc">
+                        <tr>
+                            <td class="first"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <ng-container *ngIf="!emailStatisticsLoader.isLoading">
+                    <div *ngIf="categories?.length < 1" style="max-width: 100%;text-align: center;">
+                        <span style="position: absolute;top: 130px;left: 220px;">No data
+                            available</span>
+                    </div>
+                </ng-container>
+            </div>
         </div>
     </div>
 </ng-template>
 
 <ng-template #regionalStatistics>
-    <app-regional-statistics-analytics
-        *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-regional-statistics-analytics>
-</ng-template>
+    <div class="clearfix">
+        <!---Regional Statistics--->
+        <app-regional-statistics-analytics
+            *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-regional-statistics-analytics>
+        <div>
+            <!---Video Statistics--->
+            <app-video-statistics-analytics
+                *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-video-statistics-analytics>
 
-<ng-template #videoStatistics>
-    <app-video-statistics-analytics
-        *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-video-statistics-analytics>
-</ng-template>
-
-<ng-template #emailStats>
-    <app-email-stats-analytics
-        *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-email-stats-analytics>
+            <!---email Stats--->
+            <app-email-stats-analytics
+                *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-email-stats-analytics>
+        </div>
+    </div>
 </ng-template>
 
 <ng-template #prmMdfStatistics>
@@ -398,10 +403,12 @@
 <div class="page-content"
     *ngIf="!playVideo && !editVideo && ((!showDealForm && !showLeadForm && !isOnlyUser) 
     || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
-
-    <div #dragContainer *ngIf="isDraggingEnabled" class="dragula-container" [dragula]="dashBoardAnalytics" [(dragulaModel)]="defaultDashboardLayout">
+    <ng-template [ngTemplateOutlet]="sandBoxText"></ng-template>
+    <ng-template [ngTemplateOutlet]="welcomePageHeader"></ng-template>
+    <div #dragContainer *ngIf="isDraggingEnabled" class="dragula-container" [dragula]="dashBoardAnalytics"
+        [(dragulaModel)]="defaultDashboardLayout">
         <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div *ngFor="let template of defaultDashboardLayout" [id]="template.name"> 
+        <div *ngFor="let template of defaultDashboardLayout" [id]="template.name">
             <ng-template [ngTemplateOutlet]="template.ref"></ng-template>
         </div>
     </div>
