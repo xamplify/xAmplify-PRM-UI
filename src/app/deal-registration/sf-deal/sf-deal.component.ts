@@ -32,6 +32,7 @@ export class SfDealComponent implements OnInit {
   @Input() public actionType: any;
   @Input() public contactId: any;
   @Input() public campaignId: any;
+  @Input() public showChangeContactButton: boolean = false;
   @Output() isFormValid = new EventEmitter();
   form: Form = new Form();
   errorMessage: string;
@@ -223,7 +224,7 @@ export class SfDealComponent implements OnInit {
           this.getActiveCRMCustomForm();
         }
       }
-      if (this.selectedContact != undefined && this.selectedContact != null) {
+      if (this.selectedContact != undefined && this.selectedContact != null && this.showChangeContactButton) {
         this.autoFillContactFieldsForDeal();
       }
     }
