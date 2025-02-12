@@ -136,6 +136,8 @@ export class ContactDetailsComponent implements OnInit {
   formattedLeadsCount: string = '0';
   formattedDealsCount: string = '0';
   formattedCampaignsCount: string = '0';
+  totalDealAmount: any = "$ 0.0";
+  dealAmountLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -172,15 +174,16 @@ export class ContactDetailsComponent implements OnInit {
     if (this.isCompanyJourney) {
       this.getCompany();
       this.fetchContactsAndCount();
+      this.fetchTotalDealAmount();
     } else {
       this.getContact();
       this.checkTermsAndConditionStatus();
       this.getLegalBasisOptions();
-      this.fetchLogoFromExternalSource();
       this.getVendorRegisterDealValue();
     }
     this.referenceService.goToTop();
     this.getActiveCalendarDetails();
+    this.fetchLogoFromExternalSource();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
     this.fetchCampaignsAndCount();
@@ -464,6 +467,7 @@ export class ContactDetailsComponent implements OnInit {
     this.viewLeads = false;
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
   }
 
   viewLead(leadId:any) {
@@ -533,6 +537,7 @@ export class ContactDetailsComponent implements OnInit {
   closeViewMoreDealsTab() {
     this.viewDeals = false;
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
   }
 
   showDealSubmitSuccess(event) {
@@ -540,6 +545,7 @@ export class ContactDetailsComponent implements OnInit {
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
     this.customResponse = new CustomResponse('SUCCESS', this.properties.dealSubmittedSuccessResponseMessage, true);
   }
 
@@ -684,7 +690,7 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchLogoFromExternalSource() {
     this.imgPathLoading = true;
-    this.activityService.fetchLogoFromExternalSource(this.contactId).subscribe(
+    this.activityService.fetchLogoFromExternalSource(this.contactId, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK && data != '') {
@@ -880,6 +886,20 @@ export class ContactDetailsComponent implements OnInit {
     } else {
       return input.toString();
     }
+  }
+
+  fetchTotalDealAmount() {
+    this.referenceService.loading(this.dealAmountLoader, true);
+    this.dealsService.fetchTotalDealAmount(this.selectedContactListId).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.totalDealAmount = response.data;
+        }
+        this.referenceService.loading(this.dealAmountLoader, false);
+      }, error => {
+        this.referenceService.loading(this.dealAmountLoader, false);
+      }
+    )
   }
   
 }

@@ -193,6 +193,10 @@ export class AddDealComponent implements OnInit {
   contactInfo: any;
   detailsTitle: any;
   showContactDetails: boolean = false;
+  showAttachLead: boolean = true;
+  showChangeLeadAndContactButton: boolean = false;
+  showAttachButton: boolean = false;
+  
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -691,6 +695,8 @@ export class AddDealComponent implements OnInit {
       this.activeCRMDetails.showDealPipelineStage = false;
       this.showCreatedByPipelineAndStage = false;
       this.showOpportunityTypes = false;
+      this.showAttachButton = false;
+      this.showAttachLead = true;
       this.resetDealTitle();
     }
   }
@@ -1443,10 +1449,20 @@ export class AddDealComponent implements OnInit {
               this.isZohoLeadAttachedWithoutSelectingDealFor = true;
             }
             if (this.actionType == "edit" && (this.isOrgAdmin || this.isMarketingCompany)) {
-              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled && (this.deal.associatedLeadId == undefined || this.deal.associatedLeadId == 0);
+              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled
+                && ((this.deal.associatedLeadId == undefined || this.deal.associatedLeadId == 0) && (this.deal.associatedContactId == undefined || this.deal.associatedContactId == 0));
             }
           } else {
             this.resetDealTitle();
+          }
+
+          if (("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType ||
+            "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType) && this.actionType === 'add') {
+            this.showAttachLead = false;
+            this.showAttachButton = true;
+          } else {
+            this.showAttachLead = true;
+            this.showAttachButton = false;
           }
         },
         error => {
@@ -1813,6 +1829,7 @@ export class AddDealComponent implements OnInit {
     this.showChangeLeadButton = false;
     this.showChangeContactButton = false;
     this.deal.associatedLeadId = 0;
+    this.showChangeLeadAndContactButton = false;
     this.attachLeadText = 'Attach a Lead';
     this.showDetachLeadButton = false;
     this.deal.campaignId = 0;
@@ -1842,6 +1859,8 @@ export class AddDealComponent implements OnInit {
         this.activeCRMDetails.showDealPipelineStage = false;
         this.showCustomForm = false;
         this.showDefaultForm = false;
+        this.showAttachButton = false;
+        this.showAttachLead = true;
       } else {
         this.holdTicketTypeId = this.deal.haloPSATickettypeId;
       }

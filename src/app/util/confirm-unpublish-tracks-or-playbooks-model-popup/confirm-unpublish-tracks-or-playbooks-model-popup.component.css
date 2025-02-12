@@ -20,3 +20,8 @@
 .br{
     border-radius: 5px 5px 0px 0px;
 }
+.salesforce_config{
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+}

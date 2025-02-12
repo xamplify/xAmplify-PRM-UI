@@ -91,7 +91,7 @@ export class AddCompanyComponent implements OnInit {
       return;
     } 
     
-    if (this.referenceService.validateWebsiteURL(companyWebsite)) {
+    if (this.regularExpressions.LINK_PATTERN.test(companyWebsite)) {
       this.isCompanyWebsiteValid = true;  
       this.isWebsiteError = false;   
     } else {

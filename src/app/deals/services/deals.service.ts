@@ -302,6 +302,11 @@ findVendorDetailsWithSelfDealsCount(campaignId:any, loggedInUserId:any) {
     let url = this.authenticationService.REST_URL + "deal/fetchContactsForDealAttachment/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token + pageableUrl;
     return this.authenticationService.callGetMethod(url);
   }
+
+  fetchTotalDealAmount(userListId:any) {
+    let url = this.authenticationService.REST_URL + "deal/fetchTotalDealAmount/" + this.authenticationService.getUserId() + "/" + userListId + "?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
  
 
 }

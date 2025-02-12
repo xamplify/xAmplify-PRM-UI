@@ -22,8 +22,9 @@ export class ActivityService {
         return this.authenticationService.callGetMethod(url);
     }
 
-    fetchLogoFromExternalSource(userId:any) {
-        let url = this.URL + "/fetchLogoFromExternalSource/" + userId + this.ACCESS_TOKEN_URL;
+    fetchLogoFromExternalSource(userId:any, isCompanyJourney:boolean) {
+        let prefix = isCompanyJourney ? this.authenticationService.REST_URL + "companies/" : this.URL;
+        let url = prefix + "/fetchLogoFromExternalSource/" + userId + this.ACCESS_TOKEN_URL;
         return this.authenticationService.callGetMethod(url);
     }
 

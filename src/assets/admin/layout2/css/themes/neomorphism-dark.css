@@ -418,7 +418,8 @@ tr {
   background-color: #2c2f33 !important;
   color: white !important;
 }
-.modal-content {
+.modal-content,
+.salesforce_config {
   background-color: #2e3033 !important;
   color: white !important;
 }
@@ -936,7 +937,8 @@ span.ui-column-resize {
 }
 .form-check-label,
 .gu-block,
-.modal-content {
+.modal-content,
+.salesforce_config {
   border: 1px solid #191b1e !important;
 }
 .circled-number {
