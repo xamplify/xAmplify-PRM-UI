@@ -42,7 +42,7 @@
             </h4>
         </div>
     </div>
-    <div class="page-bar p0 mb-height_auto" [hidden]="ngxLoading" style="height:48px;">
+    <div class="page-bar p0 mb-height_auto margin_b0" [hidden]="ngxLoading" style="height:48px;">
         <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
             <div
                 [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
@@ -67,11 +67,11 @@
                 [filterIcon]="true"
                 (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
             <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
-            <button class="btn btn-primary pull-right" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+            <button class="btn btn-primary pull-right btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
                 [title]="isDraggingEnabled ? 'Update DashBoard' : 'Customize DashBoard'"
                 (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : isDraggingEnabled = true">
                 {{ isDraggingEnabled ? 'Update' : 'Customize' }}</button>
-            <button class=" btn btn-danger pull-right" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+            <button class=" btn btn-danger pull-right mr5 btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
                 title="Reset" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">Reset</button>
         </div>
     </div>
@@ -85,7 +85,7 @@
 
 <ng-template #moduleAnalytics>
     <div *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
-        class="page-bar page-bar-shadow" style="padding: 1em 1em 0 1em;">
+        class="page-bar page-bar-shadow margin_17" style="padding: 1em 1em 0 1em;">
         <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
         </app-response-message>
         <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
@@ -109,7 +109,7 @@
 <ng-template #opportunityStats>
     <div *ngIf="!authenticationService?.module?.deletedPartner &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole) 
         && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
-        class="portlet light">
+        class="portlet light margin_17">
         <div class="portlet-title">
             <div class="caption">
                 <i class="fa fa-bar-chart" aria-hidden="true"></i>
@@ -138,7 +138,7 @@
 
 <ng-template #campaignsGrid>
     <div *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
-        class="portlet light campaigns_card_height">
+        class="portlet light margin_17">
         <div class="portlet-title" *ngIf="authenticationService?.module?.createCampaign">
             <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
             <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
@@ -221,7 +221,7 @@
 </ng-template>
 
 <ng-template #campaignStatistics>
-    <div class="clearfix">
+    <div class="clearfix row mr0 margin_17">
         <!---Campaign Statistics--->
         <app-campaign-statistics-analytics *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
             && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-campaign-statistics-analytics>
@@ -232,7 +232,7 @@
             [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
         <!-- ---Email Statistics---------------->
         <div *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
-            class="portlet light col-xs-12 col-sm-6 p0" style="margin-bottom: 20px;margin-top: 10px;">
+            class="portlet light col-xs-12 col-sm-6">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
@@ -263,7 +263,7 @@
 </ng-template>
 
 <ng-template #regionalStatistics>
-    <div class="clearfix">
+    <div class="clearfix row margin_17">
         <!---Regional Statistics--->
         <app-regional-statistics-analytics
             *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-regional-statistics-analytics>

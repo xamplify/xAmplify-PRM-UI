@@ -3420,3 +3420,8 @@ border-bottom-right-radius: 7px;
 .portlet-title.border-bottom-1px {
   border-bottom: none !important;
 }
+/* dashboard page alignment */
+.margin_17{
+  margin-top:18px!important;
+  margin-bottom: 5px!important;
+}

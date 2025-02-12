@@ -181,6 +181,12 @@ a.social-stats {
 }
 .gu-transit {
   opacity: 0.5;
-  transform: scale(0.95);
+  transform: scale(0.1);
   transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.btn_custom{
+  margin: 2px;
+}
+.margin_b0{
+  margin-bottom: 0px!important;
 }
