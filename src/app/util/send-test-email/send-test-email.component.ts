@@ -7,7 +7,9 @@ import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { ActivatedRoute } from '@angular/router';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
-declare var $: any;
+import { CampaignMdfRequestsEmailsSentHistoryComponent } from '../campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
+import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
+declare var $: any, swal:any;
 @Component({
   selector: 'app-send-test-email',
   templateUrl: './send-test-email.component.html',
@@ -49,6 +51,9 @@ export class SendTestEmailComponent implements OnInit {
   @Input() campaignName="";
   @Input() campaignId = 0;
   isSendMdfRequestOptionClicked = false;
+  @ViewChild('campaignMdfRequestsEmailsSentHistoryComponent') campaignMdfRequestsEmailsSentHistoryComponent: CampaignMdfRequestsEmailsSentHistoryComponent;
+  duplicateMdfRequestDto:DuplicateMdfRequest = new DuplicateMdfRequest();
+  ngxloading = false;
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
@@ -69,7 +74,9 @@ export class SendTestEmailComponent implements OnInit {
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
   }
-
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup(this.modalPopupId);
+}
   /***XNFR-832****/
   getFundingTemplateHtmlBody() {
     this.processing = true;
@@ -210,29 +217,71 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   send() {
-    this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
     if (!this.isValidForm) {
       this.showErrorMessage("Please provide valid inputs.");
       this.referenceService.closeSweetAlert();
       return;
     }
     if (this.vanityTemplatesPartnerAnalytics) {
+      this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendmailNotify.emit({ 'item': this.selectedItem });
       this.callEventEmitter();
     }else if(this.isSendMdfRequestOptionClicked){
-      this.sendMdfFundRequestEmail();
+      this.ngxloading = true;
+      this.validateCampaignMdfRequest();
     }else if(this.campaignSendTestEmail){
+      this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendCampaignTestEmail();
     }else{
+      this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendTestEmail();
     }
     
   
   }
 
+   validateCampaignMdfRequest(){
+    this.duplicateMdfRequestDto.campaignId = this.campaignId;
+    this.duplicateMdfRequestDto.emailAddress = this.sendTestEmailDto.toEmail;
+    this.authenticationService.validateDuplicateMdfRequest(this.duplicateMdfRequestDto).subscribe(
+      response=>{
+        this.ngxloading = false;
+        let isDuplicateMdfRequest = response.data;
+        if(isDuplicateMdfRequest){
+          this.showSweetAlertConfirmation();
+        }else{
+          this.sendMdfFundRequestEmail();
+        }
+      },error=>{
+        this.ngxloading = false;
+        this.sendMdfFundRequestEmail();
+      }
+    );
+   }
+
+   showSweetAlertConfirmation(){
+    let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "An email has already been sent. Do you want to resend it?",
+				type: 'info',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: "Yes, Send it",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+			}).then(function () {
+        self.sendMdfFundRequestEmail();
+			}, function (_dismiss: any) {
+        self.clicked = false;
+			});
+  }
+
 
   /***XNFR-832****/
   sendMdfFundRequestEmail() {
+    this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
     this.authenticationService.sendMdfFundRequestEmail(this.sendTestEmailDto).subscribe(
       response => {
         this.referenceService.showSweetAlertSuccessMessage(response.message);
@@ -312,6 +361,10 @@ export class SendTestEmailComponent implements OnInit {
     } else {
       this.referenceService.previewEmailTemplateInNewTab(this.id);
     }
+  }
+
+  openCampaignMdfRequestHistoryModalPopup(){
+    this.campaignMdfRequestsEmailsSentHistoryComponent.openModalPopup(this.campaignId);
   }
 
 }

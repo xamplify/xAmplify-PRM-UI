@@ -130,5 +130,5 @@ opacity: unset;
   height: 34px;
 }
 .universal-dropdown-menu::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }

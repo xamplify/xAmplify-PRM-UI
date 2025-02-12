@@ -33,6 +33,7 @@ export class CampaignMdfAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.processor.set(this.processor);
+    
     this.alias = this.route.snapshot.params['mdfAlias'];
     if(this.vanityURLService.isVanityURLEnabled()){
       this.vanityURLService.checkVanityURLDetails();

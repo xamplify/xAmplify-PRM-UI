@@ -437,7 +437,8 @@ tr {
   background-color: #f0f5fa !important;
   color: #000 !important;
 }
-.modal-content {
+.modal-content,
+.salesforce_config {
   background: linear-gradient(225deg, #d8dde1, #ffffff);
   color: #000 !important;
 }
@@ -806,12 +807,12 @@ select {
 .wrap-asset-name {
   color: #000 !important;
 }
-.custom {
+/* .custom {
   background: linear-gradient(0deg, rgba(77,54,208,1) 0%, rgba(132,116,254,1) 100%) !important;
   border: 0px solid #0104ff !important;
-}
+}*/
 .item__preview.item__preview--image.custom {
-  background-color: #2b3c46 !important;
+  background-color: #d0d5db !important;
 }
 .item__select-box-wrapper .select-box::before,
 .xamplify-dropdown-content-odd,
@@ -966,7 +967,8 @@ span.ui-column-resize {
 }
 .form-check-label,
 .gu-block,
-.modal-content {
+.modal-content,
+.salesforce_config {
   border: 1px solid #cfd6de !important;
 }
 .circled-number {
@@ -4495,3 +4497,14 @@ a.Iconhover.custom-grid-icon.icon_margin{
 }
 .lead-details-border{border: 2px solid #cfd6de !important;}
 .file-label{color: #fff !important;}
+  /* Added company profile lefside bar card color */
+  .profile_headers,.icon-group{
+    background: transparent !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+  }
+  .icon-btns,i.fa.fa-edit.ml_6{
+        background-color: #ffffff!important;
+  }
+  .icon-btns:hover,i.fa.fa-edit.ml_6:hover{
+    background-color: #e3edf7!important;
+  }

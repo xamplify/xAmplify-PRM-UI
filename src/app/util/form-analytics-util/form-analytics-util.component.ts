@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -67,11 +67,12 @@ export class FormAnalyticsUtilComponent implements OnInit {
     selectFormVendorCompanyId:number=0;
     roleName: Roles = new Roles();
     isOrgAdmin: boolean = false;  
+    modalPopupSuffix:string="";
     constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
         public logger: XtremandLogger, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        private campaignService: CampaignService
+        private campaignService: CampaignService,public changeDetectorRef: ChangeDetectorRef
     ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
@@ -121,7 +122,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
         }
 
     }
-
+ngOnDestroy(){
+    $("#addLeadsPopup"+this.modalPopupSuffix).modal("hide");
+}
     listSubmittedData(pagination: Pagination) {
         pagination.searchKey = this.searchKey;
         this.referenceService.loading(this.httpRequestLoader, true);
@@ -132,6 +135,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
             pagination.masterLandingPageAnalytics = true;
             pagination.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
             pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+            this.modalPopupSuffix = "masterLandingPageAnalytics"
         }else  if(this.isPartnerJourneyPage ){
             pagination.partnerJourneyPage = true;
             pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
@@ -139,6 +143,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
             pagination.vendorMarketplacePageAnalytics = true;
             pagination.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
             pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+            this.modalPopupSuffix = "vendorMarketplacePageAnalytics";
         }else if(this.isVendorMarketplacePage){
             pagination.vendorMarketplacePage = true;
             pagination.vendorLandingPageId = this.importedObject['partnerLandingPageId'];
@@ -309,19 +314,26 @@ export class FormAnalyticsUtilComponent implements OnInit {
 
 
     addLeadsForm(formDataRow:any){
-        this.showLeadForm = true;
-        this.selectedFormSubmitId = formDataRow.formSubmittedId;
-        if(this.isOrgAdmin){
-            this.selectFormVendorCompanyId = this.authenticationService.user.campaignAccessDto.companyId;
+        let self = this;
+        self.showLeadForm = true;
+        self.selectedFormSubmitId = formDataRow.formSubmittedId;
+        if(self.isOrgAdmin){
+            self.selectFormVendorCompanyId = self.authenticationService.user.campaignAccessDto.companyId;
         }
-        $("#addLeadsPopup").modal("show");
-
+        $("#addLeadsPopup"+this.modalPopupSuffix).modal("show");
+        self.changeDetectorRef.detectChanges();
+        setTimeout(() => {
+            self.showLeadForm = true;
+            self.changeDetectorRef.detectChanges();
+          });
+        
     }
+
     hideModal(){
-        $("#addLeadsPopup").modal("hide");
-        this.showLeadForm = false;
-
+        $("#addLeadsPopup"+this.modalPopupSuffix).modal("hide");
+        this.showLeadForm = false;  
     }
+
     showSubmitLeadMessage(event:any){
         this.hideModal();
         if(event.statusCode=200){

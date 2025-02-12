@@ -1,0 +1,177 @@
+<div class="modal fade right" id="selectContactModel" tabindex="-1" role="dialog" aria-labelledby="selectLeadModel"
+  data-backdrop="static" data-keyboard="false" style="display: block">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" (click)="closeModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Attach a Contact</h4>
+      </div>
+      <div class="modal-body border-bottom-1px">
+        <div class="portlet light" id="del-profile-div" style="border: 0px !important">
+          <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+          </app-modal-popup-loader>
+          <app-response-message class="pg8" [customResponse]="selectLeadModalResponse"
+            *ngIf="selectLeadModalResponse.isVisible">
+          </app-response-message>
+          <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content">
+                  <div>
+                    <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
+                      <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
+                        <div class="btn-group pull-right" style="width: max-content;display:flex">
+                          <div class="inputs display" align="right">
+                            <div class="portlet-input input-inline" style="display: table-cell;">
+                              <div [ngClass]="top" class="input-icon right r5" style="position: relative;right: -3px;">
+                                <input type="text" class="form-control pr-pl ml" [(ngModel)]="sortOption.searchKey"
+                                  [ngModelOptions]="{standalone: true}" placeholder="Search"
+                                  (keypress)="searchKeyPress($event.keyCode)">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search()"></button>
+                                <button type="submit" [ngClass]="top" class="search-box-item-click top mb_v_search"
+                                  (click)="search()">
+                                  <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- -------------------- List Leads-------------------- -->
+                    <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
+                      [hidden]="httpRequestLoader.isLoading || httpRequestLoader.isServerError">
+
+                      <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
+                        <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
+                          <thead>
+                            <tr>
+                              <th> </th>
+                              <th class="center-aligned leadTablewidth0" translate>Contact Details</th>
+                              <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <ng-container *ngFor='let contact of pagination.pagedItems; let i=index'>
+                              <tr [class.row-selected]="contact.contactId === showSelectedContact">
+                                <td><input id="contactCheckBox-{{i}}" class="pointer" (click)="selectLeadOnCheckBoxClick(contact,i)"
+                                    [(ngModel)]="showSelectedContact" [value]="contact.contactId" type="radio">
+                                </td>
+                                <td>
+                                  <app-user-info [userInfo]="contact"></app-user-info>
+                                </td>
+                                <td>
+                                  <button class="border-btn-small lightgray-btn" (click)="contact.showDetails = ! contact.showDetails">
+                                    <span *ngIf="!contact.showDetails" translate>More</span> <span *ngIf="contact.showDetails" translate>Less</span>
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr [ngClass]="{'hidden': !contact.showDetails, 'show-more': contact.showDetails}">
+                                <td colspan="6">
+                                  <table cellpadding="5" cellspacing="0" class="border" style="border:none !important;" aria-describedby="">
+                                    <tbody>
+                                      <tr *ngIf="gdprStatus" class="d-flex">
+                                        <td class='pt10 bold mr_10' translate><b>Legal Basis : </b> </td>
+                                        <td class="pt10 pl10">
+                                          {{contact.legalBasisString}}
+                                        </td>
+                                      </tr>
+                                      <tr *ngIf="contact.jobTitle" class="d-flex">
+                                        <td class='pt10 bold mr_10' translate>
+                                          <b>Job Title : </b>
+                                        </td>
+                                        <td class='pt10 pl10'>
+                                          {{contact.jobTitle}}</td>
+                                      </tr>
+                                      <tr *ngIf="contact.address" class="d-flex">
+                                        <td class='pt10 bold mr_10' translate>
+                                          <b>Address : </b>
+                                        </td>
+                                        <td class='pt10 pl10'>
+                                          {{contact.address}}</td>
+                                      </tr>
+                                      <tr *ngIf="contact.city" class="d-flex">
+                                        <td class='pt10 bold mr_10' translate>
+                                          <b>City : </b>
+                                        </td>
+                                        <td class='pt10 pl10'>
+                                          {{contact.city}}</td>
+                                      </tr>
+                                      <tr *ngIf="contact.state" class="d-flex">
+                                        <td class='pt10 bold mr_10' translate>
+                                          <b>State : </b>
+                                        </td>
+                                        <td class='pt10 pl10'>
+                                          {{contact.state}}</td>
+                                      </tr>
+                                      <tr *ngIf="contact.country" class="d-flex">
+                                        <td class='pt10 bold mr_10' translate>
+                                          <b>Country : </b>
+                                        </td>
+                                        <td class='pt10 pl10'>
+                                          {{contact.country}}</td>
+                                      </tr>
+                                      <tr *ngIf="contact.zipCode" class="d-flex">
+                                        <td class='pt10 bold mr_10' translate>
+                                          <b>ZipCode : </b>
+                                        </td>
+                                        <td class='pt10 pl10'>
+                                          {{contact.zipCode}}</td>
+                                      </tr>
+                                      <tr *ngFor="let flexiField of contact.flexiFields" class="d-flex">
+                                        <td class='pt10 bold mr_10' *ngIf='flexiField.fieldValue != ""' translate>{{flexiField.fieldName}}:
+                                        </td>
+                                        <td align="center" class="pt10">{{flexiField.fieldValue}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                        <strong>No Data Found.</strong>
+                      </div>
+                      <!--Pagination-->
+                      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin"
+                        [hidden]="httpRequestLoader.isLoading">
+                        <app-pagination [pagination]="pagination" [isDropdown]="'false'"
+                          (notifyParent)="setPage($event)" (notifyParentDropDown)="getContactDetails($event)">
+                        </app-pagination>
+                      </div>
+                    </section>
+
+                    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                    </app-list-loader>
+                    <div class="col-xs-12" id="box" *ngIf="httpRequestLoader.isServerError" translate>
+                      Please contact admin for 'Contacts'
+                    </div>
+
+
+                  </div>
+                </div>
+              </div><!-- End Of Tab Content -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="pull-right" style="margin: 15px">
+        <button type="submit" class="button_blue button_disabled bgcolor-unset"
+          [disabled]=" showSelectedContact==undefined || showSelectedContact==0" type="submit" (click)="contactSelected()">
+          <span class="btn btn-primary transition txt_pd-top3">Attach
+            Selected</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END CONTENT -->

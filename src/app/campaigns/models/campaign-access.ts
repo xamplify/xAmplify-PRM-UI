@@ -60,5 +60,7 @@ export class CampaignAccess {
   unlockMdfFundingEnabled = false;
   approvalHub = false;
 
+  allowVendorToChangePartnerPrimaryAdmin = false;
+
 
 }

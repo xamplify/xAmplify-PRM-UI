@@ -104,7 +104,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
   }
 
   previewTemplate(emailTemplate:VanityEmailTempalte){
-    this.referenceService.previewVanityEmailTemplateInNewTab(emailTemplate.id);
+    this.referenceService.previewVanityEmailTemplateInNewTab(emailTemplate.defaultEmailTemplateId);
   }
   searchVanityEventHandler(keyCode: any) { if (keyCode === 13) { this.searchVanityEmailTemp(); } }
 

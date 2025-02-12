@@ -3,6 +3,12 @@
     <div class="panel-heading panel-heading-custom panel-bg search_download_align" id="pj-team-member-details-div">
       <h3 class="panel-title mt7">Team Member Details</h3>
       <div style="display:flex;">
+        <div class="float-left">
+          <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.teamMember"
+            (ngModelChange)="sortPartnerTeamMembers($event)" id="select-dropdown">
+            <option *ngFor="let option of sortOption.teamMemberDropDowns" [ngValue]="option">{{option.name}}</option>
+          </select>
+        </div>
         <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" style="margin: -1px 3px 0px 3px;"
           *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember ||
             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember|| authenticationService. module.isPrm || authenticationService.module.isPrmTeamMember ||

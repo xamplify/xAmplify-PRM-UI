@@ -17,7 +17,14 @@
           <input type="text" id="subjectLine" [(ngModel)]="note.title" [ngModelOptions]="{standalone: true}" (input)="validateNote()"
             placeholder="Enter Title" class="form-control" name="subjectLine" maxlength="200" [disabled]="isPreview"/>
         </div>
-
+        <div class="form-group" *ngIf="isCompanyJourney && actionType != 'edit'">          
+          <label for="subjectLine">Pick contact(s)<span class="text-danger">*</span></label>
+          <app-dropdown-loader *ngIf="userListUsersLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
+          <angular4-multiselect *ngIf="!userListUsersLoader?.isLoading" [data]="userListUsersData" [(ngModel)]="userIds" [settings]="dropdownSettings"
+            (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+            (onDeSelectAll)="onDeSelectAll($event)">
+          </angular4-multiselect>
+        </div>
         <div class="form-group">
           <label for="subjectLine">Visibility<span class="text-danger">*</span>
             <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="ON: These notes can be considered as Public and viewed by all team members and admins.

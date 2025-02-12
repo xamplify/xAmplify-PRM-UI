@@ -2770,6 +2770,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactService.isContactModalPopup = false;
 		this.updatePartnerUser = false;
 		$('#settingSocialNetworkPartner').modal('hide');
+		$('#assignContactAndMdfPopup').modal('hide');
+		$('#tcModal').modal('hide');
 		$("body>#settingSocialNetworkPartner").remove();
 		$('body').removeClass('modal-backdrop in');
 		if (this.selectedAddPartnerOption == 5) {

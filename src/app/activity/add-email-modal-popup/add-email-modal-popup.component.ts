@@ -9,6 +9,9 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { TagInputComponent as SourceTagInput } from 'ngx-chips';
 import { tap } from 'rxjs/operators';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { ContactService } from 'app/contacts/services/contact.service';
 declare var $:any, CKEDITOR:any;
 
 @Component({
@@ -23,6 +26,8 @@ export class AddEmailModalPopupComponent implements OnInit {
   @Input() actionType:string;
   @Input() userEmailId:string;
   @Input() emailActivityId:number;
+  @Input() isCompanyJourney:boolean = false;
+  @Input() selectedUserListId:any;
   @Input() isReloadEmailActivityTab:boolean;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
@@ -54,9 +59,15 @@ export class AddEmailModalPopupComponent implements OnInit {
   showCCEmailInputField:boolean = false;
   showBCCEmailInputField:boolean = false;
   showCkEditorLimitErrorMessage:boolean = false;
+  userListUsersLoader: HttpRequestLoader = new HttpRequestLoader();
+  dropdownSettings = {};
+  userListUsersData = [];
+  userIds = [];
+  users = [];
+  testMailFormData: any = new FormData();
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
-    public authenticationService: AuthenticationService, public properties:Properties) {}
+    public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService) {}
 
   ngOnInit() {
     this.emailActivity.userId = this.userId;
@@ -71,13 +82,24 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.fetchEmailActivityById();
       this.referenceService.openModalPopup('addEmailModalPopup');
     }
+    if (this.isCompanyJourney) {
+      this.fetchUsersForCompanyJourney();
+    }
   }
-
+  ngOnDestroy(){
+    $('#addEmailModalPopup').modal('hide');
+  }
   sendEmailToUser() {
     this.ngxLoading = true;
     this.prepareFormData();
     this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
     this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+    if (this.isCompanyJourney) {
+      this.emailActivity.userIds = this.userIds.map(user => user.id);
+      this.emailActivity.isCompanyJourney = this.isCompanyJourney;
+    } else {
+      this.emailActivity.userIds.push(this.userId);
+    }
     this.emailActivityService.sendEmailToUser(this.emailActivity, this.formData).subscribe(
       data => {
         this.ngxLoading = false;
@@ -105,7 +127,8 @@ export class AddEmailModalPopupComponent implements OnInit {
 
   validateEmail() {
     let trimmedDescription = this.referenceService.getTrimmedCkEditorDescription(this.emailActivity.body);
-    if (this.referenceService.validateCkEditorDescription(trimmedDescription) &&
+    let isValidContactId = this.isCompanyJourney ? (this.userIds != undefined && this.userIds.length > 0) : true;
+    if (this.referenceService.validateCkEditorDescription(trimmedDescription) && isValidContactId &&
       this.emailActivity.subject != undefined && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
       this.isValidEmail = true;
     } else {
@@ -153,22 +176,31 @@ export class AddEmailModalPopupComponent implements OnInit {
 
   sendTestEmail() {
     this.testEmailLoading = true;
-    this.prepareFormData();
+    this.prepareTestMailFormData();
     this.emailActivity.toEmailId = this.testToEmailId;
     this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
     this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
-    this.emailActivityService.sendTestEmailToUser(this.emailActivity, this.formData).subscribe(
+    if (this.isCompanyJourney) {
+      this.emailActivity.userIds = this.userIds.map(user => user.id);
+    } else {
+      this.emailActivity.userIds.push(this.userId);
+    }
+    this.emailActivityService.sendTestEmailToUser(this.emailActivity, this.testMailFormData).subscribe(
       data => {
         this.emailActivity.toEmailId = this.userEmailId;
+        this.emailActivity.userIds = [];
         this.showTestMailSubmittedStatus();
         this.testToEmailId = '';
         this.validateTestEmailId();
         this.testEmailLoading = false;
+        this.testMailFormData.delete("uploadedFiles");
       }, error => {
+        this.emailActivity.userIds = [];
         this.showTestMailErrorStatus();
         this.testToEmailId = '';
         this.validateTestEmailId();
         this.testEmailLoading = false;
+        this.testMailFormData.delete("uploadedFiles");
       }
     )
   }
@@ -261,6 +293,50 @@ export class AddEmailModalPopupComponent implements OnInit {
   getFileExtension(fileName: string): string {
     const lastDotIndex = fileName.lastIndexOf('.');
     return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : '';
+  }
+
+  fetchUsersForCompanyJourney() {
+    this.referenceService.loading(this.userListUsersLoader, true);
+    this.contactService.fetchUsersForCompanyJourney(this.selectedUserListId).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.userListUsersData = response.data;
+        } else {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
+        }
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }, error => {
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }
+    )
+  }
+
+  getSelectedUserUserId(event) {
+    this.emailActivity.userId = event != undefined ? event['id'] : 0;
+    this.validateEmail();
+  }
+
+  onItemSelect(item: any) {
+    this.validateEmail();
+  }
+
+  OnItemDeSelect(item: any) {
+    this.validateEmail();
+  }
+
+  onSelectAll(items: any) {
+    this.validateEmail();
+  }
+
+  onDeSelectAll(items: any) {
+    this.validateEmail();
+  }
+
+  prepareTestMailFormData(): void {
+    this.files.forEach(file => {
+      this.testMailFormData.append("uploadedFiles", file, file['name']);
+    });
   }
   
 }

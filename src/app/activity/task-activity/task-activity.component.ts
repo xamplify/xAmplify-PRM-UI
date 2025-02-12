@@ -22,6 +22,7 @@ export class TaskActivityComponent implements OnInit {
   @Input() contactId:number;
   @Input() reloadTab: boolean;
   @Input() isCompanyJourney:boolean = false;
+  @Input() selectedUserListId:any;
   @Output() notifyTaskUpdatedStatus = new EventEmitter();
   @Output() notifyDeleteSuccess = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();
@@ -64,7 +65,12 @@ export class TaskActivityComponent implements OnInit {
   fetchAllTaskActivities(taskActivityPagination: Pagination) {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
-    taskActivityPagination.contactId = this.contactId;
+    taskActivityPagination.isCompanyJourney = this.isCompanyJourney;
+    if (this.isCompanyJourney) {
+      taskActivityPagination.contactId = this.selectedUserListId;
+    } else {
+      taskActivityPagination.contactId = this.contactId;
+    }
     this.taskActivityService.fetchAllTaskActivities(taskActivityPagination).subscribe(
       response => {
         const data = response.data;

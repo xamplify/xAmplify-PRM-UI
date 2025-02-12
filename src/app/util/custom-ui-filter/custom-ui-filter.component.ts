@@ -20,6 +20,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	/**** XBI-2133 ***/
 	@Output() filterConditionsEmitter = new EventEmitter();
 	@Output() closeFilterEmitter = new EventEmitter();
+	@Output() cancelSegmentationRowEmitter = new EventEmitter();
 	@Input() isFromApprovalHub: boolean = false;
 	@Input() selectedFilterType: any;
 	filterOptions: any[] = [];
@@ -149,6 +150,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		}
 		this.criterias.splice(index, 1);
 		this.dropdownDisabled.splice(index, 1);
+		
+		let input = {};
+        input['property'] = removedOption;
+		this.cancelSegmentationRowEmitter.emit(input);
 	}
 	validateDateFilters() {
 		if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
@@ -289,9 +294,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	validateAndEmitValues() {
 		if(this.isValidationErrorMessage){
 			console.log(this.isValidationErrorMessage);
-		}else if(!this.isValidationErrorMessage && this.pagination.criterias==null || this.pagination.criterias==undefined ||
-		 this.pagination.criterias.length == 0 && this.pagination.fromDateFilterString.length == 0 &&
-	     this.pagination.toDateFilterString.length==0){
+		}else if(!this.isValidationErrorMessage && (this.pagination.criterias==undefined ||this.pagination.criterias==null ||
+		 this.pagination.criterias.length == 0) && (this.pagination.fromDateFilterString == undefined  ||this.pagination.fromDateFilterString.length == 0)
+	  && (this.pagination.toDateFilterString == undefined || this.pagination.toDateFilterString.length==0) ){
 				this.closeFilterOption('close');
 		}else{
 		// this.validateDateFilters();

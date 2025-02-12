@@ -30,6 +30,7 @@ export class DealChatPopupComponent implements OnInit {
   moduleType: String;
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   showLeadInfo = false;
+  detailsTitle = 'Lead Details';
   constructor() { }
 
   ngOnInit() {     
@@ -43,10 +44,13 @@ export class DealChatPopupComponent implements OnInit {
       this.createdTime = this.deal.createdTime;
       this.referenceId = this.deal.referenceId
       let leadDetails = this.deal['associatedContact'];
-      if(leadDetails!=undefined){
-       this.lead = leadDetails;
-       this.lead.company = leadDetails.contactCompany;
-       this.showLeadInfo = true;
+      if (this.deal.associatedContactId != undefined) {
+        this.detailsTitle = 'Contact Details';
+      }
+      if (leadDetails != undefined) {
+        this.lead = leadDetails;
+        this.lead.company = leadDetails.contactCompany;
+        this.showLeadInfo = true;
       }
     } else if (this.lead != undefined) {
       this.moduleType = "lead";
@@ -55,10 +59,12 @@ export class DealChatPopupComponent implements OnInit {
       this.createdByEmail = this.lead.createdByEmail;
       this.createdByName = this.lead.createdByName;
       this.createdTime = this.lead.createdTime;
-    }  
-    $('#chatModelPopup').modal('show');  
+    }
+    $('#chatModelPopup').modal('show');
   }
-
+  ngOnDestroy(){
+    $('#chatModelPopup').modal('hide');
+  }
   addCommentModalClose()
   {
     this.isCommentSection.emit(false);

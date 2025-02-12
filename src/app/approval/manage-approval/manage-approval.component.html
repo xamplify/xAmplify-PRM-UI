@@ -326,7 +326,7 @@
 <app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
   [isApproveOrRejectStatus]="isApproveOrRejectStatus" [rejectedRecordNames]="rejectedRecordNames"
   (comment)="getComment($event)" [selectedFilterStatus]="selectedFilterStatus"
-  [isSelectedAutoApprovalRecords]="isSelectedAutoApprovalRecords">
+  [isSelectedAutoApprovalRecords]="isSelectedAutoApprovalRecords" [hasAllAuthorityAccess]="hasAllAuthorityAccess">
 </app-multiselect-approval-comments-modal-popup>
 
 <!--Download Pdf Modal Popup-->

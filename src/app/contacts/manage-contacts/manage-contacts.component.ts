@@ -2650,6 +2650,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.flexiFieldsRequestAndResponseDto = [];
 			swal.close();
 			$('#filterModal').modal('hide');
+			$('#saveAsModal').modal('hide');
+			$("#listSharedDetailsModal").modal('hide');
 		} catch (error) {
 			this.xtremandLogger.error("ERROR : MangeContactsComponent onOnDestroy() " + error);
 		}

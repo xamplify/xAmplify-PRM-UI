@@ -5,9 +5,9 @@
         data-original-title="Refresh" (click)="showAllTaskActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <a class="close-circle ref-mar ml5" [ngClass]="isCompanyJourney ? 'disabled':''" data-placement="bottom" data-toggle="tooltip" title="Add Task"
-        data-original-title="Refresh" (click)="isCompanyJourney ? '' : openAddTaskModalPopup()">
-        <i aria-hidden="true" class="fa fa-plus" [ngClass]="isCompanyJourney ? 'disabled':''"></i>
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Add Task"
+        data-original-title="Refresh" (click)="openAddTaskModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
       </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
@@ -41,7 +41,7 @@
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
   <div class="activity_card mb10" *ngFor="let taskActivity of taskActivityPagination?.pagedItems">
     <div class="activity-header">
-      <span><label class="mr5 activity-title">Title:</label><a class="underline-on-hover" (click)="viewTask(taskActivity.id)" data-toggle="tooltip" data-placement="top" title="{{taskActivity.name}}"><span>{{taskActivity.name | slice:0:35}}</span><span *ngIf="taskActivity.name.length > 35">...</span></a></span>
+      <span><label class="mr5 activity-title">Title:</label><a class="underline-on-hover" (click)="viewTask(taskActivity.id)" data-toggle="tooltip" data-placement="top" title="{{taskActivity.name}}"><span>{{taskActivity.name | slice:0:33}}</span><span *ngIf="taskActivity.name.length > 33">...</span></a></span>
       <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="taskActivity.createdTime"></app-display-date-and-time></span>
     </div>
     <div class="activity-body mt0">
@@ -61,6 +61,9 @@
             aria-hidden="true"></i></a>
       </span>
     </div>
+    <div class="activity-footer" *ngIf="isCompanyJourney">
+      <span class="activity-title"><i class="fas fa-user icon"></i>Added For: {{taskActivity.addedForEmailId}}</span>
+    </div>
   </div>
   <!-- --------------------Pagination0-------------------- -->
   <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
@@ -73,7 +76,7 @@
 </div>
 
 <app-add-task-modal-popup *ngIf="showTaskModalPopup" [userId]="contactId" [taskActivityId]="taskActivityId"
-  [actionType]="actionType" (notifyClose)="closeTaskModalPopup()"
+  [actionType]="actionType" (notifyClose)="closeTaskModalPopup()" [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedUserListId"
   (notifyUpdateSuccess)="showUpdateSuccessStatus($event)" [isReloadTaskActivityTab]="reloadTab"
   (notifySubmitSuccess)="showTaskSubmitSuccessStatus($event)"></app-add-task-modal-popup>
 

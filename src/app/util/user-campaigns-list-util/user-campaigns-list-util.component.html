@@ -141,6 +141,7 @@
 
                   <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px !important;">
                      <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
+                     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
                      <div class="clearfix" *ngIf="!listLoader.isLoading">
                         <div class="col-xs-12" style="padding: 0px 0;">
                            <div class="table-responsive">
