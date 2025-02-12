@@ -101,10 +101,9 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     @ViewChild('vendorActivityAnalytics') vendorActivityAnalytics: TemplateRef<any>;
     @ViewChild('campaignsGrid') campaignsGrid: TemplateRef<any>;
     @ViewChild('campaignStatistics') campaignStatistics: TemplateRef<any>;
-    @ViewChild('emailStatistics') emailStatistics: TemplateRef<any>;
+    @ViewChild('partnerStatistics') partnerStatistics: TemplateRef<any>;
+    @ViewChild('redistributedCampaigns') redistributedCampaigns: TemplateRef<any>;
     @ViewChild('regionalStatistics') regionalStatistics: TemplateRef<any>;
-    @ViewChild('videoStatistics') videoStatistics: TemplateRef<any>;
-    @ViewChild('emailStats') emailStats: TemplateRef<any>;
     @ViewChild('prmMdfStatistics') prmMdfStatistics: TemplateRef<any>;
     @ViewChild('prmContent') prmContent: TemplateRef<any>;
     @ViewChild('prmAssets') prmAssets: TemplateRef<any>;
@@ -119,6 +118,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     @ViewChild('dragContainer') dragContainer: ElementRef;
     templates = [];
     defaultDashboardLayout = [];
+    isDestroyed: boolean = false;
     isDraggingEnabled: boolean = false;
 
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
@@ -216,6 +216,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
   ngOnDestroy() {
     $('#customizeCampaignModal').modal('hide');
     this.isDraggingEnabled = false;
+    this.isDestroyed = true;
   }
 
   getDefaultPage(userId: number) {
@@ -652,18 +653,20 @@ showCampaignDetails(campaign:any){
             { name: 'vendorActivityAnalytics', ref: this.vendorActivityAnalytics, index: 6 },
             { name: 'campaignsGrid', ref: this.campaignsGrid, index: 7 },
             { name: 'campaignStatistics', ref: this.campaignStatistics, index: 8 },
-            { name: 'regionalStatistics', ref: this.regionalStatistics, index: 9 },
-            { name: 'prmMdfStatistics', ref: this.prmMdfStatistics, index: 10 },
-            { name: 'prmContent', ref: this.prmContent, index: 11 },
-            { name: 'prmAssets', ref: this.prmAssets, index: 12 },
-            { name: 'prmSharedAssets', ref: this.prmSharedAssets, index: 13 },
-            { name: 'prmTracks', ref: this.prmTracks, index: 14 },
-            { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 15 },
-            { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 16 },
-            { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 17 },
-            { name: 'leadStatistics', ref: this.leadStatistics, index: 18 },
-            { name: 'dealStatistics', ref: this.dealStatistics, index: 19 },
-            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 20 },
+            { name: 'partnerStatistics', ref: this.partnerStatistics, index: 9 },
+            { name: 'redistributedCampaigns', ref: this.redistributedCampaigns, index: 10 },
+            { name: 'regionalStatistics', ref: this.regionalStatistics, index: 11 },
+            { name: 'prmMdfStatistics', ref: this.prmMdfStatistics, index: 12 },
+            { name: 'prmContent', ref: this.prmContent, index: 13 },
+            { name: 'prmAssets', ref: this.prmAssets, index: 14 },
+            { name: 'prmSharedAssets', ref: this.prmSharedAssets, index: 15 },
+            { name: 'prmTracks', ref: this.prmTracks, index: 16 },
+            { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 17 },
+            { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 18 },
+            { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 19 },
+            { name: 'leadStatistics', ref: this.leadStatistics, index: 20 },
+            { name: 'dealStatistics', ref: this.dealStatistics, index: 21 },
+            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 22 },
         ];
         this.findCustomDashboardLayout();
         this.setUpDragEndSubscription();
@@ -685,7 +688,9 @@ showCampaignDetails(campaign:any){
                     }
                 }
                 this.defaultDashboardLayout = [...newOrder];
-                this.cdr.detectChanges();
+                if (!this.isDestroyed) {
+                    this.cdr.detectChanges();
+                }
             } else {
                 console.log("dragContainer or nativeElement is not yet available.");
             }

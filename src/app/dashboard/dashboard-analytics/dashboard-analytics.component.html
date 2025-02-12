@@ -221,15 +221,11 @@
 </ng-template>
 
 <ng-template #campaignStatistics>
-    <div class="clearfix row mr0 margin_17">
+    <div class="clearfix row margin_17" [ngClass]="{'mr0': authenticationService?.dashboardTypes.indexOf('Dashboard')>-1, '': authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
         <!---Campaign Statistics--->
         <app-campaign-statistics-analytics *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
             && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-campaign-statistics-analytics>
 
-        <!---Email Statistics--->
-        <app-advanced-dashboard-analytics
-            *ngIf="!ngxLoading && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
-            [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
         <!-- ---Email Statistics---------------->
         <div *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
             class="portlet light col-xs-12 col-sm-6">
@@ -239,7 +235,7 @@
                     <span class="caption-subject" translate>Email Statistics</span>
                 </div>
             </div>
-            <div class="portlet-body" style="min-height: 232px;  max-height: 100%; max-width: auto;">
+            <div class="portlet-body" style="min-height: 300px;  max-height: 100%; max-width: auto;">
                 <app-modal-popup-loader [height]=220
                     [hidden]="!emailStatisticsLoader.isLoading"></app-modal-popup-loader>
                 <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
@@ -259,6 +255,31 @@
                 </ng-container>
             </div>
         </div>
+    </div>
+</ng-template>
+
+<ng-template #partnerStatistics>
+    <div class="clearfix margin_17">
+        <ng-container
+            *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
+    !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && !authenticationService?.module?.isVendorTier && 
+    !authenticationService?.module?.isVendorTierTeamMember && !authenticationService?.module?.isVendorTierAndPartner && 
+    !authenticationService?.module?.isVendorTierAndPartnerTeamMember && !authenticationService?.module?.isMarketingCompany">
+            <app-partners-statistics [applyFilter]="applyFilter"></app-partners-statistics>
+            <app-partner-contacts-statistics [applyFilter]="applyFilter"></app-partner-contacts-statistics>
+        </ng-container>
+        <app-mdf-statistics *ngIf="authenticationService?.mdf" [applyFilter]="applyFilter"></app-mdf-statistics>
+    </div>
+</ng-template>
+
+<ng-template #redistributedCampaigns>
+    <div class="clearfix margin_17"
+        *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
+    !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && !authenticationService?.module?.isVendorTier && 
+    !authenticationService?.module?.isVendorTierTeamMember && !authenticationService?.module?.isVendorTierAndPartner && 
+    !authenticationService?.module?.isVendorTierAndPartnerTeamMember && !authenticationService?.module?.isMarketingCompany">
+        <app-redistributed-campaigns-wordcloud-map
+            [applyFilter]="applyFilter"></app-redistributed-campaigns-wordcloud-map>
     </div>
 </ng-template>
 
