@@ -890,7 +890,8 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchTotalDealAmount() {
     this.referenceService.loading(this.dealAmountLoader, true);
-    this.dealsService.fetchTotalDealAmount(this.selectedContactListId).subscribe(
+    this.dealsService.fetchTotalDealAmount(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.totalDealAmount = response.data;
