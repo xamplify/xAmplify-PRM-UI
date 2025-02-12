@@ -173,4 +173,8 @@ export class Pagination {
 	/**XNFR-848**/
 	isCompanyJourney:boolean;
 
+	/**** XNFR-839 ****/
+	selectedExcelFormFields:any[] = [];
+	/**** XNFR-839 ****/
+
 }
