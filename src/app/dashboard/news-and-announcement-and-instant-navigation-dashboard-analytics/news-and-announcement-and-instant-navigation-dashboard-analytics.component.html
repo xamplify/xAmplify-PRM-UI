@@ -1,4 +1,4 @@
-<div class="row" *ngIf="isVanityUrlEnabled">
+<div class="row" *ngIf="isVanityUrlEnabled" [ngClass]="{'margin_17':isVanityUrlEnabled}">
     <ngx-loading [show]="isNavigatingToViewAll" [config]="{ backdropBorderRadius: '14px' }"> </ngx-loading>    
    
     <!--News & Announcements-->
