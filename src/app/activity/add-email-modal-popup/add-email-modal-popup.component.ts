@@ -84,6 +84,14 @@ export class AddEmailModalPopupComponent implements OnInit {
     }
     if (this.isCompanyJourney) {
       this.fetchUsersForCompanyJourney();
+      this.dropdownSettings = {
+        singleSelection: false,
+        text: "Please select",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class"
+      };
     }
   }
   ngOnDestroy(){
