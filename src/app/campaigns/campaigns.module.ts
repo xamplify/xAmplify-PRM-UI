@@ -88,7 +88,7 @@ import { PendingChangesGuard } from "app/component-can-deactivate";
     AddCampaignComponent,
     CampaignDetailsComponent,
     ManageCampaignsComponent,
-    SelectCampaignRecipientListComponent  ],
+    SelectCampaignRecipientListComponent ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService, LeadsService,PendingChangesGuard]

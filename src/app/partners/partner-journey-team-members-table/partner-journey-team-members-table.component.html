@@ -1,4 +1,6 @@
-<div class="panel panel-info panel-card">
+<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+<div class="panel panel-info panel-card" id="partner-team-members-list">
   <div class="panel-heading panel-heading-custom br-10" id="pj-team-member-details-div">
     <h3 class="panel-title mt7">Team Member Details</h3>
     <span class="pull-right mt25m mobilesearchdisplay">
@@ -35,7 +37,8 @@
   </div>
   <div class="panel-body">
     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
-    <div class="scroll table-responsive" *ngIf="!httpRequestLoader.isLoading">
+    <app-response-message [customResponse]="sucessOrFailureResponse" *ngIf="sucessOrFailureResponse.isVisible"></app-response-message>
+    <div class="scroll table-responsive"  *ngIf="!httpRequestLoader.isLoading">
       <table class="table">
         <thead>
           <tr>
@@ -62,6 +65,17 @@
                 <button class="tm-group-preview-css btn-primary mobileBtnLeftnone" (click)="previewModules(teamMember.teamMemberGroupId)">
                 <i  data-toggle="tooltip" data-placement="bottom" title="Preview" class="fa fa-eye" aria-hidden="true"></i>
                 </button>
+                <!--XNFR-878-->
+                <div class="actions-block override-actions custom-width-icon" *ngIf="authenticationService?.module?.allowVendorToChangePartnerPrimaryAdmin && authenticationService?.module?.isAnyAdminOrSupervisor">
+                  <a data-toggle="tooltip" data-placement="bottom"
+                  [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'"
+                  (click)="confirmPrimaryAdminChange(teamMember)"
+                  [className]="teamMember.status!='APPROVE' && !authenticationService?.module?.isAnyAdminOrSupervisor ? 'inactive custom-icon':'custom-icon'">
+                  <i [className]="teamMember.status=='APPROVE' &&  authenticationService?.module?.isAnyAdminOrSupervisor ? 'fa fa-user-o IconCustomization':'fa fa-user-o gray IconCustomization'"
+                    aria-hidden="true"></i>
+                  <div class="clickicons"></div>
+                </a>
+                </div>
               </div>
               <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">
                 <span><strong>No Group Selected</strong></span>
@@ -80,7 +94,7 @@
     <!--Pagination-->
     <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
       <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-        (notifyParentDropDown)="getTeamInfo($event)">
+        (notifyParentDropDown)="navigateToDivAndGetAllTeamMembers($event)">
       </app-pagination>
     </div>
   </div>
@@ -89,3 +103,8 @@
 <!-- Group Preview Popup -->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->
+
+<!----XNFR-878----->
+<app-confirm-sweet-alert-util *ngIf="isEnablePrimaryAdminOptionClicked"
+[parameterDto]="primaryAdminSweetAlertParameterDto"
+(notifyComponent)="enableAsPrimaryAdmin($event)"></app-confirm-sweet-alert-util>

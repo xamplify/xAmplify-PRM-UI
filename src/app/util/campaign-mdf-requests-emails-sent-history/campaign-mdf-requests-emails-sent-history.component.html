@@ -1,4 +1,3 @@
-<!-- ---------------------Integration Details------------------ -->
 <div class="modal fade right" id="campaign-mdf-emails-history-modal" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog full-width">
     <div class="modal-content">
@@ -40,17 +39,17 @@
                     <th>Receiver Email Address</th>
                     <th>MDF Key</th>
                     <th>Latest Email Sent Time</th>
-                    <th>Total Requests Sent</th>
+                    <th class="text-center">Total Requests Sent</th>
                     <th class="text-center">View History</th>
                   </tr>
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let emailsHistory of emailsHistoryPagination.pagedItems;let i = index;">
-                  <tr>
+                  <tr data-id="{{emailsHistory?.mdfAlias}}">
                     <td>{{emailsHistory?.emailId}}</td>
                     <td>{{emailsHistory?.mdfAlias}}</td>
                     <td><app-display-date-and-time [dateAndTimeUTCString]="emailsHistory.lastEmailSentAtInUTCString"></app-display-date-and-time></td>
-                    <td>{{emailsHistory?.requestsCount}}</td>
+                    <td class="text-center">{{emailsHistory?.requestsCount}}</td>
                     <!--View More-->
                     <td class="text-center">
                       <div class="actions-block float-none">
@@ -67,8 +66,8 @@
                       <table [hidden]="historyLoader" class="table tgrid table-condensed redisbgcolor" aria-describedby="">
                         <thead>
                           <tr>
-                            <th scope="row"  class="center-aligned" style="width: 24%">Request Sent By</th>
-                            <th scope="row" class="center-aligned">Request Sent Time</th>
+                            <th scope="row">Request Sent By</th>
+                            <th scope="row" class="text-center">Request Sent Time</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -76,12 +75,19 @@
                             <td>
                               <app-user-info [userInfo]="requestHistory" [isPartnerEntityInfo]="false" [isPartnerInfo]="false"></app-user-info>
                             </td>
-                            <td>
-                              <app-display-date-and-time [dateAndTimeUTCString]="requestHistory.requestEmailSentAtInUTCString"></app-display-date-and-time>
+                            <td class="text-center">
+                              <app-display-date-and-time [dateAndTimeUTCString]="requestHistory.emailSentAtInUTCString"></app-display-date-and-time>
                             </td>
                           </tr>
                         </tbody>
                       </table>
+                      <div *ngIf="requestHistoryPagination.totalRecords==0 && !historyLoader" class="alert alert-info">
+                        <strong>No Data Found.</strong>
+                      </div>
+                      <div *ngIf="requestHistoryPagination?.pagedItems?.length !== 0" class="pg8" [hidden]="historyLoader">
+                        <app-pagination [pagination]="requestHistoryPagination" (notifyParent)="navigateMdfAliasRequestsHistoryByPageNumber($event)" (notifyParentDropDown)="findMdfRequestHistoriesByMdfKey($event)">
+                        </app-pagination>
+                     </div>
                     </td> 
                   </tr>
                 </ng-container>
@@ -91,7 +97,7 @@
             <!--Pagination-->
             <ng-container *ngIf="!httpRequestLoader">
               <div *ngIf="emailsHistoryPagination?.totalRecords==0" class="alert alert-info text-center">No Data Found</div>
-              <app-pagination  [pagination]="emailsHistoryPagination" (notifyParent)="navigateHistoryRecordsByPageNumber($event)" (notifyParentDropDown)="findCampaignMdfEmailsHistory($event)"></app-pagination>
+              <app-pagination  [pagination]="emailsHistoryPagination" (notifyParent)="navigateHistoryRecordsByPageNumber($event)" (notifyParentDropDown)="findMdfRequestsByCampaignId($event)"></app-pagination>
             </ng-container>
        </div>
           </div>

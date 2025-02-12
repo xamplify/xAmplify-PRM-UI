@@ -2,7 +2,7 @@
 
 	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0 mrg-10"
 		style="padding-top: 2px;margin-left: 10px;"  (click)="showMergeTagsPopUp()" translate><span
-			class="btn btn-primary transition">Insert	Default Logos</span></button>
+			class="btn btn-primary transition">Insert Default Logos</span></button>
 
 </div>
 <div class="modal fade right" id="default-logos-popup"  role="dialog" data-backdrop="static" data-keyboard="false">
@@ -18,20 +18,20 @@
 				<table class='table tgrid table-hover table-sm' aria-describedby="default-logos-table">
 					<thead>
 						<tr>
-              <td class="row">Name</td>
-							<th scope="row" translate>Copy Text</th>
+              				<th class="row">Name</th>
+							<th scope="row" translate>Embed Link</th>
 							<th scope="row" class="text-center" translate>Copy</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let logo of defaultLogos;let i = index">
-              <td class="text-center">{{logo.name}}</td>
+              				<td>{{logo.name}}</td>
 							<td id="default-logo-text">
 								<input type="text" id="default-logo-{{i}}" class="form-control" readonly="readonly"
 									value="{{logo.value}}" #defaultLogoInput>
 								<span class="default-logo-success-message" id="default-logo-copied-message-{{i}}"
 									style="display:none;">
-									<strong translate>{{logo.name}} copied successfully<i class="fa fa-check"
+									<strong translate>{{logo.name}} link copied successfully<i class="fa fa-check"
 											aria-hidden="true"></i></strong>
 								</span>
 							</td>

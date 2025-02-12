@@ -16,4 +16,6 @@ export class TaskActivity {
     taskAttachmentDTOs:any;
     assignedToEmailId:any;
     profilePath:any;
+    userIds = [];
+    isCompanyJourney:boolean;
 }

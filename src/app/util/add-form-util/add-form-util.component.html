@@ -1254,10 +1254,10 @@
                             <span class="glyphicon glyphicon-plus"></span>
                         </button><span id="form-label-drop-down-option-value" class="padding-3px">Add</span></li>
                     <li class="dropdown-item field-action-align padding-3px"
-                        (click)="$event.stopPropagation();removeColumn(columnInfo, rowIndex, columnIndex)"><button
+                        (click)=" $event.stopPropagation();removeColumn(columnInfo, rowIndex, columnIndex)"><button
                             type="button" class="btn btn-danger btn-xs" [ngClass]="{'disabled': columnInfo.defaultColumn}">
                             <span class="glyphicon glyphicon-trash"></span>
-                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Delete</span></li>
+                        </button><span id="form-label-drop-down-option-value" [ngClass]="{'disabled': columnInfo.defaultColumn}" class="padding-3px">Delete</span></li>
                     <li class="dropdown-item field-action-align padding-3px" *ngIf="rowFieldsCount > 1"
                         (click)="$event.stopPropagation();moveColumnToLastRow(columnInfo, rowIndex, columnIndex)" 
                         data-toggle="tooltip" data-placement="bottom" title="Move To Last Row" aria-hidden="true"><button

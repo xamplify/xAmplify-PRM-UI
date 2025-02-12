@@ -508,6 +508,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.message = "";
       this.landingPage = new LandingPage();
       $('#landing-page-url-modal').modal('hide');
+      $("#shareVendorDetailsPopup").modal("hide");
       swal.close();
   }
 

@@ -16,6 +16,10 @@ export class CampaignMdfSearchComponent implements OnInit {
     this.referenceService.hideVerticalScrollBar();
   }
 
+  searchMdfAliasOnKeyPress(keyCode:any){
+    if (keyCode === 13) { this.searchMdfAlias(); } 
+  }
+
   searchMdfAlias(){
     let value  = $('#mdfAlias').val();
     this.referenceService.openWindowInNewTab("/funding-request/"+value+"/analytics");

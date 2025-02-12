@@ -920,17 +920,14 @@
                                        <h6 translate>
                                           <!-- <h6 class="mt10 mb0 ellipsis"  translate> -->
                                           <b translate>Type:</b>
-                                          <span *ngIf="contactList.publicList" data-toggle="tooltip"
-                                             data-placement="top"
+                                          <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
                                              title="{{actionsDescription.contact_list_public}}">Public</span>
-                                          <span *ngIf="!contactList.publicList" data-toggle="tooltip"
-                                             data-placement="top"
+                                          <span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
                                              title="{{actionsDescription.contact_list_private}}">Private</span>
                                           <span *ngIf="contactList?.formList" data-toggle="tooltip" data-placement="top"
                                              title="{{actionsDescription.contact_list_private}}">, Form Contact
                                              List</span>
-                                          <span *ngIf="contactList?.companyList" data-toggle="tooltip"
-                                             data-placement="top" title="{{actionsDescription.contact_list_private}}">,
+                                          <span *ngIf="contactList?.companyList">,
                                              Company Contact
                                              List</span>
                                        </h6>

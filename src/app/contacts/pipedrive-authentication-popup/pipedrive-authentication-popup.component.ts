@@ -36,7 +36,9 @@ export class PipedriveAuthenticationPopupComponent implements OnInit {
     $("#pipedrivePreSettingsForm").modal('show');
     // this.checkAuthorization(); 
   }
-
+  ngOnDestroy(){
+    $( "#pipedrivePreSettingsForm" ).modal( 'hide' );
+  }
   checkAuthorization() {
     this.loading = true;
     this.integrationService.checkConfigurationByType("pipedrive").subscribe(data => {

@@ -45,6 +45,9 @@
           <span *ngIf="activity.stage=='OPENED'" class="activity-date"><i
               class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.updatedTime"></app-display-date-and-time></span>
         </div>
+        <div class="activity-header" *ngIf="isCompanyJourney">
+          <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">To:</label><span data-toggle="tooltip" data-placement="top" title="{{activity.addedForEmailId}}">{{activity.addedForEmailId | slice:0:35}}</span><span *ngIf="activity.addedForEmailId.length>35">...</span></span>
+        </div>
         <div class="activity-body mt0">
           <span><i class="fa fa-comment icon"></i><label
               class="mr3 activity-title">Subject:</label><span>{{activity.name | slice:0:100}}<span *ngIf="activity.name.length>100">...</span></span></span>
@@ -68,6 +71,9 @@
         </div>
         <div class="activity-body mt0" *ngIf="activity.schedule == 'PUBLIC'">
           <span class=""><i class="fas fa-user icon"></i>{{activity.closeDate}}</span>
+        </div>
+        <div class="activity-header" *ngIf="isCompanyJourney">
+          <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">Added For:</label><span data-toggle="tooltip" data-placement="top" title="{{activity.addedForEmailId}}">{{activity.addedForEmailId | slice:0:35}}</span><span *ngIf="activity.addedForEmailId.length>35">...</span></span>
         </div>
         <div class="activity-body text-baseline mt0 mb5">
           <i class="fa fa-comment icon"></i>
@@ -100,22 +106,32 @@
         <div class="activity-body mt0">
           <span><label class="mr3 activity-title">Type:</label> {{activity.stage}}</span>
         </div>
+        <div class="activity-body mt0" *ngIf="isCompanyJourney">
+          <span><label class="mr3 activity-title">Launched To:</label> {{activity.addedForEmailId}}</span>
+        </div>
       </div>
       </fieldset>
       <!---Lead--->
       <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Lead'">
-        <legend [ngClass]="activity.activity == 'LEAD_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">Lead {{activity.activity == 'LEAD_CREATED'?'Created':'Stage Updated'}}</legend>
-      <div>
-        <div class="activity-header">
-          <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Name:</label><a
-              class="underline-on-hover" (click)="viewLead(activity.id)" data-toggle="tooltip" data-placement="top" title="{{activity.name}}">
-              <span> {{activity.name}}</span></a></span>
-          <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
+        <legend
+          [ngClass]="activity.activity == 'LEAD_CREATED'?'scheduler-borders campaign_boxes create-activity':'scheduler-borders campaign_boxes update-activity'">
+          Lead {{activity.activity == 'LEAD_CREATED'?'Created':'Stage Updated'}}</legend>
+        <div>
+          <div class="activity-header">
+            <span><i class="fas fa-user icon"></i><label class="activity-title mr5 mb0">Name:</label><a
+                class="underline-on-hover" (click)="viewLead(activity.id)" data-toggle="tooltip" data-placement="top"
+                title="{{activity.name}}">
+                <span> {{activity.name}}</span></a></span>
+            <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time
+                [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
+          </div>
+          <div class="activity-body mt0">
+            <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
+          </div>
+          <div class="activity-body mt0" *ngIf="isCompanyJourney">
+            <span><label class="mr3 activity-title">Associated Contact:</label> {{activity.addedForEmailId}}</span>
+          </div>
         </div>
-        <div class="activity-body mt0">
-          <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
-        </div>
-      </div>
       </fieldset>
       <!---Deal--->
       <fieldset class="scheduler-borders activity_bgcolor" *ngIf="activity.type == 'Deal'">
@@ -137,6 +153,9 @@
               {{activity.closeDate | slice:0:10}}</span>
             <span><label class="mr3 activity-title">Stage:</label> {{activity.stage}}</span>
           </div>
+          <div class="activity-body mt0" *ngIf="isCompanyJourney">
+            <span><label class="mr3 activity-title">Associated Contact:</label> {{activity.addedForEmailId}}</span>
+          </div>
         </div>
       </fieldset>
       <!--- Task --->
@@ -146,7 +165,7 @@
           Task {{activity.activity == 'CREATED'?'Created':'Updated'}}</legend>
           <div>
             <div class="activity-header">
-              <span><label class="mr5 activity-title">Title:</label><a class="underline-on-hover" (click)="viewTask(activity.id)" data-toggle="tooltip" data-placement="top" title="{{activity.name}}"><span>{{activity.name | slice:0:35}}</span><span *ngIf="activity.name.length > 35">...</span></a></span>
+              <span><label class="mr5 activity-title">Title:</label><a class="underline-on-hover" (click)="viewTask(activity.id)" data-toggle="tooltip" data-placement="top" title="{{activity.name}}"><span>{{activity.name | slice:0:33}}</span><span *ngIf="activity.name.length > 33">...</span></a></span>
               <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity.createdTime"></app-display-date-and-time></span>
             </div>
             <div class="activity-body task_body_jc mt0">
@@ -169,6 +188,9 @@
                 <a *ngIf="activity.deleteEnabled" (click)="showTaskDeleteConformationAlert(activity.id)" data-toggle="tooltip" data-placement="bottom" title="Delete task"><i class="fas fa-trash task_delete"
                     aria-hidden="true"></i></a>
               </span>
+            </div>
+            <div class="activity-footer" *ngIf="isCompanyJourney">
+              <span class="activity-title"><i class="fas fa-user icon"></i>Added For: {{activity.addedForEmailId}}</span>
             </div>
           </div>
       </fieldset>

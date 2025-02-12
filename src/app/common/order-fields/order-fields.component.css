@@ -1,0 +1,30 @@
+ul.drag-menu-cu li:hover { background-color: #34495a; cursor: pointer;color: #fff;}
+.drag-menu-cu li { margin-bottom: 2px;}
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.cursor-move {
+    cursor: move !important;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* padding: 10px; */
+  }
+  .left-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .right-buttons {
+    display: flex;
+    gap: 10px;
+  }

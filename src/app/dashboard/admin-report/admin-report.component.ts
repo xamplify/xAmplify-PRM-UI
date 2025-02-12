@@ -18,6 +18,9 @@ import { UpdateEmailAddressComponent } from '../update-email-address/update-emai
 import { IntegrationDetailsComponent } from '../integration-details/integration-details.component';
 import { SuperAdminService } from '../super-admin.service';
 import { AccountDetailsDto } from '../models/account-details-dto';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { UtilService } from 'app/core/services/util.service';
+
 
 declare var swal:any,$:any;
 
@@ -96,7 +99,8 @@ export class AdminReportComponent implements OnInit {
     isValidAccountDetailsEntered = true;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , 
     public pagerService: PagerService, public referenceService: ReferenceService,
-    public authenticationService: AuthenticationService, public router:Router,public superAdminService:SuperAdminService) {
+    public authenticationService: AuthenticationService, public router:Router,public superAdminService:SuperAdminService,
+    private logger:XtremandLogger,private utilService:UtilService) {
         this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
         this.isLocalHost = this.authenticationService.isLocalHost();
   }
@@ -170,6 +174,11 @@ export class AdminReportComponent implements OnInit {
   upgradeAccountOnKeyPress(keyCode:any){
     if (keyCode === 13) { this.findCompanyInfo(); } 
   }
+
+  findCompanyInfoOnKeyPress(keyCode:any){
+    if (keyCode === 13) { this.findCompanyInfo(); } 
+  }
+  
 
   findCompanyInfo(){
       this.resetUpgradeAccountValues();
@@ -332,6 +341,86 @@ export class AdminReportComponent implements OnInit {
         this.findAccountDetailsOrUpgradeAccount();
        
     }
+
+
+    loginAs(result:any) {
+		this.utilService.addLoginAsLoader();
+		if(this.isVanityUrlEnabled){
+			this.loginAsTeamMemberForVanityLogin(result.emailId,false,result.teamMemberUserId);
+		}else{
+			this.loginAsTeamMember(result.emailId, false, result.teamMemberUserId);
+		}
+
+
+	}
+
+	loginAsTeamMemberForVanityLogin(emailId:any,isLoggedInAsAdmin:boolean,userId:number){
+		let vanityUrlRoles:any;
+			this.authenticationService.getVanityURLUserRolesForLoginAs(emailId,userId).
+			subscribe(
+				response=>{
+					vanityUrlRoles = response.data;
+				},error=>{
+					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+					this.loading = false;
+					this.referenceService.loaderFromAdmin = false;
+					this.authenticationService.logout();
+				},()=>{
+					this.authenticationService.getUserByUserName(emailId)
+					.subscribe(
+						response => {
+							response['roles'] = vanityUrlRoles;
+							this.addOrRemoveLocalStorage(isLoggedInAsAdmin, userId, emailId, response);
+						},
+						(error: any) => {
+							this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+							this.loading = false;
+							this.referenceService.loaderFromAdmin = false;
+						},
+						() => this.logger.info('Finished loginAsTeamMember()')
+					);
+
+				});
+	}
+
+	loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean, userId: number) {
+		this.loading = true;
+		this.referenceService.loaderFromAdmin = true;
+		this.authenticationService.getUserByUserName(emailId)
+			.subscribe(
+				response => {
+					this.addOrRemoveLocalStorage(isLoggedInAsAdmin, userId, emailId, response);
+				},
+				(error: any) => {
+					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+					this.loading = false;
+					this.referenceService.loaderFromAdmin = false;
+				},
+				() => this.logger.info('Finished loginAsTeamMember()')
+			);
+	}
+
+	private addOrRemoveLocalStorage(isLoggedInAsAdmin: boolean, userId: number, emailId: string, response: any) {
+		if (isLoggedInAsAdmin) {
+			localStorage.removeItem('loginAsUserId');
+			localStorage.removeItem('loginAsUserEmailId');
+		} else {
+			let loginAsUserId = JSON.parse(localStorage.getItem('loginAsUserId'));
+			if (loginAsUserId == null) {
+				localStorage.loginAsUserId = JSON.stringify(userId);
+				localStorage.loginAsUserEmailId = JSON.stringify(this.authenticationService.user.emailId);
+			}
+		}
+		this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+		let self = this;
+		setTimeout(function () {
+			self.router.navigate(['home/dashboard/'])
+				.then(() => {
+					window.location.reload();
+				});
+		}, 500);
+	}
+
 
 
 }

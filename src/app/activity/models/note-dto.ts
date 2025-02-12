@@ -17,4 +17,6 @@ export class NoteDTO {
     createdByCompanyName:string;
     publicNotes: boolean;
     contactId: number;
+    userIds = [];
+    isCompanyJourney:boolean;
 }

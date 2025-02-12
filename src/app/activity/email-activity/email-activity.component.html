@@ -5,9 +5,9 @@
         data-original-title="Refresh" (click)="showAllEmailActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <a class="close-circle ref-mar ml5" [ngClass]="isCompanyJourney ? 'disabled':''" data-placement="bottom" data-toggle="tooltip" title="Send Email"
-        data-original-title="Refresh" (click)="isCompanyJourney ? '' : openEmailModalPopup()">
-        <i aria-hidden="true" class="fa fa-plus" [ngClass]="isCompanyJourney ? 'disabled':''"></i>
+      <a class="close-circle ref-mar ml5" data-placement="bottom" data-toggle="tooltip" title="Send Email"
+        data-original-title="Refresh" (click)="openEmailModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
       </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
@@ -45,6 +45,9 @@
       <span *ngIf="emailActivity.status=='DELIVERED'" class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="emailActivity.createdTime"></app-display-date-and-time></span>
       <span *ngIf="emailActivity.status=='OPENED'" class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="emailActivity.openedTime"></app-display-date-and-time></span>
     </div>
+    <div class="activity-header" *ngIf="isCompanyJourney">
+      <span><i class="fas fa-user icon"></i><label class="mr5 activity-title">To:</label><span data-toggle="tooltip" data-placement="top" title="{{emailActivity.addedForEmailId}}">{{emailActivity.addedForEmailId | slice:0:35}}</span><span *ngIf="emailActivity.addedForEmailId.length>35">...</span></span>
+    </div>
     <div class="activity-body">
       <span><i class="fa fa-comment icon"></i><label class="mr3 activity-title">Subject:</label><span>{{emailActivity.subject | slice:0:100}}<span *ngIf="emailActivity.subject.length>100">...</span></span></span>
     </div>
@@ -65,6 +68,7 @@
 </div>
 
 <app-add-email-modal-popup *ngIf="showAddEmailModalPopup" [userId]="contactId" [actionType]="actionType"
+  [selectedUserListId]="selectedUserListId" [isCompanyJourney]="isCompanyJourney"
   (notifyClose)="closeEmailModalPopup()" (notifySubmitSuccess)="showEmailSubmitSuccessStatus($event)"
   (notifySubmitFailed)="showEmailSubmitFailedStatus($event)" [userEmailId]="contactEmailId"></app-add-email-modal-popup>
 

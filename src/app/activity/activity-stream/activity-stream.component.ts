@@ -27,6 +27,8 @@ export class ActivityStreamComponent implements OnInit {
   @Input() selectedContactListId:number;
   @Input() contactName:any;
   @Input() contactEmailId;
+  @Input() isCompanyJourney:boolean = false;
+  @Input() selectedUserListId:any;
   @Output() notifyShowDealForm = new EventEmitter();
   @Output() notifyShowLeadForm = new EventEmitter();
   @Output() notifyNoteUpdateSuccess = new EventEmitter();
@@ -76,7 +78,12 @@ export class ActivityStreamComponent implements OnInit {
   fetchAllRecentActivities(activityPagination:Pagination) {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
-    activityPagination.contactId = this.contactId;
+    activityPagination.isCompanyJourney = this.isCompanyJourney;
+    if (this.isCompanyJourney) {
+      activityPagination.contactId = this.selectedUserListId;
+    } else {
+      activityPagination.contactId = this.contactId;
+    }
     this.activityService.fetchRecentActivities(activityPagination).subscribe(
       response => {
         const data = response.data;

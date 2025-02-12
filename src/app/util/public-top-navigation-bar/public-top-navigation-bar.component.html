@@ -2,8 +2,14 @@
 <div class="header-container d-flex justify-content-between align-items-center p-3">
   <!-- Left Side: Image -->
   <div class="left-image ml10">
-    <img *ngIf="isCompanyLogoLoadedFromAnotherComponent" src="{{companyLogoPath}}" onerror="this.src='assets/images/loading-popup.gif';" alt="No Image" class="header-image">
-    <img *ngIf="!isCompanyLogoLoadedFromAnotherComponent" src="{{authenticationService?.v_companyLogoImagePath}}" onerror="this.src='assets/images/loading-popup.gif';" alt="No Image" class="header-image"> 
+    <ng-container *ngIf="authenticationService?.vanityURLEnabled">
+      <img *ngIf="isCompanyLogoLoadedFromAnotherComponent" src="{{companyLogoPath}}" onerror="this.src='assets/images/loading-popup.gif';" alt="No Image" class="header-image">
+      <img *ngIf="!isCompanyLogoLoadedFromAnotherComponent" src="{{authenticationService?.v_companyLogoImagePath}}" onerror="this.src='assets/images/loading-popup.gif';" alt="No Image" class="header-image"> 
+    </ng-container>
+    <ng-container *ngIf="!authenticationService?.vanityURLEnabled">
+      <img src="../assets/images/xamplify-logo.png" onerror="this.src='assets/images/loading-popup.gif';" alt="No Image" class="header-image">
+    </ng-container>
+   
   </div>
   <!-- Right Side: Button -->
   <button type="button" class="btn btn-primary float-right request-account" (click)="openRequestAccountModal()">
@@ -83,7 +89,7 @@
       </div>
       <div class="modal-footer" *ngIf="!processing">
         <button type="button" class="btn Btn-Gray neg_mrg_top4"  data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-info" [disabled]="!isValidForm || requestAccountButtonClicked" (click)="sendRequest();requestAccountButtonClicked = true">
+        <button type="submit" class="btn btn-success" [disabled]="!isValidForm || requestAccountButtonClicked" (click)="sendRequest();requestAccountButtonClicked = true">
           Send
         </button>
       </div>

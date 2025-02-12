@@ -408,7 +408,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             if (imageBlurContentDiv) {
                 this.renderer.removeClass(imageBlurContentDiv, 'blur-content');
             }
-        }, 2000);
+        }, 1000);
     }
 
     ngOnInit() {
@@ -2123,6 +2123,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.autoSaveLoader = false;
                 let message = this.refService.getApiErrorMessage(error);
                 this.customResponse = new CustomResponse('ERROR', message, true);
+                this.removeBlurContent();
                 console.log('Error Occured while retriving the company profile automatically :', error);
             });
     }
@@ -2158,4 +2159,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     unlockMdfFundingUiSwitchEventReceiver(event:any){
         this.campaignAccess.unlockMdfFundingEnabled = event;
     }
+
+    /**XNFR-878***/
+    allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
+        this.campaignAccess.allowVendorToChangePartnerPrimaryAdmin = event;
+    }
+  
 }

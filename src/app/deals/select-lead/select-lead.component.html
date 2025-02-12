@@ -74,8 +74,8 @@
                             <ng-container *ngFor='let lead of pagination.pagedItems; let i=index'>
                               <tr [class.row-selected]="lead.id === showSelectedLead">
                                 <td><input id="leadCheckBox-{{i}}" class="pointer" (click)="selectLeadOnCheckBoxClick(lead.id,i)"
-                                  [checked]="lead.id === showSelectedLead" type="checkbox">
-                               </td>
+                                    [(ngModel)]="showSelectedLead" [value]="lead.id" type="radio">
+                                </td>
                                 <td>
                                   <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                                   <div class="mrg_lft66" style="margin-left: 60px;">

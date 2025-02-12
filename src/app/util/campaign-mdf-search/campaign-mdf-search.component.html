@@ -6,7 +6,7 @@
     </div>
     <!--Search Bar -->
     <div class="xAmplify_search-container">
-        <input type="text" id="mdfAlias" class="xAmplify_search-box" placeholder="Search with MDF Key">
+        <input type="text" id="mdfAlias" (keypress)="searchMdfAliasOnKeyPress($event.keyCode)" class="xAmplify_search-box" placeholder="Search with MDF Key">
         <button class="xAmplify_search-button" (click)="searchMdfAlias()">
             <i class="fa fa-search"></i>
         </button>

@@ -19,9 +19,9 @@
             <ul class="mix-filter p0 m0 float-right" *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
               <!--Partner View-->
               <li class="filter view-type-css" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion">
-                {{authenticationService?.partnerModule?.customName}} View
+                Partner View
                 <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o check-icons"></i>
-               </li>
+              </li>
               <!--Vendor View-->
               <li *ngIf="authenticationService?.enableLeads" class="filter view-type-css2" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion">
                 Vendor View
@@ -162,7 +162,7 @@
                       <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                         style="margin-left: 3px !important;" title="Click here to email the report"
                         [disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
-                        (click)="downloadLeads(leadsPagination)">
+                        (click)="exportExcelSelection()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
 
@@ -765,7 +765,11 @@
 
 <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)">
 </app-deal-chat-popup>
-
+<!-- XNFR-839-->
+<app-selectfield *ngIf="showSlectFieldComponent" [userType]="logginUserType" (closeEmitter)="closeEmitter($event)"></app-selectfield>
+<!-- <app-order-fields *ngIf="showOrderFieldComponent" [selectedItems]="selectedFields" [enabledMyPreferances]="enabledMyPreferances" (closeEmitter)="closeEmitter($event)"></app-order-fields> -->
+<!-- XNFR-839-->
+ 
 <!-- Add Lead Model-->
 <!-- <app-add-lead *ngIf="showLeadForm && !vanityLoginDto?.vanityUrlFilter" [leadId]="leadId" [actionType]="actionType"
   (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyUnReadChatCount)="resetUnReadChatCount()"

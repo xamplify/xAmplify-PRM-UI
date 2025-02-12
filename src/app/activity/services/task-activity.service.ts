@@ -36,7 +36,7 @@ export class TaskActivityService {
   fetchAllTaskActivities(taskActivityPagination: Pagination) {
     taskActivityPagination.userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(taskActivityPagination);
-    let url = this.URL + "/fetchAllTaskActivities/" + this.authenticationService.getUserId() + "/" + taskActivityPagination.contactId + this.ACCESS_TOKEN_URL + pageableUrl;
+    let url = this.URL + "/fetchAllTaskActivities/" + this.authenticationService.getUserId() + "/" + taskActivityPagination.contactId + "/" + taskActivityPagination.isCompanyJourney + this.ACCESS_TOKEN_URL + pageableUrl;
     return this.authenticationService.callGetMethod(url);
   }
 

@@ -5,9 +5,9 @@
         data-original-title="Refresh" (click)="showAllMeetingActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <a class="close-circle ml3" [ngClass]="isCompanyJourney ? 'disabled':''" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
-        data-original-title="Refresh" (click)="isCompanyJourney ? '' : openMeetingModalPopup()">
-        <i aria-hidden="true" class="fa fa-plus" [ngClass]="isCompanyJourney ? 'disabled':''"></i>
+      <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
+        data-original-title="Refresh" (click)="openMeetingModalPopup()">
+        <i aria-hidden="true" class="fa fa-plus"></i>
       </a>
       <a class="close-circle ml3" *ngIf="showCalendarView" 
         data-original-title="Refresh" (click)="showCalendarViewModalPopup()">
@@ -47,9 +47,11 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <app-response-message class="pg8" [customResponse]="customResponse"
   *ngIf="customResponse?.isVisible"></app-response-message>
+<app-response-message class="pg8" [customResponse]="contactErrorResponse"
+  *ngIf="contactErrorResponse?.isVisible"></app-response-message>
 
 <div class="pg8 mt5" *ngIf="showConfigureMessage">
-  <div class="" *ngIf="showConfigureMessage">
+  <div *ngIf="showConfigureMessage">
     <div class="alert m0 p13" role="alert" [ngClass]="{'alert-success': !showConfigureMessage,
    'alert-danger': showConfigureMessage,
    'alert-info': !showConfigureMessage}">
@@ -66,7 +68,16 @@
   </div>
 </div>
 
-<div *ngIf="!showCalendarView">
+<div *ngIf="isCompanyJourney" class="fc-content mb5">
+  <app-dropdown-loader *ngIf="userListUsersLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
+  <app-searchable-dropdown
+    *ngIf="!userListUsersLoader?.isLoading && !showConfigureMessage && !customResponse?.isVisible"
+    [searchableDropDownDto]="companyUsersSearchableDropDownDto" [id]="contactId" [disableDropDown]="false"
+    (searchableDropdownEventEmitter)="getSelectedAssignedToUserId($event)">
+  </app-searchable-dropdown>
+</div>
+
+<div *ngIf="!showCalendarView && !contactErrorResponse?.isVisible">
   <div class="activity_card mb10" *ngFor="let meetingActivity of meetingActivityPagedItems">
     <div class="activity-header">
       <span><label class="mr5 activity-title">Name:</label><a class="underline-on-hover" data-toggle="tooltip" data-placement="bottom" title="View meeting"

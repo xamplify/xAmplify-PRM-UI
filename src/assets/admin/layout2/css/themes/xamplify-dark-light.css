@@ -164,7 +164,8 @@ h6 {
 .sparkline-chart .title,
 .easy-pie-chart .title,
 .alert-info,
-.btn.default {
+.btn.default,
+.salesforce_config {
   color: white !important;
 }
 .partners-text,
@@ -246,7 +247,8 @@ ul.alt-row-style1 li:hover,
 .boxes .portlet-title {
   background-color: #22313a !important;
 }
-.camp-card-bg {
+.camp-card-bg,
+.salesforce_config {
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
@@ -271,10 +273,11 @@ ul.alt-row-style1 li:hover,
   background-color: #00a8e7 !important;
 }
 .col-block,
-.alert-info {
+.alert-info{
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
 }
+
 .form-body label,
 .form-group label,.lead-label {
   color: white !important;
@@ -2634,3 +2637,8 @@ tbody{background: transparent;}
 }
 .copy_icon:hover {
   background-color: #53585b!important;}
+  /* Added company profile lefside bar card color */
+  .profile_headers,.icon-group{
+    background: #2b3c46 !important;
+    border: 1px solid #2f4857 !important;
+  }

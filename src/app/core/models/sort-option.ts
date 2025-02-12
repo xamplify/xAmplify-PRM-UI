@@ -551,15 +551,23 @@ export class SortOption {
 		{ 'name': 'Invited On (DESC)', 'value': 'createdTime-DESC' }
 	];
 
+	/**XNFR-867**/
+	userListLevelCampaignAnalyticsSortDropDownOptions = [
+		{ 'name': 'Campaign Name (A-Z)', 'value': 'campaignName-ASC' },
+		{ 'name': 'Campaign Name (Z-A)', 'value': 'campaignName-DESC' },
+		{ 'name': 'Launched On (ASC)', 'value': 'launchTime-ASC' },
+		{ 'name': 'Launched On (DESC)', 'value': 'launchTime-DESC' }
+	];
+
 	campaignMdfEmailsHistoryDropDownOptions = [
-		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
-		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+		{ 'name': 'Email Address (A-Z)', 'value': 'emailId-ASC' },
+		{ 'name': 'Email Address (Z-A)', 'value': 'emailId-DESC' },
 		{ 'name': 'MDF Key (ASC)', 'value': 'mdfAlias-ASC' },
 		{ 'name': 'MDF Key (DESC)', 'value': 'mdfAlias-DESC' },
-		{ 'name': 'Count (ASC)', 'value': 'requestsCount-ASC' },
-		{ 'name': 'Count (DESC)', 'value': 'requestsCount-DESC' },
-		{ 'name': 'Sent Time (ASC)', 'value': 'lastEmailSentAt-ASC' },
-		{ 'name': 'Sent Time (DESC)', 'value': 'lastEmailSentAt-DESC' }
+		{ 'name': 'Total Request Sent (ASC)', 'value': 'requestsCount-ASC' },
+		{ 'name': 'Total Request Sent (DESC)', 'value': 'requestsCount-DESC' },
+		{ 'name': 'Latest Email Sent Time (ASC)', 'value': 'lastEmailSentAt-ASC' },
+		{ 'name': 'Latest Email Sent Time (DESC)', 'value': 'lastEmailSentAt-DESC' }
 	];
 
 	teamMemberDropDowns = [
@@ -577,7 +585,7 @@ export class SortOption {
 		{ 'name': 'Recent Login ASC', 'value': 'logInTime-Asc' },
 		{ 'name': 'Recent Login DESC', 'value': 'logInTime-Desc' },
 	];
-
+  
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -678,6 +686,9 @@ export class SortOption {
 
 	/*** XNFR-850 ***/
 	public teamMemberAnalyticsSortOptions: any = this.inviteTeamMemberAnalyticsDropDownOptions[this.inviteTeamMemberAnalyticsDropDownOptions.length - 1];
+
+	/**XNFR-867**/
+	public userListLevelCampaignAnalyticsSortOption: any = this.userListLevelCampaignAnalyticsSortDropDownOptions[this.userListLevelCampaignAnalyticsSortDropDownOptions.length - 1];
 
 	public campaignMdfEmailsHistorySortOption: any = this.campaignMdfEmailsHistoryDropDownOptions[this.campaignMdfEmailsHistoryDropDownOptions.length - 1];
 
