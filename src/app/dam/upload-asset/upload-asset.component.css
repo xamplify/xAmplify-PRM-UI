@@ -199,9 +199,20 @@ border-radius: 4px;
 .choose-signature-text {
   color: #007bff;
   cursor: pointer;
-  margin-left: 20px;
 }
 
 .choose-signature-text:hover {
   color: #0056b3;
+}
+.signature-align{
+  display:flex;
+  align-items:center;
+  margin-left: 42px;
+  flex-wrap: wrap;
+}
+.vendor-signature-align{
+  margin-left: 117px;
+}
+.vendor-signaure-label{
+  margin-left: 25px;
 }

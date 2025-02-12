@@ -285,76 +285,75 @@
                                              </div>
                                           </div>
                                           <!---White Labeled-- XNFR-255-->
-                                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12"
-                                             *ngIf="hasShareWhiteLabeledContentAccess">
-                                             <div class="form-group">
-                                                <label class="control-label col-sm-2" translate>White Labeled</label>
-                                                <div class="col-sm-10">
-                                                   <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption" [customSwitch]="damUploadPostDto?.disableWhiteLabelOption"
-                                                   (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
-                                                   <span class="info-color-xampc">
-                                                      <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                         [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage">
-                                                      </i>
-                                                   </span>
-                                                </div>
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                             <div class="form-group signature-align ml0">
+                                                <ng-container *ngIf="hasShareWhiteLabeledContentAccess">
+                                                   <label class="control-label vendor-signaure-label mr10 " translate>White Labeled</label>
+                                                   <div class="">
+                                                      <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption"
+                                                         [customSwitch]="damUploadPostDto?.disableWhiteLabelOption"
+                                                         (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
+                                                      <span class="info-color-xampc mr8">
+                                                         <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                            aria-hidden="true"
+                                                            [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage">
+                                                         </i>
+                                                      </span>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container
+                                                   *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
+                                                   <label class="control-label vendor-signature-align mr10 " translate>Vendor Signature</label>
+                                                   <div class="">
+                                                      <app-custom-ui-switch
+                                                         [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))"
+                                                         [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
+                                                         (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
+                                                      <span class="info-color-xampc">
+                                                         <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                            aria-hidden="true"
+                                                            [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
+                                                         </i>
+                                                      </span>
+                                                      <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
+                                                         class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add your signature <span class="required">*</span>
+                                                      </span>
+                                                   </div>
+                                                </ng-container>
                                              </div>
                                           </div>
                                           <!---White Labeled-- XNFR-255-->
 
                                           <!--XNFR-578-->
-                                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                                             <div class="form-group">
-                                                <label class="control-label col-sm-2">Add To Quick Links</label>
-                                                <div class="col-sm-10">
-                                                   <app-custom-ui-switch [customSwitch]="damUploadPostDto?.addedToQuickLinks"
-                                                   (customUiSwitchEventEmitter)="setAddToQuickLinks($event)"></app-custom-ui-switch>
-                                                   <span class="info-color-xampc">
-                                                      <i class="fa fa-question-circle toggle-info-white-label"
-                                                         data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                         title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
-                                                   </span>
-                                                </div>
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                             <div class="form-group signature-align ml0">
+                                                <ng-container>
+                                                   <label class="control-label  mr10 col-sm-2">Add To Quick Links</label>
+                                                   <div class="">
+                                                      <app-custom-ui-switch [customSwitch]="damUploadPostDto?.addedToQuickLinks"
+                                                         (customUiSwitchEventEmitter)="setAddToQuickLinks($event)"></app-custom-ui-switch>
+                                                      <span class="info-color-xampc">
+                                                         <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                            aria-hidden="true" title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
+                                                      </span>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
+                                                 <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
+                                                   <div class="">
+                                                      <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                         [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                         (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
+                                                      <span class="info-color-xampc">
+                                                         <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                            aria-hidden="true"
+                                                            [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
+                                                         </i>
+                                                      </span>
+                                                   </div>
+                                                </ng-container>
                                              </div>
                                           </div>
-
-                                          <!---vendor signature-- XNFR-833-->
-                                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
-                                             <div class="form-group">
-                                                <label class="control-label col-sm-2" translate>Vendor Signature</label>
-                                                <div class="col-sm-10">
-                                                   <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))" [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
-                                                   (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
-                                                   <span class="info-color-xampc">
-                                                      <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                         [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
-                                                      </i>
-                                                   </span>
-                                                   <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)" class="choose-signature-text"
-                                                      (click)="openAddSignatureModalPopUp()">
-                                                       Add your signature <span class="required">*</span>
-                                                   </span>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <!---vendor signature-- XNFR-833-->
-
-                                           <!---partner signature-- XNFR-833-->
-                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
-                                           <div class="form-group">
-                                              <label class="control-label col-sm-2" translate>Partner Signature</label>
-                                              <div class="col-sm-10">
-                                                 <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption" [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
-                                                 (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
-                                                 <span class="info-color-xampc">
-                                                    <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                       [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
-                                                    </i>
-                                                 </span>
-                                              </div>
-                                           </div>
-                                        </div>
-                                        <!---partner signature-- XNFR-833-->
 
                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                              <div class="form-group" style="margin-bottom: 0;">
