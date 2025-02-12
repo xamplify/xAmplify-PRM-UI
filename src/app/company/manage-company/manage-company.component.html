@@ -164,7 +164,7 @@
                           <ng-container *ngFor='let company of pagination.pagedItems; let i=index'>
                             <tr>
                               <td><img src="{{company.websiteProfilePath.trim().length >0 ? company.websiteProfilePath : properties?.companyListImage}}" alt="company" style="height: 54px;"></td>
-                              <td (click)="showCompanyJourney(company)" class="text-line pointer">
+                              <td (click)="authenticationService?.module?.deletedPartner ? '' : showCompanyJourney(company)" class="text-line pointer">
                                 <h4>
                                   <span data-toggle="tooltip" data-placement="right" title="{{company.name}}"
                                     class="ListFontCu">
