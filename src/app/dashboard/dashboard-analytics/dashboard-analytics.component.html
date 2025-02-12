@@ -42,15 +42,14 @@
             </h4>
         </div>
     </div>
-    <div class="page-bar p0 mb-height_auto margin_b0" [hidden]="ngxLoading" style="height:48px;">
-        <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
-            <div
-                [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
+    <div class="page-bar p0 mb-height_auto margin_b0" [hidden]="ngxLoading">
+        <div class="col-md-12 col-xs-12 col-sm-12 dahboard_header" style="border-radius: 0;padding: 0.3em;">
+            <div>
                 <h4 class="welcome-header text-overflow"><span data-toggle="tooltip" data-placement="bottom"
                         title="{{logedInCustomerCompanyName}}">{{'Welcome' |
                         translate}} {{logedInCustomerCompanyName}}</span></h4>
             </div>
-            <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5"
+            <div class=""
                 [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
                 <div class="df-mt5 dashboardfloatRight">
                     <h4 class="defaultScreenText" style="margin: 0.3em" translate>Do you want to set this as your
@@ -61,19 +60,22 @@
                     </div>
                 </div>
             </div>
-            <app-team-member-filter-option
-                *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                            && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"
-                [filterIcon]="true"
-                (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
-            <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
-            <button class="btn btn-primary pull-right btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
-                [title]="isDraggingEnabled ? 'Update DashBoard' : 'Customize DashBoard'"
-                (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : isDraggingEnabled = true">
-                {{ isDraggingEnabled ? 'Update' : 'Customize' }}</button>
-            <button class=" btn btn-danger pull-right mr5 btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
-                title="Reset" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">Reset</button>
-        </div>
+            <!-- Btns -->
+            <div class="d-flex">
+                <button class=" btn btn-danger mr5 btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                    title="Reset" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">Reset</button>
+                <button class="btn btn-primary btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                    [title]="isDraggingEnabled ? 'Update DashBoard' : 'Customize DashBoard'"
+                    (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : isDraggingEnabled = true">
+                    {{ isDraggingEnabled ? 'Update' : 'Customize' }}</button>
+                <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+                <app-team-member-filter-option
+                    *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+                                        && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"
+                    [filterIcon]="true"
+                    (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+            </div>
+    </div>
     </div>
 </ng-template>
 

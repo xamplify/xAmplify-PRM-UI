@@ -126,7 +126,7 @@ a.social-stats {
 }
 .df-mt5 {
   display: flex;
-  margin-top: 4px;
+  /* margin-top: 4px; */
 }
 @media screen and (max-width: 600px) {
   .modal-customize {
@@ -139,9 +139,9 @@ a.social-stats {
   }
 }
 /****** Tharak *******/
-.welcome-header {
+/* .welcome-header {
   padding: 8px 0px 0px 0px;
-}
+} */
 
 .msg-color{
   color: #555555
@@ -189,4 +189,10 @@ a.social-stats {
 }
 .margin_b0{
   margin-bottom: 0px!important;
+}
+.dahboard_header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
