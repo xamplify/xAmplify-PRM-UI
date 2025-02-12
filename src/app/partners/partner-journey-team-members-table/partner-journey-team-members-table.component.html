@@ -73,9 +73,9 @@
                 <span><strong>N/A</strong></span>
               </div>
             </td>
-            <td class="text-center" *ngIf="authenticationService?.module?.allowVendorToChangePartnerPrimaryAdmin && authenticationService?.module?.isAnyAdminOrSupervisor">
+            <td class="text-center action-cp" *ngIf="authenticationService?.module?.allowVendorToChangePartnerPrimaryAdmin && authenticationService?.module?.isAnyAdminOrSupervisor">
               <!--XNFR-878-->
-              <div class="actions-block override-actions custom-width-icon float-none">
+              <div class="actions-block override-actions custom-width-icon">
                 <a data-toggle="tooltip" data-placement="bottom"
                 [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'"
                 (click)="confirmPrimaryAdminChange(teamMember)"

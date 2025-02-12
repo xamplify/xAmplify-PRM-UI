@@ -43,8 +43,7 @@
     </div>
   </div>
   <br>
-  <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading">
-  </app-landing-page-loader>
+  <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
   <div class="table-responsive" *ngIf="!httpRequestLoader?.isLoading">
     <ng-container *ngFor="let group of pagination.pagedItems ;let i =index">
       <ng-container *ngTemplateOutlet="groupGridView;context:{groupInfo:group,showPreviewIcon:true}">
@@ -85,6 +84,11 @@
       <div class="form-group">
         <label class="control-label" translate>Select Modules</label>
         <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
+      </div>
+      <!--XNFR-883-->
+      <div class="form-group">
+        <label class="control-label" translate></label>
+
       </div>
       <div class="table-responsive">
         <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
