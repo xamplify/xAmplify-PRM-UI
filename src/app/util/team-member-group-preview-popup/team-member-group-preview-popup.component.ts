@@ -22,7 +22,9 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
   ngOnInit() {
     this.previewModules();
   }
-
+  ngOnDestroy(){
+    $('#preview-team-member-popup').modal('hide');
+  }
   previewModules(){
     this.modulesLoader = true;
     this.emptyModules = false;

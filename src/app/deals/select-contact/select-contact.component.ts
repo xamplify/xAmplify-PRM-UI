@@ -75,7 +75,9 @@ export class SelectContactComponent implements OnInit {
     this.getLegalBasisOptions();
     this.getContactDetails(this.pagination);
   }
-
+  ngOnDestroy(){
+    $('#selectContactModel').modal('hide');
+  }
   closeModal() {
     this.notifyClose.emit();
     $('#selectContactModel').modal('hide');

@@ -46,9 +46,9 @@
           <div class="profile_headers">
             <div [ngClass]="showImageTag ? 'avatar2_v2' : 'avatar2'">
               <span *ngIf="!showImageTag && !imgPathLoading && !isCompanyJourney" class="avatar-initial">{{highlightLetter}}</span>
-              <img *ngIf="showImageTag && !imgPathLoading && !isCompanyJourney" class="img_wdt" src="{{imageSourcePath}}" alt="">
-              <img *ngIf="imgPathLoading && !isCompanyJourney" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
-              <img *ngIf="isCompanyJourney" class="h-50px" src="assets/admin/pages/media/works/company.png" alt="">
+              <img *ngIf="showImageTag && !imgPathLoading" class="img_wdt" src="{{imageSourcePath}}" alt="">
+              <img *ngIf="imgPathLoading" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
+              <img *ngIf="isCompanyJourney && !showImageTag && !imgPathLoading" class="h-50px" src="assets/admin/pages/media/works/company.png" alt="">
             </div>
             <div class="profile_info">
               <div>
@@ -118,8 +118,9 @@
             <a class="icon_item count-three" [ngClass]="(formattedDealsCount != undefined && formattedDealsCount != '0') ? '' : 'disabled'" (click)="(formattedDealsCount != undefined && formattedDealsCount != '0') ? viewMoreDeals() : ''">
               <i aria-hidden="true" class="fa fa-tags company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{formattedDealsCount}}</span>
-                <div class="icon_label">Deals</div>
+                <span *ngIf="!dealAmountLoader?.isLoading" class="icon_btns count_1">{{totalDealAmount}}</span>
+                <img *ngIf="dealAmountLoader?.isLoading" class="total_deal_amount_loader" src="../../../assets/images/Spinner.gif" alt="">
+                <div class="icon_label"><span class="bold">{{formattedDealsCount}}</span> Deals</div>
               </div>
             </a>
             <!-- tiles four -->
@@ -357,7 +358,8 @@
                     <span class="activity-title">{{contact.fullName | slice:0:20}}</span><span *ngIf="contact?.fullName != undefined && contact?.fullName?.length>20">..</span>
                   </a>
                   <a class="underline-on-hover"
-                    (click)="viewContactJourney(contact.contactId)"><div class="activity-title" [ngClass]="contact.fullName ? 'pl20' : ''">{{contact.emailId}}</div></a>
+                    (click)="viewContactJourney(contact.contactId)"><span *ngIf="contact?.fullName == undefined || contact?.fullName == ' ' || contact?.fullName == ''" class="activity-title" [ngClass]="contact.fullName ? 'pl20' : ''">{{contact.emailId}}</span>
+                    <div *ngIf="contact.fullName" class="activity-title" [ngClass]="contact.fullName ? 'pl20' : ''">{{contact.emailId}}</div></a>
                 </div>
                 <div *ngIf="contact?.mobileNumber!=undefined && contact?.mobileNumber?.length > 0" class="activity-body">
                   <label class="mb0 f-w-600"> Phone:</label> {{contact.mobileNumber}}

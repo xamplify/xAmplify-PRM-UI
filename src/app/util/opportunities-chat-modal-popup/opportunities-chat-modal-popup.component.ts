@@ -60,7 +60,9 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
     }
     this.referenceService.openModalPopup('changeDealPipelineStageModel');
   }
-
+  ngOnDestroy(){
+    $('#changeDealPipelineStageModel').modal('hide');
+  }
   showComments(deal: Deal) {
     this.showCommentsEmitter.emit(deal);
     this.isCommentSection = !this.isCommentSection;
