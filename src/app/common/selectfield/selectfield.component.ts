@@ -137,14 +137,12 @@ export class SelectfieldComponent implements OnInit {
   toggleSelection(field: any) {
     const isUnChecked = !field.selectedColumn;
     if (isUnChecked) {
-      field.selectedColumn = true;
       this.unSelectedItems.push(field);
     } else {
       this.unSelectedItems = this.unSelectedItems.filter(item => item.labelId !== field.labelId);
 
     }
     this.fieldsPagedItems.forEach(item => item.labelId === field.labelId && (item.selectedColumn = field.selectedColumn));
-
     this.updateHeaderCheckbox();
   }
   toggleAllSelection() {
@@ -187,16 +185,16 @@ export class SelectfieldComponent implements OnInit {
     return this.fieldsPagedItems.some(item => item.labelId === labelId);
   }
 
-  updatePagination(pagination: Pagination, data: any[]) {
-    this.pagination = this.pagerService.getPagedItems(this.pagination, data);
-    this.pager = this.socialPagerService.getPager(pagination.totalRecords, pagination.pageIndex, pagination.maxResults);
-    this.fieldsPagedItems = data.slice(this.pager.startIndex, this.pager.endIndex + 1);
-    this.updateHeaderCheckbox();
-  }
-  navigateBetweenPageNumbers(event: any) {
-    this.pagination.pageIndex = event.page;
-    this.updatePagination(this.pagination, this.allItems);
-  }
+  // updatePagination(pagination: Pagination, data: any[]) {
+  //   this.pagination = this.pagerService.getPagedItems(this.pagination, data);
+  //   this.pager = this.socialPagerService.getPager(pagination.totalRecords, pagination.pageIndex, pagination.maxResults);
+  //   this.fieldsPagedItems = data.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  //   this.updateHeaderCheckbox();
+  // }
+  // navigateBetweenPageNumbers(event: any) {
+  //   this.pagination.pageIndex = event.page;
+  //   this.updatePagination(this.pagination, this.allItems);
+  // }
   closeModalClose() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
     this.emitValues('close');
