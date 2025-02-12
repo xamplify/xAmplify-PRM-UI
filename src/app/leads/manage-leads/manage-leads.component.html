@@ -162,7 +162,7 @@
                       <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                         style="margin-left: 3px !important;" title="Click here to email the report"
                         [disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
-                        (click)="(authenticationService?.companyProfileName && (activeCRMDetails?.type === 'SALESFORCE' || activeCRMDetails?.type === null || activeCRMDetails?.type === undefined))?openSelectFieldPopup():downloadLeads(leadsPagination)">
+                        (click)="exportExcelSelection()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
 

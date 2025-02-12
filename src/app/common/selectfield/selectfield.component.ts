@@ -10,11 +10,14 @@ import { SelectedFieldsResponseDto } from 'app/dashboard/models/selected-fields-
 import { CustomResponse } from '../models/custom-response';
 import { DragulaService } from 'ng2-dragula';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { PaginationComponent } from 'app/common/pagination/pagination.component';
+
 declare var $: any;
 @Component({
   selector: 'app-selectfield',
   templateUrl: './selectfield.component.html',
-  styleUrls: ['./selectfield.component.css']
+  styleUrls: ['./selectfield.component.css'],
+    providers: [PaginationComponent]
 })
 export class SelectfieldComponent implements OnInit {
   @Output() closeEmitter = new EventEmitter();
@@ -26,6 +29,8 @@ export class SelectfieldComponent implements OnInit {
   isHeaderCheckBoxChecked: boolean = true;
   isDefault: boolean = false;
   pager: any = {};
+ fieldsPagedItems = new Array();
+ pageSize: number = 12;
   fieldsCustomResponse: CustomResponse = new CustomResponse();
   allItems: any[] = [];
   unSelectedItems: any[] = [];
@@ -37,8 +42,11 @@ export class SelectfieldComponent implements OnInit {
   isSelectDivOpen = false;
   selectFieldsDtos: Array<any> = new Array<any>();
   myPreferances: boolean = false;
+  pageNumber: any;
+
   constructor(public dashboardService: DashboardService, public authenticationService: AuthenticationService, private pagerService: PagerService,
-    public referenceService: ReferenceService, public socialPagerService: SocialPagerService, public dragulaService: DragulaService
+    public referenceService: ReferenceService, public socialPagerService: SocialPagerService, public dragulaService: DragulaService,  public paginationComponent: PaginationComponent
+
   ) {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.companyProfileName = this.authenticationService.companyProfileName;
@@ -51,14 +59,25 @@ export class SelectfieldComponent implements OnInit {
   ngOnInit() {
     this.ngxloading = true;
     this.referenceService.openModalPopup(this.selectModalPopUp);
+    this.pageNumber = this.paginationComponent.numberPerPage[0];
     this.getMyPreferances();
     //this.selectFieldValues();
   }
   ngOnDestroy() {
     this.dragulaService.destroy('fieldsDragula');
   }
-
+  ngOnChanges() {
+      this.pageNumber = this.paginationComponent.numberPerPage[0];
+      this.getMyPreferances();
+  }
+  resetPagination() {
+    this.pagination.maxResults = 12;
+    this.pagination = new Pagination;
+    //this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    //this.showFilterOption = false;
+  }
   getMyPreferances() {
+    this.resetPagination();
     this.dashboardService.isMyPreferances()
       .subscribe(
         result => {
@@ -75,16 +94,17 @@ export class SelectfieldComponent implements OnInit {
         () => console.log('finished '));
   }
 
-  getAllLeadFormColumns(pagination:Pagination) {
+  getAllLeadFormColumns(pagination: Pagination) {
     this.ngxloading = true;
     this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.userType).subscribe(
       (response: any) => {
         let data = response.data;
         this.ngxloading = false;
         this.allItems.length = 0; // Clear existing data before adding new items
-        this.allItems = [...data];
-        this.pagination.totalRecords = this.allItems.length;
-        this.updatePagination(this.pagination, this.allItems);
+        this.allItems = [...data]
+        pagination.totalRecords = data.length;
+        pagination = this.pagerService.getPagedItems(pagination, data);
+        this.setFieldsPage(1);
         this.updateHeaderCheckbox();
       },
       error => console.log(error),
@@ -93,14 +113,38 @@ export class SelectfieldComponent implements OnInit {
       }
     );
   }
+  setFieldsPage(page: number) {
+		try {
+			if (page < 1 || (this.pager.totalPages > 0 && page > this.pager.totalPages)) {
+				return;
+			}
+      
+			this.referenceService.goToTop();
+			if (this.searchKey !== undefined && this.searchKey !== '') {
+				this.fieldsPagedItems = this.allItems.filter(field =>
+					(field.labelName.toLowerCase().includes(this.searchKey.trim().toLowerCase()) || field.displayName.toLowerCase().includes(this.searchKey.trim().toLowerCase()))
+				);
+				this.pager = this.socialPagerService.getPager(this.fieldsPagedItems.length, page, this.pageSize);
+				this.fieldsPagedItems = this.fieldsPagedItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+			} else {
+				this.pager = this.socialPagerService.getPager(this.allItems.length, page, this.pageSize);
+				this.fieldsPagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+			}
+      this.updateHeaderCheckbox();
+		} catch (error) {
+		}
+	}
   toggleSelection(field: any) {
     const isUnChecked = !field.selectedColumn;
     if (isUnChecked) {
+      field.selectedColumn = true;
       this.unSelectedItems.push(field);
     } else {
       this.unSelectedItems = this.unSelectedItems.filter(item => item.labelId !== field.labelId);
+
     }
-    this.pagination.pagedItems.forEach(item => item.labelId === field.labelId && (item.selectedColumn = field.selectedColumn));
+    this.fieldsPagedItems.forEach(item => item.labelId === field.labelId && (item.selectedColumn = field.selectedColumn));
+
     this.updateHeaderCheckbox();
   }
   toggleAllSelection() {
@@ -108,11 +152,11 @@ export class SelectfieldComponent implements OnInit {
     if (isUncheckAll) {
       // If checking all, clear unSelectedItems since everything is selected
       this.unSelectedItems = this.unSelectedItems.filter(
-        unItem => !this.pagination.pagedItems.some(pItem => pItem.labelName === unItem.labelName)
+        unItem => !this.fieldsPagedItems.some(pItem => pItem.labelName === unItem.labelName)
       );
     } else {
       // If unchecking all, add items to unSelectedItems
-      this.pagination.pagedItems.forEach(item => {
+      this.fieldsPagedItems.forEach(item => {
         if (!this.excludedLabels.includes(item.labelName)) {
           item.selectedColumn = false;
           // Add item to unSelectedItems if not already there
@@ -123,7 +167,7 @@ export class SelectfieldComponent implements OnInit {
       });
     }
     // Update selection in pagedItems
-    this.pagination.pagedItems.forEach((item, index) => {
+    this.fieldsPagedItems.forEach((item, index) => {
       if (!this.excludedLabels.includes(item.labelName)) {
         item.selectedColumn = isUncheckAll;
         // If the item is checked again, remove it from unSelectedItems
@@ -137,16 +181,16 @@ export class SelectfieldComponent implements OnInit {
 
 
   updateHeaderCheckbox() {
-    this.isHeaderCheckBoxChecked = this.pagination.pagedItems.every((item: any) => item.selectedColumn);
+    this.isHeaderCheckBoxChecked = this.fieldsPagedItems.every((item: any) => item.selectedColumn);
   }
   isCheked(labelId: any): boolean {
-    return this.pagination.pagedItems.some(item => item.labelId === labelId);
+    return this.fieldsPagedItems.some(item => item.labelId === labelId);
   }
 
   updatePagination(pagination: Pagination, data: any[]) {
     this.pagination = this.pagerService.getPagedItems(this.pagination, data);
     this.pager = this.socialPagerService.getPager(pagination.totalRecords, pagination.pageIndex, pagination.maxResults);
-    this.pagination.pagedItems = data.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    this.fieldsPagedItems = data.slice(this.pager.startIndex, this.pager.endIndex + 1);
     this.updateHeaderCheckbox();
   }
   navigateBetweenPageNumbers(event: any) {
@@ -157,7 +201,10 @@ export class SelectfieldComponent implements OnInit {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
     this.emitValues('close');
   }
-
+  selectedPageNumber(event:any) {
+    this.pageSize = event;
+    this.setFieldsPage(1);
+  }
   submit() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
     this.selectedItems = this.allItems.filter(item =>
@@ -200,21 +247,18 @@ export class SelectfieldComponent implements OnInit {
   }
   searchKey: string = '';
 
-  fieldSearch(keyCode: any) {
-    if (keyCode === 13) {
-      this.searchFileds();
-    }
-  }
-  searchFileds() {
-    if (this.searchKey) {
-      this.pagination.pageIndex = 1;
-      this.fetchData(this.pagination);
-    }
+  searchFieldsKeyPress(keyCode: any) {
+		if (keyCode === 13) {
+			this.searchFields();
+		}
+	}
+  searchFields() {
+    this.setFieldsPage(1);
   }
   clearSearch() {
     this.searchKey = '';
-    this.pagination.pageIndex = 1;
-    this.getUniqueColumns(this.unSelectedItems, this.allItems);
+    this.pageSize = 12;
+    this.setFieldsPage(1);
   }
 
   getUniqueColumns(selectFieldsDtos: any[], allItems: any[]) {
@@ -230,29 +274,23 @@ export class SelectfieldComponent implements OnInit {
         col.selectedColumn = false;
       }
     });
+    // this.unSelectedItems = allFields.filter(item =>
+    //   !selectFieldsDtos.some(unselected => unselected.labelId === item.labelId)
+    // );    
     // Convert back to an array
     this.allItems.length = 0;
 
     let totalFields = Array.from(columnMap.values());
-    if (this.searchKey) {
-      this.pagination.pageIndex = 1;
-      totalFields = totalFields.filter(item =>
-        item.labelName.toLowerCase().includes(this.searchKey.toLowerCase()
-          || item.displayName.toLowerCase().includes(this.searchKey.toLowerCase())
-        ) // Case-insensitive search
-      );
-    }
     totalFields.sort((a, b) => a.orderColumn - b.orderColumn);
     if (this.selectFieldsDtos.length > 0) {
-      this.unSelectedItems = this.allItems.filter(item =>
-        !this.selectFieldsDtos.some(unselected => unselected.labelId === item.labelId)
+      this.unSelectedItems = totalFields.filter(item =>
+        !selectFieldsDtos.some(unselected => unselected.labelId === item.labelId)
       );
     }
     this.allItems = totalFields;
-    console.log("totalFields :", totalFields);
   }
 
-  fetchData(pagination:Pagination) {
+  fetchData(pagination: Pagination) {
     this.ngxloading = true;
     forkJoin([
       this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.userType),
@@ -263,10 +301,10 @@ export class SelectfieldComponent implements OnInit {
         const users = usersData;
         const orders = ordersData;
         this.selectFieldsDtos = orders.data;
-        //this.allItems = [...users.data];
         this.getUniqueColumns(orders.data, users.data);
-        this.pagination.totalRecords = users.data.length;
-        this.updatePagination(this.pagination, this.allItems);
+        pagination.totalRecords = users.data.length;
+        pagination = this.pagerService.getPagedItems(pagination, users.data);
+        this.setFieldsPage(1);
       },
       error => {
         this.ngxloading = false;
@@ -274,5 +312,4 @@ export class SelectfieldComponent implements OnInit {
       }
     );
   }
-
 }

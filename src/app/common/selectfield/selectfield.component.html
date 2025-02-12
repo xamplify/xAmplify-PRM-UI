@@ -7,14 +7,11 @@
         <div class="button-container">
           <!-- Left-aligned Checkbox -->
           <div class="left-checkbox">
-            <h4 class="modal-title" style="font-weight: 600;" *ngIf="isSelectDivOpen" translate>selected-columns-export
-              works!</h4>
-            <!-- <h4 class="modal-title" style="font-weight: 600;" *ngIf="!isSelectDivOpen" translate>order-fields works!</h4> -->
+            <h4 class="modal-title" style="font-weight: 600;" *ngIf="isSelectDivOpen" translate>Select the fields for
+              your report</h4>
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">
-            <!-- <button class="btn btn-primary" (click)="openOrderDIV()" *ngIf="isSelectDivOpen">Order Fields</button> -->
-            <!-- <button class="btn btn-primary" data-dismiss="modal" (click)="selectFieldValues()" *ngIf="!isSelectDivOpen">Select Fields</button> -->
             <a title="Close" class="close-circle" (click)="closeModalClose()">
               <i class="fa fa-times" aria-hidden="true"></i>
             </a>
@@ -30,9 +27,11 @@
             </div>
             <div class="float-right input-icon right mb10" *ngIf="isSelectDivOpen">
               <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-                placeholder="Search..." (keypress)="fieldSearch($event.keyCode)">
+                placeholder="Search..." (keypress)="searchFieldsKeyPress($event.keyCode)">
               <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
-                (click)="searchKey='';clearSearch()"></button>
+                (click)="searchKey='';clearSearch();"></button>
+              <button type="submit" class="search-box-item-click" (click)="searchFields()"><i class="fa fa-search"
+                  aria-hidden="true"></i></button>
             </div>
             <div>
               <table class="table tgrid table-hover table-sm">
@@ -46,16 +45,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-
-                    </td>
-                    <td>
-                      <div *ngIf="pagination.totalRecords==0" class="alert alert-info"><strong>No Data Found</strong>
-                      </div>
-                    </td>
-                  </tr>
-                  <ng-container *ngFor="let fieldDto of pagination.pagedItems; let i = index">
+                  <ng-container *ngFor="let fieldDto of fieldsPagedItems; let i = index">
                     <tr class="pointer">
                       <td class="text-center">
                         <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="fieldDto.selectedColumn"
@@ -77,9 +67,53 @@
               </table>
             </div>
           </div>
-          <div class="">
-            <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)"
-              (notifyParentDropDown)="myPreferances? fetchData($event): getAllLeadFormColumns($event)"></app-pagination>
+          <div>
+            <div>
+              <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setFieldsPage(1)"><span
+                      _ngcontent-c15=""><i _ngcontent-c15="" aria-hidden="true" class="fa fa-angle-double-left"
+                        data-placement="bottom" data-toggle="tooltip" title="First"></i><span
+                        class="sr-only">First</span></span></a></li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}"><a
+                    (click)="setFieldsPage(pager.currentPage - 1)"><span _ngcontent-c15=""><i _ngcontent-c15=""
+                        aria-hidden="true" class="fa fa-angle-left" data-placement="bottom" data-toggle="tooltip"
+                        title="Previous"></i><span class="sr-only">Previous</span></span></a></li>
+                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                  <a (click)="setFieldsPage(page)" [class.disabled]="pager.currentPage === page">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setFieldsPage(pager.currentPage + 1)"><span _ngcontent-c15=""><i _ngcontent-c15=""
+                        aria-hidden="true" class="fa fa-angle-right" data-placement="bottom" data-toggle="tooltip"
+                        title="Next"></i><span class="sr-only">Next</span></span></a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setFieldsPage(pager.totalPages)"><span _ngcontent-c15=""><i _ngcontent-c15=""
+                        aria-hidden="true" class="fa fa-angle-double-right" data-placement="bottom"
+                        data-toggle="tooltip" title="Last"></i><span class="sr-only">Last</span></span></a>
+                </li>
+              </ul>
+              <div *ngIf="pager.pages && pager.pages.length" class="p-drop-down pl10 custom-fields-items-count pt10"
+                style="float: right">
+                <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber"
+                  [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
+                  <option [ngValue]="paginationComponent.numberPerPage[0]">{{paginationComponent.numberPerPage[0].name}}
+                  </option>
+                  <option *ngIf="pager.totalItems>12" [ngValue]="paginationComponent.numberPerPage[1]">
+                    {{paginationComponent.numberPerPage[1].name}}</option>
+                  <option *ngIf="pager.totalItems>24" [ngValue]="paginationComponent.numberPerPage[2]">
+                    {{paginationComponent.numberPerPage[2].name}}</option>
+                </select>
+              </div>
+              <div class="border-none pr0 pt0 pl0" *ngIf="pager.pages && pager.pages.length">
+                <span class="align-item-left">
+                  <strong>Total Records :{{pager.totalItems}}</strong>
+                </span>
+              </div>
+
+            </div>
+            <div *ngIf="!(pager.pages && pager.pages.length)" class="alert alert-info mb0">
+              <strong translate>No Data Found.</strong>
+            </div>
           </div>
         </div>
         <div *ngIf="!isSelectDivOpen">

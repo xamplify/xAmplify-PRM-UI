@@ -1588,6 +1588,14 @@ triggerUniversalSearch(){
   }
   /*** XNFR-839 */
   selectedFields: any[] = [];
+  exportExcelSelection() {
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''
+      && (this.activeCRMDetails.type === 'SALESFORCE'|| this.activeCRMDetails.type === null || this.activeCRMDetails.type === undefined)) {
+      this.openSelectFieldPopup();
+    } else {
+      this.downloadLeads(this.leadsPagination);
+    }
+  }
   openSelectFieldPopup() {
     this.showSlectFieldComponent = true
   }
