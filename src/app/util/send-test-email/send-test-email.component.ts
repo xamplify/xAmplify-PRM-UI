@@ -50,6 +50,11 @@ export class SendTestEmailComponent implements OnInit {
   @Input() campaignName="";
   @Input() campaignId = 0;
   isSendMdfRequestOptionClicked = false;
+  @Input() teamMemberReminder: boolean; 
+  @Input() selectedItemTeamMember : any;
+  @Output() sendmailTeamMemberNotify =new EventEmitter
+  @Output() sendTestEmailComponentTeamMemberEventEmitter = new EventEmitter();
+
   @ViewChild('campaignMdfRequestsEmailsSentHistoryComponent') campaignMdfRequestsEmailsSentHistoryComponent: CampaignMdfRequestsEmailsSentHistoryComponent;
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
@@ -67,7 +72,10 @@ export class SendTestEmailComponent implements OnInit {
     }else if(this.isSendMdfRequestOptionClicked){
       this.headerTitle = "Unlock MDF Funds for Your Campaign";
       this.getFundingTemplateHtmlBody();
-    }else{
+    }else if(this.teamMemberReminder){
+      this.getVanityEmailTemplatesPartnerAnalytics();
+    }
+    else{
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
   }
@@ -225,7 +233,11 @@ export class SendTestEmailComponent implements OnInit {
       this.callEventEmitter();
     }else if(this.isSendMdfRequestOptionClicked){
       this.sendMdfFundRequestEmail();
-    }else if(this.campaignSendTestEmail){
+    }else if(this.teamMemberReminder){
+      this.sendmailTeamMemberNotify.emit({'item': this.selectedItemTeamMember });
+      this.callEventEmitter();
+    }
+    else if(this.campaignSendTestEmail){
       this.sendCampaignTestEmail();
     }else{
       this.sendTestEmail();
@@ -308,6 +320,7 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto = new SendTestEmailDto();
     this.referenceService.closeModalPopup(this.modalPopupId);
     this.sendTestEmailComponentEventEmitter.emit();
+    this.sendTestEmailComponentTeamMemberEventEmitter.emit();
   }
 
   previewEmailTemplate() {

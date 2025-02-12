@@ -3,6 +3,7 @@
     <div class="panel-heading panel-heading-custom panel-bg search_download_align" id="pj-team-member-details-div">
       <h3 class="panel-title mt7">Team Member Details</h3>
       <div style="display:flex;">
+        <button class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
         <div class="float-left">
           <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.teamMember"
             (ngModelChange)="sortPartnerTeamMembers($event)" id="select-dropdown">
@@ -41,7 +42,10 @@
       <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
-            <tr>              
+            <tr>    
+              <th class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAll($event)" />
+              </th>          
               <th scope="col">Company Name</th>
               <th scope="col">Status</th>
               <th scope="col">Recent Login</th>
@@ -51,6 +55,9 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                [(ngModel)]="item.isSelected" (change)="updateSelectionCheckBox(item)">
+            </td>
               <td><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="false" [isPartnerEntityTeamInfo]="true" [userInfo]="item"></app-user-info></a></td>
               <!-- <td> <span>{{item.emailId}}</span></td> -->
               <!-- <td> <span>{{item.firstName}}</span> <span>{{item.lastName}}</span></td> -->
@@ -119,3 +126,5 @@
 <!-- Group Preview Popup -->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->
+ 
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [teamMemberReminder]="teamMemberPreview" (sendmailTeamMemberNotify)= "emittedMethodTemMember($event.item)"  [selectedItemTeamMember]="selectedItemTeamMember" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentTeamMemberEventEmitter)="sendTestEmailModalPopupTeamMemberEventReceiver()"></app-send-test-email>

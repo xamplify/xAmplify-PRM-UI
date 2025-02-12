@@ -377,5 +377,12 @@ export class TeamMemberService{
         let url = this.URL + "teamMember/invite-team-member/userId/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url, vendorInvitation);
     }
- 
+
+
+    resendTeamMemberEmail(pagination: Pagination) {
+        var url = this.URL + "teamMember/send-team-Member-Recent-Login-email/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }
