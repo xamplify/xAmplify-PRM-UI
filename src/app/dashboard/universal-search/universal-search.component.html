@@ -17,8 +17,10 @@
         [isPartnerModule]="false"></app-team-member-filter-option>
     </div>
   </div>
-  <div class="alert alert-info" *ngIf="(utilService?.isLoggedAsTeamMember() || authenticationService?.module?.isTeamMember) && referenceService?.universalSearchFilterType === 'All' && !authenticationService?.module?.isMarketingCompany">
-    <strong>**The "All Partners/My Partner(s)" filter does not apply to the search results for Assets, Tracks, and Playbooks.</strong>
+  <div class="alert alert-info"
+    *ngIf="(utilService?.isLoggedAsTeamMember() || authenticationService?.module?.isTeamMember) && referenceService?.universalSearchFilterType === 'All' && !authenticationService?.module?.isMarketingCompany && (  authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner || authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner)">
+    <strong>**The "All Partners/My Partner(s)" filter does not apply to the search results for Assets, Tracks, and
+      Playbooks.</strong>
   </div>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
