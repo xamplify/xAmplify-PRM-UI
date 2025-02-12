@@ -71,13 +71,13 @@
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
-      <span *ngIf="groupDto?.defaultGroup" class="default-group-banner" translate>Default Group</span>
+      <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span>
       <div class="form-group">
         <label class="control-label" translate>Name</label>
         <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
-        <input *ngIf="!groupDto?.previewGroup && !groupDto?.defaultGroup" type="text" placeholder="Name" [(ngModel)]="groupDto.name"
+        <input *ngIf="!groupDto?.previewGroup" type="text" placeholder="Name" [(ngModel)]="groupDto.name"
           [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255" />
-        <input *ngIf="groupDto?.previewGroup || groupDto?.defaultGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
+        <input *ngIf="groupDto?.previewGroup" disabled type="text" placeholder="Name" [(ngModel)]="groupDto.name"
           [ngModelOptions]="{standalone: true}" class="form-control" />
         <span class="required"
           *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
@@ -181,7 +181,9 @@
           <i class="fa fa-eye" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
-        <a data-toggle="tooltip" data-placement="top" title = "Edit" class="Iconhover custom-icon"
+        <a data-toggle="tooltip" data-placement="top"
+          [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'"
+          [className]="group?.defaultGroup ? 'inactive custom-icon':'Iconhover custom-icon'"
           (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           <div class="clickicons"></div>
