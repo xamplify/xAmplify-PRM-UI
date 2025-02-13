@@ -23,7 +23,6 @@ export class PreviewEmailActivityComponent implements OnInit {
   constructor(public referenceService: ReferenceService, public emailActivityService:EmailActivityService) { }
 
   ngOnInit() {
-    this.setHighlightLetter();
     this.fetchEmailActivityById();
     this.referenceService.openModalPopup('previewEmailModalPopup');
   }
@@ -34,10 +33,14 @@ export class PreviewEmailActivityComponent implements OnInit {
       data => {
         if (data.statusCode == 200) {
           this.emailActivity = data.data;
+          this.contactName = this.emailActivity.fullName;
+          this.contactEmailId = this.emailActivity.addedForEmailId;
         }
         this.ngxLoading = false;
       }, error => {
         this.ngxLoading = false;
+      }, () => {
+        this.setHighlightLetter();
       }
     )
   }

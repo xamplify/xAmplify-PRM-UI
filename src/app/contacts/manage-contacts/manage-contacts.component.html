@@ -1371,26 +1371,26 @@
                                                    </span>
                                                 </ng-container>
                                              </td>
-                                             <td *ngIf="!isPartner" [ngClass]="(isContactModule)?'text-line pointer':''"
-                                                (click)="(isContactModule)?showContactJourney(contact):''">
+                                             <td *ngIf="!isPartner" [ngClass]="(isContactModule && !authenticationService?.module?.deletedPartner)?'text-line pointer':''"
+                                                (click)="(isContactModule && !authenticationService?.module?.deletedPartner)?showContactJourney(contact):''">
                                                 <app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"></app-user-info>
                                              </td>
                                              <td *ngIf="(contactsByType.selectedCategory =='invalid' ) && !isPartner" class="hidden-xs"
-                                                [ngClass]="(isContactModule)?'text-line pointer':''" (click)="(isContactModule)?showContactJourney(contact):''">
+                                                [ngClass]="(isContactModule && !authenticationService?.module?.deletedPartner)?'text-line pointer':''" (click)="(isContactModule && !authenticationService?.module?.deletedPartner)?showContactJourney(contact):''">
                                                 <span>{{contact.emailCategory}}</span>
                                                 <span *ngIf="!contact.emailCategory"><strong>-</strong></span>
                                              </td>
                                              <td *ngIf="(contactsByType.selectedCategory =='excluded') && !isPartner" class="hidden-xs"
-                                                [ngClass]="(isContactModule)?'text-line pointer':''" (click)="(isContactModule)?showContactJourney(contact):''">
+                                                [ngClass]="(isContactModule && !authenticationService?.module?.deletedPartner)?'text-line pointer':''" (click)="(isContactModule && !authenticationService?.module?.deletedPartner)?showContactJourney(contact):''">
                                                 <span>{{contact.excludedCatagory}}</span>
                                                 <span *ngIf="!contact.excludedCatagory"><strong>-</strong></span>
                                              </td>
                                              <td class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()"
-                                                [ngClass]="(isContactModule)?'text-line pointer':''" (click)="(isContactModule)?showContactJourney(contact):''">
+                                                [ngClass]="(isContactModule && !authenticationService?.module?.deletedPartner)?'text-line pointer':''" (click)="(isContactModule && !authenticationService?.module?.deletedPartner)?showContactJourney(contact):''">
                                                 <span>{{contact.jobTitle}}</span>
                                              </td>
                                              <td class="text-center hidden-xs" *ngIf="!isPartner && !isContactsByTypeAllVaildUnsubscribed()"
-                                                [ngClass]="(isContactModule)?'text-line pointer':''" (click)="(isContactModule)?showContactJourney(contact):''">
+                                                [ngClass]="(isContactModule && !authenticationService?.module?.deletedPartner)?'text-line pointer':''" (click)="(isContactModule && !authenticationService?.module?.deletedPartner)?showContactJourney(contact):''">
                                                 <h5 *ngIf="contact?.address" title="{{contact.address}}" class='mb0'>
                                                    {{contact.address |
                                                    slice:0:30}}

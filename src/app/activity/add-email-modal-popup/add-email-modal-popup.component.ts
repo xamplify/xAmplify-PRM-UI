@@ -214,7 +214,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   }
 
   validateTestEmailId() {
-    if (this.referenceService.validateEmailId(this.testToEmailId)) {
+    if (this.testToEmailId != undefined && this.testToEmailId.length > 0 && this.referenceService.validateEmailId(this.testToEmailId)) {
       this.isValidTestEmailId = true;
     } else {
       this.isValidTestEmailId = false;
