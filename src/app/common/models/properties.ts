@@ -551,6 +551,7 @@ export class Properties {
 	AUTHORIZATION_RESPONSE_FOR_TEAM_MEMBER = "Heads up! The following records cannot be rejected as some are auto-approved, or you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
 	confirmPrimaryAdminText = "Are you sure you want to assign this member as the Primary Admin? This will transfer primary admin rights.";
 	proceed = "Yes, Proceed";
+	defaultSSOTeamMemberGroupToolTip = "Users logging in via SSO will be automatically assigned to this team member group";
 
 
 

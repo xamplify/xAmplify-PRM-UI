@@ -12,6 +12,7 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { TeamMemberService } from 'app/team/services/team-member.service';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { TeamMember } from 'app/team/models/team-member';
+import { group } from 'console';
 
 
 declare var $: any;
@@ -109,6 +110,8 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     this.groupDto.defaultGroup = false;
     this.groupDto.saveAs = false;
     this.groupDto.previewGroup = false;
+    /**XNFR-883***/
+    this.groupDto.defaultSsoGroup = false;
     this.findDefaultModules();
 
   }
@@ -299,6 +302,7 @@ export class ManageTeamMemberGroupComponent implements OnInit {
 
 
   getTeamMemberGroupDetailsById(group:any,saveAs:boolean){
+    console.log(group);
     let id = group.id;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.groupDto = {};
@@ -312,6 +316,7 @@ export class ManageTeamMemberGroupComponent implements OnInit {
         this.groupDto = map['teamMemberGroupDTO'];
         this.groupDto.saveAs = saveAs;
         this.groupDto.previewGroup = group.defaultGroup && !saveAs;
+        this.groupDto.defaultSsoGroup = group.defaultSsoGroup;
         this.defaultModules = map['modules'];
         this.isAdd = saveAs;
         if(saveAs){
@@ -346,6 +351,10 @@ export class ManageTeamMemberGroupComponent implements OnInit {
 
   saveAs(group){
     this.getTeamMemberGroupDetailsById(group,true);
+  }
+
+  selectOrUnSelectDefaultSSOGroup(event:any,groupDto:any){
+    groupDto.defaultSsoGroup = event;
   }
   
 }

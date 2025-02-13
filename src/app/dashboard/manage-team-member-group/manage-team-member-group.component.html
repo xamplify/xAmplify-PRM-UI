@@ -81,17 +81,26 @@
         <span class="required"
           *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
+      <!--XNFR-883-->
+      <div class="table-responsive" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled">
+        <table class='table tgrid table-hover full-width' aria-describedby="">
+          <tr>
+            <th scope="row" class="fstcw-tm custom-label">
+              Default SSO Group <i aria-hidden="true" class="fa fa-info-circle" title="{{properties?.defaultSSOTeamMemberGroupToolTip}}"></i>
+            </th>
+            <td>
+              <app-custom-ui-switch [isSwitchOptionDisabled]="groupDto?.previewGroup" [customSwitch]="groupDto.defaultSsoGroup" (customUiSwitchEventEmitter)="selectOrUnSelectDefaultSSOGroup($event,groupDto)"></app-custom-ui-switch>
+            </td>
+          </tr>
+        </table>
+      </div>
+
       <div class="form-group">
         <label class="control-label" translate>Select Modules</label>
         <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
       </div>
-      <!--XNFR-883-->
-      <div class="form-group">
-        <label class="control-label" translate></label>
-
-      </div>
       <div class="table-responsive">
-        <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
+        <table class='table tgrid table-hover full-width' aria-describedby="">
           <tr *ngFor="let defaultModule of defaultModules;let i = index">
             <th scope="row" class="fstcw-tm">
               <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
@@ -99,11 +108,7 @@
               <br>
             </th>
             <td>
-              <switch class="switchControl" [disabled]="groupDto?.previewGroup" [status]="defaultModule.enabled"
-                [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
-                [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
-              </switch>
+              <app-custom-ui-switch [isSwitchOptionDisabled]="groupDto?.previewGroup" [customSwitch]="defaultModule.enabled" (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
             </td>
           </tr>
         </table>
@@ -154,7 +159,8 @@
         {{group?.teamMembersCount}}
       </p>
       <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span>
-      <span class="ribbon1" [ngClass]="group?.defaultGroup ? 'ctop':''" *ngIf="group?.defaultSsoGroup"><span translate>Default SSO User Group</span></span>
+      <!--XNFR-883-->
+      <span class="ribbon1" [ngClass]="group?.defaultGroup ? 'ctop':''" *ngIf="group?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled"><span translate>Default SSO Group</span></span>
       <div class="table-responsive">
         <div class="alert alert-danger left-align" *ngIf="group?.teamMemberModuleDTOs?.length==0">
           <strong>No Modules Found</strong>
