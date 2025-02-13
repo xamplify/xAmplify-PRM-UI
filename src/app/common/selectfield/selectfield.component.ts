@@ -179,7 +179,11 @@ export class SelectfieldComponent implements OnInit {
 
 
   updateHeaderCheckbox() {
-    this.isHeaderCheckBoxChecked = this.fieldsPagedItems.every((item: any) => item.selectedColumn);
+    if (!(this.pager.pages && this.pager.pages.length)) {
+      this.isHeaderCheckBoxChecked = false;
+    } else {
+      this.isHeaderCheckBoxChecked = this.fieldsPagedItems.every((item: any) => item.selectedColumn);
+    }
   }
   isCheked(labelId: any): boolean {
     return this.fieldsPagedItems.some(item => item.labelId === labelId);
@@ -260,26 +264,33 @@ export class SelectfieldComponent implements OnInit {
   }
 
   getUniqueColumns(selectFieldsDtos: any[], allItems: any[]) {
-    const columnMap = new Map();
-    // Add all original columns
-    selectFieldsDtos.forEach(col => columnMap.set(col.labelId, col));
-
-    // Add new columns, ensuring no duplicates
-    const allFields = [...allItems];
-    allFields.forEach(col => {
-      if (!columnMap.has(col.labelId)) {
-        columnMap.set(col.labelId, col);
-        col.selectedColumn = false;
-      }
-    });
-    // this.unSelectedItems = allFields.filter(item =>
-    //   !selectFieldsDtos.some(unselected => unselected.labelId === item.labelId)
-    // );    
-    // Convert back to an array
+    // const columnMap = new Map();
+    // selectFieldsDtos.forEach(col => columnMap.set(col.labelId, col));
+    // const allFields = [...allItems];
+    // allFields.forEach(col => {
+    //   if (!columnMap.has(col.labelId)) {
+    //     columnMap.set(col.labelId, col);
+    //     col.selectedColumn = false;
+    //   }
+    // });
+    // this.allItems.length = 0;
+    // let totalFields = Array.from(columnMap.values());
+    // totalFields.sort((a, b) => a.orderColumn - b.orderColumn);
     this.allItems.length = 0;
-
-    let totalFields = Array.from(columnMap.values());
-    totalFields.sort((a, b) => a.orderColumn - b.orderColumn);
+    let totalFields = allItems.map((item, index) => {
+      let match = selectFieldsDtos.find(x => x.labelId === item.labelId);
+      return {
+        ...item,
+        selectedColumn: match ? true : false,
+        id: match ? match.id : item.id
+      };
+    });
+    totalFields.sort((a, b) => {
+      if (a.selectedColumn === b.selectedColumn) {
+        return a.columnOrder - b.columnOrder;
+      }
+      return a.selectedColumn ? -1 : 1;
+    });
     if (this.selectFieldsDtos.length > 0) {
       this.unSelectedItems = totalFields.filter(item =>
         !selectFieldsDtos.some(unselected => unselected.labelId === item.labelId)
