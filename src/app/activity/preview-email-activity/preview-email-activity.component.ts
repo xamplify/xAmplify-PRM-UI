@@ -26,7 +26,9 @@ export class PreviewEmailActivityComponent implements OnInit {
     this.fetchEmailActivityById();
     this.referenceService.openModalPopup('previewEmailModalPopup');
   }
-
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup('previewEmailModalPopup');
+  }
   fetchEmailActivityById() {
     this.ngxLoading = true;
     this.emailActivityService.fetchEmailActivityById(this.emailActivityId).subscribe(
