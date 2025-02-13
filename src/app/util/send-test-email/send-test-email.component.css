@@ -73,4 +73,5 @@ input {
     min-height: 34px;
     max-height: 60px;
     field-sizing: content;
+    cursor: pointer;
 }
