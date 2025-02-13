@@ -75,6 +75,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
    assetPublishEmailNotificationLoader = true;
    isDownloaButtonClicked = false;
   isFromApprovalModule: boolean = false;
+  isApprover: boolean = false;
 
   constructor(
     private xtremandLogger: XtremandLogger,
@@ -128,6 +129,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
           });
       }
       this.findAssetPublishEmailNotificationOption();
+
+      this.checkApprovalPrivilegeForAssets();
     }
     
      /****XNFR-326*****/
@@ -558,5 +561,20 @@ downloadPdf(){
     let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
     this.referenceService.goToRouter(url);
   }
+
+  /** XNFR-884 **/
+  checkApprovalPrivilegeForAssets() {
+    this.ngxloading = true;
+    this.damService.checkApprovalPrivilegeForAssets()
+    .subscribe(
+        response => {
+            if (response.statusCode === 200) {
+                this.isApprover = response.data;
+            }
+            this.ngxloading = false;
+        }, error => {
+            this.ngxloading = false;
+        });
+}
 
 }

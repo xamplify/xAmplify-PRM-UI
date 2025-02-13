@@ -243,7 +243,8 @@
                      <!---Select Partner Lists/Partners-->
                      <div class="form-group col-lg-12 col-md-12 ml15">
                         <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-                        <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader"
+                        <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader &&
+                        (!authenticationService?.approvalRequiredForAssets || isApprover || damUploadPostDto?.approvalStatus == 'APPROVED')"
                            [moduleName]="'dam'" [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
                            [inputId]="assetId"
                            (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">

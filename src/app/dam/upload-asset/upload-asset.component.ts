@@ -154,6 +154,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     openSelectDigitalSignatureModalPopUp: boolean = false;
     fileType: any;
     isVendorSignatureToggleClicked: boolean = false;
+    isApprover: boolean = false;
     
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -212,6 +213,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.findShareWhiteLabelContentAccess();
         /****XNFR-326*****/
         this.findAssetPublishEmailNotificationOption();
+        
+        this.checkApprovalPrivilegeForAssets();
 	}
 
      /****XNFR-326*****/
@@ -1528,4 +1531,18 @@ zoomOut() {
             );
         }
 
+    /** XNFR-884 **/
+    checkApprovalPrivilegeForAssets() {
+        this.loading = true;
+        this.damService.checkApprovalPrivilegeForAssets()
+        .subscribe(
+            response => {
+                if (response.statusCode === 200) {
+                    this.isApprover = response.data;
+                }
+                this.loading = false;
+            }, error => {
+                this.loading = false;
+            });
+    }
 }

@@ -22,4 +22,5 @@ export class DamPostDto {
 	 loggedInUserId = 0;
  	 addedToQuickLinks = false;
 
+	approvalStatus : string = "";
 }
