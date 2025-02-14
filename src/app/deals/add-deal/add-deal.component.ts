@@ -1456,7 +1456,7 @@ export class AddDealComponent implements OnInit {
             this.resetDealTitle();
           }
 
-          if (("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType ||
+          if (("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType || "HUBSPOT" === this.activeCRMDetails.createdForActiveCRMType ||
             "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType) && this.actionType === 'add') {
             this.showAttachLead = false;
             this.showAttachButton = true;
