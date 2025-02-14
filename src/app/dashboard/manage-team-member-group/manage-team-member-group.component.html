@@ -202,7 +202,7 @@
           <div class="clickicons"></div>
         </a>
          <!--XNFR-883-->
-         <a *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled" class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Default SSO Group"
+         <a *ngIf="!group?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled" class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Default SSO Group"
          (click)="confirmAlertForDefaultSSOGroup(group)">
          <i class="fa fa-users" aria-hidden="true"></i>
          <div class="clickicons"></div>
