@@ -132,7 +132,7 @@
   <app-connect-accounts></app-connect-accounts>
 </ng-container>
 
-<ng-container *ngIf="!authenticationService?.module?.socialShareOptionEnabled">
+<ng-container *ngIf="!(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))">
   <app-access-denied-util></app-access-denied-util>
 </ng-container>
 
