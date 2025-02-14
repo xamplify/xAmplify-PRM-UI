@@ -143,14 +143,14 @@
             <ul class="textDecoration" *ngIf="isSelectDivOpen">
               <li><input type="checkbox" id="setAsDefault" [(ngModel)]="isDefault"
                   (change)="setMyPreferances($event)" /></li>
-              <li> <label for="setAsDefault"><b>Set as My Preferances</b></label></li>
+              <li> <label for="setAsDefault"><b>Set as My Preferences</b></label></li>
             </ul>
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">
             <div *ngIf="isSelectDivOpen">
               <button class="btn Btn-Gray" (click)="closeModalClose()">Close</button>
-              <button class="btn btn-primary" (click)="submit()">Email The Report</button>
+              <button class="btn btn-primary" (click)="submit()" [disabled]="!(pager.pages && pager.pages.length)">Email The Report</button>
             </div>
             <div *ngIf="!isSelectDivOpen">
               <button class="btn Btn-Gray" (click)="selectFieldValues()">Back To Selection</button>
