@@ -54,17 +54,23 @@
             </tr>
           </thead>
           <tbody>          
-            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
-                [(ngModel)]="item.isSelected" (change)="updateSelectionCheckBox(item)">
-            </td>
+            <tr *ngFor="let item of pagination.pagedItems; let i = index">
+              <td class="text-center" scope="col">
+                <input type="checkbox" class="checkBox_shadow" name="all"
+                       [(ngModel)]="item.isSelected" 
+                       (change)="updateSelectionCheckBox(item)"
+                       [disabled]="item.status === 'UNAPPROVED'">
+              </td>
               <td><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="false" [isPartnerEntityTeamInfo]="true" [userInfo]="item"></app-user-info></a></td>
               <!-- <td> <span>{{item.emailId}}</span></td> -->
               <!-- <td> <span>{{item.firstName}}</span> <span>{{item.lastName}}</span></td> -->
               <td> <span>{{item.status}}</span></td>
-              <!-- <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.logInTime"></app-timestamp></td> -->
-              <td><app-display-date-and-time  [dateAndTimeUTCString]="item?.logInTime"></app-display-date-and-time></td>
               <td class="text-center">
+              <!-- <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.logInTime"></app-timestamp></td> -->
+              <span *ngIf="item.status === 'UNAPPROVED'">-</span>
+              <app-display-date-and-time *ngIf="item.status !== 'UNAPPROVED'" [dateAndTimeUTCString]="item?.logInTime"></app-display-date-and-time>
+            </td>
+            <td class="text-center">
                 <div class="btn-group btnGroupFlex" *ngIf="item.teamMemberGroupId!=null &&!item?.primaryAdmin">
                   <button class="group-name-cclass btn-primary default-btn-cursor">
                     <span data-toggle="tooltip" data-placement="bottom" title="{{item?.teamMemberGroupName}}">
@@ -90,19 +96,19 @@
                 </div>
                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                   <div class="actions-block override-actions custom-width-icon">
-                  <a *ngIf="item.status=='UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
+                    <a *ngIf="item.status === 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
                     title="Resend the invitation email"
                     [className]="isLoggedInAsTeamMember? 'pointer-events-none custom-icon':'custom-icon'"
                     (click)="resendEmailInvitation(item.emailId)">
-                    <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
-                    <div class="clickicons"></div>
-                  </a>
-                  <a *ngIf="item.status!='UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
-                    title="Invitation cannot be sent as the account is created successfully"
-                    class="inactive custom-icon">
-                    <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
-                    <div class="clickicons"></div>
-                  </a>
+                   <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                   <div class="clickicons"></div>
+                 </a>
+                 <a *ngIf="item.status !== 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
+                       title="Invitation cannot be sent as the account is created successfully"
+                       class="inactive custom-icon">
+                      <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
                 </div>
                 </ng-container>
               </td>  

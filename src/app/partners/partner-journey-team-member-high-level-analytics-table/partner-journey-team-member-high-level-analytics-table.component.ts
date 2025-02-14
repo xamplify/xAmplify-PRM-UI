@@ -245,65 +245,69 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
     this.getAllFilteredResults(this.pagination);
   }
 
-  updateSelectionCheckBox(): void {
-    const currentPageItems = this.pagination.pagedItems;
-    currentPageItems
-        .filter(item => item.isSelected)
-        .forEach(item => {
-            if (!this.pagination.selectedPartnerIds.includes(item.teamMemberId)) {
-                this.pagination.selectedPartnerIds.push(item.teamMemberId);
-            }
-        });
+updateSelectionCheckBox(): void {
+  const currentPageItems = this.pagination.pagedItems;
 
-    currentPageItems
-        .filter(item => !item.isSelected)
-        .forEach(item => {
-            const index = this.pagination.selectedPartnerIds.indexOf(item.teamMemberId);
-            if (index !== -1) {
-                this.pagination.selectedPartnerIds.splice(index, 1);
-            }
-        });
+  currentPageItems
+    .filter(item => item.isSelected)
+    .forEach(item => {
+      if (!this.pagination.selectedPartnerIds.includes(item.teamMemberId)) {
+        this.pagination.selectedPartnerIds.push(item.teamMemberId);
+      }
+    });
 
-    this.isSendReminderEnabled = this.pagination.selectedPartnerIds.length > 0;
-    this.isHeaderCheckBoxChecked = currentPageItems.every(item => item.isSelected);
-    this.selectedItemTeamMember = currentPageItems;
+  currentPageItems
+    .filter(item => !item.isSelected)
+    .forEach(item => {
+      const index = this.pagination.selectedPartnerIds.indexOf(item.teamMemberId);
+      if (index !== -1) {
+        this.pagination.selectedPartnerIds.splice(index, 1);
+      }
+    });
+
+  this.isSendReminderEnabled = this.pagination.selectedPartnerIds.some(teamMemberId => {
+    const teamMember = this.allItems.find(item => item.teamMemberId === teamMemberId);
+    return teamMember && teamMember.status !== 'UNAPPROVED';
+  });
+
+  this.isHeaderCheckBoxChecked = currentPageItems.every(item => item.isSelected);
+      this.selectedItemTeamMember = currentPageItems;
+
 }
 
 
-
 toggleSelectAll(event: Event): void {
-    const checked = (event.target as HTMLInputElement).checked;
-    const currentPageItems = this.pagination.pagedItems;
+  const checked = (event.target as HTMLInputElement).checked;
+  const currentPageItems = this.pagination.pagedItems;
 
-    currentPageItems.forEach(item => {
-        item.isSelected = checked;
+  currentPageItems.forEach(item => {
+    item.isSelected = checked;
 
-        if (checked) {
-            if (!this.pagination.selectedPartnerIds.includes(item.teamMemberId)) {
-                this.pagination.selectedPartnerIds.push(item.teamMemberId);
-            }
-        } else {
-            const index = this.pagination.selectedPartnerIds.indexOf(item.teamMemberId);
-            if (index !== -1) {
-                this.pagination.selectedPartnerIds.splice(index, 1);
-            }
-        }
-    });
-    this.updateSelectionCheckBox();
-}   
-
-
+    if (checked) {
+      if (!this.pagination.selectedPartnerIds.includes(item.teamMemberId)) {
+        this.pagination.selectedPartnerIds.push(item.teamMemberId);
+      }
+    } else {
+      const index = this.pagination.selectedPartnerIds.indexOf(item.teamMemberId);
+      if (index !== -1) {
+        this.pagination.selectedPartnerIds.splice(index, 1);
+      }
+    }
+  });
+  this.updateSelectionCheckBox();
+}
 
 sendReminder(): void {
   const selectedTeamMembers = this.pagination.selectedPartnerIds
-      .map(teamMemberId => this.allItems.find(item => item.teamMemberId === teamMemberId))
-      .filter(partner => partner && !partner.isActive && partner.emailId);
+    .map(teamMemberId => this.allItems.find(item => item.teamMemberId === teamMemberId))
+    .filter(teamMember => teamMember && teamMember.status !== 'UNAPPROVED' && teamMember.emailId);
 
-  const emailIds = selectedTeamMembers.map(partner => partner.emailId);
+  const emailIds = selectedTeamMembers.map(teamMember => teamMember.emailId);
   const emailIdsString = emailIds.join(', ');
 
-  this.openSendTestEmailTeamMeberModalPopup(emailIdsString);
-
+  if (emailIdsString) {
+    this.openSendTestEmailTeamMeberModalPopup(emailIdsString);
+  } 
 }
 
 
@@ -372,8 +376,8 @@ sendReminder(): void {
 
   sendRemindersForAllSelectedPartners(): void {
     const selectedPartners = this.pagination.selectedPartnerIds
-      .map(partnerId => this.allItems.find(pagination => pagination.teamMemberId === partnerId))
-      .filter(partner => partner && !partner.isActive && partner.emailId);
+    .map(partnerId => this.allItems.find(item => item.teamMemberId === partnerId))
+    .filter(partner => partner && partner.status !== 'UNAPPROVED' && partner.emailId);
 
     this.sendTeamMemberEmail(selectedPartners);
 
