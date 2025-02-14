@@ -552,6 +552,8 @@ export class Properties {
 	confirmPrimaryAdminText = "Are you sure you want to assign this member as the Primary Admin? This will transfer primary admin rights.";
 	proceed = "Yes, Proceed";
 	defaultSSOTeamMemberGroupToolTip = "Users logging in via SSO will be automatically assigned to this team member group";
+	defaultSSOTeamMemberGroupConfirmationMessage = "This group will be set as the default for SSO users";
+
 
 
 

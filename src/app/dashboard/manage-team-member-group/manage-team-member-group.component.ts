@@ -1,3 +1,4 @@
+import { SweetAlertParameterDto } from './../../common/models/sweet-alert-parameter-dto';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -12,9 +13,6 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { TeamMemberService } from 'app/team/services/team-member.service';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { TeamMember } from 'app/team/models/team-member';
-import { group } from 'console';
-
-
 declare var $: any;
 @Component({
   selector: 'app-manage-team-member-group',
@@ -44,12 +42,17 @@ export class ManageTeamMemberGroupComponent implements OnInit {
   selectedGroupId: number = 0;
   selectedGroup: any = {};
   groupEditedFromPreviewSection = false;
+  /***XNFR-883***/
+  isDefaultSSOGroupIconClicked = false;
+  activateDefaultSSOSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public teamMemberService: TeamMemberService, public callActionSwitch: CallActionSwitch) {
   }
 
   ngOnInit() {
+    this.activateDefaultSSOSweetAlertParameterDto.confirmButtonText = this.properties.proceed;
+    this.activateDefaultSSOSweetAlertParameterDto.text = this.properties.defaultSSOTeamMemberGroupConfirmationMessage;
     this.findGroups(this.pagination);
   }
 
@@ -302,7 +305,6 @@ export class ManageTeamMemberGroupComponent implements OnInit {
 
 
   getTeamMemberGroupDetailsById(group:any,saveAs:boolean){
-    console.log(group);
     let id = group.id;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.groupDto = {};
@@ -349,12 +351,51 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     }
   }
 
-  saveAs(group){
+  saveAs(group:any){
     this.getTeamMemberGroupDetailsById(group,true);
   }
 
+  /**XNFR-883***/
   selectOrUnSelectDefaultSSOGroup(event:any,groupDto:any){
     groupDto.defaultSsoGroup = event;
   }
+
+  /**XNFR-883***/
+  confirmAlertForDefaultSSOGroup(group:any){
+    this.isDefaultSSOGroupIconClicked = true;
+    this.selectedGroupId = group.id;
+  }
+
+  /**XNFR-883***/
+  setAsDefaultSSOGroup(event:any){
+    if(event){
+      let isApiCompleted = false;
+      this.customResponse = new CustomResponse();
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.teamMemberService.setAsDefaultSSOGroup(this.selectedGroupId).subscribe(
+        response=>{
+          isApiCompleted = true;
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.customResponse = new CustomResponse("SUCCESS",response.message,true);
+        },error=>{
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.referenceService.showSweetAlertServerErrorMessage();
+          this.resetSelectedSSOGroupId();
+        },()=>{
+          if(isApiCompleted){
+            this.resetSelectedSSOGroupId();
+            this.findGroups(this.pagination);
+          }
+        });
+    }else{
+      this.resetSelectedSSOGroupId();
+    }
+
+  }
   
+
+  private resetSelectedSSOGroupId() {
+    this.isDefaultSSOGroupIconClicked = false;
+    this.selectedGroupId = 0;
+  }
 }

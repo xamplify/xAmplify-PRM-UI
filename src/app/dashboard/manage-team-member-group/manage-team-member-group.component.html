@@ -1,6 +1,5 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <!----------Manage Team Member Group-->
-
 <div id="manage-team-member-groups">
   <div class="portlet-title">
     <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -145,7 +144,10 @@
 </div>
 
 <app-confirm-sweet-alert-util *ngIf="isDelete" (notifyComponent)="deleteGroup($event)"></app-confirm-sweet-alert-util>
-
+<!----XNFR-883----->
+<app-confirm-sweet-alert-util *ngIf="isDefaultSSOGroupIconClicked"
+[parameterDto]="activateDefaultSSOSweetAlertParameterDto"
+(notifyComponent)="setAsDefaultSSOGroup($event)"></app-confirm-sweet-alert-util>
 <!--ng-template-outlet-->
 <ng-template #groupGridView let-group="groupInfo" let-isPreview="showPreviewIcon">
   <div class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
@@ -199,6 +201,12 @@
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
+         <!--XNFR-883-->
+         <a *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled" class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Default SSO Group"
+         (click)="confirmAlertForDefaultSSOGroup(group)">
+         <i class="fa fa-users" aria-hidden="true"></i>
+         <div class="clickicons"></div>
+       </a>
         <a class="delete" data-toggle="tooltip" data-placement="top"
           [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'"
           [className]="group?.defaultGroup ? 'delete inactive custom-icon':'delete custom-icon'"

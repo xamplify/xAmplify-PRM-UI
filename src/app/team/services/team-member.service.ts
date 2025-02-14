@@ -15,7 +15,7 @@ import { VendorInvitation } from 'app/dashboard/models/vendor-invitation';
 
 @Injectable()
 export class TeamMemberService{
-    
+ 
     URL = this.authenticationService.REST_URL;
     constructor( private http: Http,  private authenticationService: AuthenticationService,
             private refService:ReferenceService ) {
@@ -377,5 +377,12 @@ export class TeamMemberService{
         let url = this.URL + "teamMember/invite-team-member/userId/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url, vendorInvitation);
     }
+
+    /***XNFR-883***/
+    setAsDefaultSSOGroup(id: any) {
+        let url = this.URL + "teamMemberGroup/" + id + "/default-sso?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,"");
+      }
+        
  
 }
