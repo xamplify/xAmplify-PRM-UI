@@ -84,6 +84,14 @@ export class AddEmailModalPopupComponent implements OnInit {
     }
     if (this.isCompanyJourney) {
       this.fetchUsersForCompanyJourney();
+      this.dropdownSettings = {
+        singleSelection: false,
+        text: "Please select",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class"
+      };
     }
   }
   ngOnDestroy(){
@@ -206,7 +214,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   }
 
   validateTestEmailId() {
-    if (this.referenceService.validateEmailId(this.testToEmailId)) {
+    if (this.testToEmailId != undefined && this.testToEmailId.length > 0 && this.referenceService.validateEmailId(this.testToEmailId)) {
       this.isValidTestEmailId = true;
     } else {
       this.isValidTestEmailId = false;

@@ -90,7 +90,8 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
 		);
   }
 
-  search() {		
+  search() {	
+    this.sucessOrFailureResponse = new CustomResponse();	
     this.getAllFilteredResults(this.pagination);
 	}
 
@@ -197,7 +198,7 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   /***XNFR-878*****/
   confirmPrimaryAdminChange(teamMember:any){
     this.partnerPrimaryAdminUpdateDto =  new PartnerPrimaryAdminUpdateDto();
-    if (teamMember.status == 'APPROVE' && this.authenticationService.module.isAdmin && this.authenticationService.module.isAnyAdminOrSupervisor) {
+    if (teamMember.status == 'APPROVE' && this.authenticationService.module.isAnyAdminOrSupervisor) {
       this.isEnablePrimaryAdminOptionClicked = true;
       this.partnerPrimaryAdminUpdateDto.partnerCompanyTeamMemberUserId = teamMember.teamMemberUserId;
     }
@@ -231,6 +232,7 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
               this.pagination.partnerJourneyFilter = true;
               this.pagination.fromDateFilterString = this.fromDateFilter;
               this.pagination.toDateFilterString = this.toDateFilter;
+              this.pagination.searchKey = this.sortOption.searchKey;
               this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
               this.getTeamInfo(this.pagination);
             }

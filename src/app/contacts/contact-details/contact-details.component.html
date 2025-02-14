@@ -185,7 +185,7 @@
                   <span *ngIf="selectedContact?.jobTitle == undefined || selectedContact?.jobTitle == ''" class="mb0"> --</span>
                 </div>
               </li>
-              <li *ngIf="!isCompanyJourney"><i class="fas fa-envelope"></i>
+              <li *ngIf="isCompanyJourney"><i class="fas fa-envelope"></i>
                 <div class="user_details">
                   <span class="address_title">Email Id:</span>
                   <span *ngIf="selectedContact?.emailId != undefined && selectedContact?.emailId != ''" class="mb0">{{selectedContact?.emailId}}</span>

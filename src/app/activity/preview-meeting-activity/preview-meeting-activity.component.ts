@@ -32,7 +32,9 @@ export class PreviewMeetingActivityComponent implements OnInit {
     this.fetchCalendlyEventByEventUrl();
     this.referenceService.openModalPopup('previewMeetingModalPopup');
   }
-
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup('previewMeetingModalPopup');
+  }
   fetchCalendlyEventByEventUrl() {
     this.ngxLoading = true;
     this.meetingService.fetchCalendlyEvent(this.eventUrl, this.contactId).subscribe(
