@@ -92,7 +92,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     userGuideDashboardDto:UserGuideDashboardDto = new UserGuideDashboardDto();
     /** user guide */
 
-    @ViewChild('welcomePageHeader') welcomePageHeader: TemplateRef<any>;
+    /***** XNFR-860 *****/
     @ViewChild('dashBoardImages') dashBoardImages: TemplateRef<any>;
     @ViewChild('moduleAnalytics') moduleAnalytics: TemplateRef<any>;
     @ViewChild('newsAndAnnouncement') newsAndAnnouncement: TemplateRef<any>;
@@ -120,6 +120,8 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     defaultDashboardLayout = [];
     isDestroyed: boolean = false;
     isDraggingEnabled: boolean = false;
+    defaultDashboardsettings: boolean = false;
+    /***** XNFR-860 *****/
 
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
         public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
@@ -668,6 +670,7 @@ showCampaignDetails(campaign:any){
             { name: 'dealStatistics', ref: this.dealStatistics, index: 21 },
             { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 22 },
         ];
+        this.findDefaultDashboardSettings();
         this.findCustomDashboardLayout();
         this.setUpDragEndSubscription();
 
@@ -718,12 +721,14 @@ showCampaignDetails(campaign:any){
 
     /***** XNFR-860 *****/
     updateCustomDashBoardLayout() {
+        this.ngxLoading = true;
         const dashboardLayoutDtos = this.defaultDashboardLayout.map(template => ({
             divId: template.index,
             divName: template.name
         }));
         const customDashboardLayout = {
             userId: this.loggedInUserId,
+            companyProfileName: this.vendorCompanyProfileName,
             dashboardLayoutDTOs: dashboardLayoutDtos
         };
         this.dashBoardService.updateCustomDashBoardLayout(customDashboardLayout).subscribe((response) => {
@@ -736,12 +741,26 @@ showCampaignDetails(campaign:any){
                 this.userDefaultPage.responseType = 'ERROR';
                 this.userDefaultPage.responseMessage = response.message;
             }
+            this.ngxLoading = false;
         }, (error) => {
             console.log(error);
+            this.ngxLoading = false;
             this.isDraggingEnabled = true;
             this.userDefaultPage.responseType = 'ERROR';
             this.userDefaultPage.responseMessage = this.properties.serverErrorMessage;
         });
+    }
+
+    /***** XNFR-860 *****/
+    findDefaultDashboardSettings() {
+        if (this.vendorCompanyProfileName) {
+            this.dashBoardService.findDefaultDashboardSettings(this.vendorCompanyProfileName).subscribe((response) => {
+                this.defaultDashboardsettings = response.data;
+            }, error => {
+                console.log(error);
+                this.defaultDashboardsettings = false;
+            });
+        }
     }
 
 }

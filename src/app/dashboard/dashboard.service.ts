@@ -46,7 +46,7 @@ export class DashboardService {
     { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
 
     /***** XNFR-860 *****/
-    DASHBOARD_LAYOUT_URL = this.authenticationService.REST_URL + "dashboard/layout/";
+    DASHBOARD_LAYOUT_URL = this.authenticationService.REST_URL + "dashboard/layout";
 
     constructor(private http: Http, private authenticationService: AuthenticationService,private utilService:UtilService,
         private referenceService:ReferenceService,private vanityUrlService:VanityURLService) { }
@@ -1517,6 +1517,12 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
     updateCustomDashBoardLayout(customDashboardLayout: any) {
         const url = this.DASHBOARD_LAYOUT_URL + '?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callPutMethod(url, customDashboardLayout);
+    }
+
+    findDefaultDashboardSettings(vendorCompanyProfileName: string) {
+        const url = this.DASHBOARD_LAYOUT_URL + '/custom-dashboard-settings/' + '?loggedInUserId=' + this.authenticationService.getUserId()
+            + '&companyProfileName=' + vendorCompanyProfileName + '&access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
     }
 
 }
