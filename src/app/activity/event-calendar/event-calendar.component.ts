@@ -40,8 +40,12 @@ export class EventCalendarComponent implements OnInit {
   ngOnChanges() {
     if (this.isFirstChange) {
       this.isFirstChange = !this.isFirstChange;
-    } else {
+    } else if (this.contactId != undefined && this.contactId > 0) {
       this.getMeetingCalendarView();
+    } else {
+      this.meetingActivities = [];
+      this.events = [];
+      $('#calendar').fullCalendar('removeEvents');
     }
   }
 
@@ -87,7 +91,13 @@ export class EventCalendarComponent implements OnInit {
         self.openCustomPopup(event);
       },
       viewRender: function (view: any, element: any) {
-        self.getMeetingCalendarView();
+        if (self.contactId != undefined && self.contactId > 0) {
+          self.getMeetingCalendarView();
+        } else {
+          self.meetingActivities = [];
+          self.events = [];
+          $('#calendar').fullCalendar('removeEvents');
+        }
       },
       eventRender: function (event: any, element: any) {
         element.find('.fc-time').addClass('fc-time-title mr5');

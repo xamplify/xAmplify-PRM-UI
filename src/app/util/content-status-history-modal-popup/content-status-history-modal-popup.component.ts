@@ -152,6 +152,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.closeModalPopUp();
+    this.referenceService.closeModalPopup(this.historyModalPopUpId);
   }
 
   findComments() {
@@ -226,7 +227,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   }
   
   fetchLogoFromExternalSource() {
-    this.activityService.fetchLogoFromExternalSource(this.createdById).subscribe(
+    this.activityService.fetchLogoFromExternalSource(this.createdById, false).subscribe(
       response => {
         const data = response.data;
         if (response.statusCode == 200 && data != '') {

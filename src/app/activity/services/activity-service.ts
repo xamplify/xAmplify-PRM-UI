@@ -18,12 +18,13 @@ export class ActivityService {
         if (vendorCompanyProfileName != undefined && vendorCompanyProfileName != '') {
             pageableUrl = pageableUrl + "&vendorCompanyProfileName="+vendorCompanyProfileName;
         }
-        let url = this.URL + "/fetchRecentActivities/" + activityPagination.contactId + "/" + activityPagination.userId + this.ACCESS_TOKEN_URL + pageableUrl;
+        let url = this.URL + "/fetchRecentActivities/" + activityPagination.contactId + "/" + activityPagination.userId + "/" + activityPagination.isCompanyJourney + this.ACCESS_TOKEN_URL + pageableUrl;
         return this.authenticationService.callGetMethod(url);
     }
 
-    fetchLogoFromExternalSource(userId:any) {
-        let url = this.URL + "/fetchLogoFromExternalSource/" + userId + this.ACCESS_TOKEN_URL;
+    fetchLogoFromExternalSource(userId:any, isCompanyJourney:boolean) {
+        let prefix = isCompanyJourney ? this.authenticationService.REST_URL + "companies/" : this.URL;
+        let url = prefix + "/fetchLogoFromExternalSource/" + userId + this.ACCESS_TOKEN_URL;
         return this.authenticationService.callGetMethod(url);
     }
 

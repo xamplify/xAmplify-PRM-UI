@@ -23,6 +23,7 @@ export class NoteComponent implements OnInit {
   @Input() contactId:number;
   @Input() reloadTab: boolean;
   @Input() isCompanyJourney:boolean = false;
+  @Input() selectedUserListId:any;
   @Output() notifyUpdateSuccess = new EventEmitter();
   @Output() notifyDeleteSuccess = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();
@@ -70,7 +71,12 @@ export class NoteComponent implements OnInit {
   fetchAllNoteActivities(notePagination: Pagination) {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
-    notePagination.contactId = this.contactId;
+    notePagination.isCompanyJourney = this.isCompanyJourney;
+    if (this.isCompanyJourney) {
+      notePagination.contactId = this.selectedUserListId;
+    } else {
+      notePagination.contactId = this.contactId;
+    }
     this.noteService.getPaginatedNotes(notePagination).subscribe(
       response => {
         const data = response.data;

@@ -3,6 +3,13 @@
     <div class="panel-heading panel-heading-custom panel-bg search_download_align" id="pj-team-member-details-div">
       <h3 class="panel-title mt7">Team Member Details</h3>
       <div style="display:flex;">
+        <button class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
+        <div class="float-left">
+          <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.teamMember"
+            (ngModelChange)="sortPartnerTeamMembers($event)" id="select-dropdown">
+            <option *ngFor="let option of sortOption.teamMemberDropDowns" [ngValue]="option">{{option.name}}</option>
+          </select>
+        </div>
         <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" style="margin: -1px 3px 0px 3px;"
           *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember ||
             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember|| authenticationService. module.isPrm || authenticationService.module.isPrmTeamMember ||
@@ -35,7 +42,10 @@
       <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
-            <tr>              
+            <tr>    
+              <th class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAll($event)" />
+              </th>          
               <th scope="col">Company Name</th>
               <th scope="col">Status</th>
               <th scope="col">Recent Login</th>
@@ -44,14 +54,23 @@
             </tr>
           </thead>
           <tbody>          
-            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+            <tr *ngFor="let item of pagination.pagedItems; let i = index">
+              <td class="text-center" scope="col">
+                <input type="checkbox" class="checkBox_shadow" name="all"
+                       [(ngModel)]="item.isSelected" 
+                       (change)="updateSelectionCheckBox(item)"
+                       [disabled]="item.status === 'UNAPPROVED'">
+              </td>
               <td><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="false" [isPartnerEntityTeamInfo]="true" [userInfo]="item"></app-user-info></a></td>
               <!-- <td> <span>{{item.emailId}}</span></td> -->
               <!-- <td> <span>{{item.firstName}}</span> <span>{{item.lastName}}</span></td> -->
               <td> <span>{{item.status}}</span></td>
-              <!-- <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.logInTime"></app-timestamp></td> -->
-              <td><app-display-date-and-time  [dateAndTimeUTCString]="item?.logInTime"></app-display-date-and-time></td>
               <td class="text-center">
+              <!-- <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.logInTime"></app-timestamp></td> -->
+              <span *ngIf="item.status === 'UNAPPROVED'">-</span>
+              <app-display-date-and-time *ngIf="item.status !== 'UNAPPROVED'" [dateAndTimeUTCString]="item?.logInTime"></app-display-date-and-time>
+            </td>
+            <td class="text-center">
                 <div class="btn-group btnGroupFlex" *ngIf="item.teamMemberGroupId!=null &&!item?.primaryAdmin">
                   <button class="group-name-cclass btn-primary default-btn-cursor">
                     <span data-toggle="tooltip" data-placement="bottom" title="{{item?.teamMemberGroupName}}">
@@ -77,19 +96,19 @@
                 </div>
                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                   <div class="actions-block override-actions custom-width-icon">
-                  <a *ngIf="item.status=='UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
+                    <a *ngIf="item.status === 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
                     title="Resend the invitation email"
                     [className]="isLoggedInAsTeamMember? 'pointer-events-none custom-icon':'custom-icon'"
                     (click)="resendEmailInvitation(item.emailId)">
-                    <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
-                    <div class="clickicons"></div>
-                  </a>
-                  <a *ngIf="item.status!='UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
-                    title="Invitation cannot be sent as the account is created successfully"
-                    class="inactive custom-icon">
-                    <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
-                    <div class="clickicons"></div>
-                  </a>
+                   <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                   <div class="clickicons"></div>
+                 </a>
+                 <a *ngIf="item.status !== 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
+                       title="Invitation cannot be sent as the account is created successfully"
+                       class="inactive custom-icon">
+                      <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
                 </div>
                 </ng-container>
               </td>  
@@ -113,3 +132,5 @@
 <!-- Group Preview Popup -->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->
+ 
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [teamMemberReminder]="teamMemberPreview" (sendmailTeamMemberNotify)= "emittedMethodTemMember($event.item)"  [selectedItemTeamMember]="selectedItemTeamMember" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentTeamMemberEventEmitter)="sendTestEmailModalPopupTeamMemberEventReceiver()"></app-send-test-email>

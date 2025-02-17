@@ -83,6 +83,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resetCustomUploadCsvFields();
+    this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
   }
 
   transform(value: string): string {

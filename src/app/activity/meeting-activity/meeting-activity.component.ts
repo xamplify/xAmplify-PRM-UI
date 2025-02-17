@@ -8,6 +8,10 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { PaginationComponent } from 'app/common/pagination/pagination.component';
+import { ContactService } from 'app/contacts/services/contact.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Properties } from 'app/common/models/properties';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
 @Component({
   selector: 'app-meeting-activity',
@@ -17,21 +21,22 @@ import { PaginationComponent } from 'app/common/pagination/pagination.component'
 })
 export class MeetingActivityComponent implements OnInit {
 
-  @Input() contactId:number;
-  @Input() activeCalendarDetails:any;
-  @Input() isReloadTab:boolean;
-  @Input() isCompanyJourney:boolean = false;
+  @Input() contactId: number;
+  @Input() activeCalendarDetails: any;
+  @Input() isReloadTab: boolean;
+  @Input() isCompanyJourney: boolean = false;
+  @Input() selectedUserListId: any;
 
   @Output() notifyClose = new EventEmitter();
   @Output() notifyCloseSideBar = new EventEmitter();
 
   meetingActivities = [];
-  ngxLoading:boolean = false;
+  ngxLoading: boolean = false;
   meetingActivityPagination: Pagination = new Pagination();
   showFilterOption: boolean = false;
   selectedFilterIndex: number = 1;
   customResponse: CustomResponse = new CustomResponse();
-  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   meetingSortOption: SortOption = new SortOption();
   meetingActivitysResponse: any;
   meetingActivityPagedItems = new Array();
@@ -42,20 +47,27 @@ export class MeetingActivityComponent implements OnInit {
   pageNumber: any;
   showMeetingModalPopup: boolean = false;
   showCalendarIntegrationsModalPopup: boolean = false;
-  calendarType:any;
-  showPreviewMeeting:boolean = false;
+  calendarType: any;
+  showPreviewMeeting: boolean = false;
   eventUrl: any;
   showConfigureMessage: boolean = false;
   showCalendarView: boolean = false;
   isFirstChange: boolean = true;
+  userListUsersLoader: HttpRequestLoader = new HttpRequestLoader();
+  companyUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  contactErrorResponse: CustomResponse = new CustomResponse();
 
-  constructor(public meetingActivityService: MeetingActivityService, public referenceService: ReferenceService, public pagerService: PagerService, 
-    public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent) { }
+  constructor(public meetingActivityService: MeetingActivityService, public referenceService: ReferenceService, public pagerService: PagerService,
+    public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public contactService: ContactService, public properties: Properties) { }
 
   ngOnInit() {
     this.calendarType = this.activeCalendarDetails != undefined ? this.activeCalendarDetails.type : '';
     this.pageNumber = this.paginationComponent.numberPerPage[0];
-    this.showAllMeetingActivities();
+    if (this.isCompanyJourney) {
+      this.fetchUsersForCompanyJourney();
+    } else {
+      this.showAllMeetingActivities();
+    }
   }
 
   ngOnChanges() {
@@ -69,18 +81,23 @@ export class MeetingActivityComponent implements OnInit {
   }
 
   showAllMeetingActivities() {
-    this.resetTaskActivityPagination();
-    if (this.referenceService.checkIsValidString(this.calendarType)) {
-      this.fetchAllMeetingActivities(this.meetingActivityPagination);
+    if (this.contactId != undefined && this.contactId > 0) {
+      this.resetTaskActivityPagination();
+      this.contactErrorResponse.isVisible = false;
+      if (this.referenceService.checkIsValidString(this.calendarType)) {
+        this.fetchAllMeetingActivities(this.meetingActivityPagination);
+      } else {
+        this.showConfigureMessage = true;
+      }
     } else {
-      this.showConfigureMessage = true;
+      this.contactErrorResponse = new CustomResponse('ERROR', 'Please select contact.', true);
     }
   }
 
   resetTaskActivityPagination() {
     this.meetingActivityPagination.maxResults = 12;
     this.meetingActivityPagination = new Pagination;
-    this.meetingActivityPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.meetingActivityPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
     this.showFilterOption = false;
   }
 
@@ -92,7 +109,7 @@ export class MeetingActivityComponent implements OnInit {
       response => {
         const data = response.data;
         let isSuccess = response.statusCode === 200;
-        if(isSuccess){
+        if (isSuccess) {
           if (this.calendarType == 'CALENDLY') {
             this.meetingActivitysResponse = data.list;
           } else {
@@ -100,16 +117,16 @@ export class MeetingActivityComponent implements OnInit {
             meetingActivityPagination = this.pagerService.getPagedItems(meetingActivityPagination, data.list);
           }
           this.setMeetingActivitiesPage(1);
-        }else{
-          this.customResponse = new CustomResponse('ERROR',"Unable to get task activities",true);
+        } else {
+          this.customResponse = new CustomResponse('ERROR', "Unable to get task activities", true);
         }
         this.referenceService.loading(this.httpRequestLoader, false);
       }, error => {
         let message = this.referenceService.getApiErrorMessage(error);
         if (message.includes("401 UnAuthorized from External API")) {
-          this.customResponse = new CustomResponse('ERROR',"Your "+ this.calendarType.toLowerCase()+" integration is invalid. Please Re-configure.",true);
+          this.customResponse = new CustomResponse('ERROR', "Your " + this.calendarType.toLowerCase() + " integration is invalid. Please Re-configure.", true);
         } else {
-          this.customResponse = new CustomResponse('ERROR',message,true);
+          this.customResponse = new CustomResponse('ERROR', message, true);
         }
         this.referenceService.loading(this.httpRequestLoader, false);
       }
@@ -117,55 +134,55 @@ export class MeetingActivityComponent implements OnInit {
   }
 
   setMeetingActivitiesPage(page: number) {
-		try {
-			if (page < 1 || (this.meetingActivityPager.totalPages > 0 && page > this.meetingActivityPager.totalPages)) {
-				return;
-			}
-			if (this.meetingSortOption.calendlyDropDownOption !== undefined) {
-				if (this.meetingSortOption.calendlyDropDownOption === 'asc') {
-					this.meetingActivitysResponse.sort((a, b) => {
+    try {
+      if (page < 1 || (this.meetingActivityPager.totalPages > 0 && page > this.meetingActivityPager.totalPages)) {
+        return;
+      }
+      if (this.meetingSortOption.calendlyDropDownOption !== undefined) {
+        if (this.meetingSortOption.calendlyDropDownOption === 'asc') {
+          this.meetingActivitysResponse.sort((a, b) => {
             const dateA = new Date(a.createdTime);
             const dateB = new Date(b.createdTime);
-          
+
             return dateA.getTime() - dateB.getTime();
           });
-				} else if (this.meetingSortOption.calendlyDropDownOption === 'desc') {
-					this.meetingActivitysResponse.sort((a, b) => {
+        } else if (this.meetingSortOption.calendlyDropDownOption === 'desc') {
+          this.meetingActivitysResponse.sort((a, b) => {
             const dateA = new Date(a.createdTime);
             const dateB = new Date(b.createdTime);
-          
+
             return dateB.getTime() - dateA.getTime();
           });
-				}
-			}
-			this.referenceService.goToTop();
-			if (this.searchKey !== undefined && this.searchKey !== '') {
-				this.filteredMeetingActivities = this.meetingActivitysResponse.filter(meeting =>
-					(meeting.name.toLowerCase().includes(this.searchKey.trim().toLowerCase()) || meeting.name.toLowerCase().includes(this.searchKey.trim().toLowerCase()))
-				);
-				this.meetingActivityPager = this.socialPagerService.getPager(this.filteredMeetingActivities.length, page, this.pageSize);
-				this.meetingActivityPagedItems = this.filteredMeetingActivities.slice(this.meetingActivityPager.startIndex, this.meetingActivityPager.endIndex + 1);
-			} else {
-				this.meetingActivityPager = this.socialPagerService.getPager(this.meetingActivitysResponse.length, page, this.pageSize);
-				this.meetingActivityPagedItems = this.meetingActivitysResponse.slice(this.meetingActivityPager.startIndex, this.meetingActivityPager.endIndex + 1);
-			}
-		} catch (error) {
-		}
-	}
+        }
+      }
+      this.referenceService.goToTop();
+      if (this.searchKey !== undefined && this.searchKey !== '') {
+        this.filteredMeetingActivities = this.meetingActivitysResponse.filter(meeting =>
+          (meeting.name.toLowerCase().includes(this.searchKey.trim().toLowerCase()) || meeting.name.toLowerCase().includes(this.searchKey.trim().toLowerCase()))
+        );
+        this.meetingActivityPager = this.socialPagerService.getPager(this.filteredMeetingActivities.length, page, this.pageSize);
+        this.meetingActivityPagedItems = this.filteredMeetingActivities.slice(this.meetingActivityPager.startIndex, this.meetingActivityPager.endIndex + 1);
+      } else {
+        this.meetingActivityPager = this.socialPagerService.getPager(this.meetingActivitysResponse.length, page, this.pageSize);
+        this.meetingActivityPagedItems = this.meetingActivitysResponse.slice(this.meetingActivityPager.startIndex, this.meetingActivityPager.endIndex + 1);
+      }
+    } catch (error) {
+    }
+  }
 
   searchFieldsKeyPress(keyCode: any) {
-		if (keyCode === 13) {
-			this.searchFields();
-		}
-	}
+    if (keyCode === 13) {
+      this.searchFields();
+    }
+  }
 
-	searchFields() {
+  searchFields() {
     if (this.referenceService.checkIsValidString(this.calendarType)) {
       this.setMeetingActivitiesPage(1);
     } else {
       this.showConfigureMessage = true;
     }
-	}
+  }
 
   getAllFilteredResultsFields() {
     this.showAllMeetingActivities();
@@ -177,16 +194,16 @@ export class MeetingActivityComponent implements OnInit {
     } else {
       this.showConfigureMessage = true;
     }
-	}
+  }
 
   clearSearch() {
-		this.searchKey = '';
-		if (this.referenceService.checkIsValidString(this.calendarType)) {
+    this.searchKey = '';
+    if (this.referenceService.checkIsValidString(this.calendarType)) {
       this.setMeetingActivitiesPage(1);
     } else {
       this.showConfigureMessage = true;
     }
-	}
+  }
 
   openMeetingModalPopup() {
     if (this.activeCalendarDetails != undefined) {
@@ -206,9 +223,9 @@ export class MeetingActivityComponent implements OnInit {
     this.notifyClose.emit(event);
   }
 
-  openPreviewModalPopup(eventUrl:any) {
+  openPreviewModalPopup(eventUrl: any) {
     this.eventUrl = eventUrl;
-    this.showPreviewMeeting =true;
+    this.showPreviewMeeting = true;
   }
 
   closePreviewMeetingModalPopup() {
@@ -224,6 +241,43 @@ export class MeetingActivityComponent implements OnInit {
 
   closeCalendarViewModalPopup() {
     this.showCalendarView = false;
+  }
+
+  fetchUsersForCompanyJourney() {
+    this.referenceService.loading(this.userListUsersLoader, true);
+    this.contactService.fetchUsersForCompanyJourney(this.selectedUserListId).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.companyUsersSearchableDropDownDto.data = response.data;
+          this.companyUsersSearchableDropDownDto.placeHolder = "Select a contact";
+        } else {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
+        }
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }, error => {
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }, () => {
+        if (this.companyUsersSearchableDropDownDto.data != undefined && this.companyUsersSearchableDropDownDto.data.length > 0) {
+          this.contactId = this.companyUsersSearchableDropDownDto.data[0].id;
+          this.showAllMeetingActivities();
+        } else {
+          this.contactErrorResponse = new CustomResponse('ERROR', 'No contact is available', true);
+        }
+      }
+    )
+  }
+
+  getSelectedAssignedToUserId(event) {
+    this.contactId = event != undefined ? event['id'] : 0;
+    this.showAllMeetingActivities();
+  }
+
+  selectedPageNumber(event) {
+    this.pageNumber.value = event;
+    if (event === 0) { event = this.meetingActivitysResponse.length; }
+    this.pageSize = event;
+    this.setMeetingActivitiesPage(1);
   }
 
 }

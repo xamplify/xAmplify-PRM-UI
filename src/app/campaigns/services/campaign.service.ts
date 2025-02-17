@@ -14,10 +14,10 @@ import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { DuplicateMdfRequest } from '../models/duplicate-mdf-request';
 declare var swal: any, $: any, Promise: any;
 @Injectable()
 export class CampaignService {
-    
     campaign: Campaign;
     eventCampaign: any;
     reDistributeCampaign: Campaign;
@@ -27,6 +27,7 @@ export class CampaignService {
     reDistributeEvent = false;
     loading = false;
     archived: boolean = false;
+    QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     constructor(private http: Http, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, private utilService: UtilService, public referenceService: ReferenceService) { }
 
@@ -1470,9 +1471,43 @@ export class CampaignService {
         let vendorCompanyNameParam = vendorCompanyName != undefined ? "&vendorCompanyName=" + vendorCompanyName : "";
         let companyJourneyParam = "&isCompanyJourney="+isCompanyJourney;
         let campaignRequestDtoParam = $.trim(loggedInUserIdRequestParam + contactIdRequestParam + vanityUrlFilterParam + vendorCompanyNameParam+companyJourneyParam);
-        let url = this.URL + "campaign/fetchContactAssociatedCampaignsAndCount" + "?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
+        let url = this.URL + "campaign/fetchContactAssociatedCampaignsAndCount?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
         return this.authenticationService.callGetMethod(url);
     }
 
+    /**XNFR-867**/
+    fetchCampaignAnalyticsOfCompanyContacts(companyListId:any, pagination:Pagination) {
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        pageableUrl += pagination.campaignType != undefined ? "&campaignType="+pagination.campaignType : "";
+        pageableUrl += pagination.vendorCompanyProfileName != undefined ? "&vendorCompanyProfileName=" + pagination.vendorCompanyProfileName : "";
+        let url = this.URL + "campaign/fetchCampaignAnalyticsOfCompanyContacts/"+this.authenticationService.getUserId()+"/"+companyListId+"?access_token="+this.authenticationService.access_token+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    fetchTotalAndActiveCampaignsCountForCompanyJourney(userListId: any, isVanityFilterEnabled: boolean, vendorCompanyName: any) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let loggedInUserIdRequestParam = loggedInUserId != undefined && loggedInUserId > 0 ? "&loggedInUserId=" + loggedInUserId : "&loggedInUserId=0";
+        let contactIdRequestParam = userListId != undefined && userListId > 0 ? "&contactId=" + userListId : "&contactId=0";
+        let vanityUrlFilterParam = isVanityFilterEnabled != undefined ? "&vanityUrlFilter=" + isVanityFilterEnabled : "";
+        let vendorCompanyNameParam = vendorCompanyName != undefined ? "&vendorCompanyName=" + vendorCompanyName : "";
+        let campaignRequestDtoParam = $.trim(loggedInUserIdRequestParam + contactIdRequestParam + vanityUrlFilterParam + vendorCompanyNameParam);
+        let url = this.URL + "campaign/fetchTotalAndActiveCampaignsCounts?access_token=" + this.authenticationService.access_token + campaignRequestDtoParam;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    findMdfRequestsByCampaignId(emailsHistoryPagination: Pagination) {
+        let pageableUrl = this.referenceService.getPagebleUrl(emailsHistoryPagination);
+        const url = this.URL + 'campaign/requests/' +emailsHistoryPagination.campaignId+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+      }
+
+      
+      findMdfRequestHistoriesByMdfKey(pagination: Pagination,mdfAlias:string) {
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        const url = this.URL + 'campaign/requests/history/' +mdfAlias+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+      }
+
+      
 
 }

@@ -70,6 +70,7 @@ export class AddMeetingModalPopupComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.removeCalendlyScript('calendly-widget-script');
+    this.referenceService.closeModalPopup('addMeetingModalPopup');
   }
 
   removeCalendlyScript(scriptId:any): void {

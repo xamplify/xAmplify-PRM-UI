@@ -2736,6 +2736,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
         $('#contactsModal').modal('hide');
         $('#show_email_template_preivew').modal('hide');
+        $('#filterPopup').modal('hide');
     }
 
     smsServices() {

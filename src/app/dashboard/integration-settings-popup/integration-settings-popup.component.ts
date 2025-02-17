@@ -13,7 +13,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   @Input() customFieldsList: any;
   @Input() opportunityType :any;
   customFields = new CustomFieldsDto;
-  defaultFields = ['Name','Last Name']
+  defaultFields = ['Name','Last Name', 'Close Date']
   isDefaultField: boolean = false;
   options: any;
   deleteOptionVisible: boolean = false;
@@ -32,7 +32,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     if(this.customField.originalCRMType === 'select'){
       this.canDisableSelect = true;
     }
-    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID' || this.customField.formDefaultFieldType === 'CREATED_BY_NAME'){
+    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID' || this.customField.formDefaultFieldType === 'CREATED_BY_NAME'|| this.customField.formDefaultFieldType === 'XAMPLIFY_LEAD_CREATED_DATE' || this.customField.formDefaultFieldType === 'XAMPLIFY_DEAL_REGISTERED_DATE' || this.customField.formDefaultFieldType === 'CONTACT_FIRST_NAME' || this.customField.formDefaultFieldType === 'CONTACT_LAST_NAME' || this.customField.formDefaultFieldType === 'CONTACT_EMAIL' || this.customField.formDefaultFieldType === 'CONTACT_PHONE_NUMBER' || this.customField.formDefaultFieldType === 'CONTACT_STREET'|| this.customField.formDefaultFieldType === 'CONTACT_ZIP_CODE' || this.customField.formDefaultFieldType === 'CONTACT_STATE' || this.customField.formDefaultFieldType === 'CONTACT_CITY' || this.customField.formDefaultFieldType === 'CONTACT_COUNTRY' || this.customField.formDefaultFieldType === 'CONTACT_TITLE'){
       this.canDisableType = true;
     }
     this.customFields.required = this.customField.required;
@@ -58,6 +58,9 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     }
     this.customFields.controllerName = this.customField.controllerName;
     this.customFields.formLookUpDefaultFieldType = this.customField.formLookUpDefaultFieldType;
+  }
+  ngOnDestroy(){
+    $("#integrationSettingsForm").modal('hide');
   }
   hideIntegrationSettingForm() {
     $("#integrationSettingsForm").modal('hide');
@@ -167,7 +170,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       if (
         field.label === selectedField.label &&
         (selectedFieldType === 'DEAL_ID' ||
-          selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME')) {
+          selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME' || selectedFieldType === 'XAMPLIFY_LEAD_CREATED_DATE' || selectedFieldType === 'XAMPLIFY_DEAL_REGISTERED_DATE' || selectedFieldType === 'CONTACT_FIRST_NAME' || selectedFieldType === 'CONTACT_LAST_NAME' || selectedFieldType === 'CONTACT_EMAIL' || selectedFieldType === 'CONTACT_PHONE_NUMBER' || selectedFieldType === 'CONTACT_STREET'|| selectedFieldType === 'CONTACT_ZIP_CODE' || selectedFieldType === 'CONTACT_STATE' || selectedFieldType === 'CONTACT_CITY' || selectedFieldType === 'CONTACT_COUNTRY' || selectedFieldType === 'CONTACT_TITLE')) {
         countSelectedType++;
         field.formDefaultFieldType = selectedFieldType;
         this.canDisableType = true;
@@ -178,7 +181,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customFieldsList.forEach(field => {
         if (
           field.formDefaultFieldType === selectedFieldType && (selectedFieldType === 'DEAL_ID' ||
-            selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME') &&
+            selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME' || selectedFieldType === 'XAMPLIFY_LEAD_CREATED_DATE' || selectedFieldType === 'XAMPLIFY_DEAL_REGISTERED_DATE' || selectedFieldType === 'CONTACT_FIRST_NAME' || selectedFieldType === 'CONTACT_LAST_NAME' || selectedFieldType === 'CONTACT_EMAIL' || selectedFieldType === 'CONTACT_PHONE_NUMBER' || selectedFieldType === 'CONTACT_STREET'|| selectedFieldType === 'CONTACT_ZIP_CODE' || selectedFieldType === 'CONTACT_STATE' || selectedFieldType === 'CONTACT_CITY' || selectedFieldType === 'CONTACT_COUNTRY' || selectedFieldType === 'CONTACT_TITLE') &&
           field !== selectedField
         ) {
           field.formDefaultFieldType = null;

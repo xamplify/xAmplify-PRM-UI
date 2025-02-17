@@ -12,4 +12,8 @@ export class EmailActivity {
     ccEmailIdsString:any;
     bccEmailIdsString:any;
     emailAttachmentDTOs = [];
+    userIds = [];
+    isCompanyJourney:boolean;
+    fullName:any;
+    addedForEmailId:any;
 }

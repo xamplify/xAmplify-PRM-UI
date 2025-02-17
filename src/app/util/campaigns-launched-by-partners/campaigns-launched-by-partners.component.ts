@@ -30,11 +30,10 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 	ngOnInit() {
-		this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
-		this.getActivePartnerReports();
 	}
 
-	ngOnChanges(){
+	ngOnChanges() {
+		this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
 		this.getActivePartnerReports();
 	}
 

@@ -7,6 +7,8 @@ import { SortOption } from 'app/core/models/sort-option';
 import { TaskActivityService } from '../services/task-activity.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { ContactService } from 'app/contacts/services/contact.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var flatpickr:any;
 
@@ -22,6 +24,8 @@ export class AddTaskModalPopupComponent implements OnInit {
   @Input() userId:any;
   @Input() actionType:string;
   @Input() taskActivityId:any;
+  @Input() selectedUserListId:any;
+  @Input() isCompanyJourney:boolean = false;
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
   @Output() notifyUpdateSuccess = new EventEmitter();
@@ -51,8 +55,13 @@ export class AddTaskModalPopupComponent implements OnInit {
   formData: any = new FormData();
   assignedToUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   assignToLoader:HttpRequestLoader = new HttpRequestLoader();
+  userListUsersLoader:HttpRequestLoader = new HttpRequestLoader();
+  dropdownSettings = {};
+  userListUsersData = [];
+  userIds = [];
+  users = [];
 
-  constructor(public referenceService:ReferenceService, public taskService:TaskActivityService, public properties:Properties) { }
+  constructor(public referenceService:ReferenceService, public taskService:TaskActivityService, public properties:Properties, public contactService: ContactService) { }
 
   ngOnInit() {
     this.initializeDueDatePicker();
@@ -63,25 +72,39 @@ export class AddTaskModalPopupComponent implements OnInit {
       this.taskActivity.priority = 'LOW';
       this.taskActivity.taskType = 'TODO';
       this.taskActivity.assignedTo = 0;
-      this.fetchAssignToDropDownOptions();
-      this.fetchStatusDropDownOptions();
       this.isEdit = false;
       this.isPreview = false;
+      this.fetchAssignToDropDownOptions();
     } else if (this.actionType == 'edit') {
       this.isPreview = false;
       this.isEdit = true;
-      this.fetchAssignToDropDownOptions();
-      this.fetchStatusDropDownOptions();
       this.fetchTaskActivityByIdForEdit();
-    } else {
-      this.isPreview = true;
-      this.isEdit = false;
+    }
+    this.fetchStatusDropDownOptions();
+    if (this.isCompanyJourney) {
+      this.fetchUsersForCompanyJourney();
+      this.dropdownSettings = {
+        singleSelection: false,
+        text: "Please select",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class"
+      };
     }
     this.referenceService.openModalPopup('addTaskModalPopup');
   }
-
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup('addTaskModalPopup');
+  }
   save() {
     this.ngxLoading = true;
+    if (this.isCompanyJourney) {
+      this.taskActivity.userIds = this.userIds.map(user => user.id);
+      this.taskActivity.isCompanyJourney = this.isCompanyJourney;
+    } else {
+      this.taskActivity.userIds.push(this.userId);
+    }
     this.prepareFormData();
     this.taskService.save(this.taskActivity, this.formData).subscribe(
       response => {
@@ -111,7 +134,8 @@ export class AddTaskModalPopupComponent implements OnInit {
     let isValidAssignedTo = this.taskActivity.assignedTo != undefined && this.taskActivity.assignedTo > 0;
     let isValidStatus = this.taskActivity.status != undefined && this.taskActivity.status > 0;
     let isValidRemainder = (this.taskActivity.remainderType == 'CUSTOMDATE' && this.taskActivity.remainder && this.taskActivity.remainder.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) || this.taskActivity.remainderType != 'CUSTOMDATE'; 
-    if (isValidName && isValidDueDate && isValidAssignedTo && isValidStatus && isValidRemainder) {
+    let isValidContactId = this.isCompanyJourney && this.actionType != 'edit' ? (this.userIds != undefined && this.userIds.length > 0) : true;
+    if (isValidName && isValidDueDate && isValidAssignedTo && isValidStatus && isValidRemainder && isValidContactId) {
       this.isValidTask = true;
     } else {
       this.isValidTask = false;
@@ -263,6 +287,7 @@ export class AddTaskModalPopupComponent implements OnInit {
       },
       () => {
         this.initializeRemainderPicker();
+        this.fetchAssignToDropDownOptions();
         if (this.taskActivity.remainderType == 'CUSTOMDATE') {
           this.showRemainderDate = true;
         }
@@ -390,6 +415,44 @@ export class AddTaskModalPopupComponent implements OnInit {
     if (remainderChecks[this.taskActivity.remainderType]) {
       this.taskActivity.remainderType = '';
     }
+  }
+
+  fetchUsersForCompanyJourney() {
+    this.referenceService.loading(this.userListUsersLoader, true);
+    this.contactService.fetchUsersForCompanyJourney(this.selectedUserListId).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.userListUsersData = response.data;
+        } else {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
+        }
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }, error => {
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }
+    )
+  }
+
+  getSelectedUserUserId(event) {
+    this.taskActivity.userId = event != undefined ? event['id'] : 0;
+    this.validateTask();
+  }
+
+  onItemSelect(item: any) {
+    this.validateTask();
+  }
+
+  OnItemDeSelect(item: any) {
+    this.validateTask();
+  }
+
+  onSelectAll(items: any) {
+    this.validateTask();
+  }
+
+  onDeSelectAll(items: any) {
+    this.validateTask();
   }
 
 }

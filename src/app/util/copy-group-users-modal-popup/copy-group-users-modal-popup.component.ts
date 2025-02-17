@@ -50,6 +50,9 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
     this.pagination.userListId = this.userListId;
     this.findGroupsForMerging(this.pagination);
   }
+  ngOnDestroy(){
+    $('#copyGroupUsersModalPopup').modal('hide');
+  }
   private addLoader() {
     this.referenceService.startLoader(this.httpRequestLoader);
   }

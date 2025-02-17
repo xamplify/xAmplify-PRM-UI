@@ -125,6 +125,7 @@ import { ApprovalControlManagementSettingsComponent } from './approval-control-m
 import { SignatureService } from './services/signature.service';
 import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { CustomDashboardSettingsComponent } from './custom-dashboard-settings/custom-dashboard-settings.component';
+import { AddDefaultCompaniesOrMapLogoComponent } from 'app/util/add-default-companies-or-map-logo/add-default-companies-or-map-logo.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule, MultiSelectAllModule ],
@@ -217,6 +218,7 @@ import { CustomDashboardSettingsComponent } from './custom-dashboard-settings/cu
         CalendarIntegrationSettingsComponent,
         ApprovalControlManagementSettingsComponent,
         CustomDashboardSettingsComponent
+        AddDefaultCompaniesOrMapLogoComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,

@@ -427,7 +427,8 @@ tr {
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     backdrop-filter: blur(5px);
 }
-.modal-content {
+.modal-content,
+.salesforce_config {
   /* background-color: rgb(255, 255, 255) !important;
   color: #000 !important; */
   background: rgba(255, 255, 255, 0.35) !important;
@@ -4463,8 +4464,8 @@ border: 1px solid rgb(255 255 255 / 35%) !important;
 .icon-btns:hover,i.fa.fa-edit.ml_6:hover{
   background-color: #dee2e5!important;
 }
-i.fa.fa-edit.ml_6{
-  background-color: #eaf0f6!important;
+i.fa.fa-edit.ml_6,.icon-btns{
+  background-color: #fff!important;
   color: #555 !important;
 }
 .asidebar{
@@ -4539,3 +4540,8 @@ a.meeting-link{
 color: #fff!important;
 }
 .file-label{color: #fff !important;}
+ /* Added company profile lefside bar card color */
+ .profile_headers,.icon-group{
+  background: rgb(255 255 255 / 40%) !important;
+  border: 1px solid #ada6a64d;
+}

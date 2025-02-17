@@ -2361,6 +2361,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		$('#addCategoryModalPopup').modal('hide');
 		$('#deleteCategoryModalPopup').modal('hide');
 		$('#addPipelineModalPopup').modal('hide');
+		$('#addDomainModal').modal('hide');
 		$('#addExcludeUserPopupModal').modal('hide');
 		//swal.close();
 	}

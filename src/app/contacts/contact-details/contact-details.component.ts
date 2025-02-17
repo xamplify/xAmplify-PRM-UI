@@ -39,7 +39,7 @@ export class ContactDetailsComponent implements OnInit {
   @Input() contacts: User[];
 
   contactTitle: string = 'Contact Journey';
-  companyTitle: string = 'Company Jounrey';
+  companyTitle: string = 'Company Journey';
   highlightLetter:string = '';
   selectedCompanyContactId: any;
   isCompanyContact: boolean;
@@ -103,7 +103,6 @@ export class ContactDetailsComponent implements OnInit {
   contactCampaigns = [];
   campaignsCount:number = 0;
   selectedContactListId:number;
-  viewCampaigns: boolean = false;
   isReloadActivityTab:boolean;
   showTaskModalPopup: boolean = false;
   isReloadTaskActivityTab:boolean;
@@ -132,6 +131,13 @@ export class ContactDetailsComponent implements OnInit {
   isFromCompanyJourneyEditContacts: boolean = false;
   isRegisterDealEnabled: boolean = true;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  showCompanyCampaigns: boolean = false;
+  formattedContactsCount: string = '0';
+  formattedLeadsCount: string = '0';
+  formattedDealsCount: string = '0';
+  formattedCampaignsCount: string = '0';
+  totalDealAmount: any = "$ 0.0";
+  dealAmountLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -168,18 +174,19 @@ export class ContactDetailsComponent implements OnInit {
     if (this.isCompanyJourney) {
       this.getCompany();
       this.fetchContactsAndCount();
+      this.fetchTotalDealAmount();
     } else {
       this.getContact();
       this.checkTermsAndConditionStatus();
       this.getLegalBasisOptions();
-      this.fetchLogoFromExternalSource();
       this.getVendorRegisterDealValue();
-      this.getActiveCalendarDetails();
-      this.fetchCampaignsAndCount();
     }
     this.referenceService.goToTop();
+    this.getActiveCalendarDetails();
+    this.fetchLogoFromExternalSource();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchCampaignsAndCount();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -439,6 +446,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.leadsCount = data.totalRecords;
           this.contactLeads = data.list;
+          this.formattedLeadsCount = this.formatNumber(this.leadsCount);
         } else {
           this.leadsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -459,6 +467,7 @@ export class ContactDetailsComponent implements OnInit {
     this.viewLeads = false;
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
   }
 
   viewLead(leadId:any) {
@@ -497,6 +506,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.dealsCount = data.totalRecords;
           this.contactDeals = data.list;
+          this.formattedDealsCount = this.formatNumber(this.dealsCount);
         } else {
           this.dealsResponse = new CustomResponse('Error', this.properties.failedToFetchDealsResponseMessage, true);
         }
@@ -527,6 +537,7 @@ export class ContactDetailsComponent implements OnInit {
   closeViewMoreDealsTab() {
     this.viewDeals = false;
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
   }
 
   showDealSubmitSuccess(event) {
@@ -534,6 +545,7 @@ export class ContactDetailsComponent implements OnInit {
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
     this.customResponse = new CustomResponse('SUCCESS', this.properties.dealSubmittedSuccessResponseMessage, true);
   }
 
@@ -586,6 +598,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.campaignsCount = data.totalRecords;
           this.contactCampaigns = data.list;
+          this.formattedCampaignsCount = this.formatNumber(this.campaignsCount);
         } else {
           this.campaignsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -599,7 +612,6 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   viewMoreCampaigns() {
-    this.viewCampaigns = true;
     let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
     if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
@@ -613,6 +625,8 @@ export class ContactDetailsComponent implements OnInit {
       let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
       let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/j/"+encodedUserId+"/"+encodedUserListId+"/"+encodedCompanyId+'/fcjcd';
       this.referenceService.goToRouter(url);
+    } else if (this.isCompanyJourney) {
+      this.showCompanyCampaigns = true;
     } else {
       let url = RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.userCampaigns+"c/"+encodedUserId+"/"+encodedUserListId;
       url += this.isFromEditContacts ? "/" + RouterUrlConstants.cd : "/mcd";
@@ -629,7 +643,7 @@ export class ContactDetailsComponent implements OnInit {
       this.referenceService.goToRouter(url);
     } else if (this.isCompanyJourney) {
       let encodedCampaignId = this.referenceService.encodePathVariableInNewTab(campaignData.campaignId);
-			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignName.toLowerCase());
+			let encodedTitle = this.referenceService.getEncodedUri(campaignData.campaignTitle);
 			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignId + "/" + encodedTitle + "/details");
 		} else if (this.isFromCompanyJourneyEditContacts) {
       let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
@@ -676,7 +690,7 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchLogoFromExternalSource() {
     this.imgPathLoading = true;
-    this.activityService.fetchLogoFromExternalSource(this.contactId).subscribe(
+    this.activityService.fetchLogoFromExternalSource(this.contactId, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK && data != '') {
@@ -800,6 +814,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.contactsCount = data.totalRecords;
           this.companyContacts = data.list;
+          this.formattedContactsCount = this.formatNumber(this.contactsCount);
         } else {
           this.contactsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -853,6 +868,39 @@ export class ContactDetailsComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
       }
     );
+  }
+
+  closeCompanyCampaigns() {
+    this.showCompanyCampaigns = false;
+  }
+
+  formatNumber(input: number) {
+    if (input >= 1000000) {
+      return Math.floor(input / 1000000) + 'M';
+    } else if (input >= 1000) {
+      const roundedValue = Math.floor(input / 100) / 10;
+      if (input % 1000 !== 0) {
+        return `${roundedValue}k+`;
+      }
+      return `${roundedValue}k`;
+    } else {
+      return input.toString();
+    }
+  }
+
+  fetchTotalDealAmount() {
+    this.referenceService.loading(this.dealAmountLoader, true);
+    this.dealsService.fetchTotalDealAmount(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.totalDealAmount = response.data;
+        }
+        this.referenceService.loading(this.dealAmountLoader, false);
+      }, error => {
+        this.referenceService.loading(this.dealAmountLoader, false);
+      }
+    )
   }
   
 }

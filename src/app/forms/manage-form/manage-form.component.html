@@ -42,7 +42,7 @@
     </div>
     <div class="row" *ngIf="statusCode==200">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!detailedResponse">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pt0" *ngIf="!detailedResponse">
             <div class="portlet light remove_cardBgcolor padding_0 clearfix light_bg_removal remove_space">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject"
@@ -510,7 +510,7 @@
     <app-scroll-top></app-scroll-top>
     <app-preview-popup #previewPopUpComponent [isVendorJourney]="isVendorJourney"
         [isMasterLandingPage]="isMasterLandingPage" [isWelcomePage]="isWelcomePage"
-        [isPartnerJourneyPages]="isPartnerJourneyPages"></app-preview-popup>
+        [isPartnerJourneyPages]="isPartnerJourneyPages" [isVendorMarketplacePages]="isVendorMarketplacePages"></app-preview-popup>
 
     <div class="col-xs-12 p5" *ngIf="statusCode==403">
         <div class="alert alert-danger">

@@ -113,7 +113,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        
+        $("#templateRetrieve").modal('hide');
     }
 
     showAllTemplates(index: number) {

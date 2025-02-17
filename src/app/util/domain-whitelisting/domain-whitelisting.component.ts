@@ -144,6 +144,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.referenceService.closeSweetAlert();
+    this.referenceService.closeModalPopup("domainModal");
   }
 
   addDomainModalOpen() {

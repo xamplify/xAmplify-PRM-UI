@@ -1519,10 +1519,46 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callPutMethod(url, customDashboardLayout);
     }
 
+    /***** XNFR-860 *****/
     findDefaultDashboardSettings(vendorCompanyProfileName: string) {
         const url = this.DASHBOARD_LAYOUT_URL + '/custom-dashboard-settings/' + '?loggedInUserId=' + this.authenticationService.getUserId()
             + '&companyProfileName=' + vendorCompanyProfileName + '&access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
+    /** XNFR-839 */
+    saveSelectedFields(selectedFieldsResponseDto:any) {
+        const url = this.REST_URL + '/selected/fields?access_token=' +this.authenticationService.access_token;
+        return this.http.post(url, selectedFieldsResponseDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getAllLeadFormFields(companyProfileName:string,userType:string) {
+        var url = this.REST_URL + "/selected/fields/getAllFields/" + companyProfileName +'/'+userType+'/'+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    isMyPreferances() {
+        var url = this.REST_URL + "/selected/fields/isMyPreferances/" + this.authenticationService.getUserId()+'/' +this.authenticationService.companyProfileName+ "?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    getFieldsByUserId(){
+        var url = this.REST_URL + "/selected/fields/getByUserId/" + this.authenticationService.getUserId()+ '/' +this.authenticationService.companyProfileName + "?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    updateSelectedFields(selectedFieldsResponseDto:any) {
+        selectedFieldsResponseDto['companyProfileName'] = this.authenticationService.companyProfileName;
+        selectedFieldsResponseDto['loggedInUserId'] =this.authenticationService.getUserId();
+        const url = this.REST_URL + '/selected/fields/update?access_token=' +this.authenticationService.access_token;
+        return this.http.post(url, selectedFieldsResponseDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    /** XNFR-839 */
+    
 }

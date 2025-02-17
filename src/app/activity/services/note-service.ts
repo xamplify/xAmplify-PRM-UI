@@ -24,7 +24,7 @@ export class NoteService{
     getPaginatedNotes(notePagination:Pagination) {
         notePagination.userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(notePagination);
-        let url = this.URL + "/fetch-all-notes/" + notePagination.userId + "/" + notePagination.contactId + this.ACCESS_TOKEN_URL + pageableUrl;
+        let url = this.URL + "/fetch-all-notes/" + notePagination.userId + "/" + notePagination.contactId + "/" + notePagination.isCompanyJourney + this.ACCESS_TOKEN_URL + pageableUrl;
         return this.authenticationService.callGetMethod(url);
     }
 

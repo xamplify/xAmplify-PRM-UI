@@ -17,6 +17,7 @@ export class MultiselectApprovalCommentsModalPopupComponent implements OnInit {
   @Input() rejectedRecordNames = '';
   @Input() selectedFilterStatus = '';
   @Input() isSelectedAutoApprovalRecords = false;
+  @Input() hasAllAuthorityAccess = false;
   commentsModalPopUpId = "commentsModalPopUp";
   commentData: any = "";
   isValidComment: boolean = false;
@@ -36,15 +37,12 @@ export class MultiselectApprovalCommentsModalPopupComponent implements OnInit {
       this.statusText = this.isApproveOrRejectStatus === 'APPROVED' ? 'Approving' : 'Rejecting';
     }
 
-    if (this.isSelectedAutoApprovalRecords) {
-      this.showRecords = true;
-      this.approveCustomResponse = this.properties.AUTHORIZATION_RESPONSE_FOR_SELF_REJECT;
-    }
-
     if (this.rejectedRecordNames != undefined && this.rejectedRecordNames.length > 0) {
       this.showRecords = true;
-      if (this.selectedFilterStatus === 'APPROVED' && this.isSelectedAutoApprovalRecords) {
+      if (this.selectedFilterStatus === 'APPROVED' && this.isSelectedAutoApprovalRecords && !this.hasAllAuthorityAccess) {
         this.approveCustomResponse = this.properties.AUTHORIZATION_RESPONSE_FOR_TEAM_MEMBER;
+      } else if (this.selectedFilterStatus === 'APPROVED' && this.isSelectedAutoApprovalRecords && this.hasAllAuthorityAccess) {
+        this.approveCustomResponse = this.properties.AUTHORIZATION_RESPONSE_FOR_SELF_REJECT;
       } else if (this.selectedFilterStatus === 'APPROVED') {
         this.approveCustomResponse = this.properties.AUTHORIZATION_RESPONSE_REJECT;
       } else {
