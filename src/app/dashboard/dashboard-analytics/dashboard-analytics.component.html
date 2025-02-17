@@ -42,7 +42,7 @@
             </h4>
         </div>
     </div>
-    <div class="page-bar p0 mb-height_auto margin_b0" *ngIf="!ngxLoading">
+    <div class="page-bar p0 mb-height_auto margin_b0">
         <div class="col-md-12 col-xs-12 col-sm-12 dahboard_header" style="border-radius: 0;padding: 0.3em;">
             <div>
                 <h4 class="welcome-header text-overflow">
@@ -309,7 +309,7 @@
 </ng-template>
 
 <ng-template #prmMdfStatistics>
-    <div class="row pd_top10" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
+    <div class="row pd_top10 margin_17" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
         && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
         (authenticationService?.mdf || authenticationService?.leadsAndDeals)" 
         [ngClass]="{'margin_17': authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
@@ -373,18 +373,13 @@
         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
 </ng-template>
 
-<ng-template #leadStatistics>
-    <app-leads-statistics
+<ng-template #leadAndDealStatistics>
+    <div class="clearfix margin_17"
         *ngIf="!ngxLoading && (authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
-            && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && (authenticationService?.leadsAndDeals)"
-        [applyFilter]="applyFilter"></app-leads-statistics>
-</ng-template>
-
-<ng-template #dealStatistics>
-    <app-deals-statistics
-        *ngIf="!ngxLoading && (authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
-            && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && (authenticationService?.leadsAndDeals)"
-        [applyFilter]="applyFilter"></app-deals-statistics>
+    && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && (authenticationService?.leadsAndDeals)">
+        <app-leads-statistics [applyFilter]="applyFilter"></app-leads-statistics>
+        <app-deals-statistics [applyFilter]="applyFilter"></app-deals-statistics>
+    </div>
 </ng-template>
 
 <ng-template #highLevelAnalytics>

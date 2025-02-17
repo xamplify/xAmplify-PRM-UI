@@ -112,8 +112,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     @ViewChild('prmSharedTracks') prmSharedTracks: TemplateRef<any>;
     @ViewChild('prmPlayBooks') prmPlayBooks: TemplateRef<any>;
     @ViewChild('prmSharedPlayBooks') prmSharedPlayBooks: TemplateRef<any>;
-    @ViewChild('leadStatistics') leadStatistics: TemplateRef<any>;
-    @ViewChild('dealStatistics') dealStatistics: TemplateRef<any>;
+    @ViewChild('leadAndDealStatistics') leadAndDealStatistics: TemplateRef<any>;
     @ViewChild('highLevelAnalytics') highLevelAnalytics: TemplateRef<any>;
     @ViewChild('dragContainer') dragContainer: ElementRef;
     templates = [];
@@ -666,9 +665,8 @@ showCampaignDetails(campaign:any){
             { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 17 },
             { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 18 },
             { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 19 },
-            { name: 'leadStatistics', ref: this.leadStatistics, index: 20 },
-            { name: 'dealStatistics', ref: this.dealStatistics, index: 21 },
-            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 22 },
+            { name: 'leadAndDealStatistics', ref: this.leadAndDealStatistics, index: 20 },
+            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 21 },
         ];
         this.findDefaultDashboardSettings();
         this.findCustomDashboardLayout();
