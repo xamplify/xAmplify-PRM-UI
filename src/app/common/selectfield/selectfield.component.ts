@@ -65,6 +65,7 @@ export class SelectfieldComponent implements OnInit {
   }
   ngOnDestroy() {
     this.dragulaService.destroy('fieldsDragula');
+    this.referenceService.closeModalPopup(this.selectModalPopUp);
   }
   ngOnChanges() {
       this.pageNumber = this.paginationComponent.numberPerPage[0];
