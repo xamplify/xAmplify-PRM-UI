@@ -3425,3 +3425,7 @@ border-bottom-right-radius: 7px;
   margin-top:18px!important;
   margin-bottom: 5px!important;
 }
+/* dashboard drag and drop page border */
+.portlet.light.border_dash,.page-bar.border_dash {
+  border: 2px dashed #ca9b9b!important;
+}

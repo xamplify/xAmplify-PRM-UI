@@ -42,7 +42,7 @@
             </h4>
         </div>
     </div>
-    <div class="page-bar p0 mb-height_auto margin_b0">
+    <div class="page-bar p0 mb-height_auto margin_b0" *ngIf="!ngxLoading">
         <div class="col-md-12 col-xs-12 col-sm-12 dahboard_header" style="border-radius: 0;padding: 0.3em;">
             <div>
                 <h4 class="welcome-header text-overflow">
@@ -64,14 +64,14 @@
             </div>
             <!-- Btns -->
             <div class="d-flex">
-                <button class=" btn btn-danger mr5 btn_custom" aria-hidden="true" data-placement="bottom"
+                <button class=" btn mr5 btn_reset" aria-hidden="true" data-placement="bottom"
                     data-toggle="tooltip" title="Reset" (click)="findCustomDashboardLayout()"
                     *ngIf="isDraggingEnabled">Reset</button>
-                <button class="btn btn-primary btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                <button class="btn btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
                     [title]="isDraggingEnabled ? 'Update DashBoard Order' : (defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor)) ? 'The admin cannot grant access.' : 'Customize DashBoard Order'"
                     (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : isDraggingEnabled = true"
                     [disabled]="(defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor))">
-                    {{ isDraggingEnabled ? 'Update' : 'Customize' }}</button>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;{{ isDraggingEnabled ? 'Update' : 'Customize' }}</button>
                 <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 <app-team-member-filter-option
                     *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
@@ -85,7 +85,8 @@
 <!--XNFR-458--->
 <ng-template #dashBoardImages>
     <app-dashboard-banner-images
-        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"></app-dashboard-banner-images>
+        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        [isDraggingEnabled]="isDraggingEnabled"></app-dashboard-banner-images>
 </ng-template>
 
 <ng-template #moduleAnalytics>
@@ -103,12 +104,14 @@
 <!---XNFR-459--->
 <ng-template #newsAndAnnouncement>
     <app-news-and-announcement-and-instant-navigation-dashboard-analytics
-        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"></app-news-and-announcement-and-instant-navigation-dashboard-analytics>
+        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        [isDraggingEnabled]="isDraggingEnabled"></app-news-and-announcement-and-instant-navigation-dashboard-analytics>
 </ng-template>
 
 <ng-template #dashBoardButtons>
     <app-dashboard-buttons-carousel
-        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"></app-dashboard-buttons-carousel>
+        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        [isDraggingEnabled]="isDraggingEnabled"></app-dashboard-buttons-carousel>
 </ng-template>
 
 <ng-template #opportunityStats>
@@ -138,7 +141,8 @@
 
 <ng-template #vendorActivityAnalytics>
     <app-vendor-activity-analytics
-        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"></app-vendor-activity-analytics>
+        *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
+        [isDraggingEnabled]="isDraggingEnabled"></app-vendor-activity-analytics>
 </ng-template>
 
 <ng-template #campaignsGrid>
@@ -228,11 +232,11 @@
 
 <ng-template #campaignStatistics>
     <div class="clearfix row margin_17" [ngClass]="{'mr0': authenticationService?.dashboardTypes.indexOf('Dashboard')>-1, '': authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
-        <!---Campaign Statistics--->
+        <!--- Campaign Statistics --->
         <app-campaign-statistics-analytics *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
-            && authenticationService.module.showCampaignsAnalyticsDivInDashboard"></app-campaign-statistics-analytics>
+            && authenticationService.module.showCampaignsAnalyticsDivInDashboard" [isDraggingEnabled]="isDraggingEnabled"></app-campaign-statistics-analytics>
 
-        <!-- ---Email Statistics---------------->
+        <!--- Email Statistics --->
         <div *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
             class="portlet light col-xs-12 col-sm-6">
             <div class="portlet-title">
@@ -284,8 +288,8 @@
     !authenticationService?.module?.isVendorTier && !authenticationService?.module?.isVendorTierTeamMember && 
     !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember && 
     !authenticationService?.module?.isMarketingCompany && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
-        <app-redistributed-campaigns-wordcloud-map
-            [applyFilter]="applyFilter"></app-redistributed-campaigns-wordcloud-map>
+        <app-redistributed-campaigns-wordcloud-map [applyFilter]="applyFilter"
+            [isDraggingEnabled]="isDraggingEnabled"></app-redistributed-campaigns-wordcloud-map>
     </div>
 </ng-template>
 
@@ -307,7 +311,8 @@
 <ng-template #prmMdfStatistics>
     <div class="row pd_top10" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
         && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
-        (authenticationService?.mdf || authenticationService?.leadsAndDeals)">
+        (authenticationService?.mdf || authenticationService?.leadsAndDeals)" 
+        [ngClass]="{'margin_17': authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
         <div class="page-bar portlet light  mmtp" *ngIf="authenticationService?.mdf">
             <app-mdf-statistics [applyFilter]="applyFilter"
                 *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
@@ -316,7 +321,7 @@
 </ng-template>
 
 <ng-template #prmContent>
-    <app-show-prm-content [hideRowClass]="false"
+    <app-show-prm-content [hideRowClass]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
         *ngIf="(authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
                     authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner 
                     || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner) 
@@ -327,42 +332,42 @@
 </ng-template>
 
 <ng-template #prmAssets>
-    <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" (newItemEvent)="setManageDam($event)"
+    <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true" (newItemEvent)="setManageDam($event)"
         *ngIf="authenticationService?.module?.damAccess && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
         && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-assets>
 </ng-template>
 
 <ng-template #prmSharedAssets>
-    <app-top-4-assets [isPartnerView]="true" [hideRowClass]="false"
+    <app-top-4-assets [isPartnerView]="true" [hideRowClass]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
         *ngIf="authenticationService?.module?.damAccessAsPartner && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
         && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-assets>
 </ng-template>
 
 <ng-template #prmTracks>
-    <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="true"
+    <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="true" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
         *ngIf="authenticationService?.module?.lmsAccess && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
         && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
 </ng-template>
 
 <ng-template #prmSharedTracks>
-    <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="true"
+    <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="true" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
         *ngIf="authenticationService?.module?.lmsAccessAsPartner && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
         && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
 </ng-template>
 
 <ng-template #prmPlayBooks>
-    <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="false"
+    <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
         *ngIf="authenticationService?.module?.playbookAccess && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
         && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
 </ng-template>
 
 <ng-template #prmSharedPlayBooks>
-    <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false"
+    <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false" [isDraggingEnabled]="isDraggingEnabled" [isDashboardView]="true"
         *ngIf="authenticationService?.module?.playbookAccessAsPartner && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
         && ((authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl) 
         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)"></app-top-4-tracks-and-play-books>
@@ -383,7 +388,7 @@
 </ng-template>
 
 <ng-template #highLevelAnalytics>
-    <div class="portlet light" id="hla-adv-dashboard"
+    <div class="portlet light margin_17" id="hla-adv-dashboard"
         *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
         <div class="portlet-title" style="min-height: 0px;">
             <div class="caption">

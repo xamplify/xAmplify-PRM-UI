@@ -54,7 +54,8 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   };
   videoId: number;
   moduleType: string = "";
-
+  @Input() isDraggingEnabled: boolean;
+  @Input() isDashboardView: boolean;
   constructor(public referenceService: ReferenceService,  public tracksPlayBookUtilService:TracksPlayBookUtilService, public authenticationService: AuthenticationService,public xtremandLogger:XtremandLogger,public pagerService:PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
