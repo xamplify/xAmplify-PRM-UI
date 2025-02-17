@@ -15,7 +15,7 @@ import { VendorInvitation } from 'app/dashboard/models/vendor-invitation';
 
 @Injectable()
 export class TeamMemberService{
-    
+ 
     URL = this.authenticationService.REST_URL;
     constructor( private http: Http,  private authenticationService: AuthenticationService,
             private refService:ReferenceService ) {
@@ -379,10 +379,26 @@ export class TeamMemberService{
     }
 
 
+    /***XNFR-883***/
+    setAsDefaultSSOGroup(id: any) {
+        let url = this.URL + "teamMemberGroup/" + id + "/default-sso?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,"");
+      }
+
+      /***XNFR-883***/
+      findAllGroupIdsAndNamesWithDefaultSSOFirst() {
+        let userId = this.authenticationService.getUserId();
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let url = this.URL + "teamMemberGroup/groups/default-sso-first/"+companyProfileName+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+      }
+        
+ 
     resendTeamMemberEmail(pagination: Pagination) {
         var url = this.URL + "teamMember/send-team-Member-Recent-Login-email/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
+
 }
