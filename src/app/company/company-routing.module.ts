@@ -8,7 +8,7 @@ const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: 'manage', component: ManageCompanyComponent },
   { path: 'add', component: ManageCompanyComponent },
-  { path: 'manage/details/:userListId/:id', component: ContactDetailsComponent },
+  { path: 'manage/details/:id', component: ContactDetailsComponent },
 ];
 
 @NgModule({
