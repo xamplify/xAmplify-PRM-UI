@@ -463,9 +463,8 @@
                         [ngModelOptions]="{standalone: true}">
                         <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                           {{teamMemberGroup.name}}  
-                          <span *ngIf="teamMemberGroup?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.ssoEnabled">(Default SSO Group)</span>
+                          <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
                         </option>
-                        
                       </select>
                       <span
                         *ngIf="team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"
@@ -608,6 +607,7 @@
                       (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);">
                       <option *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                         {{teamMemberGroup?.name}}
+                        <ng-template  [ngTemplateOutlet]="defaultSSOGroupTextTemplate" [ngTemplateOutletContext]="{teamMemberGroup:teamMemberGroup}"></ng-template>
                       </option>
                     </select>
                     <span class="info-text-color float-left"
@@ -1120,3 +1120,7 @@
       </div>
     </div>
   </div>
+
+  <ng-template #defaultSSOGroupTextTemplate let-teamMemberGroup="teamMemberGroup">
+    <span *ngIf="teamMemberGroup?.defaultSsoGroup && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.ssoEnabled">({{properties?.defaultSSOGroup}})</span>
+  </ng-template>

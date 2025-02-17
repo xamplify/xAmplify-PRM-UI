@@ -1,5 +1,5 @@
 import { SweetAlertParameterDto } from './../../common/models/sweet-alert-parameter-dto';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -20,7 +20,7 @@ declare var $: any;
   styleUrls: ['./manage-team-member-group.component.css'],
   providers: [HttpRequestLoader, SortOption, Properties, TeamMemberService, CallActionSwitch]
 })
-export class ManageTeamMemberGroupComponent implements OnInit {
+export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
 
   customResponse: CustomResponse = new CustomResponse();
   updateGroupResponse: CustomResponse = new CustomResponse();
@@ -48,6 +48,9 @@ export class ManageTeamMemberGroupComponent implements OnInit {
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public teamMemberService: TeamMemberService, public callActionSwitch: CallActionSwitch) {
+  }
+  ngOnDestroy(): void {
+    this.referenceService.closeSweetAlert();
   }
 
   ngOnInit() {

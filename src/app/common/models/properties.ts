@@ -553,6 +553,7 @@ export class Properties {
 	proceed = "Yes, Proceed";
 	defaultSSOTeamMemberGroupToolTip = "Users logging in via SSO will be automatically assigned to this team member group";
 	defaultSSOTeamMemberGroupConfirmationMessage = "This group will be set as the default for SSO users";
+	defaultSSOGroup = "Default SSO Group";
 
 
 
