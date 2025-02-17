@@ -10,13 +10,24 @@
         <a translate>Universal Search Results</a>
       </li>
     </ul>
-    <div class="mr5 pull-right" style="margin-top: 4px;" *ngIf="!universalSearchApiLoading && disableTeammemberFilter() && !authenticationService?.module?.isMarketingCompany">
+    <div class="mr5 pull-right" style="margin-top: 4px;" *ngIf="!universalSearchApiLoading && disableTeammemberFilter() && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+     && !authenticationService?.module?.deletedPartner">
       <app-team-member-filter-option [customSelectedIndex]="referenceService.universalSearchFilterValue"
-      (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isPartnerModule]="false"></app-team-member-filter-option>
+        (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"
+        [isPartnerModule]="false"></app-team-member-filter-option>
     </div>
   </div>
-  <div class="alert alert-info" *ngIf="(utilService?.isLoggedAsTeamMember() || authenticationService?.module?.isTeamMember) && referenceService?.universalSearchFilterType === 'All' && !authenticationService?.module?.isMarketingCompany">
-    <strong>**The "All Partners/My Partner(s)" filter does not apply to the search results for Assets, Tracks, and Playbooks.</strong>
+  <div class="alert alert-info"
+    *ngIf="(utilService?.isLoggedAsTeamMember() || authenticationService?.module?.isTeamMember) && referenceService?.universalSearchFilterType === 'All' && !authenticationService?.module?.isMarketingCompany && (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner || authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner) && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+    && !authenticationService?.module?.deletedPartner && universalSearch?.length != 0">
+    <strong>
+      **The "All Partners/My Partner(s)" filter does not apply to the search results for 
+      {{
+        ((authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner) ? 'Assets' : '') +
+        ((authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner) ? (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ? ', ' : '') + 'Tracks' : '') +
+        ((authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner) ? ((authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner || authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner) ? ', and ' : '') + 'Playbooks' : '')
+      }}.
+    </strong>
   </div>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

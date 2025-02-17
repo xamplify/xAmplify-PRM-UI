@@ -201,7 +201,7 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit,OnDestroy
   /***XNFR-878*****/
   confirmPrimaryAdminChange(teamMember:any){
     this.partnerPrimaryAdminUpdateDto =  new PartnerPrimaryAdminUpdateDto();
-    if (teamMember.status == 'APPROVE' && this.authenticationService.module.isAdmin && this.authenticationService.module.isAnyAdminOrSupervisor) {
+    if (teamMember.status == 'APPROVE' && this.authenticationService.module.isAnyAdminOrSupervisor) {
       this.isEnablePrimaryAdminOptionClicked = true;
       this.partnerPrimaryAdminUpdateDto.partnerCompanyTeamMemberUserId = teamMember.teamMemberUserId;
     }

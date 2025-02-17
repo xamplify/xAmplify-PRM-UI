@@ -378,6 +378,7 @@ export class TeamMemberService{
         return this.authenticationService.callPostMethod(url, vendorInvitation);
     }
 
+
     /***XNFR-883***/
     setAsDefaultSSOGroup(id: any) {
         let url = this.URL + "teamMemberGroup/" + id + "/default-sso?access_token=" + this.authenticationService.access_token;
@@ -393,4 +394,11 @@ export class TeamMemberService{
       }
         
  
+    resendTeamMemberEmail(pagination: Pagination) {
+        var url = this.URL + "teamMember/send-team-Member-Recent-Login-email/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

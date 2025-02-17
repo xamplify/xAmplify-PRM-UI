@@ -276,6 +276,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             '{{mdfKeySearchLink}}',
             '{{campaignAnalyticsLink}}'
           ],
+          "TEAM_MEMBER_PORTAL": [
+            '{{VENDOR_FULL_NAME}}',
+            '{{VENDOR_COMPANY_NAME}}',
+          ],
         };
     
         const requiredTags = requiredTagsMap[emailTemplateType] || [];
@@ -286,7 +290,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             checks: [
               { condition: () => !$.trim(emailTemplate.subject), message: "Whoops! We are unable to save this template because subject line is empty." },
               { condition: () => ["JOIN_MY_TEAM", "FORGOT_PASSWORD", "ACCOUNT_ACTIVATION", "PARTNER_REMAINDER", "COMPANY_PROFILE_INCOMPLETE", "JOIN_VERSA_TEAM"].includes(emailTemplateType) && !jsonContent.includes("_CUSTOMER_FULL_NAME"), message: "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag." },
-              { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN", "ADD_LEAD", "ADD_DEAL", "LEAD_UPDATE", "DEAL_UPDATE", "FORM_COMPLETED", "ADD_SELF_LEAD", "ADD_SELF_DEAL", "UPDATE_SELF_LEAD", "UPDATE_SELF_DEAL", "PRM_ADD_LEAD", "PRM_UPDATED","LEAD_APPROVE","LEAD_REJECT","PRM_LEAD_APPROVE", "PRM_LEAD_REJECT"].includes(emailTemplateType) && !jsonContent.includes('{{customerFullName}}'), message: "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag." },
+              { condition: () => ["TRACK_PUBLISH", "PLAYBOOK_PUBLISH", "ASSET_PUBLISH", "SHARE_LEAD", "ONE_CLICK_LAUNCH", "PAGE_CAMPAIGN_PARTNER", "PAGE_CAMPAIGN_CONTACT", "SOCIAL_CAMPAIGN", "TO_SOCIAL_CAMPAIGN", "ADD_LEAD", "ADD_DEAL", "LEAD_UPDATE", "DEAL_UPDATE", "FORM_COMPLETED", "ADD_SELF_LEAD", "ADD_SELF_DEAL", "UPDATE_SELF_LEAD", "UPDATE_SELF_DEAL", "PRM_ADD_LEAD", "PRM_UPDATED","LEAD_APPROVE","LEAD_REJECT","PRM_LEAD_APPROVE", "PRM_LEAD_REJECT","TEAM_MEMBER_PORTAL"].includes(emailTemplateType) && !jsonContent.includes('{{customerFullName}}'), message: "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag." },
               { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{PARTNER_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag." },
               { condition: () => (emailTemplateType === "JOIN_VENDOR_COMPANY" || "JOIN_MY_TEAM"==emailTemplateType) && !jsonContent.includes("{{senderFullName}}"), message: "Whoops! We are unable to save this template because you deleted '{{senderFullName}}' tag." },
               { condition: () => emailTemplateType === "JOIN_VENDOR_COMPANY" && !jsonContent.includes("{{VENDOR_COMPANY_NAME}}"), message: "Whoops! We are unable to save this template because you deleted '{{VENDOR_COMPANY_NAME}}' tag." },
@@ -312,7 +316,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
               })),
               { condition: () => jsonContent.indexOf("<<LoginLink>>") < 0 && emailTemplateType === "JOIN_MY_TEAM", message: "Whoops! We are unable to save this template because you deleted 'LoginLink' tag." },
               { condition: () => jsonContent.indexOf("<login_url>") < 0 && (emailTemplateType === "JOIN_VENDOR_COMPANY" ||  emailTemplateType === "FORGOT_PASSWORD" || emailTemplateType === "JOIN_PRM_COMPANY"), message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
-              { condition: () => jsonContent.indexOf("login_url") < 0 && emailTemplateType === "COMPANY_PROFILE_INCOMPLETE", message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
+              { condition: () => jsonContent.indexOf("login_url") < 0 && (emailTemplateType === "COMPANY_PROFILE_INCOMPLETE" ||  emailTemplateType === "TEAM_MEMBER_PORTAL"), message: "Whoops! We are unable to save this template because you deleted 'login_url' tag." },
               { condition: () => jsonContent.indexOf("pageLink") < 0 && ["SOCIAL_CAMPAIGN", "PAGE_CAMPAIGN_CONTACT", "ADD_DEAL", "DEAL_UPDATE"].includes(emailTemplateType), message: "Whoops! We are unable to save this template because you deleted 'Button' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0, message: "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag." },
               { condition: () => emailTemplateType === "FORGOT_PASSWORD" && (jsonContent.match("<Vanity_Company_Logo_Href>") || []).length < 1, message: "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag." },
@@ -546,6 +550,12 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       if (["LEAD_REJECT", "LEAD_APPROVE"].includes(emailTemplateType)) {
         mergeTags.push({ name: 'Lead Associated Campaign', value: '{{leadAssociatedCampaign}}' });
       }
+      if (["TEAM_MEMBER_PORTAL"].includes(emailTemplateType)) {
+        mergeTags = [{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+          { name: 'Vendor Full Name', value: '{{VENDOR_FULL_NAME}}' },
+          { name: 'Vendor Company Name', value: '{{VENDOR_COMPANY_NAME}}' },
+        ];
+        }
 
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;

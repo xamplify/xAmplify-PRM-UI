@@ -1479,6 +1479,7 @@ export class CampaignService {
     fetchCampaignAnalyticsOfCompanyContacts(companyListId:any, pagination:Pagination) {
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         pageableUrl += pagination.campaignType != undefined ? "&campaignType="+pagination.campaignType : "";
+        pageableUrl += pagination.vendorCompanyProfileName != undefined ? "&vendorCompanyProfileName=" + pagination.vendorCompanyProfileName : "";
         let url = this.URL + "campaign/fetchCampaignAnalyticsOfCompanyContacts/"+this.authenticationService.getUserId()+"/"+companyListId+"?access_token="+this.authenticationService.access_token+pageableUrl;
         return this.authenticationService.callGetMethod(url);
     }
