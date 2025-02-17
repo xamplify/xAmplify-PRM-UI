@@ -10,7 +10,7 @@
         <a translate>Universal Search Results</a>
       </li>
     </ul>
-    <div class="mr5 pull-right" style="margin-top: 4px;" *ngIf="!universalSearchApiLoading && disableTeammemberFilter() && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+    <div class="mr5 pull-right" style="margin-top: 4px;" *ngIf="!universalSearchApiLoading && showTeammemberFilter && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
      && !authenticationService?.module?.deletedPartner">
       <app-team-member-filter-option [customSelectedIndex]="referenceService.universalSearchFilterValue"
         (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"
@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="alert alert-info"
-    *ngIf="(utilService?.isLoggedAsTeamMember() || authenticationService?.module?.isTeamMember) && referenceService?.universalSearchFilterType === 'All' && !authenticationService?.module?.isMarketingCompany && (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner || authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner) && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+    *ngIf="(utilService?.isLoggedAsTeamMember() || authenticationService?.module?.isTeamMember)  && !authenticationService?.module?.isMarketingCompany && showAlertOfContent && (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner || authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner) && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
     && !authenticationService?.module?.deletedPartner && universalSearch?.length != 0">
     <strong>
       **The "All Partners/My Partner(s)" filter does not apply to the search results for 
@@ -163,7 +163,7 @@
           <span [ngClass]="getLabelClass(quickLink)">{{quickLink?.navigate}} {{quickLink?.type}}s</span>
           <ng-template [ngTemplateOutlet]="searchNgTemplateIcon" [ngTemplateOutletContext]="{quickLink:quickLink,
           access:quickLink?.navigate === 'Shared',
-          title: quickLink?.navigate != 'Shared'? 'Navigate To Manage'
+          title: quickLink?.navigate != 'Shared'? 'Navigate To Manage ' +quickLink?.type+'s'
            :'You do not have permission to Navigate Manage'}">
           </ng-template>
 

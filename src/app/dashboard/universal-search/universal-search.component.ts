@@ -30,6 +30,8 @@ export class UniversalSearchComponent implements OnInit {
   defaultDisplayType: string = 'l';
   isWelcomePageEnabled: boolean;
   isTeamMember: boolean;
+  showAlertOfContent:boolean = false;
+  showTeammemberFilter:boolean= false;
   constructor(public referenceService: ReferenceService, public properties: Properties, public authenticationService: AuthenticationService, public pagerService: PagerService,
     public dashboardService: DashboardService, public router: Router, public utilService: UtilService) {
     let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
@@ -56,6 +58,8 @@ export class UniversalSearchComponent implements OnInit {
         this.isPartnerLoggedInThroughVanityUrl = map['isPartnerLoggedInThroughVanityUrl'];
         universalSearchPagination.totalRecords = data.totalRecords;
         universalSearchPagination = this.pagerService.getPagedItems(universalSearchPagination, this.universalSearch);
+        this.showAlertOfContent = this.referenceService.universalSearchFilterType === 'All';
+        this.disableTeammemberFilter();
         this.universalSearchApiLoading = false;
       }, error => {
         this.universalSearchApiLoading = false;
@@ -243,11 +247,11 @@ export class UniversalSearchComponent implements OnInit {
     this.referenceService.universalSearchFilterValue = this.selectedFilterIndex;
 		this.findUniversalSearch(this.universalSearchPagination);
 	}
-  disableTeammemberFilter():boolean{
+  disableTeammemberFilter(){
     if(this.referenceService.universalSearchFilterType === "Assets" || this.referenceService.universalSearchFilterType === "Tracks" || this.referenceService.universalSearchFilterType === "PlayBooks") {
-      return false;
+      this.showTeammemberFilter = false;
     } else {
-      return true;
+      this.showTeammemberFilter = true;
     }
   }
 }

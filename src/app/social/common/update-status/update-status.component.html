@@ -1,5 +1,5 @@
 <!--XNFR-726-->
-<ng-container *ngIf="authenticationService?.module?.socialShareOptionEnabled">
+<ng-container *ngIf="(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))">
     <div class="page-content">
         <ngx-loading [show]="loading"></ngx-loading>
         <div class="page-bar rounded-0 margin-bottom-10px">
@@ -1094,7 +1094,7 @@
 </div>
 </ng-container>
 <!--XNFR-726-->
-<ng-container *ngIf="!authenticationService?.module?.socialShareOptionEnabled">
+<ng-container *ngIf="!(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))">
     <app-access-denied-util></app-access-denied-util>
 </ng-container>
 <!--RSS Modal -->
