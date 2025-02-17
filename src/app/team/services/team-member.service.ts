@@ -383,6 +383,14 @@ export class TeamMemberService{
         let url = this.URL + "teamMemberGroup/" + id + "/default-sso?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callPutMethod(url,"");
       }
+
+      /***XNFR-883***/
+      findAllGroupIdsAndNamesWithDefaultSSOFirst() {
+        let userId = this.authenticationService.getUserId();
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let url = this.URL + "teamMemberGroup/groups/default-sso-first/"+companyProfileName+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+      }
         
  
 }
