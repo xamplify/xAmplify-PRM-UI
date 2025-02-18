@@ -59,3 +59,12 @@
     padding: 0px!important;
     margin-top: 6px!important;
   } 
+
+  .info-padding{
+    padding: 5px;
+    margin: 5px 1px;
+  }
+
+  .model-body-padding{
+    padding: 10px !important;
+  }
