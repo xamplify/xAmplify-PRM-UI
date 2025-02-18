@@ -22,7 +22,9 @@
             <tr>
               <th class="w-20" scope="row">Enter Email Address</th>
               <th scope="row">
-                <input class="form-control lowercase-text" type="text"   [(ngModel)]="emailAddress" [ngModelOptions]="{standalone: true}" (input)="emailAddress = emailAddress.toLowerCase()"  onkeypress="return event.charCode != 32">
+                <input class="form-control lowercase-text" type="text"   [(ngModel)]="accountDetailsDto.emailId" [ngModelOptions]="{standalone: true}"
+                 (input)="accountDetailsDto.emailId = accountDetailsDto.emailId.toLowerCase()"  onkeypress="return event.charCode != 32"
+                 (keypress)="findDetailsByEmailAddressOnKeyPress($event.keyCode)">
                 <span class="required" *ngIf="!isvalidEmailAddressEntered">{{emailAddressErrorMessage}}</span>
               </th>
               <th scope="row">
@@ -31,6 +33,11 @@
             </tr>
           </thead>
         </table>
+      </div>
+      <app-response-message [showCloseIcon]="false" [customResponse]="errorOrSuccessResponse" *ngIf="errorOrSuccessResponse?.isVisible"></app-response-message>
+      <app-modal-popup-loader *ngIf="apiLoading"></app-modal-popup-loader>
+      <div *ngIf="!apiLoading && statusCode==200">
+          <p>Vendor Comapnies Ound</p>
       </div>
     </div>
   </div>

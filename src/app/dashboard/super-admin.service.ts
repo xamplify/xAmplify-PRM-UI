@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ChangeEmailAddressRequestDto } from './models/change-email-address-request-dto';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { CustomDomainDto } from './models/custom-domain-dto';
+import { AccountDetailsDto } from './models/account-details-dto';
 
 @Injectable()
 export class SuperAdminService {
@@ -51,6 +52,11 @@ findRoleIdsAndNames(selectedTeamMemberUserId: any) {
 deleteCampaign(id: number) {
     const url = this.authenticationService.REST_URL + 'superadmin/deleteCampaign/'+id+'?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callDeleteMethod(url);
+}
+
+findVendorCompanies(accountDetailsDto:AccountDetailsDto) {
+    const url = this.authenticationService.REST_URL + 'superadmin/findVendorCompanies?emailId='+accountDetailsDto.emailId+'&access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
 }
 
 }
