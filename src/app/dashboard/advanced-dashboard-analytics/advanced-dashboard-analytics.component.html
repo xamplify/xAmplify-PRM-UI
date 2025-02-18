@@ -9,7 +9,7 @@
   </ng-container>
   <app-mdf-statistics *ngIf="authenticationService?.mdf" [applyFilter]="applyFilter"></app-mdf-statistics>
 </div>
-<div class="clearfix" *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
+<div class="clearfix margin_17" *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
     !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && !authenticationService?.module?.isVendorTier && 
     !authenticationService?.module?.isVendorTierTeamMember && !authenticationService?.module?.isVendorTierAndPartner && 
     !authenticationService?.module?.isVendorTierAndPartnerTeamMember && !authenticationService?.module?.isMarketingCompany">

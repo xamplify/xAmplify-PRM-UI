@@ -16,9 +16,21 @@ export class MyProfileService {
     return this.authenticationService.callPutMethod(url,campaignAnalyticsSettingsDto);
   }
 
-  findCampaignAnalyticsSettings(){
-    const url = this.myProfileUrl + 'findCampaignAnalyticsSettings/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+  findCampaignAnalyticsSettings() {
+    const url = this.myProfileUrl + 'findCampaignAnalyticsSettings/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url,);
+  }
+
+  findDefaultDashboardSettingsOption() {
+    const url = this.authenticationService.REST_URL + 'dashboard/layout/custom-dashboard-settings?loggedInUserId=' + this.authenticationService.getUserId()
+      + '&companyProfileName=' + this.authenticationService.companyProfileName + '&access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  updateDefaultDashboardSettingsOption(isDashboardLayoutUpdated: boolean) {
+    const url = this.authenticationService.REST_URL + 'dashboard/layout/custom-dashboard-settings?loggedInUserId=' + this.authenticationService.getUserId()
+      + '&isLayoutUpdated=' + isDashboardLayoutUpdated + '&access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, '');
   }
 
 }

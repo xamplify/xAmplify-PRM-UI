@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardButton } from 'app/vanity-url/models/dashboard.button';
@@ -22,6 +22,7 @@ export class DashboardButtonsCarouselComponent implements OnInit {
     "https://www.maggiesadler.com/wp-content/uploads/2015/10/10004088_1491055334449687_1187165020_n.jpg",
     "https://www.maggiesadler.com/wp-content/uploads/2015/10/10919749_326992714172441_299394464_n.jpg"
   ]
+  @Input() isDraggingEnabled: boolean;
 
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService) { }
 

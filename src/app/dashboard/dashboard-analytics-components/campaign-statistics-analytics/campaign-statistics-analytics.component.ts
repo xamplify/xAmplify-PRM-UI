@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -30,6 +30,7 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
   heatMapTooltip = 'Current Year';
   heatMapLoader: HttpRequestLoader = new HttpRequestLoader();
   dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
+  @Input() isDraggingEnabled: boolean;
   constructor(public authenticationService:AuthenticationService,public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService,public utilService:UtilService,private vanityUrlService: VanityURLService) {
     this.sortDates = this.dashboardService.sortDates;
     this.sortHeatMapValues = this.sortDates.concat([{ 'name': 'Year', 'value': 'year' }]);
