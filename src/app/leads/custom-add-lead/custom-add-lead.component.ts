@@ -1990,7 +1990,7 @@ export class CustomAddLeadComponent implements OnInit {
   goBackToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
-    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    let url = "home/company/manage/details/" + encodedId;
     this.referenceService.goToRouter(url);
   }
 

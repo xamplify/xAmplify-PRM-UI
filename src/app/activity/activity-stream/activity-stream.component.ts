@@ -79,11 +79,11 @@ export class ActivityStreamComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     activityPagination.isCompanyJourney = this.isCompanyJourney;
-    if (this.isCompanyJourney) {
-      activityPagination.contactId = this.selectedUserListId;
-    } else {
+    // if (this.isCompanyJourney) {
+    //   activityPagination.contactId = this.selectedUserListId;
+    // } else {
       activityPagination.contactId = this.contactId;
-    }
+    // }
     this.activityService.fetchRecentActivities(activityPagination).subscribe(
       response => {
         const data = response.data;
@@ -140,13 +140,17 @@ export class ActivityStreamComponent implements OnInit {
     this.notifyShowLeadForm.emit(leadId);
   }
 
-  viewCampaignTimeLine(campaignId:any){
-    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+  viewCampaignTimeLine(campaignData:any){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignData.id);
     let encodedUserId = this.referenceService.encodePathVariable(this.contactId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
     if (this.isFromCompanyModule) {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.ccd);
-    } else {
+    } else if (this.isCompanyJourney) {
+      let encodedCampaignIdForNewTab = this.referenceService.encodePathVariableInNewTab(campaignData.id);
+			let encodedTitle = this.referenceService.getEncodedUri(campaignData.dueDateString);
+			this.referenceService.openWindowInNewTab("/home/campaigns/" + encodedCampaignIdForNewTab + "/" + encodedTitle + "/details");
+		} else {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.campaigns+RouterUrlConstants.timeline+"c/"+encodedCampaignId+"/"+encodedUserId+"/"+encodedUserListId+"/"+RouterUrlConstants.cd);
     }
 	}
