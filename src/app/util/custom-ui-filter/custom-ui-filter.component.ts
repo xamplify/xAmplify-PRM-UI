@@ -122,7 +122,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				}
 			}
 			this.allfilterOptions = this.filterOptions;
-		} else if (type === "Partners") {
+		} else if (type == "Partners") {
 			this.filterOptions = [...this.sortOption.commonFilterOptions, ...this.sortOption.partnerFilterOptions];
 			this.allfilterOptions = this.filterOptions;
 			this.parterViewText = "Onboarded On";
@@ -276,6 +276,8 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 					criteriaObject.property = "mobileNumber";
 				} else if (this.criterias[i].property == "Notes") {
 					criteriaObject.property = "description";
+				} else {
+					criteriaObject.property = this.criterias[i].property;
 				}
 				criteriaObject.value1 = this.criterias[i].value1;
 				criteriaConditionsArray.push(criteriaObject);
@@ -362,7 +364,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		this.closeFilterEmitter.emit(event);
 	}
 	getOptionsForCriteria(criteria: any, index: number) {
-		if (criteria.property === 'From' || criteria.property === 'Type') {
+		if ((criteria.property === 'From' || criteria.property === 'Type') && this.type != 'Partners') {
 			this.criterias[index].operation = "=";
 			this.criterias[index].value1 = "undefined";
 		} else {
