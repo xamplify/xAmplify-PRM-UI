@@ -217,7 +217,7 @@ import { AddDefaultCompaniesOrMapLogoComponent } from 'app/util/add-default-comp
         CalendarIntegrationsComponent,
         CalendarIntegrationSettingsComponent,
         ApprovalControlManagementSettingsComponent,
-        CustomDashboardSettingsComponent
+        CustomDashboardSettingsComponent,
         AddDefaultCompaniesOrMapLogoComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
