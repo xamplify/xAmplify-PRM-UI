@@ -98,7 +98,7 @@
                   <div class="actions-block override-actions custom-width-icon">
                     <a *ngIf="item.status === 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
                     title="Resend the invitation email"
-                    [className]="isLoggedInAsTeamMember? 'pointer-events-none custom-icon':'custom-icon'"
+                    [className]="isLoggedInAsTeamMember? 'custom-icon':'custom-icon'"
                     (click)="resendEmailInvitation(item.emailId)">
                    <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
                    <div class="clickicons"></div>
