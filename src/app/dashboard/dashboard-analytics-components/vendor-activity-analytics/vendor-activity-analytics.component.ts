@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -25,6 +25,7 @@ export class VendorActivityAnalyticsComponent implements OnInit {
   divClass = "col-xs-12 col-sm-4";
   ngxLoading=false;
   showVendorActivity = false;
+  @Input() isDraggingEnabled: boolean;
   constructor(public authenticationService: AuthenticationService,public referenceService:ReferenceService,
     private xtremandLogger: XtremandLogger, public router: Router,public httpRequestLoader: HttpRequestLoader,public dashboardService:DashboardService,public route:ActivatedRoute,private vanityUrlService:VanityURLService) { }
 

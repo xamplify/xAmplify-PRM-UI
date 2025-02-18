@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -25,6 +25,7 @@ import { VideoFileService } from '../../videos/services/video-file.service';
 import { Roles } from 'app/core/models/roles';
 import { UserGuideDashboardDto } from 'app/guides/models/user-guide-dashboard-dto';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { DragulaService } from 'ng2-dragula';
 
 declare var swal, $:any, Highcharts: any;
 @Component({
@@ -90,27 +91,58 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     roleName: Roles = new Roles();
     userGuideDashboardDto:UserGuideDashboardDto = new UserGuideDashboardDto();
     /** user guide */
-  constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
-    public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
-    public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService,
-    public videoFileService: VideoFileService) {
 
-    this.loggedInUserId = this.authenticationService.getUserId();
-    this.vanityLoginDto.userId = this.loggedInUserId;
-    /***XNFR-134***/
-    let companyProfileName = this.authenticationService.companyProfileName;
-    if (companyProfileName !== undefined && companyProfileName !== "") {
-      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
-      this.vanityLoginDto.vanityUrlFilter = true;
-    }else{
-      this.vanityLoginDto.vanityUrlFilter = false;
+    /***** XNFR-860 *****/
+    @ViewChild('dashBoardImages') dashBoardImages: TemplateRef<any>;
+    @ViewChild('moduleAnalytics') moduleAnalytics: TemplateRef<any>;
+    @ViewChild('newsAndAnnouncement') newsAndAnnouncement: TemplateRef<any>;
+    @ViewChild('dashBoardButtons') dashBoardButtons: TemplateRef<any>;
+    @ViewChild('opportunityStats') opportunityStats: TemplateRef<any>;
+    @ViewChild('vendorActivityAnalytics') vendorActivityAnalytics: TemplateRef<any>;
+    @ViewChild('campaignsGrid') campaignsGrid: TemplateRef<any>;
+    @ViewChild('campaignStatistics') campaignStatistics: TemplateRef<any>;
+    @ViewChild('partnerStatistics') partnerStatistics: TemplateRef<any>;
+    @ViewChild('redistributedCampaigns') redistributedCampaigns: TemplateRef<any>;
+    @ViewChild('regionalStatistics') regionalStatistics: TemplateRef<any>;
+    @ViewChild('prmMdfStatistics') prmMdfStatistics: TemplateRef<any>;
+    @ViewChild('prmContent') prmContent: TemplateRef<any>;
+    @ViewChild('prmAssets') prmAssets: TemplateRef<any>;
+    @ViewChild('prmSharedAssets') prmSharedAssets: TemplateRef<any>;
+    @ViewChild('prmTracks') prmTracks: TemplateRef<any>;
+    @ViewChild('prmSharedTracks') prmSharedTracks: TemplateRef<any>;
+    @ViewChild('prmPlayBooks') prmPlayBooks: TemplateRef<any>;
+    @ViewChild('prmSharedPlayBooks') prmSharedPlayBooks: TemplateRef<any>;
+    @ViewChild('leadAndDealStatistics') leadAndDealStatistics: TemplateRef<any>;
+    @ViewChild('highLevelAnalytics') highLevelAnalytics: TemplateRef<any>;
+    @ViewChild('dragContainer') dragContainer: ElementRef;
+    templates = [];
+    defaultDashboardLayout = [];
+    isDestroyed: boolean = false;
+    isDraggingEnabled: boolean = false;
+    defaultDashboardsettings: boolean = false;
+    /***** XNFR-860 *****/
+
+    constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
+        public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
+        public dashBoardService: DashboardService, public utilService: UtilService, public router: Router, private route: ActivatedRoute, private vanityURLService: VanityURLService,
+        public videoFileService: VideoFileService, private dragulaService: DragulaService, private cdr: ChangeDetectorRef) {
+
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.vanityLoginDto.userId = this.loggedInUserId;
+        /***XNFR-134***/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        if (companyProfileName !== undefined && companyProfileName !== "") {
+            this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+            this.vanityLoginDto.vanityUrlFilter = true;
+        } else {
+            this.vanityLoginDto.vanityUrlFilter = false;
+        }
+        this.isOnlyUser = this.authenticationService.isOnlyUser();
+        this.utilService.setRouterLocalStorage('dashboard');
+        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+        this.showSandboxText = (("https://xamplify.co/" == envService.CLIENT_URL || "http://localhost:4200/" == envService.CLIENT_URL) && !this.authenticationService.vanityURLEnabled);
+
     }
-    this.isOnlyUser = this.authenticationService.isOnlyUser();
-    this.utilService.setRouterLocalStorage('dashboard');
-    this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-    this.showSandboxText = (("https://xamplify.co/"==envService.CLIENT_URL||"http://localhost:4200/"==envService.CLIENT_URL) && !this.authenticationService.vanityURLEnabled);
-    
-}
 
   ngOnInit() {
     localStorage.removeItem('assetName');
@@ -182,8 +214,10 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
             );
     }
       /** User Guide */
-  ngOnDestroy(){
+  ngOnDestroy() {
     $('#customizeCampaignModal').modal('hide');
+    this.isDraggingEnabled = false;
+    this.isDestroyed = true;
   }
 
   getDefaultPage(userId: number) {
@@ -609,5 +643,122 @@ showCampaignDetails(campaign:any){
         this.referenceService.goToRouter("/home/dam/manage");
     }
       
-      
+    /***** XNFR-860 *****/
+    ngAfterViewInit() {
+        this.templates = [
+            { name: 'dashBoardImages', ref: this.dashBoardImages, index: 1 },
+            { name: 'moduleAnalytics', ref: this.moduleAnalytics, index: 2 },
+            { name: 'newsAndAnnouncement', ref: this.newsAndAnnouncement, index: 3 },
+            { name: 'dashBoardButtons', ref: this.dashBoardButtons, index: 4 },
+            { name: 'opportunityStats', ref: this.opportunityStats, index: 5 },
+            { name: 'vendorActivityAnalytics', ref: this.vendorActivityAnalytics, index: 6 },
+            { name: 'campaignsGrid', ref: this.campaignsGrid, index: 7 },
+            { name: 'campaignStatistics', ref: this.campaignStatistics, index: 8 },
+            { name: 'partnerStatistics', ref: this.partnerStatistics, index: 9 },
+            { name: 'redistributedCampaigns', ref: this.redistributedCampaigns, index: 10 },
+            { name: 'regionalStatistics', ref: this.regionalStatistics, index: 11 },
+            { name: 'prmMdfStatistics', ref: this.prmMdfStatistics, index: 12 },
+            { name: 'prmContent', ref: this.prmContent, index: 13 },
+            { name: 'prmAssets', ref: this.prmAssets, index: 14 },
+            { name: 'prmSharedAssets', ref: this.prmSharedAssets, index: 15 },
+            { name: 'prmTracks', ref: this.prmTracks, index: 16 },
+            { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 17 },
+            { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 18 },
+            { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 19 },
+            { name: 'leadAndDealStatistics', ref: this.leadAndDealStatistics, index: 20 },
+            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 21 },
+        ];
+        this.findDefaultDashboardSettings();
+        this.findCustomDashboardLayout();
+        this.setUpDragEndSubscription();
+
+    }
+
+    /***** XNFR-860 *****/
+    setUpDragEndSubscription() {
+        this.dragulaService.dragend.subscribe(() => {
+            if (this.dragContainer && this.dragContainer.nativeElement) {
+                const newOrder: any[] = [];
+                const children = this.dragContainer.nativeElement.children;
+                for (let i = 0; i < children.length; i++) {
+                    const child = children[i];
+                    const templateName = child.id;
+                    const template = this.templates.find(t => t.name === templateName);
+                    if (template) {
+                        newOrder.push(template);
+                    }
+                }
+                this.defaultDashboardLayout = [...newOrder];
+                if (!this.isDestroyed) {
+                    this.cdr.detectChanges();
+                }
+            } else {
+                console.log("dragContainer or nativeElement is not yet available.");
+            }
+        });
+    }
+
+    /***** XNFR-860 *****/
+    findCustomDashboardLayout() {
+        this.defaultDashboardLayout = [];
+        this.dashBoardService.findCustomDashboardLayout(this.vendorCompanyProfileName)
+            .subscribe((response) => {
+                if (response) {
+                    this.defaultDashboardLayout = response.map(dashboardLayoutDto =>
+                        this.templates.find(template => dashboardLayoutDto.divName === template.name))
+                        .filter(template => template);
+                    console.log('Updated Default Dashboard Layout:', this.defaultDashboardLayout);
+                } else {
+                    this.defaultDashboardLayout = this.templates.map(template => ({ ...template }));
+                }
+            }, (error) => {
+                console.log(error);
+                this.defaultDashboardLayout = this.templates.map(template => ({ ...template }));
+            });
+    }
+
+    /***** XNFR-860 *****/
+    updateCustomDashBoardLayout() {
+        this.ngxLoading = true;
+        const dashboardLayoutDtos = this.defaultDashboardLayout.map(template => ({
+            divId: template.index,
+            divName: template.name
+        }));
+        const customDashboardLayout = {
+            userId: this.loggedInUserId,
+            companyProfileName: this.vendorCompanyProfileName,
+            dashboardLayoutDTOs: dashboardLayoutDtos
+        };
+        this.dashBoardService.updateCustomDashBoardLayout(customDashboardLayout).subscribe((response) => {
+            if (response.statusCode == 200) {
+                this.isDraggingEnabled = false;
+                this.userDefaultPage.responseType = 'SUCCESS';
+                this.userDefaultPage.responseMessage = response.message;
+            } else {
+                this.isDraggingEnabled = true;
+                this.userDefaultPage.responseType = 'ERROR';
+                this.userDefaultPage.responseMessage = response.message;
+            }
+            this.ngxLoading = false;
+        }, (error) => {
+            console.log(error);
+            this.ngxLoading = false;
+            this.isDraggingEnabled = true;
+            this.userDefaultPage.responseType = 'ERROR';
+            this.userDefaultPage.responseMessage = this.properties.serverErrorMessage;
+        });
+    }
+
+    /***** XNFR-860 *****/
+    findDefaultDashboardSettings() {
+        if (this.vendorCompanyProfileName) {
+            this.dashBoardService.findDefaultDashboardSettings(this.vendorCompanyProfileName).subscribe((response) => {
+                this.defaultDashboardsettings = response.data;
+            }, error => {
+                console.log(error);
+                this.defaultDashboardsettings = false;
+            });
+        }
+    }
+
 }

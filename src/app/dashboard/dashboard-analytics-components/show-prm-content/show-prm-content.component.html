@@ -6,9 +6,9 @@
   *ngIf="!authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
   <strong>No Modules Found</strong>
 </div>
-<div class="row" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
+<div class="row" [ngClass]="{'margin_17': isDashboardView}" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
   <div class="col-md-12">
-    <div [className]="hideRowClass ? 'page-bar portlet light mfpx' : 'portlet light'">
+    <div [ngClass]="{ 'page-bar': hideRowClass, 'portlet light': true, 'mfpx': hideRowClass}">
       <div class="portlet-title">
         <div class="caption" translate>
           <i class="fa fa-cogs" aria-hidden="true"></i>

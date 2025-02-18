@@ -99,16 +99,16 @@
         <legend class="scheduler-borders campaign_boxes sent-activity">Campaign Launched</legend>
       <div>
         <div class="activity-header">
-          <span><label class="activity-title mr5 mb0">Title:</label><a class="underline-on-hover" data-toggle="tooltip" data-placement="top" title="{{activity.name}}" (click)="viewCampaignTimeLine(activity.id)">
+          <span><label class="activity-title mr5 mb0">Title:</label><a class="underline-on-hover" data-toggle="tooltip" data-placement="top" title="{{activity.name}}" (click)="viewCampaignTimeLine(activity)">
             <span>{{activity.name}}</span></a></span>
           <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time [dateAndTimeUTCString]="activity?.createdTime"></app-display-date-and-time></span>
         </div>
         <div class="activity-body mt0">
           <span><label class="mr3 activity-title">Type:</label> {{activity.stage}}</span>
         </div>
-        <div class="activity-body mt0" *ngIf="isCompanyJourney">
+        <!-- <div class="activity-body mt0" *ngIf="isCompanyJourney">
           <span><label class="mr3 activity-title">Launched To:</label> {{activity.addedForEmailId}}</span>
-        </div>
+        </div> -->
       </div>
       </fieldset>
       <!---Lead--->
