@@ -1,16 +1,38 @@
-<div class="page-content">
+	<!--Header-->
   <div class="page-bar">
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home" aria-hidden="true"></i>
-        <a>Admin Report</a>
+        <a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        Merge Partner Companies
       </li>
     </ul>
+    <a class="close-circle mr5 mt5" [routerLink]="['/home/dashboard/admin-report']">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
   </div>
-
-  <div class="portlet body">
-
+  <div class="portlet light">
+    <div class="portlet-body clearfix">
+      <div class="table-responsive">
+        <table class='table tgrid'>
+          <thead>
+            <tr>
+              <th class="w-20" scope="row">Enter Email Address</th>
+              <th scope="row">
+                <input class="form-control lowercase-text" type="text"   [(ngModel)]="emailAddress" [ngModelOptions]="{standalone: true}" (input)="emailAddress = emailAddress.toLowerCase()"  onkeypress="return event.charCode != 32">
+                <span class="required" *ngIf="!isvalidEmailAddressEntered">{{emailAddressErrorMessage}}</span>
+              </th>
+              <th scope="row">
+                <button class="btn btn-primary" [ngClass]="emailAddressErrorMessage?.length>0 ? 'mb-20':''" (click)="findDetailsByEmailAddress()">Search</button>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
   </div>
-</div>
 
 <app-scroll-top></app-scroll-top>

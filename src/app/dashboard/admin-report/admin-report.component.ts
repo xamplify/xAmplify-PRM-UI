@@ -20,6 +20,7 @@ import { SuperAdminService } from '../super-admin.service';
 import { AccountDetailsDto } from '../models/account-details-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from 'app/core/services/util.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 
 declare var swal:any,$:any;
@@ -421,6 +422,10 @@ export class AdminReportComponent implements OnInit {
 		}, 500);
 	}
 
+
+    goToMergePartnerCompanies(){
+        this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.mergePartnerCompanies);
+    }
 
 
 }
