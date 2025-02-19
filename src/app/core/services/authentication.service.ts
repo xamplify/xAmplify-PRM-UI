@@ -1578,11 +1578,11 @@ vanityWelcomePageRequired(userId) {
     .map(this.extractData)
     .catch(this.handleError);
   }
-
-
-
-
- 
   
+  //XNFR-889
+  getPartnerCompanyByEmailDomain(emailId: any, companyProfileName: string) {
+    let url = this.REST_URL + "getPartnerCompanyByEmailDomain/" + emailId + "/" + companyProfileName;
+    return this.callGetMethod(url);
+  }
 
 }

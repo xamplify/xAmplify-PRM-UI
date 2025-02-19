@@ -176,6 +176,12 @@
                       </td>
                       <td>
                         <div class="actions-block override-actions mb_whitespace" style="float:none;">
+                          <!-- Edit Icon -->
+                          <a *ngIf="isPartnerDomainsTabSelected" class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+                            (click)="openDomianModalPopupForEdit(domain)">
+                            <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete"
                             (click)="confirmDeleteDomain(domain.id)">
                             <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
@@ -233,20 +239,32 @@
             </label>
             <div class="form-group col-xs-10 col-sm-10 domain-or-email-padding">
               <input type="text" style="border: none" class="form-control padding-mobile" id="domain"
-                (input)="validateDomain(domain)" [(ngModel)]="domain" [ngModelOptions]="{standalone: true}"
+                (input)="validateDomain(domain)" [disabled]="editAction" [(ngModel)]="domain" [ngModelOptions]="{standalone: true}"
                 placeholder="Enter Domain Name *" autocomplete="off">
               <div class="textCss"></div>
               <span class="danger" *ngIf="isDomainExist">This domain name has already been added</span>
               <span class="danger" *ngIf="!validDomainFormat">This domain name is not formatted properly</span>
             </div>
           </div>
+          <div *ngIf="isPartnerDomainsTabSelected" class="portlet light">
+            <h4 class="bold-font-weight ml10" translate>Distinctive Domain: Turn ON or OFF</h4>
+            <label class="mb0 mr10 ml10">Enabling this option will group all partners signing up with the same domain under a
+              single company.</label>
+            <span class="align-switch">
+              <app-custom-ui-switch [customSwitch]="isDomainAllowedToAddToSamePartnerAccount"
+                (customUiSwitchEventEmitter)="setIsDomainAllowed($event)"></app-custom-ui-switch>
+            </span>
+          </div>
         </form>
       </div>
       <div class="modal-footer" style="border:none">
         <button class="btn Btn-Gray" (click)="closeAddDomainModal()">Cancel</button>
-        <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
-          [disabled]="!validDomainPattern" translate><span
+        <button *ngIf="!editAction" type="button" class="button bgcolor-unset btn-top3"
+          (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern" translate><span
             class="btn Btn-Green transition txt_pd-top3">Add</span></button>
+        <button *ngIf="editAction" type="button" class="button bgcolor-unset btn-top3"
+          (click)="confirmAndupdateExcludedDomain(domain)" translate><span
+            class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>
   </div>

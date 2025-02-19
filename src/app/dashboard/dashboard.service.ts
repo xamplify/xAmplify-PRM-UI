@@ -25,6 +25,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { AccountDetailsDto } from './models/account-details-dto';
 @Injectable()
 export class DashboardService {
+
     REST_URL = this.authenticationService.REST_URL;
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
@@ -1536,5 +1537,13 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         .catch(this.handleError);
     }
     /** XNFR-839 */
+
+    /** XNFR-889 */
+    updateDomains(domainRequestDto: DomainRequestDto, selectedTab: number) {
+        let teamMemberOrPartnerDomain = selectedTab == 1 ? '' : '/partners/updateDomain';
+        const url = this.domainUrl + teamMemberOrPartnerDomain + this.QUERY_PARAMETERS;
+        domainRequestDto.createdUserId = this.authenticationService.getUserId();
+        return this.authenticationService.callPostMethod(url, domainRequestDto);
+    }
     
 }
