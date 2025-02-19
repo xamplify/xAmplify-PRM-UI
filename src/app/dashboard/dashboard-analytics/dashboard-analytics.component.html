@@ -68,7 +68,7 @@
             <!-- Btns -->
             <div class="d-flex">
                 <button class=" btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
-                    title="Reset Dashboard Layout" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">
+                    title="Reset to default dashboard" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">
                     <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Reset</button>
                 <button #customButton class="btn" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}" aria-hidden="true"
                     data-placement="bottom" data-toggle="tooltip"

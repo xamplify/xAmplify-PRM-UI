@@ -7,6 +7,10 @@
       <div class="caption caption-md col-xs-12">
         <span class="caption-subject font-blue-madison bold"><strong>Toggle the Default Dashboard Layout ON or
             OFF</strong></span>
+        <div class="pull-right" style="margin-top: -7px;margin-right: 15px;">
+            <app-custom-ui-switch [customSwitch]="isDashboardSettingsEnabled"
+              (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+        </div>
       </div>
     </div>
     <table class="table table-light" style="border:0px!important;background-color:transparent!important">
@@ -20,12 +24,6 @@
               <h5 translate>Enabling this option will restrict team members and partners from making any
                 customizations to the dashboard layout.
               </h5>
-            </div>
-            <div class="ui-switch-alignment">
-              <section>
-                <app-custom-ui-switch [customSwitch]="isDashboardSettingsEnabled"
-                  (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
-              </section>
             </div>
           </div>
         </tr>
