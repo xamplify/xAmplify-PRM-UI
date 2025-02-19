@@ -418,9 +418,10 @@ export class ContactService {
     }
 
 
-    downloadContactList(pagination: Pagination): Observable<Response> {
-        this.logger.info(pagination);
-        return this._http.post(this.contactsUrl + "/download?access_token=" + this.authenticationService.access_token, pagination)
+    downloadContactList(userListPaginationWrapper: UserListPaginationWrapper): Observable<Response> {
+        userListPaginationWrapper.pagination.userId = this.authenticationService.getUserId();
+        this.logger.info(userListPaginationWrapper);
+        return this._http.post(this.contactsUrl + "/download?access_token=" + this.authenticationService.access_token, userListPaginationWrapper)
             .map((response: any) => response);
     }
 

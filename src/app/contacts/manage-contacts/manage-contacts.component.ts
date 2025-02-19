@@ -659,7 +659,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		try {
 			this.downloadAssociatedPagination.userListId = contactListId;
 			this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
-			this.contactService.downloadContactList(this.downloadAssociatedPagination)
+			this.contactListObject = new ContactList;
+			this.contactListObject.id = contactListId;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.isPartnerUserList = this.isPartner;
+			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+			this.contactListObject.moduleName = this.module;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.userListPaginationWrapper.pagination = this.downloadAssociatedPagination;
+			this.contactService.downloadContactList(this.userListPaginationWrapper)
 				.subscribe(
 					data => this.downloadFile(data, contactListName),
 					(error: any) => {
