@@ -258,3 +258,7 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
 .table_align{
   padding: 10px 0px !important;
 }
+/**XNFR-890**/
+.mt3 {
+  margin-top: 3px
+}

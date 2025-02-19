@@ -2703,9 +2703,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	downloadList() {
 		try {
-			this.downloadAssociatedPagination.userListId = this.contactListId;
-			this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
-			this.contactService.downloadContactList(this.downloadAssociatedPagination)
+			this.userListPaginationWrapper.pagination = this.pagination;
+			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
+			this.contactListObj.id = this.selectedContactListId;
+			this.contactListObj.moduleName = this.checkingContactTypeName + 's';
+			this.contactListObj.name = this.contactListName;
+			this.contactListObj.sharedLeads = this.sharedLeads;
+			this.contactListObj.isPartnerUserList = this.isPartner;
+			this.contactListObj.assignedLeadsList = this.assignLeads;
+			this.contactListObj.contactType = this.contactsByType.selectedCategory;
+			this.contactListObj.editList = true;
+			this.contactListObj.isDownload = true;
+			this.userListPaginationWrapper.userList = this.contactListObj;
+			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+				this.refService.setTeamMemberFilterForPagination(this.userListPaginationWrapper.pagination, this.selectedFilterIndex);
+			}
+			this.contactService.downloadContactList(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						this.downloadFile(data);

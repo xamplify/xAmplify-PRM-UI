@@ -869,8 +869,13 @@
                         <div class="inputs" align="right" style="float: right; padding: 4px;display:flex;"
                             *ngIf="!referenceService.isMobileScreenSize()">
                             <!---XNFR-222-->
-                            <app-team-member-filter-option *ngIf="showFilter"
-                                (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)" [isPartnerModule] ="isPartner"></app-team-member-filter-option>
+                            <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"
+                                [isPartnerModule]="isPartner"></app-team-member-filter-option>
+                            <div class="btn btn-xs l-g-view margin-space mt3" (click)="toggleFilterOption()">
+                                <span data-placement="left" data-toggle="tooltip" title="Filter">
+                                    <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                                </span>
+                            </div>
                             <div style="float: left; margin: 3px 10px;">
                                 <select class="form-control SeclectBoxPaddingsAbj search_sort_shadows"
                                     [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
@@ -901,6 +906,7 @@
                             </div>
                         </div>
                     </div>
+                    <ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
                     <div class="portlet-body">
                         <div class="btn-group pull-right" style="margin-bottom: 10px; left: -16px;">
                             <div class="inputs" align="right" style="float: right"></div>
@@ -925,8 +931,9 @@
                                                         id="checkAllExistingContacts" />
                                                 </th>
                                                 <th style="width: 20%;" translate>Entity info</th>
-                                                <th class="hidden-xs" translate>VERTICAL</th>
-                                                <th class="hidden-xs" translate>REGION</th>
+                                                <!--- XNFR-890-start --->
+                                                <th translate>ONBOARDED ON</th>
+                                                <!--- XNFR-890-end --->
                                                 <th></th>
                                                 <th translate>SIGNUP STATUS</th>
                                                 <th class="hidden-sm" translate>COMPANY PROFILE</th>
@@ -978,14 +985,12 @@
                                                             </span>
                                                         </ng-container>
                                                     </td>
-                                                    <td class="hidden-xs white-space-transform"
-                                                        title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
-                                                        <span *ngIf="contact.vertical?.length>14">..</span>
+                                                    <!--- XNFR-890-start --->
+                                                    <td class="hidden-xs">
+                                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="contact.createdTime">
+                                                        </app-timestamp>
                                                     </td>
-                                                    <td class="hidden-xs white-space-transform"
-                                                        title="{{contact.region}}">{{contact.region | slice:0:14}}
-                                                        <span *ngIf="contact.region?.length>14">..</span>
-                                                    </td>
+                                                    <!--- XNFR-890-end --->
                                                     <td>
                                                         <button id='more_less_button_{{i}}'
                                                             class="hidden-xs lightgray-btn"
@@ -1172,6 +1177,16 @@
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.contactsLimit}}</td>
                                                                 </tr>
+                                                                <!--- XNFR-890-start --->
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Vertical:</td>
+                                                                    <td class='pt10 pb10'>{{contact.vertical}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Region:</td>
+                                                                    <td class='pt10 pb10'>{{contact.region}}</td>
+                                                                </tr>
+                                                                <!--- XNFR-890-end --->
                                                             </tbody>
                                                         </table>
                                                     </td>
@@ -1903,3 +1918,9 @@
     <app-resubscribe-contact-modal [selectedUser]="selectedUser" (notifyParent)="resubscribeUserResult($event)">
     </app-resubscribe-contact-modal>
 </div>
+
+<ng-template #filterOptionDiv>
+	<app-custom-ui-filter *ngIf="showFilterOption" [type]="'Partners'" [criteria] = "criteria"
+		(filterConditionsEmitter)="partnersFilter($event)"
+		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
+</ng-template>
