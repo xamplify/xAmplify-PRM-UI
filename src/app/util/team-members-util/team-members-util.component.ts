@@ -1047,7 +1047,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.team.id = id;
         this.editTeamMember = true;
         this.saveOrUpdateButtonText = "Update";
-        if (this.team.teamMemberGroupId == null) {
+        if (this.team.teamMemberGroupId == null || this.team.teamMemberGroupId == 0) {
           this.team.teamMemberGroupId = 0;
           this.team.validForm = false;
         }
