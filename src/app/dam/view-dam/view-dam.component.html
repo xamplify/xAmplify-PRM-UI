@@ -105,5 +105,5 @@
 </div>
 
 <div class="modal-body" *ngIf="openSelectDigitalSignatureModalPopUp">
-	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)"></app-select-digital-signature>
+	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [sharedAssetPath]="assetDetailsViewDto.sharedAssetPath"></app-select-digital-signature>
 </div>

@@ -8,35 +8,24 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-        <form>
-          <div class="form-check" *ngIf="signatureResponseDto?.uploadedSignatureExits">
-            <input class="form-check-input" type="radio" name="signatureOption" id="option1" [(ngModel)]="selectedSignature" [value]="signatureResponseDto.uploadedSignatureImagePath">
-            <label class="form-check-label" for="option1">
-              <div>
-                <img [src]="signatureResponseDto?.uploadedSignatureImagePath" alt="Image Preview" class="preview-img"/>
-              </div>
-            </label>
-          </div>
-          
-          <div class="form-check" *ngIf="signatureResponseDto?.drawSignatureExits">
-            <input class="form-check-input" type="radio" name="signatureOption" id="option2" [(ngModel)]="selectedSignature" [value]="signatureResponseDto.drawSignatureImagePath">
-            <label class="form-check-label" for="option2">
-              <div>
-                <img [src]="getSanitizedImageUrl(signatureResponseDto?.drawSignatureImagePath)" alt="Image Preview" class="preview-img" />
-              </div>
-            </label>
-          </div>
-          
-          <div class="form-check" *ngIf="signatureResponseDto?.typedSignatureExists">
-            <input class="form-check-input" type="radio" name="signatureOption" id="option3" [(ngModel)]="selectedSignature" [value]="signatureResponseDto.typedSignatureImagePath">
-            <label class="form-check-label" for="option3">
-              <div>
-                <ng-template [ngTemplateOutlet]="previewTypedSignatureTemplate" [ngTemplateOutletContext]="{'class':'signature-preview mb10'}"></ng-template>
-              </div>
-            </label>
-          </div>
-        </form>
+        <!-- PDF Signature Drag & Drop Section -->
+<div id="pdf-signature-section" style="display: flex; gap: 20px; padding: 20px;">
+  <!-- Left Side: Signature Container -->
+  <div id="signature-container">
+    <h2>Signature</h2>
+    <div id="signature-box">
+      <!-- Use the selected signature if available; otherwise a default image -->
+      <img
+        id="signature"
+        [src]="'https://dummyimage.com/100x50/000/fff.png&text=Sign'"
+        draggable="true">
+    </div>
+    <button id="download-pdf">Download PDF</button>
+  </div>
+  
+  <!-- Right Side: PDF Display -->
+  <div id="pdf-container"></div>
+</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn Btn-Gray mr5" (click)="closeModal()">Close</button>
@@ -45,9 +34,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #previewTypedSignatureTemplate let-class="class">
-  <div class="{{class}}" [ngStyle]="{'font-family': signatureResponseDto.typedSignatureFont}">
-    <div id="typedSignaturePreview">{{ signatureResponseDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}</div>
-  </div> 
-</ng-template>

@@ -223,3 +223,53 @@
   padding: 1rem 1rem;
   margin: -1rem -1rem -1rem auto;
 }
+#signature-container {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#signature-box {
+  width: 200px;
+  height: 100px;
+  border: 2px dashed #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+#signature {
+  width: 100px;
+  cursor: grab;
+}
+#pdf-container {
+  width: 800px;
+  height: 600px;
+  border: 2px solid #ccc;
+  position: relative;
+  overflow: auto;
+  background: #f9f9f9;
+}
+.pdf-page {
+  position: relative;
+  margin-bottom: 10px;
+}
+.signature-draggable {
+  position: absolute;
+  width: 100px;
+  height: auto;
+  cursor: move;
+  background: white;
+  border: 1px solid black;
+  padding: 3px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 20px;
+}
