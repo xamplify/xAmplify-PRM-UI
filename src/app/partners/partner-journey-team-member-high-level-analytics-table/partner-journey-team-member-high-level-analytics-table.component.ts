@@ -153,7 +153,6 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   }
 
   resendEmailInvitation(emailId: string) {
-    if (!this.isLoggedInAsTeamMember) {
       let self = this;
       swal({
         title: 'Are you sure?',
@@ -169,9 +168,6 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
       }, function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
       });
-
-    }
-
   }
 
   sendEmail(emailId: string) {
@@ -247,8 +243,9 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
 
 updateSelectionCheckBox(): void {
   const currentPageItems = this.pagination.pagedItems;
+  const selectableItems = currentPageItems.filter(item => item.status !== 'UNAPPROVED'); 
 
-  currentPageItems
+  selectableItems
     .filter(item => item.isSelected)
     .forEach(item => {
       if (!this.pagination.selectedPartnerIds.includes(item.teamMemberId)) {
@@ -256,7 +253,7 @@ updateSelectionCheckBox(): void {
       }
     });
 
-  currentPageItems
+  selectableItems
     .filter(item => !item.isSelected)
     .forEach(item => {
       const index = this.pagination.selectedPartnerIds.indexOf(item.teamMemberId);
@@ -270,30 +267,31 @@ updateSelectionCheckBox(): void {
     return teamMember && teamMember.status !== 'UNAPPROVED';
   });
 
-  this.isHeaderCheckBoxChecked = currentPageItems.every(item => item.isSelected);
-      this.selectedItemTeamMember = currentPageItems;
-
+  this.isHeaderCheckBoxChecked = selectableItems.length > 0 && selectableItems.every(item => item.isSelected);
+  this.selectedItemTeamMember = currentPageItems;
 }
-
 
 toggleSelectAll(event: Event): void {
   const checked = (event.target as HTMLInputElement).checked;
   const currentPageItems = this.pagination.pagedItems;
 
   currentPageItems.forEach(item => {
-    item.isSelected = checked;
+    if (item.status !== 'UNAPPROVED') { 
+      item.isSelected = checked;
 
-    if (checked) {
-      if (!this.pagination.selectedPartnerIds.includes(item.teamMemberId)) {
-        this.pagination.selectedPartnerIds.push(item.teamMemberId);
-      }
-    } else {
-      const index = this.pagination.selectedPartnerIds.indexOf(item.teamMemberId);
-      if (index !== -1) {
-        this.pagination.selectedPartnerIds.splice(index, 1);
+      if (checked) {
+        if (!this.pagination.selectedPartnerIds.includes(item.teamMemberId)) {
+          this.pagination.selectedPartnerIds.push(item.teamMemberId);
+        }
+      } else {
+        const index = this.pagination.selectedPartnerIds.indexOf(item.teamMemberId);
+        if (index !== -1) {
+          this.pagination.selectedPartnerIds.splice(index, 1);
+        }
       }
     }
   });
+
   this.updateSelectionCheckBox();
 }
 
@@ -336,8 +334,8 @@ sendReminder(): void {
             }
             else {
               this.isSendReminderEnabled = false;
+              this.isHeaderCheckBoxChecked = false;
             }
-            this.isHeaderCheckBoxChecked = false;
 
           } else {
             this.customResponse = new CustomResponse('ERROR', "Email cannot be sent", true);
@@ -395,7 +393,6 @@ sendReminder(): void {
       this.sendRemindersForAllSelectedPartners();
     }
     this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
-
   }
 
   sendTestEmailModalPopupTeamMemberEventReceiver() {

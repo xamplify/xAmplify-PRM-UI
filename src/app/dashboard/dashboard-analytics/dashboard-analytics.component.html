@@ -42,7 +42,10 @@
             </h4>
         </div>
     </div>
-    <div class="page-bar p0 mb-height_auto margin_b0">
+
+    <app-response-message [customResponse]="welcomeCustomResponse" *ngIf="welcomeCustomResponse?.isVisible"></app-response-message>
+
+    <div class="page-bar p0 mb-height_auto margin_b0" [hidden]="ngxLoading">
         <div class="col-md-12 col-xs-12 col-sm-12 dahboard_header" style="border-radius: 0;padding: 0.3em;">
             <div>
                 <h4 class="welcome-header text-overflow">
@@ -51,7 +54,7 @@
                         *ngIf="logedInCustomerCompanyName.length > 20">...</span>
                 </h4>
             </div>
-            <div class=""
+            <div
                 [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
                 <div class="df-mt5 dashboardfloatRight">
                     <h4 class="defaultScreenText" style="margin: 0.3em" translate>Do you want to set this as your
@@ -64,18 +67,21 @@
             </div>
             <!-- Btns -->
             <div class="d-flex">
-                <button class=" btn mr5 btn_reset" aria-hidden="true" data-placement="bottom"
-                    data-toggle="tooltip" title="Reset" (click)="findCustomDashboardLayout()"
-                    *ngIf="isDraggingEnabled">Reset</button>
-                <button class="btn btn_custom" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
-                    [title]="isDraggingEnabled ? 'Update DashBoard Order' : (defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor)) ? 'The admin cannot grant access.' : 'Customize DashBoard Order'"
-                    (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : isDraggingEnabled = true"
+                <button class=" btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                    title="Reset Dashboard Layout" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Reset</button>
+                <button #customButton class="btn" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}" aria-hidden="true"
+                    data-placement="bottom" data-toggle="tooltip"
+                    [title]="(defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor)) ? 'Custom Dashboard Layout is currently disabled.' : 'Customize Dashboard Layout'"
+                    (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : customizeDashboardLayout()"
                     [disabled]="(defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor))">
-                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;{{ isDraggingEnabled ? 'Update' : 'Customize' }}</button>
+                    <i class="fa" [ngClass]="{'fa-pencil-square-o': isDraggingEnabled, 'fa-tasks': !isDraggingEnabled}"
+                        aria-hidden="true"></i>&nbsp;{{ isDraggingEnabled ? 'Update' : 'Customize'}}</button>
                 <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 <app-team-member-filter-option
                     *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                        && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner" [filterIcon]="true"
+                            && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"
+                    [filterIcon]="true"
                     (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
             </div>
         </div>
@@ -91,7 +97,7 @@
 
 <ng-template #moduleAnalytics>
     <div *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
-        class="page-bar page-bar-shadow margin_17" style="padding: 1em 1em 0 1em;">
+        class="page-bar page-bar-shadow margin_17" style="padding: 1em 1em 0 1em;" [ngClass]="{'border_dashed': isDraggingEnabled}">
         <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
         </app-response-message>
         <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
@@ -117,7 +123,7 @@
 <ng-template #opportunityStats>
     <div *ngIf="!authenticationService?.module?.deletedPartner &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole) 
         && (authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1)"
-        class="portlet light margin_17">
+        class="portlet light margin_17" [ngClass]="{'border_dashed': isDraggingEnabled}">
         <div class="portlet-title">
             <div class="caption">
                 <i class="fa fa-bar-chart" aria-hidden="true"></i>
@@ -148,7 +154,7 @@
 <ng-template #campaignsGrid>
     <div *ngIf="((authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
         && authenticationService.module.showCampaignsAnalyticsDivInDashboard && authenticationService?.module?.createCampaign)"
-        class="portlet light margin_17">
+        class="portlet light margin_17" [ngClass]="{'border_dashed': isDraggingEnabled}">
         <div class="portlet-title" *ngIf="authenticationService?.module?.createCampaign">
             <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
             <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
@@ -313,7 +319,7 @@
         && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
         (authenticationService?.mdf || authenticationService?.leadsAndDeals)" 
         [ngClass]="{'margin_17': authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
-        <div class="page-bar portlet light  mmtp" *ngIf="authenticationService?.mdf">
+        <div class="page-bar portlet light  mmtp" *ngIf="authenticationService?.mdf" [ngClass]="{'border_dashed': isDraggingEnabled}">
             <app-mdf-statistics [applyFilter]="applyFilter"
                 *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
         </div>
@@ -383,7 +389,7 @@
 </ng-template>
 
 <ng-template #highLevelAnalytics>
-    <div class="portlet light margin_17" id="hla-adv-dashboard"
+    <div class="portlet light margin_17" [ngClass]="{'border_dashed': isDraggingEnabled}" id="hla-adv-dashboard"
         *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
         <div class="portlet-title" style="min-height: 0px;">
             <div class="caption">

@@ -21,15 +21,17 @@ export class MyProfileService {
     return this.authenticationService.callGetMethod(url,);
   }
 
+  /***** XNFR-860 *****/
   findDefaultDashboardSettingsOption() {
-    const url = this.authenticationService.REST_URL + 'dashboard/layout/custom-dashboard-settings?loggedInUserId=' + this.authenticationService.getUserId()
-      + '&companyProfileName=' + this.authenticationService.companyProfileName + '&access_token=' + this.authenticationService.access_token;
+    const url = this.authenticationService.REST_URL + 'dashboard/layout/default-dashboard-settings?companyProfileName='
+      + this.authenticationService.companyProfileName + '&access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
 
+  /***** XNFR-860 *****/
   updateDefaultDashboardSettingsOption(isDashboardLayoutUpdated: boolean) {
-    const url = this.authenticationService.REST_URL + 'dashboard/layout/custom-dashboard-settings?loggedInUserId=' + this.authenticationService.getUserId()
-      + '&isLayoutUpdated=' + isDashboardLayoutUpdated + '&access_token=' + this.authenticationService.access_token;
+    const url = this.authenticationService.REST_URL + 'dashboard/layout/default-dashboard-settings?companyProfileName='
+      + this.authenticationService.companyProfileName + '&isLayoutUpdated=' + isDashboardLayoutUpdated + '&access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, '');
   }
 
