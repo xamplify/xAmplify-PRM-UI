@@ -1,5 +1,5 @@
 	<!--Header-->
-  <div class="page-bar">
+  <div class="page-bar ml10 mr10 mt10">
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home" aria-hidden="true"></i>
@@ -14,10 +14,10 @@
       <i class="fa fa-times" aria-hidden="true"></i>
     </a>
   </div>
-  <div class="portlet light">
+  <div class="portlet light ml10 mr10">
     <div class="portlet-body clearfix">
       <div class="table-responsive">
-        <h4 class="required">Please enter the partner's email address used for onboarding</h4>
+        <h4>Please enter the partner's email address used for onboarding</h4>
         <app-response-message [showCloseIcon]="false" [customResponse]="errorOrSuccessResponse" *ngIf="errorOrSuccessResponse?.isVisible"></app-response-message>
         <table class='table tgrid'>
           <thead>
@@ -44,24 +44,24 @@
                  <span class="success">{{partnerCompanyName}}</span>
                 </th>
               </tr>
-              <tr>
-                <th scope="row">Select Vendor Company</th>
-                <th scope="row">
-                  <app-searchable-dropdown *ngIf="!apiLoading" [searchableDropDownDto]="vendorCompaniesSearchableDropdownDto" [id]="selectedVendorCompanyId"
-                  [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedVendorCompanyId($event)">
-                  </app-searchable-dropdown>
-                  <span class="success">Partnership Established with Number of Vendor Companies : {{vendorCompanies?.length}}</span>
-                </th>
-              </tr>
-              <tr>
-                <th scope="row">Select Partner Company To Transfer Data</th>
-                <th scope="row">
-                  <app-dropdown-loader *ngIf="partnerCompaniesApiLoading" [text]="'Partner Companies'"></app-dropdown-loader>
-                  <app-searchable-dropdown *ngIf="!partnerCompaniesApiLoading" [searchableDropDownDto]="partnerCompaniesSearchableDropdownDto" [id]="partnerCompanyIdForTransfer"
-                  [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedPartnerCompanyIdForTransfer($event)">
-                  </app-searchable-dropdown>
-                </th>
-              </tr>
+              <ng-container *ngIf="vendorCompanies?.length==1">
+                <tr>
+                  <th scope="row">Vendor Company</th>
+                  <th scope="row">
+                    <span class="success">{{vendorCompanyName}}</span>
+                  </th>
+                </tr>
+                <tr>
+                  <th scope="row">Partner Companies</th>
+                  <th scope="row">
+                    <app-dropdown-loader *ngIf="partnerCompaniesApiLoading" [text]="'Partner Companies'"></app-dropdown-loader>
+                    <app-searchable-dropdown *ngIf="!partnerCompaniesApiLoading" [searchableDropDownDto]="partnerCompaniesSearchableDropdownDto" [id]="partnerCompanyIdForTransfer"
+                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedPartnerCompanyIdForTransfer($event)">
+                    </app-searchable-dropdown>
+                    <span class="success">Number of Partner Companies : {{partnerCompanies?.length}}</span>
+                  </th>
+                </tr>
+              </ng-container>
             </tbody>
           </table>
       </div>

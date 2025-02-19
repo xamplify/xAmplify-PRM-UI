@@ -25,11 +25,13 @@ export class MergePartnerCompaniesComponent implements OnInit {
   selectedVendorCompanyId = 0;
   partnerCompaniesSearchableDropdownDto: SearchableDropdownDto = new SearchableDropdownDto();
   partnerCompanyIdForTransfer = 0;
+  isPartnerCompaniesSearchableDropdownDisplayed = false;
   isVendorCompaniesSearchableDropdownDisplayed = false;
   partnerCompanyName = "";
   partnerCompanyId = 0;
   partnerCompanies: Array<any> = new Array<any>();
   partnerCompaniesApiLoading = false;
+  vendorCompanyName = "";
   constructor(private referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public superAdminService: SuperAdminService, public logger: XtremandLogger) { }
 
@@ -66,7 +68,20 @@ export class MergePartnerCompaniesComponent implements OnInit {
   private fetchVendorCompanies(): void {
     this.superAdminService.findVendorCompanies(this.accountDetailsDto).subscribe(
       response => this.handleVendorCompaniesResponse(response),
-      error => this.handleApiError(error));
+      error => this.handleApiError(error),()=>{
+        if(this.vendorCompanies.length==1){
+          this.partnerCompaniesApiLoading = true;
+          this.partnerCompanyIdForTransfer = 0;
+          this.partnerCompanies = [];
+          let vendorCompany = this.vendorCompanies[0];
+          this.vendorCompanyName = vendorCompany['name'];
+          this.selectedVendorCompanyId = vendorCompany['id'];
+          this.findPartnerCompaniesExcluding();
+        }
+      }
+    
+    
+    );
   }
 
   private handleVendorCompaniesResponse(response: any): void {
@@ -75,21 +90,15 @@ export class MergePartnerCompaniesComponent implements OnInit {
       this.vendorCompanies = response.data;
       this.partnerCompanyName = response['map']['partnerCompanyName'];
       this.partnerCompanyId = response['map']['partnerCompanyId'];
-      this.displayVendorCompaniesDropdown();
+      if (this.vendorCompanies.length > 1) {
+        this.setErrorMessage("Merging is not applicable for the selected partner company as the partnership is established with multiple vendor");
+      } 
     } else {
       this.setErrorMessage(response.message);
     }
     this.apiLoading = false;
   }
 
-
-
-
-  private displayVendorCompaniesDropdown(): void {
-    this.isVendorCompaniesSearchableDropdownDisplayed = true;
-    this.vendorCompaniesSearchableDropdownDto.data = this.vendorCompanies;
-    this.vendorCompaniesSearchableDropdownDto.placeHolder = "Select a vendor company to display all partner companies for data transfer";
-  }
 
   private handleApiError(error: any): void {
     this.logger.errorPage(error);
@@ -98,17 +107,23 @@ export class MergePartnerCompaniesComponent implements OnInit {
 
 
   findPartnerCompaniesExcluding() {
-    this.partnerCompaniesApiLoading = true;
-    this.partnerCompanyIdForTransfer = 0;
-    this.partnerCompanies = [];
+    
     this.superAdminService.findPartnerCompaniesExcluding(this.selectedVendorCompanyId, this.partnerCompanyId).subscribe(
       response => {
         this.partnerCompanies = response.data;
+        this.displayPartnerCompaniesDropdown();
         this.partnerCompaniesApiLoading = false;
       }, error => {
         this.logger.errorPage(error);
       });
   }
+
+  private displayPartnerCompaniesDropdown(): void {
+    this.isPartnerCompaniesSearchableDropdownDisplayed = true;
+    this.partnerCompaniesSearchableDropdownDto.data = this.partnerCompanies;
+    this.partnerCompaniesSearchableDropdownDto.placeHolder = "Please select partner company to transfer the data";
+  }
+
 
   getSelectedVendorCompanyId(event: any) {
     if (event != null) {
@@ -125,6 +140,8 @@ export class MergePartnerCompaniesComponent implements OnInit {
     } else {
       this.partnerCompanyIdForTransfer = 0;
     }
+    console.log(this.selectedVendorCompanyId);
+    console.log(this.partnerCompanyIdForTransfer);
   }
 
 
@@ -137,5 +154,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
     this.partnerCompanyName = "";
     this.selectedVendorCompanyId = 0;
     this.partnerCompanyId = 0;
+    this.partnerCompanyIdForTransfer = 0;
+    this.partnerCompanies = [];
   }
 }
