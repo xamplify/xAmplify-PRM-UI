@@ -305,7 +305,7 @@ export class AddEmailModalPopupComponent implements OnInit {
 
   fetchUsersForCompanyJourney() {
     this.referenceService.loading(this.userListUsersLoader, true);
-    this.contactService.fetchUsersForCompanyJourney(this.selectedUserListId).subscribe(
+    this.contactService.fetchUsersForCompanyJourney(this.userId).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.userListUsersData = response.data;
