@@ -17,6 +17,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     rssBaseUrl = 'rss';
     contactBaseUrl = 'contacts';
     assignLeadBaseUrl = 'assignleads';
+    sharedLeadsBaseUrl = 'sharedleads';
     partnerBaseUrl = 'partners';
     campaignBaseUrl = 'campaigns';
     upgradeBaseUrl = 'upgrade';
@@ -151,6 +152,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             if (url.indexOf("/home/assignleads/") > -1) {
                 return this.authorizeUrl(roles, url, this.assignLeadBaseUrl);
+            }
+            if (url.indexOf("/home/sharedleads/") > -1) {
+                return this.authorizeUrl(roles, url, this.sharedLeadsBaseUrl);
             }
             if (url.indexOf(this.videoBaseUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.videoBaseUrl);
