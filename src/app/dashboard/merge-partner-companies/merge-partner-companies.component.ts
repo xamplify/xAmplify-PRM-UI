@@ -5,6 +5,7 @@ import { SuperAdminService } from '../super-admin.service';
 import { AccountDetailsDto } from '../models/account-details-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
 @Component({
   selector: 'app-merge-partner-companies',
@@ -13,13 +14,17 @@ import { CustomResponse } from 'app/common/models/custom-response';
 })
 export class MergePartnerCompaniesComponent implements OnInit {
   isvalidEmailAddressEntered = false;
-  emailAddressErrorMessage = "";
   accountDetailsDto:AccountDetailsDto = new AccountDetailsDto();
   apiLoading = false;
+  apiError = false;
   statusCode = 0;
   vendorCompanies:Array<any> = new Array<any>();
   errorOrSuccessResponse:CustomResponse = new CustomResponse();
-
+  vendorCompaniesSearchableDropdownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  selectedVendorCompanyId = 0;
+  isVendorCompaniesSearchableDropdownDisplayed = false;
+  partnerCompanyName = "";
+  vendorCompanyName = "";
   constructor(private referenceService: ReferenceService,public authenticationService:AuthenticationService,
     public superAdminService:SuperAdminService,public logger:XtremandLogger) { }
 
@@ -37,7 +42,9 @@ export class MergePartnerCompaniesComponent implements OnInit {
     let emailId = this.accountDetailsDto.emailId;
     this.accountDetailsDto.emailId = this.referenceService.getTrimmedData(emailId);
     this.isvalidEmailAddressEntered = emailId != undefined && emailId.length > 0;
-    this.emailAddressErrorMessage = this.isvalidEmailAddressEntered ? '':'Please Enter Email Address';
+    if(!this.isvalidEmailAddressEntered){
+      this.errorOrSuccessResponse = new CustomResponse('ERROR','Please Enter Email Address',true);
+    }
     if(this.isvalidEmailAddressEntered){
       this.apiLoading = true;
       this.superAdminService.findVendorCompanies(this.accountDetailsDto).subscribe(
@@ -45,6 +52,18 @@ export class MergePartnerCompaniesComponent implements OnInit {
           this.statusCode = response.statusCode;
           if(this.statusCode==200){
             this.vendorCompanies = response.data;
+            this.partnerCompanyName = response['map']['partnerCompanyName'];
+            if(this.vendorCompanies.length==1){
+              let vendorCompany = this.vendorCompanies[0];
+              console.log(vendorCompany);
+              this.selectedVendorCompanyId = vendorCompany['id'];
+              this.vendorCompanyName = vendorCompany['name'];
+            }else if(this.vendorCompanies.length>1){
+              this.isVendorCompaniesSearchableDropdownDisplayed = true;
+              this.vendorCompaniesSearchableDropdownDto.data = response.data;
+              this.vendorCompaniesSearchableDropdownDto.placeHolder = "Please Select Vendor Company";
+            }
+           
           }else{
             this.errorOrSuccessResponse = new CustomResponse('ERROR',response.message,true);
           }
@@ -56,12 +75,24 @@ export class MergePartnerCompaniesComponent implements OnInit {
     }
   }
 
+  searchableDropdownEventReceiver(event:any){
+    if(event!=null){
+      this.selectedVendorCompanyId = event['id'];
+    }else{
+      this.selectedVendorCompanyId = 0;
+    }
+  }
+
 
 
 
   private resetFormValues() {
-    this.emailAddressErrorMessage = "";
     this.isvalidEmailAddressEntered = false;
     this.errorOrSuccessResponse = new CustomResponse();
+    this.isVendorCompaniesSearchableDropdownDisplayed = false;
+    this.vendorCompanies = [];
+    this.partnerCompanyName = "";
+    this.vendorCompanyName = "";
+    this.selectedVendorCompanyId = 0;
   }
 }

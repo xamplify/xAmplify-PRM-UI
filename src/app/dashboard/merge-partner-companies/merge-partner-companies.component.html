@@ -17,15 +17,15 @@
   <div class="portlet light">
     <div class="portlet-body clearfix">
       <div class="table-responsive">
+        <h4>Please enter the partner's email address used for onboarding</h4>
+        <app-response-message [showCloseIcon]="false" [customResponse]="errorOrSuccessResponse" *ngIf="errorOrSuccessResponse?.isVisible"></app-response-message>
         <table class='table tgrid'>
           <thead>
             <tr>
-              <th class="w-20" scope="row">Enter Email Address</th>
               <th scope="row">
                 <input class="form-control lowercase-text" type="text"   [(ngModel)]="accountDetailsDto.emailId" [ngModelOptions]="{standalone: true}"
                  (input)="accountDetailsDto.emailId = accountDetailsDto.emailId.toLowerCase()"  onkeypress="return event.charCode != 32"
                  (keypress)="findDetailsByEmailAddressOnKeyPress($event.keyCode)">
-                <span class="required" *ngIf="!isvalidEmailAddressEntered">{{emailAddressErrorMessage}}</span>
               </th>
               <th scope="row">
                 <button class="btn btn-primary" [ngClass]="emailAddressErrorMessage?.length>0 ? 'mb-20':''" (click)="findDetailsByEmailAddress()">Search</button>
@@ -34,10 +34,32 @@
           </thead>
         </table>
       </div>
-      <app-response-message [showCloseIcon]="false" [customResponse]="errorOrSuccessResponse" *ngIf="errorOrSuccessResponse?.isVisible"></app-response-message>
       <app-modal-popup-loader *ngIf="apiLoading"></app-modal-popup-loader>
-      <div *ngIf="!apiLoading && statusCode==200">
-          <p>Vendor Comapnies Ound</p>
+      <div class="table-responsive" *ngIf="!apiLoading && statusCode==200">
+          <table class="table grid">
+            <tbody>
+              <tr>
+                <th scope="row">Partner Company Name</th>
+                <th scope="row" class="success">
+                 {{partnerCompanyName}}
+                </th>
+              </tr>
+              <tr *ngIf="vendorCompanies?.length==1">
+                <th scope="row">Vendor Company</th>
+                <th scope="row" class="success">
+                 {{vendorCompanyName}}
+                </th>
+              </tr>
+              <tr *ngIf="vendorCompanies?.length>1">
+                <th scope="row">Select Vendor Company</th>
+                <th scope="row">
+                  <app-searchable-dropdown *ngIf="!apiLoading" [searchableDropDownDto]="vendorCompaniesSearchableDropdownDto" [id]="selectedVendorCompanyId"
+                  [disableDropDown]="false" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)">
+                  </app-searchable-dropdown>
+                </th>
+              </tr>
+            </tbody>
+          </table>
       </div>
     </div>
   </div>
