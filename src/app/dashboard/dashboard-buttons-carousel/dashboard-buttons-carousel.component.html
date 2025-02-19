@@ -1,5 +1,6 @@
-<div class="page-bar page-bar-shadow margin_bottom-20" *ngIf="dashboardButtonList.length !== 0"
-  style="border-radius: 5px;padding: 10px;margin-bottom: 10px;"  [ngClass]="{'margin_17':dashboardButtonList.length !== 0}">
+<div class="page-bar page-bar-shadow margin_bottom-20"
+  [ngClass]="{'margin_17':dashboardButtonList.length !== 0, 'border_dashed': isDraggingEnabled}"
+  *ngIf="dashboardButtonList.length !== 0" style="border-radius: 5px;padding: 10px;margin-bottom: 10px;">
   <div id="carousel-example" class="carousel slide " data-ride="carousel" data-interval="false">
     <!-- Wrapper for slides -->
     <div class="carousel-inner">

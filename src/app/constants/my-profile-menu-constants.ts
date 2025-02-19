@@ -4,5 +4,5 @@ export const MY_PROFILE_MENU_CONSTANTS = {
     FLEXI_FIELDS:'Flexi Fields',
     UPDATE_MODULES: 'Update Modules',
     SIGNATURE_MENU_HEADER:'Signature',
-    CUSTOMIZE_DASHBOARD_MENU_HEADER:'Default Dashboard Order'
+    CUSTOMIZE_DASHBOARD_MENU_HEADER:'Default Dashboard Layout'
 }

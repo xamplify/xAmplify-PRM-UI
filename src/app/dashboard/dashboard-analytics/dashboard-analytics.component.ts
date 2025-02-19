@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef, ElementRef } from '@angular/core';
+import { Component, OnInit,OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -115,17 +115,19 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     @ViewChild('leadAndDealStatistics') leadAndDealStatistics: TemplateRef<any>;
     @ViewChild('highLevelAnalytics') highLevelAnalytics: TemplateRef<any>;
     @ViewChild('dragContainer') dragContainer: ElementRef;
+    @ViewChild('customButton') customButton: ElementRef;
     templates = [];
     defaultDashboardLayout = [];
     isDestroyed: boolean = false;
     isDraggingEnabled: boolean = false;
     defaultDashboardsettings: boolean = false;
+    welcomeCustomResponse: CustomResponse = new CustomResponse();
     /***** XNFR-860 *****/
 
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
         public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
         public dashBoardService: DashboardService, public utilService: UtilService, public router: Router, private route: ActivatedRoute, private vanityURLService: VanityURLService,
-        public videoFileService: VideoFileService, private dragulaService: DragulaService, private cdr: ChangeDetectorRef) {
+        public videoFileService: VideoFileService, private dragulaService: DragulaService, private cdr: ChangeDetectorRef, private renderer: Renderer2) {
 
         this.loggedInUserId = this.authenticationService.getUserId();
         this.vanityLoginDto.userId = this.loggedInUserId;
@@ -700,6 +702,7 @@ showCampaignDetails(campaign:any){
 
     /***** XNFR-860 *****/
     findCustomDashboardLayout() {
+        this.ngxLoading = true;
         this.defaultDashboardLayout = [];
         this.dashBoardService.findCustomDashboardLayout(this.vendorCompanyProfileName)
             .subscribe((response) => {
@@ -711,10 +714,25 @@ showCampaignDetails(campaign:any){
                 } else {
                     this.defaultDashboardLayout = this.templates.map(template => ({ ...template }));
                 }
+                this.ngxLoading = false;
             }, (error) => {
                 console.log(error);
+                this.ngxLoading = false;
                 this.defaultDashboardLayout = this.templates.map(template => ({ ...template }));
             });
+    }
+
+    /***** XNFR-860 *****/
+    customizeDashboardLayout() {
+        this.ngxLoading = true;
+        this.isDraggingEnabled = true;
+        if (this.customButton) {
+            this.renderer.setAttribute(this.customButton.nativeElement, 'data-original-title', 'Update Dashboard Layout');
+            this.renderer.setAttribute(this.customButton.nativeElement, 'title', '');
+        }
+        setTimeout(() => {
+            this.ngxLoading = false;
+        }, 200);
     }
 
     /***** XNFR-860 *****/
@@ -729,23 +747,25 @@ showCampaignDetails(campaign:any){
             companyProfileName: this.vendorCompanyProfileName,
             dashboardLayoutDTOs: dashboardLayoutDtos
         };
+        this.welcomeCustomResponse = new CustomResponse();
         this.dashBoardService.updateCustomDashBoardLayout(customDashboardLayout).subscribe((response) => {
             if (response.statusCode == 200) {
                 this.isDraggingEnabled = false;
-                this.userDefaultPage.responseType = 'SUCCESS';
-                this.userDefaultPage.responseMessage = response.message;
+                this.welcomeCustomResponse = new CustomResponse('SUCCESS', response.message, true);
+                if (this.customButton) {
+                    this.renderer.setAttribute(this.customButton.nativeElement, 'title', '');
+                    this.renderer.setAttribute(this.customButton.nativeElement, 'data-original-title', 'Customize Dashboard Layout');
+                }
             } else {
                 this.isDraggingEnabled = true;
-                this.userDefaultPage.responseType = 'ERROR';
-                this.userDefaultPage.responseMessage = response.message;
+                this.welcomeCustomResponse = new CustomResponse('ERROR', response.message, true);
             }
             this.ngxLoading = false;
         }, (error) => {
             console.log(error);
             this.ngxLoading = false;
             this.isDraggingEnabled = true;
-            this.userDefaultPage.responseType = 'ERROR';
-            this.userDefaultPage.responseMessage = this.properties.serverErrorMessage;
+            this.welcomeCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         });
     }
 

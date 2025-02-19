@@ -1521,8 +1521,7 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
 
     /***** XNFR-860 *****/
     findDefaultDashboardSettings(vendorCompanyProfileName: string) {
-        const url = this.DASHBOARD_LAYOUT_URL + '/custom-dashboard-settings/' + '?loggedInUserId=' + this.authenticationService.getUserId()
-            + '&companyProfileName=' + vendorCompanyProfileName + '&access_token=' + this.authenticationService.access_token;
+        const url = this.DASHBOARD_LAYOUT_URL + '/default-dashboard-settings/' + '?companyProfileName=' + vendorCompanyProfileName + '&access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

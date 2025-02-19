@@ -161,7 +161,7 @@ a.social-stats {
   opacity: 0.5;
   transform: scale(0.95);
   transition: transform 0.2s ease, opacity 0.2s ease;
-  border: 2px dashed #ca9b9b;
+  /* border: 2px dashed #ca9b9b; */
 }
 .gu-mirror {
   position: fixed !important;
@@ -197,17 +197,30 @@ a.social-stats {
   background: #0276ff;
   color: #fff;
 }
+.btn_update {
+  margin: 4px 4px;
+  border: 1px solid #3faba4;
+  color: #3faba4;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 15px;
+  background: transparent;
+}
+.btn_update:hover {
+  background: #3faba4;
+  color: #fff;
+}
 .btn_reset {
   margin: 4px 4px;
-  border: 1px solid #d05454;
-  color: #d05454;
+  border: 1px solid #e87e04;
+  color: #e87e04;
   padding: 4px 8px;
   border-radius: 20px;
   font-size: 15px;
   background: transparent;
 }
 .btn_reset:hover {
-  background: #d05454;
+  background: #e87e04;
   color: #fff;
 }
 .margin_b0{

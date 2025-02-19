@@ -3426,6 +3426,6 @@ border-bottom-right-radius: 7px;
   margin-bottom: 5px!important;
 }
 /* dashboard drag and drop page border */
-.portlet.light.border_dash,.page-bar.border_dash {
+.portlet.light.border_dashed,.page-bar.border_dashed {
   border: 2px dashed #ca9b9b!important;
 }
