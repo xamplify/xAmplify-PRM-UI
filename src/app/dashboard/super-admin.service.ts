@@ -59,4 +59,9 @@ findVendorCompanies(accountDetailsDto:AccountDetailsDto) {
     return this.authenticationService.callGetMethod(url);
 }
 
+findPartnerCompaniesExcluding(vendorCompanyId:number,partnerCompanyId:number){
+    const url = this.authenticationService.REST_URL + 'superadmin/partnerCompanies/'+vendorCompanyId+'/exclude/'+partnerCompanyId+'?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+}
+
 }

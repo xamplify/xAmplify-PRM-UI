@@ -6,6 +6,7 @@ import { AccountDetailsDto } from '../models/account-details-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-merge-partner-companies',
@@ -14,75 +15,117 @@ import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 })
 export class MergePartnerCompaniesComponent implements OnInit {
   isvalidEmailAddressEntered = false;
-  accountDetailsDto:AccountDetailsDto = new AccountDetailsDto();
+  accountDetailsDto: AccountDetailsDto = new AccountDetailsDto();
   apiLoading = false;
   apiError = false;
   statusCode = 0;
-  vendorCompanies:Array<any> = new Array<any>();
-  errorOrSuccessResponse:CustomResponse = new CustomResponse();
+  vendorCompanies: Array<any> = new Array<any>();
+  errorOrSuccessResponse: CustomResponse = new CustomResponse();
   vendorCompaniesSearchableDropdownDto: SearchableDropdownDto = new SearchableDropdownDto();
   selectedVendorCompanyId = 0;
+  partnerCompaniesSearchableDropdownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  partnerCompanyIdForTransfer = 0;
   isVendorCompaniesSearchableDropdownDisplayed = false;
   partnerCompanyName = "";
-  vendorCompanyName = "";
-  constructor(private referenceService: ReferenceService,public authenticationService:AuthenticationService,
-    public superAdminService:SuperAdminService,public logger:XtremandLogger) { }
+  partnerCompanyId = 0;
+  partnerCompanies: Array<any> = new Array<any>();
+  partnerCompaniesApiLoading = false;
+  constructor(private referenceService: ReferenceService, public authenticationService: AuthenticationService,
+    public superAdminService: SuperAdminService, public logger: XtremandLogger) { }
 
   ngOnInit() {
   }
 
-  findDetailsByEmailAddressOnKeyPress(keyCode:any){
-    if(keyCode==13){
+  findDetailsByEmailAddressOnKeyPress(keyCode: any) {
+    if (keyCode == 13) {
       this.findDetailsByEmailAddress();
     }
   }
 
-  findDetailsByEmailAddress() {
+  findDetailsByEmailAddress(): void {
     this.resetFormValues();
+    this.trimAndValidateEmail();
+    if (!this.isvalidEmailAddressEntered) {
+      this.setErrorMessage('Please Enter Email Address');
+      return;
+    }
+    this.apiLoading = true;
+    this.fetchVendorCompanies();
+  }
+
+  private trimAndValidateEmail(): void {
     let emailId = this.accountDetailsDto.emailId;
     this.accountDetailsDto.emailId = this.referenceService.getTrimmedData(emailId);
-    this.isvalidEmailAddressEntered = emailId != undefined && emailId.length > 0;
-    if(!this.isvalidEmailAddressEntered){
-      this.errorOrSuccessResponse = new CustomResponse('ERROR','Please Enter Email Address',true);
-    }
-    if(this.isvalidEmailAddressEntered){
-      this.apiLoading = true;
-      this.superAdminService.findVendorCompanies(this.accountDetailsDto).subscribe(
-        response=>{
-          this.statusCode = response.statusCode;
-          if(this.statusCode==200){
-            this.vendorCompanies = response.data;
-            this.partnerCompanyName = response['map']['partnerCompanyName'];
-            if(this.vendorCompanies.length==1){
-              let vendorCompany = this.vendorCompanies[0];
-              console.log(vendorCompany);
-              this.selectedVendorCompanyId = vendorCompany['id'];
-              this.vendorCompanyName = vendorCompany['name'];
-            }else if(this.vendorCompanies.length>1){
-              this.isVendorCompaniesSearchableDropdownDisplayed = true;
-              this.vendorCompaniesSearchableDropdownDto.data = response.data;
-              this.vendorCompaniesSearchableDropdownDto.placeHolder = "Please Select Vendor Company";
-            }
-           
-          }else{
-            this.errorOrSuccessResponse = new CustomResponse('ERROR',response.message,true);
-          }
-          this.apiLoading = false;
-        },error=>{
-          this.logger.errorPage(error);
-        }
-      );
-    }
+    this.isvalidEmailAddressEntered = !!emailId && emailId.trim().length > 0;
   }
 
-  searchableDropdownEventReceiver(event:any){
-    if(event!=null){
+  private setErrorMessage(message: string): void {
+    this.errorOrSuccessResponse = new CustomResponse('ERROR', message, true);
+  }
+
+  private fetchVendorCompanies(): void {
+    this.superAdminService.findVendorCompanies(this.accountDetailsDto).subscribe(
+      response => this.handleVendorCompaniesResponse(response),
+      error => this.handleApiError(error));
+  }
+
+  private handleVendorCompaniesResponse(response: any): void {
+    this.statusCode = response.statusCode;
+    if (this.statusCode === 200) {
+      this.vendorCompanies = response.data;
+      this.partnerCompanyName = response['map']['partnerCompanyName'];
+      this.partnerCompanyId = response['map']['partnerCompanyId'];
+      this.displayVendorCompaniesDropdown();
+    } else {
+      this.setErrorMessage(response.message);
+    }
+    this.apiLoading = false;
+  }
+
+
+
+
+  private displayVendorCompaniesDropdown(): void {
+    this.isVendorCompaniesSearchableDropdownDisplayed = true;
+    this.vendorCompaniesSearchableDropdownDto.data = this.vendorCompanies;
+    this.vendorCompaniesSearchableDropdownDto.placeHolder = "Select a vendor company to display all partner companies for data transfer";
+  }
+
+  private handleApiError(error: any): void {
+    this.logger.errorPage(error);
+    this.apiLoading = false;
+  }
+
+
+  findPartnerCompaniesExcluding() {
+    this.partnerCompaniesApiLoading = true;
+    this.partnerCompanyIdForTransfer = 0;
+    this.partnerCompanies = [];
+    this.superAdminService.findPartnerCompaniesExcluding(this.selectedVendorCompanyId, this.partnerCompanyId).subscribe(
+      response => {
+        this.partnerCompanies = response.data;
+        this.partnerCompaniesApiLoading = false;
+      }, error => {
+        this.logger.errorPage(error);
+      });
+  }
+
+  getSelectedVendorCompanyId(event: any) {
+    if (event != null) {
       this.selectedVendorCompanyId = event['id'];
-    }else{
+    } else {
       this.selectedVendorCompanyId = 0;
     }
+    this.findPartnerCompaniesExcluding();
   }
 
+  getSelectedPartnerCompanyIdForTransfer(event: any) {
+    if (event != null) {
+      this.partnerCompanyIdForTransfer = event['id'];
+    } else {
+      this.partnerCompanyIdForTransfer = 0;
+    }
+  }
 
 
 
@@ -92,7 +135,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
     this.isVendorCompaniesSearchableDropdownDisplayed = false;
     this.vendorCompanies = [];
     this.partnerCompanyName = "";
-    this.vendorCompanyName = "";
     this.selectedVendorCompanyId = 0;
+    this.partnerCompanyId = 0;
   }
 }
