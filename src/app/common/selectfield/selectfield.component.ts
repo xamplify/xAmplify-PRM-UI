@@ -11,17 +11,18 @@ import { CustomResponse } from '../models/custom-response';
 import { DragulaService } from 'ng2-dragula';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { PaginationComponent } from 'app/common/pagination/pagination.component';
+import { of } from 'rxjs/observable/of';
 
 declare var $: any;
 @Component({
   selector: 'app-selectfield',
   templateUrl: './selectfield.component.html',
   styleUrls: ['./selectfield.component.css'],
-    providers: [PaginationComponent]
+  providers: [PaginationComponent]
 })
 export class SelectfieldComponent implements OnInit {
   @Output() closeEmitter = new EventEmitter();
-  @Input() userType: string = '';
+  @Input() isVendorVersion: boolean;
   ngxloading: boolean = false;
   selectedFieldsResponseDto: SelectedFieldsResponseDto = new SelectedFieldsResponseDto();
   companyProfileName: string = "";
@@ -29,8 +30,8 @@ export class SelectfieldComponent implements OnInit {
   isHeaderCheckBoxChecked: boolean = true;
   isDefault: boolean = false;
   pager: any = {};
- fieldsPagedItems = new Array();
- pageSize: number = 12;
+  fieldsPagedItems = new Array();
+  pageSize: number = 12;
   fieldsCustomResponse: CustomResponse = new CustomResponse();
   allItems: any[] = [];
   unSelectedItems: any[] = [];
@@ -43,9 +44,9 @@ export class SelectfieldComponent implements OnInit {
   selectFieldsDtos: Array<any> = new Array<any>();
   myPreferances: boolean = false;
   pageNumber: any;
-
+  loggedInUserType: string = '';
   constructor(public dashboardService: DashboardService, public authenticationService: AuthenticationService, private pagerService: PagerService,
-    public referenceService: ReferenceService, public socialPagerService: SocialPagerService, public dragulaService: DragulaService,  public paginationComponent: PaginationComponent
+    public referenceService: ReferenceService, public socialPagerService: SocialPagerService, public dragulaService: DragulaService, public paginationComponent: PaginationComponent
 
   ) {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -60,21 +61,22 @@ export class SelectfieldComponent implements OnInit {
     this.ngxloading = true;
     this.referenceService.openModalPopup(this.selectModalPopUp);
     this.pageNumber = this.paginationComponent.numberPerPage[0];
+    if (this.isVendorVersion) {
+      this.loggedInUserType = 'v';
+    } else {
+      this.loggedInUserType = 'p';
+    }
     this.getMyPreferances();
-    //this.selectFieldValues();
   }
   ngOnDestroy() {
     this.dragulaService.destroy('fieldsDragula');
   }
   ngOnChanges() {
-      this.pageNumber = this.paginationComponent.numberPerPage[0];
-      this.getMyPreferances();
+    this.pageNumber = this.paginationComponent.numberPerPage[0];
   }
   resetPagination() {
     this.pagination.maxResults = 12;
     this.pagination = new Pagination;
-    //this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
-    //this.showFilterOption = false;
   }
   getMyPreferances() {
     this.resetPagination();
@@ -83,57 +85,38 @@ export class SelectfieldComponent implements OnInit {
         result => {
           let isMyPreferances = result.data;
           this.myPreferances = result.data;
-          this.isSelectDivOpen = true;
           if (isMyPreferances) {
+            this.isSelectDivOpen = false;
             this.fetchData(this.pagination);
           } else {
-            this.getAllLeadFormColumns(this.pagination);
+            this.isSelectDivOpen = true;
+            this.fetchData(this.pagination);
           }
         },
         error => console.log(error),
         () => console.log('finished '));
   }
 
-  getAllLeadFormColumns(pagination: Pagination) {
-    this.ngxloading = true;
-    this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.userType).subscribe(
-      (response: any) => {
-        let data = response.data;
-        this.ngxloading = false;
-        this.allItems.length = 0; // Clear existing data before adding new items
-        this.allItems = [...data]
-        pagination.totalRecords = data.length;
-        pagination = this.pagerService.getPagedItems(pagination, data);
-        this.setFieldsPage(1);
-        this.updateHeaderCheckbox();
-      },
-      error => console.log(error),
-      () => {
-        this.ngxloading = false;
-      }
-    );
-  }
   setFieldsPage(page: number) {
-		try {
-			if (page < 1 || (this.pager.totalPages > 0 && page > this.pager.totalPages)) {
-				return;
-			}
-      
-			this.referenceService.goToTop();
-			if (this.searchKey !== undefined && this.searchKey !== '') {
-				this.fieldsPagedItems = this.allItems.filter(field =>
-					(field.labelName.toLowerCase().includes(this.searchKey.trim().toLowerCase()) || field.displayName.toLowerCase().includes(this.searchKey.trim().toLowerCase()))
-				);
-				this.pager = this.socialPagerService.getPager(this.fieldsPagedItems.length, page, this.pageSize);
-				this.fieldsPagedItems = this.fieldsPagedItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
-			} else {
-				this.pager = this.socialPagerService.getPager(this.allItems.length, page, this.pageSize);
-				this.fieldsPagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
-			}
+    try {
+      if (page < 1 || (this.pager.totalPages > 0 && page > this.pager.totalPages)) {
+        return;
+      }
+      this.referenceService.goToTop();
+      if (this.searchKey !== undefined && this.searchKey !== '') {
+        this.fieldsPagedItems = this.allItems.filter(field =>
+          (field.labelName.toLowerCase().includes(this.searchKey.trim().toLowerCase()) || field.displayName.toLowerCase().includes(this.searchKey.trim().toLowerCase()))
+        );
+        this.pager = this.socialPagerService.getPager(this.fieldsPagedItems.length, page, this.pageSize);
+        this.fieldsPagedItems = this.fieldsPagedItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+      } else {
+        this.pager = this.socialPagerService.getPager(this.allItems.length, page, this.pageSize);
+        this.fieldsPagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+      }
       this.updateHeaderCheckbox();
-		} catch (error) {
-		}
-	}
+    } catch (error) {
+    }
+  }
   toggleSelection(field: any) {
     const isUnChecked = !field.selectedColumn;
     if (isUnChecked) {
@@ -176,8 +159,6 @@ export class SelectfieldComponent implements OnInit {
     });
     this.updateHeaderCheckbox();
   }
-
-
   updateHeaderCheckbox() {
     if (!(this.pager.pages && this.pager.pages.length)) {
       this.isHeaderCheckBoxChecked = false;
@@ -188,28 +169,18 @@ export class SelectfieldComponent implements OnInit {
   isCheked(labelId: any): boolean {
     return this.fieldsPagedItems.some(item => item.labelId === labelId);
   }
-
-  // updatePagination(pagination: Pagination, data: any[]) {
-  //   this.pagination = this.pagerService.getPagedItems(this.pagination, data);
-  //   this.pager = this.socialPagerService.getPager(pagination.totalRecords, pagination.pageIndex, pagination.maxResults);
-  //   this.fieldsPagedItems = data.slice(this.pager.startIndex, this.pager.endIndex + 1);
-  //   this.updateHeaderCheckbox();
-  // }
-  // navigateBetweenPageNumbers(event: any) {
-  //   this.pagination.pageIndex = event.page;
-  //   this.updatePagination(this.pagination, this.allItems);
-  // }
   closeModalClose() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
     this.emitValues('close');
   }
-  selectedPageNumber(event:any) {
+  selectedPageNumber(event: any) {
     this.pageSize = event;
     this.setFieldsPage(1);
   }
   submit() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
-    this.selectedItems = this.allItems.filter(item =>
+    let allItems = this.selectFieldsDtos.length > 0 ? this.selectFieldsDtos : this.allItems;
+    this.selectedItems = allItems.filter(item =>
       !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
     );
     this.emitValues('submit');
@@ -232,28 +203,12 @@ export class SelectfieldComponent implements OnInit {
   isFieldDisabled(labelName: string): boolean {
     return this.excludedLabels.includes(labelName);
   }
-
-  getFiledsByUserId() {
-    this.isSelectDivOpen = true;
-    this.dashboardService.getFieldsByUserId()
-      .subscribe(
-        result => {
-          this.selectFieldsDtos = result.data;
-          if (result.statusCode == 200) {
-            console.log("this.selectFieldsDtos :", this.selectFieldsDtos);
-          }
-        },
-        error => console.log(error),
-        () => {
-        });
-  }
   searchKey: string = '';
-
   searchFieldsKeyPress(keyCode: any) {
-		if (keyCode === 13) {
-			this.searchFields();
-		}
-	}
+    if (keyCode === 13) {
+      this.searchFields();
+    }
+  }
   searchFields() {
     this.setFieldsPage(1);
   }
@@ -262,63 +217,94 @@ export class SelectfieldComponent implements OnInit {
     this.pageSize = 12;
     this.setFieldsPage(1);
   }
-
   getUniqueColumns(selectFieldsDtos: any[], allItems: any[]) {
-    // const columnMap = new Map();
-    // selectFieldsDtos.forEach(col => columnMap.set(col.labelId, col));
-    // const allFields = [...allItems];
-    // allFields.forEach(col => {
-    //   if (!columnMap.has(col.labelId)) {
-    //     columnMap.set(col.labelId, col);
-    //     col.selectedColumn = false;
-    //   }
-    // });
-    // this.allItems.length = 0;
-    // let totalFields = Array.from(columnMap.values());
-    // totalFields.sort((a, b) => a.orderColumn - b.orderColumn);
-    this.allItems.length = 0;
-    let totalFields = allItems.map((item, index) => {
+    if (!Array.isArray(allItems) || !Array.isArray(selectFieldsDtos)) {
+      return;
+    }
+    //this.allItems.length = 0;
+    const selectFieldPriority = selectFieldsDtos.reduce((acc, item, index) => {
+      if (allItems.some(allItem => allItem.labelId === item.labelId)) {
+        acc[item.labelId] = index;
+      }
+      return acc;
+    }, {});
+    let totalFields = allItems.map(item => {
       let match = selectFieldsDtos.find(x => x.labelId === item.labelId);
       return {
         ...item,
-        selectedColumn: match ? true : false,
+        selectedColumn: match ? true : selectFieldsDtos.length > 0 ? false : true,
         id: match ? match.id : item.id
       };
-    });
-    totalFields.sort((a, b) => {
-      if (a.selectedColumn === b.selectedColumn) {
-        return a.columnOrder - b.columnOrder;
-      }
-      return a.selectedColumn ? -1 : 1;
-    });
+    }
+    );
     if (this.selectFieldsDtos.length > 0) {
       this.unSelectedItems = totalFields.filter(item =>
         !selectFieldsDtos.some(unselected => unselected.labelId === item.labelId)
       );
     }
+    totalFields.sort((a, b) => {
+      const priorityA = selectFieldPriority[a.labelId] !== undefined ? selectFieldPriority[a.labelId] : Number.MAX_VALUE;
+      const priorityB = selectFieldPriority[b.labelId] !== undefined ? selectFieldPriority[b.labelId] : Number.MAX_VALUE;
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;  // Prioritize based on `selectFieldsDtos` order
+      }
+      return a.columnOrder - b.columnOrder;
+    });
     this.allItems = totalFields;
   }
 
-  fetchData(pagination: Pagination) {
+  fetchData(pagination: any) {
     this.ngxloading = true;
-    forkJoin([
-      this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.userType),
-      this.dashboardService.getFieldsByUserId()
-    ]).subscribe(
+    let leadFormFields$ = this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.loggedInUserType);
+    let userFields$ = this.selectFieldsDtos.length === 0
+      ? this.dashboardService.getFieldsByUserId() : of({ data: this.selectFieldsDtos })
+
+    forkJoin([leadFormFields$, userFields$]).subscribe(
       ([usersData, ordersData]) => {
         this.ngxloading = false;
-        const users = usersData;
-        const orders = ordersData;
-        this.selectFieldsDtos = orders.data;
-        this.getUniqueColumns(orders.data, users.data);
-        pagination.totalRecords = users.data.length;
-        pagination = this.pagerService.getPagedItems(pagination, users.data);
-        this.setFieldsPage(1);
+        if (!this.showBackButton) {
+          ordersData.data = ordersData.data.filter(item =>
+            usersData.data.some(unselected => unselected.labelId === item.labelId)
+          );
+        }
+        this.selectFieldsDtos = ordersData.data || [];
+        this.processData(ordersData.data, pagination, usersData.data || []);
       },
-      error => {
+      (error) => {
         this.ngxloading = false;
         console.error('Error fetching data:', error);
       }
     );
+  }
+
+  private processData(selectFields: any[], pagination: any, usersData: any[] = []) {
+    this.getUniqueColumns(selectFields, usersData);
+    pagination.totalRecords = usersData.length;
+    pagination = this.pagerService.getPagedItems(pagination, usersData);
+    this.updateHeaderCheckbox();
+    this.setFieldsPage(1);
+  }
+  goToOrderDiv() {
+    this.isSelectDivOpen = false;
+    this.showBackButton = true;
+    this.selectFieldsDtos = this.allItems.filter(item =>
+      !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
+    );
+  }
+  chooseYourFields() {
+    this.showBackButton = true;
+    this.isSelectDivOpen = true;
+    this.fetchData(this.pagination);
+  }
+  showBackButton: boolean = false;
+  backToPreviousPage() {
+    this.showBackButton = false
+    this.isSelectDivOpen = !this.myPreferances;
+    if (this.myPreferances) {
+      this.selectFieldsDtos = this.allItems.filter(item =>
+        !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
+      );
+    }
+    this.fetchData(this.pagination);
   }
 }
