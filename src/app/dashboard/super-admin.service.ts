@@ -64,4 +64,9 @@ findPartnerCompaniesExcluding(vendorCompanyId:number,partnerCompanyId:number){
     return this.authenticationService.callGetMethod(url);
 }
 
+findPartnerCompanyMetrics(vendorCompanyId:number,partnerCompanyId:number){
+    const url = this.authenticationService.REST_URL + 'superadmin/vendors/'+vendorCompanyId+'/partners/'+partnerCompanyId+'/metrics?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+}
+
 }

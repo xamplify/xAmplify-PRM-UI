@@ -32,6 +32,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
   partnerCompanies: Array<any> = new Array<any>();
   partnerCompaniesApiLoading = false;
   vendorCompanyName = "";
+  partnerMetricsApiLoading = false;
   constructor(private referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public superAdminService: SuperAdminService, public logger: XtremandLogger) { }
 
@@ -107,7 +108,6 @@ export class MergePartnerCompaniesComponent implements OnInit {
 
 
   findPartnerCompaniesExcluding() {
-    
     this.superAdminService.findPartnerCompaniesExcluding(this.selectedVendorCompanyId, this.partnerCompanyId).subscribe(
       response => {
         this.partnerCompanies = response.data;
@@ -140,8 +140,21 @@ export class MergePartnerCompaniesComponent implements OnInit {
     } else {
       this.partnerCompanyIdForTransfer = 0;
     }
-    console.log(this.selectedVendorCompanyId);
-    console.log(this.partnerCompanyIdForTransfer);
+    if(this.partnerCompanyIdForTransfer!=undefined && this.partnerCompanyIdForTransfer>0){
+      this.partnerMetricsApiLoading = true;
+      this.superAdminService.findPartnerCompanyMetrics(this.selectedVendorCompanyId,this.partnerCompanyIdForTransfer).
+      subscribe(
+        response=>{
+
+        },error=>{
+
+        });
+    }else{
+
+    }
+    
+
+
   }
 
 
@@ -156,5 +169,6 @@ export class MergePartnerCompaniesComponent implements OnInit {
     this.partnerCompanyId = 0;
     this.partnerCompanyIdForTransfer = 0;
     this.partnerCompanies = [];
+    this.partnerMetricsApiLoading = false;
   }
 }
