@@ -36,6 +36,7 @@ export class EmailActivityService {
 
     sendTestEmailToUser(emailActivity:EmailActivity, formData:FormData) {
         emailActivity.loggedInUserId = this.authenticationService.getUserId();
+        formData.delete('emailActivityDTO');
         formData.append('emailActivityDTO', new Blob([JSON.stringify(emailActivity)],
           {
               type: "application/json"

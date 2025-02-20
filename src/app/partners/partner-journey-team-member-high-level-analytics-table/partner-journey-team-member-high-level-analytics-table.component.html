@@ -64,7 +64,7 @@
               <td><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="false" [isPartnerEntityTeamInfo]="true" [userInfo]="item"></app-user-info></a></td>
               <!-- <td> <span>{{item.emailId}}</span></td> -->
               <!-- <td> <span>{{item.firstName}}</span> <span>{{item.lastName}}</span></td> -->
-              <td> <span>{{item.status}}</span></td>
+              <td> <span>{{ item.status === 'DECLINE' ? 'DEACTIVATED' : item.status }}</span></td>
               <td class="text-center">
               <!-- <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.logInTime"></app-timestamp></td> -->
               <span *ngIf="item.status === 'UNAPPROVED'">-</span>
