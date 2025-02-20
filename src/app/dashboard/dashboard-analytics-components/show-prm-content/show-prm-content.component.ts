@@ -15,6 +15,8 @@ export class ShowPrmContentComponent implements OnInit {
   loading = false;
   prefixUrl = "home/";
   @Input() hideRowClass = false;
+  @Input() isDashboardView: boolean;
+  @Input() isDraggingEnabled: boolean;
   constructor(public router:Router,public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {

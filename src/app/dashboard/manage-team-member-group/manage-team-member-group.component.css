@@ -161,4 +161,15 @@
     min-height: 299px !important;
   }
 }
+.ctop{
+  top: 125px;
+}
 
+.full-width{
+  width: 100%;
+}
+
+.custom-label{
+  font-weight: 600 !important;
+  color: #999 !important;
+}

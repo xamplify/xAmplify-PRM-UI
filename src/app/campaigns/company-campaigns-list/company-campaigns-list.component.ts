@@ -66,7 +66,7 @@ export class CompanyCampaignsListComponent implements OnInit {
       this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
-    this.campaignService.fetchCampaignAnalyticsOfCompanyContacts(this.companyListId, pagination).subscribe((result: any) => {
+    this.campaignService.fetchCampaignAnalyticsOfCompanyContacts(this.selectedCompany.id, pagination).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let data = result.data;
         pagination.totalRecords = data.totalRecords;

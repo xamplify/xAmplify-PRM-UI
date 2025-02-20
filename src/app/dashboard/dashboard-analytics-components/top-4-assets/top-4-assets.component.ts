@@ -60,6 +60,8 @@ export class Top4AssetsComponent implements OnInit {
     UPDATED: 'UPDATED'
   };
   videoId: number;
+  @Input() isDashboardView: boolean;
+  @Input() isDraggingEnabled: boolean;
 
   constructor(public properties: Properties, public damService: DamService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,private pagerService: PagerService,
   			  public videoFileService: VideoFileService, public userService:UserService, private router: Router) {

@@ -758,6 +758,7 @@ private beforeAdd(tag: any) {
 					module.socialShareOptionEnabled = data.socialShare;
 					module.socialFeedsAccess = data.rssFeeds;
 					module.socialFeedsAccessAsPartner = data.rssFeedsAccessAsPartner;
+          module.socialShareOptionEnabledAsPartner = data.socialShareAccessAsPartner;
 					/**XNFR-726***/
 
 					this.menuItem.mdf = data.mdf;
