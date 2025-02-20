@@ -65,11 +65,11 @@ export class EmailActivityComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     emailActivityPagination.contactId = this.contactId;
     emailActivityPagination.isCompanyJourney = this.isCompanyJourney;
-    if (this.isCompanyJourney) {
-      emailActivityPagination.contactId = this.selectedUserListId;
-    } else {
+    // if (this.isCompanyJourney) {
+    //   emailActivityPagination.contactId = this.selectedUserListId;
+    // } else {
       emailActivityPagination.contactId = this.contactId;
-    }
+    // }
     this.emailActivityService.fetchAllEmailActivities(emailActivityPagination).subscribe(
       response => {
         const data = response.data;

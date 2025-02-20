@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -24,6 +24,7 @@ export class DashboardBannerImagesComponent implements OnInit {
   dashboardBanners:Array<CustomLinkDto> = new Array<CustomLinkDto>();
   isDataError = false;
   isVanityUrlEnabled = false;
+  @Input() isDraggingEnabled: boolean;
   constructor(public properties:Properties,public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public vanityUrlService:VanityURLService) { }
 

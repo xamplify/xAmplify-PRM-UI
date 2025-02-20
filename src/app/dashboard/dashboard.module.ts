@@ -124,6 +124,7 @@ import { CalendarIntegrationSettingsComponent } from './calendar-integration-set
 import { ApprovalControlManagementSettingsComponent } from './approval-control-management-settings/approval-control-management-settings.component';
 import { SignatureService } from './services/signature.service';
 import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
+import { CustomDashboardSettingsComponent } from './custom-dashboard-settings/custom-dashboard-settings.component';
 import { AddDefaultCompaniesOrMapLogoComponent } from 'app/util/add-default-companies-or-map-logo/add-default-companies-or-map-logo.component';
 
 @NgModule({
@@ -216,6 +217,7 @@ import { AddDefaultCompaniesOrMapLogoComponent } from 'app/util/add-default-comp
         CalendarIntegrationsComponent,
         CalendarIntegrationSettingsComponent,
         ApprovalControlManagementSettingsComponent,
+        CustomDashboardSettingsComponent,
         AddDefaultCompaniesOrMapLogoComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,OnDestroy } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -22,7 +22,7 @@ import { TeamMemberService } from 'app/team/services/team-member.service';
   styleUrls: ['./partner-journey-team-members-table.component.css'],
   providers: [SortOption,Properties,TeamMemberService]
 })
-export class PartnerJourneyTeamMembersTableComponent implements OnInit {
+export class PartnerJourneyTeamMembersTableComponent implements OnInit,OnDestroy {
   @Input() partnerCompanyId: any;
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
@@ -60,6 +60,9 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     public xtremandLogger: XtremandLogger, public sortOption: SortOption,
     public properties:Properties,  private vanityURLService: VanityURLService, private teamMemberService: TeamMemberService) {
       this.loggedInUserId = this.authenticationService.getUserId(); 
+  }
+  ngOnDestroy(): void {
+    this.referenseService.closeSweetAlert();
   }
 
   ngOnInit() {   

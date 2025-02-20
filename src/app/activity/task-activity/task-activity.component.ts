@@ -66,11 +66,11 @@ export class TaskActivityComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     taskActivityPagination.isCompanyJourney = this.isCompanyJourney;
-    if (this.isCompanyJourney) {
-      taskActivityPagination.contactId = this.selectedUserListId;
-    } else {
+    // if (this.isCompanyJourney) {
+    //   taskActivityPagination.contactId = this.selectedUserListId;
+    // } else {
       taskActivityPagination.contactId = this.contactId;
-    }
+    // }
     this.taskActivityService.fetchAllTaskActivities(taskActivityPagination).subscribe(
       response => {
         const data = response.data;

@@ -396,6 +396,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/***XNFR-812****/
 	signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
 	isSignatureOptionClicked = false;
+	isCustomDashboardOptionClicked = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2298,6 +2299,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.stopNgxLoader();
 			}, 500);
 			this.activeTabHeader = this.signatureMenuHeader;
+		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CUSTOMIZE_DASHBOARD_MENU_HEADER) {
+			// XNFR-860
+			this.activateCustomDashboardMenuHeader();
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
@@ -5147,6 +5151,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			(this.authenticationService.isPartner() || (this.authenticationService.module.isTeamMember && this.authenticationService.module.vendorPagesEnabled) ||
 				this.authenticationService.module.adminOrSuperVisor) && !this.authenticationService.module.loggedInThroughOwnVanityUrl) ||
 			(this.partnerJourneyPageEnabled && (this.authenticationService.isPartner() || (this.authenticationService.module.isTeamMember && this.authenticationService.module.adminOrSuperVisor)));
+	}
+
+	private activateCustomDashboardMenuHeader() {
+		this.startNgxLoader();
+		this.isCustomDashboardOptionClicked = false;
+		let self = this;
+		setTimeout(() => {
+			self.isCustomDashboardOptionClicked = true;
+			self.stopNgxLoader();
+		}, 500);
+		this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CUSTOMIZE_DASHBOARD_MENU_HEADER;
 	}
 }
 
