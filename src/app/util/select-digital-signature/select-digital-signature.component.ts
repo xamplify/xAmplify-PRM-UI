@@ -69,24 +69,20 @@ initializeDragAndDrop() {
   });
 
   // Prevent default behavior to allow dropping
-  $(document).on("dragover", ".pdf-page", function (event: any) {
+  $(document).on("dragover", "#pdf-container", function (event: any) {
     event.preventDefault();
   });
 
   // Handle drop event on the PDF
-  $(document).on("drop", ".pdf-page", (event: any) => {
+  $(document).on("drop", "#pdf-container", (event: any) => {
     event.preventDefault();
     console.log("drop event fired", event);
 
-    let droppedOnPage = $(event.target).closest(".pdf-page");
-    if (!droppedOnPage.length) return;
-
-    let pageNum = droppedOnPage.data("page");
-    let pdfOffset = droppedOnPage.offset();
-
+    let pdfOffset = $("#pdf-container").offset();
     let x = event.originalEvent.clientX - pdfOffset.left;
     let y = event.originalEvent.clientY - pdfOffset.top;
-    console.log("Dropped at:", x, y, "on page:", pageNum);
+
+    console.log("Dropped at:", x, y);
 
     // Create a new signature image
     let newSig = $("<img>")
@@ -99,18 +95,21 @@ initializeDragAndDrop() {
         zIndex: 1000,
         width: "100px",
         height: "50px",
-      })
-      .attr("data-page", pageNum);
+      });
 
-    // Append the signature to the correct page
-    droppedOnPage.append(newSig);
+    // Append the signature to the PDF container, allowing movement across pages
+    $("#pdf-container").append(newSig);
     this.placedSignatures.push(newSig);
 
-    // Make the signature draggable
+    // Make the signature draggable across the entire PDF container
     newSig.draggable({
-      containment: droppedOnPage,
+      containment: "#pdf-container",
+      stop: function (event, ui) {
+        console.log("Signature moved to:", ui.position.left, ui.position.top);
+      }
     });
   });
+
 
     $("#download-pdf").on("click", () => {
       this.generatePDF();
