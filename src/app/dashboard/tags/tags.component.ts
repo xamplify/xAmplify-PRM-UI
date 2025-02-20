@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -35,6 +35,7 @@ export class TagsComponent implements OnInit {
   tags: Array<Tag> = new Array<Tag>();
   openAddTagPopup: boolean = false;
   selectedTag: Tag = new Tag();
+  @Input () isAddorEditTag : boolean = false;
 
   constructor(public referenceService: ReferenceService, public httpRequestLoader: HttpRequestLoader, public userService: UserService,
     public utilService: UtilService, public authenticationService: AuthenticationService, public logger: XtremandLogger,
