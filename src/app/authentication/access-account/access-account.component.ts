@@ -563,16 +563,17 @@ export class AccessAccountComponent implements OnInit {
     autoFillCompnayByEmailDomain(emailId: any) {
         let data = {};
         this.isCompanyFieldLoading = true;
-        this.authenticationService.getPartnerCompanyByEmailDomain(emailId,this.companyProfileName).subscribe((result) => {
+        this.authenticationService.getPartnerCompanyByEmailDomain(emailId, this.companyProfileName).subscribe((result) => {
             if (result.statusCode == 200) {
                 this.isCompanyFieldLoading = false;
                 let company = result.data;
-                this.signUpForm.patchValue({ companyName: company });
                 if (company != undefined && company.length > 0) {
                     this.isCompanyAutoFilled = true;
+                    this.signUpForm.patchValue({ companyName: company });
                     $("#partner-company-name").addClass('disabled-background');
-                } else {
+                } else if (this.isCompanyAutoFilled) {
                     this.isCompanyAutoFilled = false;
+                    this.signUpForm.patchValue({ companyName: '' });
                     $("#partner-company-name").removeClass('disabled-background');
                 }
             }
