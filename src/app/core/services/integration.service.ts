@@ -276,4 +276,11 @@ export class IntegrationService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    /**** XNFR-887  ****/
+    getActiveIntegrationTypeByCompanyName(companyProfileName:string) {
+        return this._http.get(this.authenticationService.REST_URL + `/crm/active/companyProfileName/${companyProfileName}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    /**** XNFR-887  ****/
 }

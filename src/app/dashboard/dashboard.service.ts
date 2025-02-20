@@ -1550,14 +1550,6 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
           .map(this.extractData)
           .catch(this.handleError);
     }
-    updateSelectedFields(selectedFieldsResponseDto:any) {
-        selectedFieldsResponseDto['companyProfileName'] = this.authenticationService.companyProfileName;
-        selectedFieldsResponseDto['loggedInUserId'] =this.authenticationService.getUserId();
-        const url = this.REST_URL + '/selected/fields/update?access_token=' +this.authenticationService.access_token;
-        return this.http.post(url, selectedFieldsResponseDto)
-        .map(this.extractData)
-        .catch(this.handleError);
-    }
     /** XNFR-839 */
     
 }
