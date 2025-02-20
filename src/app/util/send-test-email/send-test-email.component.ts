@@ -240,9 +240,6 @@ export class SendTestEmailComponent implements OnInit {
       this.sendmailTeamMemberNotify.emit({'item': this.selectedItemTeamMember });
       this.callEventEmitter();
     }else if(this.campaignSendTestEmail){
-      this.ngxloading = true;
-      this.validateCampaignMdfRequest();
-    }else if(this.campaignSendTestEmail){
       this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendCampaignTestEmail();
     }else{
