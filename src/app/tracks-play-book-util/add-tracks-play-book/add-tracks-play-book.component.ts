@@ -202,6 +202,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   approverControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
   canApprove: boolean = false;
+  savedTags: any[] = [];
 
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
@@ -212,7 +213,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.viewType = this.route.snapshot.params["viewType"];
     this.categoryId = this.route.snapshot.params["categoryId"];
     this.folderViewType = this.route.snapshot.params["folderViewType"];
-    this.listTags(new Pagination());
+    // this.listTags(new Pagination());
     this.listCategories();
     this.getCompanyId();
     dragulaService.setOptions('assetsDragula', {})
@@ -369,6 +370,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.folderName = this.tracksPlayBook.category.name;
             }
             this.validateLearningTrack();
+            this.addTagsCondition(this.selectedTags)
             /**XNFR-523***/
             this.isSendEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd;
             this.sendEmailNotificationOptionToolTipMessage = this.properties.SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE.replace("{{partnersMergeTag}}",this.authenticationService.getPartnerModuleCustomName());
@@ -998,11 +1000,23 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.listCategories();
   }
 
-  resetTagValues(message: any) {
+  resetTagValues(selectedTags: any[]) {
     this.openAddTagPopup = false;
-    this.showSuccessMessage(message);
-    this.listTags(new Pagination());
-  }
+    if (selectedTags && Array.isArray(selectedTags)) {
+        selectedTags.forEach(tag => {
+            if (!this.tracksPlayBook.tagIds.includes(tag.id)) {
+                this.tracksPlayBook.tagIds.push(tag.id);
+            }else{
+                this.tracksPlayBook.tagIds.push(tag.id);
+            }
+        });
+        this.addTagsCondition(selectedTags);
+    } else {
+        if (selectedTags != undefined) {
+            this.listTags(new Pagination());
+        }
+    }
+}
 
   addTags(type) {
   }
@@ -1755,5 +1769,29 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.canApprove = true;
     }
   }
+
+  removeTag(tag: Tag) {
+    let index = this.tracksPlayBook.tagIds.indexOf(tag.id);
+    if (index > -1) {
+        this.tracksPlayBook.tagIds.splice(index, 1);
+        this.savedTags.splice(index, 1);
+        this.addTagsCondition(this.savedTags)
+    }
+}
+addTagsCondition(selectedTags:any[]) {
+  if( this.tracksPlayBook.tagIds!=undefined && this.tracksPlayBook.tagIds.length>0){
+    this.savedTags = selectedTags.filter(tag => this.tracksPlayBook.tagIds.includes(tag.id));
+  }
+  let length = selectedTags.length;
+  if ((length % 2) == 0) {
+    this.tagFirstColumnEndIndex = length / 2;
+    this.tagsListFirstColumn = this.savedTags.slice(0, this.tagFirstColumnEndIndex);
+    this.tagsListSecondColumn = this.savedTags.slice(this.tagFirstColumnEndIndex);
+  } else {
+    this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
+    this.tagsListFirstColumn = this.savedTags.slice(0, this.tagFirstColumnEndIndex + 1);
+    this.tagsListSecondColumn = this.savedTags.slice(this.tagFirstColumnEndIndex + 1);
+  }
+}
 
 }

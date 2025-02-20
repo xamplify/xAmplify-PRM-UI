@@ -161,7 +161,30 @@
                 <div class="row form-group mTags" style="padding-bottom: 10px;">
                   <label class="control-label col-sm-4 col-xs-6 mTextAlign" style="text-align: right;">Tags
                   </label>
-                  <div class="inline col-sm-8 col-xs-8">
+                  <div class="col-sm-8 col-xs-8">
+                    <button *ngIf="savedTags.length==0" type="button" class="btn btn-primary add-btn mb10" (click)="addTag()"
+                    data-toggle="tooltip" data-placement="top" title="Pick up Tag'(s)">
+                    <i class="fa fa-plus mr5" aria-hidden="true"></i>Pick up Tag'(s)</button>
+                    <!--  -->
+                    <div *ngIf = "savedTags.length>0" class="add_tag-container">
+                       <ng-container class="add-tag-list">
+                          <ng-container *ngFor="let tag of tagsListFirstColumn; let i = index">
+                             <div class="add_tag">
+                                 {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                 <span class="close-btn" (click)="removeTag(tag)">&times;</span>
+                             </div>
+                          </ng-container>
+                       <ng-container *ngFor="let tag of tagsListSecondColumn; let i = index">
+                          <div class="add_tag">
+                             {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
+                             <span class="close-btn" (click)="removeTag(tag)">&times;</span>
+                          </div>
+                       </ng-container>
+                      </ng-container>
+                  </div>
+                  <a *ngIf="savedTags.length>0" class="add_more-btn" (click)="addTag()">+ Add more tags</a>
+                  </div>
+                  <!-- <div class="inline col-sm-8 col-xs-8">
                     <div class="portlet light" style="width: 100%;padding: 5px !important;">
                       <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
                         <div class="inline" style="float: right;">
@@ -231,7 +254,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row" style="padding-top: 10px;">
@@ -1272,7 +1295,7 @@
 </div>
 
 <div *ngIf="openAddTagPopup">
-  <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
+  <app-add-tags-util [pagination]="pagination" [isAddTag]="true" [selectedTags]= "savedTags" (notifyParent)="resetTagValues($event)">
   </app-add-tags-util>
 </div>
 

@@ -230,6 +230,7 @@ border-radius: 4px;
   border-radius: 8px;
   align-items: center;
 }
+
 .add_tag-container::-webkit-scrollbar{
 width:7px;
 height: 7px;
@@ -248,7 +249,7 @@ height: 7px;
   cursor: pointer;
 }
 .add_tag:hover {
-background-color:#007bff;
+background-color:#007bff !important;
 color: #fff;
   transform: scale(1.05);
 }

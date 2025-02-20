@@ -4545,3 +4545,15 @@ color: #fff!important;
   background: rgb(255 255 255 / 40%) !important;
   border: 1px solid #ada6a64d;
 }
+/* add a tag */
+.add_tag-container,.add-tag-card{
+  background: rgb(255 255 255 / 40%) !important;
+  border: 1px solid #ada6a64d!important;
+}
+.add_tag,.checkbox-btn{
+  background-color: rgb(255 255 255 / 31%)!important;
+}
+.add_tag:hover,.checkbox-btn:hover{
+  box-shadow: unset!important;
+  color: #fff!important;
+}

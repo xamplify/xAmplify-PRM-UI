@@ -10,6 +10,10 @@
     max-height: 300px;
     overflow-y: auto;
 }
+.add-tag-card::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
 
 ul.add-tag-list {
     list-style: none;
@@ -39,7 +43,7 @@ ul.add-tag-list li {
 
 /* Hover Effect */
 .checkbox-btn:hover {
-    background-color: #54a7e9;
+    background-color: #54a7e9 !important;
     color: white;
     border-color: #54a7e9;
 }
@@ -49,21 +53,16 @@ ul.add-tag-list li {
     display: none;
 }
 .hidden-checkbox:checked + .checkbox-btn {
-    background-color: #007bff;
+    background-color: #007bff !important;
     color: white;
     border-color: #007bff;
 }
 .hidden-checkbox:checked + .checkbox-btn:hover {
-    background-color: #0056b3;
+    background-color: #0056b3 !important;
     border-color: #0056b3;
 }
 .modal-footer{
     position: absolute;
     width: 100%;
     bottom: 2px;
-}
-.select-hilghlight{
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
 }

@@ -258,66 +258,75 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
         }
 
   updateSelectedTags(tag: Tag, checked: boolean) {
+    this.resetTagValidation();
+    this.addSelectedTags();
+
+    if (checked) {
+      this.addTag(tag);
+    } else {
+      this.removeTag(tag);
+    }
+
+    this.updateSelectedTagNames();
+  }
+
+  private resetTagValidation() {
     this.tagSelected = false;
     this.tag.isTagNameValid = false;
     this.tag.isValid = false;
+  }
 
-    if (checked) {
-      this.tagSelected = true;
-      // Add the tag if it’s not already in the selected tags
-      if (!this.tagsSelected.some(existingTag => existingTag.tagName === tag.tagName)) {
-        this.tagsSelected.push(tag);
-      }
-
-      if (this.selectedTags.length > 0) {
-        this.selectedTags.forEach(selectedTag => {
-          // Add selectedTag to tagsSelected if not already included
-          if (!this.tagsSelected.some(existingTag => existingTag.tagName === selectedTag.tagName)) {
-            this.tagsSelected.push(selectedTag);
-          }
-        });
-        this.selectedTagNames = this.selectedTags.map(person => person.tagName);
-      } else {
-        this.selectedTagNames = this.tagsSelected.map(person => person.tagName);
-      }
-    } else {
-      // Handle the removal case
-      if (this.selectedTags.length > 0) {
-        this.selectedTags.forEach(selectedTag => {
-          if (!this.tagsSelected.some(existingTag => existingTag.tagName === selectedTag.tagName)) {
-            this.tagsSelected.push(selectedTag);
-          }
-        });
-      }
-
-      const index = this.tagsSelected.findIndex(existingTag => existingTag.tagName === tag.tagName);
-      if (index !== -1) {
-        this.tagsSelected.splice(index, 1);
-        this. selectedTags.splice(index, 1);// Remove the tag
-        this.tagSelected = true;
-      }
+  private addSelectedTags() {
+    if (this.selectedTags.length > 0) {
+      this.selectedTags.forEach(selectedTag => {
+        if (!this.tagsSelected.some(existingTag => existingTag.tagName === selectedTag.tagName)) {
+          this.tagsSelected.push(selectedTag);
+        }
+      });
     }
   }
-        
-    saveSelectedTags() {
-      this.notifyParent.emit(this.tagsSelected);
-      $('#addTagModal').modal('hide');
-      this.tag.isValid = false;
-      this. tag.isTagNameValid = false;
-       this. tagSelected = false;
+
+  private addTag(tag: Tag) {
+    this.tagSelected = true;
+
+    if (!this.tagsSelected.some(existingTag => existingTag.tagName === tag.tagName)) {
+      this.tagsSelected.push(tag);
     }
-    openAddTagModal() {
-      this.isAddTagPopup=true;
-      this.tagSelected = false;
-      // $('#addTagModal').modal('hide');
+  }
+
+  private removeTag(tag: Tag) {
+    const index = this.tagsSelected.findIndex(existingTag => existingTag.tagName === tag.tagName);
+
+    if (index !== -1) {
+      this.tagsSelected.splice(index, 1);
+      this.selectedTags.splice(index, 1); // Remove the tag from selectedTags
+      this.tagSelected = true;
     }
-    searchTags() {
-      let pagination: Pagination = new Pagination();
-      pagination.searchKey = this.tagSearchKey;
-      pagination.userId = this.loggedInUserId;
-      pagination.maxResults = 0;
-      this.referenceService.startLoader(this.httpRequestLoader)
-      this.userService.getTagsSearchTagName(pagination)
+  }
+
+  private updateSelectedTagNames() {
+    this.selectedTagNames = this.tagsSelected.map(tag => tag.tagName);
+  }
+
+  saveSelectedTags() {
+    this.notifyParent.emit(this.tagsSelected);
+    $('#addTagModal').modal('hide');
+    this.tag.isValid = false;
+    this.tag.isTagNameValid = false;
+    this.tagSelected = false;
+  }
+  openAddTagModal() {
+    this.isAddTagPopup = true;
+    this.tagSelected = false;
+    // $('#addTagModal').modal('hide');
+  }
+  searchTags() {
+    let pagination: Pagination = new Pagination();
+    pagination.searchKey = this.tagSearchKey;
+    pagination.userId = this.loggedInUserId;
+    pagination.maxResults = 0;
+    this.referenceService.startLoader(this.httpRequestLoader)
+    this.userService.getTagsSearchTagName(pagination)
       .subscribe(
         response => {
           const data = response.data;
@@ -329,8 +338,8 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
           this.referenceService.stopLoader(this.httpRequestLoader);
         },
       );
-    }
-    tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
+  }
+  tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
 
   cancel() {
     this.isAddTagPopup = false;
