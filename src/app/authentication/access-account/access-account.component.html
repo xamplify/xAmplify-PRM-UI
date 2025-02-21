@@ -100,8 +100,11 @@
 			<!---Company Name--->
 			<div class="form-group" *ngIf="isPartnerSignUpPage">
 				<label class="control-label visible-ie8 visible-ie9">Company Name</label>
-				<input  autocomplete="off" class="form-control placeholder-no-fix emailTF ng-invalid" type="text" placeholder="Company Name" id="partner-company-name"
-				 required formControlName="companyName"/>
+				<app-dropdown-loader [isFromSignUpForm]="true" [text]="'Company'" *ngIf="isCompanyFieldLoading"></app-dropdown-loader>
+				<input [style.display]="isCompanyFieldLoading ? 'none' : 'block'" autocomplete="off"
+					class="form-control placeholder-no-fix emailTF ng-invalid" type="text" placeholder="Company Name"
+					id="partner-company-name" required formControlName="companyName"
+					[attr.disabled]="isCompanyAutoFilled ? true : null" />
 				<div *ngIf="formErrors.companyName" class="alert alert-danger">{{ formErrors.companyName }}</div>
 			</div>
 			<!---Password--->

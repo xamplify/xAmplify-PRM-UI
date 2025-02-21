@@ -8,6 +8,7 @@ import { Component, OnInit,Input } from '@angular/core';
 export class DropdownLoaderComponent implements OnInit {
 
   @Input() text:string;
+  @Input() isFromSignUpForm : boolean = false;
   constructor() { }
 
   ngOnInit() {
