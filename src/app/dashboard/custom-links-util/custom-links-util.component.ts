@@ -486,7 +486,6 @@ export class CustomLinksUtilComponent implements OnInit {
           /**XNFR-880**/
           this.alternateUrls =[]
           this.alternateUrlRequired = this.customLinkDto.alternateUrls!= null && this.customLinkDto.alternateUrls.length>0
-          console.log("at isDashboardButtonPublished" +this.alternateUrlRequired)
           if(this.alternateUrlRequired){
             this.alternateUrls = [
               {
@@ -798,7 +797,6 @@ verifyLink(){
   let link = this.customLinkForm.get('link').value;
   this.ngxLoading = true;
   this.customResponse = new CustomResponse();
-  let isSaveOrUpdate = this.buttonActionType?this.saveButtonText:this.updateButtonText
   this.vanityURLService.findAlternateLinksByUrl(link).subscribe(
     response=>{
       this.validatedLink = link
