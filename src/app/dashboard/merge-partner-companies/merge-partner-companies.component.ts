@@ -39,6 +39,9 @@ export class MergePartnerCompaniesComponent implements OnInit {
     public superAdminService: SuperAdminService, public logger: XtremandLogger,public properties:Properties) { }
 
   ngOnInit() {
+    if(this.authenticationService.getUserId()!=1){
+      this.referenceService.goToAccessDeniedPage();
+    }
   }
 
   findDetailsByEmailAddressOnKeyPress(keyCode: any) {
@@ -79,7 +82,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
           let vendorCompany = this.vendorCompanies[0];
           this.vendorCompanyName = vendorCompany['name'];
           this.selectedVendorCompanyId = vendorCompany['id'];
-          this.findPartnerCompaniesExcluding();
+          this.findPartnerCompanies();
           this.findPartnerCompanyMetrics();
         }
       });
@@ -94,6 +97,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
           response => {
             this.partnerCompanyMetricsDto = response.data;
             this.partnerCompanyMetricsDto.apiLoading = false;
+            console.log(this.partnerCompanyMetricsDto);
           }, error => {
             this.partnerCompanyMetricsDto.apiLoading = false;
             this.partnerCompanyMetricsDto.error = true;
@@ -126,8 +130,8 @@ export class MergePartnerCompaniesComponent implements OnInit {
   }
 
 
-  findPartnerCompaniesExcluding() {
-    this.superAdminService.findPartnerCompaniesExcluding(this.selectedVendorCompanyId, this.partnerCompanyId).subscribe(
+  findPartnerCompanies() {
+    this.superAdminService.findPartnerCompanies(this.selectedVendorCompanyId).subscribe(
       response => {
         this.partnerCompanies = response.data;
         this.displayPartnerCompaniesDropdown();
@@ -150,7 +154,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
     } else {
       this.selectedVendorCompanyId = 0;
     }
-    this.findPartnerCompaniesExcluding();
+    this.findPartnerCompanies();
   }
 
   getSelectedPartnerCompanyIdForTransfer(event: any) {
