@@ -1047,14 +1047,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.team.id = id;
         this.editTeamMember = true;
         this.saveOrUpdateButtonText = "Update";
-        if (this.team.teamMemberGroupId == null || this.team.teamMemberGroupId == 0) {
+        if (this.team.teamMemberGroupId == null) {
           this.team.teamMemberGroupId = 0;
           this.team.validForm = false;
-        }
-        if (this.team.firstName.length === 0) {
+        } else if (this.team.firstName.length === 0) {
           this.team.validForm = false;
-        }
-        else {
+        } else {
           this.team.validForm = true;
         }
       }, error => {
