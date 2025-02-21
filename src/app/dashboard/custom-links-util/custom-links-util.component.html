@@ -57,9 +57,16 @@
         <!--Link-->
         <div class="form-group">
           <label>Link<span class="required"> *</span></label>
-          <input class="form-control" type="text" placeholder="Link" required formControlName="link" autocomplete="off" />
+          <div class="inline-box link">
+          <input class="form-control" type="text" placeholder="Link" (input)= "onLinkEdit()"required formControlName="link" autocomplete="off" />
+          <button class="link-button" *ngIf="moduleType==properties?.dashboardButtons && isVerificationRequired && (!isLinkVerified || isLinkFieldEdited)" type="button"  
+           (click)="verifyLink()" data-toggle="tooltip" data-placement="top" title="Edit" >Verify</button>
+          </div>
           <span *ngIf="formErrors.link" class="required">{{ formErrors.link }}</span>
+          <span class="success"  *ngIf="moduleType==properties?.dashboardButtons && isVerificationRequired && (isLinkVerified && !isLinkFieldEdited) && !alternateUrlRequired"><b>Verifed<i
+            class="fa fa-check"></i></b></span>
         </div>
+        
         <!--XNFR-532-->
         <ng-container *ngIf="moduleType==properties?.dashboardBanners">
           <div class="form-group" >
@@ -117,6 +124,22 @@
           </div>
         </div>
       </div>
+      <div class="form-group col-md-12 col-xs-12" *ngIf="moduleType==properties?.dashboardButtons && alternateUrlRequired">
+        <div class = "alert alert-danger mb10">
+          <span  translate>The given link is the partner specific URL. You and your team members will be redirected to the below selected alternative link.</span>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <!--Link-->
+        <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons && alternateUrlRequired">
+          <label>Alternate Link<span class="required"> *</span></label>
+          <div>
+            <select formControlName="alternateLink" class="form-control">
+              <option [ngValue]="type.id" *ngFor="let type of alternateUrls">{{type.name}}</option>
+            </select>
+          </div>
+      </div>
+        </div>
       <!--Description-->
       <div class="form-group col-md-12 col-xs-12">
         <label>Description</label>

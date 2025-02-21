@@ -417,4 +417,11 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     return this.authenticationService.callGetMethod(url);
   }
 
+  findAlternateLinksByUrl(refarenceUrl:string){
+    let urlString = "?url="+refarenceUrl
+    let url = this.authenticationService.REST_URL + 'dashboardButtons/findAlternateUrls/' +urlString+'&access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+
+  }
+
 }
