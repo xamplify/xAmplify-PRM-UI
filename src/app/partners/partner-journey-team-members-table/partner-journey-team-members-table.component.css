@@ -29,24 +29,19 @@
   .custom-icon{
 	margin: -1px 3px 0px 3px;
   }
-
-  .reminder_btn{
-	display: flex;
-	justify-content: end;
-	flex-wrap: wrap;
-  }
-
-  @media only screen and (max-width:1024px){
-  .margin_14{
-	margin-top: 10px;
-  }
-}
-
-@media only screen and (max-width:1024px){
-.searchable-view{
-	margin-top: 10px;
-}
-}
   .action-cp{
 	padding: 10px 40px;
   }
+  .reminder_btn{
+	display: flex;
+	justify-content: end;
+  }
+@media only screen and (max-width:599px){
+.searchable-view{
+	margin-top: 10px;
+} 
+.reminder_btn{
+	flex-wrap: wrap;
+  }
+
+}
