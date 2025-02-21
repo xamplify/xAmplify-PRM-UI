@@ -2587,7 +2587,7 @@
                                             (closeEvent)="showThemeAlert($event)">
                                         </app-custom-skin>
                                         <!--Tags-->
-                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
+                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}" [isAddorEditTag]="true"></app-tags>
                                         <!--SPF-->
                                         <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                         <!--Unsubscribe Reasons-->

@@ -4264,3 +4264,31 @@ color: #fff !important;
   background: rgb(0 0 0 / 18%) !important;
   border: 1px solid #ffffff33 !important;
 }
+/* add a tag */
+.add_tag-container,.add-tag-card{
+  background-color: rgba(16 18 27 / 28%) !important;
+  border: 1px solid #ffffff33 !important;
+}
+.add_tag,.checkbox-btn{
+  background-color: hsla(0, 0%, 100%, .15)!important;
+  color:#fff!important;
+  border: 1px solid #ffffff33!important;
+}
+.add_tag:hover,.checkbox-btn:hover{
+  box-shadow: unset!important;
+  color: #fff!important;
+}
+/* add a tag */
+.add_tag-container,.add-tag-card{
+  background-color: rgba(16 18 27 / 28%) !important;
+  border: 1px solid #ffffff33 !important;
+}
+.add_tag,.checkbox-btn{
+  background-color: hsla(0, 0%, 100%, .15)!important;
+  color:#fff!important;
+  border: 1px solid #ffffff33!important;
+}
+.add_tag:hover,.checkbox-btn:hover{
+  box-shadow: unset!important;
+  color: #fff!important;
+}

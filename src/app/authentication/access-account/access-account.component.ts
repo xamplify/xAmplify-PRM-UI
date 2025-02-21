@@ -105,6 +105,8 @@ export class AccessAccountComponent implements OnInit {
     loginStyleId:number;
     isPartnerSignUpPage = false;
     isTeamMemberSignUpPage = false;
+    isCompanyAutoFilled: boolean = false;
+    isCompanyFieldLoading: boolean = false;
     constructor( private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User, public route: ActivatedRoute,
         private userService: UserService, public referenceService: ReferenceService, private xtremandLogger: XtremandLogger,
@@ -266,11 +268,11 @@ export class AccessAccountComponent implements OnInit {
         this.customResponse = new CustomResponse();
         this.removeErrorClasses();
         this.authenticationService.signUpAsPartner(data).
-        subscribe(response=>{
-            this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.PARTNERSHIP_ESTABLISHED_SUCCESSFULLY;
-            this.router.navigate(['./login']);
-            this.loading = false;
-        },error=>{
+            subscribe(response => {
+                this.referenceService.teamMemberSignedUpSuccessfullyMessage = response.message;
+                this.router.navigate(['./login']);
+                this.loading = false;
+            },error=>{
             let message = this.referenceService.showHttpErrorMessage(error);
             if(this.properties.serverErrorMessage!=message){
                 if(message.includes("Company name has already been added")){
@@ -410,41 +412,49 @@ export class AccessAccountComponent implements OnInit {
         if (!this.signUpForm.value.companyName) { this.formErrors.companyName = this.validationMessages.companyName.required; }
     }
     buildForm() {
-        if(!this.isPartnerSignUpPage){
+        if (!this.isPartnerSignUpPage) {
             this.signUpUser.companyName = "Company";
         }
-        this.signUpForm = this.formBuilder.group( {
-            'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern( this.regularExpressions.EMAIL_ID_PATTERN )]],
-            'password': [this.signUpUser.password, [Validators.required, Validators.minLength( 6 ), Validators.maxLength( 20 ), Validators.pattern( this.regularExpressions.PASSWORD_PATTERN )]],
-            'confirmPassword': [null, [Validators.required, Validators.pattern( this.regularExpressions.PASSWORD_PATTERN )]],
+        this.signUpForm = this.formBuilder.group({
+            'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],
+            'password': [this.signUpUser.password, [Validators.required, Validators.minLength(6), Validators.maxLength(20), Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
+            'confirmPassword': [null, [Validators.required, Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'agree': [false, Validators.required],
             'firstName': [this.signUpUser.firstName, Validators.compose([Validators.required, noWhiteSpaceValidatorWithOutLimit])],//Validators.pattern(nameRegEx)
             'lastName': [this.signUpUser.lastName],
             'companyName': [this.signUpUser.companyName, Validators.compose([Validators.required, noWhiteSpaceValidatorWithOutLimit])],//Validators.pattern(nameRegEx)
         }, {
-                validator: matchingPasswords( 'password', 'confirmPassword' )
-            }
+            validator: matchingPasswords('password', 'confirmPassword')
+        }
         );
         this.signUpForm.valueChanges
-            .subscribe( data => this.onValueChanged( data ) );
+            .subscribe(data => this.onValueChanged(data));
         this.onValueChanged(); // (re)set validation messages now
+
+        const emailControl = this.signUpForm.get('emailId');
+        if (emailControl) {
+            emailControl.valueChanges
+                .subscribe(data => this.onEmailChanged(data));
+        }
+
     }
 
-    onValueChanged( data?: any ) {
-        if ( !this.signUpForm ) { return; }
+    onValueChanged(data?: any) {
+        if (!this.signUpForm) { return; }
         const form = this.signUpForm;
-        for ( const field of Object.keys( this.formErrors ) ) {
+        for (const field of Object.keys(this.formErrors)) {
             // clear previous error message (if any)
             this.formErrors[field] = '';
-            const control = form.get( field );
-            if ( control && control.dirty && !control.valid ) {
+            const control = form.get(field);
+            if (control && control.dirty && !control.valid) {
                 const messages = this.validationMessages[field];
-                for ( const key of Object.keys( control.errors ) ) {
+                for (const key of Object.keys(control.errors)) {
                     this.formErrors[field] += messages[key] + ' ';
                 }
             }
         }
     }
+
     toggleChild() {
         this.isError = !this.isError;
     }
@@ -548,6 +558,45 @@ export class AccessAccountComponent implements OnInit {
                 window.location.reload();
             }
           );
+    }
+
+    autoFillCompnayByEmailDomain(emailId: any) {
+        let data = {};
+        this.isCompanyFieldLoading = true;
+        this.authenticationService.getPartnerCompanyByEmailDomain(emailId, this.companyProfileName).subscribe((result) => {
+            if (result.statusCode == 200) {
+                this.isCompanyFieldLoading = false;
+                let company = result.data;
+                if (company != undefined && company.length > 0) {
+                    this.isCompanyAutoFilled = true;
+                    this.signUpForm.patchValue({ companyName: company });
+                    $("#partner-company-name").addClass('disabled-background');
+                } else if (this.isCompanyAutoFilled) {
+                    this.isCompanyAutoFilled = false;
+                    this.signUpForm.patchValue({ companyName: '' });
+                    $("#partner-company-name").removeClass('disabled-background');
+                }
+            }
+        },
+            (error) => {
+                this.isCompanyFieldLoading = false;
+                this.xtremandLogger.error('error in signup page' + error);
+            }
+        );
+    }
+
+    onEmailChanged(data?: any) {
+        const form = this.signUpForm;
+        if (this.isPartnerSignUpPage && data != undefined) {
+            const control = form.get('emailId');
+            if (control.valid) {
+                this.autoFillCompnayByEmailDomain(control.value);
+            } else if (!control.valid && this.isCompanyAutoFilled) {
+                this.signUpForm.patchValue({ companyName: '' });
+                this.isCompanyAutoFilled = false;
+                $("#partner-company-name").removeClass('disabled-background');
+            }
+        }
     }
 
 }

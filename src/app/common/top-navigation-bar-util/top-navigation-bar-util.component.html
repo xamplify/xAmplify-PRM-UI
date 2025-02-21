@@ -213,7 +213,7 @@
   || authenticationService.module.isVendor
   || authenticationService.module.isPrm
   || authenticationService.module.isVendorTier
-  || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && authenticationService?.module?.socialShareOptionEnabled">
+  || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && (authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))">
                 <a (click)="goToRouter('/home/social/manage/all')" translate> <i class="fa fa-cog"
                     aria-hidden="true"></i> Social Accounts<sup>(Beta)</sup></a>
                 <div class="border-bt"></div>
