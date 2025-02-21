@@ -1,0 +1,68 @@
+.add-btn {
+    padding: 7px 10px;
+    border-radius: 4px;
+}
+.add-tag-card {
+    background-color: #f1f5f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.add-tag-card::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+ul.add-tag-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+ul.add-tag-list li {
+    display: inline-block;
+}
+.checkbox-btn {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    font-weight: 500;
+    user-select: none;
+}
+
+/* Hover Effect */
+.checkbox-btn:hover {
+    background-color: #54a7e9 !important;
+    color: white;
+    border-color: #54a7e9;
+}
+
+/* Hide the Checkbox */
+.hidden-checkbox {
+    display: none;
+}
+.hidden-checkbox:checked + .checkbox-btn {
+    background-color: #007bff !important;
+    color: white;
+    border-color: #007bff;
+}
+.hidden-checkbox:checked + .checkbox-btn:hover {
+    background-color: #0056b3 !important;
+    border-color: #0056b3;
+}
+.modal-footer{
+    position: absolute;
+    width: 100%;
+    bottom: 2px;
+}

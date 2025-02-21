@@ -4508,3 +4508,17 @@ a.Iconhover.custom-grid-icon.icon_margin{
   .icon-btns:hover,i.fa.fa-edit.ml_6:hover{
     background-color: #e3edf7!important;
   }
+  /* add a tag */
+.add_tag-container,.add-tag-card{
+  background: #f0f5fa !important;
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
+}
+.add_tag,.checkbox-btn{
+  border: 1px solid #ececec !important;
+  box-shadow: inset 5px 8px 10px #d6dadf, inset -5px -5px 10px #fff;
+}
+.add_tag:hover,.checkbox-btn:hover{
+  box-shadow: unset;
+  color: #fff!important;
+}

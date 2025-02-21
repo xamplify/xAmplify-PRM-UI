@@ -2642,3 +2642,13 @@ tbody{background: transparent;}
     background: #2b3c46 !important;
     border: 1px solid #2f4857 !important;
   }
+  /* add a tag */
+.add_tag-container,.add-tag-card{
+  background-color: #22313a !important;
+    border: 1px solid #2f4857 !important;
+}
+.add_tag,.checkbox-btn{
+  color: white !important;
+  background-color: #2b3c46!important;
+  border: 1px solid #2f4857 !important;
+}
