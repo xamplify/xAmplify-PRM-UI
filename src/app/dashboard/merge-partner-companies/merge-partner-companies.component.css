@@ -5,3 +5,101 @@
 .mb-20{
     margin-bottom: 20px;
 }
+
+.dbiconscss {
+    margin-left: 0px !important;
+    font-size: 60px;
+  }
+
+  /***
+Dashboard Stats
+***/
+.dashboard-stat {
+    display: block;
+    margin-bottom: 25px;
+    overflow: hidden;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+  }
+  .dashboard-stat:before, .dashboard-stat:after {
+    content: " ";
+    display: table;
+  }
+  .dashboard-stat:after {
+    clear: both;
+  }
+  .portlet .dashboard-stat:last-child {
+    margin-bottom: 0;
+  }
+  .dashboard-stat .visual {
+    width: 80px;
+    height: 80px;
+    display: block;
+    float: left;
+    padding-top: 10px;
+    padding-left: 15px;
+    margin-bottom: 15px;
+    font-size: 35px;
+    line-height: 35px;
+  }
+  .dashboard-stat .visual > i {
+    margin-left: -35px;
+    font-size: 70px;
+    line-height: 56px;
+  }
+  .dashboard-stat .details {
+    position: absolute;
+    right: 15px;
+    padding-right: 15px;
+  }
+  .dashboard-stat .details .number {
+    padding-top: 25px;
+    text-align: right;
+    font-size: 34px;
+    line-height: 36px;
+    letter-spacing: -1px;
+    margin-bottom: 0px;
+    font-weight: 300;
+  }
+  .dashboard-stat .details .desc {
+    text-align: right;
+    font-size: 15px;
+    letter-spacing: 0px;
+    font-weight: 500;
+  }
+  .dashboard-stat .more {
+    clear: both;
+    display: block;
+    padding: 6px 10px 6px 10px;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 11px;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+  }
+  .dashboard-stat .more:hover {
+    text-decoration: none;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+  }
+  .dashboard-stat .more > i {
+    display: inline-block;
+    margin-top: 1px;
+    float: right;
+  }
+  
+  .dashboard-stat-light {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+  .dashboard-stat-light .details {
+    margin-bottom: 5px;
+  }
+  .dashboard-stat-light .details .number {
+    font-weight: 300;
+    margin-bottom: 0px;
+  }

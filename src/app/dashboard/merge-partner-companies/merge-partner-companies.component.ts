@@ -96,8 +96,6 @@ export class MergePartnerCompaniesComponent implements OnInit {
         subscribe(
           response => {
             this.partnerCompanyMetricsDto = response.data;
-            this.partnerCompanyMetricsDto.apiLoading = false;
-            console.log(this.partnerCompanyMetricsDto);
           }, error => {
             this.partnerCompanyMetricsDto.apiLoading = false;
             this.partnerCompanyMetricsDto.error = true;
@@ -115,7 +113,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
       this.partnerCompanyName = response['map']['partnerCompanyName'];
       this.partnerCompanyId = response['map']['partnerCompanyId'];
       if (this.vendorCompanies.length > 1) {
-        this.setErrorMessage("Merging is not applicable for the selected partner company as the partnership is established with multiple vendor");
+        this.setErrorMessage("The entered partner email address cannot be merged as the partnership is established with multiple vendors");
       } 
     } else {
       this.setErrorMessage(response.message);
@@ -182,5 +180,6 @@ export class MergePartnerCompaniesComponent implements OnInit {
     this.partnerCompanyIdForTransfer = 0;
     this.partnerCompanies = [];
     this.partnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
+    this.statusCode = 0;
   }
 }
