@@ -1,5 +1,7 @@
 	<!--Header-->
   <div class="page-bar ml10 mr10 mt10">
+    <ngx-loading [show]="partnerCompanyMetricsDto?.apiLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home" aria-hidden="true"></i>

@@ -6,12 +6,14 @@ import { AccountDetailsDto } from '../models/account-details-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { PartnerCompanyMetricsDto } from '../models/partner-company-metrics-dto';
+import { Properties } from 'app/common/models/properties';
 
 @Component({
   selector: 'app-merge-partner-companies',
   templateUrl: './merge-partner-companies.component.html',
   styleUrls: ['./merge-partner-companies.component.css'],
+  providers:[Properties]
 })
 export class MergePartnerCompaniesComponent implements OnInit {
   isvalidEmailAddressEntered = false;
@@ -32,9 +34,9 @@ export class MergePartnerCompaniesComponent implements OnInit {
   partnerCompanies: Array<any> = new Array<any>();
   partnerCompaniesApiLoading = false;
   vendorCompanyName = "";
-  partnerMetricsApiLoading = false;
+  partnerCompanyMetricsDto:PartnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
   constructor(private referenceService: ReferenceService, public authenticationService: AuthenticationService,
-    public superAdminService: SuperAdminService, public logger: XtremandLogger) { }
+    public superAdminService: SuperAdminService, public logger: XtremandLogger,public properties:Properties) { }
 
   ngOnInit() {
   }
@@ -78,11 +80,28 @@ export class MergePartnerCompaniesComponent implements OnInit {
           this.vendorCompanyName = vendorCompany['name'];
           this.selectedVendorCompanyId = vendorCompany['id'];
           this.findPartnerCompaniesExcluding();
+          this.findPartnerCompanyMetrics();
         }
-      }
-    
-    
-    );
+      });
+  }
+
+  private findPartnerCompanyMetrics() {
+    if (this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
+      this.partnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
+      this.partnerCompanyMetricsDto.apiLoading = true;
+      this.superAdminService.findPartnerCompanyMetrics(this.selectedVendorCompanyId, this.partnerCompanyId).
+        subscribe(
+          response => {
+            this.partnerCompanyMetricsDto = response.data;
+            this.partnerCompanyMetricsDto.apiLoading = false;
+          }, error => {
+            this.partnerCompanyMetricsDto.apiLoading = false;
+            this.partnerCompanyMetricsDto.error = true;
+            this.partnerCompanyMetricsDto.errorMessage = "Unable To Load Partner Company Metrics.Please Try After Sometime.";
+          });
+    } else {
+      this.partnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
+    }
   }
 
   private handleVendorCompaniesResponse(response: any): void {
@@ -140,18 +159,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
     } else {
       this.partnerCompanyIdForTransfer = 0;
     }
-    if(this.partnerCompanyIdForTransfer!=undefined && this.partnerCompanyIdForTransfer>0){
-      this.partnerMetricsApiLoading = true;
-      this.superAdminService.findPartnerCompanyMetrics(this.selectedVendorCompanyId,this.partnerCompanyIdForTransfer).
-      subscribe(
-        response=>{
-
-        },error=>{
-
-        });
-    }else{
-
-    }
+   
     
 
 
@@ -169,6 +177,6 @@ export class MergePartnerCompaniesComponent implements OnInit {
     this.partnerCompanyId = 0;
     this.partnerCompanyIdForTransfer = 0;
     this.partnerCompanies = [];
-    this.partnerMetricsApiLoading = false;
+    this.partnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
   }
 }
