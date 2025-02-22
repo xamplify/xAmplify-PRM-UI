@@ -182,4 +182,8 @@ export class MergePartnerCompaniesComponent implements OnInit {
     this.partnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
     this.statusCode = 0;
   }
+
+  viewDetailedAnalytics(partnerCompanyMetricsDto:PartnerCompanyMetricsDto){
+    this.referenceService.showSweetAlertInfoMessage();
+  }
 }
