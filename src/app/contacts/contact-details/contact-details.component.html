@@ -562,4 +562,4 @@
     [companyId]="companyIdForEdit" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
   
 <app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
-  [companyListId]="selectedContactListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
+  [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
