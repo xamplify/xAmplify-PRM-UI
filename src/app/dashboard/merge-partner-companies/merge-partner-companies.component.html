@@ -1,0 +1,245 @@
+	<!--Header-->
+  <div class="page-bar ml10 mr10 mt10">
+    <ngx-loading [show]="partnerCompanyMetricsDto?.apiLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        Merge Partner Companies
+      </li>
+    </ul>
+    <a class="close-circle mr5 mt5" [routerLink]="['/home/dashboard/admin-report']">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+  </div>
+  <div class="portlet light ml10 mr10">
+    <div class="portlet-body clearfix">
+      <div class="table-responsive">
+        <h4>Please enter the partner's email address used for onboarding</h4>
+        <app-response-message [showCloseIcon]="false" [customResponse]="errorOrSuccessResponse" *ngIf="errorOrSuccessResponse?.isVisible"></app-response-message>
+        <table class='table tgrid'>
+          <thead>
+            <tr>
+              <th scope="row">
+                <input class="form-control lowercase-text" type="text"   [(ngModel)]="accountDetailsDto.emailId" [ngModelOptions]="{standalone: true}"
+                 (input)="accountDetailsDto.emailId = accountDetailsDto.emailId.toLowerCase()"  onkeypress="return event.charCode != 32"
+                 (keypress)="findDetailsByEmailAddressOnKeyPress($event.keyCode)">
+              </th>
+              <th scope="row">
+                <button class="btn btn-primary" [ngClass]="emailAddressErrorMessage?.length>0 ? 'mb-20':''" (click)="findDetailsByEmailAddress()">Search</button>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="portlet light ml10 mr10" *ngIf="apiLoading">
+    <div class="portlet-body clearfix">
+      <app-modal-popup-loader></app-modal-popup-loader>
+    </div>
+  </div>
+  <ng-container *ngIf="!apiLoading && statusCode==200">
+     <div class="portlet light ml10 mr10">
+      <div class="portlet-body clearfix">
+        <div class="table-responsive">
+          <table class="table grid table-bordered">
+            <tbody>
+              <tr>
+                <th scope="row">Partner Company Name</th>
+                <th scope="row">
+                <span class="success">{{partnerCompanyName}}</span>
+                </th>
+              </tr>
+              <ng-container *ngIf="vendorCompanies?.length==1">
+                <tr>
+                  <th scope="row">Vendor Company</th>
+                  <th scope="row">
+                    <span class="success">{{vendorCompanyName}}</span>
+                  </th>
+                </tr>
+                <tr>
+                  <th scope="row">Partner Company To Transfer The Data</th>
+                  <th scope="row">
+                    <app-dropdown-loader *ngIf="partnerCompaniesApiLoading" [text]="'Partner Companies'"></app-dropdown-loader>
+                    <app-searchable-dropdown *ngIf="!partnerCompaniesApiLoading" [searchableDropDownDto]="partnerCompaniesSearchableDropdownDto" [id]="partnerCompanyIdForTransfer"
+                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedPartnerCompanyIdForTransfer($event)">
+                    </app-searchable-dropdown>
+                    <span class="success" *ngIf="!partnerCompaniesApiLoading">Number of Partner Companies : {{partnerCompanies?.length}}</span>
+                  </th>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <div class="footer float-right">
+            <button class="btn btn-danger">Transfer</button>
+          </div>
+        </div>
+      </div>
+     </div>
+    <!--Metrics-->
+    <div class="portlet light ml10 mr10">
+      <div class="portlet-body clearfix">
+        <app-box-loader [countLoader]="4" *ngIf="partnerCompanyMetricsDto?.apiLoading"></app-box-loader>
+        <ng-container *ngIf="!partnerCompanyMetricsDto?.apiLoading">
+          <div class="row mb10">
+            <!--Total Leads-->
+            <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect" title="Click to see details" (click)="viewDetailedAnalytics(partnerCompanyMetricsDto)">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                <div class="visual">
+                    <i aria-hidden="true" class="fa fa-users dbiconscss"></i>
+                </div>
+                <div class="details">
+                    <div class="number NumberFontDecrease">
+                      <span data-toggle="tooltip" data-placement="left" title="{{partnerCompanyMetricsDto?.totalLeads}}">
+                          {{partnerCompanyMetricsDto?.totalLeads}}
+                      </span>
+                    </div>
+                    <div class="desc">Total Leads</div>
+                </div>
+                <span class="morePadding">
+                    <a translate="" class="more">Detailed view
+                      <i aria-hidden="true" class="m-icon-swapright m-icon-white detailedarrow"></i>
+                      <i class="fa fa-info-circle" aria-hidden="true" title="Total Leads By {{partnerCompanyName}}"></i></a>
+                </span>
+              </a>
+            </div>
+            <!--Total Deals-->
+            <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect" title="Click to see details" (click)="viewDetailedAnalytics(partnerCompanyMetricsDto)">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                <div class="visual">
+                    <i aria-hidden="true" class="fa fa-tags dbiconscss"></i>
+                </div>
+                <div class="details">
+                    <div class="number NumberFontDecrease">
+                      <span data-toggle="tooltip" data-placement="left" title="{{partnerCompanyMetricsDto?.totalDeals}}">
+                          {{partnerCompanyMetricsDto?.totalDeals}}
+                      </span>
+                    </div>
+                    <div class="desc">Total Deals</div>
+                </div>
+                <span class="morePadding">
+                    <a translate="" class="more">Detailed view
+                      <i aria-hidden="true" class="m-icon-swapright m-icon-white detailedarrow"></i>
+                      <i class="fa fa-info-circle" aria-hidden="true" title="Total Deals By {{partnerCompanyName}}"></i></a>
+                </span>
+              </a>
+            </div>
+            <!--Total Deal Contacts-->
+            <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect" title="Click to see details" (click)="viewDetailedAnalytics(partnerCompanyMetricsDto)">
+              <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                <div class="visual">
+                    <i aria-hidden="true" class="fa fa-users dbiconscss"></i>
+                </div>
+                <div class="details">
+                    <div class="number NumberFontDecrease">
+                      <span data-toggle="tooltip" data-placement="left" title="{{partnerCompanyMetricsDto?.totalDealContacts}}">
+                          {{partnerCompanyMetricsDto?.totalDealContacts}}
+                      </span>
+                    </div>
+                    <div class="desc">Total Deal Contacts</div>
+                </div>
+                <span class="morePadding">
+                    <a translate="" class="more">Detailed view
+                      <i aria-hidden="true" class="m-icon-swapright m-icon-white detailedarrow"></i>
+                      <i class="fa fa-info-circle" aria-hidden="true" title="Total Deal Contacts By {{partnerCompanyName}}"></i></a>
+                </span>
+              </a>
+            </div>
+            <!--Total Team Members-->
+            <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect" title="Click to see details" (click)="viewDetailedAnalytics(partnerCompanyMetricsDto)">
+              <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+                <div class="visual">
+                    <i aria-hidden="true" class="fa fa-users dbiconscss"></i>
+                </div>
+                <div class="details">
+                    <div class="number NumberFontDecrease">
+                      <span data-toggle="tooltip" data-placement="left" title="{{partnerCompanyMetricsDto?.totalTeamMembers}}">
+                          {{partnerCompanyMetricsDto?.totalTeamMembers}}
+                      </span>
+                    </div>
+                    <div class="desc">Total Team Members</div>
+                </div>
+                <span class="morePadding">
+                    <a translate="" class="more">Detailed view
+                      <i aria-hidden="true" class="m-icon-swapright m-icon-white detailedarrow"></i>
+                      <i class="fa fa-info-circle" aria-hidden="true" title="Total Team Members + Admin By {{partnerCompanyName}}"></i></a>
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="row mb10">
+            <!--Total Redistributed Campaigns-->
+            <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect" title="Click to see details" (click)="viewDetailedAnalytics(partnerCompanyMetricsDto)">
+              <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                <div class="visual">
+                    <i aria-hidden="true" class="fa fa-bullhorn dbiconscss"></i>
+                </div>
+                <div class="details">
+                    <div class="number NumberFontDecrease">
+                      <span data-toggle="tooltip" data-placement="left" title="{{partnerCompanyMetricsDto?.totalRedistributedCampaigns}}">
+                          {{partnerCompanyMetricsDto?.totalRedistributedCampaigns}}
+                      </span>
+                    </div>
+                    <div class="desc">Total Redistributed Campaigns</div>
+                </div>
+                <span class="morePadding">
+                    <a translate="" class="more">Detailed view
+                      <i aria-hidden="true" class="m-icon-swapright m-icon-white detailedarrow"></i>
+                      <i class="fa fa-info-circle" aria-hidden="true" title="Total Redistributed Campaigns By {{partnerCompanyName}}"></i></a>
+                </span>
+              </a>
+            </div>
+          <!--Total Campaign Leads-->
+          <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect" title="Click to see details" (click)="viewDetailedAnalytics(partnerCompanyMetricsDto)">
+            <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+              <div class="visual">
+                  <i aria-hidden="true" class="fa fa-users dbiconscss"></i>
+              </div>
+              <div class="details">
+                  <div class="number NumberFontDecrease">
+                    <span data-toggle="tooltip" data-placement="left" title="{{partnerCompanyMetricsDto?.totalCampaignLeads}}">
+                        {{partnerCompanyMetricsDto?.totalCampaignLeads}}
+                    </span>
+                  </div>
+                  <div class="desc">Total Campaign Leads</div>
+              </div>
+              <span class="morePadding">
+                  <a translate="" class="more">Detailed view
+                    <i aria-hidden="true" class="m-icon-swapright m-icon-white detailedarrow"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" title="Total Leads Created Using Campaigns By {{partnerCompanyName}}"></i></a>
+              </span>
+            </a>
+          </div>
+          <!--Total Campaign Deals-->
+          <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect" title="Click to see details" (click)="viewDetailedAnalytics(partnerCompanyMetricsDto)">
+            <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+              <div class="visual">
+                  <i aria-hidden="true" class="fa fa-tags dbiconscss"></i>
+              </div>
+              <div class="details">
+                  <div class="number NumberFontDecrease">
+                    <span data-toggle="tooltip" data-placement="left" title="{{partnerCompanyMetricsDto?.totalCampaignDeals}}">
+                        {{partnerCompanyMetricsDto?.totalCampaignDeals}}
+                    </span>
+                  </div>
+                  <div class="desc">Total Campaign Deals</div>
+              </div>
+              <span class="morePadding">
+                  <a translate="" class="more">Detailed view
+                    <i aria-hidden="true" class="m-icon-swapright m-icon-white detailedarrow"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" title="Total Deals Created Using Campaigns By {{partnerCompanyName}}"></i></a>
+              </span>
+            </a>
+          </div>
+        </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+
+<app-scroll-top></app-scroll-top>
