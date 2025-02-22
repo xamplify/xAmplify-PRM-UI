@@ -1774,7 +1774,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     let index = this.tracksPlayBook.tagIds.indexOf(tag.id);
     if (index > -1) {
         this.tracksPlayBook.tagIds.splice(index, 1);
-        this.savedTags.splice(index, 1);
+        // this.savedTags.splice(index, 1);
+        if(this.tracksPlayBook.tagIds .length == 0){
+          this.savedTags = [];
+      }
         this.addTagsCondition(this.savedTags)
     }
 }

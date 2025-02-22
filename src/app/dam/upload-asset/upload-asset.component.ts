@@ -1563,7 +1563,10 @@ zoomOut() {
             let index = this.damUploadPostDto.tagIds.indexOf(tag.id);
             if (index > -1) {
                 this.damUploadPostDto.tagIds.splice(index, 1);
-                this.savedTags.splice(index, 1);
+                // this.savedTags.splice(index, 1);
+                if(this.damUploadPostDto.tagIds .length == 0){
+                    this.savedTags = [];
+                }
                 this.addTagsCondition(this.savedTags)
             }
         }

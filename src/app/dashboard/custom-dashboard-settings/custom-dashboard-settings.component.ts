@@ -32,7 +32,7 @@ export class CustomDashboardSettingsComponent implements OnInit {
   }
 
   customUiSwitchEventReceiver(event: any) {
-    this.isDashboardSettingsEnabled = event;
+    this.isDashboardSettingsEnabled = !this.isDashboardSettingsEnabled;
   }
 
   updateDefaultDashboardSettingsOption() {
@@ -45,8 +45,7 @@ export class CustomDashboardSettingsComponent implements OnInit {
       }, error => {
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         this.isLoading = false;
-      }
-    );
+      });
   }
 
 }

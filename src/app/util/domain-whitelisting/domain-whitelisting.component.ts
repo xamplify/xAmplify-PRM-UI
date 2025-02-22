@@ -152,7 +152,9 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
 
   addDomainModalOpen() {
     this.domain = "";
-    this.isDomainAllowedToAddToSamePartnerAccount = false;
+    if (this.isPartnerDomainsTabSelected) {
+      this.isDomainAllowedToAddToSamePartnerAccount = true;
+    }
     this.referenceService.openModalPopup("domainModal");
   }
 
