@@ -66,7 +66,8 @@ export class ShowHistoryComponent implements OnInit {
 		APPROVED: 'APPROVED',
 		REJECTED: 'REJECTED',
 		CREATED: 'CREATED',
-		UPDATED: 'UPDATED'
+		UPDATED: 'UPDATED',
+		DRAFT: 'DRAFT'
 	};
 	videoId: number;
 
@@ -504,6 +505,8 @@ export class ShowHistoryComponent implements OnInit {
 				return 'Pending Approval';
 			case this.approvalStatus.UPDATED:
 				return 'Updated';
+			case this.approvalStatus.DRAFT:
+				return 'Draft';
 			default:
 				return status;
 		}

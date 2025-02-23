@@ -76,6 +76,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
    isDownloaButtonClicked = false;
   isFromApprovalModule: boolean = false;
   isApprover: boolean = false;
+  saveAsDraftButtonText: string = "Save as Draft";
+  disableSaveAsDraftButton: boolean = false;
 
   constructor(
     private xtremandLogger: XtremandLogger,
@@ -110,7 +112,6 @@ export class AddDamComponent implements OnInit, OnDestroy {
           this.isPartnerView = this.router.url.indexOf("/editp") > -1;
           this.isAdd = false;
           this.modalTitle = "Update Details";
-          this.saveOrUpdateButtonText = "Update";
           this.getById();
         } else {
           this.goToManageSectionWithError();
@@ -129,8 +130,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
           });
       }
       this.findAssetPublishEmailNotificationOption();
-
-      this.checkApprovalPrivilegeForAssets();
+      /** XNFR-884 **/
+      if (this.authenticationService.approvalRequiredForAssets) {
+        this.checkApprovalPrivilegeForAssets();
+        this.saveOrUpdateButtonText = 'Send for Approval';
+      }
     }
     
      /****XNFR-326*****/
@@ -230,6 +234,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
       }
       this.damPostDto.categoryId = dam.categoryId;
       this.selectedCategoryId = dam.categoryId;
+      this.damPostDto.published = dam.published;
+      this.damPostDto.approvalStatus = dam.approvalStatus;
     } else {
       this.goToManageSectionWithError();
     }
@@ -320,6 +326,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
         }
       );
     }
+  }
+  
+  saveOrUpdateAsset(saveAs: boolean) {
+    this.damPostDto.draft = true;
+    this.saveOrUpdate(saveAs);
   }
 
   updatePublishedAsset() {
@@ -520,17 +531,21 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     if(isPartnerCompanyOrGroupSelected){
         this.saveOrUpdateButtonText = "Save & Publish";
         this.saveAsButtonText = "Save As & Publish";
+        this.disableSaveAsDraftButton = true;
     }else{
         this.saveOrUpdateButtonText = "Save";
         this.saveAsButtonText = "Save As";
+        this.disableSaveAsDraftButton = false;
     }
 }else{
     if(isPartnerCompanyOrGroupSelected){
        this.saveAsButtonText = "Save As & Publish";
        this.saveOrUpdateButtonText = "Save & Publish";
+       this.disableSaveAsDraftButton = true;
     }else{
       this.saveAsButtonText = "Save As";
       this.saveOrUpdateButtonText = "Save";
+      this.disableSaveAsDraftButton = false;
     }
 }
 /****XNFR-342****/

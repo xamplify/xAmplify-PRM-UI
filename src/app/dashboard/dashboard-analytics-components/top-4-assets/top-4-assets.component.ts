@@ -57,7 +57,8 @@ export class Top4AssetsComponent implements OnInit {
     APPROVED: 'APPROVED',
     REJECTED: 'REJECTED',
     CREATED: 'CREATED',
-    UPDATED: 'UPDATED'
+    UPDATED: 'UPDATED',
+    DRAFT: "DRAFT"
   };
   videoId: number;
 
@@ -411,6 +412,8 @@ isVideo(filename: any) {
         return 'Pending Approval';
       case this.approvalStatus.UPDATED:
         return 'Updated';
+      case this.approvalStatus.DRAFT:
+        return 'Draft';
       default:
         return status;
     }

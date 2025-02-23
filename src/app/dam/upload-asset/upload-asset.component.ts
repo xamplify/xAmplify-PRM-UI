@@ -28,6 +28,7 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { SignatureService } from 'app/dashboard/services/signature.service';
 import { SignatureResponseDto } from 'app/dashboard/models/signature-response-dto';
 import { GeoLocationAnalytics } from 'app/util/geo-location-analytics';
+import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 
 
 
@@ -155,6 +156,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     fileType: any;
     isVendorSignatureToggleClicked: boolean = false;
     isApprover: boolean = false;
+    saveAsDraftButtonText: string = "Save as Draft";
+    disableSaveAsDraftButton: boolean = false;
     
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -202,7 +205,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if (!this.isAdd) {
 			this.id = this.route.snapshot.params['id'];
 			this.getAssetDetailsById(this.id);
-			this.submitButtonText = "Update";
             this.uploadOrReplaceAssetText = "Replace Asset";
 		}
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -213,8 +215,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.findShareWhiteLabelContentAccess();
         /****XNFR-326*****/
         this.findAssetPublishEmailNotificationOption();
-        
-        this.checkApprovalPrivilegeForAssets();
+        /** XNFR-884 **/
+        if (this.authenticationService.approvalRequiredForAssets) {
+            this.checkApprovalPrivilegeForAssets();
+        }
 	}
 
      /****XNFR-326*****/
@@ -292,7 +296,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 					
 				}, (error: any) => {
 					this.xtremandLogger.errorPage(error);
-				}
+				}, ()=>{
+                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd);
+                }
 			);
 
 	}
@@ -502,6 +508,16 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         }
     }
 
+    saveAsDraftAndUpload() {
+        this.damUploadPostDto.draft = true;
+        this.uploadOrUpdate();
+    }
+
+    uploadOrUpdateAsset() {
+        this.damUploadPostDto.draft = false;
+        this.uploadOrUpdate();
+    }
+
 	uploadOrUpdate() {
         this.damService.uploadAssetInProgress = true;
 		this.getCkEditorData();
@@ -516,6 +532,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
+        this.saveAsDraftButtonText = "Saving...";
 		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();
@@ -562,6 +579,16 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 this.formData.delete("damUploadPostDTO");
 			});
 	}
+
+    saveAsDraftVideo() {
+        this.damUploadPostDto.draft = true;
+        this.uploadVideo();
+    }
+
+    uploadOrUpdateVideo() {
+        this.damUploadPostDto.draft = false;
+        this.uploadVideo();
+    }
 	
 	uploadVideo() {
         this.damService.uploadAssetInProgress = true;
@@ -1298,14 +1325,18 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     if(this.isAdd){
         if(isPartnerCompanyOrGroupSelected){
             this.submitButtonText = "Save & Publish";
+            this.disableSaveAsDraftButton = true;
         }else{
             this.submitButtonText = "Save";
+            this.disableSaveAsDraftButton = false;
         }
     }else{
         if(isPartnerCompanyOrGroupSelected && !this.isAssetPublished){
             this.submitButtonText = "Update & Publish";
+            this.disableSaveAsDraftButton = true;
         }else{
             this.submitButtonText = "Update";
+            this.disableSaveAsDraftButton = false;
         }
     }
     /****XNFR-342****/
@@ -1543,6 +1574,27 @@ zoomOut() {
                 this.loading = false;
             }, error => {
                 this.loading = false;
+            },
+            ()=>{
+                if (this.isAdd) {
+                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, true);
+                }
             });
     }
+
+    /** XNFR-884 **/
+    initialiseSubmitButtonText(assetApprover: boolean, currentApprovalStatus: string, isAdd: boolean) {
+        const approvalRequired = this.authenticationService.approvalRequiredForAssets;
+        const isDraft = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.DRAFT];
+        if (isAdd) {
+            this.submitButtonText = assetApprover || !approvalRequired ? 'Save' : 'Send for Approval';
+        } else {
+            if (isDraft) {
+                this.submitButtonText = (assetApprover || !approvalRequired) ? 'Update' : 'Send for Approval';
+            } else {
+                this.submitButtonText = 'Update';
+            }
+        }
+    }
+
 }
