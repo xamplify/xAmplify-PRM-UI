@@ -4202,7 +4202,7 @@ span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
 /*****Sudha Sri(27-6-2024) *****/
 .help-iconbgadd.selectRecord,.btn-success {background: #0276FF !important;border: 1px solid #026deb !important;}
 .help-iconbgadd.selectRecord:hover, .btn-success:hover, button.group-name-cclass.btn-primary.default-btn-cursor:hover {background: #1C84FF !important;}
-.color-flow-button{ border:1px solid #026deb !important;}
+/* .color-flow-button{ border:1px solid #026deb !important;} */
 button#save\&delete_button:hover{background-color: #1C84FF !important;}
 button.button.bgcolor-unset:hover{background-color: #1C84FF !important;}
 .dynamic_tbl_btn{margin-right: 6px !important;}
@@ -4439,4 +4439,13 @@ tbody>tr#uploaded-csv-tr>td {
     background: transparent !important;
     border: 1px solid #191b1e !important;
     box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  }
+    /* ui enhacement changes in onboarding partner */
+    .add_partnerbtn,.contact_img{
+      background: #2c2f33 !important;
+      border: 1px solid #191b1e !important;
+      box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+    }
+    .white-co.add_partnerbtn:hover {
+      background-color: #232629 !important;
   }

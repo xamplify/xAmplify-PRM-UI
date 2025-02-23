@@ -4264,3 +4264,11 @@ color: #fff !important;
   background: rgb(0 0 0 / 18%) !important;
   border: 1px solid #ffffff33 !important;
 }
+  /* ui enhacement changes in onboarding partner */
+  .add_partnerbtn,.contact_img{
+    background: rgb(0 0 0 / 18%) !important;
+    border: 1px solid #ffffff33 !important;
+  }
+  .white-co.add_partnerbtn:hover {
+    background: rgb(0 0 0 / 33%) !important;
+}

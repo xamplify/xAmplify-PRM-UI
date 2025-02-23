@@ -2487,7 +2487,16 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
 /* a{color: var(--title-heading--text)  !important;} */
 span.filterActiveBg {background-color: #10ad39 !important;}
  /* Added company profile lefside bar card color */
- .profile_headers,.icon-group{
+ .profile_headers,.icon-group,.contact_img{
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
+/* ui enhacement changes in onboarding partner */
+    .add_partnerbtn{
+      background-color: var(--page-content) !important;
+      border: 1px solid var(--border-color) !important;
+      color: var(---text-color) !important;
+    }
+    .white-co.add_partnerbtn:hover {
+      background-color: var(--div-bg-color) !important;
+  }

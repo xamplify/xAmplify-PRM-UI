@@ -2638,7 +2638,15 @@ tbody{background: transparent;}
 .copy_icon:hover {
   background-color: #53585b!important;}
   /* Added company profile lefside bar card color */
-  .profile_headers,.icon-group{
+  .profile_headers,.icon-group,.contact_img{
     background: #2b3c46 !important;
     border: 1px solid #2f4857 !important;
   }
+  /* ui enhacement changes in onboarding partner */
+  .add_partnerbtn{
+    background-color: #22313a !important;
+    border: 1px solid #2f4857 !important;
+  }
+  .white-co.add_partnerbtn:hover {
+    background-color: #1d2b37 !important;
+}

@@ -17,9 +17,9 @@
   .cloud-css {
     left: 65px !important;
   }
-  #SgearIcon{left: 65px !important;}
+  /* #SgearIcon{left: 65px !important;}
   #GgearIcon{left: 65px !important;}
-  #ZgearIcon{left: 65px !important;}
+  #ZgearIcon{left: 65px !important;} */
   .salesforce {
     margin-top: -25px;
     text-align: center;
@@ -27,28 +27,23 @@
 }
 
 @media only screen and (max-width: 992px) and (min-width: 601px) {
-  .cloud-css {
+  /* .cloud-css {
     left: 130px !important;
-  }
+  } */
 }
 
 @media screen and (max-width: 768px) {
-  .cloud-items {
-    position: relative;
-    font-size: 19px;
-    top: -82px !important;
-    left: 93px;
-  }
  .copy_text_area_border{
     width: 100%!important;
   }
 }
 
 .cloud-items {
-  position: relative;
+  position: absolute;
   font-size: 19px;
-  top: -82px;
-  left: 100px;
+  top: 7px;
+  right: 7px;
+  left: unset;
 }
 
 .white-space-transform {
@@ -200,7 +195,7 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
   .scroll-top-abj {padding-top: 15px;}
 }
 /* gericon */
-@media only screen and (min-width: 800px) and (max-width: 969px) {
+/* @media only screen and (min-width: 800px) and (max-width: 969px) {
   #SgearIcon{left: 106px !important;}
   #GgearIcon{left: 106px !important;}
   #ZgearIcon{left: 106px !important;}
@@ -228,7 +223,7 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
 @media only screen and (min-width: 1750px) and (max-width: 1880px) {.cloud-items{left: 84px !important;}}
 @media only screen and (min-width: 1780px) and (max-width: 1830px) {.cloud-items{left: 86px !important;}}
 @media only screen and (min-width: 1830px) and (max-width: 1882px) {.cloud-items{left: 87px !important;}}
-@media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}}
+@media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}} */
 
 .borderColorsCU {
   border: 1px solid #e5e5e5;
@@ -253,7 +248,7 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
 }
 }
 .cards_align{
-  padding: 5px 8px!important;
+  padding: 8px !important;
 }
 .table_align{
   padding: 10px 0px !important;
@@ -262,3 +257,158 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
 .mt3 {
   margin-top: 3px
 }
+/* ui ehancement changes css*/
+.height{
+  background: #ffffff;
+  border:1px solid#ddd;
+    height: 134px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*  */
+.add_partnerbtn{
+  background: #F1F5F9;
+  border: 1px solid #DEDEDE;
+  border-radius: 8px;
+  text-align: start;
+  padding: 11px;
+}
+.portlet-title.partner_title{
+  border: none!important;
+  min-height: 31px;
+}
+.cards_align{
+  padding: 5.5px 8px !important;
+}
+.partner_images{
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+}
+.fa-cloud-upload{
+  color: #0d8dd2;
+  font-size: 18px;
+}
+.img-hover-unset:hover{
+background-color: unset!important;
+}
+.cloud_platforms_padding {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  padding: 5px 0px;
+}
+.service-icon {
+  height: 96px;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border:1px solid #ddd;
+}
+.service-icon:hover{
+  transform: scale(1.05);
+}
+.white-co.add_partnerbtn:hover {
+  background-color: #e2e6ea;
+}
+@media only screen and (min-width: 960px) and (max-width: 1279.98px){
+  .cloud_platforms_padding {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  } 
+}
+@media only screen and (min-width: 600px) and (max-width: 959.98px){
+  .cloud_platforms_padding {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  } 
+}
+@media only screen and (max-width: 599.98px){
+  .cloud_platforms_padding {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  } 
+  .card_p15 {
+    padding-left: 15px !important;
+    margin-top: 10px;
+  }
+}
+
+.item1 {
+  grid-column-end: span 3;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+.fs-10{
+  display: block;
+  font-size: 12px;
+}
+.fs-15{
+  font-size: 15px;
+  font-weight: 600;
+}
+/* .service-icon {
+  width: 101px;
+  height: 96px;
+  border-radius: 10px;
+  margin: 10px 13px 0px 0px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border:1px solid #ddd;
+} */
+/* @media (max-width: 600px) {
+  .card_p15 {
+    padding-left: 15px !important;
+    margin-top: 10px;
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 360px) { 
+  .service-icon {
+    width: 100px;
+    height: 96px;
+  }
+}
+@media only screen and (min-width:378px) and (max-width: 400px) { 
+  .service-icon {
+    width: 114px;
+    height: 100px;
+    margin: 10px 9px 5px 0px;
+  }
+}
+@media only screen and (min-width:362px) and (max-width: 380px) { 
+  .service-icon {
+    width: 110px;
+    height: 98px;
+    margin: 10px 8px 0px 0px
+  }
+}
+@media only screen and (min-width:408px) and (max-width: 423px) { 
+  .service-icon {
+    width: 120px;
+    height: 110px;
+    margin: 10px 9px 5px 0px;
+  }
+}
+@media only screen and (min-width:424px) and (max-width: 460px) { 
+  .service-icon {
+    width: 126px;
+    height: 110px;
+    margin: 10px 9px 5px 0px;
+  }
+} */
