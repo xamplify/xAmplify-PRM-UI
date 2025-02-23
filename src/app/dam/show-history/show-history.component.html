@@ -84,12 +84,15 @@
 									[ngClass]="{
 										'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 										'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
-										'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+										'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+										'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 									{{getApprovalStatusText(asset.approvalStatus)}}
 								</span>
 								<span
-									*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED"
-									class="view-banner asset-approval-labele-spacing bgc-red" translate>
+									*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView  && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+									class="view-banner asset-approval-labele-spacing"
+									[ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+										'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 									{{getApprovalStatusText(asset.approvalStatus)}}
 								</span>
 								

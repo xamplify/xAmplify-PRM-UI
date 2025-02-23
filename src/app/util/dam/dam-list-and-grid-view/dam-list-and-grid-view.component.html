@@ -176,7 +176,7 @@
 																<!--Create Campaign-->
 																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 																	(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset.alias, asset.viewBy) : ''" data-toggle="tooltip" data-placement="top" 
-																	title="{{asset?.approvalStatus == 'DRAFT' ? properties.CAMPAIGN_CREATION_DISABLED_FOR_DRAFTS : (asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign')}}">
+																	title="{{asset?.approvalStatus == 'DRAFT' ? properties.DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN : (asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign')}}">
 																	<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"
 																	[ngClass]="(asset?.approvalStatus != 'APPROVED') ? 'disabled gray' : ''"></i>
 																	<div class="clickicons"></div>
