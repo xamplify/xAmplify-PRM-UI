@@ -445,7 +445,9 @@
 									<div>
 										<app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
 										<app-partner-company-and-groups
-											*ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
+											*ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany
+											&& ((!authenticationService?.approvalRequiredForAssets && saveVideoFile?.approvalStatus !== 'REJECTED')
+											|| saveVideoFile?.approvalStatus == 'APPROVED')"
 											[moduleName]="'dam'" [inputId]="saveVideoFile.damId"
 											[isPublishedToPartnerGroups]="saveVideoFile?.publishedToPartnerGroups"
 											[selectedTeamMemberIds]="saveVideoFile?.partnerIds"

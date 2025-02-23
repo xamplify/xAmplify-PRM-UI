@@ -282,9 +282,10 @@
         </a>
     
         <!-- comment/history -->
-        <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
+        <a class="custom-icon" (click)="item?.status !== 'DRAFT' ? showCommentsAndHistoryModalPopup(item) : ''" data-toggle="tooltip" data-placement="top"
           title="{{(!authenticationService?.module?.isAdmin || item?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
-          <i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+          <i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"
+          [ngClass]="(item?.status !== 'DRAFT') ? '' : 'disabled gray'"></i>
           <div class="clickicons"></div>
         </a>
         <!--Delete-->
