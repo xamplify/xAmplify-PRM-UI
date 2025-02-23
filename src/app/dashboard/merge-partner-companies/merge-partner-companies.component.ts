@@ -1,3 +1,4 @@
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -27,6 +28,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
   selectedVendorCompanyId = 0;
   partnerCompaniesSearchableDropdownDto: SearchableDropdownDto = new SearchableDropdownDto();
   partnerCompanyIdForTransfer = 0;
+  partnerCompanyNameForTransfer = "";
   isPartnerCompaniesSearchableDropdownDisplayed = false;
   isVendorCompaniesSearchableDropdownDisplayed = false;
   partnerCompanyName = "";
@@ -35,12 +37,16 @@ export class MergePartnerCompaniesComponent implements OnInit {
   partnerCompaniesApiLoading = false;
   vendorCompanyName = "";
   partnerCompanyMetricsDto:PartnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
+  isTransferOptionClicked = false;
+  transferDataSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   constructor(private referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public superAdminService: SuperAdminService, public logger: XtremandLogger,public properties:Properties) { }
 
   ngOnInit() {
     if(this.authenticationService.getUserId()!=1){
       this.referenceService.goToAccessDeniedPage();
+    }else{
+      this.transferDataSweetAlertParameterDto.confirmButtonText = "Yes, Transfer";
     }
   }
 
@@ -78,6 +84,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
         if(this.vendorCompanies.length==1){
           this.partnerCompaniesApiLoading = true;
           this.partnerCompanyIdForTransfer = 0;
+          this.partnerCompanyNameForTransfer = "";
           this.partnerCompanies = [];
           let vendorCompany = this.vendorCompanies[0];
           this.vendorCompanyName = vendorCompany['name'];
@@ -142,7 +149,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
   private displayPartnerCompaniesDropdown(): void {
     this.isPartnerCompaniesSearchableDropdownDisplayed = true;
     this.partnerCompaniesSearchableDropdownDto.data = this.partnerCompanies;
-    this.partnerCompaniesSearchableDropdownDto.placeHolder = "Please select partner company to transfer the data";
+    this.partnerCompaniesSearchableDropdownDto.placeHolder = "Please select the destination partner company to transfer the data";
   }
 
 
@@ -158,8 +165,10 @@ export class MergePartnerCompaniesComponent implements OnInit {
   getSelectedPartnerCompanyIdForTransfer(event: any) {
     if (event != null) {
       this.partnerCompanyIdForTransfer = event['id'];
+      this.partnerCompanyNameForTransfer = event['name'];
     } else {
       this.partnerCompanyIdForTransfer = 0;
+      this.partnerCompanyNameForTransfer = "";
     }
    
     
@@ -178,6 +187,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
     this.selectedVendorCompanyId = 0;
     this.partnerCompanyId = 0;
     this.partnerCompanyIdForTransfer = 0;
+    this.partnerCompanyNameForTransfer = "";
     this.partnerCompanies = [];
     this.partnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
     this.statusCode = 0;
@@ -185,5 +195,34 @@ export class MergePartnerCompaniesComponent implements OnInit {
 
   viewDetailedAnalytics(partnerCompanyMetricsDto:PartnerCompanyMetricsDto){
     this.referenceService.showSweetAlertInfoMessage();
+  }
+
+  confirmTransferringData(){
+    this.errorOrSuccessResponse = new CustomResponse();
+    if(this.authenticationService.isLocalHost()){
+      let isValidPartnerCompanyIdSelected = this.partnerCompanyIdForTransfer != this.partnerCompanyId;
+      if(this.partnerCompanyIdForTransfer>0){
+        if(isValidPartnerCompanyIdSelected){
+          this.isTransferOptionClicked = true;
+          this.transferDataSweetAlertParameterDto.text = this.partnerCompanyName+"'s data will be transferred to the "+this.partnerCompanyNameForTransfer+" company, and this change is final and cannot be undone";
+        }else{
+          this.referenceService.goToTop();
+          this.setErrorMessage("The source company and destination company must be different");
+        }
+      }else{
+        this.setErrorMessage("Select the destination partner company for data transfer");
+      }
+    }else{
+      this.referenceService.showSweetAlertInfoMessage();
+    }
+   
+  }
+
+  transferDataSweetAlertEventEmitter(event:any){
+    if(event){
+      this.isTransferOptionClicked = false;
+    }else{
+      this.isTransferOptionClicked = false;
+    }
   }
 }
