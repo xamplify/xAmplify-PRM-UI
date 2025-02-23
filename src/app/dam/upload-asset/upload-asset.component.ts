@@ -155,10 +155,13 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     openSelectDigitalSignatureModalPopUp: boolean = false;
     fileType: any;
     isVendorSignatureToggleClicked: boolean = false;
+
     isApprover: boolean = false;
     saveAsDraftButtonText: string = "Save as Draft";
     disableSaveAsDraftButton: boolean = false;
     
+    savedTags: any[] = [];
+
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch, public signatureService:SignatureService){
@@ -290,6 +293,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 						this.validateForm('description');
 						this.formLoader = false;
 						this.initLoader = false;
+                        this.addTagsCondition(this.tags);
 					}else{
 						this.referenceService.goToPageNotFound();
 					}
@@ -795,11 +799,41 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     this.openAddTagPopup = true;
   }
 
-  resetTagValues(message: any) {
+  resetTagValues(selectedTags: any[]) {
     this.openAddTagPopup = false;
-    this.showSuccessMessage(message);
-    this.listTags(new Pagination());
-  }
+    // this.showSuccessMessage(message);
+    // this.listTags(new Pagination());
+    if (selectedTags && Array.isArray(selectedTags)) {
+        selectedTags.forEach(tag => {
+            if (!this.damUploadPostDto.tagIds.includes(tag.id)) {
+                this.damUploadPostDto.tagIds.push(tag.id);
+            }else{
+                this.damUploadPostDto.tagIds.push(tag.id);
+            }
+        });
+        this.addTagsCondition(selectedTags);
+    } else {
+        if (selectedTags != undefined) {
+            this.listTags(new Pagination());
+        }
+    }
+}
+addTagsCondition(selectedTags:any[]) {
+if( this.damUploadPostDto.tagIds!=undefined && this.damUploadPostDto.tagIds.length>0){
+  this.savedTags = selectedTags.filter(tag => this.damUploadPostDto.tagIds.includes(tag.id));
+}
+let length = selectedTags.length;
+if ((length % 2) == 0) {
+  this.tagFirstColumnEndIndex = length / 2;
+  this.tagsListFirstColumn = this.savedTags.slice(0, this.tagFirstColumnEndIndex);
+  this.tagsListSecondColumn = this.savedTags.slice(this.tagFirstColumnEndIndex);
+} else {
+  this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
+  this.tagsListFirstColumn = this.savedTags.slice(0, this.tagFirstColumnEndIndex + 1);
+  this.tagsListSecondColumn = this.savedTags.slice(this.tagFirstColumnEndIndex + 1);
+}
+
+}
 
   showSuccessMessage(message: any) {
     if (message != undefined) {
@@ -1596,5 +1630,18 @@ zoomOut() {
             }
         }
     }
+
+        removeTag(tag: Tag) {
+            let index = this.damUploadPostDto.tagIds.indexOf(tag.id);
+            if (index > -1) {
+                this.damUploadPostDto.tagIds.splice(index, 1);
+                // this.savedTags.splice(index, 1);
+                if(this.damUploadPostDto.tagIds .length == 0){
+                    this.savedTags = [];
+                }
+                this.addTagsCondition(this.savedTags)
+            }
+        }
+
 
 }

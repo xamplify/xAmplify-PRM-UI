@@ -430,16 +430,8 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchLeadsAndCount() {
     this.referenceService.loading(this.leadsLoader, true);
-    let id;
-    let isCompanyJourney = false;
-    if (this.isCompanyJourney) {
-      id = this.selectedContactListId;
-      isCompanyJourney = true;
-    } else {
-      id = this.contactId;
-    }
-    this.leadsService.findLeadsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName, isCompanyJourney).subscribe(
+    this.leadsService.findLeadsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
@@ -490,15 +482,7 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchDealsAndCount() {
     this.referenceService.loading(this.dealsLoader, true);
-    let id;
-    let isCompanyJourney = false;
-    if (this.isCompanyJourney) {
-      id = this.selectedContactListId;
-      isCompanyJourney = true;
-    } else {
-      id = this.contactId;
-    }
-    this.dealsService.findDealsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
+    this.dealsService.findDealsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
       this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
@@ -582,16 +566,8 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchCampaignsAndCount() {
     this.referenceService.loading(this.campaignsLoader, true);
-    let id;
-    let isCompanyJourney = false;
-    if (this.isCompanyJourney) {
-      id = this.selectedContactListId;
-      isCompanyJourney = true;
-    } else {
-      id = this.contactId;
-    }
-    this.campaignService.fetchCampaignsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName, isCompanyJourney).subscribe(
+    this.campaignService.fetchCampaignsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
@@ -807,7 +783,7 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchContactsAndCount() {
     this.referenceService.loading(this.contactsLoader, true);
-    this.contactService.fetchContactsAndCountByUserListId(this.selectedContactListId).subscribe(
+    this.contactService.fetchContactsAndCountByUserListId(this.contactId).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
@@ -829,15 +805,12 @@ export class ContactDetailsComponent implements OnInit {
 
   viewContactJourney(contactId:any) {
     let encodedId = this.referenceService.encodePathVariable(contactId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    // let encodedCompanyId = this.referenceService.encodePathVariable(this.contactId);
-    // let url = RouterUrlConstants.home+RouterUrlConstants.contacts+'company/'+RouterUrlConstants.details+encodedUserListId+"/"+encodedId+"/"+encodedCompanyId;
-    // this.referenceService.goToRouter(url);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.companyUserListId);
     this.referenceService.openWindowInNewTab(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodedId);
   }
 
   viewMoreContacts() {
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.companyUserListId);
     let encodedCompanyId = this.referenceService.encodePathVariable(this.contactId);
     this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedUserListId + '/' + encodedCompanyId);
   }
@@ -845,14 +818,13 @@ export class ContactDetailsComponent implements OnInit {
   backToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    let url = "home/company/manage/details/"+encodedUserListId+"/"+encodedId;
+    let url = "home/company/manage/details/"+encodedId;
     this.referenceService.goToRouter(url);
   }
 
   viewCompanyJourney() {
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
     let contactCompanyId = this.referenceService.encodePathVariable(this.selectedContact.contactCompanyId);
-    let url = "home/company/manage/details/"+encodedUserListId+"/"+contactCompanyId;
+    let url = "home/company/manage/details/"+contactCompanyId;
     this.referenceService.openWindowInNewTab(url);
   }
 

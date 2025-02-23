@@ -13,6 +13,8 @@ import { EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
+import { DashboardService } from 'app/dashboard/dashboard.service';
+import { IntegrationService } from 'app/core/services/integration.service';
 
 declare var swal, $, videojs: any;
 
@@ -37,6 +39,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   @Output() refreshCounts = new EventEmitter<any>();
   @Output() showCommentsPopUp = new EventEmitter<any>();
 
+   activeCRMDetailsByCompany:any; //XNFR-887
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
@@ -67,9 +70,8 @@ export class ManageCampaignLeadsComponent implements OnInit {
   statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   statusLoader = true;
   isStatusLoadedSuccessfully = true;
-
   constructor(public authenticationService: AuthenticationService,
-    private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService) {
+    private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService,public dashboardService:DashboardService,public integrationService: IntegrationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -553,5 +555,60 @@ showRegisterDealButton(lead):boolean {
   }
   return showRegisterDeal;
 }
+
+  /*** XNFR-887 ****/
+  selectedFields: any[] = [];
+  showSlectFieldComponent: boolean = false;
+  enabledMyPreferances: boolean = false;
+  exportExcelSelection() {
+    if (this.authenticationService.companyProfileName) {
+        this.getActiveCRMDetailsByCompanyProfileName();
+    } else {
+      this.downloadLeads(this.leadsPagination);
+    }
+  }
+  closeEmitter(event: any) {
+    let input = event;
+    if (input['submit'] === 'submit') {
+      this.showSlectFieldComponent = input['close'];
+      this.enabledMyPreferances = input['myPreferances'];
+      this.selectedFields = input['selectFields'];
+      this.saveSelectedFields();
+    }
+    else {
+      this.showSlectFieldComponent = false;
+    }
+  }
+
+  saveSelectedFields() {
+    let selectedFieldsResponseDto = {};
+    selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+    selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+    selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+    selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+    this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+      .subscribe(
+        data => {
+          this.leadsPagination.selectedExcelFormFields = this.selectedFields;
+          this.downloadLeads(this.leadsPagination)
+        }, error => console.log(error),
+        () => { console.log("saveSelectedFields Completed...!") });
+  }
+  getActiveCRMDetailsByCompanyProfileName() {
+    this.integrationService.getActiveIntegrationTypeByCompanyName(this.vanityLoginDto.vendorCompanyProfileName )
+      .subscribe(
+        response => {
+          this.activeCRMDetailsByCompany = response.data;
+          if (this.activeCRMDetailsByCompany === undefined || this.activeCRMDetailsByCompany === null || this.activeCRMDetailsByCompany === '' || this.activeCRMDetailsByCompany === "salesforce") {
+            this.showSlectFieldComponent = true;
+          } else {
+            this.downloadLeads(this.leadsPagination);
+          }
+        }, (error) => {
+          console.error("Error fetching CRM details:", error);
+          this.downloadLeads(this.leadsPagination); // Fallback in case of an API error
+        });
+  }
+  /*** XNFR-839 */
 
 }

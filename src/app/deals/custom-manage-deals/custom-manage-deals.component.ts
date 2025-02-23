@@ -158,7 +158,7 @@ export class CustomManageDealsComponent implements OnInit {
 
   listDealsForPartner(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
-    pagination.contactId = this.isCompanyJourney ? this.selectedContactListId : this.selectedContact.id;
+    pagination.contactId = this.selectedContact.id;
     pagination.isCompanyJourney = this.isCompanyJourney;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.dealsService.listDealsForPartner(pagination)
@@ -579,8 +579,7 @@ export class CustomManageDealsComponent implements OnInit {
 
   goBackToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    let url = "home/company/manage/details/" + encodedId;
     this.referenceService.goToRouter(url);
   }
 

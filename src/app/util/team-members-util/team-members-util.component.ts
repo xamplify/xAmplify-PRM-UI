@@ -31,6 +31,7 @@ import { FormControl } from '@angular/forms';
 import { tap} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActiveThreadsInfoComponent } from 'app/dashboard/active-threads-info/active-threads-info.component';
 
 declare var $: any, swal: any;
 @Component({
@@ -614,7 +615,36 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.customResponse = new CustomResponse();
     this.teamMemberUi = new TeamMemberUi();
     this.showAddTeamMemberDiv = true;
-    this.findAllTeamMemberGroupIdsAndNames();
+    /***XNFR-883****/
+    this.fetchTeamMemberGroupsByCondition();
+  }
+  /***XNFR-883****/
+  private fetchTeamMemberGroupsByCondition() {
+    if (this.authenticationService.module.loggedInThroughOwnVanityUrl && this.authenticationService.module.ssoEnabled) {
+      this.findAllGroupIdsAndNamesWithDefaultSSOFirst();
+    } else {
+      this.findAllTeamMemberGroupIdsAndNames();
+    }
+  }
+
+  findAllGroupIdsAndNamesWithDefaultSSOFirst() {
+    this.referenceService.loading(this.addTeamMemberLoader, true);
+    this.teamMemberService.findAllGroupIdsAndNamesWithDefaultSSOFirst()
+      .subscribe(
+        response => {
+          this.teamMemberGroups = response.data;
+          let teamMemberGroup = this.teamMemberGroups[0];
+          let teamMemberGroupId = teamMemberGroup.id;
+          this.team.teamMemberGroupId = teamMemberGroupId;
+          $.each(this.newlyAddedTeamMembers,function(_index:number,teamMember:any){
+            teamMember['teamMemberGroupId'] = teamMemberGroupId;
+          });
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.referenceService.loading(this.addTeamMemberLoader, false);
+        },
+        error => {
+          this.logger.errorPage(error);
+        });
   }
 
   selectTeamMemberGroupId(teamMemberGroupId: any) {
@@ -839,7 +869,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   appendCsvDataToTable() {
-    this.findAllTeamMemberGroupIdsAndNames();
+    /***XNFR-883***/
     for (var i = 1; i < this.csvRecords.length; i++) {
       let rows = this.csvRecords[i];
       let row = rows[0].split(',');
@@ -855,6 +885,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.newlyAddedTeamMembers.push(team);
       }
     }
+    this.fetchTeamMemberGroupsByCondition();
   }
 
   validateSecondAdminOptionForCsvUsers(teamMemberGroupId: number, team: any) {
@@ -1019,11 +1050,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         if (this.team.teamMemberGroupId == null) {
           this.team.teamMemberGroupId = 0;
           this.team.validForm = false;
-        }
-        if (this.team.firstName.length === 0) {
+        } else if (this.team.firstName.length === 0) {
           this.team.validForm = false;
-        }
-        else {
+        } else {
           this.team.validForm = true;
         }
       }, error => {

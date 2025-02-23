@@ -14,7 +14,15 @@
 				</button>
 				<h4 class="modal-title text-center" translate>Default Logos</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body model-body-padding">
+				<div class="alert-info info-padding">
+					<ng-container *ngIf="isVendorLandscape">
+						<strong>You have the ability to copy and insert the embed link for default company tiles or default partner locator map directly into an HTML block as needed.</strong>
+					</ng-container>
+					<ng-container *ngIf="!isVendorLandscape">
+						<strong>You have the ability to copy and insert the embed link for default company tiles directly into an HTML block as needed.</strong>
+					</ng-container>
+				  </div>
 				<table class='table tgrid table-hover table-sm' aria-describedby="default-logos-table">
 					<thead>
 						<tr>

@@ -14,4 +14,6 @@ export class EmailActivity {
     emailAttachmentDTOs = [];
     userIds = [];
     isCompanyJourney:boolean;
+    fullName:any;
+    addedForEmailId:any;
 }

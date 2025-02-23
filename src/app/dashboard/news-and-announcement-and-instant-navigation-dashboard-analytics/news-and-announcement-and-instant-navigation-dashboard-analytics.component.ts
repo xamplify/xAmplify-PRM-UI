@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
@@ -30,6 +30,7 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   isPartnerLoggedInThroughVanityUrl = false;
   quickLinksPagination:Pagination = new Pagination();
   isNavigatingToViewAll = false;
+  @Input() isDraggingEnabled: boolean;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public vanityUrlService:VanityURLService,private dashboardService:DashboardService) { }
 

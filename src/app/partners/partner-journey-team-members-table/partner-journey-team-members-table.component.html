@@ -2,7 +2,35 @@
 
 <div class="panel panel-info panel-card" id="partner-team-members-list">
   <div class="panel-heading panel-heading-custom br-10" id="pj-team-member-details-div">
+    <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-3">
     <h3 class="panel-title mt7">Team Member Details</h3>
+  </div>
+    <div class="col-xs-12 col-sm-12 col-lg-9 reminder_btn margin_14">
+    <button class=" btn btn-primary mr5" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
+    <button class="mt25m btn btn-xs l-g-view mr5" data-placement="bottom"
+    [disabled]="pagination.totalRecords==0" (click)="downloadTeamMembersReport()">
+    <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+      data-original-title="Export to Excel"></i>
+  </button>
+  <!--  -->
+  <span class="pull-right mt25m mobilesearchdisplay mr5">
+    <select class="form-control SeclectBoxPaddingsAbj searchable-view"  [(ngModel)]="sortOption.activepartnerJourney" (ngModelChange)="sortActivePartnerJourney($event)"
+    id="select-dropdown">  
+         <option *ngFor="let option of sortOption.activePartnerJourneyDropDowns"
+         [ngValue]="option">{{option.name}}</option>
+  </select>
+    </span>
+  <!-- Select a Member dropdown -->
+  <span class="pull-right mt25m mobilesearchdisplay mr5">
+    <select class="form-control  searchable-view" [(ngModel)]="teamMemberId" [ngModelOptions]="{standalone: true}" placeholder="teamMemberId"
+      id="teamMemberId" (ngModelChange)="onChangeTeamMember()">
+      <option [value]="0">Select a Member</option>
+      <option *ngFor="let teamMember of teamEmails" [style.color]="(teamMember?.userStatus === 'APPROVE') ? 'green' : 'red' "  [value]="teamMember.userId">{{teamMember.emailId}}
+      </option>
+    </select>
+  </span>
+  <!--  -->
     <span class="pull-right mt25m mobilesearchdisplay">
       <div class="input-icon right serachvoxwidth mobilesearchdisplayTop" >
         <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
@@ -14,26 +42,8 @@
           <i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
     </span>
-    <span class="pull-right mt25m mobilesearchdisplay mr5">
-      <select class="form-control" [(ngModel)]="teamMemberId" [ngModelOptions]="{standalone: true}" placeholder="teamMemberId"
-        id="teamMemberId" (ngModelChange)="onChangeTeamMember()">
-        <option [value]="0">Select a Member</option>
-        <option *ngFor="let teamMember of teamEmails" [style.color]="(teamMember?.userStatus === 'APPROVE') ? 'green' : 'red' "  [value]="teamMember.userId">{{teamMember.emailId}}
-        </option>
-      </select>
-    </span>
-      <span class="pull-right mt25m mobilesearchdisplay mr5">
-      <select class="form-control SeclectBoxPaddingsAbj" class="form-control"  [(ngModel)]="sortOption.activepartnerJourney" (ngModelChange)="sortActivePartnerJourney($event)"
-      id="select-dropdown">  
-           <option *ngFor="let option of sortOption.activePartnerJourneyDropDowns"
-           [ngValue]="option">{{option.name}}</option>
-    </select>
-      </span>
-    <button class="pull-right mt25m btn btn-xs l-g-view" data-placement="bottom"
-      [disabled]="pagination.totalRecords==0" (click)="downloadTeamMembersReport()">
-      <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
-        data-original-title="Export to Excel"></i>
-    </button>
+    </div>
+    </div>
   </div>
   <div class="panel-body">
     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
@@ -42,6 +52,9 @@
       <table class="table">
         <thead>
           <tr>
+            <th class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+              [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAll($event)" />
+          </th>
             <th scope="col">Team Member</th>
             <th scope="col">Recent Login</th>
             <th scope="col" class="text-center">Group</th>
@@ -50,11 +63,19 @@
         </thead>
         <tbody>          
           <tr *ngFor="let teamMember of pagination.pagedItems;let i  = index">
+            <td class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+              [(ngModel)]="teamMember.isSelected" (change)="updateSelectionState(teamMember)"
+                       [disabled]=" teamMember.status === 'UNAPPROVED'">
+          </td>
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
               <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i class="fa fa-check active-status"></i></strong></span>
             </td>
-              <td><app-display-date-and-time  [dateAndTimeUTCString]="teamMember?.logInTime"></app-display-date-and-time></td>
+            <td class="text-center">
+              <span *ngIf="teamMember.status === 'UNAPPROVED'">-</span>
+                <app-display-date-and-time *ngIf="teamMember.status !== 'UNAPPROVED'" [dateAndTimeUTCString]="teamMember?.logInTime"></app-display-date-and-time>
+            </td>
+            
             <td class="text-center">
               <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
                 <button class="group-name-cclass btn-primary default-btn-cursor" >
@@ -73,9 +94,9 @@
                 <span><strong>N/A</strong></span>
               </div>
             </td>
-            <td class="text-center" *ngIf="authenticationService?.module?.allowVendorToChangePartnerPrimaryAdmin && authenticationService?.module?.isAnyAdminOrSupervisor">
+            <td class="text-center action-cp" *ngIf="authenticationService?.module?.allowVendorToChangePartnerPrimaryAdmin && authenticationService?.module?.isAnyAdminOrSupervisor">
               <!--XNFR-878-->
-              <div class="actions-block override-actions custom-width-icon float-none">
+              <div class="actions-block override-actions custom-width-icon">
                 <a data-toggle="tooltip" data-placement="bottom"
                 [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'"
                 (click)="confirmPrimaryAdminChange(teamMember)"
@@ -110,3 +131,5 @@
 <app-confirm-sweet-alert-util *ngIf="isEnablePrimaryAdminOptionClicked"
 [parameterDto]="primaryAdminSweetAlertParameterDto"
 (notifyComponent)="enableAsPrimaryAdmin($event)"></app-confirm-sweet-alert-util>
+
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [teamMemberReminder]="teamMemberPreview" (sendmailTeamMemberNotify)= "emittedMethodTemMember($event.item)"  [selectedItemTeamMember]="selectedItemTeamMember" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentTeamMemberEventEmitter)="sendTestEmailModalPopupTeamMemberEventReceiver()"></app-send-test-email>

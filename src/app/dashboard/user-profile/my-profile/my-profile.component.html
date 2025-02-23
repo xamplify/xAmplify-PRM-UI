@@ -179,6 +179,16 @@
                                             </a>
 
                                         </li>
+                                        <!--XNFR-860 Customize Dashboard-->
+                                        <li *ngIf="authenticationService?.companyProfileName && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor"
+                                            [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CUSTOMIZE_DASHBOARD_MENU_HEADER}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CUSTOMIZE_DASHBOARD_MENU_HEADER}"
+                                                (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CUSTOMIZE_DASHBOARD_MENU_HEADER);clearCustomResponse()">
+                                                {{MY_PROFILE_MENU_CONSTANTS.CUSTOMIZE_DASHBOARD_MENU_HEADER | translate }}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':MY_PROFILE_MENU_CONSTANTS?.CUSTOMIZE_DASHBOARD_MENU_HEADER}"></ng-template>
+                                            </a>
+                                        </li>
                                         <!---Themes-->
                                         <li *ngIf="customSkinSettingOption &&  roleNames !='Partner' && authenticationService.module.isAnyAdminOrSupervisor"
                                             [ngClass]="{'active-tab': activeTabName == 'customskin'}">
@@ -344,16 +354,6 @@
                                                     [ngTemplateOutletContext]="{'moduleName':'samlSettings'}"></ng-template>
                                             </a>
                                         </li>
-
-                                        <!-- Saml 2.0 SSO Settings-->
-                                        <!-- <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
-                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'saml2SSOsettings'}"
-                                                (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon"
-                                                    [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
-                                            </a>
-                                        </li> -->
 
                                         <!-- Oauth SSO Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
@@ -2587,7 +2587,7 @@
                                             (closeEvent)="showThemeAlert($event)">
                                         </app-custom-skin>
                                         <!--Tags-->
-                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
+                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}" [isAddorEditTag]="true"></app-tags>
                                         <!--SPF-->
                                         <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                         <!--Unsubscribe Reasons-->
@@ -3403,6 +3403,7 @@
                                         <app-custom-login-screen-settings [isTemplatesListDiv]="isTemplatesListDiv"(editLoginTemplate)="openBeeEditorForLoginTemplate($event)"
                                             *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == properties?.customLoginScreen}">
                                         </app-custom-login-screen-settings>
+                                        <app-custom-dashboard-settings *ngIf="isCustomDashboardOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CUSTOMIZE_DASHBOARD_MENU_HEADER}"></app-custom-dashboard-settings>
                                         <!--XNFR-609 Campaign Analytics Settings-->
                                         <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></app-campaign-analytics-settings>
                                         <!--XNFR-628 Chat GPT-->

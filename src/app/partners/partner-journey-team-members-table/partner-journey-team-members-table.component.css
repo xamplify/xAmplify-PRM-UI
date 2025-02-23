@@ -1,7 +1,3 @@
-.mt25m {
-	margin-top: -25px !important;
-}
-
 .group-name-cclass {
 	border-radius: 3px 0px 0px 3px !important;
 	width: 180px;
@@ -33,3 +29,19 @@
   .custom-icon{
 	margin: -1px 3px 0px 3px;
   }
+  .action-cp{
+	padding: 10px 40px;
+  }
+  .reminder_btn{
+	display: flex;
+	justify-content: end;
+  }
+@media only screen and (max-width:599px){
+.searchable-view{
+	margin-top: 10px;
+} 
+.reminder_btn{
+	flex-wrap: wrap;
+  }
+
+}

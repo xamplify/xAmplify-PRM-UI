@@ -179,6 +179,7 @@ export class AuthenticationService {
   approvalRequiredForTracks: boolean = false;
   approvalRequiredForPlaybooks: boolean = false;
 
+
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -1577,11 +1578,11 @@ vanityWelcomePageRequired(userId) {
     .map(this.extractData)
     .catch(this.handleError);
   }
-
-
-
-
- 
   
+  //XNFR-889
+  getPartnerCompanyByEmailDomain(emailId: any, companyProfileName: string) {
+    let url = this.REST_URL + "getPartnerCompanyByEmailDomain/" + emailId + "/" + companyProfileName;
+    return this.callGetMethod(url);
+  }
 
 }

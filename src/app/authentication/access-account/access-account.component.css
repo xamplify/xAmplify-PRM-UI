@@ -199,3 +199,9 @@ a.forget-password:hover {
 	overflow: auto;
 	/* padding: 40px 100px; */
 }
+
+.disabled-background {
+	background-color: #d3d3d3 !important;
+	color: #a9a9a9;
+	opacity: 0.8;
+}

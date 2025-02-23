@@ -9,9 +9,14 @@
           <div class="left-checkbox">
             <h4 class="modal-title" style="font-weight: 600;" *ngIf="isSelectDivOpen" translate>Select the fields for
               your report</h4>
+            <h4 class="modal-title" style="font-weight: 600;" *ngIf="!isSelectDivOpen" translate>Selected Fields Order
+            </h4>
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">
+            <button class="btn btn-primary" (click)="goToOrderDiv()" *ngIf="!showBackButton && !myPreferances">Customize Fields Order</button>
+            <button class="btn btn-primary" (click)="chooseYourFields()" *ngIf="!showBackButton && myPreferances">Choose
+              Your Fields</button>
             <a title="Close" class="close-circle" (click)="closeModalClose()">
               <i class="fa fa-times" aria-hidden="true"></i>
             </a>
@@ -22,16 +27,8 @@
         <div *ngIf="isSelectDivOpen">
           <div class="table-responsive">
             <div class="alert alert-info">
-              <strong>Select the fields for your report. Only the chosen fields will be displayed in the
+              <strong>**Only the chosen fields will be displayed in the
                 report.</strong>
-            </div>
-            <div class="float-right input-icon right mb10" *ngIf="isSelectDivOpen">
-              <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-                placeholder="Search..." (keypress)="searchFieldsKeyPress($event.keyCode)">
-              <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
-                (click)="searchKey='';clearSearch();"></button>
-              <button type="submit" class="search-box-item-click" (click)="searchFields()"><i class="fa fa-search"
-                  aria-hidden="true"></i></button>
             </div>
             <div>
               <table class="table tgrid table-hover table-sm">
@@ -41,7 +38,18 @@
                       <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
                         (change)="toggleAllSelection()" />
                     </th>
-                    <th scope="col">Field Label</th>
+                    <th scope="col"><b>Field Label</b></th>
+                    <th scope="col">
+                      <div class="float-right input-icon right" *ngIf="isSelectDivOpen" style="margin: -5px;">
+                        <input type="text" class="form-control" [(ngModel)]="searchKey"
+                          [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                          (keypress)="searchFieldsKeyPress($event.keyCode)">
+                        <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+                          (click)="searchKey='';clearSearch();"></button>
+                        <button type="submit" class="search-box-item-click" (click)="searchFields()"><i
+                            class="fa fa-search" aria-hidden="true"></i></button>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -52,7 +60,7 @@
                           (change)="toggleSelection(fieldDto)" [checked]="isCheked(fieldDto.labelId)"
                           [disabled]="isFieldDisabled(fieldDto.labelName)" />
                       </td>
-                      <td>
+                      <!-- <td>
                         <span class="FieldName" data-toggle="tooltip" data-placement="top"
                           title="{{fieldDto.labelName}}">{{fieldDto.labelName | slice:0:30}}
                           <span *ngIf="fieldDto.labelName?.length>30">...</span>
@@ -60,7 +68,14 @@
                         <ul class="textDecoration">
                           <li>{{fieldDto.displayName}}</li>
                         </ul>
+                      </td> -->
+                      <td>
+                        <span class="FieldName" data-toggle="tooltip" data-placement="top"
+                          title="{{fieldDto.displayName}}">{{fieldDto.displayName | slice:0:30}}
+                          <span *ngIf="fieldDto.displayName?.length>30">...</span>
+                        </span>
                       </td>
+                      <td></td>
                     </tr>
                   </ng-container>
                 </tbody>
@@ -126,8 +141,8 @@
                 [dragulaModel]='selectFieldsDtos'>
                 <li class="list-group-item cursor-move" *ngFor="let fieldDto of selectFieldsDtos;let i = index">
                   <span class="FieldName" data-toggle="tooltip" data-placement="top"
-                    title="{{fieldDto.labelName}}">{{fieldDto.labelName | slice:0:30}}
-                    <span *ngIf="fieldDto.labelName?.length>30">...</span>
+                    title="{{fieldDto.displayName}}">{{fieldDto.displayName | slice:0:30}}
+                    <span *ngIf="fieldDto.displayName?.length>30">...</span>
                   </span>
                   <i class="fa fa-arrows pull-right drap-arrow-cu" aria-hidden="true"></i>
                 </li>
@@ -140,20 +155,23 @@
         <div class="button-container">
           <!-- Left-aligned Checkbox -->
           <div class="left-checkbox">
-            <ul class="textDecoration" *ngIf="isSelectDivOpen">
+            <ul class="textDecoration" *ngIf="!showBackButton">
               <li><input type="checkbox" id="setAsDefault" [(ngModel)]="isDefault"
                   (change)="setMyPreferances($event)" /></li>
-              <li> <label for="setAsDefault"><b>Set as My Preferances</b></label></li>
+              <li> <label for="setAsDefault"><b>Set as My Preferences</b></label></li>
             </ul>
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">
-            <div *ngIf="isSelectDivOpen">
+            <div *ngIf="!showBackButton">
               <button class="btn Btn-Gray" (click)="closeModalClose()">Close</button>
-              <button class="btn btn-primary" (click)="submit()" [disabled]="!(pager.pages && pager.pages.length)">Email The Report</button>
+              <button class="btn btn-primary" (click)="submit()"
+                [disabled]="isSelectDivOpen ? !(pager.pages && pager.pages.length): false">Email
+                The Report</button>
             </div>
-            <div *ngIf="!isSelectDivOpen">
-              <button class="btn Btn-Gray" (click)="selectFieldValues()">Back To Selection</button>
+            <div *ngIf="showBackButton">
+              <button class="btn Btn-Gray" (click)="backToPreviousPage()"><i
+                  class="fa fa-long-arrow-left"></i>&nbsp;&nbsp;Back</button>
             </div>
           </div>
         </div>

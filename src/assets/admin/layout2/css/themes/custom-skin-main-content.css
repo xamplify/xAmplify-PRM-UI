@@ -2491,3 +2491,16 @@ span.filterActiveBg {background-color: #10ad39 !important;}
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
+/* add a tag */
+.add_tag-container,.add-tag-card{
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.add_tag,.checkbox-btn{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(---text-color) !important;
+}
+.add_tag:hover,.checkbox-btn:hover{
+  color: #fff!important;
+}

@@ -214,7 +214,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   }
 
   validateTestEmailId() {
-    if (this.referenceService.validateEmailId(this.testToEmailId)) {
+    if (this.testToEmailId != undefined && this.testToEmailId.length > 0 && this.referenceService.validateEmailId(this.testToEmailId)) {
       this.isValidTestEmailId = true;
     } else {
       this.isValidTestEmailId = false;
@@ -305,7 +305,7 @@ export class AddEmailModalPopupComponent implements OnInit {
 
   fetchUsersForCompanyJourney() {
     this.referenceService.loading(this.userListUsersLoader, true);
-    this.contactService.fetchUsersForCompanyJourney(this.selectedUserListId).subscribe(
+    this.contactService.fetchUsersForCompanyJourney(this.userId).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.userListUsersData = response.data;

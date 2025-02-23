@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges, S
 import { Router } from '@angular/router';
 import { Criteria } from 'app/contacts/models/criteria';
 import { Pagination } from 'app/core/models/pagination';
+import { SortOption } from 'app/core/models/sort-option';
 import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 
 @Component({
@@ -42,6 +43,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	selectedConditionArray: any[] = [];
 	@Input() criteria: Criteria ;
 	isAssetTabSelected: any = false;
+	sortOption: SortOption = new SortOption();
 
 
 	constructor(private router: Router) {
@@ -120,6 +122,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				}
 			}
 			this.allfilterOptions = this.filterOptions;
+		} else if (type == "Partners") {
+			this.filterOptions = [...this.sortOption.commonFilterOptions, ...this.sortOption.partnerFilterOptions];
+			this.allfilterOptions = this.filterOptions;
+			this.parterViewText = "Onboarded On";
 		}
 		
 		if( this.criteria.property == "Field Name*" && this.criteria.operation == "Condition*") {
@@ -252,6 +258,26 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 					criteriaObject.property = "publishedby";
 				} else if (this.criterias[i].property == "From") {
 					criteriaObject.property = "from";
+				} else if (this.criterias[i].property == "First Name") {
+					criteriaObject.property = "firstName";
+				} else if (this.criterias[i].property == "Last Name") {
+					criteriaObject.property = "lastName";
+				} else if (this.criterias[i].property == "Company") {
+					criteriaObject.property = "contactCompany";
+				} else if (this.criterias[i].property == "Job Title") {
+					criteriaObject.property = "jobTitle";
+				} else if (this.criterias[i].property == "Email Id") {
+					criteriaObject.property = "emailId";
+				} else if (this.criterias[i].property == "Country") {
+					criteriaObject.property = "country";
+				} else if (this.criterias[i].property == "City") {
+					criteriaObject.property = "city";
+				} else if (this.criterias[i].property == "Mobile Number") {
+					criteriaObject.property = "mobileNumber";
+				} else if (this.criterias[i].property == "Notes") {
+					criteriaObject.property = "description";
+				} else {
+					criteriaObject.property = this.criterias[i].property;
 				}
 				criteriaObject.value1 = this.criterias[i].value1;
 				criteriaConditionsArray.push(criteriaObject);
@@ -338,7 +364,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		this.closeFilterEmitter.emit(event);
 	}
 	getOptionsForCriteria(criteria: any, index: number) {
-		if (criteria.property === 'From' || criteria.property === 'Type') {
+		if ((criteria.property === 'From' || criteria.property === 'Type') && this.type != 'Partners') {
 			this.criterias[index].operation = "=";
 			this.criterias[index].value1 = "undefined";
 		} else {

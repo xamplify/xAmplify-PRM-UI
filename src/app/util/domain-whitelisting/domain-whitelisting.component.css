@@ -27,3 +27,22 @@
     justify-content: flex-start;
     align-items: center;
   }
+
+  .ml15 {
+      margin-left: 15px;
+  }
+
+  .custom-align {
+      align-items: center;
+      display: flex;
+      vertical-align: middle;
+  }
+
+  .align-switch {
+      position: relative;
+      left: 6px;
+  }
+
+  .bold-font-weight {
+    font-weight: bold;
+  }

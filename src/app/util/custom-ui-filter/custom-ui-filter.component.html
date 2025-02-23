@@ -98,8 +98,8 @@
     <div class="col-md-4 mobileTopandBottomSpace">
       <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
         [ngModelOptions]="{standalone: true}" (change)="setConditionsForCriteria(criterias[i],i)"
-        [disabled]="criterias[i].property === 'From' || criterias[i].property === 'Type'">
-        <ng-container *ngIf="criterias[i].property !== 'From' && criterias[i].property !== 'Type' ">
+        [disabled]="(criterias[i].property === 'From' || criterias[i].property === 'Type') && type != 'Partners'">
+        <ng-container *ngIf="(criterias[i].property !== 'From' && criterias[i].property !== 'Type') || type == 'Partners'">
           <option *ngIf="criterias[i].operation === 'Condition*'">Condition*</option>
           <!-- XNFR-837  -->
           <!-- <option *ngIf="criterias[i].operation === 'Condition*' &&  selectedConditionArray.length > 0 ">
@@ -107,17 +107,17 @@
           <option *ngFor="let filterCondition of filterConditions; let i = index">
             {{filterCondition.value}}</option>
         </ng-container>
-        <ng-container *ngIf="criterias[i].property === 'From' || criterias[i].property === 'Type'">
+        <ng-container *ngIf="(criterias[i].property === 'From' || criterias[i].property === 'Type') && type != 'Partners'">
           <option>{{filterConditions[1].value}}</option>
         </ng-container>
       </select>
     </div>
 
-    <div class="col-md-3" *ngIf="criterias[i].property !== 'Type' && criterias[i].property !== 'From'">
+    <div class="col-md-3" *ngIf="(criterias[i].property !== 'Type' && criterias[i].property !== 'From') || type == 'Partners'">
       <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
         (keypress)="eventEnterKeyHandler($event.keyCode)">
     </div>
-    <div class="col-md-3" *ngIf="criterias[i].property === 'Type' ||  criterias[i].property === 'From'">
+    <div class="col-md-3" *ngIf="(criterias[i].property === 'Type' ||  criterias[i].property === 'From') && type != 'Partners'">
       <select class="form-control" [(ngModel)]="criterias[i].value1">
         <ng-container *ngIf="criterias[i].property === 'Type' ">
           <option [value]="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Asset Type</option>

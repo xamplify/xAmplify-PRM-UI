@@ -1456,7 +1456,7 @@ export class AddDealComponent implements OnInit {
             this.resetDealTitle();
           }
 
-          if (("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType ||
+          if (("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType || "HUBSPOT" === this.activeCRMDetails.createdForActiveCRMType ||
             "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType) && this.actionType === 'add') {
             this.showAttachLead = false;
             this.showAttachButton = true;
@@ -2060,7 +2060,7 @@ export class AddDealComponent implements OnInit {
   goBackToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
-    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    let url = "home/company/manage/details/" + encodedId;
     this.referenceService.goToRouter(url);
   }
 
