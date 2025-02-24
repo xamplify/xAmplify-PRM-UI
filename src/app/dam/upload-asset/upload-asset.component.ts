@@ -798,25 +798,25 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     this.openAddTagPopup = true;
   }
 
-  resetTagValues(selectedTags: any[]) {
-    this.openAddTagPopup = false;
-    // this.showSuccessMessage(message);
-    // this.listTags(new Pagination());
-    if (selectedTags && Array.isArray(selectedTags)) {
-        selectedTags.forEach(tag => {
-            if (!this.damUploadPostDto.tagIds.includes(tag.id)) {
-                this.damUploadPostDto.tagIds.push(tag.id);
-            }else{
-                this.damUploadPostDto.tagIds.push(tag.id);
+    resetTagValues(selectedTags: any[]) {
+        this.openAddTagPopup = false;
+        // this.showSuccessMessage(message);
+        // this.listTags(new Pagination());
+        if (selectedTags && Array.isArray(selectedTags)) {
+            const selectedTagIds = selectedTags.map(tag => tag.id);
+            selectedTagIds.forEach(tagId => {
+                if (!this.damUploadPostDto.tagIds.includes(tagId)) {
+                    this.damUploadPostDto.tagIds.push(tagId);
+                }
+            });
+            this.damUploadPostDto.tagIds = this.damUploadPostDto.tagIds.filter(tagId => selectedTagIds.includes(tagId));
+            this.addTagsCondition(selectedTags);
+        } else {
+            if (selectedTags != undefined) {
+                this.listTags(new Pagination());
             }
-        });
-        this.addTagsCondition(selectedTags);
-    } else {
-        if (selectedTags != undefined) {
-            this.listTags(new Pagination());
         }
     }
-}
 addTagsCondition(selectedTags:any[]) {
 if( this.damUploadPostDto.tagIds!=undefined && this.damUploadPostDto.tagIds.length>0){
   this.savedTags = selectedTags.filter(tag => this.damUploadPostDto.tagIds.includes(tag.id));
