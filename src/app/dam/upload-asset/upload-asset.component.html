@@ -493,7 +493,7 @@
                            <button [disabled]="isDisableForm" class="btn Btn-Gray" id="right"
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
-                           <button *ngIf="!isApprover || isAdd || damUploadPostDto?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets"
+                           <button *ngIf="!isApprover || isAdd || damUploadPostDto?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets || (isApprover && !isAdd)"
                             [disabled]="!isValidForm || isDisableForm" id="right"
                               style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
                               type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span

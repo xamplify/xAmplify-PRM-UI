@@ -270,7 +270,7 @@
                   <span class="btn btn-primary transition txt_pd-top3">{{saveAsDraftButtonText}}</span>
                </button>
 
-               <button *ngIf="!isApprover || isAdd || damPostDto?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
+               <button *ngIf="!isApprover || isAdd || damPostDto?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets || (isApprover && !isAdd)" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
                   (click)="saveOrUpdate(false)" translate><span
                      class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
 
