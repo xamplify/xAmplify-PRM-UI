@@ -39,6 +39,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
   partnerCompanyMetricsDto:PartnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
   isTransferOptionClicked = false;
   transferDataSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  emailAddressErrorMessage: string = "";
   constructor(private referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public superAdminService: SuperAdminService, public logger: XtremandLogger,public properties:Properties) { }
 
