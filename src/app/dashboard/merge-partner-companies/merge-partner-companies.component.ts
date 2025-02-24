@@ -27,12 +27,12 @@ export class MergePartnerCompaniesComponent implements OnInit {
   vendorCompaniesSearchableDropdownDto: SearchableDropdownDto = new SearchableDropdownDto();
   selectedVendorCompanyId = 0;
   partnerCompaniesSearchableDropdownDto: SearchableDropdownDto = new SearchableDropdownDto();
-  partnerCompanyIdForTransfer = 0;
+  destinationPartnerCompanyId = 0;
   partnerCompanyNameForTransfer = "";
   isPartnerCompaniesSearchableDropdownDisplayed = false;
   isVendorCompaniesSearchableDropdownDisplayed = false;
   partnerCompanyName = "";
-  partnerCompanyId = 0;
+  sourcePartnerCompanyId = 0;
   partnerCompanies: Array<any> = new Array<any>();
   partnerCompaniesApiLoading = false;
   vendorCompanyName = "";
@@ -84,7 +84,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
       error => this.handleApiError(error),()=>{
         if(this.vendorCompanies.length==1){
           this.partnerCompaniesApiLoading = true;
-          this.partnerCompanyIdForTransfer = 0;
+          this.destinationPartnerCompanyId = 0;
           this.partnerCompanyNameForTransfer = "";
           this.partnerCompanies = [];
           let vendorCompany = this.vendorCompanies[0];
@@ -97,10 +97,10 @@ export class MergePartnerCompaniesComponent implements OnInit {
   }
 
   private findPartnerCompanyMetrics() {
-    if (this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
+    if (this.sourcePartnerCompanyId != undefined && this.sourcePartnerCompanyId > 0) {
       this.partnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
       this.partnerCompanyMetricsDto.apiLoading = true;
-      this.superAdminService.findPartnerCompanyMetrics(this.selectedVendorCompanyId, this.partnerCompanyId).
+      this.superAdminService.findPartnerCompanyMetrics(this.selectedVendorCompanyId, this.sourcePartnerCompanyId).
         subscribe(
           response => {
             this.partnerCompanyMetricsDto = response.data;
@@ -119,7 +119,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
     if (this.statusCode === 200) {
       this.vendorCompanies = response.data;
       this.partnerCompanyName = response['map']['partnerCompanyName'];
-      this.partnerCompanyId = response['map']['partnerCompanyId'];
+      this.sourcePartnerCompanyId = response['map']['partnerCompanyId'];
       if (this.vendorCompanies.length > 1) {
         this.setErrorMessage("The entered partner email address cannot be merged as the partnership is established with multiple vendors");
       } 
@@ -165,10 +165,10 @@ export class MergePartnerCompaniesComponent implements OnInit {
 
   getSelectedPartnerCompanyIdForTransfer(event: any) {
     if (event != null) {
-      this.partnerCompanyIdForTransfer = event['id'];
+      this.destinationPartnerCompanyId = event['id'];
       this.partnerCompanyNameForTransfer = event['name'];
     } else {
-      this.partnerCompanyIdForTransfer = 0;
+      this.destinationPartnerCompanyId = 0;
       this.partnerCompanyNameForTransfer = "";
     }
    
@@ -186,8 +186,8 @@ export class MergePartnerCompaniesComponent implements OnInit {
     this.vendorCompanies = [];
     this.partnerCompanyName = "";
     this.selectedVendorCompanyId = 0;
-    this.partnerCompanyId = 0;
-    this.partnerCompanyIdForTransfer = 0;
+    this.sourcePartnerCompanyId = 0;
+    this.destinationPartnerCompanyId = 0;
     this.partnerCompanyNameForTransfer = "";
     this.partnerCompanies = [];
     this.partnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
@@ -201,8 +201,8 @@ export class MergePartnerCompaniesComponent implements OnInit {
   confirmTransferringData(){
     this.errorOrSuccessResponse = new CustomResponse();
     if(this.authenticationService.isLocalHost()){
-      let isValidPartnerCompanyIdSelected = this.partnerCompanyIdForTransfer != this.partnerCompanyId;
-      if(this.partnerCompanyIdForTransfer>0){
+      let isValidPartnerCompanyIdSelected = this.destinationPartnerCompanyId != this.sourcePartnerCompanyId;
+      if(this.destinationPartnerCompanyId>0){
         if(isValidPartnerCompanyIdSelected){
           this.isTransferOptionClicked = true;
           this.transferDataSweetAlertParameterDto.text = this.partnerCompanyName+"'s data will be transferred to the "+this.partnerCompanyNameForTransfer+" company, and this change is final and cannot be undone";
@@ -221,6 +221,14 @@ export class MergePartnerCompaniesComponent implements OnInit {
 
   transferDataSweetAlertEventEmitter(event:any){
     if(event){
+      this.apiLoading = true;
+      this.superAdminService.transferPartnerCompanyData(this.sourcePartnerCompanyId,this.destinationPartnerCompanyId).subscribe(
+        response=>{
+          this.apiLoading = false;
+        },error=>{
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }
+      )
       this.isTransferOptionClicked = false;
     }else{
       this.isTransferOptionClicked = false;

@@ -63,7 +63,7 @@
                   <th scope="row">Destination Company: <i title="The company that will receive the transferred data" class="fa fa-info-circle cursor-pointer"></i></th>
                   <th scope="row">
                     <app-dropdown-loader *ngIf="partnerCompaniesApiLoading" [text]="'Partner Companies'"></app-dropdown-loader>
-                    <app-searchable-dropdown *ngIf="!partnerCompaniesApiLoading" [searchableDropDownDto]="partnerCompaniesSearchableDropdownDto" [id]="partnerCompanyIdForTransfer"
+                    <app-searchable-dropdown *ngIf="!partnerCompaniesApiLoading" [searchableDropDownDto]="partnerCompaniesSearchableDropdownDto" [id]="destinationPartnerCompanyId"
                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedPartnerCompanyIdForTransfer($event)">
                     </app-searchable-dropdown>
                     <span class="success" *ngIf="!partnerCompaniesApiLoading">Number of Partner Companies : {{partnerCompanies?.length}}</span>
@@ -79,7 +79,7 @@
             </tbody>
           </table>
           <div class="footer float-right">
-            <button class="btn btn-danger" [disabled]="partnerCompanyIdForTransfer==0" (click)="partnerCompanyIdForTransfer>0 && confirmTransferringData()">Transfer</button>
+            <button class="btn btn-danger" [disabled]="destinationPartnerCompanyId==0" (click)="destinationPartnerCompanyId>0 && confirmTransferringData()">Transfer</button>
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { AccountDetailsDto } from './models/account-details-dto';
 
 @Injectable()
 export class SuperAdminService {
-  
+
     
   superAdminUrl =  this.authenticationService.REST_URL+RouterUrlConstants.superAdmin;
   constructor(private authenticationService:AuthenticationService) { }
@@ -68,5 +68,11 @@ findPartnerCompanyMetrics(vendorCompanyId:number,partnerCompanyId:number){
     const url = this.authenticationService.REST_URL + 'superadmin/vendors/'+vendorCompanyId+'/partners/'+partnerCompanyId+'/metrics?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
 }
+
+transferPartnerCompanyData(sourceCompanyId: number, destinationCompanyId: number) {
+    const url = this.authenticationService.REST_URL + 'superadmin/partner-companies/'+sourceCompanyId+'/transfer-to/'+destinationCompanyId+'?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url,"");
+  }
+  
 
 }
