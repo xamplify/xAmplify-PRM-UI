@@ -469,8 +469,8 @@
                                                       <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                                                       <app-partner-company-and-groups
                                                          *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
-                                                         ((!authenticationService?.approvalRequiredForAssets && damUploadPostDto?.approvalStatus !== 'REJECTED')
-                                                          || damUploadPostDto?.approvalStatus == 'APPROVED')"
+                                                            ((!authenticationService?.approvalRequiredForAssets && damUploadPostDto?.approvalStatus !== 'REJECTED')
+                                                            || (authenticationService?.approvalRequiredForAssets && ((!isAdd && isApprover && damUploadPostDto?.createdByAnyApprover) || (isAdd && isApprover))) || damUploadPostDto?.approvalStatus === 'APPROVED')"
                                                          [moduleName]="'dam'" [inputId]="id"
                                                          [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
                                                          [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
@@ -499,7 +499,7 @@
                               type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
                            <!-- XNFR-884 -->
-                           <button class="button_blue bgcolor-unset pos_mar_rgt4"
+                           <button *ngIf="isAdd || (!isAdd && damUploadPostDto?.approvalStatus == 'DRAFT')" class="button_blue bgcolor-unset pos_mar_rgt4"
                               [disabled]="!isValidForm || isDisableForm || disableSaveAsDraftButton || damUploadPostDto?.published || (!isAdd && damUploadPostDto?.approvalStatus !== 'DRAFT')"
                               id="right" style="padding-top:1px;padding-right:0px;" type="button"
                               (click)="isVideoAsset?saveAsDraftVideo():saveAsDraftAndUpload()"

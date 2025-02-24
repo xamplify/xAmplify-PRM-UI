@@ -1463,8 +1463,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     saveAsDraftVideoAsset() {
-        this.saveVideoFile.draft = true;
-        this.saveVideoObject();
+        this.ngxLoading = true;
+        this.saveAsDraftButtonText = "Saving..."
+        setTimeout(() => {
+            this.saveVideoFile.draft = true;
+            this.ngxLoading = false;
+            this.saveVideoObject();
+        }, 500);
     }
 
   validVideoTitle(videoTitle: string) {

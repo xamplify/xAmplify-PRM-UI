@@ -69,4 +69,5 @@ export class SaveVideoFile {
     addedToQuickLinks = false;
     draft: boolean = false;
     approvalStatus: string = "";
+    createdByAnyApprover: boolean = false;
  }

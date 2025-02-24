@@ -133,7 +133,6 @@ export class AddDamComponent implements OnInit, OnDestroy {
       /** XNFR-884 **/
       if (this.authenticationService.approvalRequiredForAssets) {
         this.checkApprovalPrivilegeForAssets();
-        this.saveOrUpdateButtonText = 'Send for Approval';
       }
     }
     
@@ -585,6 +584,9 @@ downloadPdf(){
         response => {
             if (response.statusCode === 200) {
                 this.isApprover = response.data;
+            }
+            if (!this.isApprover) {
+              this.saveOrUpdateButtonText = 'Send for Approval';
             }
             this.ngxloading = false;
         }, error => {
