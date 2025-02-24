@@ -141,6 +141,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Onboarded On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Onboarded On(DESC)', 'value': 'createdTime-DESC' },
 
 		/* XNFR-556
 		 { 'name': 'Added(ASC)', 'value': 'id-ASC' },
