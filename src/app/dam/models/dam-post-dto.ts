@@ -22,4 +22,9 @@ export class DamPostDto {
 	 loggedInUserId = 0;
  	 addedToQuickLinks = false;
 
+	/** XNFR-884 **/
+	approvalStatus: string = "";
+	draft: boolean = false;
+  	published: boolean = false;
+
 }

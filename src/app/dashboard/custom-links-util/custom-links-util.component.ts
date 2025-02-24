@@ -17,6 +17,7 @@ import { ErrorResponse } from 'app/util/models/error-response';
 import { UtilService } from 'app/core/services/util.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { SortOption } from 'app/core/models/sort-option';
+import { EnvService } from 'app/env.service';
 
 declare var swal: any, $:any;
 @Component({
@@ -63,7 +64,8 @@ export class CustomLinksUtilComponent implements OnInit {
     'subTitle':'',
     'description':'',
     'icon':'',
-    'buttonText':''
+    'buttonText':'',
+    'alternateLink':''
   };
 
   validationMessages = {
@@ -75,7 +77,8 @@ export class CustomLinksUtilComponent implements OnInit {
       'link': {
           'required': 'Link is required.',
           'maxlength': 'Link cannot be more than 2083 characters long.',
-          'pattern': 'Invalid Link Pattern.'
+          'pattern': 'Invalid Link Pattern.',
+          'notVerified':'Please Verify the Link'
       },
       'subTitle': {
           'maxLimitReached': 'Subtitle cannot be more than 40 characters long.',
@@ -88,6 +91,9 @@ export class CustomLinksUtilComponent implements OnInit {
         'required': 'Button Text is required.',
         'whitespace': 'Empty spaces are not allowed.',
         'maxLimitReached': 'Button Text cannot be more than 20 characters long.',
+    },
+    'alternateLink':{
+      'required': 'Please Select Alternate Link',
     }
       
   };
@@ -109,10 +115,17 @@ export class CustomLinksUtilComponent implements OnInit {
   isAddedAndPublished = false;
   isUpdatedAndPublished = false;
   /***XNFR-571****/
+  /***XNFR-880****/
+  alternateUrlRequired = false;
+  alternateUrls =[];
+  validatedLink ="";
+  isLinkVerified = false;
+  isVerificationRequired = false;
+  isLinkFieldEdited = false;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, public httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
-    private regularExpressions:RegularExpressions,public utilService:UtilService) {
+    private regularExpressions:RegularExpressions,public utilService:UtilService, public envService: EnvService) {
     this.loadCustomLinkIcons();
     let news = {'id':CustomLinkType[CustomLinkType.NEWS],'value':"News"};
     let announcements = {'id':CustomLinkType[CustomLinkType.ANNOUNCEMENTS],'value':"Announcements"};
@@ -120,7 +133,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkTypes.push(announcements);
     
   }
-  
+
   private loadCustomLinkIcons() {
     this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
     this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
@@ -141,7 +154,8 @@ export class CustomLinksUtilComponent implements OnInit {
       openLinksInNewTab: new FormControl(),
       customLinkType:new FormControl(),
       buttonText:new FormControl(),
-      displayTitle:new FormControl()
+      displayTitle:new FormControl(),
+      alternateLink:new FormControl()
     });
   }
 
@@ -150,11 +164,16 @@ export class CustomLinksUtilComponent implements OnInit {
       this.customLinkForm = this.formBuilder.group({
         'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax40CharactersLimitValidator])],
         'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([max40CharactersLimitValidator])],
-        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.LINK_PATTERN)])],
+        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.LINK_PATTERN),
+          this.validateVerifiedLink.bind(this)
+        ])],
         'icon': [this.customLinkDto.buttonIcon],
         'description': [this.customLinkDto.buttonDescription, Validators.compose([max120CharactersLimitValidator])],
         'openLinksInNewTab': [this.customLinkDto.openInNewTab],
-        'customLinkType':['']
+        'customLinkType':[''],
+        ...((this.customLinkDto.alternateUrls != null && this.customLinkDto.alternateUrls.length>0) && {
+          'alternateLink': [this.customLinkDto.alternateUrl?this.customLinkDto.alternateUrl:'',Validators.compose([Validators.required])]
+        })
       });
     }else if(this.moduleType==this.properties.dashboardBanners){
       this.customLinkForm = this.formBuilder.group({
@@ -179,9 +198,11 @@ export class CustomLinksUtilComponent implements OnInit {
     }
 
 		this.customLinkForm.valueChanges
-			.subscribe(data => this.getSubmittedFormValues(data));
+			.subscribe(data =>{ 
+        this.getSubmittedFormValues();
+      });
 
-		this.getSubmittedFormValues(); 
+      this.getSubmittedFormValues(); 
 	}
 
 
@@ -253,6 +274,8 @@ export class CustomLinksUtilComponent implements OnInit {
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
     this.customLinkDto = new CustomLinkDto();
+    this.alternateUrlRequired = false;
+    this.isVerificationRequired = false;
     this.setDefaultValuesForForm();
     this.buildCustomLinkForm();
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
@@ -314,7 +337,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.customLinkDto = new CustomLinkDto();
     this.setCustomLinkDtoProperties();
-    this.vanityURLService.saveCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
+    this.vanityURLService.saveCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe((result) => {
       if (result.statusCode === 200) {
         let message = "";
         if(this.moduleType==this.properties.dashboardButtons){
@@ -332,7 +355,7 @@ export class CustomLinksUtilComponent implements OnInit {
         this.stopDropDownLoader();
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
-      }else if(result.statusCode==400){
+      } else if(result.statusCode==400){
         this.removeTitleErrorClass();
         let data = result.data;
         let errorResponses = data.errorMessages;
@@ -407,6 +430,9 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       this.customLinkDto.icon = this.selectedButtonIcon;
       this.customLinkDto.buttonIcon = this.selectedButtonIcon;
+      if(this.alternateUrlRequired){
+        this.customLinkDto.alternateUrl = this.referenceService.getTrimmedData(customFormDetails.alternateLink);
+      }
     }
     this.customLinkDto.loggedInUserId = this.authenticationService.getUserId();
     this.customLinkDto.openLinkInNewTab = this.customLinkDto.openInNewTab;
@@ -457,8 +483,26 @@ export class CustomLinksUtilComponent implements OnInit {
           const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
           this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
           this.selectedButtonIcon = this.customLinkDto.buttonIcon;
+          /**XNFR-880**/
+          this.alternateUrls =[]
+          this.alternateUrlRequired = this.customLinkDto.alternateUrls!= null && this.customLinkDto.alternateUrls.length>0
+          if(this.alternateUrlRequired){
+            this.alternateUrls = [
+              {
+                "name": "--Please Select Link--",
+                "id": ""
+              },
+              ...this.customLinkDto.alternateUrls
+            ];           
+          }
+
+          this.isLinkVerified = this.customLinkDto.alternateUrls!= null &&
+          this.customLinkDto.alternateUrls.length>0 &&  (this.customLinkDto.alternateUrl != null && this.customLinkDto.alternateUrl !='')
+          this.validatedLink = this.isLinkVerified? this.customLinkDto.buttonLink:"";
+          /**XNFR-880**/
           this.buildCustomLinkForm();
           this.stopDropDownLoader(); 
+          this.customLinkForm.get('link').updateValueAndValidity();
           this.ngxLoading = false;
         }else{
           this.isDropDownLoading = false;
@@ -749,5 +793,83 @@ getAllFilteredResults() {
   this.findLinks(this.pagination);
 }
 
+verifyLink(){
+  let link = this.customLinkForm.get('link').value;
+  this.ngxLoading = true;
+  this.customResponse = new CustomResponse();
+  this.vanityURLService.findAlternateLinksByUrl(link).subscribe(
+    response=>{
+      this.validatedLink = link
+      let data = response.data;
+      this.isLinkVerified = true;
+      if(data != null && data.length >0){
+        this.alternateUrls = []
+        this.alternateUrls = [
+          {
+            "name": "--Please Select Link--",
+            "id": ""
+          },
+          ...data
+        ];
+        this.alternateUrlRequired =true;
+        if (!this.customLinkForm.contains('alternateLink')) {
+          this.customLinkForm.addControl('alternateLink', new FormControl(this.customLinkDto.alternateUrl, Validators.required));
+        }
+        this.customLinkDto.alternateUrl=''
+        this.customLinkForm.get('alternateLink').setValue('');
 
+      }else{
+        this.alternateUrlRequired = false;
+        this.customLinkDto.alternateUrl='';
+        if (this.customLinkForm.contains('alternateLink')) {
+          this.customLinkForm.removeControl('alternateLink');
+        }
+      }
+      this.customLinkForm.get('link').updateValueAndValidity();
+      this.getSubmittedFormValues()
+      this.ngxLoading = false;
+      this.isLinkFieldEdited = false;
+
+    },error=>{
+      this.ngxLoading = false;
+    });
+
+}
+
+validateVerifiedLink(control: FormControl): { [key: string]: any } | null {
+  if (!control.value) {
+    return null; 
+  }
+  setTimeout(() => {
+  let domain= new URL(this.envService.CLIENT_URL).hostname
+  const pattern = new RegExp(domain);
+  const linkControl = this.customLinkForm.get('link');
+  const linkValue = linkControl ? linkControl.value : null;
+  this.isVerificationRequired =   pattern.test(linkValue);
+  this.isLinkVerified =  this.validatedLink === linkValue;
+  if(!this.isVerificationRequired){
+    this.alternateUrlRequired = false;
+    this.alternateUrls = [];
+    this.customLinkDto.alternateUrl = '';
+    this.validatedLink = '';
+    if (this.customLinkForm.contains('alternateLink')) {
+      this.customLinkForm.removeControl('alternateLink');
+    }
+
+  }
+      if (linkControl) {
+      linkControl.markAsTouched();
+      linkControl.markAsDirty();
+      if((this.isVerificationRequired && (!this.isLinkVerified || this.isLinkFieldEdited) )){
+        linkControl.setErrors({ notVerified: true });
+       }
+      this.getSubmittedFormValues()
+    }  
+  },0);
+  return !this.isVerificationRequired || (this.isVerificationRequired && this.isLinkVerified) ? null : { 'notVerified': true };
+}
+
+onLinkEdit(){
+  this.isLinkFieldEdited = true;
+}
 }

@@ -384,3 +384,29 @@ legend {
   }
 
 }
+
+
+.link input[type="text"] {
+  float: left;
+}
+
+/* Style the submit button */
+
+.link-button {
+  background-color: #0276FF;
+  color: #fff;
+  border-radius: 0px 3px 3px 0px !important;
+}
+
+.link button:hover {
+  background: #0b7dda;
+}
+
+.inline-box {
+  display: flex;
+}
+
+.success {
+  color: green;
+}
+
