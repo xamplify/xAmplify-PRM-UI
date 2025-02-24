@@ -18,7 +18,10 @@
   <div class="portlet light ml10 mr10">
     <div class="portlet-body clearfix">
       <div class="table-responsive">
-        <h4>Please enter the partner's email address used for onboarding</h4>
+        <div class="alert alert-info">
+          <strong>This section allows you to transfer company data from an existing partner company to a new partner company. Select the source and destination companies to proceed with the data migration securely and efficiently.</strong>
+        </div>
+        <h4>Enter the email address of the source company used during onboarding.</h4>
         <app-response-message [showCloseIcon]="false" [customResponse]="errorOrSuccessResponse" *ngIf="errorOrSuccessResponse?.isVisible"></app-response-message>
         <table class='table tgrid'>
           <thead>
@@ -50,20 +53,14 @@
           <table class="table grid table-bordered">
             <tbody>
               <tr>
-                <th scope="row">Partner Company Name</th>
+                <th scope="row">Source Company: <i title="The company from which the data will be transferred" class="fa fa-info-circle cursor-pointer"></i></th>
                 <th scope="row">
                 <span class="success">{{partnerCompanyName}}</span>
                 </th>
               </tr>
               <ng-container *ngIf="vendorCompanies?.length==1">
                 <tr>
-                  <th scope="row">Vendor Company</th>
-                  <th scope="row">
-                    <span class="success">{{vendorCompanyName}}</span>
-                  </th>
-                </tr>
-                <tr>
-                  <th scope="row">Partner Company To Transfer The Data</th>
+                  <th scope="row">Destination Company: <i title="The company that will receive the transferred data" class="fa fa-info-circle cursor-pointer"></i></th>
                   <th scope="row">
                     <app-dropdown-loader *ngIf="partnerCompaniesApiLoading" [text]="'Partner Companies'"></app-dropdown-loader>
                     <app-searchable-dropdown *ngIf="!partnerCompaniesApiLoading" [searchableDropDownDto]="partnerCompaniesSearchableDropdownDto" [id]="partnerCompanyIdForTransfer"
@@ -72,11 +69,17 @@
                     <span class="success" *ngIf="!partnerCompaniesApiLoading">Number of Partner Companies : {{partnerCompanies?.length}}</span>
                   </th>
                 </tr>
+                <tr>
+                  <th scope="row">Vendor Company: <i title="The company with which a partnership has been established" class="fa fa-info-circle cursor-pointer"></i></th>
+                  <th scope="row">
+                    <span class="success">{{vendorCompanyName}}</span>
+                  </th>
+                </tr>
               </ng-container>
             </tbody>
           </table>
           <div class="footer float-right">
-            <button class="btn btn-danger">Transfer</button>
+            <button class="btn btn-danger" [disabled]="partnerCompanyIdForTransfer==0" (click)="partnerCompanyIdForTransfer>0 && confirmTransferringData()">Transfer</button>
           </div>
         </div>
       </div>
@@ -241,5 +244,5 @@
       </div>
     </div>
   </ng-container>
-
-<app-scroll-top></app-scroll-top>
+  <app-confirm-sweet-alert-util *ngIf="isTransferOptionClicked" [parameterDto]="transferDataSweetAlertParameterDto" (notifyComponent)="transferDataSweetAlertEventEmitter($event)"></app-confirm-sweet-alert-util>
+  <app-scroll-top></app-scroll-top>
