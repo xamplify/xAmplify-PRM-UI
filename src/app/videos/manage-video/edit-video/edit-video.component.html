@@ -182,7 +182,7 @@
 									</button>
 
 									<!--XNFR-434-->
-									<button *ngIf="saveVideoFile?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets" type="button" class="btn button bgcolor-unset p0"
+									<button *ngIf="!authenticationService.approvalRequiredForAssets || !isApprover || saveVideoFile?.approvalStatus !== 'DRAFT' || saveVideoFile?.createdByAnyApprover" type="button" class="btn button bgcolor-unset p0"
 										[disabled]="!videoForm.valid || upperTextValid==false
 									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">
 										<span class="btn Btn-Green transition">{{saveButtonTitle}}</span></button>

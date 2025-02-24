@@ -55,4 +55,5 @@ export class DamUploadPostDto {
     draft: boolean = false;
     approvalStatus: string;
     published: boolean = false;
+    createdByAnyApprover: boolean = false;
 }
