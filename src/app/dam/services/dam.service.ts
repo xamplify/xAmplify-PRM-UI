@@ -26,6 +26,7 @@ export class DamService {
   DAM_URL = this.DAM_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
   ispreviousAssetIsProcessing = false;
   uploadAssetInProgress : boolean = false;
+  APPROVE_PREFIX_URL = this.authenticationService.REST_URL + "approve/";
   
   constructor(private http: HttpClient, private authenticationService: AuthenticationService, 
     private logger: XtremandLogger,private utilService:UtilService,private referenceService:ReferenceService) { }
@@ -387,5 +388,9 @@ export class DamService {
     return this.authenticationService.callPostMethod(url, assetDetailsViewDto);
   }
 
-  
+  checkApprovalPrivilegeForAssets() {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.APPROVE_PREFIX_URL+'checkApprovalPrivilegeForAssets/'+loggedInUserId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }  
 }

@@ -1,7 +1,7 @@
 <div class="page-bar" style="padding-bottom:10px;padding-right: 12px;">
    <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
    <ng-container *ngIf="!countsLoader">
-      <div class="col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect"
+      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect"
          style="padding-left: 12px;">
          <button class="btn-block dashboard-stat blue"
             [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'ALL'"
@@ -29,7 +29,7 @@
             </span>
          </button>
       </div>
-      <div class="col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
+      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
          <button class="btn-block dashboard-stat green"
             [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'APPROVED'"
             (click)="loadContentByType('APPROVED')" [disabled]="contentModuleStatusAnalyticsDTO.approvedCount == 0">
@@ -48,12 +48,12 @@
             </div>
             <span class="morePadding">
                <a class="more" style="text-align: left;background: #268c83; color:white" translate> Detailed view
-                 <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                 <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total approved ' + moduleLabel}}"></i></a>           
-             </span>
+               <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+               <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total approved ' + moduleLabel}}"></i></a>           
+            </span>
          </button>
       </div>
-      <div class="col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
+      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
          <button class="btn-block dashboard-stat purple"
             [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'CREATED'"
             (click)="loadContentByType('CREATED')" [disabled]="contentModuleStatusAnalyticsDTO.pendingCount == 0">
@@ -72,12 +72,12 @@
             </div>
             <span class="morePadding">
                <a class="more" style="text-align: left;" translate> Detailed view
-                 <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                 <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total pending for approval ' + moduleLabel }}"></i></a>           
-             </span>
+               <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+               <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total pending for approval ' + moduleLabel }}"></i></a>           
+            </span>
          </button>
       </div>
-      <div class="col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
+      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
          <button class="btn-block dashboard-stat red"
             [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'REJECTED'"
             (click)="loadContentByType('REJECTED')" [disabled]="contentModuleStatusAnalyticsDTO.rejectedCount == 0">
@@ -96,9 +96,35 @@
             </div>
             <span class="morePadding">
                <a class="more" style="text-align: left;" translate> Detailed view
-                 <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                 <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total rejected ' + moduleLabel }}"></i></a>           
-             </span>
+               <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+               <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total rejected ' + moduleLabel }}"></i></a>           
+            </span>
+         </button>
+      </div>
+      <!-- XNFR-884 -->
+      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect"
+         *ngIf="(moduleType == 'DAM' || (moduleType == 'APPROVE' && (filterType == 'ALL' || filterType == 'ASSETS'))) && authenticationService?.approvalRequiredForAssets && authenticationService.module.damAccess">
+         <button class="btn-block dashboard-stat yellow-gold"
+            [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'DRAFT'"
+            (click)="loadContentByType('DRAFT')" [disabled]="contentModuleStatusAnalyticsDTO.draftCount == 0">
+            <div class="visual">
+               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                  [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT' ? '#white' : '#ccc' }"
+                  *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'" aria-hidden="true"></i>
+            </div>
+            <div class="details">
+               <div class="number NumberFontDecrease">
+                  {{contentModuleStatusAnalyticsDTO.draftCount}}
+               </div>
+               <div class="desc fz-16 TextFontDecrease" translate>
+                  <ng-container>Drafts</ng-container>
+               </div>
+            </div>
+            <span class="morePadding">
+               <a class="more" style="text-align: left;" translate> Detailed view
+               <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+               <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total draft ' + moduleLabel }}"></i></a>           
+            </span>
          </button>
       </div>
    </ng-container>

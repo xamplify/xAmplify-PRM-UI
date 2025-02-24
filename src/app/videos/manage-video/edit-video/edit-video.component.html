@@ -170,8 +170,19 @@
 									<button type="button" class="btn button bgcolor-unset p0"
 										(click)="goToReplaceVideoSection()">
 										<span class="btn Btn-Green transition">Replace</span></button>
+									
+									<!-- XNFR-884-->
+									<button type="button" class="btn button bgcolor-unset p0" [disabled]="!videoForm.valid || upperTextValid==false
+										|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || ownThumbnail 
+										|| disableSaveAsDraftButton || saveVideoFile?.published || saveVideoFile?.approvalStatus !== 'DRAFT'"
+										(click)="saveAsDraftVideoAsset()" data-placement="top" [attr.title]="saveVideoFile?.published ? properties.CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED :
+											disableSaveAsDraftButton ? properties.CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS :
+											properties.DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS" translate><span
+											class="btn Btn-Green transition">{{saveAsDraftButtonText}}</span>
+									</button>
+
 									<!--XNFR-434-->
-									<button type="button" class="btn button bgcolor-unset p0"
+									<button *ngIf="!isApprover || saveVideoFile?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets" type="button" class="btn button bgcolor-unset p0"
 										[disabled]="!videoForm.valid || upperTextValid==false
 									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">
 										<span class="btn Btn-Green transition">{{saveButtonTitle}}</span></button>
@@ -434,7 +445,9 @@
 									<div>
 										<app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
 										<app-partner-company-and-groups
-											*ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
+											*ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany
+											&& ((!authenticationService?.approvalRequiredForAssets && saveVideoFile?.approvalStatus !== 'REJECTED')
+											|| saveVideoFile?.approvalStatus == 'APPROVED')"
 											[moduleName]="'dam'" [inputId]="saveVideoFile.damId"
 											[isPublishedToPartnerGroups]="saveVideoFile?.publishedToPartnerGroups"
 											[selectedTeamMemberIds]="saveVideoFile?.partnerIds"

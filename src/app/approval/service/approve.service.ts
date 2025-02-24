@@ -15,7 +15,6 @@ export class ApproveService {
   approveUrl = this.authenticationService.REST_URL + "approve";
   damUrl = this.authenticationService.REST_URL + "dam";
   COMMENTS_PREFIX_URL = this.authenticationService.REST_URL+'/comments';
-  DAM_PREFIX_URL = this.authenticationService.REST_URL + "dam";
 
   constructor(private http: Http, public httpClient: HttpClient, private authenticationService: AuthenticationService,
     private referenceService: ReferenceService
@@ -61,7 +60,7 @@ export class ApproveService {
   /** XNFR-813 **/
   getStatusTileCountsByModuleType(moduleType: string) {
     let loggedInUserId = this.authenticationService.getUserId();
-    let url = this.DAM_PREFIX_URL+'/getStatusTileCountsByModuleType/'+loggedInUserId+'/'+moduleType+ this.QUERY_PARAMETERS;
+    let url = this.approveUrl +'/getStatusTileCountsByModuleType/'+loggedInUserId+'/'+moduleType+ this.QUERY_PARAMETERS;
     return this.authenticationService.callGetMethod(url);
   }
 

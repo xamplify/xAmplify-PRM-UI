@@ -468,7 +468,9 @@
                                                    <div class="mDesc overflowtable-control">
                                                       <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                                                       <app-partner-company-and-groups
-                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
+                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
+                                                         ((!authenticationService?.approvalRequiredForAssets && damUploadPostDto?.approvalStatus !== 'REJECTED')
+                                                          || damUploadPostDto?.approvalStatus == 'APPROVED')"
                                                          [moduleName]="'dam'" [inputId]="id"
                                                          [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
                                                          [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
@@ -491,10 +493,22 @@
                            <button [disabled]="isDisableForm" class="btn Btn-Gray" id="right"
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
-                           <button [disabled]="!isValidForm || isDisableForm" id="right"
+                           <button *ngIf="!isApprover || isAdd || damUploadPostDto?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets"
+                            [disabled]="!isValidForm || isDisableForm" id="right"
                               style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
-                              type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate><span
+                              type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
+                           <!-- XNFR-884 -->
+                           <button class="button_blue bgcolor-unset pos_mar_rgt4"
+                              [disabled]="!isValidForm || isDisableForm || disableSaveAsDraftButton || damUploadPostDto?.published || (!isAdd && damUploadPostDto?.approvalStatus !== 'DRAFT')"
+                              id="right" style="padding-top:1px;padding-right:0px;" type="button"
+                              (click)="isVideoAsset?saveAsDraftVideo():saveAsDraftAndUpload()"
+                              data-placement="top" [attr.title]="damUploadPostDto?.published ? properties.CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED :
+                                 disableSaveAsDraftButton ? properties.CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS :
+                                 (!isVideoAsset ? properties.DRAFT_ASSET_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS
+                                 : properties.DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS)" translate>
+                              <span class="btn btn-primary"> {{ saveAsDraftButtonText }} </span>
+                           </button>
                         </div>
                      </div>
                   </div>

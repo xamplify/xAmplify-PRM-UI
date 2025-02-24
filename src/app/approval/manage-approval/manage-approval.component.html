@@ -212,7 +212,8 @@
       <span *ngIf="item?.status" class="view-banner ml5" [ngClass]="{
         'bgc-green': item.status === 'APPROVED',
         'bgc-red': item.status === 'REJECTED',
-        'bgc-orange': item.status === 'CREATED'}" translate>
+        'bgc-orange': item.status === 'CREATED',
+        'bgc-blue': item.status === 'DRAFT'}" translate>
         {{getApprovalStatusText(item.status)}}
       </span>
     </td>
@@ -221,7 +222,7 @@
     <td>
       <div class="actions-block override-actions" style="float:none !important;">
         <!--Design-->
-        <a class="custom-icon" *ngIf="item?.type === 'Asset' && item?.beeTemplate && item?.canEdit" data-toggle="tooltip"
+        <a class="custom-icon" *ngIf="item?.type === 'Asset' && item?.beeTemplate && item?.canEdit && item?.status !== 'DRAFT'" data-toggle="tooltip"
           data-placement="top" title="Design" (click)="addOrEdit(item.id)">
           <i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
           <div class="clickicons"></div>
@@ -259,7 +260,7 @@
             *ngIf="item?.viewBy!='DRAFT' && authenticationService?.module?.showCampaignOptionInManageVideos"
             (click)="(item?.status == 'APPROVED') ? campaignRouter(item.videoAlias, item.viewBy) : ''" data-toggle="tooltip"
             data-placement="top"
-            title="{{item?.status != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign'}}">
+            title="{{item?.status == 'DRAFT' ? properties.DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN : (item?.status != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign')}}">
             <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"
               [ngClass]="(item?.status != 'APPROVED') ? 'disabled gray' : ''"></i>
             <div class="clickicons"></div>
@@ -281,9 +282,10 @@
         </a>
     
         <!-- comment/history -->
-        <a class="custom-icon" (click)="showCommentsAndHistoryModalPopup(item)" data-toggle="tooltip" data-placement="top"
+        <a class="custom-icon" (click)="item?.status !== 'DRAFT' ? showCommentsAndHistoryModalPopup(item) : ''" data-toggle="tooltip" data-placement="top"
           title="{{(!authenticationService?.module?.isAdmin || item?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
-          <i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+          <i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"
+          [ngClass]="(item?.status !== 'DRAFT') ? '' : 'disabled gray'"></i>
           <div class="clickicons"></div>
         </a>
         <!--Delete-->

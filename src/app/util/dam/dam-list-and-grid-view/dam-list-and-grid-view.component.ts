@@ -115,7 +115,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		APPROVED: 'APPROVED',
 		REJECTED: 'REJECTED',
 		CREATED: 'CREATED',
-		UPDATED: 'UPDATED'
+		UPDATED: 'UPDATED',
+		DRAFT: 'DRAFT'
 	};
 	videoId: number;
 	/** XNFR-813 **/
@@ -969,6 +970,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				return 'Pending Approval';
 			case this.approvalStatus.UPDATED:
 				return 'Updated';
+			case this.approvalStatus.DRAFT:
+				return 'Draft';
 			default:
 				return status;
 		}
@@ -988,6 +991,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listAssets(this.pagination);
 		} else if (event == this.approvalStatus.CREATED) {
 			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.CREATED;
+			this.listAssets(this.pagination);
+		} else if (event == this.approvalStatus.DRAFT) {
+			this.pagination.selectedApprovalStatusCategory = this.approvalStatus.DRAFT;
 			this.listAssets(this.pagination);
 		} else {
 			this.pagination.selectedApprovalStatusCategory = '';

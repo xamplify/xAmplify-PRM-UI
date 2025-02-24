@@ -556,7 +556,12 @@ export class Properties {
 	defaultSSOGroup = "Default SSO Group";
 
 
-
-
+	/** XNFR-884 **/
+	CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED = "This asset has been published and cannot be saved as a draft.";
+	CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS = "An asset cannot be saved as a draft if a partner or partner group is selected.";
+	DRAFT_ASSET_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS = "Saving as a draft keeps the asset in draft mode. Draft assets cannot be published or used in tracks and playbooks.";
+	DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS = "Saving as a draft keeps the video in draft mode. Draft videos cannot be published or used in tracks, playbooks, or campaigns.";
+	DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN = "Cannot create a campaign with a draft video.";
+	
 }
 

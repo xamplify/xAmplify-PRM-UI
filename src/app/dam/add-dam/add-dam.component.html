@@ -243,7 +243,9 @@
                      <!---Select Partner Lists/Partners-->
                      <div class="form-group col-lg-12 col-md-12 ml15">
                         <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-                        <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader"
+                        <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader &&
+                        ((!authenticationService?.approvalRequiredForAssets && damUploadPostDto?.approvalStatus !== 'REJECTED')
+                           || damUploadPostDto?.approvalStatus == 'APPROVED')"
                            [moduleName]="'dam'" [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
                            [inputId]="assetId"
                            (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
@@ -257,12 +259,22 @@
                <button type="button" class="button_blue bgcolor-unset preview_pdf_btn" (click)="downloadPdf()"><span
                      class="btn btn-primary transition txt_pd-top3">Download <a
                         style="font-weight: 100;font-size: x-small;color: #fff;">(Preview PDF)</a></span></button>
+               
+               <!-- XNFR-884 -->
+               <button type="button" class="button_blue bgcolor-unset"
+                  [disabled]="!validForm || disableSaveAsDraftButton || damPostDto?.published" (click)="saveOrUpdateAsset(false)"
+                  data-placement="top"
+                  [attr.title]="damPostDto?.published ? properties.CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED :
+                     disableSaveAsDraftButton ? properties.CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS : properties.DRAFT_ASSET_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS"
+                  translate>
+                  <span class="btn btn-primary transition txt_pd-top3">{{saveAsDraftButtonText}}</span>
+               </button>
 
-               <button type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
+               <button *ngIf="!isApprover || isAdd || damPostDto?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
                   (click)="saveOrUpdate(false)" translate><span
                      class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
 
-               <button *ngIf="!isAdd" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
+               <button *ngIf="(!isApprover || damPostDto?.approvalStatus !== 'DRAFT' || !authenticationService.approvalRequiredForAssets) && !isAdd" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
                   (click)="saveOrUpdate(true)" translate><span
                      class="btn btn-primary transition txt_pd-top3">{{saveAsButtonText}}</span>
                </button>
