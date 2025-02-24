@@ -734,6 +734,9 @@ export class ContactDetailsComponent implements OnInit {
 
   reloadMeetingTab(event) {
     this.isReloadMeetingTab = event;
+    if (!this.referenceService.checkIsValidString(this.activeCalendarDetails.userUri)) {
+      this.getActiveCalendarDetails();
+    }
   }
 
   toggleSidebar() {
