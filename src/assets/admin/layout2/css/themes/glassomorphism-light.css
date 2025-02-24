@@ -4557,3 +4557,6 @@ color: #fff!important;
   box-shadow: unset!important;
   color: #fff!important;
 }
+#processing-time-image{
+  background: transparent url(/assets/images/processing-time.gif) no-repeat center center;
+}

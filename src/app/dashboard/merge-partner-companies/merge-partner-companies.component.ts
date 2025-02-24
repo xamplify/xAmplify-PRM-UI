@@ -1,5 +1,4 @@
-import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { SuperAdminService } from '../super-admin.service';
@@ -9,6 +8,9 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { PartnerCompanyMetricsDto } from '../models/partner-company-metrics-dto';
 import { Properties } from 'app/common/models/properties';
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+import { Observable } from 'rxjs';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 @Component({
   selector: 'app-merge-partner-companies',
@@ -16,7 +18,7 @@ import { Properties } from 'app/common/models/properties';
   styleUrls: ['./merge-partner-companies.component.css'],
   providers:[Properties]
 })
-export class MergePartnerCompaniesComponent implements OnInit {
+export class MergePartnerCompaniesComponent implements OnInit,ComponentCanDeactivate {
   isvalidEmailAddressEntered = false;
   accountDetailsDto: AccountDetailsDto = new AccountDetailsDto();
   apiLoading = false;
@@ -39,7 +41,7 @@ export class MergePartnerCompaniesComponent implements OnInit {
   partnerCompanyMetricsDto:PartnerCompanyMetricsDto = new PartnerCompanyMetricsDto();
   isTransferOptionClicked = false;
   transferDataSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
-  emailAddressErrorMessage: string = "";
+  transferDataApiLoading = false;
   constructor(private referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public superAdminService: SuperAdminService, public logger: XtremandLogger,public properties:Properties) { }
 
@@ -221,17 +223,26 @@ export class MergePartnerCompaniesComponent implements OnInit {
 
   transferDataSweetAlertEventEmitter(event:any){
     if(event){
-      this.apiLoading = true;
+      this.transferDataApiLoading = true;
       this.superAdminService.transferPartnerCompanyData(this.sourcePartnerCompanyId,this.destinationPartnerCompanyId).subscribe(
         response=>{
-          this.apiLoading = false;
+          this.transferDataApiLoading = false;
+          this.isTransferOptionClicked = false;
         },error=>{
+          this.isTransferOptionClicked = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         }
-      )
-      this.isTransferOptionClicked = false;
+      );
     }else{
       this.isTransferOptionClicked = false;
     }
   }
+
+  @HostListener('window:beforeunload')
+    canDeactivate(): Observable<boolean> | boolean {
+        this.authenticationService.stopLoaders();
+        return false;
+        
+    }
+
 }

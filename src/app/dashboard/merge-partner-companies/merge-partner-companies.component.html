@@ -1,4 +1,6 @@
 	<!--Header-->
+  <app-modal-popup-loader *ngIf="transferDataApiLoading" [displayProcessingImage]="true"></app-modal-popup-loader>
+  <ng-container *ngIf="!transferDataApiLoading">
   <div class="page-bar ml10 mr10 mt10">
     <ngx-loading [show]="partnerCompanyMetricsDto?.apiLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <ul class="page-breadcrumb">
@@ -244,5 +246,12 @@
       </div>
     </div>
   </ng-container>
+
+
+</ng-container>
+
+
+
+
   <app-confirm-sweet-alert-util *ngIf="isTransferOptionClicked" [parameterDto]="transferDataSweetAlertParameterDto" (notifyComponent)="transferDataSweetAlertEventEmitter($event)"></app-confirm-sweet-alert-util>
   <app-scroll-top></app-scroll-top>
