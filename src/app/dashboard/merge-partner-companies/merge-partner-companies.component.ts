@@ -222,6 +222,7 @@ export class MergePartnerCompaniesComponent implements OnInit,ComponentCanDeacti
           this.isTransferOptionClicked = false;
           this.referenceService.showSweetAlertSuccessMessage("Data transferred successfully");
         },error=>{
+          this.transferDataApiLoading = false;
           this.isTransferOptionClicked = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         }
