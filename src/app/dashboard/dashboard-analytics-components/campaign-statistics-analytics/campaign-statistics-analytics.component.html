@@ -7,8 +7,8 @@
 
     <div [ngClass]="authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 ? 'col-xs-12 col-sm-12' : 'col-xs-12 col-sm-6'"
         style="padding: 0">
-        <div class="col-xs-12">
-            <div class="portlet light campaign_stat_card_height" [ngClass]="{'border_dashed': isDraggingEnabled && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
+        <div class="col-xs-12 pl0" [ngClass]="{'pr0' : authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
+            <div class="portlet light campaign_stat_card_height margin_0" [ngClass]="{'border_dashed': isDraggingEnabled && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
                 <div class="portlet-title" style="min-height: 0px;">
                     <div class="caption">
                         <span class="caption-subject" translate>Campaign Statistics</span>
