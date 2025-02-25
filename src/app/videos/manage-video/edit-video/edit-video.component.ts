@@ -1629,7 +1629,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }, error => {
                 this.ngxLoading = false;
             }, ()=> {
-            if (this.saveVideoFile.approvalStatus === ApprovalStatusType[ApprovalStatusType.DRAFT]) {
+            const isDraft = this.saveVideoFile.approvalStatus === ApprovalStatusType[ApprovalStatusType.DRAFT];
+            const isRejected = this.saveVideoFile.approvalStatus === ApprovalStatusType[ApprovalStatusType.REJECTED];
+            if (isDraft || isRejected) {
                 this.saveButtonTitle = (this.isApprover || !this.authenticationService.approvalRequiredForAssets) ? 'Update' : 'Send for Approval';
             } else {
                 this.saveButtonTitle = 'Update';

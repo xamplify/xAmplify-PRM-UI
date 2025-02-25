@@ -493,14 +493,15 @@
                            <button [disabled]="isDisableForm" class="btn Btn-Gray" id="right"
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
-                           <button *ngIf="!authenticationService.approvalRequiredForAssets || isAdd || (!isAdd && (!isApprover || damUploadPostDto.createdByAnyApprover || damUploadPostDto?.approvalStatus !== 'DRAFT'))"
+                           <button *ngIf="!authenticationService.approvalRequiredForAssets || isAdd || 
+                              (!isAdd && (!isApprover || damUploadPostDto.createdByAnyApprover || (damUploadPostDto?.approvalStatus !== 'DRAFT' && damUploadPostDto?.approvalStatus !== 'REJECTED')))"
                             [disabled]="!isValidForm || isDisableForm" id="right"
                               style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
                               type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
                            <!-- XNFR-884 -->
-                           <button *ngIf="isAdd || (!isAdd && damUploadPostDto?.approvalStatus == 'DRAFT')" class="button_blue bgcolor-unset pos_mar_rgt4"
-                              [disabled]="!isValidForm || isDisableForm || disableSaveAsDraftButton || damUploadPostDto?.published || (!isAdd && damUploadPostDto?.approvalStatus !== 'DRAFT')"
+                           <button *ngIf="isAdd || (!isAdd && (damUploadPostDto?.approvalStatus == 'DRAFT' || damUploadPostDto?.approvalStatus == 'REJECTED'))" class="button_blue bgcolor-unset pos_mar_rgt4"
+                              [disabled]="!isValidForm || isDisableForm || disableSaveAsDraftButton || damUploadPostDto?.published || (!isAdd && (damUploadPostDto?.approvalStatus !== 'DRAFT' && damUploadPostDto?.approvalStatus !== 'REJECTED'))"
                               id="right" style="padding-top:1px;padding-right:0px;" type="button"
                               (click)="isVideoAsset?saveAsDraftVideo():saveAsDraftAndUpload()"
                               data-placement="top" [attr.title]="damUploadPostDto?.published ? properties.CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED :
