@@ -173,13 +173,8 @@ export class MergePartnerCompaniesComponent implements OnInit,ComponentCanDeacti
       this.destinationPartnerCompanyId = 0;
       this.partnerCompanyNameForTransfer = "";
     }
-   
-    
-
 
   }
-
-
 
   private resetFormValues() {
     this.isvalidEmailAddressEntered = false;
@@ -202,23 +197,18 @@ export class MergePartnerCompaniesComponent implements OnInit,ComponentCanDeacti
 
   confirmTransferringData(){
     this.errorOrSuccessResponse = new CustomResponse();
-    if(this.authenticationService.isLocalHost()){
-      let isValidPartnerCompanyIdSelected = this.destinationPartnerCompanyId != this.sourcePartnerCompanyId;
-      if(this.destinationPartnerCompanyId>0){
-        if(isValidPartnerCompanyIdSelected){
-          this.isTransferOptionClicked = true;
-          this.transferDataSweetAlertParameterDto.text = this.partnerCompanyName+"'s data will be transferred to the "+this.partnerCompanyNameForTransfer+" company, and this change is final and cannot be undone";
-        }else{
-          this.referenceService.goToTop();
-          this.setErrorMessage("The source company and destination company must be different");
-        }
+    let isValidPartnerCompanyIdSelected = this.destinationPartnerCompanyId != this.sourcePartnerCompanyId;
+    if(this.destinationPartnerCompanyId>0){
+      if(isValidPartnerCompanyIdSelected){
+        this.isTransferOptionClicked = true;
+        this.transferDataSweetAlertParameterDto.text = this.partnerCompanyName+"'s data will be transferred to the "+this.partnerCompanyNameForTransfer+" company, and this change is final and cannot be undone";
       }else{
-        this.setErrorMessage("Select the destination partner company for data transfer");
+        this.referenceService.goToTop();
+        this.setErrorMessage("The source company and destination company must be different");
       }
     }else{
-      this.referenceService.showSweetAlertInfoMessage();
+      this.setErrorMessage("Select the destination partner company for data transfer");
     }
-   
   }
 
   transferDataSweetAlertEventEmitter(event:any){
@@ -226,8 +216,11 @@ export class MergePartnerCompaniesComponent implements OnInit,ComponentCanDeacti
       this.transferDataApiLoading = true;
       this.superAdminService.transferPartnerCompanyData(this.sourcePartnerCompanyId,this.destinationPartnerCompanyId).subscribe(
         response=>{
+          this.resetFormValues();
+          this.accountDetailsDto = new AccountDetailsDto();
           this.transferDataApiLoading = false;
           this.isTransferOptionClicked = false;
+          this.referenceService.showSweetAlertSuccessMessage("Data transferred successfully");
         },error=>{
           this.isTransferOptionClicked = false;
           this.referenceService.showSweetAlertServerErrorMessage();
