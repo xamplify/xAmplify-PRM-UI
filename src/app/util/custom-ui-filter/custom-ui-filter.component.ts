@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Criteria } from 'app/contacts/models/criteria';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 
 @Component({
@@ -46,7 +47,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	sortOption: SortOption = new SortOption();
 
 
-	constructor(private router: Router) {
+	constructor(private router: Router,public authenticationService: AuthenticationService) {
 	}
 	ngOnDestroy(): void {
 	}
@@ -110,8 +111,11 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				this.filterOptions = this.filterOptions.filter(item => item.name !== 'folder'); //XNFR-409
 			}
 			if (this.isPartnerView) {
-				this.filterOptions.push({ 'name': 'publishedby', 'value': 'Published By' },
-					{ 'name': 'from', 'value': 'From' });
+				//XBI-3660 add if condition
+				if (!this.authenticationService.module.loggedInThroughVendorVanityUrl) {
+					this.filterOptions.push({ 'name': 'publishedby', 'value': 'Published By' },
+						{ 'name': 'from', 'value': 'From' });
+				}
 				this.parterViewText = "Published On";
 			} else {
 				this.filterOptions.push({ 'name': 'createdby', 'value': 'Created By' });

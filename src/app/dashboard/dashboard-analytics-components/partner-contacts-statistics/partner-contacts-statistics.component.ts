@@ -24,6 +24,7 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 	partnerContactsAnalyticsCountLoader = false;
 	partnerContactsAnalyticsCountStatusCode = 200;
 	@Input()applyFilter = false;
+	@Input() isDashboardView: boolean;
 	constructor(public authenticationService:AuthenticationService,public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService, public utilService: UtilService) {
 	}
 	ngOnInit() {
