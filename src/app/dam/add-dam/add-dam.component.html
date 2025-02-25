@@ -261,7 +261,7 @@
                         style="font-weight: 100;font-size: x-small;color: #fff;">(Preview PDF)</a></span></button>
                
                <!-- XNFR-884 -->
-               <button type="button" class="button_blue bgcolor-unset"
+               <button type="button" class="button_blue bgcolor-unset preview_pdf_btn"
                   [disabled]="!validForm || disableSaveAsDraftButton || damPostDto?.published" (click)="saveOrUpdateAsset(false)"
                   data-placement="top"
                   [attr.title]="damPostDto?.published ? properties.CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED :
