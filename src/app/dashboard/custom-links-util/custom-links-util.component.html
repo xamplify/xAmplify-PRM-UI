@@ -134,10 +134,11 @@
         <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons && alternateUrlRequired">
           <label>Alternate Link<span class="required"> *</span></label>
           <div>
-            <select formControlName="alternateLink" class="form-control">
+            <select formControlName="alternateLink" class="form-control" (change)="onAlternateLinkChange()">
               <option [ngValue]="type.id" *ngFor="let type of alternateUrls">{{type.name}}</option>
             </select>
           </div>
+          <span *ngIf="formErrors.alternateLink" class="required">{{ formErrors.alternateLink }}</span>
       </div>
         </div>
       <!--Description-->

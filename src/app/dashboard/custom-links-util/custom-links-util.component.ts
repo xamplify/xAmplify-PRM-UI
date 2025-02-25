@@ -493,14 +493,16 @@ export class CustomLinksUtilComponent implements OnInit {
                 "id": ""
               },
               ...this.customLinkDto.alternateUrls
-            ];           
+            ];      
           }
 
-          this.isLinkVerified = this.customLinkDto.alternateUrls!= null &&
-          this.customLinkDto.alternateUrls.length>0 &&  (this.customLinkDto.alternateUrl != null && this.customLinkDto.alternateUrl !='')
+          this.isLinkVerified = true;
           this.validatedLink = this.isLinkVerified? this.customLinkDto.buttonLink:"";
           /**XNFR-880**/
           this.buildCustomLinkForm();
+          if(this.customLinkForm.contains('alternateLink')){
+            this.customLinkForm.get('alternateLink').markAsDirty();     
+          }
           this.stopDropDownLoader(); 
           this.customLinkForm.get('link').updateValueAndValidity();
           this.ngxLoading = false;
@@ -837,10 +839,21 @@ verifyLink(){
 }
 
 validateVerifiedLink(control: FormControl): { [key: string]: any } | null {
+  
   if (!control.value) {
+    this.isVerificationRequired = false
+    this.isLinkVerified = false;
+    this.alternateUrlRequired = false;
+    this.alternateUrls = [];
+    this.customLinkDto.alternateUrl = '';
+    this.validatedLink = '';
+    if (this.customLinkForm.contains('alternateLink')) {
+      this.customLinkForm.removeControl('alternateLink');
+    }
     return null; 
   }
   setTimeout(() => {
+  //let domain ="xamplify.co";
   let domain= new URL(this.envService.CLIENT_URL).hostname
   const pattern = new RegExp(domain);
   const linkControl = this.customLinkForm.get('link');
@@ -871,5 +884,10 @@ validateVerifiedLink(control: FormControl): { [key: string]: any } | null {
 
 onLinkEdit(){
   this.isLinkFieldEdited = true;
+}
+
+onAlternateLinkChange(){
+  this.customLinkForm.get('alternateLink').markAsDirty();
+  this.getSubmittedFormValues();
 }
 }
