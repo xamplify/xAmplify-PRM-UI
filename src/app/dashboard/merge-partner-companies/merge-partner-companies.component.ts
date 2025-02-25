@@ -234,8 +234,11 @@ export class MergePartnerCompaniesComponent implements OnInit,ComponentCanDeacti
   @HostListener('window:beforeunload')
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.stopLoaders();
-        return false;
-        
+        if(this.authenticationService.module.logoutButtonClicked){
+          return true;
+        }else{
+          return false;
+        }
     }
 
 }
