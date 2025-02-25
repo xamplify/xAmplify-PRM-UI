@@ -26,5 +26,6 @@ export class DamPostDto {
 	approvalStatus: string = "";
 	draft: boolean = false;
   	published: boolean = false;
+	createdByAnyApprover: boolean = false;
 
 }

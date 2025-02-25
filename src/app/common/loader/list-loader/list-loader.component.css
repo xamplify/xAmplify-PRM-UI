@@ -63,3 +63,6 @@ td:nth-child(last) {
 #loading-bg-image{
   background: transparent url(../../../../assets/images/loading-popup.gif) no-repeat center center;
 }
+#processing-time-image{
+  background: transparent url(../../../../assets/images/processing-time.gif) no-repeat center center;
+}

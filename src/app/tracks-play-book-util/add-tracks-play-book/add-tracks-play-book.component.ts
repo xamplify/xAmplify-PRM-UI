@@ -1003,20 +1003,20 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   resetTagValues(selectedTags: any[]) {
     this.openAddTagPopup = false;
     if (selectedTags && Array.isArray(selectedTags)) {
-        selectedTags.forEach(tag => {
-            if (!this.tracksPlayBook.tagIds.includes(tag.id)) {
-                this.tracksPlayBook.tagIds.push(tag.id);
-            }else{
-                this.tracksPlayBook.tagIds.push(tag.id);
-            }
-        });
-        this.addTagsCondition(selectedTags);
-    } else {
-        if (selectedTags != undefined) {
-            this.listTags(new Pagination());
+      const selectedTagIds = selectedTags.map(tag => tag.id);
+      selectedTagIds.forEach(tagId => {
+        if (!this.tracksPlayBook.tagIds.includes(tagId)) {
+          this.tracksPlayBook.tagIds.push(tagId);
         }
+      });
+      this.tracksPlayBook.tagIds = this.tracksPlayBook.tagIds.filter(tagId => selectedTagIds.includes(tagId));
+      this.addTagsCondition(selectedTags);
+    } else {
+      if (selectedTags != undefined) {
+        this.listTags(new Pagination());
+      }
     }
-}
+  }
 
   addTags(type) {
   }

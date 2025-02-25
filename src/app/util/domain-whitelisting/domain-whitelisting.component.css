@@ -46,3 +46,15 @@
   .bold-font-weight {
     font-weight: bold;
   }
+  .align-item-center{
+    align-items: center;
+  }
+  .domain_text{
+    white-space: nowrap;
+    margin-right: 10px;
+  }
+  .modal-footer{
+    position:absolute ;
+    bottom: 1px;
+    width: 100%;
+  }

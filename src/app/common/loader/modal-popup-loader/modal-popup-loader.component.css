@@ -27,3 +27,6 @@
 .timeline-wrapper{
   border-radius: 7px;
 }
+#processing-time-image{
+  background: transparent url(../../../../assets/images/processing-time.gif) no-repeat center center;
+}

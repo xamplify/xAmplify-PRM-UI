@@ -211,7 +211,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             this.uploadOrReplaceAssetText = "Replace Asset";
 		}
 		this.loggedInUserId = this.authenticationService.getUserId();
-		this.listTags(new Pagination());
         /****XNFR-169*****/
         this.listCategories();
         /*******XNFR-255***/
@@ -293,7 +292,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 						this.validateForm('description');
 						this.formLoader = false;
 						this.initLoader = false;
-                        this.addTagsCondition(this.tags);
 					}else{
 						this.referenceService.goToPageNotFound();
 					}
@@ -302,6 +300,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 					this.xtremandLogger.errorPage(error);
 				}, ()=>{
                     this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd);
+                    this.listTags(new Pagination());
                 }
 			);
 
@@ -536,7 +535,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-        this.saveAsDraftButtonText = "Saving...";
 		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();
@@ -743,34 +741,25 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     }
 
  /*****************List Tags*******************/
- listTags(pagination: Pagination) {
-    pagination.userId = this.loggedInUserId;
-    pagination.maxResults = 0;
-    this.referenceService.startLoader(this.tagsLoader);
-    this.userService.getTagsSearchTagName(pagination)
-      .subscribe(
-        response => {
-          const data = response.data;
-          this.tags = data.tags;
-          let length = this.tags.length;
-          if ((length % 2) == 0) {
-            this.tagFirstColumnEndIndex = length / 2;
-            this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex);
-            this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex);
-          } else {
-            this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
-            this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex + 1);
-            this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex + 1);
-          }
-          this.referenceService.stopLoader(this.tagsLoader);
-        },
-        (error: any) => {
-          this.customResponse = this.referenceService.showServerErrorResponse(this.tagsLoader);
-          this.referenceService.stopLoader(this.tagsLoader);
-        },
-        () => this.xtremandLogger.info('Finished listTags()')
-      );
-  }
+    listTags(pagination: Pagination) {
+        pagination.userId = this.loggedInUserId;
+        pagination.maxResults = 0;
+        this.referenceService.startLoader(this.tagsLoader);
+        this.userService.getTagsSearchTagName(pagination)
+            .subscribe(
+                response => {
+                    const data = response.data;
+                    this.tags = data.tags;
+                    this.addTagsCondition(this.tags);
+                    this.referenceService.stopLoader(this.tagsLoader);
+                },
+                (error: any) => {
+                    this.customResponse = this.referenceService.showServerErrorResponse(this.tagsLoader);
+                    this.referenceService.stopLoader(this.tagsLoader);
+                },
+                () => this.xtremandLogger.info('Finished listTags()')
+            );
+    }
 
   searchTags() {
     let pagination: Pagination = new Pagination();
@@ -799,25 +788,25 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     this.openAddTagPopup = true;
   }
 
-  resetTagValues(selectedTags: any[]) {
-    this.openAddTagPopup = false;
-    // this.showSuccessMessage(message);
-    // this.listTags(new Pagination());
-    if (selectedTags && Array.isArray(selectedTags)) {
-        selectedTags.forEach(tag => {
-            if (!this.damUploadPostDto.tagIds.includes(tag.id)) {
-                this.damUploadPostDto.tagIds.push(tag.id);
-            }else{
-                this.damUploadPostDto.tagIds.push(tag.id);
+    resetTagValues(selectedTags: any[]) {
+        this.openAddTagPopup = false;
+        // this.showSuccessMessage(message);
+        // this.listTags(new Pagination());
+        if (selectedTags && Array.isArray(selectedTags)) {
+            const selectedTagIds = selectedTags.map(tag => tag.id);
+            selectedTagIds.forEach(tagId => {
+                if (!this.damUploadPostDto.tagIds.includes(tagId)) {
+                    this.damUploadPostDto.tagIds.push(tagId);
+                }
+            });
+            this.damUploadPostDto.tagIds = this.damUploadPostDto.tagIds.filter(tagId => selectedTagIds.includes(tagId));
+            this.addTagsCondition(selectedTags);
+        } else {
+            if (selectedTags != undefined) {
+                this.listTags(new Pagination());
             }
-        });
-        this.addTagsCondition(selectedTags);
-    } else {
-        if (selectedTags != undefined) {
-            this.listTags(new Pagination());
         }
     }
-}
 addTagsCondition(selectedTags:any[]) {
 if( this.damUploadPostDto.tagIds!=undefined && this.damUploadPostDto.tagIds.length>0){
   this.savedTags = selectedTags.filter(tag => this.damUploadPostDto.tagIds.includes(tag.id));

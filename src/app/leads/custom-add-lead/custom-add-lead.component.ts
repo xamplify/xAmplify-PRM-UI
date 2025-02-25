@@ -239,6 +239,7 @@ export class CustomAddLeadComponent implements OnInit {
   //XNFR-681
   isThroughAddUrl : boolean = false;
   isFromManageLeads : boolean = false;
+  isEmailEmpty:boolean =false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -531,6 +532,7 @@ export class CustomAddLeadComponent implements OnInit {
       if( this.formSubmitForCompanyId > 0){
         this.lead.createdForCompanyId = this.formSubmitForCompanyId
       }
+      this.isEmailEmpty = this.lead.email == null || this.lead.email == '';
     }else{
       this.lead.email = this.selectedContact.emailId;
     }

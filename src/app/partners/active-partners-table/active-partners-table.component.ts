@@ -185,10 +185,11 @@ export class ActivePartnersTableComponent implements OnInit {
       this.filterApplied = true;
     }
     if (isValidSelectedCompanies) {
+      this.filterActiveBg = 'filterActiveBg';
       this.isCollapsed = false;
     }
   }
-  
+
   findCompanyNames() {
     this.filterCategoryLoader = true;
     this.selectedCompanyIds = this.selectedPartnerCompanyIds;

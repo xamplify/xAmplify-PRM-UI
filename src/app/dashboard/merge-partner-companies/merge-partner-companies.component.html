@@ -1,4 +1,6 @@
 	<!--Header-->
+  <app-modal-popup-loader *ngIf="transferDataApiLoading" [displayProcessingImage]="true"></app-modal-popup-loader>
+  <ng-container *ngIf="!transferDataApiLoading">
   <div class="page-bar ml10 mr10 mt10">
     <ngx-loading [show]="partnerCompanyMetricsDto?.apiLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <ul class="page-breadcrumb">
@@ -63,7 +65,7 @@
                   <th scope="row">Destination Company: <i title="The company that will receive the transferred data" class="fa fa-info-circle cursor-pointer"></i></th>
                   <th scope="row">
                     <app-dropdown-loader *ngIf="partnerCompaniesApiLoading" [text]="'Partner Companies'"></app-dropdown-loader>
-                    <app-searchable-dropdown *ngIf="!partnerCompaniesApiLoading" [searchableDropDownDto]="partnerCompaniesSearchableDropdownDto" [id]="partnerCompanyIdForTransfer"
+                    <app-searchable-dropdown *ngIf="!partnerCompaniesApiLoading" [searchableDropDownDto]="partnerCompaniesSearchableDropdownDto" [id]="destinationPartnerCompanyId"
                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedPartnerCompanyIdForTransfer($event)">
                     </app-searchable-dropdown>
                     <span class="success" *ngIf="!partnerCompaniesApiLoading">Number of Partner Companies : {{partnerCompanies?.length}}</span>
@@ -79,7 +81,7 @@
             </tbody>
           </table>
           <div class="footer float-right">
-            <button class="btn btn-danger" [disabled]="partnerCompanyIdForTransfer==0" (click)="partnerCompanyIdForTransfer>0 && confirmTransferringData()">Transfer</button>
+            <button class="btn btn-danger" [disabled]="destinationPartnerCompanyId==0" (click)="destinationPartnerCompanyId>0 && confirmTransferringData()">Transfer</button>
           </div>
         </div>
       </div>
@@ -244,5 +246,12 @@
       </div>
     </div>
   </ng-container>
+
+
+</ng-container>
+
+
+
+
   <app-confirm-sweet-alert-util *ngIf="isTransferOptionClicked" [parameterDto]="transferDataSweetAlertParameterDto" (notifyComponent)="transferDataSweetAlertEventEmitter($event)"></app-confirm-sweet-alert-util>
   <app-scroll-top></app-scroll-top>
