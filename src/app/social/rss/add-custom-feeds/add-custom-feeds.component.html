@@ -302,7 +302,7 @@
 						<app-pagination *ngIf="videosPagination.pagedItems?.length > 0"
 							[pagination]="videosPagination" [type]="'updatestatusvideos'"
 							(notifyParent)="setPage($event)"
-							(notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+							(notifyParentDropDown)="listVideos($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
