@@ -16,8 +16,9 @@
                     <br>
                     <span *ngIf="!isVendorVanityUrl">
                         <div class="heading-top heading-top-border" *ngFor="let vendor of vendors">
-                            <a class="social-feeds-text-color" (click)="goToVendorFeeds(vendor.companyId,'p')">
-                                {{vendor.companyName}}
+                            <a class="social-feeds-text-color" (click)="goToVendorFeeds(vendor.companyId,'p')"
+                            [title]="vendor.companyName" data-toggle="tooltip" data-placement="bottom">
+                                {{vendor.companyName.length > 15 ? (vendor.companyName | slice:0:15) + '...' : vendor.companyName }}
                                 <i class="circled-number IconCustomization fontStyleNormal custom-icon pos_pd_lft9"
                                     id="vpc">{{vendor.publishedFeedCount}}</i>
                                 <div class="clickicons"></div>

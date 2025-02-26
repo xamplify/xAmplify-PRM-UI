@@ -260,6 +260,9 @@ export class SfDealComponent implements OnInit {
             && this.contactId != undefined && this.actionType === 'edit') {
             columnInfo.columnDisable = true;
           }
+          if ('ZOHO' == this.activeCRM.createdForActiveCRMType && columnInfo.labelType == "lookup") {
+            columnInfo.selectedChoiceValue = columnInfo.lookupDropDownChoices.find(column => column.id == columnInfo.value).name;
+          }
         });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         let allDropdowns = this.form.formLabelDTOs.filter(column => column.labelType === "select");

@@ -959,8 +959,8 @@
                                                         <label class="control-label" translate>Website Url</label>
                                                         <input type="url" placeholder="WebSite Url" class="form-control"
                                                             formControlName="websiteUrl" />
-                                                        <div *ngIf="formErrors.websiteUrl" class="alert alert-danger">
-                                                            {{ formErrors.websiteUrl }}</div>
+                                                        <span *ngIf="formErrors.websiteUrl" style="color: #f55d7a">
+                                                            {{ formErrors.websiteUrl }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
