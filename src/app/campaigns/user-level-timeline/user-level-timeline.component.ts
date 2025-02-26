@@ -255,7 +255,7 @@ export class UserLevelTimelineComponent implements OnInit {
         this.dealButtonText = "Update Lead";
         this.leadActionType = "edit";
         this.leadId = data.id;
-        this.canPartnerEditLead = data.partnerEditLead;
+        this.canPartnerEditLead = data.partnerEditLead && data.canUpdate;
       }      
     })
 
