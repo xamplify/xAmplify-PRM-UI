@@ -224,7 +224,7 @@ export class SfDealComponent implements OnInit {
           this.getActiveCRMCustomForm();
         }
       }
-      if (this.selectedContact != undefined && this.selectedContact != null && this.showChangeContactButton) {
+      if (this.selectedContact != undefined && this.selectedContact != '') {
         this.autoFillContactFieldsForDeal();
       }
     }
