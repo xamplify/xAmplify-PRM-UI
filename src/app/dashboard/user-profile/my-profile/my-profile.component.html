@@ -158,7 +158,7 @@
 
                                         </li>
                                         <!---Tags-->
-                                        <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess"
+                                        <li *ngIf=" authenticationService?.module?.damAccess || authenticationService.lmsAccess || authenticationService?.module?.playbookAccess"
                                             [ngClass]="{'active-tab': activeTabName == 'tags'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"
                                                 (click)="activateTab('tags');clearCustomResponse()" translate>
