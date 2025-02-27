@@ -119,7 +119,7 @@
                     class="button bgcolor-unset"
                     (click)="tag.isValid && tag.isTagNameValid ? saveOrUpdateTag() :  saveSelectedTags()">
                     <span class="btn Btn-Green transition txt_pd-top3"
-                        [ngClass]="(tag.isValid && tag.isTagNameValid) || tagSelected ?'':'disabled'">{{selectedTags.length>0 ?'update':'save'}}</span>
+                        [ngClass]="(tag.isValid && tag.isTagNameValid) || tagSelected ?'':'disabled'">{{(selectedTags?.length>0 && !isAddTagPopup) ?'update':'save'}}</span>
                 </button>
                 <button *ngIf = "isAddTagPopup" class="btn Btn-Gray neg_mrg_top4"  (click)="cancel()"
                     translate>Cancel</button>
