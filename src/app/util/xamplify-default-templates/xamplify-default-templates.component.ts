@@ -683,7 +683,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
           self.loggedInUserId = this.authenticationService.getUserId();
       }
       if (!this.loggedInAsSuperAdmin) {
-          landingPageService.getAvailableNames(self.loggedInUserId, false).subscribe(
+        landingPageService.getAvailableNames(self.loggedInUserId, false,landingPageService.landingPageSource ).subscribe(
               (data: any) => { names = data; },
               error => {
                 //  this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error);
