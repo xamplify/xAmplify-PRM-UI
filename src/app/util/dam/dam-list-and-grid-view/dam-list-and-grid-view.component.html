@@ -210,8 +210,9 @@
 															</a>
 															<!--View Analytics-->
 															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany"
-																(click)="viewAnalytics(asset)">
-																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+																(click)="asset.approvalStatus !== approvalStatus.DRAFT ? viewAnalytics(asset) : ''">
+																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
+																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"></i>
 																<div class="clickicons"></div>
 															</a>
 															<!--View Details-->
@@ -434,9 +435,9 @@
 																				data-placement="top"
 																				title="View Analytics"
 																				*ngIf="!authenticationService.module.isMarketingCompany"
-																				(click)="viewAnalytics(asset)">
+																				(click)="asset.approvalStatus !== approvalStatus.DRAFT ? viewAnalytics(asset) : ''">
 																				<i class="fa fa-line-chart IconCustomization"
-																					aria-hidden="true"></i>
+																					aria-hidden="true" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"></i>
 																				<div class="clickicons"></div>
 																			</a>
 

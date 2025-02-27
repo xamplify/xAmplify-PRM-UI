@@ -33,7 +33,8 @@
 		title="Download" (click)="openDownloadPopup(asset)"> <i class="fa fa-download" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="!authenticationService.module.isMarketingCompany"
-		data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(asset)"> <i
+		data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="asset.approvalStatus !== 'DRAFT' ? viewAnalytics(asset) : ''"
+		[ngClass]="(asset?.approvalStatus !== 'DRAFT') ? '' : 'disabled gray'"> <i
 			class="fa fa-line-chart" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
