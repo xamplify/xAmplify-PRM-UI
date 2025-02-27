@@ -245,7 +245,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.damPostDto.jsonBody = event.jsonContent;
     this.damPostDto.htmlBody = event.htmlContent;
     if (!this.isPartnerView) {
-      this.listTags(new Pagination());
+      // this.listTags(new Pagination());
       $("#addAssetDetailsPopup").modal("show");
       this.isAddAssetDetailsPopupLoaded= true;
       this.ngxloading = false;
