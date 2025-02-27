@@ -207,6 +207,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
             }else{
               this.isAddTagPopup=false;
               this.searchTags();
+              this.cancel();
             }
           } else {
             this.authenticationService.forceToLogout();
@@ -316,6 +317,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.tagSelected = false;
   }
   openAddTagModal() {
+    this.tag = new Tag();
     this.isAddTagPopup = true;
     this.tagSelected = false;
     // $('#addTagModal').modal('hide');

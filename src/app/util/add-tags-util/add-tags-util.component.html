@@ -55,7 +55,7 @@
                         <div class="float-right input-icon right mb10">
                             <input class="form-control" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
                                 (keypress)="tagEventHandler($event.keyCode);" placeholder="Search..." type="text">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                            <button *ngIf = "tagSearchKey?.length>0" class="glyphicon glyphicon-remove search-box-item-clear"
                                 (click)="tagSearchKey='';searchTags();"></button>
                             <button class="search-box-item-click" type="submit" (click)="searchTags()"><i
                                     aria-hidden="true" class="fa fa-search"></i></button>
