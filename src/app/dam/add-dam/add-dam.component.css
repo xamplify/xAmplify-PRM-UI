@@ -59,3 +59,64 @@
 .add-btn{
   border-radius: 4px;
   }
+  .add_tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    background-color: #f1f5f9;
+    border: 1px solid #ddd;
+    padding: 6px;
+    border-radius: 8px;
+    margin: 0px 0px 6px 0px;
+    max-height: 140px;
+    overflow-y: auto;
+    border-radius: 8px;
+    align-items: center;
+  }
+  
+  .add_tag-container::-webkit-scrollbar{
+  width:7px;
+  height: 7px;
+  }
+  .add_tag {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    padding: 4px 11px;
+    border-radius: 18px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .add_tag:hover {
+  background-color:#007bff !important;
+  color: #fff;
+    transform: scale(1.05);
+  }
+  
+  /* Close Button */
+  .close-btn {
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  .close-btn:hover {
+    color: #ff3b3b;
+    transform: rotate(180deg);
+  }
+  .add_more-btn{
+  color: #63abff;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3sease;
+  cursor: pointer;
+  float: right;
+  }
+  .add_more-btn:hover{
+  text-decoration: underline!important;
+  }

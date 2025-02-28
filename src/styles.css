@@ -3426,6 +3426,10 @@ border-bottom-right-radius: 7px;
   margin-bottom: 5px!important;
 }
 /* dashboard drag and drop page border */
-.portlet.light.border_dashed,.page-bar.border_dashed {
+.portlet.light.border_dashed,.page-bar.border_dashed,.border_dashed {
   border: 2px dashed #ca9b9b!important;
+  border-radius: 9px!important;
+}
+.portlet.light.margin_0 {
+  margin: 0px!important;
 }

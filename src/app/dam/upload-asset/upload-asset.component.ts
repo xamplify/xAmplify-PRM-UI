@@ -1609,10 +1609,11 @@ zoomOut() {
     initialiseSubmitButtonText(assetApprover: boolean, currentApprovalStatus: string, isAdd: boolean) {
         const approvalRequired = this.authenticationService.approvalRequiredForAssets;
         const isDraft = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.DRAFT];
+        const isRejected = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.REJECTED];
         if (isAdd) {
             this.submitButtonText = assetApprover || !approvalRequired ? 'Save' : 'Send for Approval';
         } else {
-            if (isDraft) {
+            if (isDraft || isRejected) {
                 this.submitButtonText = (assetApprover || !approvalRequired) ? 'Update' : 'Send for Approval';
             } else {
                 this.submitButtonText = 'Update';

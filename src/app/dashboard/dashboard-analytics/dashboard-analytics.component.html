@@ -237,14 +237,15 @@
 </ng-template>
 
 <ng-template #campaignStatistics>
-    <div class="clearfix row margin_17" [ngClass]="{'mr0': authenticationService?.dashboardTypes.indexOf('Dashboard')>-1, '': authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1}">
+    <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled && authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard,
+        'mr0': authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard}">
         <!--- Campaign Statistics --->
         <app-campaign-statistics-analytics *ngIf="(authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1) 
             && authenticationService.module.showCampaignsAnalyticsDivInDashboard" [isDraggingEnabled]="isDraggingEnabled"></app-campaign-statistics-analytics>
 
         <!--- Email Statistics --->
         <div *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard"
-            class="portlet light col-xs-12 col-sm-6">
+            class="portlet light col-xs-12 col-sm-6 pr0 margin_0">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
@@ -275,15 +276,15 @@
 </ng-template>
 
 <ng-template #partnerStatistics>
-    <div class="clearfix row margin_17"
+    <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled}"
         *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
     !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && 
     !authenticationService?.module?.isVendorTier && !authenticationService?.module?.isVendorTierTeamMember && 
     !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember && 
     !authenticationService?.module?.isMarketingCompany && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
-        <app-partners-statistics [applyFilter]="applyFilter"></app-partners-statistics>
-        <app-partner-contacts-statistics [applyFilter]="applyFilter"></app-partner-contacts-statistics>
-        <app-mdf-statistics *ngIf="authenticationService?.mdf" [applyFilter]="applyFilter"></app-mdf-statistics>
+        <app-partners-statistics [applyFilter]="applyFilter" [isDashboardView]="true"></app-partners-statistics>
+        <app-partner-contacts-statistics [applyFilter]="applyFilter" [isDashboardView]="true"></app-partner-contacts-statistics>
+        <app-mdf-statistics *ngIf="authenticationService?.mdf" [applyFilter]="applyFilter" [isDashboardView]="true"></app-mdf-statistics>
     </div>
 </ng-template>
 
@@ -300,7 +301,7 @@
 </ng-template>
 
 <ng-template #regionalStatistics>
-    <div class="clearfix row margin_17"
+    <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled}"
         *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 && authenticationService.module.showCampaignsAnalyticsDivInDashboard">
         <!---Regional Statistics--->
         <app-regional-statistics-analytics></app-regional-statistics-analytics>
@@ -380,7 +381,7 @@
 </ng-template>
 
 <ng-template #leadAndDealStatistics>
-    <div class="clearfix margin_17"
+    <div class="clearfix margin_17" [ngClass]="{'border_dashed' : isDraggingEnabled}"
         *ngIf="!ngxLoading && (authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
     && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && (authenticationService?.leadsAndDeals)">
         <app-leads-statistics [applyFilter]="applyFilter"></app-leads-statistics>

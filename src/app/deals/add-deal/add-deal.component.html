@@ -202,7 +202,8 @@
                           <app-user-info *ngIf="showContactDetails" [userInfo]="contact"></app-user-info>
                           <span *ngIf="!showContactInfo">Not Available</span>
                           <div *ngIf="actionType!=='edit' && showAttachLeadButton" class="btn-group pull-right pt">
-                            <button *ngIf="authenticationService?.module?.isContact && showAttachButton" class="btn Btn-Green mb_btn"
+                            <span><span *ngIf="(isDealFromContact || isCompanyJourney) && !showAttachLead" class="required">*</span>
+                              <button *ngIf="authenticationService?.module?.isContact && showAttachButton" class="btn Btn-Green mb_btn"
                               data-toggle="dropdown" style="border-radius: 3px !important;box-shadow: none !important;" translate>
                               <i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i> Attach <i aria-hidden="true"
                                 class="fa fa-angle-down"></i>
@@ -211,10 +212,12 @@
                               <li><a (click)="openSelectLeadModel()">Attach a Lead</a></li>
                               <li><a (click)="openSelectContactModel()">Attach a Contact</a></li>
                             </ul>
+                            </span>
                           </div>
                           <span *ngIf="showAttachLeadButton" class="pull-right">
                             <a *ngIf="showAttachLead || !authenticationService?.module?.isContact" style="padding-left: 4px;">
                               <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                                <span *ngIf="isDealFromContact || isCompanyJourney" class="required">*</span>
                                 <span (click)="openSelectLeadModel()" class="btn btn-primary transition d-inline">
                                   <i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>Attach a Lead
                                 </span>

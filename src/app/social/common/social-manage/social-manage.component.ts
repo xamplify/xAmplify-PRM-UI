@@ -19,8 +19,12 @@ export class SocialManageComponent implements OnInit, OnDestroy {
     response: any;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     providerName: string;
+    socialShareOptionEnabled :boolean = false;
+
     constructor( private route: ActivatedRoute, private socialService: SocialService,
-        public authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
+        public authenticationService: AuthenticationService, public referenceService:ReferenceService ) { 
+            this.socialShareOptionEnabled= JSON.parse(localStorage.getItem("socialShareOptionEnabled") || 'false'); //XBI-8970
+        }
 
     listAccounts( userId: number ) {
         this.socialConnections = [];

@@ -1,131 +1,135 @@
 <div class="page-bar" style="padding-bottom:10px;padding-right: 12px;">
    <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
    <ng-container *ngIf="!countsLoader">
-      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect"
-         style="padding-left: 12px;">
-         <button class="btn-block dashboard-stat blue"
-            [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'ALL'"
-            (click)="loadContentByType('ALL')" [disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
-            <div class="visual">
-               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                  [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL' ? '#white' : '#ccc' }"
-                  *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'" aria-hidden="true"></i>
-            </div>
-            <div class="details">
-               <div class="number NumberFontDecrease">
-                  {{contentModuleStatusAnalyticsDTO.totalCount}}
+      <div class="new-width-row">
+         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect" style="padding-left: 12px;">
+            <button class="btn-block dashboard-stat blue"
+               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'ALL'"
+               (click)="loadContentByType('ALL')" [disabled]="contentModuleStatusAnalyticsDTO.totalCount == 0">
+               <div class="visual">
+                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL' ? '#white' : '#ccc' }"
+                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'ALL'" aria-hidden="true"></i>
                </div>
-               <div class="desc fz-16 TextFontDecrease" translate>
-                  All
+               <div class="details">
+                  <div class="number NumberFontDecrease">
+                     {{contentModuleStatusAnalyticsDTO.totalCount}}
+                  </div>
+                  <div class="desc fz-16 TextFontDecrease" translate>
+                     All
+                  </div>
                </div>
-            </div>
-            <span class="morePadding">
-               <a class="more" style="text-align: left; background: #3480b5; color: white" translate> Detailed view
-                  <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-                  <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle" aria-hidden="true"
-                     title="{{'Total records of ' + moduleLabel }}"></i>
-                  <i *ngIf="moduleType.toLowerCase() === 'approve'" class="fa fa-info-circle" aria-hidden="true"
-                     title="Total records of approval hub"></i></a>
-            </span>
-         </button>
-      </div>
-      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
-         <button class="btn-block dashboard-stat green"
-            [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'APPROVED'"
-            (click)="loadContentByType('APPROVED')" [disabled]="contentModuleStatusAnalyticsDTO.approvedCount == 0">
-            <div class="visual">
-               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                  [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED' ? '#white' : '#ccc' }"
-                  *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED'" aria-hidden="true"></i>
-            </div>
-            <div class="details">
-               <div class="number numberCss NumberFontDecrease" style="font-weight: 300; color: #FFFFFF;">
-                  {{contentModuleStatusAnalyticsDTO.approvedCount}}
+               <span class="morePadding">
+                  <a class="more" style="text-align: left; background: #3480b5; color: white" translate> Detailed view
+                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                     <i *ngIf="moduleType.toLowerCase() != 'approve'" class="fa fa-info-circle" aria-hidden="true"
+                        title="{{'Total records of ' + moduleLabel }}"></i>
+                     <i *ngIf="moduleType.toLowerCase() === 'approve'" class="fa fa-info-circle" aria-hidden="true"
+                        title="Total records of approval hub"></i></a>
+               </span>
+            </button>
+         </div>
+         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
+            <button class="btn-block dashboard-stat green"
+               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'APPROVED'"
+               (click)="loadContentByType('APPROVED')" [disabled]="contentModuleStatusAnalyticsDTO.approvedCount == 0">
+               <div class="visual">
+                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED' ? '#white' : '#ccc' }"
+                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'APPROVED'" aria-hidden="true"></i>
                </div>
-               <div class="desc fz-16 TextFontDecrease" translate>
-                  Approved
+               <div class="details">
+                  <div class="number numberCss NumberFontDecrease" style="font-weight: 300; color: #FFFFFF;">
+                     {{contentModuleStatusAnalyticsDTO.approvedCount}}
+                  </div>
+                  <div class="desc fz-16 TextFontDecrease" translate>
+                     Approved
+                  </div>
                </div>
-            </div>
-            <span class="morePadding">
-               <a class="more" style="text-align: left;background: #268c83; color:white" translate> Detailed view
-               <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-               <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total approved ' + moduleLabel}}"></i></a>           
-            </span>
-         </button>
-      </div>
-      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
-         <button class="btn-block dashboard-stat purple"
-            [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'CREATED'"
-            (click)="loadContentByType('CREATED')" [disabled]="contentModuleStatusAnalyticsDTO.pendingCount == 0">
-            <div class="visual">
-               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                  [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED' ? '#white' : '#ccc' }"
-                  *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'" aria-hidden="true"></i>
-            </div>
-            <div class="details">
-               <div class="number NumberFontDecrease">
-                  {{contentModuleStatusAnalyticsDTO.pendingCount}}
+               <span class="morePadding">
+                  <a class="more" style="text-align: left;background: #268c83; color:white" translate> Detailed view
+                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                     <i class="fa fa-info-circle" aria-hidden="true"
+                        title="{{'Total approved ' + moduleLabel}}"></i></a>
+               </span>
+            </button>
+         </div>
+         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
+            <button class="btn-block dashboard-stat purple"
+               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'CREATED'"
+               (click)="loadContentByType('CREATED')" [disabled]="contentModuleStatusAnalyticsDTO.pendingCount == 0">
+               <div class="visual">
+                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED' ? '#white' : '#ccc' }"
+                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'CREATED'" aria-hidden="true"></i>
                </div>
-               <div class="desc fz-16 TextFontDecrease" translate>
-                  Pending Approval
+               <div class="details">
+                  <div class="number NumberFontDecrease">
+                     {{contentModuleStatusAnalyticsDTO.pendingCount}}
+                  </div>
+                  <div class="desc fz-16 TextFontDecrease" translate>
+                     Pending Approval
+                  </div>
                </div>
-            </div>
-            <span class="morePadding">
-               <a class="more" style="text-align: left;" translate> Detailed view
-               <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-               <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total pending for approval ' + moduleLabel }}"></i></a>           
-            </span>
-         </button>
-      </div>
-      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect">
-         <button class="btn-block dashboard-stat red"
-            [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'REJECTED'"
-            (click)="loadContentByType('REJECTED')" [disabled]="contentModuleStatusAnalyticsDTO.rejectedCount == 0">
-            <div class="visual">
-               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                  [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED' ? '#white' : '#ccc' }"
-                  *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'" aria-hidden="true"></i>
-            </div>
-            <div class="details">
-               <div class="number NumberFontDecrease">
-                  {{contentModuleStatusAnalyticsDTO.rejectedCount}}
+               <span class="morePadding">
+                  <a class="more" style="text-align: left;" translate> Detailed view
+                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                     <i class="fa fa-info-circle" aria-hidden="true"
+                        title="{{'Total pending for approval ' + moduleLabel }}"></i></a>
+               </span>
+            </button>
+         </div>
+         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
+            <button class="btn-block dashboard-stat red"
+               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'REJECTED'"
+               (click)="loadContentByType('REJECTED')" [disabled]="contentModuleStatusAnalyticsDTO.rejectedCount == 0">
+               <div class="visual">
+                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED' ? '#white' : '#ccc' }"
+                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'REJECTED'" aria-hidden="true"></i>
                </div>
-               <div class="desc fz-16 TextFontDecrease" translate>
-                  <ng-container>Rejected</ng-container>
+               <div class="details">
+                  <div class="number NumberFontDecrease">
+                     {{contentModuleStatusAnalyticsDTO.rejectedCount}}
+                  </div>
+                  <div class="desc fz-16 TextFontDecrease" translate>
+                     <ng-container>Rejected</ng-container>
+                  </div>
                </div>
-            </div>
-            <span class="morePadding">
-               <a class="more" style="text-align: left;" translate> Detailed view
-               <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-               <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total rejected ' + moduleLabel }}"></i></a>           
-            </span>
-         </button>
-      </div>
-      <!-- XNFR-884 -->
-      <div class="col-md-3 margin-top-10 pr0 pl tiles_hover_effect"
-         *ngIf="(moduleType == 'DAM' || (moduleType == 'APPROVE' && (filterType == 'ALL' || filterType == 'ASSETS'))) && authenticationService?.approvalRequiredForAssets && authenticationService.module.damAccess">
-         <button class="btn-block dashboard-stat yellow-gold"
-            [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'DRAFT'"
-            (click)="loadContentByType('DRAFT')" [disabled]="contentModuleStatusAnalyticsDTO.draftCount == 0">
-            <div class="visual">
-               <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
-                  [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT' ? '#white' : '#ccc' }"
-                  *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'" aria-hidden="true"></i>
-            </div>
-            <div class="details">
-               <div class="number NumberFontDecrease">
-                  {{contentModuleStatusAnalyticsDTO.draftCount}}
+               <span class="morePadding">
+                  <a class="more" style="text-align: left;" translate> Detailed view
+                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                     <i class="fa fa-info-circle" aria-hidden="true"
+                        title="{{'Total rejected ' + moduleLabel }}"></i></a>
+               </span>
+            </button>
+         </div>
+         <!-- XNFR-884 -->
+         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect"
+            *ngIf="(moduleType == 'DAM' || (moduleType == 'APPROVE' && (filterType == 'ALL' || filterType == 'ASSETS'))) && authenticationService?.approvalRequiredForAssets && authenticationService.module.damAccess">
+            <button class="btn-block dashboard-stat yellow-gold"
+               [class.grey]="contentModuleStatusAnalyticsDTO.selectedCategory && contentModuleStatusAnalyticsDTO.selectedCategory != 'DRAFT'"
+               (click)="loadContentByType('DRAFT')" [disabled]="contentModuleStatusAnalyticsDTO.draftCount == 0">
+               <div class="visual">
+                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                     [ngStyle]="{'color': contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT' ? '#white' : '#ccc' }"
+                     *ngIf="contentModuleStatusAnalyticsDTO.selectedCategory == 'DRAFT'" aria-hidden="true"></i>
                </div>
-               <div class="desc fz-16 TextFontDecrease" translate>
-                  <ng-container>Drafts</ng-container>
+               <div class="details">
+                  <div class="number NumberFontDecrease">
+                     {{contentModuleStatusAnalyticsDTO.draftCount}}
+                  </div>
+                  <div class="desc fz-16 TextFontDecrease" translate>
+                     <ng-container>Drafts</ng-container>
+                  </div>
                </div>
-            </div>
-            <span class="morePadding">
-               <a class="more" style="text-align: left;" translate> Detailed view
-               <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
-               <i class="fa fa-info-circle" aria-hidden="true"  title="{{'Total draft ' + moduleLabel }}"></i></a>           
-            </span>
-         </button>
+               <span class="morePadding">
+                  <a class="more" style="text-align: left;" translate> Detailed view
+                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                     <i class="fa fa-info-circle" aria-hidden="true" title="{{'Total draft ' + moduleLabel }}"></i></a>
+               </span>
+            </button>
+         </div>
       </div>
    </ng-container>
 </div>

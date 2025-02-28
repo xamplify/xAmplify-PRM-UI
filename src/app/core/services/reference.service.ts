@@ -4010,9 +4010,9 @@ getFirstLetter(inputString:any) {
 
   addDefaultLogos( isVendorLandscape:boolean) {
     let defaultLogos=[];
-    defaultLogos.push({ name: "Companies Logo", value: `<img width="100%" src="https://xamplify.s3.amazonaws.com/images/deafult-master-lading-page.jpg">` });
+    defaultLogos.push({ name: "Default Company Tiles", value: `<img width="100%" src="https://xamplify.s3.amazonaws.com/images/deafult-master-lading-page.jpg">` });
     if(isVendorLandscape){
-      defaultLogos.push({ name: "Maps Logo", value: `<img width="100%" src="https://xamplify.s3.amazonaws.com/dev/images/bee-1305/f-7f38af0f-f5ed-4ee6-a6f6-c4d9909ceb4e-94151676035396555.jpeg">` });
+      defaultLogos.push({ name: "Default Partner Locator Map", value: `<img width="100%" src="https://xamplify.s3.amazonaws.com/dev/images/bee-1305/f-7f38af0f-f5ed-4ee6-a6f6-c4d9909ceb4e-94151676035396555.jpeg">` });
     }
     return defaultLogos;
   }

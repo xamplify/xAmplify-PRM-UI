@@ -1831,6 +1831,7 @@ export class AddDealComponent implements OnInit {
     this.deal.associatedLeadId = 0;
     this.showChangeLeadAndContactButton = false;
     this.attachLeadText = 'Attach a Lead';
+    this.contactInfo = ''
     this.showDetachLeadButton = false;
     this.deal.campaignId = 0;
     this.deal.campaignName = '';

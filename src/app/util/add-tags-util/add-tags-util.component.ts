@@ -207,6 +207,13 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
             }else{
               this.isAddTagPopup=false;
               this.searchTags();
+              this.isAddTagPopup = false;
+              this.tag.isValid = false
+              this.tag.isTagNameValid = false;
+              this.tag = new Tag();
+              this.tagResponse = new CustomResponse();
+              this.tagNames = [];
+              this.tagSelected = (this.selectedTags.length> -1 || this.tagsSelected.length>0) ? true :false;
             }
           } else {
             this.authenticationService.forceToLogout();
@@ -316,6 +323,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.tagSelected = false;
   }
   openAddTagModal() {
+    this.tag = new Tag();
     this.isAddTagPopup = true;
     this.tagSelected = false;
     // $('#addTagModal').modal('hide');
@@ -349,6 +357,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.removeTagErrorClass();
     this.tagResponse = new CustomResponse();
     this.tagNames = [];
+    this.tagSelected = (this.selectedTags.length> -1 || this.tagsSelected.length>0) ? true :false;
   }
 
 }

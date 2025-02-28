@@ -60,3 +60,55 @@
     pointer-events: none;
     cursor: not-allowed;
 }
+
+.new-width-row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.new-width-col {
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 100%;
+    padding: 0px 10px;
+}
+
+.dashboard-stat .details {
+    position: relative !important; 
+}
+
+.dashboard-stat .visual {
+    width: 65px !important;
+    padding-left: 35px !important;
+}
+
+.dashboard-stat .details .desc {
+    font-size: 14px !important;
+    white-space: nowrap;
+}
+
+/* Tablet: 3 per row */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .new-width-col {
+        flex: 0 0 calc(33.33% - 0px);
+        padding: 0px 10px;
+    }
+}
+
+/* Mobile: 1 per row */
+@media (max-width: 580px) {
+    .new-width-col {
+        flex: 0 0 calc(100% - 0px);
+    }
+    .dashboard-stat .details {
+        padding-right: 20px !important;
+        width: auto !important;
+    }
+}
+
