@@ -1,247 +1,33 @@
-.portlet.light .portlet-body {
-    padding-top: 0px !important;
-  }
-  .text {
-    text-align: center;
-  }
-  h4 {
-    font-weight: 500 !important;
-    font-size: 15px !important;
-  }
-  h5 {
-    font-size: 13px !important;
-    font-weight: 400 !important;
-  }
-  .img-responsive {
-    padding-top: 30px;
-    display: block;
-    max-width: 64px;
-    height: auto;
-    padding-bottom: 30px;
-  }
-  .hover-effect:hover {
-    border: 1px solid #4eafd6;
-    -webkit-transition: none !important;
-    -moz-transition: none !important;
-    -o-transition: none !important;
-    transition: none !important;
-    box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
-  }
-  .pointer {
-    cursor: pointer;
-  }
-  .design-name {
-    color: #008fd5;
-    font-size: 13px;
-    font-weight: 600;
-    margin-left: 5px;
-  }
-  .mtop {
-    margin-top: 28px !important;
-  }
-  .cpad {
-    padding: 0px;
-  }
-  .mauto {
-    margin: 0 auto;
-  }
-  .header-text-css {
-    text-align: center;
-    padding: 10px;
-    margin: 0;
-    border-bottom: 1px solid #ddd;
-    cursor: auto;
-  }
-  .header-description-css {
-    text-align: center;
-    color: #888;
-    font-size: 14px;
-    padding: 10px 10px;
-    height: auto;
-    cursor: auto;
-  }
-  .prfpx {
-    padding-right: 40px;
-  }
-  .prtfpx {
-    padding-right: 24px;
-  }
-  .prspx {
-    padding-right: 60px;
-  }
-  .col-centered {
-    float: none;
-    margin: 0 auto;
-  }
-  @media (min-width: 1200px) and (max-width: 1261px) {
-    .header-description-css {
-      font-size: 12px;
-    }
-  }
-  @media (min-width: 1000px) and (max-width: 1200px) {
-    .header-description-css {
-      font-size: 10px;
-    }
-  }
-  @media only screen and (max-width: 600px) {
-    .mPageBar {
-      margin-top: -6px;
-      margin-bottom: 10px;
-    }
-    .mDisableColor {
-      color: #888 !important;
-    }
-  }
-  .portlet > .portlet-title > .caption {
-    line-height: 30px;
-  }
-  .padding {
-    padding: 0px 5px !important;
-  }
-  .portlet .light {
-    padding: 0px !important;
-  }
-  .img1:hover {
-    background-position: 100%;
-    background-color: #b8def1;
-    transition-duration: 500ms;
-  }
-  p {
-    margin: 0px;
-  }
-  .text-border {
-    border-bottom: 1px solid #ddd;
-  }
-  
-  
-  .modal {
-    display: block;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .modal-dialog {
-    max-width: 600px;
-  }
-  canvas {
-    width: 100%;
-    height: 150px;
-    border: 1px solid #ccc;
-  }
-  .typed-preview {
-    font-family: "Cursive", sans-serif;
-    font-size: 24px;
-  }
 
-  .signature-preview {
-    border: 1px solid #000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    margin-top: 10px;
-    text-align: center;
-    color: #000;
-    width: 300px;
-    height: 150px;
-    line-height: 150px;
-  }
-
-  
-/* Hide the default file input */
-.file-input {
-  position: absolute;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-/* Custom label styling */
-.file-label {
-  display: inline-block;
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.2s ease;
-  text-align: center;
-}
-
-/* Hover and active styles for label */
-.file-label:hover {
-  background-color: #0056b3;
-}
-
-.file-label:active {
-  background-color: #004085;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* File name display */
-.file-name {
-  display: block;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #333;
-}
-
-/* Image preview styles */
-.image-preview {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.preview-img {
-  padding: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  max-width: 300px;
-  max-height: 150px;
-  border-radius: 10px;
-  background-color: white;
-  border: 1px solid #000;
-  overflow: hidden;
-  margin-bottom: 10px;
-  width: 300px;
-  height: 150px;
-}
-
-.center-div{
-  display: flex; justify-content: center;
-}
-
-.preview-typed-signature{
-  width: 300px;
-  height: 150px;
-}
-.modal .modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-.modal .modal-header .close {
-  margin-top: 4px !important;
-  padding: 1rem 1rem;
-  margin: -1rem -1rem -1rem auto;
-}
 #signature-container {
   width: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 #signature-box {
   width: 200px;
-  height: 100px;
+  height: 250px; /* Increased height to fit multiple signatures */
   border: 2px dashed #333;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  flex-wrap: wrap; /* Wrap items properly */
+  gap: 5px; /* Adds spacing between signatures */
+  padding: 10px;
 }
-#signature {
-  width: 100px;
+
+#signature-box img {
+  width: 150px;
+  height: 70px; /* Fixed height for uniform size */
+  object-fit: contain; /* Ensures images fit properly */
   cursor: grab;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 3px;
 }
+
 #pdf-container {
   width: 800px;
   height: 600px;
@@ -262,14 +48,4 @@
   background: white;
   border: 1px solid black;
   padding: 3px;
-}
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  margin-top: 20px;
 }

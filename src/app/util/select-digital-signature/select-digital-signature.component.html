@@ -1,36 +1,46 @@
-<div class="modal" tabindex="-1" role="dialog" *ngIf="showSignatureModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Select Signature</h5>
-        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+<div class="page-content" *ngIf="showSignatureModal">
+  <!-- <app-modal-popup-loader *ngIf="pdfLoader"></app-modal-popup-loader> -->
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <div>
+    <div>
+      <div>
+        <div class="inputs" style="float: right;">
+          <a class="close-circle ref-mar" (click)="closeModal()" title="Close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+        </div>
+        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
       </div>
-      <div class="modal-body">
+      <div >
         <!-- PDF Signature Drag & Drop Section -->
 <div id="pdf-signature-section" style="display: flex; gap: 20px; padding: 20px;">
   <!-- Left Side: Signature Container -->
   <div id="signature-container">
     <h2>Signature</h2>
-    <div id="signature-box">
-      <!-- Use the selected signature if available; otherwise a default image -->
-      <img
-        id="signature"
-        [src]="'https://dummyimage.com/100x50/000/fff.png&text=Sign'"
-        draggable="true">
-    </div>
-    <button id="download-pdf">Download PDF</button>
+      <div id="signature-box">
+        <div *ngFor="let signature of availableSignatures; let i = index">
+          <img [src]="signature" class="signature-image" draggable="true" alt="Signature">
+        </div>
+      </div>
+    <!-- <button id="download-pdf">Download PDF</button> -->
+    <button (click)="addSignature()">Add Signature </button>
   </div>
   
   <!-- Right Side: PDF Display -->
   <div id="pdf-container"></div>
 </div>
       </div>
-      <div class="modal-footer">
+      <div class="float-right">
         <button type="button" class="btn Btn-Gray mr5" (click)="closeModal()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="submitSelection()">Submit</button>
+        <button type="button" class="btn btn-primary" id="download-pdf" (click)="submitSelection()">Submit</button>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal-body" *ngIf="openAddsignatureModalPopup">
+	<app-digital-signature (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)" ></app-digital-signature>
+</div>
+
