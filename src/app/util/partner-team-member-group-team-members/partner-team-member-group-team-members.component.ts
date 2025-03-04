@@ -40,7 +40,9 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, this.currentPartner);
   }
 
-  
+  ngOnDestroy(){
+    $('#teamMembersPreviewPopup').modal('hide');
+  }
 
   highlightTeamMemberOnRowClick(teamMemberId: any, event: any, partner: any) {
     this.referenceService.highlightRowOnRowCick(this.partnerModuleTeamMembersTrId + "-" + partner.index, this.partnerModuleTeamMembersTableId + "-" + partner.index,
