@@ -397,6 +397,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	signatureMenuHeader = MY_PROFILE_MENU_CONSTANTS.SIGNATURE_MENU_HEADER;
 	isSignatureOptionClicked = false;
 	isCustomDashboardOptionClicked = false;
+	isCustomHtmlBlockOptionClicked = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2302,6 +2303,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CUSTOMIZE_DASHBOARD_MENU_HEADER) {
 			// XNFR-860
 			this.activateCustomDashboardMenuHeader();
+		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CUSTOM_HTML_BLOCK_MENU_HEADER) {
+			// XNFR-859
+			this.activateCustomHtmlBlockMenuHeader();
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
@@ -5163,6 +5167,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}, 500);
 		this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CUSTOMIZE_DASHBOARD_MENU_HEADER;
 	}
+
+	private activateCustomHtmlBlockMenuHeader() {
+		this.startNgxLoader();
+		this.isCustomHtmlBlockOptionClicked = false;
+		let self = this;
+		setTimeout(() => {
+			self.isCustomHtmlBlockOptionClicked = true;
+			self.stopNgxLoader();
+		}, 500);
+		this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CUSTOM_HTML_BLOCK_MENU_HEADER;
+	}
+
 }
 
 

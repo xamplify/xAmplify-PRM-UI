@@ -1,0 +1,13 @@
+textarea {
+    min-height: 150px;
+    margin-bottom: 13px;
+}
+.preview {
+    pointer-events: none;
+    border: 1px solid #c3c7d2d6;
+    background-color: #fff;
+    border-radius: 3px;padding: 5px;
+}
+.pull-right {
+    margin-top: 20px;
+}
