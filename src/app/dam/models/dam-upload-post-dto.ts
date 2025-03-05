@@ -56,4 +56,8 @@ export class DamUploadPostDto {
     approvalStatus: string;
     published: boolean = false;
     createdByAnyApprover: boolean = false;
+
+    /** XNFR-885 **/
+    sendForReApproval: boolean = false;
+    approvalRefrenceId: number;
 }

@@ -161,6 +161,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     disableSaveAsDraftButton: boolean = false;
     
     savedTags: any[] = [];
+    isAssetReplaced: boolean = false;
+    hidePartnerSelection: boolean;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -299,7 +301,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				}, (error: any) => {
 					this.xtremandLogger.errorPage(error);
 				}, ()=>{
-                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd);
+                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                     this.listTags(new Pagination());
                 }
 			);
@@ -329,6 +331,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 let extension = this.referenceService.getFileExtension(fileName);
                 if (extension.toLocaleLowerCase() == this.damUploadPostDto.assetType.toLocaleLowerCase()) {
                     this.setUploadedFileProperties(file);
+                    this.isAssetReplaced = true;
+                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                 } else {
                     this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
                 }
@@ -518,6 +522,15 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 
     uploadOrUpdateAsset() {
         this.damUploadPostDto.draft = false;
+        this.uploadOrUpdate();
+    }
+
+    sendForReApproval() {
+        this.damUploadPostDto.sendForReApproval = true;
+        this.damUploadPostDto.partnerIds = [];
+        this.damUploadPostDto.partnerGroupIds = [];
+        this.isAdd = true;
+        this.damUploadPostDto.approvalRefrenceId = this.id;
         this.uploadOrUpdate();
     }
 
@@ -1600,21 +1613,25 @@ zoomOut() {
             },
             ()=>{
                 if (this.isAdd) {
-                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, true);
+                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, true, this.isAssetReplaced);
                 }
             });
     }
 
     /** XNFR-884 **/
-    initialiseSubmitButtonText(assetApprover: boolean, currentApprovalStatus: string, isAdd: boolean) {
+    initialiseSubmitButtonText(assetApprover: boolean, currentApprovalStatus: string, isAdd: boolean, isAssetReplaced: boolean) {
         const approvalRequired = this.authenticationService.approvalRequiredForAssets;
         const isDraft = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.DRAFT];
         const isRejected = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.REJECTED];
+        const isApproved = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED];
         if (isAdd) {
             this.submitButtonText = assetApprover || !approvalRequired ? 'Save' : 'Send for Approval';
         } else {
             if (isDraft || isRejected) {
                 this.submitButtonText = (assetApprover || !approvalRequired) ? 'Update' : 'Send for Approval';
+            } else if (isApproved && isAssetReplaced) {
+                this.submitButtonText = (assetApprover || !approvalRequired) ? 'Update' : 'Send for Re-Approval';
+                this.hidePartnerSelection = true;
             } else {
                 this.submitButtonText = 'Update';
             }

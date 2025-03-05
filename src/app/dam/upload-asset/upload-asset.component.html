@@ -508,8 +508,14 @@
                                  disableSaveAsDraftButton ? properties.CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS :
                                  (!isVideoAsset ? properties.DRAFT_ASSET_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS
                                  : properties.DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS)" translate>
-                              <span class="btn btn-primary"> {{ saveAsDraftButtonText }} </span>
+                              <span class="btn btn-primary transition"> {{ saveAsDraftButtonText }} </span>
                            </button>
+                           <!-- XNFR-885 -->
+                           <!-- <button *ngIf="!isAdd && !isApprover && damUploadPostDto?.approvalStatus == 'APPROVED' && authenticationService?.approvalRequiredForAssets && isAssetReplaced"
+                              class="button_blue bgcolor-unset pos_mar_rgt4" id="right" style="padding-top:1px;padding-right:0px;"
+                              type="button" (click)="sendForReApproval()" translate><span
+                                 class="btn btn-primary transition">Send For Re-Approval</span>
+                           </button> -->
                         </div>
                      </div>
                   </div>
