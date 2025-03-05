@@ -2638,15 +2638,27 @@ tbody{background: transparent;}
 .copy_icon:hover {
   background-color: #53585b!important;}
   /* Added company profile lefside bar card color */
-  .profile_headers,.icon-group,.contact_img{
+  .profile_headers,.icon-group,.contact_img,.cloud_color{
     background: #2b3c46 !important;
     border: 1px solid #2f4857 !important;
   }
-  /* ui enhacement changes in onboarding partner */
-  .add_partnerbtn{
-    background-color: #22313a !important;
-    border: 1px solid #2f4857 !important;
-  }
-  .white-co.add_partnerbtn:hover {
-    background-color: #1d2b37 !important;
+/* ui enhacement changes in onboarding partner */
+.add_partnerbtn{
+  border: 1px solid #2f4857 !important;
 }
+.service-icon:hover {
+  transform: scale(1.01)!important;
+}
+  @media only screen and (min-width: 760px) {
+    .clip_mask::after {
+      box-shadow: -15px 15px 0 #2b3c46 !important;
+      border-radius: 40%!important;
+    }
+    .clip_mask::before {
+      box-shadow: 15px 15px 0 #2b3c46!important;
+      border-radius: 40%!important;
+    }
+    .portlet.light.clip_mask{
+      border-bottom: 0 !important;
+    }
+  }

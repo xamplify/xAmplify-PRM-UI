@@ -1,6 +1,5 @@
 
 /***** colors class ******/
-.white-co,
 .profile-details b,
 .field-icon,
 .list__item .item__name,
@@ -4505,10 +4504,29 @@ a.Iconhover.custom-grid-icon.icon_margin{
     background-color: #e3edf7!important;
   }
    /* ui enhacement changes in onboarding partner */
-   .add_partnerbtn,.contact_img{
+   .contact_img,.cloud_color{
     background: #f0f5fa !important;
     box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   }
-  .white-co.add_partnerbtn:hover {
-    background-color: #fcfcfc !important;
-}
+  @media only screen and (min-width: 760px) {
+    .clip_mask::after {
+        right: -16px !important;
+        height: 16px !important;
+        width: 16px !important;
+        border-radius: 50% !important;
+        box-shadow: -4px 12px 12px #d6dadfed, 6px -6px 12px #ffffff00 !important;
+      }
+      .clip_mask::before {
+        box-shadow: 2px 2px 12px #d6dadfc7, -6px -3px 6px #ffffff00 !important;
+        left: -16px !important;
+        height: 16px !important;
+        width: 16px !important;
+        border-radius: 50% !important;
+        background-color: #eaeef13b;
+      }
+    .portlet.light.clip_mask{
+      border-bottom: 0 !important;
+      border-radius: 8px 8px 0px 0px !important;
+  
+    }
+  }

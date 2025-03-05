@@ -4265,10 +4265,26 @@ color: #fff !important;
   border: 1px solid #ffffff33 !important;
 }
   /* ui enhacement changes in onboarding partner */
-  .add_partnerbtn,.contact_img{
+  .contact_img,.cloud_color{
     background: rgb(0 0 0 / 18%) !important;
     border: 1px solid #ffffff33 !important;
   }
-  .white-co.add_partnerbtn:hover {
-    background: rgb(0 0 0 / 33%) !important;
-}
+  .add_partnerbtn{
+    border:none!important;
+  }
+  @media only screen and (min-width: 760px) {
+    .clip_mask::after {
+     display: none!important;
+    }
+    .clip_mask::before {
+      display: none!important;
+    }
+    .portlet.light.clip_mask{
+      border-bottom: 0px !important;
+      border-radius: 8px 8px 0px 0px !important;
+  
+    }
+    .clip_mask{
+      bottom: -74px!important;
+    }
+  }

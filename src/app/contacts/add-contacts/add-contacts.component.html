@@ -106,18 +106,21 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-							<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden-xs">
 								<div class="contact_img">
-									<img src="assets/images/crm/partner-img.png" class="img-hover-unset" height="110" alt="partner-img">
+									<img *ngIf="!assignLeads" src="assets/images/crm/contact_img1.svg" class="img-hover-unset" height="110"
+										alt="contact-img">
+									<img *ngIf="assignLeads" src="assets/images/crm/contact_img2.svg" class="img-hover-unset" height="110"
+										alt="add-share-img">
 								</div>
 							</div>
 							<!--  -->
-							<div class="col-xs-12 col-sm-8 col-lg-9 pl0 card_p15">
+							<div class="col-xs-12 col-sm-6 col-lg-6 p0 card_p0">
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-									<div class="portlet light">
+									<div class="portlet light mb0">
 										<!-- <div class="portlet-title" translate>How would you like to
-															add your {{checkingContactTypeName}}s?
-														</div> -->
+																				add your {{checkingContactTypeName}}s?
+																			</div> -->
 										<div class="portlet-body pt0">
 											<div class="row mrg-right0">
 												<div class="col-xs-8 col-sm-6 col-md-6 SideParddings1 cards_align">
@@ -126,7 +129,7 @@
 														[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 														[disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 														<span class="" translate>
-															<img src="assets/images/crm/One at a Time.png" height="38"
+															<img src="assets/images/crm/One at a Time.svg" height="30"
 																class="mr5 img-hover-unset" alt=" One at a Time">
 															One at a Time</span>
 													</button>
@@ -137,8 +140,8 @@
 														[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 														[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 														<span class="" style="z-index: 0;" translate>
-															<img src="assets/images/crm/Upload a CSV.png" class="mr5 img-hover-unset"
-																height="38" alt="  Upload a CSV">
+															<img src="assets/images/crm/Upload a CSV.svg" class="mr5 img-hover-unset"
+																height="30" alt="  Upload a CSV">
 															Upload a CSV
 														</span>
 														<input type="file" title=" " (click)="input.value = null;resetResponse();"
@@ -147,12 +150,12 @@
 													</button>
 													<!--  -->
 													<!-- <div style="margin-top: 5px;">
-																<a (click)="downloadEmptyCsv()"> <i class="fa fa-download"
-																		aria-hidden="true"
-																		style="display: contents !important; font-size: 15px !important"></i><b
-																		translate>&nbsp;CSV Template</b>
-																</a>
-															</div> -->
+																					<a (click)="downloadEmptyCsv()"> <i class="fa fa-download"
+																							aria-hidden="true"
+																							style="display: contents !important; font-size: 15px !important"></i><b
+																							translate>&nbsp;CSV Template</b>
+																					</a>
+																				</div> -->
 													<!--  -->
 												</div>
 												<!-- The global file processing state -->
@@ -163,267 +166,222 @@
 									</div>
 								</div>
 								<!--  -->
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pr10 portlet light">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 portlet light clip_mask">
 									<div class="partner_images">
 										<i class="fa fa-cloud-upload mr5" aria-hidden="true"></i>
 										<span translate>Import
-											{{checkingContactTypeName}}s from the cloud:
+											{{checkingContactTypeName}}s from the cloud
 										</span>
 										<!-- <div class="portlet-title" translate>Import
-									{{checkingContactTypeName}}s from the cloud:
-									<a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
-											class="fa fa-chevron-down" aria-hidden="true"
-											style="display: contents !important; font-size: 15px !important"></i></a>
-								</div> -->
+														{{checkingContactTypeName}}s from the cloud:
+														<a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
+																class="fa fa-chevron-down" aria-hidden="true"
+																style="display: contents !important; font-size: 15px !important"></i></a>
+													</div> -->
 									</div>
 								</div>
 								<!--  -->
 							</div>
 							<!--  -->
+							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden-xs">
+								<div class="contact_img">
+									<img *ngIf="!assignLeads" src="assets/images/crm/contact_img2.svg" class="img-hover-unset tab-view-img"
+										height="110" alt="contact-img">
+									<img *ngIf="assignLeads" src="assets/images/crm/contact_img1.svg" class="img-hover-unset" height="110"
+										alt="add-share-img">
+								</div>
+							</div>
+					
 						</div>
-						 <!--  -->
+						<!--  -->
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb10">
-									<div class="cloud_platforms_paddings">
-										<div class="service-icon"
-											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-											<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
-											    (click)="salesforceContacts()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-													src="assets/images/crm/salesforce_img.png" class="salesForceImageClass"
-													style="border-radius:8px;" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your Salesforce account"
-													height="85" width="85" alt="No Image Found">
-											</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
-												 (click)="salesforceContacts()"
-												[class.disabled]="masterContactListSync || contactsCompanyListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-													src="assets/images/crm/salesforce_img.png" class="salesForceImageClass"
-													data-toggle="tooltip" data-placement="top"
-													title="Click here to access contacts from your Salesforce account"
-													height="85" width="85"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/salesforce_img.png';"
-													alt="Image Not Found">
-											</a>
-											<div id="salesforceGear" 
-												*ngIf="sfImageNormal">
-												<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
-													(click)="settingSocialNetworkOpenModal('Salesforce')">
-													<i id="SgearIcon" class="fa fa-cog cloud-items cloud-css"
-														aria-hidden="true"></i>
-												</a>
-											</div>
-										</div>
-										<div class="service-icon"
-											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-											<a *ngIf="googleImageBlur" id="googleContact_button"
-												 (click)="googleContacts()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-													src="assets/images/crm/google_img.png" class="googleImageClass"
-													style="border-radius:8px;" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your Google account"
-													height="85" width="85"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/google_img.png';">
-											</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal"
-												  (click)="googleContacts()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-													src="assets/images/crm/google_img.png" class="googleImageClass"
-													style="border-radius:8px;" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your Google account"
-													height="85" width="85">
-											</a>
-											<div id="GoogleGear"  *ngIf="googleImageNormal">
-												<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
-													(click)="settingSocialNetworkOpenModal('Google')"> <i id="GgearIcon"
-														class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
-												</a>
-											</div>
-										</div>
-										<div class="service-icon"
-											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-											<a *ngIf="zohoImageBlur" id="zohoContact_button"
-												(click)="checkingZohoContactsAuthentication()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-													src="assets/images/crm/Zoho_img.png" class="zohoImageClass"
-													data-toggle="tooltip" data-placement="top"
-													title="Click here to access contacts from your Zoho account"
-													height="85" width="85"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/Zoho_img.png';">
-											</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
-												(click)="checkingZohoContactsAuthentication()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-													src="assets/images/crm/Zoho_img.png" class="zohoImageClass"
-													style="border-radius:8px;" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your Zoho account"
-													height="85" width="85">
-											</a>
-											<div id="zohoGear" *ngIf="zohoImageNormal">
-												<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
-													(click)="settingSocialNetworkOpenModal('Zoho')"> <i id="ZgearIcon"
-														class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
-												</a>
-											</div>
-										</div>
-										<div class="service-icon"
-											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-											<a *ngIf="microsoftDynamicsImageBlur" id="MicrosoftContact_button"
-												(click)="checkingMicrosoftContactsAuthentication()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
-													src="assets/images/crm/microsoft_img.png" style="border-radius: 8px;"
-													class="microsoftImageClass" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your Microsoft Dynamics account"
-													height="85" width="85"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/microsoft_img.png';">
-											</a> <a *ngIf="microsoftDynamicsImageNormal"
-												id="MicrosoftContact_buttonNormal"
-												(click)="checkingMicrosoftContactsAuthentication()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
-													src="assets/images/crm/microsoft_img.png" style="border-radius:8px;"
-													class="microsoftImageClass" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your Microsoft Dynamics account"
-													height="85" width="85">
-											</a>
-										</div>
-										<div class="service-icon"
-											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-											<a *ngIf="hubspotImageBlur" id="hubspotContact_button"
-												(click)="checkingHubSpotContactsAuthentication()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
-													src="assets/images/crm/hubspot_img.png" class="hubspotImageClass"
-													data-toggle="tooltip" data-placement="top"
-													title="Click here to access contacts from your HubSpot account"
-													height="85" width="85"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/hubspot_img.png';">
-											</a> <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal"
-												(click)="checkingHubSpotContactsAuthentication()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
-													src="assets/images/crm/hubspot_img.png" style="border-radius:8px;"
-													class="hubspotImageClass" data-toggle="tooltip" data-placement="top"
-													title="Click here to access contacts from your HubSpot account"
-													height="85" width="85">
-											</a>
-										</div>
-										<div class="service-icon"
-											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-											<a *ngIf="connectWiseImageBlur" id="connectWiseContact_button"
-												(click)="checkingConnectWiseContactsAuthentication()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
-													src="assets/images/crm/connectwise_img.png" style="border-radius:8px;"
-													class="connectWiseImageClass" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your ConnectWise account"
-													height="85" width="85"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/connectwise_img.png';">
-											</a> <a *ngIf="connectWiseImageNormal" id="connectWise_buttonNormal"
-												(click)="checkingConnectWiseContactsAuthentication()"
-												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
-													src="assets/images/crm/connectwise_img.png" style="border-radius:8px;"
-													class="connectWiseImageClass" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your ConnectWise account"
-													height="85" width="85">
-											</a>
-										</div>
-										<!-- XNFR-230 -->
-										<!-- <div id="showCRM"> -->
-											<div class="service-icon"
-												[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-												<a *ngIf="pipedriveImageBlur" id="pipedriveContact_button"
-													(click)="checkingPipedriveContactsAuthentication()"
-													[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
-													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
-														src="assets/images/crm/pipedrive_img.png" style="border-radius:8px;"
-														class="pipedriveImageClass" data-toggle="tooltip"
-														data-placement="top"
-														title="Click here to access contacts from your Pipedrive account"
-														height="85" width="85"
-														onmouseover="this.src='assets/images/crm/connecting.png';"
-														onmouseout="this.src='assets/images/crm/pipedrive_img.png';">
-												</a> <a *ngIf="pipedriveImageNormal" id="pipedrive_buttonNormal"
-													(click)="checkingPipedriveContactsAuthentication()"
-													[class.disabled]=" contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
-													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
-														src="assets/images/crm/pipedrive_img.png" style="border-radius:8px;"
-														class="pipedriveImageClass" data-toggle="tooltip"
-														data-placement="top"
-														title="Click here to access contacts from your pipedrive account"
-														height="85" width="85">
-												</a>
-											</div>
-											<div class="service-icon"
-												[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-												<a *ngIf="marketoImageBlur" id="marketoContact_button"
-													(click)="checkingMarketoContactsAuthentication()"
-													[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
-														src="assets/images/crm/marketo_img.png" style="border-radius:8px;"
-														class="marketoImageClass" data-toggle="tooltip"
-														data-placement="top"
-														title="Click here to access contacts from your Marketo account"
-														height="85" width="85"
-														onmouseover="this.src='assets/images/crm/connecting.png';"
-														onmouseout="this.src='assets/images/crm/marketo_img.png';">
-												</a> <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal"
-													(click)="checkingMarketoContactsAuthentication()"
-													[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
-														src="assets/images/crm/marketo_img.png" style="border-radius:8px;"
-														class="marketoImageClass" data-toggle="tooltip"
-														data-placement="top"
-														title="Click here to access contacts from your Marketo account"
-														height="85" width="85">
-												</a>
-											</div>
-											<div class="service-icon"
-												[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
-												<a *ngIf="haloPSAImageBlur" id="haloPSAContact_button"
-													(click)="checkingHaloPSAContactsAuthentication()"
-													[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 13">
-													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :halopsa==true}"
-														src="assets/images/crm/halospa_img.png" style="border-radius:8px;"
-														class="haloPSAImageClass" data-toggle="tooltip"
-														data-placement="top"
-														title="Click here to access contacts from your HaloPSA account"
-														height="85" width="85"
-														onmouseover="this.src='assets/images/crm/connecting.png';"
-														onmouseout="this.src='assets/images/crm/halospa_img.png';">
-												</a>
-												<a *ngIf="haloPSAImageNormal" id="haloPSA_buttonNormal"
-													(click)="checkingHaloPSAContactsAuthentication()"
-													[class.disabled]=" contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 13">
-													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :haloPSAImageBlur==true}"
-														src="assets/images/crm/halospa_img.png" style="border-radius:8px;"
-														class="haloPSAImageClass" data-toggle="tooltip"
-														data-placement="top"
-														title="Click here to access contacts from your HaloPSA account"
-														height="85" width="85">
-												</a>
-											</div>
-										<!-- </div> -->
+							<div class="cloud_platforms_paddings cloud_color">
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" (click)="salesforceContacts()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+											src="assets/images/crm/salesforce_img.png" class="salesForceImageClass"
+											style="border-radius:8px;" data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Salesforce account" height="85" width="85"
+											alt="No Image Found">
+									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button" (click)="salesforceContacts()"
+										[class.disabled]="masterContactListSync || contactsCompanyListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+											src="assets/images/crm/salesforce_img.png" class="salesForceImageClass" data-toggle="tooltip"
+											data-placement="bottom" title="Click here to access contacts from your Salesforce account"
+											height="85" width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/salesforce_img.png';" alt="Image Not Found">
+									</a>
+									<div id="salesforceGear" *ngIf="sfImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
+											(click)="settingSocialNetworkOpenModal('Salesforce')">
+											<i id="SgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
+										</a>
 									</div>
-									<div class="clearfix"></div>
+								</div>
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="googleImageBlur" id="googleContact_button" (click)="googleContacts()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+											src="assets/images/crm/google_img.png" class="googleImageClass" style="border-radius:8px;"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Google account" height="85" width="85"
+											onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/google_img.png';">
+									</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal" (click)="googleContacts()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+											src="assets/images/crm/google_img.png" class="googleImageClass" style="border-radius:8px;"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Google account" height="85" width="85">
+									</a>
+									<div id="GoogleGear" *ngIf="googleImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
+											(click)="settingSocialNetworkOpenModal('Google')"> <i id="GgearIcon"
+												class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
+										</a>
+									</div>
+								</div>
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="zohoImageBlur" id="zohoContact_button" (click)="checkingZohoContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+											src="assets/images/crm/Zoho_img.png" class="zohoImageClass" data-toggle="tooltip"
+											data-placement="bottom" title="Click here to access contacts from your Zoho account" height="85"
+											width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/Zoho_img.png';">
+									</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
+										(click)="checkingZohoContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+											src="assets/images/crm/Zoho_img.png" class="zohoImageClass" style="border-radius:8px;"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Zoho account" height="85" width="85">
+									</a>
+									<div id="zohoGear" *ngIf="zohoImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
+											(click)="settingSocialNetworkOpenModal('Zoho')"> <i id="ZgearIcon"
+												class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
+										</a>
+									</div>
+								</div>
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="microsoftDynamicsImageBlur" id="MicrosoftContact_button"
+										(click)="checkingMicrosoftContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
+											src="assets/images/crm/microsoft_img.png" style="border-radius: 8px;"
+											class="microsoftImageClass" data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Microsoft Dynamics account" height="85"
+											width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/microsoft_img.png';">
+									</a> <a *ngIf="microsoftDynamicsImageNormal" id="MicrosoftContact_buttonNormal"
+										(click)="checkingMicrosoftContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
+											src="assets/images/crm/microsoft_img.png" style="border-radius:8px;" class="microsoftImageClass"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Microsoft Dynamics account" height="85"
+											width="85">
+									</a>
+								</div>
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="hubspotImageBlur" id="hubspotContact_button" (click)="checkingHubSpotContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
+											src="assets/images/crm/hubspot_img.png" class="hubspotImageClass" data-toggle="tooltip"
+											data-placement="bottom" title="Click here to access contacts from your HubSpot account"
+											height="85" width="85" onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/hubspot_img.png';">
+									</a> <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal"
+										(click)="checkingHubSpotContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
+											src="assets/images/crm/hubspot_img.png" style="border-radius:8px;" class="hubspotImageClass"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your HubSpot account" height="85" width="85">
+									</a>
+								</div>
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="connectWiseImageBlur" id="connectWiseContact_button"
+										(click)="checkingConnectWiseContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
+											src="assets/images/crm/connectwise_img.png" style="border-radius:8px;"
+											class="connectWiseImageClass" data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your ConnectWise account" height="85" width="85"
+											onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/connectwise_img.png';">
+									</a> <a *ngIf="connectWiseImageNormal" id="connectWise_buttonNormal"
+										(click)="checkingConnectWiseContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
+											src="assets/images/crm/connectwise_img.png" style="border-radius:8px;"
+											class="connectWiseImageClass" data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your ConnectWise account" height="85" width="85">
+									</a>
+								</div>
+								<!-- XNFR-230 -->
+								<!-- <div id="showCRM"> -->
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="pipedriveImageBlur" id="pipedriveContact_button"
+										(click)="checkingPipedriveContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
+											src="assets/images/crm/pipedrive_img.png" style="border-radius:8px;" class="pipedriveImageClass"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Pipedrive account" height="85" width="85"
+											onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/pipedrive_img.png';">
+									</a> <a *ngIf="pipedriveImageNormal" id="pipedrive_buttonNormal"
+										(click)="checkingPipedriveContactsAuthentication()"
+										[class.disabled]=" contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
+											src="assets/images/crm/pipedrive_img.png" style="border-radius:8px;" class="pipedriveImageClass"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your pipedrive account" height="85" width="85">
+									</a>
+								</div>
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="marketoImageBlur" id="marketoContact_button" (click)="checkingMarketoContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
+											src="assets/images/crm/marketo_img.png" style="border-radius:8px;" class="marketoImageClass"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Marketo account" height="85" width="85"
+											onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/marketo_img.png';">
+									</a> <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal"
+										(click)="checkingMarketoContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
+											src="assets/images/crm/marketo_img.png" style="border-radius:8px;" class="marketoImageClass"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your Marketo account" height="85" width="85">
+									</a>
+								</div>
+								<div class="service-icon" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}">
+									<a *ngIf="haloPSAImageBlur" id="haloPSAContact_button" (click)="checkingHaloPSAContactsAuthentication()"
+										[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 13">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :halopsa==true}"
+											src="assets/images/crm/halospa_img.png" style="border-radius:8px;" class="haloPSAImageClass"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your HaloPSA account" height="85" width="85"
+											onmouseover="this.src='assets/images/crm/connecting.png';"
+											onmouseout="this.src='assets/images/crm/halospa_img.png';">
+									</a>
+									<a *ngIf="haloPSAImageNormal" id="haloPSA_buttonNormal"
+										(click)="checkingHaloPSAContactsAuthentication()"
+										[class.disabled]=" contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 13">
+										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :haloPSAImageBlur==true}"
+											src="assets/images/crm/halospa_img.png" style="border-radius:8px;" class="haloPSAImageClass"
+											data-toggle="tooltip" data-placement="bottom"
+											title="Click here to access contacts from your HaloPSA account" height="85" width="85">
+									</a>
+								</div>
+								<!-- </div> -->
+							</div>
+							<div class="clearfix"></div>
 						</div>
 					</div>
 					<div class="row">

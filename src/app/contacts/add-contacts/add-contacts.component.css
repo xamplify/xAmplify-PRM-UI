@@ -56,9 +56,6 @@
     width: 100% !important;
     right: 0 !important;
   }
-  .cloud-css {
-    left: 98px !important;
-  }
   .salesforce {
     margin-top: -25px;
     text-align: center;
@@ -143,7 +140,7 @@ i.fa.fa-file-excel-o.IconTopMargin {
   .scroll-top-abj {padding-top: 15px;}
 }
 /* gericon */
-@media only screen and (min-width: 800px) and (max-width: 969px) {
+/* @media only screen and (min-width: 800px) and (max-width: 969px) {
   #SgearIcon{left: 106px !important;}
   #GgearIcon{left: 106px !important;}
   #ZgearIcon{left: 106px !important;}
@@ -158,8 +155,8 @@ i.fa.fa-file-excel-o.IconTopMargin {
   #SgearIcon{left: 110px !important;}
   #GgearIcon{left: 110px !important;}
   #ZgearIcon{left: 110px !important;}
-}
-@media only screen and (min-width: 1032px) and (max-width: 1072px) {.cloud-items{left: 110px !important;}}
+} */
+/* @media only screen and (min-width: 1032px) and (max-width: 1072px) {.cloud-items{left: 110px !important;}}
 @media only screen and (min-width: 1072px) and (max-width: 1125px) {.cloud-items{left: 115px !important;}}
 @media only screen and (min-width: 1125px) and (max-width: 1170px) {.cloud-items{left: 124px !important;}}
 @media only screen and (min-width: 1170px) and (max-width: 1199px) {.cloud-items{left: 128px !important;}}
@@ -171,7 +168,7 @@ i.fa.fa-file-excel-o.IconTopMargin {
 @media only screen and (min-width: 1750px) and (max-width: 1880px) {.cloud-items{left: 84px !important;}}
 @media only screen and (min-width: 1780px) and (max-width: 1830px) {.cloud-items{left: 86px !important;}}
 @media only screen and (min-width: 1830px) and (max-width: 1882px) {.cloud-items{left: 87px !important;}}
-@media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}}
+@media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}} */
 
 
 @media only screen and (min-width: 992px) and (max-width: 1121px) {
@@ -210,7 +207,7 @@ i.fa.fa-file-excel-o.IconTopMargin {
 }
 }
 .cards_align{
-  padding: 5px 8px!important;
+  padding: 5px 8px;
 }
 
 .alert-danger {
@@ -260,25 +257,27 @@ i.fa.fa-file-excel-o.IconTopMargin {
 
 /*  */
 .add_partnerbtn{
-  background: #F1F5F9;
-  border: 1px solid #DEDEDE;
-  border-radius: 8px;
+  background: linear-gradient(to bottom, #4094f7, #0b60c2);
+  color: #fff;
+  border-radius: 10px;
   text-align: start;
-  padding-left: 10px;
+  padding: 10px;
 }
 .contact_img{
   background: #ffffff;
   border:1px solid#ddd;
-  height: 134px;
+  height: 130px;
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.partner_images{
-  font-size: 16px;
+.partner_images {
+  font-size: 17px;
   font-weight: 500;
   text-align: center;
+  position: relative;
+  top: 2px;
 }
 .fa-cloud-upload{
   color: #0d8dd2;
@@ -296,9 +295,17 @@ background-color: unset!important;
 }
 
 .cloud_platforms_paddings {
+  margin-top: 17px;
+  position: relative;
+  background-color: #ffff;
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  z-index: 999;
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   gap: 10px;
+  z-index: 99;
 }
 .service-icon {
   height: 96px;
@@ -309,7 +316,7 @@ background-color: unset!important;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 11%);
   background: #ffffff;
   border:1px solid #ddd;
 }
@@ -317,7 +324,8 @@ background-color: unset!important;
   transform: scale(1.05);
 }
 .white-co.add_partnerbtn:hover {
-  background-color: #e2e6ea;
+  transform: scale(1.02);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
 }
 @media only screen and (min-width: 960px) and (max-width: 1279.98px){
   .cloud_platforms_paddings {
@@ -333,11 +341,54 @@ background-color: unset!important;
 }
 @media only screen and (max-width: 599.98px){
   .cloud_platforms_paddings {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  } 
-  .card_p15 {
-    padding-left: 15px !important;
-    margin-top: 10px;
-  }
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin: 0px;
+    }
+  
+    .card_p0 {
+      padding-right: 15px !important;
+      padding-left: 15px !important;
+      margin-top: 10px;
+    }
+  
+    .clip_mask {
+      margin-top: 10px;
+    }
+}
+@media only screen and (min-width:760px){
+.clip_mask{
+  position: absolute;
+  bottom: -76px;
+  border-bottom: 0!important;
+  border-radius: 10px 10px 0px 0px !important;
+  padding: 12px 10px !important;
+  z-index: 999;
+}
+.clip_mask::before{
+  content: "";
+  left: -30px;
+  bottom: 0;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  border-radius: 26%;
+  box-shadow: 15px 15px 0 #fff;
+}
+.clip_mask::after{
+  content: "";
+    right: -30px;
+    bottom: 0;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    border-radius: 26%;
+    box-shadow: -15px 15px 0 #fff;
+}
+}
+@media only screen and (min-width: 601px) and (max-width: 1190px) { 
+.tab-view-img{
+  width: 150px;
+  height: 150px;
+}
 }

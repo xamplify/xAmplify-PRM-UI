@@ -14,9 +14,9 @@
     width: 100% !important;
     right: 0 !important;
   }
-  .cloud-css {
+  /* .cloud-css {
     left: 65px !important;
-  }
+  } */
   /* #SgearIcon{left: 65px !important;}
   #GgearIcon{left: 65px !important;}
   #ZgearIcon{left: 65px !important;} */
@@ -269,18 +269,20 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
 }
 /*  */
 .add_partnerbtn{
-  background: #F1F5F9;
+  background: linear-gradient(to bottom, #4094f7, #0b60c2);
+  color: #fff;
   border: 1px solid #DEDEDE;
-  border-radius: 8px;
+  border-radius: 15px;
   text-align: start;
-  padding: 11px;
+  padding: 10px!important;
+  min-height: 94px;
 }
 .portlet-title.partner_title{
   border: none!important;
   min-height: 31px;
 }
 .cards_align{
-  padding: 5.5px 8px !important;
+  padding: 7px 8px !important;
 }
 .partner_images{
   font-size: 16px;
@@ -309,7 +311,7 @@ background-color: unset!important;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 7%);
   background: #ffffff;
   border:1px solid #ddd;
 }
@@ -317,7 +319,8 @@ background-color: unset!important;
   transform: scale(1.05);
 }
 .white-co.add_partnerbtn:hover {
-  background-color: #e2e6ea;
+  transform: scale(1.02);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
 }
 @media only screen and (min-width: 960px) and (max-width: 1279.98px){
   .cloud_platforms_padding {
@@ -340,6 +343,9 @@ background-color: unset!important;
     padding-left: 15px !important;
     margin-top: 10px;
   }
+  .mb_pr15{
+    padding-right: 15px!important;
+  }
 }
 
 .item1 {
@@ -357,58 +363,3 @@ background-color: unset!important;
   font-size: 15px;
   font-weight: 600;
 }
-/* .service-icon {
-  width: 101px;
-  height: 96px;
-  border-radius: 10px;
-  margin: 10px 13px 0px 0px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background: #ffffff;
-  border:1px solid #ddd;
-} */
-/* @media (max-width: 600px) {
-  .card_p15 {
-    padding-left: 15px !important;
-    margin-top: 10px;
-  }
-}
-@media only screen and (min-width: 320px) and (max-width: 360px) { 
-  .service-icon {
-    width: 100px;
-    height: 96px;
-  }
-}
-@media only screen and (min-width:378px) and (max-width: 400px) { 
-  .service-icon {
-    width: 114px;
-    height: 100px;
-    margin: 10px 9px 5px 0px;
-  }
-}
-@media only screen and (min-width:362px) and (max-width: 380px) { 
-  .service-icon {
-    width: 110px;
-    height: 98px;
-    margin: 10px 8px 0px 0px
-  }
-}
-@media only screen and (min-width:408px) and (max-width: 423px) { 
-  .service-icon {
-    width: 120px;
-    height: 110px;
-    margin: 10px 9px 5px 0px;
-  }
-}
-@media only screen and (min-width:424px) and (max-width: 460px) { 
-  .service-icon {
-    width: 126px;
-    height: 110px;
-    margin: 10px 9px 5px 0px;
-  }
-} */

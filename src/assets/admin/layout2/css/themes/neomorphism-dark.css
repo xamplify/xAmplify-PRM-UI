@@ -4441,11 +4441,31 @@ tbody>tr#uploaded-csv-tr>td {
     box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
   }
     /* ui enhacement changes in onboarding partner */
-    .add_partnerbtn,.contact_img{
+    .contact_img,.cloud_color{
       background: #2c2f33 !important;
       border: 1px solid #191b1e !important;
       box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
     }
-    .white-co.add_partnerbtn:hover {
-      background-color: #232629 !important;
-  }
+    .add_partnerbtn{
+      border: none !important;
+    }
+    @media only screen and (min-width: 760px) {
+      .clip_mask::after {
+        right: -16px !important;
+        height: 16px !important;
+        width: 16px !important;
+        box-shadow: 2px 2px 12px #00000029, -6px 3px 9px #363b44e3 !important;
+      }
+      .clip_mask::before {
+        box-shadow: 2px 2px 12px #00000073, -6px -3px 16px #363e48 !important;
+        left: -16px !important;
+        height: 16px !important;
+        width: 16px !important;
+        border-radius: 50% !important;
+      }
+      .portlet.light.clip_mask{
+        border-bottom: 0 !important;
+        border-radius: 8px 8px 0px 0px !important;
+    
+      }
+    }
