@@ -546,12 +546,22 @@ export class Properties {
 	MDF_CAMPAIGN_DESCRIPTION = "This campaign was launched to notify and engage regarding an MDF request. The goal is to provide campaign performance insights, enabling assessment of results and release of funds accordingly.";
 
 	AUTHORIZATION_RESPONSE_APPROVAL = "Heads up! The following records cannot be approved because you do not have the required authorization. You can proceed with approving the other selected records."
-	AUTHORIZATION_RESPONSE_FOR_SELF_REJECT = "Heads up! Auto-approved records cannot be rejected. You can proceed with rejecting the other selected records."
+	AUTHORIZATION_RESPONSE_FOR_SELF_REJECT = "Heads up! The following records are auto-approved and cannot be rejected. You can proceed with rejecting the other selected records."
 	AUTHORIZATION_RESPONSE_REJECT = "Heads up! The following records cannot be rejected because you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
 	AUTHORIZATION_RESPONSE_FOR_TEAM_MEMBER = "Heads up! The following records cannot be rejected as some are auto-approved, or you do not have the necessary authorization to reject them. You can proceed with rejecting the other selected records."
+	confirmPrimaryAdminText = "Are you sure you want to assign this member as the Primary Admin? This will transfer primary admin rights.";
+	proceed = "Yes, Proceed";
+	defaultSSOTeamMemberGroupToolTip = "Users logging in via SSO will be automatically assigned to this team member group";
+	defaultSSOTeamMemberGroupConfirmationMessage = "This group will be set as the default for SSO users";
+	defaultSSOGroup = "Default SSO Group";
 
 
-
-
+	/** XNFR-884 **/
+	CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED = "This asset has been published and cannot be saved as a draft.";
+	CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS = "An asset cannot be saved as a draft if a partner or partner group is selected.";
+	DRAFT_ASSET_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS = "Saving as a draft keeps the asset in draft mode. Draft assets cannot be published or used in tracks and playbooks.";
+	DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS = "Saving as a draft keeps the video in draft mode. Draft videos cannot be published or used in tracks, playbooks, or campaigns.";
+	DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN = "Cannot create a campaign with a draft video.";
+	
 }
 

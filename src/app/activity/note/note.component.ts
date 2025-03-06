@@ -72,11 +72,11 @@ export class NoteComponent implements OnInit {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     notePagination.isCompanyJourney = this.isCompanyJourney;
-    if (this.isCompanyJourney) {
-      notePagination.contactId = this.selectedUserListId;
-    } else {
+    // if (this.isCompanyJourney) {
+    //   notePagination.contactId = this.selectedUserListId;
+    // } else {
       notePagination.contactId = this.contactId;
-    }
+    // }
     this.noteService.getPaginatedNotes(notePagination).subscribe(
       response => {
         const data = response.data;

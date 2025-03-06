@@ -253,8 +253,7 @@ customResponse: CustomResponse = new CustomResponse();
 
     showCompanyJourney(company:any) {
       let encodedId = this.referenceService.encodePathVariable(company.id);
-      let encodedUserListId = this.referenceService.encodePathVariable(company.companyUserListId);
-      let url = "home/company/manage/details/"+encodedUserListId+"/"+encodedId;
+      let url = "home/company/manage/details/"+encodedId;
       this.referenceService.goToRouter(url);
     }
 

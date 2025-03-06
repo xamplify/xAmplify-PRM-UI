@@ -74,14 +74,12 @@ export class AddTaskModalPopupComponent implements OnInit {
       this.taskActivity.assignedTo = 0;
       this.isEdit = false;
       this.isPreview = false;
+      this.fetchAssignToDropDownOptions();
     } else if (this.actionType == 'edit') {
       this.isPreview = false;
       this.isEdit = true;
-      this.fetchAssignToDropDownOptions();
-      this.fetchStatusDropDownOptions();
       this.fetchTaskActivityByIdForEdit();
     }
-    this.fetchAssignToDropDownOptions();
     this.fetchStatusDropDownOptions();
     if (this.isCompanyJourney) {
       this.fetchUsersForCompanyJourney();
@@ -289,6 +287,7 @@ export class AddTaskModalPopupComponent implements OnInit {
       },
       () => {
         this.initializeRemainderPicker();
+        this.fetchAssignToDropDownOptions();
         if (this.taskActivity.remainderType == 'CUSTOMDATE') {
           this.showRemainderDate = true;
         }
@@ -420,7 +419,7 @@ export class AddTaskModalPopupComponent implements OnInit {
 
   fetchUsersForCompanyJourney() {
     this.referenceService.loading(this.userListUsersLoader, true);
-    this.contactService.fetchUsersForCompanyJourney(this.selectedUserListId).subscribe(
+    this.contactService.fetchUsersForCompanyJourney(this.userId).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.userListUsersData = response.data;

@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="modal-footer" style="border: none">
-        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeNoteModalPopup()" data-dismiss="modal">Cancel</button>
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeNoteModalPopup()" data-dismiss="modal">{{isPreview ? 'Close' : 'Cancel'}}</button>
         <button *ngIf="!isEdit && !isPreview" type="submit" class="button bgcolor-unset" (click)="save()"
           [disabled]="!isValidNote"><span class="btn Btn-Green transition txt_pd-top3">Save</span></button>
         <button *ngIf="isEdit && !isPreview" type="submit" class="button bgcolor-unset" (click)="updateNote()"

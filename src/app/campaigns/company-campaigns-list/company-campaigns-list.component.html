@@ -18,7 +18,7 @@
     </ul>
   </div>
 
-  <div class="row" *ngIf="isLocalhost">
+  <div class="row">
     <div class="col-md-12 col-lg-12">
       <div class="portlet light mheight">
         <div class="row" style="margin-left: -9px;">
@@ -33,11 +33,11 @@
                       <img class="h-50px" src="assets/admin/pages/media/works/company.png" alt="">
                     </span>
                     <span class="margin-left" style="margin-left: 20px;">
-                      <h6 class='m0 user-email' *ngIf="selectedCompany?.companyName?.length>0">
+                      <h6 class='m0 user-email' *ngIf="selectedCompany?.name?.length>0">
                         <p class="user-company" data-toggle="tooltip" data-placement="bottom"
-                          title="{{selectedCompany?.companyName}}">
-                          <span>{{selectedCompany?.companyName |slice:0:50}}</span>
-                          <span *ngIf="selectedCompany?.companyName?.length>50">..</span>
+                          title="{{selectedCompany?.name}}">
+                          <span>{{selectedCompany?.name |slice:0:50}}</span>
+                          <span *ngIf="selectedCompany?.name?.length>50">..</span>
                         </p>
                       </h6>
                       <br>

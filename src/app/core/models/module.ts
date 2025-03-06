@@ -143,8 +143,13 @@ export class Module {
     /**XNFR-726***/
     socialShareOptionEnabled = false;
 
+    socialShareOptionEnabledAsPartner: boolean = false;
+
     socialFeedsAccess = false;
     socialFeedsAccessAsPartner = false;
+
+    /**XNFR-878**/
+    allowVendorToChangePartnerPrimaryAdmin = false;
 
 
 }

@@ -9,10 +9,15 @@ export class ModalPopupLoaderComponent implements OnInit {
 
 @Input() height:any;
 updatedHeight:string="";
+@Input() displayProcessingImage = false;
+imageId = "loading-bg-image";
 @Input() showCircle:boolean;
   constructor() { }
 
   ngOnInit() {
+	if(this.displayProcessingImage){
+		this.imageId = "processing-time-image";
+	}
 	if(this.height!=undefined){
 		if(this.height=="460"){
 			this.updatedHeight = "460px";

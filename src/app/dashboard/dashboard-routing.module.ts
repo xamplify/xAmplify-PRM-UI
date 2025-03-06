@@ -29,6 +29,8 @@ import { CustomSkinComponent } from "./user-profile/custom-skin/custom-skin.comp
 import { QuickLinksComponent } from "./quick-links/quick-links.component";
 import { RouterUrlConstants } from "app/constants/router-url.contstants";
 import { UniversalSearchComponent } from "./universal-search/universal-search.component";
+import { MergePartnerCompaniesComponent } from './merge-partner-companies/merge-partner-companies.component';
+import { PendingChangesGuard } from "app/component-can-deactivate";
 
 
 const routes: Routes = [
@@ -68,7 +70,8 @@ const routes: Routes = [
   {path:'edit-module-names/:companyId',component:EditModuleNameComponent},
   { path: 'microsoft-callback',component:SocialContactsCallbackComponent},
   {path:RouterUrlConstants.quickLinks,component:QuickLinksComponent},
-  {path:RouterUrlConstants.universalSearch,component:UniversalSearchComponent}
+  {path:RouterUrlConstants.universalSearch,component:UniversalSearchComponent},
+  {path:RouterUrlConstants.mergePartnerCompanies,component:MergePartnerCompaniesComponent,canDeactivate: [PendingChangesGuard]}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

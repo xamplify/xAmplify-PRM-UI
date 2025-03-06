@@ -50,4 +50,10 @@ export class DamUploadPostDto {
     selectedSignatureImagePath = "";
     vendorSignatureCompleted = false;
     geoLocationDetails:GeoLocationAnalytics = new GeoLocationAnalytics();
+
+    /** XNFR-884 **/
+    draft: boolean = false;
+    approvalStatus: string;
+    published: boolean = false;
+    createdByAnyApprover: boolean = false;
 }

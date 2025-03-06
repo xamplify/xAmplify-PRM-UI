@@ -1,6 +1,6 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div [className]="hideRowClass ? '':'row pd_top10'">
-	<div class="page-bar portlet light  tfamt">
+<div [ngClass]="{ '': hideRowClass, 'row pd_top10': !hideRowClass, 'margin_17': isDashboardView }">
+	<div class="page-bar portlet light  tfamt" [ngClass]="{'border_dashed': isDraggingEnabled}">
 		<div class="portlet-title" *ngIf="!assetsLoader">
 			<h4 class="pull-left m10 f-w-600 text-primary" translate>
 				<a (click)="goToManage()">{{title}}</a>
@@ -60,12 +60,14 @@
 								 [ngClass]="{
 									'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 									'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
-									'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+									'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+									'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 									{{getApprovalStatusText(asset.approvalStatus)}}
 								</span>
 								<span
-									*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED"
-									class="view-banner asset-approval-labele-spacing bgc-red" translate>
+									*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+									class="view-banner asset-approval-labele-spacing" [ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+									'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}"	translate>
 									{{getApprovalStatusText(asset.approvalStatus)}}
 								</span>
 							</div>

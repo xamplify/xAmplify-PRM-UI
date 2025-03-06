@@ -38,6 +38,7 @@ import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-c
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
 import { ContactList } from 'app/contacts/models/contact-list';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Criteria } from 'app/contacts/models/criteria';
 declare var $: any, Papa: any, swal: any;
 
 @Component({
@@ -140,6 +141,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Onboarded On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Onboarded On(DESC)', 'value': 'createdTime-DESC' },
 
 		/* XNFR-556
 		 { 'name': 'Added(ASC)', 'value': 'id-ASC' },
@@ -310,6 +313,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 	activeCrmType: any;
 	dashboardButtonsAcess: boolean;
+	/**XNFR-890**/
+	showFilterOption: boolean = false;
+	criteria: Criteria = new Criteria();
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2421,7 +2427,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							this.referenceService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination, this.selectedFilterIndex);
 						}
 						this.downloadAssociatedPagination.searchKey = this.searchKey;
-						this.contactService.downloadContactList(this.downloadAssociatedPagination)
+						this.userListPaginationWrapper.pagination = this.pagination;
+						this.contactListObj.id = this.partnerListId;
+						this.contactListObj.editList = true;
+						this.contactListObj.moduleName = "";
+						this.userListPaginationWrapper.userList = this.contactListObj;
+						this.contactService.downloadContactList(this.userListPaginationWrapper)
 							.subscribe(
 								data => this.downloadFile(data),
 								(error: any) => {
@@ -2770,6 +2781,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactService.isContactModalPopup = false;
 		this.updatePartnerUser = false;
 		$('#settingSocialNetworkPartner').modal('hide');
+		$('#assignContactAndMdfPopup').modal('hide');
+		$('#tcModal').modal('hide');
 		$("body>#settingSocialNetworkPartner").remove();
 		$('body').removeClass('modal-backdrop in');
 		if (this.selectedAddPartnerOption == 5) {
@@ -4788,5 +4801,38 @@ triggerUniversalSearch(){
 		this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
 	  }
 }
+
+	toggleFilterOption() {
+		this.showFilterOption = true;
+	}
+
+	partnersFilter(event:any){
+		let input = event;
+	    this.pagination.fromDateFilterString = input['fromDate'];
+		this.pagination.toDateFilterString = input['toDate'] ;
+		this.pagination.timeZone = input['zone'];
+		this.pagination.criterias = input['criterias'];
+		this.pagination.dateFilterOpionEnable = input['isDateFilter'];
+		this.pagination.filterOptionEnable = input['isCriteriasFilter'] ;
+		this.pagination.customFilterOption = true;
+		this.pagination.pageIndex = 1;
+		this.loadPartnerList(this.pagination);
+	}
+	closeFilterEmitter(event:any){
+		if(event === 'close') {
+			this.showFilterOption = false;
+		} else {
+			this.showFilterOption = true
+		}
+		this.criteria = new Criteria();
+		this.pagination.fromDateFilterString = "";
+		this.pagination.toDateFilterString = "";
+		this.pagination.customFilterOption = false;
+		this.sortOption.searchKey = '';
+		this.pagination.searchKey = this.sortOption.searchKey;
+		this.pagination.criterias = null;
+		this.pagination.pageIndex = 1;
+		this.loadPartnerList(this.pagination);
+	}
 
 }

@@ -36,8 +36,7 @@ declare var $:any, Highcharts:any, swal: any;
   templateUrl: './detailed-campaign-analytics.component.html',
   styleUrls: ['./detailed-campaign-analytics.component.css','../timeline.css'],
   providers: [Pagination, HttpRequestLoader, LandingPageService, DealsService]
-})
-export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
+})export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
   isDealRegistration: boolean = false;
   enableLeads = false;
   createdBySelf = false;
@@ -1004,7 +1003,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
     this.isTimeLineView = true;
     this.isDealPreview = false;
     console.log(this.isDealRegistration);
-
+    this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     this.getDealState(this.selectedRow);
   }
 

@@ -162,7 +162,7 @@
                       <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                         style="margin-left: 3px !important;" title="Click here to email the report"
                         [disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
-                        (click)="downloadLeads(leadsPagination)">
+                        (click)="exportExcelSelection()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
 
@@ -765,7 +765,11 @@
 
 <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)">
 </app-deal-chat-popup>
-
+<!-- XNFR-839-->
+<app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" (closeEmitter)="closeEmitter($event)"></app-selectfield>
+<!-- <app-order-fields *ngIf="showOrderFieldComponent" [selectedItems]="selectedFields" [enabledMyPreferances]="enabledMyPreferances" (closeEmitter)="closeEmitter($event)"></app-order-fields> -->
+<!-- XNFR-839-->
+ 
 <!-- Add Lead Model-->
 <!-- <app-add-lead *ngIf="showLeadForm && !vanityLoginDto?.vanityUrlFilter" [leadId]="leadId" [actionType]="actionType"
   (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyUnReadChatCount)="resetUnReadChatCount()"

@@ -508,6 +508,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.message = "";
       this.landingPage = new LandingPage();
       $('#landing-page-url-modal').modal('hide');
+      $("#shareVendorDetailsPopup").modal("hide");
       swal.close();
   }
 
@@ -534,7 +535,7 @@ copy(landingPage:any){
 
   findExistingPageNames(landingPage:any){
     this.ngxloading = true;
-    this.landingPageService.getAvailableNames(this.loggedInUserId, this.welcomePages).subscribe(
+    this.landingPageService.getAvailableNames(this.loggedInUserId, this.welcomePages,this.pagination.source ).subscribe(
       (data: any) => {
           let pageNames = data;
           this.copyModalPopupComponent.openModalPopup(landingPage.id,landingPage.name,"Page",pageNames);

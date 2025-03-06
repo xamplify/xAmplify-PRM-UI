@@ -411,5 +411,17 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
       + '?emailId=' + emailId + '&userId=' + userId + '&isInactivePartnersDiv=' + isInactivePartnersDiv
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
-  
+
+  getSupportEmailIdByCompanyProfileName(companyProfileName: string) {
+    let url = this.authenticationService.REST_URL + 'v_url/supportEmailIdByCompanyProfileName/' + companyProfileName;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  findAlternateLinksByUrl(refarenceUrl:string){
+    let urlString = "?url="+refarenceUrl
+    let url = this.authenticationService.REST_URL + 'dashboardButtons/findAlternateUrls/' +urlString+'&access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+
+  }
+
 }

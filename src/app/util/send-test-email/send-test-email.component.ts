@@ -51,6 +51,11 @@ export class SendTestEmailComponent implements OnInit {
   @Input() campaignName="";
   @Input() campaignId = 0;
   isSendMdfRequestOptionClicked = false;
+  @Input() teamMemberReminder: boolean; 
+  @Input() selectedItemTeamMember : any;
+  @Output() sendmailTeamMemberNotify =new EventEmitter
+  @Output() sendTestEmailComponentTeamMemberEventEmitter = new EventEmitter();
+
   @ViewChild('campaignMdfRequestsEmailsSentHistoryComponent') campaignMdfRequestsEmailsSentHistoryComponent: CampaignMdfRequestsEmailsSentHistoryComponent;
   duplicateMdfRequestDto:DuplicateMdfRequest = new DuplicateMdfRequest();
   ngxloading = false;
@@ -70,7 +75,10 @@ export class SendTestEmailComponent implements OnInit {
     }else if(this.isSendMdfRequestOptionClicked){
       this.headerTitle = "Unlock MDF Funds for Your Campaign";
       this.getFundingTemplateHtmlBody();
-    }else{
+    }else if(this.teamMemberReminder){
+      this.getVanityEmailTemplatesPartnerAnalytics();
+    }
+    else{
       this.getTemplateHtmlBodyAndMergeTagsInfo();
     }
   }
@@ -227,8 +235,10 @@ export class SendTestEmailComponent implements OnInit {
       this.sendmailNotify.emit({ 'item': this.selectedItem });
       this.callEventEmitter();
     }else if(this.isSendMdfRequestOptionClicked){
-      this.ngxloading = true;
-      this.validateCampaignMdfRequest();
+      this.sendMdfFundRequestEmail();
+    }else if(this.teamMemberReminder){
+      this.sendmailTeamMemberNotify.emit({'item': this.selectedItemTeamMember });
+      this.callEventEmitter();
     }else if(this.campaignSendTestEmail){
       this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
       this.sendCampaignTestEmail();
@@ -353,6 +363,7 @@ export class SendTestEmailComponent implements OnInit {
     this.sendTestEmailDto = new SendTestEmailDto();
     this.referenceService.closeModalPopup(this.modalPopupId);
     this.sendTestEmailComponentEventEmitter.emit();
+    this.sendTestEmailComponentTeamMemberEventEmitter.emit();
   }
 
   previewEmailTemplate() {

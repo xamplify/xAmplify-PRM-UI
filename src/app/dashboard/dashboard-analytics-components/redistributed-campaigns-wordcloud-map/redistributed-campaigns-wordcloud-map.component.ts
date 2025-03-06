@@ -15,6 +15,7 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
     loader = false;
     statusCode = 200;
     @Input()applyFilter:boolean;
+    @Input() isDraggingEnabled: boolean;
     constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger) { }
 
     ngOnInit() {

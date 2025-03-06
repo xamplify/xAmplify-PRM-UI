@@ -302,6 +302,17 @@ findVendorDetailsWithSelfDealsCount(campaignId:any, loggedInUserId:any) {
     let url = this.authenticationService.REST_URL + "deal/fetchContactsForDealAttachment/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token + pageableUrl;
     return this.authenticationService.callGetMethod(url);
   }
+
+  fetchTotalDealAmount(companyId:any, vanityUrlFilter:boolean, vendorCompanyName:string) {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:"&loggedInUserId=0";
+    let contactIdRequestParam = companyId!=undefined && companyId>0 ? "&contactId="+companyId:"&contactId=0";
+    let vanityUrlFilterParam = vanityUrlFilter!=undefined?"&vanityUrlFilter="+vanityUrlFilter:"";
+    let vendorCompanyNameParam = vendorCompanyName!=undefined ? "&vendorCompanyName="+vendorCompanyName:"";
+    let dealRequestDtoParam = $.trim(loggedInUserIdRequestParam+contactIdRequestParam+vanityUrlFilterParam+vendorCompanyNameParam);
+    let url = this.authenticationService.REST_URL + "deal/fetchTotalDealAmount" + "?access_token=" + this.authenticationService.access_token + dealRequestDtoParam;
+    return this.authenticationService.callGetMethod(url);
+  }
  
 
 }

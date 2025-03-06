@@ -64,6 +64,7 @@ export class VendorJourneyComponent implements OnInit {
     this.landingPageService.isPartnerJourneyPages = this.isPartnerJourneyPages;
     this.landingPageService.isVendorMarketplacePages = this.isVendorMarketplacePages;
     this.landingPageService.id = this.vendorDefaultTemplate.id;
+    this.landingPageService.landingPageSource = event.source;
     this.mergeTagsInput['page'] = true;
     this.editVendorPage = true;
     if(this.isMasterLandingPages){

@@ -46,9 +46,9 @@
           <div class="profile_headers">
             <div [ngClass]="showImageTag ? 'avatar2_v2' : 'avatar2'">
               <span *ngIf="!showImageTag && !imgPathLoading && !isCompanyJourney" class="avatar-initial">{{highlightLetter}}</span>
-              <img *ngIf="showImageTag && !imgPathLoading && !isCompanyJourney" class="img_wdt" src="{{imageSourcePath}}" alt="">
-              <img *ngIf="imgPathLoading && !isCompanyJourney" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
-              <img *ngIf="isCompanyJourney" class="h-50px" src="assets/admin/pages/media/works/company.png" alt="">
+              <img *ngIf="showImageTag && !imgPathLoading" class="img_wdt" src="{{imageSourcePath}}" alt="">
+              <img *ngIf="imgPathLoading" class="h-50px" src="../../../assets/images/Spinner.gif" alt="">
+              <img *ngIf="isCompanyJourney && !showImageTag && !imgPathLoading" class="h-50px" src="assets/admin/pages/media/works/company.png" alt="">
             </div>
             <div class="profile_info">
               <div>
@@ -99,34 +99,35 @@
           <!-- Start -->
           <div class="icon_group" *ngIf="isCompanyJourney">
             <!-- tiles one -->
-            <a class="icon_item count_one" [ngClass]="(contactsCount != undefined && contactsCount > 0) ? '' : 'disabled'" (click)="(contactsCount != undefined && contactsCount > 0) ? viewMoreContacts() : ''">
+            <a class="icon_item count_one" [ngClass]="(formattedContactsCount != undefined && formattedContactsCount != '0' && !contactsResponse.isVisible) ? '' : 'disabled'" (click)="(formattedContactsCount != undefined && formattedContactsCount != '0' && !contactsResponse.isVisible) ? viewMoreContacts() : ''">
               <i aria-hidden="true" class="fa fa-id-card dbiconscss company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{contactsCount}}</span>
+                <span class="icon_btns count_1">{{formattedContactsCount}}</span>
                 <div class="icon_label">Contacts</div>
               </div>
             </a>
             <!-- tiles two -->
-            <a class="icon_item count_two" [ngClass]="(leadsCount != undefined && leadsCount > 0) ? '' : 'disabled'" (click)="(leadsCount != undefined && leadsCount > 0) ? viewMoreLeads() : ''">
+            <a class="icon_item count_two" [ngClass]="(formattedLeadsCount != undefined && formattedLeadsCount != '0' && !leadsResponse.isVisible) ? '' : 'disabled'" (click)="(formattedLeadsCount != undefined && formattedLeadsCount != '0' && !leadsResponse.isVisible) ? viewMoreLeads() : ''">
               <i aria-hidden="true" class="fa fa-user-circle company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{leadsCount}}</span>
+                <span class="icon_btns count_1">{{formattedLeadsCount}}</span>
                 <div class="icon_label">Leads</div>
               </div>
             </a>
             <!-- tiltes three -->
-            <a class="icon_item count-three" [ngClass]="(dealsCount != undefined && dealsCount > 0) ? '' : 'disabled'" (click)="(dealsCount != undefined && dealsCount > 0) ? viewMoreDeals() : ''">
+            <a class="icon_item count-three" [ngClass]="(formattedDealsCount != undefined && formattedDealsCount != '0' && !dealsResponse.isVisible) ? '' : 'disabled'" (click)="(formattedDealsCount != undefined && formattedDealsCount != '0' && !dealsResponse.isVisible) ? viewMoreDeals() : ''">
               <i aria-hidden="true" class="fa fa-tags company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{dealsCount}}</span>
-                <div class="icon_label">Deals</div>
+                <span *ngIf="!dealAmountLoader?.isLoading" class="icon_btns count_1">{{totalDealAmount}}</span>
+                <img *ngIf="dealAmountLoader?.isLoading" class="total_deal_amount_loader" src="../../../assets/images/Spinner.gif" alt="">
+                <div class="icon_label"><span class="bold">{{formattedDealsCount}}</span> Deals</div>
               </div>
             </a>
             <!-- tiles four -->
-            <a class="icon_item count_four" [ngClass]="(campaignsCount != undefined && campaignsCount > 0) ? '' : 'disabled'" (click)="(campaignsCount != undefined && campaignsCount > 0) ? viewMoreCampaigns() : ''">
+            <a class="icon_item count_four" [ngClass]="(formattedCampaignsCount != undefined && formattedCampaignsCount != '0' && !campaignsResponse.isVisible) ? '' : 'disabled'" (click)="(formattedCampaignsCount != undefined && formattedCampaignsCount != '0' && !campaignsResponse.isVisible) ? viewMoreCampaigns() : ''">
               <i aria-hidden="true" class="fa fa-bullhorn dbiconscss company_icon"></i>
               <div>
-                <span class="icon_btns count_1">{{campaignsCount}}</span>
+                <span class="icon_btns count_1">{{formattedCampaignsCount}}</span>
                 <div class="icon_label">Campaigns</div>
               </div>
             </a>
@@ -172,79 +173,79 @@
               <li *ngIf="!isCompanyJourney"><i class="fas fa-building"></i>
                 <div class="user_details">
                   <span class="address_title">Company:</span>
-                  <span *ngIf="selectedContact?.contactCompany != undefined" class="mb0">{{selectedContact?.contactCompany}}
-                  </span>
-                  <span *ngIf="selectedContact?.contactCompany == undefined" class="mb0"> --</span>
+                  <a class="add-btn underline-on-hover" (click)="viewCompanyJourney()"><span *ngIf="selectedContact?.contactCompany != undefined && selectedContact?.contactCompany != ''" class="mb0">{{selectedContact?.contactCompany}}
+                  </span></a>
+                  <span *ngIf="selectedContact?.contactCompany == undefined || selectedContact?.contactCompany == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li *ngIf="!isCompanyJourney"><i class="fas fa-briefcase"></i>
                 <div class="user_details">
                   <span class="address_title">Job Title:</span>
-                  <span *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</span>
-                  <span *ngIf="selectedContact?.jobTitle == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.jobTitle != undefined && selectedContact?.jobTitle != ''" class="mb0">{{selectedContact?.jobTitle}}</span>
+                  <span *ngIf="selectedContact?.jobTitle == undefined || selectedContact?.jobTitle == ''" class="mb0"> --</span>
                 </div>
               </li>
-              <li *ngIf="!isCompanyJourney"><i class="fas fa-envelope"></i>
+              <li *ngIf="isCompanyJourney"><i class="fas fa-envelope"></i>
                 <div class="user_details">
                   <span class="address_title">Email Id:</span>
-                  <span *ngIf="selectedContact?.emailId != undefined" class="mb0">{{selectedContact?.emailId}}</span>
-                  <span *ngIf="selectedContact?.emailId == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.emailId != undefined && selectedContact?.emailId != ''" class="mb0">{{selectedContact?.emailId}}</span>
+                  <span *ngIf="selectedContact?.emailId == undefined || selectedContact?.emailId == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li><i class="fas fa-map-marker-alt pd_lft2"></i>
                 <div class="user_details pd_lft2">
                   <span class="address_title">Address:</span>
-                  <span *ngIf="selectedContact?.address != undefined" class="mb0">{{selectedContact?.address}}</span>
-                  <span *ngIf="selectedContact?.address == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.address != undefined && selectedContact?.address != ''" class="mb0">{{selectedContact?.address}}</span>
+                  <span *ngIf="selectedContact?.address == undefined || selectedContact?.address == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li><i class="fas fa-city"></i>
                 <div class="user_details">
                   <span class="address_title">City:</span>
-                  <span *ngIf="selectedContact?.city != undefined" class="mb0">{{selectedContact?.city}}</span>
-                  <span *ngIf="selectedContact?.city == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.city != undefined && selectedContact?.city != ''" class="mb0">{{selectedContact?.city}}</span>
+                  <span *ngIf="selectedContact?.city == undefined || selectedContact?.city == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li><i class="fas fa-map"></i>
                 <div class="user_details">
                   <span class="address_title">State/Province:</span>
-                  <span *ngIf="selectedContact?.state != undefined" class="mb0">{{selectedContact?.state}}</span>
-                  <span *ngIf="selectedContact?.state == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.state != undefined && selectedContact?.state != ''" class="mb0">{{selectedContact?.state}}</span>
+                  <span *ngIf="selectedContact?.state == undefined || selectedContact?.state == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li><i class="fas fa-mail-bulk"></i>
                 <div class="user_details">
                   <span class="address_title"> Postal Code:</span>
-                  <span *ngIf="selectedContact?.zipCode != undefined" class="mb0">{{selectedContact?.zipCode}}</span>
-                  <span *ngIf="selectedContact?.zipCode == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.zipCode != undefined && selectedContact?.zipCode != ''" class="mb0">{{selectedContact?.zipCode}}</span>
+                  <span *ngIf="selectedContact?.zipCode == undefined || selectedContact?.zipCode == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li><i class="fas fa-globe"></i>
                 <div class="user_details">
                   <span class="address_title"> Country:</span>
-                  <span *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</span>
-                  <span *ngIf="selectedContact?.country == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.country != undefined && selectedContact?.country != ''" class="mb0">{{selectedContact?.country}}</span>
+                  <span *ngIf="selectedContact?.country == undefined || selectedContact?.country == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li *ngIf="isCompanyJourney"><i class="fa fa-facebook-official"></i>
                 <div class="user_details">
                   <span class="address_title"> Facebook:</span>
-                  <span *ngIf="selectedContact?.facebookURL != undefined" class="mb0">{{selectedContact?.facebookURL}}</span>
-                  <span *ngIf="selectedContact?.facebookURL == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.facebookURL != undefined && selectedContact?.facebookURL != ''" class="mb0">{{selectedContact?.facebookURL}}</span>
+                  <span *ngIf="selectedContact?.facebookURL == undefined || selectedContact?.facebookURL == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li *ngIf="isCompanyJourney"><i class="fa fa-linkedin-square"></i>
                 <div class="user_details">
                   <span class="address_title"> LinkedIn:</span>
-                  <span *ngIf="selectedContact?.linkedinURL != undefined" class="mb0">{{selectedContact?.linkedinURL}}</span>
-                  <span *ngIf="selectedContact?.linkedinURL == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.linkedinURL != undefined && selectedContact?.linkedinURL != ''" class="mb0">{{selectedContact?.linkedinURL}}</span>
+                  <span *ngIf="selectedContact?.linkedinURL == undefined || selectedContact?.linkedinURL == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li *ngIf="isCompanyJourney"><i class="fa fa-twitter"></i>
                 <div class="user_details">
                   <span class="address_title"> X:</span>
-                  <span *ngIf="selectedContact?.twitterURL != undefined" class="mb0">{{selectedContact?.twitterURL}}</span>
-                  <span *ngIf="selectedContact?.twitterURL == undefined" class="mb0"> --</span>
+                  <span *ngIf="selectedContact?.twitterURL != undefined && selectedContact?.twitterURL != ''" class="mb0">{{selectedContact?.twitterURL}}</span>
+                  <span *ngIf="selectedContact?.twitterURL == undefined || selectedContact?.twitterURL == ''" class="mb0"> --</span>
                 </div>
               </li>
               <li *ngFor="let flexiField of selectedContact?.flexiFields">
@@ -351,17 +352,16 @@
             <app-dropdown-loader *ngIf="contactsLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
             <div class="panel-body pt0" *ngIf="companyContacts != undefined && companyContacts.length > 0">
               <div class="deals_card mb10" *ngFor="let contact of companyContacts">
-                <div *ngIf="contact.firstName != undefined || contact.lastName != undefined">
+                <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
-                  <a class="add-btn underline-on-hover" (click)="viewContactJourney(contact.contactId)">
-                    <span class="activity-title">{{contact.firstName != null ? contact.firstName:''}} {{contact.lastName}}</span>
+                  <a *ngIf="contact.fullName" class="add-btn underline-on-hover" (click)="viewContactJourney(contact.contactId)">
+                    <span class="activity-title">{{contact.fullName | slice:0:20}}</span><span *ngIf="contact?.fullName != undefined && contact?.fullName?.length>20">..</span>
                   </a>
+                  <a class="underline-on-hover"
+                    (click)="viewContactJourney(contact.contactId)"><span *ngIf="contact?.fullName == undefined || contact?.fullName == ' ' || contact?.fullName == ''" class="activity-title" [ngClass]="contact.fullName ? 'pl20' : ''">{{contact.emailId}}</span>
+                    <div *ngIf="contact.fullName" class="activity-title" [ngClass]="contact.fullName ? 'pl20' : ''">{{contact.emailId}}</div></a>
                 </div>
-                <div class="activity-body">
-                  <label class="mb0 f-w-600"> Email Id:</label> <a class="underline-on-hover"
-                    (click)="viewContactJourney(contact.contactId)"><span>{{contact.emailId}}</span></a>
-                </div>
-                <div *ngIf="contact.mobileNumber!=undefined" class="activity-body">
+                <div *ngIf="contact?.mobileNumber!=undefined && contact?.mobileNumber?.length > 0" class="activity-body">
                   <label class="mb0 f-w-600"> Phone:</label> {{contact.mobileNumber}}
                 </div>
               </div>
@@ -393,7 +393,7 @@
                 <div>
                   <i class="fas fa-user mr5" aria-hidden="true"> </i>
                   <a class="add-btn underline-on-hover" (click)="viewLead(lead.id)">
-                    <span class="activity-title">{{lead.firstName != null ? lead.firstName:''}} {{lead.lastName}}</span>
+                    <span class="activity-title">{{lead.fullName | slice:0:20}}</span><span *ngIf="lead?.fullName != undefined && lead?.fullName?.length>20">..</span>
                   </a>
                 </div>
                 <div class="activity-body">
@@ -429,7 +429,7 @@
               <div class="deals_card mb10" *ngFor="let deal of contactDeals">
                 <div>
                   <a class="add-btn underline-on-hover" (click)="viewDeal(deal.id)">
-                    <span class="activity-title">{{deal.title}}</span>
+                    <span class="activity-title">{{deal.title | slice:0:20}}</span><span *ngIf="deal?.title != undefined && deal?.title?.length>20">..</span>
                   </a>
                 </div>
                 <div class="activity-body">
@@ -472,7 +472,7 @@
                 <div>
                   <i class="fas fa-bullhorn mr5" aria-hidden="true"> </i>
                   <a class="add-btn underline-on-hover" (click)="viewCampaignTimeLine(campaign)">
-                    <span class="activity-title">{{campaign.campaignName}}</span>
+                    <span class="activity-title">{{campaign.campaignName | slice:0:20}}</span><span *ngIf="campaign?.campaignName != undefined && campaign?.campaignName?.length>20">..</span>
                   </a>
                 </div>
                 <div class="activity-body">
@@ -561,5 +561,5 @@
 <app-add-company *ngIf="showEditCompanyModalPopup" (closeEvent)="closeCompanyModal($event)" [actionType]="'edit'"
     [companyId]="companyIdForEdit" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
   
-<app-company-campaigns-list *ngIf="showCompanyCampaigns"
-  [companyListId]="selectedContactListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
+<app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
+  [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>

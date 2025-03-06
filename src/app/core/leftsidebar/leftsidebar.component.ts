@@ -144,6 +144,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					module.socialShareOptionEnabled = data.socialShare;
 					module.socialFeedsAccess = data.rssFeeds;
 					module.socialFeedsAccessAsPartner = data.rssFeedsAccessAsPartner;
+					module.socialShareOptionEnabledAsPartner = data.socialShareAccessAsPartner;
+					localStorage.setItem("socialShareOptionEnabled", JSON.stringify(!!(data.socialShare || data.socialShareAccessAsPartner)));//XBI-8970
 					/**XNFR-726***/
 
 					this.menuItem.mdf = data.mdf;
@@ -284,6 +286,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
 		/**XNFR-698**/
 		module.isMyVendorsOptionDisplayed = data.myVendorsOptionDisplayed;
+
+		/**XNFR-878***/
+		module.allowVendorToChangePartnerPrimaryAdmin = data.allowVendorToChangePartnerPrimaryAdmin;
 	}
 
 	setContentMenu(data: any, module: any) {

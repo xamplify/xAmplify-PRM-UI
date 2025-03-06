@@ -145,7 +145,7 @@ export class Pagination {
 
 	vendorLandingPageId:number;
 	welcomePages:boolean = false;
-	contactId:number;
+	contactId:any;
 	isAdmin: boolean = false;
 
 	partnerJourneyPage:boolean = false;
@@ -172,5 +172,9 @@ export class Pagination {
 
 	/**XNFR-848**/
 	isCompanyJourney:boolean;
+
+	/**** XNFR-839 ****/
+	selectedExcelFormFields:any[] = [];
+	/**** XNFR-839 ****/
 
 }

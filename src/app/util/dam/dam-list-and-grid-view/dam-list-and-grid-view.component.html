@@ -1,5 +1,6 @@
 <app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
-	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded">
+	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded 
+		&& !isEditVideo && !isPreviewVideo">
 </app-content-module-status-analytics>
 
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
@@ -101,13 +102,17 @@
 													[ngClass]="{
 														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
-														'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+														'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+														'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 													{{getApprovalStatusText(asset.approvalStatus)}}
 												</span>
-												<span *ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED" 
-												class="view-banner asset-approval-labele-spacing bgc-red" translate>
-												   {{getApprovalStatusText(asset.approvalStatus)}}
-											   </span>
+												<span
+													*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+													class="view-banner asset-approval-labele-spacing" 
+													[ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+														'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
+													{{getApprovalStatusText(asset.approvalStatus)}}
+												</span>
 
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
@@ -153,7 +158,7 @@
 																<div class="clickicons"></div>
 															</a>
 															<!--Design-->
-															<a class="custom-icon" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top" title="Design" (click)="addOrEdit(asset.id)">
+															<a class="custom-icon" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT'" data-toggle="tooltip" data-placement="top" title="Design" (click)="addOrEdit(asset.id)">
 																<i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
@@ -171,7 +176,7 @@
 																<!--Create Campaign-->
 																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 																	(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset.alias, asset.viewBy) : ''" data-toggle="tooltip" data-placement="top" 
-																	title="{{asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign'}}">
+																	title="{{asset?.approvalStatus == 'DRAFT' ? properties.DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN : (asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign')}}">
 																	<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"
 																	[ngClass]="(asset?.approvalStatus != 'APPROVED') ? 'disabled gray' : ''"></i>
 																	<div class="clickicons"></div>
@@ -205,8 +210,9 @@
 															</a>
 															<!--View Analytics-->
 															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany"
-																(click)="viewAnalytics(asset)">
-																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+																(click)="asset.approvalStatus !== approvalStatus.DRAFT ? viewAnalytics(asset) : ''">
+																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
+																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"></i>
 																<div class="clickicons"></div>
 															</a>
 															<!--View Details-->
@@ -216,9 +222,9 @@
 															</a>
 
 															<!-- comment/history -->
-															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)" 
+															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
 																data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
-																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
 															
@@ -318,15 +324,17 @@
 																			class="draft-video mb0">DRAFT</span>
 																		<!---XNFR-255-->
 																		
-																		<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner asset-approval-labele-spacing"
-																			[ngClass]="{
-																				'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+																		<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner"
+																		 [ngClass]="{ 'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 																				'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
-																				'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+																				'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+																				'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 																			{{getApprovalStatusText(asset.approvalStatus)}}
 																		</span>
-																		<span *ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED" 
-																		 class="view-banner asset-approval-labele-spacing bgc-red" translate>
+																		<span *ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+																			class="view-banner asset-approval-labele-spacing"
+																			 [ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+																				'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 																			{{getApprovalStatusText(asset.approvalStatus)}}
 																		</span>
 																		<ng-container
@@ -385,7 +393,7 @@
 																				<div class="clickicons"></div>
 																			</a>
 																			<!--XNFR-381-->
-																			<a *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
+																			<a *ngIf="asset?.edit && asset?.approvalStatus !== 'DRAFT'" class="custom-icon" data-toggle="tooltip"
 																				data-placement="top" title="Design"
 																				(click)="addOrEdit(asset.id)">
 																				<i class="fa fa-paint-brush IconCustomization"
@@ -427,15 +435,15 @@
 																				data-placement="top"
 																				title="View Analytics"
 																				*ngIf="!authenticationService.module.isMarketingCompany"
-																				(click)="viewAnalytics(asset)">
+																				(click)="asset.approvalStatus !== approvalStatus.DRAFT ? viewAnalytics(asset) : ''">
 																				<i class="fa fa-line-chart IconCustomization"
-																					aria-hidden="true"></i>
+																					aria-hidden="true" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"></i>
 																				<div class="clickicons"></div>
 																			</a>
 
-																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="showCommentsAndHistoryModalPopup(asset)"
-																			 data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
-																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" aria-hidden="true"></i>
+																			<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
+																			data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
+																				<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"  aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
 																			
@@ -517,16 +525,17 @@
 											</ng-container>
 											<span class="view-banner-dam assettype-bgcolor LableSpaceings" style="margin-right: 3px;">{{asset?.assetType}}</span>
 											<!-- XNFR-781 -->
-											<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner asset-approval-labele-spacing"
-												[ngClass]="{
-											        'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
-											        'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
-											        'bgc-orange': asset.approvalStatus === approvalStatus.CREATED}" translate>
+											<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner"
+												[ngClass]="{ 'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
+													'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+													'bgc-orange': asset.approvalStatus === approvalStatus.CREATED,
+													'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 												{{getApprovalStatusText(asset.approvalStatus)}}
 											</span>
-											<span
-												*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && asset.approvalStatus == approvalStatus.REJECTED"
-												class="view-banner asset-approval-labele-spacing bgc-red" translate>
+											<span *ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
+												class="view-banner asset-approval-labele-spacing"
+													[ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
+													'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 												{{getApprovalStatusText(asset.approvalStatus)}}
 											</span>
 

@@ -2087,7 +2087,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     /*** XNFR-760 ***/
     checkAndAutofillCompanyProfile() {
-        if (!this.authenticationService.user.hasCompany && this.authenticationService.isPartner()) {
+        if (!this.authenticationService.user.hasCompany && (this.authenticationService.isPartner()
+            || this.authenticationService.isTeamMember() || this.authenticationService.isOnlyUser())) {
             this.autoFillCompanyProfile();
         }
     }
@@ -2159,4 +2160,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     unlockMdfFundingUiSwitchEventReceiver(event:any){
         this.campaignAccess.unlockMdfFundingEnabled = event;
     }
+
+    /**XNFR-878***/
+    allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
+        this.campaignAccess.allowVendorToChangePartnerPrimaryAdmin = event;
+    }
+  
 }

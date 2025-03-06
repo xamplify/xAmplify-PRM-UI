@@ -5,7 +5,7 @@
   }
 </style>
 
-<ng-container *ngIf="authenticationService?.module?.socialShareOptionEnabled">
+<ng-container *ngIf="(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))">
   <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
     <div class="page-bar">
       <ul class="page-breadcrumb">
@@ -132,7 +132,7 @@
   <app-connect-accounts></app-connect-accounts>
 </ng-container>
 
-<ng-container *ngIf="!authenticationService?.module?.socialShareOptionEnabled">
+<ng-container *ngIf="!(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember))) && !socialShareOptionEnabled">
   <app-access-denied-util></app-access-denied-util>
 </ng-container>
 

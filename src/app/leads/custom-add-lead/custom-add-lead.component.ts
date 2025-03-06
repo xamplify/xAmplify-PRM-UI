@@ -239,6 +239,7 @@ export class CustomAddLeadComponent implements OnInit {
   //XNFR-681
   isThroughAddUrl : boolean = false;
   isFromManageLeads : boolean = false;
+  isEmailEmpty:boolean =false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -289,7 +290,10 @@ export class CustomAddLeadComponent implements OnInit {
     this.loadComments();
   }
 
-
+  ngOnDestroy(){
+    $('#leadFormModel').modal('hide');
+  }
+  
   private resetLeadData() {
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;
@@ -528,6 +532,7 @@ export class CustomAddLeadComponent implements OnInit {
       if( this.formSubmitForCompanyId > 0){
         this.lead.createdForCompanyId = this.formSubmitForCompanyId
       }
+      this.isEmailEmpty = this.lead.email == null || this.lead.email == '';
     }else{
       this.lead.email = this.selectedContact.emailId;
     }
@@ -1899,8 +1904,7 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
       this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company +RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
     } else if ((this.isCompanyJourney || this.isFromCompanyJourney) && this.selectedContact.userListId == undefined) {
-      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
-      this.referenceService.goToRouter('home/company/manage/details/'+encodedUserListId+'/'+encodeUserId);
+      this.referenceService.goToRouter('home/company/manage/details/'+encodeUserId);
     } else if (this.isFromCompanyJourney && this.selectedContact.userListId != undefined) {
       let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
       let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'company/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId + "/" + encodedCompanyId;
@@ -1986,8 +1990,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   goBackToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
-    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    let url = "home/company/manage/details/" + encodedId;
     this.referenceService.goToRouter(url);
   }
 

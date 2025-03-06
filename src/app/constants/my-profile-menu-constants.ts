@@ -3,5 +3,6 @@ export const MY_PROFILE_MENU_CONSTANTS = {
     CHAT_GPT_SETTIGNS_MENU_HEADER : 'Chat GPT Settings',
     FLEXI_FIELDS:'Flexi Fields',
     UPDATE_MODULES: 'Update Modules',
-    SIGNATURE_MENU_HEADER:'Signature'
+    SIGNATURE_MENU_HEADER:'Signature',
+    CUSTOMIZE_DASHBOARD_MENU_HEADER:'Default Dashboard Layout'
 }

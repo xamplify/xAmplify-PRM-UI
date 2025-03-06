@@ -18,6 +18,7 @@ export class MdfStatisticsComponent implements OnInit {
   mdfStatsStatusCode = 200;
   mdfData:any;
   @Input()applyFilter:boolean;
+  @Input() isDashboardView: boolean;
   constructor(public properties:Properties,public mdfService:MdfService,public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }

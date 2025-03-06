@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges, S
 import { Router } from '@angular/router';
 import { Criteria } from 'app/contacts/models/criteria';
 import { Pagination } from 'app/core/models/pagination';
+import { SortOption } from 'app/core/models/sort-option';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 
 @Component({
@@ -42,9 +44,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	selectedConditionArray: any[] = [];
 	@Input() criteria: Criteria ;
 	isAssetTabSelected: any = false;
+	sortOption: SortOption = new SortOption();
 
 
-	constructor(private router: Router) {
+	constructor(private router: Router,public authenticationService: AuthenticationService) {
 	}
 	ngOnDestroy(): void {
 	}
@@ -108,8 +111,11 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				this.filterOptions = this.filterOptions.filter(item => item.name !== 'folder'); //XNFR-409
 			}
 			if (this.isPartnerView) {
-				this.filterOptions.push({ 'name': 'publishedby', 'value': 'Published By' },
-					{ 'name': 'from', 'value': 'From' });
+				//XBI-3660 add if condition
+				if (!this.authenticationService.module.loggedInThroughVendorVanityUrl) {
+					this.filterOptions.push({ 'name': 'publishedby', 'value': 'Published By' },
+						{ 'name': 'from', 'value': 'From' });
+				}
 				this.parterViewText = "Published On";
 			} else {
 				this.filterOptions.push({ 'name': 'createdby', 'value': 'Created By' });
@@ -120,6 +126,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				}
 			}
 			this.allfilterOptions = this.filterOptions;
+		} else if (type == "Partners") {
+			this.filterOptions = [...this.sortOption.commonFilterOptions, ...this.sortOption.partnerFilterOptions];
+			this.allfilterOptions = this.filterOptions;
+			this.parterViewText = "Onboarded On";
 		}
 		
 		if( this.criteria.property == "Field Name*" && this.criteria.operation == "Condition*") {
@@ -252,6 +262,26 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 					criteriaObject.property = "publishedby";
 				} else if (this.criterias[i].property == "From") {
 					criteriaObject.property = "from";
+				} else if (this.criterias[i].property == "First Name") {
+					criteriaObject.property = "firstName";
+				} else if (this.criterias[i].property == "Last Name") {
+					criteriaObject.property = "lastName";
+				} else if (this.criterias[i].property == "Company") {
+					criteriaObject.property = "contactCompany";
+				} else if (this.criterias[i].property == "Job Title") {
+					criteriaObject.property = "jobTitle";
+				} else if (this.criterias[i].property == "Email Id") {
+					criteriaObject.property = "emailId";
+				} else if (this.criterias[i].property == "Country") {
+					criteriaObject.property = "country";
+				} else if (this.criterias[i].property == "City") {
+					criteriaObject.property = "city";
+				} else if (this.criterias[i].property == "Mobile Number") {
+					criteriaObject.property = "mobileNumber";
+				} else if (this.criterias[i].property == "Notes") {
+					criteriaObject.property = "description";
+				} else {
+					criteriaObject.property = this.criterias[i].property;
 				}
 				criteriaObject.value1 = this.criterias[i].value1;
 				criteriaConditionsArray.push(criteriaObject);
@@ -294,9 +324,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	validateAndEmitValues() {
 		if(this.isValidationErrorMessage){
 			console.log(this.isValidationErrorMessage);
-		}else if(!this.isValidationErrorMessage && this.pagination.criterias==null || this.pagination.criterias==undefined ||
-		 this.pagination.criterias.length == 0 && this.pagination.fromDateFilterString.length == 0 &&
-	     this.pagination.toDateFilterString.length==0){
+		}else if(!this.isValidationErrorMessage && (this.pagination.criterias==undefined ||this.pagination.criterias==null ||
+		 this.pagination.criterias.length == 0) && (this.pagination.fromDateFilterString == undefined  ||this.pagination.fromDateFilterString.length == 0)
+	  && (this.pagination.toDateFilterString == undefined || this.pagination.toDateFilterString.length==0) ){
 				this.closeFilterOption('close');
 		}else{
 		// this.validateDateFilters();
@@ -338,7 +368,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		this.closeFilterEmitter.emit(event);
 	}
 	getOptionsForCriteria(criteria: any, index: number) {
-		if (criteria.property === 'From' || criteria.property === 'Type') {
+		if ((criteria.property === 'From' || criteria.property === 'Type') && this.type != 'Partners') {
 			this.criterias[index].operation = "=";
 			this.criterias[index].value1 = "undefined";
 		} else {

@@ -193,6 +193,10 @@ export class AddDealComponent implements OnInit {
   contactInfo: any;
   detailsTitle: any;
   showContactDetails: boolean = false;
+  showAttachLead: boolean = true;
+  showChangeLeadAndContactButton: boolean = false;
+  showAttachButton: boolean = false;
+  
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -691,6 +695,8 @@ export class AddDealComponent implements OnInit {
       this.activeCRMDetails.showDealPipelineStage = false;
       this.showCreatedByPipelineAndStage = false;
       this.showOpportunityTypes = false;
+      this.showAttachButton = false;
+      this.showAttachLead = true;
       this.resetDealTitle();
     }
   }
@@ -1201,7 +1207,7 @@ export class AddDealComponent implements OnInit {
 
     /**************** Contact To Deal *********************/
     if (this.isDealFromContact) {
-      if (this.deal.associatedLeadId > 0) 
+      if (this.deal.associatedLeadId > 0 || this.deal.associatedContactId > 0) 
         this.attachLeadError = false;
       else 
         this.attachLeadError = true;
@@ -1443,10 +1449,20 @@ export class AddDealComponent implements OnInit {
               this.isZohoLeadAttachedWithoutSelectingDealFor = true;
             }
             if (this.actionType == "edit" && (this.isOrgAdmin || this.isMarketingCompany)) {
-              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled && (this.deal.associatedLeadId == undefined || this.deal.associatedLeadId == 0);
+              this.showAttachLeadButton = this.activeCRMDetails.dealBySelfLeadEnabled
+                && ((this.deal.associatedLeadId == undefined || this.deal.associatedLeadId == 0) && (this.deal.associatedContactId == undefined || this.deal.associatedContactId == 0));
             }
           } else {
             this.resetDealTitle();
+          }
+
+          if (("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType || "HUBSPOT" === this.activeCRMDetails.createdForActiveCRMType ||
+            "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType) && this.actionType === 'add') {
+            this.showAttachLead = false;
+            this.showAttachButton = true;
+          } else {
+            this.showAttachLead = true;
+            this.showAttachButton = false;
           }
         },
         error => {
@@ -1813,7 +1829,9 @@ export class AddDealComponent implements OnInit {
     this.showChangeLeadButton = false;
     this.showChangeContactButton = false;
     this.deal.associatedLeadId = 0;
-    this.attachLeadText = 'Attach Lead';
+    this.showChangeLeadAndContactButton = false;
+    this.attachLeadText = 'Attach a Lead';
+    this.contactInfo = ''
     this.showDetachLeadButton = false;
     this.deal.campaignId = 0;
     this.deal.campaignName = '';
@@ -1842,6 +1860,8 @@ export class AddDealComponent implements OnInit {
         this.activeCRMDetails.showDealPipelineStage = false;
         this.showCustomForm = false;
         this.showDefaultForm = false;
+        this.showAttachButton = false;
+        this.showAttachLead = true;
       } else {
         this.holdTicketTypeId = this.deal.haloPSATickettypeId;
       }
@@ -1995,8 +2015,7 @@ export class AddDealComponent implements OnInit {
     if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
        this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
     } else if ((this.isCompanyJourney || this.isFromCompanyJourney) && this.selectedContact.userListId == undefined) {
-      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
-      this.referenceService.goToRouter('home/company/manage/details/'+encodedUserListId+'/'+encodeUserId);
+      this.referenceService.goToRouter('home/company/manage/details/'+encodeUserId);
     } else if (this.isFromCompanyJourney && this.selectedContact.userListId != undefined) {
       let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
       let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'company/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId + "/" + encodedCompanyId;
@@ -2040,22 +2059,37 @@ export class AddDealComponent implements OnInit {
 
   goBackToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
-    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    let url = "home/company/manage/details/" + encodedId;
     this.referenceService.goToRouter(url);
   }
 
   //XNFR-869
   openSelectContactModel() {
-    this.showSelectContactModel = true;
-    this.contactInfo = '';
-    this.attachContact = new Object();
-    this.attachContact.dealId = this.dealId;
-    this.attachContact.contactId = this.contactId;
-    this.attachContact.dealActionType = this.actionType;
-    this.attachContact.callingComponent = "DEAL";
-    this.attachContact.isOrgAdmin = this.isOrgAdmin;
-    this.attachContact.isVendorVersion = this.isVendorVersion;
+    if (this.isDealFromContact) {
+      this.attachContactFromContactJourney();
+    } else {
+      this.showSelectContactModel = true;
+      this.contactInfo = '';
+      this.attachContact = new Object();
+      this.attachContact.dealId = this.dealId;
+      this.attachContact.contactId = this.contactId;
+      this.attachContact.dealActionType = this.actionType;
+      this.attachContact.callingComponent = "DEAL";
+      this.attachContact.isOrgAdmin = this.isOrgAdmin;
+      this.attachContact.isVendorVersion = this.isVendorVersion;
+    }
+  }
+
+  attachContactFromContactJourney() {
+    this.contactId = this.selectedContact.userUserListId;
+    const obj = {
+      'contact': this.selectedContact
+    };
+    this.showDetachLeadButton = true;
+    this.showAttachLeadButton = false;
+    this.deAttachText = "Detach Contact";
+    this.frameContactDetails(obj);
+    this.setFieldErrorStates();
   }
 
   closeSelectContactModel() {

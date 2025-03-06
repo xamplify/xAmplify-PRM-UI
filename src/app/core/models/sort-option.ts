@@ -585,6 +585,32 @@ export class SortOption {
 		{ 'name': 'Recent Login ASC', 'value': 'logInTime-Asc' },
 		{ 'name': 'Recent Login DESC', 'value': 'logInTime-Desc' },
 	];
+
+	/**XNFR-890**/
+	commonFilterOptions = [
+		{ 'name': 'firstName', 'value': 'First Name' },
+		{ 'name': 'lastName', 'value': 'Last Name' },
+		{ 'name': 'Company', 'value': 'Company' },
+		{ 'name': 'JobTitle', 'value': 'Job Title' },
+		{ 'name': 'Email Id', 'value': 'Email Id' },
+		{ 'name': 'country', 'value': 'Country' },
+		{ 'name': 'city', 'value': 'City' },
+		{ 'name': 'mobileNumber', 'value': 'Mobile Number' },
+		{ 'name': 'state', 'value': 'State' }
+	];
+	partnerFilterOptions = [
+		{ 'name': 'vertical', 'value': 'Vertical'  },
+		{ 'name': 'region', 'value': 'Region'  },
+		{ 'name': 'type', 'value': 'Type'  },
+		{ 'name': 'category', 'value': 'Category'  },
+		{ 'name': 'accountName', 'value': 'Account Name'  },
+		{ 'name': 'accountSubType', 'value': 'Account Sub Type'  },
+		{ 'name': 'territory', 'value': 'Territory'  },
+		{ 'name': 'companyDomain', 'value': 'Company Domain'  },
+		{ 'name': 'accountOwner', 'value': 'Account Owner'  },
+		{ 'name': 'website', 'value': 'Website' },
+		{ 'name': 'zipCode', 'value': 'Zip Code' },
+	]
   
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];

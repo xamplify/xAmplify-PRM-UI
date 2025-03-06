@@ -36,7 +36,6 @@ export class CompanyCampaignsListComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   totalCampaignsCount: any = 0;
   activeCampaignsCount: any = 0;
-  isLocalhost: boolean = false;
 
   constructor(public campaignService: CampaignService, public referenceService: ReferenceService, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public sortOption: SortOption, public utilService: UtilService) { 
@@ -50,10 +49,7 @@ export class CompanyCampaignsListComponent implements OnInit {
 
   ngOnInit() {
     this.showAllCampaignAnalytics();
-    if (this.authenticationService.isLocalHost()) {
-      this.isLocalhost = true;
-      this.fetchTotalAndActiveCampaignsCount();
-    }
+    this.fetchTotalAndActiveCampaignsCount();
   }
 
   resetTaskActivityPagination() {
@@ -66,7 +62,11 @@ export class CompanyCampaignsListComponent implements OnInit {
   listCampaignAnalytics(pagination: Pagination) {
     this.referenceService.goToTop();
     this.ngxLoading = true;
-    this.campaignService.fetchCampaignAnalyticsOfCompanyContacts(this.companyListId, pagination).subscribe((result: any) => {
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
+    this.campaignService.fetchCampaignAnalyticsOfCompanyContacts(this.selectedCompany.id, pagination).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let data = result.data;
         pagination.totalRecords = data.totalRecords;
@@ -89,7 +89,7 @@ export class CompanyCampaignsListComponent implements OnInit {
 
   showAllCampaignAnalytics() {
     this.resetTaskActivityPagination();
-    this.listCampaignAnalytics(this.pagination);
+    this.getAllFilteredResults();
   }
 
   closeCampaignsList() {

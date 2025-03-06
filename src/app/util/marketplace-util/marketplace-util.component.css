@@ -405,6 +405,7 @@
     border-radius: 10px;
     text-align: left;
     transform: rotateY(180deg);
+    word-break: break-word;
   }
 
   .flip-btn{

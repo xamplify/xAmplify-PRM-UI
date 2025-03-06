@@ -17,6 +17,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     rssBaseUrl = 'rss';
     contactBaseUrl = 'contacts';
     assignLeadBaseUrl = 'assignleads';
+    sharedLeadsBaseUrl = 'sharedleads';
     partnerBaseUrl = 'partners';
     campaignBaseUrl = 'campaigns';
     upgradeBaseUrl = 'upgrade';
@@ -151,6 +152,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             if (url.indexOf("/home/assignleads/") > -1) {
                 return this.authorizeUrl(roles, url, this.assignLeadBaseUrl);
+            }
+            if (url.indexOf("/home/sharedleads/") > -1) {
+                return this.authorizeUrl(roles, url, this.sharedLeadsBaseUrl);
             }
             if (url.indexOf(this.videoBaseUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.videoBaseUrl);
@@ -363,7 +367,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                     || roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.emailTemplateRole) > -1
                     || roles.indexOf(this.roles.prmRole) > -1 || isMarketing || roles.includes(this.roles.partnersRole) > -1 || roles.includes(this.roles.companyPartnerRole) > -1 || this.utilService.isLoggedAsTeamMember();
                 let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner") > -1);
-                if ((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess) {
+                let hasCampaignAccess = roles.indexOf(this.roles.campaignRole)>-1 && (url.indexOf("/partner") > -1)
+                if ((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess || hasCampaignAccess) {
                     return true;
                 } else {
                     return this.goToAccessDenied(url);

@@ -285,177 +285,102 @@
                                              </div>
                                           </div>
                                           <!---White Labeled-- XNFR-255-->
-                                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12"
-                                             *ngIf="hasShareWhiteLabeledContentAccess">
-                                             <div class="form-group">
-                                                <label class="control-label col-sm-2" translate>White Labeled</label>
-                                                <div class="col-sm-10">
-                                                   <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption" [customSwitch]="damUploadPostDto?.disableWhiteLabelOption"
-                                                   (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
-                                                   <span class="info-color-xampc">
-                                                      <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                         [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage">
-                                                      </i>
-                                                   </span>
-                                                </div>
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                             <div class="form-group signature-align ml0">
+                                                <ng-container *ngIf="hasShareWhiteLabeledContentAccess">
+                                                   <label class="control-label vendor-signaure-label mr10 " translate>White Labeled</label>
+                                                   <div class="">
+                                                      <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption"
+                                                         [customSwitch]="damUploadPostDto?.disableWhiteLabelOption"
+                                                         (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
+                                                      <span class="info-color-xampc mr8">
+                                                         <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                            aria-hidden="true"
+                                                            [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage">
+                                                         </i>
+                                                      </span>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container
+                                                   *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
+                                                   <label class="control-label vendor-signature-align mr10 " translate>Vendor Signature</label>
+                                                   <div class="">
+                                                      <app-custom-ui-switch
+                                                         [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))"
+                                                         [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
+                                                         (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
+                                                      <span class="info-color-xampc">
+                                                         <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                            aria-hidden="true"
+                                                            [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
+                                                         </i>
+                                                      </span>
+                                                      <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
+                                                         class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add your signature <span class="required">*</span>
+                                                      </span>
+                                                   </div>
+                                                </ng-container>
                                              </div>
                                           </div>
                                           <!---White Labeled-- XNFR-255-->
 
                                           <!--XNFR-578-->
-                                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                                             <div class="form-group">
-                                                <label class="control-label col-sm-2">Add To Quick Links</label>
-                                                <div class="col-sm-10">
-                                                   <app-custom-ui-switch [customSwitch]="damUploadPostDto?.addedToQuickLinks"
-                                                   (customUiSwitchEventEmitter)="setAddToQuickLinks($event)"></app-custom-ui-switch>
-                                                   <span class="info-color-xampc">
-                                                      <i class="fa fa-question-circle toggle-info-white-label"
-                                                         data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                         title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
-                                                   </span>
-                                                </div>
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                             <div class="form-group signature-align ml0">
+                                                <ng-container>
+                                                   <label class="control-label  mr10 col-sm-2">Add To Quick Links</label>
+                                                   <div class="">
+                                                      <app-custom-ui-switch [customSwitch]="damUploadPostDto?.addedToQuickLinks"
+                                                         (customUiSwitchEventEmitter)="setAddToQuickLinks($event)"></app-custom-ui-switch>
+                                                      <span class="info-color-xampc">
+                                                         <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                            aria-hidden="true" title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
+                                                      </span>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
+                                                 <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
+                                                   <div class="">
+                                                      <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                         [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                         (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
+                                                      <span class="info-color-xampc">
+                                                         <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                            aria-hidden="true"
+                                                            [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
+                                                         </i>
+                                                      </span>
+                                                   </div>
+                                                </ng-container>
                                              </div>
                                           </div>
-
-                                          <!---vendor signature-- XNFR-833-->
-                                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
-                                             <div class="form-group">
-                                                <label class="control-label col-sm-2" translate>Vendor Signature</label>
-                                                <div class="col-sm-10">
-                                                   <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))" [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
-                                                   (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
-                                                   <span class="info-color-xampc">
-                                                      <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                         [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
-                                                      </i>
-                                                   </span>
-                                                   <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)" class="choose-signature-text"
-                                                      (click)="openAddSignatureModalPopUp()">
-                                                       Add your signature <span class="required">*</span>
-                                                   </span>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <!---vendor signature-- XNFR-833-->
-
-                                           <!---partner signature-- XNFR-833-->
-                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
-                                           <div class="form-group">
-                                              <label class="control-label col-sm-2" translate>Partner Signature</label>
-                                              <div class="col-sm-10">
-                                                 <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption" [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
-                                                 (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
-                                                 <span class="info-color-xampc">
-                                                    <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                       [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
-                                                    </i>
-                                                 </span>
-                                              </div>
-                                           </div>
-                                        </div>
-                                        <!---partner signature-- XNFR-833-->
 
                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                              <div class="form-group" style="margin-bottom: 0;">
                                                 <label class="control-label col-sm-2" translate>Tags
                                                 </label>
-                                                <div class="col-sm-10  col-xs-12 inline">
-                                                   <div class="portlet light"
-                                                      style="width: 100%;padding: 5px !important;">
-                                                      <div
-                                                         class="portlet-title tabbable-line aligncheckbox-lineto-table">
-                                                         <div class="inline" style="float: right;">
-                                                            <div class="input-icon left" style="padding-bottom: 5px;">
-                                                               <input type="text" [(ngModel)]="tagSearchKey"
-                                                                  [ngModelOptions]="{standalone: true}"
-                                                                  placeholder="Search..." class="form-control"
-                                                                  (keypress)="tagEventHandler($event.keyCode);"
-                                                                  style="padding: 6px 12px;">
-                                                               <button type="button"
-                                                                  class="glyphicon glyphicon-remove search-box-item-clear"
-                                                                  *ngIf="tagSearchKey"
-                                                                  (click)="tagSearchKey='';searchTags();"></button>
-                                                               <button type="button"
-                                                                  class="search-box-item-click email-search"
-                                                                  (click)="searchTags()">
-                                                                  <i class="fa fa-search cesf-xamp"></i></button>
+                                                <div class="col-sm-8 col-xs-8">
+                                                   <button *ngIf="savedTags.length==0" type="button" class="btn btn-primary add-btn mb10" (click)="addTag()"
+                                                      data-toggle="tooltip" data-placement="top" title="Pick up Tag'(s)">
+                                                      <i class="fa fa-plus mr5" aria-hidden="true"></i>Pick up Tag'(s)</button>
+                                                   <!--  -->
+                                                   <div *ngIf="savedTags.length>0" class="add_tag-container">
+                                                      <ng-container class="add-tag-list">
+                                                         <ng-container *ngFor="let tag of tagsListFirstColumn; let i = index">
+                                                            <div class="add_tag">
+                                                               {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                                               <span class="close-btn" (click)="removeTag(tag)">&times;</span>
                                                             </div>
-                                                            <div style="padding-left: 10px;">
-                                                               <button type="button" class="btn btn-primary add-btn"
-                                                                  (click)="addTag()" data-toggle="tooltip"
-                                                                  data-placement="top" title="Add a Tag">
-                                                                  <i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                         </ng-container>
+                                                         <ng-container *ngFor="let tag of tagsListSecondColumn; let i = index">
+                                                            <div class="add_tag">
+                                                               {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                                               <span class="close-btn" (click)="removeTag(tag)">&times;</span>
                                                             </div>
-                                                         </div>
-                                                      </div>
-                                                      <div class="scroller-lg">
-                                                         <table class="table table-bordered no-footer tags-table"
-                                                            id="tags_list">
-                                                            <tbody>
-                                                               <tr role="row"
-                                                                  *ngFor="let tag of tagsListFirstColumn;let i = index"
-                                                                  style="vertical-align: middle;padding: 0px;">
-                                                                  <td style="padding: 5px;vertical-align: middle;"
-                                                                     (click)="updateSelectedTags(tag,$event.target.checked)">
-                                                                     <div
-                                                                        class="col-xs-2 col-sm-2 col-lg-2 col-sm-offset-2 ml_0">
-                                                                        <label class="forms-check-label inline">
-                                                                           <input type="checkbox"
-                                                                              class="form-check-input checkBox_shadow"
-                                                                              [checked]="damUploadPostDto.tagIds != undefined && damUploadPostDto.tagIds.length > 0 && damUploadPostDto.tagIds.indexOf(tag.id)>-1">
-                                                                        </label>
-                                                                     </div>
-                                                                     <div>
-                                                                        <div class="col-xs-9 col-sm-9 col-lg-5 pl_4"
-                                                                           style="padding-left: 0px;"
-                                                                           data-toggle="tooltip" data-placement="bottom"
-                                                                           title="{{tag.tagName}}">
-                                                                           <div
-                                                                              class="btn text-wrap btn-primary-dark btn-primary-light"
-                                                                              style="padding: 4px 10px;border-radius: 2px !important;">
-                                                                              {{tag.tagName | slice:0:15}} <span
-                                                                                 *ngIf="tag.tagName?.length>15">..</span>
-                                                                           </div>
-                                                                        </div>
-                                                                     </div>
-                                                                  </td>
-                                                                  <td style="padding: 5px;vertical-align: middle;"
-                                                                     (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
-                                                                     <div
-                                                                        class="col-xs-2 col-sm-2 col-lg-2 col-sm-offset-2 ml_0">
-                                                                        <label class="forms-check-label inline">
-                                                                           <input
-                                                                              *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                                                              type="checkbox"
-                                                                              class="form-check-input checkBox_shadow"
-                                                                              [checked]="damUploadPostDto.tagIds != undefined && damUploadPostDto.tagIds.length > 0 && damUploadPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
-                                                                        </label>
-                                                                     </div>
-                                                                     <div class="col-xs-9 col-sm-9 col-lg-5 pl_4"
-                                                                        style="padding-left: 0px;"
-                                                                        *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                                                        title="{{tagsListSecondColumn[i].tagName}}"
-                                                                        data-toggle="tooltip" data-placement="bottom">
-                                                                        <div
-                                                                           class="btn text-wrap btn-primary-dark btn-primary-light"
-                                                                           style="padding: 4px 10px;border-radius: 2px !important;">
-                                                                           {{tagsListSecondColumn[i].tagName |
-                                                                           slice:0:15}} <span
-                                                                              *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span>
-                                                                        </div>
-                                                                     </div>
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                         <div
-                                                            *ngIf="(tagsListFirstColumn == undefined || 1 > tagsListFirstColumn.length) && (tagsListSecondColumn == undefined || 1 > tagsListSecondColumn.length)"
-                                                            class="alert alert-info">
-                                                            <strong>No Tags Found.</strong>
-                                                         </div>
-                                                      </div>
+                                                         </ng-container>
+                                                      </ng-container>
                                                    </div>
+                                                   <a *ngIf="savedTags.length>0" class="add_more-btn" (click)="addTag()">+ Add more tags</a>
                                                 </div>
                                              </div>
                                           </div>
@@ -543,7 +468,9 @@
                                                    <div class="mDesc overflowtable-control">
                                                       <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                                                       <app-partner-company-and-groups
-                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
+                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
+                                                            ((!authenticationService?.approvalRequiredForAssets && damUploadPostDto?.approvalStatus !== 'REJECTED')
+                                                            || (authenticationService?.approvalRequiredForAssets && ((!isAdd && isApprover && damUploadPostDto?.createdByAnyApprover) || (isAdd && isApprover))) || damUploadPostDto?.approvalStatus === 'APPROVED')"
                                                          [moduleName]="'dam'" [inputId]="id"
                                                          [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
                                                          [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
@@ -566,10 +493,23 @@
                            <button [disabled]="isDisableForm" class="btn Btn-Gray" id="right"
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
-                           <button [disabled]="!isValidForm || isDisableForm" id="right"
+                           <button *ngIf="!authenticationService.approvalRequiredForAssets || isAdd || 
+                              (!isAdd && (!isApprover || damUploadPostDto.createdByAnyApprover || (damUploadPostDto?.approvalStatus !== 'DRAFT' && damUploadPostDto?.approvalStatus !== 'REJECTED')))"
+                            [disabled]="!isValidForm || isDisableForm" id="right"
                               style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
-                              type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate><span
+                              type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
+                           <!-- XNFR-884 -->
+                           <button *ngIf="isAdd || (!isAdd && (damUploadPostDto?.approvalStatus == 'DRAFT' || damUploadPostDto?.approvalStatus == 'REJECTED'))" class="button_blue bgcolor-unset pos_mar_rgt4"
+                              [disabled]="!isValidForm || isDisableForm || disableSaveAsDraftButton || damUploadPostDto?.published || (!isAdd && (damUploadPostDto?.approvalStatus !== 'DRAFT' && damUploadPostDto?.approvalStatus !== 'REJECTED'))"
+                              id="right" style="padding-top:1px;padding-right:0px;" type="button"
+                              (click)="isVideoAsset?saveAsDraftVideo():saveAsDraftAndUpload()"
+                              data-placement="top" [attr.title]="damUploadPostDto?.published ? properties.CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED :
+                                 disableSaveAsDraftButton ? properties.CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS :
+                                 (!isVideoAsset ? properties.DRAFT_ASSET_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS
+                                 : properties.DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS)" translate>
+                              <span class="btn btn-primary"> {{ saveAsDraftButtonText }} </span>
+                           </button>
                         </div>
                      </div>
                   </div>
@@ -707,7 +647,7 @@
 </div>
 <!-- ADD TAG POPUP -->
 <div *ngIf="openAddTagPopup">
-   <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
+   <app-add-tags-util [pagination]="pagination" [isAddTag]="true" [selectedTags]= "savedTags" (notifyParent)="resetTagValues($event)">
    </app-add-tags-util>
 </div>
 <!--record video model popup start-->

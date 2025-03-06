@@ -132,6 +132,12 @@ export class ContactDetailsComponent implements OnInit {
   isRegisterDealEnabled: boolean = true;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   showCompanyCampaigns: boolean = false;
+  formattedContactsCount: string = '0';
+  formattedLeadsCount: string = '0';
+  formattedDealsCount: string = '0';
+  formattedCampaignsCount: string = '0';
+  totalDealAmount: any = "$ 0.0";
+  dealAmountLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -168,15 +174,16 @@ export class ContactDetailsComponent implements OnInit {
     if (this.isCompanyJourney) {
       this.getCompany();
       this.fetchContactsAndCount();
+      this.fetchTotalDealAmount();
     } else {
       this.getContact();
       this.checkTermsAndConditionStatus();
       this.getLegalBasisOptions();
-      this.fetchLogoFromExternalSource();
       this.getVendorRegisterDealValue();
     }
     this.referenceService.goToTop();
     this.getActiveCalendarDetails();
+    this.fetchLogoFromExternalSource();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
     this.fetchCampaignsAndCount();
@@ -423,22 +430,15 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchLeadsAndCount() {
     this.referenceService.loading(this.leadsLoader, true);
-    let id;
-    let isCompanyJourney = false;
-    if (this.isCompanyJourney) {
-      id = this.selectedContactListId;
-      isCompanyJourney = true;
-    } else {
-      id = this.contactId;
-    }
-    this.leadsService.findLeadsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName, isCompanyJourney).subscribe(
+    this.leadsService.findLeadsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.leadsCount = data.totalRecords;
           this.contactLeads = data.list;
+          this.formattedLeadsCount = this.formatNumber(this.leadsCount);
         } else {
           this.leadsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -459,6 +459,7 @@ export class ContactDetailsComponent implements OnInit {
     this.viewLeads = false;
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
   }
 
   viewLead(leadId:any) {
@@ -481,15 +482,7 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchDealsAndCount() {
     this.referenceService.loading(this.dealsLoader, true);
-    let id;
-    let isCompanyJourney = false;
-    if (this.isCompanyJourney) {
-      id = this.selectedContactListId;
-      isCompanyJourney = true;
-    } else {
-      id = this.contactId;
-    }
-    this.dealsService.findDealsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
+    this.dealsService.findDealsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
       this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
@@ -497,6 +490,7 @@ export class ContactDetailsComponent implements OnInit {
         if (isSuccess) {
           this.dealsCount = data.totalRecords;
           this.contactDeals = data.list;
+          this.formattedDealsCount = this.formatNumber(this.dealsCount);
         } else {
           this.dealsResponse = new CustomResponse('Error', this.properties.failedToFetchDealsResponseMessage, true);
         }
@@ -527,6 +521,7 @@ export class ContactDetailsComponent implements OnInit {
   closeViewMoreDealsTab() {
     this.viewDeals = false;
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
   }
 
   showDealSubmitSuccess(event) {
@@ -534,6 +529,7 @@ export class ContactDetailsComponent implements OnInit {
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
+    this.fetchTotalDealAmount();
     this.customResponse = new CustomResponse('SUCCESS', this.properties.dealSubmittedSuccessResponseMessage, true);
   }
 
@@ -570,22 +566,15 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchCampaignsAndCount() {
     this.referenceService.loading(this.campaignsLoader, true);
-    let id;
-    let isCompanyJourney = false;
-    if (this.isCompanyJourney) {
-      id = this.selectedContactListId;
-      isCompanyJourney = true;
-    } else {
-      id = this.contactId;
-    }
-    this.campaignService.fetchCampaignsAndCountByContactId(id,this.vanityLoginDto.vanityUrlFilter,
-      this.vanityLoginDto.vendorCompanyProfileName, isCompanyJourney).subscribe(
+    this.campaignService.fetchCampaignsAndCountByContactId(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.campaignsCount = data.totalRecords;
           this.contactCampaigns = data.list;
+          this.formattedCampaignsCount = this.formatNumber(this.campaignsCount);
         } else {
           this.campaignsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -677,7 +666,7 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchLogoFromExternalSource() {
     this.imgPathLoading = true;
-    this.activityService.fetchLogoFromExternalSource(this.contactId).subscribe(
+    this.activityService.fetchLogoFromExternalSource(this.contactId, this.isCompanyJourney).subscribe(
       response => {
         const data = response.data;
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK && data != '') {
@@ -745,6 +734,9 @@ export class ContactDetailsComponent implements OnInit {
 
   reloadMeetingTab(event) {
     this.isReloadMeetingTab = event;
+    if (!this.referenceService.checkIsValidString(this.activeCalendarDetails.userUri)) {
+      this.getActiveCalendarDetails();
+    }
   }
 
   toggleSidebar() {
@@ -794,13 +786,14 @@ export class ContactDetailsComponent implements OnInit {
 
   fetchContactsAndCount() {
     this.referenceService.loading(this.contactsLoader, true);
-    this.contactService.fetchContactsAndCountByUserListId(this.selectedContactListId).subscribe(
+    this.contactService.fetchContactsAndCountByUserListId(this.contactId).subscribe(
       response => {
         const data = response.data;
         let isSuccess = response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK;
         if (isSuccess) {
           this.contactsCount = data.totalRecords;
           this.companyContacts = data.list;
+          this.formattedContactsCount = this.formatNumber(this.contactsCount);
         } else {
           this.contactsResponse = new CustomResponse('Error', this.properties.failedToFetchLeadsResponseMessage, true);
         }
@@ -814,16 +807,13 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   viewContactJourney(contactId:any) {
-    let encodedId = this.referenceService.encodePathVariable(contactId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    // let encodedCompanyId = this.referenceService.encodePathVariable(this.contactId);
-    // let url = RouterUrlConstants.home+RouterUrlConstants.contacts+'company/'+RouterUrlConstants.details+encodedUserListId+"/"+encodedId+"/"+encodedCompanyId;
-    // this.referenceService.goToRouter(url);
+    let encodedId = this.referenceService.encodePathVariableInNewTab(contactId);
+    let encodedUserListId = this.referenceService.encodePathVariableInNewTab(this.selectedContact.companyUserListId);
     this.referenceService.openWindowInNewTab(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodedId);
   }
 
   viewMoreContacts() {
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
+    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.companyUserListId);
     let encodedCompanyId = this.referenceService.encodePathVariable(this.contactId);
     this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedUserListId + '/' + encodedCompanyId);
   }
@@ -831,14 +821,13 @@ export class ContactDetailsComponent implements OnInit {
   backToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
     let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    let url = "home/company/manage/details/"+encodedUserListId+"/"+encodedId;
+    let url = "home/company/manage/details/"+encodedId;
     this.referenceService.goToRouter(url);
   }
 
   viewCompanyJourney() {
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
     let contactCompanyId = this.referenceService.encodePathVariable(this.selectedContact.contactCompanyId);
-    let url = "home/company/manage/details/"+encodedUserListId+"/"+contactCompanyId;
+    let url = "home/company/manage/details/"+contactCompanyId;
     this.referenceService.openWindowInNewTab(url);
   }
 
@@ -858,6 +847,35 @@ export class ContactDetailsComponent implements OnInit {
 
   closeCompanyCampaigns() {
     this.showCompanyCampaigns = false;
+  }
+
+  formatNumber(input: number) {
+    if (input >= 1000000) {
+      return Math.floor(input / 1000000) + 'M';
+    } else if (input >= 1000) {
+      const roundedValue = Math.floor(input / 100) / 10;
+      if (input % 1000 !== 0) {
+        return `${roundedValue}k+`;
+      }
+      return `${roundedValue}k`;
+    } else {
+      return input.toString();
+    }
+  }
+
+  fetchTotalDealAmount() {
+    this.referenceService.loading(this.dealAmountLoader, true);
+    this.dealsService.fetchTotalDealAmount(this.contactId,this.vanityLoginDto.vanityUrlFilter,
+      this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.totalDealAmount = response.data;
+        }
+        this.referenceService.loading(this.dealAmountLoader, false);
+      }, error => {
+        this.referenceService.loading(this.dealAmountLoader, false);
+      }
+    )
   }
   
 }

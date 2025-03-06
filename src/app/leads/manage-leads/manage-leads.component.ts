@@ -22,6 +22,7 @@ import { Properties } from 'app/common/models/properties';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { DashboardService } from 'app/dashboard/dashboard.service';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -116,13 +117,19 @@ export class ManageLeadsComponent implements OnInit {
   statusLoader = true;
   isStatusLoadedSuccessfully = true;
 
-
+  /*** XNFR-839 ****/
+  showSlectFieldComponent: boolean = false;
+  showOrderFieldComponent: boolean = false;
+  logginUserType: string;
+  enabledMyPreferances: boolean = false;
+  /*** XNFR-839 ****/
+  activeCRMDetailsByCompany :any; //XNFR-887
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService,private leadsService: LeadsService,
-    public integrationService: IntegrationService,public properties:Properties) {
+    public integrationService: IntegrationService,public properties:Properties,public dashboardService:DashboardService) {
 
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -237,6 +244,7 @@ triggerUniversalSearch(){
                   if (response.data === "PartnerView") {
                     this.showPartner();
                   } else if (response.data === "VendorView") {
+                    this.logginUserType = 'v';
                     this.showVendor();
                   }
                 }
@@ -282,6 +290,7 @@ triggerUniversalSearch(){
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      this.logginUserType = 'v';
       this.leadsSortOption.searchKey = "";//XNFR=799
       this.getActiveCRMDetails();
       this.showLeads();
@@ -297,6 +306,7 @@ triggerUniversalSearch(){
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
+    this.logginUserType = 'p';
     this.leadsSortOption.searchKey = "";//XNFR=799
     this.showLeads();
     this.getActiveCRMDetails();
@@ -517,7 +527,7 @@ triggerUniversalSearch(){
         () => { }
       );
   }
-
+ 
   listLeadsForVendor(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.listLeadsForVendor(pagination)
@@ -1410,6 +1420,7 @@ triggerUniversalSearch(){
                 }else if(data.statusCode == 401){
                   this.leadsResponse = new CustomResponse('SUCCESS', data.message, true);
                 }
+                this.selectedFields = [];
             },error => {
               this.httpRequestLoader.isServerError = true;
             },
@@ -1575,7 +1586,71 @@ triggerUniversalSearch(){
         () => { }
       );
   }
-
-
+  /*** XNFR-839 */
+  selectedFields: any[] = [];
+  exportExcelSelection() {
+    if (this.authenticationService.companyProfileName) {
+        this.getActiveCRMDetailsByCompanyProfileName();
+    } else {
+      this.downloadLeads(this.leadsPagination);
+    }
+  }
   
+  openSelectFieldPopup() {
+    this.showSlectFieldComponent = true
+  }
+  closeEmitter(event: any) {
+    let input = event;
+    if (input['submit'] === 'submit') {
+      this.showSlectFieldComponent = input['close'];
+      this.enabledMyPreferances = input['myPreferances'];
+      this.selectedFields = input['selectFields'];
+      this.saveSelectedFields();
+    }
+    else {
+      this.showSlectFieldComponent = false;
+    }
+  }
+
+
+  saveSelectedFields() {
+    let selectedFieldsResponseDto = {};
+    console.log("this.selectedFields :",this.selectedFields)
+    selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+    selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+    selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+    selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+    this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+      .subscribe(
+        data => {
+          if (data.statusCode === 200) {
+
+          }
+          this.leadsPagination.selectedExcelFormFields = this.selectedFields;
+          this.downloadLeads(this.leadsPagination)
+        },
+        error => console.log(error),
+        () => {
+        });
+  }
+ 
+  getActiveCRMDetailsByCompanyProfileName() {
+    this.integrationService.getActiveIntegrationTypeByCompanyName(this.vanityLoginDto.vendorCompanyProfileName )
+      .subscribe(
+        response => {
+          this.activeCRMDetailsByCompany = response.data;
+          if (this.activeCRMDetailsByCompany === undefined || this.activeCRMDetailsByCompany === null || this.activeCRMDetailsByCompany === '' || this.activeCRMDetailsByCompany === "salesforce") {
+            this.showSlectFieldComponent = true;
+          } else {
+            this.downloadLeads(this.leadsPagination);
+          }
+        }, (error) => {
+          console.error("Error fetching CRM details:", error);
+          this.downloadLeads(this.leadsPagination); // Fallback in case of an API error
+        });
+  }
+
+  /*** XNFR-839 */
+
+
 }

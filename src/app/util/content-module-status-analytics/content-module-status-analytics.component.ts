@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContentModuleStatusAnalyticsDTO } from 'app/contacts/models/ContentModuleStatusAnalyticsDTO';
 import { DamService } from 'app/dam/services/dam.service';
 import { ApproveService } from 'app/approval/service/approve.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-content-module-status-analytics',
@@ -22,7 +23,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
   timeZone: string;
   moduleLabel: string;
 
-  constructor(private approveService: ApproveService) {
+  constructor(private approveService: ApproveService, private authenticationService: AuthenticationService) {
 
   }
 
@@ -63,6 +64,7 @@ export class ContentModuleStatusAnalyticsComponent implements OnInit {
     this.contentModuleStatusAnalyticsDTO.totalCount = data.totalCount;
     this.contentModuleStatusAnalyticsDTO.approvedCount = data.approvedCount;
     this.contentModuleStatusAnalyticsDTO.rejectedCount = data.rejectedCount;
+    this.contentModuleStatusAnalyticsDTO.draftCount = data.draftCount;
     this.contentModuleStatusAnalyticsDTO.pendingCount = data.pendingCount;
   }
 

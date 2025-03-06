@@ -32,6 +32,7 @@ export class SfDealComponent implements OnInit {
   @Input() public actionType: any;
   @Input() public contactId: any;
   @Input() public campaignId: any;
+  @Input() public showChangeContactButton: boolean = false;
   @Output() isFormValid = new EventEmitter();
   form: Form = new Form();
   errorMessage: string;
@@ -79,7 +80,7 @@ export class SfDealComponent implements OnInit {
   //XNFR-710
   isSalesForceEnabledAsActiveCRM : boolean = false;
   formLabels: any;
-
+  previousTicketTypeId: any = 0;
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
@@ -215,21 +216,22 @@ export class SfDealComponent implements OnInit {
       if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
         this.isDealRegistrationFormInvalid = true;
         this.isFormValid.emit(this.isDealRegistrationFormInvalid);
-        this.addLoader();
         if ("SALESFORCE" === this.activeCRM.createdForActiveCRMType && this.isPreview && !("CONNECTWISE" === this.activeCRM.createdByActiveCRMType)) {
           this.isSalesForceEnabledAsActiveCRM = true;
           this.getFormLablesValues();
-        } else {
+        } else if (this.ticketTypeId != this.previousTicketTypeId) {
+          this.previousTicketTypeId = this.ticketTypeId;
           this.getActiveCRMCustomForm();
         }
       }
-      if (this.selectedContact != undefined && this.selectedContact != null) {
+      if (this.selectedContact != undefined && this.selectedContact != '') {
         this.autoFillContactFieldsForDeal();
       }
     }
   }
 
   getActiveCRMCustomForm() {
+    this.addLoader();
     let ticketTypeId = 0;
     if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
       ticketTypeId = this.ticketTypeId;
@@ -257,6 +259,9 @@ export class SfDealComponent implements OnInit {
           if (columnInfo.value !== undefined && columnInfo.formDefaultFieldType === 'CONTACT_EMAIL'
             && this.contactId != undefined && this.actionType === 'edit') {
             columnInfo.columnDisable = true;
+          }
+          if ('ZOHO' == this.activeCRM.createdForActiveCRMType && columnInfo.labelType == "lookup") {
+            columnInfo.selectedChoiceValue = columnInfo.lookupDropDownChoices.find(column => column.id == columnInfo.value).name;
           }
         });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
@@ -873,6 +878,7 @@ export class SfDealComponent implements OnInit {
   }
 
   getFormLablesValues() {
+    this.addLoader();
     this.integrationService.getFormLabelsValues(this.dealId, this.opportunityType, this.createdForCompanyId).subscribe(result => {
       this.showSFFormError = false;
       this.removeLoader();
@@ -935,8 +941,6 @@ export class SfDealComponent implements OnInit {
           column.value = this.selectedContact.city;
         } else if (column.formDefaultFieldType === 'CONTACT_COUNTRY' && addActionType && !column.nonInteractive) {
           column.value = this.selectedContact.country;
-        } else if (column.formDefaultFieldType === 'CONTACT_TITLE' && addActionType) {
-          column.value = this.selectedContact.jobTitle;
         }
       }
       this.validateAllFields();

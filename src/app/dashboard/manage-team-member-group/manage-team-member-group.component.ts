@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SweetAlertParameterDto } from './../../common/models/sweet-alert-parameter-dto';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -12,8 +13,6 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { TeamMemberService } from 'app/team/services/team-member.service';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { TeamMember } from 'app/team/models/team-member';
-
-
 declare var $: any;
 @Component({
   selector: 'app-manage-team-member-group',
@@ -21,7 +20,7 @@ declare var $: any;
   styleUrls: ['./manage-team-member-group.component.css'],
   providers: [HttpRequestLoader, SortOption, Properties, TeamMemberService, CallActionSwitch]
 })
-export class ManageTeamMemberGroupComponent implements OnInit {
+export class ManageTeamMemberGroupComponent implements OnInit,OnDestroy {
 
   customResponse: CustomResponse = new CustomResponse();
   updateGroupResponse: CustomResponse = new CustomResponse();
@@ -43,12 +42,20 @@ export class ManageTeamMemberGroupComponent implements OnInit {
   selectedGroupId: number = 0;
   selectedGroup: any = {};
   groupEditedFromPreviewSection = false;
+  /***XNFR-883***/
+  isDefaultSSOGroupIconClicked = false;
+  activateDefaultSSOSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public teamMemberService: TeamMemberService, public callActionSwitch: CallActionSwitch) {
   }
+  ngOnDestroy(): void {
+    this.referenceService.closeSweetAlert();
+  }
 
   ngOnInit() {
+    this.activateDefaultSSOSweetAlertParameterDto.confirmButtonText = this.properties.proceed;
+    this.activateDefaultSSOSweetAlertParameterDto.text = this.properties.defaultSSOTeamMemberGroupConfirmationMessage;
     this.findGroups(this.pagination);
   }
 
@@ -109,6 +116,8 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     this.groupDto.defaultGroup = false;
     this.groupDto.saveAs = false;
     this.groupDto.previewGroup = false;
+    /**XNFR-883***/
+    this.groupDto.defaultSsoGroup = false;
     this.findDefaultModules();
 
   }
@@ -312,6 +321,7 @@ export class ManageTeamMemberGroupComponent implements OnInit {
         this.groupDto = map['teamMemberGroupDTO'];
         this.groupDto.saveAs = saveAs;
         this.groupDto.previewGroup = group.defaultGroup && !saveAs;
+        this.groupDto.defaultSsoGroup = group.defaultSsoGroup;
         this.defaultModules = map['modules'];
         this.isAdd = saveAs;
         if(saveAs){
@@ -344,8 +354,51 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     }
   }
 
-  saveAs(group){
+  saveAs(group:any){
     this.getTeamMemberGroupDetailsById(group,true);
   }
+
+  /**XNFR-883***/
+  selectOrUnSelectDefaultSSOGroup(event:any,groupDto:any){
+    groupDto.defaultSsoGroup = event;
+  }
+
+  /**XNFR-883***/
+  confirmAlertForDefaultSSOGroup(group:any){
+    this.isDefaultSSOGroupIconClicked = true;
+    this.selectedGroupId = group.id;
+  }
+
+  /**XNFR-883***/
+  setAsDefaultSSOGroup(event:any){
+    if(event){
+      let isApiCompleted = false;
+      this.customResponse = new CustomResponse();
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.teamMemberService.setAsDefaultSSOGroup(this.selectedGroupId).subscribe(
+        response=>{
+          isApiCompleted = true;
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.customResponse = new CustomResponse("SUCCESS",response.message,true);
+        },error=>{
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.referenceService.showSweetAlertServerErrorMessage();
+          this.resetSelectedSSOGroupId();
+        },()=>{
+          if(isApiCompleted){
+            this.resetSelectedSSOGroupId();
+            this.findGroups(this.pagination);
+          }
+        });
+    }else{
+      this.resetSelectedSSOGroupId();
+    }
+
+  }
   
+
+  private resetSelectedSSOGroupId() {
+    this.isDefaultSSOGroupIconClicked = false;
+    this.selectedGroupId = 0;
+  }
 }

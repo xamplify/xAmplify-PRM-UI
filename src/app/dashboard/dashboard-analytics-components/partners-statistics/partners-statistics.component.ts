@@ -24,6 +24,7 @@ export class PartnersStatisticsComponent implements OnInit {
 	partnerAnalyticsCountLoader = false;
 	partnerAnalyticsCountStatusCode = 200;
 	@Input()applyFilter:boolean;
+	@Input() isDashboardView: boolean;
 	constructor(public dashboardService: DashboardService, public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService, public pagination: Pagination,
 		public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
 		public xtremandLogger: XtremandLogger, public properties: Properties) {

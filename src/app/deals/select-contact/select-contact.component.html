@@ -59,7 +59,7 @@
                             <ng-container *ngFor='let contact of pagination.pagedItems; let i=index'>
                               <tr [class.row-selected]="contact.contactId === showSelectedContact">
                                 <td><input id="contactCheckBox-{{i}}" class="pointer" (click)="selectLeadOnCheckBoxClick(contact,i)"
-                                    [checked]="contact.contactId === showSelectedContact" type="checkbox">
+                                    [(ngModel)]="showSelectedContact" [value]="contact.contactId" type="radio">
                                 </td>
                                 <td>
                                   <app-user-info [userInfo]="contact"></app-user-info>

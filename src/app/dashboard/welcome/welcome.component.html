@@ -33,7 +33,7 @@
         <h4 class="welcome-header text-overflow"><span  data-toggle="tooltip" data-placement="bottom" title="{{logedInCustomerCompanyName}}">{{'Welcome' | translate}}
           {{logedInCustomerCompanyName}}</span></h4>
       </div>
-      <div class="col-md-6 col-xs-6 col-sm-6"
+      <div class="col-md-5 col-xs-6 col-sm-6"
         [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
         <div style="display: flex;">
           <h4 translate>Do you want to set this as your default screen?</h4>
@@ -53,7 +53,7 @@
   <!--XNFR-458--->
   <app-dashboard-banner-images></app-dashboard-banner-images>
   <!--XNFR-458--->
-  <div class="page-bar page-bar-shadow shadow-radius">
+  <div class="page-bar page-bar-shadow shadow-radius margin_17">
     <app-response-message class="pg8" [customResponse]="dealResponse"
       *ngIf="dealResponse.isVisible"></app-response-message>
     <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
@@ -72,7 +72,7 @@
     <app-response-message [customResponse]="customResponse"
       *ngIf="customResponse.isVisible && !welcomePageItemsLoader "></app-response-message>
   </div>
-  <div class="page-bar page-bar-shadow"
+  <div class="page-bar page-bar-shadow margin_17"
     *ngIf="!authenticationService?.module?.contentLoader &&!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible && showDiv">
     <div class="col-xs-12">
       <!--Partners-->

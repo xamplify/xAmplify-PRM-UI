@@ -58,6 +58,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	isFromCompanyJourneyEditContacts: boolean = false;
 	companyJourneyId: any;
 	customResponse: CustomResponse = new CustomResponse();
+	companyRouter = RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage;
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -420,6 +421,43 @@ setAutoResponsesPage(event: any,campaign:any) {
 			this.referenceService.goToRouter(url + "manage");
 		}
    }
+	}
+
+	backToManageContacts() {
+		let url = RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.manage;
+		url += this.isFromEditContacts ? '' : '/all';
+		this.referenceService.goToRouter(url);
+	}
+
+	backToCompanyJourney() {
+		let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
+		let url = "home/company/manage/details/" + encodedId;
+		this.referenceService.goToRouter(url);
+	}
+
+	backToEditContacts() {
+		if (this.isFromCompanyJourneyEditContacts) {
+			let encodedUserListId = this.referenceService.encodePathVariable(this.userListId);
+			let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+			this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedUserListId + '/' + encodedCompanyId);
+		} else {
+			let encodedURL = this.referenceService.encodePathVariable(this.userListId);
+			this.referenceService.goToRouter(RouterUrlConstants.home + RouterUrlConstants.contacts + RouterUrlConstants.editContacts + encodedURL);
+		}
+	}
+
+	backToContactJourney() {
+		let encodedUserId = this.referenceService.encodePathVariable(this.userIdParameter);
+		let encodedUserListId = this.referenceService.encodePathVariable(this.userListId);
+		if (this.isFromCompanyJourneyEditContacts) {
+			let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
+			let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'ce/' + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId + "/" + encodedCompanyId;
+			this.referenceService.goToRouter(url);
+		} else {
+			let url = RouterUrlConstants.home + RouterUrlConstants.contacts;
+			url += this.isFromEditContacts ? RouterUrlConstants.editContacts + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId : RouterUrlConstants.manage + '/' + RouterUrlConstants.details + encodedUserListId + "/" + encodedUserId;
+			this.referenceService.goToRouter(url);
+		}
 	}
 	
 }

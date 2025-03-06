@@ -29,5 +29,8 @@ export class CustomLinkDto {
     /****XNFR-571***/
     published = false;
 
+    /****XNFR-880***/
+    alternateUrl="";
+    alternateUrls=[];
 
 }

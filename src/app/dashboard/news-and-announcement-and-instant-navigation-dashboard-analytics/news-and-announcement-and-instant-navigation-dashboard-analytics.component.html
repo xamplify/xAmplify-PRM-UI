@@ -1,10 +1,10 @@
-<div class="row" *ngIf="isVanityUrlEnabled">
+<div class="row m0" *ngIf="isVanityUrlEnabled" [ngClass]="{'margin_17':isVanityUrlEnabled, 'border_dashed': isDraggingEnabled}">
     <ngx-loading [show]="isNavigatingToViewAll" [config]="{ backdropBorderRadius: '14px' }"> </ngx-loading>    
    
     <!--News & Announcements-->
-    <div [ngClass]="!authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed ? 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pr-7 pd_btm5':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5'">
+    <div [ngClass]="!authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed ? 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pr-7 pd_btm5':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5 pl0 xsView mb_14'">
         <app-modal-popup-loader [height]="220" *ngIf="isNewsAndAnnouncementApiLoading"></app-modal-popup-loader>
-        <div class="portlet light h-240" *ngIf="!isNewsAndAnnouncementApiLoading">
+        <div class="portlet light h-240 margin_0" *ngIf="!isNewsAndAnnouncementApiLoading">
             <div class="portlet-title">
                 <div class="caption">
                     <h4 class="caption-subject header-css">{{properties?.newsAndAnnouncements}}</h4>
@@ -32,9 +32,9 @@
     </div>
 
     <!--Quick Links-->
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5"  *ngIf="authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5 pr0 xsView"  *ngIf="authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed">
         <app-modal-popup-loader [height]="220" *ngIf="isInstantNavigationLinksApiLoading"></app-modal-popup-loader>
-        <div class="portlet light h-240" *ngIf="!isInstantNavigationLinksApiLoading">
+        <div class="portlet light h-240 margin_0" *ngIf="!isInstantNavigationLinksApiLoading">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-link" aria-hidden="false"></i>

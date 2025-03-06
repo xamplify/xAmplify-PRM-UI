@@ -26,6 +26,8 @@ import { Properties } from 'app/common/models/properties';
 import { UserService } from '../../../core/services/user.service';
 import { ActivatedRoute} from '@angular/router';
 import { VideoFileEventEmitter } from 'app/dam/models/video-file-event-emitter';
+import { DamService } from 'app/dam/services/dam.service';
+import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 
 declare var videojs, QuickSidebar,$: any;
 
@@ -162,11 +164,18 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   /***XNFR-326****/
   /***XNFR-434**/
   isReplaceVideoButtonClicked = false;
+
+  saveAsDraftButtonText: string = "Save as Draft";
+  disableSaveAsDraftButton: boolean = false;
+  isApprover: boolean = false;
+
+
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
       public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public properties: Properties,
-      public embedModalComponent:EmbedModalComponent,private route: ActivatedRoute) {
+      public embedModalComponent:EmbedModalComponent,private route: ActivatedRoute,
+      private damService: DamService) {
       try{
       this.viewType = this.route.snapshot.params['viewType'];
       this.categoryId = this.route.snapshot.params['categoryId'];
@@ -1037,6 +1046,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.findShareWhiteLabelContentAccess();
       /***XNFR-326******/
       this.findAssetPublishEmailNotificationOption();
+
+      /** XNFR-884 **/
+      if (this.authenticationService.approvalRequiredForAssets) {
+        this.checkApprovalPrivilegeForAssets();
+      }
+      
       } catch (error) {
           this.clientError = true;
       }
@@ -1323,121 +1338,140 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   checkTagsValidation(){
    return true;
   }
-  saveVideoObject() {
-      try{
-      if(this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)){
-          if(!this.colorControl){ this.colorControlChange()}
-          this.showError = true
-          setTimeout(()=>{ this.showError = false; },6000)
-      }
-      else {
-      this.validVideoTitle(this.saveVideoFile.title);
-      const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
-      const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
-      let damId = this.saveVideoFile.damId;
-      if (this.isValidTitle === false && this.checkTagsValidation()) {
-          this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating';
-          this.isDisable = true;
-          /****XNFR-255****/
-          let shareAsWhiteLabeledAsset = this.saveVideoFile.shareAsWhiteLabeledAsset;
-          let partnerGroupIds = this.saveVideoFile.partnerGroupIds;
-          let partnerIds = this.saveVideoFile.partnerIds;
-          let partnerGroupSelected = this.saveVideoFile.partnerGroupSelected;
-          let addedToQuickLinks = this.saveVideoFile.addedToQuickLinks;
-          /****XNFR-255****/
-          this.saveVideoFile = this.videoForm.value;
-          this.saveVideoFile.damId = damId;
-          this.saveVideoFile.defaultSetting = this.defaultSettingValue;
-          this.saveVideoFile.playerColor = this.compPlayerColor;
-          this.saveVideoFile.controllerColor = this.compControllerColor;
-          this.saveVideoFile.transparency = this.valueRange;
-          this.saveVideoFile.enableVideoController = this.newEnableController;
-          this.saveVideoFile.allowComments = this.newComments;
-          this.saveVideoFile.allowFullscreen = this.newFullScreen;
-          this.saveVideoFile.allowLikes = this.newAllowLikes;
-          this.saveVideoFile.allowEmbed = this.newAllowEmbed;
-          this.saveVideoFile.enableCasting = this.newEnableCasting;
-          this.saveVideoFile.enableSettings = this.newEnableSetting;
-          this.saveVideoFile.allowSharing = this.newAllowSharing;
-          this.saveVideoFile.is360video = this.newValue360;
-          this.saveVideoFile.startOfVideo = this.callAction.startCalltoAction;
-          this.saveVideoFile.endOfVideo = this.callAction.endCalltoAction;
-          this.saveVideoFile.brandingLogoUri = this.brandLogoUrl;
-          this.saveVideoFile.enableVideoCobrandingLogo = this.enableVideoLogo;
-          if(this.logoDescriptionUrl === '' || this.logoDescriptionUrl === null){
-          this.saveVideoFile.brandingLogoDescUri = null;
-          } else { this.saveVideoFile.brandingLogoDescUri = this.videoUtilService.isStartsWith(this.logoDescriptionUrl); }
-          if(!this.enableVideoLogo){
-              this.saveVideoFile.brandingLogoDescUri = null;
-              this.saveVideoFile.brandingLogoUri = null;
-          }
-          const tags = this.itemOfTags;
-          for (let i = 0; i < tags.length; i++) {
-              if (this.videoFileService.actionValue === 'Save') {
-                  this.newTags[i] = tags[i]['value'];
-              } else {
-                  const tag = tags[i];
-                  if (tag['value'] !== undefined) {
-                      this.newTags[i] = tag['value'];
-                  } else {
-                      this.newTags[i] = tag;
-                  }
-              }
-          }
-          this.saveVideoFile.tags = this.newTags;
-          this.saveVideoFile.title = titleUpdatedValue;
-          this.saveVideoFile.description = descriptionData;
-          this.saveVideoFile.imagePath = this.defaultSaveImagePath;
-          this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
-          this.saveVideoFile.imageFile = null;
-          if (this.videoFileService.actionValue === 'Save') {
-              this.saveVideoFile.action = 'save';
-              this.setShowSaveUpdateValues(true, false);
-          } else {
-              this.saveVideoFile.action = 'update';
-              this.setShowSaveUpdateValues(false, true);
-          }
-          this.saveVideoFile.callACtion = this.enableCalltoAction;
-          this.saveVideoFile.folderId = this.folderId;
-          /****XNFR-255****/
-          this.saveVideoFile.partnerGroupIds = partnerGroupIds
-          this.saveVideoFile.partnerIds = partnerIds;
-          this.saveVideoFile.partnerGroupSelected = partnerGroupSelected;
-          this.saveVideoFile.shareAsWhiteLabeledAsset = shareAsWhiteLabeledAsset;
-          this.saveVideoFile.addedToQuickLinks = addedToQuickLinks;
-           /****XNFR-255****/
-          return this.videoFileService.updateVideoContent(this.saveVideoFile)
-              .subscribe((result: any) => {
-            	  if(result.access){
-                  if (this.saveVideoFile != null) {
-                      if (result.statusCode == 200) {
-                          this.saveVideoFile = result;
-                          this.referenceService.assetResponseMessage = result.message;
-                          this.callVideoEventEmitter(this.saveVideoFile);
-                          this.videoFileService.videoViewBy = 'Save';
-                          this.isDisable = false;
-                      } else if (result.statusCode == 401) {
-                          this.isValidTitle = true;
-                          this.saveButtonTitle = 'Update';
-                          this.isDisable = false;
-                  }
-                  } else {
-                      this.isDisable = false;
-                      this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
-                  }
-              }else{
-            	  this.authenticationService.forceToLogout();
-              }
-              },
-              (error: any) => {
-                  this.isDisable = false;
-                  this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
-                  this.xtremandLogger.errorPage(error);
-              }),
-              () => this.xtremandLogger.log(this.saveVideoFile);
-      } else { if (!this.titleDiv) { this.titleDivChange(); } } }
-    }catch(error){ this.xtremandLogger.error(error);}
-  }
+    saveVideoObject() {
+        try {
+            if (this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)) {
+                if (!this.colorControl) { this.colorControlChange() }
+                this.showError = true
+                setTimeout(() => { this.showError = false; }, 6000)
+            }
+            else {
+                this.validVideoTitle(this.saveVideoFile.title);
+                const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
+                const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
+                let damId = this.saveVideoFile.damId;
+                if (this.isValidTitle === false && this.checkTagsValidation()) {
+                    let saveAsDraft = this.saveVideoFile.draft;
+                    saveAsDraft ? this.saveAsDraftButtonText = 'Saving...'
+                        : this.saveButtonTitle = this.saveButtonTitle.includes('Save') ? 'Saving...' : 'Updating...';
+                    saveAsDraft ? (this.disableSaveAsDraftButton = true) : (this.isDisable = true);
+                    /****XNFR-255****/
+                    let shareAsWhiteLabeledAsset = this.saveVideoFile.shareAsWhiteLabeledAsset;
+                    let partnerGroupIds = this.saveVideoFile.partnerGroupIds;
+                    let partnerIds = this.saveVideoFile.partnerIds;
+                    let partnerGroupSelected = this.saveVideoFile.partnerGroupSelected;
+                    let addedToQuickLinks = this.saveVideoFile.addedToQuickLinks;
+                    /****XNFR-255****/
+                    this.saveVideoFile = this.videoForm.value;
+                    this.saveVideoFile.damId = damId;
+                    this.saveVideoFile.defaultSetting = this.defaultSettingValue;
+                    this.saveVideoFile.playerColor = this.compPlayerColor;
+                    this.saveVideoFile.controllerColor = this.compControllerColor;
+                    this.saveVideoFile.transparency = this.valueRange;
+                    this.saveVideoFile.enableVideoController = this.newEnableController;
+                    this.saveVideoFile.allowComments = this.newComments;
+                    this.saveVideoFile.allowFullscreen = this.newFullScreen;
+                    this.saveVideoFile.allowLikes = this.newAllowLikes;
+                    this.saveVideoFile.allowEmbed = this.newAllowEmbed;
+                    this.saveVideoFile.enableCasting = this.newEnableCasting;
+                    this.saveVideoFile.enableSettings = this.newEnableSetting;
+                    this.saveVideoFile.allowSharing = this.newAllowSharing;
+                    this.saveVideoFile.is360video = this.newValue360;
+                    this.saveVideoFile.startOfVideo = this.callAction.startCalltoAction;
+                    this.saveVideoFile.endOfVideo = this.callAction.endCalltoAction;
+                    this.saveVideoFile.brandingLogoUri = this.brandLogoUrl;
+                    this.saveVideoFile.enableVideoCobrandingLogo = this.enableVideoLogo;
+                    if (this.logoDescriptionUrl === '' || this.logoDescriptionUrl === null) {
+                        this.saveVideoFile.brandingLogoDescUri = null;
+                    } else { this.saveVideoFile.brandingLogoDescUri = this.videoUtilService.isStartsWith(this.logoDescriptionUrl); }
+                    if (!this.enableVideoLogo) {
+                        this.saveVideoFile.brandingLogoDescUri = null;
+                        this.saveVideoFile.brandingLogoUri = null;
+                    }
+                    const tags = this.itemOfTags;
+                    for (let i = 0; i < tags.length; i++) {
+                        if (this.videoFileService.actionValue === 'Save') {
+                            this.newTags[i] = tags[i]['value'];
+                        } else {
+                            const tag = tags[i];
+                            if (tag['value'] !== undefined) {
+                                this.newTags[i] = tag['value'];
+                            } else {
+                                this.newTags[i] = tag;
+                            }
+                        }
+                    }
+                    this.saveVideoFile.tags = this.newTags;
+                    this.saveVideoFile.title = titleUpdatedValue;
+                    this.saveVideoFile.description = descriptionData;
+                    this.saveVideoFile.imagePath = this.defaultSaveImagePath;
+                    this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
+                    this.saveVideoFile.imageFile = null;
+                    if (this.videoFileService.actionValue === 'Save') {
+                        this.saveVideoFile.action = 'save';
+                        this.setShowSaveUpdateValues(true, false);
+                    } else {
+                        this.saveVideoFile.action = 'update';
+                        this.setShowSaveUpdateValues(false, true);
+                    }
+                    this.saveVideoFile.callACtion = this.enableCalltoAction;
+                    this.saveVideoFile.folderId = this.folderId;
+                    /****XNFR-255****/
+                    this.saveVideoFile.partnerGroupIds = partnerGroupIds
+                    this.saveVideoFile.partnerIds = partnerIds;
+                    this.saveVideoFile.partnerGroupSelected = partnerGroupSelected;
+                    this.saveVideoFile.shareAsWhiteLabeledAsset = shareAsWhiteLabeledAsset;
+                    this.saveVideoFile.addedToQuickLinks = addedToQuickLinks;
+                    /****XNFR-255****/
+                    this.saveVideoFile.draft = saveAsDraft;
+                    return this.videoFileService.updateVideoContent(this.saveVideoFile)
+                        .subscribe((result: any) => {
+                            if (result.access) {
+                                if (this.saveVideoFile != null) {
+                                    if (result.statusCode == 200) {
+                                        this.saveVideoFile = result;
+                                        this.referenceService.assetResponseMessage = result.message;
+                                        this.callVideoEventEmitter(this.saveVideoFile);
+                                        this.videoFileService.videoViewBy = 'Save';
+                                        this.isDisable = false;
+                                        this.disableSaveAsDraftButton = false;
+                                    } else if (result.statusCode == 401) {
+                                        this.isValidTitle = true;
+                                        this.saveButtonTitle = 'Update';
+                                        this.isDisable = false;
+                                        this.disableSaveAsDraftButton = false;
+                                    }
+                                } else {
+                                    this.isDisable = false;
+                                    this.disableSaveAsDraftButton = false;
+                                    this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
+                                }
+                            } else {
+                                this.authenticationService.forceToLogout();
+                            }
+                        },
+                            (error: any) => {
+                                this.isDisable = false;
+                                this.disableSaveAsDraftButton = false;
+                                this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
+                                this.xtremandLogger.errorPage(error);
+                            }),
+                        () => this.xtremandLogger.log(this.saveVideoFile);
+                } else { if (!this.titleDiv) { this.titleDivChange(); } }
+            }
+        } catch (error) { this.xtremandLogger.error(error); }
+    }
+
+    saveAsDraftVideoAsset() {
+        this.ngxLoading = true;
+        this.saveAsDraftButtonText = "Saving..."
+        setTimeout(() => {
+            this.saveVideoFile.draft = true;
+            this.ngxLoading = false;
+            this.saveVideoObject();
+        }, 500);
+    }
+
   validVideoTitle(videoTitle: string) {
     try{
       this.saveVideoFile.title = videoTitle;
@@ -1543,6 +1577,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     setWhiteLabeled(event:any){
         this.saveVideoFile.shareAsWhiteLabeledAsset = event;
     }
+
     receivePartnerCompanyAndGroupsEventEmitterData(event:any){
         this.saveVideoFile.partnerGroupIds = event['partnerGroupIds'];
         this.saveVideoFile.partnerIds = event['partnerIds'];
@@ -1551,8 +1586,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         let isPartnerCompanyOrGroupSelected = this.saveVideoFile.partnerGroupIds.length>0 || this.saveVideoFile.partnerIds.length>0;
         if(!this.saveVideoFile.published && isPartnerCompanyOrGroupSelected){
             this.saveButtonTitle = "Update & Publish";
+            this.disableSaveAsDraftButton = true;
         }else{
             this.saveButtonTitle = "Update";
+            this.disableSaveAsDraftButton = false;
         }
         /****XNFR-342****/
     }
@@ -1577,5 +1614,28 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setAddedToQuickLinks(event){
         this.saveVideoFile.addedToQuickLinks = event;
+    }
+
+    /** XNFR-884 **/
+    checkApprovalPrivilegeForAssets() {
+        this.ngxLoading = true;
+        this.damService.checkApprovalPrivilegeForAssets()
+        .subscribe(
+            response => {
+                if (response.statusCode === 200) {
+                    this.isApprover = response.data;
+                }
+                this.ngxLoading = false;
+            }, error => {
+                this.ngxLoading = false;
+            }, ()=> {
+            const isDraft = this.saveVideoFile.approvalStatus === ApprovalStatusType[ApprovalStatusType.DRAFT];
+            const isRejected = this.saveVideoFile.approvalStatus === ApprovalStatusType[ApprovalStatusType.REJECTED];
+            if (isDraft || isRejected) {
+                this.saveButtonTitle = (this.isApprover || !this.authenticationService.approvalRequiredForAssets) ? 'Update' : 'Send for Approval';
+            } else {
+                this.saveButtonTitle = 'Update';
+            }
+            });
     }
 }

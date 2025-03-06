@@ -250,7 +250,7 @@ export class CustomManageLeadsComponent implements OnInit {
   listLeads(pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     pagination.userId = this.loggedInUserId;
-    pagination.contactId = this.isCompanyJourney ? this.selectedContactListId : this.selectedContact.id;
+    pagination.contactId = this.selectedContact.id;
     pagination.isCompanyJourney = this.isCompanyJourney;
     this.leadsService.listLeadsForPartner(pagination).subscribe(
       response => {
@@ -406,7 +406,7 @@ export class CustomManageLeadsComponent implements OnInit {
         }
       }
 
-      if (validDates) {
+      if (validDates || isValidStatusFilter || isValidCompanyIdFilter) {
         this.filterStatus(isValidStatusFilter);
         this.filterVendorCompanyId(isValidCompanyIdFilter);
         this.leadsPagination.pageIndex = 1;
@@ -538,8 +538,7 @@ export class CustomManageLeadsComponent implements OnInit {
 
   goBackToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContactListId);
-    let url = "home/company/manage/details/" + encodedUserListId + "/" + encodedId;
+    let url = "home/company/manage/details/" + encodedId;
     this.referenceService.goToRouter(url);
   }
 

@@ -27,7 +27,7 @@
         </span>
         <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
           title="Click here to email the report" [disabled]="leadsSortOption.totalRecords == 0"
-          (click)="downloadLeads(leadsPagination)">
+          (click)="exportExcelSelection()">
           <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
         </button>
       </div>
@@ -229,8 +229,7 @@
                       style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                     Rejected
                   </div>
-                  <div *ngIf="showRegisterDealButton(lead)">
-                    <!-- *ngIf="(lead?.dealByVendor && isVendorVersion && lead?.leadApprovalStatusType != undefined || (lead?.dealByPartner && lead?.canRegisterDeal)) && lead.enableRegisterDealButton && lead?.associatedDealId == undefined" -->
+                  <div *ngIf="(lead?.dealByVendor && isVendor && lead?.leadApprovalStatusType != undefined || (lead?.dealByPartner && lead?.canRegisterDeal)) && lead.enableRegisterDealButton && lead?.associatedDealId == undefined">
                     <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
                       title="{{(lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : (lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : '')) : (!lead?.leadApprovalStatusType && !lead?.associatedCampaignDeleted ? 'You can not register a deal for an unapproved lead' : (lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : '')))}}"
                       [disabled]="(lead?.leadApprovalStatusType == 'REJECTED' || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection) || lead?.associatedCampaignDeleted)"
@@ -307,3 +306,5 @@
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [leadApprovalStatusType]="leadApprovalStatusType"
   [lead]="selectedLead" [loggedInUserId]="loggedInUserId" (closePopupEmitter)="closeApprovalStatusModelPopup()">
 </app-opportunities-chat-modal-popup>
+
+<app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" (closeEmitter)="closeEmitter($event)"></app-selectfield>

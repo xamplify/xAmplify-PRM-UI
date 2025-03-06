@@ -25,6 +25,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { AccountDetailsDto } from './models/account-details-dto';
 @Injectable()
 export class DashboardService {
+
     REST_URL = this.authenticationService.REST_URL;
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
@@ -44,6 +45,9 @@ export class DashboardService {
     pagination: Pagination;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
+
+    /***** XNFR-860 *****/
+    DASHBOARD_LAYOUT_URL = this.authenticationService.REST_URL + "dashboard/layout";
 
     constructor(private http: Http, private authenticationService: AuthenticationService,private utilService:UtilService,
         private referenceService:ReferenceService,private vanityUrlService:VanityURLService) { }
@@ -1501,6 +1505,60 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.http.get(url,"")
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    /***** XNFR-860 *****/
+    findCustomDashboardLayout(vendorCompanyProfileName: string) {
+        const url = this.DASHBOARD_LAYOUT_URL + '?loggedInUserId=' + this.authenticationService.getUserId()
+            + '&companyProfileName=' + vendorCompanyProfileName + '&access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /***** XNFR-860 *****/
+    updateCustomDashBoardLayout(customDashboardLayout: any) {
+        const url = this.DASHBOARD_LAYOUT_URL + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url, customDashboardLayout);
+    }
+
+    /***** XNFR-860 *****/
+    findDefaultDashboardSettings(vendorCompanyProfileName: string) {
+        const url = this.DASHBOARD_LAYOUT_URL + '/default-dashboard-settings/' + '?companyProfileName=' + vendorCompanyProfileName + '&access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /** XNFR-839 */
+    saveSelectedFields(selectedFieldsResponseDto:any) {
+        const url = this.REST_URL + '/selected/fields?access_token=' +this.authenticationService.access_token;
+        return this.http.post(url, selectedFieldsResponseDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getAllLeadFormFields(companyProfileName:string,userType:string) {
+        var url = this.REST_URL + "/selected/fields/getAllFields/" + companyProfileName +'/'+userType+'/'+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    isMyPreferances() {
+        var url = this.REST_URL + "/selected/fields/isMyPreferances/" + this.authenticationService.getUserId()+'/' +this.authenticationService.companyProfileName+ "?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    getFieldsByUserId(){
+        var url = this.REST_URL + "/selected/fields/getByUserId/" + this.authenticationService.getUserId()+ '/' +this.authenticationService.companyProfileName + "?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    /** XNFR-839 */
+
+    /** XNFR-889 */
+    updateDomains(domainRequestDto: DomainRequestDto, selectedTab: number) {
+        let teamMemberOrPartnerDomain = selectedTab == 1 ? '' : '/partners/updateDomain';
+        const url = this.domainUrl + teamMemberOrPartnerDomain + this.QUERY_PARAMETERS;
+        domainRequestDto.createdUserId = this.authenticationService.getUserId();
+        return this.authenticationService.callPostMethod(url, domainRequestDto);
     }
     
 }

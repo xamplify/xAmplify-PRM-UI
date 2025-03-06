@@ -34,10 +34,12 @@ import { Properties } from 'app/common/models/properties';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { RequestDemo } from 'app/authentication/request-demo/request-demo';
 import { DuplicateMdfRequest } from 'app/campaigns/models/duplicate-mdf-request';
+import { PartnerPrimaryAdminUpdateDto } from 'app/partners/models/partner-primary-admin-update-dto';
 
 
 @Injectable()
 export class AuthenticationService {
+ 
  
 
   access_token: string;
@@ -176,6 +178,7 @@ export class AuthenticationService {
   approvalRequiredForAssets: boolean = false;
   approvalRequiredForTracks: boolean = false;
   approvalRequiredForPlaybooks: boolean = false;
+
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
@@ -561,11 +564,12 @@ export class AuthenticationService {
       }
     } catch (error) { this.xtremandLogger.log('error' + error); }
   }
+  
   isTeamMember() {
     try {
       const roleNames = this.getRoles();
       if ((roleNames && !this.isSuperAdmin() && !this.isOrgAdmin() && !this.isOrgAdminPartner() && !this.isPartner() && !this.isVendor() && !this.isVendorPartner() && ((roleNames.indexOf('ROLE_VIDEO_UPLOAD') > -1) || (roleNames.indexOf('ROLE_CAMPAIGN') > -1) || (roleNames.indexOf('ROLE_CONTACT') > -1) || (roleNames.indexOf('ROLE_EMAIL_TEMPLATE') > -1)
-        || (roleNames.indexOf('ROLE_STATS') > -1) || (roleNames.indexOf('ROLE_SOCIAL_SHARE') > -1)))) {
+        || (roleNames.indexOf('ROLE_STATS') > -1) || (roleNames.indexOf('ROLE_SHARE_LEADS') > -1) || (roleNames.indexOf('ROLE_SOCIAL_SHARE') > -1)))) {
         return true;
       } else {
         return false;
@@ -1567,10 +1571,19 @@ vanityWelcomePageRequired(userId) {
     return this.callGetMethod(url);
   }
 
-
-
-
- 
+  /***XNFR-878****/
+  updatePartnerCompanyPrimaryAdmin(partnerPrimaryAdminUpdateDto:PartnerPrimaryAdminUpdateDto) {
+    partnerPrimaryAdminUpdateDto.vendorCompanyUserId = this.getUserId();
+    let url = this.REST_URL +"teamMember/updatePartnerCompanyPrimaryAdmin?access_token="+this.access_token;
+    return this.http.post(url,partnerPrimaryAdminUpdateDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
   
+  //XNFR-889
+  getPartnerCompanyByEmailDomain(emailId: any, companyProfileName: string) {
+    let url = this.REST_URL + "getPartnerCompanyByEmailDomain/" + emailId + "/" + companyProfileName;
+    return this.callGetMethod(url);
+  }
 
 }

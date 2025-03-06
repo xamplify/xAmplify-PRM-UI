@@ -54,6 +54,9 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   showFilterOption: boolean = false;
   applyFilterText ="Apply Filter";
   createdOnText = "Created On";
+  isDomainAllowedToAddToSamePartnerAccount: boolean = false;
+  editAction: boolean = false;
+  domainId = 0;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public properties: Properties, public fileUtil: FileUtil, public sortOption: SortOption,
     public utilService: UtilService, public regularExpressions: RegularExpressions, public dashboardService: DashboardService,
@@ -149,15 +152,21 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
 
   addDomainModalOpen() {
     this.domain = "";
+    if (this.isPartnerDomainsTabSelected) {
+      this.isDomainAllowedToAddToSamePartnerAccount = true;
+    }
     this.referenceService.openModalPopup("domainModal");
   }
 
   closeAddDomainModal() {
     this.referenceService.closeModalPopup("domainModal");
     this.domain = "";
+    this.isDomainAllowedToAddToSamePartnerAccount = false;
     this.isDomainExist = false;
     this.validDomainFormat = true;
     this.validDomainPattern = false;
+    this.editAction = false;
+    this.domainId = 0;
     this.domainRequestDto = new DomainRequestDto();
   }
 
@@ -228,6 +237,7 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.customResponse = new CustomResponse();
     this.domainRequestDto = new DomainRequestDto();
     this.domainRequestDto.domainNames.push(this.domain);
+    this.domainRequestDto.isDomainAllowedToAddToSamePartnerAccount = this.isDomainAllowedToAddToSamePartnerAccount;
     this.dashboardService.saveDomains(this.domainRequestDto, this.selectedTab).subscribe(
       response => {
         this.customResponse = new CustomResponse('SUCCESS', response.message, true);
@@ -388,6 +398,43 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.pagination.toDateFilterString = "";
     this.filterResponse.isVisible = false;
     this.pagination.pageIndex = 1;
+  }
+
+  openDomianModalPopupForEdit(domain: any) {
+    this.editAction = true;
+    this.domain = domain.domainName;
+    this.domainId = domain.id;
+    this.isDomainAllowedToAddToSamePartnerAccount = domain.domainAllowedToAddToSamePartnerAccount;
+    this.referenceService.openModalPopup("domainModal");
+  }
+
+  confirmAndupdateExcludedDomain() {
+    this.ngxloading = true;
+    this.isDomainExist = false;
+    this.validDomainFormat = true;
+    this.customResponse = new CustomResponse();
+    this.domainRequestDto = new DomainRequestDto();
+    this.domainRequestDto.domainNames.push(this.domain);
+    this.domainRequestDto.id = this.domainId;
+    this.domainRequestDto.isDomainAllowedToAddToSamePartnerAccount = this.isDomainAllowedToAddToSamePartnerAccount;
+    this.dashboardService.updateDomains(this.domainRequestDto, this.selectedTab).subscribe(
+      response => {
+        this.customResponse = new CustomResponse('SUCCESS', "Domain has been updated successfully", true);
+        this.closeAddDomainModal();
+        this.referenceService.scrollSmoothToTop();
+        this.pagination.pageIndex = 1;
+        this.findTeamMemberOrPartnerDomains(this.pagination);
+        this.ngxloading = false;
+      }, (error: any) => {
+        let errorMessage = this.referenceService.showHttpErrorMessage(error);
+        this.referenceService.showSweetAlertErrorMessage(errorMessage);
+        this.ngxloading = false;
+      }
+    );
+  }
+
+  setIsDomainAllowed(event: any) {
+    this.isDomainAllowedToAddToSamePartnerAccount = event;
   }
 
 }
