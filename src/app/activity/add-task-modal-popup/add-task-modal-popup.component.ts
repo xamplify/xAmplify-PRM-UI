@@ -261,6 +261,10 @@ export class AddTaskModalPopupComponent implements OnInit {
     if (this.taskActivity.remainder != undefined) {
       const remainder = Date.parse(this.taskActivity.remainder);
       if (startDate < remainder) {
+        if (this.taskActivity.remainderType == 'CUSTOMDATE') {
+          this.showRemainderDate = false;
+          this.taskActivity.remainderType = '';
+        }
         this.taskActivity.remainder = undefined;
       }
     }
