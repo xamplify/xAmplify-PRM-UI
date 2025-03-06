@@ -3433,3 +3433,8 @@ border-bottom-right-radius: 7px;
 .portlet.light.margin_0 {
   margin: 0px!important;
 }
+@media only screen and (max-width:600px) {
+  .xsView {
+    padding: 0px!important;
+  }
+}

@@ -40,8 +40,18 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, this.currentPartner);
   }
 
-  
+  ngOnDestroy(){
+    $('#teamMembersPreviewPopup').modal('hide');
+  }
 
+  addContactModalClose() {
+    $( '#teamMembersPreviewPopup' ).modal( 'toggle' );
+    $( "#teamMembersPreviewPopup .close" ).click()
+    $( '#teamMembersPreviewPopup' ).modal( 'hide' );
+    $( 'body' ).removeClass( 'modal-open' );
+    $( '.modal-backdrop fade in' ).remove();
+    $( ".modal-backdrop in" ).css( "display", "none" );
+  }
   highlightTeamMemberOnRowClick(teamMemberId: any, event: any, partner: any) {
     this.referenceService.highlightRowOnRowCick(this.partnerModuleTeamMembersTrId + "-" + partner.index, this.partnerModuleTeamMembersTableId + "-" + partner.index,
       this.partnerModuleTeamMemberCheckBoxName + "-" + partner.index, partner.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId + "-" + partner.index,
