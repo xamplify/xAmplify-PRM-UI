@@ -2504,3 +2504,16 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 .add_tag:hover,.checkbox-btn:hover{
   color: #fff!important;
 }
+/*drag and drop btn */
+.btn_custom,.btn_update{
+  border: 1px solid var(--btn-primary-border-color) !important;
+  color: var(--title-heading--text) !important;
+}
+.btn_custom:hover {
+  background: #0276ff !important;
+  color: #fff !important;
+}
+.btn_update:hover {
+  background: #3faba4 !important;
+  color: #fff !important;
+}

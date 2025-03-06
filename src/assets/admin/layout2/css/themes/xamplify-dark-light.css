@@ -2652,3 +2652,10 @@ tbody{background: transparent;}
   background-color: #2b3c46!important;
   border: 1px solid #2f4857 !important;
 }
+.btn_custom {
+  border: 1px solid #4a91e4 !important;
+  color: #5da7ff !important;
+}
+.btn_custom:hover {
+  color: #fff !important;
+}
