@@ -177,4 +177,7 @@ export class Pagination {
 	selectedExcelFormFields:any[] = [];
 	/**** XNFR-839 ****/
 
+	status: string = "";
+	password : string = "";
+    vanityUrlDomain : boolean = false;
 }
