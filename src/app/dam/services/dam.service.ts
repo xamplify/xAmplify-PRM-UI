@@ -382,9 +382,13 @@ export class DamService {
   }
 
     /** XNFR-833 **/
-  uploadSignature(assetDetailsViewDto: AssetDetailsViewDto) {
-    let url = this.URL + `/p/upload/signature?access_token=${this.authenticationService.access_token}`;
-    return this.authenticationService.callPostMethod(url, assetDetailsViewDto);
+  uploadSignature(assetDetailsViewDto: AssetDetailsViewDto, formData: FormData) {
+    formData.append('assetDetailsViewDto', new Blob([JSON.stringify(assetDetailsViewDto)],
+          {
+              type: "application/json"
+          }));
+      let url = this.URL + `/p/upload/signature?access_token=${this.authenticationService.access_token}`;
+    return this.authenticationService.callPostMethod(url, formData);
   }
 
   

@@ -135,6 +135,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     imageChangedEvent: any = '';
     fileObj: any;
     isFromApprovalModule : boolean = false;
+    pdfUploadedFile: File;
     @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
 
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
@@ -332,6 +333,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 
     private setUploadedFileProperties(file: File) {
         this.uploadedImage = file;
+        this.pdfUploadedFile =  file;
         this.formData.delete("uploadedFile");
         this.uploadedAssetName = "";
         this.uploadedCloudAssetName = "";
@@ -1463,24 +1465,26 @@ zoomOut() {
     }
 
     openAddSignatureModalPopUp() {
-        this.loading = true;
-		this.signatureService.getExistingSignatures().subscribe(
-			response => {
-				let data = response.data;
-                this.loading = false;
-				if (data != undefined) {
-					this.signatureResponseDto = data;
-					if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
-						this.openSelectDigitalSignatureModalPopUp = true;
-					} else {
-						this.openDigitalSignatureModelPopup = true;
-					}
-				} else {
-					this.openDigitalSignatureModelPopup = true;
-				}
-			}, error => {
-                this.loading = false;
-			});
+        // this.loading = true;
+        this.openSelectDigitalSignatureModalPopUp = true;
+
+		// this.signatureService.getExistingSignatures().subscribe(
+		// 	response => {
+		// 		let data = response.data;
+        //         this.loading = false;
+		// 		if (data != undefined) {
+		// 			this.signatureResponseDto = data;
+		// 			if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
+		// 				this.openSelectDigitalSignatureModalPopUp = true;
+		// 			} else {
+		// 				this.openDigitalSignatureModelPopup = true;
+		// 			}
+		// 		} else {
+		// 			this.openDigitalSignatureModelPopup = true;
+		// 		}
+		// 	}, error => {
+        //         this.loading = false;
+		// 	});
 	}
 
     notifySelectDigitalSignatureCloseModalPopUp(event){
@@ -1496,7 +1500,8 @@ zoomOut() {
 	}
 
 	notifySignatureSelection(event){
-        this.damUploadPostDto.selectedSignatureImagePath = event;
+        this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
+        this.setUploadedFileProperties(event);
         this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
         });

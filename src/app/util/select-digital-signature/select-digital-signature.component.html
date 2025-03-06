@@ -18,23 +18,54 @@
 <div id="pdf-signature-section" style="display: flex; gap: 20px; padding: 20px;">
   <!-- Left Side: Signature Container -->
   <div id="signature-container">
-    <h2>Signature</h2>
+    <div class="toolbar">
+      <ul>
+        <!-- Add Text Button -->
+        <li>
+          <div class="toolbar-btn" (click)="enableTextMode()">
+            <i class="fas fa-font"></i>
+          </div>
+        </li>
+    
+        <!-- Signature Toggle Button -->
+        <li class="dropdown">
+          <div class="toolbar-btn" (click)="toggleSignatures()">
+            <i class="fas fa-pen-nib"></i>
+          </div>
+    
+          <!-- Signature Selection Box (Shown on Click) -->
+          <div class="signature-container" *ngIf="showSignatures">
+            <div *ngFor="let i of [0, 1, 2]" class="signature-box">
+              <img *ngIf="availableSignatures[i]" [src]="availableSignatures[i]" class="signature-image" draggable="true" alt="Signature">
+              <span *ngIf="!availableSignatures[i]" class="add-signature" (click)="addSignature(i)">+ Add Signature</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    
+    
+    
+    
+    <!-- <h2>Signature</h2>
       <div id="signature-box">
         <div *ngFor="let signature of availableSignatures; let i = index">
           <img [src]="signature" class="signature-image" draggable="true" alt="Signature">
         </div>
       </div>
-    <!-- <button id="download-pdf">Download PDF</button> -->
     <button (click)="addSignature()">Add Signature </button>
+    <button (click)="enableTextMode()">Add Text</button> -->
+
   </div>
   
   <!-- Right Side: PDF Display -->
-  <div id="pdf-container"></div>
+  <div id="pdf-container">  <canvas class="pdf-page" data-page="1"></canvas>
+  </div>
 </div>
       </div>
       <div class="float-right">
         <button type="button" class="btn Btn-Gray mr5" (click)="closeModal()">Close</button>
-        <button type="button" class="btn btn-primary" id="download-pdf" (click)="submitSelection()">Submit</button>
+        <button type="button" class="btn btn-primary" (click)="generatePDF()">Submit</button>
       </div>
     </div>
   </div>
@@ -42,5 +73,4 @@
 
 <div class="modal-body" *ngIf="openAddsignatureModalPopup">
 	<app-digital-signature (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)" ></app-digital-signature>
-</div>
-
+</div>    
