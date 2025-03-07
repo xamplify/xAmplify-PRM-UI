@@ -90,7 +90,7 @@ downloadPdf() {
       return;
     }
 
-    this.damService.generatePdf(data.html).subscribe(
+    this.damService.generatePdfByHtml(data.html).subscribe(
       (pdfBlob: Blob) => {
         if (!pdfBlob || pdfBlob.size === 0) {
           console.error("Received an empty or invalid PDF file.");
@@ -114,22 +114,22 @@ downloadPdf() {
 }
 
 
-generatePdf1() {
-  const htmlContent = '<h1>Hello, PDF!</h1>'; // Replace with dynamic HTML input
+// generatePdf1() {
+//   const htmlContent = '<h1>Hello, PDF!</h1>'; // Replace with dynamic HTML input
 
-  this.damService.convertHtmlToPdf(htmlContent).subscribe(
-    (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'document.pdf';
-        a.click();
-        window.URL.revokeObjectURL(url);
-    },
-    (error) => {
-        console.error('Failed to generate PDF:', error);
-    }
-);
-}
+//   this.damService.convertHtmlToPdf(htmlContent).subscribe(
+//     (blob: Blob) => {
+//         const url = window.URL.createObjectURL(blob);
+//         const a = document.createElement('a');
+//         a.href = url;
+//         a.download = 'document.pdf';
+//         a.click();
+//         window.URL.revokeObjectURL(url);
+//     },
+//     (error) => {
+//         console.error('Failed to generate PDF:', error);
+//     }
+// );
+// }
 }
 
