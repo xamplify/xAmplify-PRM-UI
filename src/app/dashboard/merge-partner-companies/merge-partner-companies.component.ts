@@ -96,7 +96,7 @@ export class MergePartnerCompaniesComponent implements OnInit,ComponentCanDeacti
           this.findPartnerCompanyMetrics();
         }else if(this.vendorCompanies.length==0){
           this.statusCode = 404;
-          this.setErrorMessage("Please provide the email address used during onboarding. Other email addresses associated with the source company are not allowed");
+          this.setErrorMessage("Merging is not applicable for the entered partner email address as it has partnership with multiple vendors");
         }
       });
   }
