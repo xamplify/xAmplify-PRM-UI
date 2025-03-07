@@ -45,12 +45,10 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
   }
 
   addContactModalClose() {
-    $( '#teamMembersPreviewPopup' ).modal( 'toggle' );
-    $( "#teamMembersPreviewPopup .close" ).click()
-    $( '#teamMembersPreviewPopup' ).modal( 'hide' );
-    $( 'body' ).removeClass( 'modal-open' );
-    $( '.modal-backdrop fade in' ).remove();
-    $( ".modal-backdrop in" ).css( "display", "none" );
+    $('#teamMembersPreviewPopup').modal('hide');
+    this.teamMembers = new Array<any>();
+    this.teamMembersPagination = new Pagination();
+    this.partnerTeamMemberGroupTeamMemberEventEmitter.emit(this.currentPartner);
   }
   highlightTeamMemberOnRowClick(teamMemberId: any, event: any, partner: any) {
     this.referenceService.highlightRowOnRowCick(this.partnerModuleTeamMembersTrId + "-" + partner.index, this.partnerModuleTeamMembersTableId + "-" + partner.index,

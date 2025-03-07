@@ -146,7 +146,7 @@ h6 {
 }
 #vendor-details-tile,
 .xamplify-dropdown-content{
-  background-color: rgb(146 151 179 / 8%) !important;
+  background-color: rgb(255 255 255 / 31%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .header {
@@ -447,8 +447,9 @@ tr {
 }
 .message-content,
 .upload-asset-div {
-  border: dotted 3px rgba(255, 255, 255, 0.1) !important;
+  border: dotted 3px rgb(255 255 255 / 24%) !important;
   color: white !important;
+  border-radius: 7px!important;
 }
 .custom-alert {
   background-color: #2b3c46 !important;
@@ -610,7 +611,7 @@ tr {
   color: white !important;
 }
 .mdf-bgcolor {
-  background-color: rgba(16 18 27 / 40%) !important;
+  background: rgb(255 255 255 / 20%) !important;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
@@ -2868,7 +2869,8 @@ justify-content: center!important;
 
 /* EditDeal page */
 .panel.panel-default.deal-bgcolor{
- background-color: rgb(146 151 179 / 8%) !important;
+ /* background-color: rgb(146 151 179 / 8%) !important; */
+ background: rgb(255 255 255 / 31%) !important;
  border-radius: 8px;
 }
 .br-unset{
@@ -2947,17 +2949,17 @@ button.unlink-button {
   border-radius: 10px;
 }
 .pjCardTitlebg >.panel-bg{
-  background-color: rgb(146 151 179 / 8%) !important;
+  background: rgb(255 255 255 / 20%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
   border-radius: 10px 10px 0px 0px !important;
-  border-bottom:   1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .panel-bg{
   background-color: rgb(146 151 179 / 8%) !important;
   border-radius: 10px 10px 0px 0px !important;
 }
 .highchartsColorCu{
-  background-color: rgb(146 151 179 / 8%) !important;
-  border:0px!important;
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
 }
 .br-none{
 border:0px!important;
@@ -3021,7 +3023,7 @@ input.field-border-customization {
 
 /* 5-12-2023 SUDHA SRI */
 .card-background-v{
-  background-color : rgb(146 151 179 / 8%) !important;
+  background-color: rgb(232 215 215 / 29%) !important;
 }
 .integration_cards{
     background: rgba(255 255 255 / 0%) !important;
@@ -4559,4 +4561,22 @@ color: #fff!important;
 }
 #processing-time-image{
   background: transparent url(/assets/images/processing-time.gif) no-repeat center center;
+}
+/*drag and drop btn */
+.btn_custom,.btn_reset,.btn_update{
+  color:#000!important;
+  background: rgb(255 255 255 / 44%) !important;
+  border: 1px solid rgb(120 109 110 / 16%)!important;
+}
+.btn_custom:hover {
+  background: #0276ff !important;
+  color: #fff !important;
+}
+.btn_update:hover {
+  background: #3faba4 !important;
+  color: #fff !important;
+}
+.btn_reset:hover {
+  background: #e87e04 !important;
+  color: #fff !important;
 }

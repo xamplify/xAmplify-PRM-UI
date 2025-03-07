@@ -44,7 +44,7 @@
             <div class="flip-card-back">
               <p><strong>Address: </strong>{{ company.address }}</p>
               <p><strong>Contact: </strong>{{ company.phone }}</p>
-              <p><strong>Website: </strong>{{ company.website }}</p>
+              <p><strong>Website: </strong><a href="{{company.website}}"  (click)="navigateToParent($event, company.openInNewTab)" class="website-url" style="-webkit-box-orient:vertical">{{ company.website }}</a></p>
               <button class="btn flip-btn"    (click)="navigateToParentFromButton(company.link, company.openInNewTab)" >Know More</button>
             </div>
           </div>

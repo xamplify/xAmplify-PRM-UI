@@ -4456,3 +4456,10 @@ tbody>tr#uploaded-csv-tr>td {
   box-shadow: unset!important;
   color: #fff!important;
 }
+.btn_custom {
+  border: 1px solid #4a91e4 !important;
+  color: #5da7ff !important;
+}
+.btn_custom:hover {
+  color: #fff !important;
+}
