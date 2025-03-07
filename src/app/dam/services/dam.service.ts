@@ -8,12 +8,13 @@ import { DamPostDto } from '../models/dam-post-dto';
 import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
-import { HttpClient, HttpRequest } from "@angular/common/http";
+import { HttpClient,HttpHeaders, HttpRequest } from "@angular/common/http";
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CommentDto } from 'app/common/models/comment-dto';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class DamService {
@@ -397,4 +398,68 @@ export class DamService {
     let url = this.APPROVE_PREFIX_URL+'checkApprovalPrivilegeForAssets/'+loggedInUserId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }  
+  generatePdfByHtml(htmlBody: string): Observable<Blob> {
+    const accessToken = this.authenticationService.access_token;
+    if (!accessToken) {
+      console.error("Access token is missing.");
+      return Observable.throw("Access token is required"); // Angular 4 syntax
+    }
+
+     let url = this.URL + `/generate/pdf?access_token=${this.authenticationService.access_token}`;
+    const param = { htmlBody }; 
+
+    return this.http.post(url, param, {
+      responseType: 'blob',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json', 
+        'Accept': 'application/pdf' 
+      })
+    }).catch((error: any) => {
+      console.error("PDF Generation API failed", error);
+      return Observable.throw("PDF generation failed"); // Proper error handling
+    });
+}
+
+generatePdf1(htmlContent: string): Observable<Blob> {
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  const url = `${this.URL}/generate/pdf?access_token=${this.authenticationService.access_token}`;
+  return this.http.post(url, JSON.stringify({ html: htmlContent }), { headers, responseType: 'blob' });
+}
+generatePdf(html: string): Observable<Blob> {
+  if (!html || html.trim().length === 0) {
+    console.error("HTML content cannot be null or empty");
+    return Observable.throw("HTML content cannot be null or empty");
+  }
+
+  const formData = new FormData();
+  formData.append("html", html); 
+
+  const encodedAccessToken = encodeURIComponent(this.authenticationService.access_token);
+  const url = `${this.URL}/generate/pdf?access_token=${encodedAccessToken}`;
+
+  return this.http.post(url, formData, { responseType: 'blob' })
+    .map((response: Blob) => {
+      if (!response || response.size === 0) {
+        console.error("Received an empty PDF file.");
+        return Observable.throw("Received an empty PDF file.");
+      }
+      return response;
+    })
+    .catch((error: Response) => {
+      console.error("Failed to generate PDF:", error);
+      return Observable.throw("Failed to generate PDF. Please try again later.");
+    });
+}
+convertHtmlToPdf(htmlContent: string): Observable<Blob> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',  // Send as JSON
+    'Accept': 'application/pdf'          // Expect a PDF response
+});
+
+const payload = { htmlContent: htmlContent };
+  console.log('Request Headers:', headers); // Debugging: Log the headers
+  const encodedAccessToken = encodeURIComponent(this.authenticationService.access_token); // Replace with your token
+  const url = `${this.URL}/convert-html-to-pdf?access_token=${encodedAccessToken}`;
+  return this.http.post(url, payload, { headers: headers, responseType: 'blob' });
+}
 }
