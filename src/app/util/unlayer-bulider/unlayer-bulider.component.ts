@@ -10,25 +10,16 @@ declare var unlayer: any;
 export class UnlayerBuliderComponent implements OnInit, AfterViewInit  {
   @Output() notifyParentComponent = new EventEmitter();
   @Input()beeContainerInput : any;
-  damPostDto: any;
-  httpClient: any;
-  // @ViewChild('editorContainer') editorContainer: ElementRef;
   private authenticationService: AuthenticationService;
   constructor(authenticationService: AuthenticationService,private damService: DamService) {
     this.authenticationService = authenticationService;
   }
 
   ngOnInit() {
+    alert("called unlayer");
       unlayer.init({
         id: 'editor-container',
         displayMode: 'document',
-        projectId: '266229', // Ensure this is correct
-        apiKey: 'Zafqjb1qHaWhR4o2CljC5EFDJxFUBmaOYW8FOkbb7qNjsT9azHve2scLXydk973N', // ADD API KEY HERE
-        tools: {
-          pdfExport: {
-            enabled: true,
-          },
-        },
       });
       if (this.beeContainerInput && this.beeContainerInput.jsonBody) {
         const parsedDesign = JSON.parse(this.beeContainerInput.jsonBody); // Parse if it's a string
@@ -37,9 +28,23 @@ export class UnlayerBuliderComponent implements OnInit, AfterViewInit  {
   }    
 
 
-ngAfterViewInit(): void {
-this.initializeUnlayerEditor();
-}
+  ngAfterViewInit() {
+    // if (typeof unlayer !== 'undefined') {
+    //   unlayer.init({
+    //     id: 'editor-container',
+    //     displayMode: 'document',
+    //   });
+  
+    //   if (this.beeContainerInput && this.beeContainerInput.jsonBody) {
+    //     const parsedDesign = JSON.parse(this.beeContainerInput.jsonBody);
+    //     unlayer.addEventListener("editor:ready", () => {
+    //       unlayer.loadDesign(parsedDesign);
+    //     });
+    //   }
+    // } else {
+    //   console.error("Unlayer is not loaded.");
+    // }
+  }  
 initializeUnlayerEditor(): void {
   console.log('Initializing Unlayer editor...');
   // if (window['unlayer']) {
@@ -53,29 +58,6 @@ initializeUnlayerEditor(): void {
   //   console.error('Unlayer editor script not loaded');
   // }
   
-}
-exportPdfWithJsPDF(): void {
-  if (!window['unlayer']) {
-    console.error('Unlayer editor not initialized');
-    return;
-  }
-
-  window['unlayer'].exportHtml((data: any) => {
-    if (!data.html || !data.design) {
-      console.error('Error exporting HTML or JSON');
-      return;
-    }
-    // this.downloadPdfWithHtml(data);
-    // const doc = new jsPDF();
-    // doc.fromHTML(data.html, 15, 15);
-    // const pdfBlob = doc.output('blob');
-    // const pdfFile = new File([pdfBlob], 'design.pdf', { type: 'application/pdf' });
-    // this.notifyParentComponent.emit({
-    //   html: data.html,
-    //   json: data.design, 
-    //   pdf: pdfFile 
-    // });
-  });
 }
 
 downloadPdf() {
@@ -114,22 +96,45 @@ downloadPdf() {
 }
 
 
-// generatePdf1() {
-//   const htmlContent = '<h1>Hello, PDF!</h1>'; // Replace with dynamic HTML input
+mydownloadPdf() {
+  if (!window['unlayer']) {
+    console.error('Unlayer editor not initialized');
+    return;
+  }
 
-//   this.damService.convertHtmlToPdf(htmlContent).subscribe(
-//     (blob: Blob) => {
-//         const url = window.URL.createObjectURL(blob);
-//         const a = document.createElement('a');
-//         a.href = url;
-//         a.download = 'document.pdf';
-//         a.click();
-//         window.URL.revokeObjectURL(url);
-//     },
-//     (error) => {
-//         console.error('Failed to generate PDF:', error);
-//     }
-// );
-// }
+  window['unlayer'].exportHtml((data: any) => {
+    if (!data.html || !data.design) {
+      console.error('Error exporting HTML or JSON');
+      return;
+    }
+
+    this.damService.downloadPdf(data.html).subscribe(
+      (blob: Blob) => {
+        if (!blob || blob.size === 0) {
+          console.error("Received an empty or invalid PDF file.");
+          return;
+        }
+
+        // ✅ Trigger PDF download
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'generated-pdf.pdf';
+        link.click();
+        URL.revokeObjectURL(link.href);
+
+        const pdfFile = new File([blob], 'design.pdf', { type: 'application/pdf' });
+        this.notifyParentComponent.emit({
+          html: data.html,
+          json: data.design,
+          pdf: pdfFile
+        });
+      },
+      (error) => {
+        console.error("Failed to generate PDF:", error);
+        alert("Failed to generate PDF. Please try again later.");
+      }
+    );
+  });
+}
 }
 
