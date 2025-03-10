@@ -1571,6 +1571,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.moduleName = this.module;
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			pagination.totalRecords = 0;
+			this.contactsByType.selectedCategory = "all";
 			this.contactService.loadUsersOfContactLists(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.contacts = data.listOfUsers;
