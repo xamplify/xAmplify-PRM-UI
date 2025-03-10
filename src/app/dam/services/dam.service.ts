@@ -420,52 +420,12 @@ export class DamService {
     });
 }
 
-// generatePdf1(htmlContent: string): Observable<Blob> {
-//   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-//   const url = `${this.URL}/generate/pdf?access_token=${this.authenticationService.access_token}`;
-//   return this.http.post(url, JSON.stringify({ html: htmlContent }), { headers, responseType: 'blob' });
-// }
-// generatePdf(html: string): Observable<Blob> {
-//   if (!html || html.trim().length === 0) {
-//     console.error("HTML content cannot be null or empty");
-//     return Observable.throw("HTML content cannot be null or empty");
-//   }
+downloadPdf(html: string): Observable<Blob> {
+  const encodedAccessToken = encodeURIComponent(this.authenticationService.access_token);
+  const url = `${this.URL}/generate-pdf?access_token=${encodedAccessToken}`;
 
-//   const formData = new FormData();
-//   formData.append("html", html); 
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-//   const encodedAccessToken = encodeURIComponent(this.authenticationService.access_token);
-//   const url = `${this.URL}/generate/pdf?access_token=${encodedAccessToken}`;
-
-//   return this.http.post(url, formData, { responseType: 'blob' })
-//     .map((response: Blob) => {
-//       if (!response || response.size === 0) {
-//         console.error("Received an empty PDF file.");
-//         return Observable.throw("Received an empty PDF file.");
-//       }
-//       return response;
-//     })
-//     .catch((error: Response) => {
-//       console.error("Failed to generate PDF:", error);
-//       return Observable.throw("Failed to generate PDF. Please try again later.");
-//     });
-// }
-// convertHtmlToPdf(htmlContent: string): Observable<Blob> {
-//   const headers = new Headers({
-//     'Content-Type': 'application/json',
-//     'Accept': 'application/pdf',
-//   });
-
-//   const options = new RequestOptions({ headers: headers });
-
-//   const encodedAccessToken = encodeURIComponent(this.authenticationService.access_token);
-//   const url = `${this.URL}/convert-html-to-pdf?access_token=${encodedAccessToken}`;
-
-//   return this.http.post(url, JSON.stringify({ htmlContent }), options) // ✅ Use RequestOptions
-//     .map((response: Response) => response.blob()) // ✅ Convert Response to Blob
-//     .catch((error: any) => {
-//       console.error('PDF conversion failed:', error);
-//       return Observable.throw('Failed to generate PDF. Please try again later.');
-//     });
-// }
+  return this.http.post(url, JSON.stringify(html), { headers: headers, responseType: 'blob' });
+}
 }

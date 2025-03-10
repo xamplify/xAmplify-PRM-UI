@@ -114,8 +114,6 @@ mydownloadPdf() {
           console.error("Received an empty or invalid PDF file.");
           return;
         }
-
-        // ✅ Trigger PDF download
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = 'generated-pdf.pdf';
@@ -124,8 +122,8 @@ mydownloadPdf() {
 
         const pdfFile = new File([blob], 'design.pdf', { type: 'application/pdf' });
         this.notifyParentComponent.emit({
-          html: data.html,
-          json: data.design,
+          htmlContent: data.html,
+          jsonContent: data.design,
           pdf: pdfFile
         });
       },

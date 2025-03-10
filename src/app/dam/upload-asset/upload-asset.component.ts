@@ -1492,8 +1492,8 @@ zoomOut() {
         this.loading = true;
         this.isBeeTemplateComponentCalled = false;
         let damPostDto = new DamPostDto();
-        damPostDto.jsonBody = JSON.stringify(event.json);
-        damPostDto.htmlBody = event.html;
+        damPostDto.jsonBody = event.jsonContent;
+        damPostDto.htmlBody = event.htmlContent;
         damPostDto.id = this.id;
         damPostDto.loggedInUserId = this.authenticationService.getUserId();
         this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();

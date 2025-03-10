@@ -244,8 +244,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
   readBeeTemplateData(event) {
     this.ngxloading = true;
-    this.damPostDto.htmlBody = event.html;
-    this.damPostDto.jsonBody = JSON.stringify(event.json); 
+    this.damPostDto.jsonBody = event.jsonContent;
+    this.damPostDto.htmlBody = event.htmlContent;
     this.damPostDto.beeTemplate = true;
     this.formData.append('uploadedFile', event.pdf);
     if (!this.isPartnerView) {
