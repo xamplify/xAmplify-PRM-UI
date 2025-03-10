@@ -9,6 +9,8 @@ import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { CustomFields } from '../models/custom-fields';
+import { DashboardService } from '../dashboard.service';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var $: any, swal: any;
 
 @Component({
@@ -72,13 +74,22 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 	];
 
 	public sortOption: any = this.sortOptions[0].value;
-
-  constructor(public referenceService: ReferenceService,public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public authenticationService: AuthenticationService, public integrationService: IntegrationService) { 
+   /*** XNFR-906  ****/
+   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+  constructor(public referenceService: ReferenceService,public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public authenticationService: AuthenticationService, public integrationService: IntegrationService,public dashboardService:DashboardService) { 
+	/*** XNFR-906  ****/
+	this.loggedInUserId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    }
+	/*** XNFR-906  ****/
   }
 
   ngOnInit() {
 	    this.pageNumber = this.paginationComponent.numberPerPage[0];
-		this.loggedInUserId = this.authenticationService.getUserId();
+		//this.loggedInUserId = this.authenticationService.getUserId(); ///*** XNFR-906  ****/
 		this.setActiveTab('menu1');
   }
 
@@ -519,6 +530,45 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 				this.ngxloading = false;
 			});
 	}
-
+	/** XNFR-906  ***/
+	openDefaultFieldsPopup: boolean = false;
+	selectedFields: any[] = [];
+	enabledMyPreferances: boolean = false;
+	setDefaultFields:boolean = false;
+	openSetDefaultFieldsPopUp() {
+		this.openDefaultFieldsPopup = true;
+	}
+	closeEmitter(event: any) {
+		let input = event;
+		if (input['submit'] === 'submit') {
+			this.openDefaultFieldsPopup = input['close'];
+			this.enabledMyPreferances = input['myPreferances'];
+			this.setDefaultFields = input['defaultField']
+			this.selectedFields = input['selectFields'];
+			this.saveSelectedFields();
+		}
+		else {
+			this.openDefaultFieldsPopup = false;
+		}
+	}
+	saveSelectedFields() {
+		let selectedFieldsResponseDto = {};
+		console.log("this.selectedFields :",this.selectedFields)
+		selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+		selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+		selectedFieldsResponseDto['defaultField'] = this.setDefaultFields;
+		selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+		selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+		selectedFieldsResponseDto['integation'] = false;
+		this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+			.subscribe(
+				data => {
+					if(data.statusCode === 200) {
+						this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+					}
+				}, error => console.log(error),
+				() => { console.log("saveSelectedFields Completed...!") });
+	}
+	/** XNFR-906  ***/
 }
 
