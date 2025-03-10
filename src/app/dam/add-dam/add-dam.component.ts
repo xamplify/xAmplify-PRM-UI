@@ -16,6 +16,7 @@ import { UserService } from '../../core/services/user.service';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 
 
 declare var $:any, CKEDITOR: any;
@@ -79,6 +80,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   saveAsDraftButtonText: string = "Save as Draft";
   disableSaveAsDraftButton: boolean = false;
   savedTags: any[] = [];
+   formData = new FormData();
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -240,19 +242,20 @@ export class AddDamComponent implements OnInit, OnDestroy {
     }
   }
 
-  readBeeTemplateData(event: any) {
+  readBeeTemplateData(event) {
     this.ngxloading = true;
     this.damPostDto.jsonBody = event.jsonContent;
     this.damPostDto.htmlBody = event.htmlContent;
+    this.damPostDto.beeTemplate = true;
+    this.formData.append('uploadedFile', event.pdf);
     if (!this.isPartnerView) {
-      // this.listTags(new Pagination());
       $("#addAssetDetailsPopup").modal("show");
-      this.isAddAssetDetailsPopupLoaded= true;
+      this.isAddAssetDetailsPopupLoaded = true;
       this.ngxloading = false;
     } else {
       this.saveOrUpdate(false);
     }
-  }
+  }  
 
   hidePopup() {
     this.isAddAssetDetailsPopupLoaded= false;
@@ -308,7 +311,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.damPostDto.id = this.assetId;
       }
       this.damPostDto.saveAs = saveAs;
-      this.damService.save(this.damPostDto).subscribe(
+      let damUploadPostDto: DamUploadPostDto = this.setDampUploadPostData(saveAs);
+      this.damService.uploadOrUpdate(this.formData, damUploadPostDto,this.isAdd).subscribe(
         (result: any) => {
           this.hidePopup();
           this.referenceService.isCreated = true;
@@ -327,6 +331,38 @@ export class AddDamComponent implements OnInit, OnDestroy {
     }
   }
   
+  private setDampUploadPostData(saveAs: boolean) {
+    let damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
+    damUploadPostDto.saveAs = this.damPostDto.saveAs;
+    damUploadPostDto.assetName = this.damPostDto.name;
+    damUploadPostDto.description = this.damPostDto.description;
+    damUploadPostDto.loggedInUserId = this.loggedInUserId;
+    damUploadPostDto.categoryId = this.damPostDto.categoryId;
+    damUploadPostDto.tagIds = this.damPostDto.tagIds;
+    damUploadPostDto.shareAsWhiteLabeledAsset = this.damPostDto.shareAsWhiteLabeledAsset;
+    damUploadPostDto.addedToQuickLinks = this.damPostDto.addedToQuickLinks;
+    damUploadPostDto.partnerGroupIds = this.damPostDto.partnerGroupIds;
+    damUploadPostDto.partnerIds = this.damPostDto.partnerIds;
+    damUploadPostDto.partnerGroupSelected = this.damPostDto.partnerGroupSelected;
+    damUploadPostDto.addedToQuickLinks = this.damPostDto.addedToQuickLinks;
+    damUploadPostDto.partnerSignatureRequired = false;
+    damUploadPostDto.vendorSignatureRequired = true;
+    // damUploadPostDto.selectedSignatureImagePath = this.damPostDto.selectedSignatureImagePath;
+    // damUploadPostDto.geoLocationDetails = this.damPostDto.geoLocationDetails;
+    damUploadPostDto.draft = this.damPostDto.draft;
+    damUploadPostDto.published = this.damPostDto.published;
+    damUploadPostDto.createdByAnyApprover = this.damPostDto.createdByAnyApprover;
+    damUploadPostDto.approvalStatus = this.damPostDto.approvalStatus;
+    damUploadPostDto.saveAs = saveAs;
+    damUploadPostDto.cloudContent = false;
+    damUploadPostDto.source = "BEE";
+    damUploadPostDto.htmlBody = this.damPostDto.htmlBody;
+    damUploadPostDto.jsonBody = this.damPostDto.jsonBody;
+    damUploadPostDto.createdBy = this.damPostDto.createdBy;
+    damUploadPostDto.beeTemplate = true;
+    return damUploadPostDto;
+  }
+
   saveOrUpdateAsset(saveAs: boolean) {
     this.damPostDto.draft = true;
     this.saveOrUpdate(saveAs);
@@ -615,5 +651,28 @@ downloadPdf(){
             this.ngxloading = false;
         });
 }
+downloadPdfWithHtml() {
+  this.modalPopupLoader = true;
+  
+  let param = { 'htmlBody': this.damPostDto.htmlBody };
+  let completeUrl = this.authenticationService.REST_URL + "dam/generatePdf?access_token=" + this.authenticationService.access_token;
+
+  this.httpClient.post(completeUrl, param, { responseType: 'blob' }).subscribe((response: Blob) => {
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'output.pdf'; // Set filename
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      this.modalPopupLoader = false;
+  }, error => {
+      console.error("PDF Download Failed", error);
+      this.modalPopupLoader = false;
+  });
+}
+
 
 }

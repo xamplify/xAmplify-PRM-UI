@@ -34,6 +34,7 @@
             <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
                <app-bee-template-util [beeContainerInput]="beeContainerInput"
                   (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+               <!-- <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider> -->
             </ng-container>
          </div>
       </div>

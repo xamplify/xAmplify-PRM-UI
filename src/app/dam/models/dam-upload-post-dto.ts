@@ -56,4 +56,8 @@ export class DamUploadPostDto {
     approvalStatus: string;
     published: boolean = false;
     createdByAnyApprover: boolean = false;
+    htmlBody:string = "";
+	jsonBody:string = "";
+    createdBy:number = 0;
+    saveAs =false;
 }

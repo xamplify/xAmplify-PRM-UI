@@ -1,5 +1,5 @@
 <ngx-loading [show]="formLoader || loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div *ngIf="!openSelectDigitalSignatureModalPopUp" class="page-content">
+<div *ngIf="!openSelectDigitalSignatureModalPopUp && isBeeTemplateComponentCalled" class="page-content">
    <ng-container *ngIf="initLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
@@ -545,6 +545,7 @@
                </a>
             </div>
             <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+            <!-- <app-unlayer-bulider [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-unlayer-bulider> -->
          </div>
       </div>
    </div>

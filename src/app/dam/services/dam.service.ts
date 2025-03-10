@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { Http, Response, RequestOptions, Headers } from "@angular/http";
+import { Http, Response, RequestOptions, Headers,HttpModule } from "@angular/http";
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs";
 import { Pagination } from "app/core/models/pagination";
@@ -8,13 +8,14 @@ import { DamPostDto } from '../models/dam-post-dto';
 import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
-import { HttpClient, HttpRequest } from "@angular/common/http";
+import { HttpClient,HttpHeaders, HttpRequest } from "@angular/common/http";
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CommentDto } from 'app/common/models/comment-dto';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
-
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 @Injectable()
 export class DamService {
    
@@ -397,4 +398,34 @@ export class DamService {
     let url = this.APPROVE_PREFIX_URL+'checkApprovalPrivilegeForAssets/'+loggedInUserId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }  
+  generatePdfByHtml(htmlBody: string): Observable<Blob> {
+    const accessToken = this.authenticationService.access_token;
+    if (!accessToken) {
+      console.error("Access token is missing.");
+      return Observable.throw("Access token is required"); // Angular 4 syntax
+    }
+
+     let url = this.URL + `generatePdf?access_token=${this.authenticationService.access_token}`;
+    const param = { htmlBody }; 
+
+    return this.http.post(url, param, {
+      responseType: 'blob',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json', 
+        'Accept': 'application/pdf' 
+      })
+    }).catch((error: any) => {
+      console.error("PDF Generation API failed", error);
+      return Observable.throw("PDF generation failed"); // Proper error handling
+    });
+}
+
+downloadPdf(html: string): Observable<Blob> {
+  const encodedAccessToken = encodeURIComponent(this.authenticationService.access_token);
+  const url = `${this.URL}/generate-pdf?access_token=${encodedAccessToken}`;
+
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+  return this.http.post(url, JSON.stringify(html), { headers: headers, responseType: 'blob' });
+}
 }

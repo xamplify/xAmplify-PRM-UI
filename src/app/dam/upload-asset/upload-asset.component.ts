@@ -1475,6 +1475,20 @@ zoomOut() {
     }  
     
     readBeeTemplateData(event: any) {
+        this.setEditDesginPdfData(event);
+        this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto, false).subscribe(
+            response => {
+                this.loading = false;
+                this.referenceService.showSweetAlertSuccessMessage("PDF updated successfully");
+            }, error => {
+                this.xtremandLogger.log(error);
+                let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
+                this.referenceService.showSweetAlertErrorMessage(errorMessage);
+                this.loading = false;
+            });
+    }
+   
+    private setEditDesginPdfData(event: any) {
         this.loading = true;
         this.isBeeTemplateComponentCalled = false;
         let damPostDto = new DamPostDto();
@@ -1482,17 +1496,14 @@ zoomOut() {
         damPostDto.htmlBody = event.htmlContent;
         damPostDto.id = this.id;
         damPostDto.loggedInUserId = this.authenticationService.getUserId();
-        this.damService.updatePDFData(damPostDto).subscribe(
-             response=>{
-                this.loading = false;
-                this.referenceService.showSweetAlertSuccessMessage("PDF updated successfully");
-             },error=>{
-                this.xtremandLogger.log(error);
-				let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
-                this.referenceService.showSweetAlertErrorMessage(errorMessage);
-                this.loading = false;
-             });
-      }
+        this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
+        this.damUploadPostDto.source = "BEE";
+        this.damUploadPostDto.beeTemplate = true;
+        this.damUploadPostDto.id = this.id;
+        this.damUploadPostDto.htmlBody = damPostDto.htmlBody;
+        this.damUploadPostDto.jsonBody = damPostDto.jsonBody;
+        this.formData.append('uploadedFile', event.pdf);
+    }
    
     hideBeeContainer(){
         this.beeContainerInput = {};
