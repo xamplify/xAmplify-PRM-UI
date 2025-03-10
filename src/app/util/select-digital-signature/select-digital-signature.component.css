@@ -33,10 +33,11 @@
 #pdf-container {
   width: 1000px;
   height: 600px;
-  border: 2px solid #ccc;
+  border: 1.6px solid #ddd;
   position: relative;
   overflow: auto;
   background: #f9f9f9;
+  border-radius: 8px;
 }
 .pdf-page {
   position: relative;
@@ -161,6 +162,11 @@
   color: #212529;
 }
 
+.toolbar-btn.active-tool {
+  background-color: #0276ff;
+  color: #ffffff;
+}
+
 /* Signature Container */
 .signature-container {
   width: 120px;
@@ -204,5 +210,9 @@
   text-align: center;
 }
 
+.increase-size, .decrease-size, .delete-signature{
+  margin: 0 5px;
+    font-size: 16px;
+}
 
 

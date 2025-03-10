@@ -9,59 +9,46 @@
             <i class="fa fa-times" aria-hidden="true"></i>
           </a>
         </div>
-        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModal()">
-          <span aria-hidden="true">&times;</span>
-        </button> -->
       </div>
-      <div >
+      <div>
         <!-- PDF Signature Drag & Drop Section -->
-<div id="pdf-signature-section" style="display: flex; gap: 20px; padding: 20px;">
-  <!-- Left Side: Signature Container -->
-  <div id="signature-container">
-    <div class="toolbar">
-      <ul>
-        <!-- Add Text Button -->
-        <li>
-          <div class="toolbar-btn" (click)="enableTextMode()">
-            <i class="fas fa-font"></i>
-          </div>
-        </li>
-    
-        <!-- Signature Toggle Button -->
-        <li class="dropdown">
-          <div class="toolbar-btn" (click)="toggleSignatures()">
-            <i class="fas fa-pen-nib"></i>
-          </div>
-    
-          <!-- Signature Selection Box (Shown on Click) -->
-          <div class="signature-container" *ngIf="showSignatures">
-            <div *ngFor="let i of [0, 1, 2]" class="signature-box">
-              <img *ngIf="availableSignatures[i]" [src]="availableSignatures[i]" class="signature-image" draggable="true" alt="Signature">
-              <span *ngIf="!availableSignatures[i]" class="add-signature" (click)="addSignature(i)">+ Add Signature</span>
+        <div id="pdf-signature-section" style="display: flex; gap: 20px; padding: 20px 20px 20px 0px;">
+          <!-- Left Side: Signature Container -->
+          <div id="signature-container">
+            <div class="toolbar">
+              <ul>
+                <!-- Add Text Button -->
+                <li>
+                  <div class="toolbar-btn" (click)="enableTextMode()" [ngClass]="{'active-tool': activeTextTool}">
+                    <i class="fas fa-font"></i>
+                  </div>
+                </li>
+
+                <!-- Signature Toggle Button -->
+                <li class="dropdown mb0">
+                  <div class="toolbar-btn" (click)="toggleSignatures()"
+                    [ngClass]="{'active-tool': activeSignatureTool}">
+                    <i class="fas fa-pen-nib"></i>
+                  </div>
+
+                  <!-- Signature Selection Box (Shown on Click) -->
+                  <div class="signature-container" *ngIf="activeSignatureTool">
+                    <div *ngFor="let i of [0, 1, 2]" class="signature-box">
+                      <img *ngIf="availableSignatures[i]" [src]="availableSignatures[i]" class="signature-image"
+                        draggable="true" alt="Signature">
+                      <span *ngIf="!availableSignatures[i]" class="add-signature" (click)="addSignature(i)">+ Add
+                        Signature</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
-    
-    
-    
-    
-    <!-- <h2>Signature</h2>
-      <div id="signature-box">
-        <div *ngFor="let signature of availableSignatures; let i = index">
-          <img [src]="signature" class="signature-image" draggable="true" alt="Signature">
-        </div>
-      </div>
-    <button (click)="addSignature()">Add Signature </button>
-    <button (click)="enableTextMode()">Add Text</button> -->
 
-  </div>
-  
-  <!-- Right Side: PDF Display -->
-  <div id="pdf-container">  <canvas class="pdf-page" data-page="1"></canvas>
-  </div>
-</div>
+          <!-- Right Side: PDF Display -->
+          <div id="pdf-container"> <canvas class="pdf-page" data-page="1"></canvas>
+          </div>
+        </div>
       </div>
       <div class="float-right">
         <button type="button" class="btn Btn-Gray mr5" (click)="closeModal()">Close</button>
@@ -72,5 +59,6 @@
 </div>
 
 <div class="modal-body" *ngIf="openAddsignatureModalPopup">
-	<app-digital-signature (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)" ></app-digital-signature>
-</div>    
+  <app-digital-signature
+    (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)"></app-digital-signature>
+</div>
