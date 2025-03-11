@@ -4024,6 +4024,12 @@ getFirstLetter(inputString:any) {
   }
   /** XNFR-853 */
 
+  /**XNFR-891**/
+  hasVanityAccess() {
+    let url = this.authenticationService.REST_URL + 'admin/hasVanityAccess/' + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }
 
 
