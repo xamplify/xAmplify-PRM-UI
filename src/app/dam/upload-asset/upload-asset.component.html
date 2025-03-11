@@ -1,5 +1,5 @@
 <ngx-loading [show]="formLoader || loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div *ngIf="!openSelectDigitalSignatureModalPopUp && isBeeTemplateComponentCalled" class="page-content">
+<div *ngIf="!openSelectDigitalSignatureModalPopUp && !isBeeTemplateComponentCalled" class="page-content">
    <ng-container *ngIf="initLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
