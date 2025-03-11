@@ -99,11 +99,14 @@
   padding-bottom: 0px!important;
 }
 @media screen and (max-width:568px) {
-  .pr-7 {
+  /* .pr-7 {
     padding-right: 15px !important;
   }
  .pl-7 {
     padding-left: 15px !important;
+  } */
+  .xsView {
+    padding: 0px!important;
   }
 }
 .w430 {

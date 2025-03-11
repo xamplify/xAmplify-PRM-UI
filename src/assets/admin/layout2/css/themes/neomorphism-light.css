@@ -1,6 +1,5 @@
 
 /***** colors class ******/
-.white-co,
 .profile-details b,
 .field-icon,
 .list__item .item__name,
@@ -3651,10 +3650,6 @@ input.cmn-toggle-round-flat + label:after{
 input.cmn-toggle-round-flat:checked + label:after{
   background-color: #fff !important;
 }
-.cloud_platforms_paddings{
-  margin-right: -19px !important;
-  margin-left: -4px !important;
-}
 .toggleOnOff .labels{
   top: 4px !important;
   left: 4px !important;
@@ -3807,7 +3802,7 @@ li.active a.active-tab-anchor-text{
 a button.btn.btn-white {
   color: #fff !important;
 }
-.color-flow-button {
+/* .color-flow-button {
   position: relative;
   display: inline-block;
   font-size: 16px;
@@ -3818,7 +3813,7 @@ a button.btn.btn-white {
   transform-origin: 0 50% !important;
   transition: all 0.475s;
   border-radius: 7px !important;
-}
+} */
 /* .color-flow-button:before {
   content: '';
   position: absolute;
@@ -3829,13 +3824,13 @@ a button.btn.btn-white {
   background: inherit;
   transition: all 0.475s;
 } */
-.color-flow-button:hover {
-  background: #1C84FF !important; /* Updated gradient color on hover */
-}
+/* .color-flow-button:hover {
+  background: #1C84FF !important;
+} */
 
-.color-flow-button:hover:before {
+/* .color-flow-button:hover:before {
   left: 0;
-}
+} */
 .buttonSPan {
 color: #fff;
 z-index: 1;
@@ -4507,6 +4502,33 @@ a.Iconhover.custom-grid-icon.icon_margin{
   }
   .icon-btns:hover,i.fa.fa-edit.ml_6:hover{
     background-color: #e3edf7!important;
+  }
+   /* ui enhacement changes in onboarding partner */
+   .contact_img,.cloud_color{
+    background: #f0f5fa !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+  }
+  @media only screen and (min-width: 760px) {
+    .clip_mask::after {
+        right: -16px !important;
+        height: 16px !important;
+        width: 16px !important;
+        border-radius: 50% !important;
+        box-shadow: -4px 12px 12px #d6dadfed, 6px -6px 12px #ffffff00 !important;
+      }
+      .clip_mask::before {
+        box-shadow: 2px 2px 12px #d6dadfc7, -6px -3px 6px #ffffff00 !important;
+        left: -16px !important;
+        height: 16px !important;
+        width: 16px !important;
+        border-radius: 50% !important;
+        background-color: #eaeef13b;
+      }
+    .portlet.light.clip_mask{
+      border-bottom: 0 !important;
+      border-radius: 8px 8px 0px 0px !important;
+  
+    }
   }
   /* add a tag */
 .add_tag-container,.add-tag-card{

@@ -23,7 +23,7 @@
             <p class="map-company-name"><strong>{{ company.name }}</strong></p>
             <p><strong>Address: </strong>{{ company.address }}</p>
             <p><strong>Contact: </strong>{{ company.phone }}</p>
-            <p><strong>Website: </strong>{{ company.website }}</p>
+            <p><strong>Website: </strong><a href="{{company.website}}"  (click)="navigateToParent($event, company.openInNewTab)" class="website-url" style="-webkit-box-orient:vertical">{{ company.website }}</a></p>
             <a href="{{company.link}}" (click)="navigateToParent($event, company.openInNewTab)">View Details</a>
           </div>
         </agm-info-window>

@@ -265,9 +265,9 @@
   .width_unset {
     width: unset!important;
   }
-  .gear_mbv{
+  /* .gear_mbv{
     left: 98px !important;
-  }
+  } */
   .h-260{
     height: unset!important;
   }
@@ -470,6 +470,9 @@ flex-wrap: wrap;
   }
   .mb_float-left{
     float: left;
+   }
+   .icon-item{
+    margin: 0px 10px!important;
    }
 }
 /*Select Campaign- campaign */

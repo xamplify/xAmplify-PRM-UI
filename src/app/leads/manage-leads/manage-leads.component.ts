@@ -124,6 +124,7 @@ export class ManageLeadsComponent implements OnInit {
   enabledMyPreferances: boolean = false;
   /*** XNFR-839 ****/
   activeCRMDetailsByCompany :any; //XNFR-887
+  isLoggedAsPartner: boolean = false;
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -158,6 +159,7 @@ export class ManageLeadsComponent implements OnInit {
     this.mergeTagForUserGuide();
     /** XNFR-574 **/
     this.triggerViewLead(); 
+    this.isLoggedAsPartner = this.utilService.isLoggedAsPartner();
   }
   triggerViewLead() {
     if (this.referenceService.universalId !== 0) {
@@ -1537,11 +1539,11 @@ triggerUniversalSearch(){
     return lead.selfLead &&
       lead.dealBySelfLead &&
       (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) &&
-      lead.associatedDealId == undefined;
+      lead.associatedDealId == undefined && !this.isLoggedAsPartner;
   }
 
   private canVendorOrPartnerRegisterDeal(lead: any): boolean {
-    let canVendorRegisterDeal = (lead.dealByVendor && this.isVendorVersion && (this.isVendor || this.prm));
+    let canVendorRegisterDeal = (lead.dealByVendor && this.isVendorVersion && (this.isVendor || this.prm) && !this.isLoggedAsPartner);
     let canPartnerRegisterDeal = lead.canRegisterDeal && lead.dealByPartner;
     let canLeadConvertToDeal = lead.enableRegisterDealButton && !lead.leadApprovalOrRejection
       && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED';

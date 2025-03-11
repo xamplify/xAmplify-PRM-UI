@@ -1,0 +1,48 @@
+<div class="modal fade right" id="partnerModuleConfiguratorModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeModalPopup()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Partner Modules</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info mb5">
+          <p>Note: You can enable or disable modules for the partner using the toggle option.</p>
+        </div>
+        <div class="table-responsive">
+          <table class='table tgrid table-hover full-width' aria-describedby="">
+            <tr *ngFor="let defaultModule of defaultModules;let i = index">
+              <th scope="row" class="fstcw-tm">
+                <i *ngIf="defaultModule.moduleId != 5 && defaultModule.moduleId != 12 && defaultModule.moduleId != 18"
+                  class="{{defaultModule?.angularIcon}} mrfpx" aria-hidden="true"></i>
+                <i *ngIf="defaultModule.moduleId == 5 || defaultModule.moduleId == 12 || defaultModule.moduleId == 18"
+                  [ngClass]="defaultModule.moduleId == 5 ? 'fa fa-file-pdf-o mrfpx': defaultModule.moduleId == 12 ? 'fa fa-book mrfpx' : 'fa fa-graduation-cap mrfpx'"
+                  aria-hidden="true"></i>
+                {{defaultModule?.moduleName}}<sup
+                  *ngIf="defaultModule?.moduleId == 26 || defaultModule?.moduleId == 10">(Beta)</sup>
+                <br>
+              </th>
+              <td>
+                <app-custom-ui-switch *ngIf="defaultModule.moduleName != 'Contacts'"
+                  [customSwitch]="defaultModule.partnerAccessModule"
+                  (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+                <app-custom-ui-switch *ngIf="defaultModule.moduleName == 'Contacts'"
+                  [isSwitchOptionDisabled]="isContactsModuleToggleDisabled" [customSwitch]="defaultModule.partnerAccessModule"
+                  (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn Btn-Gray neg_mrg_top4" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
+        <button *ngIf="isAdd" type="submit" class="button bgcolor-unset"
+          (click)="submit()"><span class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
+          <button *ngIf="isEdit" type="submit" class="button bgcolor-unset"
+          (click)="update()"><span class="btn Btn-Green transition txt_pd-top3">Update</span></button>
+      </div>
+    </div>
+  </div>
+</div>

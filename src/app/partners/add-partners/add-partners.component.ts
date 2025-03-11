@@ -316,6 +316,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	/**XNFR-890**/
 	showFilterOption: boolean = false;
 	criteria: Criteria = new Criteria();
+	showPartnerModuleConfiguratorModelPopup: boolean = false;
+	defaultModules:any[];
+	currentPartnerForModuleAccess: any;
+	currentIndex: any;
+	actionType: string = '';
+	hasVanityAccess:boolean = false;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -982,12 +988,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.connectWiseImageClass').attr('style', 'opacity: 1;');
 		$('.haloPSAImageClass').attr('style', 'opacity: 1;');
 		$('.mdImageClass').attr('style', 'opacity: 1;cursor:not-allowed;');
-		$('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
-		$('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
-		$('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
+		$('#SgearIcon').attr('style', 'opacity: 1;font-size: 19px;');
+		$('#GgearIcon').attr('style', 'opacity: 1;font-size: 19px;');
+		$('#ZgearIcon').attr('style', 'opacity: 1;font-size: 19px;');
 		$('#addContacts').attr('style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);');
 		$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);');
-		$('#uploadCSV').attr('style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);min-height:85px;border-radius: 3px');
+		$('#uploadCSV').attr('style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);');
 		$("button#sample_editable_1_new").prop('disabled', true);
 		$("button#cancel_button").prop('disabled', true);
 		$('#copyFromclipTextArea').val('');
@@ -1102,9 +1108,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			let reader = new FileReader();
 			reader.readAsText(files[0]);
@@ -1492,7 +1498,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								//  $( "#Gfile_preview" ).show();
 								this.showFilePreview();
 								$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 								$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -1502,8 +1508,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-								$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 							}
 						}
@@ -1612,12 +1618,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$("#myModal .close").click()
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 								$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-								$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
@@ -1705,12 +1711,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$("#myModal .close").click()
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 								$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-								$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
@@ -1980,7 +1986,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 								$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -1990,8 +1996,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
@@ -2065,7 +2071,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								//$( "#Gfile_preview" ).show();
 								this.showFilePreview();
 								$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+								$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 								$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -2075,8 +2081,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+								$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 							}
 						}
@@ -2716,6 +2722,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
 		this.getActiveCrmType();                                                    
+		this.checkVanityAccess();
 	}
 
 
@@ -2967,7 +2974,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						//$( "#Gfile_preview" ).show();
 						this.showFilePreview();
 						$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-						$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+						$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2976,8 +2983,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-						$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-						$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+						$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+						$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 						$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					}
 
@@ -3427,7 +3434,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					this.hideHubSpotModal();
 					$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-					$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+					$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 					$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -3437,9 +3444,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-					$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-					$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-					$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+					$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+					$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+					$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				}
 			}
 			this.setSocialPage(1);
@@ -3862,12 +3869,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$("#myModal .close").click()
 			$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-			$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+			$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 			$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 
 			$("button#cancel_button").prop('disabled', false);
 		} else {
@@ -4167,7 +4174,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$("button#cancel_button").prop('disabled', false);
 				$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-				$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+				$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 				$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -4177,9 +4184,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-				$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-				$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
 			this.socialPartners.contacts = this.socialPartnerUsers;
@@ -4313,7 +4320,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$("button#cancel_button").prop('disabled', false);
 				$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-				$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+				$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 				$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -4323,9 +4330,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-				$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-				$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
 			this.socialPartners.contacts = this.socialPartnerUsers;
@@ -4518,7 +4525,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$("button#cancel_button").prop('disabled', false);
 				$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-				$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+				$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 				$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -4528,9 +4535,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-				$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-				$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
 			this.socialPartners.contacts = this.socialPartnerUsers;
@@ -4627,7 +4634,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$("button#cancel_button").prop('disabled', false);
 				$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-				$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+				$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 				$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -4637,9 +4644,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-				$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-				$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#GgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#ZgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				$('#SgearIcon').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
 			this.socialPartners.contacts = this.socialPartnerUsers;
@@ -4833,6 +4840,54 @@ triggerUniversalSearch(){
 		this.pagination.criterias = null;
 		this.pagination.pageIndex = 1;
 		this.loadPartnerList(this.pagination);
+	}
+
+	openPartnerModuleConfiguratorModelPopup(partner:any, index:any) {
+		this.actionType = 'add';
+		this.currentPartnerForModuleAccess = partner;
+		this.currentIndex = index;
+		this.showPartnerModuleConfiguratorModelPopup = true;
+	}
+
+	closePartnerModuleConfiguratorModelPopup() {
+		this.showPartnerModuleConfiguratorModelPopup = false;
+	}
+
+	submitModuleAccessesAndCloseModalPopup(event: any) {
+		this.defaultModules = event;
+		const index = this.newPartnerUser.findIndex(p => p.emailId == event.emailId);
+		if (index !== -1) {
+			this.newPartnerUser[index] = event;
+		}
+		this.closePartnerModuleConfiguratorModelPopup();
+	}
+
+	editPartnerModulesAccess(partner) {
+		this.actionType = 'edit';
+		this.currentPartnerForModuleAccess = partner;
+		this.showPartnerModuleConfiguratorModelPopup = true;
+	}
+
+	showUpdateSuccessStatus(event) {
+		this.customResponse = new CustomResponse('SUCCESS', event, true);
+		this.showPartnerModuleConfiguratorModelPopup = false;
+		this.referenceService.goToTop();
+	}
+
+	showUpdateFailedStatus(event) {
+		this.customResponse = new CustomResponse('ERROR', event, true);
+		this.showPartnerModuleConfiguratorModelPopup = false;
+		this.referenceService.goToTop();
+	}
+
+	checkVanityAccess() {
+		this.referenceService.hasVanityAccess().subscribe(
+			response => {
+				if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+					this.hasVanityAccess = response.data;
+				}
+			}
+		)
 	}
 
 }
