@@ -1318,12 +1318,12 @@ h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
 /* 11-7-2023 sudha sri */
-.btn-primary {
+.btn-primary,.add_partnerbtn{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
 }
-.btn-primary:hover {
+.btn-primary:hover,.add_partnerbtn:hover{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
@@ -2487,10 +2487,24 @@ button.search-box-item-click.only_mdf{top: 0.8px !important;}
 /* a{color: var(--title-heading--text)  !important;} */
 span.filterActiveBg {background-color: #10ad39 !important;}
  /* Added company profile lefside bar card color */
- .profile_headers,.icon-group{
+ .profile_headers,.icon-group,.contact_img,.cloud_color{
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
+
+/* ui enhacement changes in onboarding partner */
+@media only screen and (min-width: 760px) {
+  .clip_mask::after {
+    box-shadow: -15px 15px 0 var(--div-bg-color) !important;
+  }
+  .clip_mask::before {
+    box-shadow: 15px 15px 0 var(--div-bg-color) !important;
+  }
+  .portlet.light.clip_mask{
+    border-bottom: 0px !important;
+  }
+}
+
 /* add a tag */
 .add_tag-container,.add-tag-card{
   border: 1px solid var(--border-color) !important;

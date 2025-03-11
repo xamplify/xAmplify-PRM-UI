@@ -128,6 +128,7 @@ import { CustomDashboardSettingsComponent } from './custom-dashboard-settings/cu
 import { AddDefaultCompaniesOrMapLogoComponent } from 'app/util/add-default-companies-or-map-logo/add-default-companies-or-map-logo.component';
 import { MergePartnerCompaniesComponent } from './merge-partner-companies/merge-partner-companies.component';
 import { PendingChangesGuard } from "app/component-can-deactivate";
+import { CustomHtmlBlockComponent } from './custom-html-block/custom-html-block.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule, MultiSelectAllModule ],
@@ -222,6 +223,7 @@ import { PendingChangesGuard } from "app/component-can-deactivate";
         CustomDashboardSettingsComponent,
         AddDefaultCompaniesOrMapLogoComponent,
         MergePartnerCompaniesComponent,
+        CustomHtmlBlockComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
