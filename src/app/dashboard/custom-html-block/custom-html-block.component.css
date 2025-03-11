@@ -3,11 +3,32 @@ textarea {
     margin-bottom: 13px;
 }
 .preview {
-    pointer-events: none;
     border: 1px solid #c3c7d2d6;
     background-color: #fff;
-    border-radius: 3px;padding: 5px;
+    border-radius: 5px;
+    padding: 5px;
 }
 .pull-right {
     margin-top: 20px;
+}
+.align-items-center {
+    align-items: center;
+}
+.html-logo-image {
+    height: 47px; 
+    margin-top: 7px!important;
+}
+.btn_custom {
+    border: 1px solid #026deb;
+    color: #0276ff;
+    padding: 4px 8px;
+    border-radius: 7px;
+    font-size: 13px;
+    background: transparent;
+    position: relative;
+    top: -6px;
+}
+.btn_custom:hover {
+    background: #026deb;
+    color: #fff;
 }

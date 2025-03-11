@@ -69,14 +69,13 @@
             <div class="d-flex">
                 <button class=" btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
                     title="Reset to default dashboard" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">
-                    <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;Reset</button>
-                <button #customButton class="btn hidden-xs" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}" aria-hidden="true"
+                    <i class="fa fa-refresh"></i>&nbsp;Reset</button>
+                <button class="btn" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}"
                     data-placement="bottom" data-toggle="tooltip"
                     [title]="(defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor)) ? 'Custom Dashboard Layout is currently disabled.' : 'Customize Dashboard Layout'"
                     (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : customizeDashboardLayout()"
                     [disabled]="(defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor))">
-                    <i class="fa" [ngClass]="{'fa-pencil-square-o': isDraggingEnabled, 'fa-tasks': !isDraggingEnabled}"
-                        aria-hidden="true"></i>&nbsp;{{ isDraggingEnabled ? 'Update' : 'Customize'}}</button>
+                    <i class="fa" [ngClass]="{'fa-pencil-square-o': isDraggingEnabled, 'fa-tasks': !isDraggingEnabled}"></i>&nbsp;{{ isDraggingEnabled ? 'Update' : 'Customize'}}</button>
                 <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 <app-team-member-filter-option
                     *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
@@ -430,9 +429,21 @@
     <app-social-accounts-analytics></app-social-accounts-analytics>
 </ng-template>
 
-<ng-template #customHtmlBlock>
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <div [innerHTML]="defaultDashboardLayout.htmlBlock"></div>
+<ng-template #dynamicTemplate let-template="template">
+    <div class="portlet light margin_17" [ngClass]="{'border_dashed': isDraggingEnabled}">
+        <div class="portlet-body" *ngIf="template?.htmlBody">
+            <div [innerHTML]="template?.htmlBody"></div>
+        </div>
+        <div class="portlet-body" *ngIf="template?.leftHtmlBody || template?.rightHtmlBody">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div [innerHTML]="template?.leftHtmlBody"></div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div [innerHTML]="template?.rightHtmlBody"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </ng-template>
 
@@ -443,18 +454,23 @@
     || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
     <ng-template [ngTemplateOutlet]="sandBoxText"></ng-template>
     <ng-template [ngTemplateOutlet]="welcomePageHeader"></ng-template>
+    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div #dragContainer *ngIf="isDraggingEnabled" class="dragula-container" [dragula]="dashBoardAnalytics"
         [(dragulaModel)]="defaultDashboardLayout">
-        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div *ngFor="let template of defaultDashboardLayout" [id]="template.name">
-            <ng-template [ngTemplateOutlet]="template.ref"></ng-template>
+        <div *ngFor="let template of defaultDashboardLayout" [id]="template.name ? template.name : template.title">
+            <ng-template *ngIf="template?.ref" [ngTemplateOutlet]="template.ref"></ng-template>
+            <ng-container *ngIf="template?.title">
+                <ng-container *ngTemplateOutlet="dynamicTemplate; context: { template: template }"></ng-container>
+            </ng-container>
         </div>
     </div>
 
     <div *ngIf="!isDraggingEnabled">
-        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <ng-container *ngFor="let template of defaultDashboardLayout">
             <ng-template [ngTemplateOutlet]="template.ref"></ng-template>
+            <ng-container *ngIf="template.title">
+                <ng-container *ngTemplateOutlet="dynamicTemplate; context: { template: template }"></ng-container>
+            </ng-container>
         </ng-container>
     </div>
 </div>
