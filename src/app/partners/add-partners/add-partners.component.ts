@@ -141,6 +141,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Onboarded On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Onboarded On(DESC)', 'value': 'createdTime-DESC' },
 
 		/* XNFR-556
 		 { 'name': 'Added(ASC)', 'value': 'id-ASC' },
@@ -314,6 +316,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	/**XNFR-890**/
 	showFilterOption: boolean = false;
 	criteria: Criteria = new Criteria();
+	showPartnerModuleConfiguratorModelPopup: boolean = false;
+	defaultModules:any[];
+	currentPartnerForModuleAccess: any;
+	currentIndex: any;
+	actionType: string = '';
+	hasVanityAccess:boolean = false;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2714,6 +2722,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error("addPartner.component oninit " + error);
 		}
 		this.getActiveCrmType();                                                    
+		this.checkVanityAccess();
 	}
 
 
@@ -4831,6 +4840,54 @@ triggerUniversalSearch(){
 		this.pagination.criterias = null;
 		this.pagination.pageIndex = 1;
 		this.loadPartnerList(this.pagination);
+	}
+
+	openPartnerModuleConfiguratorModelPopup(partner:any, index:any) {
+		this.actionType = 'add';
+		this.currentPartnerForModuleAccess = partner;
+		this.currentIndex = index;
+		this.showPartnerModuleConfiguratorModelPopup = true;
+	}
+
+	closePartnerModuleConfiguratorModelPopup() {
+		this.showPartnerModuleConfiguratorModelPopup = false;
+	}
+
+	submitModuleAccessesAndCloseModalPopup(event: any) {
+		this.defaultModules = event;
+		const index = this.newPartnerUser.findIndex(p => p.emailId == event.emailId);
+		if (index !== -1) {
+			this.newPartnerUser[index] = event;
+		}
+		this.closePartnerModuleConfiguratorModelPopup();
+	}
+
+	editPartnerModulesAccess(partner) {
+		this.actionType = 'edit';
+		this.currentPartnerForModuleAccess = partner;
+		this.showPartnerModuleConfiguratorModelPopup = true;
+	}
+
+	showUpdateSuccessStatus(event) {
+		this.customResponse = new CustomResponse('SUCCESS', event, true);
+		this.showPartnerModuleConfiguratorModelPopup = false;
+		this.referenceService.goToTop();
+	}
+
+	showUpdateFailedStatus(event) {
+		this.customResponse = new CustomResponse('ERROR', event, true);
+		this.showPartnerModuleConfiguratorModelPopup = false;
+		this.referenceService.goToTop();
+	}
+
+	checkVanityAccess() {
+		this.referenceService.hasVanityAccess().subscribe(
+			response => {
+				if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+					this.hasVanityAccess = response.data;
+				}
+			}
+		)
 	}
 
 }

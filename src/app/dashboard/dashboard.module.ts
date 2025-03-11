@@ -126,6 +126,8 @@ import { SignatureService } from './services/signature.service';
 import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { CustomDashboardSettingsComponent } from './custom-dashboard-settings/custom-dashboard-settings.component';
 import { AddDefaultCompaniesOrMapLogoComponent } from 'app/util/add-default-companies-or-map-logo/add-default-companies-or-map-logo.component';
+import { MergePartnerCompaniesComponent } from './merge-partner-companies/merge-partner-companies.component';
+import { PendingChangesGuard } from "app/component-can-deactivate";
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule, MultiSelectAllModule ],
@@ -219,9 +221,10 @@ import { AddDefaultCompaniesOrMapLogoComponent } from 'app/util/add-default-comp
         ApprovalControlManagementSettingsComponent,
         CustomDashboardSettingsComponent,
         AddDefaultCompaniesOrMapLogoComponent,
+        MergePartnerCompaniesComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
-        SuperAdminService,MyProfileService,ChatGptSettingsService,FlexiFieldService,SignatureService]
+        SuperAdminService,MyProfileService,ChatGptSettingsService,FlexiFieldService,SignatureService,PendingChangesGuard]
 })
 export class DashboardModule { }

@@ -28,6 +28,7 @@ export class LandingPageService {
     welcomePages:boolean = false;
     isPartnerJourneyPages:boolean = false;
     isVendorMarketplacePages:boolean = false;
+    landingPageSource:string="";
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
@@ -87,7 +88,7 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    getAvailableNames( userId: number, isWelcomePage:boolean) {
+    getAvailableNames( userId: number, isWelcomePage:boolean, source:string) {
         let url;
         if(isWelcomePage){
             url = this.URL + "/listAvailableNamesForWelcomePage/";
@@ -95,7 +96,8 @@ export class LandingPageService {
             url = this.URL + "/listAvailableNames/";
 
         }
-        return this.http.get( url + userId + "?access_token=" + this.authenticationService.access_token, "" )
+
+        return this.http.get( url + userId +"/"+source+"?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

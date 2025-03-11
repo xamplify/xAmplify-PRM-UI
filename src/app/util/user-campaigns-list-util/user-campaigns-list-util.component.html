@@ -2,13 +2,34 @@
 <div class="page-content">
    <div class="page-bar mb-height_auto" style="height: 48px;">
       <ul class="page-breadcrumb">
-         <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"
-               translate>Home</a>
+         <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li *ngIf="!isFromCompanyModule && !isFromCompanyJourney && !isFromCompanyJourneyEditContacts">
+            <a (click)="backToManageContacts()" translate> Manage Contacts
+            </a>
+         </li>
+         <li *ngIf="isFromCompanyModule || isFromCompanyJourney || isFromCompanyJourneyEditContacts">
+            <a translate [routerLink]="companyRouter">Manage Companies</a>
+         </li>
+         <li *ngIf="isFromCompanyJourneyEditContacts">
+            <a (click)="backToCompanyJourney()" translate>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>Company Journey
+            </a>
+         </li>
+         <li *ngIf="(isFromEditContacts && !isFromCompanyJourney) || isFromCompanyJourneyEditContacts">
+            <a (click)="backToEditContacts()" translate>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>Edit Contacts
+            </a>
+         </li>
+         <li *ngIf="isFromContactDetails">
+            <a (click)="backToContactJourney()" translate>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Journey
+            </a><i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
          <li><a translate>Campaigns</a></li>
       </ul>
-      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+      <a *ngIf="!isFromContactDetails" class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
          <i class="fa fa-times" aria-hidden="true"></i>
       </a>
       <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()"

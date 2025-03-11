@@ -145,7 +145,8 @@
 													style="margin-bottom: 20px;">
 													<div class="text-right" style="margin-top: 10px">
 														<span *ngIf="selectedType=='p'"
-															class="published-banner uppercase">{{feed?.companyName}}</span>
+															class="published-banner uppercase" [title]="feed?.companyName" data-toggle="tooltip" data-placement="bottom">
+															{{feed.companyName.length > 15 ? (feed?.companyName | slice:0:15) + '...' : feed.companyName}}</span>
 													</div>
 													<div class="text-right"
 														style="margin-right: 10px; margin-top: 10px">

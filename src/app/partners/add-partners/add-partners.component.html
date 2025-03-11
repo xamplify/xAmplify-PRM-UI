@@ -999,6 +999,13 @@
                                                     <td class="white-space-transform">
                                                         <div class="actions-block override-actions"
                                                             style="display: flex;">
+                                                            <a class="custom-icon" *ngIf="authenticationService?.module?.adminOrSuperVisor && hasVanityAccess"
+                                                                data-toggle="tooltip" data-placement="bottom"
+                                                                title="Update Partner Modules" (click)="editPartnerModulesAccess(contact)">
+                                                                <i class="fa fa-cogs IconCustomization"
+                                                                    aria-hidden="true"></i>
+                                                                <div class="clickicons"></div>
+                                                            </a>
                                                             <a class="custom-icon"
                                                                 *ngIf="!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor"
                                                                 data-toggle="tooltip" data-placement="bottom"
@@ -1754,7 +1761,7 @@
     </div>
 </div>
 
-<div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog"
+<div class="modal fade right" id="assignContactAndMdfPopup" role="dialog"
     aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" [ngClass]="isPartnerPopupShow ? 'custom-width-modal-popup' : 'full-width-modal-popup'"
         role="document">
@@ -1787,6 +1794,11 @@
                                             title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                 </th>
+                                <th *ngIf="authenticationService?.module?.adminOrSuperVisor && hasVanityAccess" scope="row" translate>Assign Modules to the Partners<span id="tooltip-helper"> <i class="fa fa-question-circle"
+                                            aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+                                            title="Assign Modules to the Partners"></i>
+                                    </span>
+                                </th>
                                 <th *ngIf="authenticationService?.module?.adminOrSuperVisor" style="text-align: center;"
                                     scope="row" translate>Team Member Group <span id="tooltip-helper"> <i
                                             class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
@@ -1815,6 +1827,13 @@
                                             [size]="callActionSwitch.defaultSize"
                                             (statusChange)="setNotifyPartnerOption(partner,$event)">
                                         </switch>
+                                    </td>
+                                    <td *ngIf="authenticationService?.module?.adminOrSuperVisor && hasVanityAccess">
+                                        <button class="btn btn-info" type="button" tabindex="-1"
+                                            (click)="openPartnerModuleConfiguratorModelPopup(partner, i)">
+                                            <i title="Assign Modules to the Partner" data-toggle="tooltip" data-placement="top" class="fa fa-plus white"
+                                                aria-hidden="true"></i>
+                                        </button>
                                     </td>
                                     <!--- (XNFR-85) ----->
                                     <td *ngIf="authenticationService?.module?.adminOrSuperVisor" id="team-member-group-error-count-{{i}}">
@@ -1899,3 +1918,8 @@
 		(filterConditionsEmitter)="partnersFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
+
+<app-partner-module-configurator *ngIf="showPartnerModuleConfiguratorModelPopup"
+    [currentPartner]="currentPartnerForModuleAccess" [actionType]="actionType"
+    (notifyClose)="closePartnerModuleConfiguratorModelPopup()" (notifyUpdateSuccess)="showUpdateSuccessStatus($event)"
+    (notifySubmit)="submitModuleAccessesAndCloseModalPopup($event)" (notifyUpdateFailed)="showUpdateFailedStatus($event)"></app-partner-module-configurator>

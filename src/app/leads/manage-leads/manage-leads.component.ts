@@ -123,7 +123,8 @@ export class ManageLeadsComponent implements OnInit {
   logginUserType: string;
   enabledMyPreferances: boolean = false;
   /*** XNFR-839 ****/
-
+  activeCRMDetailsByCompany :any; //XNFR-887
+  isLoggedAsPartner: boolean = false;
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -158,6 +159,7 @@ export class ManageLeadsComponent implements OnInit {
     this.mergeTagForUserGuide();
     /** XNFR-574 **/
     this.triggerViewLead(); 
+    this.isLoggedAsPartner = this.utilService.isLoggedAsPartner();
   }
   triggerViewLead() {
     if (this.referenceService.universalId !== 0) {
@@ -527,7 +529,7 @@ triggerUniversalSearch(){
         () => { }
       );
   }
-
+ 
   listLeadsForVendor(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.listLeadsForVendor(pagination)
@@ -1537,11 +1539,11 @@ triggerUniversalSearch(){
     return lead.selfLead &&
       lead.dealBySelfLead &&
       (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) &&
-      lead.associatedDealId == undefined;
+      lead.associatedDealId == undefined && !this.isLoggedAsPartner;
   }
 
   private canVendorOrPartnerRegisterDeal(lead: any): boolean {
-    let canVendorRegisterDeal = (lead.dealByVendor && this.isVendorVersion && (this.isVendor || this.prm));
+    let canVendorRegisterDeal = (lead.dealByVendor && this.isVendorVersion && (this.isVendor || this.prm) && !this.isLoggedAsPartner);
     let canPartnerRegisterDeal = lead.canRegisterDeal && lead.dealByPartner;
     let canLeadConvertToDeal = lead.enableRegisterDealButton && !lead.leadApprovalOrRejection
       && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED';
@@ -1589,13 +1591,13 @@ triggerUniversalSearch(){
   /*** XNFR-839 */
   selectedFields: any[] = [];
   exportExcelSelection() {
-    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''
-      && (this.activeCRMDetails.type === 'SALESFORCE'|| this.activeCRMDetails.type === null || this.activeCRMDetails.type === undefined)) {
-      this.openSelectFieldPopup();
+    if (this.authenticationService.companyProfileName) {
+        this.getActiveCRMDetailsByCompanyProfileName();
     } else {
       this.downloadLeads(this.leadsPagination);
     }
   }
+  
   openSelectFieldPopup() {
     this.showSlectFieldComponent = true
   }
@@ -1633,6 +1635,23 @@ triggerUniversalSearch(){
         () => {
         });
   }
+ 
+  getActiveCRMDetailsByCompanyProfileName() {
+    this.integrationService.getActiveIntegrationTypeByCompanyName(this.vanityLoginDto.vendorCompanyProfileName )
+      .subscribe(
+        response => {
+          this.activeCRMDetailsByCompany = response.data;
+          if (this.activeCRMDetailsByCompany === undefined || this.activeCRMDetailsByCompany === null || this.activeCRMDetailsByCompany === '' || this.activeCRMDetailsByCompany === "salesforce") {
+            this.showSlectFieldComponent = true;
+          } else {
+            this.downloadLeads(this.leadsPagination);
+          }
+        }, (error) => {
+          console.error("Error fetching CRM details:", error);
+          this.downloadLeads(this.leadsPagination); // Fallback in case of an API error
+        });
+  }
+
   /*** XNFR-839 */
 
 

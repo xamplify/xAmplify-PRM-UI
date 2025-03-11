@@ -14,7 +14,7 @@
 	</a>
 	<!--XNFR-381-->
 	<a class="Iconhover custom-grid-icon"
-		*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top"
+		*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT'" data-toggle="tooltip" data-placement="top"
 		title="Design" (click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="asset?.beeTemplate && isPartnerView"
@@ -33,14 +33,16 @@
 		title="Download" (click)="openDownloadPopup(asset)"> <i class="fa fa-download" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="!authenticationService.module.isMarketingCompany"
-		data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(asset)"> <i
+		data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="asset.approvalStatus !== 'DRAFT' ? viewAnalytics(asset) : ''"
+		[ngClass]="(asset?.approvalStatus !== 'DRAFT') ? '' : 'disabled gray'"> <i
 			class="fa fa-line-chart" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
 		title="View Details" (click)="viewDetails(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView"
-		(click)="showCommentsAndHistoryModalPopup(asset)" data-toggle="tooltip" data-placement="top"
+		(click)="asset.approvalStatus !== 'DRAFT' ? showCommentsAndHistoryModalPopup(asset) : ''" 
+		[ngClass]="(asset?.approvalStatus !== 'DRAFT') ? '' : 'disabled gray'" data-toggle="tooltip" data-placement="top"
 		title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 		<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
 		<div class="clickicons"></div>
@@ -54,7 +56,7 @@
 		<a class="Iconhover custom-grid-icon"
 			*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 			(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset) : ''" data-toggle="tooltip" data-placement="top" 
-			title="{{asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign'}}"
+			title="{{asset?.approvalStatus == 'DRAFT' ? properties.DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN : (asset?.approvalStatus != 'APPROVED' ? 'Requires approval for creating campaign' : 'Create campaign')}}"
 			[ngClass]="(asset?.approvalStatus != 'APPROVED') ? 'disabled gray' : ''">
 			<i class="fa fa-bullhorn" aria-hidden="true"></i>
 			<div class="clickicons"></div>

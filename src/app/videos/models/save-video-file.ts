@@ -67,4 +67,7 @@ export class SaveVideoFile {
     publishedToPartnerGroups = false;
     published = false;
     addedToQuickLinks = false;
+    draft: boolean = false;
+    approvalStatus: string = "";
+    createdByAnyApprover: boolean = false;
  }

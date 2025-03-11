@@ -81,7 +81,7 @@
               <option [ngValue]="'BEFORE1HOUR'" [disabled]="isBeforeOneHourEnable">1 Hour Before</option>
               <option [ngValue]="'BEFORE1DAY'" [disabled]="isBeforeOneDayEnable">1 Day Before</option>
               <option [ngValue]="'BEFORE1WEEK'" [disabled]="isBeforeOneWeekEnable">1 Week Before</option>
-              <option [ngValue]="'CUSTOMDATE'">Custom Date</option>
+              <option [ngValue]="'CUSTOMDATE'" [disabled]="isBeforeHalfAnHourEnable">Custom Date</option>
             </select>
           </div>
           <div [ngClass]="showRemainderDate ? 'form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field' : 'form-group col-lg-6 col-md-6 col-sm-6 right_aligned_input_field hide_remainder_date'">

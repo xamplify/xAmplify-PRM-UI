@@ -25,6 +25,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { AccountDetailsDto } from './models/account-details-dto';
 @Injectable()
 export class DashboardService {
+
     REST_URL = this.authenticationService.REST_URL;
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
@@ -1550,14 +1551,30 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
           .map(this.extractData)
           .catch(this.handleError);
     }
-    updateSelectedFields(selectedFieldsResponseDto:any) {
-        selectedFieldsResponseDto['companyProfileName'] = this.authenticationService.companyProfileName;
-        selectedFieldsResponseDto['loggedInUserId'] =this.authenticationService.getUserId();
-        const url = this.REST_URL + '/selected/fields/update?access_token=' +this.authenticationService.access_token;
-        return this.http.post(url, selectedFieldsResponseDto)
-        .map(this.extractData)
-        .catch(this.handleError);
-    }
     /** XNFR-839 */
+
+    /** XNFR-889 */
+    updateDomains(domainRequestDto: DomainRequestDto, selectedTab: number) {
+        let teamMemberOrPartnerDomain = selectedTab == 1 ? '' : '/partners/updateDomain';
+        const url = this.domainUrl + teamMemberOrPartnerDomain + this.QUERY_PARAMETERS;
+        domainRequestDto.createdUserId = this.authenticationService.getUserId();
+        return this.authenticationService.callPostMethod(url, domainRequestDto);
+    }
+
+    fetchModuleForPartnerModuleAccess() {
+        let url = this.moduleUrl + 'fetchModuleForPartnerModuleAccess/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    fetchModulesForEditPartnerModule(partnershipId:any) {
+        let url = this.moduleUrl + 'fetchModulesForEditPartnerModule/'+this.authenticationService.getUserId()+'/'+partnershipId+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    updatePartnerModulesAccess(partner:any) {
+        partner.userId = this.authenticationService.getUserId();
+        let url = this.moduleUrl + 'updatePartnerModulesAccess?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url, partner);
+    }
     
 }

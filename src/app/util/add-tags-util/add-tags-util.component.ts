@@ -31,11 +31,24 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
   tags: Array<Tag> = new Array<Tag>();
   maxlengthError: boolean = false;
   maxlengthErrorMessage = "Please note: The maximum allowed length for the tag is 55 characters."
+  tagSelected: boolean = false;
+  tagFirstColumnEndIndex: number;
+  tagsListFirstColumn: Tag[];
+  tagsListSecondColumn: Tag[];
+  tagsSelected: any[] = [];
+  tagSearchKey: string = "";
+  createdOrsearchedTags: Tag[] = [];
+  isAddTagPopup: boolean;
+  previousTags: Tag[] = [];
+  selectedTagNames: any[];
+  allTags = [];
 
   @Input() pagination: Pagination;
   @Input() isAddTag:boolean;
   @Input() selectedTag:any;
   @Output() notifyParent: EventEmitter<any>;
+  @Input() selectedTags = [];
+  @Input() isTagsTabActive =false;
 
   constructor(public referenceService: ReferenceService, public httpRequestLoader: HttpRequestLoader, public authenticationService: AuthenticationService,
      public userService: UserService) {
@@ -44,6 +57,17 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
+    if(!this.isTagsTabActive){
+      $('#addTagModal').modal('show');
+      this.searchTags();
+      if (Array.isArray(this.selectedTags)) {
+        this.allTags.push(...this.selectedTags); 
+      } else {
+        console.error('selectedTags is not an array');
+      }
+      this.selectedTagNames = this.selectedTags.map(person => person.tagName)
+    }
+    else{
     if (this.isAddTag) {
       this.tag = new Tag();
       this.tagModalTitle = 'Enter Tag Details';
@@ -65,9 +89,14 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     }
     $('#addTagModalPopup').modal('show');
   }
+  }
 
   ngOnDestroy() {
     $('#addTagModalPopup').modal('hide');
+    $('#addTagModal').modal('hide');
+    this.tagSelected = false;
+    this.isAddTagPopup=false;
+    this.isTagsTabActive = false;
   }
 
   closeTagModal() {
@@ -81,6 +110,19 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.tag.isTagNameValid = false;
     this.maxlengthError = false;
     this.notifyParent.emit();
+  }
+  closeTagModal1() {
+    $('#addTagModal').modal('hide');
+    this.referenceService.stopLoader(this.addTagLoader);
+    this.tag = new Tag();
+    this.removeTagErrorClass();
+    this.tagResponse = new CustomResponse();
+    this.isAddTag = false;
+    this.tagNames = [];
+    this.tag.isTagNameValid = false;
+    this.maxlengthError = false;
+    this.isAddTagPopup = false;
+    this.notifyParent.emit(this.allTags);
   }
 
   addTagErrorMessage(errorMessage: string) {
@@ -145,22 +187,37 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.referenceService.startLoader(this.addTagLoader);
     if (this.tag.id > 0) {
       this.tag.updatedBy = this.loggedInUserId;
-      if(this.tag.tagName != undefined && this.tag.tagName .length > 55){
-        this.tag.tagName = this.tag.tagName.substring(0,55);
+      if (this.tag.tagName != undefined && this.tag.tagName.length > 55) {
+        this.tag.tagName = this.tag.tagName.substring(0, 55);
       }
     } else {
       this.tag.createdBy = this.loggedInUserId;
       this.tag.tagNames = this.tagNames;
     }
-   
+
     this.userService.saveOrUpdateTag(this.tag)
       .subscribe(
         (result: any) => {
-          this.closeTagModal();
-          if (result.access) {
+          if (result.statusCode == 200) {
             this.referenceService.stopLoader(this.addTagLoader);
-            this.tagResponse = new CustomResponse('SUCCESS', result.message, true);
-            this.notifyParent.emit(result.message);
+            if (this.isTagsTabActive) {
+              this.closeTagModal();
+              this.tagResponse = new CustomResponse('SUCCESS', result.message, true);
+              this.notifyParent.emit(result.message);
+            } else {
+              this.isAddTagPopup = false;
+              this.searchTags();
+              this.isAddTagPopup = false;
+              this.tag.isValid = false
+              this.tag.isTagNameValid = false;
+              this.tag = new Tag();
+              this.tagResponse = new CustomResponse();
+              this.tagNames = [];
+              this.tagSelected = (this.selectedTags.length > 0 || this.tagsSelected.length > 0) ? true : false;
+            }
+          } else if (result.statusCode == 400) {
+            this.referenceService.stopLoader(this.addTagLoader);
+            this.addTagErrorMessage(result.message);
           } else {
             this.authenticationService.forceToLogout();
           }
@@ -188,5 +245,122 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
   }
 
   public validatorsTag = [this.startsWithAt];
+
+  addTagsCondition() {
+
+    // this.selectedTags.forEach(tag => {
+    //   if (!this.tagsSelected.includes(tag)) {
+    //     this.tagsSelected.push(tag);
+    //   } });
+    
+          let length = this.previousTags.length;
+          this.isAddTagPopup = false;
+          
+          if ((length % 2) == 0) {
+            this.tagFirstColumnEndIndex = length / 2;
+            this.tagsListFirstColumn = this.previousTags.slice(0, this.tagFirstColumnEndIndex);
+            this.tagsListSecondColumn = this.previousTags.slice(this.tagFirstColumnEndIndex);
+          } else {
+            this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
+            this.tagsListFirstColumn = this.previousTags.slice(0, this.tagFirstColumnEndIndex + 1);
+            this.tagsListSecondColumn = this.previousTags.slice(this.tagFirstColumnEndIndex + 1);
+          }
+        }
+
+  updateSelectedTags(tag: Tag, checked: boolean) {
+    this.resetTagValidation();
+    this.addSelectedTags();
+
+    if (checked) {
+      this.addTag(tag);
+    } else {
+      this.removeTag(tag);
+    }
+
+    this.updateSelectedTagNames();
+  }
+
+  private resetTagValidation() {
+    this.tagSelected = false;
+    this.tag.isTagNameValid = false;
+    this.tag.isValid = false;
+  }
+
+  private addSelectedTags() {
+    if (this.selectedTags.length > 0) {
+      this.selectedTags.forEach(selectedTag => {
+        if (!this.tagsSelected.some(existingTag => existingTag.tagName === selectedTag.tagName)) {
+          this.tagsSelected.push(selectedTag);
+        }
+      });
+    }
+  }
+
+  private addTag(tag: Tag) {
+    this.tagSelected = true;
+
+    if (!this.tagsSelected.some(existingTag => existingTag.tagName === tag.tagName)) {
+      this.tagsSelected.push(tag);
+    }
+  }
+
+  private removeTag(tag: Tag) {
+    const index = this.tagsSelected.findIndex(existingTag => existingTag.tagName === tag.tagName);
+
+    if (index !== -1) {
+      this.tagsSelected.splice(index, 1);
+      this.selectedTags.splice(index, 1); // Remove the tag from selectedTags
+      this.tagSelected = true;
+    }
+  }
+
+  private updateSelectedTagNames() {
+    this.selectedTagNames = this.tagsSelected.map(tag => tag.tagName);
+  }
+
+  saveSelectedTags() {
+    this.notifyParent.emit(this.tagsSelected);
+    $('#addTagModal').modal('hide');
+    this.tag.isValid = false;
+    this.tag.isTagNameValid = false;
+    this.tagSelected = false;
+  }
+  openAddTagModal() {
+    this.tag = new Tag();
+    this.isAddTagPopup = true;
+    this.tagSelected = false;
+    // $('#addTagModal').modal('hide');
+  }
+  searchTags() {
+    let pagination: Pagination = new Pagination();
+    pagination.searchKey = this.tagSearchKey;
+    pagination.userId = this.loggedInUserId;
+    pagination.maxResults = 0;
+    this.referenceService.startLoader(this.httpRequestLoader)
+    this.userService.getTagsSearchTagName(pagination)
+      .subscribe(
+        response => {
+          const data = response.data;
+          this.previousTags = data.tags;
+          this.addTagsCondition();
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        },
+        (error: any) => {
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        },
+      );
+  }
+  tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
+
+  cancel() {
+    this.isAddTagPopup = false;
+    this.tag.isValid = false
+    this.tag.isTagNameValid = false;
+    this.tag = new Tag();
+    this.removeTagErrorClass();
+    this.tagResponse = new CustomResponse();
+    this.tagNames = [];
+    this.tagSelected = (this.tagsSelected.length>0) ? true :false;
+  }
 
 }

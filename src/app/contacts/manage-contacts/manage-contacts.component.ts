@@ -1289,6 +1289,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.xtremandLogger.info("SelectedUserIDs:" + this.selectedContactListIds);
 			this.contactListObject = new ContactList;
 			this.contactListObject.isPartnerUserList = this.isPartner;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
 			if (listName != "") {
 				if (this.selectedContactListIds.length != 0) {
 					$.each(this.allselectedUsers, function (index, value: User) {
@@ -2870,6 +2871,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.contactListObject = new ContactList();
 		this.contactListObject.name = contactListName;
 		this.contactListObject.isPartnerUserList = isPartner;
+		this.contactListObject.assignedLeadsList = this.assignLeads;
 		this.contactListObject.publicList = isPublic;
 		this.contactListObject.contactType = contactType;
 		this.contactListObject.socialNetwork = socialnetwork;

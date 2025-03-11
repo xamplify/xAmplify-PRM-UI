@@ -48,7 +48,6 @@ export class MarketplaceMapUtilComponent implements OnInit {
     this.channel.onmessage = (event) => {
       if (event.data.type === 'companies') {
         this.filteredCompanies = event.data.data;
-        console.log('Search data received:', this.filteredCompanies);
         this.calculateMapCenterAndZoom();
       }
     };
@@ -56,7 +55,7 @@ export class MarketplaceMapUtilComponent implements OnInit {
 
   ngAfterViewChecked() {
     const componentHeight = this.elementRef.nativeElement.offsetHeight;
-    (window.parent as any).$('#map-frame').height(componentHeight +20);
+    (window.parent as any).$('.map-frame').height(componentHeight +20);
 
   }
 

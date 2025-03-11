@@ -6,5 +6,6 @@ export class ContentModuleStatusAnalyticsDTO {
 	pendingCount: number = 0;
 	totalCount: number = 0;
 	selectedCategory: string = '';
+	draftCount: number = 0;
 
 }

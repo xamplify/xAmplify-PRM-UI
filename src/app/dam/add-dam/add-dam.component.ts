@@ -75,7 +75,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
    assetPublishEmailNotificationLoader = true;
    isDownloaButtonClicked = false;
   isFromApprovalModule: boolean = false;
-
+  isApprover: boolean = false;
+  saveAsDraftButtonText: string = "Save as Draft";
+  disableSaveAsDraftButton: boolean = false;
+  savedTags: any[] = [];
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -109,7 +112,6 @@ export class AddDamComponent implements OnInit, OnDestroy {
           this.isPartnerView = this.router.url.indexOf("/editp") > -1;
           this.isAdd = false;
           this.modalTitle = "Update Details";
-          this.saveOrUpdateButtonText = "Update";
           this.getById();
         } else {
           this.goToManageSectionWithError();
@@ -128,6 +130,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
           });
       }
       this.findAssetPublishEmailNotificationOption();
+      /** XNFR-884 **/
+      if (this.authenticationService.approvalRequiredForAssets) {
+        this.checkApprovalPrivilegeForAssets();
+      }
     }
     
      /****XNFR-326*****/
@@ -227,6 +233,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
       }
       this.damPostDto.categoryId = dam.categoryId;
       this.selectedCategoryId = dam.categoryId;
+      this.damPostDto.published = dam.published;
+      this.damPostDto.approvalStatus = dam.approvalStatus;
     } else {
       this.goToManageSectionWithError();
     }
@@ -237,7 +245,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.damPostDto.jsonBody = event.jsonContent;
     this.damPostDto.htmlBody = event.htmlContent;
     if (!this.isPartnerView) {
-      this.listTags(new Pagination());
+      // this.listTags(new Pagination());
       $("#addAssetDetailsPopup").modal("show");
       this.isAddAssetDetailsPopupLoaded= true;
       this.ngxloading = false;
@@ -318,6 +326,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
       );
     }
   }
+  
+  saveOrUpdateAsset(saveAs: boolean) {
+    this.damPostDto.draft = true;
+    this.saveOrUpdate(saveAs);
+  }
 
   updatePublishedAsset() {
     this.damPostDto.id = this.assetId;
@@ -382,26 +395,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       (response) => {
         const data = response.data;
         this.tags = data.tags;
-        let length = this.tags.length;
-        if (length % 2 == 0) {
-          this.tagFirstColumnEndIndex = length / 2;
-          this.tagsListFirstColumn = this.tags.slice(
-            0,
-            this.tagFirstColumnEndIndex
-          );
-          this.tagsListSecondColumn = this.tags.slice(
-            this.tagFirstColumnEndIndex
-          );
-        } else {
-          this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
-          this.tagsListFirstColumn = this.tags.slice(
-            0,
-            this.tagFirstColumnEndIndex + 1
-          );
-          this.tagsListSecondColumn = this.tags.slice(
-            this.tagFirstColumnEndIndex + 1
-          );
-        }
+        this.addTagsCondition(this.tags);
         this.referenceService.stopLoader(this.tagsLoader);
       },
       (error: any) => {
@@ -445,11 +439,52 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.openAddTagPopup = true;
   }
 
-  resetTagValues(message: any) {
-    this.openAddTagPopup = false;
-    this.showSuccessMessage(message);
-    this.listTags(new Pagination());
+ resetTagValues(selectedTags: any[]) {
+         this.openAddTagPopup = false;
+         // this.showSuccessMessage(message);
+         // this.listTags(new Pagination());
+         if (selectedTags && Array.isArray(selectedTags)) {
+             const selectedTagIds = selectedTags.map(tag => tag.id);
+             selectedTagIds.forEach(tagId => {
+                 if (!this.damPostDto.tagIds.includes(tagId)) {
+                     this.damPostDto.tagIds.push(tagId);
+                 }
+             });
+             this.damPostDto.tagIds = this.damPostDto.tagIds.filter(tagId => selectedTagIds.includes(tagId));
+             this.addTagsCondition(selectedTags);
+         } else {
+             if (selectedTags != undefined) {
+                 this.listTags(new Pagination());
+             }
+         }
+     }
+ addTagsCondition(selectedTags:any[]) {
+ if( this.damPostDto.tagIds!=undefined && this.damPostDto.tagIds.length>0){
+   this.savedTags = selectedTags.filter(tag => this.damPostDto.tagIds.includes(tag.id));
+ }
+ let length = selectedTags.length;
+ if ((length % 2) == 0) {
+   this.tagFirstColumnEndIndex = length / 2;
+   this.tagsListFirstColumn = this.savedTags.slice(0, this.tagFirstColumnEndIndex);
+   this.tagsListSecondColumn = this.savedTags.slice(this.tagFirstColumnEndIndex);
+ } else {
+   this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
+   this.tagsListFirstColumn = this.savedTags.slice(0, this.tagFirstColumnEndIndex + 1);
+   this.tagsListSecondColumn = this.savedTags.slice(this.tagFirstColumnEndIndex + 1);
+ }
+ 
+ }
+ removeTag(tag: Tag) {
+  let index = this.damPostDto.tagIds.indexOf(tag.id);
+  if (index > -1) {
+      this.damPostDto.tagIds.splice(index, 1);
+      // this.savedTags.splice(index, 1);
+      if(this.damPostDto.tagIds .length == 0){
+          this.savedTags = [];
+      }
+      this.addTagsCondition(this.savedTags)
   }
+}
 
   showSuccessMessage(message: any) {
     if (message != undefined) {
@@ -517,17 +552,21 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     if(isPartnerCompanyOrGroupSelected){
         this.saveOrUpdateButtonText = "Save & Publish";
         this.saveAsButtonText = "Save As & Publish";
+        this.disableSaveAsDraftButton = true;
     }else{
         this.saveOrUpdateButtonText = "Save";
         this.saveAsButtonText = "Save As";
+        this.disableSaveAsDraftButton = false;
     }
 }else{
     if(isPartnerCompanyOrGroupSelected){
        this.saveAsButtonText = "Save As & Publish";
        this.saveOrUpdateButtonText = "Save & Publish";
+       this.disableSaveAsDraftButton = true;
     }else{
       this.saveAsButtonText = "Save As";
       this.saveOrUpdateButtonText = "Save";
+      this.disableSaveAsDraftButton = false;
     }
 }
 /****XNFR-342****/
@@ -558,5 +597,23 @@ downloadPdf(){
     let url = RouterUrlConstants['home'] + RouterUrlConstants['manageApproval'];
     this.referenceService.goToRouter(url);
   }
+
+  /** XNFR-884 **/
+  checkApprovalPrivilegeForAssets() {
+    this.ngxloading = true;
+    this.damService.checkApprovalPrivilegeForAssets()
+    .subscribe(
+        response => {
+            if (response.statusCode === 200) {
+                this.isApprover = response.data;
+            }
+            if (!this.isApprover) {
+              this.saveOrUpdateButtonText = 'Send for Approval';
+            }
+            this.ngxloading = false;
+        }, error => {
+            this.ngxloading = false;
+        });
+}
 
 }

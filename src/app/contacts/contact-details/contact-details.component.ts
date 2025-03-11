@@ -734,6 +734,9 @@ export class ContactDetailsComponent implements OnInit {
 
   reloadMeetingTab(event) {
     this.isReloadMeetingTab = event;
+    if (!this.referenceService.checkIsValidString(this.activeCalendarDetails.userUri)) {
+      this.getActiveCalendarDetails();
+    }
   }
 
   toggleSidebar() {
@@ -804,8 +807,8 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   viewContactJourney(contactId:any) {
-    let encodedId = this.referenceService.encodePathVariable(contactId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedContact.companyUserListId);
+    let encodedId = this.referenceService.encodePathVariableInNewTab(contactId);
+    let encodedUserListId = this.referenceService.encodePathVariableInNewTab(this.selectedContact.companyUserListId);
     this.referenceService.openWindowInNewTab(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodedId);
   }
 

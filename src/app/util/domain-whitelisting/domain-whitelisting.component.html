@@ -176,6 +176,12 @@
                       </td>
                       <td>
                         <div class="actions-block override-actions mb_whitespace" style="float:none;">
+                          <!-- Edit Icon -->
+                          <a *ngIf="isPartnerDomainsTabSelected" class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+                            (click)="openDomianModalPopupForEdit(domain)">
+                            <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete"
                             (click)="confirmDeleteDomain(domain.id)">
                             <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
@@ -219,34 +225,48 @@
       </div>
       <div class="modal-body">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="alert alert-info">
+        <div class="alert alert-info mb20">
           <p>
-            {{descriptionText}} <br><br>
+            {{descriptionText}} <br>
             <strong>Example:</strong> example.com
           </p>
         </div>
-        <br>
         <form class="form-horizontal" autocomplete="off">
           <div class="form-group">
-            <label class="control-label col-xs-1 col-sm-1 required-mark-padding" for="domain">
-              <span class="mb-star star">*</span>
-            </label>
-            <div class="form-group col-xs-10 col-sm-10 domain-or-email-padding">
+            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+              <div class="d-flex align-item-center">
+              <label for="domain" class="domain_text">
+                Domain Name<span class="mb-star star">*</span>
+              </label>
               <input type="text" style="border: none" class="form-control padding-mobile" id="domain"
-                (input)="validateDomain(domain)" [(ngModel)]="domain" [ngModelOptions]="{standalone: true}"
-                placeholder="Enter Domain Name *" autocomplete="off">
-              <div class="textCss"></div>
+                (input)="validateDomain(domain)" [disabled]="editAction" [(ngModel)]="domain" [ngModelOptions]="{standalone: true}"
+                placeholder="Enter Domain Name" autocomplete="off">
+                </div>
               <span class="danger" *ngIf="isDomainExist">This domain name has already been added</span>
               <span class="danger" *ngIf="!validDomainFormat">This domain name is not formatted properly</span>
             </div>
           </div>
+          <div *ngIf="isPartnerDomainsTabSelected" class="portlet light">
+            <div class="portlet-title tabbable-line bt-zero-px mh-zero-px">
+              <span class="caption-subject bold"><strong>Distinctive Domain: Turn ON or OFF</strong></span>
+              <div class="pull-right" style="margin-top: -7px;margin-right: 15px;">
+                <app-custom-ui-switch [customSwitch]="isDomainAllowedToAddToSamePartnerAccount"
+                  (customUiSwitchEventEmitter)="setIsDomainAllowed($event)"></app-custom-ui-switch>
+              </div>
+            </div>
+            <label class="mb0 mr10 ml5">Enabling this option will group all partners signing up with this domain under a
+              single company.</label>
+          </div>
         </form>
       </div>
-      <div class="modal-footer" style="border:none">
+      <div class="modal-footer">
         <button class="btn Btn-Gray" (click)="closeAddDomainModal()">Cancel</button>
-        <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
-          [disabled]="!validDomainPattern" translate><span
+        <button *ngIf="!editAction" type="button" class="button bgcolor-unset btn-top3"
+          (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern" translate><span
             class="btn Btn-Green transition txt_pd-top3">Add</span></button>
+        <button *ngIf="editAction" type="button" class="button bgcolor-unset btn-top3"
+          (click)="confirmAndupdateExcludedDomain(domain)" translate><span
+            class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>
   </div>

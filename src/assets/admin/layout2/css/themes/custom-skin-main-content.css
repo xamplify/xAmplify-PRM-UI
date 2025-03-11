@@ -2491,6 +2491,7 @@ span.filterActiveBg {background-color: #10ad39 !important;}
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }
+
 /* ui enhacement changes in onboarding partner */
 @media only screen and (min-width: 760px) {
   .clip_mask::after {
@@ -2502,4 +2503,31 @@ span.filterActiveBg {background-color: #10ad39 !important;}
   .portlet.light.clip_mask{
     border-bottom: 0px !important;
   }
+}
+
+/* add a tag */
+.add_tag-container,.add-tag-card{
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.add_tag,.checkbox-btn{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(---text-color) !important;
+}
+.add_tag:hover,.checkbox-btn:hover{
+  color: #fff!important;
+}
+/*drag and drop btn */
+.btn_custom,.btn_update{
+  border: 1px solid var(--btn-primary-border-color) !important;
+  color: var(--title-heading--text) !important;
+}
+.btn_custom:hover {
+  background: #0276ff !important;
+  color: #fff !important;
+}
+.btn_update:hover {
+  background: #3faba4 !important;
+  color: #fff !important;
 }

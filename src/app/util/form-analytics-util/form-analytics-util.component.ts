@@ -68,6 +68,8 @@ export class FormAnalyticsUtilComponent implements OnInit {
     roleName: Roles = new Roles();
     isOrgAdmin: boolean = false;  
     modalPopupSuffix:string="";
+    @Input() isWelcomePage: boolean;
+ 
     constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -147,6 +149,8 @@ ngOnDestroy(){
         }else if(this.isVendorMarketplacePage){
             pagination.vendorMarketplacePage = true;
             pagination.vendorLandingPageId = this.importedObject['partnerLandingPageId'];
+        }else if(this.isWelcomePage){
+            pagination.landingPageId = this.importedObject['selectedLandingPageId'];
         }
         this.formService.getFormAnalytics(pagination, this.alias, false).subscribe(
             (response: any) => {

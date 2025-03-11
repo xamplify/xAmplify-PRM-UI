@@ -564,11 +564,12 @@ export class AuthenticationService {
       }
     } catch (error) { this.xtremandLogger.log('error' + error); }
   }
+  
   isTeamMember() {
     try {
       const roleNames = this.getRoles();
       if ((roleNames && !this.isSuperAdmin() && !this.isOrgAdmin() && !this.isOrgAdminPartner() && !this.isPartner() && !this.isVendor() && !this.isVendorPartner() && ((roleNames.indexOf('ROLE_VIDEO_UPLOAD') > -1) || (roleNames.indexOf('ROLE_CAMPAIGN') > -1) || (roleNames.indexOf('ROLE_CONTACT') > -1) || (roleNames.indexOf('ROLE_EMAIL_TEMPLATE') > -1)
-        || (roleNames.indexOf('ROLE_STATS') > -1) || (roleNames.indexOf('ROLE_SOCIAL_SHARE') > -1)))) {
+        || (roleNames.indexOf('ROLE_STATS') > -1) || (roleNames.indexOf('ROLE_SHARE_LEADS') > -1) || (roleNames.indexOf('ROLE_SOCIAL_SHARE') > -1)))) {
         return true;
       } else {
         return false;
@@ -1578,11 +1579,11 @@ vanityWelcomePageRequired(userId) {
     .map(this.extractData)
     .catch(this.handleError);
   }
-
-
-
-
- 
   
+  //XNFR-889
+  getPartnerCompanyByEmailDomain(emailId: any, companyProfileName: string) {
+    let url = this.REST_URL + "getPartnerCompanyByEmailDomain/" + emailId + "/" + companyProfileName;
+    return this.callGetMethod(url);
+  }
 
 }

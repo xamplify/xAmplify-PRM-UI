@@ -22,13 +22,14 @@ import { VideoFileService } from 'app/videos/services/video-file.service';
 import { Router } from '@angular/router';
 import { SortOption } from 'app/core/models/sort-option';
 import { Criteria } from 'app/contacts/models/criteria';
+import { Properties } from 'app/common/models/properties';
 declare var swal: any, $: any;
 
 @Component({
   selector: 'app-manage-approval',
   templateUrl: './manage-approval.component.html',
   styleUrls: ['./manage-approval.component.css'],
-  providers: [HttpRequestLoader, ApproveService, DamService, TracksPlayBookUtilService, VideoFileService, SortOption]
+  providers: [HttpRequestLoader, ApproveService, DamService, TracksPlayBookUtilService, VideoFileService, SortOption, Properties]
 })
 export class ManageApprovalComponent implements OnInit {
 
@@ -104,7 +105,7 @@ export class ManageApprovalComponent implements OnInit {
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
     public pagerService: PagerService, public tracksPlayBookUtilService: TracksPlayBookUtilService, public videoFileService: VideoFileService,
-    private router: Router, public sortOption: SortOption
+    private router: Router, public sortOption: SortOption, public properties: Properties
   ) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -225,6 +226,9 @@ export class ManageApprovalComponent implements OnInit {
     } else if (event == 'CREATED') {
       this.selectedFilterStatus = 'PENDING';
       this.getAllApprovalList(this.pagination);
+    } else if (event == 'DRAFT') {
+      this.selectedFilterStatus = 'DRAFT';
+      this.getAllApprovalList(this.pagination);
     } else {
       this.selectedFilterStatus = '';
       this.getAllApprovalList(this.pagination);
@@ -239,6 +243,8 @@ export class ManageApprovalComponent implements OnInit {
         return 'Rejected';
       case 'CREATED':
         return 'Pending Approval';
+      case 'DRAFT':
+        return 'Draft';
       default:
         return status;
     }

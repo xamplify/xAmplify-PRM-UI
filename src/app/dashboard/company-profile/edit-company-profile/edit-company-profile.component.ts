@@ -2087,7 +2087,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     /*** XNFR-760 ***/
     checkAndAutofillCompanyProfile() {
-        if (!this.authenticationService.user.hasCompany && this.authenticationService.isPartner()) {
+        if (!this.authenticationService.user.hasCompany && (this.authenticationService.isPartner()
+            || this.authenticationService.isTeamMember() || this.authenticationService.isOnlyUser())) {
             this.autoFillCompanyProfile();
         }
     }

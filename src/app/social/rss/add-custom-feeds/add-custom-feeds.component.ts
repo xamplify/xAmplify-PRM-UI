@@ -570,5 +570,8 @@ export class AddCustomFeedsComponent implements OnInit {
     }
   );
 	}
-  
+  setPage(event: any) {
+    this.videosPagination.pageIndex = event.page;
+    this.listVideos(this.videosPagination); 
+ }
 }

@@ -291,15 +291,14 @@ export class SaveAsComponent implements OnInit {
                       } else if (this.isPartner) {
                           let message = "Your "+this.authenticationService.partnerModule.customName+" group name has been updated successfully";
                           this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', message, true);
+                      } else if (this.module === 'contacts') {
+                        this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', 'Your contact list has been updated successfully.', true);
                       } else {
-                          this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
-                          let message = "Your "+this.authenticationService.partnerModule.customName+" list name has been updated successfully";
-
+                        this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
                       }
                       this.notifyParentSaveAs.emit('success');
                   } else if (data.statusCode == 1001) {
                       this.saveAsError = 'This list name is already taken.';
-
                   }
               },
               error => this.xtremandLogger.error(error),

@@ -1831,6 +1831,7 @@ export class AddDealComponent implements OnInit {
     this.deal.associatedLeadId = 0;
     this.showChangeLeadAndContactButton = false;
     this.attachLeadText = 'Attach a Lead';
+    this.contactInfo = ''
     this.showDetachLeadButton = false;
     this.deal.campaignId = 0;
     this.deal.campaignName = '';
@@ -2014,8 +2015,7 @@ export class AddDealComponent implements OnInit {
     if (this.isFromCompanyModule && !this.isCompanyJourney && !this.isFromCompanyJourney) {
        this.referenceService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.company+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
     } else if ((this.isCompanyJourney || this.isFromCompanyJourney) && this.selectedContact.userListId == undefined) {
-      let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
-      this.referenceService.goToRouter('home/company/manage/details/'+encodedUserListId+'/'+encodeUserId);
+      this.referenceService.goToRouter('home/company/manage/details/'+encodeUserId);
     } else if (this.isFromCompanyJourney && this.selectedContact.userListId != undefined) {
       let encodedCompanyId = this.referenceService.encodePathVariable(this.companyJourneyId);
       let url = RouterUrlConstants.home + RouterUrlConstants.contacts + 'company/' + RouterUrlConstants.details + encodedUserListId + "/" + encodeUserId + "/" + encodedCompanyId;
@@ -2059,7 +2059,6 @@ export class AddDealComponent implements OnInit {
 
   goBackToCompanyJourney() {
     let encodedId = this.referenceService.encodePathVariable(this.companyJourneyId);
-    let encodedUserListId = this.referenceService.encodePathVariable(this.selectedUserListId);
     let url = "home/company/manage/details/" + encodedId;
     this.referenceService.goToRouter(url);
   }
