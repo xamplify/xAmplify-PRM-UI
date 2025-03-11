@@ -1,5 +1,4 @@
 /***** colors class ******/
-.white-co,
 .profile-details b,
 .field-icon,
 .list__item .item__name,
@@ -4547,6 +4546,27 @@ color: #fff!important;
   background: rgb(255 255 255 / 40%) !important;
   border: 1px solid #ada6a64d;
 }
+  /* ui enhacement changes in onboarding partner */
+  .contact_img,.cloud_color{
+    background: rgb(255 255 255 / 31%) !important;
+    border: 1px solid rgb(255 255 255 / 35%) !important;
+  }
+  @media only screen and (min-width: 760px) {
+    .clip_mask::after {
+     display: none!important;
+    }
+    .clip_mask::before {
+      display: none!important;
+    }
+    .portlet.light.clip_mask{
+      border-bottom: 0 !important;
+      border-radius: 8px 8px 0px 0px !important;
+  
+    }
+    .clip_mask{
+      bottom: -74px!important;
+    }
+  }
 /* add a tag */
 .add_tag-container,.add-tag-card{
   background: rgb(255 255 255 / 40%) !important;
@@ -4580,3 +4600,4 @@ color: #fff!important;
   background: #e87e04 !important;
   color: #fff !important;
 }
+
