@@ -216,7 +216,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
     let dam = result.data;
     if (dam != undefined) {
       this.jsonBody = dam.jsonBody;
-      this.beeContainerInput["jsonBody"] = this.jsonBody;
+      // this.beeContainerInput["jsonBody"] = this.jsonBody;
+      this.beeContainerInput["jsonBody"] = dam.jsonBody;
       this.damPostDto.name = dam.assetName;
       this.damPostDto.description = dam.description;
       if (dam.whiteLabeledAssetSharedWithPartners != undefined) {
@@ -251,7 +252,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
   readBeeTemplateData(event) {
     this.ngxloading = true;
-    this.damPostDto.jsonBody = event.jsonContent;
+    this.damPostDto.jsonBody =  JSON.stringify(event.jsonContent);
     this.damPostDto.htmlBody = event.htmlContent;
     this.damPostDto.beeTemplate = true;
     this.pdfFile = event.pdf;
@@ -317,6 +318,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     } else {
       if (!this.isAdd && !saveAs) {
         this.damPostDto.id = this.assetId;
+        this.isAdd = true;
       }
       this.damPostDto.saveAs = saveAs;
       this.setDampUploadPostData(saveAs);
@@ -341,6 +343,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
   
   private setDampUploadPostData(saveAs: boolean) {
     // let damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
+    this.damUploadPostDto.id = this.damPostDto.id;
+    this.damUploadPostDto.categoryId =  this.damPostDto.categoryId
     this.damUploadPostDto.saveAs = this.damPostDto.saveAs;
     this.damUploadPostDto.assetName = this.damPostDto.name;
     this.damUploadPostDto.description = this.damPostDto.description;
@@ -685,7 +689,7 @@ downloadPdfWithHtml() {
 openAddSignatureModalPopUp() {
   // this.loading = true;
   this.openSelectDigitalSignatureModalPopUp = true;
-  $("#addAssetDetailsPopup").modal("hide");
+  // $("#addAssetDetailsPopup").modal("hide");
 }
 setPartnerSignatureRequired(event){
   this.damUploadPostDto.partnerSignatureRequired = event;
@@ -695,16 +699,16 @@ setVendorSignatureRequired(event){
   this.damUploadPostDto.vendorSignatureRequired = event;
   this.validateAllFields();
 }
-notifySignatureSelection(event){
-        if(this.damUploadPostDto.vendorSignatureRequired){
-            this.setUploadedFileProperties(event);
-            this.pdfUploadedFile =  event;
-            this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
-        }
-        this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
-            this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
-        });
-        this.validateAllFields();
+  notifySignatureSelection(event) {
+    if (this.damUploadPostDto.vendorSignatureRequired) {
+      this.setUploadedFileProperties(event);
+      this.pdfUploadedFile = event;
+      this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
+    }
+    this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
+      this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
+    });
+    this.validateAllFields();
   }
   private setUploadedFileProperties(file: File) {
     // this.uploadedImage = file;
@@ -766,7 +770,7 @@ notifySignatureSelection(event){
         notifySelectDigitalSignatureCloseModalPopUp(event){
           if(event == 'close'){
             this.openSelectDigitalSignatureModalPopUp = false;
-            $("#addAssetDetailsPopup").modal("show");
+            // $("#addAssetDetailsPopup").modal("show");
           }
 
         }

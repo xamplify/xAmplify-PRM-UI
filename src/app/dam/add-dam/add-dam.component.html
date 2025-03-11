@@ -31,14 +31,16 @@
                   <i class="fa fa-times" aria-hidden="true"></i>
                </a>
             </div>
-            <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
+            <!-- <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
+               <app-bee-template-util [beeContainerInput]="beeContainerInput"
+                  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+               <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
+            </ng-container> -->
+            <ng-container>
                <!-- <app-bee-template-util [beeContainerInput]="beeContainerInput"
                   (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util> -->
-               <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
+               <app-unlayer-bulider *ngIf="!ngxloading" [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
             </ng-container>
-            <div *ngIf="openSelectDigitalSignatureModalPopUp">
-               <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfFile" [isFromDam]="true"></app-select-digital-signature>
-            </div>
          </div>
       </div>
    </div>
@@ -48,7 +50,7 @@
       data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-css" role="document" style="width: 75% !important;">
          <!-- Modal content-->
-         <div class="modal-content">
+         <div class="modal-content" *ngIf="!openSelectDigitalSignatureModalPopUp">
             <ngx-loading [show]="modalPopupLoader && !isCkeditorLoaded"
                [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
@@ -122,14 +124,15 @@
                         </div>
                      </div>
                      <!--White Labeled--->
-                     <dsiv class="col-lg-12 col-md-12" *ngIf="hasShareWhiteLabeledContentAccess">
+                     <div class="col-lg-12 col-md-12" *ngIf="hasShareWhiteLabeledContentAccess">
                         <div class="form-group col-md-6 col-lg-6">
                            <label>White Labeled</label>
                            <app-custom-ui-switch [customSwitch]="damPostDto?.shareAsWhiteLabeledAsset"
                               (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
                            <span class="info-color-xampc">
-                              <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup" data-toggle="tooltip"
-                                 data-placement="top" aria-hidden="true" title="Share As White Labeled Content"></i>
+                              <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
+                                 data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                 title="Share As White Labeled Content"></i>
                            </span>
                         </div>
                         <ng-container>
@@ -152,20 +155,6 @@
                               </span>
                            </div>
                         </ng-container>
-                        <ng-container>
-                           <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
-                             <div class="">
-                                <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
-                                   [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
-                                   (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
-                                <span class="info-color-xampc">
-                                   <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
-                                      aria-hidden="true"
-                                      [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
-                                   </i>
-                                </span>
-                             </div>
-                          </ng-container>
                      </div>
                       <!--XNFR-578 && XBI-3235-->
                       <div class="col-lg-12 col-md-12" *ngIf="!isPartnerView">
@@ -179,6 +168,20 @@
                                  title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
                            </span>
                         </div>
+                        <ng-container>
+                           <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
+                           <div class="">
+                              <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
+                                 [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
+                                 (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
+                              <span class="info-color-xampc">
+                                 <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                    aria-hidden="true"
+                                    [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
+                                 </i>
+                              </span>
+                           </div>
+                        </ng-container>
                      </div>
                      <!--Description-->
                      <div class="col-lg-12 col-md-12">
@@ -266,6 +269,9 @@
                </button>
             </div>
          </div>
+         <div *ngIf="openSelectDigitalSignatureModalPopUp">
+            <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfFile" [isFromDam]="true"></app-select-digital-signature>
+         </div>
       </div>
    </div>
    <!-- ADD TAG POPUP -->
@@ -275,4 +281,3 @@
    </div>
    <app-add-folder-modal-popup #addFolderModalPopupComponent
       (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
-      <app-send-test-email *ngIf="showPreview" [htmlbody] = "damPostDto?.htmlBody" ></app-send-test-email>

@@ -121,11 +121,11 @@ mydownloadPdf() {
           console.error("Received an empty or invalid PDF file.");
           return;
         }
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'generated-pdf.pdf';
-        link.click();
-        URL.revokeObjectURL(link.href);
+        // const link = document.createElement('a');
+        // link.href = URL.createObjectURL(blob);
+        // link.download = 'generated-pdf.pdf';
+        // link.click();
+        // URL.revokeObjectURL(link.href);
 
         const pdfFile = new File([blob], 'design.pdf', { type: 'application/pdf' });
         this.notifyParentComponent.emit({
@@ -159,7 +159,8 @@ exportDesign() {
 }
 
 myPdfPreview(htmlContent: string): void {
-  this.damService.downloadPdf(htmlContent).subscribe(
+  const htmlWithInlineStyles = this.fixBackgroundStyles(htmlContent);
+  this.damService.downloadPdf(htmlWithInlineStyles).subscribe(
     (blob: Blob) => {
       if (!blob || blob.size === 0) {
         console.error("Received an empty or invalid PDF file.");
@@ -178,7 +179,16 @@ myPdfPreview(htmlContent: string): void {
     }
   );
 }
+fixBackgroundStyles(html: string): string {
+  // Replace external image URLs with Base64-encoded images
+  const base64Image = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...'; // Replace with your Base64 image
+  html = html.replace(/url\(['"]?([^'"]+)['"]?\)/g, `url('${base64Image}')`);
 
+  // Ensure background colors are applied
+  html = html.replace(/background-color:\s*([^;]+);/g, 'background-color: $1 !important;');
+
+  return html;
+}
 // Method to close the preview popup
 closePopup(): void {
   this.showPreview = false;
