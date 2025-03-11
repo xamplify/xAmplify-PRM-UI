@@ -207,6 +207,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
           			this.authenticationService.approvalRequiredForPlaybooks = data.approvalRequiredForPlaybooks;
 					//XNFR-276
 					this.menuItems = data.menuItems;
+					module.sharedLeads = data.sharedLeads;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
