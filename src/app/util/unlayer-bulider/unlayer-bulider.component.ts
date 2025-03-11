@@ -159,8 +159,7 @@ exportDesign() {
 }
 
 myPdfPreview(htmlContent: string): void {
-  const htmlWithInlineStyles = this.fixBackgroundStyles(htmlContent);
-  this.damService.downloadPdf(htmlWithInlineStyles).subscribe(
+  this.damService.downloadPdf(htmlContent).subscribe(
     (blob: Blob) => {
       if (!blob || blob.size === 0) {
         console.error("Received an empty or invalid PDF file.");
