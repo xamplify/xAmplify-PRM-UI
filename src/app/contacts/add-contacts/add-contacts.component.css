@@ -257,7 +257,7 @@ i.fa.fa-file-excel-o.IconTopMargin {
 
 /*  */
 .add_partnerbtn{
-  background: linear-gradient(to bottom, #4094f7, #0b60c2);
+  background: linear-gradient(to bottom, #4094f7, #1a6ed1);
   color: #fff;
   border-radius: 10px;
   text-align: start;
@@ -308,7 +308,7 @@ background-color: unset!important;
   z-index: 99;
 }
 .service-icon {
-  height: 96px;
+  height: 93px;
   border-radius: 10px;
   text-align: center;
   display: flex;
