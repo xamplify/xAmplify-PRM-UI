@@ -167,11 +167,11 @@
             <div *ngIf="!showBackButton">
               <button class="btn Btn-Gray" (click)="closeModalClose()">Close</button>
               <button class="btn btn-primary" (click)="submit()"
-                [disabled]="isSelectDivOpen ?  unSelectedItems.length === allItems.length : false"
+              [disabled]="!(pager.pages && pager.pages.length)"
                 *ngIf="!isMyprofile">Email
                 The Report</button>
               <button class="btn btn-primary" (click)="submit()"
-                [disabled]="isSelectDivOpen ? (!(pager.pages && pager.pages.length) || unSelectedItems.length === allItems.length) : false"
+              [disabled]="!(pager.pages && pager.pages.length)"
                 *ngIf="isMyprofile">Save</button>
             </div>
             <div *ngIf="showBackButton">
