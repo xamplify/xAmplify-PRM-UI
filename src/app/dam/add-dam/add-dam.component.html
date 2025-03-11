@@ -32,9 +32,9 @@
                </a>
             </div>
             <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
-               <app-bee-template-util [beeContainerInput]="beeContainerInput"
-                  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
-               <!-- <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider> -->
+               <!-- <app-bee-template-util [beeContainerInput]="beeContainerInput"
+                  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util> -->
+               <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
             </ng-container>
          </div>
       </div>
@@ -239,3 +239,4 @@
    </div>
    <app-add-folder-modal-popup #addFolderModalPopupComponent
       (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
+      <app-send-test-email *ngIf="showPreview" [htmlbody] = "damPostDto?.htmlBody" ></app-send-test-email>
