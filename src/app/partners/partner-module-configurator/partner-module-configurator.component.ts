@@ -47,7 +47,11 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
     }
     this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
   }
-
+  
+  ngOnDestroy(){
+    this.referenceService.closeModalPopup('partnerModuleConfiguratorModalPopup');
+  }
+  
   private checkAndDisableContactsModuleToggleUsingCampaignModule() {
     let campignModule = this.defaultModules.filter((item) => item.moduleName == "Campaign")[0];
     if (campignModule != undefined) {
