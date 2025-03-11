@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit,OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -26,6 +26,7 @@ import { Roles } from 'app/core/models/roles';
 import { UserGuideDashboardDto } from 'app/guides/models/user-guide-dashboard-dto';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { DragulaService } from 'ng2-dragula';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var swal, $:any, Highcharts: any;
 @Component({
@@ -115,7 +116,6 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     @ViewChild('leadAndDealStatistics') leadAndDealStatistics: TemplateRef<any>;
     @ViewChild('highLevelAnalytics') highLevelAnalytics: TemplateRef<any>;
     @ViewChild('dragContainer') dragContainer: ElementRef;
-    @ViewChild('customButton') customButton: ElementRef;
     templates = [];
     defaultDashboardLayout = [];
     isDestroyed: boolean = false;
@@ -123,11 +123,12 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     defaultDashboardsettings: boolean = false;
     welcomeCustomResponse: CustomResponse = new CustomResponse();
     /***** XNFR-860 *****/
+    @ViewChild('dynamicTemplate') dynamicTemplate: TemplateRef<any>;
 
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
         public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
         public dashBoardService: DashboardService, public utilService: UtilService, public router: Router, private route: ActivatedRoute, private vanityURLService: VanityURLService,
-        public videoFileService: VideoFileService, private dragulaService: DragulaService, private cdr: ChangeDetectorRef, private renderer: Renderer2) {
+        public videoFileService: VideoFileService, private dragulaService: DragulaService, private cdr: ChangeDetectorRef, public sanitizer: DomSanitizer) {
 
         this.loggedInUserId = this.authenticationService.getUserId();
         this.vanityLoginDto.userId = this.loggedInUserId;
@@ -618,8 +619,8 @@ showCampaignDetails(campaign:any){
         }
         )
         
-      }
-      setManageDam(event: any) {
+    }
+    setManageDam(event: any) {
         let input = event;
         let editVideo = input['editVideo'];
         let playVideo = input['playVideo'];
@@ -633,42 +634,42 @@ showCampaignDetails(campaign:any){
             this.videoFileService.actionValue = 'Update';
         }
     }
-   
+
     update(videoFile: any) {
         if (videoFile != null) {
             this.referenceService.isAssetDetailsUpldated = true;
         }
         this.referenceService.goToRouter("home/dam/manage");
     }
-   
+
     goToDam() {
         this.referenceService.goToRouter("/home/dam/manage");
     }
-      
+
     /***** XNFR-860 *****/
     ngAfterViewInit() {
         this.templates = [
-            { name: 'dashBoardImages', ref: this.dashBoardImages, index: 1 },
-            { name: 'moduleAnalytics', ref: this.moduleAnalytics, index: 2 },
-            { name: 'newsAndAnnouncement', ref: this.newsAndAnnouncement, index: 3 },
-            { name: 'dashBoardButtons', ref: this.dashBoardButtons, index: 4 },
-            { name: 'opportunityStats', ref: this.opportunityStats, index: 5 },
-            { name: 'vendorActivityAnalytics', ref: this.vendorActivityAnalytics, index: 6 },
-            { name: 'campaignsGrid', ref: this.campaignsGrid, index: 7 },
-            { name: 'campaignStatistics', ref: this.campaignStatistics, index: 8 },
-            { name: 'partnerStatistics', ref: this.partnerStatistics, index: 9 },
-            { name: 'redistributedCampaigns', ref: this.redistributedCampaigns, index: 10 },
-            { name: 'regionalStatistics', ref: this.regionalStatistics, index: 11 },
-            { name: 'prmMdfStatistics', ref: this.prmMdfStatistics, index: 12 },
-            { name: 'prmContent', ref: this.prmContent, index: 13 },
-            { name: 'prmAssets', ref: this.prmAssets, index: 14 },
-            { name: 'prmSharedAssets', ref: this.prmSharedAssets, index: 15 },
-            { name: 'prmTracks', ref: this.prmTracks, index: 16 },
-            { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 17 },
-            { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 18 },
-            { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 19 },
-            { name: 'leadAndDealStatistics', ref: this.leadAndDealStatistics, index: 20 },
-            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 21 },
+            { name: 'dashBoardImages', ref: this.dashBoardImages, index: 1, title: '' },
+            { name: 'moduleAnalytics', ref: this.moduleAnalytics, index: 2, title: '' },
+            { name: 'newsAndAnnouncement', ref: this.newsAndAnnouncement, index: 3, title: '' },
+            { name: 'dashBoardButtons', ref: this.dashBoardButtons, index: 4, title: '' },
+            { name: 'opportunityStats', ref: this.opportunityStats, index: 5, title: '' },
+            { name: 'vendorActivityAnalytics', ref: this.vendorActivityAnalytics, index: 6, title: '' },
+            { name: 'campaignsGrid', ref: this.campaignsGrid, index: 7, title: '' },
+            { name: 'campaignStatistics', ref: this.campaignStatistics, index: 8, title: '' },
+            { name: 'partnerStatistics', ref: this.partnerStatistics, index: 9, title: '' },
+            { name: 'redistributedCampaigns', ref: this.redistributedCampaigns, index: 10, title: '' },
+            { name: 'regionalStatistics', ref: this.regionalStatistics, index: 11, title: '' },
+            { name: 'prmMdfStatistics', ref: this.prmMdfStatistics, index: 12, title: '' },
+            { name: 'prmContent', ref: this.prmContent, index: 13, title: '' },
+            { name: 'prmAssets', ref: this.prmAssets, index: 14, title: '' },
+            { name: 'prmSharedAssets', ref: this.prmSharedAssets, index: 15, title: '' },
+            { name: 'prmTracks', ref: this.prmTracks, index: 16, title: '' },
+            { name: 'prmSharedTracks', ref: this.prmSharedTracks, index: 17, title: '' },
+            { name: 'prmPlayBooks', ref: this.prmPlayBooks, index: 18, title: '' },
+            { name: 'prmSharedPlayBooks', ref: this.prmSharedPlayBooks, index: 19, title: '' },
+            { name: 'leadAndDealStatistics', ref: this.leadAndDealStatistics, index: 20, title: '' },
+            { name: 'highLevelAnalytics', ref: this.highLevelAnalytics, index: 21, title: '' },
         ];
         this.findDefaultDashboardSettings();
         this.findCustomDashboardLayout();
@@ -688,6 +689,12 @@ showCampaignDetails(campaign:any){
                     const template = this.templates.find(t => t.name === templateName);
                     if (template) {
                         newOrder.push(template);
+                    } else {
+                        this.defaultDashboardLayout.forEach(layout => {
+                            if (layout.title === templateName) {
+                                newOrder.push(layout);
+                            }
+                        });
                     }
                 }
                 this.defaultDashboardLayout = [...newOrder];
@@ -704,12 +711,27 @@ showCampaignDetails(campaign:any){
     findCustomDashboardLayout() {
         this.ngxLoading = true;
         this.defaultDashboardLayout = [];
+        $('[data-toggle="tooltip"]').tooltip('hide');
         this.dashBoardService.findCustomDashboardLayout(this.vendorCompanyProfileName)
             .subscribe((response) => {
                 if (response) {
-                    this.defaultDashboardLayout = response.map(dashboardLayoutDto =>
-                        this.templates.find(template => dashboardLayoutDto.divName === template.name))
-                        .filter(template => template);
+                    response.forEach((dashboardLayoutDto, i) => {
+                        const matchingTemplate = this.templates.find(template => dashboardLayoutDto.divName === template.name);
+                        if (matchingTemplate) {
+                            this.defaultDashboardLayout.push(matchingTemplate);
+                        } else {
+                            this.defaultDashboardLayout.push({
+                                name: '', ref: '', index: i + 1, title: dashboardLayoutDto.title,
+                                htmlBody: this.sanitizedHtml(dashboardLayoutDto.htmlBody),
+                                leftHtmlBody: this.sanitizedHtml(dashboardLayoutDto.leftHtmlBody),
+                                rightHtmlBody: this.sanitizedHtml(dashboardLayoutDto.rightHtmlBody),
+                                customHtmlBlockId: dashboardLayoutDto.customHtmlBlockId
+                            });
+                        }
+                    });
+                    if (!this.isDestroyed) {
+                        this.cdr.detectChanges();
+                    }
                     console.log('Updated Default Dashboard Layout:', this.defaultDashboardLayout);
                 } else {
                     this.defaultDashboardLayout = this.templates.map(template => ({ ...template }));
@@ -726,10 +748,7 @@ showCampaignDetails(campaign:any){
     customizeDashboardLayout() {
         this.ngxLoading = true;
         this.isDraggingEnabled = true;
-        if (this.customButton) {
-            this.renderer.setAttribute(this.customButton.nativeElement, 'data-original-title', 'Update Dashboard Layout');
-            this.renderer.setAttribute(this.customButton.nativeElement, 'title', '');
-        }
+        $('[data-toggle="tooltip"]').tooltip('hide');
         setTimeout(() => {
             this.ngxLoading = false;
         }, 200);
@@ -739,8 +758,8 @@ showCampaignDetails(campaign:any){
     updateCustomDashBoardLayout() {
         this.ngxLoading = true;
         const dashboardLayoutDtos = this.defaultDashboardLayout.map(template => ({
-            divId: template.index,
-            divName: template.name
+            divId: template.index, divName: template.name,
+            title: template.title, customHtmlBlockId: template.customHtmlBlockId
         }));
         const customDashboardLayout = {
             userId: this.loggedInUserId,
@@ -752,10 +771,7 @@ showCampaignDetails(campaign:any){
             if (response.statusCode == 200) {
                 this.isDraggingEnabled = false;
                 this.welcomeCustomResponse = new CustomResponse('SUCCESS', response.message, true);
-                if (this.customButton) {
-                    this.renderer.setAttribute(this.customButton.nativeElement, 'title', '');
-                    this.renderer.setAttribute(this.customButton.nativeElement, 'data-original-title', 'Customize Dashboard Layout');
-                }
+                $('[data-toggle="tooltip"]').tooltip('hide');
             } else {
                 this.isDraggingEnabled = true;
                 this.welcomeCustomResponse = new CustomResponse('ERROR', response.message, true);
@@ -778,6 +794,12 @@ showCampaignDetails(campaign:any){
                 console.log(error);
                 this.defaultDashboardsettings = false;
             });
+        }
+    }
+
+    sanitizedHtml(htmlBody: string) {
+        if (htmlBody) {
+            return this.sanitizer.bypassSecurityTrustHtml(htmlBody);
         }
     }
 

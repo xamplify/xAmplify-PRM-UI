@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MyProfileService } from '../my-profile.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { FileUploader } from 'ng2-file-upload';
 import { Pagination } from 'app/core/models/pagination';
 import { CustomResponse } from 'app/common/models/custom-response';
 import * as JSZip from 'jszip';
 import { PagerService } from 'app/core/services/pager.service';
 import { UtilService } from 'app/core/services/util.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 declare var $: any;
 
@@ -26,22 +26,24 @@ export class CustomHtmlBlockComponent implements OnInit {
   listLoading: boolean = false;
   popupLoader: boolean = false;
   allSelected: boolean = false;
+  leftHtmlBody: SafeHtml;
+  rightHtmlBody: SafeHtml;
+  sanitizedHtml: SafeHtml;
   customErrorMessage: string = '';
-  hasBaseDropZoneOver: boolean = false;
   isDeleteOptionClicked: boolean = false;
   ADD_CUSTOM_HTML_DIV = "add-custom-html";
   pagination: Pagination = new Pagination();
   MODAL_POPUP = "custom_html_block_modal_popup";
   MANAGE_CUSTOM_HTML_DIV = "manage-custom-html";
+  @ViewChild('fullFileInput') fileInput1: ElementRef;
+  @ViewChild('leftFileInput') fileInput2: ElementRef;
+  @ViewChild('rightFileInput') fileInput3: ElementRef;
   customResponse: CustomResponse = new CustomResponse();
-  customHtmlBlock: any = { id: 0, title: '', htmlBody: '', loggedInUserId: 0 };
-  emailTemplateUploader: FileUploader = new FileUploader({
-    url: 'YOUR_UPLOAD_URL', allowedFileType: ['zip'], maxFileSize: 10 * 1024 * 1024
-  });
+  customHtmlBlock: any = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '', rightHtmlBody: '', selected: false, layoutSize: 'col-xs-12 col-sm-12 col-md-12 col-lg-12' };
 
   constructor(private myProfileService: MyProfileService, public referenceService: ReferenceService,
     public sortOption: SortOption, public authenticationService: AuthenticationService, public pagerService: PagerService,
-    public utilService: UtilService) { }
+    public utilService: UtilService, public sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.findPaginatedCustomHtmlBlocks(this.pagination);
@@ -75,7 +77,6 @@ export class CustomHtmlBlockComponent implements OnInit {
   }
 
   refreshList() {
-    this.referenceService.scrollSmoothToTop();
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = "";
     this.findPaginatedCustomHtmlBlocks(this.pagination);
@@ -91,67 +92,105 @@ export class CustomHtmlBlockComponent implements OnInit {
     this.selectedHtmlId = id;
   }
 
-  isValid() {
-    return !this.customHtmlBlock.title.trim() || !this.customHtmlBlock.htmlBody.trim();
+  isValid(): boolean {
+    if (this.customHtmlBlock.layoutSize === 'col-xs-12 col-sm-6 col-md-6 col-lg-6') {
+      if (this.customHtmlBlock.leftHtmlBody || this.customHtmlBlock.rightHtmlBody) {
+        return !this.customHtmlBlock.title.trim();
+      } else if (this.customHtmlBlock.title) {
+        if (this.customHtmlBlock.leftHtmlBody || this.customHtmlBlock.rightHtmlBody) {
+          return !this.customHtmlBlock.title.trim();
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    } else {
+      return (!this.customHtmlBlock.title.trim() || !this.customHtmlBlock.htmlBody.trim());
+    }
+  }
+
+  customUiSwitchEventReceiver(event: any) {
+    this.customHtmlBlock.selected = event;
   }
 
   goToAddHtmlDiv() {
+    this.isAdd = true;
+    this.setUpCustomHtmlBlock();
     this.customResponse = new CustomResponse();
     this.referenceService.showDiv(this.ADD_CUSTOM_HTML_DIV);
     this.referenceService.hideDiv(this.MANAGE_CUSTOM_HTML_DIV);
   }
 
   goToManage() {
+    this.setUpCustomHtmlBlock();
     this.referenceService.hideDiv(this.ADD_CUSTOM_HTML_DIV);
     this.referenceService.showDiv(this.MANAGE_CUSTOM_HTML_DIV);
-    this.customHtmlBlock = { id: 0, title: '', htmlBody: '', loggedInUserId: 0 };
     this.referenceService.scrollSmoothToTop();
-    this.emailTemplateUploader.clearQueue();
     this.customResponse = new CustomResponse();
+    if (this.fileInput1) {
+      this.fileInput1.nativeElement.value = '';
+    }
+    if (this.fileInput2) {
+      this.fileInput2.nativeElement.value = '';
+    }
+    if (this.fileInput3) {
+      this.fileInput3.nativeElement.value = '';
+    }
     this.customErrorMessage = '';
+    this.sanitizedHtml = '';
+    this.leftHtmlBody = '';
+    this.rightHtmlBody = '';
     this.isAdd = false;
   }
 
-  fileOverBase(event: any): void {
-    this.hasBaseDropZoneOver = event;
+  setUpCustomHtmlBlock() {
+    this.customHtmlBlock = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '', rightHtmlBody: '', selected: false, layoutSize: 'col-xs-12 col-sm-12 col-md-12 col-lg-12' };
   }
 
-  fileDropPreview(event: any): void {
-    this.extractHtmlFromZip(event);
+  copyAndSave(id: number) {
+    this.referenceService.openModalPopup(this.MODAL_POPUP);
+    this.findById(id);
   }
 
-  dropClick(): void {
-    $('#file-upload').click();
+  editCustomHtmlBlock(id: number) {
+    this.findById(id);
+    this.customResponse = new CustomResponse();
+    this.referenceService.showDiv(this.ADD_CUSTOM_HTML_DIV);
+    this.referenceService.hideDiv(this.MANAGE_CUSTOM_HTML_DIV);
   }
 
-  changeLogo(event: any): void {
-    this.extractHtmlFromZip(event.target.files);
+  updateHtmlBody() {
+    if (this.customHtmlBlock.layoutSize === 'col-xs-12 col-sm-12 col-md-12 col-lg-12') {
+      this.customHtmlBlock.rightHtmlBody = '';
+      this.customHtmlBlock.leftHtmlBody = '';
+    } else {
+      this.customHtmlBlock.htmlBody = '';
+    }
   }
 
-  async extractHtmlFromZip(files: FileList): Promise<void> {
-    const zip = new JSZip();
-    const file = files[0];
-    try {
-      const content = await zip.loadAsync(file);
-      const htmlFiles: string[] = [];
-      for (const filename in content.files) {
-        if (content.files.hasOwnProperty(filename)) {
-          const fileData = content.files[filename];
-          if (fileData.name.endsWith('.html')) {
-            const htmlContent = await fileData.async('text');
-            htmlFiles.push(htmlContent);
+  onFileSelected(event: any, side: string) {
+    const file = event.target.files[0];
+    $('[data-toggle="tooltip"]').tooltip('hide');
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const zip = new JSZip();
+        zip.loadAsync(e.target.result).then((zip) => {
+          const htmlFileName = Object.keys(zip.files).find(name => name.endsWith('.html'));
+          if (htmlFileName) {
+            zip.file(htmlFileName).async('text').then((html) => {
+              this.updateSanitizedHtml(html, side);
+            });
+          } else {
+            this.customResponse = new CustomResponse('ERROR', 'No HTML file found in the ZIP.', true);
+            console.error('No HTML file found in the ZIP.');
           }
-        }
-      }
-      if (htmlFiles.length > 0) {
-        this.customHtmlBlock.htmlBody = htmlFiles[0];
-        this.isAdd = true;
-      } else {
-        this.customResponse = new CustomResponse('ERROR', 'No HTML file found in the ZIP.', true);
-        console.error('No HTML file found in the ZIP.');
-      }
-    } catch (error) {
-      console.error('Error extracting ZIP file:', error);
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      console.error('No file selected.');
     }
   }
 
@@ -179,8 +218,8 @@ export class CustomHtmlBlockComponent implements OnInit {
 
   saveOrUpdateCustomblock() {
     this.isLoading = true;
+    this.updateHtmlBody();
     this.customResponse = new CustomResponse();
-    this.referenceService.scrollSmoothToTop();
     const serviceCall = this.isAdd
       ? this.myProfileService.saveCustomHtmlBlock(this.customHtmlBlock)
       : this.myProfileService.updateCustomHtmlBlock(this.customHtmlBlock);
@@ -206,15 +245,22 @@ export class CustomHtmlBlockComponent implements OnInit {
   }
 
   findById(id: number) {
-    this.customResponse = new CustomResponse();
-    this.referenceService.showModalPopup(this.MODAL_POPUP);
     this.popupLoader = true;
+    this.setUpCustomHtmlBlock();
+    this.customResponse = new CustomResponse();
     this.myProfileService.findById(id).subscribe(
       response => {
         if (response.statusCode === 200) {
           this.customHtmlBlock = response.data;
           if (this.isAdd) {
             this.customHtmlBlock.title = this.customHtmlBlock.title + '-copy';
+          } else {
+            if (this.customHtmlBlock.htmlBody) {
+              this.updateSanitizedHtml(this.customHtmlBlock.htmlBody, 'full');
+            } else {
+              this.updateSanitizedHtml(this.customHtmlBlock.leftHtmlBody, 'left');
+              this.updateSanitizedHtml(this.customHtmlBlock.rightHtmlBody, 'right');
+            }
           }
         } else {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
@@ -222,7 +268,6 @@ export class CustomHtmlBlockComponent implements OnInit {
         this.popupLoader = false;
       }, error => {
         this.popupLoader = false;
-        this.referenceService.closeModalPopup(this.MODAL_POPUP);
         let message = this.referenceService.showHttpErrorMessage(error);
         this.customResponse = new CustomResponse('ERROR', message, true);
       });
@@ -265,7 +310,7 @@ export class CustomHtmlBlockComponent implements OnInit {
     this.updateSelectedHtmlBlock();
   }
 
-  updateSelection(customDto: any) {
+  updateSelection() {
     this.isAllSelected();
     this.updateSelectedHtmlBlock();
   }
@@ -292,6 +337,20 @@ export class CustomHtmlBlockComponent implements OnInit {
         let message = this.referenceService.showHttpErrorMessage(error);
         this.customResponse = new CustomResponse('ERROR', message, true);
       });
+  }
+
+  updateSanitizedHtml(htmlbody: string, side: string) {
+    if (side === 'left') {
+      this.customHtmlBlock.leftHtmlBody = htmlbody;
+      this.leftHtmlBody = this.sanitizer.bypassSecurityTrustHtml(htmlbody);
+    } else if (side === 'right') {
+      this.customHtmlBlock.rightHtmlBody = htmlbody
+      this.rightHtmlBody = this.sanitizer.bypassSecurityTrustHtml(htmlbody);
+    } else {
+      this.customHtmlBlock.htmlBody = htmlbody
+      this.sanitizedHtml = this.sanitizer.bypassSecurityTrustHtml(htmlbody);
+    }
+    this.cdr.detectChanges();
   }
 
 }
