@@ -4,7 +4,7 @@
 </div>
 <div class="portlet light" id="manage-custom-html">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
-    <div class="portlet-title">
+    <div class="portlet-title" *ngIf="!isLoading">
         <div class="col-lg-12 p0">
             <div class="inputs btn-group float-right" style="display: inline-flex;">
                 <div class="mr5">
@@ -103,7 +103,8 @@
 </div>
 
 <div class="page-toolbar" id="add-custom-html" style="display: none;">
-    <div class="portlet-body">
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+    <div class="portlet-body" *ngIf="!isLoading">
         <form>
             <div class="form-group">
                 <div class="row">
@@ -115,9 +116,10 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <label for="layoutSize">Custom HTML Layout</label>
-                        <select class="form-control" id="customHtmlLayout" [(ngModel)]="customHtmlBlock.layoutSize" [ngModelOptions]="{standalone: true}">
-                            <option value="col-xs-12 col-sm-12 col-md-12 col-lg-12">Single Column Layout</option>
-                            <option value="col-xs-12 col-sm-6 col-md-6 col-lg-6">Two Column Layout</option>
+                        <select class="form-control" id="customHtmlLayout" [(ngModel)]="customHtmlBlock.layoutSize"
+                            [ngModelOptions]="{standalone: true}" (ngModelChange)="updateDropDownHtmlBody($event)">
+                            <option value="SINGLE_COLUMN_LAYOUT">Single Column Layout</option>
+                            <option value="TWO_COLUMN_LAYOUT">Two Column Layout</option>
                         </select>
                     </div>
                 </div>
@@ -125,7 +127,8 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label class="mr10">Embed Into Dashboard</label>
+                        <label>Embed Into Dashboard</label>
+                        <i class="fa fa-info-circle mr10 ml5" aria-hidden="true"></i>
                         <app-custom-ui-switch [customSwitch]="customHtmlBlock.selected"
                             (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)">
                         </app-custom-ui-switch>
@@ -133,7 +136,7 @@
                 </div>
             </div>
 
-            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'col-xs-12 col-sm-12 col-md-12 col-lg-12'">
+            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT'">
                 <div class="d-flex justify-content-between align-items-center">
                     <label for="htmlBody">HTML Body<span class="required">*</span></label>
                     <div class="float-right">
@@ -153,7 +156,7 @@
                 </div>
             </div>
 
-            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'col-xs-12 col-sm-12 col-md-12 col-lg-12'">
+            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT'">
                 <label>Preview</label>
                 <div class="preview">
                     <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.htmlBody">No Preview Available
@@ -162,7 +165,7 @@
                 </div>
             </div>
 
-            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'col-xs-12 col-sm-6 col-md-6 col-lg-6'">
+            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'TWO_COLUMN_LAYOUT'">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="d-flex justify-content-between align-items-center">
@@ -206,7 +209,7 @@
                 </div>
             </div>
 
-            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'col-xs-12 col-sm-6 col-md-6 col-lg-6'">
+            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'TWO_COLUMN_LAYOUT'">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <label>Preview (Left)</label>
