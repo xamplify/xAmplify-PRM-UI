@@ -50,9 +50,11 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
 
   private checkAndDisableContactsModuleToggleUsingCampaignModule() {
     let campignModule = this.defaultModules.filter((item) => item.moduleName == "Campaign")[0];
-    let contactModule = this.defaultModules.filter((item) => item.moduleName == "Contacts")[0];
-    contactModule.partnerAccessModule = campignModule.partnerAccessModule ? true : contactModule.partnerAccessModule;
-    this.isContactsModuleToggleDisabled = campignModule.partnerAccessModule;
+    if (campignModule != undefined) {
+      let contactModule = this.defaultModules.filter((item) => item.moduleName == "Contacts")[0];
+      contactModule.partnerAccessModule = campignModule.partnerAccessModule ? true : contactModule.partnerAccessModule;
+      this.isContactsModuleToggleDisabled = campignModule.partnerAccessModule;
+    }
   }
 
   findDefaultModules() {
