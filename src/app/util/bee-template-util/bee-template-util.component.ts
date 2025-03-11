@@ -297,12 +297,12 @@ export class BeeTemplateUtilComponent implements OnInit {
 				return;
 			  }
 	  
-			  // ✅ Trigger PDF download
-			  const link = document.createElement('a');
-			  link.href = URL.createObjectURL(blob);
-			  link.download = 'generated-pdf.pdf';
-			  link.click();
-			  URL.revokeObjectURL(link.href);
+			  //  Trigger PDF download
+			//   const link = document.createElement('a');
+			//   link.href = URL.createObjectURL(blob);
+			//   link.download = 'generated-pdf.pdf';
+			//   link.click();
+			//   URL.revokeObjectURL(link.href);
 	  
 			  const pdfFile = new File([blob], 'design.pdf', { type: 'application/pdf' });
 			  input['pdf'] = pdfFile;

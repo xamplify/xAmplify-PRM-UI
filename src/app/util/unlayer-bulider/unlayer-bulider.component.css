@@ -4,3 +4,171 @@
      overflow-x: auto;
      margin-top: 20px !important;
    }
+  /* General Modal Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);  /* Semi-transparent dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it's on top */
+}
+
+/* Modal Content Styling */
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;  /* Stack header, body, and iframe */
+  position: relative;
+  transition: transform 0.3s ease-in-out;  /* Smooth transition for scaling */
+}
+
+/* General Modal Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);  /* Semi-transparent dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it's on top */
+}
+
+/* Modal Content Styling */
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;  /* Stack header, body, and iframe */
+  position: relative;
+  transition: transform 0.3s ease-in-out;  /* Smooth transition for scaling */
+}
+
+/* Header Section for Icon-based View Selection */
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* View Icons Section */
+.view-icons {
+  display: flex;
+  gap: 20px; /* Space out the icons */
+}
+
+.view-icon {
+  font-size: 24px;  /* Icon size */
+  cursor: pointer;
+  transition: transform 0.3s ease; /* Smooth hover effect */
+  padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f1f1;
+}
+
+.view-icon:hover {
+  background-color: #007bff;
+  color: white;  /* Change color on hover */
+  transform: scale(1.1);  /* Slight zoom effect */
+}
+
+.view-icon i {
+  font-size: 1.5em; /* Icon size */
+}
+
+/* Close Button */
+.close-circle {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.close-circle:hover {
+  background-color: #f1f1f1;  /* Light gray background on hover */
+}
+
+/* Iframe Container */
+.iframe-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-top: 10px; /* Some spacing between the content and iframe */
+}
+
+.iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 4px;
+}
+
+/* Mobile View */
+@media (max-width: 600px) {
+  .popup-content {
+    width: 90%;  /* Take up 90% of the screen width */
+    height: 80%; /* Keep it smaller for mobile screens */
+  }
+
+  .popup-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .view-select-label {
+    margin-bottom: 5px;
+  }
+
+  select {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
+/* Tablet View */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .popup-content {
+    width: 80%; /* Adjust size for tablet */
+    height: 75%;
+  }
+
+  select {
+    width: 70%;
+  }
+}
+
+/* Desktop View */
+@media (min-width: 1025px) {
+  .popup-content {
+    width: 60%; /* More spacious on desktop */
+    height: 80%;
+  }
+}
+
+

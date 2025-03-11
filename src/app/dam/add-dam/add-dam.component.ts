@@ -79,6 +79,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   isApprover: boolean = false;
   saveAsDraftButtonText: string = "Save as Draft";
   disableSaveAsDraftButton: boolean = false;
+  showPreview : boolean = false;
   savedTags: any[] = [];
    formData = new FormData();
   constructor(
@@ -309,6 +310,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     } else {
       if (!this.isAdd && !saveAs) {
         this.damPostDto.id = this.assetId;
+        this.isAdd = true;
       }
       this.damPostDto.saveAs = saveAs;
       let damUploadPostDto: DamUploadPostDto = this.setDampUploadPostData(saveAs);
@@ -333,6 +335,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
   
   private setDampUploadPostData(saveAs: boolean) {
     let damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
+    damUploadPostDto.id = this.damPostDto.id;
+    damUploadPostDto.categoryId =  this.damPostDto.categoryId
     damUploadPostDto.saveAs = this.damPostDto.saveAs;
     damUploadPostDto.assetName = this.damPostDto.name;
     damUploadPostDto.description = this.damPostDto.description;
@@ -673,6 +677,4 @@ downloadPdfWithHtml() {
       this.modalPopupLoader = false;
   });
 }
-
-
 }
