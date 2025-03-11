@@ -1,7 +1,7 @@
 <div class="page-content" *ngIf="showSignatureModal">
-  <!-- <app-modal-popup-loader *ngIf="pdfLoader"></app-modal-popup-loader> -->
+  <app-modal-popup-loader *ngIf="pdfLoader"></app-modal-popup-loader>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  <div>
+  <div [hidden]="pdfLoader">
     <div>
       <div>
         <div class="inputs" style="float: right;">
@@ -25,7 +25,7 @@
                 </li>
 
                 <!-- Signature Toggle Button -->
-                <li class="dropdown mb0">
+                <li class="dropdown">
                   <div class="toolbar-btn" (click)="toggleSignatures()"
                     [ngClass]="{'active-tool': activeSignatureTool}">
                     <i class="fas fa-pen-nib"></i>
@@ -41,6 +41,21 @@
                     </div>
                   </div>
                 </li>
+
+                <li>
+                  <div class="toolbar-btn" (click)="enableSignatureBlock()"
+                    [ngClass]="{'active-tool': activeBlockTool}">
+                    <i class="fas fa-border-all"></i>
+                  </div>
+                </li>
+
+                <li class="mb0">
+                  <div class="toolbar-btn" (click)="enableLineTool()"
+                    [ngClass]="{'active-tool': activeLineTool}">
+                    <i class="fas fa-minus"></i>
+                  </div>
+                </li>
+                
               </ul>
             </div>
           </div>

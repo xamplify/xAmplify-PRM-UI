@@ -36,6 +36,12 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
   openAddsignatureModalPopup: boolean = false;
   activeTextTool: boolean = false;
   activeSignatureTool: boolean = false;
+  placedBlocks: any[] = [];
+  isBlockMode: boolean = false;
+  activeBlockTool: boolean = false;
+  placedLines: any[] = [];
+  isLineMode: boolean = false;
+  activeLineTool: boolean = false;
 
   constructor(
     private signatureService: SignatureService,
@@ -49,19 +55,23 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.pdfLoader = true;
     if (!this.isFromDam) {
       this.http.get(this.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
         .subscribe(response => {
           this.url = URL.createObjectURL(response);
           this.displayPDF(this.url);
+          this.pdfLoader = false;
         });
     } else if (this.uploadedFile) {
       const fileReader = new FileReader();
       fileReader.onload = (event: any) => {
         this.url = URL.createObjectURL(this.uploadedFile);
         this.displayPDF(this.url);
+        this.pdfLoader = false;
       };
       fileReader.readAsArrayBuffer(this.uploadedFile);
+      this.pdfLoader = false;
     }
     this.initializeDragAndDrop();
 
@@ -71,6 +81,23 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
         $("body").css("cursor", "default");
       }
     });
+    $("#pdf-container").on("click", (event: any) => {
+      if (this.isBlockMode) {
+          if (!$(event.target).closest(".block-draggable, .resize-controls, span").length) {
+              this.placeBlock(event);
+              $("body").css("cursor", "default");
+          }
+      }
+  });
+  $("#pdf-container").on("click", (event: any) => {
+    if (this.isBlockMode) {
+        this.placeBlock(event);
+        $("body").css("cursor", "default");
+    } else if (this.isLineMode) {
+        this.placeLine(event);
+        $("body").css("cursor", "default");
+    }
+});
   }
 
   enableTextMode() {
@@ -78,6 +105,19 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
     this.activeTextTool = true;
     $("body").css("cursor", "text");
   }
+
+  enableSignatureBlock() {
+    this.isBlockMode = true;
+    this.activeBlockTool = true;
+    $("body").css("cursor", "text");
+}
+
+enableLineTool() {
+  this.isLineMode = true;
+  this.activeLineTool = true;
+  $("body").css("cursor", "crosshair");
+}
+
 
   async displayPDF(url: string) {
     const pdf = await pdfjsLib.getDocument(url).promise;
@@ -412,8 +452,290 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
 
   }
 
+  placeBlock(event: any) {
+    if (!this.isBlockMode) return;  // Only allow placement if enabled
+
+    let pdfContainer = $("#pdf-container");
+    let pdfOffset = pdfContainer.offset();
+    let x = event.clientX - pdfOffset.left + pdfContainer.scrollLeft();
+    let y = event.clientY - pdfOffset.top + pdfContainer.scrollTop();
+
+    let defaultWidth = 100;
+    let defaultHeight = 50;
+    let minWidth = 50;
+    let minHeight = 25;
+    let maxWidth = 300;
+    let maxHeight = 150;
+
+    let newBlock = $(`
+      <div class="block-draggable">
+        <div class="resize-controls">
+          <span class="increase-size">➕</span>
+          <span class="decrease-size">➖</span>
+          <span class="delete-block"><i class="fa fa-trash"></i></span>
+        </div>
+      </div>
+    `).css({
+        left: `${x}px`,
+        top: `${y}px`,
+        width: `${defaultWidth}px`,
+        height: `${defaultHeight}px`,
+        position: "absolute",
+        cursor: "move",
+        border: "1.6px solid black",
+        display: "flex",
+        "align-items": "center",
+        "justify-content": "center",
+      });
+
+    let targetPage = this.getPageNumber(event.clientY);
+    if (!targetPage) return;
+
+    newBlock.attr("data-page", targetPage);
+    pdfContainer.append(newBlock);
+
+    newBlock.draggable({
+      containment: "#pdf-container",
+      scroll: true,
+      drag: (event, ui) => {
+        let newTargetPage = this.getPageNumber(event.pageY);
+        if (newTargetPage) {
+          newBlock.attr("data-page", newTargetPage);
+        }
+      }
+    });
+
+    let resizeControls = newBlock.find(".resize-controls").css({
+      position: "absolute",
+      top: "-35px",
+      left: "0px",
+      "background-color": "white",
+      padding: "5px 10px",
+      "border-radius": "4px",
+      "box-shadow": "2px 2px 5px rgba(0, 0, 0, 0.2)",
+      display: "flex",
+      gap: "5px",
+    });
+
+    resizeControls.find("span").css({ cursor: "pointer" });
+
+    // **Prevent click propagation inside icons**
+    resizeControls.find("span").on("click", function (event) {
+        event.stopPropagation(); // Prevents the event from bubbling up
+    });
+
+    resizeControls.find(".increase-size").on("click", function () {
+      let newWidth = newBlock.width() + 10;
+      let newHeight = newBlock.height() + 5;
+      if (newWidth <= maxWidth && newHeight <= maxHeight) {
+        newBlock.css({ width: newWidth, height: newHeight });
+      }
+    });
+
+    resizeControls.find(".decrease-size").on("click", function () {
+      let newWidth = newBlock.width() - 10;
+      let newHeight = newBlock.height() - 5;
+      if (newWidth >= minWidth && newHeight >= minHeight) {
+        newBlock.css({ width: newWidth, height: newHeight });
+      }
+    });
+
+    resizeControls.find(".delete-block").on("click", function () {
+      newBlock.remove();
+    });
+
+    newBlock.resizable({
+      aspectRatio: false,
+      handles: "se",
+      minWidth: minWidth,
+      minHeight: minHeight,
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      create: function () {
+        $(this)
+          .find(".ui-resizable-handle")
+          .css({
+            width: "16px",
+            height: "16px",
+            "border-radius": "50%",
+            background: "radial-gradient(circle, black 40%, white 60%)",
+            border: "none",
+            "box-shadow": "0 0 4px rgba(0, 0, 0, 0.4)",
+            opacity: "1",
+          });
+
+        $(this).find(".ui-resizable-se").css({
+          bottom: "-8px",
+          right: "-8px",
+          cursor: "se-resize",
+        });
+      },
+      start: function () {
+        newBlock.css("border", "2px solid black");
+      },
+      resize: function (event, ui) {
+        newBlock.css({
+          width: ui.size.width + "px",
+          height: ui.size.height + "px",
+        });
+      },
+      stop: function () {
+        newBlock.css("border", "2px solid black");
+      }
+    });
+
+    this.placedBlocks.push({
+      element: newBlock,
+      page: targetPage,
+    });
+
+    // **Allow only one block per click**
+    this.isBlockMode = false;
+    this.activeBlockTool = false;
+    $("body").css("cursor", "default");
+}
 
 
+// placeLine(event: any) {
+//   let pdfContainer = $("#pdf-container");
+//   let pdfOffset = pdfContainer.offset();
+//   let x = event.clientX - pdfOffset.left + pdfContainer.scrollLeft();
+//   let y = event.clientY - pdfOffset.top + pdfContainer.scrollTop();
+
+//   let line = $("<div class='pdf-line'></div>").css({
+//       left: `${x}px`,
+//       top: `${y}px`,
+//       width: "100px",
+//       height: "1.6px",
+//       position: "absolute",
+//       background: "black",
+//       cursor: "move"
+//   });
+
+//   let targetPage = this.getPageNumber(event.clientY);
+//   if (!targetPage) return;
+
+//   line.attr("data-page", targetPage);
+//   pdfContainer.append(line);
+
+//   line.draggable({
+//       containment: "#pdf-container",
+//       scroll: true,
+//       drag: (event, ui) => {
+//           let newTargetPage = this.getPageNumber(event.pageY);
+//           if (newTargetPage) {
+//               line.attr("data-page", newTargetPage);
+//           }
+//       }
+//   });
+
+//   this.placedLines.push({
+//       element: line,
+//       page: targetPage
+//   });
+
+//   this.isLineMode = false;
+//   this.activeLineTool = false;
+// }
+
+
+placeLine(event: any) {
+  let pdfContainer = $("#pdf-container");
+  let pdfOffset = pdfContainer.offset();
+  let x = event.clientX - pdfOffset.left + pdfContainer.scrollLeft();
+  let y = event.clientY - pdfOffset.top + pdfContainer.scrollTop();
+
+  let defaultWidth = 100; 
+  let minWidth = 20;
+  let maxWidth = 400;
+
+  let targetPage = this.getPageNumber(event.clientY);
+  if (!targetPage) return;
+
+  let newLine = $(` 
+    <div class="line-draggable">
+      <div class="line-element"></div>
+      <div class="resize-controls">
+        <span class="increase-width">➕</span>
+        <span class="decrease-width">➖</span>
+        <span class="delete-line"><i class="fa fa-trash"></i></span>
+      </div>
+    </div>
+  `).css({
+      position: "absolute",
+      left: `${x}px`,
+      top: `${y}px`,
+      cursor: "move",
+  }).attr("data-page", targetPage);
+
+  let lineElement = newLine.find(".line-element").css({
+      width: `${defaultWidth}px`,
+      height: "1.6px",
+      background: "black",
+      position: "absolute",
+  });
+
+  let resizeControls = newLine.find(".resize-controls").css({
+      position: "absolute",
+      top: "-35px",
+      left: "0px",
+      "background-color": "white",
+      padding: "5px 10px",
+      "border-radius": "4px",
+      "box-shadow": "2px 2px 5px rgba(0, 0, 0, 0.2)",
+      display: "flex",  // ✅ Always visible
+      gap: "5px",
+  });
+
+  resizeControls.find("span").css({ cursor: "pointer" });
+
+  pdfContainer.append(newLine);
+
+  // ✅ No need to hide/show icons on click
+  // ✅ Icons always visible
+
+  // Increase line width
+  resizeControls.find(".increase-width").on("click", function () {
+      let currentWidth = parseInt(lineElement.css("width"));
+      if (currentWidth < maxWidth) {
+          lineElement.css("width", `${currentWidth + 10}px`);
+      }
+  });
+
+  // Decrease line width
+  resizeControls.find(".decrease-width").on("click", function () {
+      let currentWidth = parseInt(lineElement.css("width"));
+      if (currentWidth > minWidth) {
+          lineElement.css("width", `${currentWidth - 10}px`);
+      }
+  });
+
+  // Delete line
+  resizeControls.find(".delete-line").on("click", function () {
+      newLine.remove();
+  });
+
+  // Make line draggable
+  newLine.draggable({
+    containment: "#pdf-container",
+    scroll: true,
+    cursor: "move",
+    drag: (event, ui) => {
+        let newTargetPage = this.getPageNumber(event.pageY);
+        if (newTargetPage) {
+            newLine.attr("data-page", newTargetPage);
+        }
+    }
+  });
+
+  this.placedLines.push({
+      element: newLine,
+      page: targetPage,
+  });
+
+  this.isLineMode = false;
+  this.activeLineTool = false;
+}
 
   async generatePDF() {
     if (!this.pdfDoc) {
@@ -499,6 +821,62 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
         });
       }
 
+      for (const blockObj of this.placedBlocks) {
+        let blockRect = blockObj.element[0].getBoundingClientRect();
+        let targetPageNum = parseInt(blockObj.element.attr("data-page"));
+
+        let pageCanvas = $(".pdf-page[data-page='" + targetPageNum + "'] canvas")[0];
+        if (!pageCanvas) continue;
+
+        let page = pages[targetPageNum - 1];
+        let canvasRect = pageCanvas.getBoundingClientRect();
+
+        let scaleX = page.getWidth() / canvasRect.width;
+        let scaleY = page.getHeight() / canvasRect.height;
+
+        let x = (blockRect.left - canvasRect.left) * scaleX;
+        let y = page.getHeight() - (blockRect.top - canvasRect.top) * scaleY - (blockObj.element.height() * scaleY);
+
+        let blockWidth = blockObj.element.width() * scaleX;
+        let blockHeight = blockObj.element.height() * scaleY;
+
+        page.drawRectangle({
+            x: x,
+            y: y,
+            width: blockWidth,
+            height: blockHeight,
+            borderColor: PDFLib.rgb(0, 0, 0),
+            borderWidth: 1.6,
+        });
+    }
+
+
+    for (const lineObj of this.placedLines) {
+      let lineElement = lineObj.element.find(".line-element")[0];
+      let lineRect = lineElement.getBoundingClientRect();
+      let targetPageNum = parseInt(lineObj.element.attr("data-page"));
+
+      let pageCanvas = $(".pdf-page[data-page='" + targetPageNum + "'] canvas")[0];
+      if (!pageCanvas) continue;
+
+      let page = pages[targetPageNum - 1];
+      let canvasRect = pageCanvas.getBoundingClientRect();
+
+      let scaleX = page.getWidth() / canvasRect.width;
+      let scaleY = page.getHeight() / canvasRect.height;
+
+      let x1 = (lineRect.left - canvasRect.left) * scaleX;
+      let y1 = page.getHeight() - ((lineRect.top - canvasRect.top) * scaleY);
+      let x2 = x1 + (lineRect.width * scaleX);
+      let y2 = y1;
+
+      page.drawLine({
+          start: { x: x1, y: y1 },
+          end: { x: x2, y: y2 },
+          thickness: 1,
+          color: PDFLib.rgb(0, 0, 0)
+      });
+  }
       const pdfBytes = await pdfDocNew.save();
       const blob = new Blob([pdfBytes], { type: "application/pdf" });
       const downloadUrl = URL.createObjectURL(blob);
@@ -522,6 +900,7 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
       console.error("Error generating signed PDF:", error);
     }
   }
+
   closeModal() {
     this.showSignatureModal = false;
     this.notifyCloseModalPopUp.emit("close");
@@ -578,5 +957,10 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
   toggleSignatures() {
     this.activeSignatureTool = !this.activeSignatureTool;
   }
+
+  toggleBlockTool() {
+    this.activeBlockTool = !this.activeBlockTool;
+}
+
 
 }

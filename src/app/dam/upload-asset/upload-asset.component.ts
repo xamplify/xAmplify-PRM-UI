@@ -162,6 +162,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     disableSaveAsDraftButton: boolean = false;
     
     savedTags: any[] = [];
+    pdfDefaultUploadedFile: File;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -319,6 +320,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			let file = files[0];
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
+            this.pdfDefaultUploadedFile =  file;
 			if(sizeInKb==0){
 				this.showAssetErrorMessage('Invalid File');
 			}else if(sizeInKb>maxFileSizeInKb){
@@ -1529,6 +1531,11 @@ zoomOut() {
     setVendorSignatureRequired(event){
         this.damUploadPostDto.vendorSignatureRequired = event;
         this.isVendorSignatureToggleClicked = true;
+        if(event === 'true'){
+          this.setUploadedFileProperties(this.pdfUploadedFile);
+        } else {
+            this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+        }
         this.validateAllFields();
     }
 
@@ -1568,11 +1575,9 @@ zoomOut() {
 	}
 
 	notifySignatureSelection(event){
-        if(this.damUploadPostDto.vendorSignatureRequired){
             this.setUploadedFileProperties(event);
             this.pdfUploadedFile =  event;
             this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
-        }
         this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
         });
