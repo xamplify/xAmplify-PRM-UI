@@ -17,6 +17,7 @@ import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/ad
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
+import { GeoLocationAnalytics } from 'app/util/geo-location-analytics';
 
 
 declare var $:any, CKEDITOR: any;
@@ -79,9 +80,14 @@ export class AddDamComponent implements OnInit, OnDestroy {
   isApprover: boolean = false;
   saveAsDraftButtonText: string = "Save as Draft";
   disableSaveAsDraftButton: boolean = false;
-  showPreview : boolean = false;
   savedTags: any[] = [];
    formData = new FormData();
+   openSelectDigitalSignatureModalPopUp: boolean = false;
+   pdfFile : File ;
+   damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
+  pdfUploadedFile: any;
+  utilService: any;
+  deviceService: any;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -248,6 +254,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.damPostDto.jsonBody = event.jsonContent;
     this.damPostDto.htmlBody = event.htmlContent;
     this.damPostDto.beeTemplate = true;
+    this.pdfFile = event.pdf;
     this.formData.append('uploadedFile', event.pdf);
     if (!this.isPartnerView) {
       $("#addAssetDetailsPopup").modal("show");
@@ -310,11 +317,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
     } else {
       if (!this.isAdd && !saveAs) {
         this.damPostDto.id = this.assetId;
-        this.isAdd = true;
       }
       this.damPostDto.saveAs = saveAs;
-      let damUploadPostDto: DamUploadPostDto = this.setDampUploadPostData(saveAs);
-      this.damService.uploadOrUpdate(this.formData, damUploadPostDto,this.isAdd).subscribe(
+      this.setDampUploadPostData(saveAs);
+      this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
         (result: any) => {
           this.hidePopup();
           this.referenceService.isCreated = true;
@@ -334,37 +340,35 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
   
   private setDampUploadPostData(saveAs: boolean) {
-    let damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
-    damUploadPostDto.id = this.damPostDto.id;
-    damUploadPostDto.categoryId =  this.damPostDto.categoryId
-    damUploadPostDto.saveAs = this.damPostDto.saveAs;
-    damUploadPostDto.assetName = this.damPostDto.name;
-    damUploadPostDto.description = this.damPostDto.description;
-    damUploadPostDto.loggedInUserId = this.loggedInUserId;
-    damUploadPostDto.categoryId = this.damPostDto.categoryId;
-    damUploadPostDto.tagIds = this.damPostDto.tagIds;
-    damUploadPostDto.shareAsWhiteLabeledAsset = this.damPostDto.shareAsWhiteLabeledAsset;
-    damUploadPostDto.addedToQuickLinks = this.damPostDto.addedToQuickLinks;
-    damUploadPostDto.partnerGroupIds = this.damPostDto.partnerGroupIds;
-    damUploadPostDto.partnerIds = this.damPostDto.partnerIds;
-    damUploadPostDto.partnerGroupSelected = this.damPostDto.partnerGroupSelected;
-    damUploadPostDto.addedToQuickLinks = this.damPostDto.addedToQuickLinks;
-    damUploadPostDto.partnerSignatureRequired = false;
-    damUploadPostDto.vendorSignatureRequired = true;
+    // let damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
+    this.damUploadPostDto.saveAs = this.damPostDto.saveAs;
+    this.damUploadPostDto.assetName = this.damPostDto.name;
+    this.damUploadPostDto.description = this.damPostDto.description;
+    this.damUploadPostDto.loggedInUserId = this.loggedInUserId;
+    this.damUploadPostDto.categoryId = this.damPostDto.categoryId;
+    this.damUploadPostDto.tagIds = this.damPostDto.tagIds;
+    this.damUploadPostDto.shareAsWhiteLabeledAsset = this.damPostDto.shareAsWhiteLabeledAsset;
+    this.damUploadPostDto.addedToQuickLinks = this.damPostDto.addedToQuickLinks;
+    this.damUploadPostDto.partnerGroupIds = this.damPostDto.partnerGroupIds;
+    this.damUploadPostDto.partnerIds = this.damPostDto.partnerIds;
+    this.damUploadPostDto.partnerGroupSelected = this.damPostDto.partnerGroupSelected;
+    this.damUploadPostDto.addedToQuickLinks = this.damPostDto.addedToQuickLinks;
+    // this.damUploadPostDto.partnerSignatureRequired = false;
+    // this.damUploadPostDto.vendorSignatureRequired = true;
     // damUploadPostDto.selectedSignatureImagePath = this.damPostDto.selectedSignatureImagePath;
     // damUploadPostDto.geoLocationDetails = this.damPostDto.geoLocationDetails;
-    damUploadPostDto.draft = this.damPostDto.draft;
-    damUploadPostDto.published = this.damPostDto.published;
-    damUploadPostDto.createdByAnyApprover = this.damPostDto.createdByAnyApprover;
-    damUploadPostDto.approvalStatus = this.damPostDto.approvalStatus;
-    damUploadPostDto.saveAs = saveAs;
-    damUploadPostDto.cloudContent = false;
-    damUploadPostDto.source = "BEE";
-    damUploadPostDto.htmlBody = this.damPostDto.htmlBody;
-    damUploadPostDto.jsonBody = this.damPostDto.jsonBody;
-    damUploadPostDto.createdBy = this.damPostDto.createdBy;
-    damUploadPostDto.beeTemplate = true;
-    return damUploadPostDto;
+    this.damUploadPostDto.draft = this.damPostDto.draft;
+    this.damUploadPostDto.published = this.damPostDto.published;
+    this.damUploadPostDto.createdByAnyApprover = this.damPostDto.createdByAnyApprover;
+    this. damUploadPostDto.approvalStatus = this.damPostDto.approvalStatus;
+    this.damUploadPostDto.saveAs = saveAs;
+    this.damUploadPostDto.cloudContent = false;
+    this.damUploadPostDto.source = "BEE";
+    this.damUploadPostDto.htmlBody = this.damPostDto.htmlBody;
+    this.damUploadPostDto.jsonBody = this.damPostDto.jsonBody;
+    this.damUploadPostDto.createdBy = this.damPostDto.createdBy;
+    this.damUploadPostDto.beeTemplate = true;
+    return this.damUploadPostDto;
   }
 
   saveOrUpdateAsset(saveAs: boolean) {
@@ -677,4 +681,93 @@ downloadPdfWithHtml() {
       this.modalPopupLoader = false;
   });
 }
+
+openAddSignatureModalPopUp() {
+  // this.loading = true;
+  this.openSelectDigitalSignatureModalPopUp = true;
+  $("#addAssetDetailsPopup").modal("hide");
+}
+setPartnerSignatureRequired(event){
+  this.damUploadPostDto.partnerSignatureRequired = event;
+}
+
+setVendorSignatureRequired(event){
+  this.damUploadPostDto.vendorSignatureRequired = event;
+  this.validateAllFields();
+}
+notifySignatureSelection(event){
+        if(this.damUploadPostDto.vendorSignatureRequired){
+            this.setUploadedFileProperties(event);
+            this.pdfUploadedFile =  event;
+            this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
+        }
+        this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
+            this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
+        });
+        this.validateAllFields();
+  }
+  private setUploadedFileProperties(file: File) {
+    // this.uploadedImage = file;
+    this.pdfUploadedFile =  file;
+    this.formData.delete("uploadedFile");
+    // this.uploadedAssetName = "";
+    // this.uploadedCloudAssetName = "";
+    // this.damUploadPostDto.source = "";
+    // this.fileType = file['type'];
+    this.customResponse = new CustomResponse();
+    this.formData.append("uploadedFile", file, file['name']);
+    // this.uploadedAssetName = file['name'];
+    this.damUploadPostDto.cloudContent = false;
+    this.damUploadPostDto.fileName = file['name'];
+    this.damUploadPostDto.downloadLink = null;
+    this.damUploadPostDto.oauthToken = null;
+}
+
+  
+	validateAllFields() {
+		if(this.isAdd){
+			let uploadedAssetValue = $('#uploadedAsset').val();
+			this.validForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0));
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath ){
+            this.validForm = false;
+            }
+		}else{
+			this.validForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && !this.damUploadPostDto.vendorSignatureCompleted){
+                this.validForm = false;
+                }
+		}
+	}
+
+    private getGeoLocationAnalytics(callback: (geoLocationDetails: GeoLocationAnalytics) => void) {
+            this.utilService.getJSONLocation().subscribe(
+                (response: any) => {
+                    let geoLocationDetails = new GeoLocationAnalytics();
+                    let deviceInfo = this.deviceService.getDeviceInfo();
+                    if (deviceInfo.device === 'unknown') {
+                        deviceInfo.device = 'computer';
+                    }
+                    geoLocationDetails.city = response.city;
+                    geoLocationDetails.country = response.country;
+                    geoLocationDetails.ipAddress = response.query;
+                    geoLocationDetails.state = response.regionName;
+                    geoLocationDetails.zip = response.zip;
+                    geoLocationDetails.latitude = response.lat;
+                    geoLocationDetails.longitude = response.lon;
+                    geoLocationDetails.countryCode = response.countryCode;
+                    geoLocationDetails.timezone = response.timezone;
+                    callback(geoLocationDetails);
+                },
+                (_error: any) => {
+                    this.xtremandLogger.error("Error In Fetching Location Details");
+                }
+            );
+        }
+        notifySelectDigitalSignatureCloseModalPopUp(event){
+          if(event == 'close'){
+            this.openSelectDigitalSignatureModalPopUp = false;
+            $("#addAssetDetailsPopup").modal("show");
+          }
+
+        }
 }
