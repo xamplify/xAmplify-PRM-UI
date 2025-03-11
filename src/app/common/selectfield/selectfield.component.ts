@@ -150,13 +150,13 @@ export class SelectfieldComponent implements OnInit {
   toggleSelection(field: any) {
     const isUnChecked = !field.selectedColumn;
     if (isUnChecked) {
-      if(this.isMyprofile) {
-      field.defaultColumn = !field.selectedColumn
+      if (this.isMyprofile) {
+        field.defaultColumn = false
       }
       this.unSelectedItems.push(field);
     } else {
-      if(this.isMyprofile) {
-      field.defaultColumn = !field.selectedColumn;
+      if (this.isMyprofile) {
+        field.defaultColumn = true;
       }
       this.unSelectedItems = this.unSelectedItems.filter(item => item.labelId !== field.labelId);
     }
@@ -213,7 +213,7 @@ export class SelectfieldComponent implements OnInit {
   }
   submit() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
-    let allItems = this.isMyprofile ? this.allItems.filter(item => item.selectedColumn === true) :this.selectFieldsDtos.length > 0 ? this.selectFieldsDtos : this.allItems;
+    let allItems = !this.isSelectDivOpen && this.selectFieldsDtos.length > 0 ? this.selectFieldsDtos : this.allItems.filter(item => item.selectedColumn === true);
     this.selectedItems = allItems.filter(item =>
       !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
     );
@@ -242,7 +242,7 @@ export class SelectfieldComponent implements OnInit {
   }
 
   isFieldDisabled(labelName: string): boolean {
-    return this.excludedLabels.includes(labelName) ;
+    return this.excludedLabels.includes(labelName);
   }
   searchKey: string = '';
   searchFieldsKeyPress(keyCode: any) {
@@ -268,17 +268,7 @@ export class SelectfieldComponent implements OnInit {
       }
       return acc;
     }, {});
-    // let totalFields = allItems.map(item => {
-    //   let match = selectFieldsDtos.find(x => x.labelId === item.labelId);
-    //   return {
-    //     ...item,
-    //     selectedColumn: match ? match.defaultColumn? match.selectedColumn:selectFieldsDtos.length > 0 ? match.defaultColumn:true : selectFieldsDtos.length > 0 ? false : true,
-    //     id: match ? match.id : item.id,
-    //     defaultColumn: match ? match.defaultColumn : false,
-    //     columnOrder: match ? match.columnOrder : item.columnOrder,
-    //   };
-    // }
-    // );
+
     let totalFields = allItems.map(item => {
       let match = selectFieldsDtos.find(x => x.labelId === item.labelId);
       if (this.isMyprofile) {
@@ -286,7 +276,7 @@ export class SelectfieldComponent implements OnInit {
         return {
           ...item,
           selectedColumn: match ? match.defaultColumn ? match.selectedColumn : selectFieldsDtos.length > 0 ? match.selectedColumn : true : selectFieldsDtos.length > 0 ? false : true,
-          id: match ? match.id : exist? exist.id: item.id,
+          id: match ? match.id : exist ? exist.id : item.id,
           defaultColumn: match ? match.defaultColumn ? match.selectedColumn : selectFieldsDtos.length > 0 ? match.selectedColumn : true : selectFieldsDtos.length > 0 ? false : true,
           columnOrder: match ? match.columnOrder : item.columnOrder,
         };
@@ -329,7 +319,7 @@ export class SelectfieldComponent implements OnInit {
       ? Array.from(new Set([...this.excludedLabels, ...this.defaultFields])) // Merge & remove duplicates
       : [...this.defaultFields];
   }
-  exstingDataDto:Array<any> = new Array<any>();
+  exstingDataDto: Array<any> = new Array<any>();
   fetchData(pagination: any) {
     this.ngxloading = true;
     let leadFormFields$ = this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.loggedInUserType, this.customName);
