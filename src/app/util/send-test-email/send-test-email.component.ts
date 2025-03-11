@@ -62,6 +62,7 @@ export class SendTestEmailComponent implements OnInit {
   activateNowItems: any[]= [];
   registerNowItems: any[]= [];
   tabsEnabled: boolean = false;
+  // selectedTab: string = 'registerNow'; // Default active tab
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public properties: Properties, private activatedRoute: ActivatedRoute, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
@@ -223,7 +224,14 @@ export class SendTestEmailComponent implements OnInit {
           'cursor': 'not-allowed',
           'pointer-events': 'none'
         });
+        $('tbody td').css({
+          'background-color': 'inherit'
+        });
+        $('table tbody').css({
+          'background-color': 'inherit'
+        });
         this.processing = false;
+        
       }, error => {
         this.processing = false;
         this.callEventEmitter();
@@ -387,6 +395,8 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   activeTab(tabName: string) {
+    // this.selectedTab = tabName;
+
     if (this.selectedItem) {
       let selectedItemsArray = Array.isArray(this.selectedItem)
         ? this.selectedItem
