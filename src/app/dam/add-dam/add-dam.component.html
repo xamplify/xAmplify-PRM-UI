@@ -48,6 +48,7 @@
    <!--Add Asset Details------->
    <div id="addAssetDetailsPopup" class="modal fade right " role="dialog" aria-labelledby="myModalLabel"
       data-backdrop="static" data-keyboard="false">
+      <ng-container *ngIf="!openSelectDigitalSignatureModalPopUp">
       <div class="modal-dialog modal-css" role="document" style="width: 75% !important;">
          <!-- Modal content-->
          <div class="modal-content" *ngIf="!openSelectDigitalSignatureModalPopUp">
@@ -137,7 +138,6 @@
                         </div>
                         <ng-container>
                            <label class="control-label vendor-signature-align mr10 " translate>Vendor Signature</label>
-                           <div class="">
                               <app-custom-ui-switch
                                  [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))"
                                  [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
@@ -153,7 +153,6 @@
                                  class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add your signature <span
                                     class="required">*</span>
                               </span>
-                           </div>
                         </ng-container>
                      </div>
                       <!--XNFR-578 && XBI-3235-->
@@ -170,7 +169,6 @@
                         </div>
                         <ng-container>
                            <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
-                           <div class="">
                               <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
                                  [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
                                  (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
@@ -180,7 +178,6 @@
                                     [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
                                  </i>
                               </span>
-                           </div>
                         </ng-container>
                      </div>
                      <!--Description-->
@@ -269,10 +266,13 @@
                </button>
             </div>
          </div>
+      </div>
+   </ng-container>
+      <ng-container *ngIf="openSelectDigitalSignatureModalPopUp">
          <div *ngIf="openSelectDigitalSignatureModalPopUp">
             <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfFile" [isFromDam]="true"></app-select-digital-signature>
          </div>
-      </div>
+      </ng-container>
    </div>
    <!-- ADD TAG POPUP -->
    <div *ngIf="openAddTagPopup">

@@ -195,6 +195,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       (result: any) => {
         if (result.statusCode === 200) {
           this.setDamProperties(result);
+          this.addSingatureProperties();
         }else if(result.statusCode==403){
           this.referenceService.goToAccessDeniedPage();
         }else {
@@ -245,6 +246,16 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.selectedCategoryId = dam.categoryId;
       this.damPostDto.published = dam.published;
       this.damPostDto.approvalStatus = dam.approvalStatus;
+      this.damPostDto.vendorSignatureCompleted = dam.vendorSignatureCompleted;
+      this.damPostDto.partnerSignatureRequired = dam.partnerSignatureRequired;
+      this.damPostDto.vendorSignatureRequired = dam.vendorSignatureRequired;
+      this.damPostDto.partnerGroupIds = dam.partnerGroupIds;
+      this.damPostDto.partnerIds = dam.partnerIds;
+      this.damPostDto.partnerGroupSelected = dam.partnerGroupSelected;
+      this.damPostDto.createdByAnyApprover = dam.createdByAnyApprover;
+      this.damPostDto.draft = dam.draft;
+      this.damPostDto.id = dam.id;
+      
     } else {
       this.goToManageSectionWithError();
     }
@@ -372,7 +383,21 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.damUploadPostDto.jsonBody = this.damPostDto.jsonBody;
     this.damUploadPostDto.createdBy = this.damPostDto.createdBy;
     this.damUploadPostDto.beeTemplate = true;
+    this.addSingatureProperties();
     return this.damUploadPostDto;
+  }
+
+  private addSingatureProperties() {
+    if (this.assetId > 0) {
+      this.damUploadPostDto.vendorSignatureCompleted = this.damPostDto.vendorSignatureCompleted;
+      this.damUploadPostDto.partnerSignatureRequired = this.damPostDto.partnerSignatureRequired;
+      this.damUploadPostDto.vendorSignatureRequired = this.damPostDto.vendorSignatureRequired;
+      this.damUploadPostDto.selectedSignatureImagePath = this.damPostDto.selectedSignatureImagePath;
+      this.damUploadPostDto.partnerGroupIds = this.damPostDto.partnerGroupIds;
+      this.damUploadPostDto.partnerIds = this.damPostDto.partnerIds;
+      this.damUploadPostDto.partnerGroupSelected = this.damPostDto.partnerGroupSelected;
+      this.damUploadPostDto.createdByAnyApprover = this.damPostDto.createdByAnyApprover;
+    }
   }
 
   saveOrUpdateAsset(saveAs: boolean) {

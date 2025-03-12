@@ -140,13 +140,17 @@
     border-radius: 8px;
     width: 600px;
     max-width: 90%;
-    /* Ensure it doesn't exceed 90% of the screen width */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Add a subtle shadow */
     position: relative;
-    /* For positioning close button or other elements */
     overflow-y: auto;
-    /* Add scroll if content exceeds height */
     max-height: 90vh;
+  }
+  .choose-signature-text {
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .choose-signature-text:hover {
+    color: #0056b3;
   }
     
