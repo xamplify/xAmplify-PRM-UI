@@ -2,7 +2,7 @@ textarea {
     min-height: 150px;
     margin-bottom: 13px;
 }
-.preview {
+.custom_preview{
     border: 1px solid #c3c7d2d6;
     background-color: #fff;
     border-radius: 5px;

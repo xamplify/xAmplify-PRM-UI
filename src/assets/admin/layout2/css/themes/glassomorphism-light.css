@@ -4568,7 +4568,7 @@ color: #fff!important;
     }
   }
 /* add a tag */
-.add_tag-container,.add-tag-card{
+.add_tag-container,.add-tag-card,.custom_preview{
   background: rgb(255 255 255 / 40%) !important;
   border: 1px solid #ada6a64d!important;
 }

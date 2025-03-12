@@ -4939,5 +4939,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
         this.referenceService.isDownloadCsvFile = true;
     }
-
+   
+    getTooltipTitle(): string {
+        if (this.assignLeads) {
+          return "Download CSV Template for Share Leads";
+        } else {
+          return "Download CSV Template for Contacts";
+        }
+      }
 }

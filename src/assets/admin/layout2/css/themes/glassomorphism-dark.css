@@ -4305,7 +4305,7 @@ color: #fff !important;
   color: #fff!important;
 }
 /* add a tag */
-.add_tag-container,.add-tag-card{
+.add_tag-container,.add-tag-card,.custom_preview{
   background-color: rgba(16 18 27 / 28%) !important;
   border: 1px solid #ffffff33 !important;
 }

@@ -2496,9 +2496,11 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 @media only screen and (min-width: 760px) {
   .clip_mask::after {
     box-shadow: -15px 15px 0 var(--div-bg-color) !important;
+    border-left: 1px solid var(--border-color) !important;
   }
   .clip_mask::before {
     box-shadow: 15px 15px 0 var(--div-bg-color) !important;
+    border-right: 1px solid var(--border-color) !important;
   }
   .portlet.light.clip_mask{
     border-bottom: 0px !important;
@@ -2506,7 +2508,7 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 }
 
 /* add a tag */
-.add_tag-container,.add-tag-card{
+.add_tag-container,.add-tag-card,.custom_preview{
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }

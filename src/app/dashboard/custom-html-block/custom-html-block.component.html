@@ -159,7 +159,7 @@
 
             <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT'">
                 <label>Preview</label>
-                <div class="preview">
+                <div class="custom_preview">
                     <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.htmlBody">No Preview Available
                     </div>
                     <div [innerHTML]="sanitizedHtml"></div>
@@ -214,7 +214,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <label>Preview (Left)</label>
-                        <div class="preview">
+                        <div class="custom_preview">
                             <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.leftHtmlBody">No
                                 Preview Available</div>
                             <div [innerHTML]="leftHtmlBody"></div>
@@ -222,7 +222,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <label>Preview (Right)</label>
-                        <div class="preview">
+                        <div class="custom_preview">
                             <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.rightHtmlBody">No
                                 Preview Available</div>
                             <div [innerHTML]="rightHtmlBody"></div>
