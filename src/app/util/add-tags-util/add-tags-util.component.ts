@@ -187,25 +187,25 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.referenceService.startLoader(this.addTagLoader);
     if (this.tag.id > 0) {
       this.tag.updatedBy = this.loggedInUserId;
-      if(this.tag.tagName != undefined && this.tag.tagName .length > 55){
-        this.tag.tagName = this.tag.tagName.substring(0,55);
+      if (this.tag.tagName != undefined && this.tag.tagName.length > 55) {
+        this.tag.tagName = this.tag.tagName.substring(0, 55);
       }
     } else {
       this.tag.createdBy = this.loggedInUserId;
       this.tag.tagNames = this.tagNames;
     }
-   
+
     this.userService.saveOrUpdateTag(this.tag)
       .subscribe(
         (result: any) => {
-          if (result.access) {
+          if (result.statusCode == 200) {
             this.referenceService.stopLoader(this.addTagLoader);
-            if(this.isTagsTabActive){
+            if (this.isTagsTabActive) {
               this.closeTagModal();
-            this.tagResponse = new CustomResponse('SUCCESS', result.message, true);
-            this.notifyParent.emit(result.message);
-            }else{
-              this.isAddTagPopup=false;
+              this.tagResponse = new CustomResponse('SUCCESS', result.message, true);
+              this.notifyParent.emit(result.message);
+            } else {
+              this.isAddTagPopup = false;
               this.searchTags();
               this.isAddTagPopup = false;
               this.tag.isValid = false
@@ -213,8 +213,11 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
               this.tag = new Tag();
               this.tagResponse = new CustomResponse();
               this.tagNames = [];
-              this.tagSelected = (this.selectedTags.length> -1 || this.tagsSelected.length>0) ? true :false;
+              this.tagSelected = (this.selectedTags.length > 0 || this.tagsSelected.length > 0) ? true : false;
             }
+          } else if (result.statusCode == 400) {
+            this.referenceService.stopLoader(this.addTagLoader);
+            this.addTagErrorMessage(result.message);
           } else {
             this.authenticationService.forceToLogout();
           }
@@ -357,7 +360,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.removeTagErrorClass();
     this.tagResponse = new CustomResponse();
     this.tagNames = [];
-    this.tagSelected = (this.selectedTags.length> -1 || this.tagsSelected.length>0) ? true :false;
+    this.tagSelected = (this.tagsSelected.length>0) ? true :false;
   }
 
 }

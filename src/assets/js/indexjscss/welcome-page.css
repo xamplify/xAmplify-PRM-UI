@@ -1301,3 +1301,8 @@ top: opx;
 .universal-dropdown-menu li {
   padding: 6px 10px !important;
 }
+@media (min-width: 768px) {
+.w85-per {
+  width: 85% !important;
+}
+}

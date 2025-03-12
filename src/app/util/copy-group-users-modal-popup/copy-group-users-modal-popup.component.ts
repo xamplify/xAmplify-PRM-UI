@@ -138,6 +138,11 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
       this.copyGroupUsersDto.userGroupId = this.userListId;
       this.copyGroupUsersDto.moduleName = this.moduleName;
       this.copyGroupUsersDto.users = this.selectedUsers;
+      if (this.copyGroupUsersDto.users) {
+        this.copyGroupUsersDto.users.forEach(user => {
+          user.createdTime = null;
+        });
+      }
       this.authenticationService.copyUsersToUserGroups(this.copyGroupUsersDto).subscribe(
         response=>{
           this.copySuccess = true;

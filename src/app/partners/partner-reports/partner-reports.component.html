@@ -835,11 +835,11 @@
               </button>
               <!-- XNFR-835 -->
               <div class="portlet-input input-inline">
-                <button *ngIf="isIncompleteCompanyProfileDiv" class="btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()"
+                <button *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv" class="btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()"
                 >Send Reminder</button>
                 <div class="input-icon right mTop" 
-                [ngClass]="isIncompleteCompanyProfileDiv ? '' : 'input-icon right mTop'" 
-                [ngStyle]="isIncompleteCompanyProfileDiv ? {'position': 'relative', 'margin': '-34px 0 0 131px'} : {'position': 'relative', 'margin': '-12px 0 0 0'}">
+                [ngClass]="isIncompleteCompanyProfileDiv || isSingUpPendingDiv ? '' : 'input-icon right mTop'" 
+                [ngStyle]="isIncompleteCompanyProfileDiv || isSingUpPendingDiv ? {'position': 'relative', 'margin': '-34px 0 0 131px'} : {'position': 'relative', 'margin': '-12px 0 0 0'}">
                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"
                     [ngModelOptions]="{ standalone: true }" placeholder="Search"
                     (keypress)=" inCompleteCompanyProfileSignupPendingPartnersSearch($event.keyCode)">
@@ -867,7 +867,7 @@
                 *ngIf="incompleteCompanyProfileAndPendingSingupPagination.pagedItems.length !== 0">
                 <thead>
                   <tr>
-                    <th *ngIf="isIncompleteCompanyProfileDiv" class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                    <th *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv" class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
                       [(ngModel)]="isHeaderCheckBoxChecked" (change)="toggleSelectAllForIncompleteProfiles($event)" />
                   </th>
                     <th class="center-aligned">partners</th>
@@ -878,7 +878,7 @@
                 <tbody>
                   <tr *ngFor="let item of incompleteCompanyProfileAndPendingSingupPagination.pagedItems"
                     style="cursor: pointer;">
-                    <td   *ngIf="isIncompleteCompanyProfileDiv"  class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
+                    <td   *ngIf="isIncompleteCompanyProfileDiv || isSingUpPendingDiv"  class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow" name="all"
                       [(ngModel)]="item.isSelected" (change)="updateSelectionStateForIncompleteProfiles()">
                   </td>
                     <td>
@@ -1205,7 +1205,7 @@
   </div>
 </div>
 
-<app-send-test-email *ngIf="sendTestEmailIconClicked" [vanityTemplatesPartnerAnalytics]="vanityTemplates" (sendmailNotify)= "emittedMethod($event.item)"  [selectedItem]="selectedItem" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [selectedPartners]="selectedPartners" [vanityTemplatesPartnerAnalytics]="vanityTemplates" (sendmailNotify)= "emittedMethod($event.item)"  [selectedItem]="selectedItem" [id]="selectedEmailTemplateId" [toEmailId]="selectedEmailId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 
 
 

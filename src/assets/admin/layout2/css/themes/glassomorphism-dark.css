@@ -145,8 +145,8 @@ h6 {
 }
 #vendor-details-tile,
 .xamplify-dropdown-content{
-  background-color: rgb(146 151 179 / 8%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(16 18 27 / 40%) !important;
+  border: 1px solid #ffffff33 !important;
 }
 .header {
   background-color: rgb(146 151 179 / 8%) !important;
@@ -2836,7 +2836,7 @@ span.btn.btn-primary.transition{
 }
 /* EditDeal page */
 .panel.panel-default.deal-bgcolor{
- background-color: rgb(146 151 179 / 8%) !important;
+  background: rgb(0 0 0 / 18%) !important;
  border-radius: 8px;
 }
 .br-unset{
@@ -2917,17 +2917,17 @@ button.unlink-button {
   border-radius: 10px;
 }
 .pjCardTitlebg >.panel-bg{
-  background-color: rgb(146 151 179 / 8%) !important;
   border-radius: 10px 10px 0px 0px !important;
-  border-bottom:   1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgb(0 0 0 / 18%) !important;
+  border: 1px solid #ffffff33 !important;
 }
 .panel-bg{
   background-color: rgb(146 151 179 / 8%) !important;
   border-radius: 10px 10px 0px 0px !important;
 }
 .highchartsColorCu{
-  background-color: rgb(146 151 179 / 8%) !important;
-  border:0px!important;
+  background: rgb(0 0 0 / 18%) !important;
+  border: 1px solid #ffffff33 !important;
 }
 .br-none{
 border:0px!important;
@@ -4264,6 +4264,32 @@ color: #fff !important;
   background: rgb(0 0 0 / 18%) !important;
   border: 1px solid #ffffff33 !important;
 }
+
+  /* ui enhacement changes in onboarding partner */
+  .contact_img,.cloud_color{
+    background: rgb(0 0 0 / 18%) !important;
+    border: 1px solid #ffffff33 !important;
+  }
+  .add_partnerbtn{
+    border:none!important;
+  }
+  @media only screen and (min-width: 760px) {
+    .clip_mask::after {
+     display: none!important;
+    }
+    .clip_mask::before {
+      display: none!important;
+    }
+    .portlet.light.clip_mask{
+      border-bottom: 0px !important;
+      border-radius: 8px 8px 0px 0px !important;
+  
+    }
+    .clip_mask{
+      bottom: -74px!important;
+    }
+  }
+
 /* add a tag */
 .add_tag-container,.add-tag-card{
   background-color: rgba(16 18 27 / 28%) !important;
@@ -4292,3 +4318,22 @@ color: #fff !important;
   box-shadow: unset!important;
   color: #fff!important;
 }
+/*drag and drop btn */
+.btn_custom,.btn_reset,.btn_update{
+  color: #fff!important;
+  background: rgb(0 0 0 / 18%) !important;
+  border: 1px solid #ffffff33!important;
+}
+.btn_custom:hover {
+  background: #0276ff !important;
+  color: #fff !important;
+}
+.btn_update:hover {
+  background: #3faba4 !important;
+  color: #fff !important;
+}
+.btn_reset:hover {
+  background: #e87e04 !important;
+  color: #fff !important;
+}
+

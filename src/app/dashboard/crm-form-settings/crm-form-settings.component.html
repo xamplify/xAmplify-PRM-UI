@@ -5,16 +5,15 @@
       <div class="row m0">
         <div class="col-md-12 p0 mb10 mt10">
           <div style="margin-bottom:20px">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 p0">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 p0">
             <h3 class="fs-16 mt10">{{ opportunityType }} custom fields
               <span class="reload-btn">
                 <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top" title="Refresh Custom Fields"><i
-                    class="fa fa-refresh" style="font-size: 14px !important;"></i>
-                  Reload</a>
+                    class="fa fa-refresh" style="font-size: 14px !important;"></i></a>
               </span>
             </h3>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 pr0 pl-left0 tabview-fields">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 pr0 pl-left0 tabview-fields" style="padding-left: 0px;">
             <div class="d-flex justify-content-end mb-flex-wrap my-10">
             <div class="inputs mr5 width100">
               <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
@@ -36,7 +35,10 @@
                 </div>
               </div>
             </div>
-            <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="btn btn-primary ml5 my-10"
+            <!--  XNFR-906 -->
+            <button type="button" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && integrationType === 'SALESFORCE' && authenticationService?.module?.isAnyAdminOrSupervisor && opportunityType === 'LEAD'" class="btn btn-primary ml5 my-10 reportButton" (click)="openSetDefaultFieldsPopUp()">Default Lead Report</button>
+            <!--  XNFR-906 -->
+            <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="btn btn-primary ml5 my-10 reportButton"
               (click)="addCustomFielsdOrderModalOpen()">Order Custom Fields</button>
               </div> 
             </div> 
@@ -282,4 +284,9 @@
   <div *ngIf="isCustomFieldsOrderModelPopUp">
     <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList" [opportunityType]="opportunityType"></app-custom-fields-order-popup>
   </div>
+   <!-- XNFR-906 -->
+   <div *ngIf="openDefaultFieldsPopup">
+    <app-selectfield [isVendorVersion]="true"  [customName]="'manage'"  (closeEmitter)="closeEmitter($event)"></app-selectfield>
+  </div>
+  <!-- XNFR-906 -->
 </div>

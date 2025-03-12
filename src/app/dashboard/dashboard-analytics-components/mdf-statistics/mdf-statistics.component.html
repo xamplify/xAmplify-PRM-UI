@@ -1,7 +1,7 @@
 <div
     [ngClass]="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || 
 authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isMarketingCompany ? 'col-xs-12 col-sm-12':'col-xs-12 col-sm-6 p0 mdf_card_height pl0 pr0'">
-    <div class="col-sm-12" [ngClass]="{'p0' : authenticationService?.dashboardTypes.indexOf('Detailed Dashboard')>-1, 'pr0' : isDashboardView}">
+    <div class="col-sm-12 xsView" [ngClass]="{'p0' : authenticationService?.dashboardTypes.indexOf('Detailed Dashboard')>-1, 'pr0' : isDashboardView}">
         <div class="portlet light margin_0" style="margin-bottom: 20px;">
             <div class="portlet-title mb0mh0">
                 <div class="caption">

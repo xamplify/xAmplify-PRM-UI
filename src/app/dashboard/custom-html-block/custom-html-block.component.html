@@ -1,0 +1,276 @@
+<app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
+<div class="alert alert-info">
+    You have the ability to add custom HTML blocks. These will be displayed in your dashboard.
+</div>
+<div class="portlet light" id="manage-custom-html">
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+    <div class="portlet-title" *ngIf="!isLoading">
+        <div class="col-lg-12 p0">
+            <div class="inputs btn-group float-right" style="display: inline-flex;">
+                <div class="mr5">
+                    <button class="btn btn-primary" (click)="goToAddHtmlDiv()" aria-hidden="true"
+                        data-placement="bottom" data-toggle="tooltip" title="Add custom html block"><i
+                            class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add</button>
+                </div>
+                <div class="mr5">
+                    <select class="form-control" [(ngModel)]="sortOption.selectedCampaignEmailTemplateDropDownOption"
+                        (ngModelChange)="sortBy($event)" id="select-dropdown" style="width: auto;">
+                        <option *ngFor="let option of sortOption.eventCampaignRecipientsDropDownOptions"
+                            [ngValue]="option">{{
+                            option.name }}</option>
+                    </select>
+                </div>
+                <div class="search-box-item">
+                    <input type="text" autocomplete="off" id="sort-text" class="form-control"
+                        [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{ standalone: true }"
+                        placeholder="Search..." (keydown.enter)="search()">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                        (click)="sortOption.searchKey=''; search();"></button>
+                    <button type="submit" class="search-box-item-click" (click)="search();"><i class="fa fa-search"
+                            aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-list-loader *ngIf="listLoading"></app-list-loader>
+    <div class="alert alert-info text-center" *ngIf="pagination?.totalRecords === 0 && !listLoading">No Data Found.
+    </div>
+    <ng-container *ngIf="pagination?.totalRecords > 0 && !listLoading">
+        <div class="table-responsive">
+            <table class="table tgrid table-hover table-sm" id="custom-htmls">
+                <thead>
+                    <tr>
+                        <th style="width: 40%">
+                            <span class="ui-column-resizer gray"
+                                (mousedown)="referenceService?.onMouseDown($event, 'custom-htmls', 1)"></span>
+                            <span class="gridHeader">Custom HTML Name</span>
+                        </th>
+                        <th class="text-center">Created On</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let customDto of pagination?.pagedItems; let i = index"
+                        id="custom-html-{{ customDto.id }}">
+                        <td class="d flex">
+                            <div>
+                                <img src="assets/admin/pages/media/works/html_logo_image.png" alt="logo"
+                                    class="html-logo-image">
+                            </div>
+                            <div style="margin-left: 5px;">
+                                <h5 class="moreipsis" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{ customDto?.title }}">
+                                    <span>{{ customDto?.title }}</span>
+                                </h5>
+                                <h6 class="">
+                                    <span translate>Created By <strong>{{ customDto?.createdBy }}</strong></span>
+                                </h6>
+                                <span *ngIf="customDto?.selected" class="view-banner green-btn-cu">Added to
+                                    Dashboard</span>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <app-display-date-and-time
+                                [dateAndTimeUTCString]="customDto?.createdTimeInString"></app-display-date-and-time>
+                        </td>
+                        <td>
+                            <div class="actions-block override-actions float-none">
+                                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy and save"
+                                    (click)="copyAndSave(customDto.id); isAdd=true;">
+                                    <i class="fa fa-files-o IconCustomization" aria-hidden="true"></i>
+                                </a>
+                                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+                                    (click)="editCustomHtmlBlock(customDto.id); isAdd=false;">
+                                    <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
+                                </a>
+                                <a id="template-delete" class="custom-icon"
+                                    (click)="showConfirmSweetAlert(customDto.id)" data-toggle="tooltip"
+                                    data-placement="top" title="Delete">
+                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pg8">
+                <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)"
+                    (notifyParentDropDown)="findPaginatedItems($event)"></app-pagination>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<div class="page-toolbar" id="add-custom-html" style="display: none;">
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+    <div class="portlet-body" *ngIf="!isLoading">
+        <form>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label for="title">Custom HTML Name<span class="required">*</span></label>
+                        <input type="text" class="form-control" id="customHtmlName" [(ngModel)]="customHtmlBlock.title"
+                            [ngModelOptions]="{standalone: true}" placeholder="Enter Custom HTML Name" required>
+                        <span *ngIf="customErrorMessage">{{customErrorMessage}}</span>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label for="layoutSize">Custom HTML Layout</label>
+                        <select class="form-control" id="customHtmlLayout" [(ngModel)]="customHtmlBlock.layoutSize"
+                            [ngModelOptions]="{standalone: true}" (ngModelChange)="updateDropDownHtmlBody($event)">
+                            <option value="SINGLE_COLUMN_LAYOUT">Single Column Layout</option>
+                            <option value="TWO_COLUMN_LAYOUT">Two Column Layout</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Add to Dashboard</label>
+                        <i class="fa fa-info-circle mr10 ml5" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                            title="Enabling this option will display the custom HTML block on the dashboard."></i>
+                        <app-custom-ui-switch [customSwitch]="customHtmlBlock.selected"
+                            (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)">
+                        </app-custom-ui-switch>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT'">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label for="htmlBody">HTML Body<span class="required">*</span></label>
+                    <div class="float-right">
+                        <a class="btn_custom" (click)="fullFileInput.click()" data-placement="bottom" data-toggle="tooltip"
+                            title="Upload a zip file">
+                            <i class="fa fa-upload" aria-hidden="true"></i>
+                            Upload file
+                            <input type="file" #fullFileInput (change)="onFileSelected($event, 'full')" accept=".zip"
+                                style="display: none;">
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <textarea class="form-control" id="htmlBody" [(ngModel)]="customHtmlBlock.htmlBody"
+                        (ngModelChange)="updateSanitizedHtml(customHtmlBlock.htmlBody, 'full')"
+                        [ngModelOptions]="{standalone: true}" placeholder="Enter Custom HTML Body" required></textarea>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT'">
+                <label>Preview</label>
+                <div class="preview">
+                    <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.htmlBody">No Preview Available
+                    </div>
+                    <div [innerHTML]="sanitizedHtml"></div>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'TWO_COLUMN_LAYOUT'">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label for="leftHtmlBody">HTML Body (Left)</label>
+                            <div class="float-right">
+                                <a class="btn_custom" (click)="leftFileInput.click()" data-placement="bottom"
+                                    data-toggle="tooltip" title="Upload a zip file"><i class="fa fa-upload"
+                                        aria-hidden="true"></i>
+                                    Upload file
+                                    <input type="file" #leftFileInput (change)="onFileSelected($event, 'left')" accept=".zip"
+                                        style="display: none;">
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea class="form-control" id="leftHtmlBody" [(ngModel)]="customHtmlBlock.leftHtmlBody"
+                                [ngModelOptions]="{standalone: true}" (ngModelChange)="updateSanitizedHtml(customHtmlBlock.leftHtmlBody, 'left')"
+                                placeholder="Enter Custom HTML Body" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label for="rightHtmlBody">HTML Body (Right)</label>
+                            <div class="float-right">
+                                <a class="btn_custom" (click)="rightFileInput.click()" data-placement="bottom"
+                                    data-toggle="tooltip" title="Upload a zip file"><i class="fa fa-upload"
+                                        aria-hidden="true"></i>
+                                    Upload file
+                                    <input type="file" #rightFileInput (change)="onFileSelected($event, 'right')" accept=".zip"
+                                        style="display: none;">
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea class="form-control" id="rightHtmlBody"
+                                [(ngModel)]="customHtmlBlock.rightHtmlBody" [ngModelOptions]="{standalone: true}"
+                                (ngModelChange)="updateSanitizedHtml(customHtmlBlock.rightHtmlBody, 'right')"
+                                placeholder="Enter Custom HTML Body" required></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'TWO_COLUMN_LAYOUT'">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label>Preview (Left)</label>
+                        <div class="preview">
+                            <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.leftHtmlBody">No
+                                Preview Available</div>
+                            <div [innerHTML]="leftHtmlBody"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label>Preview (Right)</label>
+                        <div class="preview">
+                            <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.rightHtmlBody">No
+                                Preview Available</div>
+                            <div [innerHTML]="rightHtmlBody"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="right">
+                <button type="button" class="btn btn-primary" [disabled]="isValid()"
+                    (click)="saveOrUpdateCustomblock()">
+                    <i class="fa fa-floppy-o mr5" aria-hidden="true" *ngIf="isAdd"></i>{{ isAdd ? 'Save' : 'Update' }}
+                </button>
+                <button type="button" class="btn Btn-Gray" (click)="goToManage()" translate>Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade right" id="custom_html_block_modal_popup" role="dialog" aria-labelledby="myModalLabel"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" (click)="closeModalPopup()" data-dismiss="modal">
+                    <i class="fa fa-times"></i></a>
+                <h4 class="modal-title left" id="myModalLabel">Update Custom HTML Details</h4>
+            </div>
+            <div class="modal-body">
+                <app-modal-popup-loader *ngIf="popupLoader"></app-modal-popup-loader>
+                <div *ngIf="!popupLoader">
+                    <div class="form-group">
+                        <label for="title">Name<span class="required">*</span></label>
+                        <input type="text" class="form-control" id="customHtmlName" [(ngModel)]="customHtmlBlock.title"
+                            [ngModelOptions]="{standalone: true}" placeholder="Enter Custom HTML Name" required>
+                        <span *ngIf="customErrorMessage" class="required">{{customErrorMessage}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none">
+                <button class="btn Btn-Gray" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="button bgcolor-unset" [disabled]="!customHtmlBlock.title"
+                    (click)="saveOrUpdateCustomblock()">
+                    <span class="btn btn-primary transition">Save changes</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" (notifyComponent)="delete($event)">
+</app-confirm-sweet-alert-util>

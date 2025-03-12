@@ -151,5 +151,7 @@ export class Module {
     /**XNFR-878**/
     allowVendorToChangePartnerPrimaryAdmin = false;
 
+    /**XNFR-891**/
+    sharedLeads = false;
 
 }

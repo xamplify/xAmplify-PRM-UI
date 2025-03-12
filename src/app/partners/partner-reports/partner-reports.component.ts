@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -111,7 +111,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isSendReminderEnabled: boolean = false;
     selectedPartnerIds: number[] = [];
     allItems: any[] = []; 
-    constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
+    selectedPartners : any;
+  constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
         public utilService: UtilService,private route: ActivatedRoute,public properties: Properties, private vanityURLService: VanityURLService) {
@@ -119,9 +120,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.utilService.setRouterLocalStorage('partnerAnalytics');
         this.isListView = !this.referenseService.isGridView;
         this.getModuleAccess();
-
-    }
-
+    }    
     gotoMange() {
         this.router.navigateByUrl('/home/partners/manage');
     }
@@ -1164,6 +1163,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.incompleteCompanyProfileAndPendingSingupPagination.moduleName = 'pSignUp';
         this.incompleteCompanyProfileAndPendingSingupPagination.partnerTeamMemberGroupFilter = this.applyFilter;
         this.incompleteCompanyProfileAndPendingSingupPagination.searchKey ="";
+        this.pagination.selectedPartnerIds = [];
+        this.isSendReminderEnabled = false;
+        this.isHeaderCheckBoxChecked = false;
         this.getCompanyProfileIncompleteAndSignupPendingReports(this.incompleteCompanyProfileAndPendingSingupPagination);
     }
     CompanyProfileIncompleteAndSignupPendingList(event) {
@@ -1340,26 +1342,26 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             );
         }
     }
-
+    
          
   
     sendReminder(): void {
-        if (this.isIncompleteCompanyProfileDiv) {
+        if (this.isIncompleteCompanyProfileDiv || this.isSingUpPendingDiv) {
             this.sendReminderForIncompleteProfiles();
-        } else {
+        }
+        else{
             this.sendReminderForInactivePartners();
         }
     }
 
     sendReminderForIncompleteProfiles(): void {
-
         const selectedPartners = this.pagination.selectedPartnerIds
         .map(partnerId => this.allItems.find(item => item.partnerId === partnerId))
         .filter(partner => partner && !partner.isActive && partner.emailId);
 
         const emailIds = selectedPartners.map(partner => partner.emailId);
         const emailIdsString = emailIds.join(', ');
-       
+        this.selectedItem = this.allItems.filter(item => item.isSelected);
         this.modelPopUpMultipleSelectedEmails(emailIdsString);
 
     }
@@ -1373,7 +1375,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         const emailIdsString = emailIds.join(', ');
         this.modelPopUpMultipleSelectedEmails(emailIdsString);
     }
-
     updateSelectionState(): void {
         const currentPageItems = this.inActivePartnersPagination.pagedItems;
 
@@ -1458,6 +1459,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             );
         }
+        else if (this.isSingUpPendingDiv) {
+            this.sendTestEmailIconClicked = true;
+            this.vanityTemplates = true;
+        }
     }
     
     sendTestEmailModalPopupEventReceiver(){
@@ -1474,7 +1479,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             }
             this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
         }
-         else if (this.isIncompleteCompanyProfileDiv) {
+         else if (this.isIncompleteCompanyProfileDiv  || this.isSingUpPendingDiv) {
             if (Array.isArray(event)) {
                 this.sendRemindersForAllSelectedPartnersOne();
             } else {
@@ -1531,7 +1536,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     this.pagination.selectedPartnerIds.push(item.partnerId);
                 }
             });
-
+    
         pagedItems
             .filter(item => !item.isSelected)
             .forEach(item => {
@@ -1540,12 +1545,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     this.pagination.selectedPartnerIds.splice(index, 1);
                 }
             });
-
+    
+        this.allItems.forEach(item => {
+            item.isSelected = this.pagination.selectedPartnerIds.includes(item.partnerId);
+        });
+    
         this.isSendReminderEnabled = this.pagination.selectedPartnerIds.length > 0;
         this.isHeaderCheckBoxChecked = pagedItems.every(item => item.isSelected);
-        this.selectedItem = pagedItems;
+        this.selectedItem = this.allItems.filter(item => item.isSelected);
     }
-
+    
     toggleSelectAllIncomplete(event: Event, pagedItems: any[]): void {
         const checked = (event.target as HTMLInputElement).checked;
 

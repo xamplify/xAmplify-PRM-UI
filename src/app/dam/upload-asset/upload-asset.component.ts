@@ -136,6 +136,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     imageChangedEvent: any = '';
     fileObj: any;
     isFromApprovalModule : boolean = false;
+    pdfUploadedFile: File;
     @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
 
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
@@ -161,6 +162,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     disableSaveAsDraftButton: boolean = false;
     
     savedTags: any[] = [];
+    pdfDefaultUploadedFile: File;
 
     isAssetReplaced: boolean = false;
     approvalRequired: boolean = false;
@@ -323,6 +325,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			let file = files[0];
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
+            this.pdfDefaultUploadedFile =  file;
 			if(sizeInKb==0){
 				this.showAssetErrorMessage('Invalid File');
 			}else if(sizeInKb>maxFileSizeInKb){
@@ -351,6 +354,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 
     private setUploadedFileProperties(file: File) {
         this.uploadedImage = file;
+        this.pdfUploadedFile =  file;
         this.formData.delete("uploadedFile");
         this.uploadedAssetName = "";
         this.uploadedCloudAssetName = "";
@@ -1497,6 +1501,20 @@ zoomOut() {
     }  
     
     readBeeTemplateData(event: any) {
+        this.setEditDesginPdfData(event);
+        this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto, false).subscribe(
+            response => {
+                this.loading = false;
+                this.referenceService.showSweetAlertSuccessMessage("PDF updated successfully");
+            }, error => {
+                this.xtremandLogger.log(error);
+                let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
+                this.referenceService.showSweetAlertErrorMessage(errorMessage);
+                this.loading = false;
+            });
+    }
+   
+    private setEditDesginPdfData(event: any) {
         this.loading = true;
         this.isBeeTemplateComponentCalled = false;
         let damPostDto = new DamPostDto();
@@ -1504,18 +1522,14 @@ zoomOut() {
         damPostDto.htmlBody = event.htmlContent;
         damPostDto.id = this.id;
         damPostDto.loggedInUserId = this.authenticationService.getUserId();
-
-        this.damService.updatePDFData(damPostDto).subscribe(
-             response=>{
-                this.loading = false;
-                this.referenceService.showSweetAlertSuccessMessage("PDF updated successfully");
-             },error=>{
-                this.xtremandLogger.log(error);
-				let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
-                this.referenceService.showSweetAlertErrorMessage(errorMessage);
-                this.loading = false;
-             });
-      }
+        this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
+        this.damUploadPostDto.source = "BEE";
+        this.damUploadPostDto.beeTemplate = true;
+        this.damUploadPostDto.id = this.id;
+        this.damUploadPostDto.htmlBody = damPostDto.htmlBody;
+        this.damUploadPostDto.jsonBody = damPostDto.jsonBody;
+        this.formData.append('uploadedFile', event.pdf);
+    }
    
     hideBeeContainer(){
         this.beeContainerInput = {};
@@ -1541,28 +1555,35 @@ zoomOut() {
     setVendorSignatureRequired(event){
         this.damUploadPostDto.vendorSignatureRequired = event;
         this.isVendorSignatureToggleClicked = true;
+        if(event === 'true'){
+          this.setUploadedFileProperties(this.pdfUploadedFile);
+        } else {
+            this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+        }
         this.validateAllFields();
     }
 
     openAddSignatureModalPopUp() {
-        this.loading = true;
-		this.signatureService.getExistingSignatures().subscribe(
-			response => {
-				let data = response.data;
-                this.loading = false;
-				if (data != undefined) {
-					this.signatureResponseDto = data;
-					if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
-						this.openSelectDigitalSignatureModalPopUp = true;
-					} else {
-						this.openDigitalSignatureModelPopup = true;
-					}
-				} else {
-					this.openDigitalSignatureModelPopup = true;
-				}
-			}, error => {
-                this.loading = false;
-			});
+        // this.loading = true;
+        this.openSelectDigitalSignatureModalPopUp = true;
+
+		// this.signatureService.getExistingSignatures().subscribe(
+		// 	response => {
+		// 		let data = response.data;
+        //         this.loading = false;
+		// 		if (data != undefined) {
+		// 			this.signatureResponseDto = data;
+		// 			if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
+		// 				this.openSelectDigitalSignatureModalPopUp = true;
+		// 			} else {
+		// 				this.openDigitalSignatureModelPopup = true;
+		// 			}
+		// 		} else {
+		// 			this.openDigitalSignatureModelPopup = true;
+		// 		}
+		// 	}, error => {
+        //         this.loading = false;
+		// 	});
 	}
 
     notifySelectDigitalSignatureCloseModalPopUp(event){
@@ -1578,7 +1599,9 @@ zoomOut() {
 	}
 
 	notifySignatureSelection(event){
-        this.damUploadPostDto.selectedSignatureImagePath = event;
+            this.setUploadedFileProperties(event);
+            this.pdfUploadedFile =  event;
+            this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
         this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
         });

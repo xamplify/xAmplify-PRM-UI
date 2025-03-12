@@ -36,7 +36,7 @@ export class OrderFieldsComponent implements OnInit {
   }
   getFiledsByUserId() {
     this.ngxloading = true;
-    this.dashBoardService.getFieldsByUserId()
+    this.dashBoardService.getFieldsByUserId("")
       .subscribe(
         result => {
           if (result.statusCode == 200) {

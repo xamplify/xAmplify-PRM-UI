@@ -1533,8 +1533,8 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         .map(this.extractData)
         .catch(this.handleError);
     }
-    getAllLeadFormFields(companyProfileName:string,userType:string) {
-        var url = this.REST_URL + "/selected/fields/getAllFields/" + companyProfileName +'/'+userType+'/'+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+    getAllLeadFormFields(companyProfileName:string,userType:string, customFormName:string) {
+        var url = this.REST_URL + "/selected/fields/getAllFields/" + companyProfileName +'/'+userType+'/'+this.authenticationService.getUserId()+'/'+ customFormName +"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
           .map(this.extractData)
           .catch(this.handleError);
@@ -1545,20 +1545,34 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
           .map(this.extractData)
           .catch(this.handleError);
     }
-    getFieldsByUserId(){
-        var url = this.REST_URL + "/selected/fields/getByUserId/" + this.authenticationService.getUserId()+ '/' +this.authenticationService.companyProfileName + "?access_token=" + this.authenticationService.access_token;
+    getFieldsByUserId(customFormName:string){
+        var url = this.REST_URL + "/selected/fields/getByUserId/" + this.authenticationService.getUserId()+ '/' +this.authenticationService.companyProfileName +'/'+ customFormName+ "?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
           .map(this.extractData)
           .catch(this.handleError);
     }
-    /** XNFR-839 */
-
     /** XNFR-889 */
     updateDomains(domainRequestDto: DomainRequestDto, selectedTab: number) {
         let teamMemberOrPartnerDomain = selectedTab == 1 ? '' : '/partners/updateDomain';
         const url = this.domainUrl + teamMemberOrPartnerDomain + this.QUERY_PARAMETERS;
         domainRequestDto.createdUserId = this.authenticationService.getUserId();
         return this.authenticationService.callPostMethod(url, domainRequestDto);
+    }
+
+    fetchModuleForPartnerModuleAccess() {
+        let url = this.moduleUrl + 'fetchModuleForPartnerModuleAccess/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    fetchModulesForEditPartnerModule(partnershipId:any) {
+        let url = this.moduleUrl + 'fetchModulesForEditPartnerModule/'+this.authenticationService.getUserId()+'/'+partnershipId+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    updatePartnerModulesAccess(partner:any) {
+        partner.userId = this.authenticationService.getUserId();
+        let url = this.moduleUrl + 'updatePartnerModulesAccess?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url, partner);
     }
     
 }

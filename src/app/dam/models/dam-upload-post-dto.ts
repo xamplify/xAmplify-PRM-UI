@@ -61,4 +61,8 @@ export class DamUploadPostDto {
     sendForReApproval: boolean = false;
     approvalReferenceId: number;
     tags: any;
+    htmlBody:string = "";
+	jsonBody:string = "";
+    createdBy:number = 0;
+    saveAs =false;
 }

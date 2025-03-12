@@ -120,3 +120,37 @@
   .add_more-btn:hover{
   text-decoration: underline!important;
   }
+    .modalpopuplayer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      /* Semi-transparent black background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+  
+  .modalpopuplayer-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 600px;
+    max-width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow-y: auto;
+    max-height: 90vh;
+  }
+  .choose-signature-text {
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .choose-signature-text:hover {
+    color: #0056b3;
+  }
+    

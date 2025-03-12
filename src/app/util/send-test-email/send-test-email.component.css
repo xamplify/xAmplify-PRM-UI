@@ -75,3 +75,33 @@ input {
     field-sizing: content;
     cursor: pointer;
 }
+ .tab-bg {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    margin-bottom: 10px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 0 10px;
+  }
+  .disabled {
+    opacity: 0.5; 
+  }
+  .nav-tabs li.disabled a {
+    color: grey;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.nav>li>a:hover {
+    background-color: #eee;
+}
+.nav-tabs > li > a{
+    font-size: 12px;
+}
+li.disabled.active a {
+    border-bottom: none !important;
+  }
+  
+
+  
+  
+ 

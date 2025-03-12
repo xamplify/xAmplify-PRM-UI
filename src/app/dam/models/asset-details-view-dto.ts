@@ -15,4 +15,5 @@ export class AssetDetailsViewDto {
     partnerSignatureCompleted: boolean = false;
     selectedSignaturePath: any;
     vendorSignatureCompleted: boolean = false;
+    sharedAssetPath: any;
 }

@@ -40,6 +40,7 @@ export class ViewDamComponent implements OnInit {
   openDigitalSignatureModelPopup: boolean = false;
   signatureResponseDto:SignatureResponseDto = new SignatureResponseDto();
   openSelectDigitalSignatureModalPopUp: boolean = false;
+  formData: any = new FormData();
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
@@ -164,24 +165,25 @@ export class ViewDamComponent implements OnInit {
 	}
 
 	openModelpopup() {
+		this.openSelectDigitalSignatureModalPopUp = true;
 		// this.assetViewLoader = true;
-		this.signatureService.getExistingSignatures().subscribe(
-			response => {
-				let data = response.data;
-				this.assetViewLoader = false;
-				if (data != undefined) {
-					this.signatureResponseDto = data;
-					if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
-						this.openSelectDigitalSignatureModalPopUp = true;
-					} else {
-						this.openDigitalSignatureModelPopup = true;
-					}
-				} else {
-					this.openDigitalSignatureModelPopup = true;
-				}
-			}, error => {
-				this.assetViewLoader = false;
-			});
+		// this.signatureService.getExistingSignatures().subscribe(
+		// 	response => {
+		// 		let data = response.data;
+		// 		this.assetViewLoader = false;
+		// 		if (data != undefined) {
+		// 			this.signatureResponseDto = data;
+		// 			if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
+		// 				this.openSelectDigitalSignatureModalPopUp = true;
+		// 			} else {
+		// 				this.openDigitalSignatureModelPopup = true;
+		// 			}
+		// 		} else {
+		// 			this.openDigitalSignatureModelPopup = true;
+		// 		}
+		// 	}, error => {
+		// 		this.assetViewLoader = false;
+		// 	});
 	}
 
 	uploadSignature() {
@@ -189,7 +191,7 @@ export class ViewDamComponent implements OnInit {
 		this.assetDetailsViewDto.loggedInUserId = this.authenticationService.getUserId();
 		this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
 			this.assetDetailsViewDto.geoLocationDetails = geoLocationDetails;
-			this.damService.uploadSignature(this.assetDetailsViewDto).subscribe(
+			this.damService.uploadSignature(this.assetDetailsViewDto, this.formData).subscribe(
 				(response: any) => {
 					this.assetViewLoader = false;
 					this.viewDetails(this.assetId);
@@ -245,7 +247,8 @@ export class ViewDamComponent implements OnInit {
 	}
 
 	notifySignatureSelection(event){
-     this.assetDetailsViewDto.selectedSignaturePath = event;
+	 this.formData.append("uploadedFile", event, event['name']);
+	 this.assetDetailsViewDto.selectedSignaturePath = 'http://localhost:8000/signatures/94105361/draw-signature.png'
 	 this.uploadSignature();
 	}
 

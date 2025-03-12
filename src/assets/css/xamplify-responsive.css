@@ -265,9 +265,9 @@
   .width_unset {
     width: unset!important;
   }
-  .gear_mbv{
+  /* .gear_mbv{
     left: 98px !important;
-  }
+  } */
   .h-260{
     height: unset!important;
   }
@@ -470,6 +470,9 @@ flex-wrap: wrap;
   }
   .mb_float-left{
     float: left;
+   }
+   .icon-item{
+    margin: 0px 10px!important;
    }
 }
 /*Select Campaign- campaign */
@@ -689,6 +692,10 @@ flex-wrap: wrap;
   .mobilesearchdisplayTop{Margin-top:7px;}
   .mb_14{
     margin-bottom: 14px;
+  }
+  .mb_11{
+    margin-bottom: 11px!important;
+    padding-right: 15px!important;
   }
 }
 @media only screen and (min-width:768px) and (max-width:1024px) {

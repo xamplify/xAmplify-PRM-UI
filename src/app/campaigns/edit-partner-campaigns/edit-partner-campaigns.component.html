@@ -333,7 +333,7 @@
                                                 <li class="filter" [class.active]="'ALL' == contactListPagination.filterBy" (click)="filterContacts('ALL')">All</li>
                                                 <li class="filter" [class.active]="'MY-CONTACTS' == contactListPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
                                                 </li>
-                                                <li class="filter" [class.active]="'SHARED-LEADS' == contactListPagination.filterBy" (click)="filterContacts('SHARED-LEADS')" translate>Shared Leads
+                                                <li *ngIf="authenticationService?.module?.sharedLeads" class="filter" [class.active]="'SHARED-LEADS' == contactListPagination.filterBy" (click)="filterContacts('SHARED-LEADS')" translate>Shared Leads
                                                 </li>
                                                 <li class="filter" [class.active]="'FORM-CONTACTS' == contactListPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
                                                    Contacts</li>
