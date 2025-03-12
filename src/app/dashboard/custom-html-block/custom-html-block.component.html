@@ -1,6 +1,6 @@
 <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
 <div class="alert alert-info">
-    You have the ability to add custom HTML blocks, which will be displayed in your dashboard.
+    You have the ability to add custom HTML blocks. These will be displayed in your dashboard.
 </div>
 <div class="portlet light" id="manage-custom-html">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
@@ -67,7 +67,7 @@
                                     <span translate>Created By <strong>{{ customDto?.createdBy }}</strong></span>
                                 </h6>
                                 <span *ngIf="customDto?.selected" class="view-banner green-btn-cu">Added to
-                                    dashboard</span>
+                                    Dashboard</span>
                             </div>
                         </td>
                         <td class="text-center">
@@ -127,8 +127,9 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Embed Into Dashboard</label>
-                        <i class="fa fa-info-circle mr10 ml5" aria-hidden="true"></i>
+                        <label>Add to Dashboard</label>
+                        <i class="fa fa-info-circle mr10 ml5" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                            title="Enabling this option will display the custom HTML block on the dashboard."></i>
                         <app-custom-ui-switch [customSwitch]="customHtmlBlock.selected"
                             (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)">
                         </app-custom-ui-switch>

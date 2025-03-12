@@ -36,9 +36,9 @@
               </div>
             </div>
             <!--  XNFR-906 -->
-            <button type="button" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && integrationType === 'SALESFORCE' && authenticationService?.module?.isAnyAdminOrSupervisor" class="btn btn-primary ml5 my-10" (click)="openSetDefaultFieldsPopUp()">Default Lead Report</button>
+            <button type="button" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && integrationType === 'SALESFORCE' && authenticationService?.module?.isAnyAdminOrSupervisor && opportunityType === 'LEAD'" class="btn btn-primary ml5 my-10 reportButton" (click)="openSetDefaultFieldsPopUp()">Default Lead Report</button>
             <!--  XNFR-906 -->
-            <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="btn btn-primary ml5 my-10"
+            <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="btn btn-primary ml5 my-10 reportButton"
               (click)="addCustomFielsdOrderModalOpen()">Order Custom Fields</button>
               </div> 
             </div> 
