@@ -19,6 +19,8 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
   @Output() notifySignatureSelection = new EventEmitter();
   @Input() sharedAssetPath: any;
   @Input() uploadedFile: File;
+  @Input() isDamEditMode: boolean = false;
+  @Input() damAssetPath : any;
   @Input() isFromDam: boolean = false;
 
   signatureResponseDto: SignatureResponseDto = new SignatureResponseDto();
@@ -72,6 +74,13 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
       };
       fileReader.readAsArrayBuffer(this.uploadedFile);
       this.pdfLoader = false;
+    } else if (this.isDamEditMode) {
+      this.http.get(this.damAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
+      .subscribe(response => {
+        this.url = URL.createObjectURL(response);
+        this.displayPDF(this.url);
+        this.pdfLoader = false;
+      });
     }
     this.initializeDragAndDrop();
 
