@@ -1,4 +1,4 @@
-<div class="page-content">
+<div class="page-content" *ngIf="!openSelectDigitalSignatureModalPopUp">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home" aria-hidden="true"></i>
@@ -100,10 +100,10 @@
 		(downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
 </ng-container>
 
-<div class="modal-body" *ngIf="openDigitalSignatureModelPopup">
+<!-- <div class="modal-body" *ngIf="openDigitalSignatureModelPopup">
 	<app-digital-signature  [isFromDam]="true" (notifyAddImageToPdf)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)" ></app-digital-signature>
-</div>
+</div> -->
 
-<div class="modal-body" *ngIf="openSelectDigitalSignatureModalPopUp">
-	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)"></app-select-digital-signature>
+<div *ngIf="openSelectDigitalSignatureModalPopUp">
+	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [sharedAssetPath]="assetDetailsViewDto.sharedAssetPath"></app-select-digital-signature>
 </div>

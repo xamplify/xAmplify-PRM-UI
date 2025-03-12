@@ -1,53 +1,79 @@
-<div class="modal" tabindex="-1" role="dialog" *ngIf="showSignatureModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Select Signature</h5>
-        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<div class="page-content" *ngIf="showSignatureModal">
+  <app-modal-popup-loader *ngIf="pdfLoader"></app-modal-popup-loader>
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <div [hidden]="pdfLoader">
+    <div>
+      <div>
+        <div class="inputs" style="float: right;">
+          <a class="close-circle ref-mar" (click)="closeModal()" title="Close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+        </div>
       </div>
-      <div class="modal-body">
-        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-        <form>
-          <div class="form-check" *ngIf="signatureResponseDto?.uploadedSignatureExits">
-            <input class="form-check-input" type="radio" name="signatureOption" id="option1" [(ngModel)]="selectedSignature" [value]="signatureResponseDto.uploadedSignatureImagePath">
-            <label class="form-check-label" for="option1">
-              <div>
-                <img [src]="signatureResponseDto?.uploadedSignatureImagePath" alt="Image Preview" class="preview-img"/>
-              </div>
-            </label>
+      <div>
+        <!-- PDF Signature Drag & Drop Section -->
+        <div id="pdf-signature-section" style="display: flex; gap: 20px; padding: 20px 20px 20px 0px;">
+          <!-- Left Side: Signature Container -->
+          <div id="signature-container">
+            <div class="toolbar">
+              <ul>
+                <!-- Add Text Button -->
+                <li>
+                  <div class="toolbar-btn" (click)="enableTextMode()" [ngClass]="{'active-tool': activeTextTool}">
+                    <i class="fas fa-font"></i>
+                  </div>
+                </li>
+
+                <!-- Signature Toggle Button -->
+                <li class="dropdown">
+                  <div class="toolbar-btn" (click)="toggleSignatures()"
+                    [ngClass]="{'active-tool': activeSignatureTool}">
+                    <i class="fas fa-pen-nib"></i>
+                  </div>
+
+                  <!-- Signature Selection Box (Shown on Click) -->
+                  <div class="signature-container" *ngIf="activeSignatureTool">
+                    <div *ngFor="let i of [0, 1, 2]" class="signature-box">
+                      <img *ngIf="availableSignatures[i]" [src]="availableSignatures[i]" class="signature-image"
+                        draggable="true" alt="Signature">
+                      <span *ngIf="!availableSignatures[i]" class="add-signature" (click)="addSignature(i)">+ Add
+                        Signature</span>
+                    </div>
+                  </div>
+                </li>
+
+                <li>
+                  <div class="toolbar-btn" (click)="enableSignatureBlock()"
+                    [ngClass]="{'active-tool': activeBlockTool}">
+                    <i class="fas fa-border-all"></i>
+                  </div>
+                </li>
+
+                <li class="mb0">
+                  <div class="toolbar-btn" (click)="enableLineTool()"
+                    [ngClass]="{'active-tool': activeLineTool}">
+                    <i class="fas fa-minus"></i>
+                  </div>
+                </li>
+                
+              </ul>
+            </div>
           </div>
-          
-          <div class="form-check" *ngIf="signatureResponseDto?.drawSignatureExits">
-            <input class="form-check-input" type="radio" name="signatureOption" id="option2" [(ngModel)]="selectedSignature" [value]="signatureResponseDto.drawSignatureImagePath">
-            <label class="form-check-label" for="option2">
-              <div>
-                <img [src]="getSanitizedImageUrl(signatureResponseDto?.drawSignatureImagePath)" alt="Image Preview" class="preview-img" />
-              </div>
-            </label>
+
+          <!-- Right Side: PDF Display -->
+          <div id="pdf-container"> <canvas class="pdf-page" data-page="1"></canvas>
           </div>
-          
-          <div class="form-check" *ngIf="signatureResponseDto?.typedSignatureExists">
-            <input class="form-check-input" type="radio" name="signatureOption" id="option3" [(ngModel)]="selectedSignature" [value]="signatureResponseDto.typedSignatureImagePath">
-            <label class="form-check-label" for="option3">
-              <div>
-                <ng-template [ngTemplateOutlet]="previewTypedSignatureTemplate" [ngTemplateOutletContext]="{'class':'signature-preview mb10'}"></ng-template>
-              </div>
-            </label>
-          </div>
-        </form>
+        </div>
       </div>
-      <div class="modal-footer">
+      <div class="float-right">
         <button type="button" class="btn Btn-Gray mr5" (click)="closeModal()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="submitSelection()">Submit</button>
+        <button type="button" class="btn btn-primary" (click)="generatePDF()">Submit</button>
       </div>
     </div>
   </div>
 </div>
 
-<ng-template #previewTypedSignatureTemplate let-class="class">
-  <div class="{{class}}" [ngStyle]="{'font-family': signatureResponseDto.typedSignatureFont}">
-    <div id="typedSignaturePreview">{{ signatureResponseDto.typedSignatureText || 'Your Signature'  | slice:0:25 }}</div>
-  </div> 
-</ng-template>
+<div class="modal-body" *ngIf="openAddsignatureModalPopup">
+  <app-digital-signature
+    (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)"></app-digital-signature>
+</div>

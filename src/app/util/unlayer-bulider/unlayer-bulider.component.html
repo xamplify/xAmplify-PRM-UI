@@ -1,0 +1,38 @@
+<div class="col-xs-12 col-sm-12 col-lg-12 d-flex justify-content-end mb10">
+    <button class="btn btn-primary"(click)="mydownloadPdf()">Save</button>
+    <button class="btn btn-primary" (click)="exportDesign()">preview</button>
+    </div>
+<div  class="col-xs-12 col-sm-12 col-lg-12" id="editor-container"></div>
+<div *ngIf="showPreview" class="popup-overlay" (click)="closePopup()">
+    <div class="popup-content" [ngStyle]="popupStyles" (click)="$event.stopPropagation()">
+        <!-- Header Section with Icon buttons -->
+        <div class="popup-header">
+            <div class="view-icons">
+                <!-- Mobile Icon -->
+                <div class="view-icon" (click)="setView('mobile')" title="Mobile">
+                    <i class="fa fa-mobile"></i>
+                </div>
+
+                <!-- Tablet Icon -->
+                <div class="view-icon" (click)="setView('tablet')" title="Tablet">
+                    <i class="fa fa-tablet"></i>
+                </div>
+
+                <!-- Desktop Icon -->
+                <div class="view-icon" (click)="setView('desktop')" title="Desktop">
+                    <i class="fa fa-desktop"></i>
+                </div>
+            </div>
+
+            <!-- Close Button -->
+            <button (click)="closePopup()" class="close-circle" aria-label="Close Preview">
+                <i class="fa fa-times mt0" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <!-- Iframe to display the PDF -->
+        <div class="iframe-container">
+            <iframe [src]="pdfSrc" width="100%" height="100%" frameborder="0" aria-label="PDF Preview"></iframe>
+        </div>
+    </div>
+</div>

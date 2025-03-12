@@ -1,5 +1,5 @@
 <ngx-loading [show]="formLoader || loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div *ngIf="!isBeeTemplateComponentCalled" class="page-content">
+<div *ngIf="!openSelectDigitalSignatureModalPopUp && !isBeeTemplateComponentCalled" class="page-content">
    <ng-container *ngIf="initLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
@@ -302,7 +302,7 @@
                                                    </div>
                                                 </ng-container>
                                                 <ng-container
-                                                   *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
+                                                   *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf')">
                                                    <label class="control-label vendor-signature-align mr10 " translate>Vendor Signature</label>
                                                    <div class="">
                                                       <app-custom-ui-switch
@@ -338,7 +338,7 @@
                                                       </span>
                                                    </div>
                                                 </ng-container>
-                                                <ng-container *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf' && !damUploadPostDto.beeTemplate)">
+                                                <ng-container *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf')">
                                                  <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
                                                    <div class="">
                                                       <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
@@ -544,7 +544,8 @@
                   <i class="fa fa-times" aria-hidden="true"></i>
                </a>
             </div>
-            <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+            <!-- <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util> -->
+            <app-unlayer-bulider [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-unlayer-bulider>
          </div>
       </div>
    </div>
@@ -716,10 +717,10 @@
    (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
 
 <!-- XNFR-833  -->
-   <div class="modal-body" *ngIf="openDigitalSignatureModelPopup">
+   <!-- <div class="modal-body" *ngIf="openDigitalSignatureModelPopup">
       <app-digital-signature  [isFromDam]="true" (notifyAddImageToPdf)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifyDigitalSignatureCloseModalPopUp($event)" ></app-digital-signature>
-   </div>
+   </div> -->
 
-   <div class="modal-body" *ngIf="openSelectDigitalSignatureModalPopUp">
-      <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)"></app-select-digital-signature>
+   <div *ngIf="openSelectDigitalSignatureModalPopUp">
+      <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true"></app-select-digital-signature>
    </div>
