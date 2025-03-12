@@ -7,6 +7,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CustomFieldsDto } from '../models/custom-fields-dto';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { DashboardService } from '../dashboard.service';
 declare var swal:any, $:any;
 
 @Component({
@@ -69,13 +71,21 @@ export class CrmFormSettingsComponent {
 
 	public sortOption: any = this.sortOptions[0].value;
 	
-	
 
+	/*** XNFR-906  ****/
+	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
-		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
+		public referenceService: ReferenceService, public authenticationService: AuthenticationService, public dashboardService:DashboardService) {
 		this.pageNumber = this.paginationComponent.numberPerPage[0];
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
+		/*** XNFR-906  ****/
+		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			this.vanityLoginDto.userId = this.loggedInUserId;
+			this.vanityLoginDto.vanityUrlFilter = true;
+		}
+		/*** XNFR-906  ****/
 	}
 	
 	ngOnChanges() {
@@ -835,6 +845,46 @@ export class CrmFormSettingsComponent {
 		this.showHeaderTextArea = !this.showHeaderTextArea;
 	}
 
-
+	/** XNFR-906  ***/
+	openDefaultFieldsPopup: boolean = false;
+	selectedFields: any[] = [];
+	enabledMyPreferances: boolean = false;
+	setDefaultFields:boolean = false;
+	openSetDefaultFieldsPopUp() {
+		this.openDefaultFieldsPopup = true;
+	}
+	closeEmitter(event: any) {
+		let input = event;
+		if (input['submit'] === 'submit') {
+			this.openDefaultFieldsPopup = input['close'];
+			this.enabledMyPreferances = input['myPreferances'];
+			this.setDefaultFields = input['defaultField']
+			this.selectedFields = input['selectFields'];
+			this.saveSelectedFields();
+		}
+		else {
+			this.openDefaultFieldsPopup = false;
+		}
+	}
+	saveSelectedFields() {
+		let selectedFieldsResponseDto = {};
+		console.log("this.selectedFields :",this.selectedFields)
+		selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+		selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+		selectedFieldsResponseDto['defaultField'] = this.setDefaultFields;
+		selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+		selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+		selectedFieldsResponseDto['integation'] = true;
+		this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+			.subscribe(
+				data => {
+					if(data.statusCode === 200) {
+						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+                        this.notifySubmitSuccess.emit(this.customFieldsResponse);
+					}
+				}, error => console.log(error),
+				() => { console.log("saveSelectedFields Completed...!") });
+	}
+	/** XNFR-906  ***/
 
 }

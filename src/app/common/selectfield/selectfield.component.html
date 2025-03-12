@@ -8,13 +8,14 @@
           <!-- Left-aligned Checkbox -->
           <div class="left-checkbox">
             <h4 class="modal-title" style="font-weight: 600;" *ngIf="isSelectDivOpen" translate>Select the fields for
-              your report</h4>
+              your <span *ngIf="isMyprofile"> default</span> report</h4>
             <h4 class="modal-title" style="font-weight: 600;" *ngIf="!isSelectDivOpen" translate>Selected Fields Order
             </h4>
           </div>
           <!-- Right-aligned Buttons -->
           <div class="right-buttons">
-            <button class="btn btn-primary" (click)="goToOrderDiv()" *ngIf="!showBackButton && !myPreferances">Customize Fields Order</button>
+            <button class="btn btn-primary" (click)="goToOrderDiv()" *ngIf="!showBackButton && !myPreferances">Customize
+              Fields Order</button>
             <button class="btn btn-primary" (click)="chooseYourFields()" *ngIf="!showBackButton && myPreferances">Choose
               Your Fields</button>
             <a title="Close" class="close-circle" (click)="closeModalClose()">
@@ -27,8 +28,10 @@
         <div *ngIf="isSelectDivOpen">
           <div class="table-responsive">
             <div class="alert alert-info">
-              <strong>**Only the chosen fields will be displayed in the
+              <strong *ngIf="!isMyprofile">**Only the chosen fields will be displayed in the
                 report.</strong>
+              <strong *ngIf="isMyprofile">The chosen fields will be added to the lead report by default. You, your team
+                members, and partners cannot deselect these fields.</strong>
             </div>
             <div>
               <table class="table tgrid table-hover table-sm">
@@ -60,15 +63,6 @@
                           (change)="toggleSelection(fieldDto)" [checked]="isCheked(fieldDto.labelId)"
                           [disabled]="isFieldDisabled(fieldDto.labelName)" />
                       </td>
-                      <!-- <td>
-                        <span class="FieldName" data-toggle="tooltip" data-placement="top"
-                          title="{{fieldDto.labelName}}">{{fieldDto.labelName | slice:0:30}}
-                          <span *ngIf="fieldDto.labelName?.length>30">...</span>
-                        </span>
-                        <ul class="textDecoration">
-                          <li>{{fieldDto.displayName}}</li>
-                        </ul>
-                      </td> -->
                       <td>
                         <span class="FieldName" data-toggle="tooltip" data-placement="top"
                           title="{{fieldDto.displayName}}">{{fieldDto.displayName | slice:0:30}}
@@ -126,7 +120,7 @@
               </div>
 
             </div>
-            <div *ngIf="!(pager.pages && pager.pages.length)" class="alert alert-info mb0">
+            <div *ngIf="!(pager.pages && pager.pages.length) && !ngxloading" class="alert alert-info mb0">
               <strong translate>No Data Found.</strong>
             </div>
           </div>
@@ -134,12 +128,16 @@
         <div *ngIf="!isSelectDivOpen">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 add-graph-bg">
             <div class="alert alert-info">
-              <strong>Drag and reorder the fields as needed. Your report will display them in the same order.</strong>
+              <strong *ngIf="!isMyprofile">Drag and reorder the fields as needed. Your report will display them in the
+                same order.</strong>
+              <strong *ngIf="isMyprofile">Drag and reorder the fields as needed. Your default report will display the
+                fields in the selected order.</strong>
             </div>
             <div class="portlet light border-radius-0 custome-portlet" id="removeborder">
               <ul class="list-group drag-menu-cu cursor-move" [dragula]='"fieldsDragula"'
                 [dragulaModel]='selectFieldsDtos'>
-                <li class="list-group-item cursor-move" *ngFor="let fieldDto of selectFieldsDtos;let i = index">
+                <li class="list-group-item cursor-move" *ngFor="let fieldDto of selectFieldsDtos;let i = index"
+                  [class.non-draggable]="isNonDraggable(fieldDto)">
                   <span class="FieldName" data-toggle="tooltip" data-placement="top"
                     title="{{fieldDto.displayName}}">{{fieldDto.displayName | slice:0:30}}
                     <span *ngIf="fieldDto.displayName?.length>30">...</span>
@@ -156,9 +154,12 @@
           <!-- Left-aligned Checkbox -->
           <div class="left-checkbox">
             <ul class="textDecoration" *ngIf="!showBackButton">
-              <li><input type="checkbox" id="setAsDefault" [(ngModel)]="isDefault"
+              <li *ngIf="!isMyprofile"><input type="checkbox" id="setAsDefault" [(ngModel)]="isDefault"
                   (change)="setMyPreferances($event)" /></li>
-              <li> <label for="setAsDefault"><b>Set as My Preferences</b></label></li>
+              <li> <label for="setAsDefault">
+                  <b *ngIf="!isMyprofile">Set as My Preferences</b>
+                  <!-- <b *ngIf="isMyprofile">Set My Default Fields</b> -->
+                </label></li>
             </ul>
           </div>
           <!-- Right-aligned Buttons -->
@@ -166,8 +167,12 @@
             <div *ngIf="!showBackButton">
               <button class="btn Btn-Gray" (click)="closeModalClose()">Close</button>
               <button class="btn btn-primary" (click)="submit()"
-                [disabled]="isSelectDivOpen ? !(pager.pages && pager.pages.length): false">Email
+              [disabled]="!(pager.pages && pager.pages.length)"
+                *ngIf="!isMyprofile">Email
                 The Report</button>
+              <button class="btn btn-primary" (click)="submit()"
+              [disabled]="!(pager.pages && pager.pages.length)"
+                *ngIf="isMyprofile">Save</button>
             </div>
             <div *ngIf="showBackButton">
               <button class="btn Btn-Gray" (click)="backToPreviousPage()"><i

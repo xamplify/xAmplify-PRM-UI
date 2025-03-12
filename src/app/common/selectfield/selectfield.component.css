@@ -46,3 +46,11 @@
 .cursor-move {
     cursor: move !important;
 }
+.non-draggable {
+  opacity: 0.5; /* Makes non-draggable items appear faded */
+  cursor: not-allowed !important;
+}
+/* .non-draggable {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+} */
