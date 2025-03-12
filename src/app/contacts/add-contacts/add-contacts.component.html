@@ -77,13 +77,15 @@
 				{{checkingContactTypeName}}s
 			</li>
 		</ul>
-		<div align="right" style="margin-top: 4px;float: right;" class="hidden-xs csv_btn" *ngIf="!assignLeads">
+		<div align="right" style="margin-top: 4px;float: right;" class="hidden-xs csv_btn">
 			<a (click)="downloadEmptyCsv()">
 				<button type="button" class="button p-rgt_p-top bgcolor-unset" download
 					style="color: #ffffff;margin-right: 3px;"
 					[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-					<span class="btn Btn-Green transition">Download Contact CSV Template <i class="fa fa-download"
-							aria-hidden="true" style="margin-left: 5px"></i></span>
+					<span *ngIf="!assignLeads" class="btn Btn-Green transition">Download Contact CSV Template <i
+							class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i></span>
+					<span *ngIf="assignLeads" class="btn Btn-Green transition">Download Share Leads CSV Template <i
+							class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i></span>
 				</button>
 			</a>
 		</div>

@@ -181,7 +181,7 @@
                                         </li>
                                         <!--- XNFR-859 Custom HTML Block --->
                                         <li *ngIf="(authenticationService?.companyProfileName && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor) 
-                                                || (!authenticationService?.companyProfileName && authenticationService?.module?.isAnyAdminOrSupervisor)"
+                                                || (!authenticationService?.companyProfileName && !authenticationService?.module?.isOnlyPartnerCompany && authenticationService?.module?.isAnyAdminOrSupervisor)"
                                             [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CUSTOM_HTML_BLOCK_MENU_HEADER}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CUSTOM_HTML_BLOCK_MENU_HEADER}"
                                                 (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CUSTOM_HTML_BLOCK_MENU_HEADER);clearCustomResponse()">

@@ -48,10 +48,10 @@
             <div class="modal-body">
                 <app-dashboard-loader *ngIf="addTagLoader.isLoading"></app-dashboard-loader>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <span *ngIf="!isAddTagPopup" class="pt10" style="position: relative;top: 5px; font-size: 15px;">Please Select Tag(s) </span>
+                    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pr0 mb_11 mt10">
+                        <span *ngIf="!isAddTagPopup" class="alert-info m0" style="position: relative;border-radius: 4px; padding:9px;">Please Select Tag(s) </span>
                 </div>
-                    <div *ngIf="!isAddTagPopup" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div *ngIf="!isAddTagPopup" class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
                         <div class="float-right input-icon right mb10">
                             <input class="form-control" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
                                 (keypress)="tagEventHandler($event.keyCode);" placeholder="Search..." type="text">

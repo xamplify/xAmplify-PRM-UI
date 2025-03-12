@@ -39,7 +39,7 @@ export class CustomHtmlBlockComponent implements OnInit {
   @ViewChild('leftFileInput') fileInput2: ElementRef;
   @ViewChild('rightFileInput') fileInput3: ElementRef;
   customResponse: CustomResponse = new CustomResponse();
-  customHtmlBlock: any = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '', rightHtmlBody: '', selected: false, layoutSize: 'col-xs-12 col-sm-12 col-md-12 col-lg-12' };
+  customHtmlBlock: any = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '', rightHtmlBody: '', selected: false, layoutSize: 'SINGLE_COLUMN_LAYOUT' };
 
   constructor(private myProfileService: MyProfileService, public referenceService: ReferenceService,
     public sortOption: SortOption, public authenticationService: AuthenticationService, public pagerService: PagerService,
@@ -93,7 +93,7 @@ export class CustomHtmlBlockComponent implements OnInit {
   }
 
   isValid(): boolean {
-    if (this.customHtmlBlock.layoutSize === 'col-xs-12 col-sm-6 col-md-6 col-lg-6') {
+    if (this.customHtmlBlock.layoutSize === 'TWO_COLUMN_LAYOUT') {
       if (this.customHtmlBlock.leftHtmlBody || this.customHtmlBlock.rightHtmlBody) {
         return !this.customHtmlBlock.title.trim();
       } else if (this.customHtmlBlock.title) {
@@ -145,7 +145,7 @@ export class CustomHtmlBlockComponent implements OnInit {
   }
 
   setUpCustomHtmlBlock() {
-    this.customHtmlBlock = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '', rightHtmlBody: '', selected: false, layoutSize: 'col-xs-12 col-sm-12 col-md-12 col-lg-12' };
+    this.customHtmlBlock = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '', rightHtmlBody: '', selected: false, layoutSize: 'SINGLE_COLUMN_LAYOUT' };
   }
 
   copyAndSave(id: number) {
@@ -161,10 +161,10 @@ export class CustomHtmlBlockComponent implements OnInit {
   }
 
   updateHtmlBody() {
-    if (this.customHtmlBlock.layoutSize === 'col-xs-12 col-sm-12 col-md-12 col-lg-12') {
+    if (this.customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT') {
       this.customHtmlBlock.rightHtmlBody = '';
       this.customHtmlBlock.leftHtmlBody = '';
-    } else {
+    } else if (this.customHtmlBlock.layoutSize === 'TWO_COLUMN_LAYOUT') {
       this.customHtmlBlock.htmlBody = '';
     }
   }
@@ -177,7 +177,7 @@ export class CustomHtmlBlockComponent implements OnInit {
       reader.onload = (e: any) => {
         const zip = new JSZip();
         zip.loadAsync(e.target.result).then((zip) => {
-          const htmlFileName = Object.keys(zip.files).find(name => name.endsWith('.html'));
+          const htmlFileName = Object.keys(zip.files).find(name => name.endsWith('.html') || name.endsWith('.htm'));
           if (htmlFileName) {
             zip.file(htmlFileName).async('text').then((html) => {
               this.updateSanitizedHtml(html, side);
@@ -295,6 +295,27 @@ export class CustomHtmlBlockComponent implements OnInit {
         );
     } else {
       this.resetDeleteOptions();
+    }
+  }
+
+  updateDropDownHtmlBody(text: any) {
+    if (text === 'SINGLE_COLUMN_LAYOUT') {
+      if (this.customHtmlBlock.htmlBody) {
+        this.updateSanitizedHtml(this.customHtmlBlock.htmlBody, 'full');
+      } else if (this.customHtmlBlock.leftHtmlBody) {
+        this.customHtmlBlock.htmlBody = this.customHtmlBlock.leftHtmlBody;
+        this.updateSanitizedHtml(this.customHtmlBlock.htmlBody, 'full');
+      } else if (this.customHtmlBlock.rightHtmlBody) {
+        this.customHtmlBlock.htmlBody = this.customHtmlBlock.rightHtmlBody;
+        this.updateSanitizedHtml(this.customHtmlBlock.htmlBody, 'full');
+      }
+    } else if (text === 'TWO_COLUMN_LAYOUT') {
+      if (this.customHtmlBlock.leftHtmlBody) {
+        this.updateSanitizedHtml(this.customHtmlBlock.leftHtmlBody, 'left');
+      } else if (this.customHtmlBlock.htmlBody) {
+        this.customHtmlBlock.leftHtmlBody = this.customHtmlBlock.htmlBody;
+        this.updateSanitizedHtml(this.customHtmlBlock.leftHtmlBody, 'left');
+      }
     }
   }
 
