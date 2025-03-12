@@ -263,6 +263,10 @@ export class CustomAddLeadComponent implements OnInit {
       this.isLeadDetailsTabDisplayed = this.actionType!="add";
     }
     this.resetLeadData();
+    this.getVendorList(currentUrl);
+  }
+
+  private loadDataForLead(currentUrl: string) {
     if (this.actionType === "view") {
       this.loadDataForViewLead();
     } else if (this.actionType === "edit") {
@@ -270,13 +274,13 @@ export class CustomAddLeadComponent implements OnInit {
     } else if (this.actionType === "add") {
       this.loadDataForAddLead();
     } else if (currentUrl.includes(RouterUrlConstants.addLead)) {
-      this.actionType = "add"
+      this.actionType = "add";
       this.isThroughAddUrl = true;
       this.isFromManageLeads = true;
       this.checkIfHasAcessForAddLead();
     } else if (currentUrl.includes(RouterUrlConstants.addLeadFromHome)) {
       if (this.authenticationService.isPartnershipOnlyWithPrm) {
-        this.actionType = "add"
+        this.actionType = "add";
         this.isThroughAddUrl = true;
         this.loadDataForAddLead();
       } else {
@@ -286,7 +290,6 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
       this.disableCreatedFor = true;
     }
-    this.getVendorList();
     this.loadComments();
   }
 
@@ -738,7 +741,7 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
-  getVendorList() {
+  getVendorList(currentUrl:any) {
     this.referenceService.loading(this.vendorListLoader, true);
     this.leadsService.getVendorList(this.loggedInUserId)
       .subscribe(
@@ -746,6 +749,7 @@ export class CustomAddLeadComponent implements OnInit {
           if (data.statusCode == 200) {
             this.vendorList = data.data;
           }
+          this.loadDataForLead(currentUrl);
           this.referenceService.loading(this.vendorListLoader, false);
         },
         error => {
