@@ -1505,11 +1505,6 @@ zoomOut() {
         damPostDto.id = this.id;
         damPostDto.loggedInUserId = this.authenticationService.getUserId();
 
-        // if (!this.isApprover && this.approvalRequired && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED]) {
-        //     damPostDto.sendForReApproval = true;
-        // }
-
-
         this.damService.updatePDFData(damPostDto).subscribe(
              response=>{
                 this.loading = false;
