@@ -88,6 +88,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   pdfUploadedFile: any;
   utilService: any;
   deviceService: any;
+  showPageSizeAndOrientation: boolean = false;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -397,6 +398,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damUploadPostDto.partnerIds = this.damPostDto.partnerIds;
       this.damUploadPostDto.partnerGroupSelected = this.damPostDto.partnerGroupSelected;
       this.damUploadPostDto.createdByAnyApprover = this.damPostDto.createdByAnyApprover;
+      this.isAdd = true;
     }
   }
 

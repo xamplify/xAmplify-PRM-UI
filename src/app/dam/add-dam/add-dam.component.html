@@ -86,7 +86,7 @@
                         </div>
                      </div>
                      <!--Page Size & Page Orientation-->
-                     <div class="col-lg-12 col-md-12">
+                     <div class="col-lg-12 col-md-12" *ngIf="showPageSizeAndOrientation">
                         <div class="form-group  col-md-6 col-lg-6">
                            <label>Select Page Size<span class="required">*</span></label>
                            <select class="form-control" id="selectedSize" [(ngModel)]="damPostDto.pageSize">
@@ -260,7 +260,7 @@
                   (click)="saveOrUpdate(false)" translate><span
                      class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
 
-               <button *ngIf="!isAdd" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
+               <button *ngIf="assetId > 0" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
                   (click)="saveOrUpdate(true)" translate><span
                      class="btn btn-primary transition txt_pd-top3">{{saveAsButtonText}}</span>
                </button>
