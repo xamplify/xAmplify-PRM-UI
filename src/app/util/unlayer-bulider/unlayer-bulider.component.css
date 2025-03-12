@@ -1,6 +1,6 @@
 #editor-container {
     /* You can adjust this height as necessary */
-     height: 935px;
+     height: 855px;
      overflow-x: auto;
      margin-top: 20px !important;
    }
@@ -88,6 +88,7 @@
   background-color: #282828;
   width: 40px;
   height: 40px;
+  color: #fff;
 }
 
 .view-icon:hover {
@@ -171,4 +172,7 @@
     width: 60%; /* More spacious on desktop */
     height: 80%;
   }
+}
+.justify-content-end{
+  justify-content: end;
 }

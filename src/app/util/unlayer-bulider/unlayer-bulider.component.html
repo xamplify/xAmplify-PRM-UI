@@ -1,6 +1,8 @@
-<button class="btn btn-primary" (click)="mydownloadPdf()">Save</button>
-<button  class="btn btn-primary" (click)="exportDesign()">preview</button>
-<div id="editor-container"></div>
+<div class="col-xs-12 col-sm-12 col-lg-12 d-flex justify-content-end mb10">
+    <button class="btn btn-primary"(click)="mydownloadPdf()">Save</button>
+    <button class="btn btn-primary" (click)="exportDesign()">preview</button>
+    </div>
+<div  class="col-xs-12 col-sm-12 col-lg-12" id="editor-container"></div>
 <div *ngIf="showPreview" class="popup-overlay" (click)="closePopup()">
     <div class="popup-content" [ngStyle]="popupStyles" (click)="$event.stopPropagation()">
         <!-- Header Section with Icon buttons -->
