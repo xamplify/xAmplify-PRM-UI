@@ -103,18 +103,33 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
   enableTextMode() {
     this.isTextMode = true;
     this.activeTextTool = true;
+    this.activeBlockTool = false;
+    this.activeLineTool = false;
+    this.activeSignatureTool = false;
+    this.isBlockMode = false;
+    this.isLineMode = false;
     $("body").css("cursor", "text");
   }
 
   enableSignatureBlock() {
     this.isBlockMode = true;
     this.activeBlockTool = true;
+    this.activeLineTool = false;
+    this.activeSignatureTool = false;
+    this.activeTextTool = false;
+    this.isTextMode = false;
+    this.isLineMode = false;
     $("body").css("cursor", "text");
 }
 
 enableLineTool() {
   this.isLineMode = true;
   this.activeLineTool = true;
+  this.activeSignatureTool = false;
+  this.activeTextTool = false;
+  this.activeBlockTool = false;
+  this.isTextMode = false;
+  this.isBlockMode = false;
   $("body").css("cursor", "crosshair");
 }
 
@@ -464,8 +479,8 @@ enableLineTool() {
     let defaultHeight = 50;
     let minWidth = 50;
     let minHeight = 25;
-    let maxWidth = 300;
-    let maxHeight = 150;
+    let maxWidth = 500;
+    let maxHeight = 250;
 
     let newBlock = $(`
       <div class="block-draggable">
@@ -956,11 +971,12 @@ placeLine(event: any) {
 
   toggleSignatures() {
     this.activeSignatureTool = !this.activeSignatureTool;
+    this.activeBlockTool = false;
+    this.activeLineTool = false;
+    this.activeTextTool = false;
+    this.isTextMode = false;
+    this.isLineMode = false;
+    this.isBlockMode = false;
   }
-
-  toggleBlockTool() {
-    this.activeBlockTool = !this.activeBlockTool;
-}
-
 
 }
