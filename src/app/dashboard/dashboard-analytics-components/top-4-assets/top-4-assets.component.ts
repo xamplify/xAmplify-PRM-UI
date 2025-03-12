@@ -63,6 +63,7 @@ export class Top4AssetsComponent implements OnInit {
   videoId: number;
   @Input() isDashboardView: boolean;
   @Input() isDraggingEnabled: boolean;
+  approvalReferenceId: number;
 
   constructor(public properties: Properties, public damService: DamService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,private pagerService: PagerService,
   			  public videoFileService: VideoFileService, public userService:UserService, private router: Router) {
@@ -394,6 +395,7 @@ isVideo(filename: any) {
     this.selectedDamId = asset.id;
     this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
     this.videoId = asset.videoId;
+    this.approvalReferenceId = asset.approvalReferenceId;
   }
 
   closeCommentsAndHistoryModalPopup() {

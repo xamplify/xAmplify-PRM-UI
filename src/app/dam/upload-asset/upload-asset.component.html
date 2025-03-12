@@ -467,10 +467,8 @@
                                                 <td class="desc" [class.customDisableCss]='isDisableForm==true'>
                                                    <div class="mDesc overflowtable-control">
                                                       <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-                                                      <app-partner-company-and-groups
-                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
-                                                            ((!authenticationService?.approvalRequiredForAssets && damUploadPostDto?.approvalStatus !== 'REJECTED')
-                                                            || (authenticationService?.approvalRequiredForAssets && ((!isAdd && isApprover && damUploadPostDto?.createdByAnyApprover) || (isAdd && isApprover))) || damUploadPostDto?.approvalStatus === 'APPROVED')"
+                                                      <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
+                                                            canShowPartnerSectionBasedOnApprovalConfiguration()"
                                                          [moduleName]="'dam'" [inputId]="id"
                                                          [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
                                                          [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
@@ -483,7 +481,10 @@
                                              </tr>
                                           </tbody>
                                        </table>
-                                    </div>
+                                       </div>
+                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced">
+                                          <p><strong>{{properties.PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL}}</strong></p>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -493,16 +494,13 @@
                            <button [disabled]="isDisableForm" class="btn Btn-Gray" id="right"
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
-                           <button *ngIf="!authenticationService.approvalRequiredForAssets || isAdd || 
-                              (!isAdd && (!isApprover || damUploadPostDto.createdByAnyApprover || (damUploadPostDto?.approvalStatus !== 'DRAFT' && damUploadPostDto?.approvalStatus !== 'REJECTED')))"
-                            [disabled]="!isValidForm || isDisableForm" id="right"
+                           <button *ngIf="canShowSubmitButton()" [disabled]="!isValidForm || isDisableForm" id="right"
                               style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
                               type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
                            <!-- XNFR-884 -->
                            <button *ngIf="isAdd || (!isAdd && (damUploadPostDto?.approvalStatus == 'DRAFT' || damUploadPostDto?.approvalStatus == 'REJECTED'))" class="button_blue bgcolor-unset pos_mar_rgt4"
-                              [disabled]="!isValidForm || isDisableForm || disableSaveAsDraftButton || damUploadPostDto?.published || (!isAdd && (damUploadPostDto?.approvalStatus !== 'DRAFT' && damUploadPostDto?.approvalStatus !== 'REJECTED'))"
-                              id="right" style="padding-top:1px;padding-right:0px;" type="button"
+                              [disabled]="isSaveAsDraftDisabled()" id="right" style="padding-top:1px;padding-right:0px;" type="button"
                               (click)="isVideoAsset?saveAsDraftVideo():saveAsDraftAndUpload()"
                               data-placement="top" [attr.title]="damUploadPostDto?.published ? properties.CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED :
                                  disableSaveAsDraftButton ? properties.CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS :
@@ -510,12 +508,6 @@
                                  : properties.DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS)" translate>
                               <span class="btn btn-primary transition"> {{ saveAsDraftButtonText }} </span>
                            </button>
-                           <!-- XNFR-885 -->
-                           <!-- <button *ngIf="!isAdd && !isApprover && damUploadPostDto?.approvalStatus == 'APPROVED' && authenticationService?.approvalRequiredForAssets && isAssetReplaced"
-                              class="button_blue bgcolor-unset pos_mar_rgt4" id="right" style="padding-top:1px;padding-right:0px;"
-                              type="button" (click)="sendForReApproval()" translate><span
-                                 class="btn btn-primary transition">Send For Re-Approval</span>
-                           </button> -->
                         </div>
                      </div>
                   </div>

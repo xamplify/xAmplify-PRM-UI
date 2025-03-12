@@ -101,6 +101,7 @@ export class ManageApprovalComponent implements OnInit {
   showApproveResponse : boolean = false;
   isSelectedAutoApprovalRecords: boolean = false;
   hasAllAuthorityAccess: boolean = false;
+  approvalReferenceId: number;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
@@ -292,6 +293,7 @@ export class ManageApprovalComponent implements OnInit {
       this.createdByAnyApprovalManagerOrApprover = item.createdByAnyApprovalManagerOrApprover;
       this.selectedDamId = item.id;
       this.moduleType = 'DAM';
+      this.approvalReferenceId = item.approvalReferenceId;
     }
     if (item.type === 'Track') {
       this.callCommentsComponent = true;

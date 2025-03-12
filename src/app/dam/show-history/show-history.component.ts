@@ -70,6 +70,7 @@ export class ShowHistoryComponent implements OnInit {
 		DRAFT: 'DRAFT'
 	};
 	videoId: number;
+	approvalReferenceId: number;
 
 	/****XNFR-381*****/
 	constructor(public damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -493,6 +494,7 @@ export class ShowHistoryComponent implements OnInit {
 		this.selectedDamId = asset.id;
 		this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
 		this.videoId = asset.videoId;
+		this.approvalReferenceId = asset.approvalReferenceId;
 	}
 	
 	getApprovalStatusText(status: string): string {
