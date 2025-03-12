@@ -122,6 +122,7 @@ export class ManageLeadsComponent implements OnInit {
   showOrderFieldComponent: boolean = false;
   logginUserType: string;
   enabledMyPreferances: boolean = false;
+  setDefaultFields:boolean = false;
   /*** XNFR-839 ****/
   activeCRMDetailsByCompany :any; //XNFR-887
   isLoggedAsPartner: boolean = false;
@@ -1607,6 +1608,8 @@ triggerUniversalSearch(){
       this.showSlectFieldComponent = input['close'];
       this.enabledMyPreferances = input['myPreferances'];
       this.selectedFields = input['selectFields'];
+      this.setDefaultFields = input['defaultField'];
+
       this.saveSelectedFields();
     }
     else {
@@ -1620,8 +1623,10 @@ triggerUniversalSearch(){
     console.log("this.selectedFields :",this.selectedFields)
     selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
     selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+    selectedFieldsResponseDto['defaultField'] = this.setDefaultFields;
     selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
     selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+    selectedFieldsResponseDto['integation'] = true;
     this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
       .subscribe(
         data => {

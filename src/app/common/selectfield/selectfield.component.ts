@@ -12,6 +12,7 @@ import { DragulaService } from 'ng2-dragula';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { PaginationComponent } from 'app/common/pagination/pagination.component';
 import { of } from 'rxjs/observable/of';
+import { Router } from '@angular/router';
 
 declare var $: any;
 @Component({
@@ -23,6 +24,7 @@ declare var $: any;
 export class SelectfieldComponent implements OnInit {
   @Output() closeEmitter = new EventEmitter();
   @Input() isVendorVersion: boolean;
+  @Input() customName: any;
   ngxloading: boolean = false;
   selectedFieldsResponseDto: SelectedFieldsResponseDto = new SelectedFieldsResponseDto();
   companyProfileName: string = "";
@@ -45,17 +47,40 @@ export class SelectfieldComponent implements OnInit {
   myPreferances: boolean = false;
   pageNumber: any;
   loggedInUserType: string = '';
+  isMyprofile: boolean = false;
+  defaultSelectedFieldsDtos: Array<any> = new Array<any>();
   constructor(public dashboardService: DashboardService, public authenticationService: AuthenticationService, private pagerService: PagerService,
     public referenceService: ReferenceService, public socialPagerService: SocialPagerService, public dragulaService: DragulaService, public paginationComponent: PaginationComponent
-
+    , public router: Router
   ) {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.companyProfileName = this.authenticationService.companyProfileName;
       this.selectedFieldsResponseDto['companyProfileName'] = this.companyProfileName;
     }
-    this.dragulaService.setOptions('fieldsDragula', {});
-    dragulaService.dropModel.subscribe((value) => {
-    });
+    this.isMyprofile = this.router.url.includes('dashboard/myprofile');
+
+    if (!this.isMyprofile) {
+      this.dragulaService.setOptions('fieldsDragula', {
+        moves: (el, container, handle) => {
+          return !this.isDisabled(el);
+        },
+        accepts: (el, target, source, sibling) => {
+          if (!sibling) return true;
+          const siblingIndex = Array.from(target.children).indexOf(sibling);
+          if (siblingIndex < this.defaultFields.length) {
+            return false;
+          }
+          return true;
+        }
+      });
+    } else {
+      this.dragulaService.setOptions('fieldsDragula', {});
+    }
+  }
+  isDisabled(element: Element | null): boolean {
+    if (!element) return false;
+    const fieldName = element.querySelector('.FieldName').textContent.trim();
+    return this.defaultFields.includes(fieldName || '');
   }
   ngOnInit() {
     this.ngxloading = true;
@@ -85,8 +110,12 @@ export class SelectfieldComponent implements OnInit {
       .subscribe(
         result => {
           let isMyPreferances = result.data;
-          this.myPreferances = result.data;
-          if (isMyPreferances) {
+          if (this.isMyprofile) {
+            this.myPreferances = false;
+          } else {
+            this.myPreferances = result.data;
+          }
+          if (this.myPreferances) {
             this.isSelectDivOpen = false;
             this.fetchData(this.pagination);
           } else {
@@ -121,10 +150,15 @@ export class SelectfieldComponent implements OnInit {
   toggleSelection(field: any) {
     const isUnChecked = !field.selectedColumn;
     if (isUnChecked) {
+      if (this.isMyprofile) {
+        field.defaultColumn = false
+      }
       this.unSelectedItems.push(field);
     } else {
+      if (this.isMyprofile) {
+        field.defaultColumn = true;
+      }
       this.unSelectedItems = this.unSelectedItems.filter(item => item.labelId !== field.labelId);
-
     }
     this.fieldsPagedItems.forEach(item => item.labelId === field.labelId && (item.selectedColumn = field.selectedColumn));
     this.updateHeaderCheckbox();
@@ -132,27 +166,22 @@ export class SelectfieldComponent implements OnInit {
   toggleAllSelection() {
     const isUncheckAll = this.isHeaderCheckBoxChecked;
     if (isUncheckAll) {
-      // If checking all, clear unSelectedItems since everything is selected
       this.unSelectedItems = this.unSelectedItems.filter(
         unItem => !this.fieldsPagedItems.some(pItem => pItem.labelName === unItem.labelName)
       );
     } else {
-      // If unchecking all, add items to unSelectedItems
       this.fieldsPagedItems.forEach(item => {
         if (!this.excludedLabels.includes(item.labelName)) {
           item.selectedColumn = false;
-          // Add item to unSelectedItems if not already there
           if (!this.unSelectedItems.some(unItem => unItem.labelName === item.labelName)) {
             this.unSelectedItems.push(item);
           }
         }
       });
     }
-    // Update selection in pagedItems
     this.fieldsPagedItems.forEach((item, index) => {
       if (!this.excludedLabels.includes(item.labelName)) {
         item.selectedColumn = isUncheckAll;
-        // If the item is checked again, remove it from unSelectedItems
         if (isUncheckAll) {
           this.unSelectedItems = this.unSelectedItems.filter(unItem => unItem.labelName !== item.labelName);
         }
@@ -168,7 +197,11 @@ export class SelectfieldComponent implements OnInit {
     }
   }
   isCheked(labelId: any): boolean {
-    return this.fieldsPagedItems.some(item => item.labelId === labelId);
+    if (this.isMyprofile) {
+      return this.fieldsPagedItems.some(item => item.defaultColumn === true && item.labelId === labelId);
+    } else {
+      return this.fieldsPagedItems.some(item => item.labelId === labelId);
+    }
   }
   closeModalClose() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
@@ -180,7 +213,7 @@ export class SelectfieldComponent implements OnInit {
   }
   submit() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
-    let allItems = this.selectFieldsDtos.length > 0 ? this.selectFieldsDtos : this.allItems;
+    let allItems = !this.isSelectDivOpen && this.selectFieldsDtos.length > 0 ? this.selectFieldsDtos : this.allItems.filter(item => item.selectedColumn === true);
     this.selectedItems = allItems.filter(item =>
       !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
     );
@@ -196,7 +229,14 @@ export class SelectfieldComponent implements OnInit {
     input['close'] = false;
     if (value === 'submit') {
       input[value] = value;
-      input['myPreferances'] = this.isDefault;
+      if (this.isMyprofile) {
+        input['defaultField'] = true;
+        input['myPreferances'] = false;
+      } else {
+        input['myPreferances'] = this.isDefault;
+        input['defaultField'] = false;
+
+      }
     }
     this.closeEmitter.emit(input);
   }
@@ -222,22 +262,34 @@ export class SelectfieldComponent implements OnInit {
     if (!Array.isArray(allItems) || !Array.isArray(selectFieldsDtos)) {
       return;
     }
-    //this.allItems.length = 0;
     const selectFieldPriority = selectFieldsDtos.reduce((acc, item, index) => {
       if (allItems.some(allItem => allItem.labelId === item.labelId)) {
         acc[item.labelId] = index;
       }
       return acc;
     }, {});
+
     let totalFields = allItems.map(item => {
       let match = selectFieldsDtos.find(x => x.labelId === item.labelId);
-      return {
-        ...item,
-        selectedColumn: match ? true : selectFieldsDtos.length > 0 ? false : true,
-        id: match ? match.id : item.id
-      };
-    }
-    );
+      if (this.isMyprofile) {
+        let exist = selectFieldsDtos.length === 0 ? this.exstingDataDto.find(x => x.labelId === item.labelId) : [];
+        return {
+          ...item,
+          selectedColumn: match ? match.defaultColumn ? match.selectedColumn : selectFieldsDtos.length > 0 ? match.selectedColumn : true : selectFieldsDtos.length > 0 ? false : true,
+          id: match ? match.id : exist ? exist.id : item.id,
+          defaultColumn: match ? match.defaultColumn ? match.selectedColumn : selectFieldsDtos.length > 0 ? match.selectedColumn : true : selectFieldsDtos.length > 0 ? false : true,
+          columnOrder: match ? match.columnOrder : item.columnOrder,
+        };
+      } else {
+        return {
+          ...item,
+          selectedColumn: match ? true : selectFieldsDtos.length > 0 ? false : true, // Original logic when isMyprofile is false
+          id: match ? match.id : item.id,
+          defaultColumn: match ? match.defaultColumn : false,
+          columnOrder: match ? match.columnOrder : item.columnOrder,
+        };
+      }
+    });
     if (this.selectFieldsDtos.length > 0) {
       this.unSelectedItems = totalFields.filter(item =>
         !selectFieldsDtos.some(unselected => unselected.labelId === item.labelId)
@@ -247,18 +299,32 @@ export class SelectfieldComponent implements OnInit {
       const priorityA = selectFieldPriority[a.labelId] !== undefined ? selectFieldPriority[a.labelId] : Number.MAX_VALUE;
       const priorityB = selectFieldPriority[b.labelId] !== undefined ? selectFieldPriority[b.labelId] : Number.MAX_VALUE;
       if (priorityA !== priorityB) {
-        return priorityA - priorityB;  // Prioritize based on `selectFieldsDtos` order
+        return priorityA - priorityB;
       }
       return a.columnOrder - b.columnOrder;
     });
     this.allItems = totalFields;
+    if (!this.isMyprofile) {
+      this.updateExcludedLabels();
+    }
+    console.log("defaultFields :", this.defaultFields)
   }
+  defaultFields = [];
 
+  updateExcludedLabels() {
+    this.defaultFields = this.allItems
+      .filter(item => item.defaultColumn === true)
+      .map(item => item.labelName)
+    this.excludedLabels = this.excludedLabels
+      ? Array.from(new Set([...this.excludedLabels, ...this.defaultFields])) // Merge & remove duplicates
+      : [...this.defaultFields];
+  }
+  exstingDataDto: Array<any> = new Array<any>();
   fetchData(pagination: any) {
     this.ngxloading = true;
-    let leadFormFields$ = this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.loggedInUserType);
+    let leadFormFields$ = this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.loggedInUserType, this.customName);
     let userFields$ = this.selectFieldsDtos.length === 0
-      ? this.dashboardService.getFieldsByUserId() : of({ data: this.selectFieldsDtos })
+      ? this.dashboardService.getFieldsByUserId(this.customName) : of({ data: this.selectFieldsDtos })
 
     forkJoin([leadFormFields$, userFields$]).subscribe(
       ([usersData, ordersData]) => {
@@ -268,8 +334,13 @@ export class SelectfieldComponent implements OnInit {
             usersData.data.some(unselected => unselected.labelId === item.labelId)
           );
         }
-        this.selectFieldsDtos = ordersData.data || [];
-        this.processData(ordersData.data, pagination, usersData.data || []);
+        this.exstingDataDto = ordersData.data;
+        if (this.isMyprofile) {
+          this.selectFieldsDtos = ordersData.data.filter(item => item.defaultColumn === true) || [];
+        } else {
+          this.selectFieldsDtos = ordersData.data || [];
+        }
+        this.processData(this.selectFieldsDtos, pagination, usersData.data || []);
       },
       (error) => {
         this.ngxloading = false;
@@ -307,5 +378,8 @@ export class SelectfieldComponent implements OnInit {
       );
     }
     this.fetchData(this.pagination);
+  }
+  isNonDraggable(fieldDto: any): boolean {
+    return this.excludedLabels.includes(fieldDto.labelName) && fieldDto.defaultColumn && !this.isMyprofile;
   }
 }

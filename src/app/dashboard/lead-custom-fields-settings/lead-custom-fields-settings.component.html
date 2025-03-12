@@ -16,11 +16,11 @@
       <div class="row m0">
         <div class="col-md-12 p0 mb10 mt10">
           <div style="margin-bottom:20px">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 p0">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2 p0">
               <button type="button" class="btn btn-success ml5 my-10" (click)="addCustomFieldsdModalOpen()">Create
                 Custom Field</button>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 pr0 pl-left0 tabview-fields">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 pr0 pl-left0 tabview-fields">
               <div class="d-flex justify-content-end mb-flex-wrap my-10">
                 <div class="inputs mr5 width100">
                   <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
@@ -43,6 +43,9 @@
                     </div>
                   </div>
                 </div>
+                <!-- XNFR-906 -->
+                <button type="button" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl" class="btn btn-primary ml5 my-10" (click)="openSetDefaultFieldsPopUp()">Default Lead Report</button>
+                <!-- XNFR-906 -->
                 <button type="button" class="btn btn-primary ml5 my-10" (click)="addCustomFielsdOrderModalOpen()">Order
                   Custom Fields</button>
               </div>
@@ -167,4 +170,9 @@
     <app-add-custom-fields (closeEvent)="closeAddCustomFieldsModal($event)"
       (notifySubmitSuccess)="showCustomFieldSubmitSuccess()" [opportunityType]="opportunityType"></app-add-custom-fields>
   </div>
+  <!-- XNFR-906 -->
+  <div *ngIf="openDefaultFieldsPopup">
+    <app-selectfield [isVendorVersion]="true" [customName]="'custom'" (closeEmitter)="closeEmitter($event)"></app-selectfield>
+  </div>
+  <!-- XNFR-906 -->
 </div>
