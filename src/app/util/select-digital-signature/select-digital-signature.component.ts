@@ -478,8 +478,8 @@ enableLineTool() {
     let defaultHeight = 50;
     let minWidth = 50;
     let minHeight = 25;
-    let maxWidth = 500;
-    let maxHeight = 250;
+    let maxWidth = 400;
+    let maxHeight = 200;
 
     let newBlock = $(`
       <div class="block-draggable">
