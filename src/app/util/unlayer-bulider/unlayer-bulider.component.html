@@ -1,5 +1,5 @@
-<button (click)="mydownloadPdf()">Save as PDF</button>
-<button (click)="exportDesign()">preview</button>
+<button class="btn btn-primary" (click)="mydownloadPdf()">Save</button>
+<button  class="btn btn-primary" (click)="exportDesign()">preview</button>
 <div id="editor-container"></div>
 <div *ngIf="showPreview" class="popup-overlay" (click)="closePopup()">
     <div class="popup-content" [ngStyle]="popupStyles" (click)="$event.stopPropagation()">
@@ -24,7 +24,7 @@
 
             <!-- Close Button -->
             <button (click)="closePopup()" class="close-circle" aria-label="Close Preview">
-                <i class="fa fa-times" aria-hidden="true"></i>
+                <i class="fa fa-times mt0" aria-hidden="true"></i>
             </button>
         </div>
 
