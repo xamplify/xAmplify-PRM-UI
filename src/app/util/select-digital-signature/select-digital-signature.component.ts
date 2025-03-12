@@ -468,8 +468,7 @@ enableLineTool() {
   }
 
   placeBlock(event: any) {
-    if (!this.isBlockMode) return;  // Only allow placement if enabled
-
+    if (!this.isBlockMode) return;
     let pdfContainer = $("#pdf-container");
     let pdfOffset = pdfContainer.offset();
     let x = event.clientX - pdfOffset.left + pdfContainer.scrollLeft();
@@ -534,9 +533,8 @@ enableLineTool() {
 
     resizeControls.find("span").css({ cursor: "pointer" });
 
-    // **Prevent click propagation inside icons**
     resizeControls.find("span").on("click", function (event) {
-        event.stopPropagation(); // Prevents the event from bubbling up
+        event.stopPropagation();
     });
 
     resizeControls.find(".increase-size").on("click", function () {
@@ -603,56 +601,10 @@ enableLineTool() {
       element: newBlock,
       page: targetPage,
     });
-
-    // **Allow only one block per click**
     this.isBlockMode = false;
     this.activeBlockTool = false;
     $("body").css("cursor", "default");
 }
-
-
-// placeLine(event: any) {
-//   let pdfContainer = $("#pdf-container");
-//   let pdfOffset = pdfContainer.offset();
-//   let x = event.clientX - pdfOffset.left + pdfContainer.scrollLeft();
-//   let y = event.clientY - pdfOffset.top + pdfContainer.scrollTop();
-
-//   let line = $("<div class='pdf-line'></div>").css({
-//       left: `${x}px`,
-//       top: `${y}px`,
-//       width: "100px",
-//       height: "1.6px",
-//       position: "absolute",
-//       background: "black",
-//       cursor: "move"
-//   });
-
-//   let targetPage = this.getPageNumber(event.clientY);
-//   if (!targetPage) return;
-
-//   line.attr("data-page", targetPage);
-//   pdfContainer.append(line);
-
-//   line.draggable({
-//       containment: "#pdf-container",
-//       scroll: true,
-//       drag: (event, ui) => {
-//           let newTargetPage = this.getPageNumber(event.pageY);
-//           if (newTargetPage) {
-//               line.attr("data-page", newTargetPage);
-//           }
-//       }
-//   });
-
-//   this.placedLines.push({
-//       element: line,
-//       page: targetPage
-//   });
-
-//   this.isLineMode = false;
-//   this.activeLineTool = false;
-// }
-
 
 placeLine(event: any) {
   let pdfContainer = $("#pdf-container");
@@ -698,18 +650,12 @@ placeLine(event: any) {
       padding: "5px 10px",
       "border-radius": "4px",
       "box-shadow": "2px 2px 5px rgba(0, 0, 0, 0.2)",
-      display: "flex",  // ✅ Always visible
+      display: "flex",
       gap: "5px",
   });
 
   resizeControls.find("span").css({ cursor: "pointer" });
-
   pdfContainer.append(newLine);
-
-  // ✅ No need to hide/show icons on click
-  // ✅ Icons always visible
-
-  // Increase line width
   resizeControls.find(".increase-width").on("click", function () {
       let currentWidth = parseInt(lineElement.css("width"));
       if (currentWidth < maxWidth) {
@@ -717,7 +663,6 @@ placeLine(event: any) {
       }
   });
 
-  // Decrease line width
   resizeControls.find(".decrease-width").on("click", function () {
       let currentWidth = parseInt(lineElement.css("width"));
       if (currentWidth > minWidth) {
@@ -725,12 +670,10 @@ placeLine(event: any) {
       }
   });
 
-  // Delete line
   resizeControls.find(".delete-line").on("click", function () {
       newLine.remove();
   });
 
-  // Make line draggable
   newLine.draggable({
     containment: "#pdf-container",
     scroll: true,
@@ -904,12 +847,12 @@ placeLine(event: any) {
       const file = new File([blob], this.fileName, { type: "application/pdf" });
       this.notifySignatureSelection.emit(file);
 
-      const downloadLink = document.createElement("a");
-      downloadLink.href = downloadUrl;
-      downloadLink.download = "signed_document.pdf";
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
+      // const downloadLink = document.createElement("a");
+      // downloadLink.href = downloadUrl;
+      // downloadLink.download = "signed_document.pdf";
+      // document.body.appendChild(downloadLink);
+      // downloadLink.click();
+      // document.body.removeChild(downloadLink);
       this.closeModal();
     } catch (error) {
       console.error("Error generating signed PDF:", error);
@@ -949,13 +892,13 @@ placeLine(event: any) {
     this.availableSignatures = [null, null, null];
 
     if (this.signatureResponseDto.drawSignatureExits && this.signatureResponseDto.drawSignatureImagePath) {
-      this.availableSignatures[0] = 'https://aravindu.com/vod/signatures/20268149/draw-signature.png?v=1740137273710';
+      this.availableSignatures[0] = this.signatureResponseDto.drawSignatureImagePath;
     }
     if (this.signatureResponseDto.typedSignatureExists && this.signatureResponseDto.typedSignatureImagePath) {
-      this.availableSignatures[1] = 'https://aravindu.com/vod/signatures/20268149/typed-signature.png';
+      this.availableSignatures[1] = this.signatureResponseDto.typedSignatureImagePath;
     }
     if (this.signatureResponseDto.uploadedSignatureExits && this.signatureResponseDto.uploadedSignatureImagePath) {
-      this.availableSignatures[2] = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
+      this.availableSignatures[2] = this.signatureResponseDto.uploadedSignatureImagePath;
     }
   }
 
