@@ -1343,8 +1343,8 @@
 				<div class="col-md-12 col-lg-12">
 					<div class="form-group">
 						<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 bottom-padding">
-							<app-browse-content
-								(browseContentEventEmitter)="browseContentEventReceiver()"></app-browse-content>
+							<app-browse-content [isApprover]="isApprover" [approvalRequired]="authenticationService?.approvalRequiredForAssets"
+							 [folderId]="folderId" [itemOfTags]="itemOfTags" [currentApprovalStatus]="saveVideoFile?.approvalStatus" (browseContentEventEmitter)="browseContentEventReceiver()"></app-browse-content>
 						</div>
 					</div>
 				</div>

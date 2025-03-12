@@ -127,6 +127,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/****XNFR-381*****/
 	criteria: Criteria = new Criteria();
 	@ViewChild(CustomUiFilterComponent) customUiFilterComponent: CustomUiFilterComponent;
+	
+	approvalReferenceId: number;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
@@ -949,6 +951,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.selectedDamId = asset.id;
 		this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
 		this.videoId = asset.videoId;
+		this.approvalReferenceId = asset.approvalReferenceId;
 	}
 
 	closeCommentsAndHistoryModalPopup() {

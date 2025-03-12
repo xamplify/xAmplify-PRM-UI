@@ -201,6 +201,12 @@
           </span>
         </span>
       </h6>
+
+      <h6 *ngIf="item?.approvalReferenceId" class="moreipsis" data-toggle="tooltip" data-placement="top"
+        title="{{item?.parentAssetName}}">
+        <span><b>Parent Asset Name: </b>{{item.parentAssetName}} </span>
+      </h6>
+
       <!-- Tags, Folders, and Additional Details -->
       <ng-template [ngTemplateOutlet]="extraDetails" [ngTemplateOutletContext]="{ item: item }"></ng-template>
       <span *ngIf="item?.type" class="view-banner" [ngClass]="{
@@ -229,8 +235,9 @@
         </a>
         <!-- Edit Icon -->
         <a *ngIf="item?.canEdit" class="custom-icon" data-toggle="tooltip"
-          data-placement="top" title="Edit" (click)="edit(item)">
-          <i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
+          data-placement="top" title="Edit" (click)="item?.hasAnyReApprovalVersion ? '' : edit(item)">
+          <i class="fa fa-edit IconCustomization" aria-hidden="true"
+          [ngClass]="item?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
           <div class="clickicons"></div>
         </a>
         <!-- UnPublish Icon -->
@@ -291,8 +298,8 @@
         </a>
         <!--Delete-->
         <a *ngIf="item?.canDelete" class="custom-icon" data-toggle="tooltip"
-          data-placement="top" title="Delete" (click)="confirmDelete(item)">
-          <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+          data-placement="top" title="Delete" (click)="item?.hasAnyReApprovalVersion ? '' :confirmDelete(item)">
+          <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true" [ngClass]="item?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
           <div class="del-icon"></div>
         </a>
       </div>
@@ -321,7 +328,7 @@
 
 <app-content-status-history-modal-popup *ngIf="callCommentsComponent" [entityId]="selectedDamId" [title]="assetName"
   [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
-  [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover"
+  [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover" [approvalReferenceId]="approvalReferenceId"
   (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
   (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopup()">
 </app-content-status-history-modal-popup>
