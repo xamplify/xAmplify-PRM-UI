@@ -28,4 +28,13 @@ export class DamPostDto {
   	published: boolean = false;
 	createdByAnyApprover: boolean = false;
 
+	partnerSignatureRequired = false;
+    disablePartnerSignatureOption = false;
+    partnerSignatureToolTipMessage = "";
+    vendorSignatureRequired = false;
+    disableVendorSignatuerOption = false;
+    vendorSignatureToolTipMessage = "";
+    selectedSignatureImagePath = "";
+    vendorSignatureCompleted = false;
+
 }

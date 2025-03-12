@@ -5,6 +5,7 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { Router } from '@angular/router';
 import { CustomLoginTemplate } from 'app/email-template/models/custom-login-template';
+import { DamService } from 'app/dam/services/dam.service';
 
 declare var BeePlugin: any, swal:any;
 
@@ -38,7 +39,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 	/***********  XNFR-233 *********/
 	customLoginTemplate:CustomLoginTemplate = new CustomLoginTemplate()
 	/***********  XNFR-233 *********/
-	constructor(private referenceService: ReferenceService, private authenticationService: AuthenticationService, private router: Router, private xtremandLogger: XtremandLogger) {
+	constructor(private referenceService: ReferenceService, private authenticationService: AuthenticationService, private router: Router, private xtremandLogger: XtremandLogger,private damService: DamService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
@@ -259,10 +260,12 @@ export class BeeTemplateUtilComponent implements OnInit {
 			}
 			input['jsonContent'] = updatedJsonContent;
 			input['htmlContent'] = updatedHtmlContent;
+			this.notifyParentComponent.emit(input);
 		} else {
 			this.updateJsonAndHtmlContent(jsonContent, htmlContent, input);
+			this.mydownloadPdf(htmlContent, input);
+			// this.notifyParentComponent.emit(input);
 		}
-		this.notifyParentComponent.emit(input);
 		this.loading = false;
 
 	}
@@ -286,5 +289,31 @@ export class BeeTemplateUtilComponent implements OnInit {
 		this.loading = false;
 	}
 
-
+	mydownloadPdf(htmlContent: string,input:any) {
+		  this.damService.downloadPdf(htmlContent).subscribe(
+			(blob: Blob) => {
+			  if (!blob || blob.size === 0) {
+				console.error("Received an empty or invalid PDF file.");
+				return;
+			  }
+	  
+			  //  Trigger PDF download
+			//   const link = document.createElement('a');
+			//   link.href = URL.createObjectURL(blob);
+			//   link.download = 'generated-pdf.pdf';
+			//   link.click();
+			//   URL.revokeObjectURL(link.href);
+	  
+			  const pdfFile = new File([blob], 'design.pdf', { type: 'application/pdf' });
+			  input['pdf'] = pdfFile;
+			  
+			},
+			(error) => {
+			  console.error("Failed to generate PDF:", error);
+			  alert("Failed to generate PDF. Please try again later.");
+			}, ()=>{
+				this.notifyParentComponent.emit(input);
+			}
+		  );
+	  }
 }
