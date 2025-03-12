@@ -2,9 +2,9 @@
 <div class="alert alert-info">
     You have the ability to add custom HTML blocks. These will be displayed in your dashboard.
 </div>
-<div class="portlet light" id="manage-custom-html">
+<div class="portlet light" id="manage-custom-html"  *ngIf="!isLoading">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
-    <div class="portlet-title" *ngIf="!isLoading">
+    <div class="portlet-title">
         <div class="col-lg-12 p0">
             <div class="inputs btn-group float-right" style="display: inline-flex;">
                 <div class="mr5">
