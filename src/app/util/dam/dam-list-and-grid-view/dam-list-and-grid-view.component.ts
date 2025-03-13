@@ -600,9 +600,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
 			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 		} 
-		// else if(asset.beeTemplate) {
-		// 	this.referenceService.previewAssetPdfInNewTab(asset.id);
-		// }
+		else if (asset.beeTemplate && (asset.assetPath == null || asset.assetPath == '' || asset.assetPath.length == 0)) {
+			this.referenceService.previewAssetPdfInNewTab(asset.id);
+		}
 		else{
 			this.referenceService.preivewAssetOnNewHost(asset.id);
 		}

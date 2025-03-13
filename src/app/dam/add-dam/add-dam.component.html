@@ -31,16 +31,16 @@
                   <i class="fa fa-times" aria-hidden="true"></i>
                </a>
             </div>
-            <!-- <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
+            <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
                <app-bee-template-util [beeContainerInput]="beeContainerInput"
                   (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
-               <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
-            </ng-container> -->
-            <ng-container>
-               <!-- <app-bee-template-util [beeContainerInput]="beeContainerInput"
-                  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util> -->
-               <app-unlayer-bulider *ngIf="!ngxloading" [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
+               <!-- <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider> -->
             </ng-container>
+            <!-- <ng-container>
+               <app-bee-template-util [beeContainerInput]="beeContainerInput"
+                  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+               <app-unlayer-bulider *ngIf="!ngxloading" [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
+            </ng-container> -->
          </div>
       </div>
    </div>
