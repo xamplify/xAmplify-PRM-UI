@@ -977,7 +977,7 @@ declare var $:any, Highcharts:any, swal: any;
         this.dealButtonText = "Update Lead";
         this.leadActionType = "edit";
         this.leadId = data.id;
-        this.canPartnerEditLead = data.partnerEditLead;
+        this.canPartnerEditLead = data.partnerEditLead && data.canUpdate;
       }      
     })
 

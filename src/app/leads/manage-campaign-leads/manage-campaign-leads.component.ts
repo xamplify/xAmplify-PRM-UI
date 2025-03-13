@@ -15,6 +15,7 @@ import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { UtilService } from 'app/core/services/util.service';
 
 declare var swal, $, videojs: any;
 
@@ -70,7 +71,8 @@ export class ManageCampaignLeadsComponent implements OnInit {
   statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   statusLoader = true;
   isStatusLoadedSuccessfully = true;
-  constructor(public authenticationService: AuthenticationService,
+  isLoggedAsPartner:boolean = false;
+  constructor(public authenticationService: AuthenticationService, public utilService:UtilService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService,public dashboardService:DashboardService,public integrationService: IntegrationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -91,6 +93,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
         this.listCampaignLeads(this.leadsPagination);   
         /*****Registered By Users*****/   
         this.findAllRegisteredByUsers();
+        this.isLoggedAsPartner = this.utilService.isLoggedAsPartner();
        
     }
     this.refreshCampaignLeadsSubject.subscribe(response => {
@@ -547,10 +550,10 @@ getSelectedStatus(event:any){
 
 showRegisterDealButton(lead):boolean {
   let showRegisterDeal = false;
-  if (lead.selfLead && lead.dealBySelfLead && (this.authenticationService.module.isOrgAdminCompany || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
+  if (lead.selfLead && lead.dealBySelfLead && (this.authenticationService.module.isOrgAdminCompany || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined && !this.isLoggedAsPartner) {
     showRegisterDeal = true;
   } else if (((((lead.dealByVendor && (this.authenticationService.module.isVendor || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
-    && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED')) && (this.authenticationService.enableLeads || this.authenticationService.module.opportunitiesAccessAsPartner)) {
+    && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED')) && (this.authenticationService.enableLeads || this.authenticationService.module.opportunitiesAccessAsPartner) && !this.isLoggedAsPartner) {
     showRegisterDeal = true;
   }
   return showRegisterDeal;
