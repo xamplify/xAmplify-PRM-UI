@@ -710,8 +710,8 @@ placeLine(event: any) {
       return;
     }
 
-    if (this.placedSignatures.length === 0 && this.placedTexts.length === 0) {
-      this.customResponse = new CustomResponse('ERROR', 'Please add at least one signature or text', true);
+    if (this.placedSignatures.length === 0) {
+      this.customResponse = new CustomResponse('ERROR', 'Please add at least one Signature', true);
       return;
     }
 
