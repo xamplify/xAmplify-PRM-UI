@@ -334,6 +334,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       }
       this.damPostDto.saveAs = saveAs;
       this.setDampUploadPostData(saveAs);
+      this.damUploadPostDto.assetName = this.damPostDto.name;
       this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
         (result: any) => {
           this.hidePopup();
@@ -427,6 +428,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     let statusCode = JSON.parse(error["status"]);
     if (statusCode == 409) {
       this.nameErrorMessage = "Already exists";
+      this.formData.delete("damUploadPostDTO");
     }else if(statusCode == 400){
       let message = error['error']['message'];
       this.customResponse = new CustomResponse("ERROR",message,true);
