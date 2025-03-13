@@ -27,6 +27,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     form: Form = new Form();
     ngxloading = false;
     formError = false;
+    selectedFormTypeIndex = 0;
     customResponse: CustomResponse = new CustomResponse();
     columnInfos: Array<ColumnInfo> = new Array<ColumnInfo>();
     formsError: boolean = false;
@@ -132,7 +133,13 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     searchForms() {
         this.getAllFilteredResults(this.pagination);
     }
-
+    searchFormsByFilter(type: string, index: number) {
+        this.selectedFormTypeIndex = index;
+        this.pagination.filterKey = type;
+        this.pagination.pageIndex = 1;
+        this.getAllFilteredResults(this.pagination);
+      }
+    
     paginationDropdown(items: any) {
         this.sortOption.itemsSize = items;
         this.getAllFilteredResults(this.pagination);
