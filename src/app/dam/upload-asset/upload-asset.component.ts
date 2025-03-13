@@ -163,6 +163,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     
     savedTags: any[] = [];
     pdfDefaultUploadedFile: File;
+    isVendorSignatureAdded: boolean = false;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -310,6 +311,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     uploadedImage:any;
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
+        this.isVendorSignatureAdded = false;
 		let files: Array<File>;
 		if ( event.target.files!=undefined ) {
 			 files = event.target.files; 
@@ -492,12 +494,12 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if(this.isAdd){
 			let uploadedAssetValue = $('#uploadedAsset').val();
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 );
-            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && this.fileType === 'application/pdf'){
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && this.fileType === 'application/pdf'){
             this.isValidForm = false;
             }
 		}else{
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
-            if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && !this.damUploadPostDto.vendorSignatureCompleted){
+            if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && !this.damUploadPostDto.vendorSignatureCompleted){
                 this.isValidForm = false;
                 }
 		}
@@ -1531,12 +1533,13 @@ zoomOut() {
     setVendorSignatureRequired(event){
         this.damUploadPostDto.vendorSignatureRequired = event;
         this.isVendorSignatureToggleClicked = true;
+        this.isVendorSignatureAdded = false;
+        this.validateAllFields();
         if(event === 'true'){
           this.setUploadedFileProperties(this.pdfUploadedFile);
         } else {
             this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
         }
-        this.validateAllFields();
     }
 
     openAddSignatureModalPopUp() {
@@ -1577,8 +1580,9 @@ zoomOut() {
 	notifySignatureSelection(event){
             this.setUploadedFileProperties(event);
             this.pdfUploadedFile =  event;
+            this.isVendorSignatureAdded = true;
             this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
-        this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
+            this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
         });
         this.validateAllFields();
