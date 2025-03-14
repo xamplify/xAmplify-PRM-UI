@@ -270,7 +270,7 @@
    </ng-container>
       <ng-container *ngIf="openSelectDigitalSignatureModalPopUp">
          <div *ngIf="openSelectDigitalSignatureModalPopUp">
-            <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfFile" [isFromDam]="true"></app-select-digital-signature>
+            <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true"></app-select-digital-signature>
          </div>
       </ng-container>
    </div>

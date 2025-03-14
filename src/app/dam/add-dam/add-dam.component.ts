@@ -89,6 +89,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   utilService: any;
   deviceService: any;
   showPageSizeAndOrientation: boolean = false;
+  isVendorSignatureAdded: boolean = false;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -268,6 +269,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.damPostDto.htmlBody = event.htmlContent;
     this.damPostDto.beeTemplate = true;
     this.pdfFile = event.pdf;
+    this.pdfUploadedFile = event.pdf;
     this.formData.append('uploadedFile', event.pdf);
     if (!this.isPartnerView) {
       $("#addAssetDetailsPopup").modal("show");
@@ -307,6 +309,9 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
   validateFields() {
     this.validForm = this.isValidName && this.isValidDescription;
+    if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded ){
+      this.validForm = false;
+      }
   }
 
   updateDescriptionErrorMessage(description: string) {
@@ -726,18 +731,24 @@ setPartnerSignatureRequired(event){
 
 setVendorSignatureRequired(event){
   this.damUploadPostDto.vendorSignatureRequired = event;
-  this.validateAllFields();
+  this.isVendorSignatureAdded = false;
+  this.validateFields();
+  if(event === 'true'){
+    this.setUploadedFileProperties(this.pdfUploadedFile);
+  } else {
+      this.setUploadedFileProperties(this.pdfFile);
+  }
 }
   notifySignatureSelection(event) {
-    if (this.damUploadPostDto.vendorSignatureRequired) {
       this.setUploadedFileProperties(event);
       this.pdfUploadedFile = event;
+      this.isVendorSignatureAdded = true;
+      this.validateFields();
       this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
-    }
-    this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
+      this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
       this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
     });
-    this.validateAllFields();
+    // this.validateFields();
   }
   private setUploadedFileProperties(file: File) {
     // this.uploadedImage = file;
@@ -758,18 +769,13 @@ setVendorSignatureRequired(event){
 
   
 	validateAllFields() {
-		if(this.isAdd){
-			let uploadedAssetValue = $('#uploadedAsset').val();
-			this.validForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0));
-            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath ){
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded ){
             this.validForm = false;
+            } else {
+              if(this.isValidName){
+              this.validForm = true;
+              }
             }
-		}else{
-			this.validForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
-            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && !this.damUploadPostDto.vendorSignatureCompleted){
-                this.validForm = false;
-                }
-		}
 	}
 
     private getGeoLocationAnalytics(callback: (geoLocationDetails: GeoLocationAnalytics) => void) {
