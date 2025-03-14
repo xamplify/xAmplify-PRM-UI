@@ -35,6 +35,7 @@ export class BeeTemplateUtilComponent implements OnInit {
     coBraningImage = "co-branding.png";
 	isCoBrandingTemplate = false;
 	isVideoTemplate = false;
+	formLoader = false;
 	/****XBI-1685******/
 	/***********  XNFR-233 *********/
 	customLoginTemplate:CustomLoginTemplate = new CustomLoginTemplate()
@@ -290,6 +291,8 @@ export class BeeTemplateUtilComponent implements OnInit {
 	}
 
 	mydownloadPdf(htmlContent: string,input:any) {
+		this.formLoader = true;
+		
 		  this.damService.downloadPdf(htmlContent).subscribe(
 			(blob: Blob) => {
 			  if (!blob || blob.size === 0) {
@@ -306,13 +309,16 @@ export class BeeTemplateUtilComponent implements OnInit {
 	  
 			  const pdfFile = new File([blob], 'design.pdf', { type: 'application/pdf' });
 			  input['pdf'] = pdfFile;
+			  this.formLoader = false;
 			  
 			},
 			(error) => {
 			  console.error("Failed to generate PDF:", error);
+			  this.formLoader = false;
 			  alert("Failed to generate PDF. Please try again later.");
 			}, ()=>{
 				this.notifyParentComponent.emit(input);
+				this.formLoader = false;
 			}
 		  );
 	  }
