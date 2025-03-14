@@ -195,6 +195,7 @@ enableLineTool() {
       padding: "5px",
       display: "inline-block",
       "white-space": "nowrap",
+      color: "#333333",
     });
 
     let targetPage = this.getPageNumber(event.clientY);
@@ -363,7 +364,8 @@ enableLineTool() {
         "border": "1px solid blue",
         "display": "flex",
         "align-items": "center",
-        "justify-content": "center"
+        "justify-content": "center",
+        color: "#333333",
       }).attr("data-page", targetPage);
 
       let signatureImage = newSig.find(".signature-draggable").css({
@@ -509,6 +511,7 @@ enableLineTool() {
         display: "flex",
         "align-items": "center",
         "justify-content": "center",
+        color: "#333333",
       });
 
     let targetPage = this.getPageNumber(event.clientY);
@@ -642,6 +645,7 @@ placeLine(event: any) {
       left: `${x}px`,
       top: `${y}px`,
       cursor: "move",
+      color: "#333333",
   }).attr("data-page", targetPage);
 
   let lineElement = newLine.find(".line-element").css({
