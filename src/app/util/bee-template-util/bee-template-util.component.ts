@@ -12,7 +12,8 @@ declare var BeePlugin: any, swal:any;
 @Component({
 	selector: 'app-bee-template-util',
 	templateUrl: './bee-template-util.component.html',
-	styleUrls: ['./bee-template-util.component.css']
+	styleUrls: ['./bee-template-util.component.css'],
+	providers: [DamService]
 })
 export class BeeTemplateUtilComponent implements OnInit {
 
