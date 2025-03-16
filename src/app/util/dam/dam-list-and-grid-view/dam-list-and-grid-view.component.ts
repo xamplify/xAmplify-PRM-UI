@@ -958,9 +958,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.callCommentsComponent = false;
 	}
 
-	closeCommentsAndHistoryModalPopupAndRefreshList() {
+	closeCommentsAndHistoryModalPopupAndRefreshList(event: boolean) {
 		this.refreshList();
 		this.callCommentsComponent = false;
+		if (event) {
+			this.referenceService.showSweetAlertSuccessMessage(this.properties.RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT);
+		}
 	}
 
 	getApprovalStatusText(status: string): string {

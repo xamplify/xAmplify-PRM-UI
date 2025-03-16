@@ -457,30 +457,29 @@
                                     <!---XNFR-255-->
                                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                        <div class="table-responsive">
-                                       <table class="table">
-                                          <tbody>
-                                             <tr>
-                                                <td class="desc hidden-xs" style="width: 11%;">
-                                                   <label class="control-label" translate>
-                                                   </label>
-                                                </td>
-                                                <td class="desc" [class.customDisableCss]='isDisableForm==true'>
-                                                   <div class="mDesc overflowtable-control">
-                                                      <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-                                                      <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
-                                                            canShowPartnerSectionBasedOnApprovalConfiguration()"
-                                                         [moduleName]="'dam'" [inputId]="id"
-                                                         [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
-                                                         [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
-                                                         [selectedPartnershipIds]="damUploadPostDto?.partnershipIds"
-                                                         [selectedPartnerGroupIds]="damUploadPostDto?.partnerGroupIds"
-                                                         [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
-                                                         (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)"></app-partner-company-and-groups>
-                                                   </div>
-                                                </td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
+                                          <table class="table" *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
+                                             canShowPartnerSectionBasedOnApprovalConfiguration()">
+                                             <tbody>
+                                                <tr>
+                                                   <td class="desc hidden-xs" style="width: 11%;">
+                                                      <label class="control-label" translate>
+                                                      </label>
+                                                   </td>
+                                                   <td class="desc" [class.customDisableCss]='isDisableForm==true'>
+                                                      <div class="mDesc overflowtable-control">
+                                                         <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
+                                                         <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="id"
+                                                            [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
+                                                            [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
+                                                            [selectedPartnershipIds]="damUploadPostDto?.partnershipIds"
+                                                            [selectedPartnerGroupIds]="damUploadPostDto?.partnerGroupIds"
+                                                            [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
+                                                            (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)"></app-partner-company-and-groups>
+                                                      </div>
+                                                   </td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
                                        </div>
                                        <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced">
                                           <p><strong>{{properties.PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL}}</strong></p>

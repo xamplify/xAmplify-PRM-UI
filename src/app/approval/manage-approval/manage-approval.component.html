@@ -330,7 +330,7 @@
   [createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [moduleType]="moduleType"
   [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover" [approvalReferenceId]="approvalReferenceId"
   (closeModalPopup)="closeCommentsAndHistoryModalPopup()"
-  (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopup()">
+  (closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefresh($event)">
 </app-content-status-history-modal-popup>
 
 <app-multiselect-approval-comments-modal-popup *ngIf="showCommentsPopUp"
