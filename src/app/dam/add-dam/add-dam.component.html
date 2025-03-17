@@ -170,7 +170,7 @@
                         <ng-container>
                            <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
                               <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
-                                 [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
+                                 [customSwitch]="damUploadPostDto?.partnerSignatureRequired"
                                  (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
                               <span class="info-color-xampc">
                                  <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"

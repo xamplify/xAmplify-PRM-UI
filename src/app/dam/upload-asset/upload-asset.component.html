@@ -291,7 +291,7 @@
                                                    <label class="control-label vendor-signaure-label mr10 " translate>White Labeled</label>
                                                    <div class="">
                                                       <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption"
-                                                         [customSwitch]="damUploadPostDto?.disableWhiteLabelOption"
+                                                         [customSwitch]="damUploadPostDto?.shareAsWhiteLabeledAsset"
                                                          (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc mr8">
                                                          <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
@@ -342,7 +342,7 @@
                                                  <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
                                                    <div class="">
                                                       <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
-                                                         [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                         [customSwitch]="damUploadPostDto?.partnerSignatureRequired"
                                                          (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc">
                                                          <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
