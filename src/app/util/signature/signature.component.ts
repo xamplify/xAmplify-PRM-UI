@@ -49,7 +49,7 @@ export class SignatureComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
   maxFileSize: number = 100; // 100 KB
-  uploadSignatureHeaderText = "Upload an existing signature image to use for signing documents. Maximum file size is 100 KB.";
+  uploadSignatureHeaderText = "Upload an existing signature image(.jpg, .jpeg, .png) to use for signing documents. Maximum file size is 100 KB.";
   isUploadTabActive = false;
   headerTextMessage = "";
   previewingExistingUploadedSignature = false;
