@@ -481,7 +481,8 @@
                                              </tbody>
                                           </table>
                                        </div>
-                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced">
+                                       <!-- XNFR-885 -->
+                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'">
                                           <p><strong>{{properties.PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL}}</strong></p>
                                        </div>
                                     </div>
