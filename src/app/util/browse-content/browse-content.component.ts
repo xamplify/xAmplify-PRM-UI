@@ -695,7 +695,6 @@ uploadVideo() {
   if (this.approvalRequired && !this.isApprover && this.currentApprovalStatus == ApprovalStatusType[ApprovalStatusType.APPROVED]) {
     this.damUploadPostDto.sendForReApproval = true;
     this.damUploadPostDto.tags = this.itemOfTags;
-    this.damUploadPostDto.tags = this.itemOfTags;
     this.damUploadPostDto.categoryId = this.folderId;
   }	
   this.isDisableForm = true;

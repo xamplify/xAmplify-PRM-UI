@@ -565,5 +565,7 @@ export class Properties {
 	
 	/** XNFR-885 **/
 	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**Once the asset is replaced, selecting partners or partner groups is disabled as the asset must go through the re-approval process. If any partners or partner groups were selected, they will be automatically detached to ensure compliance with the approval workflow.";
+	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approval version has been replaced by its parent version.";
+
 }
 

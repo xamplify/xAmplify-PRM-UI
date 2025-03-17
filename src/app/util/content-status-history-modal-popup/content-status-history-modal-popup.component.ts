@@ -145,7 +145,8 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   closeModalPopUp() {
     this.referenceService.closeModalPopup(this.commentsModalPopUpId);
     if(this.reloadAfterClose) {
-      this.closeModalPopupAndRefresh.emit();
+      let showSweetAlertAfterUpdate = this.approvalReferenceId && this.status == ApprovalStatusType[ApprovalStatusType.APPROVED];
+      this.closeModalPopupAndRefresh.emit(showSweetAlertAfterUpdate);
     } else {
       this.closeModalPopup.emit();
     }
