@@ -1344,7 +1344,8 @@
 					<div class="form-group">
 						<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 bottom-padding">
 							<app-browse-content [isApprover]="isApprover" [approvalRequired]="authenticationService?.approvalRequiredForAssets"
-							 [folderId]="folderId" [itemOfTags]="itemOfTags" [currentApprovalStatus]="saveVideoFile?.approvalStatus" (browseContentEventEmitter)="browseContentEventReceiver()"></app-browse-content>
+							 [folderId]="folderId" [itemOfTags]="itemOfTags" [currentApprovalStatus]="saveVideoFile?.approvalStatus"
+							 [addedToQuickLinks]="saveVideoFile?.addedToQuickLinks" (browseContentEventEmitter)="browseContentEventReceiver()"></app-browse-content>
 						</div>
 					</div>
 				</div>
