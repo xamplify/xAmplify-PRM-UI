@@ -23,6 +23,7 @@ import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { DashboardService } from 'app/dashboard/dashboard.service';
+import { UserService } from 'app/core/services/user.service';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -131,7 +132,8 @@ export class ManageLeadsComponent implements OnInit {
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService,private leadsService: LeadsService,
-    public integrationService: IntegrationService,public properties:Properties,public dashboardService:DashboardService) {
+    public integrationService: IntegrationService,public properties:Properties,public dashboardService:DashboardService,
+    private userService:UserService) {
 
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -147,7 +149,7 @@ export class ManageLeadsComponent implements OnInit {
     if (filterPartner !== null && filterPartner !== undefined && (!filterPartner || filterPartner === 'false')) {
       this.selectedFilterIndex = 0;
     }
-    this.init();
+    this.getUserRolesAndInit();
   }
 
   ngOnInit() {
@@ -1659,5 +1661,18 @@ triggerUniversalSearch(){
 
   /*** XNFR-839 */
 
+  getUserRolesAndInit() {
+    const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
 
+    this.userService.getHomeRoles(url)
+      .subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            this.authenticationService.loggedInUserRole = response.data.role;
+            this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+            this.authenticationService.superiorRole = response.data.superiorRole;            
+          }
+          this.init();
+        });
+  }
 }

@@ -114,7 +114,7 @@
     </div>
 
     <div class="col-md-3" *ngIf="(criterias[i].property !== 'Type' && criterias[i].property !== 'From') || type == 'Partners'">
-      <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
+      <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" (input)="handleCriteriaValue(criterias[i].value1, i)" required
         (keypress)="eventEnterKeyHandler($event.keyCode)">
     </div>
     <div class="col-md-3" *ngIf="(criterias[i].property === 'Type' ||  criterias[i].property === 'From') && type != 'Partners'">

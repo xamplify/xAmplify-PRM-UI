@@ -541,8 +541,8 @@
                   <i class="fa fa-times" aria-hidden="true"></i>
                </a>
             </div>
-            <!-- <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util> -->
-            <app-unlayer-bulider [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-unlayer-bulider>
+            <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+            <!-- <app-unlayer-bulider [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-unlayer-bulider> -->
          </div>
       </div>
    </div>
@@ -719,5 +719,5 @@
    </div> -->
 
    <div *ngIf="openSelectDigitalSignatureModalPopUp">
-      <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true"></app-select-digital-signature>
+      <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true" [isDamEditMode] = "!isAdd" [damAssetPath] = "this.damUploadPostDto.assetPath"></app-select-digital-signature>
    </div>

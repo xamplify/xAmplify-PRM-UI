@@ -372,7 +372,7 @@ background-color: unset!important;
   height: 30px;
   width: 30px;
   position: absolute;
-  border-radius: 26%;
+  border-bottom-right-radius: 26%;
   box-shadow: 15px 15px 0 #fff;
 }
 .clip_mask::after{
@@ -382,7 +382,7 @@ background-color: unset!important;
     height: 30px;
     width: 30px;
     position: absolute;
-    border-radius: 26%;
+    border-bottom-left-radius: 26%;
     box-shadow: -15px 15px 0 #fff;
 }
 }

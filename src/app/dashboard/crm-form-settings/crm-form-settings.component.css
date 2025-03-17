@@ -311,3 +311,6 @@
   padding: 7px 7px;
   font-size: 12px;
 }
+.capitalize {
+  text-transform: capitalize;
+}

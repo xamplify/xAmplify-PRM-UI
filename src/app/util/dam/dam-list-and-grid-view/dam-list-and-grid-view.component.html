@@ -167,10 +167,10 @@
 																<div class="clickicons"></div>
 															</a>
 															<!-- Edit--->
-															<a class="custom-icon" *ngIf="asset?.beeTemplate && isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="addOrEdit(asset.id)">
+															<!-- <a class="custom-icon" *ngIf="asset?.beeTemplate && isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="addOrEdit(asset.id)">
 																<i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
-															</a>
+															</a> -->
 															<!--Edit--->
 															<a class="custom-icon" *ngIf="!isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top" title="Edit"
 															 (click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">

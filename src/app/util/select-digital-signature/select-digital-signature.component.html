@@ -18,14 +18,14 @@
             <div class="toolbar">
               <ul>
                 <!-- Add Text Button -->
-                <li>
+                <li data-toggle="tooltip" data-placement="right" title="Type Text">
                   <div class="toolbar-btn" (click)="enableTextMode()" [ngClass]="{'active-tool': activeTextTool}">
                     <i class="fas fa-font"></i>
                   </div>
                 </li>
 
                 <!-- Signature Toggle Button -->
-                <li class="dropdown">
+                <li class="dropdown" data-toggle="tooltip" data-placement="right" title="Add Signature">
                   <div class="toolbar-btn" (click)="toggleSignatures()"
                     [ngClass]="{'active-tool': activeSignatureTool}">
                     <i class="fas fa-pen-nib"></i>
@@ -42,14 +42,14 @@
                   </div>
                 </li>
 
-                <li>
+                <li data-toggle="tooltip" data-placement="right" title="Add Block">
                   <div class="toolbar-btn" (click)="enableSignatureBlock()"
                     [ngClass]="{'active-tool': activeBlockTool}">
                     <i class="fas fa-border-all"></i>
                   </div>
                 </li>
 
-                <li class="mb0">
+                <li class="mb0" data-toggle="tooltip" data-placement="right" title="Add Line">
                   <div class="toolbar-btn" (click)="enableLineTool()"
                     [ngClass]="{'active-tool': activeLineTool}">
                     <i class="fas fa-minus"></i>

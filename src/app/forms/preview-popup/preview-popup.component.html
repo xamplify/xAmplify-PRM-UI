@@ -22,28 +22,42 @@
                     <div class="col-xs-12 p5" style="margin-bottom: -10px;">
                         <div class="portlet light">
                             <div class="portlet-title">
-                                <div class="inputs mMargin tab_formsearch" id="right">
-                                    <div id="left" class="mPadSort">
-                                        <select class="form-control" [(ngModel)]="sortOption.previewFormsSortOption"
-                                            (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                                            <option *ngFor="let option of sortOption.previewPopUpFormsSortOptions"
-                                                [ngValue]="option">
-                                                {{option.name}}
-                                            </option>
-                                        </select>
+                                <div class="">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0">
+                                        <ul class="mix-filter m0">
+                                            <li class="filter" (click)="searchFormsByFilter('All',0)" [class.form-selected]="0 == selectedFormTypeIndex"
+                                                translate>All</li>
+                                            <li class="filter" (click)="searchFormsByFilter('Regular',1)"
+                                                [class.form-selected]="1 == selectedFormTypeIndex" translate>Regular</li>
+                                            <li class="filter" (click)="searchFormsByFilter('Quiz',2)" [class.form-selected]="2 == selectedFormTypeIndex"
+                                                translate>Quiz</li>
+                                            <li class="filter" (click)="searchFormsByFilter('Survey',3)"
+                                                [class.form-selected]="3 == selectedFormTypeIndex" translate>Survey</li>
+                                        </ul>
                                     </div>
-                                    <div class="portlet-input input-inline input-small mPadSearch" id="search">
-                                        <div class="input-icon right" id="search-icon">
-                                            <input type="text" id="search-text" class="form-control"
-                                                [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                                                placeholder="Search..." (keypress)="eventHandler($event.keyCode)">
-                                            <button class="glyphicon glyphicon-remove search-box-item-clear"
-                                                *ngIf="sortOption.searchKey"
-                                                (click)="sortOption.searchKey='';searchForms();"></button>
-                                            <button type="submit" class="search-box-item-click" (click)="searchForms()">
-                                                <i class="fa fa-search" aria-hidden="true"></i> </button>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="inputs mMargin tab_formsearch" id="right">
+                                        <div id="left" class="mPadSort">
+                                            <select class="form-control" [(ngModel)]="sortOption.previewFormsSortOption"
+                                                (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                                                <option *ngFor="let option of sortOption.previewPopUpFormsSortOptions" [ngValue]="option">
+                                                    {{option.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="portlet-input input-inline input-small mPadSearch mr0" id="search">
+                                            <div class="input-icon right" id="search-icon">
+                                                <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                                                    [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                                                    (keypress)="eventHandler($event.keyCode)">
+                                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                                                    (click)="sortOption.searchKey='';searchForms();"></button>
+                                                <button type="submit" class="search-box-item-click" (click)="searchForms()">
+                                                    <i class="fa fa-search" aria-hidden="true"></i> </button>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                             <app-list-loader *ngIf="formsLoader.isLoading"></app-list-loader>

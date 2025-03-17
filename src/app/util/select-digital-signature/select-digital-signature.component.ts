@@ -19,6 +19,8 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
   @Output() notifySignatureSelection = new EventEmitter();
   @Input() sharedAssetPath: any;
   @Input() uploadedFile: File;
+  @Input() isDamEditMode: boolean = false;
+  @Input() damAssetPath : any;
   @Input() isFromDam: boolean = false;
 
   signatureResponseDto: SignatureResponseDto = new SignatureResponseDto();
@@ -72,6 +74,13 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
       };
       fileReader.readAsArrayBuffer(this.uploadedFile);
       this.pdfLoader = false;
+    } else if (this.isDamEditMode) {
+      this.http.get(this.damAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
+      .subscribe(response => {
+        this.url = URL.createObjectURL(response);
+        this.displayPDF(this.url);
+        this.pdfLoader = false;
+      });
     }
     this.initializeDragAndDrop();
 
@@ -186,6 +195,7 @@ enableLineTool() {
       padding: "5px",
       display: "inline-block",
       "white-space": "nowrap",
+      color: "#333333",
     });
 
     let targetPage = this.getPageNumber(event.clientY);
@@ -354,7 +364,8 @@ enableLineTool() {
         "border": "1px solid blue",
         "display": "flex",
         "align-items": "center",
-        "justify-content": "center"
+        "justify-content": "center",
+        color: "#333333",
       }).attr("data-page", targetPage);
 
       let signatureImage = newSig.find(".signature-draggable").css({
@@ -500,6 +511,7 @@ enableLineTool() {
         display: "flex",
         "align-items": "center",
         "justify-content": "center",
+        color: "#333333",
       });
 
     let targetPage = this.getPageNumber(event.clientY);
@@ -633,6 +645,7 @@ placeLine(event: any) {
       left: `${x}px`,
       top: `${y}px`,
       cursor: "move",
+      color: "#333333",
   }).attr("data-page", targetPage);
 
   let lineElement = newLine.find(".line-element").css({
@@ -701,8 +714,8 @@ placeLine(event: any) {
       return;
     }
 
-    if (this.placedSignatures.length === 0 && this.placedTexts.length === 0) {
-      this.customResponse = new CustomResponse('ERROR', 'Please add at least one signature or text', true);
+    if (this.placedSignatures.length === 0) {
+      this.customResponse = new CustomResponse('ERROR', 'Please add at least one Signature', true);
       return;
     }
 

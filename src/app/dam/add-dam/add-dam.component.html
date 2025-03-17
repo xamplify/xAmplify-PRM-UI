@@ -31,16 +31,16 @@
                   <i class="fa fa-times" aria-hidden="true"></i>
                </a>
             </div>
-            <!-- <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
+            <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
                <app-bee-template-util [beeContainerInput]="beeContainerInput"
                   (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
-               <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
-            </ng-container> -->
-            <ng-container>
-               <!-- <app-bee-template-util [beeContainerInput]="beeContainerInput"
-                  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util> -->
-               <app-unlayer-bulider *ngIf="!ngxloading" [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
+               <!-- <app-unlayer-bulider (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider> -->
             </ng-container>
+            <!-- <ng-container>
+               <app-bee-template-util [beeContainerInput]="beeContainerInput"
+                  (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+               <app-unlayer-bulider *ngIf="!ngxloading" [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)" ></app-unlayer-bulider>
+            </ng-container> -->
          </div>
       </div>
    </div>
@@ -86,7 +86,7 @@
                         </div>
                      </div>
                      <!--Page Size & Page Orientation-->
-                     <div class="col-lg-12 col-md-12">
+                     <div class="col-lg-12 col-md-12" *ngIf="showPageSizeAndOrientation">
                         <div class="form-group  col-md-6 col-lg-6">
                            <label>Select Page Size<span class="required">*</span></label>
                            <select class="form-control" id="selectedSize" [(ngModel)]="damPostDto.pageSize">
@@ -125,8 +125,8 @@
                         </div>
                      </div>
                      <!--White Labeled--->
-                     <div class="col-lg-12 col-md-12" *ngIf="hasShareWhiteLabeledContentAccess">
-                        <div class="form-group col-md-6 col-lg-6">
+                     <div class="col-lg-12 col-md-12" >
+                        <div class="form-group col-md-6 col-lg-6" *ngIf="hasShareWhiteLabeledContentAccess">
                            <label>White Labeled</label>
                            <app-custom-ui-switch [customSwitch]="damPostDto?.shareAsWhiteLabeledAsset"
                               (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
@@ -156,8 +156,8 @@
                         </ng-container>
                      </div>
                       <!--XNFR-578 && XBI-3235-->
-                      <div class="col-lg-12 col-md-12" *ngIf="!isPartnerView">
-                        <div class="form-group col-md-6 col-lg-6">
+                      <div class="col-lg-12 col-md-12" >
+                        <div class="form-group col-md-6 col-lg-6" *ngIf="!isPartnerView">
                            <label>Add To Quick Links</label>
                            <app-custom-ui-switch [customSwitch]="damPostDto?.addedToQuickLinks"
                               (customUiSwitchEventEmitter)="setAddToQuickLinks($event)"></app-custom-ui-switch>
@@ -260,7 +260,7 @@
                   (click)="saveOrUpdate(false)" translate><span
                      class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
 
-               <button *ngIf="!isAdd" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
+               <button *ngIf="assetId > 0" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
                   (click)="saveOrUpdate(true)" translate><span
                      class="btn btn-primary transition txt_pd-top3">{{saveAsButtonText}}</span>
                </button>
@@ -270,7 +270,7 @@
    </ng-container>
       <ng-container *ngIf="openSelectDigitalSignatureModalPopUp">
          <div *ngIf="openSelectDigitalSignatureModalPopUp">
-            <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfFile" [isFromDam]="true"></app-select-digital-signature>
+            <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true"></app-select-digital-signature>
          </div>
       </ng-container>
    </div>
