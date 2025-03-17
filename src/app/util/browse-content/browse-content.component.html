@@ -170,7 +170,7 @@
        class="button_blue bgcolor-unset pos_mar_rgt4" type="button" 
       (click)="customResponse.responseType!='ERROR' && !isDisableForm && damUploadPostDto.fileName?.length>0
                 && uploadVideo()">
-      <span class="btn btn-primary transition">Update</span>
+      <span class="btn btn-primary transition">{{updateButtonName}}</span>
    </button>
 </div>
 

@@ -70,11 +70,12 @@ export class ShowHistoryComponent implements OnInit {
 		DRAFT: 'DRAFT'
 	};
 	videoId: number;
+	approvalReferenceId: number;
 
 	/****XNFR-381*****/
 	constructor(public damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
 		public referenceService: ReferenceService, public utilService: UtilService, public pagerService: PagerService, private router: Router,
-		public activatedRoute: ActivatedRoute, public sortOption: SortOption, public videoFileService: VideoFileService, public listLoader: HttpRequestLoader) { }
+		public activatedRoute: ActivatedRoute, public sortOption: SortOption, public videoFileService: VideoFileService, public listLoader: HttpRequestLoader, public properties: Properties) { }
 
 	ngOnInit() {
 		this.assetId = parseInt(this.activatedRoute.snapshot.params['assetId']);
@@ -493,6 +494,7 @@ export class ShowHistoryComponent implements OnInit {
 		this.selectedDamId = asset.id;
 		this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
 		this.videoId = asset.videoId;
+		this.approvalReferenceId = asset.approvalReferenceId;
 	}
 	
 	getApprovalStatusText(status: string): string {
@@ -517,8 +519,11 @@ export class ShowHistoryComponent implements OnInit {
 		this.callCommentsComponent = false;
 	}
 
-	closeCommentsAndHistoryModalPopupAndRefreshList() {
+	closeCommentsAndHistoryModalPopupAndRefreshList(event: boolean) {
 		this.refreshList();
 		this.callCommentsComponent = false;
+		if (event) {
+			this.referenceService.showSweetAlertSuccessMessage(this.properties.RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT);
+		}
 	}
 }

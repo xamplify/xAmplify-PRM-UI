@@ -12,6 +12,7 @@ import { DamUploadPostDto } from 'app/dam/models/dam-upload-post-dto';
 import { DamService } from 'app/dam/services/dam.service';
 import { HttpEventType,HttpResponse} from "@angular/common/http";
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 declare var $:any, swal:any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
 
 @Component({
@@ -77,6 +78,15 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
   @Input() assetType:string;
   @Input()assetDetailsDto:DamUploadPostDto;
   isFromApprovalModule: boolean = false;
+
+  /** XNFR-885 **/
+  @Input() isApprover: boolean;
+  @Input() approvalRequired: boolean;
+  @Input() currentApprovalStatus: string;
+  @Input() itemOfTags: any;
+  @Input() folderId: number;
+  updateButtonName: string = "Update";
+
   constructor(public referenceService:ReferenceService,public sanitizer: DomSanitizer,private router: Router,public properties:Properties,
     public deviceService: Ng2DeviceService,private xtremandLogger:XtremandLogger,private authenticationService:AuthenticationService,
     private videoFileService:VideoFileService,private damService:DamService,private route:ActivatedRoute) {
@@ -124,6 +134,10 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
 		this.headerText = this.isAdd ? 'Upload Asset' : this.isEdit ? 'Replace Asset':'Replace Video Asset';
     if(this.isEdit){
       this.damUploadPostDto = this.assetDetailsDto;
+    }
+
+    if (this.approvalRequired && !this.isApprover && this.currentApprovalStatus == ApprovalStatusType[ApprovalStatusType.APPROVED]) {
+      this.updateButtonName = 'Send for Re-Approval';
     }
   }
 
@@ -671,13 +685,18 @@ pickerCallback(data: any) {
 }
 
 /********Replace Video*****/
-uploadVideo(){
+uploadVideo() {
   this.damService.uploadAssetInProgress = true;
   this.referenceService.goToTop();
   this.customResponse = new CustomResponse();
   this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
   this.damUploadPostDto.videoId = this.route.snapshot.params['videoId'];
   this.damUploadPostDto.replaceVideoAsset = this.isReplaceVideo;
+  if (this.approvalRequired && !this.isApprover && this.currentApprovalStatus == ApprovalStatusType[ApprovalStatusType.APPROVED]) {
+    this.damUploadPostDto.sendForReApproval = true;
+    this.damUploadPostDto.tags = this.itemOfTags;
+    this.damUploadPostDto.categoryId = this.folderId;
+  }	
   this.isDisableForm = true;
   if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
       swal({
@@ -728,6 +747,9 @@ processVideo(result: any){
   if (this.RecordSave !== true) {  setTimeout(function () {  this.processing = true; }, 100); }
   if(this.damService.ispreviousAssetIsProcessing){
     this.damService.ispreviousAssetIsProcessing = false;
+  }
+  if (this.approvalRequired && !this.isApprover && this.currentApprovalStatus == ApprovalStatusType[ApprovalStatusType.APPROVED]) {
+    this.damUploadPostDto.sendForReApproval = true;
   }		
   this.damService.processVideo(this.formData, this.damUploadPostDto, path).subscribe(
             (result: any) => {

@@ -563,5 +563,9 @@ export class Properties {
 	DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS = "Saving as a draft keeps the video in draft mode. Draft videos cannot be published or used in tracks, playbooks, or campaigns.";
 	DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN = "Cannot create a campaign with a draft video.";
 	
+	/** XNFR-885 **/
+	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**Once the asset is replaced, selecting partners or partner groups is disabled as the asset must go through the re-approval process. If any partners or partner groups were selected, they will be automatically detached to ensure compliance with the approval workflow.";
+	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approval version has been replaced by its parent version.";
+
 }
 
