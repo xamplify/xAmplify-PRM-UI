@@ -306,7 +306,7 @@
                                                    <label class="control-label vendor-signature-align mr10 " translate>Vendor Signature</label>
                                                    <div class="">
                                                       <app-custom-ui-switch
-                                                         [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))"
+                                                         [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (isPartnerCompanyOrGroupSelected || this.isAssetPublished))"
                                                          [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
                                                          (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc">
@@ -315,7 +315,7 @@
                                                             [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
                                                          </i>
                                                       </span>
-                                                      <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
+                                                      <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
                                                          class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add your signature <span class="required">*</span>
                                                       </span>
                                                    </div>
