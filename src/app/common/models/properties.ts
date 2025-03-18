@@ -564,8 +564,8 @@ export class Properties {
 	DRAFT_VIDEO_CANNOT_CREATE_CAMPAIGN = "Cannot create a campaign with a draft video.";
 	
 	/** XNFR-885 **/
-	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**Once the asset is replaced, selecting partners or partner groups is disabled as the asset must go through the re-approval process. If any partners or partner groups were selected, they will be automatically detached to ensure compliance with the approval workflow.";
-	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approval version has been replaced by its parent version.";
+	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**As the replaced asset must undergo the re-approval process, selecting partner(s) is not allowed at this stage.";
+	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approved version has been successfully replaced by its parent version.";
 
 }
 
