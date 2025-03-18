@@ -482,7 +482,8 @@
                                           </table>
                                        </div>
                                        <!-- XNFR-885 -->
-                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'">
+                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'
+                                          && damUploadPostDto?.assetType != 'pdf'">
                                           <p><strong>{{properties.PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL}}</strong></p>
                                        </div>
                                     </div>
