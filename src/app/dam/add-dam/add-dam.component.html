@@ -231,7 +231,7 @@
                         <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                         <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader &&
                         ((!authenticationService?.approvalRequiredForAssets && damPostDto?.approvalStatus !== 'REJECTED')
-                           || (authenticationService?.approvalRequiredForAssets && ((!isAdd && isApprover && damPostDto?.createdByAnyApprover) || (isAdd && isApprover))) || damPostDto?.approvalStatus == 'APPROVED')"
+                           || (authenticationService?.approvalRequiredForAssets && isApprover))"
                            [moduleName]="'dam'" [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
                            [inputId]="assetId"
                            (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
