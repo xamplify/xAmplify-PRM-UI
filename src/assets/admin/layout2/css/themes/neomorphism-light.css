@@ -4544,3 +4544,8 @@ a.Iconhover.custom-grid-icon.icon_margin{
   box-shadow: unset;
   color: #fff!important;
 }
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -68px !important;
+  }
+}

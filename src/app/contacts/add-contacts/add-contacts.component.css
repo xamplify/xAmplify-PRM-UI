@@ -409,9 +409,10 @@ background-color: unset!important;
 }
 p.mb0.mt5 {
   font-size: 12px;
+  font-weight: 500;
 }
 .fs_16{
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 500;
 }
 @media only screen and (min-width: 600px) and (max-width:1024px){
@@ -419,9 +420,16 @@ p.mb0.mt5 {
     font-size: 12px;
   }
   p.mb0.mt5 {
-    font-size: 10px;
+    font-size: 9px;
   }
+}
+@media only screen and (min-width: 600px) and (max-width:798px){
   .clip_mask{
-    bottom: -80px;
+    bottom: -65px!important;
+  }
+}
+@media only screen and (min-width: 779px) and (max-width:1024px){
+  .clip_mask{
+    bottom: -71px!important;
   }
 }

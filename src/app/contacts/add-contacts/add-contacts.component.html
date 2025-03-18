@@ -106,7 +106,7 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden-xs">
+							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 								<div class="contact_imgs">
 									<button class="color-flow-button btn-block white-co add_partnerbtn" id="addContacts" (click)="addContactModalOpen()"
 										[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
@@ -114,7 +114,7 @@
 										<span class="d-flex upload_bgcolor" translate>
 											<img src="assets/images/crm/contact_imgs.svg" height="30" class="mr10 img-hover-unset" alt=" One at a Time">
 											One at a Time</span>
-											<p *ngIf="!assignLeads" class="mb0 mt5">Add your contacts individually for a personalized contact list.</p>
+											<p *ngIf="!assignLeads" class="mb0 mt5">Add your contacts individually to create a personalized contact list.</p>
 											<p *ngIf="assignLeads" class="mb0 mt5">Add your share leads individually to create a personalized share leads list.</p>
 									</button>
 									<!-- <img *ngIf="!assignLeads" src="assets/images/crm/contact_img1.png" class="img-hover-unset" height="110"
@@ -133,8 +133,8 @@
 										<div class="portlet-body pt0">
 											<div class="contact-card">
 												<img src="assets/images/crm/user_icon.svg"  height="40px"  alt="Contact Icon">
-												<p *ngIf="!assignLeads" class="mb0 ml10 fs_16">Add contacts and explore cloud for more contact</p>
-											    <p *ngIf="assignLeads" class="mb0 ml10 fs_16">Add share leads and explore cloud for more share leads</p>
+												<p *ngIf="!assignLeads" class="mb0 ml10 fs_16">Add Contacts and Create Personalized Lists</p>
+											    <p *ngIf="assignLeads" class="mb0 ml10 fs_16">Add Share Leads and Create Personalized Lists</p>
 											</div>
 										</div>
 									</div>
@@ -144,7 +144,7 @@
 									<div class="partner_images">
 										<i class="fa fa-cloud-upload mr5" aria-hidden="true"></i>
 										<span translate>Import
-											{{checkingContactTypeName}}s from the cloud
+											{{checkingContactTypeName}}s from the cloud platforms
 										</span>
 										<!-- <div class="portlet-title" translate>Import
 														{{checkingContactTypeName}}s from the cloud:
@@ -174,7 +174,7 @@
 											<input type="file" title=" " (click)="input.value = null;resetResponse();" (change)="fileChange(input)"
 												accept=".csv" #input
 												[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
-												<p *ngIf="!assignLeads" class="mb0 mt5">Quickly add multiple contacts at once by uploading a CSV.</p>
+												<p *ngIf="!assignLeads" class="mb0 mt5">Quickly add multiple contacts at once by uploading a CSV.  </p>
 												<p *ngIf="assignLeads" class="mb0 mt5">Quickly add multiple share leads at once by uploading a CSV.</p>
 										</button>
 													<!--  -->

@@ -4492,3 +4492,8 @@ tbody>tr#uploaded-csv-tr>td {
 .btn_custom:hover {
   color: #fff !important;
 }
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -68px !important;
+  }
+}
