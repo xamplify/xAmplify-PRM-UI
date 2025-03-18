@@ -2538,6 +2538,6 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 }
 @media only screen and (min-width: 600px) and (max-width: 1024px) {
   .clip_mask{
-      bottom: -74px !important;
+      bottom: -68px !important;
   }
 }
