@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="!openSelectDigitalSignatureModalPopUp">
+<div class="page-content" *ngIf="!openSelectDigitalSignatureModalPopUp &&  !askAiValue">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home" aria-hidden="true"></i>
@@ -70,6 +70,9 @@
 									<button *ngIf="!loadVideoPlayer" class="button_blue bgcolor-unset"  (click)="viewContent()">
 										<span class="btn btn-primary transition txt_pd-top3">View</span>
 									</button>
+									<button *ngIf="!loadVideoPlayer" class="button_blue bgcolor-unset"  (click)="AskAi()">
+										<span class="btn btn-primary transition txt_pd-top3">Ask AI</span>
+									</button>
 									<!--Download-->
 									<button class="button_blue bgcolor-unset" [class.disabled]="!showDownload" (click)="downloadContent()">
 										<span class="btn btn-primary transition txt_pd-top3">Download</span>
@@ -106,4 +109,7 @@
 
 <div *ngIf="openSelectDigitalSignatureModalPopUp">
 	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [sharedAssetPath]="assetDetailsViewDto.sharedAssetPath"></app-select-digital-signature>
+</div>
+<div *ngIf="askAiValue">
+	<app-ai-chat-manager [assetDetailsViewDto]="assetDetailsViewDto" [pdfFile]="pdfDoc"(notifyParent)="closeAskAi($event)"></app-ai-chat-manager>
 </div>

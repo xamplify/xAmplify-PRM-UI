@@ -1,0 +1,135 @@
+<div class="page-content">
+  <div *ngIf="!openHistory" class="pdf_body">
+    <button class="btn close_btn" (click)="closeAi()">×</button>
+    <div>
+      <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
+      <div class="pdf_card">
+        <div class="pdf_child">
+          <div class="file-info">
+            <div class="file-icon">
+              <div class="d-flex document_flex">
+                <div class="pdf-text">PDF</div>
+                <a>{{assetDetailsViewDto.assetName}}.pdf</a>
+              </div>
+              <div class="published-on">Published On: {{assetDetailsViewDto.displayTime}}</div>
+            </div>
+            <div class="file-details">
+              <h5>Asset Name: {{assetDetailsViewDto.assetName}}</h5>
+              <p>Folder: Zoho Integrations</p>
+              <p>Published By: sivakumar@gmail.com</p>
+              <p>From: Siva Kumar</p>
+            </div>
+          </div>
+
+          <div class="input-section">
+            <input type="text" class="form-control" [(ngModel)]="inputText" (input)="validateInputText()"
+              placeholder="Ask me!">
+          </div>
+        </div>
+        <div class="action-buttons">
+          <div class="btn-group">
+            <button class="btn plus-btn" (click)="pdfInput.click()">
+              <span class="fa fa-plus"></span>
+              <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
+                style="display: none;" />
+            </button>
+
+            <button class="btn btn-pdf" (click)="setInputText('Analyze PDF')">Analyze PDF</button>
+            <button class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+              Quotes</button>
+          </div>
+
+          <!-- Optional: Show selected file name below buttons -->
+          <button class="btn btn-primary" (click)="submitdata()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- chat history -->
+  <div *ngIf="openHistory" class="summarize-pdf-card">
+    <button class="close_pdf" (click)="closeHistory()">&times;</button>
+    <div *ngFor="let message of messages">
+      <ng-container *ngIf="message.content?.trim()">
+        <div class="message">
+          <div class="scrollable-card">
+            <div class="main-container">
+
+              <!-- User Message -->
+              <div class="message user" *ngIf="message.role === 'user'">
+                <div class="summarize-card">
+                  {{ message.content }}
+                </div>
+                <div class="avatar">
+                  <img src="assets/images/Pdf-AI.svg" alt="User" class="avatar">
+                </div>
+              </div>
+
+              <!-- Assistant Message -->
+              <div class="d-flex" *ngIf="message.role === 'assistant'">
+                <div class="avatar1 col-lg-1 col-sm-1">
+                  <img src="assets/images/Pdf-AI.svg" alt="Assistant" class="avatar">
+                </div>
+                <div class="col-lg-11 col-sm-11">
+                  <div class="content-card">
+                    <div class="chat-container">
+                      <div class="chat-history">
+                        <strong>{{ message.content }}</strong>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="footer-icons">
+                    <div class="footer-icon" title="Share">
+                      <i class="fa fa-volume-up fs-12" aria-hidden="true"></i>
+                    </div>
+                    <div class="footer-icon" title="Copy to Clipboard">
+                      <i class="fa fa-clone fs-12" aria-hidden="true" (click)="copyAiText(chatGptGeneratedText)"></i>
+                    </div>
+                    <div class="footer-icon" title="List View">
+                      <i class="fa fa-refresh fs-12"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+
+    <div class="d-flex main-container">
+      <div class="col-lg-1 col-sm-1 width_11"></div>
+      <div class="form-section fixed-card col-lg-11 col-sm-11 width_89" style="margin-right: 18px;">
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-default accordion_card">
+            <div class="panel-heading accordion_card">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Asset
+                  Name:{{assetDetailsViewDto.assetName}} | Folder: Zoho Integrations</a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <input type="text" class="form-control" [(ngModel)]="inputText" (input)="validateInputText()"
+                  placeholder="Ask me!">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <div>
+            <button class="action-btn">
+              <i class="fa fa-plus"></i>
+            </button>
+            <button class="action-btn"> Analyze PDF</button>
+            <button class="action-btn"> Summarize in detail</button>
+            <button class="action-btn">Summarize with Key Quotes</button>
+          </div>
+          <button class="submit-btn" (click)="AskAiTogetData()"> Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
