@@ -35,7 +35,7 @@ export class AiChatManagerComponent implements OnInit {
     if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
       console.log('PDF file loaded:', this.pdfFile);
       if (this.pdfFile) {
-        this.getUploadedFileId();
+        // this.getUploadedFileId();
       }
     }
   }
@@ -51,6 +51,7 @@ export class AiChatManagerComponent implements OnInit {
   }
   closeHistory() {
     this.openHistory = false;
+    this.notifyParent.emit();
   }
   validateInputText() {
     this.trimmedText = this.referenceService.getTrimmedData(this.inputText);
@@ -143,5 +144,7 @@ export class AiChatManagerComponent implements OnInit {
       }
     );
   }
-
+  errorHandler(event: any) {
+    event.target.src = 'assets/images/icon-user-default.png';
+  }
 }

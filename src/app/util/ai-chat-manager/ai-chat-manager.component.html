@@ -40,8 +40,6 @@
             <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
           </div>
-
-          <!-- Optional: Show selected file name below buttons -->
           <button class="btn btn-primary" (click)="submitdata()">Submit</button>
         </div>
       </div>
@@ -62,7 +60,7 @@
                   {{ message.content }}
                 </div>
                 <div class="avatar">
-                  <img src="assets/images/icon-user-default.png" alt="User" class="avatar">
+                  <img src="{{authenticationService.MEDIA_URL+assetDetailsViewDtoOfPartner.loggedInUserProfileImage}}" alt="User" class="avatar"(error)="errorHandler($event)">
                 </div>
               </div>
 
