@@ -5,6 +5,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+declare var  $: any;
 
 @Component({
   selector: 'app-ai-chat-manager',
@@ -50,6 +51,7 @@ export class AiChatManagerComponent implements OnInit {
     this.openHistory = true;
     this.AskAiTogetData();
   }
+  
   closeHistory() {
     this.openHistory = false;
     this.notifyParent.emit();
@@ -62,6 +64,11 @@ export class AiChatManagerComponent implements OnInit {
   AskAiTogetData() {
     this.openHistory = true;
     this.isLoading = true;
+    if ($('.scrollable-card').length) {
+      $('.scrollable-card').animate({
+        scrollTop: $('.scrollable-card')[0].scrollHeight
+      }, 500);
+    }
     this.messages.push({ role: 'user', content: this.trimmedText });
     this.inputText = '';
     var self = this;
