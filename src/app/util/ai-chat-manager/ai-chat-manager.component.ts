@@ -24,6 +24,8 @@ export class AiChatManagerComponent implements OnInit {
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,) { }
 
   ngOnInit() {
+    alert(this.pdfFile);
+    // this.chatGptSettingsService.onUpload(this.pdfFile);
   }
   setInputText(text: string) {
     this.inputText = text;
@@ -91,7 +93,7 @@ export class AiChatManagerComponent implements OnInit {
       console.log('PDF selected:', file.name);
       this.assetDetailsViewDto.assetName = file.name.replace(/\.pdf/i, '');
       this.assetDetailsViewDto.displayTime = new Date();
-      // this.chatGptSettingsService.onUpload(this.pdfFile);
+      this.chatGptSettingsService.onUpload(this.pdfFile);
     } else {
       alert('Please upload a valid PDF file.');
     }
