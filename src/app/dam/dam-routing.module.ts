@@ -10,6 +10,7 @@ import { ShowHistoryComponent } from './show-history/show-history.component';
 import { ViewDamComponent } from './view-dam/view-dam.component';
 import { DamPartnerCompanyAnalyticsComponent } from './dam-partner-company-analytics/dam-partner-company-analytics.component';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { AiChatManagerComponent } from 'app/util/ai-chat-manager/ai-chat-manager.component';
 
 const damPartnerCompanyAnalyticsRouterUrl = RouterUrlConstants['damPartnerCompanyAnalytics'];
 const damPartnerAnalyticsRouterUrl = RouterUrlConstants['damPartnerAnalytics'];
@@ -82,7 +83,8 @@ export const routes: Routes = [
 	{ path: approvalRouterUrl + damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
 	{ path: approvalRouterUrl + damPartnerAnalyticsRouterUrl+":damId/:damPartnerId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
 	{ path: approvalRouterUrl + "vda/:damId/:damPartnerId/:partnerId/:viewType", component: DamAnalyticsComponent },
-
+	{ path: "askAi/view/:assetId", component: AiChatManagerComponent },
+	{ path: "askAi/shared/view/:assetId", component: AiChatManagerComponent }
 ];
 
 @NgModule({

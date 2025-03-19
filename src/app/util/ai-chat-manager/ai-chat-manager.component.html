@@ -10,12 +10,12 @@
             <div class="file-icon">
               <div class="d-flex document_flex">
                 <div class="pdf-text">PDF</div>
-                <a>{{assetDetailsViewDto.assetName}}.pdf</a>
+                <a>{{assetDetailsViewDtoOfPartner.assetName}}.pdf</a>
               </div>
-              <div class="published-on">Published On: {{assetDetailsViewDto.displayTime}}</div>
+              <div class="published-on">Published On: {{assetDetailsViewDtoOfPartner.displayTime}}</div>
             </div>
             <div class="file-details">
-              <h5>Asset Name: {{assetDetailsViewDto.assetName}}</h5>
+              <h5>Asset Name: {{assetDetailsViewDtoOfPartner.assetName}}</h5>
               <p>Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</p>
               <p>Published By:{{assetDetailsViewDtoOfPartner.displayName}}</p>
               <p>From: {{assetDetailsViewDtoOfPartner.vendorCompanyName}}</p>
@@ -47,7 +47,7 @@
   </div>
   <!-- chat history -->
   <div *ngIf="openHistory" class="summarize-pdf-card">
-    <button class="close_pdf" (click)="closeHistory()">&times;</button>
+    <button class="close_pdf" (click)="closeAi()">&times;</button>
     <div class="scrollable-card">
       <div *ngFor="let message of messages">
         <ng-container *ngIf="message.content?.trim()">
@@ -113,7 +113,7 @@
             <div class="panel-heading accordion_card">
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Asset
-                  Name:{{assetDetailsViewDto.assetName}} | Folder: Zoho Integrations</a>
+                  Name:{{assetDetailsViewDtoOfPartner.assetName}} | Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</a>
               </h4>
             </div>
             <div id="collapseOne" class="panel-collapse collapse in">

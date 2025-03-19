@@ -103,7 +103,7 @@ export class ViewDamComponent implements OnInit {
 					if(this.loadVideoPlayer && this.damViewStatusCode==200){
 						this.saveGeoLocationAnalytics(id);
 					}
-					this.getPdfByAssetPath();
+					// this.getPdfByAssetPath();
 				}
 			);
 	}
@@ -255,7 +255,8 @@ export class ViewDamComponent implements OnInit {
 	 this.uploadSignature();
 	}
 	AskAi(){
-		this.askAiValue = true;
+		let url = "/home/dam/askAi/view/" + this.assetId;
+		this.referenceService.goToRouter(url)
 	}
 	closeAskAi(){
 		this.askAiValue = false;
@@ -267,7 +268,7 @@ export class ViewDamComponent implements OnInit {
         });
 	}
 	extractTextFromPDF(url: string): void {
-		const self = this; // in case `this` context is lost
+		const self = this;   
 		pdfjsLib.getDocument(url).promise.then(function (pdf) {
 		  let fullText = '';
 		  let loadPagePromises = [];

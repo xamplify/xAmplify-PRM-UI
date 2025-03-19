@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -13,7 +15,7 @@ declare var $: any;
   styleUrls: ['./ai-chat-manager.component.css']
 })
 export class AiChatManagerComponent implements OnInit {
-  @Input() assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
+  // @Input() assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -22,17 +24,24 @@ export class AiChatManagerComponent implements OnInit {
   chatGptGeneratedText: string = "";
   properties: any;
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
-  @Output() notifyParent: EventEmitter<any> = new EventEmitter();
-  @Input() pdfFile: Blob;
+  // @Output() notifyParent: EventEmitter<any> = new EventEmitter();
+  // @Input() pdfFile: Blob;
   uploadedFileId: any;
   isLoading: boolean = false;
   assetDetailsViewDtoOfPartner: AssetDetailsViewDto = new AssetDetailsViewDto();
   loading: boolean;
-  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,) { }
+  assetId = 0;
+  pdfDoc: any;
+  pdfFile: Blob;
+  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
+    private router:Router) { }
 
-  ngOnInit() {
-    this.getSharedAssetDetailsById(this.assetDetailsViewDto.id);
-  }
+    ngOnInit() {
+      this.assetId = parseInt(this.route.snapshot.params['assetId']);
+      if(this.assetId >0){
+        this.getSharedAssetDetailsById(this.assetId);
+      }
+    }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
@@ -58,7 +67,7 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    this.notifyParent.emit();
+    // this.notifyParent.emit();
   }
   validateInputText() {
     this.trimmedText = this.referenceService.getTrimmedData(this.inputText);
@@ -112,8 +121,13 @@ export class AiChatManagerComponent implements OnInit {
   closeAi() {
     if(this.uploadedFileId != undefined){
       this.deleteUploadedFile();
+      if (this.router.url.includes('/shared/view/')) {
+        this.referenceService.goToRouter('/home/dam/shared/l');
+      } else {
+        this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
+      }
     }
-    this.notifyParent.emit();
+    // this.notifyParent.emit();
   }
 
   copyAiText(text: string) {
@@ -133,8 +147,8 @@ export class AiChatManagerComponent implements OnInit {
     if (file && file.type === 'application/pdf') {
       this.pdfFile = file;
       console.log('PDF selected:', file.name);
-      this.assetDetailsViewDto.assetName = file.name.replace(/\.pdf/i, '');
-      this.assetDetailsViewDto.displayTime = new Date();
+      this.assetDetailsViewDtoOfPartner.assetName = file.name.replace(/\.pdf/i, '');
+      this.assetDetailsViewDtoOfPartner.displayTime = new Date();
       this.chatGptSettingsService.onUpload(this.pdfFile);
     } else {
       alert('Please upload a valid PDF file.');
@@ -166,7 +180,10 @@ export class AiChatManagerComponent implements OnInit {
       (error) => {
         this.loading = false;
         console.error('API Error:', error);
+      },() => {
+        this.getPdfByAssetPath();
       }
+
     );
   }
   errorHandler(event: any) {
@@ -181,6 +198,14 @@ export class AiChatManagerComponent implements OnInit {
         console.log('API Error:', error);
       }
     );
+  }
+  
+  getPdfByAssetPath() {
+    this.http.get(this.assetDetailsViewDtoOfPartner.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
+      .subscribe(async response => {
+        this.pdfDoc = response;
+        this.getUploadedFileId();
+      });
   }
 
 }
