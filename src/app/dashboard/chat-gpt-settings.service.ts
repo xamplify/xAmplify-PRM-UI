@@ -49,4 +49,10 @@ export class ChatGptSettingsService {
     const url = `${this.chatGptSettingsUrl}/getSharedAssetDetailsById/${id}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
     return this.http.get(url);
   }
+
+  deleteUploadedFileInOpenAI(uploadedFileId: any) {
+    const url = this.chatGptSettingsUrl + '/deleteUploadedFile/' + uploadedFileId + '?access_token=' + this.authenticationService.access_token;
+    return this.http.delete(url);
+  }
+
 }

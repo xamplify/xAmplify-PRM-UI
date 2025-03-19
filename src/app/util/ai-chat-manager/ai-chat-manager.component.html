@@ -23,7 +23,7 @@
           </div>
 
           <div class="input-section">
-            <input type="text" class="form-control" [(ngModel)]="inputText" (input)="validateInputText()"
+            <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" class="form-control" [(ngModel)]="inputText" (input)="validateInputText()"
               placeholder="Ask me!">
           </div>
         </div>
@@ -40,7 +40,7 @@
             <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
           </div>
-          <button class="btn btn-primary" (click)="submitdata()">Submit</button>
+          <button class="btn btn-primary" [disabled]="isLoading" (click)="submitdata()">Submit</button>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@
             </div>
             <div id="collapseOne" class="panel-collapse collapse in">
               <div class="panel-body">
-                <input type="text" class="form-control" [(ngModel)]="inputText" (input)="validateInputText()"
+                <input type="text" class="form-control" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText" (input)="validateInputText()"
                   placeholder="Ask me!">
               </div>
             </div>
@@ -133,7 +133,7 @@
             <button class="action-btn"> Summarize in detail</button>
             <button class="action-btn">Summarize with Key Quotes</button>
           </div>
-          <button class="submit-btn" (click)="AskAiTogetData()"> Submit</button>
+          <button class="submit-btn" [disabled]="isLoading" (click)="AskAiTogetData()"> Submit</button>
         </div>
       </div>
     </div>
