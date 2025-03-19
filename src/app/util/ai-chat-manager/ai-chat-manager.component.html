@@ -1,3 +1,4 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
   <div *ngIf="!openHistory" class="pdf_body">
     <button class="btn close_btn" (click)="closeAi()">×</button>
@@ -15,9 +16,9 @@
             </div>
             <div class="file-details">
               <h5>Asset Name: {{assetDetailsViewDto.assetName}}</h5>
-              <p>Folder: Zoho Integrations</p>
-              <p>Published By: sivakumar@gmail.com</p>
-              <p>From: Siva Kumar</p>
+              <p>Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</p>
+              <p>Published By:{{assetDetailsViewDtoOfPartner.displayName}}</p>
+              <p>From: {{assetDetailsViewDtoOfPartner.vendorCompanyName}}</p>
             </div>
           </div>
 

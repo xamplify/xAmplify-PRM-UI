@@ -45,5 +45,8 @@ export class ChatGptSettingsService {
     const url = this.chatGptSettingsUrl + '/getPromptResponse?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptSettings);;
   }
-
+  getSharedAssetDetailsById(id: number) {
+    const url = `${this.chatGptSettingsUrl}/getSharedAssetDetailsById/${id}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
+    return this.http.get(url);
+  }
 }

@@ -24,9 +24,12 @@ export class AiChatManagerComponent implements OnInit {
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   @Input() pdfFile: Blob;
   uploadedFileId: any;
+  assetDetailsViewDtoOfPartner: AssetDetailsViewDto = new AssetDetailsViewDto();
+  loading: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,) { }
 
   ngOnInit() {
+    this.getSharedAssetDetailsById(this.assetDetailsViewDto.id);
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
@@ -121,6 +124,22 @@ export class AiChatManagerComponent implements OnInit {
       },
       (error: string) => {
         console.log('API Error:', error);;
+      }
+    );
+  }
+  getSharedAssetDetailsById(id: number) {
+    this.loading = true;
+    this.chatGptSettingsService.getSharedAssetDetailsById(id).subscribe(
+      (response:any) => {
+        this.loading = false;
+        if (response.statusCode == 200) {
+          this.assetDetailsViewDtoOfPartner = response.data;
+          console.log('API Response:', response);
+        }
+      },
+      (error) => {
+        this.loading = false;
+        console.error('API Error:', error);
       }
     );
   }
