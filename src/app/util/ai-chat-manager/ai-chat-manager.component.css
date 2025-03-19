@@ -170,6 +170,12 @@
         border-radius: 50%;
         margin: 0 10px;
       }
+      .assitant {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-left: 20px;
+      }
       .message {
         margin-bottom: 15px;
         display: flex;
@@ -450,4 +456,17 @@
         font-size: 16px;
         padding: 2px 10px;
         border-radius: 4px;
+      }
+
+      .assitLoader {
+        width: 20px;
+        aspect-ratio: 4;
+        background: radial-gradient(circle closest-side,#000 90%,#0000) 0/calc(100%/3) 100% space;
+        clip-path: inset(0 100% 0 0);
+        animation: l1 2s steps(4) infinite;
+      }
+      @keyframes l1 {to{clip-path: inset(0 -34% 0 0)}}
+
+      .aligin-center{
+        align-items: center;
       }

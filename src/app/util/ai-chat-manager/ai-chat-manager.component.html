@@ -48,22 +48,22 @@
   <!-- chat history -->
   <div *ngIf="openHistory" class="summarize-pdf-card">
     <button class="close_pdf" (click)="closeHistory()">&times;</button>
-    <div *ngFor="let message of messages">
-      <ng-container *ngIf="message.content?.trim()">
-        <div class="message">
-          <div class="scrollable-card">
+    <div class="scrollable-card">
+      <div *ngFor="let message of messages">
+        <ng-container *ngIf="message.content?.trim()">
             <div class="main-container">
-
+    
               <!-- User Message -->
               <div class="message user" *ngIf="message.role === 'user'">
                 <div class="summarize-card">
                   {{ message.content }}
                 </div>
                 <div class="avatar">
-                  <img src="{{authenticationService.MEDIA_URL+assetDetailsViewDtoOfPartner.loggedInUserProfileImage}}" alt="User" class="avatar"(error)="errorHandler($event)">
+                  <img src="{{authenticationService.MEDIA_URL+assetDetailsViewDtoOfPartner.loggedInUserProfileImage}}"
+                    alt="User" class="avatar" (error)="errorHandler($event)">
                 </div>
               </div>
-
+    
               <!-- Assistant Message -->
               <div class="d-flex" *ngIf="message.role === 'assistant'">
                 <div class="avatar1 col-lg-1 col-sm-1">
@@ -90,11 +90,18 @@
                   </div>
                 </div>
               </div>
-
             </div>
-          </div>
+        </ng-container>
+      </div>
+      <!-- Assistant Loader -->
+      <div class="d-flex main-container aligin-center" *ngIf="isLoading">
+        <div class="avatar1 col-lg-1 col-sm-1">
+          <img src="assets/images/Pdf-AI.svg" alt="Assistant" class="assitant">
         </div>
-      </ng-container>
+        <div class="col-lg-11 col-sm-11">
+          <div class="assitLoader"></div>
+        </div>
+      </div>
     </div>
 
 

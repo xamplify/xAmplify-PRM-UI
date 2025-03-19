@@ -24,6 +24,7 @@ export class AiChatManagerComponent implements OnInit {
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   @Input() pdfFile: Blob;
   uploadedFileId: any;
+  isLoading : boolean = false;
   assetDetailsViewDtoOfPartner: AssetDetailsViewDto = new AssetDetailsViewDto();
   loading: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,) { }
@@ -60,6 +61,7 @@ export class AiChatManagerComponent implements OnInit {
   
   AskAiTogetData() {
     this.openHistory = true;
+    this.isLoading = true;
     this.messages.push({ role: 'user', content: this.trimmedText });
     this.inputText = '';
     var self = this;
@@ -68,7 +70,7 @@ export class AiChatManagerComponent implements OnInit {
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         console.log('API Response:', response);
-
+        self.isLoading = false;
         var data = response.data;
         var reply = 'No response received from ChatGPT.';
 
@@ -82,6 +84,7 @@ export class AiChatManagerComponent implements OnInit {
         this.trimmedText = '';
       },
       function (error) {
+        self.isLoading = false;
         console.log('API Error:', error);
         self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
       }
