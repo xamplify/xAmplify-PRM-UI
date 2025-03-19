@@ -291,7 +291,7 @@
                                                    <label class="control-label vendor-signaure-label mr10 " translate>White Labeled</label>
                                                    <div class="">
                                                       <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption"
-                                                         [customSwitch]="damUploadPostDto?.disableWhiteLabelOption"
+                                                         [customSwitch]="damUploadPostDto?.shareAsWhiteLabeledAsset"
                                                          (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc mr8">
                                                          <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
@@ -306,7 +306,7 @@
                                                    <label class="control-label vendor-signature-align mr10 " translate>Vendor Signature</label>
                                                    <div class="">
                                                       <app-custom-ui-switch
-                                                         [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))"
+                                                         [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (isPartnerCompanyOrGroupSelected || this.isAssetPublished))"
                                                          [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
                                                          (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc">
@@ -315,7 +315,7 @@
                                                             [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
                                                          </i>
                                                       </span>
-                                                      <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
+                                                      <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
                                                          class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add your signature <span class="required">*</span>
                                                       </span>
                                                    </div>
@@ -342,7 +342,7 @@
                                                  <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
                                                    <div class="">
                                                       <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
-                                                         [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                         [customSwitch]="damUploadPostDto?.partnerSignatureRequired"
                                                          (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc">
                                                          <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
@@ -481,7 +481,9 @@
                                              </tbody>
                                           </table>
                                        </div>
-                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced">
+                                       <!-- XNFR-885 -->
+                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'
+                                          && damUploadPostDto?.assetType != 'pdf'">
                                           <p><strong>{{properties.PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL}}</strong></p>
                                        </div>
                                     </div>

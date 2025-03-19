@@ -85,6 +85,7 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
   @Input() currentApprovalStatus: string;
   @Input() itemOfTags: any;
   @Input() folderId: number;
+  @Input() addedToQuickLinks: boolean;
   updateButtonName: string = "Update";
 
   constructor(public referenceService:ReferenceService,public sanitizer: DomSanitizer,private router: Router,public properties:Properties,
@@ -694,8 +695,12 @@ uploadVideo() {
   this.damUploadPostDto.replaceVideoAsset = this.isReplaceVideo;
   if (this.approvalRequired && !this.isApprover && this.currentApprovalStatus == ApprovalStatusType[ApprovalStatusType.APPROVED]) {
     this.damUploadPostDto.sendForReApproval = true;
-    this.damUploadPostDto.tags = this.itemOfTags;
+    this.damUploadPostDto.tags = this.itemOfTags.map((tag: any) =>
+      typeof tag === 'object' && tag !== null ? tag.value : tag);
     this.damUploadPostDto.categoryId = this.folderId;
+    this.damUploadPostDto.addedToQuickLinks = this.addedToQuickLinks;
+    this.damUploadPostDto.partnerGroupIds = [];
+    this.damUploadPostDto.partnerIds = [];
   }	
   this.isDisableForm = true;
   if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {

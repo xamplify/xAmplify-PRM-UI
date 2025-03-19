@@ -2661,6 +2661,9 @@ tbody{background: transparent;}
     .portlet.light.clip_mask{
       border-bottom: 0 !important;
     }
+    .clip_mask{
+      bottom: -79px!important;
+    }
   }
   /* add a tag */
 .add_tag-container,.add-tag-card,.custom_preview{

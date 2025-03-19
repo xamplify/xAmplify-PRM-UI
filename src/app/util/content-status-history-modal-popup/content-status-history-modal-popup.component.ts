@@ -333,5 +333,17 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
       }
     );
   }
+
+  getCurrentModuleName() : string {
+    let moduleName = "";
+    if (this.moduleType.toUpperCase() == 'DAM') {
+      moduleName = "Asset";
+    } else if (this.moduleType.toUpperCase() == 'TRACK') {
+      moduleName = "Track";
+    } else if (this.moduleType.toUpperCase() == 'PLAYBOOK') {
+      moduleName = "Playbook";
+    }
+    return moduleName;
+  }
   
 }

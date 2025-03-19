@@ -31,9 +31,15 @@
                         </div>
                      </div> 
                      <div class="col-md-10" style="text-align: left;">
+                        <div *ngIf="title">
+                           <h5 class="mt10 mb0" title="{{title}}">
+                              <span><strong> {{ getCurrentModuleName() }} Name </strong></span>: {{title | slice:0:30}}
+                              <span *ngIf="title?.length>30">..</span>
+                           </h5>
+                        </div>
                         <div *ngIf="userDetailsDto?.createdBy!=userDetailsDto?.emailId">
                            <h5 class="mt10 mb0" title="{{userDetailsDto?.createdBy}}">
-                              <span><strong>Name </strong></span>: {{userDetailsDto?.createdByName | slice:0:30}}
+                              <span><strong>Created By </strong></span>: {{userDetailsDto?.createdByName | slice:0:30}}
                               <span *ngIf="userDetailsDto?.createdBy?.length>30">..</span>
                            </h5>
                         </div>

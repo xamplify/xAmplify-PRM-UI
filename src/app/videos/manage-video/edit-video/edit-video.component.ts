@@ -191,7 +191,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.editVideoTitle = this.saveVideoFile.title;
       if (this.saveVideoFile.tags != null && this.saveVideoFile.tags.length>0 ) {
         this.itemOfTags = this.saveVideoFile.tags;
-  }
+      }
 
       this.publish = this.videoUtilService.publishUtil;
       this.validationMessages = this.videoUtilService.validationMessages;

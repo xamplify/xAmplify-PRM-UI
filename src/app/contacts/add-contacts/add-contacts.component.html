@@ -106,12 +106,21 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden-xs">
-								<div class="contact_img">
-									<img *ngIf="!assignLeads" src="assets/images/crm/contact_img1.png" class="img-hover-unset" height="110"
+							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+								<div class="contact_imgs">
+									<button class="color-flow-button btn-block white-co add_partnerbtn" id="addContacts" (click)="addContactModalOpen()"
+										[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
+										[disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+										<span class="d-flex upload_bgcolor" translate>
+											<img src="assets/images/crm/contact_imgs.svg" height="30" class="mr10 img-hover-unset" alt=" One at a Time">
+											One at a Time</span>
+											<p *ngIf="!assignLeads" class="mb0 mt5">Add your contacts individually to create a personalized contact list.</p>
+											<p *ngIf="assignLeads" class="mb0 mt5">Add your share leads individually to create a personalized share leads list.</p>
+									</button>
+									<!-- <img *ngIf="!assignLeads" src="assets/images/crm/contact_img1.png" class="img-hover-unset" height="110"
 										alt="contact-img">
 									<img *ngIf="assignLeads" src="assets/images/crm/share_leadsimg.png" class="img-hover-unset" height="110"
-										alt="add-share-img">
+										alt="add-share-img"> -->
 								</div>
 							</div>
 							<!--  -->
@@ -122,45 +131,10 @@
 																				add your {{checkingContactTypeName}}s?
 																			</div> -->
 										<div class="portlet-body pt0">
-											<div class="row mrg-right0">
-												<div class="col-xs-8 col-sm-6 col-md-6 SideParddings1 cards_align">
-													<button class="color-flow-button btn-block white-co add_partnerbtn" id="addContacts"
-														(click)="addContactModalOpen()"
-														[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
-														[disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-														<span class="" translate>
-															<img src="assets/images/crm/One at a Time.svg" height="30"
-																class="mr5 img-hover-unset" alt=" One at a Time">
-															One at a Time</span>
-													</button>
-												</div>
-												<div class="col-xs-8 col-sm-6 col-md-6 SideParddings1 cards_align">
-													<button class="color-flow-button fileinput-button btn-block white-co add_partnerbtn"
-														id="uploadCSV"
-														[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
-														[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-														<span class="" style="z-index: 0;" translate>
-															<img src="assets/images/crm/Upload a CSV.svg" class="mr5 img-hover-unset"
-																height="30" alt="  Upload a CSV">
-															Upload a CSV
-														</span>
-														<input type="file" title=" " (click)="input.value = null;resetResponse();"
-															(change)="fileChange(input)" accept=".csv" #input
-															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
-													</button>
-													<!--  -->
-													<!-- <div style="margin-top: 5px;">
-																					<a (click)="downloadEmptyCsv()"> <i class="fa fa-download"
-																							aria-hidden="true"
-																							style="display: contents !important; font-size: 15px !important"></i><b
-																							translate>&nbsp;CSV Template</b>
-																					</a>
-																				</div> -->
-													<!--  -->
-												</div>
-												<!-- The global file processing state -->
-												<span class="fileupload-process"> </span>
-												<div class="clearfix"></div>
+											<div class="contact-card">
+												<img src="assets/images/crm/user_icon.svg"  height="40px"  alt="Contact Icon">
+												<p *ngIf="!assignLeads" class="mb0 ml10 fs_16">Add Contacts and Create Personalized Lists</p>
+											    <p *ngIf="assignLeads" class="mb0 ml10 fs_16">Add Share Leads and Create Personalized Lists</p>
 											</div>
 										</div>
 									</div>
@@ -170,7 +144,7 @@
 									<div class="partner_images">
 										<i class="fa fa-cloud-upload mr5" aria-hidden="true"></i>
 										<span translate>Import
-											{{checkingContactTypeName}}s from the cloud
+											{{checkingContactTypeName}}s from the cloud platforms
 										</span>
 										<!-- <div class="portlet-title" translate>Import
 														{{checkingContactTypeName}}s from the cloud:
@@ -184,11 +158,34 @@
 							</div>
 							<!--  -->
 							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden-xs">
-								<div class="contact_img">
-									<img *ngIf="!assignLeads" src="assets/images/crm/contact_img2.png" class="img-hover-unset tab-view-img"
+								<div class="contact_imgs">
+									<!-- <img *ngIf="!assignLeads" src="assets/images/crm/contact_img2.png" class="img-hover-unset tab-view-img"
 										height="110" alt="contact-img">
 									<img *ngIf="assignLeads" src="assets/images/crm/share_leadsimg2.png" class="img-hover-unset" height="110"
-										alt="add-share-img">
+										alt="add-share-img"> -->
+
+										<button class="color-flow-button fileinput-button btn-block white-co add_partnerbtn" id="uploadCSV"
+											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
+											[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+											<span class="upload_bgcolor" style="z-index: 0;" translate>
+												<img src="assets/images/crm/Contact CSV.svg" class="mr10 img-hover-unset" height="30" alt="  Upload a CSV">
+												Upload a CSV
+											</span>
+											<input type="file" title=" " (click)="input.value = null;resetResponse();" (change)="fileChange(input)"
+												accept=".csv" #input
+												[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
+												<p *ngIf="!assignLeads" class="mb0 mt5">Quickly add multiple contacts at once by uploading a CSV.  </p>
+												<p *ngIf="assignLeads" class="mb0 mt5">Quickly add multiple share leads at once by uploading a CSV.</p>
+										</button>
+													<!--  -->
+													<!-- <div style="margin-top: 5px;">
+																					<a (click)="downloadEmptyCsv()"> <i class="fa fa-download"
+																							aria-hidden="true"
+																							style="display: contents !important; font-size: 15px !important"></i><b
+																							translate>&nbsp;CSV Template</b>
+																					</a>
+																				</div> -->
+													<!--  -->
 								</div>
 							</div>
 					

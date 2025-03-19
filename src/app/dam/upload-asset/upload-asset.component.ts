@@ -532,7 +532,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     uploadOrUpdateAsset() {
         this.damUploadPostDto.draft = false;
         if (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus == 'APPROVED'
-            && this.approvalRequired && this.isAssetReplaced) {
+            && this.approvalRequired && this.isAssetReplaced && this.damUploadPostDto.assetType != 'pdf') {
             this.sendForReApproval();
         } else {
             this.uploadOrUpdate();
@@ -1668,7 +1668,7 @@ zoomOut() {
             if (isDraft || isRejected) {
                 this.submitButtonText = (assetApprover || !this.approvalRequired) ? 'Update' : 'Send for Approval';
             } else if (isApproved && isAssetReplaced) {
-                this.submitButtonText = (assetApprover || !this.approvalRequired) ? 'Update' : 'Send for Re-Approval';
+                this.submitButtonText = (assetApprover || !this.approvalRequired || this.damUploadPostDto.assetType == 'pdf') ? 'Update' : 'Send for Re-Approval';
             } else {
                 this.submitButtonText = 'Update';
             }
@@ -1704,7 +1704,7 @@ zoomOut() {
         }
         
         return ((!this.isAdd && this.isApprover && (this.damUploadPostDto.createdByAnyApprover || this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED])) ||
-            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && !this.isAssetReplaced) ||
+            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && (!this.isAssetReplaced || this.damUploadPostDto.assetType == 'pdf')) ||
             (this.isAdd && this.isApprover));
     }
           
