@@ -4600,4 +4600,10 @@ color: #fff!important;
   background: #e87e04 !important;
   color: #fff !important;
 }
+.modal-header{
+  background-color: rgb(255 253 253 / 35%) !important;
+}
+.modal-title{
+  color: #000 !important;
+}
 

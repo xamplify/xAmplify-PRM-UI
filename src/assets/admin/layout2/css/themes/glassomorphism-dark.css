@@ -4336,4 +4336,9 @@ color: #fff !important;
   background: #e87e04 !important;
   color: #fff !important;
 }
-
+.modal-header{
+  background-color: rgba(16 18 27 / 40%) !important;
+}
+.modal-title{
+  color: #fff !important;
+}

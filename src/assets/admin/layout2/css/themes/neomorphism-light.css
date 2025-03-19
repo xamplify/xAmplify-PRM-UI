@@ -4544,3 +4544,9 @@ a.Iconhover.custom-grid-icon.icon_margin{
   box-shadow: unset;
   color: #fff!important;
 }
+.modal-header{
+  background-color: #f0f5fa !important;
+}
+.modal-title{
+  color: #000 !important;
+}

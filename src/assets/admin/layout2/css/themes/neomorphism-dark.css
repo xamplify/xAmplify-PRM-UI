@@ -4492,3 +4492,9 @@ tbody>tr#uploaded-csv-tr>td {
 .btn_custom:hover {
   color: #fff !important;
 }
+.modal-header{
+  background-color: #2c2f33 !important;
+}
+.modal-title{
+  color: white !important;
+}

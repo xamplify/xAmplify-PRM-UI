@@ -2684,3 +2684,9 @@ tbody{background: transparent;}
     bottom: -68px!important;
   }
 }
+.modal-header{
+  background-color: #22313a !important;
+}
+.modal-title{
+  color: white !important;
+} 
