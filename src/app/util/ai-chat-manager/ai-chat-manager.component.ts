@@ -174,6 +174,8 @@ export class AiChatManagerComponent implements OnInit {
         this.loading = false;
         if (response.statusCode == 200) {
           this.assetDetailsViewDtoOfPartner = response.data;
+          this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
+          alert(this.assetDetailsViewDtoOfPartner.displayTime);
           console.log('API Response:', response);
         }
       },
@@ -203,7 +205,7 @@ export class AiChatManagerComponent implements OnInit {
   getPdfByAssetPath() {
     this.http.get(this.assetDetailsViewDtoOfPartner.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
       .subscribe(async response => {
-        this.pdfDoc = response;
+        this.pdfFile = response;
         this.getUploadedFileId();
       });
   }

@@ -12,7 +12,8 @@
                 <div class="pdf-text">PDF</div>
                 <a>{{assetDetailsViewDtoOfPartner.assetName}}.pdf</a>
               </div>
-              <div class="published-on">Published On: {{assetDetailsViewDtoOfPartner.displayTime}}</div>
+              <div class="published-on">Published On: Published On: {{ assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}
+              </div>
             </div>
             <div class="file-details">
               <h5>Asset Name: {{assetDetailsViewDtoOfPartner.assetName}}</h5>
