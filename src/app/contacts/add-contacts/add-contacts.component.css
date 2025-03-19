@@ -206,7 +206,7 @@ i.fa.fa-file-excel-o.IconTopMargin {
   padding-top: 0px!important;
 }
 .fs_16{
-  font-size: 16px!important;
+  font-size: 14px!important;
 }
 }
 .cards_align{
@@ -420,16 +420,11 @@ p.mb0.mt5 {
     font-size: 12px;
   }
   p.mb0.mt5 {
-    font-size: 9px;
+    font-size: 8px;
   }
 }
-@media only screen and (min-width: 600px) and (max-width:798px){
+@media only screen and (min-width: 600px) and (max-width:1024px){
   .clip_mask{
-    bottom: -65px!important;
-  }
-}
-@media only screen and (min-width: 779px) and (max-width:1024px){
-  .clip_mask{
-    bottom: -71px!important;
+    bottom: -68px!important;
   }
 }
