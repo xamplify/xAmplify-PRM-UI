@@ -175,7 +175,6 @@ export class AiChatManagerComponent implements OnInit {
         if (response.statusCode == 200) {
           this.assetDetailsViewDtoOfPartner = response.data;
           this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
-          alert(this.assetDetailsViewDtoOfPartner.displayTime);
           console.log('API Response:', response);
         }
       },
