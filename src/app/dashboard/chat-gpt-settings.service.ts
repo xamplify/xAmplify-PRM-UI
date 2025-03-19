@@ -36,21 +36,14 @@ export class ChatGptSettingsService {
 
   onUpload(pdfFile: Blob) {
     const url = `${this.chatGptSettingsUrl}/upload/loggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
-    if (pdfFile) {
-      const formData = new FormData();
-      formData.append('file', pdfFile, 'file.pdf');
-      this.http.post(url, formData)
-        .subscribe(
-          (response: any) => {
-            console.log('File uploaded successfully!', response);
-          },
-          (error) => {
-            console.error('File upload failed!', error);
-          }
-        );
-    } else {
-      console.error('No file selected!');
-    }
+    const formData = new FormData();
+    formData.append('file', pdfFile, 'file.pdf');
+    return this.authenticationService.callPostMethod(url, formData);
+  }
+
+  generateAssistantText(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + '/getPromptResponse?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, chatGptSettings);;
   }
 
 }

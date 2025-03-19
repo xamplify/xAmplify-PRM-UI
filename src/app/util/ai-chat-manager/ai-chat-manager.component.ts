@@ -4,6 +4,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReferenceService } from 'app/core/services/reference.service';
 import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 
 @Component({
   selector: 'app-ai-chat-manager',
@@ -19,8 +20,10 @@ export class AiChatManagerComponent implements OnInit {
   trimmedText: string = "";
   chatGptGeneratedText: string = "";
   properties: any;
+  chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   @Input() pdfFile: Blob;
+  uploadedFileId: any;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,) { }
 
   ngOnInit() {
@@ -28,9 +31,12 @@ export class AiChatManagerComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
       console.log('PDF file loaded:', this.pdfFile);
-      this.chatGptSettingsService.onUpload(this.pdfFile);
+      if (this.pdfFile) {
+        this.getUploadedFileId();
+      }
     }
   }
+
   setInputText(text: string) {
     this.inputText = text;
     this.validateInputText();
@@ -49,11 +55,13 @@ export class AiChatManagerComponent implements OnInit {
   }
   
   AskAiTogetData() {
-    this.openHistory = true; 
+    this.openHistory = true;
     this.messages.push({ role: 'user', content: this.trimmedText });
     this.inputText = '';
     var self = this;
-    this.chatGptSettingsService.generateText(this.trimmedText).subscribe(
+    this.chatGptIntegrationSettingsDto.uploadedFileId = this.uploadedFileId;
+    this.chatGptIntegrationSettingsDto.prompt = this.trimmedText;
+    this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         console.log('API Response:', response);
 
@@ -75,6 +83,7 @@ export class AiChatManagerComponent implements OnInit {
       }
     );
   }
+  
   closeAi() {
     this.notifyParent.emit();
   }
@@ -102,5 +111,18 @@ export class AiChatManagerComponent implements OnInit {
       alert('Please upload a valid PDF file.');
     }
   }
-  
+
+  getUploadedFileId() {
+    this.chatGptSettingsService.onUpload(this.pdfFile).subscribe(
+      (response: any) => {
+        const responseObject = JSON.parse(response);
+        this.uploadedFileId = responseObject.id;
+        console.log(this.uploadedFileId);
+      },
+      (error: string) => {
+        console.log('API Error:', error);;
+      }
+    );
+  }
+
 }
