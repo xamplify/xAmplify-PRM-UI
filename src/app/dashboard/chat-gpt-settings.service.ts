@@ -34,11 +34,11 @@ export class ChatGptSettingsService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  onUpload(pdfFile: File) {
+  onUpload(pdfFile: Blob) {
     const url = `${this.chatGptSettingsUrl}/upload/loggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
     if (pdfFile) {
       const formData = new FormData();
-      formData.append('file', pdfFile, pdfFile.name);
+      formData.append('file', pdfFile, 'file.pdf');
       this.http.post(url, formData)
         .subscribe(
           (response: any) => {

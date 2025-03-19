@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -20,12 +20,16 @@ export class AiChatManagerComponent implements OnInit {
   chatGptGeneratedText: string = "";
   properties: any;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter();
-  @Input() pdfFile: File;
+  @Input() pdfFile: Blob;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,) { }
 
   ngOnInit() {
-    alert(this.pdfFile);
-    // this.chatGptSettingsService.onUpload(this.pdfFile);
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
+      console.log('PDF file loaded:', this.pdfFile);
+      this.chatGptSettingsService.onUpload(this.pdfFile);
+    }
   }
   setInputText(text: string) {
     this.inputText = text;

@@ -263,13 +263,7 @@ export class ViewDamComponent implements OnInit {
 	getPdfByAssetPath(){
 		this.http.get(this.assetDetailsViewDto.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
         .subscribe(async response => {
-          let url = URL.createObjectURL(response);
-		//   this.extractTextFromPDF(url);
-		if (response.type === 'application/pdf') {
-			alert('It is a PDF file.');
-		  }
-          const pdf = await pdfjsLib.getDocument(url).promise;
-          this.pdfDoc = pdf;
+		this.pdfDoc = response;
         });
 	}
 	extractTextFromPDF(url: string): void {
