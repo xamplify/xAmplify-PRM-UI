@@ -207,13 +207,14 @@ import { OrderFieldsComponent } from './order-fields/order-fields.component';
 import { CampaignMdfRequestsEmailsSentHistoryComponent } from 'app/util/campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
 import { UnlayerBuliderComponent } from 'app/util/unlayer-bulider/unlayer-bulider.component';
 import { AiChatManagerComponent } from 'app/util/ai-chat-manager/ai-chat-manager.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,
-		 ScrollToModule.forRoot(),AngularMultiSelectModule],
+		 ScrollToModule.forRoot(),AngularMultiSelectModule,MarkdownModule.forRoot()],
 	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
