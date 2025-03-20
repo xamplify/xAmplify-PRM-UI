@@ -37,6 +37,8 @@ export class AiChatManagerComponent implements OnInit {
   actionType: string;
   showEmailModalPopup: boolean;
   openShareOption: boolean = false;
+  ngxLoading: boolean = false;
+  UploadedFile: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -148,6 +150,7 @@ export class AiChatManagerComponent implements OnInit {
     document.body.removeChild(textarea);
   }
   onFileSelected(event: any) {
+    this.UploadedFile =true;
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
@@ -171,9 +174,11 @@ export class AiChatManagerComponent implements OnInit {
         this.isPdfUploading = false;
         this.uploadedFileId = responseObject.id;
         console.log(this.uploadedFileId);
+        this.isLoading = false;
       },
       (error: string) => {
         this.isPdfUploading = false;
+        this.isLoading = false;
         console.log('API Error:', error);;
       }
     );
@@ -214,10 +219,12 @@ export class AiChatManagerComponent implements OnInit {
   }
   
   getPdfByAssetPath() {
+  this.ngxLoading=true;
     this.http.get(this.assetDetailsViewDtoOfPartner.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
       .subscribe(async response => {
         this.pdfFile = response;
         this.getUploadedFileId();
+        this.ngxLoading=false;
       });
   }
   openEmailModalPopup() {
@@ -235,4 +242,7 @@ export class AiChatManagerComponent implements OnInit {
     this.openShareOption = false;
     this.openHistory = true;
   }
+  // ngOndestroy{
+
+  // }
 }

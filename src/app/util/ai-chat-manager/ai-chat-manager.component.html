@@ -1,4 +1,4 @@
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType"[emailBody]="chatGptGeneratedText" (notifyClose)="closeEmailModalPopup()"></app-add-email-modal-popup>
 <app-update-status *ngIf="openShareOption" [fromAi]="true"(notifyClose)="closeSocialShare($event)"></app-update-status>
 <div class="page-content">
@@ -16,9 +16,12 @@
                 <ng-container *ngIf="!isPdfUploading">
                   <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
                 </ng-container>
-                <a>{{assetDetailsViewDtoOfPartner?.assetName}}.pdf</a>
+                <a title="{{ assetDetailsViewDtoOfPartner?.assetName }}">
+                  {{ assetDetailsViewDtoOfPartner?.assetName | slice:0:20 }}
+                  <span *ngIf="assetDetailsViewDtoOfPartner?.assetName?.length > 20">...</span>.pdf
+                </a>                
               </div>
-              <div class="published-on">Published On:{{ assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}
+              <div class="published-on">{{UploadedFile ? 'Uploaded On' :'Published On'}}:{{ assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}
               </div>
             </div>
             <div class="file-details">
@@ -47,7 +50,7 @@
             <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
           </div>
-          <button class="btn btn-primary" [disabled]="isPdfUploading" (click)="submitdata()">Submit</button>
+          <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading" (click)="submitdata()">Submit</button>
         </div>
       </div>
     </div>
@@ -94,8 +97,8 @@
                   <div class="footer-icon" title="List View">
                     <i class="fa fa-refresh fs-12"></i>
                   </div>
-                  <button class="share-btn" >Desgin Template</button>
-                  <button class="share-btn">Desgin Page</button>
+                  <button class="share-btn" >Design Template</button>
+                  <button class="share-btn">Design Page</button>
                   <button class="share-btn" (click)="openEmailModalPopup()">Send Email</button>
                   <button class="share-btn" (click)="openSocialShare()">Social Share</button>
                 </div>
@@ -148,7 +151,7 @@
             <button class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
           </div>
-          <button class="submit-btn" [disabled]="isLoading" (click)="AskAiTogetData()"> Submit</button>
+          <button class="submit-btn" [disabled]="isLoading || isPdfUploading" (click)="AskAiTogetData()"> Submit</button>
         </div>
       </div>
     </div>
