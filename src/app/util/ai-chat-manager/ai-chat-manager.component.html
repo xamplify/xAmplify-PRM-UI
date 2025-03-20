@@ -12,7 +12,10 @@
             <div class="file-icon">
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
-                <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
+                <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
+                <ng-container *ngIf="!isPdfUploading">
+                  <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
+                </ng-container>
                 <a>{{assetDetailsViewDtoOfPartner?.assetName}}.pdf</a>
               </div>
               <div class="published-on">Published On:{{ assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}
@@ -44,7 +47,7 @@
             <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
           </div>
-          <button class="btn btn-primary" [disabled]="isLoading" (click)="submitdata()">Submit</button>
+          <button class="btn btn-primary" [disabled]="isPdfUploading" (click)="submitdata()">Submit</button>
         </div>
       </div>
     </div>

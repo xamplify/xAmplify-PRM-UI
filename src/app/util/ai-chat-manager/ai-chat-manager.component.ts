@@ -180,6 +180,7 @@ export class AiChatManagerComponent implements OnInit {
   }
   getSharedAssetDetailsById(id: number) {
     this.loading = true;
+    this.isPdfUploading = true;
     this.chatGptSettingsService.getSharedAssetDetailsById(id).subscribe(
       (response: any) => {
         this.loading = false;
@@ -192,7 +193,7 @@ export class AiChatManagerComponent implements OnInit {
       (error) => {
         this.loading = false;
         console.error('API Error:', error);
-      },() => {
+      }, () => {
         this.getPdfByAssetPath();
       }
 
