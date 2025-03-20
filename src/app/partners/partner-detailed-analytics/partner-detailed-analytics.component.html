@@ -64,17 +64,17 @@
   </div>
 
   <!--****************** Lead To Deal Conversion & Campaigns To Lead Conversion Charts *******************-->
-  <div class="row rowPaddingCustomization3 mobilerowPadding1" *ngIf="referenseService?.opportunitiesAccessGivenByVendor && referenseService?.campaignAccessGivenByVendor">
+  <div class="row rowPaddingCustomization3 mobilerowPadding1" *ngIf="referenseService?.opportunitiesAccessGivenByVendor || referenseService?.campaignAccessGivenByVendor">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Campaigns To Lead Conversion Chart*******************-->
-      <div>
+      <div *ngIf="referenseService?.opportunitiesAccessGivenByVendor && referenseService?.campaignAccessGivenByVendor">
         <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId"
           *ngIf="authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
           [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
-          [chartId]="'partnerJourneyredistributeCampaignsAndLeadsBarChart'" ></app-redistributed-campaigns-and-leads-bar-chart>
+          [chartId]="'partnerJourneyredistributeCampaignsAndLeadsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
       </div>
       <!--******************Lead To Deal Conversion Chart*******************-->
-      <div>
+      <div *ngIf="referenseService?.opportunitiesAccessGivenByVendor">
         <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
           [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
           [chartId]="'partnerJourneyLeadsAndDealsBarChart'" *ngIf="referenseService?.opportunitiesAccessGivenByVendor"></app-redistributed-campaigns-and-leads-bar-chart>

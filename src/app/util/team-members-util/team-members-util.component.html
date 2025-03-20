@@ -925,29 +925,29 @@
           </div>
         </span>
         <!--******************Graphs Details*******************-->
-        <div *ngIf="!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm && referenceService?.opportunitiesAccessGivenByVendor && referenceService?.campaignAccessGivenByVendor"
+        <div *ngIf="!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm && (referenceService?.opportunitiesAccessGivenByVendor || referenceService?.campaignAccessGivenByVendor)"
           class="row rowPaddingCustomization3">
           <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
             [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
             [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
             [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="fromDateFilter"
-            [toDateFilter]="toDateFilter">
+            [toDateFilter]="toDateFilter" *ngIf="referenceService?.campaignAccessGivenByVendor">
           </app-redistributed-campaigns-and-leads-bar-chart>
           <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
             [selectedTeamMemberIds]="selectedTeamMemberIds" [vanityUrlFilter]="vanityUrlFilter"
             [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-            [chartId]="'allLeadsAndDealsBarChart'" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter">
+            [chartId]="'allLeadsAndDealsBarChart'" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.opportunitiesAccessGivenByVendor">
           </app-redistributed-campaigns-and-leads-bar-chart>
           <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
             [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
             [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
             [chartId]="'redistributeCampaignsAndLeadsCountBarChart'" [fromDateFilter]="fromDateFilter"
-            [toDateFilter]="toDateFilter"></app-redistributed-campaigns-and-leads-bar-chart>
+            [toDateFilter]="toDateFilter" *ngIf="referenceService?.campaignAccessGivenByVendor"></app-redistributed-campaigns-and-leads-bar-chart>
           <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true" [partnerCompanyId]="loggedInUserId"
             [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
             [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
             [chartId]="'top10LeadsAndDealsBarChart'" [fromDateFilter]="fromDateFilter"
-            [toDateFilter]="toDateFilter"></app-redistributed-campaigns-and-leads-bar-chart>
+            [toDateFilter]="toDateFilter" *ngIf="referenceService?.opportunitiesAccessGivenByVendor"></app-redistributed-campaigns-and-leads-bar-chart>
         </div>
         <!--******************Lead Details*******************-->
         <span *ngIf="!isVendorVersion || authenticationService?.enableLeads">
