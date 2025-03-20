@@ -148,13 +148,16 @@ export class AiChatManagerComponent implements OnInit {
     document.body.removeChild(textarea);
   }
   onFileSelected(event: any) {
+    if (this.uploadedFileId != undefined) {
+      this.deleteUploadedFile();
+    }
     const file: File = event.target.files[0];
     if (file && file.type === 'application/pdf') {
       this.pdfFile = file;
       console.log('PDF selected:', file.name);
       this.assetDetailsViewDtoOfPartner.assetName = file.name.replace(/\.pdf/i, '');
       this.assetDetailsViewDtoOfPartner.displayTime = new Date();
-      this.chatGptSettingsService.onUpload(this.pdfFile);
+      this.getUploadedFileId();
     } else {
       alert('Please upload a valid PDF file.');
     }
@@ -213,7 +216,7 @@ export class AiChatManagerComponent implements OnInit {
     this.http.get(this.assetDetailsViewDtoOfPartner.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
       .subscribe(async response => {
         this.pdfFile = response;
-        // this.getUploadedFileId();
+        this.getUploadedFileId();
       });
   }
   openEmailModalPopup() {
@@ -224,6 +227,7 @@ export class AiChatManagerComponent implements OnInit {
     this.showEmailModalPopup = false;
   }
   openSocialShare(){
+    this.referenceService.scrollSmoothToTop();
     this.openShareOption = true;
   }
   closeSocialShare(event:any){
