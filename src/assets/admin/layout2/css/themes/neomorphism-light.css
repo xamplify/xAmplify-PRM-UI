@@ -1932,9 +1932,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   background: linear-gradient(225deg, #d8dde1, #ffffff);
 }
-.popup_header {
+/* .popup_header {
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
-}
+} */
 .popup_footer {
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
 }
@@ -1983,9 +1983,10 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .close-circle {
   background: none !important;
-  color: #000 !important;
+  color: white !important;
   border: 1px solid #d0d5db !important;
-  box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff !important;
+  /* box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff !important;
+*/
 }
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
@@ -4545,8 +4546,8 @@ a.Iconhover.custom-grid-icon.icon_margin{
   color: #fff!important;
 }
 .modal-header{
-  background-color: #f0f5fa !important;
+  background: #34495a !important;
 }
 .modal-title{
-  color: #000 !important;
+  color: white !important;
 }

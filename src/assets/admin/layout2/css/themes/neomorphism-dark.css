@@ -4493,7 +4493,7 @@ tbody>tr#uploaded-csv-tr>td {
   color: #fff !important;
 }
 .modal-header{
-  background-color: 2px solid #0276FF !important;
+  background: linear-gradient(33deg,#171718, #444a50) !important;
 }
 .modal-title{
   color: white !important;
