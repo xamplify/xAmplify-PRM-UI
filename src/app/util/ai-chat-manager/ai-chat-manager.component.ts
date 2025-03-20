@@ -226,4 +226,8 @@ export class AiChatManagerComponent implements OnInit {
   openSocialShare(){
     this.openShareOption = true;
   }
+  closeSocialShare(event:any){
+    this.openShareOption = false;
+    this.openHistory = true;
+  }
 }

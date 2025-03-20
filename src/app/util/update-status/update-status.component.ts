@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild,Renderer } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild,Renderer, EventEmitter, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -115,6 +115,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	loggedInUserId = 0;
 	teamMemberEmailIds:any[] = [];
 	isValidFromName = true;
+	@Output() notifyClose: EventEmitter<any> = new EventEmitter();
+	@Input() fromAi :boolean = false;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -1696,7 +1698,9 @@ checkAliasAccess(socialCampaignAlias: string) {
 			this.referenceService.goToRouter('/home/campaigns/partner/social');
 		}
 		}
-	
+		backAi(){
+			this.notifyClose.emit();
+		}
 }
 
 

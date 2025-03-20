@@ -13,7 +13,7 @@
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                     Update Status <sup>(Beta)</sup>
                 </li>
-                <ng-container *ngIf="!showNavigationBreadCrumbToPartner && !location.includes('/social/update-status')">
+                <ng-container *ngIf="!showNavigationBreadCrumbToPartner && !location.includes('/social/update-status') && !fromAi">
                     <li>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                         <a (click)="nagivatetoRouter('campaigns')">Select Campaign</a>
@@ -34,6 +34,8 @@
                     </li>
                 </ng-container>
             </ul>
+            <button *ngIf="fromAi"class="close-circle mr5 mt5" (click)="backAi()">
+                <i aria-hidden="true" class="fa fa-times" style="margin-top: 0px;"></i></button>
             <div *ngIf="location.includes('/campaigns/social')" id="folder-margin-xamp">
                 <button class="button_blue bgcolor-unset pos_pd_top_rgt1 btn_for_only_themes" id="right" style="margin-top: 0px;"
                     (click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition">Create
