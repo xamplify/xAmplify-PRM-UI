@@ -33,6 +33,7 @@ export class AiChatManagerComponent implements OnInit {
   assetId = 0;
   pdfDoc: any;
   pdfFile: Blob;
+  isPdfUploading: boolean =false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -69,13 +70,14 @@ export class AiChatManagerComponent implements OnInit {
     }
     // this.notifyParent.emit();
   }
+  
   validateInputText() {
     this.trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = this.trimmedText != undefined && this.trimmedText.length > 0;
   }
 
   searchDataOnKeyPress(keyCode: any) {
-    if (keyCode === 13 && !this.isLoading) {
+    if (keyCode === 13 && !(this.isLoading || this.isPdfUploading)) {
       this.openHistory = true;
       this.AskAiTogetData();
     }
@@ -119,13 +121,13 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   closeAi() {
-    if(this.uploadedFileId != undefined){
+    if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
-      if (this.router.url.includes('/shared/view/')) {
-        this.referenceService.goToRouter('/home/dam/shared/l');
-      } else {
-        this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
-      }
+    }
+    if (this.router.url.includes('/shared/view/')) {
+      this.referenceService.goToRouter('/home/dam/shared/l');
+    } else {
+      this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
     }
     // this.notifyParent.emit();
   }
@@ -156,13 +158,16 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   getUploadedFileId() {
+    this.isPdfUploading = true;
     this.chatGptSettingsService.onUpload(this.pdfFile).subscribe(
       (response: any) => {
         const responseObject = JSON.parse(response);
+        this.isPdfUploading = false;
         this.uploadedFileId = responseObject.id;
         console.log(this.uploadedFileId);
       },
       (error: string) => {
+        this.isPdfUploading = false;
         console.log('API Error:', error);;
       }
     );
