@@ -338,7 +338,7 @@ export class AddTaskModalPopupComponent implements OnInit {
     if (this.taskActivity.dueDate) {
       const now = new Date();
       const diffInMinutes = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 60);
-      return diffInMinutes < 30;
+      return diffInMinutes < 60;
     }
     return false;
   }
@@ -347,7 +347,7 @@ export class AddTaskModalPopupComponent implements OnInit {
     if (this.taskActivity.dueDate) {
       const now = new Date();
       const diffInMinutes = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 60);
-      return diffInMinutes < 60;
+      return diffInMinutes < 90;
     }
     return false;
   }
@@ -355,8 +355,8 @@ export class AddTaskModalPopupComponent implements OnInit {
   isDueDateLessThanOneDay(): boolean {
     if (this.taskActivity.dueDate) {
       const now = new Date();
-      const diffInDays = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 3600 * 24);
-      return diffInDays < 1;
+      const diffInMinutes = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 60);
+      return diffInMinutes < 1470;
     }
     return false;
   }
@@ -364,8 +364,8 @@ export class AddTaskModalPopupComponent implements OnInit {
   isDueDateLessThanOneWeek(): boolean {
     if (this.taskActivity.dueDate) {
       const now = new Date();
-      const diffInDays = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 3600 * 24);
-      return diffInDays < 7;
+      const diffInMinutes = (new Date(this.taskActivity.dueDate).getTime() - now.getTime()) / (1000 * 60);
+      return diffInMinutes < 10110;
     }
     return false;
   }
