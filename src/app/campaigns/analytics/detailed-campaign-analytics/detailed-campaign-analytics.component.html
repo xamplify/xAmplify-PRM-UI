@@ -765,7 +765,7 @@
                         </button>
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
-                        *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
+                        *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                         <button class="portlet light color1-invert crcb vlt-b-c detail_card"
                            (click)="showCampaignLeads()"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -780,7 +780,7 @@
                         </button>
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
-                        *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
+                        *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                         <button class="portlet light color1-invert crcb lt-g-b-c detail_card"
                            (click)="showCampaignDeals()"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
