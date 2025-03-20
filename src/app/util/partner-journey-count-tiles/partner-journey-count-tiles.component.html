@@ -26,7 +26,7 @@
       </div>
       <!-- card one  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount && authenticationService.module?.isCampaign"
+         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount && authenticationService.module?.isCampaign && referenseService?.campaignAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.redistributedCampaignCount > 0 ? '#pj-redistributed-campaigns-div' : ''"
          [scrollDuration]="1000" [scrollOffset]="-100" data-toggle="tooltip" data-placement="top" title="{{!this.isTeamMemberAnalytics ? properties?.redistributed_campaigns + infoName : ''}}">
          <div
@@ -50,7 +50,7 @@
       </div>
       <!-- card three  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showContactCount"
+         *ngIf="partnerJourneyAnalytics?.showContactCount && referenseService?.contactsAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.contactCount > 0 ? '#ta-contact-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="top" title="{{!this.isTeamMemberAnalytics ? properties?.contacts_Info + infoName : ''}}">
          <div
@@ -62,7 +62,7 @@
       </div>
       <!-- card eleven  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showCompanyCount && isTeamMemberAnalytics"
+         *ngIf="partnerJourneyAnalytics?.showCompanyCount && isTeamMemberAnalytics && referenseService?.contactsAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.companyCount > 0 ? '#ta-company-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div
@@ -74,7 +74,7 @@
       </div>
       <!-- card four  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showShareLeadCount"
+         *ngIf="partnerJourneyAnalytics?.showShareLeadCount && referenseService?.sharedLeadAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.shareLeadCount > 0 ? '#pj-share-lead-details-div' : ''"
          [scrollDuration]="1000" [scrollOffset]="-100" data-toggle="tooltip" data-placement="top" title="{{!this.isTeamMemberAnalytics ? properties?.share_Leads_Info + infoName : ''}}">
          <div
@@ -86,7 +86,7 @@
       </div>
       <!-- card five  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showLeadCount"
+         *ngIf="partnerJourneyAnalytics?.showLeadCount && referenseService?.opportunitiesAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.leadCount > 0 ? '#pj-lead-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="top" title="{{!this.isTeamMemberAnalytics ? properties?.leads_Info + infoName : ''}}">
          <div
@@ -98,7 +98,7 @@
       </div>
       <!-- card six  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showDealCount"
+         *ngIf="partnerJourneyAnalytics?.showDealCount && referenseService?.opportunitiesAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.dealCount > 0 ? '#pj-deal-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="top" title="{{!this.isTeamMemberAnalytics ? properties?.deals_Info + infoName : ''}}">
          <div
@@ -110,7 +110,7 @@
       </div>
       <!-- card seven  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showMDFAmount && authenticationService?.mdf"
+         *ngIf="partnerJourneyAnalytics?.showMDFAmount && authenticationService?.mdf && referenseService?.mdfAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.mdfAmount > 0 ? '#pj-mdf-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.mdf_Amount_Info : ''}}">
          <div
@@ -122,7 +122,7 @@
       </div>
       <!-- card eight  for team member analytics -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics && isVendorVersion"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics && isVendorVersion && referenseService?.assetAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#ta-asset-details-div': ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.assets_Info + infoName : ''}}">
          <div
@@ -134,7 +134,7 @@
       </div>
       
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics && !isVendorVersion"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && isTeamMemberAnalytics && !isVendorVersion && referenseService?.assetAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#ta-asset-details-div': ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.assets_Info + infoName : ''}}">
          <div
@@ -147,7 +147,7 @@
       
       <!-- card eleven  for partner analytics-->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount && !isTeamMemberAnalytics"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && !isTeamMemberAnalytics && referenseService?.assetAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#asset-details-div': ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.assets_Info + infoName : ''}}">
          <div
@@ -159,7 +159,7 @@
       </div>
       
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showTrackAssetCount"
+         *ngIf="partnerJourneyAnalytics?.showTrackAssetCount && referenseService?.trackAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.trackAssetCount > 0 ? '#pj-asset-details-div' : ''" [scrollDuration]="1000"
          [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.track_Assets_Info : ''}}">
          <div
@@ -171,7 +171,7 @@
       </div>
       <!-- card nine  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showTrackCount"
+         *ngIf="partnerJourneyAnalytics?.showTrackCount && referenseService?.trackAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.trackCount > 0 ? '#pj-track-playbook-details-div' : ''"
          [scrollDuration]="1000" [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.tracks_Info + infoName : ''}}">
          <div
@@ -183,7 +183,7 @@
       </div>
       <!-- card ten  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showPlaybookCount"
+         *ngIf="partnerJourneyAnalytics?.showPlaybookCount && referenseService?.playBookAccessGivenByVendor"
          [scrollTo]="partnerJourneyAnalytics?.playbookCount > 0 ? '#pj-track-playbook-details-div' : ''"
          [scrollDuration]="1000" [scrollOffset]="-100" data-toggle="tooltip" data-placement="bottom" title="{{!this.isTeamMemberAnalytics ? properties?.playbooks_Info + infoName : ''}}">
          <div

@@ -50,41 +50,41 @@
   </div>
 
   <!--******************User wise Track Counts & User wise PlayBook Counts*******************-->
-  <div class="row rowPaddingCustomization2 mobilerowPadding" *ngIf="authenticationService?.lmsAccess">
+  <div class="row rowPaddingCustomization2 mobilerowPadding" *ngIf="authenticationService?.lmsAccess && (referenseService?.trackAccessGivenByVendor || referenseService?.playBookAccessGivenByVendor)">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--*****************User wise Track Counts********************-->
       <app-userwise-track-counts [type]="'TRACK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
         [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter"
-        [toDateFilter]="toDateFilter"></app-userwise-track-counts>
+        [toDateFilter]="toDateFilter" *ngIf="referenseService?.trackAccessGivenByVendor"></app-userwise-track-counts>
       <!--******************User wise Playbook Counts*******************-->
       <app-userwise-track-counts [type]="'PLAYBOOK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
         [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter"
-        [toDateFilter]="toDateFilter"></app-userwise-track-counts>
+        [toDateFilter]="toDateFilter" *ngIf="referenseService?.playBookAccessGivenByVendor"></app-userwise-track-counts>
     </div>
   </div>
 
   <!--****************** Lead To Deal Conversion & Campaigns To Lead Conversion Charts *******************-->
-  <div class="row rowPaddingCustomization3 mobilerowPadding1">
+  <div class="row rowPaddingCustomization3 mobilerowPadding1" *ngIf="referenseService?.opportunitiesAccessGivenByVendor && referenseService?.campaignAccessGivenByVendor">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Campaigns To Lead Conversion Chart*******************-->
       <div>
         <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId"
           *ngIf="authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
           [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
-          [chartId]="'partnerJourneyredistributeCampaignsAndLeadsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+          [chartId]="'partnerJourneyredistributeCampaignsAndLeadsBarChart'" ></app-redistributed-campaigns-and-leads-bar-chart>
       </div>
       <!--******************Lead To Deal Conversion Chart*******************-->
       <div>
         <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
           [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
-          [chartId]="'partnerJourneyLeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+          [chartId]="'partnerJourneyLeadsAndDealsBarChart'" *ngIf="referenseService?.opportunitiesAccessGivenByVendor"></app-redistributed-campaigns-and-leads-bar-chart>
       </div>
     </div>
   </div>
 
 
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
-  <div class="row rowPaddingCustomization mobilerowPadding1">
+  <div class="row rowPaddingCustomization mobilerowPadding1"  *ngIf="referenseService?.trackAccessGivenByVendor">
     <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="authenticationService?.lmsAccess">
       <!--******************Interacted & Not Interacted Donut Chart******************-->
       <div class="ml15m">
@@ -103,7 +103,7 @@
   </div>
 
   <!--******************Status wise Track Assets Donut Chart & Details******************-->
-  <div class="row rowPaddingCustomization mobilerowPadding1">
+  <div class="row rowPaddingCustomization mobilerowPadding1"  *ngIf="referenseService?.trackAccessGivenByVendor">
     <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="authenticationService?.lmsAccess">
       <!--******************Type wise Track Assets Donut Chart******************-->
       <div class="ml15m">
@@ -121,52 +121,52 @@
     </div>
   </div>
 
-  <div class="row rowPaddingCustomization1">
+  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.assetAccessGivenByVendor">
     <app-partner-journey-asset-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
       [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
       *ngIf="authenticationService?.module?.damAccess"></app-partner-journey-asset-details>
   </div>
 
   <!--******************Track Assets Detailed Report*******************-->
-  <div class="row rowPaddingCustomization1">
+  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.trackAccessGivenByVendor">
     <app-userwise-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
       [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="authenticationService?.lmsAccess"></app-userwise-track-details>
   </div>
   <!--******************Track & Playbook Asset Details*******************-->
-  <div class="row rowPaddingCustomization mobilerowPadding">
+  <div class="row rowPaddingCustomization mobilerowPadding" *ngIf="referenseService?.trackAccessGivenByVendor || referenseService?.playBookAccessGivenByVendor">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Track Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
         [isDetailedAnalytics]="true" [type]="'TRACK'" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
-        *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
+        *ngIf="authenticationService?.lmsAccess && referenseService?.trackAccessGivenByVendor"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
         [isDetailedAnalytics]="true" [type]="'PLAYBOOK'" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
-        *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
+        *ngIf="authenticationService.module?.playbookAccess && referenseService?.playBookAccessGivenByVendor"></app-track-asset-details>
     </div>
   </div>
 
   <!--******************Share Lead Details*******************-->
-  <div class="row rowPaddingCustomization1">
+  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.sharedLeadAccessGivenByVendor">
     <app-share-lead-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
       [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" [teamMemberId]="teamMemberId"
       *ngIf="authenticationService.module?.hasShareLeadAccess"></app-share-lead-details>
   </div>
   <!--******************Redistributed Camapign Details*******************-->
-  <div class="row rowPaddingCustomization1">
+  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.campaignAccessGivenByVendor">
     <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
       [isDetailedAnalytics]="true" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
       *ngIf="authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaign-details>
   </div>
   <!--******************Lead Details*******************-->
-  <div class="row rowPaddingCustomization1">
+  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.opportunitiesAccessGivenByVendor">
     <app-partner-journey-lead-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
       [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
       *ngIf="authenticationService?.enableLeads"></app-partner-journey-lead-details>
   </div>
   <!--******************Deal Details*******************-->
-  <div class="row rowPaddingCustomization1">
+  <div class="row rowPaddingCustomization1" *ngIf="referenseService?.opportunitiesAccessGivenByVendor">
     <app-partner-journey-deal-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
       [teamMemberId]="teamMemberId" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter"
       *ngIf="authenticationService?.enableLeads"></app-partner-journey-deal-details>
@@ -176,5 +176,5 @@
     <app-partner-journey-contact-details [partnerCompanyId]="partnerCompanyId"
   [teamMemberId]="teamMemberId"></app-partner-journey-contact-details> -->
 
-
+  <app-scroll-top></app-scroll-top>
 </div>

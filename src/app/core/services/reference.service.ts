@@ -166,7 +166,17 @@ export class ReferenceService {
   universalSearchVendorOrPartnerView :String ="";
   isOpenUniversalSearch:boolean= false;
   approvalModuleRouter = "/home/approval-hub/manage";
-  universalSearchFilterValue:number= this.getUniversalSearchFilterValue() ;
+  universalSearchFilterValue:number= this.getUniversalSearchFilterValue();
+  /*** XNFR-914 */
+  assetAccessGivenByVendor = true;
+  trackAccessGivenByVendor = true;
+  playBookAccessGivenByVendor = true;
+  opportunitiesAccessGivenByVendor = true;
+  contactsAccessGivenByVendor = true;
+  campaignAccessGivenByVendor = true;
+  sharedLeadAccessGivenByVendor = true;
+  mdfAccessGivenByVendor = true;
+  showAnalytics = true;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
