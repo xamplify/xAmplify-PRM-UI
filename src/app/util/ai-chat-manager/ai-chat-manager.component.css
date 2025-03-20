@@ -45,7 +45,7 @@
     margin-right: 15px;
     padding: 5px;
     }
-    .pdf-text {
+    /* .pdf-text {
     width: 29px;
     height: 29px;
     background: red;
@@ -57,7 +57,7 @@
     font-weight: bold;
     margin-right: 10px;
     font-size: 12px;
-    }
+    } */
     .pdf-text a {
     color: #007bff;
     }
@@ -137,6 +137,8 @@
     background-color: #fff;
     padding: 5px;
     border-radius: 6px;
+    align-items: center;
+    font-weight: 500;
     }
     /* view history */
     .summarize-pdf-card{

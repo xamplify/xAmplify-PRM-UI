@@ -226,9 +226,9 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top" title="Ask AI" (click)="AskAi(asset)">
+															<a class ="oliveIcon" *ngIf="isPartnerView && asset?.assetType =='pdf'" data-toggle="tooltip" data-placement="top" title="Ask AI" (click)="AskAi(asset)">
 																<div class="oliveBackground">
-																	<img src="assets/images/Pdf-AI.svg" alt="Oliver Icon" class="oliveImg">
+																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
 															</a>
 
