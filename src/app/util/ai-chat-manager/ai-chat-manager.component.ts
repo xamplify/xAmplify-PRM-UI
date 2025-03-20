@@ -242,7 +242,12 @@ export class AiChatManagerComponent implements OnInit {
     this.openShareOption = false;
     this.openHistory = true;
   }
-  // ngOndestroy{
-
-  // }
+  ngOnDestroy() {
+    this.openHistory=false;
+    this.openShareOption = false;
+    this.loading = false;
+    this.ngxLoading  = false;
+    this.UploadedFile = false;
+    this.showEmailModalPopup = false;
+  }
 }
