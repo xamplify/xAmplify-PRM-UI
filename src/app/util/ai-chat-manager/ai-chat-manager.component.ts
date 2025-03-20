@@ -34,6 +34,9 @@ export class AiChatManagerComponent implements OnInit {
   pdfDoc: any;
   pdfFile: Blob;
   isPdfUploading: boolean =false;
+  actionType: string;
+  showEmailModalPopup: boolean;
+  openShareOption: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -210,8 +213,17 @@ export class AiChatManagerComponent implements OnInit {
     this.http.get(this.assetDetailsViewDtoOfPartner.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
       .subscribe(async response => {
         this.pdfFile = response;
-        this.getUploadedFileId();
+        // this.getUploadedFileId();
       });
   }
-
+  openEmailModalPopup() {
+    this.actionType = 'oliveAi';
+    this.showEmailModalPopup = true;
+  }
+  closeEmailModalPopup() {
+    this.showEmailModalPopup = false;
+  }
+  openSocialShare(){
+    this.referenceService.goToRouter('home/rss/welcome');
+  }
 }

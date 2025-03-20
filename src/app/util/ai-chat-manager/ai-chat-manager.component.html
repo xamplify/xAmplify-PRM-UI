@@ -1,4 +1,6 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType"[emailBody]="chatGptGeneratedText" (notifyClose)="closeEmailModalPopup()"></app-add-email-modal-popup>
+<!-- <app-update-status *ngIf="openShareOption"></app-update-status> -->
 <div class="page-content">
   <div *ngIf="!openHistory" class="pdf_body">
     <button class="btn close_btn" (click)="closeAi()">×</button>
@@ -89,6 +91,10 @@
                   <div class="footer-icon" title="List View">
                     <i class="fa fa-refresh fs-12"></i>
                   </div>
+                  <button class="share-btn" >Desgin Template</button>
+                  <button class="share-btn">Desgin Page</button>
+                  <button class="share-btn" (click)="openEmailModalPopup()">Send Email</button>
+                  <button class="share-btn" (click)="openSocialShare()">Social Share</button>
                 </div>
               </div>
             </div>

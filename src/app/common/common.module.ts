@@ -208,7 +208,7 @@ import { CampaignMdfRequestsEmailsSentHistoryComponent } from 'app/util/campaign
 import { UnlayerBuliderComponent } from 'app/util/unlayer-bulider/unlayer-bulider.component';
 import { AiChatManagerComponent } from 'app/util/ai-chat-manager/ai-chat-manager.component';
 import { MarkdownModule } from 'ngx-markdown';
-
+import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
 
 
 @NgModule({
@@ -252,8 +252,7 @@ import { MarkdownModule } from 'ngx-markdown';
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
-		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent
-
+		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent
 	],
 
 
@@ -294,9 +293,7 @@ import { MarkdownModule } from 'ngx-markdown';
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
-		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent
-
-
+		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
 	]
 
 
