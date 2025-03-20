@@ -305,9 +305,9 @@
                           </a>
                           <!---Analytics--->
                           <a data-toggle="tooltip" data-placement="bottom"
-                            [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member': !referenceService?.showAnalytics ? 'No Modules Assigned': 'Click here to see anlaytics'"
+                            [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member': !referenceService?.showAnalytics ? 'Not available due to restricted module access': 'Click here to see anlaytics'"
                             [className]="teamMember.status=='UNAPPROVED'? 'inactive custom-icon':!referenceService?.showAnalytics ? 'inactive custom-icon': 'custom-icon'"
-                            (click)="goToAnalytics(teamMember)">
+                            (click)="!referenceService?.showAnalytics ? '' : goToAnalytics(teamMember)">
                             <i class="fa fa-line-chart IconCustomization"
                               [ngClass]="teamMember.status=='UNAPPROVED'? 'disabled gray': !referenceService?.showAnalytics? 'disabled gray' : 'active'"
                               aria-hidden="true"></i>
