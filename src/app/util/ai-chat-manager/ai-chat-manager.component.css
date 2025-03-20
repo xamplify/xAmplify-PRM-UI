@@ -17,8 +17,7 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    min-height: 410px;
-    height: 100%;
+    height: 80vh;
     border-radius: 8px;
     }
     .assist_text {
@@ -146,6 +145,7 @@
         padding: 15px;
         border-radius: 8px;
         position: relative;
+        height: 100vh;
       }
       .main-container {
         max-width: 850px;
@@ -422,7 +422,7 @@
       .scrollable-card {
         flex-grow: 1; 
         overflow-y: auto; 
-        max-height: calc(100vh - 338px); 
+        max-height: calc(100vh - 280px); 
       }
       .scrollable-card::-webkit-scrollbar {
         width: 8px;
@@ -472,3 +472,136 @@
       .aligin-center{
         align-items: center;
       }
+
+      .Ai_file {
+        padding: 8px;
+        display: flex;
+      }
+      .Ai-icon {
+      background-color: #007bff;
+      width: 280px;
+      color: white;
+      border-radius: 10px;
+      margin-right: 15px;
+      padding: 5px;
+      }
+      .Ai-text {
+      width: 29px;
+      height: 29px;
+      background: red;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: 12px;
+      }
+      .Ai-text a {
+      color: #007bff;
+      }
+      .Ai-icon .Ai-text {
+      font-size: 12px;
+      margin-bottom: 2px;
+      }
+      .document_flex {
+      background-color: #fff;
+      padding: 5px;
+      border-radius: 6px;
+      }
+      .Ai-file-details {
+      flex: 1;
+      }
+      .Ai-file-details h5 {
+      margin-top: 0;
+      font-weight: bold;
+      margin-bottom: 3px;
+      }
+      .Ai-file-details p {
+      margin-bottom: 3px;
+      font-size: 13px;
+      }
+      .Ai_pdf{
+      font-size: 13px!important;
+      }
+      .published-on {
+        font-size: 12px;
+        color: white;
+        margin-top: 10px;
+      }
+
+            /* Apply styles to markdown content */
+            ::ng-deep markdown {
+              font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Helvetica, Apple Color Emoji, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol !important;
+              font-size: 14px;
+              color: #0D0D0D !important;
+              line-height: 1.6;
+            }
+            
+            /* Headings */
+            ::ng-deep markdown h1,
+            ::ng-deep markdown h2,
+            ::ng-deep markdown h3,
+            ::ng-deep markdown h4 {
+              font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Helvetica, Apple Color Emoji, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol !important;
+              font-weight: 600;
+              color: #0D0D0D !important;
+              margin-top: 15px;
+              margin-bottom: 10px;
+            }
+            
+            /* Lists */
+            ::ng-deep markdown ul,
+            ::ng-deep markdown ol {
+              padding-left: 20px; /* Ensure indentation */
+              margin-bottom: 10px;
+            }
+            
+            /* List items */
+            ::ng-deep markdown li {
+              margin-bottom: 5px;
+            }
+            
+            /* Bold (strong) text */
+            ::ng-deep markdown strong {
+              font-weight: 500 !important;
+              color: #0D0D0D !important; /* Ensure bold text stands out */
+            }
+            
+            /* Italic text */
+            ::ng-deep markdown em {
+              font-style: italic;
+              color: #444;
+            }
+            
+            /* Links */
+            ::ng-deep markdown a {
+              color: #007bff;
+              text-decoration: none;
+              font-weight: 500;
+            }
+            
+            ::ng-deep markdown a:hover {
+              text-decoration: underline;
+            }
+            
+            /* Code blocks */
+            ::ng-deep markdown pre {
+              background-color: #f4f4f4;
+              padding: 10px;
+              border-radius: 5px;
+              overflow-x: auto;
+              font-family: "Courier New", monospace;
+            }
+            
+            /* Inline code */
+            ::ng-deep markdown code {
+              background-color: #eee;
+              padding: 2px 4px;
+              border-radius: 3px;
+              font-family: "Courier New", monospace;
+              color: #d63384;
+            }
+            
+
