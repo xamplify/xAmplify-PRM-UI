@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivityService } from 'app/activity/services/activity-service';
 import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
+import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 import { ApproveService } from 'app/approval/service/approve.service';
 import { CommentDto } from 'app/common/models/comment-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
@@ -27,6 +28,7 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   @Input() createdById: number;
   @Input() createdByName: string;
   @Input() videoId: number;
+  @Input() approvalReferenceId: number;
   @Output() closeModalPopup = new EventEmitter();
   @Output() closeModalPopupAndRefresh = new EventEmitter();
 
@@ -143,7 +145,8 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
   closeModalPopUp() {
     this.referenceService.closeModalPopup(this.commentsModalPopUpId);
     if(this.reloadAfterClose) {
-      this.closeModalPopupAndRefresh.emit();
+      let showSweetAlertAfterUpdate = this.approvalReferenceId && this.status == ApprovalStatusType[ApprovalStatusType.APPROVED];
+      this.closeModalPopupAndRefresh.emit(showSweetAlertAfterUpdate);
     } else {
       this.closeModalPopup.emit();
     }
@@ -211,8 +214,14 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentDto.comment = "";
         this.commentDto.invalidComment = true;
         this.commentDto.statusUpdated = false;
-        this.refreshModalPopUp();
-        this.removeSuccessMessage();
+
+        if (this.approvalReferenceId && this.status == ApprovalStatusType[ApprovalStatusType.APPROVED]) {
+          this.closeModalPopUp();
+        } else {
+          this.refreshModalPopUp();
+          this.removeSuccessMessage();
+        }
+        
       },error=>{
         this.isStatusUpdated = false;
         this.commentModalPopUpLoader = false;
@@ -323,6 +332,18 @@ export class ContentStatusHistoryModalPopupComponent implements OnInit {
         this.commentModalPopUpLoader = false;
       }
     );
+  }
+
+  getCurrentModuleName() : string {
+    let moduleName = "";
+    if (this.moduleType.toUpperCase() == 'DAM') {
+      moduleName = "Asset";
+    } else if (this.moduleType.toUpperCase() == 'TRACK') {
+      moduleName = "Track";
+    } else if (this.moduleType.toUpperCase() == 'PLAYBOOK') {
+      moduleName = "Playbook";
+    }
+    return moduleName;
   }
   
 }

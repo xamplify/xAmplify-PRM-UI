@@ -1,6 +1,6 @@
 <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
-<div class="alert alert-info">
-    You have the ability to add custom HTML blocks. These will be displayed in your dashboard.
+<div class="alert alert-info" *ngIf="!isLoading">
+    You have the ability to add custom blocks. These will be displayed in your dashboard.
 </div>
 <div class="portlet light" id="manage-custom-html">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
@@ -112,7 +112,7 @@
                         <label for="title">Custom HTML Name<span class="required">*</span></label>
                         <input type="text" class="form-control" id="customHtmlName" [(ngModel)]="customHtmlBlock.title"
                             [ngModelOptions]="{standalone: true}" placeholder="Enter Custom HTML Name" required>
-                        <span *ngIf="customErrorMessage">{{customErrorMessage}}</span>
+                        <span *ngIf="customErrorMessage" class="required">{{customErrorMessage}}</span>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <label for="layoutSize">Custom HTML Layout</label>
@@ -129,7 +129,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <label>Add to Dashboard</label>
                         <i class="fa fa-info-circle mr10 ml5" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
-                            title="Enabling this option will display the custom HTML block on the dashboard."></i>
+                            title="Enabling this option will display the custom block on the dashboard."></i>
                         <app-custom-ui-switch [customSwitch]="customHtmlBlock.selected"
                             (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)">
                         </app-custom-ui-switch>
@@ -159,7 +159,7 @@
 
             <div class="form-group" *ngIf="customHtmlBlock.layoutSize === 'SINGLE_COLUMN_LAYOUT'">
                 <label>Preview</label>
-                <div class="preview">
+                <div class="custom_preview">
                     <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.htmlBody">No Preview Available
                     </div>
                     <div [innerHTML]="sanitizedHtml"></div>
@@ -214,7 +214,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <label>Preview (Left)</label>
-                        <div class="preview">
+                        <div class="custom_preview">
                             <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.leftHtmlBody">No
                                 Preview Available</div>
                             <div [innerHTML]="leftHtmlBody"></div>
@@ -222,7 +222,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <label>Preview (Right)</label>
-                        <div class="preview">
+                        <div class="custom_preview">
                             <div class="alert alert-info text-center m0" *ngIf="!customHtmlBlock.rightHtmlBody">No
                                 Preview Available</div>
                             <div [innerHTML]="rightHtmlBody"></div>
@@ -264,9 +264,9 @@
             </div>
             <div class="modal-footer" style="border: none">
                 <button class="btn Btn-Gray" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="button bgcolor-unset" [disabled]="!customHtmlBlock.title"
+                <button type="submit" class="btn btn-primary" [disabled]="!customHtmlBlock.title"
                     (click)="saveOrUpdateCustomblock()">
-                    <span class="btn btn-primary transition">Save changes</span></button>
+                Save changes</button>
             </div>
         </div>
     </div>

@@ -291,7 +291,7 @@
                                                    <label class="control-label vendor-signaure-label mr10 " translate>White Labeled</label>
                                                    <div class="">
                                                       <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption"
-                                                         [customSwitch]="damUploadPostDto?.disableWhiteLabelOption"
+                                                         [customSwitch]="damUploadPostDto?.shareAsWhiteLabeledAsset"
                                                          (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc mr8">
                                                          <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
@@ -306,7 +306,7 @@
                                                    <label class="control-label vendor-signature-align mr10 " translate>Vendor Signature</label>
                                                    <div class="">
                                                       <app-custom-ui-switch
-                                                         [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))"
+                                                         [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (isPartnerCompanyOrGroupSelected || this.isAssetPublished))"
                                                          [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
                                                          (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc">
@@ -315,7 +315,7 @@
                                                             [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
                                                          </i>
                                                       </span>
-                                                      <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
+                                                      <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
                                                          class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add your signature <span class="required">*</span>
                                                       </span>
                                                    </div>
@@ -342,7 +342,7 @@
                                                  <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
                                                    <div class="">
                                                       <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
-                                                         [customSwitch]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                         [customSwitch]="damUploadPostDto?.partnerSignatureRequired"
                                                          (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
                                                       <span class="info-color-xampc">
                                                          <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
@@ -457,33 +457,35 @@
                                     <!---XNFR-255-->
                                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                        <div class="table-responsive">
-                                       <table class="table">
-                                          <tbody>
-                                             <tr>
-                                                <td class="desc hidden-xs" style="width: 11%;">
-                                                   <label class="control-label" translate>
-                                                   </label>
-                                                </td>
-                                                <td class="desc" [class.customDisableCss]='isDisableForm==true'>
-                                                   <div class="mDesc overflowtable-control">
-                                                      <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-                                                      <app-partner-company-and-groups
-                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
-                                                            ((!authenticationService?.approvalRequiredForAssets && damUploadPostDto?.approvalStatus !== 'REJECTED')
-                                                            || (authenticationService?.approvalRequiredForAssets && ((!isAdd && isApprover && damUploadPostDto?.createdByAnyApprover) || (isAdd && isApprover))) || damUploadPostDto?.approvalStatus === 'APPROVED')"
-                                                         [moduleName]="'dam'" [inputId]="id"
-                                                         [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
-                                                         [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
-                                                         [selectedPartnershipIds]="damUploadPostDto?.partnershipIds"
-                                                         [selectedPartnerGroupIds]="damUploadPostDto?.partnerGroupIds"
-                                                         [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
-                                                         (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)"></app-partner-company-and-groups>
-                                                   </div>
-                                                </td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
-                                    </div>
+                                          <table class="table" *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany &&
+                                             canShowPartnerSectionBasedOnApprovalConfiguration()">
+                                             <tbody>
+                                                <tr>
+                                                   <td class="desc hidden-xs" style="width: 11%;">
+                                                      <label class="control-label" translate>
+                                                      </label>
+                                                   </td>
+                                                   <td class="desc" [class.customDisableCss]='isDisableForm==true'>
+                                                      <div class="mDesc overflowtable-control">
+                                                         <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
+                                                         <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="id"
+                                                            [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
+                                                            [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
+                                                            [selectedPartnershipIds]="damUploadPostDto?.partnershipIds"
+                                                            [selectedPartnerGroupIds]="damUploadPostDto?.partnerGroupIds"
+                                                            [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
+                                                            (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)"></app-partner-company-and-groups>
+                                                      </div>
+                                                   </td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </div>
+                                       <!-- XNFR-885 -->
+                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'
+                                          && damUploadPostDto?.assetType != 'pdf'">
+                                          <p><strong>{{properties.PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL}}</strong></p>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -493,22 +495,19 @@
                            <button [disabled]="isDisableForm" class="btn Btn-Gray" id="right"
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
-                           <button *ngIf="!authenticationService.approvalRequiredForAssets || isAdd || 
-                              (!isAdd && (!isApprover || damUploadPostDto.createdByAnyApprover || (damUploadPostDto?.approvalStatus !== 'DRAFT' && damUploadPostDto?.approvalStatus !== 'REJECTED')))"
-                            [disabled]="!isValidForm || isDisableForm" id="right"
+                           <button *ngIf="canShowSubmitButton()" [disabled]="!isValidForm || isDisableForm" id="right"
                               style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
                               type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
                            <!-- XNFR-884 -->
                            <button *ngIf="isAdd || (!isAdd && (damUploadPostDto?.approvalStatus == 'DRAFT' || damUploadPostDto?.approvalStatus == 'REJECTED'))" class="button_blue bgcolor-unset pos_mar_rgt4"
-                              [disabled]="!isValidForm || isDisableForm || disableSaveAsDraftButton || damUploadPostDto?.published || (!isAdd && (damUploadPostDto?.approvalStatus !== 'DRAFT' && damUploadPostDto?.approvalStatus !== 'REJECTED'))"
-                              id="right" style="padding-top:1px;padding-right:0px;" type="button"
+                              [disabled]="isSaveAsDraftDisabled()" id="right" style="padding-top:1px;padding-right:0px;" type="button"
                               (click)="isVideoAsset?saveAsDraftVideo():saveAsDraftAndUpload()"
                               data-placement="top" [attr.title]="damUploadPostDto?.published ? properties.CANNOT_SAVE_DRAFT_ASSET_ALREADY_PUBLISHED :
                                  disableSaveAsDraftButton ? properties.CANNOT_SAVE_DRAFT_WITH_SELECTED_PARTNERS :
                                  (!isVideoAsset ? properties.DRAFT_ASSET_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS
                                  : properties.DRAFT_VIDEO_CANNOT_BE_PUBLISHED_OR_USED_IN_TRACKS_PLAYBOOKS_CAMPAIGNS)" translate>
-                              <span class="btn btn-primary"> {{ saveAsDraftButtonText }} </span>
+                              <span class="btn btn-primary transition"> {{ saveAsDraftButtonText }} </span>
                            </button>
                         </div>
                      </div>
@@ -544,8 +543,8 @@
                   <i class="fa fa-times" aria-hidden="true"></i>
                </a>
             </div>
-            <!-- <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util> -->
-            <app-unlayer-bulider [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-unlayer-bulider>
+            <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+            <!-- <app-unlayer-bulider [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-unlayer-bulider> -->
          </div>
       </div>
    </div>

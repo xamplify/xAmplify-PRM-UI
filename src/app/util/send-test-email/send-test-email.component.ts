@@ -395,8 +395,6 @@ export class SendTestEmailComponent implements OnInit {
   }
 
   activeTab(tabName: string) {
-    // this.selectedTab = tabName;
-
     if (this.selectedItem) {
       let selectedItemsArray = Array.isArray(this.selectedItem)
         ? this.selectedItem
@@ -413,6 +411,9 @@ export class SendTestEmailComponent implements OnInit {
         }
       });
     }
+    let isPrm = this.authenticationService.module.isPrm;
+    let isTeamMember = this.authenticationService.module.isTeamMember;
+
     let vanityCheck = Array.isArray(this.selectedItem)
       ? this.selectedItem.some((item: any) => item.vanityUrlDomain)
       : this.selectedItem.vanityUrlDomain;
@@ -422,13 +423,26 @@ export class SendTestEmailComponent implements OnInit {
 
     if (hasRegisterItems) {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
-      this.id = vanityCheck ? 4 : 638;
+      if (isPrm || isTeamMember) {
+        this.id = vanityCheck ? 14 : 1178;
+      } else {
+        this.id = vanityCheck ? 4 : 638;
+      }
     } else if (hasActivateItems) {
       this.toEmailId = this.activateNowItems.map(item => item.emailId).join(', ');
-      this.id = vanityCheck ? 2 : 405;
+      if (isPrm) {
+        this.id = vanityCheck ? 2 : 405;
+      } else {
+        this.id = vanityCheck ? 2 : 405;
+      }
+
     } else {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
-      this.id = vanityCheck ? 4 : 638;
+      if (isPrm || isTeamMember) {
+        this.id = vanityCheck ? 14 : 1178;
+      } else {
+        this.id = vanityCheck ? 4 : 638;
+      }
     }
     this.getVanityEmailTemplatesPartnerAnalytics();
   }

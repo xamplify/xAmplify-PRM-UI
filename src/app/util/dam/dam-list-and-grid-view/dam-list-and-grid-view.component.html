@@ -76,6 +76,10 @@
 													<span *ngIf="isPartnerView"><b>Published By:</b>{{asset?.displayName}}</span>
 													<span *ngIf="!isPartnerView"><b>Created By:</b>{{asset?.displayName}}</span>
 												</h6>
+												<h6 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="moreipsis" data-toggle="tooltip" data-placement="top"
+													title="{{asset?.parentAssetName}}">
+													<span><b>Parent Asset Name: </b>{{asset?.parentAssetName}} </span>
+												</h6>
 												<ng-container *ngIf="(!isPartnerView && asset.videoId)">
 													<h6 class="moreipsis">
 														<span *ngIf="asset?.videoFileDTO?.viewBy!=='DRAFT'">
@@ -163,13 +167,15 @@
 																<div class="clickicons"></div>
 															</a>
 															<!-- Edit--->
-															<a class="custom-icon" *ngIf="asset?.beeTemplate && isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="addOrEdit(asset.id)">
+															<!-- <a class="custom-icon" *ngIf="asset?.beeTemplate && isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="addOrEdit(asset.id)">
 																<i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
-															</a>
+															</a> -->
 															<!--Edit--->
-															<a class="custom-icon" *ngIf="!isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
-																<i class="fa fa-edit IconCustomization"aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="!isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top" title="Edit"
+															 (click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
+																<i class="fa fa-edit IconCustomization"aria-hidden="true"
+																[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
 																<div class="clickicons"></div>
 															</a>
 															<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
@@ -210,9 +216,9 @@
 															</a>
 															<!--View Analytics-->
 															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany"
-																(click)="asset.approvalStatus !== approvalStatus.DRAFT ? viewAnalytics(asset) : ''">
+																(click)="asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId ? viewAnalytics(asset) : ''">
 																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
-																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"></i>
+																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
 																<div class="clickicons"></div>
 															</a>
 															<!--View Details-->
@@ -229,8 +235,8 @@
 															</a>
 															
 															<!--Delete-->
-															<a class="custom-icon" *ngIf="!isPartnerView && asset?.delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(asset)">
-																<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="!isPartnerView && asset?.delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' :confirmDelete(asset)">
+																<i class="fa fa-trash-o trashIconCustomization" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''" aria-hidden="true"></i>
 																<div class="del-icon"></div>
 															</a>
 														</div>
@@ -306,6 +312,11 @@
 																			title="{{asset?.displayName}}">
 																			<span translate><b>Created	By:</b>{{asset?.displayName | slice: 0: 23}} </span>
 																		</h6>
+																		<h4 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="moreipsis" data-toggle="tooltip" data-placement="top"
+																			title="{{asset?.parentAssetName}}">
+																			<span><b>Parent Asset Name: </b><span>{{asset?.parentAssetName | slice: 0:17}} </span></span>
+																			<span *ngIf="asset?.parentAssetName?.length>17">...</span>
+																		</h4>
 																		<h6 class="moreipsis"
 																			*ngIf="!isPartnerView && asset?.beeTemplate">
 																			<span translate> <b>Version:</b>{{asset?.versionInString}} </span>
@@ -413,9 +424,9 @@
 																				*ngIf="!isPartnerView && asset?.edit"
 																				data-toggle="tooltip"
 																				data-placement="top" title="Edit"
-																				(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
+																				(click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
 																				<i class="fa fa-edit IconCustomization"
-																					aria-hidden="true"></i>
+																				[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''" aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
 																			<a class="custom-icon" title="Preview"
@@ -435,9 +446,9 @@
 																				data-placement="top"
 																				title="View Analytics"
 																				*ngIf="!authenticationService.module.isMarketingCompany"
-																				(click)="asset.approvalStatus !== approvalStatus.DRAFT ? viewAnalytics(asset) : ''">
+																				(click)="(asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? viewAnalytics(asset) : ''">
 																				<i class="fa fa-line-chart IconCustomization"
-																					aria-hidden="true" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'"></i>
+																					aria-hidden="true" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
 																				<div class="clickicons"></div>
 																			</a>
 
@@ -449,9 +460,9 @@
 																			
 																			<a *ngIf="asset?.edit" class="custom-icon" data-toggle="tooltip"
 																				data-placement="top" title="Delete"
-																				(click)="confirmDelete(asset)">
+																				(click)="asset?.hasAnyReApprovalVersion ? '' : confirmDelete(asset)">
 																				<i class="fa fa-trash-o trashIconCustomization"
-																					aria-hidden="true"></i>
+																					aria-hidden="true"[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
 																				<div class="del-icon"></div>
 																			</a>
 																		</div>
@@ -511,6 +522,11 @@
 										title="{{asset?.assetName}}">
 										<span><b>Asset Name:</b> 
 										<span>{{asset?.assetName | slice: 0: 54}}</span></span> <span *ngIf="asset?.assetName?.length>54">...</span>
+									</h4>
+									<h4 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top"
+										title="{{asset?.parentAssetName}}" style="padding-top: 0px;">
+										<span><b>Parent Asset Name: </b>
+											<span>{{asset?.parentAssetName | slice: 0: 54}}</span></span> <span *ngIf="asset?.parentAssetName?.length>54">...</span>
 									</h4>
 									<div class="divapdding-or-cards">
 										<div class="aligntowbtns">
@@ -758,7 +774,7 @@
 <app-content-status-history-modal-popup
 	*ngIf="callCommentsComponent && authenticationService?.approvalRequiredForAssets && !isPartnerView"
 	[entityId]="selectedDamId" [moduleType]="'DAM'" [createdByAnyApprovalManagerOrApprover]="createdByAnyApprovalManagerOrApprover" [title]="assetName"
-	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId"
+	[createdById]="assetCreatedById" [createdByName]="assetCreatedByFullName" [videoId]="videoId" [approvalReferenceId]="approvalReferenceId"
 	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
-	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList()">
+	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList($event)">
 </app-content-status-history-modal-popup>

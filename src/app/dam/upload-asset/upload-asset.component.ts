@@ -163,6 +163,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     
     savedTags: any[] = [];
     pdfDefaultUploadedFile: File;
+    isVendorSignatureAdded: boolean = false;
+
+    isAssetReplaced: boolean = false;
+    approvalRequired: boolean = false;
+    storeAdd: boolean = false;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -197,7 +202,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.viewType = this.route.snapshot.params['viewType'];
         this.categoryId = this.route.snapshot.params['categoryId'];
         this.folderViewType = this.route.snapshot.params['folderViewType'];
-    
+
+        this.approvalRequired = this.authenticationService.approvalRequiredForAssets
 	}
 	
     
@@ -301,7 +307,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				}, (error: any) => {
 					this.xtremandLogger.errorPage(error);
 				}, ()=>{
-                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd);
+                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                     this.listTags(new Pagination());
                 }
 			);
@@ -310,6 +316,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     uploadedImage:any;
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
+        this.isVendorSignatureAdded = false;
 		let files: Array<File>;
 		if ( event.target.files!=undefined ) {
 			 files = event.target.files; 
@@ -332,6 +339,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 let extension = this.referenceService.getFileExtension(fileName);
                 if (extension.toLocaleLowerCase() == this.damUploadPostDto.assetType.toLocaleLowerCase()) {
                     this.setUploadedFileProperties(file);
+                    this.isAssetReplaced = true;
+                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                 } else {
                     this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
                 }
@@ -492,12 +501,12 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if(this.isAdd){
 			let uploadedAssetValue = $('#uploadedAsset').val();
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 );
-            if(this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && this.fileType === 'application/pdf'){
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && this.fileType === 'application/pdf'){
             this.isValidForm = false;
             }
 		}else{
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
-            if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.damUploadPostDto.selectedSignatureImagePath && !this.damUploadPostDto.vendorSignatureCompleted){
+            if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && !this.damUploadPostDto.vendorSignatureCompleted){
                 this.isValidForm = false;
                 }
 		}
@@ -522,6 +531,21 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 
     uploadOrUpdateAsset() {
         this.damUploadPostDto.draft = false;
+        if (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus == 'APPROVED'
+            && this.approvalRequired && this.isAssetReplaced && this.damUploadPostDto.assetType != 'pdf') {
+            this.sendForReApproval();
+        } else {
+            this.uploadOrUpdate();
+        }
+    }
+
+    sendForReApproval() {
+        this.damUploadPostDto.sendForReApproval = true;
+        this.damUploadPostDto.partnerIds = [];
+        this.damUploadPostDto.partnerGroupIds = [];
+        this.storeAdd = this.isAdd;
+        this.isAdd = true;
+        this.damUploadPostDto.approvalReferenceId = this.id;
         this.uploadOrUpdate();
     }
 
@@ -559,7 +583,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                         } else {
                             this.goToManageDam();
                         }
-                    }                   
+                    }
+                    this.isAdd = this.storeAdd;                  
 				} else if (result.statusCode == 400) {
 					this.customResponse = new CustomResponse('ERROR', result.message, true);
 				} else if (result.statusCode == 404) {
@@ -570,6 +595,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				}
 				this.formLoader = false;
 			}, error => {
+                this.isAdd = this.storeAdd;   
 				swal.close();
 				this.formLoader = false;
 				let statusCode = JSON.parse(error['status']);
@@ -1494,7 +1520,7 @@ zoomOut() {
         this.loading = true;
         this.isBeeTemplateComponentCalled = false;
         let damPostDto = new DamPostDto();
-        damPostDto.jsonBody = event.jsonContent;
+        damPostDto.jsonBody = JSON.stringify(event.jsonContent);
         damPostDto.htmlBody = event.htmlContent;
         damPostDto.id = this.id;
         damPostDto.loggedInUserId = this.authenticationService.getUserId();
@@ -1531,12 +1557,13 @@ zoomOut() {
     setVendorSignatureRequired(event){
         this.damUploadPostDto.vendorSignatureRequired = event;
         this.isVendorSignatureToggleClicked = true;
+        this.isVendorSignatureAdded = false;
+        this.validateAllFields();
         if(event === 'true'){
           this.setUploadedFileProperties(this.pdfUploadedFile);
         } else {
             this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
         }
-        this.validateAllFields();
     }
 
     openAddSignatureModalPopUp() {
@@ -1577,8 +1604,9 @@ zoomOut() {
 	notifySignatureSelection(event){
             this.setUploadedFileProperties(event);
             this.pdfUploadedFile =  event;
+            this.isVendorSignatureAdded = true;
             this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
-        this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
+            this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
         });
         this.validateAllFields();
@@ -1624,21 +1652,23 @@ zoomOut() {
             },
             ()=>{
                 if (this.isAdd) {
-                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, true);
+                    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, true, this.isAssetReplaced);
                 }
             });
     }
 
     /** XNFR-884 **/
-    initialiseSubmitButtonText(assetApprover: boolean, currentApprovalStatus: string, isAdd: boolean) {
-        const approvalRequired = this.authenticationService.approvalRequiredForAssets;
+    initialiseSubmitButtonText(assetApprover: boolean, currentApprovalStatus: string, isAdd: boolean, isAssetReplaced: boolean) {
         const isDraft = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.DRAFT];
         const isRejected = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.REJECTED];
+        const isApproved = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED];
         if (isAdd) {
-            this.submitButtonText = assetApprover || !approvalRequired ? 'Save' : 'Send for Approval';
+            this.submitButtonText = assetApprover || !this.approvalRequired ? 'Save' : 'Send for Approval';
         } else {
             if (isDraft || isRejected) {
-                this.submitButtonText = (assetApprover || !approvalRequired) ? 'Update' : 'Send for Approval';
+                this.submitButtonText = (assetApprover || !this.approvalRequired) ? 'Update' : 'Send for Approval';
+            } else if (isApproved && isAssetReplaced) {
+                this.submitButtonText = (assetApprover || !this.approvalRequired || this.damUploadPostDto.assetType == 'pdf') ? 'Update' : 'Send for Re-Approval';
             } else {
                 this.submitButtonText = 'Update';
             }
@@ -1656,6 +1686,27 @@ zoomOut() {
                 this.addTagsCondition(this.savedTags)
             }
         }
+    
+    canShowSubmitButton(): boolean {
+        return !this.approvalRequired || this.isAdd || 
+                (!this.isAdd && (!this.isApprover || this.damUploadPostDto.createdByAnyApprover || 
+                (this.damUploadPostDto.approvalStatus !== ApprovalStatusType[ApprovalStatusType.DRAFT] && this.damUploadPostDto.approvalStatus !== ApprovalStatusType[ApprovalStatusType.REJECTED])));
+    }
 
+    isSaveAsDraftDisabled(): boolean {
+        return !this.isValidForm || this.isDisableForm || this.disableSaveAsDraftButton || this.damUploadPostDto.published ||
+               (!this.isAdd && this.damUploadPostDto.approvalStatus !== ApprovalStatusType[ApprovalStatusType.DRAFT] && this.damUploadPostDto.approvalStatus !== ApprovalStatusType[ApprovalStatusType.REJECTED]);
+    }
+    
+    canShowPartnerSectionBasedOnApprovalConfiguration(): boolean {
+        if (!this.approvalRequired) {
+            return this.damUploadPostDto.approvalStatus !== ApprovalStatusType[ApprovalStatusType.REJECTED];
+        }
+        
+        return ((!this.isAdd && this.isApprover && (this.damUploadPostDto.createdByAnyApprover || this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED])) ||
+            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && (!this.isAssetReplaced || this.damUploadPostDto.assetType == 'pdf')) ||
+            (this.isAdd && this.isApprover));
+    }
+          
 
 }

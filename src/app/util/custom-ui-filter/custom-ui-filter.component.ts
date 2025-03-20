@@ -199,22 +199,25 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 	}
 	criteriaValidation() {
 		for (let i = 0; i < this.criterias.length; i++) {
-			if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
+			if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 				if (this.pagination.dateFilterOpionEnable && this.criterias.length == 1) {
 					this.isValidationErrorMessage = false
 				} else {
 					this.isValidationErrorMessage = true;
 				}
-				if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
+				if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.filterConditionErrorMessage = "Please fill the required data at position " + (i + 1);
+					this.criterias[i].value1 = this.criterias[i].value1.trim();
 				} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
 					this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + (i + 1);
-				} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
+				} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.isValidationErrorMessage = true;
+					this.criterias[i].value1 = this.criterias[i].value1.trim();
 					this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + (i + 1);
-				} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
+				} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.isValidationErrorMessage = true;
+					this.criterias[i].value1 = this.criterias[i].value1.trim();
 					this.filterConditionErrorMessage = "Please select the Condition and Value at position " + (i + 1);
 				} else if (this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
@@ -222,8 +225,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				} else if (this.criterias[i].property == "Field Name*") {
 					this.isValidationErrorMessage = true;
 					this.filterConditionErrorMessage = "Please select the Field Name at position " + (i + 1);
-				} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined") {
+				} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined") {
 					this.isValidationErrorMessage = true;
+					this.criterias[i].value1 = this.criterias[i].value1.trim();
 					this.filterConditionErrorMessage = "Please fill the value at position " + (i + 1);
 				}
 				break;
@@ -432,5 +436,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				this.pagination.toDateFilterString = this.toDateFilter;
 			}
 		}
+	}
+
+	handleCriteriaValue(value:any, index:any) {
+		this.criterias[index].value1 = value.trim();
 	}
 }

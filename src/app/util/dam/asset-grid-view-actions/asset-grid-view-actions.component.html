@@ -22,9 +22,11 @@
 			class="fa fa-edit" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView && asset?.edit"
-		data-toggle="tooltip" data-placement="top" title="Edit" (click)="editDetails(asset)"> <i
+		data-toggle="tooltip" data-placement="top" title="Edit" (click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset)"
+		[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"> <i
 			class="fa fa-edit" aria-hidden="true"></i>
 		<div class="clickicons"></div>
+
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
 		data-placement="top" title="Preview" (click)="preview(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
@@ -33,8 +35,8 @@
 		title="Download" (click)="openDownloadPopup(asset)"> <i class="fa fa-download" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="!authenticationService.module.isMarketingCompany"
-		data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="asset.approvalStatus !== 'DRAFT' ? viewAnalytics(asset) : ''"
-		[ngClass]="(asset?.approvalStatus !== 'DRAFT') ? '' : 'disabled gray'"> <i
+		data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="(asset.approvalStatus !== 'DRAFT' && !asset?.approvalReferenceId) ? viewAnalytics(asset) : ''"
+		[ngClass]="(asset?.approvalStatus !== 'DRAFT' && !asset?.approvalReferenceId) ? '' : 'disabled gray'"> <i
 			class="fa fa-line-chart" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
@@ -46,8 +48,9 @@
 		title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 		<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
 		<div class="clickicons"></div>
+
 	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete custom-icon" data-toggle="tooltip"
-		data-placement="top" title="Delete" (click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
+		data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' : confirmDelete(asset)" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"> <i class="fa fa-trash-o"
 			aria-hidden="true"></i>
 		<div class="del-icon"></div>
 	</a>

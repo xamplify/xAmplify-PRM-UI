@@ -2214,14 +2214,10 @@
                   <div class="row mb10">
                      <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found" />
                      <ng-container *ngIf="!disabled">
-                        <span *ngIf="
-                       showUserLevelCampaignAnalytics &&
-                       showRegisterLeadButton &&
-                       campaignType != 'LANDINGPAGE' &&
-                       campaignType != 'SOCIAL' && canPartnerEditLead
-                       ">
-                           <button style="position: absolute; right: 15px; margin-top: 7px"
-                              (click)="showDealRegistrationForm()" class="btn btn-success">
+                        <span *ngIf="showUserLevelCampaignAnalytics && showRegisterLeadButton && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)
+                                                && campaignType != 'LANDINGPAGE' && campaignType != 'SOCIAL' && canPartnerEditLead">
+                           <button style="position: absolute; right: 15px; margin-top: 7px" (click)="showDealRegistrationForm()"
+                              class="btn btn-success">
                               {{ dealButtonText }}
                            </button>
                         </span>

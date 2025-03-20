@@ -127,6 +127,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/****XNFR-381*****/
 	criteria: Criteria = new Criteria();
 	@ViewChild(CustomUiFilterComponent) customUiFilterComponent: CustomUiFilterComponent;
+	
+	approvalReferenceId: number;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
@@ -599,9 +601,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (this.referenceService.isVideo(asset.assetType)) {
 			let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
 			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
-		} else if(asset.beeTemplate) {
+		} 
+		else if (asset.beeTemplate && (asset.assetPath == null || asset.assetPath == '' || asset.assetPath.length == 0)) {
 			this.referenceService.previewAssetPdfInNewTab(asset.id);
-		}else{
+		}
+		else{
 			this.referenceService.preivewAssetOnNewHost(asset.id);
 		}
 	}
@@ -949,15 +953,19 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.selectedDamId = asset.id;
 		this.createdByAnyApprovalManagerOrApprover = asset.createdByAnyApprovalManagerOrApprover;
 		this.videoId = asset.videoId;
+		this.approvalReferenceId = asset.approvalReferenceId;
 	}
 
 	closeCommentsAndHistoryModalPopup() {
 		this.callCommentsComponent = false;
 	}
 
-	closeCommentsAndHistoryModalPopupAndRefreshList() {
+	closeCommentsAndHistoryModalPopupAndRefreshList(event: boolean) {
 		this.refreshList();
 		this.callCommentsComponent = false;
+		if (event) {
+			this.referenceService.showSweetAlertSuccessMessage(this.properties.RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT);
+		}
 	}
 
 	getApprovalStatusText(status: string): string {

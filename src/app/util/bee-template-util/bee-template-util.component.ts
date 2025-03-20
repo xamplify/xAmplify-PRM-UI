@@ -12,7 +12,8 @@ declare var BeePlugin: any, swal:any;
 @Component({
 	selector: 'app-bee-template-util',
 	templateUrl: './bee-template-util.component.html',
-	styleUrls: ['./bee-template-util.component.css']
+	styleUrls: ['./bee-template-util.component.css'],
+	providers: [DamService]
 })
 export class BeeTemplateUtilComponent implements OnInit {
 
@@ -35,6 +36,7 @@ export class BeeTemplateUtilComponent implements OnInit {
     coBraningImage = "co-branding.png";
 	isCoBrandingTemplate = false;
 	isVideoTemplate = false;
+	formLoader = false;
 	/****XBI-1685******/
 	/***********  XNFR-233 *********/
 	customLoginTemplate:CustomLoginTemplate = new CustomLoginTemplate()
@@ -290,6 +292,8 @@ export class BeeTemplateUtilComponent implements OnInit {
 	}
 
 	mydownloadPdf(htmlContent: string,input:any) {
+		this.formLoader = true;
+		
 		  this.damService.downloadPdf(htmlContent).subscribe(
 			(blob: Blob) => {
 			  if (!blob || blob.size === 0) {
@@ -306,13 +310,16 @@ export class BeeTemplateUtilComponent implements OnInit {
 	  
 			  const pdfFile = new File([blob], 'design.pdf', { type: 'application/pdf' });
 			  input['pdf'] = pdfFile;
+			  this.formLoader = false;
 			  
 			},
 			(error) => {
 			  console.error("Failed to generate PDF:", error);
+			  this.formLoader = false;
 			  alert("Failed to generate PDF. Please try again later.");
 			}, ()=>{
 				this.notifyParentComponent.emit(input);
+				this.formLoader = false;
 			}
 		  );
 	  }

@@ -70,7 +70,7 @@
                 <button class=" btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
                     title="Reset to default dashboard" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">
                     <i class="fa fa-refresh"></i>&nbsp;Reset</button>
-                <button class="btn" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}"
+                <button class="btn hidden-xs" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}"
                     data-placement="bottom" data-toggle="tooltip"
                     [title]="(defaultDashboardsettings && !(authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor)) ? 'Custom Dashboard Layout is currently disabled.' : 'Customize Dashboard Layout'"
                     (click)="isDraggingEnabled ? updateCustomDashBoardLayout() : customizeDashboardLayout()"

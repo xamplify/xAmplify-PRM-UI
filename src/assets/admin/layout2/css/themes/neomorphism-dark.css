@@ -4470,7 +4470,7 @@ tbody>tr#uploaded-csv-tr>td {
       }
     }
   /* add a tag */
-.add_tag-container,.add-tag-card{
+.add_tag-container,.add-tag-card,.custom_preview{
   background: #2d3035 !important;
   border: 1px solid #191b1e !important;
   box-shadow: inset 3px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
@@ -4491,4 +4491,9 @@ tbody>tr#uploaded-csv-tr>td {
 }
 .btn_custom:hover {
   color: #fff !important;
+}
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -68px !important;
+  }
 }

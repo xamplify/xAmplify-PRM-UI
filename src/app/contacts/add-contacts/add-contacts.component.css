@@ -205,6 +205,9 @@ i.fa.fa-file-excel-o.IconTopMargin {
 .SideParddings3 {
   padding-top: 0px!important;
 }
+.fs_16{
+  font-size: 14px!important;
+}
 }
 .cards_align{
   padding: 5px 8px;
@@ -263,10 +266,8 @@ i.fa.fa-file-excel-o.IconTopMargin {
   text-align: start;
   padding: 10px;
 }
-.contact_img{
-  background: #ffffff;
-  border:1px solid#ddd;
-  height: 130px;
+.contact_imgs{
+  /* height: 130px; */
   border-radius: 8px;
   display: flex;
   justify-content: center;
@@ -295,7 +296,7 @@ background-color: unset!important;
 }
 
 .cloud_platforms_paddings {
-  margin-top: 17px;
+  margin-top: 23px;
   position: relative;
   background-color: #ffff;
   padding: 18px;
@@ -359,10 +360,10 @@ background-color: unset!important;
 @media only screen and (min-width:760px){
 .clip_mask{
   position: absolute;
-  bottom: -76px;
-  border-bottom: 0!important;
+  bottom: -77px;
+  border-bottom: 0 !important;
   border-radius: 10px 10px 0px 0px !important;
-  padding: 12px 10px !important;
+  padding: 10px 10px !important;
   z-index: 999;
 }
 .clip_mask::before{
@@ -372,7 +373,7 @@ background-color: unset!important;
   height: 30px;
   width: 30px;
   position: absolute;
-  border-radius: 26%;
+  border-bottom-right-radius: 26%;
   box-shadow: 15px 15px 0 #fff;
 }
 .clip_mask::after{
@@ -382,7 +383,7 @@ background-color: unset!important;
     height: 30px;
     width: 30px;
     position: absolute;
-    border-radius: 26%;
+    border-bottom-left-radius: 26%;
     box-shadow: -15px 15px 0 #fff;
 }
 }
@@ -391,4 +392,39 @@ background-color: unset!important;
   width: 150px;
   height: 150px;
 }
+}
+/*  */
+.contact-card{
+  display: flex;
+  align-items: center;
+}
+.upload_bgcolor{
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 8px;
+  color: #000;
+  font-weight: 500;
+  border-radius: 8px;
+}
+p.mb0.mt5 {
+  font-size: 12px;
+  font-weight: 500;
+}
+.fs_16{
+  font-size: 18px;
+  font-weight: 500;
+}
+@media only screen and (min-width: 600px) and (max-width:1024px){
+  .upload_bgcolor{
+    font-size: 12px;
+  }
+  p.mb0.mt5 {
+    font-size: 8px;
+  }
+}
+@media only screen and (min-width: 600px) and (max-width:1024px){
+  .clip_mask{
+    bottom: -68px!important;
+  }
 }

@@ -101,6 +101,7 @@ export class ManageApprovalComponent implements OnInit {
   showApproveResponse : boolean = false;
   isSelectedAutoApprovalRecords: boolean = false;
   hasAllAuthorityAccess: boolean = false;
+  approvalReferenceId: number;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
@@ -160,6 +161,7 @@ export class ManageApprovalComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
       }, error => {
         this.xtremandLogger.errorPage(error);
+        this.referenceService.loading(this.httpRequestLoader, false);
       });
   }
 
@@ -292,6 +294,7 @@ export class ManageApprovalComponent implements OnInit {
       this.createdByAnyApprovalManagerOrApprover = item.createdByAnyApprovalManagerOrApprover;
       this.selectedDamId = item.id;
       this.moduleType = 'DAM';
+      this.approvalReferenceId = item.approvalReferenceId;
     }
     if (item.type === 'Track') {
       this.callCommentsComponent = true;
@@ -313,10 +316,19 @@ export class ManageApprovalComponent implements OnInit {
     }
   }
 
-  closeCommentsAndHistoryModalPopup() {
+  
+	closeCommentsAndHistoryModalPopup() {
+		this.callCommentsComponent = false;
+	}
+
+  closeCommentsAndHistoryModalPopupAndRefresh(event: boolean) {
     this.getAllApprovalList(this.pagination);
     this.callCommentsComponent = false;
     this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
+    if (event) {
+			this.referenceService.showSweetAlertSuccessMessage(this.properties.RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT);
+		}
+
   }
 
   searchData() {
@@ -556,6 +568,7 @@ export class ManageApprovalComponent implements OnInit {
       this.commentDto.damIds = this.selectedDamIds;
       this.commentDto.trackIds = this.selectedTrackIds;
       this.commentDto.playBooksIds = this.selectedPlayBookIds;
+      this.referenceService.loading(this.httpRequestLoader, true);
       this.approveService.updateApprovalStatusAndComment(this.commentDto).subscribe(
         response => {
           this.clearSelectedItems();
@@ -578,8 +591,10 @@ export class ManageApprovalComponent implements OnInit {
           }
           this.getAllApprovalList(this.pagination);
           this.contentModuleStatusAnalyticsComponent.getTileCountsForApproveModule();
+          this.referenceService.loading(this.httpRequestLoader, false);
         }, error => {
           this.xtremandLogger.errorPage(error);
+          this.referenceService.loading(this.httpRequestLoader, false);
         });
     }
   }

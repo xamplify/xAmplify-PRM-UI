@@ -4564,11 +4564,11 @@ color: #fff!important;
   
     }
     .clip_mask{
-      bottom: -74px!important;
+      bottom: -77px!important;
     }
   }
 /* add a tag */
-.add_tag-container,.add-tag-card{
+.add_tag-container,.add-tag-card,.custom_preview{
   background: rgb(255 255 255 / 40%) !important;
   border: 1px solid #ada6a64d!important;
 }
@@ -4600,4 +4600,8 @@ color: #fff!important;
   background: #e87e04 !important;
   color: #fff !important;
 }
-
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -67px !important;
+  }
+}
