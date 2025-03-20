@@ -36,7 +36,7 @@ export class AiChatManagerComponent implements OnInit {
   isPdfUploading: boolean =false;
   actionType: string;
   showEmailModalPopup: boolean;
-  openShareOption: boolean;
+  openShareOption: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -224,6 +224,6 @@ export class AiChatManagerComponent implements OnInit {
     this.showEmailModalPopup = false;
   }
   openSocialShare(){
-    this.referenceService.goToRouter('home/rss/welcome');
+    this.openShareOption = true;
   }
 }

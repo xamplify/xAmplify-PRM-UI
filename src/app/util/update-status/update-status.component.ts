@@ -1,33 +1,33 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild,Renderer } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
-import { SaveVideoFile } from '../../../videos/models/save-video-file';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { SaveVideoFile } from '../../videos/models/save-video-file';
 
-import { SocialCampaign } from '../../models/social-campaign';
-import { SocialStatusDto } from '../../models/social-status-dto';
-import { SocialStatus } from '../../models/social-status';
-import { SocialConnection } from '../../models/social-connection';
-import { SocialStatusContent } from '../../models/social-status-content';
-import { SocialStatusProvider } from '../../models/social-status-provider';
+import { SocialCampaign } from '../../social/models/social-campaign';
+import { SocialStatusDto } from '../../social/models/social-status-dto';
+import { SocialStatus } from '../../social/models/social-status';
+import { SocialConnection } from '../../social/models/social-connection';
+import { SocialStatusContent } from '../../social/models/social-status-content';
+import { SocialStatusProvider } from '../../social/models/social-status-provider';
 
-import { ContactList } from '../../../contacts/models/contact-list';
-import { CustomResponse } from '../../../core/models/custom-response';
+import { ContactList } from '../../contacts/models/contact-list';
+import { CustomResponse } from '../../core/models/custom-response';
 
-import { ResponseType } from '../../../core/models/response-type';
+import { ResponseType } from '../../core/models/response-type';
 
-import { AuthenticationService } from '../../../core/services/authentication.service';
-import { PagerService } from '../../../core/services/pager.service';
-import { SocialService } from '../../services/social.service';
-import { VideoFileService } from '../.././../videos/services/video-file.service';
-import { ContactService } from '../.././../contacts/services/contact.service';
-import { VideoUtilService } from '../../../videos/services/video-util.service';
-import { Pagination } from '../../../core/models/pagination';
-import { CallActionSwitch } from '../../../videos/models/call-action-switch';
-import { ReferenceService } from '../../../core/services/reference.service';
-import { Properties } from '../../../common/models/properties';
-import { Country } from '../../../core/models/country';
-import { Timezone } from '../../../core/models/timezone';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { PagerService } from '../../core/services/pager.service';
+import { SocialService } from '../../social/services/social.service';
+import { VideoFileService } from '../../videos/services/video-file.service';
+import { ContactService } from '../../contacts/services/contact.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
+import { Pagination } from '../../core/models/pagination';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import { ReferenceService } from '../../core/services/reference.service';
+import { Properties } from '../../common/models/properties';
+import { Country } from '../../core/models/country';
+import { Timezone } from '../../core/models/timezone';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
@@ -43,7 +43,7 @@ declare var $:any, flatpickr:any, videojs:any, swal: any;
 @Component({
 	selector: 'app-update-status',
 	templateUrl: './update-status.component.html',
-	styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
+	styleUrls: ['./update-status.component.css', '../../../assets/css/video-css/video-js.custom.css'],
 	providers: [PagerService, Pagination, CallActionSwitch, Properties,HttpRequestLoader,SortOption]
 })
 export class UpdateStatusComponent implements OnInit, OnDestroy {
@@ -1686,6 +1686,16 @@ checkAliasAccess(socialCampaignAlias: string) {
 		this.contactListsPagination.filterBy = filterType;
 		this.loadContactLists(this.contactListsPagination)
 	}
+
+	nagivatetoRouter(urlType :any){
+		if(urlType =='home'){
+			this.referenceService.goToRouter(this.referenceService.homeRouter);
+		}else if(urlType =='campaigns'){
+			this.referenceService.goToRouter('../../campaigns/select');
+		}else if(urlType =='social'){
+			this.referenceService.goToRouter('/home/campaigns/partner/social');
+		}
+		}
 	
 }
 

@@ -1,8 +1,8 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType"[emailBody]="chatGptGeneratedText" (notifyClose)="closeEmailModalPopup()"></app-add-email-modal-popup>
-<!-- <app-update-status *ngIf="openShareOption"></app-update-status> -->
+<app-update-status *ngIf="openShareOption"></app-update-status>
 <div class="page-content">
-  <div *ngIf="!openHistory" class="pdf_body">
+  <div *ngIf="!openHistory && !openShareOption" class="pdf_body">
     <button class="btn close_btn" (click)="closeAi()">×</button>
     <div>
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
@@ -50,7 +50,7 @@
     </div>
   </div>
   <!-- chat history -->
-  <div *ngIf="openHistory" class="summarize-pdf-card">
+  <div *ngIf="openHistory && !openShareOption" class="summarize-pdf-card">
     <button class="close_pdf" (click)="closeAi()">&times;</button>
     <div class="scrollable-card">
       <div *ngFor="let message of messages">
