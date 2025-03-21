@@ -478,7 +478,7 @@ tr {
 .page-sidebar .page-sidebar-menu > li.active > a,
 .page-sidebar .page-sidebar-menu > li.hover > a {
   background-color: #f0f5fa !important;
-  border-bottom: 2px solid #01b6ff !important;
+  border-bottom: 2px solid #0276FF !important;
 }
 .page-sidebar-closed.page-sidebar-fixed
   .page-sidebar:hover
@@ -3459,7 +3459,7 @@ input.form-control.remove_checkbox_shadow{
   box-shadow : none !important;
 }
 .page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected{
-  border-color: transparent #01b6ff transparent transparent;
+  border-color: transparent #0276FF transparent transparent;
 }
 .page-sidebar .page-sidebar-menu > li.active > a > .selected{
   right: 0px !important;
