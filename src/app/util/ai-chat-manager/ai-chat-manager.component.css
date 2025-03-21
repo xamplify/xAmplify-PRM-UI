@@ -144,8 +144,11 @@
         background: radial-gradient(circle, #F3F8FF, #E3E4FF, #D4E7F7);
         padding: 15px;
         border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
         position: relative;
-        height: 100vh;
+        height: 85vh;
       }
       .main-container {
         max-width: 850px;
@@ -182,6 +185,7 @@
         margin-bottom: 15px;
         display: flex;
         align-items: center;
+        width: 100%;
       }
       .message.agent {
         justify-content: flex-start;
