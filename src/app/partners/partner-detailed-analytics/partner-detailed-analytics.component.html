@@ -30,7 +30,7 @@
   </div>
 
   <!--******************Campaign Counts - Tiles*******************-->
-  <div class="row customeRow">
+  <div class="row customeRow" *ngIf="referenseService?.campaignAccessGivenByVendor">
     <app-campaign-count-tiles
       *ngIf="!authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
       [partnerCompanyId]="partnerCompanyId"></app-campaign-count-tiles>
