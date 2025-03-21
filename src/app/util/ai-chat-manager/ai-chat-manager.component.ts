@@ -194,7 +194,6 @@ export class AiChatManagerComponent implements OnInit {
           this.assetDetailsViewDtoOfPartner = response.data;
           this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
           this.assetType=this.assetDetailsViewDtoOfPartner.assetType;
-          alert(this.assetType);
           console.log('API Response:', response);
         }
       },
