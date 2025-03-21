@@ -44,12 +44,13 @@
 							<div class="portlet light mhtpx">
 								<div class="portlet-title port-heading">
 									<div class="caption">Overview</div>
-									<div>
+									<div
+										*ngIf="(authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596')">
 										<button class="btn btn-pdf pull-right caption oliveButton" (click)="AskAi()">
-										  <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveimgButton">
-										  <span>Ask Oliver</span>
+											<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveimgButton">
+											<span>Ask Oliver</span>
 										</button>
-									  </div>									  
+									</div>
 								</div>
 								<div class="col-md-12 col-lg-12 px-3" *ngIf="loadVideoPlayer">
 									<app-xamplify-video-player
