@@ -104,7 +104,7 @@
   border-radius: 4px !important;
   }
   .btn-pdf:hover,
-  .plus-btn:hover {
+  .plus-btn:hover,.history-plusicon:hover {
   background-color: #f0f7ff;
   box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2);
   
@@ -270,7 +270,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: all 0.3s ease;
     }
-    .form-section:hover {
+    .form-section:hover,.pdf_card:hover{
       box-shadow: 0 6px 15px rgba(0,0,0,0.15);
     }
     .asset-name {
@@ -651,3 +651,11 @@
               color: #333;
               font-weight: 500;
             }
+            .history-plusicon {
+              border-radius: 4px;
+              padding: 3px 8px;
+              font-size: 12px;
+              transition: all 0.3s ease;
+              background-color: #fff;
+              border: 1px solid #ddd;
+            }  
