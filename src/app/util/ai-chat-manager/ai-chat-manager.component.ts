@@ -39,6 +39,7 @@ export class AiChatManagerComponent implements OnInit {
   openShareOption: boolean = false;
   ngxLoading: boolean = false;
   UploadedFile: boolean = false;
+  assetType: string ="";
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -192,6 +193,8 @@ export class AiChatManagerComponent implements OnInit {
         if (response.statusCode == 200) {
           this.assetDetailsViewDtoOfPartner = response.data;
           this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
+          this.assetType=this.assetDetailsViewDtoOfPartner.assetType;
+          alert(this.assetType);
           console.log('API Response:', response);
         }
       },

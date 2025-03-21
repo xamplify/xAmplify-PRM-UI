@@ -13,12 +13,18 @@
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
                 <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
-                <ng-container *ngIf="!isPdfUploading">
+                <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
                   <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
+                </ng-container>
+                <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='csv' ||  assetType =='xlsx') ">
+                  <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
+                </ng-container>
+                <ng-container *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
+                  <img class="mr10" src="assets/images/oliverImagelogo.svg" alt="img" width="28px" height="28px">
                 </ng-container>
                 <a title="{{ assetDetailsViewDtoOfPartner?.assetName }}">
                   {{ assetDetailsViewDtoOfPartner?.assetName | slice:0:20 }}
-                  <span *ngIf="assetDetailsViewDtoOfPartner?.assetName?.length > 20">...</span>.pdf
+                  <span *ngIf="assetDetailsViewDtoOfPartner?.assetName?.length > 20">...</span>.{{assetDetailsViewDtoOfPartner?.assetType}}
                 </a>                
               </div>
               <div class="published-on">{{UploadedFile ? 'Uploaded On' :'Published On'}}:{{ assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}

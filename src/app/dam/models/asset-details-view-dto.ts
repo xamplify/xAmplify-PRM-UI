@@ -20,4 +20,5 @@ export class AssetDetailsViewDto {
 	 displayName = "";
 	 vendorCompanyName = "";
 	 loggedInUserProfileImage = "";
+     assetType = "";
 }
