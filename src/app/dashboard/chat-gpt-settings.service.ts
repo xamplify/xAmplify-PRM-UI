@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { ChatGptIntegrationSettingsDto } from './models/chat-gpt-integration-settings-dto';
 import { Injectable } from '@angular/core';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
@@ -9,7 +10,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 export class ChatGptSettingsService {
 
   chatGptSettingsUrl =  this.authenticationService.REST_URL+RouterUrlConstants.chatGptSettings;
-  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService) { 
+  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,private http: HttpClient) { 
 
   }
 
@@ -31,6 +32,27 @@ export class ChatGptSettingsService {
     let trimmedInput = this.referenceService.getTrimmedData(input);
     const url = this.chatGptSettingsUrl + '/loggedInUserId/'+this.authenticationService.getUserId()+'/input/'+trimmedInput+'?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
+  }
+
+  onUpload(pdfFile: Blob) {
+    const url = `${this.chatGptSettingsUrl}/upload/loggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
+    const formData = new FormData();
+    formData.append('file', pdfFile, 'file.pdf');
+    return this.authenticationService.callPostMethod(url, formData);
+  }
+
+  generateAssistantText(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + '/getPromptResponse?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, chatGptSettings);;
+  }
+  getSharedAssetDetailsById(id: number) {
+    const url = `${this.chatGptSettingsUrl}/getSharedAssetDetailsById/${id}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
+    return this.http.get(url);
+  }
+
+  deleteUploadedFileInOpenAI(uploadedFileId: any) {
+    const url = this.chatGptSettingsUrl + '/deleteUploadedFile/' + uploadedFileId + '?access_token=' + this.authenticationService.access_token;
+    return this.http.delete(url);
   }
 
 }

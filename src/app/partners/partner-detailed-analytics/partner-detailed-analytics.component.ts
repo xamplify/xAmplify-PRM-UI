@@ -33,10 +33,36 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
       this.loggedInUserId = this.authenticationService.getUserId();
     }
 
-  ngOnInit() {    
+  ngOnInit() {
+    /** XNFR-914 ***/
+    let isAnalytics =  this.partnerCompanyId > 0 && this.partnerCompanyId != undefined;
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '' && isAnalytics) {
+      this.getModulesAccessGivenByVendorForPartners(); //XNFR-914
+    } else {
+      this.referenseService.assetAccessGivenByVendor = true;
+      this.referenseService.trackAccessGivenByVendor = true;
+      this.referenseService.playBookAccessGivenByVendor = true;
+      this.referenseService.opportunitiesAccessGivenByVendor = true;
+      this.referenseService.contactsAccessGivenByVendor = true;
+      this.referenseService.campaignAccessGivenByVendor = true;
+      this.referenseService.sharedLeadAccessGivenByVendor = true;
+      this.referenseService.mdfAccessGivenByVendor = true;
+      this.referenseService.showAnalytics = true;
+    }
+    /** XNFR-914 ***/    
   }  
-
   closeDetailedAnalytics(){
+    /** XNFR-914 ***/
+    this.referenseService.assetAccessGivenByVendor = true;
+    this.referenseService.trackAccessGivenByVendor = true;
+    this.referenseService.playBookAccessGivenByVendor = true;
+    this.referenseService.opportunitiesAccessGivenByVendor = true;
+    this.referenseService.contactsAccessGivenByVendor = true;
+    this.referenseService.campaignAccessGivenByVendor = true;
+    this.referenseService.sharedLeadAccessGivenByVendor = true;
+    this.referenseService.mdfAccessGivenByVendor = true;
+    this.referenseService.showAnalytics = true;
+    /** XNFR-914 ***/
     this.notifyCloseDetailedAnalytics.emit();
   }
 
@@ -70,5 +96,46 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
     this.fromDateFilter = event.fromDate;
     this.toDateFilter = event.toDate;
   }
+  /*** XNFR-914 ***/
+    getModulesAccessGivenByVendorForPartners(){
+    this.parterService.getModulesAccessGivenByVendorForPartners(this.authenticationService.companyProfileName,this.partnerCompanyId, this.loggedInUserId).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+           this.moduleAccessGivenByVendorForPartner(response.data);
+        }
+      },
+      (_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.xtremandLogger.error(_error);
+      }
+    );
+  }
+  moduleAccessGivenByVendorForPartner(partnerModules: any) {
+    for (let module of partnerModules) {
+      if (module.moduleId === 2) {
+        this.referenseService.campaignAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 3) {
+        this.referenseService.contactsAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 5) {
+        this.referenseService.assetAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 8) {
+        this.referenseService.mdfAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 9) {
+        this.referenseService.opportunitiesAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 12) {
+        this.referenseService.playBookAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 14) {
+        this.referenseService.sharedLeadAccessGivenByVendor = module.partnerAccessModule;
+      } else if (module.moduleId === 18) {
+        this.referenseService.trackAccessGivenByVendor = module.partnerAccessModule;
+      } 
+    }
+    if (!(this.referenseService.campaignAccessGivenByVendor || this.referenseService.contactsAccessGivenByVendor || this.referenseService.assetAccessGivenByVendor ||
+      this.referenseService.mdfAccessGivenByVendor || this.referenseService.opportunitiesAccessGivenByVendor || this.referenseService.playBookAccessGivenByVendor ||
+      this.referenseService.sharedLeadAccessGivenByVendor || this.referenseService.trackAccessGivenByVendor)) {
+      this.referenseService.showAnalytics = false;
+    }
+  }
+  /*** XNFR-914 ***/
   
 }

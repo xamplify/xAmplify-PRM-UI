@@ -8,7 +8,7 @@ import { ResponseType } from '../../../core/models/response-type';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { PagerService } from '../../../core/services/pager.service';
 import { SocialService } from '../../services/social.service';
-import { VideoFileService } from '../.././../videos/services/video-file.service';
+import { VideoFileService } from '../../../videos/services/video-file.service';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
 import { Pagination } from '../../../core/models/pagination';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';

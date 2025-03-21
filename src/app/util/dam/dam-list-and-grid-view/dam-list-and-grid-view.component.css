@@ -272,3 +272,27 @@
   margin-bottom: 1px;
   margin-top: 1px;
 }
+.oliveIcon{
+  display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: #439ae4;
+    border-radius: 50%;
+    cursor: pointer
+}
+.oliveBackground{
+  width: 28px;
+  height: 28px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.oliveImg{
+  width: 28px;
+  height: 24px;
+  object-fit: contain;
+}

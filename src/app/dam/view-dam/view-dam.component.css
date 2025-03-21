@@ -30,3 +30,28 @@ a.disabled {
 .px-3{
   padding: 0 3px;
 }
+.btn-pdf {
+  background-color: transparent;
+  border: 1px solid rgba(2, 118, 255, 1);
+  color: rgba(2, 118, 255, 1);
+  margin-right: 5px;
+  font-size: 13px !important;
+  padding: 4px 8px !important;
+  font-size: 12px;
+  border-radius: 4px !important;
+  }
+  .oliveButton{
+    display: flex; 
+    align-items: center; 
+    gap: 6px; 
+    padding: 3px 8px !important;
+  }
+  .oliveimgButton{
+    width:25px; 
+    height:25px; 
+    object-fit: contain;
+  }
+  .btn-pdf:hover {
+    background-color: #f0f7ff;
+    box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2);
+    }
