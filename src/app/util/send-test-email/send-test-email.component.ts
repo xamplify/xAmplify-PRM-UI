@@ -412,6 +412,8 @@ export class SendTestEmailComponent implements OnInit {
       });
     }
     let isPrm = this.authenticationService.module.isPrm;
+    let isTeamMember = this.authenticationService.module.isTeamMember;
+
     let vanityCheck = Array.isArray(this.selectedItem)
       ? this.selectedItem.some((item: any) => item.vanityUrlDomain)
       : this.selectedItem.vanityUrlDomain;
@@ -421,7 +423,7 @@ export class SendTestEmailComponent implements OnInit {
 
     if (hasRegisterItems) {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
-      if (isPrm) {
+      if (isPrm || isTeamMember) {
         this.id = vanityCheck ? 14 : 1178;
       } else {
         this.id = vanityCheck ? 4 : 638;
@@ -436,7 +438,7 @@ export class SendTestEmailComponent implements OnInit {
 
     } else {
       this.toEmailId = this.registerNowItems.map(item => item.emailId).join(', ');
-      if (isPrm) {
+      if (isPrm || isTeamMember) {
         this.id = vanityCheck ? 14 : 1178;
       } else {
         this.id = vanityCheck ? 4 : 638;
