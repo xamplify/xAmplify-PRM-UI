@@ -33,7 +33,6 @@ import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component
 import { VendorJourneyAnalyticsComponent } from 'app/util/vendor-journey-analytics/vendor-journey-analytics.component';
 import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom-manage-leads.component';
 import { CustomManageDealsComponent } from 'app/deals/custom-manage-deals/custom-manage-deals.component';
-import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
 import { CKEditorModule } from "ng2-ckeditor";
 import { EmailActivityComponent } from 'app/activity/email-activity/email-activity.component';
 import { AddNoteModalPopupComponent } from 'app/activity/add-note-modal-popup/add-note-modal-popup.component';
@@ -68,7 +67,7 @@ import { SelectContactComponent } from 'app/deals/select-contact/select-contact.
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
-                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent,
+                CustomManageLeadsComponent, CustomManageDealsComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent,
                 AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
@@ -78,7 +77,7 @@ import { SelectContactComponent } from 'app/deals/select-contact/select-contact.
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent,
-                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent, AddTaskModalPopupComponent, TaskActivityComponent,
+                CustomManageDealsComponent,  EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent, AddTaskModalPopupComponent, TaskActivityComponent,
                 PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent],
         providers: [FormService],
 })

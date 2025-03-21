@@ -226,6 +226,11 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
+															<a class ="oliveIcon" *ngIf="isPartnerView && asset?.assetType =='pdf' && (authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596')" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+																<div class="oliveBackground">
+																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																</div>
+															</a>
 
 															<!-- comment/history -->
 															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"

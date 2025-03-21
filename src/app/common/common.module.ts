@@ -206,13 +206,19 @@ import { SelectfieldComponent } from './selectfield/selectfield.component';
 import { OrderFieldsComponent } from './order-fields/order-fields.component';
 import { CampaignMdfRequestsEmailsSentHistoryComponent } from 'app/util/campaign-mdf-requests-emails-sent-history/campaign-mdf-requests-emails-sent-history.component';
 import { UnlayerBuliderComponent } from 'app/util/unlayer-bulider/unlayer-bulider.component';
-
-
+import { AiChatManagerComponent } from 'app/util/ai-chat-manager/ai-chat-manager.component';
+import { MarkdownModule } from 'ngx-markdown';
+import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
+import { UpdateStatusComponent } from 'app/util/update-status/update-status.component';
+import { ConnectAccountsComponent } from 'app/util/connect-accounts/connect-accounts.component';
+import { FeedUpdateComponent } from 'app/util/feed-update/feed-update.component';
+import { FeedComponent } from 'app/util/feed/feed.component';
+import { RssLoaderComponent } from 'app/util/rss-loader/rss-loader.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,
-		 ScrollToModule.forRoot(),AngularMultiSelectModule],
+		 ScrollToModule.forRoot(),AngularMultiSelectModule,MarkdownModule.forRoot()],
 	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
@@ -250,8 +256,7 @@ import { UnlayerBuliderComponent } from 'app/util/unlayer-bulider/unlayer-bulide
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
-		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent
-
+		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent
 	],
 
 
@@ -292,9 +297,7 @@ import { UnlayerBuliderComponent } from 'app/util/unlayer-bulider/unlayer-bulide
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
-		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,OrderFieldsComponent,UnlayerBuliderComponent
-
-
+		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent
 	]
 
 

@@ -32,7 +32,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
   @Output() notifySubmitFailed = new EventEmitter();
-
+  @Input() emailBody :string;
   emailActivity:EmailActivity = new EmailActivity();
   customResponse:CustomResponse = new CustomResponse();
   isPreview:boolean = false;
@@ -65,6 +65,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   userIds = [];
   users = [];
   testMailFormData: any = new FormData();
+  OliveAi: boolean;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService) {}
@@ -81,6 +82,12 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.isPreview = true;
       this.fetchEmailActivityById();
       this.referenceService.openModalPopup('addEmailModalPopup');
+    } else if(this.actionType == 'oliveAi'){
+      this.isPreview = false;
+      this.referenceService.openModalPopup('addEmailModalPopup');
+      this.emailActivity.senderEmailId = this.authenticationService.getUserName();
+      this.emailActivity.body = this.emailBody;
+      this.OliveAi = true;
     }
     if (this.isCompanyJourney) {
       this.fetchUsersForCompanyJourney();
@@ -128,6 +135,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   closeEmailModal() {
     this.isPreview = false;
     this.actionType = '';
+    this.OliveAi = false;
     // $('#addEmailModalPopup').modal('hide');
     this.referenceService.closeModalPopup('addEmailModalPopup');
     this.notifyClose.emit();

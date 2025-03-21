@@ -1,0 +1,253 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
+import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
+import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+declare var $: any;
+
+@Component({
+  selector: 'app-ai-chat-manager',
+  templateUrl: './ai-chat-manager.component.html',
+  styleUrls: ['./ai-chat-manager.component.css']
+})
+export class AiChatManagerComponent implements OnInit {
+  // @Input() assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
+  openHistory: boolean;
+  messages: any[] = [];
+  isValidInputText: boolean;
+  inputText: string = "";
+  trimmedText: string = "";
+  chatGptGeneratedText: string = "";
+  properties: any;
+  chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+  // @Output() notifyParent: EventEmitter<any> = new EventEmitter();
+  // @Input() pdfFile: Blob;
+  uploadedFileId: any;
+  isLoading: boolean = false;
+  assetDetailsViewDtoOfPartner: AssetDetailsViewDto = new AssetDetailsViewDto();
+  loading: boolean;
+  assetId = 0;
+  pdfDoc: any;
+  pdfFile: Blob;
+  isPdfUploading: boolean =false;
+  actionType: string;
+  showEmailModalPopup: boolean;
+  openShareOption: boolean = false;
+  ngxLoading: boolean = false;
+  UploadedFile: boolean = false;
+  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
+    private router:Router) { }
+
+    ngOnInit() {
+      this.assetId = parseInt(this.route.snapshot.params['assetId']);
+      if(this.assetId >0){
+        this.getSharedAssetDetailsById(this.assetId);
+      }
+    }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
+      console.log('PDF file loaded:', this.pdfFile);
+      if (this.pdfFile) {
+        this.getUploadedFileId();
+      }
+    }
+  }
+
+  setInputText(text: string) {
+    this.inputText = text;
+    this.validateInputText();
+  }
+
+  submitdata() {
+    this.openHistory = true;
+    this.AskAiTogetData();
+  }
+
+  closeHistory() {
+    this.openHistory = false;
+    if (this.uploadedFileId != undefined) {
+      this.deleteUploadedFile();
+    }
+    // this.notifyParent.emit();
+  }
+  
+  validateInputText() {
+    this.trimmedText = this.referenceService.getTrimmedData(this.inputText);
+    this.isValidInputText = this.trimmedText != undefined && this.trimmedText.length > 0;
+  }
+
+  searchDataOnKeyPress(keyCode: any) {
+    if (keyCode === 13 && !(this.isLoading || this.isPdfUploading)) {
+      this.openHistory = true;
+      this.AskAiTogetData();
+    }
+  }
+
+  AskAiTogetData() {
+    this.openHistory = true;
+    this.isLoading = true;
+    if ($('.scrollable-card').length) {
+      $('.scrollable-card').animate({
+        scrollTop: $('.scrollable-card')[0].scrollHeight
+      }, 500);
+    }
+    this.messages.push({ role: 'user', content: this.trimmedText });
+    this.inputText = '';
+    var self = this;
+    this.chatGptIntegrationSettingsDto.uploadedFileId = this.uploadedFileId;
+    this.chatGptIntegrationSettingsDto.prompt = this.trimmedText;
+    this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
+      function (response) {
+        console.log('API Response:', response);
+        self.isLoading = false;
+        var data = response.data;
+        var reply = 'No response received from ChatGPT.';
+
+        if (data && data.apiResponse && data.apiResponse.choices && data.apiResponse.choices.length > 0) {
+          var content = data.apiResponse.choices[0].message.content;
+          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content);
+          self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
+        } else {
+          self.messages.push({ role: 'assistant', content: 'Invalid response from ChatGPT.' });
+        }
+        this.trimmedText = '';
+      },
+      function (error) {
+        self.isLoading = false;
+        console.log('API Error:', error);
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+      }
+    );
+  }
+
+  closeAi() {
+    if (this.uploadedFileId != undefined) {
+      this.deleteUploadedFile();
+    }
+    if (this.router.url.includes('/shared/view/')) {
+      this.referenceService.goToRouter('/home/dam/shared/l');
+    } else {
+      this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
+    }
+    // this.notifyParent.emit();
+  }
+
+  copyAiText(text: string) {
+    this.copyToClipboard(text);
+  }
+
+  copyToClipboard(text: string) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+  onFileSelected(event: any) {
+    this.UploadedFile =true;
+    if (this.uploadedFileId != undefined) {
+      this.deleteUploadedFile();
+    }
+    const file: File = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      this.pdfFile = file;
+      console.log('PDF selected:', file.name);
+      this.assetDetailsViewDtoOfPartner.assetName = file.name.replace(/\.pdf/i, '');
+      this.assetDetailsViewDtoOfPartner.displayTime = new Date();
+      this.getUploadedFileId();
+    } else {
+      alert('Please upload a valid PDF file.');
+    }
+  }
+
+  getUploadedFileId() {
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.onUpload(this.pdfFile).subscribe(
+      (response: any) => {
+        const responseObject = JSON.parse(response);
+        this.isPdfUploading = false;
+        this.uploadedFileId = responseObject.id;
+        console.log(this.uploadedFileId);
+        this.isLoading = false;
+      },
+      (error: string) => {
+        this.isPdfUploading = false;
+        this.isLoading = false;
+        console.log('API Error:', error);;
+      }
+    );
+  }
+  getSharedAssetDetailsById(id: number) {
+    this.loading = true;
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.getSharedAssetDetailsById(id).subscribe(
+      (response: any) => {
+        this.loading = false;
+        if (response.statusCode == 200) {
+          this.assetDetailsViewDtoOfPartner = response.data;
+          this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
+          console.log('API Response:', response);
+        }
+      },
+      (error) => {
+        this.loading = false;
+        console.error('API Error:', error);
+      }, () => {
+        this.getPdfByAssetPath();
+      }
+
+    );
+  }
+  errorHandler(event: any) {
+    event.target.src = 'assets/images/icon-user-default.png';
+  }
+
+  deleteUploadedFile() {
+    this.chatGptSettingsService.deleteUploadedFileInOpenAI(this.uploadedFileId).subscribe(
+      (response: any) => {
+      },
+      (error: string) => {
+        console.log('API Error:', error);
+      }
+    );
+  }
+  
+  getPdfByAssetPath() {
+  this.ngxLoading=true;
+    this.http.get(this.assetDetailsViewDtoOfPartner.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
+      .subscribe(async response => {
+        this.pdfFile = response;
+        this.getUploadedFileId();
+        this.ngxLoading=false;
+      });
+  }
+  openEmailModalPopup() {
+    this.actionType = 'oliveAi';
+    this.showEmailModalPopup = true;
+  }
+  closeEmailModalPopup() {
+    this.showEmailModalPopup = false;
+  }
+  openSocialShare(){
+    this.referenceService.scrollSmoothToTop();
+    this.openShareOption = true;
+  }
+  closeSocialShare(event:any){
+    this.openShareOption = false;
+    this.openHistory = true;
+  }
+  ngOnDestroy() {
+    this.openHistory=false;
+    this.openShareOption = false;
+    this.loading = false;
+    this.ngxLoading  = false;
+    this.UploadedFile = false;
+    this.showEmailModalPopup = false;
+  }
+}
