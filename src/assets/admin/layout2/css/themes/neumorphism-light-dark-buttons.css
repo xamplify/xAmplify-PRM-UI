@@ -88,7 +88,7 @@ span.btn.Btn-Green.transition {
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active.open > a > i,
 .page-sidebar .page-sidebar-menu > li.active > a > i, 
 .page-sidebar .page-sidebar-menu > li.active.open > a > i {
-  color: #0276FF !important;
+  color: #0276FF !important ;
 }
 /**** tharak(12-01-2024) *********/
 h3#notifications {
