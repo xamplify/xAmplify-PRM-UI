@@ -161,3 +161,9 @@ background-color: var(--top-bg-color) !important;
   color: var(--top-button-value-color) !important;
 }
 /*** Universal Search *******/
+.modal-header{
+  background: var(--top-bg-color) !important;
+}
+.modal-title{
+  color: var(--menu-text) !important;
+}
