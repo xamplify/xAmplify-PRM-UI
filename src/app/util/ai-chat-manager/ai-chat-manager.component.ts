@@ -40,6 +40,7 @@ export class AiChatManagerComponent implements OnInit {
   ngxLoading: boolean = false;
   UploadedFile: boolean = false;
   assetType: string ="";
+  isCollapsed: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -251,5 +252,9 @@ export class AiChatManagerComponent implements OnInit {
     this.ngxLoading  = false;
     this.UploadedFile = false;
     this.showEmailModalPopup = false;
+  }
+
+  toggleAction(){
+    this.isCollapsed = !this.isCollapsed;
   }
 }

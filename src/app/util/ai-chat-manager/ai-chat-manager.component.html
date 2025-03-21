@@ -132,9 +132,49 @@
           <div class="panel panel-default accordion_card">
             <div class="panel-heading accordion_card">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Asset
-                  Name:{{assetDetailsViewDtoOfPartner.assetName}} |
-                  Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</a>
+                <a *ngIf="!isCollapsed" (click)="toggleAction()"><span>
+                    Asset Name:{{assetDetailsViewDtoOfPartner.assetName}} |
+                    Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
+                  <i class="fa fa-chevron-up toggle-icon"></i>
+                </a>
+                <a *ngIf="isCollapsed" (click)="toggleAction()">
+                  <span>
+                    <div class="Ai_file">
+                      <div class="Ai-icon">
+                        <div class="d-flex document_flex">
+                          <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
+                          <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
+                            <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
+                          </ng-container>
+                          <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='csv' ||  assetType =='xlsx') ">
+                            <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
+                          </ng-container>
+                          <ng-container
+                            *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
+                            <img class="mr10" src="assets/images/oliverImagelogo.svg" alt="img" width="28px" height="28px">
+                          </ng-container>
+                          <a title="{{ assetDetailsViewDtoOfPartner?.assetName }}">
+                            {{ assetDetailsViewDtoOfPartner?.assetName | slice:0:20 }}
+                            <span
+                              *ngIf="assetDetailsViewDtoOfPartner?.assetName?.length > 20">...</span>.{{assetDetailsViewDtoOfPartner?.assetType}}
+                          </a>
+                        </div>
+                        <div class="published-on">{{UploadedFile ? 'Uploaded On' :'Published On'}}:{{
+                          assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}
+                        </div>
+                      </div>
+                      <div class="Ai-file-details">
+                        <h5>Asset Name: {{assetDetailsViewDtoOfPartner?.assetName}}</h5>
+                        <span class="aligin-para">
+                          <p>Folder:{{assetDetailsViewDtoOfPartner?.categoryName}}</p>
+                          <p>Published By:{{assetDetailsViewDtoOfPartner?.displayName}}</p>
+                          <p>From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
+                        </span>
+                      </div>
+                    </div>
+                  </span>
+                  <i class="fa fa-chevron-down toggle-icon"></i>
+                </a>
               </h4>
             </div>
             <div id="collapseOne" class="panel-collapse collapse in">
