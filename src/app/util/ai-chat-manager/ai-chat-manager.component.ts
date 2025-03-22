@@ -249,7 +249,9 @@ export class AiChatManagerComponent implements OnInit {
     this.showEmailModalPopup = false;
     this.subjectText = "";
     this.emailBody = "";
+    if (event) {
     this.referenceService.showSweetAlertSuccessMessage(event);
+    }
   }
   openSocialShare(){
     this.referenceService.scrollSmoothToTop();
@@ -258,7 +260,9 @@ export class AiChatManagerComponent implements OnInit {
   closeSocialShare(event:any){
     this.openShareOption = false;
     this.openHistory = true;
+    if (event) {
     this.referenceService.showSweetAlertSuccessMessage(event);
+    }
   }
   ngOnDestroy() {
     this.openHistory=false;
