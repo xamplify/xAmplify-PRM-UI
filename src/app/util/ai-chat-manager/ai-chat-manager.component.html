@@ -1,5 +1,5 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType"[emailBody]="chatGptGeneratedText" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
+<app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType" [subjectText]="subjectText" [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
 <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "chatGptGeneratedText" (notifyClose)="closeSocialShare($event)"></app-update-status>
 <div class="page-content">
   <div *ngIf="!openHistory && !openShareOption" class="pdf_body">
@@ -88,7 +88,7 @@
               <div class="col-lg-11 col-sm-11">
                 <div class="content-card">
                   <div class="chat-container">
-                    <div class="chat-history">
+                    <div #markdownComponent class="chat-history">
                       <markdown [data]="message.content"></markdown>
                     </div>
                   </div>
@@ -98,14 +98,14 @@
                     <i class="fa fa-volume-up fs-12" aria-hidden="true"></i>
                   </div>
                   <div class="footer-icon" title="Copy to Clipboard">
-                    <i class="fa fa-clone fs-12" aria-hidden="true" (click)="copyAiText(chatGptGeneratedText)"></i>
+                    <i class="fa fa-clone fs-12" aria-hidden="true" (click)="copyAiText(markdownComponent)"></i>
                   </div>
                   <div class="footer-icon" title="List View">
                     <i class="fa fa-refresh fs-12"></i>
                   </div>
                   <button class="share-btn" >Design Template</button>
                   <button class="share-btn">Design Page</button>
-                  <button class="share-btn" (click)="openEmailModalPopup()">Send Email</button>
+                  <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                   <button class="share-btn" (click)="openSocialShare()">Social Share</button>
                 </div>
               </div>

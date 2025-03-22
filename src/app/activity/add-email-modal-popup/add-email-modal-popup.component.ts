@@ -34,6 +34,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   @Output() notifyClose = new EventEmitter();
   @Output() notifySubmitFailed = new EventEmitter();
   @Input() emailBody :string;
+  @Input() subjectText : string;
   emailActivity:EmailActivity = new EmailActivity();
   customResponse:CustomResponse = new CustomResponse();
   isPreview:boolean = false;
@@ -91,6 +92,10 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.emailActivity.userId = this.authenticationService.getUserId();
       this.emailActivity.contactId = this.authenticationService.getUserId();
       this.emailActivity.body = this.emailBody;
+      if (this.subjectText != undefined) {
+        this.emailActivity.subject = this.subjectText;
+        this.isValidEmail = true;
+      }
       this.OliveAi = true;
     }
     if (this.isCompanyJourney) {

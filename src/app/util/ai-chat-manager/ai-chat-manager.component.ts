@@ -42,6 +42,8 @@ export class AiChatManagerComponent implements OnInit {
   assetType: string ="";
   isCollapsed: boolean = false;
   copiedText: string = "";
+  emailBody: any;
+  subjectText: string;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -234,12 +236,19 @@ export class AiChatManagerComponent implements OnInit {
       });
   }
   
-  openEmailModalPopup() {
+  openEmailModalPopup(markdown: any) {
+    let text = markdown.innerHTML;
+    if (text != undefined) {
+      this.emailBody = text.replace(/<\/?markdown[^>]*>/g, '');
+    }
+    this.parseHTMLBody(this.emailBody);
     this.actionType = 'oliveAi';
     this.showEmailModalPopup = true;
   }
-  closeEmailModalPopup(event :any) {
+  closeEmailModalPopup(event: any) {
     this.showEmailModalPopup = false;
+    this.subjectText = "";
+    this.emailBody = "";
     this.referenceService.showSweetAlertSuccessMessage(event);
   }
   openSocialShare(){
@@ -263,4 +272,28 @@ export class AiChatManagerComponent implements OnInit {
   toggleAction(){
     this.isCollapsed = !this.isCollapsed;
   }
+
+  parseHTMLBody(emailContent: string): void {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = emailContent;
+    let plainText = tempDiv.innerHTML;
+    let subject = "";
+    let body = "";
+    let subjectStartIndex = plainText.indexOf("<p>Subject:");
+    if (subjectStartIndex !== -1) {
+      let subjectEndIndex = plainText.indexOf("</p>", subjectStartIndex);
+      if (subjectEndIndex !== -1) {
+        this.subjectText = plainText.substring(subjectStartIndex + 3, subjectEndIndex)
+          .replace("Subject:", "").trim();
+      }
+      this.emailBody = plainText.substring(subjectEndIndex + 4).trim();
+      let lastHrIndex = body.lastIndexOf("<hr");
+      if (lastHrIndex !== -1) {
+        this.emailBody = this.emailBody.substring(0, lastHrIndex).trim();
+      }
+    }
+    console.log("Subject:", subject);
+    console.log("Body:", body);
+  }
+
 }
