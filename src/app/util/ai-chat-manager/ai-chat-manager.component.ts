@@ -291,7 +291,7 @@ export class AiChatManagerComponent implements OnInit {
           .replace("Subject:", "").trim();
       }
       this.emailBody = plainText.substring(subjectEndIndex + 4).trim();
-      let lastHrIndex = body.lastIndexOf("<hr");
+      let lastHrIndex = this.emailBody.lastIndexOf("<hr");
       if (lastHrIndex !== -1) {
         this.emailBody = this.emailBody.substring(0, lastHrIndex).trim();
       }
