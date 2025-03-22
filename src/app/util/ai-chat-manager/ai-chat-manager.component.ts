@@ -41,6 +41,7 @@ export class AiChatManagerComponent implements OnInit {
   UploadedFile: boolean = false;
   assetType: string ="";
   isCollapsed: boolean = false;
+  copiedText: string = "";
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -139,18 +140,20 @@ export class AiChatManagerComponent implements OnInit {
     // this.notifyParent.emit();
   }
 
-  copyAiText(text: string) {
-    this.copyToClipboard(text);
+  copyAiText(element: HTMLElement) {
+    this.copyToClipboard(element);
   }
 
-  copyToClipboard(text: string) {
+  copyToClipboard(element : any) {
+    this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
-    textarea.value = text;
+    textarea.value = this.copiedText;
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
   }
+
   onFileSelected(event: any) {
     this.UploadedFile =true;
     if (this.uploadedFileId != undefined) {
@@ -230,7 +233,9 @@ export class AiChatManagerComponent implements OnInit {
         this.ngxLoading=false;
       });
   }
-  openEmailModalPopup() {
+  
+  openEmailModalPopup(element: HTMLElement) {
+    this.copiedText = element.innerText || element.textContent;
     this.actionType = 'oliveAi';
     this.showEmailModalPopup = true;
   }

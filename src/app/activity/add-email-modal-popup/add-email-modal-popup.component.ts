@@ -12,6 +12,7 @@ import { tap } from 'rxjs/operators';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { ContactService } from 'app/contacts/services/contact.service';
+import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 declare var $:any, CKEDITOR:any;
 
 @Component({
@@ -66,6 +67,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   users = [];
   testMailFormData: any = new FormData();
   OliveAi: boolean;
+  sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService) {}
@@ -82,10 +84,12 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.isPreview = true;
       this.fetchEmailActivityById();
       this.referenceService.openModalPopup('addEmailModalPopup');
-    } else if(this.actionType == 'oliveAi'){
+    } else if (this.actionType == 'oliveAi') {
       this.isPreview = false;
       this.referenceService.openModalPopup('addEmailModalPopup');
       this.emailActivity.senderEmailId = this.authenticationService.getUserName();
+      this.emailActivity.userId = this.authenticationService.getUserId();
+      this.emailActivity.contactId = this.authenticationService.getUserId();
       this.emailActivity.body = this.emailBody;
       this.OliveAi = true;
     }
@@ -104,28 +108,44 @@ export class AddEmailModalPopupComponent implements OnInit {
   ngOnDestroy(){
     $('#addEmailModalPopup').modal('hide');
   }
+  
   sendEmailToUser() {
-    this.ngxLoading = true;
-    this.prepareFormData();
-    this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
-    this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
-    if (this.isCompanyJourney) {
-      this.emailActivity.userIds = this.userIds.map(user => user.id);
-      this.emailActivity.isCompanyJourney = this.isCompanyJourney;
+    if (this.OliveAi) {
+      this.ngxLoading = true;
+      this.sendTestEmailDto.body = this.emailBody;
+      this.sendTestEmailDto.toEmail = this.emailActivity.toEmailId;
+      this.sendTestEmailDto.subject = this.emailActivity.subject;
+      this.sendTestEmailDto.showAlert = false;
+      this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
+        response => {
+          this.ngxLoading = false;
+          this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
+        }, error => {
+          this.ngxLoading = false;
+        });
     } else {
-      this.emailActivity.userIds.push(this.userId);
-    }
-    this.emailActivityService.sendEmailToUser(this.emailActivity, this.formData).subscribe(
-      data => {
-        this.ngxLoading = false;
-        $('#addEmailModalPopup').modal('hide');
-        this.notifySubmitSuccess.emit(!this.isReloadEmailActivityTab);
-      }, error => {
-        this.ngxLoading = false;
-        this.notifySubmitFailed.emit(!this.isReloadEmailActivityTab);
-        this.closeEmailModal();
+      this.ngxLoading = true;
+      this.prepareFormData();
+      this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+      this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+      if (this.isCompanyJourney) {
+        this.emailActivity.userIds = this.userIds.map(user => user.id);
+        this.emailActivity.isCompanyJourney = this.isCompanyJourney;
+      } else {
+        this.emailActivity.userIds.push(this.userId);
       }
-    )
+      this.emailActivityService.sendEmailToUser(this.emailActivity, this.formData).subscribe(
+        data => {
+          this.ngxLoading = false;
+          $('#addEmailModalPopup').modal('hide');
+          this.notifySubmitSuccess.emit(!this.isReloadEmailActivityTab);
+        }, error => {
+          this.ngxLoading = false;
+          this.notifySubmitFailed.emit(!this.isReloadEmailActivityTab);
+          this.closeEmailModal();
+        }
+      )
+    }
   }
 
   private extractEmailIds(emailList: any[]): string[] {
