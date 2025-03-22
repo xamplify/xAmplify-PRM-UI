@@ -238,8 +238,9 @@ export class AiChatManagerComponent implements OnInit {
     this.actionType = 'oliveAi';
     this.showEmailModalPopup = true;
   }
-  closeEmailModalPopup() {
+  closeEmailModalPopup(event :any) {
     this.showEmailModalPopup = false;
+    this.referenceService.showSweetAlertSuccessMessage(event);
   }
   openSocialShare(){
     this.referenceService.scrollSmoothToTop();
@@ -248,6 +249,7 @@ export class AiChatManagerComponent implements OnInit {
   closeSocialShare(event:any){
     this.openShareOption = false;
     this.openHistory = true;
+    this.referenceService.showSweetAlertSuccessMessage(event);
   }
   ngOnDestroy() {
     this.openHistory=false;

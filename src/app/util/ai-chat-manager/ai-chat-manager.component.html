@@ -1,6 +1,6 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType"[emailBody]="chatGptGeneratedText" (notifyClose)="closeEmailModalPopup()"></app-add-email-modal-popup>
-<app-update-status *ngIf="openShareOption" [fromAi]="true"(notifyClose)="closeSocialShare($event)"></app-update-status>
+<app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType"[emailBody]="chatGptGeneratedText" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
+<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "chatGptGeneratedText" (notifyClose)="closeSocialShare($event)"></app-update-status>
 <div class="page-content">
   <div *ngIf="!openHistory && !openShareOption" class="pdf_body">
     <button class="btn close_btn" (click)="closeAi()">×</button>

@@ -119,6 +119,7 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
         response => {
           this.ngxLoading = false;
+          this.notifyClose.emit("Email sent sucessfully");
           this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
         }, error => {
           this.ngxLoading = false;
