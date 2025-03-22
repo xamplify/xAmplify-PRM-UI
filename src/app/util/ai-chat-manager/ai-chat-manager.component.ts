@@ -111,14 +111,14 @@ export class AiChatManagerComponent implements OnInit {
         console.log('API Response:', response);
         self.isLoading = false;
         var data = response.data;
-        var reply = 'No response received from ChatGPT.';
+        var reply = 'No response received from Oliver.';
 
         if (data && data.apiResponse && data.apiResponse.choices && data.apiResponse.choices.length > 0) {
           var content = data.apiResponse.choices[0].message.content;
           self.chatGptGeneratedText = self.referenceService.getTrimmedData(content);
           self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
         } else {
-          self.messages.push({ role: 'assistant', content: 'Invalid response from ChatGPT.' });
+          self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
         this.trimmedText = '';
       },
