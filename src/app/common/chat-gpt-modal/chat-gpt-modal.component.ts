@@ -30,7 +30,6 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    alert(this.sortOption.selectWordDropDownForOliver);
   }
 
 
