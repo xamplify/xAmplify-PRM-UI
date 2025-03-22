@@ -1,8 +1,8 @@
 
 
 .icon-s-w{
-  height:32px;
-   width:32px;
+  height:150px;
+   width:150px;
 }
 
 .svg-w-h{
@@ -40,9 +40,9 @@
     right: 15px;
     bottom: 15px;
     padding:2px;
-    background-color: #fff;
+    /* background-color: #fff;
     border-radius: 50%;
-    box-shadow: 0px 1px 5px 2px #00000059;
+    box-shadow: 0px 1px 5px 2px #00000059; */
     z-index: 100001;
   }
   .card1 {
@@ -469,14 +469,18 @@ input.form-control.input-lg.oliver-input {
   font-weight: bold;
   cursor: pointer;
 }
-.upload-box i {
-  font-size: 40px;
-  color: #007bff;
+
+.upload-box img {
+  width: 40px;
   display: block;
-  margin-bottom: 15px;
+  margin: 0 auto 10px;
 }
 .submit-section{
   flex-direction: column;
     display: flex;
     margin-left: 20px;
+}
+.h-350::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
 }

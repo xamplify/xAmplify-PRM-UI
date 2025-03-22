@@ -1,6 +1,6 @@
 <!--CHATGPT ICON-->
-<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
-  <a class="javascript:void(0)"><img src="../assets/images/ai.png" class="icon-s-w"></a>
+<div *ngIf="isChatGptIconDisplayed && showIcon &&authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
+  <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo.svg" class="icon-s-w"></a>
 </div>
 <!--ICON END -->
 
@@ -16,6 +16,9 @@
       <div class="modal-body oliver-header">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
         <div classs="row">
+          <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
+        style="position: absolute;  top: 17px;right: 27px;" (click)="showOliverIcon()">
+        <i class="fa fa-times mb5" aria-hidden="true"></i></button>
           <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 card_pr15">
             <div class="card1 pr0 pl0">
               <div class="chat_btn">
@@ -107,7 +110,7 @@
               <div role="tabpanel" class="tab-pane fade" id="writing">
                   <!-- Heading -->
                   <div class="d-flex content-align">
-                    <span class="heading">Engage, Learn, Create, and Communicate with Oliver</span>
+                    <span class="heading">Create Essays, Documents, Reports with Oliver</span>
                     <!-- Oliver Image Positioned Correctly -->
                     <div class="oliver-container">
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
@@ -130,10 +133,11 @@
               <!-- Ask PDF Tab -->
               <div role="tabpanel" class="tab-pane fade" id="askpdf">
                 <span class="heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
-                <div class="custom-card">
+                <div class="custom-card mt10">
                   <div class="upload-box">
                     <label>
-                      <i class="glyphicon glyphicon-upload"></i>
+                      <!-- <i class="glyphicon glyphicon-upload"></i> -->
+                      <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
                       Feed Me Digital Assets
                       <input type="file">
                     </label>
@@ -146,24 +150,21 @@
               </div>
               <!-- Paraphraser Tab -->
               <div role="tabpanel" class="tab-pane fade" id="paraphraser">
-                <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
-                  style="position: absolute;  top: 17px;right: 62px;">
-                  <i class="fa fa-times" aria-hidden="true"></i></button>
                 <div class="header-text fs-22">Paraphraser – Rewrite Text Effortlessly With Oliver</div>
                 <div class="phara-card">
                   <div class="content-area">
                     <div class="textarea-card clip-path1">
-                      <textarea class="textarea h-350" placeholder="Feed Me Your Thoughts"></textarea>
+                      <textarea class="textarea h-350" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()"  placeholder="Feed Me Your Thoughts"></textarea>
                     </div>
                     <div class="oliver-container-img">
                       <img src="assets/images/olivere-dog.svg" width="50px" alt="Oliver">
                     </div>
                     <div class="textarea-card clip-path2">
-                      <textarea class="textarea h-350"></textarea>
+                      <textarea class="textarea h-350" id="chatGptGeneratedTextArea"  [(ngModel)]="chatGptGeneratedText" [ngModelOptions]="{standalone: true}"  readonly #chatGptGeneratedTextInput></textarea>
                     </div>
                   </div>
                   <div class="generate-div">
-                    <button class="generate-btn">Generate</button>
+                    <button class="generate-btn" (click)=" generateChatGPTText()">Generate</button>
                   </div>
                 </div>
               </div>

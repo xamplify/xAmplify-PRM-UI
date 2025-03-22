@@ -21,6 +21,7 @@ export class ChatGptModalComponent implements OnInit {
   isTextLoading = false;
   isCopyButtonDisplayed = false;
   customResponse:CustomResponse = new CustomResponse();
+  showIcon: boolean = true;
   constructor(public authenticationService:AuthenticationService,private chatGptSettingsService:ChatGptSettingsService,
     private referenceService:ReferenceService,public properties:Properties) { 
     
@@ -40,7 +41,8 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.isTextLoading = true;
     this.chatGptGeneratedText = '';
-    this.chatGptSettingsService.generateText(this.inputText).subscribe(
+    let askOliver = 'Paraphrase this:' + this.inputText
+    this.chatGptSettingsService.generateText(askOliver).subscribe(
       response=>{
         let statusCode = response.statusCode;
         let data = response.data;
@@ -76,6 +78,10 @@ export class ChatGptModalComponent implements OnInit {
     this.isCopyButtonDisplayed = false;
     this.customResponse = new CustomResponse();
     $('#copied-chat-gpt-text-message').hide();
+    this.showIcon = false;
+  }
+  showOliverIcon(){
+    this.showIcon = true;
   }
 
  
