@@ -234,8 +234,7 @@ export class AiChatManagerComponent implements OnInit {
       });
   }
   
-  openEmailModalPopup(element: HTMLElement) {
-    this.copiedText = element.innerText || element.textContent;
+  openEmailModalPopup() {
     this.actionType = 'oliveAi';
     this.showEmailModalPopup = true;
   }
