@@ -117,7 +117,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   sendEmailToUser() {
     if (this.OliveAi) {
       this.ngxLoading = true;
-      this.sendTestEmailDto.body = this.emailBody;
+      this.sendTestEmailDto.body = this.emailActivity.body;
       this.sendTestEmailDto.toEmail = this.emailActivity.toEmailId;
       this.sendTestEmailDto.subject = this.emailActivity.subject;
       this.sendTestEmailDto.showAlert = false;
