@@ -1,6 +1,6 @@
 <!--CHATGPT ICON-->
 <div *ngIf="isChatGptIconDisplayed && showIcon &&authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
-  <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo.svg" class="icon-s-w"></a>
+  <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
 </div>
 <!--ICON END -->
 
@@ -75,18 +75,32 @@
           <div class="sidebar">
             <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
             <ul class="nav nav-pills nav-stacked" role="tablist">
-              <li class="active"><a href="#New-Chat" role="tab" data-toggle="tab"><i class="fa fa-plus-circle" aria-hidden="true"></i>
-                  Start New Chat</a></li>
-              <li><a href="#writing" role="tab" data-toggle="tab"><i class="fa fa-pencil"></i> Writing</a></li>
-              <li><a href="#askpdf" role="tab" data-toggle="tab"><i class="fa fa-file-text"></i> Ask PDF</a></li>
-              <li><a href="#paraphraser" role="tab" data-toggle="tab"><i class="fa fa-align-left"></i>
-                  Paraphraser</a></li>
-            </ul>
+              <li [ngClass]="{'active': activeTab === 'new-chat'}">
+                <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
+                  <i class="fa fa-plus-circle"></i> Start New Chat
+                </a>
+              </li>
+              <li [ngClass]="{'active': activeTab === 'writing'}">
+                <a href="#writing" role="tab" data-toggle="tab" (click)="setActiveTab('writing')">
+                  <i class="fa fa-pencil"></i> Writing
+                </a>
+              </li>
+              <li [ngClass]="{'active': activeTab === 'askpdf'}">
+                <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
+                  <i class="fa fa-file-text"></i> Ask Oliver
+                </a>
+              </li>
+              <li [ngClass]="{'active': activeTab === 'paraphraser'}">
+                <a href="#paraphraser" role="tab" data-toggle="tab" (click)="setActiveTab('paraphraser')">
+                  <i class="fa fa-align-left"></i> Paraphraser
+                </a>
+              </li>
+            </ul>            
           </div>
           <div class="d-flex align-center">
             <div class="tab-content">
               <!-- Start New Chat -->
-              <div role="tabpanel" class="tab-pane fade in active" id="New-Chat">
+              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}" id="New-Chat">
                 <div class="container-ui">
                   <!-- Heading -->
                    <div class="d-flex content-align">
@@ -98,7 +112,7 @@
               </div>
                   <!-- Input Section -->
                   <div class="input-wrapper mt10">
-                    <input type="text" placeholder="Ask Oliver!">
+                    <input type="text" placeholder="Ask Me!">
                     <div class="btn-wrapper">
                       <button class="btn-plus">+</button>
                       <button class="btn-submit">Submit</button>
@@ -107,7 +121,7 @@
                 </div>
               </div>
               <!-- Writing Tab -->
-              <div role="tabpanel" class="tab-pane fade" id="writing">
+              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'writing', 'tab-pane fade': activeTab !== 'writing'}" id="writing">
                   <!-- Heading -->
                   <div class="d-flex content-align">
                     <span class="heading">Create Essays, Documents, Reports with Oliver</span>
@@ -119,19 +133,22 @@
                   <!-- Input Section -->
                   <div class="writing-card mt10">
                     <div class="form-group">
-                      <input type="text" class="form-control input-lg oliver-input" placeholder="Ask Oliver!">
+                      <input type="text" class="form-control input-lg oliver-input" placeholder="Ask Me!">
                     </div>
                     <div class="label-text">Text Length</div>
-                    <div class="input-group">
-                      <input type="text" class="form-control oliver-focus" value="Short (under 100 words)" readonly>
-                      <span class="input-group-btn">
-                        <button type="submit" class="btn btn-submit">Submit</button>
-                      </span>
-                    </div>
+                    <div class="input-group d-flex">
+                      <select class="form-control oliver-focus" [(ngModel)]="sortOption.selectWordDropDownForOliver"
+                      (ngModelChange)="sortBy($event)" id="select-dropdown">
+                        <option *ngFor="let option of sortOption.wordOptionsForOliver" [value]="option">
+                          {{ option.name }}
+                        </option>
+                      </select>
+                      <button class="btn btn-submit ml10" type="button" (click)="onSubmit()">Submit</button>
+                    </div>                    
                   </div>
               </div>
               <!-- Ask PDF Tab -->
-              <div role="tabpanel" class="tab-pane fade" id="askpdf">
+              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'askpdf', 'tab-pane fade': activeTab !== 'askpdf'}" id="askpdf">
                 <span class="heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
                 <div class="custom-card mt10">
                   <div class="upload-box">
@@ -149,7 +166,7 @@
                 </div>
               </div>
               <!-- Paraphraser Tab -->
-              <div role="tabpanel" class="tab-pane fade" id="paraphraser">
+              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'paraphraser', 'tab-pane fade': activeTab !== 'paraphraser'}" id="paraphraser">
                 <div class="header-text fs-22">Paraphraser – Rewrite Text Effortlessly With Oliver</div>
                 <div class="phara-card">
                   <div class="content-area">
@@ -164,12 +181,13 @@
                     </div>
                   </div>
                   <div class="generate-div">
-                    <button class="generate-btn" (click)=" generateChatGPTText()">Generate</button>
+                    <button class="generate-btn" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Generate</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <!-- -add changes- -->
         </div>
           <!--  -->
         </div>

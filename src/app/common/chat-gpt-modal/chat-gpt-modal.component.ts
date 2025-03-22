@@ -4,12 +4,13 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { CustomResponse } from '../models/custom-response';
 import { Properties } from '../models/properties';
+import { SortOption } from 'app/core/models/sort-option';
 declare var $:any;
 @Component({
   selector: 'app-chat-gpt-modal',
   templateUrl: './chat-gpt-modal.component.html',
   styleUrls: ['./chat-gpt-modal.component.css'],
-  providers:[Properties]
+  providers:[Properties,SortOption]
 })
 export class ChatGptModalComponent implements OnInit {
   @Input() isChatGptIconDisplayed:boolean;
@@ -22,12 +23,14 @@ export class ChatGptModalComponent implements OnInit {
   isCopyButtonDisplayed = false;
   customResponse:CustomResponse = new CustomResponse();
   showIcon: boolean = true;
+  activeTab: string = 'paraphraser';
   constructor(public authenticationService:AuthenticationService,private chatGptSettingsService:ChatGptSettingsService,
-    private referenceService:ReferenceService,public properties:Properties) { 
+    private referenceService:ReferenceService,public properties:Properties,public sortOption:SortOption) { 
     
   }
 
   ngOnInit() {
+    alert(this.sortOption.selectWordDropDownForOliver);
   }
 
 
@@ -41,8 +44,8 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.isTextLoading = true;
     this.chatGptGeneratedText = '';
-    let askOliver = 'Paraphrase this:' + this.inputText
-    this.chatGptSettingsService.generateText(askOliver).subscribe(
+    // let askOliver = 'Paraphrase this:' + this.inputText
+    this.chatGptSettingsService.generateText(this.inputText).subscribe(
       response=>{
         let statusCode = response.statusCode;
         let data = response.data;
@@ -79,10 +82,17 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     $('#copied-chat-gpt-text-message').hide();
     this.showIcon = false;
+    this.activeTab = 'paraphraser';
+    this.sortOption.selectWordDropDownForOliver = this.sortOption.wordOptionsForOliver[0];
   }
   showOliverIcon(){
     this.showIcon = true;
   }
 
- 
+  sortBy(text: any) {
+    this.sortOption.selectWordDropDownForOliver = text;
+  }
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+  }
 }
