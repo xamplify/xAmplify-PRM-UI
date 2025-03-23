@@ -31,6 +31,7 @@ export class ChatGptModalComponent implements OnInit {
   showEmailModalPopup: boolean;
   emailBody: any;
   subjectText: string;
+  messages: any[] = [];
   constructor(public authenticationService:AuthenticationService,private chatGptSettingsService:ChatGptSettingsService,
     private referenceService:ReferenceService,public properties:Properties,public sortOption:SortOption) { 
     
@@ -52,33 +53,44 @@ export class ChatGptModalComponent implements OnInit {
     this.showIcon = true;
   }
  
-  generateChatGPTText(){
+  generateChatGPTText() {
     this.customResponse = new CustomResponse();
     this.isTextLoading = true;
     this.chatGptGeneratedText = '';
     // let askOliver = 'Paraphrase this:' + this.inputText
+    this.messages.push({ role: 'user', content: this.inputText });
     let askOliver = this.activeTab == 'writing'
-    ? 'In ' + (this.sortOption.selectWordDropDownForOliver.name || '') + ' ' + this.inputText
-    : this.inputText;
+      ? 'In ' + (this.sortOption.selectWordDropDownForOliver.name || '') + ' ' + this.inputText
+      : this.inputText;
     this.chatGptIntegrationSettingsDto.prompt = askOliver;
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
-      response=>{
+      response => {
         let statusCode = response.statusCode;
         let data = response.data;
-        if(statusCode==200){
+
+        if (statusCode === 200) {
           let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
           this.chatGptGeneratedText = this.referenceService.getTrimmedData(chatGptGeneratedText);
-          this.isCopyButtonDisplayed = this.chatGptGeneratedText.length>0;
-        }else if(statusCode==400){
+
+          // Push assistant's response into messages array
+          this.messages.push({ role: 'assistant', content: this.chatGptGeneratedText });
+
+          this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
+        } else if (statusCode === 400) {
           this.chatGptGeneratedText = response.message;
-        }else{
+          this.messages.push({ role: 'assistant', content: response.message });
+        } else {
           let errorMessage = data['apiResponse']['error']['message'];
-          this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+          this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+
+          // Push error message
+          this.messages.push({ role: 'assistant', content: errorMessage });
         }
         this.isTextLoading = false;
-      },error=>{
-          this.isTextLoading = false;
-          this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+      }, error => {
+        this.isTextLoading = false;
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.messages.push({ role: 'assistant', content: this.properties.serverErrorMessage });
       });
   }
 
@@ -90,7 +102,7 @@ export class ChatGptModalComponent implements OnInit {
     $('#copied-chat-gpt-text-message').show(500);
   }
 
-  resetValues(){
+  resetValues() {
     this.inputText = "";
     this.isValidInputText = false;
     this.chatGptGeneratedText = "";
@@ -99,7 +111,8 @@ export class ChatGptModalComponent implements OnInit {
     $('#copied-chat-gpt-text-message').hide();
     this.showIcon = false;
     this.activeTab = 'paraphraser';
-    this.sortOption.selectWordDropDownForOliver = this.sortOption.wordOptionsForOliver[0];
+    this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
+    this.messages = []
   }
   showOliverIcon(){
     this.showIcon = true;
@@ -116,6 +129,7 @@ export class ChatGptModalComponent implements OnInit {
     this.isValidInputText = false;
     this.inputText ="";
     this.isTextLoading = false;
+    this.messages = [];
     this.activeTab = tab;
   }
   openEmailModalPopup(markdown: any) {
