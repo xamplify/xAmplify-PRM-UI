@@ -44,6 +44,7 @@ export class AiChatManagerComponent implements OnInit {
   copiedText: string = "";
   emailBody: any;
   subjectText: string;
+  socialContent: string;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -253,10 +254,17 @@ export class AiChatManagerComponent implements OnInit {
     this.referenceService.showSweetAlertSuccessMessage(event);
     }
   }
-  openSocialShare(){
+
+  openSocialShare(markdown: any) {
+    let text = markdown.innerHTML;
+    if (text != undefined) {
+      this.socialContent = text.replace(/<\/?markdown[^>]*>/g, '');
+    }
+    this.parseTextBody(this.socialContent);
     this.referenceService.scrollSmoothToTop();
     this.openShareOption = true;
   }
+
   closeSocialShare(event:any){
     this.openShareOption = false;
     this.openHistory = true;
@@ -299,5 +307,26 @@ export class AiChatManagerComponent implements OnInit {
     console.log("Subject:", subject);
     console.log("Body:", body);
   }
+
+  parseTextBody(socialContent: string) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = socialContent;
+    const firstHrIndex = socialContent.indexOf("<hr>");
+    const lastHrIndex = socialContent.lastIndexOf("<hr>");
+    if (firstHrIndex === -1) {
+      this.socialContent = socialContent.trim();
+    }
+
+    if (firstHrIndex !== -1 && firstHrIndex === lastHrIndex) {
+      this.socialContent = socialContent.substring(0, firstHrIndex).trim();
+    }
+    if (firstHrIndex !== -1 && lastHrIndex !== -1 && firstHrIndex !== lastHrIndex) {
+      this.socialContent = socialContent.substring(firstHrIndex + 4, lastHrIndex).trim();
+    }
+    tempDiv.innerHTML = this.socialContent;
+    this.socialContent = tempDiv.textContent || tempDiv.innerText || "";
+  }
+
+
 
 }

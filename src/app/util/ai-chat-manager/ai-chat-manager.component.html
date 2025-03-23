@@ -1,6 +1,6 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType" [subjectText]="subjectText" [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
-<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "chatGptGeneratedText" (notifyClose)="closeSocialShare($event)"></app-update-status>
+<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "socialContent" (notifyClose)="closeSocialShare($event)"></app-update-status>
 <div class="page-content">
   <div *ngIf="!openHistory && !openShareOption" class="pdf_body">
     <button class="btn close_btn" (click)="closeAi()">×</button>
@@ -106,7 +106,7 @@
                   <button class="share-btn" >Design Template</button>
                   <button class="share-btn">Design Page</button>
                   <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-                  <button class="share-btn" (click)="openSocialShare()">Social Share</button>
+                  <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
                 </div>
               </div>
             </div>
