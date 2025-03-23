@@ -92,7 +92,7 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.emailActivity.userId = this.authenticationService.getUserId();
       this.emailActivity.contactId = this.authenticationService.getUserId();
       this.emailActivity.body = this.emailBody;
-      if (this.subjectText != undefined) {
+      if (this.subjectText != undefined && this.subjectText != "") {
         this.emailActivity.subject = this.subjectText;
         this.isValidEmail = true;
       }
@@ -111,6 +111,7 @@ export class AddEmailModalPopupComponent implements OnInit {
     }
   }
   ngOnDestroy(){
+    this.isValidEmail = false;
     $('#addEmailModalPopup').modal('hide');
   }
   
@@ -217,34 +218,50 @@ export class AddEmailModalPopupComponent implements OnInit {
   }
 
   sendTestEmail() {
-    this.testEmailLoading = true;
-    this.prepareTestMailFormData();
-    this.emailActivity.toEmailId = this.testToEmailId;
-    this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
-    this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
-    if (this.isCompanyJourney) {
-      this.emailActivity.userIds = this.userIds.map(user => user.id);
+    if (this.OliveAi) {
+      this.testEmailLoading = true;
+      this.sendTestEmailDto.body = this.emailActivity.body;
+      this.sendTestEmailDto.toEmail = this.testToEmailId;
+      this.sendTestEmailDto.subject = this.emailActivity.subject;
+      this.sendTestEmailDto.showAlert = false;
+      this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
+        response => {
+          this.testEmailLoading = false;
+          this.notifyClose.emit("Email sent sucessfully");
+          this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
+        }, error => {
+          this.ngxLoading = false;
+        });
     } else {
-      this.emailActivity.userIds.push(this.userId);
-    }
-    this.emailActivityService.sendTestEmailToUser(this.emailActivity, this.testMailFormData).subscribe(
-      data => {
-        this.emailActivity.toEmailId = this.userEmailId;
-        this.emailActivity.userIds = [];
-        this.showTestMailSubmittedStatus();
-        this.testToEmailId = '';
-        this.validateTestEmailId();
-        this.testEmailLoading = false;
-        this.testMailFormData.delete("uploadedFiles");
-      }, error => {
-        this.emailActivity.userIds = [];
-        this.showTestMailErrorStatus();
-        this.testToEmailId = '';
-        this.validateTestEmailId();
-        this.testEmailLoading = false;
-        this.testMailFormData.delete("uploadedFiles");
+      this.testEmailLoading = true;
+      this.prepareTestMailFormData();
+      this.emailActivity.toEmailId = this.testToEmailId;
+      this.emailActivity.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+      this.emailActivity.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+      if (this.isCompanyJourney) {
+        this.emailActivity.userIds = this.userIds.map(user => user.id);
+      } else {
+        this.emailActivity.userIds.push(this.userId);
       }
-    )
+      this.emailActivityService.sendTestEmailToUser(this.emailActivity, this.testMailFormData).subscribe(
+        data => {
+          this.emailActivity.toEmailId = this.userEmailId;
+          this.emailActivity.userIds = [];
+          this.showTestMailSubmittedStatus();
+          this.testToEmailId = '';
+          this.validateTestEmailId();
+          this.testEmailLoading = false;
+          this.testMailFormData.delete("uploadedFiles");
+        }, error => {
+          this.emailActivity.userIds = [];
+          this.showTestMailErrorStatus();
+          this.testToEmailId = '';
+          this.validateTestEmailId();
+          this.testEmailLoading = false;
+          this.testMailFormData.delete("uploadedFiles");
+        }
+      )
+    }
   }
 
   validateTestEmailId() {
