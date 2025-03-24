@@ -61,7 +61,7 @@ import { SelectContactComponent } from 'app/deals/select-contact/select-contact.
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
                   BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, 
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule, CKEditorModule,
-                  AgmCoreModule.forRoot({ apiKey: "AIzaSyC_rv55LIbLQF9TN8TyPMNEP3cZgIAk-EY"
+                  AgmCoreModule.forRoot({ apiKey: "AIzaSyAOFRgJ4DduOovKv1nuwutG7pPJ76n3hbk"
                   })
                   ],
 
