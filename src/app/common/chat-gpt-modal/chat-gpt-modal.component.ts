@@ -71,10 +71,7 @@ export class ChatGptModalComponent implements OnInit {
         if (statusCode === 200) {
           let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
           this.chatGptGeneratedText = this.referenceService.getTrimmedData(chatGptGeneratedText);
-
-          // Push assistant's response into messages array
           this.messages.push({ role: 'assistant', content: this.chatGptGeneratedText });
-
           this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
         } else if (statusCode === 400) {
           this.chatGptGeneratedText = response.message;
@@ -82,8 +79,6 @@ export class ChatGptModalComponent implements OnInit {
         } else {
           let errorMessage = data['apiResponse']['error']['message'];
           this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-
-          // Push error message
           this.messages.push({ role: 'assistant', content: errorMessage });
         }
         this.isTextLoading = false;
@@ -94,12 +89,19 @@ export class ChatGptModalComponent implements OnInit {
       });
   }
 
-  copyChatGPTText(chatGptGeneratedTextInput: any){
-    $('#copied-chat-gpt-text-message').hide();
-    chatGptGeneratedTextInput.select();
+  copyChatGPTText(element : any){
+    // $('#copied-chat-gpt-text-message').hide();
+    // chatGptGeneratedTextInput.select();
+    // document.execCommand('copy');
+    // chatGptGeneratedTextInput.setSelectionRange(0, 0);
+    // $('#copied-chat-gpt-text-message').show(500);
+    let copiedText = element.innerText || element.textContent;
+    const textarea = document.createElement('textarea');
+    textarea.value = copiedText;
+    document.body.appendChild(textarea);
+    textarea.select();
     document.execCommand('copy');
-    chatGptGeneratedTextInput.setSelectionRange(0, 0);
-    $('#copied-chat-gpt-text-message').show(500);
+    document.body.removeChild(textarea);
   }
 
   resetValues() {
@@ -130,6 +132,8 @@ export class ChatGptModalComponent implements OnInit {
     this.inputText ="";
     this.isTextLoading = false;
     this.messages = [];
+    this.chatGptGeneratedText = "";
+    this.isCopyButtonDisplayed = false;
     this.activeTab = tab;
   }
   openEmailModalPopup(markdown: any) {
