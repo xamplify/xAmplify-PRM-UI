@@ -60,6 +60,11 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.isTextLoading = true;
     this.chatGptGeneratedText = '';
+    if ($('.main-container').length) {
+      $('.main-container').animate({
+        scrollTop: $('.main-container')[0].scrollHeight
+      }, 500);
+    }
     // let askOliver = 'Paraphrase this:' + this.inputText
     this.messages.push({ role: 'user', content: this.inputText });
     let askOliver = this.activeTab == 'writing'

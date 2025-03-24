@@ -215,7 +215,7 @@
                     <div *ngIf="isCopyButtonDisplayed" class="w-50per mt10">
                       <div class="footer-icons phara-footer mt0">
                         <div class="footer-icon" title="Read aloud"><i class="fa fa-volume-up fs-12"></i></div>
-                        <div class="footer-icon" title="Copy" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div>
+                        <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div>
                         <div class="footer-icon" title=" Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
                         <button class="share-btn"  (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
@@ -239,7 +239,6 @@
   </div>
 </div>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType" [subjectText]="subjectText" [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
-<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "socialContent" (notifyClose)="closeSocialShare($event)"></app-update-status>
 <ng-template #messageTemplate let-message="data" let-index="index" >
     <div class="message user" *ngIf="message.role === 'user'">
       <div class="summarize-card">{{ message.content }}</div>
@@ -260,9 +259,9 @@
           </div>
         </div>
         <div class="footer-icons mb10">
-          <div class="footer-icon" title="Share"><i class="fa fa-volume-up fs-12"></i></div>
-          <div class="footer-icon" title="Copy"><i class="fa fa-clone fs-12" (click)="copyChatGPTText1(index)"></i></div>
-          <div class="footer-icon" title="Refresh"><i class="fa fa-refresh fs-12"></i></div>
+          <div class="footer-icon" title="Read aloud"><i class="fa fa-volume-up fs-12"></i></div>
+          <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12" (click)="copyChatGPTText1(index)"></i></div>
+          <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
           <button class="share-btn">Design Template</button>
           <button class="share-btn">Design Page</button>
           <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
