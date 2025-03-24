@@ -611,6 +611,12 @@ export class SortOption {
 		{ 'name': 'website', 'value': 'Website' },
 		{ 'name': 'zipCode', 'value': 'Zip Code' },
 	]
+
+	/***XNFR-908***/
+	callIntegrationDropDownOptions = [
+		{ 'name': 'Call Time(Desc)', 'value': 'desc' },
+		{ 'name': 'Call Time(Asc)', 'value': 'asc' }
+	]
   
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
@@ -721,6 +727,9 @@ export class SortOption {
 	public teamMember = this.teamMemberDropDowns[0]; 
 
 	public activepartnerJourney = this.activePartnerJourneyDropDowns[0];
+
+	/**XNFR-908**/
+	public callIntegrationDropDownOption = this.callIntegrationDropDownOptions[0].value;
 
 
 }

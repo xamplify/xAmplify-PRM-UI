@@ -3,7 +3,7 @@
     <section class="py-5 border-none" *ngIf="integrationTabIndex == 0">
       <div class="col-xs-12 integration-row">
         <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
-          <div class="card mb-5 mb-lg-0 integration_cards">
+          <div [className]="activeCalendarDetails?.type == 'CALENDLY'? 'card mb-5 mb-lg-0 activeCalendar' : 'card mb-5 mb-lg-0 integration_cards'">
             <div class="card-body" style="padding:10px;">
               <span *ngIf="calendlyRibbonText == 'configured'" class="integration-cards">
                 <a (click)="calendlySettings()" data-toggle="tooltip" data-placement="top" title="Calendly Settings"><i

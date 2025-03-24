@@ -82,7 +82,7 @@ export class MeetingActivityComponent implements OnInit {
 
   showAllMeetingActivities() {
     if (this.contactId != undefined && this.contactId > 0) {
-      this.resetTaskActivityPagination();
+      this.resetMeetingActivityPagination();
       this.contactErrorResponse.isVisible = false;
       if (this.referenceService.checkIsValidString(this.calendarType)) {
         this.fetchAllMeetingActivities(this.meetingActivityPagination);
@@ -94,7 +94,7 @@ export class MeetingActivityComponent implements OnInit {
     }
   }
 
-  resetTaskActivityPagination() {
+  resetMeetingActivityPagination() {
     this.meetingActivityPagination.maxResults = 12;
     this.meetingActivityPagination = new Pagination;
     this.meetingActivityPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
