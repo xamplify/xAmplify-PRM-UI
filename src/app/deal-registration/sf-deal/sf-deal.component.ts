@@ -310,7 +310,9 @@ export class SfDealComponent implements OnInit {
               if (addActionType) {
                 column.value = this.selectedContact.emailId;
               }
-              column.columnDisable = true;
+              if(!this.isFromFormAnalytics || (this.isFromFormAnalytics && !this.isEmailEmpty)){
+                column.columnDisable = true;
+              }
             } else if (column.labelId === 'FirstName' && addActionType) {
               column.value = this.selectedContact.firstName;
             } else if (column.labelId === 'LastName' && addActionType) {
