@@ -110,8 +110,15 @@ export class AddEmailModalPopupComponent implements OnInit {
       };
     }
   }
-  ngOnDestroy(){
+
+  ngAfterViewInit() {
+    $('#chatIconImage').hide();
+  }
+
+
+  ngOnDestroy() {
     this.isValidEmail = false;
+    $('#chatIconImage').show();
     $('#addEmailModalPopup').modal('hide');
   }
   
