@@ -4,7 +4,7 @@
         <ngx-loading [show]="loading"></ngx-loading>
         <div class="page-bar rounded-0 margin-bottom-10px">
             <ul class="page-breadcrumb">
-                <li>
+                <li *ngIf="!fromAi">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <a (click)="nagivatetoRouter('home')">Home</a>
                 </li>

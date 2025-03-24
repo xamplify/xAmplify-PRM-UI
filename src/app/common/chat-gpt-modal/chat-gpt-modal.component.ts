@@ -86,7 +86,8 @@ export class ChatGptModalComponent implements OnInit {
           this.messages.push({ role: 'assistant', content: errorMessage });
         }
         this.isTextLoading = false;
-        this.inputText = '';
+        this.inputText = this.activeTab =='paraphraser' ? this.inputText : '';
+
       }, error => {
         this.isTextLoading = false;
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
