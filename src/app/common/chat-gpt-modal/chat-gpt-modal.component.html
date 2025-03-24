@@ -6,19 +6,20 @@
 
 <!--ChatGPT Modal-->
 <div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
-  <div class="modal-dialog w85-per" role="document">
+  <div  class="modal-dialog w85-per" role="document">
     <div class="modal-content">
       <!-- <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
           <i class="fa fa-times"></i></button>
         <h4 class="modal-title text-center">xAmplify AI</h4>
       </div> -->
-      <div class="modal-body oliver-header">
+      <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "socialContent" (notifyClose)="closeSocialShare($event)"></app-update-status>
+      <div *ngIf="!openShareOption" class="modal-body oliver-header">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
         <div classs="row">
           <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
-        style="position: absolute;  top: 17px;right: 27px;" (click)="showOliverIcon()">
-        <i class="fa fa-times mb5" aria-hidden="true"></i></button>
+        style="position: absolute;  top: 12px;right: 12px; width: 27px;height: 27px;" (click)="showOliverIcon()">
+        <i class="fa fa-times m0" aria-hidden="true"></i></button>
           <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 card_pr15">
             <div class="card1 pr0 pl0">
               <div class="chat_btn">
@@ -139,8 +140,8 @@
                       <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
                     </div>
                   </ng-container> 
-                  <div [ngClass]="(isCopyButtonDisplayed) && activeTab === 'writing' ? 'templateui col-lg-9' : ''">                 
-                  <div *ngIf= "!isCopyButtonDisplayed" class="d-flex content-align">
+                  <div [ngClass]="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing' ? 'templateui col-lg-9' : ''">                 
+                  <div *ngIf= "!showOpenHistory" class="d-flex content-align">
                     <span class="heading">Create Essays, Documents, Reports with Oliver</span>
                     <!-- Oliver Image Positioned Correctly -->
                     <div class="oliver-container">
@@ -217,7 +218,7 @@
                         <div class="footer-icon" title="Copy" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div>
                         <div class="footer-icon" title=" Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
                         <button class="share-btn"  (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-                        <button class="share-btn" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Social Share</button>
+                        <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
                       </div>
                     </div>
                   </div>
@@ -238,12 +239,12 @@
   </div>
 </div>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType" [subjectText]="subjectText" [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
-<!-- <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "chatGptGeneratedText" (notifyClose)="closeSocialShare($event)"></app-update-status> -->
+<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "socialContent" (notifyClose)="closeSocialShare($event)"></app-update-status>
 <ng-template #messageTemplate let-message="data" let-index="index" >
     <div class="message user" *ngIf="message.role === 'user'">
       <div class="summarize-card">{{ message.content }}</div>
       <div class="avatar">
-        <img src="assets/images/user-avatar.png" alt="User" class="avatar">
+        <img src="assets/images/icon-user-default.png" alt="User" class="avatar">
       </div>
     </div>
     <div class="d-flex" *ngIf="message.role === 'assistant'">

@@ -177,6 +177,7 @@
     background: linear-gradient(to bottom, #E6F0FF, #d0e4ffd1);
     max-height: 100%;
     overflow: hidden;
+    padding: 15px 0px 15px 15px;
   }
   .sidebar {
     width: 22%;
@@ -297,7 +298,7 @@
   text-align: center;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
 }
 /*  */
 /* .container-ui {
@@ -517,7 +518,7 @@ max-height: calc(100vh - 220px);
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  margin-left: 20px;
+  margin-left: 15px;
   display: flex;
   align-items: center;
   justify-content: center;

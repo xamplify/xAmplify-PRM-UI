@@ -34,6 +34,8 @@ export class ChatGptModalComponent implements OnInit {
   messages: any[] = [];
   showCopiedMessage: boolean;
   showOpenHistory: boolean;
+  socialContent: any;
+  openShareOption: boolean;
   constructor(public authenticationService:AuthenticationService,private chatGptSettingsService:ChatGptSettingsService,
     private referenceService:ReferenceService,public properties:Properties,public sortOption:SortOption) { 
     
@@ -154,11 +156,13 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     $('#copied-chat-gpt-text-message').hide();
     this.showIcon = false;
-    this.activeTab = 'paraphraser';
+    this.activeTab = 'new-chat';
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
     this.messages = [];
     this.showOpenHistory = false;
+    this.openShareOption = false;
+    this.showEmailModalPopup = false;
   }
   showOliverIcon(){
     this.showIcon = true;
@@ -181,6 +185,8 @@ export class ChatGptModalComponent implements OnInit {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
     this.showOpenHistory = false;
+    this.openShareOption = false;
+    this.showEmailModalPopup = false;
     this.activeTab = tab;
   }
   openEmailModalPopup(markdown: any) {
@@ -221,5 +227,40 @@ export class ChatGptModalComponent implements OnInit {
     if (event) {
     this.referenceService.showSweetAlertSuccessMessage(event);
     }
+  }
+  openSocialShare(markdown: any) {
+    let text = markdown.innerHTML;
+    if (text != undefined) {
+      this.socialContent = text.replace(/<\/?markdown[^>]*>/g, '');
+    }
+    this.parseTextBody(this.socialContent);
+    this.referenceService.scrollSmoothToTop();
+    this.openShareOption = true;
+  }
+  parseTextBody(socialContent: string) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = socialContent;
+    const firstHrIndex = socialContent.indexOf("<hr>");
+    const lastHrIndex = socialContent.lastIndexOf("<hr>");
+    if (firstHrIndex === -1) {
+      this.socialContent = socialContent.trim();
+    }
+
+    if (firstHrIndex !== -1 && firstHrIndex === lastHrIndex) {
+      this.socialContent = socialContent.substring(0, firstHrIndex).trim();
+    }
+    if (firstHrIndex !== -1 && lastHrIndex !== -1 && firstHrIndex !== lastHrIndex) {
+      this.socialContent = socialContent.substring(firstHrIndex + 4, lastHrIndex).trim();
+    }
+    tempDiv.innerHTML = this.socialContent;
+    this.socialContent = tempDiv.textContent || tempDiv.innerText || "";
+  }
+  closeSocialShare(event:any){
+    this.openShareOption = false;
+    this.showOpenHistory = true;
+    if (event) {
+    this.referenceService.showSweetAlertSuccessMessage(event);
+    }
+    this.openShareOption = false;
   }
 }
