@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SocialService } from '../../services/social.service';
+import { SocialService } from '../../social/services/social.service';
 import { Router } from '@angular/router';
 
 declare var $: any;

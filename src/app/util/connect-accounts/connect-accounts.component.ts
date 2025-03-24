@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from "@angular/router";
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
-import { AuthenticationService } from '../../../core/services/authentication.service';
-import { ReferenceService } from '../../../core/services/reference.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../../core/services/reference.service';
 
 
 declare var $: any;

@@ -195,6 +195,22 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     /** User Guide */
     this.getVendorInfoForFilter();
     this.getTeamMemberInfoForFilter();
+    /** XNFR-914 ***/
+    let isAnalytics = this.isVendorVersion ? false: true;
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '' && isAnalytics) {
+      this.getModulesAccessGivenByVendorForPartners(); //XNFR-914
+    } else {
+      this.referenceService.assetAccessGivenByVendor = true;
+      this.referenceService.trackAccessGivenByVendor = true;
+      this.referenceService.playBookAccessGivenByVendor = true;
+      this.referenceService.opportunitiesAccessGivenByVendor = true;
+      this.referenceService.contactsAccessGivenByVendor = true;
+      this.referenceService.campaignAccessGivenByVendor = true;
+      this.referenceService.sharedLeadAccessGivenByVendor = true;
+      this.referenceService.mdfAccessGivenByVendor = true;
+      this.referenceService.showAnalytics = true;
+    }
+    /** XNFR-914 ***/
   }
   /** User Guide **/
   getGuideUrlByMergeTag() {
@@ -1525,5 +1541,45 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   navigateToTeamMemberReports() {
     this.referenceService.goToRouter("/home/team/team-member-request");
   }
-
+  /**** XNFR-914  ****/
+    getModulesAccessGivenByVendorForPartners(){
+      this.partnerService.getModulesAccessGivenByVendorForPartners(this.authenticationService.companyProfileName,undefined, this.loggedInUserId).subscribe(
+        (response: any) => {
+          if (response.statusCode == 200) {
+             this.moduleAccessGivenByVendorForPartner(response.data);
+          }
+        },
+        (_error: any) => {
+          this.httpRequestLoader.isServerError = true;
+          //this.xtremandLogger.error(_error);
+        }
+      );
+    }
+    moduleAccessGivenByVendorForPartner(partnerModules: any) {
+      for (let module of partnerModules) {
+        if (module.moduleId === 2) {
+          this.referenceService.campaignAccessGivenByVendor = module.partnerAccessModule;
+        } else if (module.moduleId === 3) {
+          this.referenceService.contactsAccessGivenByVendor = module.partnerAccessModule;
+        } else if (module.moduleId === 5) {
+          this.referenceService.assetAccessGivenByVendor = module.partnerAccessModule;
+        } else if (module.moduleId === 8) {
+          this.referenceService.mdfAccessGivenByVendor = module.partnerAccessModule;
+        } else if (module.moduleId === 9) {
+          this.referenceService.opportunitiesAccessGivenByVendor = module.partnerAccessModule;
+        } else if (module.moduleId === 12) {
+          this.referenceService.playBookAccessGivenByVendor = module.partnerAccessModule;
+        } else if (module.moduleId === 14) {
+          this.referenceService.sharedLeadAccessGivenByVendor = module.partnerAccessModule;
+        } else if (module.moduleId === 18) {
+          this.referenceService.trackAccessGivenByVendor = module.partnerAccessModule;
+        } 
+      }
+      if (!(this.referenceService.campaignAccessGivenByVendor || this.referenceService.contactsAccessGivenByVendor || this.referenceService.assetAccessGivenByVendor ||
+        this.referenceService.mdfAccessGivenByVendor || this.referenceService.opportunitiesAccessGivenByVendor || this.referenceService.playBookAccessGivenByVendor ||
+        this.referenceService.sharedLeadAccessGivenByVendor || this.referenceService.trackAccessGivenByVendor)) {
+        this.referenceService.showAnalytics = false;
+      }
+    }
+    /** XNFR-914 ***/
 }

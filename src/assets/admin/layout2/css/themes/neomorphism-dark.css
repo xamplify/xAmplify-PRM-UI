@@ -4492,9 +4492,17 @@ tbody>tr#uploaded-csv-tr>td {
 .btn_custom:hover {
   color: #fff !important;
 }
+
 .modal-header{
   background: linear-gradient(33deg,#171718, #444a50) !important;
 }
+
 .modal-title{
   color: white !important;
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -68px !important;
+  }
 }

@@ -13,9 +13,10 @@ import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { DomSanitizer } from "@angular/platform-browser";
 import { SignatureService } from 'app/dashboard/services/signature.service';
 import { SignatureResponseDto } from 'app/dashboard/models/signature-response-dto';
+import { HttpClient } from '@angular/common/http';
 
 declare var $: any;
-
+declare var pdfjsLib: any;
 
 @Component({
   selector: 'app-view-dam',
@@ -41,11 +42,13 @@ export class ViewDamComponent implements OnInit {
   signatureResponseDto:SignatureResponseDto = new SignatureResponseDto();
   openSelectDigitalSignatureModalPopUp: boolean = false;
   formData: any = new FormData();
+  askAiValue: boolean;
+  pdfDoc: any = null;
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
     public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer, public signatureService:SignatureService,
-	public properties: Properties) {
+	public properties: Properties,private http: HttpClient) {
 		 /****XNFR-169****/
 		 this.viewType = this.activatedRoute.snapshot.params['viewType'];
 		 this.categoryId = this.activatedRoute.snapshot.params['categoryId'];
@@ -100,7 +103,7 @@ export class ViewDamComponent implements OnInit {
 					if(this.loadVideoPlayer && this.damViewStatusCode==200){
 						this.saveGeoLocationAnalytics(id);
 					}
-					
+					// this.getPdfByAssetPath();
 				}
 			);
 	}
@@ -251,5 +254,47 @@ export class ViewDamComponent implements OnInit {
 	 this.assetDetailsViewDto.selectedSignaturePath = 'http://localhost:8000/signatures/94105361/draw-signature.png'
 	 this.uploadSignature();
 	}
+	AskAi(){
+		let url = "/home/dam/askAi/view/" + this.assetId;
+		this.referenceService.goToRouter(url)
+	}
+	closeAskAi(){
+		this.askAiValue = false;
+	}
+	getPdfByAssetPath(){
+		this.http.get(this.assetDetailsViewDto.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
+        .subscribe(async response => {
+		this.pdfDoc = response;
+        });
+	}
+	extractTextFromPDF(url: string): void {
+		const self = this;   
+		pdfjsLib.getDocument(url).promise.then(function (pdf) {
+		  let fullText = '';
+		  let loadPagePromises = [];
+	  
+		  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+			loadPagePromises.push(
+			  pdf.getPage(pageNum).then(function (page) {
+				return page.getTextContent().then(function (textContent) {
+				  const pageText = textContent.items.map(function (item: any) {
+					return item.str;
+				  }).join(' ');
+	  
+				  fullText += 'Page ' + pageNum + ':\n' + pageText + '\n\n';
+				});
+			  })
+			);
+		  }
+	  
+		  Promise.all(loadPagePromises).then(function () {
+			console.log('Extracted PDF Text:', fullText);
+			// If you want to use it elsewhere
+			self.pdfDoc = fullText; // Define `extractedPdfText` in your component
+		  });
+		}).catch(function (error) {
+		  console.error('Error extracting PDF text:', error);
+		});
+	  }
 
 }

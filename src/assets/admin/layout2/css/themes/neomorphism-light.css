@@ -4545,9 +4545,16 @@ a.Iconhover.custom-grid-icon.icon_margin{
   box-shadow: unset;
   color: #fff!important;
 }
+
 .modal-header{
   background: #34495a !important;
 }
 .modal-title{
   color: white !important;
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -68px !important;
+  }
 }

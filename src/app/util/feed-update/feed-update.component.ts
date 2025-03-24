@@ -1,12 +1,12 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { RssService } from '../../services/rss.service';
-import { AuthenticationService } from '../../../core/services/authentication.service';
+import { RssService } from '../../social/services/rss.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
 declare var  $:any;
 
 @Component({
   selector: 'app-feed-update',
   templateUrl: './feed-update.component.html',
-  styleUrls: ['../rss/rss.component.css', '../left-nav/left-nav.component.css', '../feed/feed.component.css']
+  styleUrls: ['./feed-update.component.css' ]
 })
 export class FeedUpdateComponent implements OnInit {
 

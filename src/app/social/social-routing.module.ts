@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { UpdateStatusComponent } from './common/update-status/update-status.component';
+import { UpdateStatusComponent } from '../util/update-status/update-status.component';
 import { SocialManageComponent } from './common/social-manage/social-manage.component';
 
 import { FacebookPostsComponent } from './facebook/facebook-posts/facebook-posts.component';
