@@ -1,5 +1,5 @@
 <!--CHATGPT ICON-->
-<div *ngIf="isChatGptIconDisplayed && showIcon &&authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
+<div *ngIf="isChatGptIconDisplayed && showIcon &&authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
   <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
 </div>
 <!--ICON END -->
@@ -97,25 +97,33 @@
               </li>
             </ul>            
           </div>
-          <div class="d-flex align-center">
+          <div  [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing')? 'd-flex align-templateui' : 'd-flex align-center'">
             <div class="tab-content">
               <!-- Start New Chat -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}" id="New-Chat">
-                <div class="container-ui">
+                <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'new-chat'">
+                  <div class="main-container newChatlabel">
+                    <ng-container *ngFor="let msg of messages; let i = index">
+                      <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                    </ng-container>
+                    <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                  </div>
+                </ng-container>                
+                <div  [ngClass]="showOpenHistory && activeTab === 'new-chat' ? 'templateui col-lg-9' : 'container-ui'">
                   <!-- Heading -->
-                   <div class="d-flex content-align">
-                  <span class="heading">Engage, Learn, Create, and Communicate with Oliver</span>
-                   <!-- Oliver Image Positioned Correctly -->
-                <div class="oliver-container">
-                  <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
-                </div>
-              </div>
+                  <div *ngIf= "!showOpenHistory" class="d-flex content-align">
+                    <span class="heading">Engage, Learn, Create, and Communicate with Oliver</span>
+                    <!-- Oliver Image Positioned Correctly -->
+                    <div class="oliver-container">
+                      <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                    </div>
+                  </div>
                   <!-- Input Section -->
                   <div class="input-wrapper mt10">
-                    <input type="text" placeholder="Ask Me!">
+                    <input type="text" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
                     <div class="btn-wrapper">
                       <button class="btn-plus">+</button>
-                      <button class="btn-submit">Submit</button>
+                      <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Submit</button>
                     </div>
                   </div>
                 </div>
@@ -123,7 +131,16 @@
               <!-- Writing Tab -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'writing', 'tab-pane fade': activeTab !== 'writing'}" id="writing">
                   <!-- Heading -->
-                  <div class="d-flex content-align">
+                  <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing'">
+                    <div class="main-container">
+                      <div *ngFor="let msg of messages">
+                        <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
+                      </div>
+                      <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                    </div>
+                  </ng-container> 
+                  <div [ngClass]="(isCopyButtonDisplayed) && activeTab === 'writing' ? 'templateui col-lg-9' : ''">                 
+                  <div *ngIf= "!isCopyButtonDisplayed" class="d-flex content-align">
                     <span class="heading">Create Essays, Documents, Reports with Oliver</span>
                     <!-- Oliver Image Positioned Correctly -->
                     <div class="oliver-container">
@@ -133,22 +150,26 @@
                   <!-- Input Section -->
                   <div class="writing-card mt10">
                     <div class="form-group">
-                      <input type="text" class="form-control input-lg oliver-input" placeholder="Ask Me!">
+                      <input type="text" class="form-control input-lg oliver-input" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
                     </div>
                     <div class="label-text">Text Length</div>
                     <div class="input-group d-flex">
-                      <select class="form-control oliver-focus" [(ngModel)]="sortOption.selectWordDropDownForOliver"
+                      <select class="form-control oliver-focus" [(ngModel)]="selectedValueForWork"
                       (ngModelChange)="sortBy($event)" id="select-dropdown">
-                        <option *ngFor="let option of sortOption.wordOptionsForOliver" [value]="option">
+                        <option *ngFor="let option of sortOption.wordOptionsForOliver" [value]="option.value">
                           {{ option.name }}
                         </option>
                       </select>
-                      <button class="btn btn-submit ml10" type="button" (click)="onSubmit()">Submit</button>
+                      <button class="btn btn-submit ml10" type="button" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Submit</button>
                     </div>                    
                   </div>
+                </div>
               </div>
               <!-- Ask PDF Tab -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'askpdf', 'tab-pane fade': activeTab !== 'askpdf'}" id="askpdf">
+                <!-- <div *ngIf="isCopyButtonDisplayed && activeTab === 'askpdf'" *ngFor="let msg of messages">
+                  <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
+                </div>                 -->
                 <span class="heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
                 <div class="custom-card mt10">
                   <div class="upload-box">
@@ -176,12 +197,29 @@
                     <div class="oliver-container-img">
                       <img src="assets/images/olivere-dog.svg" width="50px" alt="Oliver">
                     </div>
-                    <div class="textarea-card clip-path2">
-                      <textarea class="textarea h-350" id="chatGptGeneratedTextArea"  [(ngModel)]="chatGptGeneratedText" [ngModelOptions]="{standalone: true}"  readonly #chatGptGeneratedTextInput></textarea>
+                    <div class="textarea-card clip-path2 scrollable">
+                      <div #markdownComponent class="padding-align">
+                        <markdown [data]="chatGptGeneratedText"></markdown>
+                      </div>
+                      <!-- <textarea class="textarea h-350" id="chatGptGeneratedTextArea"  [(ngModel)]="chatGptGeneratedText" [ngModelOptions]="{standalone: true}"  readonly #chatGptGeneratedTextInput></textarea> -->
                     </div>
                   </div>
-                  <div class="generate-div">
-                    <button class="generate-btn" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Generate</button>
+                  <div class="content-area">
+                    <div class="generate-div w-50per mt10">
+                      <button class="generate-btn" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Generate</button>
+                      <!-- <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button>
+                      <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
+                      <button *ngIf="false" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button> -->
+                    </div>
+                    <div *ngIf="isCopyButtonDisplayed" class="w-50per mt10">
+                      <div class="footer-icons phara-footer mt0">
+                        <div class="footer-icon" title="Read aloud"><i class="fa fa-volume-up fs-12"></i></div>
+                        <div class="footer-icon" title="Copy" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div>
+                        <div class="footer-icon" title=" Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
+                        <button class="share-btn"  (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
+                        <button class="share-btn" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Social Share</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -199,3 +237,47 @@
     </div>
   </div>
 </div>
+<app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType" [subjectText]="subjectText" [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
+<!-- <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "chatGptGeneratedText" (notifyClose)="closeSocialShare($event)"></app-update-status> -->
+<ng-template #messageTemplate let-message="data" let-index="index" >
+    <div class="message user" *ngIf="message.role === 'user'">
+      <div class="summarize-card">{{ message.content }}</div>
+      <div class="avatar">
+        <img src="assets/images/user-avatar.png" alt="User" class="avatar">
+      </div>
+    </div>
+    <div class="d-flex" *ngIf="message.role === 'assistant'">
+      <div class="avatar1 col-lg-1 col-sm-1">
+        <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
+      </div>
+      <div class="col-lg-11 col-sm-11">
+        <div class="content-card">
+          <div class="chat-container"[id]="'chat-message-' + index">
+            <div #markdownComponent class="chat-history">
+              <markdown [data]="message.content"></markdown>
+            </div>
+          </div>
+        </div>
+        <div class="footer-icons mb10">
+          <div class="footer-icon" title="Share"><i class="fa fa-volume-up fs-12"></i></div>
+          <div class="footer-icon" title="Copy"><i class="fa fa-clone fs-12" (click)="copyChatGPTText1(index)"></i></div>
+          <div class="footer-icon" title="Refresh"><i class="fa fa-refresh fs-12"></i></div>
+          <button class="share-btn">Design Template</button>
+          <button class="share-btn">Design Page</button>
+          <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
+          <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
+        </div>
+      </div>
+    </div>
+</ng-template>
+<ng-template #assistantLoader>
+  <div class="d-flex aligin-center">
+    <div class="avatar1 col-lg-1 col-sm-1">
+      <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
+    </div>
+    <div class="col-lg-11 col-sm-11">
+      <div class="assitLoader"></div>
+    </div>
+  </div>
+</ng-template>
+
