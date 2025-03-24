@@ -88,7 +88,7 @@ span.btn.Btn-Green.transition {
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active.open > a > i,
 .page-sidebar .page-sidebar-menu > li.active > a > i, 
 .page-sidebar .page-sidebar-menu > li.active.open > a > i {
-  color: #01b6ff85 !important;
+  color: #0276FF !important ;
 }
 /**** tharak(12-01-2024) *********/
 h3#notifications {
@@ -100,7 +100,7 @@ h3#notifications {
 }
 
 .page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected {
-  border-color: transparent #01b6ff5c transparent transparent !important;
+  border-color: transparent #0276FF transparent transparent !important;
 }
 
 button.button_blue:disabled,
