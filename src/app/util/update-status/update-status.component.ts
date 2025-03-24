@@ -117,6 +117,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	isValidFromName = true;
 	@Output() notifyClose: EventEmitter<any> = new EventEmitter();
 	@Input() fromAi :boolean = false;
+	@Input() OliverData : any;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -136,6 +137,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.onSelectCountry(this.countryId);
 		
 	}
+	
 	resetCustomResponse() {
 		this.customResponse.type = null;
 		this.customResponse.statusText = null;
@@ -554,6 +556,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					() => {
 						this.loading = false;
 						this.listEvents();
+						if(this.fromAi){
+							this.notifyClose.emit('Post Uploaded Sucessfully');
+						}
 					}
 				);
 		}
@@ -630,6 +635,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		socialStatus.userId = this.userId;
 		this.socialCampaign.userListIds = [];
 		socialStatus.id = null;
+		if(this.fromAi){
+			socialStatus.statusMessage = this.OliverData;
+		}
 		this.socialStatusList.push(socialStatus);
 		this.listSocialStatusProviders();
 		this.isEditSocialStatus = false;

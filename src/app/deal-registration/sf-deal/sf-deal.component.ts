@@ -81,7 +81,8 @@ export class SfDealComponent implements OnInit {
   isSalesForceEnabledAsActiveCRM : boolean = false;
   formLabels: any;
   previousTicketTypeId: any = 0;
-
+  @Input() isEmailEmpty: boolean = false;
+  @Input() isFromFormAnalytics: boolean = false;
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
@@ -309,7 +310,9 @@ export class SfDealComponent implements OnInit {
               if (addActionType) {
                 column.value = this.selectedContact.emailId;
               }
-              column.columnDisable = true;
+              if(!this.isFromFormAnalytics || (this.isFromFormAnalytics && !this.isEmailEmpty)){
+                column.columnDisable = true;
+              }
             } else if (column.labelId === 'FirstName' && addActionType) {
               column.value = this.selectedContact.firstName;
             } else if (column.labelId === 'LastName' && addActionType) {
@@ -327,7 +330,7 @@ export class SfDealComponent implements OnInit {
             }
           }
           this.validateAllFields();
-        } else if (this.actionType === 'edit' && this.campaignId !== undefined && this.campaignId > 0) {
+        } else if (this.actionType === 'edit' && ((this.campaignId !== undefined && this.campaignId > 0) || (this.isFromFormAnalytics && !this.isEmailEmpty) )) {
           const emailColumn = this.form.formLabelDTOs.find(column => column.labelId === 'Email');
           if (emailColumn) {
             emailColumn.columnDisable = true;

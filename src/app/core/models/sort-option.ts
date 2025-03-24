@@ -610,7 +610,14 @@ export class SortOption {
 		{ 'name': 'accountOwner', 'value': 'Account Owner'  },
 		{ 'name': 'website', 'value': 'Website' },
 		{ 'name': 'zipCode', 'value': 'Zip Code' },
-	]
+	];
+	wordOptionsForOliver = [
+		{ 'name': 'Short (under 100 words)', 'value': 'short' },
+		{ 'name': 'Medium-short (101–500 words)', 'value': 'medium-short' },
+		{ 'name': 'Medium (501–1000 words)', 'value': 'medium' },
+		{ 'name': 'Medium-long (1000–2000 words)', 'value': 'medium-long' },
+		{ 'name': 'Long (2000–3000+ words)', 'value': 'long' }
+	];
   
 	
 	public selectedSortedOption: any = this.sortByDropDown[0];
@@ -721,6 +728,8 @@ export class SortOption {
 	public teamMember = this.teamMemberDropDowns[0]; 
 
 	public activepartnerJourney = this.activePartnerJourneyDropDowns[0];
+
+	selectWordDropDownForOliver = this.wordOptionsForOliver[0];
 
 
 }

@@ -11,4 +11,5 @@ export class SendTestEmailDto {
   recipientName = "";
   campaignId = 0;
   loggedInUserId = 0;
+  showAlert = true;
 }

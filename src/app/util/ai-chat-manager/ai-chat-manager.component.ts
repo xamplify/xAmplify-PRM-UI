@@ -39,6 +39,12 @@ export class AiChatManagerComponent implements OnInit {
   openShareOption: boolean = false;
   ngxLoading: boolean = false;
   UploadedFile: boolean = false;
+  assetType: string ="";
+  isCollapsed: boolean = false;
+  copiedText: string = "";
+  emailBody: any;
+  subjectText: string;
+  socialContent: string;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router) { }
 
@@ -106,14 +112,14 @@ export class AiChatManagerComponent implements OnInit {
         console.log('API Response:', response);
         self.isLoading = false;
         var data = response.data;
-        var reply = 'No response received from ChatGPT.';
+        var reply = 'No response received from Oliver.';
 
         if (data && data.apiResponse && data.apiResponse.choices && data.apiResponse.choices.length > 0) {
           var content = data.apiResponse.choices[0].message.content;
           self.chatGptGeneratedText = self.referenceService.getTrimmedData(content);
           self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
         } else {
-          self.messages.push({ role: 'assistant', content: 'Invalid response from ChatGPT.' });
+          self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
         this.trimmedText = '';
       },
@@ -137,18 +143,20 @@ export class AiChatManagerComponent implements OnInit {
     // this.notifyParent.emit();
   }
 
-  copyAiText(text: string) {
-    this.copyToClipboard(text);
+  copyAiText(element: HTMLElement) {
+    this.copyToClipboard(element);
   }
 
-  copyToClipboard(text: string) {
+  copyToClipboard(element : any) {
+    this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
-    textarea.value = text;
+    textarea.value = this.copiedText;
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
   }
+
   onFileSelected(event: any) {
     this.UploadedFile =true;
     if (this.uploadedFileId != undefined) {
@@ -192,6 +200,7 @@ export class AiChatManagerComponent implements OnInit {
         if (response.statusCode == 200) {
           this.assetDetailsViewDtoOfPartner = response.data;
           this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
+          this.assetType=this.assetDetailsViewDtoOfPartner.assetType;
           console.log('API Response:', response);
         }
       },
@@ -227,20 +236,41 @@ export class AiChatManagerComponent implements OnInit {
         this.ngxLoading=false;
       });
   }
-  openEmailModalPopup() {
+  
+  openEmailModalPopup(markdown: any) {
+    let text = markdown.innerHTML;
+    if (text != undefined) {
+      this.emailBody = text.replace(/<\/?markdown[^>]*>/g, '');
+    }
+    this.parseHTMLBody(this.emailBody);
     this.actionType = 'oliveAi';
     this.showEmailModalPopup = true;
   }
-  closeEmailModalPopup() {
+  closeEmailModalPopup(event: any) {
     this.showEmailModalPopup = false;
+    this.subjectText = "";
+    this.emailBody = "";
+    if (event) {
+    this.referenceService.showSweetAlertSuccessMessage(event);
+    }
   }
-  openSocialShare(){
+
+  openSocialShare(markdown: any) {
+    let text = markdown.innerHTML;
+    if (text != undefined) {
+      this.socialContent = text.replace(/<\/?markdown[^>]*>/g, '');
+    }
+    this.parseTextBody(this.socialContent);
     this.referenceService.scrollSmoothToTop();
     this.openShareOption = true;
   }
+
   closeSocialShare(event:any){
     this.openShareOption = false;
     this.openHistory = true;
+    if (event) {
+    this.referenceService.showSweetAlertSuccessMessage(event);
+    }
   }
   ngOnDestroy() {
     this.openHistory=false;
@@ -250,4 +280,53 @@ export class AiChatManagerComponent implements OnInit {
     this.UploadedFile = false;
     this.showEmailModalPopup = false;
   }
+
+  toggleAction(){
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  parseHTMLBody(emailContent: string): void {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = emailContent;
+    let plainText = tempDiv.innerHTML;
+    let subject = "";
+    let body = "";
+    let subjectStartIndex = plainText.indexOf("<p>Subject:");
+    if (subjectStartIndex !== -1) {
+      let subjectEndIndex = plainText.indexOf("</p>", subjectStartIndex);
+      if (subjectEndIndex !== -1) {
+        this.subjectText = plainText.substring(subjectStartIndex + 3, subjectEndIndex)
+          .replace("Subject:", "").trim();
+      }
+      this.emailBody = plainText.substring(subjectEndIndex + 4).trim();
+      let lastHrIndex = this.emailBody.lastIndexOf("<hr");
+      if (lastHrIndex !== -1) {
+        this.emailBody = this.emailBody.substring(0, lastHrIndex).trim();
+      }
+    }
+    console.log("Subject:", subject);
+    console.log("Body:", body);
+  }
+
+  parseTextBody(socialContent: string) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = socialContent;
+    const firstHrIndex = socialContent.indexOf("<hr>");
+    const lastHrIndex = socialContent.lastIndexOf("<hr>");
+    if (firstHrIndex === -1) {
+      this.socialContent = socialContent.trim();
+    }
+
+    if (firstHrIndex !== -1 && firstHrIndex === lastHrIndex) {
+      this.socialContent = socialContent.substring(0, firstHrIndex).trim();
+    }
+    if (firstHrIndex !== -1 && lastHrIndex !== -1 && firstHrIndex !== lastHrIndex) {
+      this.socialContent = socialContent.substring(firstHrIndex + 4, lastHrIndex).trim();
+    }
+    tempDiv.innerHTML = this.socialContent;
+    this.socialContent = tempDiv.textContent || tempDiv.innerText || "";
+  }
+
+
+
 }
