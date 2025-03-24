@@ -2682,3 +2682,16 @@ tbody{background: transparent;}
 .btn_custom:hover {
   color: #fff !important;
 }
+
+@media only screen and (min-width: 760px) {
+  .clip_mask{
+    bottom: -68px!important;
+  }
+}
+.modal-header{
+  background-color: #22313a !important;
+}
+.modal-title{
+  color: white !important;
+} 
+

@@ -3600,3 +3600,9 @@ Page Loading
 .page-sidebar .page-sidebar-menu > li:last-child > a {
   border-bottom: 1px solid transparent !important;
 }
+.modal-header{
+  background-color: #34495a !important;
+}
+.modal-title{
+  color: white !important;
+} 
