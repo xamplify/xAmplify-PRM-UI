@@ -80,9 +80,4 @@ color: #000 !important;
     color: #000 !important;
   }
 /*** Universal Search *******/
-.modal-header{
-    background: var(--top-bg-color) !important;
-  }
-  .modal-title{
-    color: var(--menu-text) !important;
-  }
+
