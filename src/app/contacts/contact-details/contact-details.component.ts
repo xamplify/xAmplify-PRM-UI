@@ -915,5 +915,9 @@ export class ContactDetailsComponent implements OnInit {
     }
     this.showAircallDialer = false;
   }
+
+  reloadCallTab(event) {
+    this.isReloadCallTab = event;
+  }
   
 }

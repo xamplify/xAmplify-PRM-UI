@@ -51,6 +51,7 @@ export class CallActivityComponent implements OnInit {
   userListUsersLoader: HttpRequestLoader = new HttpRequestLoader();
   companyUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   contactErrorResponse: CustomResponse = new CustomResponse();
+  showAircallDialer: boolean = false;
 
   constructor(public referenceService: ReferenceService, public pagerService: PagerService, private callIntegrationService:CallIntegrationService,
       public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public contactService: ContactService, public properties: Properties) { }
@@ -233,6 +234,16 @@ export class CallActivityComponent implements OnInit {
       this.pageNumber = this.paginationComponent.numberPerPage[0];
       this.showAllCallActivities();
     }
+  }
+
+  openAircallDialer() {
+    this.showAircallDialer = true;
+  }
+
+  closeCallModalPopup(event) {
+    this.isReloadTab = event;
+    this.showAircallDialer = false;
+    this.notifyClose.emit(event);
   }
 
 }

@@ -5,10 +5,10 @@
         data-original-title="Refresh" (click)="showAllCallActivities()">
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
-      <!-- <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Schedule Meeting"
-        data-original-title="Refresh" (click)="openMeetingModalPopup()">
-        <i aria-hidden="true" class="fa fa-plus"></i>
-      </a> -->
+      <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Make a Call"
+        data-original-title="Make a Call" (click)="openAircallDialer()">
+        <i aria-hidden="true" class="glyphicon glyphicon-phone"></i>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">
@@ -81,6 +81,26 @@
           </g>
         </svg>
 
+        <svg *ngIf="callActivity.direction=='Missed'" width="12px" height="12px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.13 123.14"
+          style="enable-background:new 0 0 122.13 123.14" xml:space="preserve">
+          <style type="text/css">
+            .st0 {
+              fill: #D8453E;
+            }
+        
+            .st1 {
+              fill: #393939;
+            }
+          </style>
+          <g>
+            <path class="st0"
+              d="M117.17,41.79c2.75-0.02,4.97,2.18,4.96,4.94c-0.01,2.75-2.23,4.99-4.98,5.01L94.67,52.8 c-5.81-0.76-10.03-5.06-10.35-11.32l0.29-26.11l-4.48,4.04c-1.91,1.73-4.87,1.58-6.6-0.33c-1.73-1.91-1.58-4.87,0.33-6.6 L86.31,1.21c1.7-1.54,4.24-1.59,5.99-0.23l0,0l14.11,10.94c2.04,1.58,2.43,4.52,0.84,6.57c-1.58,2.04-4.52,2.43-6.57,0.84 l-6.12-4.75l0.62,27.82L117.17,41.79L117.17,41.79L117.17,41.79z" />
+            <path class="st1"
+              d="M71.89,82.56c-3.34-6.01-7.18-11.78-12.18-17.06c-5-5.3-11.22-10.12-19.29-14.23c-0.59-0.3-1.16-0.3-1.66-0.09 c-0.77,0.3-1.54,0.92-2.32,1.69c-0.59,0.59-1.34,1.55-2.11,2.59c-3.1,4.08-6.93,9.14-12.36,6.61c-0.12-0.06-0.21-0.12-0.33-0.18 L3.58,51.5c-0.06-0.03-0.12-0.09-0.18-0.12c-2.39-1.63-3.37-4.16-3.4-7.02c0-2.92,1.07-6.19,2.65-8.96 c2.08-3.66,5.15-6.07,8.69-7.68c3.37-1.54,7.11-2.39,10.71-2.92c5.65-0.83,10.95-0.3,16.37,1.37c5.3,1.63,10.63,4.35,16.46,7.95 l0.42,0.27c2.68,1.66,5.57,3.46,8.4,5.57c10.39,7.83,20.95,19.14,27.84,31.59c5.77,10.45,8.93,21.74,7.21,32.48 c-0.95,5.89-3.49,11.25-7.89,14.79c-3.84,3.1-9.02,4.79-15.72,4.2c-0.77-0.06-1.46-0.51-1.81-1.16l-11.58-19.59 c-1.69-2.2-1.9-4.38-0.98-6.55c0.77-1.78,2.32-3.43,4.44-4.97c0.62-0.53,1.37-1.07,2.14-1.63c2.59-1.87,5.54-4.05,4.53-6.61 L71.89,82.56L71.89,82.56L71.89,82.56z" />
+          </g>
+        </svg>
+
         <svg *ngIf="callActivity.direction=='Outgoing'" width="12px" height="12px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 122.26"
           style="enable-background:new 0 0 122.88 122.26" xml:space="preserve">
@@ -108,7 +128,7 @@
     </div>
     <div class="activity-body mt0">
       <span class="activity-title">
-        <label class="activity-title mb0"> {{callActivity.direction=='Incoming'?'From:':'To:'}} </label>
+        <label class="activity-title mb0"> {{(callActivity.direction=='Incoming' || callActivity.direction=='Missed')?'From:':'To:'}} </label>
         <span>{{callActivity.callInfoString}}</span>
       </span>
     </div>
@@ -184,3 +204,5 @@
     <strong translate>No Data Found.</strong>
   </div>
 </div>
+
+<app-aircall-dialer *ngIf="showAircallDialer" [isReloadTab]="isReloadTab" (notifyClose)="closeCallModalPopup($event)"></app-aircall-dialer>
