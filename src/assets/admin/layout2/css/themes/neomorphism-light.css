@@ -1983,7 +1983,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .close-circle {
   background: none !important;
-  color: white !important;
+  color: #00a6e8 !important;
   border: 1px solid #d0d5db !important;
   /* box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff !important;
 */
