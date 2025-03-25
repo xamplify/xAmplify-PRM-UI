@@ -177,6 +177,8 @@ export class Properties {
 	leadFieldSettings = "Custom Fields";
 	oauthSSOConfiguration = "oAuth SSO Settings";
 	calendarIntegrations = "Calendar Integrations";
+	/**XNFR-908**/
+	callIntegrations = "Call Integrations";
 
 
 	/************XNFR-426**********/

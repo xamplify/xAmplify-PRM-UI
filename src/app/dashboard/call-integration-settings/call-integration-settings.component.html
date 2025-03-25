@@ -1,0 +1,35 @@
+<!-- Nav tabs -->
+<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<app-response-message class="pg8" [customResponse]="customResponse"
+  *ngIf="customResponse?.isVisible"></app-response-message>
+<div class="scrollbar-x">
+  <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
+    <li class="active"><a data-toggle="tab" href="#home">User Info</a></li>
+    <div class="d-flex justify-content-end">
+      <li class="ml_15"><button type="button" class="btn btn-warning" (click)="closeSettings()">Close</button></li>
+    </div>
+  </ul>
+</div>
+
+<div class="tab-content tab-bg">
+  <div id="home" class="tab-pane fade in active pt-25 integration-profile">
+    <div class="user-profile">
+      <div class="profile-image-wrapper-color">
+        <img class="profile-image" alt="No image found" src="assets/images/icon-user-default.png">
+      </div>
+      <div class="pl10 pt10 user-info">
+        <h4 class="media-heading"><b>{{callIntegrationDetails?.externalName}}</b></h4>
+        <h5>Email: {{callIntegrationDetails?.externalEmailId}}</h5>
+      </div>
+      <div class="btn-groups active-btns mb_right0" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary activate-btn integration-btn" *ngIf="!(callIntegrationDetails?.active)"
+          (click)="activateCallIntegration()">Activate</button>
+        <button type="button" class="btn btn-primary inetgrations_activate_bgcolor activated-btn ActivatedBtn"
+          *ngIf="callIntegrationDetails?.active"><i class="fa fa-star"
+            style="font-size: 15px !important;"></i>Activated</button>
+        <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color deactivate-btn"
+          (click)="unlinkCallIntegration()" [disabled]="!(callIntegrationDetails?.enableUnlink)">Unlink</button>
+      </div>
+    </div>
+  </div>
+</div>

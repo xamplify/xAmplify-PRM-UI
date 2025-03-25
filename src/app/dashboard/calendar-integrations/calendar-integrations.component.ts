@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
@@ -22,6 +23,7 @@ export class CalendarIntegrationsComponent implements OnInit {
   integrationTabIndex: number = 0;
   ngxloading: boolean = false;
   loggedInThroughVanityUrl = false;
+  activeCalendarDetails:any;
 
   constructor(public referenceService: ReferenceService, public httpRequestLoader: HttpRequestLoader, public logger: XtremandLogger, public router: Router,
     public calendarIntegrationService: CalendarIntegrationService, private vanityUrlService: VanityURLService, public authenticationService: AuthenticationService) { 
@@ -30,6 +32,7 @@ export class CalendarIntegrationsComponent implements OnInit {
 
   ngOnInit() {
     this.integrationTabIndex = 0;
+	this.getActiveCalendar();
     this.checkCalendarIntegrations();
   }
 
@@ -127,6 +130,21 @@ export class CalendarIntegrationsComponent implements OnInit {
   refreshIntegrationSettings(event: any) {
 		this.checkCalendarIntegrations();
 		this.integrationTabIndex = 0;
+	}
+
+	getActiveCalendar() {
+		this.ngxloading = true;
+		this.calendarIntegrationService.getActiveCalendarDetails().subscribe(
+			data => {
+				this.ngxloading = false;
+				if (data.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+					this.activeCalendarDetails = data.data;
+				}
+			},
+			error => {
+				this.ngxloading = false;
+			}
+		);
 	}
 
 }

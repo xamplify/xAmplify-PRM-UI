@@ -398,6 +398,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isSignatureOptionClicked = false;
 	isCustomDashboardOptionClicked = false;
 	isCustomHtmlBlockOptionClicked = false;
+	showCallIntegrations: boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -708,6 +709,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				else if (e.data == 'isCalendlyAuth') {
 					localStorage.setItem('isCalendlyAuth', 'yes');
 				}
+				else if (e.data == 'isAircallAuth') {
+					localStorage.setItem('isAircallAuth', 'yes');
+				}
 			}, false);
 			this.getModuleAccessByUser();
 			this.findUpgradeRequest();
@@ -817,11 +821,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempCheckZohoAuth = localStorage.getItem('isZohoAuth');
 		let tempCheckCalendlyAuth = localStorage.getItem('isCalendlyAuth');
+		let tempCheckAircallAuth = localStorage.getItem('isAircallAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('isCalendlyAuth');
+		localStorage.removeItem('isAircallAuth');
 
 		if (tempCheckHubSpotAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
@@ -847,7 +853,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			localStorage.removeItem("currentModule");
 			this.router.navigate(['/home/dashboard/myprofile']);
 		}
-		else if (tempCheckCalendlyAuth == 'yes') {
+		else if (tempCheckCalendlyAuth == 'yes' || tempCheckAircallAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
 			localStorage.removeItem("userAlias");
 			localStorage.removeItem("currentModule");
@@ -2306,6 +2312,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CUSTOM_HTML_BLOCK_MENU_HEADER) {
 			// XNFR-859
 			this.activateCustomHtmlBlockMenuHeader();
+		} else if (this.activeTabName == 'callIntegrations') {
+			this.showCallIntegrations = true;
+			this.activeTabHeader = this.properties.callIntegrations;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
