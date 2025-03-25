@@ -64,4 +64,9 @@ export class CallIntegrationService {
     return this.authenticationService.callGetMethod(url);
   }
 
+  vanityConfigCall() {
+    let url = this.URL + "/authorize/aircall/" + localStorage.getItem('vanityUserId');
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }

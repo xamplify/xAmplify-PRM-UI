@@ -9,6 +9,7 @@ import { SamlSecurityService } from 'app/dashboard/samlsecurity/samlsecurity.ser
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { OauthSsoService } from 'app/dashboard/oauth-sso-configuration/oauth-sso.service';
 import { CalendarIntegrationService } from 'app/core/services/calendar-integration.service';
+import { CallIntegrationService } from 'app/core/services/call-integration.service';
 //import { AddContactsComponent } from 'app/contacts/add-contacts/add-contacts.component';
 
 
@@ -16,7 +17,7 @@ import { CalendarIntegrationService } from 'app/core/services/calendar-integrati
 	selector: 'app-social-login',
 	templateUrl: './social-login.component.html',
 	styleUrls: ['./social-login.component.css'],
-	providers: [SamlSecurityService, OauthSsoService, CalendarIntegrationService]
+	providers: [SamlSecurityService, OauthSsoService, CalendarIntegrationService, CallIntegrationService]
 })
 export class SocialLoginComponent implements OnInit {
 	error: string;
@@ -29,7 +30,8 @@ export class SocialLoginComponent implements OnInit {
 
 	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService, private hubSpotService: HubSpotService,
 		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, 
-		public samlSecurityService: SamlSecurityService, private vanityURLService: VanityURLService, public oauthSsoService: OauthSsoService, public calendarService: CalendarIntegrationService) {
+		public samlSecurityService: SamlSecurityService, private vanityURLService: VanityURLService, public oauthSsoService: OauthSsoService, 
+		public calendarService: CalendarIntegrationService, public callService: CallIntegrationService) {
 		this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');		
 	}
 	login(providerName: string) {
@@ -155,6 +157,15 @@ export class SocialLoginComponent implements OnInit {
 			}, (error: any) => {
 				this.xtremandLogger.error(error);
 			}, () => this.xtremandLogger.log("Calendly Configuration Checking done"));
+		} else if (providerName == 'aircall' && this.isLoggedInVanityUrl == 'true') {
+			this.callService.vanityConfigCall().subscribe(data => {
+				let response = data;
+				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+					window.location.href = "" + response.data.redirectUrl;
+				}
+			}, (error: any) => {
+				this.xtremandLogger.error(error);
+			}, () => this.xtremandLogger.log("Aircall Configuration Checking done"));
 		} else {
 			this.socialService.login(providerName)
 				.subscribe(
