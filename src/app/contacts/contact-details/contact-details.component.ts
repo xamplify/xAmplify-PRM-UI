@@ -23,13 +23,15 @@ import { CalendarIntegrationService } from 'app/core/services/calendar-integrati
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CompanyService } from 'app/company/service/company.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { CallIntegrationService } from 'app/core/services/call-integration.service';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService, CompanyService]
+  providers: [LeadsService, DealsService, Properties, UserService, EmailActivityService, CampaignService, ActivityService, CalendarIntegrationService, CompanyService,
+    CallIntegrationService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -138,12 +140,17 @@ export class ContactDetailsComponent implements OnInit {
   formattedCampaignsCount: string = '0';
   totalDealAmount: any = "$ 0.0";
   dealAmountLoader:HttpRequestLoader = new HttpRequestLoader();
+  showAircallDialer:boolean = false;
+  showCallsTab: boolean = false;
+  activeCallDetails:any;
+  isReloadCallTab:boolean;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
     public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService,
-    public calendarIntegratonService: CalendarIntegrationService, public companyService: CompanyService, public integrationService: IntegrationService ) {
+    public calendarIntegratonService: CalendarIntegrationService, public companyService: CompanyService, public integrationService: IntegrationService,
+    public callIntegratonService: CallIntegrationService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -183,6 +190,7 @@ export class ContactDetailsComponent implements OnInit {
     }
     this.referenceService.goToTop();
     this.getActiveCalendarDetails();
+    this.getActiveCallIntegrationDetails();
     this.fetchLogoFromExternalSource();
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
@@ -269,6 +277,8 @@ export class ContactDetailsComponent implements OnInit {
       this.showActivityTab = true;
     } else if (tabName === 'form1') {
       this.showFormsTab = true;
+    } else if (tabName === 'call') {
+      this.showCallsTab = true;
     }
   }
 
@@ -876,6 +886,34 @@ export class ContactDetailsComponent implements OnInit {
         this.referenceService.loading(this.dealAmountLoader, false);
       }
     )
+  }
+
+  openAircallDialer() {
+    this.showAircallDialer = true;
+  }
+
+  getActiveCallIntegrationDetails() {
+    this.ngxLoading = true;
+    this.callIntegratonService.getActiveCallIntegration().subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.activeCallDetails = response.data;
+        }
+        this.ngxLoading = false;
+      },
+      error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  closeCallModalPopup(event) {
+    if (this.activeCallDetails != undefined && this.referenceService.checkIsValidString(this.activeCallDetails.type)) {
+      this.isReloadCallTab = event;
+    } else {
+      this.getActiveCallIntegrationDetails();
+    }
+    this.showAircallDialer = false;
   }
   
 }

@@ -611,6 +611,13 @@ export class SortOption {
 		{ 'name': 'website', 'value': 'Website' },
 		{ 'name': 'zipCode', 'value': 'Zip Code' },
 	];
+
+	/***XNFR-908***/
+	callIntegrationDropDownOptions = [
+		{ 'name': 'Call Time(Desc)', 'value': 'desc' },
+		{ 'name': 'Call Time(Asc)', 'value': 'asc' }
+	];
+	
 	wordOptionsForOliver = [
 		{ 'name': 'Short (under 100 words)', 'value': 'short' },
 		{ 'name': 'Medium-short (101–500 words)', 'value': 'medium-short' },
@@ -729,7 +736,12 @@ export class SortOption {
 
 	public activepartnerJourney = this.activePartnerJourneyDropDowns[0];
 
+
+	/**XNFR-908**/
+	public callIntegrationDropDownOption = this.callIntegrationDropDownOptions[0].value;
+
 	selectWordDropDownForOliver = this.wordOptionsForOliver[0];
+
 
 
 }

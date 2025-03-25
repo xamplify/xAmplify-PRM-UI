@@ -18,14 +18,16 @@ import { HalopsaauthenticationpopupComponent } from 'app/contacts/halopsaauthent
 import { CustomCsvMappingComponent } from 'app/contacts/custom-csv-mapping/custom-csv-mapping.component';
 import { ContactDetailsComponent } from 'app/contacts/contact-details/contact-details.component';
 import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom-manage-leads.component';
+import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dialer.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
         declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent,
-        UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent, ContactDetailsComponent, CustomCsvMappingComponent],
+        UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent, ContactDetailsComponent, CustomCsvMappingComponent,
+        AircallDialerComponent],
         exports: [FormsModule, CommonModule, RouterModule, AddContactsComponent,ManageContactsComponent,EditContactsComponent,
                   SocialContactsCallbackComponent, AddContactModalComponent, UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent, 
-                  HalopsaauthenticationpopupComponent, ContactDetailsComponent, CustomCsvMappingComponent],
+                  HalopsaauthenticationpopupComponent, ContactDetailsComponent, CustomCsvMappingComponent, AircallDialerComponent],
 
         providers: [SocialPagerService],
 })
