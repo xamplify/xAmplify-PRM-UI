@@ -226,6 +226,11 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
+															<a class ="oliveIcon" *ngIf="isPartnerView  && (authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596')" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+																<div class="oliveBackground">
+																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																</div>
+															</a>
 
 															<!-- comment/history -->
 															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
@@ -312,10 +317,11 @@
 																			title="{{asset?.displayName}}">
 																			<span translate><b>Created	By:</b>{{asset?.displayName | slice: 0: 23}} </span>
 																		</h6>
-																		<h6 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="moreipsis" data-toggle="tooltip" data-placement="top"
+																		<h4 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="moreipsis" data-toggle="tooltip" data-placement="top"
 																			title="{{asset?.parentAssetName}}">
-																			<span><b>Parent Asset Name: </b>{{asset?.parentAssetName}} </span>
-																		</h6>
+																			<span><b>Parent Asset Name: </b><span>{{asset?.parentAssetName | slice: 0:17}} </span></span>
+																			<span *ngIf="asset?.parentAssetName?.length>17">...</span>
+																		</h4>
 																		<h6 class="moreipsis"
 																			*ngIf="!isPartnerView && asset?.beeTemplate">
 																			<span translate> <b>Version:</b>{{asset?.versionInString}} </span>
@@ -522,10 +528,11 @@
 										<span><b>Asset Name:</b> 
 										<span>{{asset?.assetName | slice: 0: 54}}</span></span> <span *ngIf="asset?.assetName?.length>54">...</span>
 									</h4>
-									<h6 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="moreipsis" data-toggle="tooltip" data-placement="top"
-										title="{{asset?.parentAssetName}}">
-										<span><b>Parent Asset Name: </b>{{asset?.parentAssetName}} </span>
-									</h6>
+									<h4 *ngIf="asset?.approvalReferenceId && !isPartnerView" class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top"
+										title="{{asset?.parentAssetName}}" style="padding-top: 0px;">
+										<span><b>Parent Asset Name: </b>
+											<span>{{asset?.parentAssetName | slice: 0: 54}}</span></span> <span *ngIf="asset?.parentAssetName?.length>54">...</span>
+									</h4>
 									<div class="divapdding-or-cards">
 										<div class="aligntowbtns">
 											<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">

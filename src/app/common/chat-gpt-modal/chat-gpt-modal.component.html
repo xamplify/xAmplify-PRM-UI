@@ -1,23 +1,25 @@
 <!--CHATGPT ICON-->
-<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
-  <a class="javascript:void(0)"><img src="../assets/images/ai.png" class="icon-s-w"></a>
+<div *ngIf="isChatGptIconDisplayed && showIcon &&authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
+  <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
 </div>
 <!--ICON END -->
 
 <!--ChatGPT Modal-->
-<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" aria-labelledby="xAmplifyChatGPTModalLabel">
+<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <!-- <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
           <i class="fa fa-times"></i></button>
         <h4 class="modal-title text-center">xAmplify AI</h4>
-      </div>
-      <div class="modal-body">
+      </div> -->
+      <div class="modal-body oliver-header">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
         <div classs="row">
-          <!--Input Text-->
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 card_pr15">
+          <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
+        style="position: absolute;  top: 17px;right: 27px;" (click)="showOliverIcon()">
+        <i class="fa fa-times mb5" aria-hidden="true"></i></button>
+          <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 card_pr15">
             <div class="card1 pr0 pl0">
               <div class="chat_btn">
                 <textarea class="form-control border_0" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}" rows="18" (input)="validateInputText()" placeholder="Enter the text here"></textarea>
@@ -51,7 +53,6 @@
             </div>
           </div>
            <div class="right_arrow"><i class="fa fa-long-arrow-right hidden-xs" aria-hidden="true"></i></div>
-           <!--ChatGPT Generated Text-->
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 card_pl15">
             <div class="mt10" *ngIf="isTextLoading">
               <app-modal-popup-loader [height]="435"></app-modal-popup-loader>
@@ -69,13 +70,132 @@
                 </div>
               </div>
             </div>
+          </div> -->
+          <div class="d-flex">
+          <div class="sidebar">
+            <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+              <li [ngClass]="{'active': activeTab === 'new-chat'}">
+                <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
+                  <i class="fa fa-plus-circle"></i> Start New Chat
+                </a>
+              </li>
+              <li [ngClass]="{'active': activeTab === 'writing'}">
+                <a href="#writing" role="tab" data-toggle="tab" (click)="setActiveTab('writing')">
+                  <i class="fa fa-pencil"></i> Writing
+                </a>
+              </li>
+              <li [ngClass]="{'active': activeTab === 'askpdf'}">
+                <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
+                  <i class="fa fa-file-text"></i> Ask Oliver
+                </a>
+              </li>
+              <li [ngClass]="{'active': activeTab === 'paraphraser'}">
+                <a href="#paraphraser" role="tab" data-toggle="tab" (click)="setActiveTab('paraphraser')">
+                  <i class="fa fa-align-left"></i> Paraphraser
+                </a>
+              </li>
+            </ul>            
           </div>
+          <div class="d-flex align-center">
+            <div class="tab-content">
+              <!-- Start New Chat -->
+              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}" id="New-Chat">
+                <div class="container-ui">
+                  <!-- Heading -->
+                   <div class="d-flex content-align">
+                  <span class="heading">Engage, Learn, Create, and Communicate with Oliver</span>
+                   <!-- Oliver Image Positioned Correctly -->
+                <div class="oliver-container">
+                  <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                </div>
+              </div>
+                  <!-- Input Section -->
+                  <div class="input-wrapper mt10">
+                    <input type="text" placeholder="Ask Me!">
+                    <div class="btn-wrapper">
+                      <button class="btn-plus">+</button>
+                      <button class="btn-submit">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Writing Tab -->
+              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'writing', 'tab-pane fade': activeTab !== 'writing'}" id="writing">
+                  <!-- Heading -->
+                  <div class="d-flex content-align">
+                    <span class="heading">Create Essays, Documents, Reports with Oliver</span>
+                    <!-- Oliver Image Positioned Correctly -->
+                    <div class="oliver-container">
+                      <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
+                    </div>
+                  </div>
+                  <!-- Input Section -->
+                  <div class="writing-card mt10">
+                    <div class="form-group">
+                      <input type="text" class="form-control input-lg oliver-input" placeholder="Ask Me!">
+                    </div>
+                    <div class="label-text">Text Length</div>
+                    <div class="input-group d-flex">
+                      <select class="form-control oliver-focus" [(ngModel)]="sortOption.selectWordDropDownForOliver"
+                      (ngModelChange)="sortBy($event)" id="select-dropdown">
+                        <option *ngFor="let option of sortOption.wordOptionsForOliver" [value]="option">
+                          {{ option.name }}
+                        </option>
+                      </select>
+                      <button class="btn btn-submit ml10" type="button" (click)="onSubmit()">Submit</button>
+                    </div>                    
+                  </div>
+              </div>
+              <!-- Ask PDF Tab -->
+              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'askpdf', 'tab-pane fade': activeTab !== 'askpdf'}" id="askpdf">
+                <span class="heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
+                <div class="custom-card mt10">
+                  <div class="upload-box">
+                    <label>
+                      <!-- <i class="glyphicon glyphicon-upload"></i> -->
+                      <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
+                      Feed Me Digital Assets
+                      <input type="file">
+                    </label>
+                  </div>
+                  <div class="submit-section">
+                    <img src="assets/images/olivere-dog.svg" width="80px" alt="Robot">
+                    <button class="btn btn-submit">Submit</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Paraphraser Tab -->
+              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'paraphraser', 'tab-pane fade': activeTab !== 'paraphraser'}" id="paraphraser">
+                <div class="header-text fs-22">Paraphraser – Rewrite Text Effortlessly With Oliver</div>
+                <div class="phara-card">
+                  <div class="content-area">
+                    <div class="textarea-card clip-path1">
+                      <textarea class="textarea h-350" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()"  placeholder="Feed Me Your Thoughts"></textarea>
+                    </div>
+                    <div class="oliver-container-img">
+                      <img src="assets/images/olivere-dog.svg" width="50px" alt="Oliver">
+                    </div>
+                    <div class="textarea-card clip-path2">
+                      <textarea class="textarea h-350" id="chatGptGeneratedTextArea"  [(ngModel)]="chatGptGeneratedText" [ngModelOptions]="{standalone: true}"  readonly #chatGptGeneratedTextInput></textarea>
+                    </div>
+                  </div>
+                  <div class="generate-div">
+                    <button class="generate-btn" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Generate</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- -add changes- -->
+        </div>
+          <!--  -->
         </div>
       </div>
       <!--Footer-->
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
           <button class="btn btn-danger close-button" (click)="resetValues()" data-dismiss="modal">Close</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

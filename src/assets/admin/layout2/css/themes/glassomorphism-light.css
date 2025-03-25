@@ -4564,7 +4564,7 @@ color: #fff!important;
   
     }
     .clip_mask{
-      bottom: -74px!important;
+      bottom: -77px!important;
     }
   }
 /* add a tag */
@@ -4601,3 +4601,15 @@ color: #fff!important;
   color: #fff !important;
 }
 
+.modal-header{
+  background-color: rgb(255 253 253 / 35%) !important;
+}
+.modal-title{
+  color: #000 !important;
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -67px !important;
+  }
+}

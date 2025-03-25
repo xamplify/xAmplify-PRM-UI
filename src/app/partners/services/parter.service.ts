@@ -700,5 +700,12 @@ export class ParterService {
         return this.httpClient.get(url)
             .catch(this.handleError);
     }
-
+    /*** XNFR-914 */
+    getModulesAccessGivenByVendorForPartners(companyProfileName: string, partnerCompanyId: number, teamMemberId: number) {
+        partnerCompanyId = partnerCompanyId != undefined && partnerCompanyId > 0 ? partnerCompanyId : 0;
+        const url = this.URL + '/module/module-access/' + companyProfileName + '/' + partnerCompanyId + '/' + teamMemberId + '?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get(url)
+            .catch(this.handleError);
+    }
+    /*** XNFR-914 */
 }

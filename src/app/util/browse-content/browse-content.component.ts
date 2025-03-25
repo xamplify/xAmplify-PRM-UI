@@ -86,6 +86,7 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
   @Input() itemOfTags: any;
   @Input() folderId: number;
   @Input() addedToQuickLinks: boolean;
+  @Input() shareAsWhiteLabeledAsset: boolean;
   updateButtonName: string = "Update";
 
   constructor(public referenceService:ReferenceService,public sanitizer: DomSanitizer,private router: Router,public properties:Properties,
@@ -699,6 +700,7 @@ uploadVideo() {
       typeof tag === 'object' && tag !== null ? tag.value : tag);
     this.damUploadPostDto.categoryId = this.folderId;
     this.damUploadPostDto.addedToQuickLinks = this.addedToQuickLinks;
+    this.damUploadPostDto.shareAsWhiteLabeledAsset = this.shareAsWhiteLabeledAsset;
     this.damUploadPostDto.partnerGroupIds = [];
     this.damUploadPostDto.partnerIds = [];
   }	

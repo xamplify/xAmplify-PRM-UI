@@ -1,33 +1,33 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild,Renderer } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild,Renderer, EventEmitter, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
-import { SaveVideoFile } from '../../../videos/models/save-video-file';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { SaveVideoFile } from '../../videos/models/save-video-file';
 
-import { SocialCampaign } from '../../models/social-campaign';
-import { SocialStatusDto } from '../../models/social-status-dto';
-import { SocialStatus } from '../../models/social-status';
-import { SocialConnection } from '../../models/social-connection';
-import { SocialStatusContent } from '../../models/social-status-content';
-import { SocialStatusProvider } from '../../models/social-status-provider';
+import { SocialCampaign } from '../../social/models/social-campaign';
+import { SocialStatusDto } from '../../social/models/social-status-dto';
+import { SocialStatus } from '../../social/models/social-status';
+import { SocialConnection } from '../../social/models/social-connection';
+import { SocialStatusContent } from '../../social/models/social-status-content';
+import { SocialStatusProvider } from '../../social/models/social-status-provider';
 
-import { ContactList } from '../../../contacts/models/contact-list';
-import { CustomResponse } from '../../../core/models/custom-response';
+import { ContactList } from '../../contacts/models/contact-list';
+import { CustomResponse } from '../../core/models/custom-response';
 
-import { ResponseType } from '../../../core/models/response-type';
+import { ResponseType } from '../../core/models/response-type';
 
-import { AuthenticationService } from '../../../core/services/authentication.service';
-import { PagerService } from '../../../core/services/pager.service';
-import { SocialService } from '../../services/social.service';
-import { VideoFileService } from '../.././../videos/services/video-file.service';
-import { ContactService } from '../.././../contacts/services/contact.service';
-import { VideoUtilService } from '../../../videos/services/video-util.service';
-import { Pagination } from '../../../core/models/pagination';
-import { CallActionSwitch } from '../../../videos/models/call-action-switch';
-import { ReferenceService } from '../../../core/services/reference.service';
-import { Properties } from '../../../common/models/properties';
-import { Country } from '../../../core/models/country';
-import { Timezone } from '../../../core/models/timezone';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { PagerService } from '../../core/services/pager.service';
+import { SocialService } from '../../social/services/social.service';
+import { VideoFileService } from '../../videos/services/video-file.service';
+import { ContactService } from '../../contacts/services/contact.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
+import { Pagination } from '../../core/models/pagination';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import { ReferenceService } from '../../core/services/reference.service';
+import { Properties } from '../../common/models/properties';
+import { Country } from '../../core/models/country';
+import { Timezone } from '../../core/models/timezone';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
@@ -43,7 +43,7 @@ declare var $:any, flatpickr:any, videojs:any, swal: any;
 @Component({
 	selector: 'app-update-status',
 	templateUrl: './update-status.component.html',
-	styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
+	styleUrls: ['./update-status.component.css', '../../../assets/css/video-css/video-js.custom.css'],
 	providers: [PagerService, Pagination, CallActionSwitch, Properties,HttpRequestLoader,SortOption]
 })
 export class UpdateStatusComponent implements OnInit, OnDestroy {
@@ -115,6 +115,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	loggedInUserId = 0;
 	teamMemberEmailIds:any[] = [];
 	isValidFromName = true;
+	@Output() notifyClose: EventEmitter<any> = new EventEmitter();
+	@Input() fromAi :boolean = false;
+	@Input() OliverData : any;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -134,6 +137,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.onSelectCountry(this.countryId);
 		
 	}
+	
 	resetCustomResponse() {
 		this.customResponse.type = null;
 		this.customResponse.statusText = null;
@@ -552,6 +556,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					() => {
 						this.loading = false;
 						this.listEvents();
+						if(this.fromAi){
+							this.notifyClose.emit('Post Uploaded Sucessfully');
+						}
 					}
 				);
 		}
@@ -628,6 +635,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		socialStatus.userId = this.userId;
 		this.socialCampaign.userListIds = [];
 		socialStatus.id = null;
+		if(this.fromAi){
+			socialStatus.statusMessage = this.OliverData;
+		}
 		this.socialStatusList.push(socialStatus);
 		this.listSocialStatusProviders();
 		this.isEditSocialStatus = false;
@@ -1686,7 +1696,19 @@ checkAliasAccess(socialCampaignAlias: string) {
 		this.contactListsPagination.filterBy = filterType;
 		this.loadContactLists(this.contactListsPagination)
 	}
-	
+
+	nagivatetoRouter(urlType :any){
+		if(urlType =='home'){
+			this.referenceService.goToRouter(this.referenceService.homeRouter);
+		}else if(urlType =='campaigns'){
+			this.referenceService.goToRouter('../../campaigns/select');
+		}else if(urlType =='social'){
+			this.referenceService.goToRouter('/home/campaigns/partner/social');
+		}
+		}
+		backAi(){
+			this.notifyClose.emit();
+		}
 }
 
 

@@ -2505,6 +2505,9 @@ span.filterActiveBg {background-color: #10ad39 !important;}
   .portlet.light.clip_mask{
     border-bottom: 0px !important;
   }
+  .clip_mask{
+    bottom: -79px!important;
+  }
 }
 
 /* add a tag */
@@ -2533,3 +2536,14 @@ span.filterActiveBg {background-color: #10ad39 !important;}
   background: #3faba4 !important;
   color: #fff !important;
 }
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -68px !important;
+  }
+}
+.modal-header{
+  background-color: var(--left-bg-color) !important;
+}
+.modal-title{
+  color: var(--left-text-color) !important;
+} 

@@ -4285,9 +4285,6 @@ color: #fff !important;
       border-radius: 8px 8px 0px 0px !important;
   
     }
-    .clip_mask{
-      bottom: -74px!important;
-    }
   }
 
 /* add a tag */
@@ -4336,4 +4333,14 @@ color: #fff !important;
   background: #e87e04 !important;
   color: #fff !important;
 }
-
+.modal-header{
+  background-color: rgba(16 18 27 / 40%) !important;
+}
+.modal-title{
+  color: #fff !important;
+}
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask{
+      bottom: -67px !important;
+  }
+}
