@@ -24,7 +24,7 @@ export class ChatGptModalComponent implements OnInit {
   isCopyButtonDisplayed = false;
   customResponse:CustomResponse = new CustomResponse();
   showIcon: boolean = true;
-  activeTab: string = 'paraphraser';
+  activeTab: string = 'new-chat';
   selectedValueForWork : any ={};
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   actionType: string ;
@@ -32,6 +32,10 @@ export class ChatGptModalComponent implements OnInit {
   emailBody: any;
   subjectText: string;
   messages: any[] = [];
+  showCopiedMessage: boolean;
+  showOpenHistory: boolean;
+  socialContent: any;
+  openShareOption: boolean;
   constructor(public authenticationService:AuthenticationService,private chatGptSettingsService:ChatGptSettingsService,
     private referenceService:ReferenceService,public properties:Properties,public sortOption:SortOption) { 
     
@@ -40,7 +44,6 @@ export class ChatGptModalComponent implements OnInit {
   ngOnInit() {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
-
   }
   
 
@@ -57,12 +60,18 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.isTextLoading = true;
     this.chatGptGeneratedText = '';
+    if ($('.main-container').length) {
+      $('.main-container').animate({
+        scrollTop: $('.main-container')[0].scrollHeight
+      }, 500);
+    }
     // let askOliver = 'Paraphrase this:' + this.inputText
     this.messages.push({ role: 'user', content: this.inputText });
     let askOliver = this.activeTab == 'writing'
       ? 'In ' + (this.sortOption.selectWordDropDownForOliver.name || '') + ' ' + this.inputText
       : this.inputText;
     this.chatGptIntegrationSettingsDto.prompt = askOliver;
+    this.showOpenHistory = true;
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
       response => {
         let statusCode = response.statusCode;
@@ -82,27 +91,68 @@ export class ChatGptModalComponent implements OnInit {
           this.messages.push({ role: 'assistant', content: errorMessage });
         }
         this.isTextLoading = false;
+        this.inputText = this.activeTab =='paraphraser' ? this.inputText : '';
+
       }, error => {
         this.isTextLoading = false;
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         this.messages.push({ role: 'assistant', content: this.properties.serverErrorMessage });
+        this.inputText = '';
       });
   }
 
-  copyChatGPTText(element : any){
-    // $('#copied-chat-gpt-text-message').hide();
-    // chatGptGeneratedTextInput.select();
-    // document.execCommand('copy');
-    // chatGptGeneratedTextInput.setSelectionRange(0, 0);
-    // $('#copied-chat-gpt-text-message').show(500);
-    let copiedText = element.innerText || element.textContent;
+  copyChatGPTText(text: string): void {
     const textarea = document.createElement('textarea');
-    textarea.value = copiedText;
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
     document.body.appendChild(textarea);
     textarea.select();
-    document.execCommand('copy');
+    try {
+      const success = document.execCommand('copy');
+      if (success) {
+        console.log('Text copied successfully');
+      } else {
+        console.warn('Copy command failed');
+      }
+    } catch (err) {
+      console.error('Unable to copy text:', err);
+    }
+    document.body.removeChild(textarea);
+  }  
+  
+  copyChatGPTText1(index: number): void {
+    const element = document.getElementById('chat-message-' + index);
+    if (!element) {
+      console.warn('Could not find element to copy');
+      return;
+    }
+  
+    const text = element.innerText || element.textContent || '';
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+  
+    try {
+      const success = document.execCommand('copy');
+      if (success) {
+        console.log('Copied successfully');
+      } else {
+        console.warn('Copy failed');
+      }
+    } catch (err) {
+      console.error('Error while copying', err);
+    }
+  
     document.body.removeChild(textarea);
   }
+  
+  
 
   resetValues() {
     this.inputText = "";
@@ -112,9 +162,13 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     $('#copied-chat-gpt-text-message').hide();
     this.showIcon = false;
-    this.activeTab = 'paraphraser';
+    this.activeTab = 'new-chat';
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
-    this.messages = []
+    this.sortBy(this.selectedValueForWork);
+    this.messages = [];
+    this.showOpenHistory = false;
+    this.openShareOption = false;
+    this.showEmailModalPopup = false;
   }
   showOliverIcon(){
     this.showIcon = true;
@@ -134,6 +188,11 @@ export class ChatGptModalComponent implements OnInit {
     this.messages = [];
     this.chatGptGeneratedText = "";
     this.isCopyButtonDisplayed = false;
+    this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
+    this.sortBy(this.selectedValueForWork);
+    this.showOpenHistory = false;
+    this.openShareOption = false;
+    this.showEmailModalPopup = false;
     this.activeTab = tab;
   }
   openEmailModalPopup(markdown: any) {
@@ -174,5 +233,40 @@ export class ChatGptModalComponent implements OnInit {
     if (event) {
     this.referenceService.showSweetAlertSuccessMessage(event);
     }
+  }
+  openSocialShare(markdown: any) {
+    let text = markdown.innerHTML;
+    if (text != undefined) {
+      this.socialContent = text.replace(/<\/?markdown[^>]*>/g, '');
+    }
+    this.parseTextBody(this.socialContent);
+    this.referenceService.scrollSmoothToTop();
+    this.openShareOption = true;
+  }
+  parseTextBody(socialContent: string) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = socialContent;
+    const firstHrIndex = socialContent.indexOf("<hr>");
+    const lastHrIndex = socialContent.lastIndexOf("<hr>");
+    if (firstHrIndex === -1) {
+      this.socialContent = socialContent.trim();
+    }
+
+    if (firstHrIndex !== -1 && firstHrIndex === lastHrIndex) {
+      this.socialContent = socialContent.substring(0, firstHrIndex).trim();
+    }
+    if (firstHrIndex !== -1 && lastHrIndex !== -1 && firstHrIndex !== lastHrIndex) {
+      this.socialContent = socialContent.substring(firstHrIndex + 4, lastHrIndex).trim();
+    }
+    tempDiv.innerHTML = this.socialContent;
+    this.socialContent = tempDiv.textContent || tempDiv.innerText || "";
+  }
+  closeSocialShare(event:any){
+    this.openShareOption = false;
+    this.showOpenHistory = true;
+    if (event) {
+    this.referenceService.showSweetAlertSuccessMessage(event);
+    }
+    this.openShareOption = false;
   }
 }
