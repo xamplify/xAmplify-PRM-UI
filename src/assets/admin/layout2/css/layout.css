@@ -3603,7 +3603,7 @@ Page Loading
 .modal-header{
   background-color: #34495a !important;
 }
-.modal-title{
+.modal-title,.modal-title b{
   color: white !important;
 } 
 .modal-title1{
