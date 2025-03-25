@@ -691,6 +691,7 @@ downloadPdf(){
             }
             if (!this.isApprover) {
               this.saveOrUpdateButtonText = 'Send for Approval';
+              this.damUploadPostDto.sendForApproval = true;
             }
             this.ngxloading = false;
         }, error => {

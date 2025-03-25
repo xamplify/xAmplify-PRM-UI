@@ -65,4 +65,5 @@ export class DamUploadPostDto {
 	jsonBody:string = "";
     createdBy:number = 0;
     saveAs =false;
+    sendForApproval: boolean = false;
 }
