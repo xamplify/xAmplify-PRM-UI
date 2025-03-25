@@ -137,4 +137,16 @@ export class CallIntegrationsComponent implements OnInit {
     );
   }
 
+  ngAfterViewChecked() {
+		let tempCheckAircallAuth = localStorage.getItem('isAircallAuth');
+		localStorage.removeItem('isAircallAuth');
+
+		if (tempCheckAircallAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+	}
+
 }
