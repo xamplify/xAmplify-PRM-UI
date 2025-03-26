@@ -22,6 +22,7 @@ export class SelectDigitalSignatureComponent implements OnInit, AfterViewInit {
   @Input() isDamEditMode: boolean = false;
   @Input() damAssetPath : any;
   @Input() isFromDam: boolean = false;
+  @Input() hideSignatureTool: boolean = false;
 
   signatureResponseDto: SignatureResponseDto = new SignatureResponseDto();
   selectedSignature: string = '';
@@ -714,7 +715,7 @@ placeLine(event: any) {
       return;
     }
 
-    if (this.placedSignatures.length === 0) {
+    if (this.placedSignatures.length === 0 && !this.hideSignatureTool) {
       this.customResponse = new CustomResponse('ERROR', 'Please add at least one Signature', true);
       return;
     }
@@ -905,7 +906,7 @@ placeLine(event: any) {
     this.availableSignatures = [null, null, null];
 
     if (this.signatureResponseDto.drawSignatureExits && this.signatureResponseDto.drawSignatureImagePath) {
-      this.availableSignatures[0] = this.signatureResponseDto.drawSignatureImagePath;
+      this.availableSignatures[0] = 'https://xamp.io/vod/signatures/STUhxt12/draw-signature.png';
     }
     if (this.signatureResponseDto.typedSignatureExists && this.signatureResponseDto.typedSignatureImagePath) {
       this.availableSignatures[1] = this.signatureResponseDto.typedSignatureImagePath;

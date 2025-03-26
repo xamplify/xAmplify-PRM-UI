@@ -428,4 +428,22 @@ downloadPdf(html: string): Observable<Blob> {
 
   return this.http.post(url, JSON.stringify(html), { headers: headers, responseType: 'blob' });
 }
+
+uploadVendorSignature(assetDetailsViewDto: AssetDetailsViewDto, formData: FormData) {
+  formData.append('assetDetailsViewDto', new Blob([JSON.stringify(assetDetailsViewDto)],
+        {
+            type: "application/json"
+        }));
+    let url = this.URL + `/v/upload/signature?access_token=${this.authenticationService.access_token}`;
+  return this.authenticationService.callPostMethod(url, formData);
+}
+
+getSharedAssetDetailsByIdForVendor(id: number) {
+  return this.utilGetMethod("getSharedAssetDetailsById/v/" + id);
+ }
+
+ getIsVendorSignatureRequiredAfterPartnerSignatureCompleted(id: number) {
+  return this.utilGetMethod("getIsVendorSignatureRequiredAfterPartnerSignatureCompleted/" + id);
+ }
+
 }

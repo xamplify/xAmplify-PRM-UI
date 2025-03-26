@@ -1,4 +1,4 @@
-<div class="page-content">
+<div class="page-content" *ngIf="!openSelectDigitalSignatureModalPopUp">
    <div class="page-bar mb-height_auto" style="height: 48px;">
       <ul class="page-breadcrumb">
         <li>
@@ -93,7 +93,13 @@
                           </strong>
                        </h5>
                        <span *ngIf="company?.partnerSignatureCompleted"
+													class="view-banner bgc-green" style="margin-right: 5px;">Partner Signed
+												</span>
+                        <span *ngIf="company?.partnerSignatureCompleted && company?.vendorSignatureCompleted && isVendorSignatureRequiredAfterPartnerSignature"
 													class="view-banner bgc-green" style="margin-right: 5px;">Signature added
+												</span>
+                        <span *ngIf="company?.partnerSignatureCompleted && isVendorSignatureRequiredAfterPartnerSignature && !company?.vendorSignatureCompleted"
+													class="view-banner bgc-orange" style="margin-right: 5px;">Signature pending
 												</span>
                       </td>
                       <td class="text-center">{{company?.viewCount}}</td>
@@ -104,8 +110,16 @@
                             <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
+                          <a *ngIf="company?.partnerSignatureCompleted" class="custom-icon"  data-toggle="tooltip" data-placement="top" title="View" (click)="viewAsset(company)">
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
                           <a *ngIf="company?.partnerSignatureCompleted" class="custom-icon"  data-toggle="tooltip" data-placement="top" title="Download" (click)="downloadAsset(company)">
                             <i class="fa fa-download IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                          <a *ngIf="company?.partnerSignatureCompleted && isVendorSignatureRequiredAfterPartnerSignature && !company?.vendorSignatureCompleted" class="custom-icon"  data-toggle="tooltip" data-placement="top" title="Signature" (click)="addSignature(company)">
+                            <i class="fas fa-pen-nib IconCustomization" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
                         </div>
@@ -150,3 +164,7 @@
     </tr>
   </thead>
 </ng-template>
+
+<div *ngIf="openSelectDigitalSignatureModalPopUp">
+	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [sharedAssetPath]="sharedAssetPath"></app-select-digital-signature>
+</div>
