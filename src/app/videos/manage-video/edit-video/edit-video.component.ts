@@ -1361,6 +1361,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     let partnerIds = this.saveVideoFile.partnerIds;
                     let partnerGroupSelected = this.saveVideoFile.partnerGroupSelected;
                     let addedToQuickLinks = this.saveVideoFile.addedToQuickLinks;
+                    let sendForApproval = this.saveVideoFile.sendForApproval;
                     /****XNFR-255****/
                     this.saveVideoFile = this.videoForm.value;
                     this.saveVideoFile.damId = damId;
@@ -1422,6 +1423,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.saveVideoFile.partnerGroupSelected = partnerGroupSelected;
                     this.saveVideoFile.shareAsWhiteLabeledAsset = shareAsWhiteLabeledAsset;
                     this.saveVideoFile.addedToQuickLinks = addedToQuickLinks;
+                    this.saveVideoFile.sendForApproval = sendForApproval;
                     /****XNFR-255****/
                     this.saveVideoFile.draft = saveAsDraft;
                     return this.videoFileService.updateVideoContent(this.saveVideoFile)
@@ -1632,7 +1634,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             const isDraft = this.saveVideoFile.approvalStatus === ApprovalStatusType[ApprovalStatusType.DRAFT];
             const isRejected = this.saveVideoFile.approvalStatus === ApprovalStatusType[ApprovalStatusType.REJECTED];
             if (isDraft || isRejected) {
-                this.saveButtonTitle = (this.isApprover || !this.authenticationService.approvalRequiredForAssets) ? 'Update' : 'Send for Approval';
+                const requiresApproval = this.authenticationService.approvalRequiredForAssets;
+                const isApprovalBypass = this.isApprover || !requiresApproval;
+                this.saveButtonTitle = isApprovalBypass ? 'Update' : 'Send for Approval';
+                this.saveVideoFile.sendForApproval = !isApprovalBypass;
             } else {
                 this.saveButtonTitle = 'Update';
             }
