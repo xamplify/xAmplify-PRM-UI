@@ -180,4 +180,5 @@ export class Pagination {
 	status: string = "";
 	password : string = "";
     vanityUrlDomain : boolean = false;
+	selectedType : boolean = false;
 }

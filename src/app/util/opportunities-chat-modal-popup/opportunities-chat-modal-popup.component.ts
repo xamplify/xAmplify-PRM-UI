@@ -76,6 +76,7 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
     request.pipelineStageId = deal.pipelineStageId;
     request.userId = this.loggedInUserId;
     request.dealComment = $.trim(this.comment);
+    request.createdForCompanyId = deal.createdForCompanyId;
     this.dealsService.changeDealStatus(request)
       .subscribe(
         response => {
