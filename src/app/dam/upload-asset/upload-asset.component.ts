@@ -501,12 +501,12 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if(this.isAdd){
 			let uploadedAssetValue = $('#uploadedAsset').val();
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 );
-            if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && this.fileType === 'application/pdf'){
+            if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && this.fileType === 'application/pdf' && !this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
             this.isValidForm = false;
             }
 		}else{
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
-            if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && !this.damUploadPostDto.vendorSignatureCompleted){
+            if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && !this.damUploadPostDto.vendorSignatureCompleted && !this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
                 this.isValidForm = false;
                 }
 		}
@@ -1552,6 +1552,9 @@ zoomOut() {
      /****XNFR-586****/
      setPartnerSignatureRequired(event){
         this.damUploadPostDto.partnerSignatureRequired = event;
+        if(!event){
+            this.setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event);
+        }
     }
 
     setVendorSignatureRequired(event){
@@ -1604,7 +1607,9 @@ zoomOut() {
 	notifySignatureSelection(event){
             this.setUploadedFileProperties(event);
             this.pdfUploadedFile =  event;
-            this.isVendorSignatureAdded = true;
+            if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
+                this.isVendorSignatureAdded = true;
+            }
             this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
             this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
@@ -1713,6 +1718,60 @@ zoomOut() {
             (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && (!this.isAssetReplaced || this.damUploadPostDto.assetType == 'pdf')) ||
             (this.isAdd && this.isApprover));
     }
+
+    setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event:any){
+    this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = event;
+    if(event && this.isVendorSignatureAdded && this.damUploadPostDto.vendorSignatureRequired){
+        this.confirmClearVendorSignature(false);
+    }
+    this.validateAllFields();
+    if(event){
+        this.setUploadedFileProperties(this.pdfUploadedFile);
+      } else {
+          this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+      }
+    }
+
+    clearSignature(){
+        this.pdfUploadedFile =  this.pdfDefaultUploadedFile;
+        this.isVendorSignatureAdded = false;
+    }
+
+    confirmClear() {
+        let self = this;
+          swal({
+            title: 'Are you sure?',
+            text: 'The Signatures will be removed form the Pdf',
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Clear it!'
+          }).then(function () {
+            self.clearSignature();
+          }, function (dismiss: any) {
+            console.log('You clicked on option: ' + dismiss);
+          });
+      }
+
+      confirmClearVendorSignature(event: any) {
+        let self = this;
+          swal({
+            title: 'Are you sure?',
+            text: 'The added signatures will be removed form the Pdf',
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Clear it!'
+          }).then(function () {
+            self.clearSignature();
+          }, function (dismiss: any) {
+            if(dismiss === 'cancel'){
+                self.setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event);
+            }
+          });
+      }
           
 
 }

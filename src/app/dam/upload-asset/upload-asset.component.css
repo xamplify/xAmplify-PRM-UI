@@ -211,7 +211,7 @@ border-radius: 4px;
   flex-wrap: wrap;
 }
 .vendor-signature-align{
-  margin-left: 74px;
+  margin-left: 45px;
 }
 .vendor-signaure-label{
   margin-left: 25px;
@@ -276,4 +276,8 @@ float: right;
 }
 .add_more-btn:hover{
 text-decoration: underline!important;
+}
+.iconFontSize{
+  font-size: 18px;
+  margin: 0px 7px;
 }

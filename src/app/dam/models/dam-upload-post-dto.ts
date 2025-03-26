@@ -65,5 +65,9 @@ export class DamUploadPostDto {
 	jsonBody:string = "";
     createdBy:number = 0;
     saveAs =false;
+    vendorSignatureRequiredAfterPartnerSignature = false;
+    disablevendorSignatureRequiredAfterPartnerSignatureOption = false;
+    vendorSignatureRequiredAfterPartnerSignatureToolTipMessage = "";
     sendForApproval: boolean = false;
+
 }

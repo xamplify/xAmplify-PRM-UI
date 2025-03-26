@@ -19,8 +19,8 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { GeoLocationAnalytics } from 'app/util/geo-location-analytics';
 
-
-declare var $:any, CKEDITOR: any;
+ 
+declare var $:any, CKEDITOR: any, swal:any;
 @Component({
   selector: "app-add-dam",
   templateUrl: "./add-dam.component.html",
@@ -309,7 +309,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
   validateFields() {
     this.validForm = this.isValidName && this.isValidDescription;
-    if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded ){
+    if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && !this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
       this.validForm = false;
       }
   }
@@ -404,6 +404,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damUploadPostDto.partnerSignatureRequired = this.damPostDto.partnerSignatureRequired;
       this.damUploadPostDto.vendorSignatureRequired = this.damPostDto.vendorSignatureRequired;
       this.damUploadPostDto.selectedSignatureImagePath = this.damPostDto.selectedSignatureImagePath;
+      this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = this.damPostDto.vendorSignatureRequiredAfterPartnerSignature;
       this.damUploadPostDto.partnerGroupIds = this.damPostDto.partnerGroupIds;
       this.damUploadPostDto.partnerIds = this.damPostDto.partnerIds;
       this.damUploadPostDto.partnerGroupSelected = this.damPostDto.partnerGroupSelected;
@@ -747,13 +748,15 @@ setVendorSignatureRequired(event){
   notifySignatureSelection(event) {
       this.setUploadedFileProperties(event);
       this.pdfUploadedFile = event;
-      this.isVendorSignatureAdded = true;
+      if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
+        this.isVendorSignatureAdded = true;
+    }
       this.validateFields();
       this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
       this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
       this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
     });
-    // this.validateFields();
+    this.validateFields();
   }
   private setUploadedFileProperties(file: File) {
     // this.uploadedImage = file;
@@ -813,5 +816,59 @@ setVendorSignatureRequired(event){
             // $("#addAssetDetailsPopup").modal("show");
           }
 
+        }
+
+        setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event:any){
+          this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = event;
+          if(event && this.isVendorSignatureAdded && this.damUploadPostDto.vendorSignatureRequired){
+              this.confirmClearVendorSignature(false);
+          }
+          this.validateFields();
+          if(event){
+            this.setUploadedFileProperties(this.pdfUploadedFile);
+          } else {
+              this.setUploadedFileProperties(this.pdfFile);
+          }
+          }
+
+          confirmClearVendorSignature(event: any) {
+            let self = this;
+              swal({
+                title: 'Are you sure?',
+                text: 'The added signatures will be removed form the Pdf',
+                type: 'warning',
+                showCancelButton: true,
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
+                confirmButtonText: 'Yes, Clear it!'
+              }).then(function () {
+                self.clearSignature();
+              }, function (dismiss: any) {
+                if(dismiss === 'cancel'){
+                    self.setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event);
+                }
+              });
+          }
+
+          clearSignature(){
+            this.pdfUploadedFile =  this.pdfFile;
+            this.isVendorSignatureAdded = false;
+        }
+
+        confirmClear() {
+          let self = this;
+            swal({
+              title: 'Are you sure?',
+              text: 'The Signatures will be removed form the Pdf',
+              type: 'warning',
+              showCancelButton: true,
+              swalConfirmButtonColor: '#54a7e9',
+              swalCancelButtonColor: '#999',
+              confirmButtonText: 'Yes, Clear it!'
+            }).then(function () {
+              self.clearSignature();
+            }, function (dismiss: any) {
+              console.log('You clicked on option: ' + dismiss);
+            });
         }
 }

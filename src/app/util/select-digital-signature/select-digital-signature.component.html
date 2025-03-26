@@ -25,7 +25,7 @@
                 </li>
 
                 <!-- Signature Toggle Button -->
-                <li class="dropdown" data-toggle="tooltip" data-placement="right" title="Add Signature">
+                <li *ngIf="!hideSignatureTool" class="dropdown" data-toggle="tooltip" data-placement="right" title="Add Signature">
                   <div class="toolbar-btn" (click)="toggleSignatures()"
                     [ngClass]="{'active-tool': activeSignatureTool}">
                     <i class="fas fa-pen-nib"></i>

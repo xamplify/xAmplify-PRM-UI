@@ -36,5 +36,6 @@ export class DamPostDto {
     vendorSignatureToolTipMessage = "";
     selectedSignatureImagePath = "";
     vendorSignatureCompleted = false;
+	vendorSignatureRequiredAfterPartnerSignature = false;
 
 }

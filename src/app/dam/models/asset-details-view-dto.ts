@@ -16,9 +16,10 @@ export class AssetDetailsViewDto {
     selectedSignaturePath: any;
     vendorSignatureCompleted: boolean = false;
     sharedAssetPath: any;
+    damPartnerId: any;
      categoryName ="";
 	 displayName = "";
 	 vendorCompanyName = "";
 	 loggedInUserProfileImage = "";
-     assetType = "";
+    assetType = "";
 }
