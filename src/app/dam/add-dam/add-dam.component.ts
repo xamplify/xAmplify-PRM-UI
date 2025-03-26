@@ -826,7 +826,7 @@ setVendorSignatureRequired(event){
           this.validateFields();
           if(event){
             this.setUploadedFileProperties(this.pdfUploadedFile);
-          } else {
+          } else if (!event && !this.isVendorSignatureAdded)  {
               this.setUploadedFileProperties(this.pdfFile);
           }
           }
