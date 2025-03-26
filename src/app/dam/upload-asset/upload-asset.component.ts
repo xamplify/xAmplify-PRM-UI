@@ -1663,12 +1663,18 @@ zoomOut() {
         const isRejected = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.REJECTED];
         const isApproved = currentApprovalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED];
         if (isAdd) {
-            this.submitButtonText = assetApprover || !this.approvalRequired ? 'Save' : 'Send for Approval';
+            const requiresApproval = !assetApprover && this.approvalRequired;
+            this.submitButtonText = requiresApproval ? 'Send for Approval' : 'Save';
+            this.damUploadPostDto.sendForApproval = requiresApproval;
         } else {
             if (isDraft || isRejected) {
-                this.submitButtonText = (assetApprover || !this.approvalRequired) ? 'Update' : 'Send for Approval';
+                const requiresApproval = !assetApprover && this.approvalRequired;
+                this.submitButtonText = requiresApproval ? 'Send for Approval' : 'Update';
+                this.damUploadPostDto.sendForApproval = requiresApproval;
             } else if (isApproved && isAssetReplaced) {
-                this.submitButtonText = (assetApprover || !this.approvalRequired || this.damUploadPostDto.assetType == 'pdf') ? 'Update' : 'Send for Re-Approval';
+                const requiresApproval = !(assetApprover || !this.approvalRequired || this.damUploadPostDto.assetType === 'pdf');
+                this.submitButtonText = requiresApproval ? 'Send for Re-Approval' : 'Update';
+                this.damUploadPostDto.sendForReApproval = requiresApproval;
             } else {
                 this.submitButtonText = 'Update';
             }
