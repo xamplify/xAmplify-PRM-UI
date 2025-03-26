@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -45,8 +45,10 @@ export class AiChatManagerComponent implements OnInit {
   emailBody: any;
   subjectText: string;
   socialContent: string;
+  isSpeakingText: boolean;
+  speakingIndex: number;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
-    private router:Router) { }
+    private router:Router, private cdr: ChangeDetectorRef) { }
 
     ngOnInit() {
       this.assetId = parseInt(this.route.snapshot.params['assetId']);
@@ -325,6 +327,23 @@ export class AiChatManagerComponent implements OnInit {
     }
     tempDiv.innerHTML = this.socialContent;
     this.socialContent = tempDiv.textContent || tempDiv.innerText || "";
+  }
+
+  speakTextOn(index: number, element: any) {
+    let text = element.innerText || element.textContent;
+    if (this.isSpeakingText && this.speakingIndex === index) {
+      this.authenticationService.stopSpeech();
+      this.isSpeakingText = false;
+      this.speakingIndex = null;
+    } else {
+      this.speakingIndex = index;
+      this.isSpeakingText = true;
+      this.authenticationService.readText(text, () => {
+        this.isSpeakingText = false;
+        this.speakingIndex = null;
+        this.cdr.detectChanges();
+      });
+    }
   }
 
 

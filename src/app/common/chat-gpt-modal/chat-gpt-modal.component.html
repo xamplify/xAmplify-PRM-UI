@@ -137,9 +137,9 @@
                   <!-- Heading -->
                   <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing'">
                     <div class="main-container">
-                      <div *ngFor="let msg of messages">
-                        <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
-                      </div>
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
                       <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
                     </div>
                   </ng-container> 
@@ -217,8 +217,12 @@
                     </div>
                     <div *ngIf="isCopyButtonDisplayed" class="w-50per mt10">
                       <div class="footer-icons phara-footer mt0">
-                        <div class="footer-icon" title="Read aloud"><i class="fa fa-volume-up fs-12"></i></div>
-                        <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div>
+                        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}">
+                          <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'" aria-hidden="true"
+                            (click)="speakTextForParaprasher(chatGptGeneratedText)">
+                          </i>
+                        </div>
+                        <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(markdownComponent)"><i class="fa fa-clone fs-12"></i></div>
                         <div class="footer-icon" title=" Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
                         <button class="share-btn"  (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
@@ -262,8 +266,13 @@
           </div>
         </div>
         <div class="footer-icons mb10">
-          <div class="footer-icon" title="Read aloud"><i class="fa fa-volume-up fs-12"></i></div>
-          <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12" (click)="copyAiText(message.content)"></i></div>
+          <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
+            <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
+              aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
+            </i>
+          </div>
+          <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
+              (click)="copyAiText(message.content)"></i></div>
           <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
           <button class="share-btn">Design Template</button>
           <button class="share-btn">Design Page</button>

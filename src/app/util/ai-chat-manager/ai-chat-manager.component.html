@@ -65,7 +65,7 @@
   <div *ngIf="openHistory && !openShareOption" class="summarize-pdf-card">
     <button class="close_pdf" (click)="closeAi()">&times;</button>
     <div class="scrollable-card">
-      <div *ngFor="let message of messages">
+      <div *ngFor="let message of messages;let i = index">
         <ng-container *ngIf="message.content?.trim()">
           <div class="main-container">
 
@@ -94,8 +94,10 @@
                   </div>
                 </div>
                 <div class="footer-icons mb10">
-                  <div class="footer-icon" title="Read aloud">
-                    <i class="fa fa-volume-up fs-12" aria-hidden="true"></i>
+                  <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === i) ? 'Read aloud' : 'stop'}}">
+                    <i [ngClass]="(isSpeakingText && speakingIndex === i) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
+                      aria-hidden="true" (click)="speakTextOn(i,markdownComponent)">
+                    </i>
                   </div>
                   <div class="footer-icon" title="Copy to Clipboard">
                     <i class="fa fa-clone fs-12" aria-hidden="true" (click)="copyAiText(markdownComponent)"></i>

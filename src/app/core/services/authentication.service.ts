@@ -1589,21 +1589,34 @@ vanityWelcomePageRequired(userId) {
     return this.callGetMethod(url);
   }
 
-  readText(text: string) {
-    if (!this.synth.speaking) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1;  
-      utterance.pitch = 1;
-      utterance.volume = 1; 
-      utterance.lang = 'en-US'; 
-      this.synth.speak(utterance);
+  readText(text: string, onEndCallback: () => void) {
+    if (this.synth.speaking) {
+      this.stopSpeech();
     }
+    this.startSpeaking(text, onEndCallback);
   }
+  
+  startSpeaking(text: string, onEndCallback: () => void) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1;
+    utterance.pitch = 2.0;
+    utterance.volume = 1;
+    utterance.lang = 'en-US';
 
-  stopSpeech(): void {
+    utterance.onend = () => {
+      console.log('Speech finished');
+      setTimeout(() => {
+        onEndCallback();
+      });
+    };
+    this.synth.speak(utterance);
+  }
+  
+  stopSpeech() {
     if (this.synth.speaking) {
       this.synth.cancel();
     }
   }
+  
 
 }
