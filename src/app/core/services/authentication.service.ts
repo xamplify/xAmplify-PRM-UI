@@ -178,6 +178,7 @@ export class AuthenticationService {
   approvalRequiredForAssets: boolean = false;
   approvalRequiredForTracks: boolean = false;
   approvalRequiredForPlaybooks: boolean = false;
+  synth = window.speechSynthesis;
 
 
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
@@ -1157,7 +1158,9 @@ export class AuthenticationService {
   }
 
   sendTestEmail(sendTestEmailDto: SendTestEmailDto) {
-    alert("Send Test Email Triggers");
+    if (sendTestEmailDto.showAlert) {
+      alert("Send Test Email Triggers");
+    }
     sendTestEmailDto.fromEmail = this.user.emailId;
     let url = this.REST_URL + "email-template/sendTestEmail?access_token=" + this.access_token;
     return this.callPostMethod(url, sendTestEmailDto);
@@ -1584,6 +1587,23 @@ vanityWelcomePageRequired(userId) {
   getPartnerCompanyByEmailDomain(emailId: any, companyProfileName: string) {
     let url = this.REST_URL + "getPartnerCompanyByEmailDomain/" + emailId + "/" + companyProfileName;
     return this.callGetMethod(url);
+  }
+
+  readText(text: string) {
+    if (!this.synth.speaking) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1;  
+      utterance.pitch = 1;
+      utterance.volume = 1; 
+      utterance.lang = 'en-US'; 
+      this.synth.speak(utterance);
+    }
+  }
+
+  stopSpeech(): void {
+    if (this.synth.speaking) {
+      this.synth.cancel();
+    }
   }
 
 }

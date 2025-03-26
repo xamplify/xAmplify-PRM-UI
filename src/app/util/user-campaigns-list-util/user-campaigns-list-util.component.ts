@@ -59,6 +59,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	companyJourneyId: any;
 	customResponse: CustomResponse = new CustomResponse();
 	companyRouter = RouterUrlConstants.home+RouterUrlConstants.company+RouterUrlConstants.manage;
+	showManageContacts:boolean = false;
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -99,6 +100,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 			} else if (this.navigatedFrom == "fcjcd") {
 				this.isFromCompanyJourneyEditContacts = true;
 			}
+			this.showManageContacts = !this.isFromCompanyModule && !this.isFromCompanyJourney && !this.isFromCompanyJourneyEditContacts;
 		}
 	}
 

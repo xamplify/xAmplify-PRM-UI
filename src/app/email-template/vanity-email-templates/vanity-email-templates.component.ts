@@ -31,10 +31,18 @@ export class VanityEmailTemplatesComponent implements OnInit {
   @Output() editTemplate = new EventEmitter();
   @ViewChild("emailTemplatePreviewPopupComponent") emailTemplatePreviewUtilComponent:EmailTemplatePreviewUtilComponent;
   selectedTypeIndex = 0;
+	activeTab: string = 'templates';
+  selectedType: boolean = false;
+  isZeroDefaultsYourTemplates: boolean = false;
+  isZeroDefaultsPartnerNotifications: boolean = false;
+;
   constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties,public utilService: UtilService) { }
 
   ngOnInit() {
-    this.showAllVanityTemplates('DEFAULT', 0);
+    this.isZeroDefaultsYourTemplates = false;  
+  this.isZeroDefaultsPartnerNotifications = false;
+    this.setActiveTab('templates');
+    
   }
 
   
@@ -57,6 +65,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
       pagination.userId = this.authenticationService.getUserId();
       pagination.isAdmin = this.authenticationService.module.isAdmin;
       pagination.companyId = this.referenceService.companyId;
+      this.pagination.selectedType = this.activeTab == 'templates' ? true : false;
       this.vanityURLService.getVanityEmailTemplates(pagination).subscribe(result => {
         const data = result.data;
         if (result.statusCode === 200) {
@@ -135,4 +144,18 @@ setPage(event: any) {
 	this.pagination.pageIndex = event.page;
 	this.getVanityEmailTemplates(this.pagination);
 }
+  setActiveTab(tabName: string) {
+    this.activeTab = tabName;
+    if (tabName === 'templates') {
+      this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates; 
+      // this.isZeroDefaultsTemplates = true;
+      this.showAllVanityTemplates('DEFAULT', 0);
+    } else if (tabName === 'partnerNotifications') {
+      this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates; 
+      // this.isZeroDefaultsTemplates = false;; 
+      this.showAllVanityTemplates('DEFAULT', 0);
+    }
+  }
+  
+  
 }

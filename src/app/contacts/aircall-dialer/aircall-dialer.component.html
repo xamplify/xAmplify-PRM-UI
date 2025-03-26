@@ -1,0 +1,16 @@
+<div class="modal fade right" id="addCallModalPopup" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeCallModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+        <h4 class="modal-title left" id="myModalLabel">Make a Call</h4>
+      </div>
+      <div class="modal-body mb_height p0">
+        <iframe #aircallIframe src="https://phone.aircall.io?integration=generic"
+          allow="microphone; autoplay; clipboard-read; clipboard-write; hid"
+          style="height: calc(100vh - 20px); width: 100%; border: none;"></iframe>
+      </div>
+    </div>
+  </div>
+</div>

@@ -340,6 +340,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damPostDto.saveAs = saveAs;
       this.setDampUploadPostData(saveAs);
       this.damUploadPostDto.assetName = this.damPostDto.name;
+      if (saveAs) {
+        this.damUploadPostDto.sendForApproval = false;
+        this.damUploadPostDto.sendForReApproval = false;
+      }
       this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
         (result: any) => {
           this.hidePopup();
@@ -692,6 +696,7 @@ downloadPdf(){
             }
             if (!this.isApprover) {
               this.saveOrUpdateButtonText = 'Send for Approval';
+              this.damUploadPostDto.sendForApproval = true;
             }
             this.ngxloading = false;
         }, error => {

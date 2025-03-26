@@ -1022,4 +1022,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		  }
 		}
 	}
+	AskAi(asset: any){
+		let url = "/home/dam/askAi/shared/view/" + asset.id;
+		this.referenceService.goToRouter(url)
+	}
 }

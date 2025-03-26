@@ -33,7 +33,6 @@ import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component
 import { VendorJourneyAnalyticsComponent } from 'app/util/vendor-journey-analytics/vendor-journey-analytics.component';
 import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom-manage-leads.component';
 import { CustomManageDealsComponent } from 'app/deals/custom-manage-deals/custom-manage-deals.component';
-import { AddEmailModalPopupComponent } from 'app/activity/add-email-modal-popup/add-email-modal-popup.component';
 import { CKEditorModule } from "ng2-ckeditor";
 import { EmailActivityComponent } from 'app/activity/email-activity/email-activity.component';
 import { AddNoteModalPopupComponent } from 'app/activity/add-note-modal-popup/add-note-modal-popup.component';
@@ -56,21 +55,22 @@ import { PreviewMeetingActivityComponent } from 'app/activity/preview-meeting-ac
 import { EventCalendarComponent } from 'app/activity/event-calendar/event-calendar.component';
 import { CompanyCampaignsListComponent } from 'app/campaigns/company-campaigns-list/company-campaigns-list.component';
 import { SelectContactComponent } from 'app/deals/select-contact/select-contact.component';
+import { CallActivityComponent } from 'app/activity/call-activity/call-activity.component';
+import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dialer.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
                   BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, 
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule, CKEditorModule,
-                  AgmCoreModule.forRoot({ apiKey: "AIzaSyC_rv55LIbLQF9TN8TyPMNEP3cZgIAk-EY"
+                  AgmCoreModule.forRoot({ apiKey: "AIzaSyAOFRgJ4DduOovKv1nuwutG7pPJ76n3hbk"
                   })
                   ],
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
-                CustomManageLeadsComponent, CustomManageDealsComponent, AddEmailModalPopupComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent,
-                AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent],
-
+                CustomManageLeadsComponent, CustomManageDealsComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent,
+                AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent, CallActivityComponent, AircallDialerComponent], 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
@@ -78,8 +78,8 @@ import { SelectContactComponent } from 'app/deals/select-contact/select-contact.
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent,
-                CustomManageDealsComponent, AddEmailModalPopupComponent, EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent, AddTaskModalPopupComponent, TaskActivityComponent,
-                PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent],
+                CustomManageDealsComponent,  EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent, AddTaskModalPopupComponent, TaskActivityComponent,
+                PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent, CallActivityComponent, AircallDialerComponent],
         providers: [FormService],
 })
 

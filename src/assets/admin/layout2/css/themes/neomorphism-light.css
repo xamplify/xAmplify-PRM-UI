@@ -478,7 +478,7 @@ tr {
 .page-sidebar .page-sidebar-menu > li.active > a,
 .page-sidebar .page-sidebar-menu > li.hover > a {
   background-color: #f0f5fa !important;
-  border-bottom: 2px solid #01b6ff !important;
+  border-bottom: 2px solid #0276FF !important;
 }
 .page-sidebar-closed.page-sidebar-fixed
   .page-sidebar:hover
@@ -1932,9 +1932,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   background: linear-gradient(225deg, #d8dde1, #ffffff);
 }
-.popup_header {
+/* .popup_header {
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
-}
+} */
 .popup_footer {
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
 }
@@ -1983,9 +1983,10 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .close-circle {
   background: none !important;
-  color: #000 !important;
+  color: white !important;
   border: 1px solid #d0d5db !important;
-  box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff !important;
+  /* box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff !important;
+*/
 }
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
@@ -3458,7 +3459,7 @@ input.form-control.remove_checkbox_shadow{
   box-shadow : none !important;
 }
 .page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected{
-  border-color: transparent #01b6ff transparent transparent;
+  border-color: transparent #0276FF transparent transparent;
 }
 .page-sidebar .page-sidebar-menu > li.active > a > .selected{
   right: 0px !important;
@@ -4544,6 +4545,14 @@ a.Iconhover.custom-grid-icon.icon_margin{
   box-shadow: unset;
   color: #fff!important;
 }
+
+.modal-header{
+  background: #34495a !important;
+}
+.modal-title{
+  color: white !important;
+}
+
 @media only screen and (min-width: 600px) and (max-width: 1024px) {
   .clip_mask{
       bottom: -68px !important;

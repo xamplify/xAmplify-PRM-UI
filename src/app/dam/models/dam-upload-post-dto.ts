@@ -68,4 +68,6 @@ export class DamUploadPostDto {
     vendorSignatureRequiredAfterPartnerSignature = false;
     disablevendorSignatureRequiredAfterPartnerSignatureOption = false;
     vendorSignatureRequiredAfterPartnerSignatureToolTipMessage = "";
+    sendForApproval: boolean = false;
+
 }

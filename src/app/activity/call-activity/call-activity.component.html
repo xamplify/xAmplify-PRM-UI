@@ -1,0 +1,208 @@
+<div class="inputs display row" align="right">
+  <div class="col-xs-12 col-sm-12 col-lg-12 mb10">
+    <div class="page-toolbar">
+      <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Refresh"
+        data-original-title="Refresh" (click)="showAllCallActivities()">
+        <i aria-hidden="true" class="fa fa-refresh"></i>
+      </a>
+      <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Make a Call"
+        data-original-title="Make a Call" (click)="openAircallDialer()">
+        <i aria-hidden="true" class="glyphicon glyphicon-phone"></i>
+      </a>
+      <div class="btn-group pull-right">
+        <div class="inputs float-right" style="display: inline-flex;">
+          <div class="float-left">
+            <select class="form-control" [(ngModel)]="callSortOption.callIntegrationDropDownOption"
+              (ngModelChange)="sortFieldsByOption()" id="select-dropdown">
+              <option *ngFor="let option of callSortOption.callIntegrationDropDownOptions" [ngValue]="option.value">
+                {{option.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<app-response-message class="pg8" [customResponse]="customResponse"
+  *ngIf="customResponse?.isVisible"></app-response-message>
+<app-response-message class="pg8" [customResponse]="contactErrorResponse"
+  *ngIf="contactErrorResponse?.isVisible"></app-response-message>
+
+<div class="pg8 mt5" *ngIf="showConfigureMessage">
+  <div *ngIf="showConfigureMessage">
+    <div class="alert m0 p13" role="alert" [ngClass]="{'alert-success': !showConfigureMessage,
+   'alert-danger': showConfigureMessage,
+   'alert-info': !showConfigureMessage}">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+        (click)="showConfigureMessage = false">
+        <span aria-hidden="true">x</span>
+      </button>
+      <h4 style="padding-top: 6px;">
+        <span style="word-wrap: break-word;" class="login-error" id='responseMessage'>Please configure with atleast one
+          call integration.</span>
+      </h4>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isCompanyJourney" class="fc-content mb5">
+  <app-dropdown-loader *ngIf="userListUsersLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
+  <app-searchable-dropdown
+    *ngIf="!userListUsersLoader?.isLoading && !showConfigureMessage && !customResponse?.isVisible"
+    [searchableDropDownDto]="companyUsersSearchableDropDownDto" [id]="contactId" [disableDropDown]="false"
+    (searchableDropdownEventEmitter)="getSelectedAssignedToUserId($event)">
+  </app-searchable-dropdown>
+</div>
+
+<div *ngIf="!contactErrorResponse?.isVisible">
+  <div class="activity_card mb10" *ngFor="let callActivity of callActivityPagedItems">
+    <div class="activity-header">
+      <span>
+        <svg *ngIf="callActivity.direction=='Incoming'" width="12px" height="12px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 122.26"
+          style="enable-background:new 0 0 122.88 122.26" xml:space="preserve">
+          <style type="text/css">
+            .st0 {
+              fill: #38AE48;
+            }
+        
+            .st1 {
+              fill: #393939;
+            }
+          </style>
+          <g>
+            <path class="st0"
+              d="M118.11,15.41c-0.16,0.2-0.33,0.39-0.51,0.59L88.53,44.56l7.46,0.39c3.19,0.16,5.65,2.88,5.49,6.07 c-0.16,3.19-2.88,5.65-6.07,5.49l-20.76-1.05c-2.84-0.14-5.11-2.32-5.45-5.05l0,0l-2.77-21.94c-0.4-3.18,1.83-6.08,5.02-6.49 c3.18-0.4,6.08,1.83,6.49,5.02l1.2,9.52l29.5-30.58L118.11,15.41L118.11,15.41z" />
+            <path class="st1"
+              d="M33.84,50.26c4.13,7.45,8.89,14.6,15.08,21.12c6.19,6.57,13.9,12.54,23.89,17.62 c0.73,0.37,1.44,0.37,2.06,0.11c0.96-0.37,1.91-1.14,2.88-2.1c0.73-0.73,1.66-1.92,2.62-3.2c3.83-5.05,8.59-11.32,15.3-8.19 c0.15,0.07,0.26,0.15,0.41,0.22l22.36,12.87c0.07,0.04,0.15,0.11,0.22,0.15c2.95,2.02,4.17,5.15,4.21,8.7 c0,3.61-1.33,7.67-3.28,11.1c-2.58,4.53-6.38,7.52-10.76,9.51c-4.17,1.91-8.81,2.95-13.27,3.61c-7,1.03-13.56,0.37-20.28-1.7 c-6.57-2.02-13.17-5.39-20.39-9.84l-0.52-0.34c-3.31-2.06-6.9-4.28-10.4-6.9C31.11,93.31,18.03,79.3,9.51,63.89 C2.36,50.94-1.55,36.97,0.58,23.66c1.18-7.3,4.32-13.94,9.77-18.32c4.75-3.83,11.17-5.93,19.47-5.2c0.96,0.07,1.81,0.63,2.25,1.44 l14.35,24.26c2.1,2.73,2.36,5.42,1.22,8.12c-0.96,2.21-2.88,4.24-5.5,6.16c-0.77,0.66-1.7,1.33-2.66,2.02 c-3.2,2.32-6.86,5.01-5.61,8.19L33.84,50.26L33.84,50.26L33.84,50.26z" />
+          </g>
+        </svg>
+
+        <svg *ngIf="callActivity.direction=='Missed'" width="12px" height="12px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.13 123.14"
+          style="enable-background:new 0 0 122.13 123.14" xml:space="preserve">
+          <style type="text/css">
+            .st0 {
+              fill: #D8453E;
+            }
+        
+            .st1 {
+              fill: #393939;
+            }
+          </style>
+          <g>
+            <path class="st0"
+              d="M117.17,41.79c2.75-0.02,4.97,2.18,4.96,4.94c-0.01,2.75-2.23,4.99-4.98,5.01L94.67,52.8 c-5.81-0.76-10.03-5.06-10.35-11.32l0.29-26.11l-4.48,4.04c-1.91,1.73-4.87,1.58-6.6-0.33c-1.73-1.91-1.58-4.87,0.33-6.6 L86.31,1.21c1.7-1.54,4.24-1.59,5.99-0.23l0,0l14.11,10.94c2.04,1.58,2.43,4.52,0.84,6.57c-1.58,2.04-4.52,2.43-6.57,0.84 l-6.12-4.75l0.62,27.82L117.17,41.79L117.17,41.79L117.17,41.79z" />
+            <path class="st1"
+              d="M71.89,82.56c-3.34-6.01-7.18-11.78-12.18-17.06c-5-5.3-11.22-10.12-19.29-14.23c-0.59-0.3-1.16-0.3-1.66-0.09 c-0.77,0.3-1.54,0.92-2.32,1.69c-0.59,0.59-1.34,1.55-2.11,2.59c-3.1,4.08-6.93,9.14-12.36,6.61c-0.12-0.06-0.21-0.12-0.33-0.18 L3.58,51.5c-0.06-0.03-0.12-0.09-0.18-0.12c-2.39-1.63-3.37-4.16-3.4-7.02c0-2.92,1.07-6.19,2.65-8.96 c2.08-3.66,5.15-6.07,8.69-7.68c3.37-1.54,7.11-2.39,10.71-2.92c5.65-0.83,10.95-0.3,16.37,1.37c5.3,1.63,10.63,4.35,16.46,7.95 l0.42,0.27c2.68,1.66,5.57,3.46,8.4,5.57c10.39,7.83,20.95,19.14,27.84,31.59c5.77,10.45,8.93,21.74,7.21,32.48 c-0.95,5.89-3.49,11.25-7.89,14.79c-3.84,3.1-9.02,4.79-15.72,4.2c-0.77-0.06-1.46-0.51-1.81-1.16l-11.58-19.59 c-1.69-2.2-1.9-4.38-0.98-6.55c0.77-1.78,2.32-3.43,4.44-4.97c0.62-0.53,1.37-1.07,2.14-1.63c2.59-1.87,5.54-4.05,4.53-6.61 L71.89,82.56L71.89,82.56L71.89,82.56z" />
+          </g>
+        </svg>
+
+        <svg *ngIf="callActivity.direction=='Outgoing'" width="12px" height="12px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 122.26"
+          style="enable-background:new 0 0 122.88 122.26" xml:space="preserve">
+          <style type="text/css">
+            .st0 {
+              fill: #EC8011;
+            }
+        
+            .st1 {
+              fill: #393939;
+            }
+          </style>
+          <g>
+            <path class="st0"
+              d="M66.38,47.05c0.16-0.2,0.33-0.39,0.51-0.59L95.96,17.9l-7.46-0.39c-3.19-0.16-5.65-2.88-5.49-6.07 c0.16-3.19,2.88-5.65,6.07-5.49L109.84,7c2.84,0.14,5.11,2.32,5.45,5.05l0,0l2.77,21.94c0.4,3.18-1.83,6.08-5.02,6.49 c-3.18,0.4-6.08-1.83-6.49-5.02l-1.2-9.52l-29.5,30.58L66.38,47.05L66.38,47.05z" />
+            <path class="st1"
+              d="M33.84,50.26c4.13,7.45,8.89,14.6,15.08,21.12c6.19,6.57,13.9,12.54,23.89,17.62 c0.73,0.37,1.44,0.37,2.06,0.11c0.96-0.37,1.91-1.14,2.88-2.1c0.73-0.73,1.66-1.92,2.62-3.2c3.83-5.05,8.59-11.32,15.3-8.19 c0.15,0.07,0.26,0.15,0.41,0.22l22.36,12.87c0.07,0.04,0.15,0.11,0.22,0.15c2.95,2.02,4.17,5.15,4.21,8.7 c0,3.61-1.33,7.67-3.28,11.1c-2.58,4.53-6.38,7.52-10.76,9.51c-4.17,1.91-8.81,2.95-13.27,3.61c-7,1.03-13.56,0.37-20.28-1.7 c-6.57-2.02-13.17-5.39-20.39-9.84l-0.52-0.34c-3.31-2.06-6.9-4.28-10.4-6.9C31.11,93.31,18.03,79.3,9.51,63.89 C2.36,50.94-1.55,36.97,0.58,23.66c1.18-7.3,4.32-13.94,9.77-18.32c4.75-3.83,11.17-5.93,19.47-5.2c0.96,0.07,1.81,0.63,2.25,1.44 l14.35,24.26c2.1,2.73,2.36,5.42,1.22,8.12c-0.96,2.21-2.88,4.24-5.5,6.16c-0.77,0.66-1.7,1.33-2.66,2.02 c-3.2,2.32-6.86,5.01-5.61,8.19L33.84,50.26L33.84,50.26L33.84,50.26z" />
+          </g>
+        </svg>
+
+        <label class="mr5 activity-title"> {{callActivity.direction |
+          slice:0:35}} Call</label></span>
+      <span class="activity-date"><i class="fa fa-clock"></i><app-display-date-and-time
+          [dateAndTimeUTCString]="callActivity.createdTime"></app-display-date-and-time></span>
+    </div>
+    <div class="activity-body mt0">
+      <span class="activity-title">
+        <label class="activity-title mb0"> {{(callActivity.direction=='Incoming' || callActivity.direction=='Missed')?'From:':'To:'}} </label>
+        <span>{{callActivity.callInfoString}}</span>
+      </span>
+    </div>
+    <div class="activity-footer">
+      <span class="activity-title">
+        <i class="fa fa-hourglass-half" aria-hidden="true"></i> Duration: <span
+          class="view-banner activity-updated-status-btn">{{callActivity.duration}}</span>
+      </span>
+      <span *ngIf="callActivity.recordingURL != undefined">
+        <div class="icon-item" (click)="toggleCard(callActivity)">
+          <div class="icon-btns">
+            <i class="fa fa-play play_button" [ngClass]="callActivity.expanded ? 'transform_90deg' : ''"
+              aria-hidden="true"></i>
+          </div>
+        </div>
+      </span>
+    </div>
+    <div *ngIf="callActivity.expanded" class="activity-footer record_player">
+      <span class="activity-title">
+        <div class="audio-player-container">
+          <audio controls>
+            <source src="{{callActivity.recordingURL}}" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </span>
+    </div>
+  </div>
+  <div class="activity_pagination">
+    <ul *ngIf="callActivityPager.pages && callActivityPager.pages.length" class="pagination">
+      <li [ngClass]="{disabled:callActivityPager.currentPage === 1}"><a (click)="setCallActivitiesPage(1)"><span
+            _ngcontent-c15=""><i _ngcontent-c15="" aria-hidden="true" class="fa fa-angle-double-left"
+              data-placement="bottom" data-toggle="tooltip" title="First"></i><span
+              class="sr-only">First</span></span></a></li>
+      <li [ngClass]="{disabled:callActivityPager.currentPage === 1}"><a
+          (click)="setCallActivitiesPage(callActivityPager.currentPage - 1)"><span _ngcontent-c15=""><i
+              _ngcontent-c15="" aria-hidden="true" class="fa fa-angle-left" data-placement="bottom"
+              data-toggle="tooltip" title="Previous"></i><span class="sr-only">Previous</span></span></a></li>
+      <li *ngFor="let page of callActivityPager.pages" [ngClass]="{active:callActivityPager.currentPage === page}">
+        <a (click)="setCallActivitiesPage(page)" [class.disabled]="callActivityPager.currentPage === page">{{page}}</a>
+      </li>
+      <li [ngClass]="{disabled:callActivityPager.currentPage === callActivityPager.totalPages}">
+        <a (click)="setCallActivitiesPage(callActivityPager.currentPage + 1)"><span _ngcontent-c15=""><i
+              _ngcontent-c15="" aria-hidden="true" class="fa fa-angle-right" data-placement="bottom"
+              data-toggle="tooltip" title="Next"></i><span class="sr-only">Next</span></span></a>
+      </li>
+      <li [ngClass]="{disabled:callActivityPager.currentPage === callActivityPager.totalPages}">
+        <a (click)="setCallActivitiesPage(callActivityPager.totalPages)"><span _ngcontent-c15=""><i _ngcontent-c15=""
+              aria-hidden="true" class="fa fa-angle-double-right" data-placement="bottom" data-toggle="tooltip"
+              title="Last"></i><span class="sr-only">Last</span></span></a>
+      </li>
+    </ul>
+    <div *ngIf="callActivityPager.pages && callActivityPager.pages.length"
+      class="p-drop-down pl10 custom-fields-items-count pt10">
+      <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber"
+        [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
+        <option [ngValue]="paginationComponent.numberPerPage[0]">{{paginationComponent.numberPerPage[0].name}}
+        </option>
+        <option *ngIf="callActivityPager.totalItems>12" [ngValue]="paginationComponent.numberPerPage[1]">
+          {{paginationComponent.numberPerPage[1].name}}</option>
+        <option *ngIf="callActivityPager.totalItems>24" [ngValue]="paginationComponent.numberPerPage[2]">
+          {{paginationComponent.numberPerPage[2].name}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer border-none pr0 pt0 pl0" *ngIf="callActivityPager.pages && callActivityPager.pages.length">
+    <span class="align-item-left">
+      <strong>Total Records :{{callActivityPager.totalItems}}</strong>
+    </span>
+  </div>
+  <div *ngIf="!(callActivityPager.pages && callActivityPager.pages.length) && !this.httpRequestLoader.isLoading"
+    class="alert alert-info mb0">
+    <strong translate>No Data Found.</strong>
+  </div>
+</div>
+
+<app-aircall-dialer *ngIf="showAircallDialer" [isReloadTab]="isReloadTab" (notifyClose)="closeCallModalPopup($event)"></app-aircall-dialer>

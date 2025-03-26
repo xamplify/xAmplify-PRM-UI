@@ -5,7 +5,7 @@
          <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li *ngIf="!isFromCompanyModule && !isFromCompanyJourney && !isFromCompanyJourneyEditContacts">
+         <li *ngIf="showManageContacts">
             <a (click)="backToManageContacts()" translate> Manage Contacts
             </a>
          </li>

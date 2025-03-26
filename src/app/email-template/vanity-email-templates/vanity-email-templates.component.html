@@ -1,85 +1,109 @@
 <app-grid-loader  *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 <div class="row" *ngIf="!httpRequestLoader.isLoading">
-<div class="col-xs-12 col-sm-6 col-lg-6">
-  <div>
-    <ul class="mix-filter">
-      <div [ngClass]="{disabled:isZeroDefaultsTemplates}" *ngIf="isZeroDefaultsTemplates"></div>
-      <ng-container>
-        <li class="filter" [class.disabled]="isZeroDefaultsTemplates" [attr.data-toggle]="isZeroDefaultsTemplates? 'tooltip' : null" [attr.title]="isZeroDefaultsTemplates? 'No default templates available.' : null"
-        (click)="!isZeroDefaultsTemplates && showAllVanityTemplates('DEFAULT', 0)"
-        [class.vanity-template-selected]="0 == selectedTypeIndex" translate>DEFAULT</li>
-        <li class="filter" (click)=" showAllVanityTemplates('CUSTOM', 1)"
-        [class.vanity-template-selected]="1 == selectedTypeIndex"  translate>CUSTOM</li>
-      </ng-container>
-</ul>
-  </div>
-</div>
-<div class="col-xs-12 col-sm-6 col-lg-6">
-  <div class="page-toolbar">
-    <div class="pull-right">
-      <div class="inputs float-right" style="display: inline-flex;">
-        <div class="portlet-input input-inline" id="search-div">
-          <div class="input-icon right" id="icon">
-          <div class="pb3 float-left search_sort_shadows">
-              <select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
-                [(ngModel)]="vanityEmailSortOption.vanityEmailTemplates"
-                (ngModelChange)="sortEmailTemplates($event)"
-                style="position: relative; right: -3px;">
-                <option *ngFor="let option of vanityEmailSortOption.emailTemplatesDropDown"
-                  [ngValue]="option">{{option.name}}</option>
-              </select>
+  <div class="scrollbar-x row-over_ride">
+    <ul class="nav nav-tabs hideBorder">  
+      <li [ngClass]="{'active': activeTab == 'templates' } " class="caption-subject font-blue-madison bold">
+        <a data-toggle="tab" href="#YourTemplates" (click)="setActiveTab('templates')">Your Templates</a>
+      </li>
+      <li *ngIf="isLoggedInAsPartner || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || authenticationService.module.isPrm"
+        [ngClass]="{'active': activeTab == 'partnerNotifications' } " class="caption-subject font-blue-madison bold">
+        <a data-toggle="tab" href="#Partner" (click)="setActiveTab('partnerNotifications')">Partner Notification
+          Templates</a>
+      </li> 
+    </ul>
+ 
+  <div class="tab-content tab-bg">
+    <div id="YourTemplates" class="tab-pane fade in active pt-5 integration-profile">
+      <div>
+        <ul class="mix-filter">
+          <li class="filter" [class.disabled]="isZeroDefaultsTemplates"
+            [attr.data-toggle]="isZeroDefaultsYourTemplates ? 'tooltip' : null"
+            [attr.title]="isZeroDefaultsYourTemplates ? 'No default templates available.' : null"
+            (click)="!isZeroDefaultsYourTemplates && showAllVanityTemplates('DEFAULT', 0)"
+            [class.vanity-template-selected]="0 == selectedTypeIndex" translate>DEFAULT</li>
+          <li class="filter" (click)="showAllVanityTemplates('CUSTOM', 1)"
+            [class.vanity-template-selected]="1 == selectedTypeIndex" translate>CUSTOM</li>
+        </ul>
+      </div>
+    </div>
+    <div id="Partner" class="tab-pane fade in pt-5">
+      <div>
+        <ul class="mix-filter">
+          <li class="filter" [class.disabled]="isZeroDefaultsPartnerNotifications"
+            [attr.data-toggle]="isZeroDefaultsPartnerNotifications ? 'tooltip' : null"
+            [attr.title]="isZeroDefaultsPartnerNotifications ? 'No default templates available.' : null"
+            (click)="!isZeroDefaultsPartnerNotifications && showAllVanityTemplates('DEFAULT', 0)"
+            [class.vanity-template-selected]="0 == selectedTypeIndex" translate>DEFAULT</li>
+          <li class="filter" (click)="showAllVanityTemplates('CUSTOM', 1)"
+            [class.vanity-template-selected]="1 == selectedTypeIndex" translate>CUSTOM</li>
+        </ul>
+      </div>
+    </div>
+    
+      <div class="page-toolbar">
+        <div class="pull-right">
+          <div class="inputs float-right neg_mrg_top100" style="display: inline-flex;">
+            <div class="portlet-input input-inline" id="search-div">
+              <div class="input-icon right" id="icon">
+              <div class="pb3 float-left search_sort_shadows">
+                  <select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
+                    [(ngModel)]="vanityEmailSortOption.vanityEmailTemplates"
+                    (ngModelChange)="sortEmailTemplates($event)"
+                    style="position: relative; right: -3px;">
+                    <option *ngFor="let option of vanityEmailSortOption.emailTemplatesDropDown"
+                      [ngValue]="option">{{option.name}}</option>
+                  </select>
+                </div>
+            
+    
+            <div class="portlet-input input-inline ml5" id="search-div">
+              <div class="input-icon right" id="icon">
+                <input type="text" id="sort-text" class="form-control"
+                  [(ngModel)]="vanityEmailSortOption.searchKey"
+                  [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="searchVanityEventHandler($event.keyCode)">
+                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="vanityEmailSortOption.searchKey"
+                  (click)="vanityEmailSortOption.searchKey=''; searchVanityEmailTemp();"></button>
+                <button type="submit" class="search-box-item-click" (click)="searchVanityEmailTemp()">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
-        
-
-        <div class="portlet-input input-inline ml5" id="search-div">
-          <div class="input-icon right" id="icon">
-            <input type="text" id="sort-text" class="form-control"
-              [(ngModel)]="vanityEmailSortOption.searchKey"
-              [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="searchVanityEventHandler($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="vanityEmailSortOption.searchKey"
-              (click)="vanityEmailSortOption.searchKey=''; searchVanityEmailTemp();"></button>
-            <button type="submit" class="search-box-item-click" (click)="searchVanityEmailTemp()">
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+    
+    <div class="row fullRowCuPaddings" *ngIf="!httpRequestLoader.isLoading">
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment"
+        *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+        <div class="grid-box">
+          <img class="email-template-preview" *ngIf="emailTemplate.imagePath" src="{{emailTemplate.imagePath}}"
+            alt="Image Not Found">
+          <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top"
+            title="{{selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.name}}">
+            {{(selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.name) | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+          </h4>
+          <div class="bar gridIconCustomization">
+            <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+              (click)="designTemplate(emailTemplate)">
+              <i class="fa fa-edit" aria-hidden="true"></i>
+              <div class="clickicons"></div>
+            </a>
+            <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
+              (click)="previewTemplate(emailTemplate)">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              <div class="clickicons"></div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-</div>
-</div>
-<div class="row fullRowCuPaddings" *ngIf="!httpRequestLoader.isLoading">
-  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment"
-    *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
-    <div class="grid-box">
-      <img class="email-template-preview" *ngIf="emailTemplate.imagePath" src="{{emailTemplate.imagePath}}"
-        alt="Image Not Found">
-      <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top"
-        title="{{selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.name}}">
-        {{(selectedTypeIndex == 0 ? emailTemplate.name : emailTemplate.name) | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
-      </h4>
-
-      <!-- <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top"
-           title="{{emailTemplate.name}}">
-           {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
-           </h4> -->
-      <div class="bar gridIconCustomization">
-        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
-          (click)="designTemplate(emailTemplate)">
-          <i class="fa fa-edit" aria-hidden="true"></i>
-          <div class="clickicons"></div>
-        </a>
-        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
-          (click)="previewTemplate(emailTemplate)">
-          <i class="fa fa-eye" aria-hidden="true"></i>
-          <div class="clickicons"></div>
-        </a>
-      </div>
     </div>
+
   </div>
-</div>
+  </div>
+
 
 <!---Pagination-->
 <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">

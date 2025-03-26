@@ -4093,7 +4093,7 @@ a.delete.custom-icon {
   border-radius: 0px !important;
 }
 .page-sidebar .page-sidebar-menu>li.active>a{
-  border-bottom: 2px solid #01b6ff5c !important;
+  border-bottom: 2px solid #0276FF !important;
 }
 li.active-tab a.active-tab-anchor-text{
   box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
@@ -4492,6 +4492,15 @@ tbody>tr#uploaded-csv-tr>td {
 .btn_custom:hover {
   color: #fff !important;
 }
+
+.modal-header{
+  background: linear-gradient(33deg,#171718, #444a50) !important;
+}
+
+.modal-title{
+  color: white !important;
+}
+
 @media only screen and (min-width: 600px) and (max-width: 1024px) {
   .clip_mask{
       bottom: -68px !important;

@@ -355,6 +355,15 @@
                                                     [ngTemplateOutletContext]="{'moduleName':'calendarIntegrations'}"></ng-template>
                                             </a>
                                         </li>
+
+                                        <!---Call Integration--->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'callIntegrations'}" *ngIf="authenticationService?.module?.isContact">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'callIntegrations'}"
+                                                (click)="activateTab('callIntegrations');clearCustomResponse()">{{properties.callIntegrations | translate}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'callIntegrations'}"></ng-template>
+                                            </a>
+                                        </li>
                                         
                                         <!--Saml Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
@@ -2308,6 +2317,12 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'calendarIntegrations'}"
                                          *ngIf="showCalendarIntegrations">
                                             <app-calendar-integrations></app-calendar-integrations>
+                                        </div>
+
+                                        <!-- Call Integration settings -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'callIntegrations'}"
+                                         *ngIf="showCallIntegrations">
+                                            <app-call-integrations></app-call-integrations>
                                         </div>
 
                                         <!-- Your Templates TAB -->
