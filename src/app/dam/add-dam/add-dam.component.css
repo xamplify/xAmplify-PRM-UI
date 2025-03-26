@@ -153,4 +153,9 @@
   .choose-signature-text:hover {
     color: #0056b3;
   }
+
+  .iconFontSize{
+    font-size: 18px;
+    margin: 0px 7px;
+  }
     

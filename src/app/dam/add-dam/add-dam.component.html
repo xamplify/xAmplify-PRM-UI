@@ -137,7 +137,7 @@
                            </span>
                         </div>
                         <ng-container>
-                           <label class="control-label vendor-signature-align mr10 " translate>Vendor Signature</label>
+                           <label class="control-label vendor-signature-align mr10 " translate>Add My Signature Now</label>
                               <app-custom-ui-switch
                                  [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0))"
                                  [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
@@ -145,13 +145,23 @@
                               <span class="info-color-xampc">
                                  <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
                                     aria-hidden="true"
-                                    [title]="isAdd ? 'Enable Vendor signature--':damUploadPostDto?.vendorSignatureToolTipMessage">
+                                    [title]="isAdd ? 'Enable my signature':damUploadPostDto?.vendorSignatureToolTipMessage">
                                  </i>
                               </span>
                               <span
-                                 *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
-                                 class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add your signature <span
+                                 *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd && !isVendorSignatureAdded && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !(damUploadPostDto.publishedToPartnerGroups || damUploadPostDto.partnerIds?.length > 0) && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)"
+                                 class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add my signature <span
                                     class="required">*</span>
+                              </span>
+                              <span *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd && isVendorSignatureAdded && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption && isVendorSignatureAdded && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)">
+                                 <a  class="custom-icon"  data-toggle="tooltip" data-placement="top" title="Edit Signature" (click)="openAddSignatureModalPopUp()">
+                                    <i class="fa fa-edit iconFontSize" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
+                                  </a>
+                                  <a  class="custom-icon"  data-toggle="tooltip" data-placement="top" title="Clear Signature" (click)="confirmClear()">
+                                    <i class="fa fa-times-circle iconFontSize" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
+                                  </a>
                               </span>
                         </ng-container>
                      </div>
@@ -175,10 +185,28 @@
                               <span class="info-color-xampc">
                                  <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
                                     aria-hidden="true"
-                                    [title]="isAdd ? 'Enable partner signature--':damUploadPostDto?.partnerSignatureToolTipMessage">
+                                    [title]="isAdd ? 'Enable partner signature':damUploadPostDto?.partnerSignatureToolTipMessage">
                                  </i>
                               </span>
                         </ng-container>
+
+                        <ng-container *ngIf="damUploadPostDto.partnerSignatureRequired">
+                           <label class=" control-label mr10 vendor-signature-align" translate>Add My Signature After Partner Signature</label>
+                             <div class="">
+                                <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablevendorSignatureRequiredAfterPartnerSignatureOption || (!isAdd && (isPartnerCompanyOrGroupSelected || this.isAssetPublished || this.damUploadPostDto?.vendorSignatureCompleted))"
+                                   [customSwitch]="damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignature"
+                                   (customUiSwitchEventEmitter)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted($event)"></app-custom-ui-switch>
+                                <span class="info-color-xampc">
+                                   <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                      aria-hidden="true"
+                                      [title]="isAdd ? 'Enable vendor signature after partner signature completed':damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignatureToolTipMessage">
+                                   </i>
+                                </span>
+                                <span *ngIf="(damUploadPostDto.partnerSignatureRequired && isAdd && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.partnerSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disablePartnerSignatureOption && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)"
+                                class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Edit Pdf
+                             </span>
+                             </div>
+                          </ng-container>
                      </div>
                      <!--Description-->
                      <div class="col-lg-12 col-md-12">
@@ -270,7 +298,7 @@
    </ng-container>
       <ng-container *ngIf="openSelectDigitalSignatureModalPopUp">
          <div *ngIf="openSelectDigitalSignatureModalPopUp">
-            <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true"></app-select-digital-signature>
+            <app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [uploadedFile]="pdfUploadedFile" [isFromDam]="true" [hideSignatureTool]="this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature"></app-select-digital-signature>
          </div>
       </ng-container>
    </div>

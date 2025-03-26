@@ -16,6 +16,7 @@ import { VideoFileService } from 'app/videos/services/video-file.service';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 
 @Component({
   selector: 'app-dam-partner-company-analytics',
@@ -44,6 +45,12 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   isVideoAnalyticsLoaded = false;
   isVideoFile = false;
   isFromApprovalModule: boolean = false;
+  openSelectDigitalSignatureModalPopUp: boolean = false;
+  sharedAssetPath: any;
+  assetDetailsViewDto : AssetDetailsViewDto = new AssetDetailsViewDto();
+  formData: any = new FormData();
+  damPartnerUserId: any;
+  isVendorSignatureRequiredAfterPartnerSignature: boolean = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,public router: Router,
     public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService,public renderer:Renderer, public deviceService: Ng2DeviceService) { 
@@ -73,6 +80,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
    
     this.findPartnerCompanies(this.pagination);
     this.findVideoDetails();
+    this.getIsVendorSignatureRequiredAfterPartnerSignatureCompleted(this.damId);
   }
 
   findVideoDetails() {
@@ -213,6 +221,11 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     );
   }
 
+  viewAsset(company: any){
+    // this.saveGeoLocationAnalytics(this.assetId);
+    this.referenceService.preivewAssetForPartnerOnNewHost(company.damPartnerId);
+  }
+
   getLocationDetails(response: any, alias: string, company: any) {
 		let deviceInfo = this.deviceService.getDeviceInfo();
 		if (deviceInfo.device === 'unknown') {
@@ -236,5 +249,70 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
 		};
 		return param;
 	}
+
+  addSignature(company: any){
+    this.getAssetDetailsById(company.damPartnerId);
+    this.damPartnerUserId = company.partnerUserId;
+  }
+
+  notifySelectDigitalSignatureCloseModalPopUp(event){
+		if(event == 'close'){
+			this.openSelectDigitalSignatureModalPopUp = false;
+		}
+	}
+
+  notifySignatureSelection(event){
+    let formData = new FormData();
+    formData.append("uploadedFile", event, event['name']);
+    this.assetDetailsViewDto.selectedSignaturePath = 'http://localhost:8000/signatures/94105361/draw-signature.png'
+    this.uploadSignature(formData);
+   }
+
+     uploadSignature(formData : FormData) {
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.assetDetailsViewDto.loggedInUserId = this.damPartnerUserId;
+        this.damService.uploadVendorSignature(this.assetDetailsViewDto, formData).subscribe(
+          (response: any) => {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.findPartnerCompanies(this.pagination);
+          },
+          (error: string) => {
+            this.xtremandLogger.errorPage(error);
+            this.referenceService.loading(this.httpRequestLoader, false);
+          }
+        );
+    }
+
+    getAssetDetailsById(damPartnerId:any){
+      this.damService.getSharedAssetDetailsByIdForVendor(damPartnerId)
+        .subscribe(
+          (response: any) => {
+            if (response.access) {
+              if (response.statusCode == 200) {
+                this.assetDetailsViewDto = response.data;
+                this.sharedAssetPath = this.assetDetailsViewDto.sharedAssetPath;
+                this.openSelectDigitalSignatureModalPopUp = true;        
+              } 
+            }
+          },
+          (error: string) => {
+            this.xtremandLogger.errorPage(error);
+          },
+        );
+    }
+
+    getIsVendorSignatureRequiredAfterPartnerSignatureCompleted(damId : any){
+      this.damService.getIsVendorSignatureRequiredAfterPartnerSignatureCompleted(damId)
+      .subscribe(
+        (response: any) => {
+            if (response.statusCode == 200) {
+              this.isVendorSignatureRequiredAfterPartnerSignature = response.data;
+            }
+        },
+        (error: string) => {
+          this.xtremandLogger.errorPage(error);
+        },
+      );
+    }
 
 }

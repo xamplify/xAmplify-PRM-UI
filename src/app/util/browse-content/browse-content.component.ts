@@ -140,6 +140,7 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
 
     if (this.approvalRequired && !this.isApprover && this.currentApprovalStatus == ApprovalStatusType[ApprovalStatusType.APPROVED]) {
       this.updateButtonName = 'Send for Re-Approval';
+      this.damUploadPostDto.sendForReApproval = true;
     }
   }
 
