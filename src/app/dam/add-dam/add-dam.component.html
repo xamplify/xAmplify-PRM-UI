@@ -191,8 +191,9 @@
                         </ng-container>
 
                         <ng-container *ngIf="damUploadPostDto.partnerSignatureRequired">
-                           <label class=" control-label mr10 vendor-signature-align" translate>Add My Signature After Partner Signature</label>
-                             <div class="">
+                           <div class="PartnerSignature">
+                           <label class=" control-label mr10 vendor-signature-align marginProp"  translate>Add My Signature After Partner Signature</label>
+                             <div class="white-nowrap">
                                 <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablevendorSignatureRequiredAfterPartnerSignatureOption || (!isAdd && (isPartnerCompanyOrGroupSelected || this.isAssetPublished || this.damUploadPostDto?.vendorSignatureCompleted))"
                                    [customSwitch]="damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignature"
                                    (customUiSwitchEventEmitter)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted($event)"></app-custom-ui-switch>
@@ -206,6 +207,7 @@
                                 class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Edit Pdf
                              </span>
                              </div>
+                           </div>
                           </ng-container>
                      </div>
                      <!--Description-->

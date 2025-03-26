@@ -281,3 +281,18 @@ text-decoration: underline!important;
   font-size: 18px;
   margin: 0px 7px;
 }
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.grid-item {
+  flex: 0 0 auto;
+  width: auto;
+}
+.justify-end{
+  justify-content: end;
+}
+.align-baseline{
+  align-items: baseline;
+  margin-bottom: 16px;
+}
