@@ -6,6 +6,7 @@ import { CustomResponse } from '../models/custom-response';
 import { Properties } from '../models/properties';
 import { SortOption } from 'app/core/models/sort-option';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { Router } from '@angular/router';
 declare var $:any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -36,24 +37,27 @@ export class ChatGptModalComponent implements OnInit {
   showOpenHistory: boolean;
   socialContent: any;
   openShareOption: boolean;
+  isWelcomePageUrl: boolean = false;
+  copiedText: any;
   constructor(public authenticationService:AuthenticationService,private chatGptSettingsService:ChatGptSettingsService,
-    private referenceService:ReferenceService,public properties:Properties,public sortOption:SortOption) { 
-    
+    private referenceService:ReferenceService,public properties:Properties,public sortOption:SortOption, public router: Router) { 
   }
 
   ngOnInit() {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
   }
-  
+
 
 
   validateInputText(){
     let trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = trimmedText!=undefined && trimmedText.length>0;
   }
+  
   ngOnDestroy() {
     this.showIcon = true;
+    this.isWelcomePageUrl = false;
   }
  
   generateChatGPTText() {
@@ -122,39 +126,23 @@ export class ChatGptModalComponent implements OnInit {
     document.body.removeChild(textarea);
   }  
   
-  copyChatGPTText1(index: number): void {
-    const element = document.getElementById('chat-message-' + index);
-    if (!element) {
-      console.warn('Could not find element to copy');
-      return;
-    }
-  
-    const text = element.innerText || element.textContent || '';
+  copyAiText(text: any) {
+    this.copyToClipboard(text);
+  }
+
+  copyToClipboard(text : any) {
+    this.copiedText = text;
+    // this.copiedText = text; .innerText || element.textContent
     const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.setAttribute('readonly', '');
-    textarea.style.position = 'absolute';
-    textarea.style.left = '-9999px';
+    textarea.value = this.copiedText;
     document.body.appendChild(textarea);
     textarea.select();
-  
-    try {
-      const success = document.execCommand('copy');
-      if (success) {
-        console.log('Copied successfully');
-      } else {
-        console.warn('Copy failed');
-      }
-    } catch (err) {
-      console.error('Error while copying', err);
-    }
-  
+    document.execCommand('copy');
     document.body.removeChild(textarea);
   }
-  
-  
 
   resetValues() {
+    this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
     this.inputText = "";
     this.isValidInputText = false;
     this.chatGptGeneratedText = "";

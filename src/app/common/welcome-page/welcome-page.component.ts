@@ -60,17 +60,17 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
     this.pageLoading = true;
     this.removeFlatpickrInstances();
     this.getActiveThemeData(this.vanityLoginDto);
-    if(this.router.url.includes('/welcome-page')){
-        this.referenceService.clearHeadScriptFiles();
-        if (this.vanityURLService.isVanityURLEnabled()) {
-          this.vanityURLService.checkVanityURLDetails();
-        }
+    if (this.router.url.includes('/welcome-page')) {
+      this.referenceService.clearHeadScriptFiles();
+      if (this.vanityURLService.isVanityURLEnabled()) {
+        this.vanityURLService.checkVanityURLDetails();
+      }
+      $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/oliver-AI.css' type='text/css'>");
     }
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
-    $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
+    $("#xamplify-index-head").append("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/universal-search-bar.css' type='text/css'>");
-
   }
    
   ngAfterViewInit(){
