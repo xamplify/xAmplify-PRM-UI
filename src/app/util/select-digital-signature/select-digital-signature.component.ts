@@ -906,7 +906,7 @@ placeLine(event: any) {
     this.availableSignatures = [null, null, null];
 
     if (this.signatureResponseDto.drawSignatureExits && this.signatureResponseDto.drawSignatureImagePath) {
-      this.availableSignatures[0] = 'https://xamp.io/vod/signatures/STUhxt12/draw-signature.png';
+      this.availableSignatures[0] = this.signatureResponseDto.drawSignatureImagePath;
     }
     if (this.signatureResponseDto.typedSignatureExists && this.signatureResponseDto.typedSignatureImagePath) {
       this.availableSignatures[1] = this.signatureResponseDto.typedSignatureImagePath;
