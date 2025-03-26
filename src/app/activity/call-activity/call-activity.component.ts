@@ -185,8 +185,11 @@ export class CallActivityComponent implements OnInit {
     }
   }
 
-  toggleCard(card: any) {
-    card.expanded = !card.expanded;
+  toggleRecordingCard(card: any) {
+    if (card.voiceMailExpanded) {
+      card.voiceMailExpanded = false;
+    }
+    card.recordExpanded = !card.recordExpanded;
   }
 
   fetchUsersForCompanyJourney() {
@@ -244,6 +247,13 @@ export class CallActivityComponent implements OnInit {
     this.isReloadTab = event;
     this.showAircallDialer = false;
     this.notifyClose.emit(event);
+  }
+
+  toggleVoiceMailCard(card: any) {
+    if (card.recordExpanded) {
+      card.recordExpanded = false;
+    }
+    card.voiceMailExpanded = !card.voiceMailExpanded;
   }
 
 }

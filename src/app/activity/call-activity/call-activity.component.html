@@ -138,19 +138,43 @@
           class="view-banner activity-updated-status-btn">{{callActivity.duration}}</span>
       </span>
       <span *ngIf="callActivity.recordingURL != undefined">
-        <div class="icon-item" (click)="toggleCard(callActivity)">
-          <div class="icon-btns">
-            <i class="fa fa-play play_button" [ngClass]="callActivity.expanded ? 'transform_90deg' : ''"
+        <div class="icon-item" (click)="toggleRecordingCard(callActivity)">
+          <div class="icon-btns play_button">
+            <i class="fa fa-play transform_button fs_10px" [ngClass]="callActivity.recordExpanded ? 'transform_90deg' : ''"
               aria-hidden="true"></i>
           </div>
         </div>
       </span>
+      <span *ngIf="callActivity.voiceMailURL != undefined">
+        <div class="icon-item" (click)="toggleVoiceMailCard(callActivity)">
+          <div class="icon-btns play_button">
+            <!-- <i class="fa fa-voicemail play_button" [ngClass]="callActivity.voiceMailExpanded ? 'transform_90deg' : ''"
+                    aria-hidden="true"></i> -->
+            <svg class="transform_button" [ngClass]="callActivity.voiceMailExpanded ? 'transform_180deg pb_5' : 'high_level_height'" width="10px"
+              height="10px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 50.99">
+              <title>voicemail</title>
+              <path
+                d="M25.49,0A25.49,25.49,0,0,1,45.68,41.06H77.2a25.49,25.49,0,1,1,22.17,9.85,4.94,4.94,0,0,1-.87.08h-73a25.5,25.5,0,0,1,0-51ZM108.4,14.48a15.57,15.57,0,1,0,4.56,11,15.56,15.56,0,0,0-4.56-11Zm-71.9,0a15.57,15.57,0,1,0,4.56,11,15.54,15.54,0,0,0-4.56-11Z" />
+            </svg>
+          </div>
+        </div>
+      </span>
     </div>
-    <div *ngIf="callActivity.expanded" class="activity-footer record_player">
+    <div *ngIf="callActivity.recordExpanded" class="activity-footer record_player">
       <span class="activity-title">
         <div class="audio-player-container">
           <audio controls>
             <source src="{{callActivity.recordingURL}}" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </span>
+    </div>
+    <div *ngIf="callActivity.voiceMailExpanded" class="activity-footer record_player">
+      <span class="activity-title">
+        <div class="audio-player-container">
+          <audio controls>
+            <source src="{{callActivity.voiceMailURL}}" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
         </div>
