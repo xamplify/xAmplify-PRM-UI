@@ -383,7 +383,7 @@
                                                         <span class="info-color-xampc">
                                                            <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
                                                               aria-hidden="true"
-                                                              [title]="isAdd ? 'Enable vendor signature after partner signature completed':damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignatureToolTipMessage">
+                                                              [title]="isAdd ? 'Enable my signature after partner signature completed':damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignatureToolTipMessage">
                                                            </i>
                                                         </span>
                                                         <span *ngIf="(damUploadPostDto.partnerSignatureRequired && isAdd && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.partnerSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.disablevendorSignatureRequiredAfterPartnerSignatureOption && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)"
