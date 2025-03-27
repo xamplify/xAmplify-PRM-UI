@@ -219,7 +219,7 @@
                       <div class="footer-icons phara-footer mt0">
                         <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}">
                           <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'" aria-hidden="true"
-                            (click)="speakTextForParaprasher(chatGptGeneratedText)">
+                            (click)="speakTextForParaprasher(markdownComponent)">
                           </i>
                         </div>
                         <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(markdownComponent)"><i class="fa fa-clone fs-12"></i></div>
