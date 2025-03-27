@@ -386,7 +386,7 @@
                                                               [title]="isAdd ? 'Enable vendor signature after partner signature completed':damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignatureToolTipMessage">
                                                            </i>
                                                         </span>
-                                                        <span *ngIf="(damUploadPostDto.partnerSignatureRequired && isAdd && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.partnerSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disablePartnerSignatureOption && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)"
+                                                        <span *ngIf="(damUploadPostDto.partnerSignatureRequired && isAdd && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.partnerSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.disablevendorSignatureRequiredAfterPartnerSignatureOption && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)"
                                                         class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Edit Pdf
                                                      </span>
                                                      </div>
