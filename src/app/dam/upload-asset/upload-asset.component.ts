@@ -168,6 +168,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     isAssetReplaced: boolean = false;
     approvalRequired: boolean = false;
     storeAdd: boolean = false;
+    activeAddSignatureToggle: boolean = false;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -1722,13 +1723,17 @@ zoomOut() {
     setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event:any){
     this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = event;
     if(event && this.isVendorSignatureAdded && this.damUploadPostDto.vendorSignatureRequired){
+        this.activeAddSignatureToggle = true;
         this.confirmClearVendorSignature(false);
     }
     this.validateAllFields();
     if(event){
-        this.setUploadedFileProperties(this.pdfUploadedFile);
+        this.setUploadedFileProperties(this.pdfUploadedFile)
+        this.activeAddSignatureToggle = true;
       } else if (!event && !this.isVendorSignatureAdded) {
           this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+      } else if (!event){
+        this.activeAddSignatureToggle = false;
       }
     }
 

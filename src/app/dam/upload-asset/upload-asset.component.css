@@ -296,3 +296,6 @@ text-decoration: underline!important;
   align-items: baseline;
   margin-bottom: 16px;
 }
+.addSignatureToggleAlign{
+  margin-left: -15px;
+}
