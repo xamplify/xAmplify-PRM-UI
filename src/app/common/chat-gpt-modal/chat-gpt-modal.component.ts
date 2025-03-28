@@ -6,6 +6,8 @@ import { CustomResponse } from '../models/custom-response';
 import { Properties } from '../models/properties';
 import { SortOption } from 'app/core/models/sort-option';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 declare var $:any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -36,24 +38,29 @@ export class ChatGptModalComponent implements OnInit {
   showOpenHistory: boolean;
   socialContent: any;
   openShareOption: boolean;
-  constructor(public authenticationService:AuthenticationService,private chatGptSettingsService:ChatGptSettingsService,
-    private referenceService:ReferenceService,public properties:Properties,public sortOption:SortOption) { 
-    
+  isWelcomePageUrl: boolean = false;
+  copiedText: any;
+  isSpeakingText: any;
+  speakingIndex: any;
+  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
+    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
   }
-  
+
 
 
   validateInputText(){
     let trimmedText = this.referenceService.getTrimmedData(this.inputText);
     this.isValidInputText = trimmedText!=undefined && trimmedText.length>0;
   }
+  
   ngOnDestroy() {
     this.showIcon = true;
+    this.isWelcomePageUrl = false;
   }
  
   generateChatGPTText() {
@@ -122,40 +129,29 @@ export class ChatGptModalComponent implements OnInit {
     document.body.removeChild(textarea);
   }  
   
-  copyChatGPTText1(index: number): void {
-    const element = document.getElementById('chat-message-' + index);
-    if (!element) {
-      console.warn('Could not find element to copy');
-      return;
-    }
-  
-    const text = element.innerText || element.textContent || '';
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.setAttribute('readonly', '');
-    textarea.style.position = 'absolute';
-    textarea.style.left = '-9999px';
-    document.body.appendChild(textarea);
-    textarea.select();
-  
-    try {
-      const success = document.execCommand('copy');
-      if (success) {
-        console.log('Copied successfully');
-      } else {
-        console.warn('Copy failed');
-      }
-    } catch (err) {
-      console.error('Error while copying', err);
-    }
-  
-    document.body.removeChild(textarea);
+  copyAiText(text: any) {
+    this.copyToClipboard(text);
   }
-  
-  
+
+  copyToClipboard(text : any) {
+    setTimeout(() => {
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      
+      console.log('Copied using fallback method');
+    }, 100);
+  }
 
   resetValues() {
+    this.isWelcomePageUrl = this.router.url.includes('/welcome-page');
     this.inputText = "";
+    this.isSpeakingText = false;
+    this.speakingIndex = null;
     this.isValidInputText = false;
     this.chatGptGeneratedText = "";
     this.isCopyButtonDisplayed = false;
@@ -170,6 +166,7 @@ export class ChatGptModalComponent implements OnInit {
     this.openShareOption = false;
     this.showEmailModalPopup = false;
   }
+
   showOliverIcon(){
     this.showIcon = true;
   }
@@ -261,12 +258,45 @@ export class ChatGptModalComponent implements OnInit {
     tempDiv.innerHTML = this.socialContent;
     this.socialContent = tempDiv.textContent || tempDiv.innerText || "";
   }
-  closeSocialShare(event:any){
+
+  closeSocialShare(event: any) {
     this.openShareOption = false;
     this.showOpenHistory = true;
     if (event) {
-    this.referenceService.showSweetAlertSuccessMessage(event);
+      this.referenceService.showSweetAlertSuccessMessage(event);
     }
     this.openShareOption = false;
   }
+
+  speakTextOn(index: number, element: any) {
+    let text = element.innerText || element.textContent;
+    if (this.isSpeakingText && this.speakingIndex === index) {
+      this.authenticationService.stopSpeech();
+      this.isSpeakingText = false;
+      this.speakingIndex = null;
+    } else {
+      this.speakingIndex = index;
+      this.isSpeakingText = true;
+      this.authenticationService.readText(text, () => {
+        this.isSpeakingText = false;
+        this.speakingIndex = null;
+        this.cdr.detectChanges();
+      });
+    }
+  }
+
+  speakTextForParaprasher(element: any) {
+    let text = element.innerText || element.textContent;
+    if (this.isSpeakingText) {
+      this.authenticationService.stopSpeech();
+      this.isSpeakingText = false;
+    } else {
+      this.isSpeakingText = true;
+      this.authenticationService.readText(text, () => {
+        this.isSpeakingText = false;
+        this.cdr.detectChanges();
+      });
+    }
+  }
+  
 }

@@ -66,17 +66,25 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 
 	private downloadSavedPdf(asset: any) {
 		let alias = asset.alias;
-		// if (asset.beeTemplate) {
-		// 	this.selectedPdfAlias = alias;
-		// 	if (this.isPartnerView) {
-		// 		this.downloadAsPdf();
-		// 	} else {
-		// 		$('#downloadPdfModalPopup').modal('show');
-		// 		this.getDownloadOptions(alias);
-		// 	}
-		// } else {
+		if (asset.beeTemplate) {
+			this.selectedPdfAlias = alias;
+			if (this.isPartnerView) {
+				if ((asset.sharedAssetPath == null || asset.sharedAssetPath == undefined || asset.sharedAssetPath.length == '')) {
+					this.downloadAsPdf();
+				} else {
+					this.downloadContent(asset);
+				}
+			} else if (!this.isPartnerView) {
+				if (asset.assetPath == null || asset.assetPath == undefined || asset.assetPath.length == '') {
+					$('#downloadPdfModalPopup').modal('show');
+					this.getDownloadOptions(alias);
+				} else {
+					this.downloadContent(asset);
+				}
+			}
+		} else {
 			this.downloadContent(asset);
-		// }
+		}
 	}
 
 	downloadContent(asset: any) {

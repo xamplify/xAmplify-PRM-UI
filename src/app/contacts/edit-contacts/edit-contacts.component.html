@@ -1909,7 +1909,7 @@
 										<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3 tb_view_10">
 											<input type="text" class="form-control" placeholder="value*"
 												[(ngModel)]="criterias[i].value1" required
-												(keypress)="eventEnterKeyHandler($event.keyCode)">
+												(keypress)="eventEnterKeyHandler($event.keyCode)" (input)="handleCriteriaValue(criterias[i].value1, i)">
 										</div>
 										<div class="form-group col-xs-6 col-sm-3 col-md-1 col-lg-1 filter-delete tb_view_10 filter_del"
 											data-toggle="tooltip" data-placement="left" title="Remove a condition">
@@ -1958,7 +1958,7 @@
 			</div>
 			<div class="modal-body">
 				<div>
-					<h4 class="modal-title f-w-600" translate>You are agreeing to xAmplify's Terms and Conditions.</h4>
+					<h4 class="modal-title-new f-w-600" translate>You are agreeing to xAmplify's Terms and Conditions.</h4>
 				</div>
 				<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
 					<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC"

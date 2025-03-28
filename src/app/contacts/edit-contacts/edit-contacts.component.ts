@@ -3840,8 +3840,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	backToCompanyJourney() {
 		let encodedId = this.refService.encodePathVariable(this.companyJourneyId);
 		let encodedUserListId = this.refService.encodePathVariable(this.selectedContactListId);
-		let url = "home/company/manage/details/"+encodedId;
+		let url = "home/company/manage/details/" + encodedId;
 		this.refService.goToRouter(url);
-	  }
+	}
+
+	handleCriteriaValue(value: any, index: any) {
+		this.criterias[index].value1 = value.trim();
+	}
 
 }

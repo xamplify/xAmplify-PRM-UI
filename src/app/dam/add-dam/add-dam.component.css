@@ -158,4 +158,11 @@
     font-size: 18px;
     margin: 0px 7px;
   }
-    
+  .PartnerSignature {
+    display: flex;
+    align-items: center;
+}
+.marginProp{margin-top: 10px; margin-bottom: 0px;}
+.white-nowrap{
+  white-space: nowrap;
+}

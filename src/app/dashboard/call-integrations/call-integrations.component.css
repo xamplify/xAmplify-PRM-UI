@@ -53,3 +53,13 @@
 .activeCall {
     background-color: #d7e5ff;
 }
+
+.ribbon.draft.config>span::before {
+    border-left: 3px solid green;
+    border-top: 3px solid green;
+}
+
+.ribbon.draft.config>span::after {
+    border-right: 3px solid green;
+    border-top: 3px solid green;
+}

@@ -70,4 +70,5 @@ export class SaveVideoFile {
     draft: boolean = false;
     approvalStatus: string = "";
     createdByAnyApprover: boolean = false;
+    sendForApproval: boolean = false;
  }

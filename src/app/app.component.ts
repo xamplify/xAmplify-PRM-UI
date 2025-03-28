@@ -143,7 +143,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (evt instanceof NavigationEnd) {
                 this.router.navigated = false;
                 let currentUrl = evt.url;
-                this.isChatGptIconDisplayed = currentUrl.indexOf("/home/")>-1;
+                this.isChatGptIconDisplayed = currentUrl.indexOf("/home/")>-1 || currentUrl.indexOf("/welcome-page")>-1;
                 let loginUrl = currentUrl.indexOf('/login')>-1;
                 let logoutUrl = currentUrl.indexOf('/logout')>-1;
                 let expiredUrl = currentUrl.indexOf('/expired')>-1;

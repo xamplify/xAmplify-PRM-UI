@@ -3,9 +3,12 @@
   <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
 </div>
 <!--ICON END -->
+<link *ngIf="isWelcomePageUrl" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link  *ngIf="isWelcomePageUrl" rel='stylesheet' href='/assets/js/indexjscss/oliver-AI.css' type='text/css'>
+<script *ngIf="isWelcomePageUrl" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <!--ChatGPT Modal-->
-<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
+<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div  class="modal-dialog w85-per" role="document">
     <div class="modal-content">
       <!-- <div class="modal-header">
@@ -134,9 +137,9 @@
                   <!-- Heading -->
                   <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing'">
                     <div class="main-container">
-                      <div *ngFor="let msg of messages">
-                        <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
-                      </div>
+                      <ng-container *ngFor="let msg of messages; let i = index">
+                        <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      </ng-container>
                       <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
                     </div>
                   </ng-container> 
@@ -214,8 +217,12 @@
                     </div>
                     <div *ngIf="isCopyButtonDisplayed" class="w-50per mt10">
                       <div class="footer-icons phara-footer mt0">
-                        <div class="footer-icon" title="Read aloud"><i class="fa fa-volume-up fs-12"></i></div>
-                        <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div>
+                        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}">
+                          <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'" aria-hidden="true"
+                            (click)="speakTextForParaprasher(markdownComponent)">
+                          </i>
+                        </div>
+                        <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(markdownComponent)"><i class="fa fa-clone fs-12"></i></div>
                         <div class="footer-icon" title=" Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
                         <button class="share-btn"  (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
@@ -252,15 +259,20 @@
       </div>
       <div class="col-lg-11 col-sm-11">
         <div class="content-card">
-          <div class="chat-container"[id]="'chat-message-' + index">
+          <div class="chat-container">
             <div #markdownComponent class="chat-history">
               <markdown [data]="message.content"></markdown>
             </div>
           </div>
         </div>
         <div class="footer-icons mb10">
-          <div class="footer-icon" title="Read aloud"><i class="fa fa-volume-up fs-12"></i></div>
-          <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12" (click)="copyChatGPTText1(index)"></i></div>
+          <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === index) ? 'Read aloud' : 'stop'}}">
+            <i [ngClass]="(isSpeakingText && speakingIndex === index) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
+              aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
+            </i>
+          </div>
+          <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
+              (click)="copyAiText(message.content)"></i></div>
           <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
           <button class="share-btn">Design Template</button>
           <button class="share-btn">Design Page</button>

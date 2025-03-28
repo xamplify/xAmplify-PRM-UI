@@ -340,10 +340,6 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damPostDto.saveAs = saveAs;
       this.setDampUploadPostData(saveAs);
       this.damUploadPostDto.assetName = this.damPostDto.name;
-      if (saveAs) {
-        this.damUploadPostDto.sendForApproval = false;
-        this.damUploadPostDto.sendForReApproval = false;
-      }
       this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
         (result: any) => {
           this.hidePopup();
@@ -826,7 +822,7 @@ setVendorSignatureRequired(event){
           this.validateFields();
           if(event){
             this.setUploadedFileProperties(this.pdfUploadedFile);
-          } else {
+          } else if (!event && !this.isVendorSignatureAdded)  {
               this.setUploadedFileProperties(this.pdfFile);
           }
           }
