@@ -2544,6 +2544,6 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 .modal-header{
   background-color: var(--left-bg-color) !important;
 }
-.modal-title{
+.modal-title,.modal-title b,h4.modal-title[id]{
   color: var(--left-text-color) !important;
 } 
