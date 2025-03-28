@@ -428,3 +428,14 @@ p.mb0.mt5 {
     bottom: -68px!important;
   }
 }
+.image-background{
+  background: #fff;
+  border-radius: 10px;
+  object-fit: cover;
+  padding: 5px;
+}
+.align-modal-header{
+  align-items: center;
+  display: flex;
+  justify-content: space-between
+}

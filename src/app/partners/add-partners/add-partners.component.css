@@ -353,3 +353,14 @@ background-color: unset!important;
   font-size: 15px;
   font-weight: 600;
 }
+.image-background{
+  background: #fff;
+  border-radius: 10px;
+  object-fit: cover;
+  padding: 5px;
+}
+.align-modal-header{
+  align-items: center;
+  display: flex;
+  justify-content: space-between
+}
