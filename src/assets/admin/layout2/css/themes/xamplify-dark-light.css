@@ -2694,4 +2694,6 @@ tbody{background: transparent;}
 .modal-title{
   color: white !important;
 } 
-
+.modal-title-new{
+  color: white !important;
+}
