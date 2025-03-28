@@ -22,6 +22,9 @@ export class VanityURLService {
   CUSTOM_LINK_PREFIX_URL = this.authenticationService.REST_URL + "customLinks";
   DASHBOARD_BUTTON_PREFIX_URL = this.authenticationService.REST_URL + "dashboardButtons";
   CUSTOM_LINK_URL = this.CUSTOM_LINK_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
+  activeTab : any = "templates";
+  selectedTypeIndex = 0;
+
 
   constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title,
      @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router,public envService: EnvService,

@@ -35,19 +35,20 @@ export class VanityEmailTemplatesComponent implements OnInit {
   selectedType: boolean = false;
   isZeroDefaultsYourTemplates: boolean = false;
   isZeroDefaultsPartnerNotifications: boolean = false;
-;
   constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties,public utilService: UtilService) { }
 
   ngOnInit() {
     this.isZeroDefaultsYourTemplates = false;  
   this.isZeroDefaultsPartnerNotifications = false;
-    this.setActiveTab('templates');
+  this.selectedTypeIndex = this.vanityURLService.selectedTypeIndex;
+    this.setActiveTab(this.vanityURLService.activeTab);
     
   }
 
   
   showAllVanityTemplates(type: string, index: number) {
     this.selectedTypeIndex = index;
+    this.vanityURLService.selectedTypeIndex = index;
     this.pagination.filterKey = type;
     this.pagination.pageIndex = 1;
     this.vanityEmailSortOption.searchKey = "";
@@ -109,6 +110,8 @@ export class VanityEmailTemplatesComponent implements OnInit {
     })
   }
   designTemplate(emailTemplate:VanityEmailTempalte){
+    this.vanityURLService.activeTab = this.activeTab;
+    this.vanityURLService.selectedTypeIndex = this.selectedTypeIndex;
     this.editTemplate.emit(emailTemplate);
   }
 
@@ -145,15 +148,19 @@ setPage(event: any) {
 	this.getVanityEmailTemplates(this.pagination);
 }
   setActiveTab(tabName: string) {
+    
     this.activeTab = tabName;
+    this.vanityURLService.activeTab = this.activeTab;
+    this.vanityURLService.selectedTypeIndex = this.selectedTypeIndex;
+
     if (tabName === 'templates') {
       this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates; 
-      // this.isZeroDefaultsTemplates = true;
       this.showAllVanityTemplates('DEFAULT', 0);
+
     } else if (tabName === 'partnerNotifications') {
       this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates; 
-      // this.isZeroDefaultsTemplates = false;; 
       this.showAllVanityTemplates('DEFAULT', 0);
+
     }
   }
   
