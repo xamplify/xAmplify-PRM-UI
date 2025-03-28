@@ -914,7 +914,7 @@ placeLine(event: any) {
       this.availableSignatures[1] = `${this.signatureResponseDto.typedSignatureImagePath}?t=${cacheBuster}`;
     }
     if (this.signatureResponseDto.uploadedSignatureExits && this.signatureResponseDto.uploadedSignatureImagePath) {
-      this.availableSignatures[2] = `${this.signatureResponseDto.uploadedSignatureImagePath}?t=${cacheBuster}`;
+      this.availableSignatures[2] = this.signatureResponseDto.uploadedSignatureImagePath;
     }
   }
 
