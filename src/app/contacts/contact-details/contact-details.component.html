@@ -159,7 +159,7 @@
               </div>
               <div class="icon-label">Meeting</div>
             </div>
-            <div class="icon-item" (click)="openAircallDialer()">
+            <div class="icon-item" (click)="openDialNumber()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Make a Call">
                 <i class="glyphicon glyphicon-phone"></i>
               </div>
@@ -327,8 +327,7 @@
                 </div>
                 <div *ngIf="showCallsTab" id="call" class="tab-pane fade pt-top">
                   <app-call-activity [contactId]="contactId" [isReloadTab]="isReloadCallTab" [activeCallDetails]="activeCallDetails"
-                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId"
-                    (notifyClose)="reloadCallTab($event)"></app-call-activity>
+                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId"></app-call-activity>
                 </div>
               </div>
               <!-- END -->
@@ -512,6 +511,30 @@
   </div>
 </div>
 
+<div class="modal fade in" id="addSelectContactModalPopup" data-backdrop="static">
+  <div class="modal-dialog popup-width modal-copy mt_125" role="document">
+    <div class="modal-content mSweetalertWid popup-cu-widthalign">
+      <div class="modal-header alert-info modal_header_br">
+        <h4 class="modal-title f-w-600" id="" translate="">Select a Contact to dial</h4>
+      </div>
+      <div class="modal-body">
+        <div class="fc-content mb5">
+          <app-dropdown-loader *ngIf="userListUsersLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
+          <app-searchable-dropdown
+            *ngIf="!userListUsersLoader?.isLoading && !customResponse?.isVisible"
+            [searchableDropDownDto]="companyUsersSearchableDropDownDto" [id]="contactId" [disableDropDown]="false"
+            (searchableDropdownEventEmitter)="getSelectedAssignedToUserId($event)">
+          </app-searchable-dropdown>
+        </div>
+      </div>
+      <div class="modal-footer p-10">
+        <button class="btn Btn-Green" type="button" name="Dial" (click)="dialNumber()" [disabled]="!enableDialButton">Dial</button>
+        <button class="btn Btn-Gray" type="button" name="cancel" (click)="closeSelectContactModalPopup()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="contactService.isContactModalPopup && updateContactUser">
   <app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [gdprInput]="gdprInput"
     [totalUsers]="contacts" [contactDetails]="contactAllDetails" [isUpdateUser]="isUpdateUser"
@@ -575,5 +598,3 @@
   
 <app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
   [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
-
-<app-aircall-dialer *ngIf="showAircallDialer" [isReloadTab]="isReloadCallTab" (notifyClose)="closeCallModalPopup($event)"></app-aircall-dialer>

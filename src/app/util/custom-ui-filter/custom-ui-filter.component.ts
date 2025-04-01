@@ -207,17 +207,23 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				}
 				if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.filterConditionErrorMessage = "Please fill the required data at position " + (i + 1);
-					this.criterias[i].value1 = this.criterias[i].value1.trim();
+					if (this.criterias[i].value1 != undefined) {
+						this.criterias[i].value1 = this.criterias[i].value1.trim();
+					}
 				} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
 					this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + (i + 1);
 				} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.isValidationErrorMessage = true;
-					this.criterias[i].value1 = this.criterias[i].value1.trim();
+					if (this.criterias[i].value1 != undefined) {
+						this.criterias[i].value1 = this.criterias[i].value1.trim();
+					}
 					this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + (i + 1);
 				} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.isValidationErrorMessage = true;
-					this.criterias[i].value1 = this.criterias[i].value1.trim();
+					if (this.criterias[i].value1 != undefined) {
+						this.criterias[i].value1 = this.criterias[i].value1.trim();
+					}
 					this.filterConditionErrorMessage = "Please select the Condition and Value at position " + (i + 1);
 				} else if (this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
@@ -227,7 +233,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 					this.filterConditionErrorMessage = "Please select the Field Name at position " + (i + 1);
 				} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined") {
 					this.isValidationErrorMessage = true;
-					this.criterias[i].value1 = this.criterias[i].value1.trim();
+					if (this.criterias[i].value1 != undefined) {
+						this.criterias[i].value1 = this.criterias[i].value1.trim();
+					}
 					this.filterConditionErrorMessage = "Please fill the value at position " + (i + 1);
 				}
 				break;

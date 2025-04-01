@@ -177,6 +177,7 @@ export class ReferenceService {
   sharedLeadAccessGivenByVendor = true;
   mdfAccessGivenByVendor = true;
   showAnalytics = true;
+  aircallPhone:any;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
