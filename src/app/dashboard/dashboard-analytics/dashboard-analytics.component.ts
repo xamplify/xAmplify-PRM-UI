@@ -124,6 +124,9 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     welcomeCustomResponse: CustomResponse = new CustomResponse();
     /***** XNFR-860 *****/
     @ViewChild('dynamicTemplate') dynamicTemplate: TemplateRef<any>;
+    customModalPopup: boolean = false;
+    customHtmlBlockIds: any = [];
+    customHtmlBlockId: number;
 
     constructor(public envService: EnvService, public authenticationService: AuthenticationService, public userService: UserService,
         public referenceService: ReferenceService, public xtremandLogger: XtremandLogger, public properties: Properties, public campaignService: CampaignService,
@@ -220,6 +223,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
   ngOnDestroy() {
     $('#customizeCampaignModal').modal('hide');
     this.isDraggingEnabled = false;
+    this.customHtmlBlockIds = [];
     this.isDestroyed = true;
   }
 
@@ -725,7 +729,7 @@ showCampaignDetails(campaign:any){
                                 htmlBody: this.sanitizedHtml(dashboardLayoutDto.htmlBody),
                                 leftHtmlBody: this.sanitizedHtml(dashboardLayoutDto.leftHtmlBody),
                                 rightHtmlBody: this.sanitizedHtml(dashboardLayoutDto.rightHtmlBody),
-                                customHtmlBlockId: dashboardLayoutDto.customHtmlBlockId
+                                customHtmlBlockId: dashboardLayoutDto.customHtmlBlockId, titleVisible: dashboardLayoutDto.titleVisible
                             });
                         }
                     });
@@ -763,6 +767,7 @@ showCampaignDetails(campaign:any){
         }));
         const customDashboardLayout = {
             userId: this.loggedInUserId,
+            ids: this.customHtmlBlockIds,
             companyProfileName: this.vendorCompanyProfileName,
             dashboardLayoutDTOs: dashboardLayoutDtos
         };
@@ -800,6 +805,27 @@ showCampaignDetails(campaign:any){
     sanitizedHtml(htmlBody: string) {
         if (htmlBody) {
             return this.sanitizer.bypassSecurityTrustHtml(htmlBody);
+        }
+    }
+
+    remove(template: any) {
+        this.customHtmlBlockIds.push(template.customHtmlBlockId);
+        const indexToRemove = this.defaultDashboardLayout.findIndex(layout => layout.title === template.title);
+        if (indexToRemove !== -1) {
+            this.defaultDashboardLayout.splice(indexToRemove, 1);
+        }
+    }
+
+    edit(template: any) {
+        this.customHtmlBlockId = template.customHtmlBlockId;
+        this.customModalPopup = true;
+    }
+
+    reLoadLayout(event: any) {
+        this.customModalPopup = false;
+        if (event) {
+            this.referenceService.scrollSmoothToTop();
+            this.findCustomDashboardLayout();
         }
     }
 
