@@ -2506,7 +2506,7 @@ span.filterActiveBg {background-color: #10ad39 !important;}
     border-bottom: 0px !important;
   }
   .clip_mask{
-    bottom: -79px!important;
+    bottom: -90px!important;
   }
 }
 
@@ -2538,7 +2538,7 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 }
 @media only screen and (min-width: 600px) and (max-width: 1024px) {
   .clip_mask{
-      bottom: -68px !important;
+      bottom: -84px !important;
   }
 }
 .modal-header{
