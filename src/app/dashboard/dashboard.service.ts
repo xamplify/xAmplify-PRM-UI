@@ -1574,5 +1574,12 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         let url = this.moduleUrl + 'updatePartnerModulesAccess?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callPutMethod(url, partner);
     }
+
+    /***** XNFR-859 *****/
+    updateSelectedHtmlBlock(customHtmlBlock: any) {
+        customHtmlBlock.loggedInUserId = this.authenticationService.getUserId();
+        let url = this.authenticationService.REST_URL + 'custom/html/update/selection?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url, customHtmlBlock);
+    }
     
 }
