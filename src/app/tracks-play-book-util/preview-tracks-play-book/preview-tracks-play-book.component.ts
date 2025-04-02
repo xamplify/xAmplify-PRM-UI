@@ -67,6 +67,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   assetsSortOption: SortOption = new SortOption();
   groupByAssetsParam: boolean = false;
   isAssetGroupingEnabled: boolean = false;
+  previewContent: boolean = false;
+  previewPath: any;
+  isBeeTemplate:boolean = false;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -247,17 +250,47 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any) {
     let isNotVideoFile = assetDetails.assetType != 'mp4';
+    const nonImageFormats = ['pdf','pptx','doc','docx','csv','ppt','xlsx','html'];
+    let isNonImageFormat = nonImageFormats.includes(assetDetails.assetType);
     if(isNotVideoFile){
       let isBeeTemplate = assetDetails.beeTemplate;
       let isVendorView = this.isCreatedUser;
+      this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+          if (isNonImageFormat) {
+            this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+            this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+              `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
+            );
+            this.previewContent = true;
+            this.isBeeTemplate = isBeeTemplate;
+          } else {
+            this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+          }
         } else {
-          this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+          if (isNonImageFormat) {
+            this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+            this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+              `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
+            );
+            this.previewContent = true;
+            this.isBeeTemplate = isBeeTemplate;
+          } else {
+            this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+          }
         }
       }else{
-        this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+        if (isNonImageFormat) {
+          this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+          this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+            `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
+          );
+          this.previewContent = true;
+          this.isBeeTemplate = isBeeTemplate;
+        } else {
+          this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+        }
       }
     }
     this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED, false);
@@ -472,5 +505,14 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
   /** XNFR-745 end **/
 
+  closePreview() {
+    this.previewContent = false;
+    this.previewPath = null;
+    const objElement = document.getElementById('preview-object');
+    if (objElement) {
+      objElement.remove();
+    }
+  }
+  
 
 }
