@@ -69,6 +69,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="padding_bottom text-wrap-track-description img-desc-section-wrap">
+                                <div *ngIf="tracksPlayBook?.description" class="title-class">Description: </div>
                                 <div [innerHTML]="tracksPlayBook.description"></div>
                             </div>
                         </div>
@@ -156,6 +157,7 @@
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
                                                         style="padding: 6px 10px 10px 10px;">
+                                                        <div *ngIf="assetDetails?.description" class="title-class ml3"> Description:</div>
                                                         <div class="description-scroll padding_bottom img-desc-section-wrap"
                                                             [innerHTML]="assetDetails?.description">
                                                         </div>
@@ -246,6 +248,7 @@
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner">Finished</h6>
                                                         <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081;" class="banner">In Progress</h6>
                                                     </div>
+                                                    <div *ngIf="content?.dam?.categoryName"><i class="fa fa-folder-open mr3"></i>{{content?.dam?.categoryName}}</div>
                                                 </td>
                                                 <td class="text-center">{{content?.dam?.assetType}}</td>
                                             </ng-container>

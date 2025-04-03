@@ -95,12 +95,14 @@ export class TracksPlayBookUtilService {
       .catch(this.handleError);
   }
 
-  getBySlug(companyId: number,slug: string,type:string) {
+  getBySlug(companyId: number,slug: string,type:string, isPlaybookPreview:boolean) {
     let url = "";
     if(type == undefined || type == TracksPlayBookType[TracksPlayBookType.TRACK]){
       url = this.trackURL;
-    } else if(type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
+    } else if(type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK] && !isPlaybookPreview){
       url = this.playBookURL;
+    } else if (type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK] && isPlaybookPreview) {
+      url = this.playBookURL + "/preview";
     }
     return this.http.get(url + "/" + companyId + "/" + slug + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)

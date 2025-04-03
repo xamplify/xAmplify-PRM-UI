@@ -18,16 +18,18 @@ export class PreviewContentComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    // this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
-    //   `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
-    // );
-    // this.url = `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`;
-    // this.showPage = true;
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
+    );
   }
 
   closePreview() {
-    // this.showPage = false;
     this.notifyClose.emit();
+  }
+
+  reload() {
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://docs.google.com/gview?url=${this.previewPath+'?cache=' + Math.random().toString(36).substring(7) + new Date().getTime()}&embedded=true`);
   }
 
 }

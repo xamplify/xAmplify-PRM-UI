@@ -133,7 +133,7 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
 
  publish(user:any){
   let isPublishingCompleted = false;
-  let sweetAlertPrefixText = this.isAssetsModule ? "Asset" : this.isLmsModule ? "Track" : this.isPlayBooksModule ? "Play Book" : this.isDashboardButtonsModule ? "Dashboard Button":""; 
+  let sweetAlertPrefixText = this.isAssetsModule ? "Asset" : this.isLmsModule ? "Track" : this.isPlayBooksModule ? "Playbook" : this.isDashboardButtonsModule ? "Dashboard Button":""; 
   this.referenceService.showSweetAlertProcessingLoader(sweetAlertPrefixText+" publishing is in progress");
   this.authenticationService.publishContentToPartnerCompanyByModuleName(user.userListId,user.userId,this.inputId,this.moduleName).
   subscribe(
