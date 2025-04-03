@@ -26,7 +26,7 @@
                     <li class="filter" (click)="filterQuickLinks('All',0)" [class.emailtemplate-selected]="0 == selectedFilterIndex">All<i class="fa fa-check-circle-o check-icons" *ngIf="0 == selectedFilterIndex"></i></li>
                     <li class="filter" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner" (click)="filterQuickLinks('Assets',1)" [class.emailtemplate-selected]="1 == selectedFilterIndex">Assets<i class="fa fa-check-circle-o check-icons" *ngIf="1 == selectedFilterIndex"></i></li>
                     <li class="filter" *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner" (click)="filterQuickLinks('Tracks',2)" [class.emailtemplate-selected]="2 == selectedFilterIndex">Tracks<i class="fa fa-check-circle-o check-icons" *ngIf="2 == selectedFilterIndex"></i></li>
-                    <li class="filter" *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner" (click)="filterQuickLinks('PlayBooks',3)" [class.emailtemplate-selected]="3 == selectedFilterIndex">Play Books<i class="fa fa-check-circle-o check-icons" *ngIf="3 == selectedFilterIndex"></i></li>
+                    <li class="filter" *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner" (click)="filterQuickLinks('PlayBooks',3)" [class.emailtemplate-selected]="3 == selectedFilterIndex">Playbooks<i class="fa fa-check-circle-o check-icons" *ngIf="3 == selectedFilterIndex"></i></li>
                 </ul>
                 </div>
                 <div class="float-right input-icon right mb10">
@@ -99,7 +99,7 @@
                             [ngTemplateOutletContext]="{quickLink:quickLink,
                             access:authenticationService?.module?.playbookAccess && quickLink?.published,
                             title: authenticationService?.module?.playbookAccess &&  quickLink?.published ?
-                            'Click here to view play book analytics':  authenticationService?.module?.playbookAccess &&  !quickLink?.published ?'Not yet published'
+                            'Click here to view playbook analytics':  authenticationService?.module?.playbookAccess &&  !quickLink?.published ?'Not yet published'
                             :'You do not have permission to view the analytics'}">
                         </ng-template>
                         <!--Play Book / Partner View-->
@@ -107,7 +107,7 @@
                             [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
                             [ngTemplateOutletContext]="{quickLink:quickLink,
                             access:authenticationService?.module?.playbookAccessAsPartner,
-                            title: authenticationService?.module?.playbookAccessAsPartner ?'Click here to view the play book that has been shared by your vendor':'You do not have permission to view the play book'}">
+                            title: authenticationService?.module?.playbookAccessAsPartner ?'Click here to view the playbook that has been shared by your vendor':'You do not have permission to view the playbook'}">
                         </ng-template>
                     </ng-container>
                 </div>

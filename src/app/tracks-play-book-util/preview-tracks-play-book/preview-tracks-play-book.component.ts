@@ -125,7 +125,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   getBySlug() {
     this.trackViewLoader = true;
-    this.tracksPlayBookUtilService.getBySlug(this.createdUserCompanyId, this.slug, this.type).subscribe(
+    this.tracksPlayBookUtilService.getBySlug(this.createdUserCompanyId, this.slug, this.type, true).subscribe(
       (result: any) => {
         if (result.statusCode == 200) {
           let tracksPlayBook: TracksPlayBook = result.data;
@@ -259,10 +259,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       if(isBeeTemplate){
         if (isVendorView) {
           if (isNonImageFormat) {
-            this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-            this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-              `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
-            );
+            // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+            // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+            //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
+            // );
+            this.previewPath = assetDetails.assetPath;
             this.previewContent = true;
             this.isBeeTemplate = isBeeTemplate;
           } else {
@@ -270,10 +271,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           }
         } else {
           if (isNonImageFormat) {
-            this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-            this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-              `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
-            );
+            // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+            // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+            //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
+            // );
+            this.previewPath = assetDetails.assetPath;
             this.previewContent = true;
             this.isBeeTemplate = isBeeTemplate;
           } else {
@@ -282,10 +284,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         }
       }else{
         if (isNonImageFormat) {
-          this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-          this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-            `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
-          );
+          // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+          // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+          //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
+          // );
+          this.previewPath = assetDetails.assetPath;
           this.previewContent = true;
           this.isBeeTemplate = isBeeTemplate;
         } else {
@@ -364,7 +367,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.tracksPlayBookUtilService.saveAsPlayBook(tracksPlayBook).subscribe(
         (response: any) => {
           if (response.statusCode == 200) {
-            self.customResponse = new CustomResponse('SUCCESS', "Saved to play books successfully.", true);
+            self.customResponse = new CustomResponse('SUCCESS', "Saved to playbooks successfully.", true);
             this.referenceService.stopLoader(this.httpRequestLoader);
           } else {
             swal("Please Contact Admin!", response.message, "error");

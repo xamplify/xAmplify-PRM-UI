@@ -72,10 +72,11 @@ export class ViewDamComponent implements OnInit {
     let isNonImageFormat = nonImageFormats.includes(this.assetDetailsViewDto.assetType);
 	if (isNonImageFormat) {
 		this.previewContent = true;
-		let assetPath = this.assetDetailsViewDto.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime();
-		this.assetPath = this.domSanitizer.bypassSecurityTrustResourceUrl(
-			`https://docs.google.com/gview?url=${assetPath}&embedded=true`
-		);
+		// let assetPath = this.assetDetailsViewDto.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime();
+		// this.assetPath = this.domSanitizer.bypassSecurityTrustResourceUrl(
+		// 	`https://docs.google.com/gview?url=${this.assetDetailsViewDto.assetPath}&embedded=true`
+		// );
+		this.assetPath = this.assetDetailsViewDto.assetPath;
 	} else {
 		this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
 	}
