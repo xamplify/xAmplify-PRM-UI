@@ -259,7 +259,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          if (isNonImageFormat) {
+          if (isNonImageFormat && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined && this.type == 'TRACK')) {
             // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
             // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
             //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
@@ -272,7 +272,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
             this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
           }
         } else {
-          if (isNonImageFormat) {
+          if (isNonImageFormat && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined && this.type == 'TRACK')) {
             // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
             // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
             //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
@@ -319,7 +319,12 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           window.open(assetDetails.assetPath, '_blank');
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else if (!assetDetails.beeTemplate) {
-          window.open(assetDetails.assetPath, '_blank');
+        let assetPath = assetDetails.assetPath;
+        if (assetDetails.assetType == 'pdf') {
+          assetPath = assetPath.split("=")[1];
+          assetPath = decodeURIComponent(assetPath);
+        }
+          window.open(assetPath, '_blank');
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else {
           this.downloadBeeTemplate(assetDetails);

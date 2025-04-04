@@ -23,4 +23,5 @@ export class AssetDetailsViewDto {
 	 loggedInUserProfileImage = "";
     assetType = "";
     assetPath:any;
+    beeTemplate:boolean;
 }

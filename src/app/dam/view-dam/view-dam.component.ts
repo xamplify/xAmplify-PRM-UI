@@ -71,7 +71,7 @@ export class ViewDamComponent implements OnInit {
 	this.saveGeoLocationAnalytics(this.assetId);
 	const nonImageFormats = ['pdf','pptx','doc','docx','ppt','xlsx'];
     let isNonImageFormat = nonImageFormats.includes(this.assetDetailsViewDto.assetType);
-	if (isNonImageFormat) {
+	if (isNonImageFormat && !this.assetDetailsViewDto.beeTemplate) {
 		this.previewContent = true;
 		// let assetPath = this.assetDetailsViewDto.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime();
 		// this.assetPath = this.domSanitizer.bypassSecurityTrustResourceUrl(
