@@ -111,7 +111,7 @@
 		<object [data]="assetPath" width="100%" height="600px" style="border:none;">
 		</object>
 	</div> -->
-	<app-preview-content *ngIf="previewContent" [previewPath]="assetPath"
+	<app-preview-content *ngIf="previewContent" [previewPath]="assetPath" [fileType]="fileType"
 		(notifyClose)="closePreview()"></app-preview-content>
 </div>
 <ng-container *ngIf="download">

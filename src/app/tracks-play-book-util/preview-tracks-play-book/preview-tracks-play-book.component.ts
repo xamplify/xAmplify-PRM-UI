@@ -70,6 +70,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   previewContent: boolean = false;
   previewPath: any;
   isBeeTemplate:boolean = false;
+  previewFileType:string;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -250,7 +251,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any) {
     let isNotVideoFile = assetDetails.assetType != 'mp4';
-    const nonImageFormats = ['pdf','pptx','doc','docx','csv','ppt','xlsx','html'];
+    const nonImageFormats = ['pdf','pptx','doc','docx','ppt','xlsx'];
     let isNonImageFormat = nonImageFormats.includes(assetDetails.assetType);
     if(isNotVideoFile){
       let isBeeTemplate = assetDetails.beeTemplate;
@@ -264,6 +265,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
             //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
             // );
             this.previewPath = assetDetails.assetPath;
+            this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
             this.isBeeTemplate = isBeeTemplate;
           } else {
@@ -276,6 +278,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
             //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
             // );
             this.previewPath = assetDetails.assetPath;
+            this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
             this.isBeeTemplate = isBeeTemplate;
           } else {
@@ -289,6 +292,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
           // );
           this.previewPath = assetDetails.assetPath;
+          this.previewFileType = assetDetails.assetType;
           this.previewContent = true;
           this.isBeeTemplate = isBeeTemplate;
         } else {

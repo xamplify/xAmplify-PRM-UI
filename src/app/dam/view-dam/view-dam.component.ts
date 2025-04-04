@@ -46,6 +46,7 @@ export class ViewDamComponent implements OnInit {
   pdfDoc: any = null;
 	previewContent: boolean = false;
 	assetPath: any;
+	fileType: string;
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
@@ -68,7 +69,7 @@ export class ViewDamComponent implements OnInit {
 
   viewContent(){
 	this.saveGeoLocationAnalytics(this.assetId);
-	const nonImageFormats = ['pdf','pptx','doc','docx','csv','ppt'];
+	const nonImageFormats = ['pdf','pptx','doc','docx','ppt','xlsx'];
     let isNonImageFormat = nonImageFormats.includes(this.assetDetailsViewDto.assetType);
 	if (isNonImageFormat) {
 		this.previewContent = true;
@@ -77,6 +78,7 @@ export class ViewDamComponent implements OnInit {
 		// 	`https://docs.google.com/gview?url=${this.assetDetailsViewDto.assetPath}&embedded=true`
 		// );
 		this.assetPath = this.assetDetailsViewDto.assetPath;
+		this.fileType = this.assetDetailsViewDto.assetType;
 	} else {
 		this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
 	}

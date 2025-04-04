@@ -9,18 +9,26 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class PreviewContentComponent implements OnInit {
 
   @Input() previewPath:any;
+  @Input() fileType:any;
 
   @Output() notifyClose = new EventEmitter();
 
   url:any;
   showPage: boolean = false;
+  documentFileTypes = ['doc','docx','ppt','pptx','xlsx'];
 
   constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
-    );
+    if ('pdf' == this.fileType) {
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://docs.google.com/gview?url=${this.previewPath}&embedded=true`
+      );
+    } else if (this.documentFileTypes.includes(this.fileType)) {
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://view.officeapps.live.com/op/view.aspx?src=${this.previewPath}`
+      );
+    }
   }
 
   closePreview() {
@@ -28,8 +36,14 @@ export class PreviewContentComponent implements OnInit {
   }
 
   reload() {
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://docs.google.com/gview?url=${this.previewPath+'?cache=' + Math.random().toString(36).substring(7) + new Date().getTime()}&embedded=true`);
+    if ('pdf' == this.fileType) {
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://docs.google.com/gview?url=${this.previewPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime()}&embedded=true`);
+    } else if (this.documentFileTypes.includes(this.fileType)) {
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://view.officeapps.live.com/op/view.aspx?src=${this.previewPath}`
+      );
+    }
   }
 
 }
