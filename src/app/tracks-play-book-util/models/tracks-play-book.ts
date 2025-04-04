@@ -47,4 +47,8 @@ export class TracksPlayBook {
     /** XNFR-745 **/
     groupByAssets: boolean = false;
     isCollapsed : boolean = false;
+
+    /*** XNFR-897 */
+    expireDate:string = null;
+    expireDateTime:Date;
 }

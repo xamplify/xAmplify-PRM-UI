@@ -176,6 +176,13 @@
                                                     {{learningTrack.createdByName}}
                                                 </span>
                                             </h6>
+                                            <!-- XNFR-897 -->
+                                            <h6 class="moreipsis">
+                                                <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                                                title="{{expireDescription(learningTrack.expireDate,learningTrack?.createdDateString)}}">
+                                                    {{expireDescription(learningTrack?.expireDate, learningTrack?.createdDateString)}}
+                                                </span>
+                                            </h6>
                                             <!-- XNFR-824 -->
                                             <span *ngIf="isApprovalRequiredForType() && !isPartnerView" class="view-banner" [ngClass]="{
                                                     'bgc-green': learningTrack?.approvalStatus === approvalStatus.APPROVED,
@@ -342,6 +349,13 @@
                                 <h6 class="xamplify-ellipsis GridViewCotent">
                                     <b> Created On: </b><app-timestamp [isOnlyDate]="true"
                                         [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
+                                </h6>
+                                <!-- XNFR-897 -->
+                                <h6 class="xamplify-ellipsis GridViewCotent">
+                                    <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                                        title="{{expireDescription(learningTrack.expireDate,learningTrack?.createdDateString)}}">
+                                        {{expireDescription(learningTrack?.expireDate, learningTrack?.createdDateString)}}
+                                    </span>
                                 </h6>
                                 <!-- XNFR-824 -->
                                 <span *ngIf="isApprovalRequiredForType() && !isPartnerView" class="view-banner" [ngClass]="{

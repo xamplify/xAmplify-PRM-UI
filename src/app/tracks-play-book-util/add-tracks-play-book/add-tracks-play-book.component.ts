@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ElementRef } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
@@ -35,8 +35,9 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
 import { ApproveService } from 'app/approval/service/approve.service';
+import { DatePipe } from '@angular/common';
 Properties
-declare var $, swal, CKEDITOR: any;
+declare var $, swal, CKEDITOR: any,flatpickr:any;
 @Component({
   selector: 'app-add-tracks-play-book',
   templateUrl: './add-tracks-play-book.component.html',
@@ -203,10 +204,12 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   approverControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
   canApprove: boolean = false;
   savedTags: any[] = [];
-
+/*** XNFR-897 */
+endDatePickr:any;
+errorMessage:any;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
-    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService) {
+    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService,public datePipe: DatePipe) {
     this.siteKey = this.envService.captchaSiteKey;
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-170****/
@@ -225,6 +228,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initializeDatePicker();
     this.activeTabName = "step-1";
     this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     if (this.router.url.indexOf('/edit') > -1) {
@@ -374,7 +378,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             /**XNFR-523***/
             this.isSendEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd;
             this.sendEmailNotificationOptionToolTipMessage = this.properties.SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE.replace("{{partnersMergeTag}}",this.authenticationService.getPartnerModuleCustomName());
-            /**XNFR-523***/
           } else {
             this.goToManageSectionWithError();
             this.ngxloading = false;
@@ -756,7 +759,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             } else {
               this.listAssets(this.assetPagination);
             }
-
           }
         }
       );
@@ -1796,5 +1798,48 @@ addTagsCondition(selectedTags:any[]) {
     this.tagsListSecondColumn = this.savedTags.slice(this.tagFirstColumnEndIndex + 1);
   }
 }
-
+/**** XNFR-897 ** */
+  clearEndDate() {
+    this.endDatePickr.clear()
+    this.tracksPlayBook.expireDate = undefined;
+  }
+  // ngAfterViewInit() {
+  //   this.initializeDatePicker();
+  // }
+  initializeDatePicker() {
+    this.tracksPlayBook.expireDate = this.datePipe.transform(this.tracksPlayBook.expireDate, 'yyyy-MM-dd HH:mm');
+    let now: Date = new Date();
+    let defaultDate = now;
+    if (this.tracksPlayBook.expireDate != undefined && this.tracksPlayBook.expireDate != null) {
+      defaultDate = new Date(this.tracksPlayBook.expireDate);
+    }
+    setTimeout(() => {
+      this.endDatePickr = flatpickr('#campaignEndDatePicker', {
+        dateFormat: 'Y-m-d H:i',
+        time_24hr: true,
+        minDate: now,
+        //defaultDate: defaultDate,
+        enableTime: true,
+      });
+    }, 1000);
+  }
+  expireDescription(expireDate: any, expiredDate: any): string {
+    const selectedDate = new Date(this.datePipe.transform(expireDate ? expireDate : expiredDate, 'yyyy-MM-dd HH:mm'));
+    const today = new Date();
+    const diffTime = selectedDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const dayMonthFormat: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short' };
+    const dayMonthYearFormat: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+    const currentYear = today.getFullYear();
+    const selectedYear = selectedDate.getFullYear();
+    const dateFormat = currentYear === selectedYear ? dayMonthFormat : dayMonthYearFormat;
+    const moduleName = this.type === TracksPlayBookType[TracksPlayBookType.TRACK] ? 'Track': 'Play Book';
+    if (diffDays < 0) {
+      return `The ${moduleName} has already expired on ${selectedDate.toLocaleDateString('en-GB', dayMonthYearFormat).replace(',', '')}.`;
+    } else if (diffDays <= 30) {
+      return `The ${moduleName} will expire in ${diffDays} day(s).`;
+    } else {
+      return `The ${moduleName} will expire on ${selectedDate.toLocaleDateString('en-GB', dateFormat).replace(',', '')}.`;
+    }
+  }
 }

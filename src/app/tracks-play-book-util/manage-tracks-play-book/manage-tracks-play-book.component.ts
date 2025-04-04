@@ -19,6 +19,7 @@ import { Roles } from 'app/core/models/roles';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
+import { DatePipe } from '@angular/common';
 
 
 declare var swal:any, $: any;
@@ -82,7 +83,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
-    public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
+    public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,public datePipe: DatePipe,) {
     this.referenceService.renderer = this.renderer;
     this.pagination.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
   }
@@ -547,5 +548,23 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     }
   }
   /** XNFR-824 end **/
-
+  /*** XNFR-897 ***/
+  expireDescription(expireDate: any, expiredDate: any): string {
+    const selectedDate = new Date(this.datePipe.transform(expireDate ? expireDate : expiredDate, 'yyyy-MM-dd HH:mm'));
+    const today = new Date();
+    const diffTime = selectedDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const dayMonthFormat: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short' };
+    const dayMonthYearFormat: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+    const currentYear = today.getFullYear();
+    const selectedYear = selectedDate.getFullYear();
+    const dateFormat = currentYear === selectedYear ? dayMonthFormat : dayMonthYearFormat;
+    if (diffDays < 0) {
+      return `The ${this.tracksModule ? "Track" : "Play Book"} has already expired on ${selectedDate.toLocaleDateString('en-GB', dayMonthYearFormat).replace(',', '')}.`;
+    } else if (diffDays <= 30) {
+      return `The ${this.tracksModule ? "Track" : "Play Book"} will expire in ${diffDays} day(s).`;
+    } else {
+      return `The ${this.tracksModule ? "Track" : "Play Book"} will expire on ${selectedDate.toLocaleDateString('en-GB', dateFormat).replace(',', '')}.`;
+    }
+  }
 }

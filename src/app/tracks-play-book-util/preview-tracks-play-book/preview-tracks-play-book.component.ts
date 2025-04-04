@@ -14,6 +14,7 @@ import { DamService } from '../../dam/services/dam.service';
 import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { SortOption } from 'app/core/models/sort-option';
+import { DatePipe } from '@angular/common';
 
 declare var $, swal: any;
 
@@ -71,7 +72,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
     private router: Router, public logger: XtremandLogger,
-    private damService: DamService, public sanitizer: DomSanitizer, public sortOption: SortOption) {
+    private damService: DamService, public sanitizer: DomSanitizer, public sortOption: SortOption,public datePipe:DatePipe) {
     this.notifyShowTracksPlayBook = new EventEmitter<any>();
     this.notifyShowAsset = new EventEmitter<any>();
     this.notifyCreatedUser = new EventEmitter<any>();
@@ -471,6 +472,13 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.getGroupedAssetsBySlug();
   }
   /** XNFR-745 end **/
-
+  isAccessToView(expireDate:any,expiredDate:any):boolean{
+  const selectedDate = new Date(this.datePipe.transform(expireDate ? expireDate : expiredDate , 'yyyy-MM-dd HH:mm'));
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diffTime = selectedDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays< 0 ? true:false;
+  }
 
 }
