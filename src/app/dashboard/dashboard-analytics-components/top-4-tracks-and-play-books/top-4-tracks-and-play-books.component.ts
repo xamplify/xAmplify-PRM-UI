@@ -373,7 +373,25 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         : false;
     }
   }
-
+/*** XNFR-897 ***/
+expireDescription(expireDate: any, expiredDate: any): string {
+  const selectedDate = new Date(expireDate ? expireDate : expiredDate);
+  const today = new Date();
+  const diffTime = selectedDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const dayMonthFormat: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short' };
+  const dayMonthYearFormat: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+  const currentYear = today.getFullYear();
+  const selectedYear = selectedDate.getFullYear();
+  const dateFormat = currentYear === selectedYear ? dayMonthFormat : dayMonthYearFormat;
+  if (diffDays < 0) {
+    return `The ${this.tracks ? "Track" : "Play Book"} has already expired on ${selectedDate.toLocaleDateString('en-GB', dayMonthYearFormat).replace(',', '')}.`;
+  } else if (diffDays <= 30) {
+    return `The ${this.tracks ? "Track" : "Play Book"} will expire in ${diffDays} day(s).`;
+  } else {
+    return `The ${this.tracks ? "Track" : "Play Book"} will expire on ${selectedDate.toLocaleDateString('en-GB', dateFormat).replace(',', '')}.`;
+  }
+}
   
 
 }

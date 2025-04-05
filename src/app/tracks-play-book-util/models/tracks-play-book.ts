@@ -49,6 +49,5 @@ export class TracksPlayBook {
     isCollapsed : boolean = false;
 
     /*** XNFR-897 */
-    expireDate:string = null;
-    expireDateTime:Date;
+    expireDate:string;
 }
