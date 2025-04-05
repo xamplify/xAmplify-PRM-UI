@@ -345,12 +345,10 @@
               <div class="form-group mrg0">
                 <label class="control-label col-xs-2 col-sm-2" for="phone" style="color: green">
                 </label>
-                <div class="col-xs-10 col-sm-10 p0 px_0" id="mobile-field-width">
-                  <input type="email" style="border: none !important"
-                    class="form-control padding-mobile placeholder-bg-color" [(ngModel)]="addContactuser.mobileNumber"
-                    [ngModelOptions]="{standalone: true}" placeholder="Enter your mobile no" maxlength="20">
-                  <div class="textCss"></div>
-                </div>
+                <app-country-phone-input [mobileNumber]="addContactuser.mobileNumber" [placeholder]="'Enter your mobile no'"
+                  [maxlength]="15" (mobileNumberEventEmitter)="mobileNumberEventEmitter($event)">
+                </app-country-phone-input>
+                <span *ngIf="isInvalidMobileNumber" class="required" style="margin-left: 115px;">Invalid mobile number</span>
               </div>
             </div>
 
@@ -372,14 +370,14 @@
         <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addContactModalClose()"
           translate>Cancel</button>
         <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
-          [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()"
+          [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0) || isInvalidMobileNumber" (click)="addRow()"
           translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
         <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
-          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0) || isInvalidMobileNumber"
           (click)="addEditContactRow()" translate><span
             class="btn Btn-Green transition txt_pd-top3">Save</span></button>
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
-          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0) || isInvalidMobileNumber"
           (click)="updateUser()" data-dismiss="modal" translate><span
             class="btn Btn-Green transition txt_pd-top3">Update</span></button>
 
@@ -389,14 +387,14 @@
           translate>Cancel</button>
         <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
           [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''" (click)="addRow()" translate><span
+          ||addContactuser.contactCompany == '' || isInvalidMobileNumber" (click)="addRow()" translate><span
             class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
           [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''" (click)="addEditContactRow()" translate><span
+          ||addContactuser.contactCompany == '' || isInvalidMobileNumber" (click)="addEditContactRow()" translate><span
             class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset" [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''" (click)="updateUser()" translate><span
+          ||addContactuser.contactCompany == '' || isInvalidMobileNumber" (click)="updateUser()" translate><span
             class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>

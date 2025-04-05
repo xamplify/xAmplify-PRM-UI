@@ -1,0 +1,72 @@
+.phone-input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .custom-dropdown {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+  }
+  
+  .dropdown-selected {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+  }
+  
+  .dropdown-options {
+    position: absolute;
+    top: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0;
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .dropdown-options li {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropdown-options li:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .flag-icon {
+    width: 20px;
+    height: 15px;
+    border-radius: 2px;
+  }
+  
+  .country-name {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .country-code {
+    color: #666;
+  }
+  
+  .dropdown-arrow {
+    margin-left: auto;
+    font-size: 10px;
+    color: #666;
+  }
+  
+  input[type="tel"] {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 95%;
+  }

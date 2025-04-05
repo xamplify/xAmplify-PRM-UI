@@ -68,6 +68,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   invalidUsers: User[];
   invalidPatternEmails = [];
   csvCustomResponse = new CustomResponse();
+  isInvalidMobileNumber: boolean = false;
 
   constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
     public xtremandLogger: XtremandLogger, public countryNames: CountryNames) {
@@ -820,6 +821,12 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     }
     event.preventDefault();
     return false;
+  }
+
+  /***** XNFR-762 *****/
+  mobileNumberEventEmitter(event: any, user: User) {
+    this.isInvalidMobileNumber = event.isInvalidMobileNumber;
+    user.mobileNumber = event.mobileNumber;
   }
 
 }
