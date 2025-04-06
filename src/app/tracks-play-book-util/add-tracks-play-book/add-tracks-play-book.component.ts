@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ElementRef, AfterViewInit } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
@@ -228,7 +228,6 @@ errorMessage:any;
   }
 
   ngOnInit() {
-    this.initializeDatePicker();
     this.activeTabName = "step-1";
     this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
     if (this.router.url.indexOf('/edit') > -1) {
@@ -1800,46 +1799,47 @@ addTagsCondition(selectedTags:any[]) {
 }
 /**** XNFR-897 ** */
   clearEndDate() {
-    this.endDatePickr.clear()
+    //this.endDatePickr.clear();
     this.tracksPlayBook.expireDate = undefined;
   }
-  // ngAfterViewInit() {
-  //   this.initializeDatePicker();
-  // }
-  initializeDatePicker() {
-    this.tracksPlayBook.expireDate = this.datePipe.transform(this.tracksPlayBook.expireDate, 'yyyy-MM-dd HH:mm');
-    let now: Date = new Date();
-    let defaultDate = now;
-    if (this.tracksPlayBook.expireDate != undefined && this.tracksPlayBook.expireDate != null) {
-      defaultDate = new Date(this.tracksPlayBook.expireDate);
-    }
-    setTimeout(() => {
-      this.endDatePickr = flatpickr('#campaignEndDatePicker', {
-        dateFormat: 'Y-m-d H:i',
-        time_24hr: true,
-        minDate: now,
-        //defaultDate: defaultDate,
-        enableTime: true,
-      });
-    }, 1000);
-  }
+
   expireDescription(expireDate: any, expiredDate: any): string {
-    const selectedDate = new Date(this.datePipe.transform(expireDate ? expireDate : expiredDate, 'yyyy-MM-dd HH:mm'));
-    const today = new Date();
-    const diffTime = selectedDate.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const dayMonthFormat: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short' };
-    const dayMonthYearFormat: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
-    const currentYear = today.getFullYear();
-    const selectedYear = selectedDate.getFullYear();
-    const dateFormat = currentYear === selectedYear ? dayMonthFormat : dayMonthYearFormat;
-    const moduleName = this.type === TracksPlayBookType[TracksPlayBookType.TRACK] ? 'Track': 'Play Book';
-    if (diffDays < 0) {
-      return `The ${moduleName} has already expired on ${selectedDate.toLocaleDateString('en-GB', dayMonthYearFormat).replace(',', '')}.`;
-    } else if (diffDays <= 30) {
-      return `The ${moduleName} will expire in ${diffDays} day(s).`;
-    } else {
-      return `The ${moduleName} will expire on ${selectedDate.toLocaleDateString('en-GB', dateFormat).replace(',', '')}.`;
+    if(!expireDate) {
+      return;
     }
+    const currentDate = new Date();
+    const givenDate = new Date(expireDate ? expireDate : expiredDate);
+    const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
+    const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    let suffix = diffInMs < 0 ? 'ago' : 'left';
+    if (suffix === 'ago') {
+      return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Play Book"} has already expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+    } else if (diffInDays < 1) {
+      const hours = diffInHours;
+      const minutes = diffInMinutes % 60;
+      return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} will expire in ${hours} hrs ${minutes} mins ${suffix}`;
+    } else if (diffInDays >= 1 && diffInDays <= 15) {
+      let days = diffInMs < 0 ? `${diffInDays} days ago` : `in ${diffInDays} days`;
+      return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} will expire in ${days}`
+    } else {
+      const currentYear = currentDate.getFullYear();
+      const givenYear = givenDate.getFullYear();
+
+      if (currentYear === givenYear) {
+        return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM');
+      } else {
+        return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      }
+    }
+  }
+  formatDate(date: Date, format: string): string {
+    const options: any = {};
+    if (format.includes('dd')) options.day = '2-digit';
+    if (format.includes('MMM')) options.month = 'short';
+    if (format.includes('yyyy')) options.year = 'numeric';
+
+    return new Intl.DateTimeFormat('en-US', options).format(date);
   }
 }

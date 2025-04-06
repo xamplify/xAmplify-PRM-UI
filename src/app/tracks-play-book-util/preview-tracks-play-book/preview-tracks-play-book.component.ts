@@ -473,12 +473,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
   /** XNFR-745 end **/
   isAccessToView(expireDate:any,expiredDate:any):boolean{
-  const selectedDate = new Date(this.datePipe.transform(expireDate ? expireDate : expiredDate , 'yyyy-MM-dd HH:mm'));
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const diffTime = selectedDate.getTime() - today.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays< 0 ? true:false;
+    const currentDate = new Date();
+    const givenDate = new Date(expireDate ? expireDate : expiredDate);
+    const diffInMs = givenDate.getTime() - currentDate.getTime();
+    let suffix = diffInMs < 0 ? 'ago' : 'left';
+    return suffix === 'ago' ? true:false;
   }
 
 }

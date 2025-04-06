@@ -190,7 +190,9 @@
                   <label class="control-label col-sm-4" style="text-align: right;" translate>End Date</label>
                   <div class="control-label col-sm-5 mt--10px">
                     <div class="flex">
-                    <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="tracksPlayBook.expireDate" [ngModelOptions]="{standalone: true}" [value]="tracksPlayBook.expireDate" />
+                    <!-- <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="tracksPlayBook.expireDate" [ngModelOptions]="{standalone: true}" name="campaignEndDatePicker" [value]="tracksPlayBook.expireDate" /> -->
+                    <app-flatpickr [type]="'dateTime'" [time_24hr]="false" [dateFormat]="'m/d/Y h:i K'" [enableTime]="true" [(dataField)]="tracksPlayBook.expireDate" (input)="expireDescription(tracksPlayBook.expireDate,null)">
+                  </app-flatpickr>
                       <button class="btn btn-default" type="button"  (click)="clearEndDate()">
                         <span class="input-group-btn flex" data-toggle="tooltip" data-placement="top" title="Clear">
                           <i class="fa fa-refresh npcfs" aria-hidden="true"></i>
@@ -202,8 +204,8 @@
                           title="Your partners will not be able to access the Playbook after its end date."></i>
                     </span>
                     </div>
-                    <div class="col-sm-12 text-danger" style="padding:0" *ngIf="errorMessage">
-                      {{errorMessage}}</div>
+                    <div class="col-sm-12 text-danger" style="padding:0" *ngIf="expireDescription(tracksPlayBook.expireDate,null)">
+                      {{expireDescription(tracksPlayBook.expireDate,null)}}</div>
                   </div>
                 </div>
                 <!-- XNFR-897-->
