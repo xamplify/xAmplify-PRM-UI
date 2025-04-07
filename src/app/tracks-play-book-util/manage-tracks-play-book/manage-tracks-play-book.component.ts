@@ -19,6 +19,7 @@ import { Roles } from 'app/core/models/roles';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
+import { DatePipe } from '@angular/common';
 
 
 declare var swal:any, $: any;
@@ -82,7 +83,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
-    public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
+    public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,public datePipe: DatePipe,) {
     this.referenceService.renderer = this.renderer;
     this.pagination.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
   }
@@ -547,5 +548,43 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     }
   }
   /** XNFR-824 end **/
+  /*** XNFR-897 ***/
+   expireDescription(expireDate: any, expiredDate: any): string {
+    const currentDate = new Date();
+    const givenDate = new Date(expireDate ? expireDate : expiredDate);
+    const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
+    const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    let suffix = diffInMs < 0 ? 'ago' : 'left';
+    if (suffix === 'ago') {
+      return `The ${this.tracksModule ? "Track" : "Play Book"} has already expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+    } else if (diffInDays < 1) {
+      const hours = diffInHours;
+      const minutes = diffInMinutes % 60;
+      return `The ${this.tracksModule ? "Track" : "Playbook"} will expire in ${hours} hrs ${minutes} mins ${suffix}`;
+    } else if (diffInDays >= 1 && diffInDays <= 15) {
+      let days = diffInMs < 0 ? `${diffInDays} days ago` : `in ${diffInDays} days`;
+      return `The ${this.tracksModule ? "Track" : "Playbook"} will expire in ${days}`
+    } else {
+      const currentYear = currentDate.getFullYear();
+      const givenYear = givenDate.getFullYear();
+
+      if (currentYear === givenYear) {
+        return `The ${this.tracksModule ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM');
+      } else {
+        return `The ${this.tracksModule ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      }
+    }
+  }
+  formatDate(date: Date, format: string): string {
+    const options: any = {};
+    if (format.includes('dd')) options.day = '2-digit';
+    if (format.includes('MMM')) options.month = 'short';
+    if (format.includes('yyyy')) options.year = 'numeric';
+
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
 
 }

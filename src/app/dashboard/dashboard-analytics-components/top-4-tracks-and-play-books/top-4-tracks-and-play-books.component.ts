@@ -373,7 +373,45 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         : false;
     }
   }
+  /*** XNFR-897 ***/
+  expireDescription(expireDate: any, expiredDate: any): string {
+    const currentDate = new Date();
+    const givenDate = new Date(expireDate ? expireDate : expiredDate);
 
+    const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
+    const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    let suffix = diffInMs < 0 ? 'ago' : 'left';
+    if (suffix === 'ago') {
+      return `The ${this.tracks ? "Track" : "Play Book"} has already expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+    } else if (diffInDays < 1) {
+      const hours = diffInHours;
+      const minutes = diffInMinutes % 60;
+      return `The ${this.tracks ? "Track" : "Playbook"} will expire in ${hours} hrs ${minutes} mins ${suffix}`;
+    } else if (diffInDays >= 1 && diffInDays <= 15) {
+      let days = diffInMs < 0 ? `${diffInDays} days ago` : `in ${diffInDays} days`;
+      return `The ${this.tracks ? "Track" : "Playbook"} will expire in ${days}`
+    } else {
+      const currentYear = currentDate.getFullYear();
+      const givenYear = givenDate.getFullYear();
+
+      if (currentYear === givenYear) {
+        return `The ${this.tracks ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM');
+      } else {
+        return `The ${this.tracks ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      }
+    }
+  }
+  formatDate(date: Date, format: string): string {
+    const options: any = {};
+    if (format.includes('dd')) options.day = '2-digit';
+    if (format.includes('MMM')) options.month = 'short';
+    if (format.includes('yyyy')) options.year = 'numeric';
+
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
   
 
 }
