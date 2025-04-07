@@ -34,7 +34,7 @@
                     autocomplete="off" aria-autocomplete="none" maxlength="250">
                   <button *ngIf="isSalesforceAsActiveCRM" class="btn btn-primary customAlign" [disabled]="!isValidEmail"
                     data-toggle="tooltip" data-placement="bottom" title="Click here to fetch details"
-                    (click)="fetchUserDetailsFromSalesForce(addContactuser.emailId)" type="button">Next<i
+                    (click)="fetchUserDetailsFromSalesForce(addContactuser.emailId)" type="button">Fetch<i
                       class="fa fa-arrow-right ml5" aria-hidden="true"></i></button>
                 </div>
                 <div *ngIf="!isSalesforceAsActiveCRM" class="textCss"></div>
