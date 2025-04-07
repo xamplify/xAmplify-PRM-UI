@@ -23,6 +23,7 @@ export class AssetGridViewActionsComponent implements OnInit {
   @Output() assetGridViewActionsDeleteActionEmitter = new EventEmitter();
   @Output() assetGridViewRefreshListEmitter = new EventEmitter();
   @Output() assetGridViewCommentStatusHistoryEmitter = new EventEmitter();
+  @Output() assetGridViewAssetPreviewEmitter = new EventEmitter();
 
   hasCampaignRole = false;
   hasAllAccess = false;
@@ -75,7 +76,13 @@ export class AssetGridViewActionsComponent implements OnInit {
   } else if(asset.beeTemplate) {
     this.referenceService.previewAssetPdfInNewTab(asset.id);
   }else{
-    this.referenceService.preivewAssetOnNewHost(asset.id);
+     const nonImageFormats = ['pdf', 'pptx', 'doc', 'docx', 'ppt', 'xlsx'];
+     let isNonImageFormat = nonImageFormats.includes(asset.assetType);
+     if (isNonImageFormat) {
+       this.assetGridViewAssetPreviewEmitter.emit(asset);
+     } else {
+       this.referenceService.preivewAssetOnNewHost(asset.id);
+     }
   }
   }
 

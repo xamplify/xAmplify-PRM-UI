@@ -26,6 +26,7 @@ export class CallActivityComponent implements OnInit {
   @Input() isReloadTab: boolean;
   @Input() isCompanyJourney: boolean = false;
   @Input() selectedUserListId: any;
+  @Input() mobileNumber: any;
 
   @Output() notifyClose = new EventEmitter();
 
@@ -194,7 +195,7 @@ export class CallActivityComponent implements OnInit {
 
   fetchUsersForCompanyJourney() {
     this.referenceService.loading(this.userListUsersLoader, true);
-    this.contactService.fetchUsersForCompanyJourney(this.contactId).subscribe(
+    this.contactService.fetchUsersForCompanyJourney(this.contactId, true).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.companyUsersSearchableDropDownDto.data = response.data;
@@ -209,6 +210,7 @@ export class CallActivityComponent implements OnInit {
       }, () => {
         if (this.companyUsersSearchableDropDownDto.data != undefined && this.companyUsersSearchableDropDownDto.data.length > 0) {
           this.contactId = this.companyUsersSearchableDropDownDto.data[0].id;
+          this.mobileNumber = this.companyUsersSearchableDropDownDto.data[0].mobileNumber;
           this.showAllCallActivities();
         } else {
           this.contactErrorResponse = new CustomResponse('ERROR', 'No contact is available', true);
@@ -219,6 +221,7 @@ export class CallActivityComponent implements OnInit {
 
   getSelectedAssignedToUserId(event) {
     this.contactId = event != undefined ? event['id'] : 0;
+    this.mobileNumber = event != undefined ? event['mobileNumber'] : '';
     this.showAllCallActivities();
   }
 
@@ -239,9 +242,9 @@ export class CallActivityComponent implements OnInit {
     }
   }
 
-  openAircallDialer() {
-    this.showAircallDialer = true;
-  }
+  // openAircallDialer() {
+  //   this.showAircallDialer = true;
+  // }
 
   closeCallModalPopup(event) {
     this.isReloadTab = event;
@@ -254,6 +257,23 @@ export class CallActivityComponent implements OnInit {
       card.recordExpanded = false;
     }
     card.voiceMailExpanded = !card.voiceMailExpanded;
+  }
+
+  openAircallDialer() {
+    this.referenceService.openModalPopup("addCallModalPopup");
+  }
+
+  dialNumber() {
+    this.openAircallDialer();
+    const payload = {
+      phone_number: this.mobileNumber
+    };
+    this.referenceService.aircallPhone.send(
+      'dial_number',
+      payload,
+      (success, data) => {
+      }
+    );
   }
 
 }

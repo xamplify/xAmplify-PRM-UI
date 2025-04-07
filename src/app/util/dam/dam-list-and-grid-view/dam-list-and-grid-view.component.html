@@ -1,6 +1,6 @@
 <app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
 	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded 
-		&& !isEditVideo && !isPreviewVideo">
+		&& !isEditVideo && !isPreviewVideo && !previewContent">
 </app-content-module-status-analytics>
 
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
@@ -10,7 +10,7 @@
 <div *ngIf="isEditVideo || isPreviewVideo">
 	<app-modal-popup-loader></app-modal-popup-loader>
 </div>
-<div class="row" *ngIf="!isEditVideo && !isPreviewVideo">
+<div class="row" *ngIf="!isEditVideo && !isPreviewVideo && !previewContent">
 	<div class="col-md-12">
 		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0 light_bg_removal remove_space">
 			<!--List View / Grid View-->
@@ -595,7 +595,7 @@
 											(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 											(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
 											(assetGridViewCommentStatusHistoryEmitter)="showCommentsAndHistoryModalPopup($event)"
-											(assetGridViewRefreshListEmitter)="refreshList()">
+											(assetGridViewRefreshListEmitter)="refreshList()" (assetGridViewAssetPreviewEmitter)="preview($event)">
 										</app-asset-grid-view-actions>
 									</div>
 								</div>
@@ -783,3 +783,6 @@
 	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
 	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList($event)">
 </app-content-status-history-modal-popup>
+
+<app-preview-content *ngIf="previewContent" [previewPath]="previewAssetPath" [fileType]="fileType"
+	(notifyClose)="closePreview()"></app-preview-content>

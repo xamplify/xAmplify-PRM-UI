@@ -4339,8 +4339,11 @@ color: #fff !important;
 .modal-title{
   color: #fff !important;
 }
-@media only screen and (min-width: 600px) and (max-width: 1024px) {
-  .clip_mask{
-      bottom: -67px !important;
+.modal-title-new{
+  color: white !important;
+}
+@media only screen and (min-width: 600px) and (max-width:1024px) {
+  .clip_mask {
+    bottom: -81px !important;
   }
 }

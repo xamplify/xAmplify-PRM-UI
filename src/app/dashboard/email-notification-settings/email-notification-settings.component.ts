@@ -66,9 +66,9 @@ export class EmailNotificationSettingsComponent implements OnInit {
   }
 
   private setPlaybookNotificationText() {
-    let playBookHeaderText = "Play Book";
-    let playBooksSuffixText = "play books";
-    let playBookSuffixText = "a play book";
+    let playBookHeaderText = "Playbook";
+    let playBooksSuffixText = "playbooks";
+    let playBookSuffixText = "a playbook";
     this.playbookPublishedTextDto.headerText = this.getHeaderText(playBookHeaderText);
     this.playbookPublishedTextDto.notificationToggle = this.getNotificationToggleText(playBookHeaderText);
     this.playbookPublishedTextDto.notificationControlInfo = this.getNotificationControlInfoText(playBooksSuffixText,true,true);

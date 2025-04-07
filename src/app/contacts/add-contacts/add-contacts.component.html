@@ -132,7 +132,7 @@
 																			</div> -->
 										<div class="portlet-body pt0">
 											<div class="contact-card">
-												<img src="assets/images/crm/user_icon.svg"  height="40px"  alt="Contact Icon">
+												<!-- <img src="assets/images/crm/user_icon.svg"  height="40px"  alt="Contact Icon"> -->
 												<p *ngIf="!assignLeads" class="mb0 ml10 fs_16">Add Contacts and Create Personalized Lists</p>
 											    <p *ngIf="assignLeads" class="mb0 ml10 fs_16">Add Share Leads and Create Personalized Lists</p>
 											</div>
@@ -974,14 +974,21 @@
 		<ngx-loading [show]="zohoPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="modal-content">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i
+				<div class="align-modal-header">
+					<img src="assets/images/zoho.png" class="image-background" alt="Picture of a happy monkey" style="height: 65px"
+						width="90px" />
+					<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top: -20px;" translate>Import From Zoho</h4>
+					<a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i
+							class="fa fa-times"></i></a>
+				</div>
+				<!-- <a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i
 						class="fa fa-times"></i></a>
 				<div>
 					<img src="assets/images/zoho.png" alt="Picture of a happy monkey" style="height: 65px"
 						width="90px" />
 					<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top: -20px;" translate>Import
 						From Zoho</h4>
-				</div>
+				</div> -->
 			</div>
 			<div class="modal-body">
 				<app-response-message class="pg8" [customResponse]="zohoErrorResponse"
@@ -1132,19 +1139,26 @@
 		</div>
 	</div>
 </div>
+<!-- Salesforce -->
 <div class="modal right fade" id="ContactSalesForceModal" tabindex="-1" role="dialog"
 	aria-labelledby="TestSalesForceModal">
 	<div class="modal-dialog modal-css" role="document">
 		<div class="modal-content rounded-0">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
+				<div class="align-modal-header">
+					<img src="assets/images/Salesforce-01.png" class="image-background" alt="Picture of a happy monkey" style="height: 65px"
+						width="100px" />
+						<h4 class="modal-title" translate>Import from salesforce:</h4>
+						<a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
+				</div>
+				<!-- <a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
 				<div class="col-sm-3" style="margin-top: 10px">
 					<img src="assets/images/Salesforce-01.png" alt="Picture of a happy monkey" style="height: 65px"
 						width="100px" />
 				</div>
 				<div class="col-sm-12 salesforce">
 					<h4 class="modal-title" translate>Import from salesforce:</h4>
-				</div>
+				</div> -->
 			</div>
 			<div class="modal-body">
 				<div class="clearfix">
@@ -1318,14 +1332,20 @@
 	<div class="modal-dialog modal-css" role="document">
 		<div class="modal-content rounded-0">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
+				<div class="align-modal-header">
+					<img src="assets/images/crm/hubspot-logo.png" class="image-background"  alt="Picture of a happy monkey" style="height: 60px"
+						width="150px" />
+					<h4 class="modal-title" translate>Import from HubSpot:</h4>
+					<a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
+				</div>
+				<!-- <a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
 				<div class="col-sm-3" style="margin-top: 25px">
 					<img src="assets/images/crm/hubspot-logo.png" alt="Picture of a happy monkey" style="height: 60px"
 						width="150px" />
 				</div>
 				<div class="col-sm-12 salesforce">
 					<h4 class="modal-title" translate>Import from HubSpot:</h4>
-				</div>
+				</div> -->
 			</div>
 			<div class="modal-body">
 				<div class="clearfix">

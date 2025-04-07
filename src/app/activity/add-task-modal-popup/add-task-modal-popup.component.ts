@@ -423,7 +423,7 @@ export class AddTaskModalPopupComponent implements OnInit {
 
   fetchUsersForCompanyJourney() {
     this.referenceService.loading(this.userListUsersLoader, true);
-    this.contactService.fetchUsersForCompanyJourney(this.userId).subscribe(
+    this.contactService.fetchUsersForCompanyJourney(this.userId, false).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.userListUsersData = response.data;

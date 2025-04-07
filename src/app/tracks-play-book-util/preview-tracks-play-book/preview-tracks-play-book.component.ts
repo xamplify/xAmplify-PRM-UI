@@ -67,6 +67,10 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   assetsSortOption: SortOption = new SortOption();
   groupByAssetsParam: boolean = false;
   isAssetGroupingEnabled: boolean = false;
+  previewContent: boolean = false;
+  previewPath: any;
+  isBeeTemplate:boolean = false;
+  previewFileType:string;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -122,7 +126,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   getBySlug() {
     this.trackViewLoader = true;
-    this.tracksPlayBookUtilService.getBySlug(this.createdUserCompanyId, this.slug, this.type).subscribe(
+    this.tracksPlayBookUtilService.getBySlug(this.createdUserCompanyId, this.slug, this.type, true).subscribe(
       (result: any) => {
         if (result.statusCode == 200) {
           let tracksPlayBook: TracksPlayBook = result.data;
@@ -247,17 +251,53 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any) {
     let isNotVideoFile = assetDetails.assetType != 'mp4';
+    const nonImageFormats = ['pdf','pptx','doc','docx','ppt','xlsx'];
+    let isNonImageFormat = nonImageFormats.includes(assetDetails.assetType);
     if(isNotVideoFile){
       let isBeeTemplate = assetDetails.beeTemplate;
       let isVendorView = this.isCreatedUser;
+      this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+          if (isNonImageFormat && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+            // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+            // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+            //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
+            // );
+            this.previewPath = assetDetails.assetPath;
+            this.previewFileType = assetDetails.assetType;
+            this.previewContent = true;
+            this.isBeeTemplate = isBeeTemplate;
+          } else {
+            this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+          }
         } else {
-          this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+          if (isNonImageFormat && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+            // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+            // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+            //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
+            // );
+            this.previewPath = assetDetails.assetPath;
+            this.previewFileType = assetDetails.assetType;
+            this.previewContent = true;
+            this.isBeeTemplate = isBeeTemplate;
+          } else {
+            this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+          }
         }
       }else{
-        this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+        if (isNonImageFormat) {
+          // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
+          // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+          //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
+          // );
+          this.previewPath = assetDetails.assetPath;
+          this.previewFileType = assetDetails.assetType;
+          this.previewContent = true;
+          this.isBeeTemplate = isBeeTemplate;
+        } else {
+          this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+        }
       }
     }
     this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED, false);
@@ -279,7 +319,12 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           window.open(assetDetails.assetPath, '_blank');
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else if (!assetDetails.beeTemplate) {
-          window.open(assetDetails.assetPath, '_blank');
+        let assetPath = assetDetails.assetPath;
+        if (assetDetails.assetType == 'pdf') {
+          assetPath = assetPath.split("=")[1];
+          assetPath = decodeURIComponent(assetPath);
+        }
+          window.open(assetPath, '_blank');
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else {
           this.downloadBeeTemplate(assetDetails);
@@ -331,7 +376,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.tracksPlayBookUtilService.saveAsPlayBook(tracksPlayBook).subscribe(
         (response: any) => {
           if (response.statusCode == 200) {
-            self.customResponse = new CustomResponse('SUCCESS', "Saved to play books successfully.", true);
+            self.customResponse = new CustomResponse('SUCCESS', "Saved to playbooks successfully.", true);
             this.referenceService.stopLoader(this.httpRequestLoader);
           } else {
             swal("Please Contact Admin!", response.message, "error");
@@ -472,5 +517,14 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
   /** XNFR-745 end **/
 
+  closePreview() {
+    this.previewContent = false;
+    this.previewPath = null;
+    const objElement = document.getElementById('preview-object');
+    if (objElement) {
+      objElement.remove();
+    }
+  }
+  
 
 }

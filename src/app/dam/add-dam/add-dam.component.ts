@@ -131,7 +131,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.isAdd = true;
         this.modalTitle = "Add Details";
         this.saveOrUpdateButtonText = "Save";
-        this.listCategories();
+        this.listCategories(false);
         this.httpClient
           .get("assets/config-files/bee-default-asset.json")
           .subscribe((data) => {
@@ -210,7 +210,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.goBack();
         this.referenceService.showSweetAlertServerErrorMessage();
       },()=>{
-        this.listCategories();
+        this.listCategories(true);
       }
     );
   }
@@ -433,14 +433,14 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.modalPopupLoader = false;
     let statusCode = JSON.parse(error["status"]);
     if (statusCode == 409) {
-      this.nameErrorMessage = "Already exists";
-      this.formData.delete("damUploadPostDTO");
+      this.nameErrorMessage = "Already exists"; 
     }else if(statusCode == 400){
       let message = error['error']['message'];
       this.customResponse = new CustomResponse("ERROR",message,true);
     }else {
       this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
     }
+    this.formData.delete("damUploadPostDTO");
   }
 
   saveAs() {
@@ -590,14 +590,14 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
 
   /*****************List Categories*******************/
-  listCategories() {
+  listCategories(isHistoryTemplate: boolean) {
     this.ngxloading = true;
     this.authenticationService
       .getCategoryNamesByUserId(this.loggedInUserId)
       .subscribe(
         (data: any) => {
           this.categoryNames = data.data;
-          if (this.isAdd) {
+          if (this.isAdd && !isHistoryTemplate) {
             let category = this.categoryNames[0];
             this.damPostDto.categoryId = category["id"];
           }
@@ -621,7 +621,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
 showFolderCreatedSuccessMessage(message:any){
    this.showFolderDropDown = false; 
    this.customResponse = new CustomResponse('SUCCESS',message, true);
-   this.listCategories();
+   this.listCategories(false);
 }
 
 /********XNFR-255**********/

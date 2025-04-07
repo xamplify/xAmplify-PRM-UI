@@ -7,11 +7,11 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i *ngIf="isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="isCreatedUser" (click)="goToManagePlayBooks()">Manage Play Books</a>
+                <a *ngIf="isCreatedUser" (click)="goToManagePlayBooks()">Manage Playbooks</a>
                 <i *ngIf="!isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isCreatedUser" (click)="goToManageSharedPlayBooks()">Shared Play Books</a>
+                <a *ngIf="!isCreatedUser" (click)="goToManageSharedPlayBooks()">Shared Playbooks</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a>View Play Book</a>
+                <a>View Playbook</a>
             </li>
             <li *ngIf="isFromApprovalModule">
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -19,7 +19,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.approvalModuleRouter" translate>Manage Approval</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a>View Play Book</a>
+                <a>View Playbook</a>
             </li>
         </ul>
     </div>

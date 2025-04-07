@@ -73,10 +73,10 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.type = "track";
       this.moduleType = TracksPlayBookType[TracksPlayBookType.TRACK];
     }else{
-      this.headerTitle = this.isPartnerView ? 'Shared Play Books':'Play Books';
-      this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared play books' : 'Click here to manage play books'
-      this.addButtonText = "Add Play Books";
-      this.titleHeader = "Play Books";
+      this.headerTitle = this.isPartnerView ? 'Shared Playbooks':'Playbooks';
+      this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared playbooks' : 'Click here to manage playbooks'
+      this.addButtonText = "Add Playbooks";
+      this.titleHeader = "Playbooks";
       this.type = "play book";
       this.moduleType = TracksPlayBookType[TracksPlayBookType.PLAYBOOK];
     }
