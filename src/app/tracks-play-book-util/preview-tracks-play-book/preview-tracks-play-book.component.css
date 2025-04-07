@@ -648,3 +648,11 @@ button:hover {
   border-radius: 0px !important;
   border-collapse: collapse!important;
 }
+
+.ml3 {
+  margin-left: 3px;
+}
+
+.mr3 {
+  margin-right: 3px;
+}

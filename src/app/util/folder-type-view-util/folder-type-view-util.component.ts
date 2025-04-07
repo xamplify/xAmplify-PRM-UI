@@ -66,7 +66,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
     } else if (this.pagination.categoryType == "LEARNING_TRACK") {
       this.titleHeader = "Tracks";
     } else if (this.pagination.categoryType == "PLAY_BOOK") {
-      this.titleHeader = "Play Books";
+      this.titleHeader = "Playbooks";
     }else if(this.pagination.categoryType == "CAMPAIGN"){
       this.titleHeader = "Campaigns";
     }else if(this.pagination.categoryType == "EMAIL_TEMPLATE"){

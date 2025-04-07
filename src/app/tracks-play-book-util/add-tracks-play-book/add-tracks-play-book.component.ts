@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ElementRef, AfterViewInit } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
@@ -35,8 +35,9 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
 import { ApprovalControlSettingsDTO } from 'app/approval/models/approval-control-settings-dto';
 import { ApproveService } from 'app/approval/service/approve.service';
+import { DatePipe } from '@angular/common';
 Properties
-declare var $, swal, CKEDITOR: any;
+declare var $, swal, CKEDITOR: any,flatpickr:any;
 @Component({
   selector: 'app-add-tracks-play-book',
   templateUrl: './add-tracks-play-book.component.html',
@@ -203,10 +204,12 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   approverControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
   canApprove: boolean = false;
   savedTags: any[] = [];
-
+/*** XNFR-897 */
+endDatePickr:any;
+errorMessage:any;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
-    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService) {
+    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService,public datePipe: DatePipe) {
     this.siteKey = this.envService.captchaSiteKey;
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-170****/
@@ -374,7 +377,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             /**XNFR-523***/
             this.isSendEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd;
             this.sendEmailNotificationOptionToolTipMessage = this.properties.SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE.replace("{{partnersMergeTag}}",this.authenticationService.getPartnerModuleCustomName());
-            /**XNFR-523***/
           } else {
             this.goToManageSectionWithError();
             this.ngxloading = false;
@@ -756,7 +758,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             } else {
               this.listAssets(this.assetPagination);
             }
-
           }
         }
       );
@@ -1376,7 +1377,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
         this.lmsResponse = new CustomResponse('ERROR', "Invalid Track Builder", true);
       } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-        this.lmsResponse = new CustomResponse('ERROR', "Invalid Play Book", true);
+        this.lmsResponse = new CustomResponse('ERROR', "Invalid Playbook", true);
       }
       this.referenceService.goToTop();
     }
@@ -1796,5 +1797,49 @@ addTagsCondition(selectedTags:any[]) {
     this.tagsListSecondColumn = this.savedTags.slice(this.tagFirstColumnEndIndex + 1);
   }
 }
+/**** XNFR-897 ** */
+  clearEndDate() {
+    //this.endDatePickr.clear();
+    this.tracksPlayBook.expireDate = undefined;
+  }
 
+  expireDescription(expireDate: any, expiredDate: any): string {
+    if(!expireDate) {
+      return;
+    }
+    const currentDate = new Date();
+    const givenDate = new Date(expireDate ? expireDate : expiredDate);
+    const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
+    const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    let suffix = diffInMs < 0 ? 'ago' : 'left';
+    if (suffix === 'ago') {
+      return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Play Book"} has already expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+    } else if (diffInDays < 1) {
+      const hours = diffInHours;
+      const minutes = diffInMinutes % 60;
+      return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} will expire in ${hours} hrs ${minutes} mins ${suffix}`;
+    } else if (diffInDays >= 1 && diffInDays <= 15) {
+      let days = diffInMs < 0 ? `${diffInDays} days ago` : `in ${diffInDays} days`;
+      return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} will expire in ${days}`
+    } else {
+      const currentYear = currentDate.getFullYear();
+      const givenYear = givenDate.getFullYear();
+
+      if (currentYear === givenYear) {
+        return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM');
+      } else {
+        return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      }
+    }
+  }
+  formatDate(date: Date, format: string): string {
+    const options: any = {};
+    if (format.includes('dd')) options.day = '2-digit';
+    if (format.includes('MMM')) options.month = 'short';
+    if (format.includes('yyyy')) options.year = 'numeric';
+
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
 }

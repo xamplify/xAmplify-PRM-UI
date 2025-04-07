@@ -1,0 +1,47 @@
+/* Main container with limited height */
+#pdf-container {
+    width: 100%;
+    height: 95vh;
+    /* Reduce background height */
+    background: #202124;
+    /* Google Docs' dark gray background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    /* Align content towards the top */
+    overflow-y: auto;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+/* Smaller PDF pages */
+.pdf-page {
+    display: block;
+    background: #fff;
+    /* White background for pages */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Soft shadow */
+    border-radius: 6px;
+    margin-bottom: 15px;
+    /* Space between pages */
+    width: 400px;
+    /* Decrease page width */
+    height: auto;
+    /* Maintain aspect ratio */
+}
+
+/* Smooth Scrollbar */
+#pdf-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#pdf-container::-webkit-scrollbar-thumb {
+    background: #5f6368;
+    /* Google Docs-style scrollbar */
+    border-radius: 10px;
+}
+
+#pdf-container::-webkit-scrollbar-thumb:hover {
+    background: #bdc1c6;
+}

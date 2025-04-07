@@ -215,6 +215,7 @@ import { FeedUpdateComponent } from 'app/util/feed-update/feed-update.component'
 import { FeedComponent } from 'app/util/feed/feed.component';
 import { RssLoaderComponent } from 'app/util/rss-loader/rss-loader.component';
 import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dialer.component';
+import { PreviewContentComponent } from 'app/util/preview-content/preview-content.component';
 import { CustomBlocksModalPopupComponent } from './custom-blocks-modal-popup/custom-blocks-modal-popup.component';
 import { CountryPhoneInputComponent } from 'app/util/country-phone-input/country-phone-input.component';
 
