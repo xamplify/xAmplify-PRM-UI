@@ -428,7 +428,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       (response: any) => {
         if (response.statusCode == 200) {
           /****XBI-2589***/
-          let trackOrPlayBook =  this.tracksModule ? "Track":"Play Book";
+          let trackOrPlayBook =  this.tracksModule ? "Track":"Playbook";
           let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
           this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);

@@ -77,7 +77,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared playbooks' : 'Click here to manage playbooks'
       this.addButtonText = "Add Playbooks";
       this.titleHeader = "Playbooks";
-      this.type = "play book";
+      this.type = "playbook";
       this.moduleType = TracksPlayBookType[TracksPlayBookType.PLAYBOOK];
     }
     this.listLearningTracks(this.pagination);
@@ -302,7 +302,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       (response: any) => {
         if (response.statusCode == 200) {
           /****XBI-2589***/
-          let trackOrPlayBook =  this.tracks ? "Track":"Play Book";
+          let trackOrPlayBook =  this.tracks ? "Track":"Playbook";
           let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
           this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);
