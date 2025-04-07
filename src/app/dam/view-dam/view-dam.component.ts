@@ -77,7 +77,11 @@ export class ViewDamComponent implements OnInit {
 		// this.assetPath = this.domSanitizer.bypassSecurityTrustResourceUrl(
 		// 	`https://docs.google.com/gview?url=${this.assetDetailsViewDto.assetPath}&embedded=true`
 		// );
-		this.assetPath = this.assetDetailsViewDto.assetPath;
+		if(this.assetDetailsViewDto.sharedAssetPath){
+			this.assetPath = this.assetDetailsViewDto.sharedAssetPath;
+		} else {
+			this.assetPath = this.assetDetailsViewDto.assetPath;
+		}
 		this.fileType = this.assetDetailsViewDto.assetType;
 	} else {
 		this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
