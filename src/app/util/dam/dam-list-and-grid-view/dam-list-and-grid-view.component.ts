@@ -132,6 +132,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	previewContent: boolean;
 	fileType: any;
 	previewAssetPath: any;
+	existingCriterias = new Array<Criteria>();
+	fromDateFilter: any;
+	toDateFilter: any;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
@@ -835,11 +838,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.pagination.filterOptionEnable = input['isCriteriasFilter'] ;
 		this.pagination.customFilterOption = true;
 		this.pagination.pageIndex = 1;
+		this.existingCriterias = input['existingCriterias'];
+		this.fromDateFilter = input['fromDateFilter'];
+		this.toDateFilter = input['toDateFilter'];
 		this.listItems(this.pagination);
 	}
 	closeFilterEmitter(event:any){
 		if(event === 'close') {
 			this.showFilterOption = false;
+			this.existingCriterias = new Array<Criteria>();
+			this.fromDateFilter = '';
+			this.toDateFilter = '';
 		} else {
 			this.showFilterOption = true
 		}
