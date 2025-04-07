@@ -116,7 +116,7 @@
                     <td class='bold'>Mobile Number</td>
                     <td [ngClass]="isInvalidMobileNumber ? 'red':''">
                       <app-country-phone-input [mobileNumber]="user.mobileNumber" [placeholder]="'Mobile Number (optional)'"
-                        [maxlength]="15" (mobileNumberEventEmitter)="mobileNumberEventEmitter($event, user)">
+                        [maxlength]="15" [isUploadCsv]="true" (mobileNumberEventEmitter)="mobileNumberEventEmitter($event, user)">
                       </app-country-phone-input>
                     </td>
                   </tr>

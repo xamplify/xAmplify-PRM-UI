@@ -15,6 +15,7 @@ export class CountryPhoneInputComponent implements OnInit {
   @Input() maxlength: number = 15;
   @Input() placeholder: string = '';
   @Input() mobileNumber: string = '';
+  @Input() isUploadCsv: boolean = false;
   selectedCountry: any;
   filteredCountries: any;
   isOpen: boolean = false;

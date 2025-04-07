@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
 </head>
 <div class="phone-input-container">
-  <div class="phone-input-group">
+  <div class="phone-input-group" [ngStyle]="{'width': isUploadCsv ? '100%' : '75%'}">
     <div class="custom-dropdown" [class.active]="isOpen" clickOutside (clickOutside)="isOpen = false">
       <div class="dropdown-selected" (click)="toggleDropdown()">
         <span class="flag-icon flag-icon-{{convertIntoLowerCase(selectedCountry.code)}}"></span>
