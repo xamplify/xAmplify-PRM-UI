@@ -8,11 +8,12 @@
         <span class="flag-icon flag-icon-{{convertIntoLowerCase(selectedCountry.code)}}"></span>
         <span class="dropdown-arrow">▼</span>
       </div>
-      <ul class="dropdown-options" *ngIf="isOpen">
+      <ul class="dropdown-options mb0" *ngIf="isOpen">
         <li class="search-box">
           <input type="text" [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" (input)="filterCountries()" placeholder="Search country...">
         </li>
-        <li *ngFor="let country of filteredCountries" (click)="selectCountry(country)">
+        <li *ngFor="let country of filteredCountries" (click)="selectCountry(country)" 
+            [ngClass]="{'selected': country.code === selectedCountry.code}">
           <span class="flag-icon flag-icon-{{convertIntoLowerCase(country.code)}}"></span>
           <span class="country-name">{{country.name}}</span>
           <span class="country-code">{{country.dial_code}}</span>

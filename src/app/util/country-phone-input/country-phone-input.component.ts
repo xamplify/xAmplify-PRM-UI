@@ -16,12 +16,12 @@ export class CountryPhoneInputComponent implements OnInit {
   @Input() placeholder: string = '';
   @Input() mobileNumber: string = '';
   selectedCountry: any;
+  filteredCountries: any;
   isOpen: boolean = false;
   searchQuery: string = '';
   isInvalidMobileNumber: boolean = false;
   @Output() clickOutside = new EventEmitter<void>();
   @Output() mobileNumberEventEmitter = new EventEmitter<any>();
-  filteredCountries: any;
 
   constructor(public countryNames: CountryNames, private eRef: ElementRef) {
     this.filteredCountries = [...this.countryNames.countriesMobileCodes];
@@ -30,6 +30,7 @@ export class CountryPhoneInputComponent implements OnInit {
   ngOnInit() {
     if (this.mobileNumber) {
       this.autoDetectCountry();
+      this.validateMobileNumber();
     } else {
       this.setDefaultCountry();
     }
@@ -84,6 +85,7 @@ export class CountryPhoneInputComponent implements OnInit {
           if (country.dial_code.length > maxLength) {
             maxLength = country.dial_code.length;
             matchedCountry = country;
+            break;
           }
         }
       }
@@ -105,10 +107,12 @@ export class CountryPhoneInputComponent implements OnInit {
     }
 
     // Apply new country code
-    this.mobileNumber = country.dial_code + (numberWithoutCode ? ' ' + numberWithoutCode : '');
+    this.mobileNumber = country.dial_code + ' ' + numberWithoutCode;
     this.selectedCountry = country;
     this.isOpen = false;
-    this.validateMobileNumber();
+    if (numberWithoutCode) {
+      this.validateMobileNumber();
+    }
   }
 
   filterCountries() {
