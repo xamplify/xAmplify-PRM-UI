@@ -14,6 +14,7 @@ import { DamService } from '../../dam/services/dam.service';
 import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { SortOption } from 'app/core/models/sort-option';
+import { DatePipe } from '@angular/common';
 
 declare var $, swal: any;
 
@@ -75,7 +76,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
     private router: Router, public logger: XtremandLogger,
-    private damService: DamService, public sanitizer: DomSanitizer, public sortOption: SortOption) {
+    private damService: DamService, public sanitizer: DomSanitizer, public sortOption: SortOption,public datePipe:DatePipe) {
     this.notifyShowTracksPlayBook = new EventEmitter<any>();
     this.notifyShowAsset = new EventEmitter<any>();
     this.notifyCreatedUser = new EventEmitter<any>();
@@ -516,6 +517,14 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.getGroupedAssetsBySlug();
   }
   /** XNFR-745 end **/
+  isAccessToView(expireDate:any,expiredDate:any):boolean{
+    const currentDate = new Date();
+    const givenDate = new Date(expireDate ? expireDate : expiredDate);
+    const diffInMs = givenDate.getTime() - currentDate.getTime();
+    let suffix = diffInMs < 0 ? 'ago' : 'left';
+    return suffix === 'ago' ? true:false;
+  }
+
 
   closePreview() {
     this.previewContent = false;
@@ -526,5 +535,4 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     }
   }
   
-
 }

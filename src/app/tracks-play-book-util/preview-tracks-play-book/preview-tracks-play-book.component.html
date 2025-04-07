@@ -68,7 +68,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="padding_bottom text-wrap-track-description img-desc-section-wrap">
+                            <div class="padding_bottom text-wrap-track-description img-desc-section-wrap" [ngClass]="isAccessToView(tracksPlayBook?.expireDate,tracksPlayBook?.createdTime)? 'disable-click':''">
                                 <div *ngIf="tracksPlayBook?.description" class="title-class">Description: </div>
                                 <div [innerHTML]="tracksPlayBook.description"></div>
                             </div>
@@ -206,7 +206,7 @@
                                     </tr>
                                 </thead>
                                 <div></div>
-                                <tbody class="pointer">
+                                <tbody class="pointer" [ngClass]="isAccessToView(tracksPlayBook?.expireDate,tracksPlayBook?.createdTime)? 'disable-click':''">
                                     <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
                                         <tr [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}"
                                             (click)="$event.stopPropagation();viewContent(content, i)">
@@ -309,7 +309,7 @@
                         <div class="table-responsive" style="display: inline;">
                             <table class='table tgrid table-hover table-sm border_collapse' id="manage-assets-table"
                                 *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
-                                <tbody class="pointer">
+                                <tbody class="pointer"  [ngClass]="isAccessToView(tracksPlayBook?.expireDate,tracksPlayBook?.createdTime)? 'disable-click':''">
                                     <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
                                         <div class="col-lg-12 p10">
                                             <div role="tablist" aria-multiselectable="true">
