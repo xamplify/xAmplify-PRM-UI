@@ -549,9 +549,12 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   }
   /** XNFR-824 end **/
   /*** XNFR-897 ***/
-   expireDescription(expireDate: any, expiredDate: any): string {
+   expireDescription(expireDate: any): string {
+    if(!expireDate) {
+      return ;
+    }
     const currentDate = new Date();
-    const givenDate = new Date(expireDate ? expireDate : expiredDate);
+    const givenDate = new Date(expireDate);
     const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
     const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
     const diffInHours = Math.floor(diffInMinutes / 60);
@@ -559,22 +562,22 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
     let suffix = diffInMs < 0 ? 'ago' : 'left';
     if (suffix === 'ago') {
-      return `The ${this.tracksModule ? "Track" : "Play Book"} has already expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      return `The ${this.tracksModule ? "Track" : "Play Book"} expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
     } else if (diffInDays < 1) {
       const hours = diffInHours;
       const minutes = diffInMinutes % 60;
-      return `The ${this.tracksModule ? "Track" : "Playbook"} will expire in ${hours} hrs ${minutes} mins ${suffix}`;
+      return `The ${this.tracksModule ? "Track" : "Playbook"} will be expired in ${hours} hrs ${minutes} mins ${suffix}`;
     } else if (diffInDays >= 1 && diffInDays <= 15) {
-      let days = diffInMs < 0 ? `${diffInDays} days ago` : `in ${diffInDays} days`;
-      return `The ${this.tracksModule ? "Track" : "Playbook"} will expire in ${days}`
+      let days = diffInMs < 0 ? `${diffInDays} days ago` : ` ${diffInDays} days`;
+      return `The ${this.tracksModule ? "Track" : "Playbook"} will be expired in ${days}`
     } else {
       const currentYear = currentDate.getFullYear();
       const givenYear = givenDate.getFullYear();
 
       if (currentYear === givenYear) {
-        return `The ${this.tracksModule ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM');
+        return `The ${this.tracksModule ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM');
       } else {
-        return `The ${this.tracksModule ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM yyyy');
+        return `The ${this.tracksModule ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
       }
     }
   }
