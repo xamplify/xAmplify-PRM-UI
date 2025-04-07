@@ -3335,7 +3335,7 @@ input.field-border-customization {
   background-color : #23272c !important;
   border-radius: 10px;
 }
-.activeCRM{
+.activeCRM, .activeCalendar, .activeCall{
   background-color : #1f1f1f !important;;
   border-radius: 10px;
 }

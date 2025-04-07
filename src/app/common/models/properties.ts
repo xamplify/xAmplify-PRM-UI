@@ -12,6 +12,7 @@ export class Properties {
 	xamplify_router = 'https://www.xamplify.com/';
 
 	NO_RESULTS_FOUND = "No results found.";
+	NO_DATA_FOUND = "No data found.";
 	EMAIL_SENT_SUCCESS = "Email sent successfully.";
 	NO_USERS_SELECT_ERROR = "You have not selected any user.";
 	//FOR CONTACTS

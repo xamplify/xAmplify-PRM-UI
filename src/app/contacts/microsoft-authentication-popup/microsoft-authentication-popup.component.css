@@ -1,0 +1,6 @@
+.image-background{
+    background: #fff;
+    border-radius: 10px;
+    object-fit: cover;
+    padding: 5px;
+  }

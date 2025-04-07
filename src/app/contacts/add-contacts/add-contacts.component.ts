@@ -221,6 +221,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     connectWiseCurrentUser: string;
     connectWiseLoading: boolean = false;
     contactsCompanyListSync: boolean = false;
+    connectWiseErrorMessage: boolean = false;
 
     haloPSAImageBlur: boolean = false;
     haloPSAImageNormal: boolean = false;
@@ -4632,8 +4633,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     frameConnectWisePreview(response: any) {
-        if (!response.contacts) {
-            this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+        this.connectWiseErrorMessage = false;
+        if (!response.contacts || response.contacts.length === 0) {
+            this.connectWiseErrorMessage = true;
+            this.customResponse = new CustomResponse('ERROR', this.properties.NO_DATA_FOUND, true);
         } else {
             this.socialContactUsers = [];
             this.model.contactListName = this.hubSpotContactListName;

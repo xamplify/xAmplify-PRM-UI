@@ -1379,9 +1379,9 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
-				<button type="button" id="hubspot_save_button" class="button_blue bgcolor-unset"
+				<button type="button" id="hubspot_save_button" class="button_blue bgcolor-unset neg_mrg_top4"
 					(click)="getHubSpotData()" data-dismiss="modal" translate><span
-						class="btn btn-primary transition">Submit</span></button>
+						class="btn btn-primary transition txt_pd-top3 pdt7">Submit</span></button>
 			</div>
 		</div>
 	</div>
@@ -1395,7 +1395,7 @@
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
 				<div class="col-sm-3" style="margin-top: 25px">
-					<img src="assets/images/crm/connectwise-logo.png" alt="Picture of a happy monkey"
+					<img src="assets/images/crm/connectwise-logo.png" class="image-background" alt="Picture of a happy monkey"
 						style="height: 60px" width="150px" />
 				</div>
 				<div class="col-sm-12 salesforce">
@@ -1429,6 +1429,9 @@
 								</select>
 							</div>
 						</div>
+						<div *ngIf="customResponse?.show" class="alert alert-danger">
+							{{ customResponse.message }}
+						  </div>					
 					</form>
 				</div>
 			</div>
