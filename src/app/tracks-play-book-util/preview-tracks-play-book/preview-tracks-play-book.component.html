@@ -1,7 +1,7 @@
 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 </app-response-message>
 <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="portlet-title" style="border-bottom: 0px !important ;" *ngIf="!showTracksPlayBook">
+<div class="portlet-title" style="border-bottom: 0px !important ;" *ngIf="!showTracksPlayBook && !previewContent">
     <div *ngIf="!showAsset" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 20px;">
         <a (click)="closeView()" class="pull-right close-circle track_cross_align" style="padding: 4px 5px; margin: 6.5px -7px 0px 0px;">
             <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;position: relative;
@@ -19,8 +19,8 @@
     <br>
 </div>
 
-<div [ngClass]="{'blur-content' : showFilePreview}">
-    <ng-container *ngIf="tracksPlayBook != undefined && !httpRequestLoader.isLoading">
+<div *ngIf="!previewContent" [ngClass]="{'blur-content' : showFilePreview}">
+    <ng-container *ngIf="tracksPlayBook != undefined && !httpRequestLoader.isLoading && !previewContent">
         <div class="row">
             <section *ngIf="showTracksPlayBook">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-padding" style="padding-right: 0px;">
@@ -69,6 +69,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="padding_bottom text-wrap-track-description img-desc-section-wrap" [ngClass]="isAccessToView(tracksPlayBook?.expireDate,tracksPlayBook?.createdTime)? 'disable-click':''">
+                                <div *ngIf="tracksPlayBook?.description" class="title-class">Description: </div>
                                 <div [innerHTML]="tracksPlayBook.description"></div>
                             </div>
                         </div>
@@ -156,6 +157,7 @@
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
                                                         style="padding: 6px 10px 10px 10px;">
+                                                        <div *ngIf="assetDetails?.description" class="title-class ml3"> Description:</div>
                                                         <div class="description-scroll padding_bottom img-desc-section-wrap"
                                                             [innerHTML]="assetDetails?.description">
                                                         </div>
@@ -246,6 +248,7 @@
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner">Finished</h6>
                                                         <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081;" class="banner">In Progress</h6>
                                                     </div>
+                                                    <div *ngIf="content?.dam?.categoryName"><i class="fa fa-folder-open mr3"></i>{{content?.dam?.categoryName}}</div>
                                                 </td>
                                                 <td class="text-center">{{content?.dam?.assetType}}</td>
                                             </ng-container>
@@ -452,7 +455,7 @@
 <app-preview-popup #previewPopupComponent [learningTrackId]="tracksPlayBook.id"></app-preview-popup>
 
 <!-- Preview Assets -->
-<ng-container *ngIf="showFilePreview">
+<ng-container *ngIf="showFilePreview && !previewContent">
     <div class="overlay page-content custimizaPageContent previewContent">
         <button type="button" class="close-circle mb-close" style="position: relative; top: 32px; right: 26px;"
             data-dismiss="modal" (click)="closeAssetPreview()">
@@ -478,7 +481,7 @@
 
 
 <!-- Preview Bee Template Modal Popup-->
-<div class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static"
+<div *ngIf="!previewContent" class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static"
     data-keyboard="false">
     <div class="modal-dialog modal-lg modal-template fullwidth" role="document">
         <div class="modal-content">
@@ -501,3 +504,13 @@
 </div>
 
 <!--Load xAmplify Player-->
+
+<!-- <div *ngIf="previewContent">
+    <a (click)="closePreview()" class="pull-right close-circle track_cross_align" style="margin: 0px 0px 5px 0px;">
+        <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;position: relative;
+        top: 4px;" aria-hidden="true"></span></a>
+    <object id="preview-object" [data]="previewPath" width="100%" height="600px" style="border:none;">
+    </object>
+</div> -->
+<app-preview-content *ngIf="previewContent" [previewPath]="previewPath" [fileType]="previewFileType"
+    (notifyClose)="closePreview()"></app-preview-content>

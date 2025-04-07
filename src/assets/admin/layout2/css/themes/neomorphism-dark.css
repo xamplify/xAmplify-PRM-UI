@@ -4503,8 +4503,3 @@ tbody>tr#uploaded-csv-tr>td {
 .modal-title-new{
   color: white !important;
 }
-@media only screen and (min-width: 600px) and (max-width: 1024px) {
-  .clip_mask{
-      bottom: -68px !important;
-  }
-}

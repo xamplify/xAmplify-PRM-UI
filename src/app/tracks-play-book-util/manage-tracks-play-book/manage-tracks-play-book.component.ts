@@ -92,8 +92,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.tracksModule = this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK];
     this.moduleId = this.tracksModule ? this.roles.learningTrackId :this.roles.playbookId;
     this.isPartnerView = this.router.url.indexOf('/shared') > -1;
-    this.titleHeader = this.tracksModule ? "Tracks" : "Play Books";
-    this.trackOrPlayBookText = this.tracksModule ? "track" : "play book";
+    this.titleHeader = this.tracksModule ? "Tracks" : "Playbooks";
+    this.trackOrPlayBookText = this.tracksModule ? "track" : "playbook";
     this.suffixHeader = this.isPartnerView ? 'Shared ':'Manage ';
     if (this.folderListViewCategoryId != undefined) {
       this.categoryId = this.folderListViewCategoryId;
@@ -125,7 +125,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
         this.message = "Track created successfully";
       } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-        this.message = "Play Book created successfully";
+        this.message = "Playbook created successfully";
       }
       this.showMessageOnTop(this.message);
     } else if (this.referenceService.isUpdated) {
@@ -133,7 +133,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         this.message = "Track updated successfully";
         this.showMessageOnTop(this.message);
       } else if ((this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) && !this.folderListViewExpanded) {
-        this.message = "Play Book updated successfully";
+        this.message = "Playbook updated successfully";
         this.showMessageOnTop(this.message);
       }
     }

@@ -123,7 +123,7 @@
                                             <span *ngIf="type == undefined || (type != undefined && type == 'TRACK')"
                                                 class="gridHeader">Track</span>
                                             <span *ngIf="type != undefined && type == 'PLAYBOOK'"
-                                                class="gridHeader">Play Book</span>
+                                                class="gridHeader">Playbook</span>
                                         </th>
                                         <th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
                                             <span class="ui-column-resizer gray"
@@ -131,7 +131,7 @@
                                             <span *ngIf="type == undefined || (type != undefined && type == 'TRACK')"
                                                 class="gridHeader" translate>Track</span>
                                             <span *ngIf="type != undefined && type == 'PLAYBOOK'"
-                                                class="gridHeader">Play Book</span>
+                                                class="gridHeader">Playbook</span>
                                         </th>
                                         <th class="hidden-xs text-center" style="width: 15%;" translate scope="col"
                                             id="border-bottom">Tags</th>
@@ -463,7 +463,7 @@
                     <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
                         <strong *ngIf="type == undefined || type == 'TRACK'" translate>No Learning Tracks
                             Found.</strong>
-                        <strong *ngIf="type != undefined && type == 'PLAYBOOK'" translate>No Play Books Found.</strong>
+                        <strong *ngIf="type != undefined && type == 'PLAYBOOK'" translate>No Playbooks Found.</strong>
                     </div>
                 </ng-container>
             </div>

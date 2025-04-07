@@ -1377,7 +1377,7 @@ errorMessage:any;
       if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
         this.lmsResponse = new CustomResponse('ERROR', "Invalid Track Builder", true);
       } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-        this.lmsResponse = new CustomResponse('ERROR', "Invalid Play Book", true);
+        this.lmsResponse = new CustomResponse('ERROR', "Invalid Playbook", true);
       }
       this.referenceService.goToTop();
     }

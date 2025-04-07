@@ -2662,7 +2662,7 @@ tbody{background: transparent;}
       border-bottom: 0 !important;
     }
     .clip_mask{
-      bottom: -79px!important;
+      bottom: -90px!important;
     }
   }
   /* add a tag */
@@ -2683,11 +2683,6 @@ tbody{background: transparent;}
   color: #fff !important;
 }
 
-@media only screen and (min-width: 760px) {
-  .clip_mask{
-    bottom: -68px!important;
-  }
-}
 .modal-header{
   background-color: #22313a !important;
 }
@@ -2696,4 +2691,9 @@ tbody{background: transparent;}
 } 
 .modal-title-new{
   color: white !important;
+}
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .clip_mask {
+      bottom: -84px !important;
+  }
 }

@@ -20,7 +20,7 @@
           </ng-container>
           <ng-container
             *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
-            and Play Book
+            and Playbook
           </ng-container>
           Module
         </div>
@@ -119,14 +119,14 @@
                     src="assets/admin/pages/media/works/Grid_View_Icons/Play_Book.png">
                 </div>
                 <div>
-                  <h4 class="header-text-css" translate>Play Book</h4>
+                  <h4 class="header-text-css" translate>Playbook</h4>
                 </div>
                 <ng-container *ngIf="authenticationService?.module?.playbookAccess">
                   <div class="text row-space">
                     <h5>
                       <a class="prspx" (click)="navigate('playbook/add')">
                         <i class="fa fa-plus" aria-hidden="true"></i>
-                        <span class="design-name" translate>Add Play Books</span></a>
+                        <span class="design-name" translate>Add Playbooks</span></a>
                     </h5>
                   </div>
                   <div class="text row-space"
@@ -134,7 +134,7 @@
                     <h5>
                       <a class="prfpx" (click)="navigate('playbook/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
-                        <span class="design-name" translate>Manage Play Books</span></a>
+                        <span class="design-name" translate>Manage Playbooks</span></a>
                     </h5>
                   </div>
                 </ng-container>
@@ -142,7 +142,7 @@
                   <h5>
                     <a (click)="navigate('playbook/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
-                      <span class="design-name" translate>Access Shared Play Books</span></a>
+                      <span class="design-name" translate>Access Shared Playbooks</span></a>
                   </h5>
                 </div>
               </div>

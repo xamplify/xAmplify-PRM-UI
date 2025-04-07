@@ -1,0 +1,15 @@
+<div>
+  <a *ngIf="!pdfLoader" (click)="closePreview()" class="close-circle ref-mar c ml5 mb5" data-placement="top" data-toggle="tooltip"
+    title="Close">
+    <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;position: relative;
+      top: 4px;" aria-hidden="true"></span></a>
+  <a *ngIf="!isPdf && !pdfLoader" class="close-circle ref-mar c" data-placement="top" data-toggle="tooltip" title="Refresh"
+    data-original-title="Refresh" (click)="reload()">
+    <i aria-hidden="true" class="fa fa-refresh"></i>
+  </a>
+  <app-modal-popup-loader *ngIf="pdfLoader"></app-modal-popup-loader>
+  <div *ngIf="isPdf && !pdfLoader" id="pdf-container"> <canvas class="pdf-page" data-page="1"></canvas>
+  </div>
+  <object *ngIf="!isPdf" id="preview-object" [data]="url" width="100%" height="600px" style="border: 1px solid #ddd;">
+  </object>
+</div>
