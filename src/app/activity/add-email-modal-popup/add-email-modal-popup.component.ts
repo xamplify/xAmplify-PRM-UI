@@ -69,6 +69,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   testMailFormData: any = new FormData();
   OliveAi: boolean;
   sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
+  toEmailIds = [];
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService) {}
@@ -129,7 +130,11 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.sendTestEmailDto.toEmail = this.emailActivity.toEmailId;
       this.sendTestEmailDto.subject = this.emailActivity.subject;
       this.sendTestEmailDto.showAlert = false;
-      this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
+      this.sendTestEmailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
+      this.sendTestEmailDto.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+      this.sendTestEmailDto.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+      this.prepareFormData();
+      this.authenticationService.sendEmailToUser(this.sendTestEmailDto,this.formData).subscribe(
         response => {
           this.ngxLoading = false;
           this.notifyClose.emit("Email sent sucessfully");
@@ -231,7 +236,11 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.sendTestEmailDto.toEmail = this.testToEmailId;
       this.sendTestEmailDto.subject = this.emailActivity.subject;
       this.sendTestEmailDto.showAlert = false;
-      this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
+      this.prepareTestMailFormData();
+      this.sendTestEmailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
+      this.sendTestEmailDto.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+      this.sendTestEmailDto.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+      this.authenticationService.sendEmailToUser(this.sendTestEmailDto,this.formData).subscribe(
         response => {
           this.testEmailLoading = false;
           this.notifyClose.emit("Email sent sucessfully");

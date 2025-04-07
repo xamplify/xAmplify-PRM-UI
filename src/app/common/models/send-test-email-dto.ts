@@ -12,4 +12,7 @@ export class SendTestEmailDto {
   campaignId = 0;
   loggedInUserId = 0;
   showAlert = true;
+  ccEmailIds = [];
+  bccEmailIds = [];
+  toEmailIds = [];
 }
