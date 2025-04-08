@@ -1,7 +1,7 @@
 <head>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icon-css/css/flag-icon.min.css">
 </head>
-<div class="phone-input-container">
+<div class="phone-input-container" [ngStyle]="{'margin-top': isUploadCsv ? '0px' : '10px'}">
   <div class="phone-input-group" [ngStyle]="{'width': isUploadCsv ? '100%' : '75%'}">
     <div class="custom-dropdown" [class.active]="isOpen" clickOutside (clickOutside)="isOpen = false">
       <div class="dropdown-selected" (click)="toggleDropdown()">

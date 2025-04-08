@@ -70,7 +70,7 @@ export class CountryPhoneInputComponent implements OnInit {
 
   setDefaultCountry() {
     this.selectedCountry = [];
-    this.selectedCountry = this.countryNames.countriesMobileCodes[189];
+    this.selectedCountry = this.countryNames.countriesMobileCodes[188];
     this.mobileNumber = this.selectedCountry.dial_code + ' ';
   }
 
@@ -78,15 +78,12 @@ export class CountryPhoneInputComponent implements OnInit {
     let maxLength = 0;
     this.selectedCountry = [];
     let matchedCountry = null;
-    const cleanNumber = this.mobileNumber.replace(/[^\d+]/g, '');
     for (const country of this.countryNames.countriesMobileCodes) {
-      if (country.dial_code) {
-        if (this.mobileNumber.startsWith(country.dial_code)) {
-          if (country.dial_code.length > maxLength) {
-            maxLength = country.dial_code.length;
-            matchedCountry = country;
-            break;
-          }
+      if (this.mobileNumber.startsWith(country.dial_code)) {
+        if (country.dial_code.length > maxLength) {
+          maxLength = country.dial_code.length;
+          matchedCountry = country;
+          break;
         }
       }
     }
@@ -121,7 +118,7 @@ export class CountryPhoneInputComponent implements OnInit {
     } else {
       const query = this.searchQuery.toLowerCase();
       this.filteredCountries = this.countryNames.countriesMobileCodes.filter(country =>
-        country.name.toLowerCase().includes(query));
+        country.name.toLowerCase().includes(query) || country.dial_code.includes(query));
     }
   }
 

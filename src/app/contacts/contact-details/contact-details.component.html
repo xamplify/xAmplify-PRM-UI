@@ -84,13 +84,14 @@
                 </p>
               </span> 
               <span *ngIf="selectedContact?.mobileNumber != undefined && selectedContact?.mobileNumber != ''" class="email-id">
-                <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.mobileNumber}}">
-                  <i class="fa fa-phone mr_6 icons_colors"></i>{{selectedContact.mobileNumber}}
-              
+                <p data-toggle="tooltip" data-placement="bottom"
+                  title="{{ validateMobileNumber(selectedContact?.mobileNumber) ? (selectedContact?.mobileNumber + ' - Invalid Mobile Number') : selectedContact?.mobileNumber }}">
+                  <i class="fa fa-phone mr_6 icons_colors"></i>
+                  <span [ngClass]="{'required': validateMobileNumber(selectedContact?.mobileNumber)}" style="font-size:12px;">{{selectedContact.mobileNumber}}</span>
                   <button class="copy-btn" #textMobile value="{{selectedContact?.mobileNumber}}"
                     (click)="copyMobileNumber(textMobile)">
-                    <i *ngIf="isMobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isMobileNumberCopied"
-                      class="fa fa-clone ml_6" aria-hidden="true"></i></button>
+                    <i *ngIf="isMobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i>
+                    <i *ngIf="!isMobileNumberCopied" class="fa fa-clone ml_6" aria-hidden="true"></i></button>
                 </p>
               </span>
             </div>
