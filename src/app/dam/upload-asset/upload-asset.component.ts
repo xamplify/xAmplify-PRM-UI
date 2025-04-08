@@ -1779,32 +1779,48 @@ zoomOut() {
           });
       }
 getFileIcon(): string {
-    if (!this.uploadedAssetName) return '../../../assets/images/pdf-file.svg';
+    if (!this.uploadedAssetName) return '../../../assets/images/asset-uploads/asset-uploads/Documents.svg';
   
-    // Get the file extension by splitting and safely handling empty or undefined cases
     const extension = this.uploadedAssetName.split('.').pop();
     
-    // If there's no extension, return default icon
-    if (!extension) return '../../../assets/images/pdf-file.svg';
+    if (!extension) return '../../../assets/images/asset-uploads/asset-uploads/Documents.svg';
   
-    // Convert extension to lowercase
     const lowerExtension = extension.toLowerCase();
   
     switch (lowerExtension) {
       case 'pdf':
-        return '../../../assets/images/pdf-file.svg';
-      case 'jpg':
+        return '../../../assets/images/asset-uploads/PDF.svg';
+      case 'csv':
+        return '../../../assets/images/asset-uploads/CSV.svg';
       case 'jpeg':
       case 'png':
-        return '../../../assets/images/pinterest.png';
+      case 'gif':
+      case 'svg':
+        return '../../../assets/images/asset-uploads/Image.svg';
       case 'doc':
+        return '../../../assets/images/asset-uploads/Documents.svg';
       case 'docx':
-        return '../../../assets/images/pinterest.png';
+        return '../../../assets/images/asset-uploads/DOCX.svg';
+      case 'html':
+        return '../../../assets/images/asset-uploads/HTML.svg';
       case 'xls':
+        return '../../../assets/images/asset-uploads/XLS.svg';
       case 'xlsx':
-        return '../../../assets/images/pinterest.png';
+        return '../../../assets/images/asset-uploads/XLSX.svg';
+      case 'ppt':
+        return '../../../assets/images/asset-uploads/PPT.svg';
+      case 'pptx':
+        return '../../../assets/images/asset-uploads/PPTX.svg';
+      case 'mp3':
+        return '../../../assets/images/asset-uploads/Audio.svg';
+      case 'mp4':
+      case 'mpeg':
+      case 'mpg':
+        return '../../../assets/images/asset-uploads/Video.svg';
+      case 'avi':
+        return '../../../assets/images/asset-uploads/AVI.svg';
       default:
-        return '../../../assets/images/pinterest.png';
+        return '../../../assets/images/asset-uploads/Documents.svg';
     }
   }
   confirmDelete() {
