@@ -103,9 +103,9 @@
       <div class="modal-footer" style="border: none">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Cancel</button>
         <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="showFileTypeError || !isValidEmail"
-          (click)="sendTestEmailToUser()"><span class="btn btn-primary transition txt_pd-top3">Send Test Mail</span></button>
+          (click)="sendTestEmailToUser()"><span class="btn btn-primary transition txt_pd-top3">{{OliveAi ? 'Send Test Email' : 'Send Test Mail'}}</span></button>
         <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="(showFileTypeError || !isValidEmail) && toEmailIds.length == 0"
-          (click)="sendEmailToUser()"><span class="btn btn-primary transition txt_pd-top3">Send Mail</span></button>
+          (click)="sendEmailToUser()"><span class="btn btn-primary transition txt_pd-top3">{{OliveAi ? 'Send Email' : 'Send Mail'}}</span></button>
       </div>
     </div>
   </div>
@@ -114,7 +114,7 @@
     <ngx-loading [show]="testEmailLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="modal-content mSweetalertWid popup-cu-widthalign">
       <div class="modal-header alert-info br">
-        <h4 class="modal-title f-w-600" id="" translate="">Send Test Mail</h4>
+        <h4 class="modal-title f-w-600" id="" translate="">{{OliveAi ? 'Send Test Email' : 'Send Test Mail'}}</h4>
       </div>
       <div class="modal-body">
         <div>
@@ -135,7 +135,7 @@
       <div class="modal-footer p-10">
         <button class="btn Btn-Gray" type="button" name="cancel" (click)="closeTestMailPopup()">Cancel</button>
         <button class="btn btn-primary" type="button" name="ok" [disabled]="!isValidTestEmailId && toEmailIds.length == 0"
-          (click)="sendTestEmail()">Send Test Mail</button>
+          (click)="sendTestEmail()">{{OliveAi ? 'Send Test Email' : 'Send Test Mail'}}</button>
       </div>
     </div>
   </div>
