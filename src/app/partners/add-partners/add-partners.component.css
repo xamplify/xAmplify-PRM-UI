@@ -364,3 +364,9 @@ background-color: unset!important;
   display: flex;
   justify-content: space-between
 }
+.button_blue.bgcolor-unset.neg_mrg_top4{
+  padding-top: 1px !important;
+}
+span.btn.btn-primary.transition.txt_pd-top3.pdt7{
+  padding-top: 7px !important;
+}

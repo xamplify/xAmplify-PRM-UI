@@ -182,5 +182,7 @@ export class CustomBlocksModalPopupComponent implements OnInit {
   titleUiSwitchEventReceiver(event: any) {
     this.customHtmlBlock.titleVisible = event;
   }
-
+  ngOnDestroy(){
+    $('#custom_html_block_modal_popup').modal('hide');
+  }
 }

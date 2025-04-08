@@ -517,12 +517,16 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.getGroupedAssetsBySlug();
   }
   /** XNFR-745 end **/
-  isAccessToView(expireDate:any,expiredDate:any):boolean{
+  isAccessToView(expireDate:any):boolean{
     const currentDate = new Date();
-    const givenDate = new Date(expireDate ? expireDate : expiredDate);
+    const givenDate = new Date(expireDate);
     const diffInMs = givenDate.getTime() - currentDate.getTime();
     let suffix = diffInMs < 0 ? 'ago' : 'left';
+    if(this.isCreatedUser) {
+     return false;
+    } else {
     return suffix === 'ago' ? true:false;
+    }
   }
 
 

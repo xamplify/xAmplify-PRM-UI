@@ -75,7 +75,6 @@ export class CountryPhoneInputComponent implements OnInit {
   }
 
   autoDetectCountry() {
-    let self = this;
     let maxLength = 0;
     this.selectedCountry = [];
     let matchedCountry = null;
