@@ -72,6 +72,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   previewPath: any;
   isBeeTemplate:boolean = false;
   previewFileType:string;
+  isImageFormat: boolean = false;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -252,7 +253,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any) {
     let isNotVideoFile = assetDetails.assetType != 'mp4';
-    const nonImageFormats = ['pdf','pptx','doc','docx','ppt','xlsx'];
+    const nonImageFormats = ['pptx','doc','docx','ppt','xlsx','pdf', 'csv', 'html', 'txt'];
     let isNonImageFormat = nonImageFormats.includes(assetDetails.assetType);
     if(isNotVideoFile){
       let isBeeTemplate = assetDetails.beeTemplate;
@@ -260,41 +261,32 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          if (isNonImageFormat && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
-            // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-            // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-            //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
-            // );
+          if ((isNonImageFormat || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
+            this.isImageFormat = assetDetails.imageFileType;
             this.isBeeTemplate = isBeeTemplate;
           } else {
             this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
           }
         } else {
-          if (isNonImageFormat && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
-            // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-            // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-            //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
-            // );
+          if ((isNonImageFormat || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
+            this.isImageFormat = assetDetails.imageFileType;
             this.isBeeTemplate = isBeeTemplate;
           } else {
             this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
           }
         }
       }else{
-        if (isNonImageFormat) {
-          // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-          // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-          //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
-          // );
+        if ((isNonImageFormat || assetDetails.imageFileType) && !(this.type == undefined || this.type == 'TRACK')) {
           this.previewPath = assetDetails.assetPath;
           this.previewFileType = assetDetails.assetType;
           this.previewContent = true;
+          this.isImageFormat = assetDetails.imageFileType;
           this.isBeeTemplate = isBeeTemplate;
         } else {
           this.referenceService.preivewAssetOnNewHost(assetDetails.id);

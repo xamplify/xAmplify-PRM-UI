@@ -112,7 +112,7 @@
 		</object>
 	</div> -->
 	<app-preview-content *ngIf="previewContent" [previewPath]="assetPath" [fileType]="fileType"
-		(notifyClose)="closePreview()"></app-preview-content>
+		(notifyClose)="closePreview()" [isImageFormat]="this.assetDetailsViewDto.imageFileType"></app-preview-content>
 </div>
 <ng-container *ngIf="download">
 	<app-download-asset-popup [asset]="selectedAsset" [isPartnerView]="true"

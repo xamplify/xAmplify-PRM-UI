@@ -135,6 +135,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	existingCriterias = new Array<Criteria>();
 	fromDateFilter: any;
 	toDateFilter: any;
+	isImageFormat: boolean = false;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
@@ -612,11 +613,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.referenceService.previewAssetPdfInNewTab(asset.id);
 		}
 		else {
-			const nonImageFormats = ['pdf', 'pptx', 'doc', 'docx', 'ppt', 'xlsx'];
+			const nonImageFormats = ['pdf', 'pptx', 'doc', 'docx', 'ppt', 'xlsx', 'csv', 'txt', 'html'];
 			let isNonImageFormat = nonImageFormats.includes(asset.assetType);
-			if (isNonImageFormat) {
+			if (isNonImageFormat || asset.imageFileType) {
 				this.previewContent = true;
 				this.previewAssetPath = asset.assetPath;
+				this.isImageFormat = asset.imageFileType;
 				this.fileType = asset.assetType;
 			} else {
 				this.referenceService.preivewAssetOnNewHost(asset.id);
