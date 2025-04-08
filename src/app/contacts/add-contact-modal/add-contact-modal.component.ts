@@ -77,7 +77,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     previousEmailIds:any = [];
     isValidEmail : boolean = false;
     @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
-
+    isInvalidMobileNumber: boolean = false;
     
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
@@ -602,6 +602,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.addContactuser.companyDomain = "";
         this.addContactuser.territory = "";
         this.addContactuser.website = "";
+    }
+
+    mobileNumberEventEmitter(event: any) {
+        if (event) {
+            this.addContactuser.mobileNumber = event.mobileNumber;
+            this.isInvalidMobileNumber = event.isInvalidMobileNumber;
+        }
     }
 
 }
