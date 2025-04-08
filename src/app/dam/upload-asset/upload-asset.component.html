@@ -149,7 +149,7 @@
                                           <span [style.color]="invalidAssetName ? 'red':''"><strong>
                                              {{uploadOrReplaceAssetText}}<span *ngIf="isAdd" class="required">*</span></strong>
                                           </span>
-                                          <div class="row">
+                                          <!-- <div class="row">
                                              <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
                                                 <div class="upload-asset-div" (click)="browse()"
                                                    (drop)="chooseAsset($event)">
@@ -243,14 +243,121 @@
                                                    <br />
                                                 </div>
                                              </div>
+                                          </div> -->
+                                          <div class="row mt5">
+                                             <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
+                                                <div class="upload-asset-div">
+                                                   <div class="files-div">
+                                                      <div class="asset_files" (click)="browse()" (drop)="chooseAsset($event)">
+                                                         <input type="file" (change)="chooseAsset($event)" style="opacity: 0.0; position: absolute;height: 76px;width: 414px;cursor: pointer;" id="uploadedAsset" (click)="$event.stopPropagation()">
+                                                         <div class="text-center card-template">
+                                                            <img class="img-templates" src="../../../assets/images/file-upload.svg" height="39px" alt="">
+                                                            <span class="mb0 drag-text mt10">Click to upload</span>
+                                                            <!-- <h2 class="upload-video" style="margin:-5px;padding-top: 5px;">{{uploadOrReplaceAssetText}}</h2>
+                                                                                                                                                         <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6> -->
+                                                            <!-- <button class="button_blue bgcolor-unset" style="color:#fff"><span
+                                                                                                                                                               class="btn btn-primary transition txt_pd-top3">Browse</span></button> -->
+                                                            <!-- <br><br>
+                                                                                                                                                         <span *ngIf="uploadedAssetName?.length>0">
+                                                                                                                                                            <strong>File Name : {{uploadedAssetName | slice: 0:
+                                                                                                                                                               23}}</strong>
+                                                                                                                                                         </span>
+                                                                                                                                                         <span *ngIf="uploadedAssetName?.length==0">
+                                                                                                                                                            <strong>No File Selected</strong>
+                                                                                                                                                   </span> -->
+                                                         </div>
+                                                      </div>
+                                                      <p class="mt10 mb0" *ngIf="uploadedAssetName?.length==0">Maximum file size is 800 MB.</p>
+                                                     <div class="flex justify-content-between" *ngIf="uploadedAssetName?.length > 0">
+                                                      <div class="file-item">
+                                                         <div class="file-info">
+                                                            <div class="flex">
+                                                               <img class="file-icon mr5" [src]="getFileIcon()" alt="Upload">
+                                                               <div class="file-details">                                                         
+                                                                  <div class="file-name"> {{uploadedAssetName | slice: 0:15}}</div>
+                                                                  <div class="file-status">Upload complete</div> 
+                                                               </div>                                                      
+                                                            </div>
+                                                            <div class="success-icon">
+                                                               <i class="fa fa-check"></i>
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         </div>
+                                                         <div class="file-actions">
+                                                            <button class="delete-btn" (click)="confirmDelete()">
+                                                               <i class="fa fa-trash fs-18"></i>
+                                                            </button>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
+                                                <div class="upload-asset-div">
+                                                   <div class="text-center" style="margin-bottom:10px;">
+                                                      <!--  -->
+                                                      <span *ngIf="uploadedCloudAssetName?.length>0">
+                                                         <strong>File Name : {{uploadedCloudAssetName | slice: 0:
+                                                            23}}</strong>
+                                                      </span>
+                                                      <span *ngIf="uploadedCloudAssetName?.length==0">
+                                                         <strong>No File Selected</strong>
+                                                      </span>
+                                                      <!--  -->
+                                                      <div class="row asset-flex">
+                                                         <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 text-center hidden-xs hidden-sm card-template p0">
+                                                            <div class="upload_asset-files">
+                                                               <img src="assets/images/record.png" alt="" data-toggle="tooltip" data-placement="bottom"
+                                                                  title="Click here to record using your webcam" (click)="cameraChange()" height="50" width="auto"
+                                                                  class="camera img-templates" style=" border: 5px; margin: 4px 0px;"
+                                                                  onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
+                                                               <div class="decfsize" style="font-weight: 600;color: #ea7b92;" translate>WebCam</div>
+                                                            </div>
+                                                         </div>
+                                                         <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-center card-template p0">
+                                                            <div class="upload_asset-files">
+                                                               <img src="assets/images/Dropbox.png" class="dropBox img-templates" alt="" data-toggle="tooltip"
+                                                                  data-placement="bottom" title="Click here to access videos from your Dropbox account"
+                                                                  (click)="dropBoxChange()" height="50" width="auto"
+                                                                  style="cursor:pointer; border: 1px; margin: 4px 0px;" onMouseOver="this.style.opacity= 1"
+                                                                  onMouseOut="this.style.opacity= 0.7">
+                                                               <div class="decfsize" style="font-weight: 600;color: #55bede;" translate>DropBox</div>
+                                                            </div>
+                                                         </div>
+                                                         <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-center margin-top-16 card-template p0">
+                                                            <div class="upload_asset-files">
+                                                               <img src="assets/images/box.png" class="box img-templates" alt="" data-toggle="tooltip"
+                                                                  data-placement="bottom" title="Click here to access videos from your Box account"
+                                                                  (click)="downloadFrombox()" height="50" width="auto"
+                                                                  style="cursor:pointer; border: 1px; margin: 4px 0px;" onMouseOver="this.style.opacity= 1"
+                                                                  onMouseOut="this.style.opacity= 0.7">
+                                                               <div class="decfsize" style="font-weight: 600;color: #6eabd7;" translate>Box</div>
+                                                            </div>
+                                                         </div>
+                                                         <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-center margin-top-16 card-template p0">
+                                                            <div class="upload_asset-files">
+                                                               <img src="assets/images/GoogleDrive.png" alt="" data-toggle="tooltip" data-placement="bottom"
+                                                                  class="googleDrive img-templates" title="Click here to access videos from your GoogleDrive account"
+                                                                  (click)="googleDriveChange()" height="50" width="auto"
+                                                                  style="cursor: pointer; border: 1px; margin: 4px 0px;" onMouseOver="this.style.opacity= 1"
+                                                                  onMouseOut="this.style.opacity= 0.7">
+                                                               <div class="decfsize" style="font-weight: 600; color: #eec24c;" translate>GoogleDrive
+                                                               </div>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
                                           </div>
-                                          <div class="col-xs-12 p0 top10px md-padd">
+                                          <!-- <div class="col-xs-12 p0 top10px md-padd">
                                              <div class="col-xs-12 message-content">
                                                 <ul>
                                                    <li translate>Maximum file size is 800 MB.</li>
                                                 </ul>
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                     <div class="row" [class.customDisableCss]='isDisableForm==true'>
@@ -270,7 +377,6 @@
                                                 </div>
                                              </div>
                                           </div>
-                                          <!---XNFR-169-->
                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                              <div class="form-group">
                                                 <label class="control-label col-sm-2" translate>Folder
@@ -284,7 +390,6 @@
                                                 </div>
                                              </div>
                                           </div>
-                                          <!---White Labeled-- XNFR-255-->
                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                              <div class="row grid-container m0">
                                                 <div class="grid-item">
@@ -340,9 +445,6 @@
                                                 </div>
                                              </div>
                                           </div>
-                                          <!---White Labeled-- XNFR-255-->
-
-                                          <!--XNFR-578-->
                                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                              <div class="row grid-container m0">
                                                  <div class="grid-item">
@@ -404,7 +506,6 @@
                                                    <button *ngIf="savedTags.length==0" type="button" class="btn btn-primary add-btn mb10" (click)="addTag()"
                                                       data-toggle="tooltip" data-placement="top" title="Pick up Tag(s)">
                                                       <i class="fa fa-plus mr5" aria-hidden="true"></i>Pick up Tag'(s)</button>
-                                                   <!--  -->
                                                    <div *ngIf="savedTags.length>0" class="add_tag-container">
                                                       <ng-container class="add-tag-list">
                                                          <ng-container *ngFor="let tag of tagsListFirstColumn; let i = index">
@@ -429,8 +530,7 @@
                                        <div class="col-md-4 col-lg-4 col-xs-12 col-sm-4 mb_pl_15 mobile_thumbnail"
                                           style="padding-left: 0;">
                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                                             <!---Thumbnail Image-->
-                                             <div>
+                                            <div>
                                                 <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload
                                                       Thumbnail </strong></span>
                                                 <div class="asset-thumbnail-div-sm mThumbwidth mb_imgwidth"
@@ -467,7 +567,12 @@
                                              </div>
                                           </div>
                                        </div>
-                                    </div>
+                                    </div> 
+                                  
+
+
+
+
                                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 mb-padding"
                                        [class.customDisableCss]='isDisableForm==true'>
                                        <div *ngIf="!damUploadPostDto.validDescription && descriptionErrorMessage?.length > 0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
