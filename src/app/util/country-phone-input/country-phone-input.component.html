@@ -11,7 +11,7 @@
 
       <div class="dropdown-options-container" *ngIf="isOpen">
         <div class="search-box">
-          <input type="text" [(ngModel)]="searchQuery" (input)="filterCountries()" placeholder="Search country...">
+          <input class="form_controls" type="text" [(ngModel)]="searchQuery" (input)="filterCountries()" placeholder="Search country...">
         </div>
         <ul class="dropdown-options">
           <li *ngFor="let country of filteredCountries" (click)="selectCountry(country)"
@@ -25,7 +25,7 @@
     </div>
 
     <div class="phone-input-field">
-      <input type="tel" [(ngModel)]="mobileNumber" [placeholder]="placeholder" (input)="validateMobileNumber()"
+      <input class="form_controls" type="tel" [(ngModel)]="mobileNumber" [placeholder]="placeholder" (input)="validateMobileNumber()"
         (keydown)="onKeyDown($event)" (keypress)="numbersOnly($event)" [maxlength]="maxlength">
     </div>
   </div>

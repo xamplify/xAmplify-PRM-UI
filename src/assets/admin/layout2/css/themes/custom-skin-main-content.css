@@ -2559,3 +2559,20 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 .drag-text{
   color: var(---text-color) !important;
 }
+.dropdown-selected,.phone-input-field input,.search-box input{
+  color: var(---text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.dropdown-options-container,.search-box{
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.dropdown-options li{
+  border: 1px solid var(--border-color) !important;
+}
+.dropdown-options li:hover,.dropdown-options li.selected {
+  background-color: var(--div-bg-color) !important;
+}
