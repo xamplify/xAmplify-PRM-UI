@@ -4558,3 +4558,7 @@ a.Iconhover.custom-grid-icon.icon_margin{
 .modal-title{
   color: white !important;
 }
+/* upload asset */
+.file-item,.delete_btn{
+background: #f0f5fa !important;
+box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;}

@@ -558,7 +558,7 @@ input:checked + .toggle-slider:before {
   color: white;
 }
 
-.delete-btn {
+.delete_btn {
   color: #007bff;
   font-size: 20px;
   background: none;
@@ -597,7 +597,7 @@ border: 1px solid #ddd;
 border-radius: 4px;
 padding: 3px 8px;
 margin-right: 10px;}
-.delete-btn{
+.delete_btn{
   background-color: #fff;
   box-shadow: 0 2px 4px rgb(0 0 0 / 11%);
   width: 58px;
@@ -605,7 +605,7 @@ margin-right: 10px;}
   border-radius: 8px;
   margin-top: 19px;
 }
-.delete-btn:hover,.file-item:hover {
+.delete_btn:hover,.file-item:hover {
   box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
 }
 .fs-18{

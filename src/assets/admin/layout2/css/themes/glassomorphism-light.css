@@ -4612,3 +4612,15 @@ color: #fff!important;
     bottom: -81px !important;
   }
 }
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.asset_files{
+  background: rgb(209 170 170 / 15%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+}
+.file-name,.drag-text{
+  color: #000!important;
+}
