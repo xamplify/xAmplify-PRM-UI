@@ -55,7 +55,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
     this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
     this.pagination = this.utilService.sortOptionValues(this.vanityEmailSortOption.vanityEmailTemplates, this.pagination);
     if(index == 1){
-      this.pagination.sortcolumn ="subject";
+      this.pagination.sortcolumn ="name";
     }
     this.getVanityEmailTemplates(this.pagination);
 }
@@ -138,7 +138,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
 	this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
 	this.pagination = this.utilService.sortOptionValues(this.vanityEmailSortOption.vanityEmailTemplates, this.pagination);
   if(this.selectedTypeIndex == 1){
-    this.pagination.sortcolumn = "subject";
+    this.pagination.sortcolumn = "name";
   }
 	this.getVanityEmailTemplates(this.pagination);
 }

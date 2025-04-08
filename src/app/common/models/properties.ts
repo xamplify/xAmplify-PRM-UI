@@ -12,6 +12,7 @@ export class Properties {
 	xamplify_router = 'https://www.xamplify.com/';
 
 	NO_RESULTS_FOUND = "No results found.";
+	NO_DATA_FOUND = "No data found.";
 	EMAIL_SENT_SUCCESS = "Email sent successfully.";
 	NO_USERS_SELECT_ERROR = "You have not selected any user.";
 	//FOR CONTACTS
@@ -352,7 +353,7 @@ export class Properties {
 	campaignsHeaderText = "Campaigns";
 	assetsHeaderText = "Assets";
 	tracksHeaderText = "Tracks";
-	playBooksHeaderText = "Play Books";
+	playBooksHeaderText = "Playbooks";
 	/****XNFR-342****/
 
 	/***XNFR-454*****/
@@ -477,7 +478,7 @@ export class Properties {
 	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
 
 	/** XNFR-745 **/
-	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders while viewing the Play Book";
+	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders while viewing the Playbook";
 	disableOrderAssetsTooltipMessage = "Enabling 'Show Assets By Folders' will lock asset ordering since assets are organized by folders";
 	/***** XNFR-755 *****/
 	SIGNUP_PROCESS_NOT_COMPLETED = "The sign-up process is not yet complete.";
@@ -568,6 +569,9 @@ export class Properties {
 	/** XNFR-885 **/
 	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**As the replaced asset must undergo the re-approval process, selecting partner(s) is not allowed at this stage.";
 	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approved version has been successfully replaced by its parent version.";
+
+	/** XNFR-929 **/
+	CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE: number = 2021;
 
 }
 

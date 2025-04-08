@@ -16,4 +16,4 @@
   <!--Chat GPT Modal-->
   <app-chat-gpt-modal [isChatGptIconDisplayed]="isChatGptIconDisplayed" [isShowingRouteLoadIndicator]="isShowingRouteLoadIndicator" [showLoaderForAuthGuard]="showLoaderForAuthGuard"></app-chat-gpt-modal>
   
-  
+  <app-aircall-dialer *ngIf="isChatGptIconDisplayed"></app-aircall-dialer>

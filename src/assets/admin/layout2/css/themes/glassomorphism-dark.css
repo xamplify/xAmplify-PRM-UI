@@ -2983,7 +2983,7 @@ input.field-border-customization {
     backdrop-filter: blur(5px);
     border-radius: 10px;
 }
-.activeCRM{
+.activeCRM, .activeCalendar, .activeCall{
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.2) !important;
   border: 1px solid rgba(255, 255, 255, 0.2 )!important;
@@ -4342,8 +4342,8 @@ color: #fff !important;
 .modal-title-new{
   color: white !important;
 }
-@media only screen and (min-width: 600px) and (max-width: 1024px) {
-  .clip_mask{
-      bottom: -67px !important;
+@media only screen and (min-width: 600px) and (max-width:1024px) {
+  .clip_mask {
+    bottom: -81px !important;
   }
 }

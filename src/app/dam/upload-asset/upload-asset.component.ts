@@ -170,6 +170,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     storeAdd: boolean = false;
     activeAddSignatureToggle: boolean = false;
 
+    deleteUploadedAsset = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch, public signatureService:SignatureService){
@@ -1777,6 +1778,36 @@ zoomOut() {
             }
           });
       }
-          
-
+getFileIcon(): string {
+    if (!this.uploadedAssetName) return '../../../assets/images/pdf-file.svg';
+  
+    // Get the file extension by splitting and safely handling empty or undefined cases
+    const extension = this.uploadedAssetName.split('.').pop();
+    
+    // If there's no extension, return default icon
+    if (!extension) return '../../../assets/images/pdf-file.svg';
+  
+    // Convert extension to lowercase
+    const lowerExtension = extension.toLowerCase();
+  
+    switch (lowerExtension) {
+      case 'pdf':
+        return '../../../assets/images/pdf-file.svg';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+        return '../../../assets/images/pinterest.png';
+      case 'doc':
+      case 'docx':
+        return '../../../assets/images/pinterest.png';
+      case 'xls':
+      case 'xlsx':
+        return '../../../assets/images/pinterest.png';
+      default:
+        return '../../../assets/images/pinterest.png';
+    }
+  }
+  confirmDelete() {
+    this.clearPreviousSelectedAsset();
+  }
 }

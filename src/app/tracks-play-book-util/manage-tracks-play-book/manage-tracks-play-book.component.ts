@@ -19,6 +19,7 @@ import { Roles } from 'app/core/models/roles';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
+import { DatePipe } from '@angular/common';
 
 
 declare var swal:any, $: any;
@@ -82,7 +83,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
-    public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
+    public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,public datePipe: DatePipe,) {
     this.referenceService.renderer = this.renderer;
     this.pagination.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
   }
@@ -91,8 +92,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.tracksModule = this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK];
     this.moduleId = this.tracksModule ? this.roles.learningTrackId :this.roles.playbookId;
     this.isPartnerView = this.router.url.indexOf('/shared') > -1;
-    this.titleHeader = this.tracksModule ? "Tracks" : "Play Books";
-    this.trackOrPlayBookText = this.tracksModule ? "track" : "play book";
+    this.titleHeader = this.tracksModule ? "Tracks" : "Playbooks";
+    this.trackOrPlayBookText = this.tracksModule ? "track" : "playbook";
     this.suffixHeader = this.isPartnerView ? 'Shared ':'Manage ';
     if (this.folderListViewCategoryId != undefined) {
       this.categoryId = this.folderListViewCategoryId;
@@ -124,7 +125,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
         this.message = "Track created successfully";
       } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-        this.message = "Play Book created successfully";
+        this.message = "Playbook created successfully";
       }
       this.showMessageOnTop(this.message);
     } else if (this.referenceService.isUpdated) {
@@ -132,7 +133,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         this.message = "Track updated successfully";
         this.showMessageOnTop(this.message);
       } else if ((this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) && !this.folderListViewExpanded) {
-        this.message = "Play Book updated successfully";
+        this.message = "Playbook updated successfully";
         this.showMessageOnTop(this.message);
       }
     }
@@ -427,7 +428,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       (response: any) => {
         if (response.statusCode == 200) {
           /****XBI-2589***/
-          let trackOrPlayBook =  this.tracksModule ? "Track":"Play Book";
+          let trackOrPlayBook =  this.tracksModule ? "Track":"Playbook";
           let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
           this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);
@@ -547,5 +548,46 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     }
   }
   /** XNFR-824 end **/
+  /*** XNFR-897 ***/
+   expireDescription(expireDate: any): string {
+    if(!expireDate) {
+      return ;
+    }
+    const currentDate = new Date();
+    const givenDate = new Date(expireDate);
+    const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
+    const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    let suffix = diffInMs < 0 ? 'ago' : 'left';
+    if (suffix === 'ago') {
+      return `The ${this.tracksModule ? "Track" : "Play Book"} expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+    } else if (diffInDays < 1) {
+      const hours = diffInHours;
+      const minutes = diffInMinutes % 60;
+      return `The ${this.tracksModule ? "Track" : "Playbook"} will be expired in ${hours} hrs ${minutes} mins ${suffix}`;
+    } else if (diffInDays >= 1 && diffInDays <= 15) {
+      let days = diffInMs < 0 ? `${diffInDays} days ago` : ` ${diffInDays} days`;
+      return `The ${this.tracksModule ? "Track" : "Playbook"} will be expired in ${days}`
+    } else {
+      const currentYear = currentDate.getFullYear();
+      const givenYear = givenDate.getFullYear();
+
+      if (currentYear === givenYear) {
+        return `The ${this.tracksModule ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM');
+      } else {
+        return `The ${this.tracksModule ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      }
+    }
+  }
+  formatDate(date: Date, format: string): string {
+    const options: any = {};
+    if (format.includes('dd')) options.day = '2-digit';
+    if (format.includes('MMM')) options.month = 'short';
+    if (format.includes('yyyy')) options.year = 'numeric';
+
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
 
 }

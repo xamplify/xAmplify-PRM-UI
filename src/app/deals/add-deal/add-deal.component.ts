@@ -1457,7 +1457,8 @@ export class AddDealComponent implements OnInit {
           }
 
           if (("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType || "HUBSPOT" === this.activeCRMDetails.createdForActiveCRMType ||
-            "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType) && this.actionType === 'add') {
+            "PIPEDRIVE" === this.activeCRMDetails.createdForActiveCRMType || "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType) 
+            && this.actionType === 'add') {
             this.showAttachLead = false;
             this.showAttachButton = true;
           } else {

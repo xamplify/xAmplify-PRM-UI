@@ -31,6 +31,8 @@ export class SendTestEmailComponent implements OnInit {
   @Input() toEmailId :any;
   @Input() selectedItem : any;
   @Output() sendmailNotify =new EventEmitter
+  @Input() sendSignatureRemainder: boolean; 
+  
   email = "";
   headerTitle = "";
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
@@ -75,7 +77,9 @@ export class SendTestEmailComponent implements OnInit {
     this.referenceService.openModalPopup(this.modalPopupId);
     $('#sendTestEmailHtmlBody').val('');
     this.tabsEnabled = false;
-    if(this.vanityTemplatesPartnerAnalytics && this.id !== undefined && this.id!=0 ){
+    if(this.sendSignatureRemainder){
+      this.getVanityEmailTemplateForParterSignatureRemainder()
+    }else if(this.vanityTemplatesPartnerAnalytics && this.id !== undefined && this.id!=0 ){
       this.getVanityEmailTemplatesPartnerAnalytics();
     }else if(this.isSendMdfRequestOptionClicked){
       this.headerTitle = "Unlock MDF Funds for Your Campaign";
@@ -157,80 +161,7 @@ export class SendTestEmailComponent implements OnInit {
     this.processing = true;
     this.vanityURLService.getHtmlBody(this.id).subscribe(
       response => {
-        let map = response.data;
-        let htmlBody = map.body;
-        let subject = map.subject;
-        let mergeTagsInfo = map['mergeTagsInfo'];
-        htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
-        this.sendTestEmailDto.body = htmlBody;
-        this.sendTestEmailDto.subject = subject;
-        this.sendTestEmailDto.toEmail = this.toEmailId;
-        if (this.sendTestEmailDto.subject.length > 0 && this.sendTestEmailDto.toEmail.length > 0 && this.referenceService.validateEmailId(this.sendTestEmailDto.toEmail)) {
-          this.isValidForm = true;
-        } else {
-          this.isValidForm = false;
-        }
-        $('#sendTestEmailHtmlBody').html(''); 
-        $('#sendTestEmailHtmlBody').append(htmlBody);
-        $('div.selector, div.selector span, div.checker span, div.radio span, div.uploader, div.uploader span.action, div.button, div.button span')
-          .css('background-image', 'url("path/to/your/new-image.png")');
-        $('div.button span span a').each(function () {
-          this.style.setProperty('opacity', 'unset', 'important');
-        });
-        $('div.button span').css({
-          'padding': '1px 15px 0px 2px',
-          'cursor': 'not-allowed'
-        });
-        $('div.plspx').css({
-          'cursor': 'not-allowed',
-        });
-        $('table.social-table').css({
-          'padding': '0 5px 0 0',
-          'cursor': 'not-allowed',
-        });
-        $('table.social-table a').css('pointer-events', 'none');
-
-        $('table.social-table a').removeAttr('href');
-
-        $('div.button').css({
-          'padding': '1px 15px 0px 2px',
-          'cursor': 'not-allowed'
-        }).prop('disabled', true);
-
-        $('div.button').on('click', function (e) {
-          e.preventDefault();
-          return false;
-        });
-        $('div.button a').css({
-          'padding': '1px 15px 0px 2px',
-          'cursor': 'not-allowed'
-        }).prop('disabled', true);
-        $('div.alignment a').css({
-          'cursor': 'not-allowed',
-          'pointer-events': 'none'
-        });
-        $('div.button-container a').css({
-          'cursor': 'not-allowed',
-          'pointer-events': 'none'
-        });
-        $('td.pad a').css({
-          'cursor': 'not-allowed',
-          'pointer-events': 'none'
-        });
-    
-        $('tbody').addClass('preview-shown')
-
-        $('td a').css({
-          'cursor': 'not-allowed',
-          'pointer-events': 'none'
-        });
-        $('tbody td').css({
-          'background-color': 'inherit'
-        });
-        $('table tbody').css({
-          'background-color': 'inherit'
-        });
-        this.processing = false;
+        this.processEmailTemplate(response);
         
       }, error => {
         this.processing = false;
@@ -240,14 +171,93 @@ export class SendTestEmailComponent implements OnInit {
     );
   }
 
+  private processEmailTemplate(response: any) {
+    let map = response.data;
+    let htmlBody = map.body;
+    let subject = map.subject;
+    let mergeTagsInfo = map['mergeTagsInfo'];
+    htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
+    this.sendTestEmailDto.body = htmlBody;
+    this.sendTestEmailDto.subject = subject;
+    this.sendTestEmailDto.toEmail = this.toEmailId;
+    if (this.sendTestEmailDto.subject.length > 0 && this.sendTestEmailDto.toEmail.length > 0 && this.referenceService.validateEmailId(this.sendTestEmailDto.toEmail)) {
+      this.isValidForm = true;
+    } else {
+      this.isValidForm = false;
+    }
+    $('#sendTestEmailHtmlBody').html('');
+    $('#sendTestEmailHtmlBody').append(htmlBody);
+    $('div.selector, div.selector span, div.checker span, div.radio span, div.uploader, div.uploader span.action, div.button, div.button span')
+      .css('background-image', 'url("path/to/your/new-image.png")');
+    $('div.button span span a').each(function () {
+      this.style.setProperty('opacity', 'unset', 'important');
+    });
+    $('div.button span').css({
+      'padding': '1px 15px 0px 2px',
+      'cursor': 'not-allowed'
+    });
+    $('div.plspx').css({
+      'cursor': 'not-allowed',
+    });
+    $('table.social-table').css({
+      'padding': '0 5px 0 0',
+      'cursor': 'not-allowed',
+    });
+    $('table.social-table a').css('pointer-events', 'none');
+
+    $('table.social-table a').removeAttr('href');
+
+    $('div.button').css({
+      'padding': '1px 15px 0px 2px',
+      'cursor': 'not-allowed'
+    }).prop('disabled', true);
+
+    $('div.button').on('click', function (e) {
+      e.preventDefault();
+      return false;
+    });
+    $('div.button a').css({
+      'padding': '1px 15px 0px 2px',
+      'cursor': 'not-allowed'
+    }).prop('disabled', true);
+    $('div.alignment a').css({
+      'cursor': 'not-allowed',
+      'pointer-events': 'none'
+    });
+    $('div.button-container a').css({
+      'cursor': 'not-allowed',
+      'pointer-events': 'none'
+    });
+    $('td.pad a').css({
+      'cursor': 'not-allowed',
+      'pointer-events': 'none'
+    });
+
+    $('tbody').addClass('preview-shown');
+
+    $('td a').css({
+      'cursor': 'not-allowed',
+      'pointer-events': 'none'
+    });
+    $('tbody td').css({
+      'background-color': 'inherit'
+    });
+    $('table tbody').css({
+      'background-color': 'inherit'
+    });
+    this.processing = false;
+  }
+
   send() {
     if (!this.isValidForm) {
       this.showErrorMessage("Please provide valid inputs.");
       this.referenceService.closeSweetAlert();
       return;
     }
-    if (this.vanityTemplatesPartnerAnalytics) {
-      this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
+    if (this.vanityTemplatesPartnerAnalytics || this.sendSignatureRemainder) {
+      if(this.vanityTemplatesPartnerAnalytics){
+        this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
+      }
       this.sendmailNotify.emit({ 'item': this.selectedItem });
       this.callEventEmitter();
     }else if(this.isSendMdfRequestOptionClicked){
@@ -445,6 +455,20 @@ export class SendTestEmailComponent implements OnInit {
       }
     }
     this.getVanityEmailTemplatesPartnerAnalytics();
+  }
+
+  getVanityEmailTemplateForParterSignatureRemainder() {
+    this.processing = true;
+    this.vanityURLService.getPartnerRemainderTemplate().subscribe(
+      response => {
+        this.processEmailTemplate(response);
+        
+      }, error => {
+        this.processing = false;
+        this.callEventEmitter();
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
   }
 
   }

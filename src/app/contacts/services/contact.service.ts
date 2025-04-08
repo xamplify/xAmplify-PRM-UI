@@ -1001,8 +1001,8 @@ export class ContactService {
     }
 
     /**XNFR-867**/
-    fetchUsersForCompanyJourney(userListId:any) {
-        let url = this.contactsUrl + "fetchUsersByUserListId/" + userListId +"?access_token=" + this.authenticationService.access_token;
+    fetchUsersForCompanyJourney(userListId:any, isForCallIntegration:boolean) {
+        let url = this.contactsUrl + "fetchUsersByUserListId/" + userListId + "/" + isForCallIntegration + "?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

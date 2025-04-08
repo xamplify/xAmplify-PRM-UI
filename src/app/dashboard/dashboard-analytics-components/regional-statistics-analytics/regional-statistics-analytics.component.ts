@@ -45,7 +45,9 @@ export class RegionalStatisticsAnalyticsComponent implements OnInit {
     this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
     this.getRegionalStatistics();
   }
-
+  ngOnDestroy(){
+    $('#worldMapModal').modal('hide');
+  }
   getRegionalStatistics(){
     this.referenceService.loading(this.regionalStatisticsLoader,true);
     this.dashboardService.getRegionalStatistics(this.dashboardAnalyticsDto).

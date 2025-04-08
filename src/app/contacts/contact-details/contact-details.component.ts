@@ -24,6 +24,8 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CompanyService } from 'app/company/service/company.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { CallIntegrationService } from 'app/core/services/call-integration.service';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 declare var $: any, swal: any;
 
 @Component({
@@ -144,6 +146,10 @@ export class ContactDetailsComponent implements OnInit {
   showCallsTab: boolean = false;
   activeCallDetails:any;
   isReloadCallTab:boolean;
+  userListUsersLoader: HttpRequestLoader = new HttpRequestLoader();
+  companyUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  mobileNumber: any;
+  enableDialButton: boolean = false;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -182,6 +188,7 @@ export class ContactDetailsComponent implements OnInit {
       this.getCompany();
       this.fetchContactsAndCount();
       this.fetchTotalDealAmount();
+      this.fetchUsersForCompanyJourney();
     } else {
       this.getContact();
       this.checkTermsAndConditionStatus();
@@ -195,6 +202,9 @@ export class ContactDetailsComponent implements OnInit {
     this.fetchLeadsAndCount();
     this.fetchDealsAndCount();
     this.fetchCampaignsAndCount();
+    this.referenceService.aircallPhone.on('call_ended', callInfos => {
+      this.reloadCallTab();
+    });
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -248,6 +258,7 @@ export class ContactDetailsComponent implements OnInit {
             this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
             this.selectedContact = event;
             this.selectedContact.id = this.contactId;
+            this.mobileNumber = event.mobileNumber;
           }
           this.isLoading = false;
         },
@@ -309,6 +320,7 @@ export class ContactDetailsComponent implements OnInit {
         this.setHighlightLetter();
         this.showActivityTab = true;
         this.setContactNameToDisplay();
+        this.mobileNumber = this.selectedContact.mobileNumber;
       }
     )
   }
@@ -907,17 +919,88 @@ export class ContactDetailsComponent implements OnInit {
     )
   }
 
-  closeCallModalPopup(event) {
-    if (this.activeCallDetails != undefined && this.referenceService.checkIsValidString(this.activeCallDetails.type)) {
-      this.isReloadCallTab = event;
-    } else {
-      this.getActiveCallIntegrationDetails();
-    }
-    this.showAircallDialer = false;
+  reloadCallTab() {
+    this.isReloadCallTab = !this.isReloadCallTab;
   }
 
-  reloadCallTab(event) {
-    this.isReloadCallTab = event;
+  openAircallPopup() {
+    this.referenceService.openModalPopup("addCallModalPopup");
+  }
+
+  dialNumber() {
+    if (this.isCompanyJourney) {
+      this.closeSelectContactModalPopup();
+    }
+    this.openAircallPopup();
+    const payload = {
+      phone_number: this.mobileNumber
+    };
+    this.referenceService.aircallPhone.send(
+      'dial_number',
+      payload,
+      (success, data) => {
+      }
+    );
+  }
+
+  fetchUsersForCompanyJourney() {
+    this.referenceService.loading(this.userListUsersLoader, true);
+    this.contactService.fetchUsersForCompanyJourney(this.contactId, true).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.companyUsersSearchableDropDownDto.data = response.data;
+          this.companyUsersSearchableDropDownDto.placeHolder = "Select a contact";
+        } else {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
+        }
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }, error => {
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.referenceService.loading(this.userListUsersLoader, false);
+      }, () => {
+        if (this.companyUsersSearchableDropDownDto.data != undefined && this.companyUsersSearchableDropDownDto.data.length > 0) {
+          this.mobileNumber = this.companyUsersSearchableDropDownDto.data[0].mobileNumber;
+        }
+      }
+    )
+  }
+
+  getSelectedAssignedToUserId(event) {
+    this.mobileNumber = event != undefined ? event['mobileNumber'] : '';
+    if (this.mobileNumber != undefined && this.mobileNumber.length > 0) {
+      this.enableDialButton = true;
+    } else {
+      this.enableDialButton = false;
+    }
+  }
+
+  openSelectContactModalPopup() {
+    this.referenceService.openModalPopup('addSelectContactModalPopup');
+  }
+
+  closeSelectContactModalPopup() {
+    this.referenceService.closeModalPopup('addSelectContactModalPopup');
+  }
+
+  openDialNumber() {
+    if (this.isCompanyJourney) {
+      this.openSelectContactModalPopup();
+    } else {
+      this.dialNumber();
+    }
+  }
+
+  validateMobileNumber(mobileNumber: string): boolean {
+    if (mobileNumber) {
+      const phone = parsePhoneNumberFromString(mobileNumber);
+      if (phone && isValidPhoneNumber(mobileNumber)) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
   
 }

@@ -214,6 +214,10 @@ import { ConnectAccountsComponent } from 'app/util/connect-accounts/connect-acco
 import { FeedUpdateComponent } from 'app/util/feed-update/feed-update.component';
 import { FeedComponent } from 'app/util/feed/feed.component';
 import { RssLoaderComponent } from 'app/util/rss-loader/rss-loader.component';
+import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dialer.component';
+import { PreviewContentComponent } from 'app/util/preview-content/preview-content.component';
+import { CustomBlocksModalPopupComponent } from './custom-blocks-modal-popup/custom-blocks-modal-popup.component';
+import { CountryPhoneInputComponent } from 'app/util/country-phone-input/country-phone-input.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -256,7 +260,8 @@ import { RssLoaderComponent } from 'app/util/rss-loader/rss-loader.component';
 		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, AccessDeniedUtilComponent, VendorCompanyModelPopupComponent, UniversalSearchBarComponent,
 		ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, ContentModuleStatusAnalyticsComponent, 
 		TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,UploadImageComponent,DateRangeDisplayComponent,
-		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent
+		MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent, SelectfieldComponent, OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,
+		UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent
 	],
 
 
@@ -297,7 +302,9 @@ import { RssLoaderComponent } from 'app/util/rss-loader/rss-loader.component';
 		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent,AccessDeniedUtilComponent, VendorCompanyModelPopupComponent,
 		UniversalSearchBarComponent, ContentStatusHistoryModalPopupComponent, AssetApprovalConfigurationSettingsComponent, 
 		ContentModuleStatusAnalyticsComponent, TeamMemberWiseAssetDetailsComponent,DigitalSignatureComponent,SignatureComponent,
-		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent
+		UploadImageComponent,DateRangeDisplayComponent,MultiselectApprovalCommentsModalPopupComponent,SelectDigitalSignatureComponent,CampaignMdfRequestsEmailsSentHistoryComponent,SelectfieldComponent,
+		OrderFieldsComponent,UnlayerBuliderComponent,AiChatManagerComponent,AddEmailModalPopupComponent,UpdateStatusComponent,ConnectAccountsComponent,FeedUpdateComponent,FeedComponent,RssLoaderComponent,
+		AircallDialerComponent, CustomBlocksModalPopupComponent, PreviewContentComponent, CountryPhoneInputComponent
 	]
 
 

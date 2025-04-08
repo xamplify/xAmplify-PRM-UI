@@ -44,6 +44,9 @@ export class ViewDamComponent implements OnInit {
   formData: any = new FormData();
   askAiValue: boolean;
   pdfDoc: any = null;
+	previewContent: boolean = false;
+	assetPath: any;
+	fileType: string;
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
@@ -66,7 +69,23 @@ export class ViewDamComponent implements OnInit {
 
   viewContent(){
 	this.saveGeoLocationAnalytics(this.assetId);
-	this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
+	const nonImageFormats = ['pdf','pptx','doc','docx','ppt','xlsx'];
+    let isNonImageFormat = nonImageFormats.includes(this.assetDetailsViewDto.assetType);
+	if (isNonImageFormat && !this.assetDetailsViewDto.beeTemplate) {
+		this.previewContent = true;
+		// let assetPath = this.assetDetailsViewDto.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime();
+		// this.assetPath = this.domSanitizer.bypassSecurityTrustResourceUrl(
+		// 	`https://docs.google.com/gview?url=${this.assetDetailsViewDto.assetPath}&embedded=true`
+		// );
+		if(this.assetDetailsViewDto.sharedAssetPath){
+			this.assetPath = this.assetDetailsViewDto.sharedAssetPath;
+		} else {
+			this.assetPath = this.assetDetailsViewDto.assetPath;
+		}
+		this.fileType = this.assetDetailsViewDto.assetType;
+	} else {
+		this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
+	}
   }
 
   closeAssetDetails(){
@@ -295,6 +314,10 @@ export class ViewDamComponent implements OnInit {
 		}).catch(function (error) {
 		  console.error('Error extracting PDF text:', error);
 		});
+	  }
+
+	  closePreview() {
+		this.previewContent = false;
 	  }
 
 }

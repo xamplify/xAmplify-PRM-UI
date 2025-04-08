@@ -18,6 +18,7 @@ export class FlatpickrComponent implements OnInit {
   @Input() enableTime: any;
   @Input() type: any;
   @Input() dateFormat: any;
+  @Input() time_24hr: boolean = true;//XNFR-897
   @Output() dataFieldChange: EventEmitter<any> = new EventEmitter();
   constructor() { }
 
@@ -54,13 +55,16 @@ export class FlatpickrComponent implements OnInit {
     const self = this;
     flatpickr('.valueEditor' + self.type, {
       dateFormat: self.dateFormat,
-      time_24hr: true,
+      time_24hr: self.time_24hr,
       minDate: new Date(),
       defaultDate: new Date(),
       //static: true,
       //noCalendar: false,
       enableTime: self.enableTime
     });
+    if (!self.time_24hr) {
+      this.customPlaceHolder = "MM/DD/YYYY";
+    }
   }
 
 }

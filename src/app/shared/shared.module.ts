@@ -56,7 +56,6 @@ import { EventCalendarComponent } from 'app/activity/event-calendar/event-calend
 import { CompanyCampaignsListComponent } from 'app/campaigns/company-campaigns-list/company-campaigns-list.component';
 import { SelectContactComponent } from 'app/deals/select-contact/select-contact.component';
 import { CallActivityComponent } from 'app/activity/call-activity/call-activity.component';
-import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dialer.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
@@ -70,7 +69,7 @@ import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dial
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
                 CustomManageLeadsComponent, CustomManageDealsComponent,EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent,  MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent,
-                AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent, CallActivityComponent, AircallDialerComponent], 
+                AddTaskModalPopupComponent, TaskActivityComponent, PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent,CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent, CallActivityComponent], 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
@@ -79,7 +78,7 @@ import { AircallDialerComponent } from 'app/contacts/aircall-dialer/aircall-dial
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent,
                 CustomManageDealsComponent,  EmailActivityComponent, AddNoteModalPopupComponent, NoteComponent, ActivityStreamComponent, PreviewEmailActivityComponent, AgmCoreModule, MarketplaceUtilComponent, MarketplaceMapUtilComponent, FormAnalyticsUtilComponent, VendorJourneyFormAnalyticsComponent, DetailViewComponent, AddTaskModalPopupComponent, TaskActivityComponent,
-                PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent, CallActivityComponent, AircallDialerComponent],
+                PreviewTaskActivityComponent, AddMeetingModalPopupComponent, MeetingActivityComponent, CalendarIntegrationModalPopupComponent, PreviewMeetingActivityComponent, EventCalendarComponent, SelectContactComponent, CompanyCampaignsListComponent, CallActivityComponent],
         providers: [FormService],
 })
 

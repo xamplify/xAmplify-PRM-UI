@@ -3053,7 +3053,7 @@ input.field-border-customization {
   background-color : #f0f5fa !important;
   border-radius: 10px;
 }
-.activeCRM{
+.activeCRM, .activeCalendar, .activeCall{
   background: linear-gradient(270deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
   box-shadow: -5px 5px 10px #bebebe, 5px -5px 10px #ffffff !important;
   border-radius: 10px;
@@ -4557,10 +4557,4 @@ a.Iconhover.custom-grid-icon.icon_margin{
 }
 .modal-title{
   color: white !important;
-}
-
-@media only screen and (min-width: 600px) and (max-width: 1024px) {
-  .clip_mask{
-      bottom: -68px !important;
-  }
 }

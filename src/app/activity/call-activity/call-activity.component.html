@@ -6,7 +6,7 @@
         <i aria-hidden="true" class="fa fa-refresh"></i>
       </a>
       <a class="close-circle ml3" data-placement="bottom" data-toggle="tooltip" title="Make a Call"
-        data-original-title="Make a Call" (click)="openAircallDialer()">
+        data-original-title="Make a Call" (click)="dialNumber()">
         <i aria-hidden="true" class="glyphicon glyphicon-phone"></i>
       </a>
       <div class="btn-group pull-right">
@@ -229,4 +229,4 @@
   </div>
 </div>
 
-<app-aircall-dialer *ngIf="showAircallDialer" [isReloadTab]="isReloadTab" (notifyClose)="closeCallModalPopup($event)"></app-aircall-dialer>
+<!-- <app-aircall-dialer *ngIf="showAircallDialer" [isReloadTab]="isReloadTab" (notifyClose)="closeCallModalPopup($event)"></app-aircall-dialer> -->

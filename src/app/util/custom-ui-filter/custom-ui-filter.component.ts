@@ -30,10 +30,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		{ 'name': 'eq', 'value': '=' },
 		{ 'name': 'like', 'value': 'Contains' },
 	];
-	criterias = new Array<Criteria>();
+	@Input() criterias = new Array<Criteria>();
 	isclearFilter: boolean;
-	fromDateFilter: any;
-	toDateFilter: any;
+	@Input() fromDateFilter: any;
+	@Input() toDateFilter: any;
 	isValidationErrorMessage: boolean;
 	filterConditionErrorMessage: any;
 	pagination: Pagination = new Pagination();
@@ -132,8 +132,14 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 			this.parterViewText = "Onboarded On";
 		}
 		
-		if( this.criteria.property == "Field Name*" && this.criteria.operation == "Condition*") {
+		if( this.criteria.property == "Field Name*" && this.criteria.operation == "Condition*" && this.criterias.length==0) {
 		   this.addNewRow();
+		} else if (this.criterias != undefined && this.criterias.length > 0) {
+			this.criterias.forEach((criteria, index) => {
+				this.onSelection(criteria, index);
+				this.dropdownDisabled[index] = true;
+			});
+			this.isclearFilter = true;
 		}
 		
 	}
@@ -207,17 +213,23 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 				}
 				if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.filterConditionErrorMessage = "Please fill the required data at position " + (i + 1);
-					this.criterias[i].value1 = this.criterias[i].value1.trim();
+					if (this.criterias[i].value1 != undefined) {
+						this.criterias[i].value1 = this.criterias[i].value1.trim();
+					}
 				} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
 					this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + (i + 1);
 				} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.isValidationErrorMessage = true;
-					this.criterias[i].value1 = this.criterias[i].value1.trim();
+					if (this.criterias[i].value1 != undefined) {
+						this.criterias[i].value1 = this.criterias[i].value1.trim();
+					}
 					this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + (i + 1);
 				} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined")) {
 					this.isValidationErrorMessage = true;
-					this.criterias[i].value1 = this.criterias[i].value1.trim();
+					if (this.criterias[i].value1 != undefined) {
+						this.criterias[i].value1 = this.criterias[i].value1.trim();
+					}
 					this.filterConditionErrorMessage = "Please select the Condition and Value at position " + (i + 1);
 				} else if (this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
@@ -227,7 +239,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 					this.filterConditionErrorMessage = "Please select the Field Name at position " + (i + 1);
 				} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1.trim() == "" || this.criterias[i].value1 == "undefined") {
 					this.isValidationErrorMessage = true;
-					this.criterias[i].value1 = this.criterias[i].value1.trim();
+					if (this.criterias[i].value1 != undefined) {
+						this.criterias[i].value1 = this.criterias[i].value1.trim();
+					}
 					this.filterConditionErrorMessage = "Please fill the value at position " + (i + 1);
 				}
 				break;
@@ -346,6 +360,9 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy, OnChanges  {
 		input['criterias'] = this.pagination.criterias;
 		input['isDateFilter'] = this.pagination.dateFilterOpionEnable;
 		input['isCriteriasFilter'] = this.pagination.filterOptionEnable;
+		input['existingCriterias'] = this.criterias;
+		input['fromDateFilter'] = this.fromDateFilter;
+		input['toDateFilter'] = this.toDateFilter;
 		if (!this.isValidationErrorMessage) {
 			this.isclearFilter = true;
 			this.filterConditionsEmitter.emit(input);

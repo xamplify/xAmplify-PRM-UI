@@ -22,4 +22,6 @@ export class AssetDetailsViewDto {
 	 vendorCompanyName = "";
 	 loggedInUserProfileImage = "";
     assetType = "";
+    assetPath:any;
+    beeTemplate:boolean;
 }
