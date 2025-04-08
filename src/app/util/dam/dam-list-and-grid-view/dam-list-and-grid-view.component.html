@@ -788,7 +788,9 @@
 	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList($event)">
 </app-content-status-history-modal-popup>
 
-<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="previewAssetPath" [fileType]="fileType"
+
+<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="previewAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat"
 	(notifyClose)="closePreview()"></app-preview-content>
 	<app-ai-chat-manager *ngIf="isOliverCalled" [asset]="SendAssetToOliver"
 	(notifyParent)="closeAskAi($event)"></app-ai-chat-manager>
+
