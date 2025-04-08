@@ -24,4 +24,5 @@ export class AssetDetailsViewDto {
     assetType = "";
     assetPath:any;
     beeTemplate:boolean;
+    imageFileType:boolean = false;
 }
