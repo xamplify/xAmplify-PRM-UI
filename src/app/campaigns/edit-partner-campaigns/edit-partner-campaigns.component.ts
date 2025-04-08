@@ -210,6 +210,9 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     errorClass = "form-group has-error has-feedback";
     successClass = "form-group has-success has-feedback";      
 
+    maxRecipientCountReached: boolean = false;
+    maxRecipientCount: number = 0;
+
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
@@ -261,7 +264,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
                 this.isListView = !this.referenceService.isGridView;
                 this.listCategories();
             }
-            
+           this.getMaximumContactCountForCampaignLaunch();
         }
 
     checkInteractiveData( text: any ) {
@@ -1345,6 +1348,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
                         this.anyLaunchButtonClicked = true;
                         /***XNFR-330****/
                         this.router.navigate(["/home/campaigns/manage"]);
+                    } else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
+                        this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipient are allowed at one time");
                     } else {
                         this.invalidScheduleTime = true;
                         this.invalidScheduleTimeError = response.message;
@@ -1402,6 +1407,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
                   this.validUsersCount = data['validUsersCount'];
                   this.allUsersCount = data['allUsersCount'];
                   this.ngxloading = false;
+                  this.checkRecipientCountLimitReached();
               },
               ( error: any ) => {
                 this.ngxloading = false;
@@ -1410,7 +1416,9 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
               },
               () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
               )
-         }
+         } else {
+            this.maxRecipientCountReached = false;
+        }
       } catch ( error ) {
         this.ngxloading = false;
           console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
@@ -1647,5 +1655,30 @@ downloadAsImage(campaign:any){
                 this.referenceService.showSweetAlertFailureMessage("Unable to download.Please try after sometime.");
              });
 }
+
+    /** XNFR-929 **/
+    getMaximumContactCountForCampaignLaunch() {
+        this.referenceService.loading(this.campaignContact.httpRequestLoader, true);
+        this.campaignService.getMaximumContactCountForCampaignLaunch(this.loggedInUserId).subscribe(
+        (result: any) => {
+            if (result.statusCode == 200) {
+                this.maxRecipientCount = result.data;
+            } else {
+                this.maxRecipientCount = 0;
+            }
+            this.referenceService.loading(this.campaignContact.httpRequestLoader, false);
+        },
+        (error: string) => {
+            this.referenceService.loading(this.campaignContact.httpRequestLoader, false);
+        })
+    }
+
+    private checkRecipientCountLimitReached() {
+        if (this.validUsersCount >= this.maxRecipientCount) {
+            this.maxRecipientCountReached = true;
+        } else {
+            this.maxRecipientCountReached = false;
+        }
+    }
 
 }
