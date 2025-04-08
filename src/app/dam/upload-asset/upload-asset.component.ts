@@ -1809,5 +1809,7 @@ getFileIcon(): string {
   }
   confirmDelete() {
     this.clearPreviousSelectedAsset();
+    this.isAssetReplaced = false;
+    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
   }
 }
