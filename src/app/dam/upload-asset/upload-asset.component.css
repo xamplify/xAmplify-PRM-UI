@@ -5,7 +5,7 @@
   /* min-height: 230px; */
   background-color:#eaf2f9;
   box-shadow: none !important;
-  padding: 19px 19px 12px 19px;
+  padding: 15px;
   position: relative;
   /* cursor: pointer; */
   margin-bottom: 0;
@@ -306,10 +306,13 @@ text-decoration: underline!important;
   padding: 10px;
   border-radius: 10px;
 }
+.upload_asset-files:hover {
+  transform: scale(1.05);
+}
 .asset-flex{
 display: flex;
 gap: 12px;
-margin-top: 21px;
+margin: 0px -8px;
 }
 .drag-text{
   color:rgba(50, 118, 232, 1);
@@ -319,22 +322,25 @@ margin-top: 21px;
   background: #eaf2f9;
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid #d6d6d6;
+  border:1px solid rgba(195, 195, 195, 1);
 }
 .files-div {
-  /* background-color: #fff; */
+  background-color: #fff;
   padding: 10px;
   border-radius: 10px;
-  /* border: 1px solid #ddd; */
+  border: 1px solid #ddd;
   text-align: center;
 }
- 
+ .files_asset {
+  border-radius: 10px;
+  text-align: center;
+}
 .file-item {
   background-color: white;
   box-shadow: 0 2px 4px rgb(0 0 0 / 11%);
   border-radius: 8px;
   padding:7px;
-  margin-top: 10px;
+  margin-top: 20px;
   width: 100%;
   margin-right: 15px;
 }
@@ -597,7 +603,10 @@ margin-right: 10px;}
   width: 58px;
   height: 58px;
   border-radius: 8px;
-  margin-top: 10px;
+  margin-top: 19px;
+}
+.delete-btn:hover,.file-item:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
 }
 .fs-18{
   font-size: 18px;
@@ -643,4 +652,10 @@ margin-right: 10px;}
 .pill-toggle input[type="radio"]:checked + label {
   background-color: #007bff;
   color: white!important;
+}
+.d_block{
+  display: block;
+}
+.mt8{
+  margin-top: 7px;
 }

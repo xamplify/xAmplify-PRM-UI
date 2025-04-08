@@ -247,7 +247,7 @@
                                           <div class="row mt5">
                                              <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
                                                 <div class="upload-asset-div">
-                                                   <div class="files-div">
+                                                   <div [ngClass]="uploadedAssetName?.length > 0 ? 'files_asset' : 'files-div'">
                                                       <div class="asset_files" (click)="browse()" (drop)="chooseAsset($event)">
                                                          <input type="file" (change)="chooseAsset($event)" style="opacity: 0.0; position: absolute;height: 76px;width: 414px;cursor: pointer;" id="uploadedAsset" (click)="$event.stopPropagation()">
                                                          <div class="text-center card-template">
@@ -267,7 +267,7 @@
                                                                                                                                                    </span> -->
                                                          </div>
                                                       </div>
-                                                      <p class="mt10 mb0" *ngIf="uploadedAssetName?.length==0">Maximum file size is 800 MB.</p>
+                                                      <p class="mt8 mb0" *ngIf="uploadedAssetName?.length==0">Maximum file size is 800 MB.</p>
                                                      <div class="flex justify-content-between" *ngIf="uploadedAssetName?.length > 0">
                                                       <div class="file-item">
                                                          <div class="file-info">
@@ -305,7 +305,7 @@
                                                          <strong>No File Selected</strong>
                                                       </span>
                                                       <!--  -->
-                                                      <div class="row asset-flex">
+                                                      <div class="row asset-flex mt10">
                                                          <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 text-center hidden-xs hidden-sm card-template p0">
                                                             <div class="upload_asset-files">
                                                                <img src="assets/images/record.png" alt="" data-toggle="tooltip" data-placement="bottom"

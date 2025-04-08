@@ -25,6 +25,7 @@ import { CompanyService } from 'app/company/service/company.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { CallIntegrationService } from 'app/core/services/call-integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 declare var $: any, swal: any;
 
 @Component({
@@ -986,6 +987,19 @@ export class ContactDetailsComponent implements OnInit {
       this.openSelectContactModalPopup();
     } else {
       this.dialNumber();
+    }
+  }
+
+  validateMobileNumber(mobileNumber: string): boolean {
+    if (mobileNumber) {
+      const phone = parsePhoneNumberFromString(mobileNumber);
+      if (phone && isValidPhoneNumber(mobileNumber)) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
     }
   }
   
