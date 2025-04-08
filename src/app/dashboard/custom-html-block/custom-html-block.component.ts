@@ -176,7 +176,8 @@ export class CustomHtmlBlockComponent implements OnInit {
   }
 
   onFileSelected(event: any, side: string) {
-    const file = event.target.files[0];
+    const fileInput = event.target;
+    const file = fileInput.files[0];
     $('[data-toggle="tooltip"]').tooltip('hide');
     if (file) {
       const reader = new FileReader();
@@ -184,10 +185,12 @@ export class CustomHtmlBlockComponent implements OnInit {
         reader.onload = (e: any) => {
           const html = e.target.result;
           this.updateSanitizedHtml(html, side);
+          fileInput.value = '';
         };
         reader.readAsText(file);
       } else {
         console.error('Unsupported file type. Please upload an HTML/HTM file.');
+        fileInput.value = '';
       }
     } else {
       console.error('No file selected.');

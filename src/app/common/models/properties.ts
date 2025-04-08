@@ -570,5 +570,8 @@ export class Properties {
 	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**As the replaced asset must undergo the re-approval process, selecting partner(s) is not allowed at this stage.";
 	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approved version has been successfully replaced by its parent version.";
 
+	/** XNFR-929 **/
+	CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE: number = 2021;
+
 }
 

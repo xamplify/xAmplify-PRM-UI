@@ -427,4 +427,18 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
 
   }
 
+
+  getPartnerRemainderTemplate(){
+    const url = this.authenticationService.REST_URL + "v_url/getPartnerRemainderTemplate/"+this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+
+  sendPartnerSignatureReminder(pagination: Pagination) {
+    const url = this.authenticationService.REST_URL + "v_url/sendPartnerSignatureReminder" + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
 }
