@@ -102,10 +102,10 @@
       </div>
       <div class="modal-footer" style="border: none">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeEmailModal()" data-dismiss="modal">Cancel</button>
-        <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="showFileTypeError || !isValidEmail"
-          (click)="sendTestEmailToUser()"><span class="btn btn-primary transition txt_pd-top3">{{OliveAi ? 'Send Test Email' : 'Send Test Mail'}}</span></button>
-        <button *ngIf="!isPreview" type="submit" class="button bgcolor-unset" [disabled]="(showFileTypeError || !isValidEmail) && toEmailIds.length == 0"
-          (click)="sendEmailToUser()"><span class="btn btn-primary transition txt_pd-top3">{{OliveAi ? 'Send Email' : 'Send Mail'}}</span></button>
+        <button *ngIf="!isPreview" type="submit" class="btn btn-primary" [disabled]="showFileTypeError || !isValidEmail || !isValidToEmailId"
+          (click)="sendTestEmailToUser()">{{OliveAi ? 'Send Test Email' : 'Send Test Mail'}}</button>
+        <button *ngIf="!isPreview" type="submit" class="btn btn-primary" [disabled]="showFileTypeError || !isValidEmail ||  !isValidToEmailId"
+          (click)="sendEmailToUser()">{{OliveAi ? 'Send Email' : 'Send Mail'}}</button>
       </div>
     </div>
   </div>
