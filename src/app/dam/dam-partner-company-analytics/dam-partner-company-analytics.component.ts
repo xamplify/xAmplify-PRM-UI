@@ -128,6 +128,8 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
       });
   }
   findPartnerCompanies(pagination: Pagination) {
+    this.isSendReminderEnabled = false;
+    this.isHeaderCheckBoxChecked = false;
     this.referenceService.loading(this.httpRequestLoader, true);
 		this.damService.findPartnerCompanies(pagination,this.damId).
     	subscribe((result: any) => {
@@ -343,6 +345,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
           this.xtremandLogger.errorPage(error);
         },
         ()=>{
+          this.pagination = this.utilService.sortOptionValues(this.partnerCompaniesSortOption.selectedDamPartnerCompaniesDropDownOption, this.pagination);
           this.findPartnerCompanies(this.pagination);
           this.findVideoDetails();
           this.getIsVendorSignatureRequiredAfterPartnerSignatureCompleted(this.damId);      
@@ -402,7 +405,6 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.selectedEmailTemplateId = 0;
     this.sendTestEmailIconClicked = false;
     this.vanityTemplates = false;
-    this.searchPartnerCompanies();
   }
 
 
@@ -474,6 +476,5 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
       }
     );
   }
-
 }
 
