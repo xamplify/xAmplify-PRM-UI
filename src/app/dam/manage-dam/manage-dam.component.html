@@ -1,6 +1,6 @@
 <div class="page-content">
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-   <div class="page-bar">
+   <div *ngIf="!referenceService.isOliverEnabled" class="page-bar">
       <ul class="page-breadcrumb">
          <li><i class="fa fa-home" aria-hidden="true"></i>
             <a [routerLink]="referenceService.homeRouter" translate>Home</a>
