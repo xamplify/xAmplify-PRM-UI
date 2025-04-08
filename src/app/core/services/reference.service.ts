@@ -178,6 +178,7 @@ export class ReferenceService {
   mdfAccessGivenByVendor = true;
   showAnalytics = true;
   aircallPhone:any;
+  isOliverEnabled = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
