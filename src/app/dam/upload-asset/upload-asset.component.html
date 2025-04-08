@@ -360,7 +360,7 @@
                                           </div> -->
                                        </div>
                                     </div>
-                                    <div class="row" [class.customDisableCss]='isDisableForm==true'>
+                                    <!-- <div class="row" [class.customDisableCss]='isDisableForm==true'>
                                        <div class="col-md-8 col-lg-8 col-xs-12 col-sm-8">
                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                              <div class="form-group">
@@ -567,9 +567,318 @@
                                              </div>
                                           </div>
                                        </div>
-                                    </div> 
+                                    </div>  -->
                                   
 
+                                    <div class="col-xs-12" [class.customDisableCss]='isDisableForm==true'>
+                                       <div class=" row d-flex flex_wrap_asset">
+                                          <div class="width_84">
+                                             <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                                <div class="form-group label-flex">
+                                                   <label class="control-label form_label" translate>Name
+                                                      <span class="required">*</span>
+                                                   </label>
+                                                   <div class="width-fit-content">
+                                                      <input type="text" class="form-control" [(ngModel)]="damUploadPostDto.assetName"
+                                                         [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
+                                                      <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <!---XNFR-169-->
+                                             <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                                <div class="form-group label-flex">
+                                                   <label class="control-label  form_label" translate>Folder
+                                                      <span class="required">*</span>
+                                                   </label>
+                                                   <div class="width-fit-content" *ngIf="showFolderDropDown">
+                                                      <app-select-dropdown [categoryId]="damUploadPostDto.categoryId"
+                                                         [disabled]="damUploadPostDto.historyTemplate" [dropDownItems]="categoryNames"
+                                                         (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <!---White Labeled-- XNFR-255-->
+                                             <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                                 <div class="row grid-container m0">
+                                                                                    <div class="grid-item">
+                                                                                       <ng-container *ngIf="hasShareWhiteLabeledContentAccess">
+                                                                                          <div class="d-flex align-baseline">
+                                                                                             <label class="control-label vendor-signaure-label mr10 " translate>White Labeled</label>
+                                                                                             <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption"
+                                                                                                [customSwitch]="damUploadPostDto?.shareAsWhiteLabeledAsset"
+                                                                                                (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
+                                                                                             <span class="info-color-xampc mr8">
+                                                                                                <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                                                                   aria-hidden="true"
+                                                                                                   [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage">
+                                                                                                </i>
+                                                                                             </span>
+                                                                                          </div>
+                                                                                       </ng-container>
+                                                                                    </div>
+                                                                                    <div class="grid-item">
+                                                                                       <ng-container *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf')">
+                                                                                          <div class="d-flex align-baseline">
+                                                                                             <label class="control-label vendor-signature-align mr10 " translate>Add My Signature Now</label>
+                                                                                             <app-custom-ui-switch
+                                                                                                [isSwitchOptionDisabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (isPartnerCompanyOrGroupSelected || this.isAssetPublished))"
+                                                                                                [customSwitch]="damUploadPostDto?.vendorSignatureRequired"
+                                                                                                (customUiSwitchEventEmitter)="setVendorSignatureRequired($event)"></app-custom-ui-switch>
+                                                                                             <span class="info-color-xampc">
+                                                                                                <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                                                                   aria-hidden="true"
+                                                                                                   [title]="isAdd ? 'Enable My signature':damUploadPostDto?.vendorSignatureToolTipMessage">
+                                                                                                </i>
+                                                                                             </span>
+                                                                                             <span
+                                                                                                *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd && !isVendorSignatureAdded && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption && !isVendorSignatureAdded && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)"
+                                                                                                class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Add my signature <span
+                                                                                                   class="required">*</span>
+                                                                                             </span>
+                                                                                             <span
+                                                                                                *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd && isVendorSignatureAdded && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption && isVendorSignatureAdded && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)">
+                                                                                                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit Signature"
+                                                                                                   (click)="openAddSignatureModalPopUp()">
+                                                                                                   <i class="fa fa-edit iconFontSize" aria-hidden="true"></i>
+                                                                                                   <div class="clickicons"></div>
+                                                                                                </a>
+                                                                                                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Clear Signature"
+                                                                                                   (click)="confirmClear()">
+                                                                                                   <i class="fa fa-times-circle iconFontSize ml0" aria-hidden="true"></i>
+                                                                                                   <div class="clickicons"></div>
+                                                                                                </a>
+                                                                                             </span>
+                                                                                          </div>
+                                                                                       </ng-container>
+                                                                                    </div>
+                                                                                 </div>
+                                                                              </div> -->
+                                             <!---White Labeled-- XNFR-255-->
+                                    
+                                             <!--XNFR-578-->
+                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pr0">
+                                                <!-- Toggle Switches -->
+                                                <div class="toggle-section">
+                                                   <div class="toggle-item" *ngIf="hasShareWhiteLabeledContentAccess">
+                                                      <div class="toggle-label">
+                                                        {{ 'White Labeled' | translate }}
+                                                      </div>
+                                                      <label class="toggle-switch">
+                                                        <input type="checkbox"
+                                                               [disabled]="damUploadPostDto?.disableWhiteLabelOption"
+                                                               [checked]="damUploadPostDto?.shareAsWhiteLabeledAsset"
+                                                               (change)="setWhiteLabeled($event.target.checked)">
+                                                        <span class="toggle-slider"></span>
+                                                      </label>
+                                                      <i class="fa fa-question-circle help-icon"
+                                                         data-toggle="tooltip"
+                                                         data-placement="top"
+                                                         aria-hidden="true"
+                                                         [title]="isAdd ? 'Share As White Labeled Content' : damUploadPostDto?.whiteLabeledToolTipMessage">
+                                                      </i>
+                                                    </div>
+                                                    <div class="toggle-item">
+                                                      <div class="toggle-label">Add To Quick Links</div>
+                                                      <label class="toggle-switch">
+                                                         <input type="checkbox" [checked]="damUploadPostDto?.addedToQuickLinks"
+                                                         (change)="setAddToQuickLinks($event.target.checked)">
+                                                         <span class="toggle-slider"></span>
+                                                      </label>
+                                                      <i class="fa fa-question-circle help-icon"
+                                                      data-toggle="tooltip"
+                                                      data-placement="top"
+                                                      aria-hidden="true"
+                                                      [title]="properties?.ADD_TO_QUICK_LINKS">
+                                                      </i>
+                                                   </div>
+                                    
+                                                   <div class="toggle-item" *ngIf="fileType === 'application/pdf'">
+                                                      <div class="toggle-label">
+                                                        Partner Signature
+                                                      </div>
+                                                      <label class="toggle-switch">
+                                                        <input type="checkbox"
+                                                               [checked]="damUploadPostDto?.partnerSignatureRequired"
+                                                               [disabled]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                               (change)="setPartnerSignatureRequired($event.target.checked)">
+                                                        <span class="toggle-slider"></span>
+                                                      </label>
+                                                      <i class="fa fa-question-circle help-icon"
+                                                         data-toggle="tooltip"
+                                                         data-placement="top"
+                                                         aria-hidden="true"
+                                                         [title]="isAdd ? 'Enable partner signature' : damUploadPostDto?.partnerSignatureToolTipMessage">
+                                                      </i>
+                                                    </div>
+                                    
+                                                   <div class="toggle-items" *ngIf="fileType === 'application/pdf'">
+                                                      <div class="d-flex align-items-center">
+                                                         <div class="toggle-label">My Signature</div>
+                                                         <label class="toggle-switch">
+                                                            <input type="checkbox" 
+                                                            [checked]="damUploadPostDto?.vendorSignatureRequired"
+                                                            [disabled]="damUploadPostDto?.disableVendorSignatureOption"
+                                                            (change)="setVendorSignatureRequired($event.target.checked)">
+                                                            <span class="toggle-slider"></span>
+                                                         </label>
+                                                         <i class="fa fa-question-circle help-icon"
+                                                         data-toggle="tooltip"
+                                                         data-placement="top"
+                                                         aria-hidden="true"
+                                                         [title]="isAdd ? 'Enable vendor signature' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
+                                                      </div>
+                                                      <div>
+                                                         <div class="signature-options">
+                                                            <div *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired" class="pill-toggle mr10">
+                                                               <input type="radio" id="join" checked>
+                                                               <label for="join">Now</label>
+                                    
+                                                               <input type="radio" id="relation">
+                                                               <label for="relation">Later</label>
+                                                            </div>
+                                                            <!-- <div class="signature_toogle">
+                                                                                             <span class="timing-option">Now</span>
+                                                                                             <label class="toggle-switch toggle-switch-small">
+                                                                                                <input type="checkbox">
+                                                                                                <span class="toggle-slider"></span>
+                                                                                             </label>
+                                                                                             <span class="timing-option">Later</span>
+                                                                                          </div> -->
+                                                            <i class="fa fa-question-circle help-icon"></i>
+                                                         </div>
+                                                         <div>
+                                                            <div class="signature-buttons">
+                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired" class="signature-btn">
+                                                                  <i class="fa fa-pencil"></i> Signature Settings
+                                                               </button>
+                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired && isVendorSignatureAdded" class="signature-btn clear">Clear</button>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                <!-- <div class="row grid-container m0">
+                                                                                     <div class="grid-item">
+                                                                                    <ng-container>
+                                                                                       <div class="d-flex align-baseline">
+                                                                                       <label class="control-label  mr10 ">Add To Quick Links</label>
+                                                                                          <app-custom-ui-switch [customSwitch]="damUploadPostDto?.addedToQuickLinks"
+                                                                                             (customUiSwitchEventEmitter)="setAddToQuickLinks($event)"></app-custom-ui-switch>
+                                                                                          <span class="info-color-xampc">
+                                                                                             <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                                                                aria-hidden="true" title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
+                                                                                          </span>
+                                                                                       </div>
+                                                                                    </ng-container>
+                                                                                    </div>
+                                                                                    <div class="grid-item">
+                                                                                    <ng-container *ngIf="fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf')">
+                                                                                    <div class="d-flex align-baseline">
+                                                                                       <label class=" control-label mr10 vendor-signature-align" translate>Partner Signature</label>
+                                                                                          <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablePartnerSignatureOption"
+                                                                                             [customSwitch]="damUploadPostDto?.partnerSignatureRequired"
+                                                                                             (customUiSwitchEventEmitter)="setPartnerSignatureRequired($event)"></app-custom-ui-switch>
+                                                                                          <span class="info-color-xampc">
+                                                                                             <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                                                                aria-hidden="true"
+                                                                                                [title]="isAdd ? 'Enable partner signature':damUploadPostDto?.partnerSignatureToolTipMessage">
+                                                                                             </i>
+                                                                                          </span>
+                                                                                       </div>
+                                                                                    </ng-container>
+                                                                                    <div class="justify-end d-flex">
+                                                                                    <ng-container *ngIf="damUploadPostDto.partnerSignatureRequired && (fileType === 'application/pdf' || (damUploadPostDto.assetType === 'pdf'))">
+                                                                                       <div class="d-flex align-baseline">
+                                                                                       <label [ngClass]="activeAddSignatureToggle ? 'control-label mr10 addSignatureToggleAlign' : 'control-label mr10 vendor-signature-align'" translate>Add My Signature After Partner Signature</label>
+                                                                                            <app-custom-ui-switch [isSwitchOptionDisabled]="damUploadPostDto?.disablevendorSignatureRequiredAfterPartnerSignatureOption || (!isAdd && (isPartnerCompanyOrGroupSelected || this.isAssetPublished || this.damUploadPostDto?.vendorSignatureCompleted))"
+                                                                                               [customSwitch]="damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignature"
+                                                                                               (customUiSwitchEventEmitter)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted($event)"></app-custom-ui-switch>
+                                                                                            <span class="info-color-xampc">
+                                                                                               <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top"
+                                                                                                  aria-hidden="true"
+                                                                                                  [title]="isAdd ? 'Enable my signature after partner signature completed':damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignatureToolTipMessage">
+                                                                                               </i>
+                                                                                            </span>
+                                                                                            <span *ngIf="(damUploadPostDto.partnerSignatureRequired && isAdd && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature) || (damUploadPostDto.partnerSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.disablevendorSignatureRequiredAfterPartnerSignatureOption && damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature)"
+                                                                                            class=" choose-signature-text ml10" (click)="openAddSignatureModalPopUp()"> Edit Pdf
+                                                                                         </span>
+                                                                                         </div>
+                                                                                      </ng-container>
+                                                                                    </div>
+                                                                                    </div>
+                                                                                 </div> -->
+                                             </div>
+                                    
+                                             <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                                <div class="form-group label-flex" style="margin-bottom: 0;">
+                                                   <label class="control-label mr10 form_label" translate>Tags
+                                                   </label>
+                                                   <button *ngIf="savedTags.length==0" type="button" class="btn btn-primary add-btn" (click)="addTag()"
+                                                      data-toggle="tooltip" data-placement="top" title="Pick up Tag(s)">
+                                                      <i class="fa fa-plus mr5" aria-hidden="true"></i>Pick up Tag'(s)</button>
+                                                   <!--  -->
+                                                   <div class=" width-fit-content">
+                                                      <div *ngIf="savedTags.length>0" class="add_tag-container">
+                                                         <ng-container class="add-tag-list">
+                                                            <ng-container *ngFor="let tag of tagsListFirstColumn; let i = index">
+                                                               <div class="add_tag">
+                                                                  {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                                                  <span class="close-btn" (click)="removeTag(tag)">&times;</span>
+                                                               </div>
+                                                            </ng-container>
+                                                            <ng-container *ngFor="let tag of tagsListSecondColumn; let i = index">
+                                                               <div class="add_tag">
+                                                                  {{ tag.tagName | slice:0:15 }} <span *ngIf="tag.tagName?.length > 15">..</span>
+                                                                  <span class="close-btn" (click)="removeTag(tag)">&times;</span>
+                                                               </div>
+                                                            </ng-container>
+                                                         </ng-container>
+                                                      </div>
+                                                      <a *ngIf="savedTags.length>0" class="add_more-btn" (click)="addTag()">+ Add more tags</a>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <div class="mobile_thumbnail" style="padding-left: 0;">
+                                             <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 pl0">
+                                                <!---Thumbnail Image-->
+                                                <div>
+                                                   <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload
+                                                         Thumbnail </strong></span>
+                                                   <div class="asset-thumbnail-div-sm mThumbwidth mb_imgwidth" (click)="browseThumbnail()">
+                                                      <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)"
+                                                         style="opacity: 0.0; position: absolute;">
+                                                      <span *ngIf="showDefaultLogo && !croppedImage">
+                                                         <img src="assets/images/contentPlaceholderImages.png" class="profile-image asset-img-grid-sm"
+                                                            alt="">
+                                                      </span>
+                                                      <span *ngIf="croppedImage">
+                                                         <img class="asset-img-grid-sm" [src]="croppedImage" alt="">
+                                                      </span>
+                                                      <span *ngIf="!isAdd && !croppedImage">
+                                                         <img class="asset-img-grid-sm" [src]="damUploadPostDto.thumbnailPath"
+                                                            (error)="errorHandler($event)" alt="">
+                                                      </span>
+                                                      <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"
+                                                         title="upload 2:1 ratio logo">
+                                                         &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+                                                            style="font-size:25px;padding-top:10px"></i></a>
+                                                   </div>
+                                                   <div class="col-xs-12 p0 top10px mWidth">
+                                                      <div class="col-xs-12 message-content">
+                                                         <ul>
+                                                            <li translate>Maximum file size is 10 MB.</li>
+                                                            <li translate>Please Upload <strong>.jpg, .jpeg, .png
+                                                               </strong>files only.</li>
+                                                         </ul>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
 
 
 
