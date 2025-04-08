@@ -177,10 +177,10 @@
                                                 </span>
                                             </h6>
                                             <!-- XNFR-897 -->
-                                            <h6 class="moreipsis">
+                                            <h6 class="moreipsis" *ngIf="expireDescription(learningTrack.expireDate)">
                                                 <span class="text-danger" data-toggle="tooltip" data-placement="top"
-                                                title="{{expireDescription(learningTrack.expireDate,learningTrack?.createdDateString)}}">
-                                                    {{expireDescription(learningTrack?.expireDate, learningTrack?.createdDateString)}}
+                                                title="{{expireDescription(learningTrack.expireDate)}}">
+                                                    {{expireDescription(learningTrack?.expireDate)}}
                                                 </span>
                                             </h6>
                                             <!-- XNFR-824 -->

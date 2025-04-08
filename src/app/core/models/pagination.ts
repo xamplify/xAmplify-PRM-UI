@@ -181,4 +181,8 @@ export class Pagination {
 	password : string = "";
     vanityUrlDomain : boolean = false;
 	selectedType : boolean = false;
+
+	/**** XNFR-923 ****/
+	damId:number;
+	partners:any[]=[];
 }

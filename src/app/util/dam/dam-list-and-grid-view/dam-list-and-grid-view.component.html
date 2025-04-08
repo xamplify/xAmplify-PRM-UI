@@ -768,9 +768,9 @@
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
 	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'" [criteria] = "criteria"
-		[isWhiteLabeledAsset]="isWhiteLabeledAsset"
+		[isWhiteLabeledAsset]="isWhiteLabeledAsset" [criterias] = "existingCriterias" [fromDateFilter]="fromDateFilter"
 		[whiteLableContentSharedByVendorCompanies]="whiteLableContentSharedByVendorCompanies" [fileTypes]="fileTypes"
-		(filterConditionsEmitter)="assetsFilter($event)"
+		[toDateFilter]="toDateFilter" (filterConditionsEmitter)="assetsFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"
 		(cancelSegmentationRowEmitter)="cancelSegmentationRowEmitter($event)"></app-custom-ui-filter>
 </ng-template>

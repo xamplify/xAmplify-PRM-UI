@@ -77,7 +77,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared playbooks' : 'Click here to manage playbooks'
       this.addButtonText = "Add Playbooks";
       this.titleHeader = "Playbooks";
-      this.type = "play book";
+      this.type = "playbook";
       this.moduleType = TracksPlayBookType[TracksPlayBookType.PLAYBOOK];
     }
     this.listLearningTracks(this.pagination);
@@ -302,7 +302,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       (response: any) => {
         if (response.statusCode == 200) {
           /****XBI-2589***/
-          let trackOrPlayBook =  this.tracks ? "Track":"Play Book";
+          let trackOrPlayBook =  this.tracks ? "Track":"Playbook";
           let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
           this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);
@@ -374,9 +374,12 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     }
   }
   /*** XNFR-897 ***/
-  expireDescription(expireDate: any, expiredDate: any): string {
+  expireDescription(expireDate: any): string {
+    if(!expireDate){
+      return;
+    }
     const currentDate = new Date();
-    const givenDate = new Date(expireDate ? expireDate : expiredDate);
+    const givenDate = new Date(expireDate);
 
     const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
     const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
@@ -385,22 +388,22 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
 
     let suffix = diffInMs < 0 ? 'ago' : 'left';
     if (suffix === 'ago') {
-      return `The ${this.tracks ? "Track" : "Play Book"} has already expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      return `The ${this.tracks ? "Track" : "Play Book"} expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
     } else if (diffInDays < 1) {
       const hours = diffInHours;
       const minutes = diffInMinutes % 60;
-      return `The ${this.tracks ? "Track" : "Playbook"} will expire in ${hours} hrs ${minutes} mins ${suffix}`;
+      return `The ${this.tracks ? "Track" : "Playbook"} will be expired in ${hours} hrs ${minutes} mins ${suffix}`;
     } else if (diffInDays >= 1 && diffInDays <= 15) {
-      let days = diffInMs < 0 ? `${diffInDays} days ago` : `in ${diffInDays} days`;
-      return `The ${this.tracks ? "Track" : "Playbook"} will expire in ${days}`
+      let days = diffInMs < 0 ? `${diffInDays} days ago` : ` ${diffInDays} days`;
+      return `The ${this.tracks ? "Track" : "Playbook"} will be expired in ${days}`
     } else {
       const currentYear = currentDate.getFullYear();
       const givenYear = givenDate.getFullYear();
 
       if (currentYear === givenYear) {
-        return `The ${this.tracks ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM');
+        return `The ${this.tracks ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM');
       } else {
-        return `The ${this.tracks ? "Track" : "Playbook"} will expire in ` + this.formatDate(givenDate, 'dd MMM yyyy');
+        return `The ${this.tracks ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
       }
     }
   }

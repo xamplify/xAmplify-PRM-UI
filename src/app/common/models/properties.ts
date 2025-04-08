@@ -12,6 +12,7 @@ export class Properties {
 	xamplify_router = 'https://www.xamplify.com/';
 
 	NO_RESULTS_FOUND = "No results found.";
+	NO_DATA_FOUND = "No data found.";
 	EMAIL_SENT_SUCCESS = "Email sent successfully.";
 	NO_USERS_SELECT_ERROR = "You have not selected any user.";
 	//FOR CONTACTS
@@ -568,6 +569,9 @@ export class Properties {
 	/** XNFR-885 **/
 	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**As the replaced asset must undergo the re-approval process, selecting partner(s) is not allowed at this stage.";
 	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approved version has been successfully replaced by its parent version.";
+
+	/** XNFR-929 **/
+	CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE: number = 2021;
 
 }
 

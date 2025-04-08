@@ -342,13 +342,18 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damUploadPostDto.assetName = this.damPostDto.name;
       this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
         (result: any) => {
-          this.hidePopup();
-          this.referenceService.isCreated = true;
-          this.referenceService.assetResponseMessage = result.message;
-          if (this.isFromApprovalModule) {
-            this.goBackToManageApproval();
-          } else {
-            this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+          if (result.statusCode == 200) {
+            this.hidePopup();
+            this.referenceService.isCreated = true;
+            this.referenceService.assetResponseMessage = result.message;
+            if (this.isFromApprovalModule) {
+              this.goBackToManageApproval();
+            } else {
+              this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+            }
+          } else if (result.statusCode == 401) {
+            this.nameErrorMessage = "Already exists";
+            this.formData.delete("damUploadPostDTO");
           }
           this.modalPopupLoader = false;
         },

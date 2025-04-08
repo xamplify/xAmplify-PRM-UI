@@ -264,6 +264,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     isDealLayoutSelected:boolean = false;
     crmErrorMessage:CustomResponse = new CustomResponse();
     readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
+    maxRecipientCountReached: boolean = false;
+    maxRecipientCount: number = 0;
+    restrictRecipientCount: boolean = false;
+    
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
@@ -567,7 +571,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.eventCampaign.leadPipelineId = 0;
         this.eventCampaign.dealPipelineId = 0;
         //this.eventCampaign.configurePipelines = !this.eventCampaign.configurePipelines;
-
+        if (this.reDistributeEvent || this.reDistributeEventManage || this.isOrgAdminOrOrgAdminTeamMember ){
+            this.restrictRecipientCount = true;
+            this.getMaximumContactCountForCampaignLaunch();
+        }
     }
 
     configurePipelines() {
@@ -1627,6 +1634,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             this.router.navigate(["/home/campaigns/manage"]);
                             this.referenceService.campaignSuccessMessage = launchOption;
                             if (this.isEventUpdate) { this.referenceService.campaignSuccessMessage = "UPDATE"; }
+                        }  else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
+                            this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipient are allowed at one time");
                         } else {
 
                             if (response.statusCode === 1999) {
@@ -2791,12 +2800,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         data => {
                             this.validUsersCount = data['validContactsCount'];
                             this.allUsersCount = data['allContactsCount'];
+                            this.checkRecipientCountLimitReached();
                         },
                         (error: any) => {
                             console.log(error);
                         },
                         () => console.info("MangeContactsComponent ValidateInvalidContacts() finished")
                     )
+            } else {
+                this.maxRecipientCountReached = false;
             }
         } catch (error) {
             console.error(error, "ManageContactsComponent", "removingInvalidUsers()");
@@ -3388,6 +3400,31 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             (result: any) => {
                 self.getMappedDealLayoutIdByLeadLayoutId(result, this.eventCampaign.leadTicketTypeId);
             });
+    }
+
+    /** XNFR-929 **/
+    getMaximumContactCountForCampaignLaunch() {
+        this.loading = true;
+        this.campaignService.getMaximumContactCountForCampaignLaunch(this.loggedInUserId).subscribe(
+        (result: any) => {
+            if (result.statusCode == 200) {
+                this.maxRecipientCount = result.data;
+            } else {
+                this.maxRecipientCount = 0;
+            }
+            this.loading = false;
+        },
+        (error: string) => {
+            this.loading = false;
+        })
+    }
+
+    private checkRecipientCountLimitReached() {
+        if (this.restrictRecipientCount && this.validUsersCount >= this.maxRecipientCount) {
+            this.maxRecipientCountReached = true;
+        } else {
+            this.maxRecipientCountReached = false;
+        }
     }
 
 }

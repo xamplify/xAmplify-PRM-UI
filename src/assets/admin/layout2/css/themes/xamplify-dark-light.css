@@ -755,7 +755,7 @@ span.ui-column-resize {
 .pricing-border {
   border: 3px solid #2f4857 !important;
 }
-.activeCRM {
+.activeCRM, .activeCalendar, .activeCall{
   background-color: #2f4857 !important;
 }
 .alert-warning {

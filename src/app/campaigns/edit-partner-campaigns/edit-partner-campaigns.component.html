@@ -292,9 +292,9 @@
                   <div class="col-xs-12">
                      <div class="table-responsive">
                         <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-                           <legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
+                           <legend  *ngIf="!maxRecipientCountReached" class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
                               'Lead(s)':'Contact(s)'}} list</legend>
-                           <div class="row m0">
+                           <div *ngIf="!maxRecipientCountReached" class="row m0">
                               <div class="col-xs-4 p0">
                                  <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}"
                                     aria-hidden="true"></i>
@@ -315,6 +315,14 @@
                               </div>
                               <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span success">This email will
                                  be sent to {{validUsersCount}}({{allUsersCount}}) valid recipients.</span>
+                           </div>
+                           <!-- XNFR-929 -->
+                           <div class="alert alert-danger text-center mbgrid" style="margin-top: 20px;" *ngIf="maxRecipientCountReached && selectedUserlistIds?.length>0">
+                              <strong>Selected Rows : {{selectedUserlistIds?.length}}</strong>
+                              <ng-container class="danger">
+                                 <strong style="padding-left: 25px;">**Maximum recipient count has reached. Only {{maxRecipientCount}} active recipient are allowed
+                                    at one time </strong>
+                              </ng-container>
                            </div>
                            <div id="campaign-contact-list" style="display: none;">
                               <div>
@@ -1009,8 +1017,9 @@
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
                                  >Send Test Email</button>
                                  <button type="button" class="btn btn-primary"
-                                    [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
-                                     (click)="campaignLaunchForm.valid && isCampaignDetailsFormValid && launchCampaign()">
+                                    [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid || maxRecipientCountReached"
+                                     (click)="campaignLaunchForm.valid && isCampaignDetailsFormValid && launchCampaign()"
+                                     title="{{maxRecipientCountReached ? 'Maximum recipient limit has reached' : ''}}">
                                     {{buttonName}}</button>
                               </div>
                            </div>

@@ -1158,9 +1158,7 @@ export class AuthenticationService {
   }
 
   sendTestEmail(sendTestEmailDto: SendTestEmailDto) {
-    if (sendTestEmailDto.showAlert) {
-      alert("Send Test Email Triggers");
-    }
+    console.log("Send Test Email Triggers");
     sendTestEmailDto.fromEmail = this.user.emailId;
     let url = this.REST_URL + "email-template/sendTestEmail?access_token=" + this.access_token;
     return this.callPostMethod(url, sendTestEmailDto);
