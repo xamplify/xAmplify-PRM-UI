@@ -74,7 +74,7 @@
 								<div class="grid-box zero-margin" style="min-height: 200px;">
 									<img class="img-class mxv" src="{{assetDetailsViewDto?.thumbnailPath}}" alt="No Image Found"><br> 
 									<!--View-->
-									<button *ngIf="!loadVideoPlayer" class="button_blue bgcolor-unset"  (click)="viewContent()">
+									<button *ngIf="!loadVideoPlayer && (this.assetDetailsViewDto.contentPreviewType || this.assetDetailsViewDto.imageFileType)" class="button_blue bgcolor-unset"  (click)="viewContent()">
 										<span class="btn btn-primary transition txt_pd-top3">View</span>
 									</button>
 									<!-- <button *ngIf="!loadVideoPlayer" class="button_blue bgcolor-unset"  (click)="AskAi()">
@@ -112,7 +112,7 @@
 		</object>
 	</div> -->
 	<app-preview-content *ngIf="previewContent" [previewPath]="assetPath" [fileType]="fileType"
-		(notifyClose)="closePreview()" [isImageFormat]="this.assetDetailsViewDto.imageFileType"></app-preview-content>
+		(notifyClose)="closePreview()" [isImageFormat]="this.assetDetailsViewDto.imageFileType" [isTextFormat]="this.assetDetailsViewDto.textFileType"></app-preview-content>
 </div>
 <ng-container *ngIf="download">
 	<app-download-asset-popup [asset]="selectedAsset" [isPartnerView]="true"

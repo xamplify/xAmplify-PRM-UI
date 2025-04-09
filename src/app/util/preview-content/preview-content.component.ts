@@ -16,6 +16,7 @@ export class PreviewContentComponent implements OnInit {
   @Input() previewPath: any;
   @Input() fileType: any;
   @Input() isImageFormat: boolean = false;
+  @Input() isTextFormat: boolean = false;
   
 
   @Output() notifyClose = new EventEmitter();
@@ -25,6 +26,8 @@ export class PreviewContentComponent implements OnInit {
   documentFileTypes = ['doc', 'docx', 'ppt', 'pptx', 'xlsx'];
   pdfLoader: boolean = false;
   pdfDoc: any = null;
+  showTextViewer: boolean = false;
+  showImageViewer: boolean = false;
 
   constructor(private sanitizer: DomSanitizer, private authenticationService: AuthenticationService, private http: HttpClient) { }
 
@@ -59,19 +62,6 @@ export class PreviewContentComponent implements OnInit {
     }
   }
 
-  // ngAfterViewInit() {
-  //   if (!this.documentFileTypes.includes(this.fileType)) {
-  //     this.isPdf = true;
-  //     this.pdfLoader = true;
-  //     this.http.get(this.previewPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), { responseType: 'blob' })
-  //       .subscribe(response => {
-  //         this.url = URL.createObjectURL(response);
-  //         this.displayFile(this.url, this.fileType);
-  //         this.pdfLoader = false;
-  //       });
-  //   }
-  // }
-
   async displayPDF(url: string) {
     const pdf = await pdfjsLib.getDocument(url).promise;
     this.pdfDoc = pdf;
@@ -98,6 +88,8 @@ export class PreviewContentComponent implements OnInit {
   }
 
   async displayFile(url: string, fileType: string) {
+    this.showImageViewer = false;
+    this.showTextViewer = false;
     $("#pdf-container, #image-viewer, #text-viewer, #html-viewer").hide();
   
     if (fileType.includes("pdf")) {
@@ -106,10 +98,9 @@ export class PreviewContentComponent implements OnInit {
   
     } else if (this.isImageFormat) {
       $("#image-viewer").attr("src", url).show();
-  
-    } else if (["txt", "html"].some(ext => fileType.includes(ext))) {
-      this.displayTextFile(url);
-  
+      this.showImageViewer = true;
+    } else if (this.isTextFormat) {
+      this.displayTextFile(url); 
     } else if (fileType.includes("csv")) {
       this.displayCSV(url);
       $("#csv-viewer").show();
@@ -123,6 +114,7 @@ export class PreviewContentComponent implements OnInit {
       .then(response => response.text())
       .then(text => {
         $("#text-viewer").text(text).show();
+        this.showTextViewer = true;
       })
       .catch(err => console.error("Error loading text file:", err));
   }
