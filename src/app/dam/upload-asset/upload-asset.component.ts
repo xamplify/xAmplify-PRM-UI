@@ -1748,6 +1748,7 @@ zoomOut() {
     clearSignature(){
         this.pdfUploadedFile =  this.pdfDefaultUploadedFile;
         this.isVendorSignatureAdded = false;
+        this.showClearOption = false;
         this.validateAllFields();
     }
 
