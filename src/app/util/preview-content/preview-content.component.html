@@ -13,7 +13,7 @@
   <object *ngIf="!isPdf" id="preview-object" [data]="url" width="100%" height="600px" style="border: 1px solid #ddd;">
   </object>
   <div id="pdf-container" style="display: none;"></div>
-  <div [hidden]="pdfLoader && !ispdf" class="viewer-wrapper">
+  <div [hidden]="!(showImageViewer || showTextViewer)" class="viewer-wrapper">
     <img id="image-viewer" style="display: none;" />
     <pre id="text-viewer" style="display: none;"></pre>
   </div>
