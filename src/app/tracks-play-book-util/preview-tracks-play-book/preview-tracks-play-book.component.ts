@@ -73,6 +73,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   isBeeTemplate:boolean = false;
   previewFileType:string;
   isImageFormat: boolean = false;
+  isTextFormat: boolean = false;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -261,32 +262,35 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          if ((isNonImageFormat || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
             this.isImageFormat = assetDetails.imageFileType;
+            this.isTextFormat = assetDetails.textFileType;
             this.isBeeTemplate = isBeeTemplate;
           } else {
             this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
           }
         } else {
-          if ((isNonImageFormat || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
             this.isImageFormat = assetDetails.imageFileType;
+            this.isTextFormat = assetDetails.textFileType;
             this.isBeeTemplate = isBeeTemplate;
           } else {
             this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
           }
         }
       }else{
-        if ((isNonImageFormat || assetDetails.imageFileType) && !(this.type == undefined || this.type == 'TRACK')) {
+        if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && !(this.type == undefined || this.type == 'TRACK')) {
           this.previewPath = assetDetails.assetPath;
           this.previewFileType = assetDetails.assetType;
           this.previewContent = true;
           this.isImageFormat = assetDetails.imageFileType;
+          this.isTextFormat = assetDetails.textFileType;
           this.isBeeTemplate = isBeeTemplate;
         } else {
           this.referenceService.preivewAssetOnNewHost(assetDetails.id);
@@ -313,7 +317,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else if (!assetDetails.beeTemplate) {
         let assetPath = assetDetails.assetPath;
-        if (assetDetails.assetType == 'pdf') {
+        let fileFormats = ['pdf','html','txt','csv'];
+        let isProxyFileFormat = fileFormats.includes(assetDetails.assetType);
+        if (isProxyFileFormat || assetDetails.imageFileType) {
           assetPath = assetPath.split("=")[1];
           assetPath = decodeURIComponent(assetPath);
         }

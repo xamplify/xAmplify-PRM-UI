@@ -69,14 +69,8 @@ export class ViewDamComponent implements OnInit {
 
   viewContent(){
 	this.saveGeoLocationAnalytics(this.assetId);
-	const nonImageFormats = ['pdf','pptx','doc','docx','ppt','xlsx'];
-    // let isImageFormat = this.assetDetailsViewDto.imageFileType;
 	if (!this.assetDetailsViewDto.beeTemplate) {
 		this.previewContent = true;
-		// let assetPath = this.assetDetailsViewDto.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime();
-		// this.assetPath = this.domSanitizer.bypassSecurityTrustResourceUrl(
-		// 	`https://docs.google.com/gview?url=${this.assetDetailsViewDto.assetPath}&embedded=true`
-		// );
 		if(this.assetDetailsViewDto.sharedAssetPath){
 			this.assetPath = this.assetDetailsViewDto.sharedAssetPath;
 		} else {
@@ -188,24 +182,6 @@ export class ViewDamComponent implements OnInit {
 
 	openModelpopup() {
 		this.openSelectDigitalSignatureModalPopUp = true;
-		// this.assetViewLoader = true;
-		// this.signatureService.getExistingSignatures().subscribe(
-		// 	response => {
-		// 		let data = response.data;
-		// 		this.assetViewLoader = false;
-		// 		if (data != undefined) {
-		// 			this.signatureResponseDto = data;
-		// 			if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
-		// 				this.openSelectDigitalSignatureModalPopUp = true;
-		// 			} else {
-		// 				this.openDigitalSignatureModelPopup = true;
-		// 			}
-		// 		} else {
-		// 			this.openDigitalSignatureModelPopup = true;
-		// 		}
-		// 	}, error => {
-		// 		this.assetViewLoader = false;
-		// 	});
 	}
 
 	uploadSignature() {
