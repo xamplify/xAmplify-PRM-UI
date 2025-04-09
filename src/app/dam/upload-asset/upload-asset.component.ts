@@ -1838,5 +1838,7 @@ getFileIcon(): string {
 }
 setPartnerSignatureRequiredNow(){
     this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature=false;
+    this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
 }
+
 }

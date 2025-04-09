@@ -718,7 +718,7 @@
                                                          <label class="toggle-switch">
                                                             <input type="checkbox" 
                                                             [checked]="damUploadPostDto?.vendorSignatureRequired"
-                                                            [disabled]="damUploadPostDto?.disableVendorSignatureOption"
+                                                            [disabled]="damUploadPostDto?.disableVendorSignatuerOption || (!isAdd && (isPartnerCompanyOrGroupSelected || isAssetPublished))"
                                                             (change)="setVendorSignatureRequired($event.target.checked)">
                                                             <span class="toggle-slider"></span>
                                                          </label>
@@ -729,12 +729,12 @@
                                                          [title]="isAdd ? 'Enable vendor signature' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                                       </div>
                                                       <div>
-                                                         <div class="signature-options" *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired" >
+                                                         <div class="signature-options" *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired">
                                                             <div class="pill-toggle mr10">
-                                                               <input type="radio" id="join" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequired" (change)="setPartnerSignatureRequiredNow()">
+                                                               <input [disabled] = "!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)" type="radio" id="join" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequired" (change)="setPartnerSignatureRequiredNow()">
                                                                <label for="join">Now</label>
                                     
-                                                               <input type="radio" id="relation" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted($event)">
+                                                               <input [disabled] = "!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)" type="radio" id="relation" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignature" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(true)">
                                                                <label for="relation">Later</label>
                                                             </div>
                                                             <!-- <div class="signature_toogle">
@@ -752,7 +752,7 @@
                                                          </div>
                                                          <div>
                                                             <div class="signature-buttons">
-                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired" (click)="openAddSignatureModalPopUp()"  class="signature-btn">
+                                                               <button *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)" (click)="openAddSignatureModalPopUp()"  class="signature-btn">
                                                                   <i class="fa fa-pencil"></i> Signature Settings
                                                                   <span class="required" *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
                                                                </button>
