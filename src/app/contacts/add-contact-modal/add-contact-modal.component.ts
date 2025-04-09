@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy,ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy } from '@angular/core';
 import { User } from '../../core/models/user';
 import { Router } from '@angular/router';
 import { CountryNames } from '../../common/models/country-names';
@@ -77,11 +77,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     previousEmailIds:any = [];
     isValidEmail : boolean = false;
     @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
-    isInvalidMobileNumber: boolean = false;
+    isValidMobileNumber: boolean = false;
     
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
-                 public logger: XtremandLogger,public authenticationService: AuthenticationService,public properties:Properties ) {
+                 public logger: XtremandLogger,public authenticationService: AuthenticationService,public properties:Properties) {
         this.notifyParent = new EventEmitter();
 
 
@@ -607,7 +607,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     mobileNumberEventEmitter(event: any) {
         if (event) {
             this.addContactuser.mobileNumber = event.mobileNumber;
-            this.isInvalidMobileNumber = event.isInvalidMobileNumber;
+            this.isValidMobileNumber = event.isValidMobileNumber;
         }
     }
 

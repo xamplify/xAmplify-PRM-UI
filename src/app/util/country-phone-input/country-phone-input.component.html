@@ -25,8 +25,10 @@
     </div>
 
     <div class="phone-input-field">
-      <input class="form_controls" type="tel" [(ngModel)]="mobileNumber" [placeholder]="placeholder" (input)="validateMobileNumber()"
-        (keydown)="onKeyDown($event)" (keypress)="numbersOnly($event)" [maxlength]="maxlength">
+      <input class="form_controls" type="tel" [(ngModel)]="mobileNumber" [placeholder]="placeholder"
+        (input)="onInput($event); validateMobileNumber()" (keydown)="onKeyDown($event)" (keypress)="numbersOnly($event)"
+        [maxlength]="maxlength">
     </div>
   </div>
+  <span *ngIf="!isUploadCsv && !isValidMobileNumber" class="required" style="margin-left: 115px;">Please enter valid mobile number</span>
 </div>

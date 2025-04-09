@@ -257,6 +257,7 @@ export class CustomHtmlBlockComponent implements OnInit {
           this.customHtmlBlock = response.data;
           if (this.isAdd) {
             this.customHtmlBlock.title = this.customHtmlBlock.title + '-copy';
+            this.customHtmlBlock.selected = false;
           } else {
             if (this.customHtmlBlock.htmlBody) {
               this.updateSanitizedHtml(this.customHtmlBlock.htmlBody, 'full');
