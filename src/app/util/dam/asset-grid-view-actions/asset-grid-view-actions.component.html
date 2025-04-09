@@ -28,7 +28,7 @@
 		<div class="clickicons"></div>
 
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
-		data-placement="top" title="Preview" (click)="preview(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
+		data-placement="top" title="Preview" (click)="(asset.contentPreviewType || asset.imageFileType)? preview(asset) : ''"> <i class="fa fa-eye" [ngClass]="asset.contentPreviewType || asset.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a>
 	<a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
