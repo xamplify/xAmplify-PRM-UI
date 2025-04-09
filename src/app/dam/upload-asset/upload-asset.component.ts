@@ -1574,6 +1574,7 @@ zoomOut() {
         } else {
             this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
             this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
+            this.showClearOption = false;
         }
     }
 
