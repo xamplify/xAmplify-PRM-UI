@@ -1573,6 +1573,7 @@ zoomOut() {
           this.setUploadedFileProperties(this.pdfUploadedFile);
         } else {
             this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+            this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
         }
     }
 
