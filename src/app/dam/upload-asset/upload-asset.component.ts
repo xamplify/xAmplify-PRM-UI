@@ -534,7 +534,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     uploadOrUpdateAsset() {
         this.damUploadPostDto.draft = false;
         if (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus == 'APPROVED'
-            && this.approvalRequired && this.isAssetReplaced && this.damUploadPostDto.assetType != 'pdf') {
+            && this.approvalRequired && this.isAssetReplaced) {
             this.sendForReApproval();
         } else {
             this.uploadOrUpdate();
@@ -1679,7 +1679,7 @@ zoomOut() {
                 this.submitButtonText = requiresApproval ? 'Send for Approval' : 'Update';
                 this.damUploadPostDto.sendForApproval = requiresApproval;
             } else if (isApproved && isAssetReplaced) {
-                const requiresApproval = !(assetApprover || !this.approvalRequired || this.damUploadPostDto.assetType === 'pdf');
+                const requiresApproval = !(assetApprover || !this.approvalRequired);
                 this.submitButtonText = requiresApproval ? 'Send for Re-Approval' : 'Update';
                 this.damUploadPostDto.sendForReApproval = requiresApproval;
             } else {
@@ -1717,7 +1717,7 @@ zoomOut() {
         }
         
         return ((!this.isAdd && this.isApprover && (this.damUploadPostDto.createdByAnyApprover || this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED])) ||
-            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && (!this.isAssetReplaced || this.damUploadPostDto.assetType == 'pdf')) ||
+            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && !this.isAssetReplaced) ||
             (this.isAdd && this.isApprover));
     }
 
@@ -1825,5 +1825,7 @@ getFileIcon(): string {
   }
   confirmDelete() {
     this.clearPreviousSelectedAsset();
+    this.isAssetReplaced = false;
+    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
   }
 }
