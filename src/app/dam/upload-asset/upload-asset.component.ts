@@ -172,6 +172,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     isPdfFileSelected: boolean = false;
 
     deleteUploadedAsset = false;
+    showClearOption: boolean = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch, public signatureService:SignatureService){
@@ -1616,6 +1617,7 @@ zoomOut() {
             if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
                 this.isVendorSignatureAdded = true;
             }
+            this.showClearOption = true;
             this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
             this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
@@ -1745,6 +1747,7 @@ zoomOut() {
     clearSignature(){
         this.pdfUploadedFile =  this.pdfDefaultUploadedFile;
         this.isVendorSignatureAdded = false;
+        this.validateAllFields();
     }
 
     confirmClear() {

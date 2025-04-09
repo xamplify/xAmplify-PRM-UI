@@ -731,7 +731,7 @@
                                                       <div>
                                                          <div class="signature-options" *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired">
                                                             <div class="pill-toggle mr10">
-                                                               <input [disabled] = "!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)" type="radio" id="join" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequired" (change)="setPartnerSignatureRequiredNow()">
+                                                               <input [disabled] = "!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)" type="radio" id="join" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequired" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(false)">
                                                                <label for="join">Now</label>
                                     
                                                                <input [disabled] = "!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)" type="radio" id="relation" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignature" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(true)">
@@ -756,7 +756,7 @@
                                                                   <i class="fa fa-pencil"></i> Signature Settings
                                                                   <span class="required" *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
                                                                </button>
-                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired && isVendorSignatureAdded" (click)="confirmClear()"  class="signature-btn clear">Clear</button>
+                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired && showClearOption" (click)="confirmClear()"  class="signature-btn clear">Clear</button>
                                                             </div>
                                                          </div>
                                                       </div>
