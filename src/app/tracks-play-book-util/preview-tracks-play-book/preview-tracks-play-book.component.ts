@@ -72,6 +72,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   previewPath: any;
   isBeeTemplate:boolean = false;
   previewFileType:string;
+  isImageFormat: boolean = false;
+  isTextFormat: boolean = false;
+  assetPreviewProxyPath: any;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -252,7 +255,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any) {
     let isNotVideoFile = assetDetails.assetType != 'mp4';
-    const nonImageFormats = ['pdf','pptx','doc','docx','ppt','xlsx'];
+    const nonImageFormats = ['pptx','doc','docx','ppt','xlsx','pdf', 'csv', 'html', 'txt'];
     let isNonImageFormat = nonImageFormats.includes(assetDetails.assetType);
     if(isNotVideoFile){
       let isBeeTemplate = assetDetails.beeTemplate;
@@ -260,41 +263,50 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          if (isNonImageFormat && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
-            // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-            // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-            //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
-            // );
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+            if(assetDetails.assetProxyPath){
+              this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            } else {
+              this.assetPreviewProxyPath = assetDetails.assetPath;
+            }
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
+            this.isImageFormat = assetDetails.imageFileType;
+            this.isTextFormat = assetDetails.textFileType;
             this.isBeeTemplate = isBeeTemplate;
           } else {
             this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
           }
         } else {
-          if (isNonImageFormat && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
-            // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-            // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-            //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
-            // );
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+            if(assetDetails.assetProxyPath){
+              this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            } else {
+              this.assetPreviewProxyPath = assetDetails.assetPath;
+            }
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
+            this.isImageFormat = assetDetails.imageFileType;
+            this.isTextFormat = assetDetails.textFileType;
             this.isBeeTemplate = isBeeTemplate;
           } else {
             this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
           }
         }
       }else{
-        if (isNonImageFormat) {
-          // this.previewPath = assetDetails.assetPath + '?cache=' + Math.random().toString(36).substring(7) + new Date().getTime() + Math.random().toString(36).substring(7);
-          // this.previewPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-          //   `https://docs.google.com/gview?url=${assetDetails.assetPath}&embedded=true`
-          // );
+        if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && !(this.type == undefined || this.type == 'TRACK')) {
+          if(assetDetails.assetProxyPath){
+            this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+          } else {
+            this.assetPreviewProxyPath = assetDetails.assetPath;
+          }
           this.previewPath = assetDetails.assetPath;
           this.previewFileType = assetDetails.assetType;
           this.previewContent = true;
+          this.isImageFormat = assetDetails.imageFileType;
+          this.isTextFormat = assetDetails.textFileType;
           this.isBeeTemplate = isBeeTemplate;
         } else {
           this.referenceService.preivewAssetOnNewHost(assetDetails.id);
@@ -321,10 +333,12 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else if (!assetDetails.beeTemplate) {
         let assetPath = assetDetails.assetPath;
-        if (assetDetails.assetType == 'pdf') {
-          assetPath = assetPath.split("=")[1];
-          assetPath = decodeURIComponent(assetPath);
-        }
+        // let fileFormats = ['pdf','html','txt','csv'];
+        // let isProxyFileFormat = fileFormats.includes(assetDetails.assetType);
+        // if (isProxyFileFormat || assetDetails.imageFileType) {
+        //   assetPath = assetPath.split("=")[1];
+        //   assetPath = decodeURIComponent(assetPath);
+        // }
           window.open(assetPath, '_blank');
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else {

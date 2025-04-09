@@ -1510,6 +1510,10 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
       }
 
-      
+      /** XNFR-929 **/
+      getMaximumContactCountForCampaignLaunch(loggedInUserId :number) {
+        const url = this.URL + 'campaign/getMaxContactCountForCampaignLaunch/' + loggedInUserId + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
 
 }

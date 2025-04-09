@@ -1,7 +1,7 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType" [subjectText]="subjectText" [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
-<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "socialContent" (notifyClose)="closeSocialShare($event)"></app-update-status>
-<div class="page-content">
+<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "socialContent" [isShowPageContent]="isOliverAiFromdam"(notifyClose)="closeSocialShare($event)"></app-update-status>
+<div [ngClass]="isOliverAiFromdam ? '' : 'page-content'">
   <div *ngIf="!openHistory && !openShareOption" class="pdf_body">
     <button class="btn close_btn" (click)="closeAi()">×</button>
     <div>
@@ -34,7 +34,7 @@
               <h5>Asset Name: {{assetDetailsViewDtoOfPartner?.assetName}}</h5>
               <p>Folder:{{assetDetailsViewDtoOfPartner?.categoryName}}</p>
               <p>Published By:{{assetDetailsViewDtoOfPartner?.displayName}}</p>
-              <p>From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
+              <p *ngIf="!isOliverAiFromdam">From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
             </div>
           </div>
 
@@ -45,11 +45,11 @@
         </div>
         <div class="action-buttons">
           <div class="btn-group">
-            <button class="btn plus-btn" (click)="pdfInput.click()">
+            <!-- <button class="btn plus-btn" (click)="pdfInput.click()">
               <span class="fa fa-plus"></span>
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
-            </button>
+            </button> -->
 
             <button class="btn btn-pdf" (click)="setInputText('Analyze PDF')">Analyze PDF</button>
             <button class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
@@ -94,13 +94,17 @@
                   </div>
                 </div>
                 <div class="footer-icons mb10">
-                  <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === i) ? 'Read aloud' : 'stop'}}">
+                  <div class="footer-icon"
+                    [ngStyle]="{'background-color': (isSpeakingText && speakingIndex === i) ? '#e40707' : '#0d6efd'}"
+                    data-toggle="tooltip" [attr.data-original-title]="!(isSpeakingText && speakingIndex === i) ? 'Read aloud' : 'stop'"
+                    data-placement="top">
                     <i [ngClass]="(isSpeakingText && speakingIndex === i) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-                      aria-hidden="true" (click)="speakTextOn(i,markdownComponent)">
-                    </i>
+                      aria-hidden="true" (click)="speakTextOn(i, markdownComponent)"></i>
                   </div>
-                  <div class="footer-icon" title="Copy to Clipboard">
-                    <i class="fa fa-clone fs-12" aria-hidden="true" (click)="copyAiText(markdownComponent)"></i>
+                  <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied ? '#00FF13' : '#0d6efd'}" data-toggle="tooltip"
+                    [attr.data-original-title]="isEmailCopied ? 'copied' : 'Copy to Clipboard'" data-placement="top">
+                    <i class="fs-12" [ngClass]="isEmailCopied ? 'fa fa-check' : 'fa fa-clone'"
+                      (click)="!isEmailCopied && copyAiText(markdownComponent)"></i>
                   </div>
                   <!-- <div class="footer-icon" title="Reload/Refresh">
                     <i class="fa fa-refresh fs-12"></i>
@@ -170,7 +174,7 @@
                         <span class="aligin-para">
                           <p>Folder:{{assetDetailsViewDtoOfPartner?.categoryName}}</p>
                           <p>Published By:{{assetDetailsViewDtoOfPartner?.displayName}}</p>
-                          <p>From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
+                          <p *ngIf="!isOliverAiFromdam">From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
                         </span>
                       </div>
                     </div>
@@ -189,11 +193,11 @@
         </div>
         <div class="action-buttons">
           <div>
-            <button class="history-plusicon" (click)="pdfInput.click()">
+            <!-- <button class="history-plusicon" (click)="pdfInput.click()">
               <span class="fa fa-plus"></span>
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
-            </button>
+            </button> -->
             <button class="action-btn" (click)="setInputText('Analyze PDF')"> Analyze PDF</button>
             <button class="action-btn" (click)="setInputText('Summarize in detail')"> Summarize in detail</button>
             <button class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key

@@ -170,6 +170,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     storeAdd: boolean = false;
     activeAddSignatureToggle: boolean = false;
 
+    deleteUploadedAsset = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch, public signatureService:SignatureService){
@@ -533,7 +534,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     uploadOrUpdateAsset() {
         this.damUploadPostDto.draft = false;
         if (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus == 'APPROVED'
-            && this.approvalRequired && this.isAssetReplaced && this.damUploadPostDto.assetType != 'pdf') {
+            && this.approvalRequired && this.isAssetReplaced) {
             this.sendForReApproval();
         } else {
             this.uploadOrUpdate();
@@ -1678,7 +1679,7 @@ zoomOut() {
                 this.submitButtonText = requiresApproval ? 'Send for Approval' : 'Update';
                 this.damUploadPostDto.sendForApproval = requiresApproval;
             } else if (isApproved && isAssetReplaced) {
-                const requiresApproval = !(assetApprover || !this.approvalRequired || this.damUploadPostDto.assetType === 'pdf');
+                const requiresApproval = !(assetApprover || !this.approvalRequired);
                 this.submitButtonText = requiresApproval ? 'Send for Re-Approval' : 'Update';
                 this.damUploadPostDto.sendForReApproval = requiresApproval;
             } else {
@@ -1716,7 +1717,7 @@ zoomOut() {
         }
         
         return ((!this.isAdd && this.isApprover && (this.damUploadPostDto.createdByAnyApprover || this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED])) ||
-            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && (!this.isAssetReplaced || this.damUploadPostDto.assetType == 'pdf')) ||
+            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && !this.isAssetReplaced) ||
             (this.isAdd && this.isApprover));
     }
 
@@ -1777,6 +1778,54 @@ zoomOut() {
             }
           });
       }
-          
-
+getFileIcon(): string {
+    if (!this.uploadedAssetName) return '../../../assets/images/asset-uploads/asset-uploads/Documents.svg';
+  
+    const extension = this.uploadedAssetName.split('.').pop();
+    
+    if (!extension) return '../../../assets/images/asset-uploads/asset-uploads/Documents.svg';
+  
+    const lowerExtension = extension.toLowerCase();
+  
+    switch (lowerExtension) {
+      case 'pdf':
+        return '../../../assets/images/asset-uploads/PDF.svg';
+      case 'csv':
+        return '../../../assets/images/asset-uploads/CSV.svg';
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+      case 'svg':
+        return '../../../assets/images/asset-uploads/Image.svg';
+      case 'doc':
+        return '../../../assets/images/asset-uploads/Documents.svg';
+      case 'docx':
+        return '../../../assets/images/asset-uploads/DOCX.svg';
+      case 'html':
+        return '../../../assets/images/asset-uploads/HTML.svg';
+      case 'xls':
+        return '../../../assets/images/asset-uploads/XLS.svg';
+      case 'xlsx':
+        return '../../../assets/images/asset-uploads/XLSX.svg';
+      case 'ppt':
+        return '../../../assets/images/asset-uploads/PPT.svg';
+      case 'pptx':
+        return '../../../assets/images/asset-uploads/PPTX.svg';
+      case 'mp3':
+        return '../../../assets/images/asset-uploads/Audio.svg';
+      case 'mp4':
+      case 'mpeg':
+      case 'mpg':
+        return '../../../assets/images/asset-uploads/Video.svg';
+      case 'avi':
+        return '../../../assets/images/asset-uploads/AVI.svg';
+      default:
+        return '../../../assets/images/asset-uploads/Documents.svg';
+    }
+  }
+  confirmDelete() {
+    this.clearPreviousSelectedAsset();
+    this.isAssetReplaced = false;
+    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
+  }
 }

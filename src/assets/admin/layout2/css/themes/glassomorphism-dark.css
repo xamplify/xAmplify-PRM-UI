@@ -2983,7 +2983,7 @@ input.field-border-customization {
     backdrop-filter: blur(5px);
     border-radius: 10px;
 }
-.activeCRM{
+.activeCRM, .activeCalendar, .activeCall{
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.2) !important;
   border: 1px solid rgba(255, 255, 255, 0.2 )!important;
@@ -4347,3 +4347,36 @@ color: #fff !important;
     bottom: -81px !important;
   }
 }
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background-color: rgb(204 210 244 / 16%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.asset_files{
+  background-color: rgb(16 18 27 / 24%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.drag-text{
+  color: #fff!important;
+}
+.dropdown-selected,.phone-input-field input,.search-box input{
+  background-color: rgb(146 151 179 / 22%) !important;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.dropdown-options-container,.search-box{
+  background-color: rgb(16 18 27 / 93%) !important;
+  border: 1px solid #ffffff33 !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.dropdown-options li{
+  border: 1px solid #ffffff33 !important;
+}
+.dropdown-options li:hover,.dropdown-options li.selected {
+  background-color: #2c2f33 !important;
+}
+/* .form_controls{
+  color: #000!important;
+} */

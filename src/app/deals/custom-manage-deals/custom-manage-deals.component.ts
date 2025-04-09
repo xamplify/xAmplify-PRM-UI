@@ -205,12 +205,12 @@ export class CustomManageDealsComponent implements OnInit {
 
   showComments(event: any) {
     this.selectedDeal = event;
-    this.isCommentSection = true;
+    this.isCommentSection = !this.isCommentSection;
   }
 
   addCommentModalClose(event: any) {
     this.selectedDeal.unReadChatCount = 0;
-    this.isCommentSection = false
+    this.isCommentSection = !this.isCommentSection;
   }
 
   addDeal() {

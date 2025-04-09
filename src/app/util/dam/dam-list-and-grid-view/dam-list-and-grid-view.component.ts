@@ -132,6 +132,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	previewContent: boolean;
 	fileType: any;
 	previewAssetPath: any;
+	SendAssetToOliver : any;
+	isOliverCalled : boolean = false;
+	existingCriterias = new Array<Criteria>();
+	fromDateFilter: any;
+	toDateFilter: any;
+	isImageFormat: boolean = false;
+	isTextFormat: boolean = false;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
@@ -212,6 +219,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.isAssetDetailsUpldated = false;
 		this.referenceService.assetResponseMessage = "";
 		this.referenceService.universalModuleType = "";//XNFR-574
+		this.referenceService.isOliverEnabled = false;
 	}
 
 	/********XNFR-169******/
@@ -609,11 +617,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.referenceService.previewAssetPdfInNewTab(asset.id);
 		}
 		else {
-			const nonImageFormats = ['pdf', 'pptx', 'doc', 'docx', 'ppt', 'xlsx'];
+			const nonImageFormats = ['pdf', 'pptx', 'doc', 'docx', 'ppt', 'xlsx', 'csv', 'txt', 'html'];
 			let isNonImageFormat = nonImageFormats.includes(asset.assetType);
-			if (isNonImageFormat) {
+			if (asset.contentPreviewType || asset.imageFileType) {
 				this.previewContent = true;
 				this.previewAssetPath = asset.assetPath;
+				this.isImageFormat = asset.imageFileType;
+				this.isTextFormat = asset.textFileType;
 				this.fileType = asset.assetType;
 			} else {
 				this.referenceService.preivewAssetOnNewHost(asset.id);
@@ -835,11 +845,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.pagination.filterOptionEnable = input['isCriteriasFilter'] ;
 		this.pagination.customFilterOption = true;
 		this.pagination.pageIndex = 1;
+		this.existingCriterias = input['existingCriterias'];
+		this.fromDateFilter = input['fromDateFilter'];
+		this.toDateFilter = input['toDateFilter'];
 		this.listItems(this.pagination);
 	}
 	closeFilterEmitter(event:any){
 		if(event === 'close') {
 			this.showFilterOption = false;
+			this.existingCriterias = new Array<Criteria>();
+			this.fromDateFilter = '';
+			this.toDateFilter = '';
 		} else {
 			this.showFilterOption = true
 		}
@@ -1037,8 +1053,18 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		let url = "/home/dam/askAi/shared/view/" + asset.id;
 		this.referenceService.goToRouter(url)
 	}
+	AskOliver(asset: any){
+		this.referenceService.isOliverEnabled = true;
+		this.SendAssetToOliver = asset;
+		this.isOliverCalled = true;
+	}
 
 	closePreview() {
 		this.previewContent = false;
+	}
+	closeAskAi(event:any){
+		this.isOliverCalled = false;
+		this.SendAssetToOliver = "";
+		this.referenceService.isOliverEnabled = false;
 	}
 }

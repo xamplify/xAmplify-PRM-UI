@@ -385,10 +385,6 @@ export class CountryNames {
         "dial_code": "+353",
         "code": "IE"
     }, {
-        "name": "Israel",
-        "dial_code": "+972",
-        "code": "IL"
-    }, {
         "name": "Italy",
         "dial_code": "+39",
         "code": "IT"
@@ -810,11 +806,11 @@ export class CountryNames {
         "code": "ZW"
     }, {
         "name": "land Islands",
-        "dial_code": "",
+        "dial_code": "+358",
         "code": "AX"
     }, {
         "name": "Antarctica",
-        "dial_code": null,
+        "dial_code": "+672",
         "code": "AQ"
     }, {
         "name": "Bolivia, Plurinational State of",

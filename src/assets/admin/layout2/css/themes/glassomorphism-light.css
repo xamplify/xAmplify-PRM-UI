@@ -3030,7 +3030,7 @@ input.field-border-customization {
     backdrop-filter: blur(5px);
     border-radius: 10px;
 }
-.activeCRM{
+.activeCRM, .activeCalendar, .activeCall{
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.2) !important;
   border: 1px solid rgba(255, 255, 255, 0.2 )!important;
@@ -4611,4 +4611,32 @@ color: #fff!important;
   .clip_mask {
     bottom: -81px !important;
   }
+}
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.asset_files{
+  background: rgb(209 170 170 / 15%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+}
+.file-name,.drag-text{
+  color: #000!important;
+}
+.dropdown-selected,.phone-input-field input,.search-box input{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(5px)
+}
+.dropdown-options-container,.search-box{
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(10px);
+  background-color: rgb(237 236 236 / 80%) !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.form_controls{
+  color: #000!important;
 }

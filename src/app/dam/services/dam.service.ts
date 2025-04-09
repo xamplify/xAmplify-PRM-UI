@@ -446,4 +446,15 @@ getSharedAssetDetailsByIdForVendor(id: number) {
   return this.utilGetMethod("getIsVendorSignatureRequiredAfterPartnerSignatureCompleted/" + id);
  }
 
+ getIsPartnerSignatureRequiredAndGetPartnerSignatureCount(id:number){
+  return this.utilGetMethod("getIsPartnerSignatureRequiredAndGetPartnerSignatureCount/" + id);
+
+ }
+
+ getPartnersByDamIdAndCompanyIds(pagination: Pagination) {
+  const url = "getPartnersByDamIdAndCompanyIds";
+  return this.utilPostSaveOrUpdateMethod(url, pagination)
+
+}
+
 }

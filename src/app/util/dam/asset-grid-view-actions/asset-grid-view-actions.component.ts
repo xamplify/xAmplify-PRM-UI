@@ -78,7 +78,7 @@ export class AssetGridViewActionsComponent implements OnInit {
   }else{
      const nonImageFormats = ['pdf', 'pptx', 'doc', 'docx', 'ppt', 'xlsx'];
      let isNonImageFormat = nonImageFormats.includes(asset.assetType);
-     if (isNonImageFormat) {
+     if (asset.contentPreviewType || asset.imageFileType) {
        this.assetGridViewAssetPreviewEmitter.emit(asset);
      } else {
        this.referenceService.preivewAssetOnNewHost(asset.id);
