@@ -314,11 +314,11 @@
   [companyJourneyId]="companyJourneyId"
   [isFromCompanyJourneyEditContacts]="isFromCompanyJourneyEditContacts"></app-add-deal>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
-  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
-
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="selectedDeal" [isFromCompanyJourney]="isCompanyJourney"
   [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
   [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments($event)"
   (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>
+
+<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
+  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>

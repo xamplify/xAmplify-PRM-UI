@@ -48,6 +48,7 @@ export class AiChatManagerComponent implements OnInit {
   isSpeakingText: boolean;
   speakingIndex: number;
   isOliverAiFromdam: boolean;
+  isEmailCopied: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef) { }
 
@@ -167,7 +168,8 @@ export class AiChatManagerComponent implements OnInit {
     this.copyToClipboard(element);
   }
 
-  copyToClipboard(element : any) {
+  copyToClipboard(element: any) {
+    this.isEmailCopied = true;
     this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
     textarea.value = this.copiedText;
@@ -175,6 +177,9 @@ export class AiChatManagerComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+    setTimeout(() => {
+      this.isEmailCopied = false;
+    }, 2000);
   }
 
   onFileSelected(event: any) {
@@ -299,6 +304,9 @@ export class AiChatManagerComponent implements OnInit {
     this.ngxLoading  = false;
     this.UploadedFile = false;
     this.showEmailModalPopup = false;
+    if (this.uploadedFileId != undefined) {
+      this.deleteUploadedFile();
+    }
   }
 
   toggleAction(){
