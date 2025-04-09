@@ -264,7 +264,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       if(isBeeTemplate){
         if (isVendorView) {
           if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
-            this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            if(assetDetails.assetProxyPath){
+              this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            } else {
+              this.assetPreviewProxyPath = assetDetails.assetPath;
+            }
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
@@ -276,7 +280,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           }
         } else {
           if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
-            this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            if(assetDetails.assetProxyPath){
+              this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            } else {
+              this.assetPreviewProxyPath = assetDetails.assetPath;
+            }
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
@@ -289,7 +297,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         }
       }else{
         if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && !(this.type == undefined || this.type == 'TRACK')) {
-          this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+          if(assetDetails.assetProxyPath){
+            this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+          } else {
+            this.assetPreviewProxyPath = assetDetails.assetPath;
+          }
           this.previewPath = assetDetails.assetPath;
           this.previewFileType = assetDetails.assetType;
           this.previewContent = true;
