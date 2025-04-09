@@ -141,7 +141,7 @@ export class CountryPhoneInputComponent implements OnInit {
   onKeyDown(event: KeyboardEvent): void {
     const input = event.target as HTMLInputElement;
     const cursorPos = input.selectionStart || 0;
-    const dialCodeLength = this.selectedCountry.dial_code.length;
+    const dialCodeLength = this.selectedCountry.dial_code.length + 1;
     if (input.selectionStart < dialCodeLength ||
       input.selectionEnd < dialCodeLength) {
       if (!(event.ctrlKey && (event.key === 'c' || event.key === 'a'))) {

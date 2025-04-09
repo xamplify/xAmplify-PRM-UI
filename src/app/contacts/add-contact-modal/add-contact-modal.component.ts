@@ -77,7 +77,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     previousEmailIds:any = [];
     isValidEmail : boolean = false;
     @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
-    isValidMobileNumber: boolean = false;
+    isValidMobileNumber: boolean = true;
     
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
