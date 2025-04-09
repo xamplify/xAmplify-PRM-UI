@@ -142,7 +142,7 @@
                                                                     title="{{assetDetails.assetType}}">Type:
                                                                     {{assetDetails.assetType}}</strong><br>
                                                             </div>
-                                                            <button *ngIf="assetDetails.contentPreviewType || assetDetails.imageFileType" class="btn btn-primary mb_6"
+                                                            <button *ngIf="assetDetails.contentPreviewType || assetDetails.imageFileType || type == 'TRACK'" class="btn btn-primary mb_6"
                                                                 (click)="assetPreview(assetDetails)">View</button>
                                                             <button *ngIf="assetDetails?.assetType!='mp4'"
                                                                 class="btn btn-primary"
