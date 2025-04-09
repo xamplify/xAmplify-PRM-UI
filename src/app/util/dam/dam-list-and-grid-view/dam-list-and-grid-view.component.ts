@@ -139,6 +139,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	toDateFilter: any;
 	isImageFormat: boolean = false;
 	isTextFormat: boolean = false;
+	proxyAssetPath: any;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
@@ -621,6 +622,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			let isNonImageFormat = nonImageFormats.includes(asset.assetType);
 			if (asset.contentPreviewType || asset.imageFileType) {
 				this.previewContent = true;
+				if(asset.assetProxyPath){
+					this.proxyAssetPath = asset.assetProxyPath + asset.assetPath;
+				} else{
+					this.proxyAssetPath = asset.assetPath;
+				}
 				this.previewAssetPath = asset.assetPath;
 				this.isImageFormat = asset.imageFileType;
 				this.isTextFormat = asset.textFileType;
