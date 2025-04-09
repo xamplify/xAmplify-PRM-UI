@@ -205,7 +205,7 @@
                       <div #markdownComponent class="padding-align">
                         <markdown [data]="chatGptGeneratedText"></markdown>
                       </div>
-                      <!-- <textarea class="textarea h-350" id="chatGptGeneratedTextArea"  [(ngModel)]="chatGptGeneratedText" [ngModelOptions]="{standalone: true}"  readonly #chatGptGeneratedTextInput></textarea> -->
+                      <textarea class="form-control border_0" id="chatGptGeneratedTextArea"  style="position: absolute; left: -9999px;" [(ngModel)]="chatGptGeneratedText" [ngModelOptions]="{standalone: true}" rows="18" readonly #chatGptGeneratedTextInput></textarea>
                     </div>
                   </div>
                   <div class="content-area">
@@ -217,12 +217,17 @@
                     </div>
                     <div *ngIf="isCopyButtonDisplayed" class="w-50per mt10">
                       <div class="footer-icons phara-footer mt0">
-                        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}">
+                        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}" [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
                           <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'" aria-hidden="true"
                             (click)="speakTextForParaprasher(markdownComponent)">
                           </i>
                         </div>
-                        <!-- <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(markdownComponent)"><i class="fa fa-clone fs-12"></i></div> -->
+                        <!-- <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div> -->
+                        <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied ? '#00FF13' : '#0d6efd'}">
+                          <i data-toggle="tooltip" data-placement="top" [title]="isEmailCopied ? 'Copied to Clipboard' : 'Copy to Clipboard'" class="fs-12" [ngClass]="isEmailCopied ? 'fa fa-check' : 'fa fa-clone'"
+                            (click)="!isEmailCopied && copyChatGPTText(chatGptGeneratedTextInput)" aria-hidden="true">
+                          </i>
+                        </div>
                         <!-- <div class="footer-icon" title=" Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
                         <button class="share-btn"  (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
@@ -271,8 +276,8 @@
               aria-hidden="true" (click)="speakTextOn(index,markdownComponent)">
             </i>
           </div>
-          <!-- <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
-              (click)="copyAiText(message.content)"></i></div> -->
+          <div class="footer-icon" title="Copy to Clipboard"><i class="fa fa-clone fs-12"
+              (click)="copyChatGPTText(message.content)"></i></div>
           <!-- <div class="footer-icon" title="Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div>
           <button class="share-btn">Design Template</button>
           <button class="share-btn">Design Page</button> -->
