@@ -75,10 +75,10 @@
                                 <b> Created On: </b><app-timestamp [isOnlyDate]="true"
                                     [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
                             </h6>
-                            <h6 class="xamplify-ellipsis GridViewCotent" *ngIf="expireDescription(learningTrack?.expireDate)">
+                            <h6 class="xamplify-ellipsis GridViewCotent" *ngIf="referenceService?.expireDescription(learningTrack?.expireDate,tracks)">
                                 <span class="text-danger" data-toggle="tooltip" data-placement="top"
-                                    title="{{expireDescription(learningTrack.expireDate)}}">
-                                    {{expireDescription(learningTrack?.expireDate)}}
+                                    title="{{referenceService?.expireDescription(learningTrack.expireDate,tracks)}}">
+                                    {{referenceService?.expireDescription(learningTrack?.expireDate,tracks)}}
                                 </span>
                             </h6>
                         </div>
@@ -110,10 +110,13 @@
                                 </a>
                                 <a class="Iconhover custom-grid-icon"
                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                    data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
-                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '' : confirmChangePublish(learningTrack.id, true, learningTrack)"
-                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''">
-                                    <i class="fa fa-share" aria-hidden="true"></i>
+                                    data-toggle="tooltip" data-placement="top" 
+                                    [attr.title]="setTooltipMessage(learningTrack)"
+                                    [attr.data-original-title]="setTooltipMessage(learningTrack)"
+                                    (mouseenter)="updateTooltip($event, learningTrack)"
+                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? '' : confirmChangePublish(learningTrack.id, true, learningTrack)"
+                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? 'disabled-div gray':''">
+                                    <i class="fa fa-share" aria-hidden="true" [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? 'disabled':''"></i>
                                     <div class="clickicons"></div>
                                 </a>
                                 <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="View"
