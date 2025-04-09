@@ -141,39 +141,44 @@ export class CountryPhoneInputComponent implements OnInit {
   onKeyDown(event: KeyboardEvent): void {
     const input = event.target as HTMLInputElement;
     const cursorPos = input.selectionStart || 0;
-    const dialCodeLength = this.selectedCountry.dial_code.length + 1;
-    if (input.selectionStart < dialCodeLength ||
-      input.selectionEnd < dialCodeLength) {
-      if (!(event.ctrlKey && (event.key === 'c' || event.key === 'a'))) {
-        event.preventDefault();
-        return;
-      }
-    }
-
-    if (cursorPos <= dialCodeLength &&
-      (event.key === 'Backspace' || event.key === 'Delete')) {
-      event.preventDefault();
+    const selectionEnd = input.selectionEnd || 0;
+    const dialCode = this.selectedCountry.dial_code + ' ';
+    const dialCodeLength = dialCode.length;
+    if (cursorPos >= dialCodeLength && selectionEnd >= dialCodeLength) {
       return;
     }
 
-    if (event.ctrlKey && event.key === 'x') {
-      if (input.selectionStart < dialCodeLength ||
-        input.selectionEnd < dialCodeLength) {
+    if (cursorPos < dialCodeLength || selectionEnd < dialCodeLength) {
+      if (event.ctrlKey && event.key === 'a') {
+        return;
+      }
+      if (event.ctrlKey && (event.key === 'x' || event.key === 'v')) {
         event.preventDefault();
+        return;
+      }
+      if (event.key === 'Backspace' || event.key === 'Delete') {
+        event.preventDefault();
+        return;
+      }
+      if (event.key.length === 1) {
+        event.preventDefault();
+        return;
       }
     }
   }
 
   onInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const dialCode = this.selectedCountry.dial_code;
-
+    const dialCode = this.selectedCountry.dial_code + ' ';
     if (!input.value.startsWith(dialCode)) {
       const numbersOnly = input.value.replace(/\D/g, '');
       const userNumber = numbersOnly.slice(dialCode.replace(/\D/g, '').length);
-      input.value = dialCode + ' ' + userNumber;
-      this.validateMobileNumber();
+      input.value = dialCode + userNumber;
+      setTimeout(() => {
+        input.setSelectionRange(dialCode.length, dialCode.length);
+      });
     }
+    this.validateMobileNumber();
   }
 
 }
