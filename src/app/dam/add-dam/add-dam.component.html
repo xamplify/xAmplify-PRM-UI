@@ -208,7 +208,7 @@
                                        <input type="radio" id="join" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequired" (change)="setVendorSignatureRequiredNow()">
                                        <label for="join">Now</label>
                      
-                                       <input type="radio" id="relation" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted($event)">
+                                       <input type="radio" id="relation" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(true)">
                                        <label for="relation">Later</label>
                                     </div>
                                     <i class="fa fa-question-circle help-icon" data-toggle="tooltip"
