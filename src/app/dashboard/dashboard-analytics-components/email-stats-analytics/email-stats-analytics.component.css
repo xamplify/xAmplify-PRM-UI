@@ -17,3 +17,6 @@
     width: 75% !important;
   }
 }
+.modal-title{
+  line-height: initial;
+}

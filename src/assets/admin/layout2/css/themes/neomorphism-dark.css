@@ -4500,6 +4500,38 @@ tbody>tr#uploaded-csv-tr>td {
 .modal-title{
   color: white !important;
 }
-.modal-title-new{
+.modal-title-new,.drag-text{
   color: white !important;
 }
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.asset_files{
+  background: #2c2f33!important;
+  border: 1px solid  #191b1e !important;
+  box-shadow: inset 2px 2px 5px #1f1a1a, inset -3px -3px 7px #3b4451 !important;
+}
+.dropdown-selected,.phone-input-field input,.search-box input{
+  border:1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.dropdown-options-container,.search-box{
+  background-color: #2c2f33 !important;
+  border: 1px solid  #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.dropdown-options li{
+  border-bottom:  1px solid #191b1e !important;
+}
+.dropdown-options li:hover,.dropdown-options li.selected {
+  background-color: #2c2f33 !important;
+}
+.form_controls:focus {
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  outline: none !important;}

@@ -123,9 +123,7 @@ export class CountryPhoneInputComponent implements OnInit {
   }
 
   convertIntoLowerCase(value: string) {
-    if (value) {
-      return value.toLowerCase();
-    }
+    return value.toLowerCase();
   }
 
   @HostListener('document:click', ['$event.target'])
@@ -140,4 +138,21 @@ export class CountryPhoneInputComponent implements OnInit {
     event.stopPropagation();
   }
 
+  onKeyDown(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    const cursorPos = input.selectionStart || 0;
+    if (cursorPos <= this.selectedCountry.dial_code.length + 1) {
+      if (event.key === 'Backspace' || event.key === 'Delete') {
+        event.preventDefault();
+        return;
+      }
+    }
+
+    if (event.ctrlKey && event.key === 'x') {
+      if (input.selectionStart < this.selectedCountry.dial_code.length + 1 || input.selectionEnd < this.selectedCountry.dial_code.length + 1) {
+        event.preventDefault();
+      }
+    }
+  }
+  
 }
