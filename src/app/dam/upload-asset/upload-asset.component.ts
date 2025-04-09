@@ -169,6 +169,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     approvalRequired: boolean = false;
     storeAdd: boolean = false;
     activeAddSignatureToggle: boolean = false;
+    isPdfFileSelected: boolean = false;
 
     deleteUploadedAsset = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
@@ -364,6 +365,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.uploadedCloudAssetName = "";
         this.damUploadPostDto.source = "";
         this.fileType = file['type'];
+        if(this.fileType=="application/pdf"){
+            this.isPdfFileSelected=true;
+        }
         this.customResponse = new CustomResponse();
         this.formData.append("uploadedFile", file, file['name']);
         this.uploadedAssetName = file['name'];
@@ -1824,6 +1828,15 @@ getFileIcon(): string {
     }
   }
   confirmDelete() {
-    this.clearPreviousSelectedAsset();
+    this.clearPreviousSelectedAssetAndClearPdfToggles();
   }
+  clearPreviousSelectedAssetAndClearPdfToggles(){
+    this.formData.delete("uploadedFile");
+    $('#uploadedAsset').val('');
+    this.uploadedAssetName  = "";
+    this.isPdfFileSelected = false;
+}
+setPartnerSignatureRequiredNow(){
+    this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature=false;
+}
 }

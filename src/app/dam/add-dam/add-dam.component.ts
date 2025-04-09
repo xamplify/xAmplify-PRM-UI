@@ -872,4 +872,9 @@ setVendorSignatureRequired(event){
               console.log('You clicked on option: ' + dismiss);
             });
         }
+
+        setVendorSignatureRequiredNow(){
+          this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
+        }
+
 }

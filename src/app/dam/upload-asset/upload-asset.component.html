@@ -693,7 +693,7 @@
                                                       </i>
                                                    </div>
                                     
-                                                   <div class="toggle-item" *ngIf="fileType === 'application/pdf'">
+                                                   <div class="toggle-item" *ngIf="isPdfFileSelected || damUploadPostDto.assetType === 'pdf'">
                                                       <div class="toggle-label">
                                                         Partner Signature
                                                       </div>
@@ -712,7 +712,7 @@
                                                       </i>
                                                     </div>
                                     
-                                                   <div class="toggle-items" *ngIf="fileType === 'application/pdf'">
+                                                   <div class="toggle-items" *ngIf="isPdfFileSelected || damUploadPostDto.assetType === 'pdf'">
                                                       <div class="d-flex align-items-center">
                                                          <div class="toggle-label">My Signature</div>
                                                          <label class="toggle-switch">
@@ -729,12 +729,12 @@
                                                          [title]="isAdd ? 'Enable vendor signature' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                                       </div>
                                                       <div>
-                                                         <div class="signature-options">
-                                                            <div *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired" class="pill-toggle mr10">
-                                                               <input type="radio" id="join" checked>
+                                                         <div class="signature-options" *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired" >
+                                                            <div class="pill-toggle mr10">
+                                                               <input type="radio" id="join" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequired" (change)="setPartnerSignatureRequiredNow()">
                                                                <label for="join">Now</label>
                                     
-                                                               <input type="radio" id="relation">
+                                                               <input type="radio" id="relation" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted($event)">
                                                                <label for="relation">Later</label>
                                                             </div>
                                                             <!-- <div class="signature_toogle">
@@ -745,14 +745,18 @@
                                                                                              </label>
                                                                                              <span class="timing-option">Later</span>
                                                                                           </div> -->
-                                                            <i class="fa fa-question-circle help-icon"></i>
+                                                            <i class="fa fa-question-circle help-icon" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            aria-hidden="true"
+                                                            [title]="isAdd ? 'Add your signature Now or Later' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                                          </div>
                                                          <div>
                                                             <div class="signature-buttons">
-                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired" class="signature-btn">
+                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired" (click)="openAddSignatureModalPopUp()"  class="signature-btn">
                                                                   <i class="fa fa-pencil"></i> Signature Settings
+                                                                  <span class="required" *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
                                                                </button>
-                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired && isVendorSignatureAdded" class="signature-btn clear">Clear</button>
+                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired && isVendorSignatureAdded" (click)="confirmClear()"  class="signature-btn clear">Clear</button>
                                                             </div>
                                                          </div>
                                                       </div>
