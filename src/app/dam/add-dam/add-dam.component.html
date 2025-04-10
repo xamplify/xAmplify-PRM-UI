@@ -203,7 +203,7 @@
                                  <div class="signature-options">
                                     <div class="mt7" *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired">
                                        <div class="pill-toggle mr5">
-                                          <input type="radio" id="join" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequired"
+                                          <input type="radio" id="join" name="toggle" [checked]="!damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature"
                                              (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(false)">
                                           <label for="join">Now</label>
                                  
@@ -223,7 +223,7 @@
                                              <span class="required"
                                                 *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
                                           </button>
-                                          <button *ngIf="damUploadPostDto.vendorSignatureRequired && isVendorSignatureAdded" (click)="confirmClear()"
+                                          <button *ngIf="damUploadPostDto.vendorSignatureRequired && showClearOption" (click)="confirmClear()"
                                              class="signature-btn clear mt7">Clear</button>
                                        </div>
                                     </div>

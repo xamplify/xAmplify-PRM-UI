@@ -90,6 +90,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   deviceService: any;
   showPageSizeAndOrientation: boolean = false;
   isVendorSignatureAdded: boolean = false;
+  showClearOption: boolean = false;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -854,6 +855,8 @@ setVendorSignatureRequired(event){
           clearSignature(){
             this.pdfUploadedFile =  this.pdfFile;
             this.isVendorSignatureAdded = false;
+            this.showClearOption = false;
+            this.validateFields();
         }
 
         confirmClear() {

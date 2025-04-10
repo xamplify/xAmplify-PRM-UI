@@ -732,7 +732,7 @@
                                                                <div class="pill-toggle">
                                                                   <input
                                                                      [disabled]="!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)"
-                                                                     type="radio" id="join" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequired"
+                                                                     type="radio" id="join" name="toggle" [checked]="!damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignature"
                                                                      (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(false)">
                                                                   <label for="join">Now</label>
                                                          
