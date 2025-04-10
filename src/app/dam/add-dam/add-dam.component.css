@@ -256,7 +256,6 @@ input:checked + .toggle-slider:before {
 .signature-options {
   display: flex;
   align-items: center;
-  margin: 10px 0px 4px 0px;
   justify-content: space-between;
 }
 
@@ -280,8 +279,6 @@ input:checked + .toggle-slider:before {
   display: flex;
   gap: 5px;
   white-space: nowrap;
-  margin-top: 6px;
-
 }
 
 .signature-btn {
@@ -451,4 +448,7 @@ margin-right: 10px;}
 .signature-options{
   margin: 0px;
 }
+}
+.mt7{
+  margin: 10px 0px 4px 0px;
 }

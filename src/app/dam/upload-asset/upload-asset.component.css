@@ -477,7 +477,6 @@ input:checked + .toggle-slider:before {
 .signature-options {
   display: flex;
   align-items: center;
-  margin: 10px 0px 4px 0px;
   justify-content: space-between;
 }
 
@@ -688,4 +687,7 @@ margin-right: 10px;}
   .mb_7{
     margin-top: 12px;
   }
+}
+.mt7{
+  margin: 10px 0px 4px 0px;
 }

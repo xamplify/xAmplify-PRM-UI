@@ -201,8 +201,8 @@
                                </div>
                               <div>
                                  <div class="signature-options">
-                                    <div  *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired">
-                                       <div class="pill-toggle mr10">
+                                    <div class="mt7" *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired">
+                                       <div class="pill-toggle mr5">
                                           <input type="radio" id="join" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequired"
                                              (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(false)">
                                           <label for="join">Now</label>
@@ -218,13 +218,13 @@
                                     <div>
                                        <div class="signature-buttons">
                                           <button *ngIf="damUploadPostDto.vendorSignatureRequired" (click)="openAddSignatureModalPopUp()"
-                                             class="signature-btn">
+                                             class="signature-btn mt7">
                                              <i class="fa fa-pencil"></i> Signature Settings
                                              <span class="required"
                                                 *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
                                           </button>
                                           <button *ngIf="damUploadPostDto.vendorSignatureRequired && isVendorSignatureAdded" (click)="confirmClear()"
-                                             class="signature-btn clear">Clear</button>
+                                             class="signature-btn clear mt7">Clear</button>
                                        </div>
                                     </div>
                                  </div>
