@@ -4380,3 +4380,19 @@ color: #fff !important;
 /* .form_controls{
   color: #000!important;
 } */
+
+/* vendor signature asset */
+.toggle-item,.toggle-items,.signature-btn,.pill-toggle{
+  background: rgb(0 0 0 / 18%) !important;
+  border: 1px solid #ffffff33!important;
+}
+.toggle-label,.help-icon,.pill-toggle label,.signature-btn{
+  color: #fff!important;
+}
+input:checked + .toggle-slider {
+  background-color: #2196F3 !important;
+}
+.toggle-slider{
+  background-color: #d1d1d170!important;
+}
+
