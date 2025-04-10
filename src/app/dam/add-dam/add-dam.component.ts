@@ -832,6 +832,7 @@ setVendorSignatureRequired(event){
             this.setUploadedFileProperties(this.pdfUploadedFile);
           } else if (!event && !this.isVendorSignatureAdded)  {
               this.setUploadedFileProperties(this.pdfFile);
+              this.showClearOption = false;
           }
           }
 

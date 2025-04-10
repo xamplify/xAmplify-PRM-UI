@@ -1741,6 +1741,7 @@ zoomOut() {
         this.activeAddSignatureToggle = true;
       } else if (!event && !this.isVendorSignatureAdded) {
           this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+          this.showClearOption = false;
       } else if (!event){
         this.activeAddSignatureToggle = false;
       }

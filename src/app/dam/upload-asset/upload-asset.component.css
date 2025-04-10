@@ -221,7 +221,7 @@ border-radius: 4px;
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
-  background-color: #f1f5f9;
+  background-color: rgba(234, 242, 249, 1);
   border: 1px solid #ddd;
   padding: 6px;
   border-radius: 8px;
@@ -691,3 +691,11 @@ margin-right: 10px;}
 .mt7{
   margin: 10px 0px 4px 0px;
 }
+
+.toggle-switch input:disabled + .toggle-slider {  cursor: not-allowed;
+  opacity: 0.6;}
+
+.pill-toggle input:disabled + label {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
