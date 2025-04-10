@@ -1128,10 +1128,8 @@
                                             <!-- XNFR-929 -->
                                             <div class="alert alert-danger text-center mbgrid"
                                                 *ngIf="maxRecipientCountReached && selectedContactListIds?.length>0">
-                                                <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
-                                                <ng-container class="danger">
-                                                    <strong style="padding-left: 25px;">**Maximum recipient count has reached. Only {{maxRecipientCount}} active recipients are allowed at one time </strong>
-                                                </ng-container>
+                                                <strong>Selected Rows: {{selectedContactListIds.length}}, Recipients Count: {{validUsersCount}}, Limit:
+                                                    {{maxRecipientCount}} recipients per campaign.</strong>
                                             </div>
 
                                             <table class="table table-filter"
@@ -2055,7 +2053,7 @@
                                     </button>
                                     <button type="submit" class="button mBtnAlign w-10em mar-lft-11 bgcolor-unset"
                                         [disabled]="!isContactList || maxRecipientCountReached"
-								        title="{{maxRecipientCountReached ? 'Maximum recipient limit has reached' : ''}}"
+								        title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}"
                                         (click)="isContactList && validateAndLaunchCampaign()"><span
                                             class="btn Btn-Green transition pos_pd-top4">{{buttonName}}</span></button>
                                     <button *ngIf="!isPageCampaign" type="button"
