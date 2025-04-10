@@ -2697,3 +2697,24 @@ tbody{background: transparent;}
       bottom: -84px !important;
   }
 }
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  border: 1px solid #2f4857 !important;
+  background-color: #22313a !important;
+}
+.toggle-label,.help-icon,.pill-toggle label{
+  color: #fff !important;
+}
+input:checked + .toggle-slider {
+  background-color: #2196F3!important;
+}
+.toggle-slider{
+  background-color: #cccccc69!important;
+}
+.pill-toggle{
+  background-color: #22313a !important;
+}
+.signature-btn{
+  border: 1px solid #2f4857 !important;
+  background-color: #2b3c46 !important;
+}

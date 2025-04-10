@@ -294,7 +294,7 @@
                                                 </div>
                                              </div>
                                              <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
-                                                <div class="upload-asset-div">
+                                                <div class="upload-asset-div mb_7">
                                                    <div class="text-center" style="margin-bottom:10px;">
                                                       <!--  -->
                                                       <span *ngIf="uploadedCloudAssetName?.length>0">
@@ -571,8 +571,8 @@
                                   
 
                                     <div class="col-xs-12" [class.customDisableCss]='isDisableForm==true'>
-                                       <div class=" row d-flex flex_wrap_asset">
-                                          <div class="width_84">
+                                       <div class=" row mt10">
+                                          <div class="col-md-8 col-lg-8 col-xs-12 col-sm-8">
                                              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                                 <div class="form-group label-flex">
                                                    <label class="control-label form_label" translate>Name
@@ -678,22 +678,7 @@
                                                          [title]="isAdd ? 'Share As White Labeled Content' : damUploadPostDto?.whiteLabeledToolTipMessage">
                                                       </i>
                                                     </div>
-                                                    <div class="toggle-item">
-                                                      <div class="toggle-label">Add To Quick Links</div>
-                                                      <label class="toggle-switch">
-                                                         <input type="checkbox" [checked]="damUploadPostDto?.addedToQuickLinks"
-                                                         (change)="setAddToQuickLinks($event.target.checked)">
-                                                         <span class="toggle-slider"></span>
-                                                      </label>
-                                                      <i class="fa fa-question-circle help-icon"
-                                                      data-toggle="tooltip"
-                                                      data-placement="top"
-                                                      aria-hidden="true"
-                                                      [title]="properties?.ADD_TO_QUICK_LINKS">
-                                                      </i>
-                                                   </div>
-                                    
-                                                   <div class="toggle-item" *ngIf="isPdfFileSelected || damUploadPostDto.assetType === 'pdf'">
+                                                    <div class="toggle-item" *ngIf="isPdfFileSelected || damUploadPostDto.assetType === 'pdf'">
                                                       <div class="toggle-label">
                                                         Partner Signature
                                                       </div>
@@ -711,7 +696,20 @@
                                                          [title]="isAdd ? 'Enable partner signature' : damUploadPostDto?.partnerSignatureToolTipMessage">
                                                       </i>
                                                     </div>
-                                    
+                                                    <div class="toggle-item">
+                                                      <div class="toggle-label">Add To Quick Links</div>
+                                                      <label class="toggle-switch">
+                                                         <input type="checkbox" [checked]="damUploadPostDto?.addedToQuickLinks"
+                                                         (change)="setAddToQuickLinks($event.target.checked)">
+                                                         <span class="toggle-slider"></span>
+                                                      </label>
+                                                      <i class="fa fa-question-circle help-icon"
+                                                      data-toggle="tooltip"
+                                                      data-placement="top"
+                                                      aria-hidden="true"
+                                                      [title]="properties?.ADD_TO_QUICK_LINKS">
+                                                      </i>
+                                                   </div>
                                                    <div class="toggle-items" *ngIf="isPdfFileSelected || damUploadPostDto.assetType === 'pdf'">
                                                       <div class="d-flex align-items-center">
                                                          <div class="toggle-label">My Signature</div>
@@ -729,34 +727,38 @@
                                                          [title]="isAdd ? 'Enable vendor signature' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                                       </div>
                                                       <div>
-                                                         <div class="signature-options" *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired">
-                                                            <div class="pill-toggle mr10">
-                                                               <input [disabled] = "!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)" type="radio" id="join" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequired" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(false)">
-                                                               <label for="join">Now</label>
-                                    
-                                                               <input [disabled] = "!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)" type="radio" id="relation" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignature" (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(true)">
-                                                               <label for="relation">Later</label>
+                                                         <div class="signature-options"
+                                                            *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired">
+                                                            <div>
+                                                               <div class="pill-toggle">
+                                                                  <input
+                                                                     [disabled]="!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)"
+                                                                     type="radio" id="join" name="toggle" [checked]="damUploadPostDto?.vendorSignatureRequired"
+                                                                     (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(false)">
+                                                                  <label for="join">Now</label>
+                                                         
+                                                                  <input
+                                                                     [disabled]="!isAdd && (damUploadPostDto.vendorSignatureCompleted || damUploadPostDto?.disableVendorSignatuerOption)"
+                                                                     type="radio" id="relation" name="toggle"
+                                                                     [checked]="damUploadPostDto?.vendorSignatureRequiredAfterPartnerSignature"
+                                                                     (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(true)">
+                                                                  <label for="relation">Later</label>
+                                                               </div>
+                                                               <i class="fa fa-question-circle help-icon" data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                                  [title]="isAdd ? 'Add your signature Now or Later' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                                             </div>
-                                                            <!-- <div class="signature_toogle">
-                                                                                             <span class="timing-option">Now</span>
-                                                                                             <label class="toggle-switch toggle-switch-small">
-                                                                                                <input type="checkbox">
-                                                                                                <span class="toggle-slider"></span>
-                                                                                             </label>
-                                                                                             <span class="timing-option">Later</span>
-                                                                                          </div> -->
-                                                            <i class="fa fa-question-circle help-icon" data-toggle="tooltip"
-                                                            data-placement="top"
-                                                            aria-hidden="true"
-                                                            [title]="isAdd ? 'Add your signature Now or Later' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
-                                                         </div>
-                                                         <div>
-                                                            <div class="signature-buttons">
-                                                               <button *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)" (click)="openAddSignatureModalPopUp()"  class="signature-btn">
-                                                                  <i class="fa fa-pencil"></i> Signature Settings
-                                                                  <span class="required" *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
-                                                               </button>
-                                                               <button *ngIf="damUploadPostDto.vendorSignatureRequired && showClearOption" (click)="confirmClear()"  class="signature-btn clear">Clear</button>
+                                                            <div>
+                                                               <div class="signature-buttons">
+                                                                  <button
+                                                                     *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
+                                                                     (click)="openAddSignatureModalPopUp()" class="signature-btn">
+                                                                     <i class="fa fa-pencil"></i> Signature Settings
+                                                                     <span class="required"
+                                                                        *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
+                                                                  </button>
+                                                                  <button *ngIf="damUploadPostDto.vendorSignatureRequired && showClearOption" (click)="confirmClear()"
+                                                                     class="signature-btn clear">Clear</button>
+                                                               </div>
                                                             </div>
                                                          </div>
                                                       </div>
@@ -844,8 +846,8 @@
                                                 </div>
                                              </div>
                                           </div>
-                                          <div class="mobile_thumbnail" style="padding-left: 0;">
-                                             <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 pl0">
+                                          <div class=" col-md-4 col-lg-4 col-xs-12 col-sm-4 mb_pl_15 mobile_thumbnail" style="padding-left: 0;">
+                                             <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                                 <!---Thumbnail Image-->
                                                 <div>
                                                    <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload

@@ -3438,3 +3438,9 @@ border-bottom-right-radius: 7px;
     padding: 0px!important;
   }
 }
+.pill-toggle label {
+  color: #007bff!important;
+}
+.pill-toggle input[type="radio"]:checked + label {
+  color: white!important;
+}

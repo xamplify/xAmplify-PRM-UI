@@ -2547,3 +2547,21 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 .modal-title,.modal-title b,h4.modal-title[id]{
   color: var(--left-text-color) !important;
 } 
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.toggle-label,.help-icon,.pill-toggle label,.signature-btn{
+  color: var(---text-color) !important;
+}
+/* input:checked + .toggle-slider {
+  background-color: #2196F3 !important;
+}
+.toggle-slider{
+  background: rgb(107 104 104 / 31%) !important;
+} */
+.pill-toggle,.signature-btn{
+  background-color: var(--div-bg-color) !important;
+  border: 1.3px solid var(--border-color) !important;
+}
