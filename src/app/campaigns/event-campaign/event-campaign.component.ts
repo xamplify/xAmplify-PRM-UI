@@ -1635,7 +1635,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             this.referenceService.campaignSuccessMessage = launchOption;
                             if (this.isEventUpdate) { this.referenceService.campaignSuccessMessage = "UPDATE"; }
                         }  else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
-                            this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipient are allowed at one time");
+                            this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipients are allowed at one time");
                         } else {
 
                             if (response.statusCode === 1999) {

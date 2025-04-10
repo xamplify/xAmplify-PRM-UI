@@ -2129,7 +2129,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                             this.reInitialize();
                             this.router.navigate(["/home/campaigns/manage"]);
                         } else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
-                            this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipient are allowed at one time");
+                            this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipients are allowed at one time");
                         } else if(response.statusCode==2020){
                             this.referenceService.goToDiv('campaign-work-flow');
                             this.selectedContactListIds = [];
