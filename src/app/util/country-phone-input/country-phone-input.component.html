@@ -4,7 +4,8 @@
 <div class="phone-input-container" [style.margin-top]="isUploadCsv ? '0px' : '10px'">
   <div class="phone-input-group" [style.width]="isUploadCsv ? '100%' : '75%'">
     <div class="custom-dropdown" [class.active]="isOpen" (clickOutside)="isOpen = false">
-      <div class="dropdown-selected" (click)="toggleDropdown()">
+      <div class="dropdown-selected" (click)="toggleDropdown()" data-placement="bottom" data-toggle="tooltip"
+        [attr.data-original-title]="selectedCountry?.name">
         <span class="flag-icon flag-icon-{{selectedCountry?.code?.toLowerCase()}}"></span>
         <span class="dropdown-arrow" [class.open]="isOpen">▼</span>
       </div>
