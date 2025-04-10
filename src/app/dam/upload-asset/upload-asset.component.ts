@@ -169,8 +169,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     approvalRequired: boolean = false;
     storeAdd: boolean = false;
     activeAddSignatureToggle: boolean = false;
+    isPdfFileSelected: boolean = false;
 
     deleteUploadedAsset = false;
+    showClearOption: boolean = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch, public signatureService:SignatureService){
@@ -364,6 +366,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.uploadedCloudAssetName = "";
         this.damUploadPostDto.source = "";
         this.fileType = file['type'];
+        if(this.fileType=="application/pdf"){
+            this.isPdfFileSelected=true;
+        }
         this.customResponse = new CustomResponse();
         this.formData.append("uploadedFile", file, file['name']);
         this.uploadedAssetName = file['name'];
@@ -1568,6 +1573,8 @@ zoomOut() {
           this.setUploadedFileProperties(this.pdfUploadedFile);
         } else {
             this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+            this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
+            this.showClearOption = false;
         }
     }
 
@@ -1612,6 +1619,7 @@ zoomOut() {
             if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
                 this.isVendorSignatureAdded = true;
             }
+            this.showClearOption = true;
             this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
             this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
@@ -1733,6 +1741,7 @@ zoomOut() {
         this.activeAddSignatureToggle = true;
       } else if (!event && !this.isVendorSignatureAdded) {
           this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+          this.showClearOption = false;
       } else if (!event){
         this.activeAddSignatureToggle = false;
       }
@@ -1741,6 +1750,8 @@ zoomOut() {
     clearSignature(){
         this.pdfUploadedFile =  this.pdfDefaultUploadedFile;
         this.isVendorSignatureAdded = false;
+        this.showClearOption = false;
+        this.validateAllFields();
     }
 
     confirmClear() {
@@ -1824,8 +1835,20 @@ getFileIcon(): string {
     }
   }
   confirmDelete() {
+    this.clearPreviousSelectedAssetAndClearPdfToggles();
     this.clearPreviousSelectedAsset();
     this.isAssetReplaced = false;
     this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
   }
+  clearPreviousSelectedAssetAndClearPdfToggles(){
+    this.formData.delete("uploadedFile");
+    $('#uploadedAsset').val('');
+    this.uploadedAssetName  = "";
+    this.isPdfFileSelected = false;
+}
+setPartnerSignatureRequiredNow(){
+    this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature=false;
+    this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+}
+
 }
