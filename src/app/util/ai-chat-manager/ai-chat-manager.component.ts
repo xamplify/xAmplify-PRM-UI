@@ -67,7 +67,7 @@ export class AiChatManagerComponent implements OnInit {
         this.assetDetailsViewDtoOfPartner.displayName = this.asset.displayName;
         this.assetType = this.asset.assetType;
         this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
-        this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.assetProxyPath + this.asset.assetPath;
+        this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
         this.getPdfByAssetPath();
       }
     }
