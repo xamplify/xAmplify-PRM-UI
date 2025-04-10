@@ -1423,7 +1423,7 @@
 							<div class="col-sm-8">
 								<select class="form-control" id="connectwise-dropdown-2"
 									(change)="onChangeConnectWiseListsDropdown($event.target.value)">
-									<option selected value="DEFAULT" translate>Select</option>
+									<option selected value="DEFAULT" translate>Select a Contact Group</option>
 									<option *ngFor="let item of connectWiseContactListsData" value='{{item.id}}'>
 										{{item.name}}</option>
 								</select>
