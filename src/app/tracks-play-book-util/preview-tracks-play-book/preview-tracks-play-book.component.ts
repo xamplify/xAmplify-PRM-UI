@@ -74,6 +74,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   previewFileType:string;
   isImageFormat: boolean = false;
   isTextFormat: boolean = false;
+  assetPreviewProxyPath: any;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -263,6 +264,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       if(isBeeTemplate){
         if (isVendorView) {
           if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+            if(assetDetails.assetProxyPath){
+              this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            } else {
+              this.assetPreviewProxyPath = assetDetails.assetPath;
+            }
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
@@ -274,6 +280,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           }
         } else {
           if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+            if(assetDetails.assetProxyPath){
+              this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            } else {
+              this.assetPreviewProxyPath = assetDetails.assetPath;
+            }
             this.previewPath = assetDetails.assetPath;
             this.previewFileType = assetDetails.assetType;
             this.previewContent = true;
@@ -286,6 +297,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         }
       }else{
         if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && !(this.type == undefined || this.type == 'TRACK')) {
+          if(assetDetails.assetProxyPath){
+            this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+          } else {
+            this.assetPreviewProxyPath = assetDetails.assetPath;
+          }
           this.previewPath = assetDetails.assetPath;
           this.previewFileType = assetDetails.assetType;
           this.previewContent = true;
@@ -317,12 +333,12 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else if (!assetDetails.beeTemplate) {
         let assetPath = assetDetails.assetPath;
-        let fileFormats = ['pdf','html','txt','csv'];
-        let isProxyFileFormat = fileFormats.includes(assetDetails.assetType);
-        if (isProxyFileFormat || assetDetails.imageFileType) {
-          assetPath = assetPath.split("=")[1];
-          assetPath = decodeURIComponent(assetPath);
-        }
+        // let fileFormats = ['pdf','html','txt','csv'];
+        // let isProxyFileFormat = fileFormats.includes(assetDetails.assetType);
+        // if (isProxyFileFormat || assetDetails.imageFileType) {
+        //   assetPath = assetPath.split("=")[1];
+        //   assetPath = decodeURIComponent(assetPath);
+        // }
           window.open(assetPath, '_blank');
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else {

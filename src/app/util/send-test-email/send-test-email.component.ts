@@ -95,6 +95,10 @@ export class SendTestEmailComponent implements OnInit {
     }
   }
   ngOnDestroy(){
+    $('td a').css({
+      'cursor': '',
+      'pointer-events': ''
+    });
     this.referenceService.closeModalPopup(this.modalPopupId);
 }
   /***XNFR-832****/

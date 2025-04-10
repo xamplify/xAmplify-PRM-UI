@@ -205,8 +205,8 @@
 																</a>
 															</ng-container>
 															<!--Preview-->
-															<a class="custom-icon"	*ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(asset)">
-																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview" (click)="(asset.contentPreviewType || asset.imageFileType)? preview(asset) : ''">
+																<i class="fa fa-eye IconCustomization" [ngClass]="asset.contentPreviewType || asset.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
 															<!--Popup-->
@@ -789,7 +789,7 @@
 </app-content-status-history-modal-popup>
 
 
-<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="previewAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat"
+<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="proxyAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
 	(notifyClose)="closePreview()"></app-preview-content>
 	<app-ai-chat-manager *ngIf="isOliverCalled" [asset]="SendAssetToOliver"
 	(notifyParent)="closeAskAi($event)"></app-ai-chat-manager>

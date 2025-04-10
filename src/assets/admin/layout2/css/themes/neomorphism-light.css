@@ -4558,6 +4558,11 @@ a.Iconhover.custom-grid-icon.icon_margin{
 .modal-title{
   color: white !important;
 }
+/* upload asset */
+.file-item,.delete_btn{
+background: #f0f5fa !important;
+box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;}
+
 /* vendor signature asset */
 .toggle-item,.toggle-items{
   border: 1px solid #d0d5db !important;
@@ -4573,3 +4578,4 @@ input:checked + .toggle-slider {
 .toggle-slider{
   background-color:#b0b0b0!important;
 }
+

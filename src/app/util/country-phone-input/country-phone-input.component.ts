@@ -20,7 +20,7 @@ export class CountryPhoneInputComponent implements OnInit {
   filteredCountries: any;
   isOpen: boolean = false;
   searchQuery: string = '';
-  isInvalidMobileNumber: boolean = false;
+  isValidMobileNumber: boolean = true;
   @Output() clickOutside = new EventEmitter<void>();
   @Output() mobileNumberEventEmitter = new EventEmitter<any>();
 
@@ -41,14 +41,14 @@ export class CountryPhoneInputComponent implements OnInit {
     if (this.mobileNumber) {
       const phone = parsePhoneNumberFromString(this.mobileNumber);
       if (phone && isValidPhoneNumber(this.mobileNumber)) {
-        this.isInvalidMobileNumber = false;
+        this.isValidMobileNumber = true;
       } else {
-        this.isInvalidMobileNumber = true;
+        this.isValidMobileNumber = false;
       }
     } else {
-      this.isInvalidMobileNumber = false;
+      this.isValidMobileNumber = true;
     }
-    this.mobileNumberEventEmitter.emit({ isInvalidMobileNumber: this.isInvalidMobileNumber, mobileNumber: this.mobileNumber });
+    this.mobileNumberEventEmitter.emit({ isValidMobileNumber: this.isValidMobileNumber, mobileNumber: this.mobileNumber });
   }
 
   numbersOnly(event: KeyboardEvent): boolean {
@@ -123,9 +123,7 @@ export class CountryPhoneInputComponent implements OnInit {
   }
 
   convertIntoLowerCase(value: string) {
-    if (value) {
-      return value.toLowerCase();
-    }
+    return value.toLowerCase();
   }
 
   @HostListener('document:click', ['$event.target'])
@@ -138,6 +136,49 @@ export class CountryPhoneInputComponent implements OnInit {
 
   onDropdownClick(event: MouseEvent) {
     event.stopPropagation();
+  }
+
+  onKeyDown(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    const cursorPos = input.selectionStart || 0;
+    const selectionEnd = input.selectionEnd || 0;
+    const dialCode = this.selectedCountry.dial_code + ' ';
+    const dialCodeLength = dialCode.length;
+    if (cursorPos >= dialCodeLength && selectionEnd >= dialCodeLength) {
+      return;
+    }
+
+    if (cursorPos < dialCodeLength || selectionEnd < dialCodeLength) {
+      if (event.ctrlKey && event.key === 'a') {
+        return;
+      }
+      if (event.ctrlKey && (event.key === 'x' || event.key === 'v')) {
+        event.preventDefault();
+        return;
+      }
+      if (event.key === 'Backspace' || event.key === 'Delete') {
+        event.preventDefault();
+        return;
+      }
+      if (event.key.length === 1) {
+        event.preventDefault();
+        return;
+      }
+    }
+  }
+
+  onInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const dialCode = this.selectedCountry.dial_code + ' ';
+    if (!input.value.startsWith(dialCode)) {
+      const numbersOnly = input.value.replace(/\D/g, '');
+      const userNumber = numbersOnly.slice(dialCode.replace(/\D/g, '').length);
+      input.value = dialCode + userNumber;
+      setTimeout(() => {
+        input.setSelectionRange(dialCode.length, dialCode.length);
+      });
+    }
+    this.validateMobileNumber();
   }
 
 }

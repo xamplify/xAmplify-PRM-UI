@@ -2689,13 +2689,38 @@ tbody{background: transparent;}
 .modal-title{
   color: white !important;
 } 
-.modal-title-new{
+.modal-title-new,.drag-text{
   color: white !important;
 }
 @media only screen and (min-width: 600px) and (max-width: 1024px) {
   .clip_mask {
       bottom: -84px !important;
   }
+}
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background-color: #22313a!important;
+  border: 1px solid #2f4857!important;
+}
+.asset_files{
+  background: #2b3c46!important;
+  border: 1px solid rgb(47 72 87)!important;
+}
+.dropdown-selected,.phone-input-field input,.search-box input{
+  border: 1px solid #2f4857 !important;
+}
+.dropdown-options-container,.search-box{
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.dropdown-options li{
+  border-bottom: 1px solid #2f4857 !important;
+}
+.dropdown-options li:hover,.dropdown-options li.selected {
+  background-color: #22313a !important;
 }
 /* vendor signature asset */
 .toggle-item,.toggle-items{

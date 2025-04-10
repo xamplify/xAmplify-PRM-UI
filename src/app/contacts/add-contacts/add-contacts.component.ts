@@ -3794,7 +3794,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.socialContact.contacts = this.validateMarketoContacts(this.socialContactUsers);
             this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
             this.socialContact.listName = this.model.contactListName;
-            if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
+            this.socialContact.externalListId = this.connectWiseSelectContactListOption;
+            if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.connectWiseSelectContactListOption != '') {
                 if (this.socialContactUsers.length > 0) {
                     this.askForPermission(type + 'Contacts')
                 } else
@@ -4711,7 +4712,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         if (this.assignLeads) {
             this.userUserListWrapper.userList.assignedLeadsList = true;
         }
-        this.userUserListWrapper.userList.externalListId = this.hubSpotSelectContactListOption;
+
+        if(type === 'HUBSPOT')
+        {
+            this.userUserListWrapper.userList.externalListId = this.hubSpotSelectContactListOption;
+        }else if(type === 'connectWise'){
+            this.userUserListWrapper.userList.externalListId = this.connectWiseSelectContactListOption;
+        }
         this.saveList(this.userUserListWrapper);
     }
 
