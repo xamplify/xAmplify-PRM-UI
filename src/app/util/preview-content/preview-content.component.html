@@ -13,9 +13,11 @@
   <object *ngIf="!isPdf" id="preview-object" [data]="url" width="100%" height="600px" style="border: 1px solid #ddd;">
   </object>
   <div id="pdf-container" style="display: none;"></div>
-  <div [hidden]="!(showImageViewer || showTextViewer)" class="viewer-wrapper">
+  <div [hidden]="!(showImageViewer || showTextViewer || showAudioPlayer)" class="viewer-wrapper">
     <img id="image-viewer" style="display: none;" />
     <pre id="text-viewer" style="display: none;"></pre>
+    <audio id="audio-viewer" style="display: none;" controls>
+    </audio>
   </div>
 <div class="csv-container-wrapper" id="csv-container-wrapper" style="display: none;">
   <div class="table-scroll">
