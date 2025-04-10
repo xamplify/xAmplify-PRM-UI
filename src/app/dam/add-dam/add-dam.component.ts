@@ -745,6 +745,7 @@ setVendorSignatureRequired(event){
     this.setUploadedFileProperties(this.pdfUploadedFile);
   } else {
       this.setUploadedFileProperties(this.pdfFile);
+      this.showClearOption = false;
   }
 }
   notifySignatureSelection(event) {
@@ -753,6 +754,7 @@ setVendorSignatureRequired(event){
       if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
         this.isVendorSignatureAdded = true;
     }
+    this.showClearOption = true;
       this.validateFields();
       this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
       this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
