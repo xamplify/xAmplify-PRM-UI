@@ -200,9 +200,8 @@
                                  </i>
                                </div>
                               <div>
-                                 <div *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired"
-                                    class="signature-options">
-                                    <div>
+                                 <div class="signature-options">
+                                    <div  *ngIf="damUploadPostDto.vendorSignatureRequired && damUploadPostDto.partnerSignatureRequired">
                                        <div class="pill-toggle mr10">
                                           <input type="radio" id="join" name="toggle" [checked]="damUploadPostDto.vendorSignatureRequired"
                                              (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(false)">
