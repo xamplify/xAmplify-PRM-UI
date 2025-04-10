@@ -866,9 +866,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							}
 							//this.getContactsAssocialteCampaigns();
 							this.contactService.addUserSuccessMessage = true;
-							this.goBackToManageList();
-							if (this.isFromCompanyModule) {
+							if (this.isFromCompanyModule || this.isCompanyJourney) {
 								this.goBackToCompaniesList();
+							} else {
+								this.goBackToManageList();
 							}
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
