@@ -267,6 +267,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     maxRecipientCountReached: boolean = false;
     maxRecipientCount: number = 0;
     restrictRecipientCount: boolean = false;
+    isOrgAdminCompany: boolean = false;
     
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -316,7 +317,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         let isVendor = roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.prmRole) > -1;
         this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
         this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
-
+        this.isOrgAdminCompany = (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminTeamMember);
         if (this.isEditCampaign) {
             let selectedListSortOption = {
                 'name': 'Selected Group', 'value': 'selectedList'
@@ -571,7 +572,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.eventCampaign.leadPipelineId = 0;
         this.eventCampaign.dealPipelineId = 0;
         //this.eventCampaign.configurePipelines = !this.eventCampaign.configurePipelines;
-        if (this.reDistributeEvent || this.reDistributeEventManage || this.isOrgAdminOrOrgAdminTeamMember ){
+        if (this.reDistributeEvent || this.reDistributeEventManage || this.authenticationService.module.isMarketingCompany || (this.isOrgAdminCompany && !this.eventCampaign.channelCampaign)) {
             this.restrictRecipientCount = true;
             this.getMaximumContactCountForCampaignLaunch();
         }
@@ -920,6 +921,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.loadEmailTemplates(this.emailTemplatesPagination);
             this.eventCampaign.configurePipelines = false;
             // this.isValidPipeline = true;
+            this.restrictRecipientCount = this.isOrgAdminCompany ? true : this.restrictRecipientCount;
         } else {
             this.emailTemplatesPagination.throughPartner = true;
             this.eventCampaign.enableCoBrandingLogo = true;
@@ -928,6 +930,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
             this.loadEmailTemplates(this.emailTemplatesPagination);
             // this.checkSalesforceIntegration();
+            this.restrictRecipientCount = this.isOrgAdminCompany ? false : this.restrictRecipientCount;
         }
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)) {
             if (!this.eventCampaign.channelCampaign) {
@@ -1635,7 +1638,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             this.referenceService.campaignSuccessMessage = launchOption;
                             if (this.isEventUpdate) { this.referenceService.campaignSuccessMessage = "UPDATE"; }
                         }  else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
-                            this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipients are allowed at one time");
+                            const template = this.properties.CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE;
+                            const message = template.replace('{{maxRecipientCount}}', this.maxRecipientCount.toString());
+                            this.referenceService.showSweetAlertErrorMessage(message);
                         } else {
 
                             if (response.statusCode === 1999) {
@@ -3419,8 +3424,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         })
     }
 
-    private checkRecipientCountLimitReached() {
-        if (this.restrictRecipientCount && this.validUsersCount >= this.maxRecipientCount) {
+    checkRecipientCountLimitReached() {
+        if (this.restrictRecipientCount && this.validUsersCount > this.maxRecipientCount) {
             this.maxRecipientCountReached = true;
         } else {
             this.maxRecipientCountReached = false;

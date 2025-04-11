@@ -83,4 +83,5 @@ export class User {
     accountId : string;
     userStatus : string;
     isValidMobileNumber = false;
+    countryCode: string;
 }

@@ -14,6 +14,7 @@ export class CountryPhoneInputComponent implements OnInit {
 
   @Input() maxlength: number = 15;
   @Input() placeholder: string = '';
+  @Input() countryCode: string = '';
   @Input() mobileNumber: string = '';
   @Input() isUploadCsv: boolean = false;
   selectedCountry: any;
@@ -48,7 +49,7 @@ export class CountryPhoneInputComponent implements OnInit {
     } else {
       this.isValidMobileNumber = true;
     }
-    this.mobileNumberEventEmitter.emit({ isValidMobileNumber: this.isValidMobileNumber, mobileNumber: this.mobileNumber });
+    this.mobileNumberEventEmitter.emit({ isValidMobileNumber: this.isValidMobileNumber, mobileNumber: this.mobileNumber, selectedCountry: this.selectedCountry });
   }
 
   numbersOnly(event: KeyboardEvent): boolean {
@@ -79,7 +80,12 @@ export class CountryPhoneInputComponent implements OnInit {
     this.selectedCountry = [];
     let matchedCountry = null;
     for (const country of this.countryNames.countriesMobileCodes) {
-      if (this.mobileNumber.startsWith(country.dial_code)) {
+      if (this.countryCode && this.countryCode === country.code) {
+        matchedCountry = country;
+        break;
+      }
+
+      if (!this.countryCode && this.mobileNumber.startsWith(country.dial_code)) {
         if (country.dial_code.length > maxLength) {
           maxLength = country.dial_code.length;
           matchedCountry = country;

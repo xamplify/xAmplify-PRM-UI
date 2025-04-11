@@ -1349,7 +1349,9 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
                         /***XNFR-330****/
                         this.router.navigate(["/home/campaigns/manage"]);
                     } else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
-                        this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipients are allowed at one time");
+                        const template = this.properties.CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE;
+                        const message = template.replace('{{maxRecipientCount}}', this.maxRecipientCount.toString());
+                        this.referenceService.showSweetAlertErrorMessage(message);
                     } else {
                         this.invalidScheduleTime = true;
                         this.invalidScheduleTimeError = response.message;
@@ -1673,8 +1675,8 @@ downloadAsImage(campaign:any){
         })
     }
 
-    private checkRecipientCountLimitReached() {
-        if (this.validUsersCount >= this.maxRecipientCount) {
+    checkRecipientCountLimitReached() {
+        if (this.validUsersCount > this.maxRecipientCount) {
             this.maxRecipientCountReached = true;
         } else {
             this.maxRecipientCountReached = false;

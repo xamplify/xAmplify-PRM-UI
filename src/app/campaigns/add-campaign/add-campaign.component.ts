@@ -651,8 +651,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             }
             this.campaignRecipientsPagination.maxResults = 4;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
-
-            if (this.isOrgAdminCompany || this.isMarketingCompany) {
+            if (this.isMarketingCompany || (this.isOrgAdminCompany && !this.campaign.channelCampaign)) {
                 this.restrictRecipientCount = true;
                 this.getMaximumContactCountForCampaignLaunch();
             }
@@ -1222,12 +1221,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
            this.findCampaignRecipients(this.campaignRecipientsPagination);
+           this.restrictRecipientCount = this.isOrgAdminCompany ? false : this.restrictRecipientCount;
         } else {
             this.campaign.oneClickLaunch = false;
             this.campaign.configurePipelines = false;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
+            this.restrictRecipientCount = this.isOrgAdminCompany ? true : this.restrictRecipientCount;
         }
         this.updateLaunchTabClass();
 
@@ -2129,7 +2130,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                             this.reInitialize();
                             this.router.navigate(["/home/campaigns/manage"]);
                         } else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
-                            this.referenceService.showSweetAlertErrorMessage("Maximum recipient count has reached. Only "+this.maxRecipientCount+" active recipients are allowed at one time");
+                            const template = this.properties.CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE;
+                            const message = template.replace('{{maxRecipientCount}}', this.maxRecipientCount.toString());
+                            this.referenceService.showSweetAlertErrorMessage(message);
                         } else if(response.statusCode==2020){
                             this.referenceService.goToDiv('campaign-work-flow');
                             this.selectedContactListIds = [];
@@ -2724,8 +2727,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         })
     }
 
-    private checkRecipientCountLimitReached() {
-        if (this.restrictRecipientCount && this.validUsersCount >= this.maxRecipientCount) {
+    checkRecipientCountLimitReached() {
+        if (this.restrictRecipientCount && this.validUsersCount > this.maxRecipientCount) {
             this.maxRecipientCountReached = true;
         } else {
             this.maxRecipientCountReached = false;

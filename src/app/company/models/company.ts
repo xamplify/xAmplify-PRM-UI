@@ -19,4 +19,5 @@ export class Company {
     companyId: number;
     contactCount: string;
     companyListName: string;
+    countryCode: string;
 }

@@ -86,6 +86,8 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   showSweetAlert = false;
   sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   oneClickLaunchParentCampaignId = 0;
+  maxRecipientCount: number = 0;
+
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
@@ -212,6 +214,7 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
                this.pagination.categoryType = 'c';
            }
            this.listCampaign(this.pagination);
+           this.getMaximumContactCountForCampaignLaunch();
         }
       );
   }
@@ -561,7 +564,11 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
                 }else if(response.statusCode==404){
                     this.customResponse = new CustomResponse('ERROR',this.properties.emptyOneClickLaunchCampaignErrorMessage,true);
                     this.referenceService.scrollSmoothToTop();
-                }else{
+                } else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
+                    const template = this.properties.CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE;
+                    const message = template.replace('{{maxRecipientCount}}', this.maxRecipientCount.toString());
+                    this.referenceService.showSweetAlertErrorMessage(message);
+                } else{
                     this.ngxloading = true;
                     this.referenceService.campaignSuccessMessage = "NOW";
                     this.router.navigate(["/home/campaigns/manage"]);
@@ -580,4 +587,22 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   openEmailTemplateInNewTab(campaign:any){
     this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
   }
+
+    /** XNFR-929 **/
+    getMaximumContactCountForCampaignLaunch() {
+        this.ngxloading = true;
+        this.campaignService.getMaximumContactCountForCampaignLaunch(this.loggedInUserId).subscribe(
+            (result: any) => {
+                if (result.statusCode == 200) {
+                    this.maxRecipientCount = result.data;
+                } else {
+                    this.maxRecipientCount = 0;
+                }
+                this.ngxloading = false;
+            },
+            (error: string) => {
+                this.ngxloading = false;
+            })
+    }
+
 }
