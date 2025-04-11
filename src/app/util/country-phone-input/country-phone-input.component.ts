@@ -71,6 +71,7 @@ export class CountryPhoneInputComponent implements OnInit {
         if (inputElement) {
           inputElement.focus();
         }
+        this.scrollToSelectedCountry()
       }, 0);
     }
   }
@@ -191,6 +192,14 @@ export class CountryPhoneInputComponent implements OnInit {
       });
     }
     this.validateMobileNumber();
+  }
+
+  scrollToSelectedCountry() {
+    const container = this.eRef.nativeElement.querySelector('.dropdown-options');
+    const selected = this.eRef.nativeElement.querySelector('.selected');
+    if (container && selected) {
+      container.scrollTop = selected.offsetTop - container.offsetTop;
+    }
   }
 
 }
