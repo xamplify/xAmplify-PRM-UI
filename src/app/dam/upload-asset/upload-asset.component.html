@@ -744,7 +744,7 @@
                                                                   <label for="relation">Later</label>
                                                                </div>
                                                                <i class="fa fa-question-circle help-icon" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                                  [title]="isAdd ? 'Add your signature Now or Later' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
+                                                                  [title]="(isAdd || !damUploadPostDto?.disableVendorSignatuerOption) ? 'Add your signature Now or Later' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                                             </div>
                                                             <div>
                                                                <div class="signature-buttons">
