@@ -305,6 +305,7 @@ text-decoration: underline!important;
   box-shadow: 0 2px 4px rgb(0 0 0 / 11%);
   padding: 10px;
   border-radius: 10px;
+  height: 100%;
 }
 .upload_asset-files:hover {
   transform: scale(1.05);
