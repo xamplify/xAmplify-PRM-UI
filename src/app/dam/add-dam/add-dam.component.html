@@ -160,7 +160,7 @@
                                  data-toggle="tooltip"
                                  data-placement="top"
                                  aria-hidden="true"
-                                 [title]="isAdd ? 'Enable partner signature' : damUploadPostDto?.partnerSignatureToolTipMessage">
+                                 [title]="isAdd ? 'Enabling \'Partner Signature\' allows your partner to sign the shared document.' : damUploadPostDto?.partnerSignatureToolTipMessage">
                               </i>
                             </div>
                             <div class="toggle-item ml0" *ngIf="!isPartnerView">
@@ -196,7 +196,7 @@
                                    data-toggle="tooltip"
                                    data-placement="top"
                                    aria-hidden="true"
-                                   [title]="isAdd ? 'Enable my signature' : damUploadPostDto?.vendorSignatureToolTipMessage">
+                                   [title]="isAdd ? 'Enabling \'My Signature\' allows you to sign the document now or after the partner signs.' : damUploadPostDto?.vendorSignatureToolTipMessage">
                                  </i>
                                </div>
                               <div>
@@ -212,8 +212,8 @@
                                              (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(true)">
                                           <label for="relation">Later</label>
                                        </div>
-                                       <i class="fa fa-question-circle help-icon" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                          [title]="isAdd ? 'Add your signature Now or Later' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
+                                       <i class="fa fa-question-circle help-icon" data-toggle="tooltip" data-placement="top" aria-hidden="true" data-html="true"
+                                          [attr.title]="isAdd ? 'Now: You will need to add signature now.<br><br>Later: You can add your signature after partner signs.': damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                     </div>
                                     <div>
                                        <div class="signature-buttons">
