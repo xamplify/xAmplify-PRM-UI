@@ -43,6 +43,7 @@ export class ChatGptModalComponent implements OnInit {
   isSpeakingText: any;
   speakingIndex: any;
   isEmailCopied: boolean;
+  hasAcess: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef) {
   }

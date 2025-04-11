@@ -89,7 +89,7 @@
                   <i class="fa fa-pencil"></i> Writing
                 </a>
               </li>
-              <li [ngClass]="{'active': activeTab === 'askpdf'}">
+              <li *ngIf="hasAcess" [ngClass]="{'active': activeTab === 'askpdf'}">
                 <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                   <i class="fa fa-file-text"></i> Ask Oliver
                 </a>
@@ -126,7 +126,7 @@
                   <div class="input-wrapper mt10">
                     <input type="text" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
                     <div class="btn-wrapper">
-                      <button class="btn-plus">+</button>
+                      <button *ngIf="hasAcess" class="btn-plus">+</button>
                       <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Submit</button>
                     </div>
                   </div>
