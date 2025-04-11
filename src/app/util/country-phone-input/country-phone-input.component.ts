@@ -66,6 +66,12 @@ export class CountryPhoneInputComponent implements OnInit {
     if (this.isOpen) {
       this.searchQuery = '';
       this.filterCountries();
+      setTimeout(() => {
+        const inputElement = document.getElementById('phoneInput');
+        if (inputElement) {
+          inputElement.focus();
+        }
+      }, 0);
     }
   }
 
