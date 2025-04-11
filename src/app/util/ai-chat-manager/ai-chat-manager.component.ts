@@ -52,26 +52,26 @@ export class AiChatManagerComponent implements OnInit {
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef) { }
 
-    ngOnInit() {
-      this.assetId = parseInt(this.route.snapshot.params['assetId']);
-      if(this.assetId >0){
-        this.isOliverAiFromdam = false;
-        this.getSharedAssetDetailsById(this.assetId);
-      }else{
-        if(this.asset != undefined && this.asset != null){
-          this.isOliverAiFromdam = true;
-          this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
-          this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
-          this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
-          this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
-          this.assetDetailsViewDtoOfPartner.displayName = this.asset.displayName;
-          this.assetType=this.asset.assetType;
-          this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
-          this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.assetPath;
-          this.getPdfByAssetPath();
-        }
+  ngOnInit() {
+    this.assetId = parseInt(this.route.snapshot.params['assetId']);
+    if (this.assetId > 0) {
+      this.isOliverAiFromdam = false;
+      this.getSharedAssetDetailsById(this.assetId);
+    } else {
+      if (this.asset != undefined && this.asset != null) {
+        this.isOliverAiFromdam = true;
+        this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
+        this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
+        this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
+        this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
+        this.assetDetailsViewDtoOfPartner.displayName = this.asset.displayName;
+        this.assetType = this.asset.assetType;
+        this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
+        this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
+        this.getPdfByAssetPath();
       }
     }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['asset'] && changes['asset'].currentValue) {
