@@ -4754,7 +4754,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	/******XNFR-342***/
 	openUnPublishedContentModalPopUp(contact: any) {
-		this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner", contact.name);
+		this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner", contact.name, false);
 	}
 
 	/***** XNFR-471 *****/

@@ -3431,7 +3431,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***********XNFR-342*********/
 	openUnPublishedContentModalPopUp(contact: any) {
-		this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName, this.selectedContactListName);
+		this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName, this.selectedContactListName, false);
 	}
 
 

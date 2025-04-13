@@ -54,6 +54,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
   dashboardButtonTitle = [];
   @Input() hasDashboardButtonsAccess = false;
   partnerId: any;
+  checkMaxContactLimitForCampaignLaunch: boolean = false;
+
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -64,7 +66,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   ngOnDestroy(){
     this.referenceService.closeModalPopup(this.modalPopUpId);
 }
-  openPopUp(userListId: number, contact:any,type:string,userListName:string){
+  openPopUp(userListId: number, contact:any,type:string,userListName:string, checkMaxContactLimitForCampaignLaunch: boolean){
     this.resetValues();
     this.isPublishedSuccessfully = false;
     let accessList = [];
@@ -88,6 +90,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.contact = contact;
     this.type = type;
     this.selectedUserListId = userListId;
+    this.checkMaxContactLimitForCampaignLaunch = checkMaxContactLimitForCampaignLaunch;
     this.referenceService.openModalPopup(this.modalPopUpId);
     this.isCampaignChildComponentCalled = this.hasCampaignAccess && this.selectedModule==this.properties.campaignsHeaderText;
     this.applyFilter(0,this.selectedModule);
