@@ -61,6 +61,7 @@ export class CampaignAccess {
   approvalHub = false;
 
   allowVendorToChangePartnerPrimaryAdmin = false;
+  oliverActive = false;
 
 
 }
