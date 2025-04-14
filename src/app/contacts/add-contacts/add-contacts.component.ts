@@ -222,6 +222,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     connectWiseLoading: boolean = false;
     contactsCompanyListSync: boolean = false;
     connectWiseErrorMessage: boolean = false;
+    hideCSVInNotes: boolean =  false;
 
     haloPSAImageBlur: boolean = false;
     haloPSAImageNormal: boolean = false;
@@ -4578,6 +4579,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getConnectWiseData() {
+        this.hideCSVInNotes = true;
         $("button#salesforce_save_button").prop('disabled', true);
         if (this.contactType === "contacts") {
             this.getConnectWiseContacts();
