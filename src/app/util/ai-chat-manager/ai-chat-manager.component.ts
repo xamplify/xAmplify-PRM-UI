@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -49,8 +50,13 @@ export class AiChatManagerComponent implements OnInit {
   speakingIndex: number;
   isOliverAiFromdam: boolean;
   isEmailCopied: boolean;
+  showPreview: boolean;
+  assetUrl: SafeResourceUrl;
+  zoomLevel = 60;
+  baseWidth: number = 800;
+baseHeight: number = 1000;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
-    private router:Router, private cdr: ChangeDetectorRef) { }
+    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
     ngOnInit() {
       this.assetId = parseInt(this.route.snapshot.params['assetId']);
@@ -68,7 +74,9 @@ export class AiChatManagerComponent implements OnInit {
           this.assetType=this.asset.assetType;
           this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
           this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.assetPath;
+          this.assetDetailsViewDtoOfPartner.assetPath = this.asset.assetPath;
           this.getPdfByAssetPath();
+          this.framePerviewPath();
         }
       }
     }
@@ -226,6 +234,7 @@ export class AiChatManagerComponent implements OnInit {
           this.assetDetailsViewDtoOfPartner = response.data;
           this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
           this.assetType=this.assetDetailsViewDtoOfPartner.assetType;
+          this.framePerviewPath();
           console.log('API Response:', response);
         }
       },
@@ -238,6 +247,13 @@ export class AiChatManagerComponent implements OnInit {
 
     );
   }
+  private framePerviewPath() {
+    const dynamicUrl = encodeURIComponent(this.assetDetailsViewDtoOfPartner.assetPath);
+    this.assetUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://docs.google.com/gview?url=${dynamicUrl}&embedded=true`
+    );
+  }
+
   errorHandler(event: any) {
     event.target.src = 'assets/images/icon-user-default.png';
   }
@@ -371,7 +387,18 @@ export class AiChatManagerComponent implements OnInit {
       });
     }
   }
-
-
-
+  showAssetPreview(){
+    this.showPreview = true;
+  }
+  closePreview(){
+    this.showPreview = false;
+    this.zoomLevel = 60;
+  }
+  get scaledWidth(): string {
+    return (this.baseWidth * (this.zoomLevel / 100)) + 'px';
+  }
+  
+  get scaledHeight(): string {
+    return (this.baseHeight * (this.zoomLevel / 100)) + 'px';
+  }
 }
