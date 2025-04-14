@@ -54,6 +54,11 @@
                                         </app-timestamp>
                                     </strong>
                                 </div>
+                                <!-- XNFR-897 -->
+                                <div class="center text-danger" style="padding-top: 10px;" *ngIf="isAccessToView(tracksPlayBook?.expireDate)">
+                                    {{referenceService?.expireDescription(tracksPlayBook.expireDate,type == 'TRACK')}}
+                                </div>
+                                 <!-- XNFR-897-->
                                 <div *ngIf="(type == undefined || type == 'TRACK') && isCreatedUser" class="center"
                                     style="padding-top: 10px;">
                                     <button style="border-radius: 5px;"
