@@ -56,7 +56,6 @@ export class AiChatManagerComponent implements OnInit {
   baseWidth: number = 800;
 baseHeight: number = 1000;
 loadPreview :boolean = false
-reloadKey: string;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
@@ -252,14 +251,12 @@ reloadKey: string;
   
   private framePerviewPath() {
     this.loadPreview = false;
-    this.reloadKey = ''; 
     setTimeout(() => {
       const timestamp = new Date().getTime();
       const dynamicUrl = encodeURIComponent(`${this.assetDetailsViewDtoOfPartner.assetPath}?v=${timestamp}`);
       this.assetUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         `https://docs.google.com/gview?url=${dynamicUrl}&embedded=true`
       );
-      this.reloadKey = 'key_' + timestamp;
       this.loadPreview = true;
     }, 50); 
   }
