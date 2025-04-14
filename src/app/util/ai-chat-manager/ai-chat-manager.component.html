@@ -83,7 +83,8 @@
       </div>
       <div class="pdf-zoom-wrapper">
         <div class="pdf-scaled">
-          <object [data]="assetUrl" [style.width]="scaledWidth" [style.height]="scaledHeight" style="border:none;">
+          <object *ngIf="loadPreview" [attr.data]="assetUrl" [style.width]="scaledWidth" [style.height]="scaledHeight"
+            style="border:none;">
           </object>
         </div>
       </div>

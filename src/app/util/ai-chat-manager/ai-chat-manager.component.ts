@@ -55,6 +55,8 @@ export class AiChatManagerComponent implements OnInit {
   zoomLevel = 60;
   baseWidth: number = 800;
 baseHeight: number = 1000;
+loadPreview :boolean = false
+reloadKey: string;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
@@ -247,12 +249,22 @@ baseHeight: number = 1000;
 
     );
   }
+  
   private framePerviewPath() {
-    const dynamicUrl = encodeURIComponent(this.assetDetailsViewDtoOfPartner.assetPath);
-    this.assetUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://docs.google.com/gview?url=${dynamicUrl}&embedded=true`
-    );
+    this.loadPreview = false;
+    this.reloadKey = ''; 
+    setTimeout(() => {
+      const timestamp = new Date().getTime();
+      const dynamicUrl = encodeURIComponent(`${this.assetDetailsViewDtoOfPartner.assetPath}?v=${timestamp}`);
+      this.assetUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://docs.google.com/gview?url=${dynamicUrl}&embedded=true`
+      );
+      this.reloadKey = 'key_' + timestamp;
+      this.loadPreview = true;
+    }, 50); 
   }
+  
+
 
   errorHandler(event: any) {
     event.target.src = 'assets/images/icon-user-default.png';
@@ -389,6 +401,7 @@ baseHeight: number = 1000;
   }
   showAssetPreview(){
     this.showPreview = true;
+    this.framePerviewPath();
   }
   closePreview(){
     this.showPreview = false;
