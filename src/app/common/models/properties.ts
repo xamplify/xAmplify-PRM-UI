@@ -569,5 +569,9 @@ export class Properties {
 	PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL = "**As the replaced asset must undergo the re-approval process, selecting partner(s) is not allowed at this stage.";
 	RE_APPROVAL_ASSET_HAS_REPLACED_BY_PARENT = "The re-approved version has been successfully replaced by its parent version.";
 
+	/**XNFR-911**/
+	LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_MARKETING_COMPANY = "**This custom template will be used to notify team members when lead details are updated in Salesforce and synced back to xAmplify.";
+	LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_VENDOR_ORG_PRM_COMPANIES = "**This custom template will be used to notify partners when lead details are updated in Salesforce and synced back to xAmplify.";
+
 }
 
