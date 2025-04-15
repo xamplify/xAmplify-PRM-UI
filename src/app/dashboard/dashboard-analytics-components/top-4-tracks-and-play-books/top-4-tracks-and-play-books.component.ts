@@ -374,47 +374,19 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     }
   }
   /*** XNFR-897 ***/
-  expireDescription(expireDate: any): string {
-    if(!expireDate){
-      return;
-    }
-    const currentDate = new Date();
-    const givenDate = new Date(expireDate);
-
-    const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
-    const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    const diffInDays = Math.floor(diffInHours / 24);
-
-    let suffix = diffInMs < 0 ? 'ago' : 'left';
-    if (suffix === 'ago') {
-      return `The ${this.tracks ? "Track" : "Play Book"} expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
-    } else if (diffInDays < 1) {
-      const hours = diffInHours;
-      const minutes = diffInMinutes % 60;
-      return `The ${this.tracks ? "Track" : "Playbook"} will be expired in ${hours} hrs ${minutes} mins ${suffix}`;
-    } else if (diffInDays >= 1 && diffInDays <= 15) {
-      let days = diffInMs < 0 ? `${diffInDays} days ago` : ` ${diffInDays} days`;
-      return `The ${this.tracks ? "Track" : "Playbook"} will be expired in ${days}`
+  setTooltipMessage(learningTrack): string {
+    if (!learningTrack.createdByAnyApprovalManagerOrApprover && learningTrack.approvalStatus !== 'APPROVED') {
+      return 'Requires approval for publishing.';
+    } else if (this.referenceService.isAccessToView(learningTrack.expireDate)) {
+      return `${this.tracks ? "Track" : "Playbook"} cannot be published as the end date has expired.`;
     } else {
-      const currentYear = currentDate.getFullYear();
-      const givenYear = givenDate.getFullYear();
-
-      if (currentYear === givenYear) {
-        return `The ${this.tracks ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM');
-      } else {
-        return `The ${this.tracks ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
-      }
+      return 'Publish';
     }
   }
-  formatDate(date: Date, format: string): string {
-    const options: any = {};
-    if (format.includes('dd')) options.day = '2-digit';
-    if (format.includes('MMM')) options.month = 'short';
-    if (format.includes('yyyy')) options.year = 'numeric';
-
-    return new Intl.DateTimeFormat('en-US', options).format(date);
-  }
-  
+  updateTooltip(event: any, learningTrack: any) {
+    const tooltipMessage = this.setTooltipMessage(learningTrack);
+    const element = $(event.target).closest('a');
+    element.attr('data-original-title', tooltipMessage).tooltip('fixTitle').tooltip('show');
+  }  
 
 }

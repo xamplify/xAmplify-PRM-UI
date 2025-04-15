@@ -14,13 +14,14 @@ export class CountryPhoneInputComponent implements OnInit {
 
   @Input() maxlength: number = 15;
   @Input() placeholder: string = '';
+  @Input() countryCode: string = '';
   @Input() mobileNumber: string = '';
   @Input() isUploadCsv: boolean = false;
   selectedCountry: any;
   filteredCountries: any;
   isOpen: boolean = false;
   searchQuery: string = '';
-  isInvalidMobileNumber: boolean = false;
+  isValidMobileNumber: boolean = true;
   @Output() clickOutside = new EventEmitter<void>();
   @Output() mobileNumberEventEmitter = new EventEmitter<any>();
 
@@ -37,18 +38,34 @@ export class CountryPhoneInputComponent implements OnInit {
     }
   }
 
+  ngOndestroy() {
+    this.isOpen = false;
+    this.searchQuery = '';
+    this.selectedCountry = [];
+    this.filteredCountries = [];
+    this.clickOutside.unsubscribe();
+  }
+
   validateMobileNumber() {
+    let numberWithoutCode = '';
+    let cleanDialCode = '';
     if (this.mobileNumber) {
-      const phone = parsePhoneNumberFromString(this.mobileNumber);
-      if (phone && isValidPhoneNumber(this.mobileNumber)) {
-        this.isInvalidMobileNumber = false;
-      } else {
-        this.isInvalidMobileNumber = true;
+      this.isValidMobileNumber = isValidPhoneNumber(this.mobileNumber);
+      const cleanNumber = this.mobileNumber.replace(/[^\d+]/g, '');
+      for (const country of this.countryNames.countriesMobileCodes) {
+        cleanDialCode = country.dial_code.replace(/[^\d+]/g, '');
+        if (cleanNumber.startsWith(cleanDialCode)) {
+          numberWithoutCode = cleanNumber.substring(cleanDialCode.length).trim();
+          if (!numberWithoutCode) {
+            this.isValidMobileNumber = true;
+          }
+          break;
+        }
       }
     } else {
-      this.isInvalidMobileNumber = false;
+      this.isValidMobileNumber = true;
     }
-    this.mobileNumberEventEmitter.emit({ isInvalidMobileNumber: this.isInvalidMobileNumber, mobileNumber: this.mobileNumber });
+    this.mobileNumberEventEmitter.emit({ isValidMobileNumber: this.isValidMobileNumber, mobileNumber: this.mobileNumber, selectedCountry: this.selectedCountry });
   }
 
   numbersOnly(event: KeyboardEvent): boolean {
@@ -65,12 +82,19 @@ export class CountryPhoneInputComponent implements OnInit {
     if (this.isOpen) {
       this.searchQuery = '';
       this.filterCountries();
+      setTimeout(() => {
+        const inputElement = document.getElementById('phoneInput');
+        if (inputElement) {
+          inputElement.focus();
+        }
+        this.scrollToSelectedCountry()
+      }, 0);
     }
   }
 
   setDefaultCountry() {
     this.selectedCountry = [];
-    this.selectedCountry = this.countryNames.countriesMobileCodes[189];
+    this.selectedCountry = this.countryNames.countriesMobileCodes[188];
     this.mobileNumber = this.selectedCountry.dial_code + ' ';
   }
 
@@ -78,22 +102,25 @@ export class CountryPhoneInputComponent implements OnInit {
     let maxLength = 0;
     this.selectedCountry = [];
     let matchedCountry = null;
-    const cleanNumber = this.mobileNumber.replace(/[^\d+]/g, '');
     for (const country of this.countryNames.countriesMobileCodes) {
-      if (country.dial_code) {
-        if (this.mobileNumber.startsWith(country.dial_code)) {
-          if (country.dial_code.length > maxLength) {
-            maxLength = country.dial_code.length;
-            matchedCountry = country;
-            break;
-          }
+      if (this.countryCode && this.countryCode === country.code) {
+        matchedCountry = country;
+        break;
+      }
+
+      if (!this.countryCode && this.mobileNumber.startsWith(country.dial_code)) {
+        if (country.dial_code.length > maxLength) {
+          maxLength = country.dial_code.length;
+          matchedCountry = country;
+          break;
         }
       }
     }
 
     if (matchedCountry) {
       this.selectedCountry = matchedCountry;
-      const userNumber = this.mobileNumber.substring(matchedCountry.dial_code.length);
+      const cleanNumber = this.mobileNumber.replace(/[^\d+]/g, '');
+      const userNumber = cleanNumber.substring(matchedCountry.dial_code.length);
       this.mobileNumber = matchedCountry.dial_code + ' ' + userNumber;
     }
   }
@@ -121,14 +148,12 @@ export class CountryPhoneInputComponent implements OnInit {
     } else {
       const query = this.searchQuery.toLowerCase();
       this.filteredCountries = this.countryNames.countriesMobileCodes.filter(country =>
-        country.name.toLowerCase().includes(query));
+        country.name.toLowerCase().includes(query) || country.dial_code.includes(query));
     }
   }
 
   convertIntoLowerCase(value: string) {
-    if (value) {
-      return value.toLowerCase();
-    }
+    return value.toLowerCase();
   }
 
   @HostListener('document:click', ['$event.target'])
@@ -141,6 +166,57 @@ export class CountryPhoneInputComponent implements OnInit {
 
   onDropdownClick(event: MouseEvent) {
     event.stopPropagation();
+  }
+
+  onKeyDown(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    const cursorPos = input.selectionStart || 0;
+    const selectionEnd = input.selectionEnd || 0;
+    const dialCode = this.selectedCountry.dial_code + ' ';
+    const dialCodeLength = dialCode.length;
+    if (cursorPos >= dialCodeLength && selectionEnd >= dialCodeLength) {
+      return;
+    }
+
+    if (cursorPos < dialCodeLength || selectionEnd < dialCodeLength) {
+      if (event.ctrlKey && event.key === 'a') {
+        return;
+      }
+      if (event.ctrlKey && (event.key === 'x' || event.key === 'v')) {
+        event.preventDefault();
+        return;
+      }
+      if (event.key === 'Backspace' || event.key === 'Delete') {
+        event.preventDefault();
+        return;
+      }
+      if (event.key.length === 1) {
+        event.preventDefault();
+        return;
+      }
+    }
+  }
+
+  onInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const dialCode = this.selectedCountry.dial_code + ' ';
+    if (!input.value.startsWith(dialCode)) {
+      const numbersOnly = input.value.replace(/\D/g, '');
+      const userNumber = numbersOnly.slice(dialCode.replace(/\D/g, '').length);
+      input.value = dialCode + userNumber;
+      setTimeout(() => {
+        input.setSelectionRange(dialCode.length, dialCode.length);
+      });
+    }
+    this.validateMobileNumber();
+  }
+
+  scrollToSelectedCountry() {
+    const container = this.eRef.nativeElement.querySelector('.dropdown-options');
+    const selected = this.eRef.nativeElement.querySelector('.selected');
+    if (container && selected) {
+      container.scrollTop = selected.offsetTop - container.offsetTop;
+    }
   }
 
 }

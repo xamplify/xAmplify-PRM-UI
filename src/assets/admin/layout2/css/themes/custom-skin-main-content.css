@@ -1318,12 +1318,12 @@ h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
 /* 11-7-2023 sudha sri */
-.btn-primary,.add_partnerbtn{
+.btn-primary,.add_partnerbtn,.submit-btn{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
 }
-.btn-primary:hover,.add_partnerbtn:hover{
+.btn-primary:hover,.add_partnerbtn:hover,.submit-btn:hover{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
@@ -2547,3 +2547,79 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 .modal-title,.modal-title b,h4.modal-title[id]{
   color: var(--left-text-color) !important;
 } 
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background-color: var(--page-content) !important;
+    border: 1px solid var(--border-color) !important;
+}
+.asset_files{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.drag-text{
+  color: var(---text-color) !important;
+}
+.dropdown-selected,.phone-input-field input,.search-box input{
+  color: var(---text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.dropdown-options-container,.search-box{
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.dropdown-options li{
+  border: 1px solid var(--border-color) !important;
+}
+.dropdown-options li:hover,.dropdown-options li.selected {
+  background-color: var(--div-bg-color) !important;
+}
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.toggle-label,.help-icon,.pill-toggle label,.signature-btn{
+  color: var(---text-color) !important;
+}
+.pill-toggle,.signature-btn{
+  background-color: var(--div-bg-color) !important;
+  border: 1.3px solid var(--border-color) !important;
+}
+textarea.cke_source {
+  color: #000;
+}
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card,.pdf_child{
+  background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.pdf_card,.content-card,.fixed-card{
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  color: var(---text-color) !important;
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+markdown,markdown h1,
+markdown h2,
+markdown h3,
+markdown h4,markdown strong,markdown em ,
+markdown pre,.aligin-para{
+  color: var(---text-color) !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card,.accordion_card .panel-body{
+  background: var(--div-bg-color) !important;
+}

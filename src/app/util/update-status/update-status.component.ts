@@ -118,6 +118,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	@Output() notifyClose: EventEmitter<any> = new EventEmitter();
 	@Input() fromAi :boolean = false;
 	@Input() OliverData : any;
+	@Input () isShowPageContent : boolean = false;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,

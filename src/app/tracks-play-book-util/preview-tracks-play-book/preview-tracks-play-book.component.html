@@ -54,6 +54,11 @@
                                         </app-timestamp>
                                     </strong>
                                 </div>
+                                <!-- XNFR-897 -->
+                                <div class="center text-danger" style="padding-top: 10px;" *ngIf="isAccessToView(tracksPlayBook?.expireDate)">
+                                    {{referenceService?.expireDescription(tracksPlayBook.expireDate,type == 'TRACK')}}
+                                </div>
+                                 <!-- XNFR-897-->
                                 <div *ngIf="(type == undefined || type == 'TRACK') && isCreatedUser" class="center"
                                     style="padding-top: 10px;">
                                     <button style="border-radius: 5px;"
@@ -142,7 +147,7 @@
                                                                     title="{{assetDetails.assetType}}">Type:
                                                                     {{assetDetails.assetType}}</strong><br>
                                                             </div>
-                                                            <button class="btn btn-primary mb_6"
+                                                            <button *ngIf="assetDetails.contentPreviewType || assetDetails.imageFileType || type == 'TRACK'" class="btn btn-primary mb_6"
                                                                 (click)="assetPreview(assetDetails)">View</button>
                                                             <button *ngIf="assetDetails?.assetType!='mp4'"
                                                                 class="btn btn-primary"
@@ -512,5 +517,5 @@
     <object id="preview-object" [data]="previewPath" width="100%" height="600px" style="border:none;">
     </object>
 </div> -->
-<app-preview-content *ngIf="previewContent" [previewPath]="previewPath" [fileType]="previewFileType"
+<app-preview-content *ngIf="previewContent" [previewPath]="assetPreviewProxyPath" [fileType]="previewFileType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
     (notifyClose)="closePreview()"></app-preview-content>

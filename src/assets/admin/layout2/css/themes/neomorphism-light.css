@@ -4558,3 +4558,38 @@ a.Iconhover.custom-grid-icon.icon_margin{
 .modal-title{
   color: white !important;
 }
+/* upload asset */
+.file-item,.delete_btn{
+background: #f0f5fa !important;
+box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;}
+
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  border: 1px solid #d0d5db !important;
+  background: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+.toggle-label,.help-icon,.pill-toggle label{
+  color: #000 !important;
+}
+input:checked + .toggle-slider {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+.toggle-slider{
+  background-color:#b0b0b0!important;
+}
+/* oliver AI css*/
+.btn-group button.btn-pdf,.share-btn,.action-btn {
+  background: unset !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover {
+  background-color: #f0f7ff !important;
+}
+.btn-pdf:focus {
+  color: rgba(2, 118, 255, 1) !important;
+}
+.panel-heading.accordion_card {
+  border: none !important;
+}

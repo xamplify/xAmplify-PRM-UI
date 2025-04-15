@@ -1108,31 +1108,33 @@
                                         <div class="row mrgt45">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <div class="alert alert-success text-center mbgrid"
-                                                    *ngIf="!maxRecipientCountReached && selectedContactListIds?.length>0">
-                                                    <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
-                                                    <ng-container *ngIf="emailReceiversCountError">
-                                                        <span class="required float-right" translate>Something went
-                                                            wrong.Please contact admin</span>
-                                                    </ng-container>
-                                                    <ng-container
-                                                        *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
-                                                        <span *ngIf="campaign?.emailNotification"
-                                                            class="success float-right">Email will be sent to
-                                                            {{validUsersCount}}({{allUsersCount}}) valid recipients.</span>
-                                                        <span *ngIf="!campaign?.emailNotification"
-                                                            class="required float-right">No emails will be sent.</span>
-                                                    </ng-container>
+                                                style="margin-bottom: 10px;" *ngIf="selectedContactListIds?.length>0">
+                                                    <div *ngIf="!maxRecipientCountReached">
+                                                        <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
+                                                        <ng-container *ngIf="emailReceiversCountError">
+                                                            <span class="required float-right" translate>Something went
+                                                                wrong.Please contact admin</span>
+                                                        </ng-container>
+                                                        <ng-container
+                                                            *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
+                                                            <span *ngIf="campaign?.emailNotification"
+                                                                class="success float-right">Email will be sent to
+                                                                {{validUsersCount}}({{allUsersCount}}) valid recipients.</span>
+                                                            <span *ngIf="!campaign?.emailNotification"
+                                                                class="required float-right">No emails will be sent.</span>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div *ngIf="maxRecipientCountReached">
+                                                        <strong>Selected Rows: {{selectedContactListIds.length}}, Recipients Count: {{validUsersCount}}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached && selectedContactListIds?.length>0">
+                                                    <strong> Campaign cannot be launched as the recipient count exceeds the {{maxRecipientCount}} limit.</strong>
                                                 </div>
                                             </div>
 
                                             <!-- XNFR-929 -->
-                                            <div class="alert alert-danger text-center mbgrid"
-                                                *ngIf="maxRecipientCountReached && selectedContactListIds?.length>0">
-                                                <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
-                                                <ng-container class="danger">
-                                                    <strong style="padding-left: 25px;">**Maximum recipient count has reached. Only {{maxRecipientCount}} active recipient are allowed at one time </strong>
-                                                </ng-container>
-                                            </div>
+                                           
 
                                             <table class="table table-filter"
                                                 *ngIf="campaignRecipientsPagination?.totalRecords==0"
@@ -2055,7 +2057,7 @@
                                     </button>
                                     <button type="submit" class="button mBtnAlign w-10em mar-lft-11 bgcolor-unset"
                                         [disabled]="!isContactList || maxRecipientCountReached"
-								        title="{{maxRecipientCountReached ? 'Maximum recipient limit has reached' : ''}}"
+								        title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}"
                                         (click)="isContactList && validateAndLaunchCampaign()"><span
                                             class="btn Btn-Green transition pos_pd-top4">{{buttonName}}</span></button>
                                     <button *ngIf="!isPageCampaign" type="button"

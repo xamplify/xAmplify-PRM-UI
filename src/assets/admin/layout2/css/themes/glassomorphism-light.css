@@ -4612,3 +4612,83 @@ color: #fff!important;
     bottom: -81px !important;
   }
 }
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.asset_files{
+  background: rgb(209 170 170 / 15%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+}
+.file-name,.drag-text{
+  color: #000!important;
+}
+.dropdown-selected,.phone-input-field input,.search-box input{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(5px)
+}
+.dropdown-options-container,.search-box{
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(10px);
+  background-color: rgb(237 236 236 / 80%) !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.form_controls{
+  color: #000!important;
+}
+
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  background: rgb(255 255 255 / 37%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+  backdrop-filter: blur(5px);
+}
+.toggle-label,.help-icon,.pill-toggle label,.signature-btn{
+  color: #000!important;
+}
+input:checked + .toggle-slider {
+  background-color: #2196F3 !important;
+}
+.toggle-slider{
+  background: rgb(107 104 104 / 31%) !important;
+}
+.pill-toggle{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1.4px solid rgb(255 255 255 / 35%)!important;
+}
+.signature-btn{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1.4px solid rgb(255 255 255 / 35%);
+}
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card{
+  background: rgb(255 255 255 / 17%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(5px);
+}
+.pdf_card,.content-card,.fixed-card{
+  background-color: rgb(255 255 255 / 17%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.pdf_child{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  background-color: transparent !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+  background-color: rgb(255 234 234 / 51%) !important;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}

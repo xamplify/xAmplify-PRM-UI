@@ -1,6 +1,6 @@
 <app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
 	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded 
-		&& !isEditVideo && !isPreviewVideo && !previewContent">
+		&& !isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled">
 </app-content-module-status-analytics>
 
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
@@ -10,7 +10,7 @@
 <div *ngIf="isEditVideo || isPreviewVideo">
 	<app-modal-popup-loader></app-modal-popup-loader>
 </div>
-<div class="row" *ngIf="!isEditVideo && !isPreviewVideo && !previewContent">
+<div class="row" *ngIf="!isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled">
 	<div class="col-md-12">
 		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0 light_bg_removal remove_space">
 			<!--List View / Grid View-->
@@ -205,8 +205,8 @@
 																</a>
 															</ng-container>
 															<!--Preview-->
-															<a class="custom-icon"	*ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(asset)">
-																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview" (click)="(asset.contentPreviewType || asset.imageFileType)? preview(asset) : ''">
+																<i class="fa fa-eye IconCustomization" [ngClass]="asset.contentPreviewType || asset.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
 															<!--Popup-->
@@ -226,7 +226,7 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon" *ngIf="isPartnerView  && (authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596')" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+															<a class ="oliveIcon" *ngIf="isPartnerView  && (showOliver || authenticationService.getUserId()=='37596' ||  authenticationService.getUserId()=='39972' || authenticationService.getUserId()=='1275449')" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
@@ -238,7 +238,11 @@
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
-															
+															<a class ="oliveIcon mr5" *ngIf="!isPartnerView && (authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596'  || showOliver)" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+																<div class="oliveBackground">
+																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																</div>
+															</a>
 															<!--Delete-->
 															<a class="custom-icon" *ngIf="!isPartnerView && asset?.delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' :confirmDelete(asset)">
 																<i class="fa fa-trash-o trashIconCustomization" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''" aria-hidden="true"></i>
@@ -784,5 +788,9 @@
 	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList($event)">
 </app-content-status-history-modal-popup>
 
-<app-preview-content *ngIf="previewContent" [previewPath]="previewAssetPath" [fileType]="fileType"
+
+<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="proxyAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
 	(notifyClose)="closePreview()"></app-preview-content>
+	<app-ai-chat-manager *ngIf="isOliverCalled" [asset]="SendAssetToOliver"
+	(notifyParent)="closeAskAi($event)"></app-ai-chat-manager>
+

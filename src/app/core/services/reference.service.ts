@@ -178,6 +178,7 @@ export class ReferenceService {
   mdfAccessGivenByVendor = true;
   showAnalytics = true;
   aircallPhone:any;
+  isOliverEnabled = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -4040,7 +4041,55 @@ getFirstLetter(inputString:any) {
     let url = this.authenticationService.REST_URL + 'admin/hasVanityAccess/' + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
   }
+  /**** XNFR-897 *****/
+  expireDescription(expireDate: any,tracksModule:any): string {
+    if(!expireDate) {
+      return ;
+    }
+    const currentDate = new Date();
+    const givenDate = new Date(expireDate);
+    const diffInMs = givenDate.getTime() - currentDate.getTime(); // Future/Past Safe
+    const diffInMinutes = Math.floor(Math.abs(diffInMs) / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    let suffix = diffInMs < 0 ? 'ago' : 'left';
+    if (suffix === 'ago') {
+      return `The ${tracksModule ? "Track" : "Playbook"} expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+    } else if (diffInDays < 1) {
+      const hours = diffInHours;
+      const minutes = diffInMinutes % 60;
+      return `The ${tracksModule ? "Track" : "Playbook"} will be expired in ${hours} hrs ${minutes} mins`;
+    } else if (diffInDays >= 1 && diffInDays <= 15) {
+      let days = diffInMs < 0 ? `${diffInDays} days ago` : ` ${diffInDays} days`;
+      return `The ${tracksModule ? "Track" : "Playbook"} will be expired in ${days}`
+    } else {
+      const currentYear = currentDate.getFullYear();
+      const givenYear = givenDate.getFullYear();
 
+      if (currentYear === givenYear) {
+        return `The ${tracksModule ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM');
+      } else {
+        return `The ${tracksModule ? "Track" : "Playbook"} will be expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      }
+    }
+  }
+  formatDate(date: Date, format: string): string {
+    const options: any = {};
+    if (format.includes('dd')) options.day = '2-digit';
+    if (format.includes('MMM')) options.month = 'short';
+    if (format.includes('yyyy')) options.year = 'numeric';
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
+  isAccessToView(expireDate: any): boolean {
+    if (expireDate) {
+      const currentDate = new Date();
+      const givenDate = new Date(expireDate);
+      const diffInMs = givenDate.getTime() - currentDate.getTime();
+      let suffix = diffInMs < 0 ? 'ago' : 'left';
+      return suffix === 'ago' ? true : false;
+    }
+  }
+  /** XNFR-897 */
 }
 
 

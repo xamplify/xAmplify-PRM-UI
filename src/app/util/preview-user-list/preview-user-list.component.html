@@ -63,8 +63,11 @@
                             <span class="required" title="Not Published" >
                               <i class="fa fa-times-circle"></i>
                             </span>
-                            <span *ngIf="isDashboardButtonsModule || isAssetsModule || isPlayBooksModule || isLmsModule" title="Click here to publish">
+                            <!-- <span *ngIf="isDashboardButtonsModule || isAssetsModule || isPlayBooksModule || isLmsModule" title="Click here to publish">
                               <a (click)="publish(user)"><i  class="fa fa-share"></i></a>
+                            </span> -->
+                            <span *ngIf="isDashboardButtonsModule || isAssetsModule || isPlayBooksModule || isLmsModule">
+                              <a data-toggle="tooltip" data-placement="top" title="{{isButtonDisabled? isLmsModule ? 'Track cannot be published as the end date has expired.':'Playbook cannot be published as the end date has expired.':'Click here to publish'}}"(click)="isButtonDisabled? '':publish(user)" [ngClass]="isButtonDisabled? 'disabled-div':''"><i  class="fa fa-share" [ngClass]="isButtonDisabled? 'disabled':''"></i></a>
                             </span>
                           </ng-container>
                           <ng-container *ngIf="partnershipIds!=undefined && partnershipIds?.length>0 && partnershipIds.indexOf(user.partnershipId)>-1">

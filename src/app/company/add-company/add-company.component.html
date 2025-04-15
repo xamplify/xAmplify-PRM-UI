@@ -37,19 +37,13 @@
             <div class="form-group mrg0">
               <label class="control-label col-xs-2 col-sm-2" for="email" style="color: green">
               </label>
-              <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+              <div class="form-group col-xs-10 col-sm-10 px0 mrg0">
                 <input type="email" style="border: none !important" class="form-control placeholder-bg-color" id="email"
                   [(ngModel)]="addCompany.email" [ngModelOptions]="{standalone: true}" placeholder="Email"
                   maxlength="100" [disabled]="preview" (input)="validateEmail(addCompany.email)">
                 <div class="textCss"></div>
                 <span class="danger" *ngIf="!isCompanyEmailValid" translate>Please enter a valid email
                   address</span>
-              </div>
-              <div class="form-group col-xs-5 col-sm-5 field-width hide-icons" id="minor-field-width">
-                <input type="number" style="border: none !important" class="form-control placeholder-bg-color"
-                  id="phone" [(ngModel)]="addCompany.phone" [ngModelOptions]="{standalone: true}"
-                  placeholder="Enter your Mobile no" maxlength="20" [disabled]="preview">
-                <div class="textCss"></div>
               </div>
             </div>
 
@@ -104,6 +98,15 @@
             </div>
 
             <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for="phone" style="color: green">
+              </label>
+              <app-country-phone-input [mobileNumber]="addCompany.phone" [countryCode]="addCompany.countryCode" [placeholder]="'Enter your mobile no'"
+                [maxlength]="15" (mobileNumberEventEmitter)="mobileNumberEventEmitter($event)">
+              </app-country-phone-input>
+              <span *ngIf="isInvalidMobileNumber" class="required" style="margin-left: 115px;">Invalid mobile number</span>
+            </div>
+
+            <div class="form-group mrg0" style="margin-top: 10px;">
               <div>
                 <label class="control-label col-xs-2 col-sm-2" for="zip" style="color: #53affe;">
                 </label>
@@ -120,8 +123,8 @@
                   <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
                     id="website" [(ngModel)]="addCompany.website" [ngModelOptions]="{standalone: true}"
                     placeholder="Website" maxlength="100" [disabled]="preview" (input)="validateWebsite(addCompany.website)">
+                    <div class="textCss"></div>
                     <span *ngIf="isWebsiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
-                  <div class="textCss"></div>
                 </div>
               </div>
             </div>
@@ -161,9 +164,9 @@
       <div class="modal-footer popup_footer" style="border:none">
         <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addCompanyModalClose()"
           translate>Cancel</button>
-        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" (click)="saveCompany()" [disabled]="(!isCompanyNameValid || !isCompanyWebsiteValid) || !isCompanyEmailValid" translate><span
+        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" (click)="saveCompany()" [disabled]="(!isCompanyNameValid || !isCompanyWebsiteValid) || !isCompanyEmailValid || !isValidMobileNumber" translate><span
             class="btn Btn-Green transition txt_pd-top3" >Add</span></button>
-            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" (click)="editCompany()"  [disabled]="!isCompanyEmailValid || !isCompanyWebsiteValid" translate><span
+            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" (click)="editCompany()"  [disabled]="!isCompanyEmailValid || !isCompanyWebsiteValid || !isValidMobileNumber" translate><span
               class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>

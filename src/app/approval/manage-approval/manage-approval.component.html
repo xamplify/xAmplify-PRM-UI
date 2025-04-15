@@ -122,8 +122,7 @@
         class="filter" (click)="filterByType('TRACKS',3)" [class.type-selected]="3 == selectedTypeIndex">Tracks<i
           class="fa fa-check-circle-o check-icons" *ngIf="3 == selectedTypeIndex"></i></li>
       <li *ngIf="authenticationService?.approvalRequiredForPlaybooks && authenticationService.module.playbookAccess"
-        class="filter" (click)="filterByType('PLAYBOOKS',4)" [class.type-selected]="4 == selectedTypeIndex">Play
-        Books<i class="fa fa-check-circle-o check-icons" *ngIf="4 == selectedTypeIndex"></i></li>
+        class="filter" (click)="filterByType('PLAYBOOKS',4)" [class.type-selected]="4 == selectedTypeIndex">Playbooks<i class="fa fa-check-circle-o check-icons" *ngIf="4 == selectedTypeIndex"></i></li>
     </ul>
   </div>
   <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6 pr0">
@@ -249,10 +248,12 @@
         <!-- Publish Icon -->
         <a class="custom-icon" *ngIf="!item.published && item?.type != 'Asset' && item?.canPublish" data-toggle="tooltip"
           data-placement="top"
-          title="{{(!item?.createdByAnyApprovalManagerOrApprover && item?.status != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
-          (click)="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyApprovalManagerOrApprover && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? '': confirmChangePublish(item.id, true, item)">
+          [attr.title]="setTooltipMessage(item)"
+          [attr.data-original-title]="setTooltipMessage(item)"
+          (mouseenter)="updateTooltip($event, item)"
+          (click)="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyApprovalManagerOrApprover && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED') || referenceService?.isAccessToView(item?.expireDate)) ? '': confirmChangePublish(item.id, true, item)">
           <i class="fa fa-share IconCustomization" aria-hidden="true"
-            [ngClass]="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyApprovalManagerOrApprover && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED')) ? 'disabled gray':''"></i>
+            [ngClass]="((isApprovalRequiredForType(item?.type) && !item?.createdByAnyApprovalManagerOrApprover && item?.status != 'APPROVED') || (!isApprovalRequiredForType(item?.type) && item?.status != 'APPROVED') || referenceService?.isAccessToView(item?.expireDate)) ? 'disabled gray':''"></i>
           <div class="clickicons"></div>
         </a>
         <!-- Preview Icon -->
@@ -313,6 +314,13 @@
     <span class="pointer"><b>Folder: </b>
       <span data-toggle="tooltip" data-placement="top" title="{{item.folder}}">
         {{item?.folder}}
+      </span>
+    </span>
+  </h6>
+  <h6  *ngIf="referenceService?.expireDescription(item?.expireDate,item?.type == 'Track')">
+    <span class="pointer">
+      <span class="text-danger" data-toggle="tooltip" data-placement="top" title="{{referenceService?.expireDescription(item?.expireDate,item?.type == 'Track')}}">
+        {{referenceService?.expireDescription(item?.expireDate,item?.type == 'Track')}}
       </span>
     </span>
   </h6>

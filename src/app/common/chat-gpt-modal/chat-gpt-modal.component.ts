@@ -42,6 +42,9 @@ export class ChatGptModalComponent implements OnInit {
   copiedText: any;
   isSpeakingText: any;
   speakingIndex: any;
+  isEmailCopied: boolean;
+  hasAcess: boolean = false;
+  isMinimizeOliver: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef) {
   }
@@ -108,43 +111,17 @@ export class ChatGptModalComponent implements OnInit {
       });
   }
 
-  copyChatGPTText(text: string): void {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.setAttribute('readonly', '');
-    textarea.style.position = 'absolute';
-    textarea.style.left = '-9999px';
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      const success = document.execCommand('copy');
-      if (success) {
-        console.log('Text copied successfully');
-      } else {
-        console.warn('Copy command failed');
-      }
-    } catch (err) {
-      console.error('Unable to copy text:', err);
-    }
-    document.body.removeChild(textarea);
-  }  
-  
-  copyAiText(text: any) {
-    this.copyToClipboard(text);
-  }
-
-  copyToClipboard(text : any) {
+ 
+  copyChatGPTText(chatGptGeneratedTextInput: any){
+    this.isEmailCopied = true;
+    $('#copied-chat-gpt-text-message').hide();
+    chatGptGeneratedTextInput.select();
+    document.execCommand('copy');
+    chatGptGeneratedTextInput.setSelectionRange(0, 0);
     setTimeout(() => {
-
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      
-      console.log('Copied using fallback method');
-    }, 100);
+      this.isEmailCopied = false;
+    }, 2000)
+    $('#copied-chat-gpt-text-message').show(500);
   }
 
   resetValues() {
@@ -298,5 +275,19 @@ export class ChatGptModalComponent implements OnInit {
       });
     }
   }
-  
+  minimizeOliver() {
+    this.isMinimizeOliver = true;
+  }
+
+  onMouseEnter() {
+    if (this.isMinimizeOliver) {
+      $('.mini').attr(
+        'style',
+        'transform: scale(1.7); transition: all 0.9s ease-in-out;'
+      );
+      setTimeout(() => {
+        this.isMinimizeOliver = false;
+      }, 400);
+    }
+  }
 }

@@ -201,7 +201,7 @@
                       <span class="info-color-xampc" style="margin: 10px 0px 0px 0px;">
                         <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
                           data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                          title="Your partners will not be able to access the Playbook after its end date."></i>
+                          title="Your partners will not be able to access the {{type === 'TRACK'? 'Track ': 'Playbook '}} after its end date."></i>
                     </span>
                     </div>
                     <div class="col-sm-12 text-danger" style="padding:0" *ngIf="expireDescription(tracksPlayBook.expireDate)">
@@ -485,7 +485,8 @@
         [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId" [moduleName]="'lms'"
         [selectedPartnerGroupIds]="tracksPlayBook.groupIds" [selectedTeamMemberIds]="tracksPlayBook.userIds"
         [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
-        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification"
+        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification" 
+        [isButtonDisabled]="isButtonDisabled"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"

@@ -12,6 +12,10 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { UtilService } from 'app/core/services/util.service';
 
+import { ContactService } from 'app/contacts/services/contact.service';
+import { ContactList } from 'app/contacts/models/contact-list';
+
+
 declare var $:any;
 
 @Component({
@@ -26,6 +30,8 @@ export class ShareCampaignsComponent implements OnInit {
   @Input() selectedUserListId = 0;
   @Input() type = "";
   @Input() contact:any;
+  @Input() checkMaxContactLimitForCampaignLaunch: boolean = false;
+
   pagination:Pagination = new Pagination();
   firstName = "";
   lastName = "";
@@ -37,9 +43,15 @@ export class ShareCampaignsComponent implements OnInit {
   selectedCampaignIds = [];
   isHeaderCheckBoxChecked = false;
 
+  maxRecipientCount:number = 0;
+  restrictRecipientCount:boolean = false;
+  validContactsCount: number = 0;
+  maxRecipientCountReached: boolean = false;
+  contactList:ContactList = new ContactList;
+
   constructor(public authenticationService:AuthenticationService,private referenceService:ReferenceService,
     private pagerService:PagerService,private vanityUrlService:VanityURLService,private xtremandLogger:XtremandLogger,
-    private campaignService:CampaignService,public utilService:UtilService) { }
+    private campaignService:CampaignService,public utilService:UtilService, public contactService: ContactService) { }
 
   ngOnInit() {
     this.referenceService.startLoader(this.httpRequestLoader);
@@ -63,7 +75,13 @@ export class ShareCampaignsComponent implements OnInit {
       this.pagination.vanityUrlFilter = true;
     }
     this.findCampaigns(this.pagination);
-    
+   
+    if (this.checkMaxContactLimitForCampaignLaunch) {
+      this.restrictRecipientCount = true;
+      this.getMaximumContactCountForCampaignLaunch();
+    } else {
+      this.restrictRecipientCount = false;
+    }
   }
 
 
@@ -163,6 +181,67 @@ export class ShareCampaignsComponent implements OnInit {
     }
 		this.shareCampaignsEventEmitter.emit(emitterObject);
 	}
+
+  /** XNFR-929 **/
+  getMaximumContactCountForCampaignLaunch() {
+    this.referenceService.startLoader(this.httpRequestLoader);
+    let userId = this.authenticationService.getUserId();
+    this.campaignService.getMaximumContactCountForCampaignLaunch(userId).subscribe(
+      (result: any) => {
+        if (result.statusCode == 200) {
+          this.maxRecipientCount = result.data;
+        } else {
+          this.restrictRecipientCount = false;
+        }
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      },
+      (error: string) => {
+        this.referenceService.stopLoader(this.httpRequestLoader);
+        this.restrictRecipientCount = false;
+      }, () => {
+        this.loadValidContactsCount(this.selectedUserListId);
+      });
+  }
+
+  loadValidContactsCount(id: number) {
+    try {
+      this.referenceService.startLoader(this.httpRequestLoader);
+      this.contactList.id = id;
+      this.contactList.assignedLeadsList = false;
+      this.contactList.moduleName = 'contacts';
+      this.contactList.isPartnerUserList = false;
+      this.contactService.loadContactsCount(this.contactList).subscribe(
+        data => {
+          this.validContactsCount = data.validContactsCount;
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        },
+        (error: any) => {
+          this.restrictRecipientCount = false;
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        },
+        () => {
+          this.referenceService.stopLoader(this.httpRequestLoader);
+          this.checkRecipientCountLimitReached();
+        }
+      );
+    } catch (error) {
+      this.restrictRecipientCount = false;
+    }
+  }
+
+  checkRecipientCountLimitReached() {
+    if (this.restrictRecipientCount && this.maxRecipientCount > 0 && this.validContactsCount > this.maxRecipientCount) {
+      this.maxRecipientCountReached = true;
+    } else {
+      this.maxRecipientCountReached = false;
+    }
+  }
+
+  ngOnDestroy() {
+    this.restrictRecipientCount = false;
+    this.checkMaxContactLimitForCampaignLaunch = false;
+    this.maxRecipientCountReached = false;
+  }
 
 
 }

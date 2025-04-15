@@ -866,9 +866,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							}
 							//this.getContactsAssocialteCampaigns();
 							this.contactService.addUserSuccessMessage = true;
-							this.goBackToManageList();
-							if (this.isFromCompanyModule) {
+							if (this.isFromCompanyModule || this.isCompanyJourney) {
 								this.goBackToCompaniesList();
+							} else {
+								this.goBackToManageList();
 							}
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
@@ -1116,9 +1117,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								this.showSuccessMessage(data);
 							}
 							this.contactService.addUserSuccessMessage = true;
-							this.goBackToManageList();
-							if (this.isFromCompanyModule) {
+							if (this.isFromCompanyModule || this.isCompanyJourney) {
 								this.goBackToCompaniesList();
+							} else {
+								this.goBackToManageList();
 							}
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
@@ -3430,7 +3432,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/***********XNFR-342*********/
 	openUnPublishedContentModalPopUp(contact: any) {
-		this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName, this.selectedContactListName);
+		this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName, this.selectedContactListName, false);
 	}
 
 

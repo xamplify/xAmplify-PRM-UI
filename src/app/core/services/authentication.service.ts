@@ -178,6 +178,7 @@ export class AuthenticationService {
   approvalRequiredForAssets: boolean = false;
   approvalRequiredForTracks: boolean = false;
   approvalRequiredForPlaybooks: boolean = false;
+  isOliverActive :boolean = false;
   synth = window.speechSynthesis;
 
 
@@ -1615,6 +1616,14 @@ vanityWelcomePageRequired(userId) {
       this.synth.cancel();
     }
   }
-  
+  sendEmailToUser (sendTestEmailDto: SendTestEmailDto, formData: FormData) {
+    sendTestEmailDto.fromEmail = this.user.emailId;
+    formData.append('sendTestEmailDTO', new Blob([JSON.stringify(sendTestEmailDto)], {
+        type: "application/json"
+    }));
+    
+    let url = this.REST_URL + "email-template/sendEmailFromOliver?access_token=" + this.access_token;
+    return this.callPostMethod(url, formData);
+}
 
 }
