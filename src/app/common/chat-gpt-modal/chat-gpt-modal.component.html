@@ -3,23 +3,21 @@
   <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
 </div> -->
 <div
-  *ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
+*ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
   class="chatgpt-card override" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal"
   (click)="resetValues()">
   <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver(); $event.stopPropagation()"
     aria-hidden="true"></i>
-
   <div class="oliver-wrapper" (mouseenter)="onMouseEnter()">
     <ng-container *ngIf="!isMinimizeOliver; else minimized">
       <object data="assets/images/homeOliverLogo-1.svg" type="image/svg+xml" class="icon-s-w"></object>
     </ng-container>
-  
+
     <ng-template #minimized>
       <object data="assets/images/olivermsglogo.svg" type="image/svg+xml" class="icon-s-w mini"></object>
     </ng-template>
   </div>
 </div>
-
 <!--ICON END -->
 <link *ngIf="isWelcomePageUrl" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link  *ngIf="isWelcomePageUrl" rel='stylesheet' href='/assets/js/indexjscss/oliver-AI.css' type='text/css'>
@@ -94,9 +92,9 @@
             </div>
           </div> -->
           <div class="d-flex">
-          <div class="sidebar">
+          <div class="side_bar">
             <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
-            <ul class="nav nav-pills nav-stacked" role="tablist">
+            <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
               <li [ngClass]="{'active': activeTab === 'new-chat'}">
                 <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
                   <i class="fa fa-plus-circle"></i> Start New Chat
@@ -134,14 +132,14 @@
                 <div  [ngClass]="showOpenHistory && activeTab === 'new-chat' ? 'templateui col-lg-9' : 'container-ui'">
                   <!-- Heading -->
                   <div *ngIf= "!showOpenHistory" class="d-flex content-align">
-                    <span class="heading">Engage, Learn, Create, and Communicate with Oliver</span>
+                    <span class="oliver_heading">Engage, Learn, Create, and Communicate with Oliver</span>
                     <!-- Oliver Image Positioned Correctly -->
                     <div class="oliver-container">
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                     </div>
                   </div>
                   <!-- Input Section -->
-                  <div class="input-wrapper mt10">
+                  <div class="oliver_input mt10">
                     <input type="text" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
                     <div class="btn-wrapper">
                       <button *ngIf="hasAcess" class="btn-plus">+</button>
@@ -163,7 +161,7 @@
                   </ng-container> 
                   <div [ngClass]="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing' ? 'templateui col-lg-9' : ''">                 
                   <div *ngIf= "!showOpenHistory" class="d-flex content-align">
-                    <span class="heading">Create Essays, Documents, Reports with Oliver</span>
+                    <span class="oliver_heading">Create Essays, Documents, Reports with Oliver</span>
                     <!-- Oliver Image Positioned Correctly -->
                     <div class="oliver-container">
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
@@ -192,7 +190,7 @@
                 <!-- <div *ngIf="isCopyButtonDisplayed && activeTab === 'askpdf'" *ngFor="let msg of messages">
                   <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
                 </div>                 -->
-                <span class="heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
+                <span class="oliver_heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
                 <div class="custom-card mt10">
                   <div class="upload-box">
                     <label>

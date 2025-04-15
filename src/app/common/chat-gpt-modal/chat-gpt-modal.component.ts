@@ -275,19 +275,15 @@ export class ChatGptModalComponent implements OnInit {
       });
     }
   }
+  
   minimizeOliver() {
-    this.isMinimizeOliver = true;
+    this.isMinimizeOliver = false;
+    setTimeout(() => {
+      this.isMinimizeOliver = true;
+    }, 50)
   }
 
   onMouseEnter() {
-    if (this.isMinimizeOliver) {
-      $('.mini').attr(
-        'style',
-        'transform: scale(1.7); transition: all 0.9s ease-in-out;'
-      );
-      setTimeout(() => {
-        this.isMinimizeOliver = false;
-      }, 400);
-    }
+    this.isMinimizeOliver = false;
   }
 }

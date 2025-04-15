@@ -2757,11 +2757,15 @@ textarea.cke_source {
   background: radial-gradient(#1e2f38, #1d262c, #1d2a36) !important;
   border: 1px solid #2f4857!important;
 }
-.pdf_card,.content-card,.fixed-card{
+.pdf_card,.content-card,.fixed-card,.oliver_input,.writing-card,.phara-card{
   background-color: #2b3c46!important;
   border: 1px solid #2f4857!important;
 }
-.pdf_child{
+.side_bar{
+  background: #2b3c46!important;
+  border: 1px solid #2f4857!important;
+}
+.pdf_child,.textarea-card{
   background-color: #22313a!important;
   border: 1px solid #2f4857!important;
 }
@@ -2791,3 +2795,17 @@ markdown pre,.aligin-para{
 .panel-heading.accordion_card .panel-title a {
   color: rgb(70 143 230)!important;
 }
+.modal-body.oliver-header{
+  background: radial-gradient(#1e2f38, #1d262c, #1d2a36) !important;
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+  background-color: #22313a !important;
+  border: 1px solid #2f4857!important;
+  color: #fff!important;
+  border-radius: 5px;
+  }
+  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text{
+    color: #fff!important;
+  }
