@@ -23,7 +23,7 @@ export class AiChatManagerComponent implements OnInit {
   trimmedText: string = "";
   chatGptGeneratedText: string = "";
   properties: any;
-  chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+  chatGptIntegrationSettingsDto : ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   // @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   // @Input() pdfFile: Blob;
   uploadedFileId: any;
@@ -47,15 +47,19 @@ export class AiChatManagerComponent implements OnInit {
   socialContent: string;
   isSpeakingText: boolean;
   speakingIndex: number;
-  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
-    private router:Router, private cdr: ChangeDetectorRef) { }
+  threadId: any = "";
+  vectorStoreId: any = "";
+  
+  constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService, private http: HttpClient, private route: ActivatedRoute,
+    private router: Router, private cdr: ChangeDetectorRef) { }
 
-    ngOnInit() {
-      this.assetId = parseInt(this.route.snapshot.params['assetId']);
-      if(this.assetId >0){
-        this.getSharedAssetDetailsById(this.assetId);
-      }
+  ngOnInit() {
+    this.assetId = parseInt(this.route.snapshot.params['assetId']);
+    if (this.assetId > 0) {
+      this.chatGptIntegrationSettingsDto.partnerDam = true;
+      this.getSharedAssetDetailsById(this.assetId);
     }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
@@ -109,17 +113,18 @@ export class AiChatManagerComponent implements OnInit {
     var self = this;
     this.chatGptIntegrationSettingsDto.uploadedFileId = this.uploadedFileId;
     this.chatGptIntegrationSettingsDto.prompt = this.trimmedText;
-    this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
+    self.chatGptIntegrationSettingsDto.threadId = self.threadId;
+    this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         console.log('API Response:', response);
         self.isLoading = false;
-        var data = response.data;
+        var content = response.data;
         var reply = 'No response received from Oliver.';
 
-        if (data && data.apiResponse && data.apiResponse.choices && data.apiResponse.choices.length > 0) {
-          var content = data.apiResponse.choices[0].message.content;
-          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content);
+        if (content) {
+          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
           self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
+          self.threadId = content.threadId;
         } else {
           self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
@@ -178,11 +183,13 @@ export class AiChatManagerComponent implements OnInit {
 
   getUploadedFileId() {
     this.isPdfUploading = true;
-    this.chatGptSettingsService.onUpload(this.pdfFile).subscribe(
+    this.chatGptIntegrationSettingsDto.damId = this.assetId;
+    this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
-        const responseObject = JSON.parse(response);
         this.isPdfUploading = false;
-        this.uploadedFileId = responseObject.id;
+        let data = response.data;
+        this.uploadedFileId = data.fileId;
+        this.threadId = data.threadId;
         console.log(this.uploadedFileId);
         this.isLoading = false;
       },
@@ -193,6 +200,7 @@ export class AiChatManagerComponent implements OnInit {
       }
     );
   }
+
   getSharedAssetDetailsById(id: number) {
     this.loading = true;
     this.isPdfUploading = true;
@@ -200,33 +208,74 @@ export class AiChatManagerComponent implements OnInit {
       (response: any) => {
         this.loading = false;
         if (response.statusCode == 200) {
-          this.assetDetailsViewDtoOfPartner = response.data;
-          this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
-          this.assetType=this.assetDetailsViewDtoOfPartner.assetType;
-          console.log('API Response:', response);
+          let self = this;
+          self.assetDetailsViewDtoOfPartner = response.data;
+          self.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
+          self.assetType = self.assetDetailsViewDtoOfPartner.assetType;
+          self.threadId = response.data.threadId;
+          self.vectorStoreId = response.data.vectorStoreId;
+          if (!(self.vectorStoreId != undefined && self.vectorStoreId != '')) {
+            this.getPdfByAssetPath();
+          }
+          if (self.threadId != undefined && self.threadId != '') {
+            this.getChatHistory();
+          }
         }
       },
       (error) => {
         this.loading = false;
         console.error('API Error:', error);
-      }, () => {
-        this.getPdfByAssetPath();
       }
-
     );
   }
+
+  private getChatHistory() {
+    this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId).subscribe(
+      (response: any) => {
+        this.isPdfUploading = false;
+        this.openHistory = true;
+        this.isLoading = false;
+        if (response.statusCode == 200) {
+          let messages = response.data;
+          messages.forEach((message: any) => {
+            if (message.role === 'assistant') {
+              this.messages.push({ role: 'assistant', content: message.content });
+            }
+            if (message.role === 'user') {
+              this.messages.push({ role: 'user', content: message.content });
+            }
+          });
+          setTimeout(() => {
+            if ($('.scrollable-card').length) {
+              $('.scrollable-card').animate({
+                scrollTop: $('.scrollable-card')[0].scrollHeight
+              }, 500);
+            }
+          }, 500);
+
+        } else {
+          console.log('API Error:', response.errorMessage);
+        }
+      },
+      (error: string) => {
+        this.isPdfUploading = false;
+        console.log('API Error:', error);
+      }
+    );
+  }
+
   errorHandler(event: any) {
     event.target.src = 'assets/images/icon-user-default.png';
   }
 
   deleteUploadedFile() {
-    this.chatGptSettingsService.deleteUploadedFileInOpenAI(this.uploadedFileId).subscribe(
-      (response: any) => {
-      },
-      (error: string) => {
-        console.log('API Error:', error);
-      }
-    );
+    // this.chatGptSettingsService.deleteUploadedFileInOpenAI(this.uploadedFileId).subscribe(
+    //   (response: any) => {
+    //   },
+    //   (error: string) => {
+    //     console.log('API Error:', error);
+    //   }
+    // );
   }
   
   getPdfByAssetPath() {
@@ -293,9 +342,17 @@ export class AiChatManagerComponent implements OnInit {
     let plainText = tempDiv.innerHTML;
     let subject = "";
     let body = "";
-    let subjectStartIndex = plainText.indexOf("<p>Subject:");
+    let subjectStartIndex = -1;
+    let closingTag = "";
+    if (plainText.indexOf("<p>Subject:") !== -1) {
+      subjectStartIndex = plainText.indexOf("<p>Subject:");
+      closingTag = "</p>";
+    } else if (plainText.indexOf("<strong>Subject:") !== -1) {
+      subjectStartIndex = plainText.indexOf("<strong>Subject:");
+      closingTag = "</strong>";
+    }
     if (subjectStartIndex !== -1) {
-      let subjectEndIndex = plainText.indexOf("</p>", subjectStartIndex);
+      let subjectEndIndex = plainText.indexOf(closingTag, subjectStartIndex);
       if (subjectEndIndex !== -1) {
         this.subjectText = plainText.substring(subjectStartIndex + 3, subjectEndIndex)
           .replace("Subject:", "").trim();
