@@ -361,6 +361,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                     this.findTeamMemberGroups();
 
                 }
+                this.addContactuser.countryCode = this.contactDetails.countryCode;
             }
             if (this.addContactuser.country == undefined) {
                 this.addContactuser.country = this.countryNames.countries[0];
@@ -607,6 +608,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     mobileNumberEventEmitter(event: any) {
         if (event) {
             this.addContactuser.mobileNumber = event.mobileNumber;
+            this.addContactuser.countryCode = event.selectedCountry.code;
             this.isValidMobileNumber = event.isValidMobileNumber;
         }
     }

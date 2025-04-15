@@ -4640,3 +4640,27 @@ color: #fff!important;
 .form_controls{
   color: #000!important;
 }
+
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  background: rgb(255 255 255 / 37%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+  backdrop-filter: blur(5px);
+}
+.toggle-label,.help-icon,.pill-toggle label,.signature-btn{
+  color: #000!important;
+}
+input:checked + .toggle-slider {
+  background-color: #2196F3 !important;
+}
+.toggle-slider{
+  background: rgb(107 104 104 / 31%) !important;
+}
+.pill-toggle{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1.4px solid rgb(255 255 255 / 35%)!important;
+}
+.signature-btn{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1.4px solid rgb(255 255 255 / 35%);
+}

@@ -202,6 +202,7 @@ export class AddCompanyComponent implements OnInit {
   mobileNumberEventEmitter(event: any) {
     if (event) {
       this.addCompany.phone = event.mobileNumber;
+      this.addCompany.countryCode = event.selectedCountry.code;
       this.isValidMobileNumber = event.isValidMobileNumber;
     }
   }

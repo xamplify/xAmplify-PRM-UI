@@ -90,6 +90,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   deviceService: any;
   showPageSizeAndOrientation: boolean = false;
   isVendorSignatureAdded: boolean = false;
+  showClearOption: boolean = false;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -744,6 +745,7 @@ setVendorSignatureRequired(event){
     this.setUploadedFileProperties(this.pdfUploadedFile);
   } else {
       this.setUploadedFileProperties(this.pdfFile);
+      this.showClearOption = false;
   }
 }
   notifySignatureSelection(event) {
@@ -752,6 +754,7 @@ setVendorSignatureRequired(event){
       if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
         this.isVendorSignatureAdded = true;
     }
+    this.showClearOption = true;
       this.validateFields();
       this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
       this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
@@ -829,6 +832,7 @@ setVendorSignatureRequired(event){
             this.setUploadedFileProperties(this.pdfUploadedFile);
           } else if (!event && !this.isVendorSignatureAdded)  {
               this.setUploadedFileProperties(this.pdfFile);
+              this.showClearOption = false;
           }
           }
 
@@ -854,6 +858,8 @@ setVendorSignatureRequired(event){
           clearSignature(){
             this.pdfUploadedFile =  this.pdfFile;
             this.isVendorSignatureAdded = false;
+            this.showClearOption = false;
+            this.validateFields();
         }
 
         confirmClear() {
@@ -872,4 +878,9 @@ setVendorSignatureRequired(event){
               console.log('You clicked on option: ' + dismiss);
             });
         }
+
+        setVendorSignatureRequiredNow(){
+          this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
+        }
+
 }

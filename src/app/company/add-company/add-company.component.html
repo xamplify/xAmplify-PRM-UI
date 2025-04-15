@@ -100,7 +100,7 @@
             <div class="form-group mrg0">
               <label class="control-label col-xs-2 col-sm-2" for="phone" style="color: green">
               </label>
-              <app-country-phone-input [mobileNumber]="addCompany.phone" [placeholder]="'Enter your mobile no'"
+              <app-country-phone-input [mobileNumber]="addCompany.phone" [countryCode]="addCompany.countryCode" [placeholder]="'Enter your mobile no'"
                 [maxlength]="15" (mobileNumberEventEmitter)="mobileNumberEventEmitter($event)">
               </app-country-phone-input>
               <span *ngIf="isInvalidMobileNumber" class="required" style="margin-left: 115px;">Invalid mobile number</span>

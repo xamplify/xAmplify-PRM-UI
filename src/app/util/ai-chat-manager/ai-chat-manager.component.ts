@@ -74,13 +74,13 @@ loadPreview :boolean = false
           this.assetDetailsViewDtoOfPartner.displayName = this.asset.displayName;
           this.assetType=this.asset.assetType;
           this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
-          this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.assetPath;
+          this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
           this.assetDetailsViewDtoOfPartner.assetPath = this.asset.assetPath;
           this.getPdfByAssetPath();
           this.framePerviewPath();
         }
-      }
     }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['asset'] && changes['asset'].currentValue) {
