@@ -178,6 +178,7 @@ export class AuthenticationService {
   approvalRequiredForAssets: boolean = false;
   approvalRequiredForTracks: boolean = false;
   approvalRequiredForPlaybooks: boolean = false;
+  isOliverActive :boolean = false;
   synth = window.speechSynthesis;
 
 
