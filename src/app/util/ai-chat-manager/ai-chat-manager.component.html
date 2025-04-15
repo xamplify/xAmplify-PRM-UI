@@ -50,11 +50,11 @@
         </div>
         <div class="action-buttons">
           <div class="btn-group">
-            <!-- <button class="btn plus-btn" (click)="pdfInput.click()">
+            <button *ngIf="false" class="btn plus-btn" (click)="pdfInput.click()">
               <span class="fa fa-plus"></span>
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
-            </button> -->
+            </button>
 
             <button class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
             <button class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>

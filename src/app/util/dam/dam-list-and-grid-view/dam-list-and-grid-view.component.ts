@@ -140,10 +140,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	isImageFormat: boolean = false;
 	isTextFormat: boolean = false;
 	proxyAssetPath: any;
+	showOliver: boolean;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
-		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
+		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
+		this.accessForOliver();
 		this.referenceService.renderer = this.renderer;
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -168,6 +170,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.getAllFilteredResults();
 		}
 	}
+
+	private accessForOliver() {
+		if (this.authenticationService.isProductionDomain()) {
+			const allowedUserIds = [813265, 812192, 37596, 39972, 962757, 1207651];
+			this.showOliver = allowedUserIds.includes(this.authenticationService.getUserId());
+		} else if (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()) {
+			const allowedUserIds = [325063, 37596, 325062, 325060, 348038];
+			this.showOliver = allowedUserIds.includes(this.authenticationService.getUserId());
+		}
+	}
+
 	callInitMethods() {
 		localStorage.removeItem('campaignReport');
 		localStorage.removeItem('saveVideoFile');

@@ -891,7 +891,7 @@
 									The maximum number of contacts per upload is determined by your
 									account type.
 								</li>
-								<li translate>
+								<li translate *ngIf="!hideCSVInNotes">
 									<!-- Only files with (<strong>.csv</strong>) extension are allowed to upload. -->
 									You can only upload (.csv) extension files
 								</li>

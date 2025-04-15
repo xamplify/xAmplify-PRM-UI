@@ -258,6 +258,7 @@ export class ContactDetailsComponent implements OnInit {
             this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
             this.selectedContact = event;
             this.selectedContact.id = this.contactId;
+            this.selectedContact.userListId = this.selectedContactListId;
             this.mobileNumber = event.mobileNumber;
           }
           this.isLoading = false;

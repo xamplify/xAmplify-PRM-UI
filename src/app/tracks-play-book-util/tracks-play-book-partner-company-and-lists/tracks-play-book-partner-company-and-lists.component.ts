@@ -35,6 +35,7 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	@Input() selectedPartnerGroupIds: any[] = [];
 	@Input() selectedTeamMemberIds: any[] = [];
 	@Input() selectedPartnershipIds: any[] = [];
+	@Input() isButtonDisabled:boolean;//XBI-4309
 	@Output() notifyParentComponent = new EventEmitter();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	responseMessage = "";

@@ -2,6 +2,10 @@
 <app-response-message class="pg8" [showCloseIcon]="false" [customResponse]="customResponse"
   *ngIf="customResponse.isVisible">
 </app-response-message>
+<!-- XNFR-929 -->
+<div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached && restrictRecipientCount">
+  <strong>Recipients Count: {{validContactsCount}}, Limit: {{maxRecipientCount}} recipients per campaign.</strong>
+</div>
 <!--Campaigns-->
 <div *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader?.isServerError" class="table-responsive">
   <!--Search & Sort-->
@@ -41,7 +45,8 @@
         <tr>
           <th class="text-center">
             <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-              (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)" id="unPublished-campaigns-header-checkbox-id">
+              (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)" id="unPublished-campaigns-header-checkbox-id"
+              [disabled]="maxRecipientCountReached && restrictRecipientCount">
           </th>
           <th class="text-center">Campaign Name</th>
           <th class="text-center">Type</th>
@@ -53,12 +58,14 @@
         <tr class="pointer" *ngFor="let campaign of pagination.pagedItems ;let i =index"
           id="unPublished-campaigns-tr-{{campaign.id}}"
           [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1"
-          (click)="highlightSelectedCampaignOnRowClick(campaign.id,$event)">
+          (click)="(maxRecipientCountReached && restrictRecipientCount) ? '' : highlightSelectedCampaignOnRowClick(campaign.id,$event)">
           <td class="text-center">
             <input type="checkbox" class="pointer checkBox_shadow" id="{{campaign.id}}"
               [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="unPublishedCampaignsCheckBox[]"
               value="{{campaign.id}}"
-              (click)="$event.stopPropagation();highlightCampaignRowOnCheckBoxClick(campaign.id,$event)">
+              (click)="$event.stopPropagation();highlightCampaignRowOnCheckBoxClick(campaign.id,$event)"
+              [disabled]="maxRecipientCountReached && restrictRecipientCount"
+              data-toggle="tooltip" data-placement="right" title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}">
           </td>
           <td class="text-center" title="{{campaign.campaign}}">
             {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>

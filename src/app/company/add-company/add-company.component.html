@@ -123,8 +123,8 @@
                   <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
                     id="website" [(ngModel)]="addCompany.website" [ngModelOptions]="{standalone: true}"
                     placeholder="Website" maxlength="100" [disabled]="preview" (input)="validateWebsite(addCompany.website)">
+                    <div class="textCss"></div>
                     <span *ngIf="isWebsiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
-                  <div class="textCss"></div>
                 </div>
               </div>
             </div>

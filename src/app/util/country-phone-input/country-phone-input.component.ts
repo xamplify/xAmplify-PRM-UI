@@ -38,13 +38,29 @@ export class CountryPhoneInputComponent implements OnInit {
     }
   }
 
+  ngOndestroy() {
+    this.isOpen = false;
+    this.searchQuery = '';
+    this.selectedCountry = [];
+    this.filteredCountries = [];
+    this.clickOutside.unsubscribe();
+  }
+
   validateMobileNumber() {
+    let numberWithoutCode = '';
+    let cleanDialCode = '';
     if (this.mobileNumber) {
-      const phone = parsePhoneNumberFromString(this.mobileNumber);
-      if (phone && isValidPhoneNumber(this.mobileNumber)) {
-        this.isValidMobileNumber = true;
-      } else {
-        this.isValidMobileNumber = false;
+      this.isValidMobileNumber = isValidPhoneNumber(this.mobileNumber);
+      const cleanNumber = this.mobileNumber.replace(/[^\d+]/g, '');
+      for (const country of this.countryNames.countriesMobileCodes) {
+        cleanDialCode = country.dial_code.replace(/[^\d+]/g, '');
+        if (cleanNumber.startsWith(cleanDialCode)) {
+          numberWithoutCode = cleanNumber.substring(cleanDialCode.length).trim();
+          if (!numberWithoutCode) {
+            this.isValidMobileNumber = true;
+          }
+          break;
+        }
       }
     } else {
       this.isValidMobileNumber = true;
@@ -66,6 +82,13 @@ export class CountryPhoneInputComponent implements OnInit {
     if (this.isOpen) {
       this.searchQuery = '';
       this.filterCountries();
+      setTimeout(() => {
+        const inputElement = document.getElementById('phoneInput');
+        if (inputElement) {
+          inputElement.focus();
+        }
+        this.scrollToSelectedCountry()
+      }, 0);
     }
   }
 
@@ -96,7 +119,8 @@ export class CountryPhoneInputComponent implements OnInit {
 
     if (matchedCountry) {
       this.selectedCountry = matchedCountry;
-      const userNumber = this.mobileNumber.substring(matchedCountry.dial_code.length);
+      const cleanNumber = this.mobileNumber.replace(/[^\d+]/g, '');
+      const userNumber = cleanNumber.substring(matchedCountry.dial_code.length);
       this.mobileNumber = matchedCountry.dial_code + ' ' + userNumber;
     }
   }
@@ -185,6 +209,14 @@ export class CountryPhoneInputComponent implements OnInit {
       });
     }
     this.validateMobileNumber();
+  }
+
+  scrollToSelectedCountry() {
+    const container = this.eRef.nativeElement.querySelector('.dropdown-options');
+    const selected = this.eRef.nativeElement.querySelector('.selected');
+    if (container && selected) {
+      container.scrollTop = selected.offsetTop - container.offsetTop;
+    }
   }
 
 }

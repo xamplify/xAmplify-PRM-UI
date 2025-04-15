@@ -693,7 +693,7 @@
                                                          data-toggle="tooltip"
                                                          data-placement="top"
                                                          aria-hidden="true"
-                                                         [title]="isAdd ? 'Enable partner signature' : damUploadPostDto?.partnerSignatureToolTipMessage">
+                                                         [title]="isAdd ? 'Enabling \'Partner Signature\' allows your partner to sign the shared document.' : damUploadPostDto?.partnerSignatureToolTipMessage">
                                                       </i>
                                                     </div>
                                                     <div class="toggle-item">
@@ -724,7 +724,7 @@
                                                          data-toggle="tooltip"
                                                          data-placement="top"
                                                          aria-hidden="true"
-                                                         [title]="isAdd ? 'Enable my signature' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
+                                                         [title]="isAdd ? 'Enabling \'My Signature\' allows you to sign the document now or after the partner signs.' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                                       </div>
                                                       <div>
                                                          <div class="signature-options">
@@ -743,8 +743,9 @@
                                                                      (change)="setPartnerSignatureRequiredAfterPartnerSignatureCompleted(true)">
                                                                   <label for="relation">Later</label>
                                                                </div>
-                                                               <i class="fa fa-question-circle help-icon" data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                                  [title]="isAdd ? 'Add your signature Now or Later' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
+                                                               <i class="fa fa-question-circle help-icon" data-toggle="tooltip" data-placement="top" aria-hidden="true" data-html="true"
+                                                                  [attr.title]="(isAdd || !damUploadPostDto?.disableVendorSignatuerOption) ? 'Now: You will need to add signature now.
+                                                                  <br><br>Later: You can add your signature after partner signs.' : damUploadPostDto?.vendorSignatureToolTipMessage"></i>
                                                             </div>
                                                             <div>
                                                                <div class="signature-buttons">
@@ -942,8 +943,7 @@
                                           </table>
                                        </div>
                                        <!-- XNFR-885 -->
-                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'
-                                          && damUploadPostDto?.assetType != 'pdf'">
+                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'">
                                           <p><strong>{{properties.PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL}}</strong></p>
                                        </div>
                                     </div>
