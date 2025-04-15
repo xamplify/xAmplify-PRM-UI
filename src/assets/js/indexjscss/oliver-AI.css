@@ -798,76 +798,84 @@
     z-index: 9999;
   }
 
-   /* Apply styles to markdown content */
-   ::ng-deep markdown {
-    font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Helvetica, Apple Color Emoji, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol !important;
-    font-size: 14px;
-    color: #0D0D0D !important;
-    line-height: 1.6;
+ /* Apply styles to markdown content */
+ ::ng-deep markdown {
+  font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Helvetica, Apple Color Emoji, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol !important;
+  font-size: 14px;
+  color: #0D0D0D;
+  line-height: 1.6;
+}
+
+/* Headings */
+::ng-deep markdown h1,
+::ng-deep markdown h2,
+::ng-deep markdown h3,
+::ng-deep markdown h4 {
+  font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Helvetica, Apple Color Emoji, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol !important;
+  font-weight: 600;
+  color: #0D0D0D;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+/* Lists */
+::ng-deep markdown ul,
+::ng-deep markdown ol {
+  padding-left: 20px; /* Ensure indentation */
+  margin-bottom: 10px;
+}
+
+/* List items */
+::ng-deep markdown li {
+  margin-bottom: 5px;
+}
+
+/* Bold (strong) text */
+::ng-deep markdown strong {
+  font-weight: 500 !important;
+  color: #0D0D0D; /* Ensure bold text stands out */
+}
+
+/* Italic text */
+::ng-deep markdown em {
+  font-style: italic;
+  color: #444;
+}
+
+/* Links */
+::ng-deep markdown a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+::ng-deep markdown a:hover {
+  text-decoration: underline;
+}
+
+/* Code blocks */
+::ng-deep markdown pre {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+  font-family: "Courier New", monospace;
+}
+
+/* Inline code */
+::ng-deep markdown code {
+  background-color: #eee;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: "Courier New", monospace;
+  color: #d63384;
+}
+.share-btn {
+    border: 1px solid #0d6efd;
+    background-color: transparent;
+    color: #0d6efd;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 12px;
+    transition: all 0.3s ease;
   }
-  
-  /* Headings */
-  ::ng-deep markdown h1,
-  ::ng-deep markdown h2,
-  ::ng-deep markdown h3,
-  ::ng-deep markdown h4 {
-    font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Helvetica, Apple Color Emoji, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol !important;
-    font-weight: 600;
-    color: #0D0D0D !important;
-    margin-top: 15px;
-    margin-bottom: 10px;
-  }
-  
-  /* Lists */
-  ::ng-deep markdown ul,
-  ::ng-deep markdown ol {
-    padding-left: 20px; /* Ensure indentation */
-    margin-bottom: 10px;
-  }
-  
-  /* List items */
-  ::ng-deep markdown li {
-    margin-bottom: 5px;
-  }
-  
-  /* Bold (strong) text */
-  ::ng-deep markdown strong {
-    font-weight: 500 !important;
-    color: #0D0D0D !important; /* Ensure bold text stands out */
-  }
-  
-  /* Italic text */
-  ::ng-deep markdown em {
-    font-style: italic;
-    color: #444;
-  }
-  
-  /* Links */
-  ::ng-deep markdown a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  
-  ::ng-deep markdown a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Code blocks */
-  ::ng-deep markdown pre {
-    background-color: #f4f4f4;
-    padding: 10px;
-    border-radius: 5px;
-    overflow-x: auto;
-    font-family: "Courier New", monospace;
-  }
-  
-  /* Inline code */
-  ::ng-deep markdown code {
-    background-color: #eee;
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-family: "Courier New", monospace;
-    color: #d63384;
-  }
-  

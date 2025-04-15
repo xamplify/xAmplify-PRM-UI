@@ -4558,3 +4558,45 @@ input:checked + .toggle-slider {
   background-color: #5f6168!important;
     border: 1px solid #65676a!important;
 }
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card{
+  background: radial-gradient(circle at center, #414850, #2b2e32, #2d3034)!important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  /* background: radial-gradient(#16242c, #1d262c, #0c1215) !important; */
+  /* background: radial-gradient(#1b2931, #1d262c, #20313a)!important; */
+}
+.pdf_card,.content-card,.fixed-card,.pdf_child{
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  border: 1px solid rgb(70 143 230)!important;
+  color: rgb(70 143 230)!important;
+  background-color: transparent !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+background-color:#23262b!important;
+box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2)!important;
+border: 1px solid #3b6178!important;
+color: #fff;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card{
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+markdown,markdown h1,
+markdown h2,
+markdown h3,
+markdown h4,markdown strong,markdown em ,
+markdown pre,.aligin-para{
+  color: #fff!important;
+}
+.panel-heading.accordion_card .panel-title a {
+  color: rgb(70 143 230)!important;
+}

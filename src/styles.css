@@ -3444,3 +3444,6 @@ border-bottom-right-radius: 7px;
 .pill-toggle input[type="radio"]:checked + label {
   color: white!important;
 }
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card{
+  background-color: #f1f5f9!important;
+}
