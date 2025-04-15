@@ -249,7 +249,7 @@
                                                 <div class="upload-asset-div">
                                                    <div [ngClass]="uploadedAssetName?.length > 0 ? 'files_asset' : 'files-div'">
                                                       <div class="asset_files" (click)="browse()" (drop)="chooseAsset($event)">
-                                                         <input type="file" (change)="chooseAsset($event)" style="opacity: 0.0; position: absolute;height: 76px;width: 414px;cursor: pointer;" id="uploadedAsset" (click)="$event.stopPropagation()">
+                                                         <input type="file" (change)="chooseAsset($event)" [disabled]="uploadedAssetName?.length > 0" style="opacity: 0.0; position: absolute;height: 76px;width: 414px;cursor: pointer;" id="uploadedAsset" (click)="$event.stopPropagation()">
                                                          <div class="text-center card-template">
                                                             <img class="img-templates" src="../../../assets/images/asset-uploads/file-upload.svg" height="39px" alt="">
                                                             <span [ngClass]="uploadedAssetName?.length > 0 ? 'mb0 drag-text mt10' : 'mb0 drag-text mt10 d_block'">{{ uploadedAssetName?.length > 0 ? 'Click to upload ' : 'Click to upload or Drag and drop files' }}</span>

@@ -4392,7 +4392,7 @@ input:checked + .toggle-slider {
   background-color: #d1d1d170!important;
 }
 /* oliver AI css*/
-.pdf_body,.summarize-pdf-card,.pdf_child{
+.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards{
   background: rgb(0 0 0 / 45%) !important;
   border: 1px solid #ffffff33 !important;
 }
