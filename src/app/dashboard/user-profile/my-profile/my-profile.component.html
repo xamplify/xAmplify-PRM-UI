@@ -3524,6 +3524,11 @@
                                         </span>
                                     </div>
                                 </div>
+                                <div class="alert alert-info" *ngIf="xamplifyDefaultTemplate.typeInString == 'LEAD_DETAILS_UPDATE'">
+                                    <p class="fsfpx">{{authenticationService?.module?.isMarketingCompany ?
+                                        properties.LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_MARKETING_COMPANY :
+                                        properties.LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_VENDOR_ORG_PRM_COMPANIES}}</p>
+                                </div>
                             </div>
                             <div class="portlet-body clearfix">
                                 <app-xamplify-default-templates
