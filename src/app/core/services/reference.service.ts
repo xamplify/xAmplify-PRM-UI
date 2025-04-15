@@ -3087,7 +3087,8 @@ export class ReferenceService {
     let timeZoneParam = pagination.timeZone != null ? "&timeZone="+pagination.timeZone :"";
     let filterBy = $.trim(pagination.filterBy)!=null ? $.trim(pagination.filterBy) :"";
     let filterParam = filterBy.length>0 ? "&filterBy="+filterBy:"";
-    return $.trim("&page="+page+"&size="+size+"&loginAsUserId="+loginAsUserId+sortParam+searchParam+teamMemberPartnerFilter+filterParam+fromDateFilterStringParam+toDateFilterStringParam+timeZoneParam);
+    let partnerSignaturetypeParam = (pagination.partnerSignatureType != null && pagination.partnerSignatureType.length>0 ) ? "&partnerSignatureType="+pagination.partnerSignatureType:"";;
+    return $.trim("&page="+page+"&size="+size+"&loginAsUserId="+loginAsUserId+sortParam+searchParam+teamMemberPartnerFilter+filterParam+fromDateFilterStringParam+toDateFilterStringParam+timeZoneParam+partnerSignaturetypeParam);
   }
   
   downloadCsvTemplate(url:string){
