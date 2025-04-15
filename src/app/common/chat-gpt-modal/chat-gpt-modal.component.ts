@@ -44,6 +44,7 @@ export class ChatGptModalComponent implements OnInit {
   speakingIndex: any;
   isEmailCopied: boolean;
   hasAcess: boolean = false;
+  isMinimizeOliver: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef) {
   }
@@ -274,5 +275,19 @@ export class ChatGptModalComponent implements OnInit {
       });
     }
   }
-  
+  minimizeOliver() {
+    this.isMinimizeOliver = true;
+  }
+
+  onMouseEnter() {
+    if (this.isMinimizeOliver) {
+      $('.mini').attr(
+        'style',
+        'transform: scale(1.7); transition: all 0.9s ease-in-out;'
+      );
+      setTimeout(() => {
+        this.isMinimizeOliver = false;
+      }, 400);
+    }
+  }
 }

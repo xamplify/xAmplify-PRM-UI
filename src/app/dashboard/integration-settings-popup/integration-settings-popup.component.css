@@ -98,3 +98,7 @@
  .ml50 {
   margin-left: 50px;
  }
+
+.display_ruby {
+  display: ruby;
+}

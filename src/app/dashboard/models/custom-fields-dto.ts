@@ -26,4 +26,5 @@ export class CustomFieldsDto {
     referenceTo: any;
     active: boolean = false;
     formFieldType: any;
+    emailNotificationEnabledOnUpdate:boolean;
 }
