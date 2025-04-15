@@ -25,8 +25,7 @@ export class AiChatManagerComponent implements OnInit {
   chatGptGeneratedText: string = "";
   properties: any;
   chatGptIntegrationSettingsDto : ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
-  // @Output() notifyParent: EventEmitter<any> = new EventEmitter();
-  // @Input() pdfFile: Blob;
+  @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   uploadedFileId: any;
   isLoading: boolean = false;
   assetDetailsViewDtoOfPartner: AssetDetailsViewDto = new AssetDetailsViewDto();
@@ -272,12 +271,6 @@ export class AiChatManagerComponent implements OnInit {
       );
       this.loadPreview = true;
     }, 50); 
-  }
-  
-
-
-  errorHandler(event: any) {
-    event.target.src = 'assets/images/icon-user-default.png';
   }
 
   private getChatHistory() {
