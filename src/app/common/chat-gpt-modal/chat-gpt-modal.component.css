@@ -646,7 +646,7 @@ max-height: calc(100vh - 220px);
  ::ng-deep markdown {
   font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Helvetica, Apple Color Emoji, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol !important;
   font-size: 14px;
-  color: #0D0D0D !important;
+  color: #0D0D0D;
   line-height: 1.6;
 }
 
@@ -657,7 +657,7 @@ max-height: calc(100vh - 220px);
 ::ng-deep markdown h4 {
   font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Helvetica, Apple Color Emoji, Arial, sans-serif, Segoe UI Emoji, Segoe UI Symbol !important;
   font-weight: 600;
-  color: #0D0D0D !important;
+  color: #0D0D0D ;
   margin-top: 15px;
   margin-bottom: 10px;
 }
@@ -677,7 +677,7 @@ max-height: calc(100vh - 220px);
 /* Bold (strong) text */
 ::ng-deep markdown strong {
   font-weight: 500 !important;
-  color: #0D0D0D !important; /* Ensure bold text stands out */
+  color: #0D0D0D; /* Ensure bold text stands out */
 }
 
 /* Italic text */
