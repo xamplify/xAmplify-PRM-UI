@@ -174,10 +174,10 @@
                         Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
                       <i class="fa fa-chevron-up toggle-icon"></i>
                     </a>
-                    <a *ngIf="isCollapsed" (click)="toggleAction();showAssetPreview()">
+                    <a *ngIf="isCollapsed" (click)="toggleAction()">
                       <span>
                         <div class="Ai_file">
-                          <div class="Ai-icon"  [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                          <div class="Ai-icon" (click)="showAssetPreview()"[ngStyle]="showPreview ? {'width': '252px'} : {}">
                             <div class="d-flex document_flex">
                               <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
                               <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
