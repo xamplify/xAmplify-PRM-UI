@@ -1,6 +1,8 @@
-.icon-s-w{
-  height:150px;
-   width:150px;
+.icon-s-w {
+  height: 150px;
+  width: 150px;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
 }
 
 .svg-w-h{
@@ -711,4 +713,22 @@ max-height: calc(100vh - 220px);
   border-radius: 3px;
   font-family: "Courier New", monospace;
   color: #d63384;
+}
+.icon-s-w.max {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  width: 150px;
+  height: 150px;
+}
+
+.icon-s-w.mini {
+  width: 30px;
+  height: 30px;
+}
+
+.customIcon{
+  position: absolute;
+  top:0px;
+  right:10px;
 }

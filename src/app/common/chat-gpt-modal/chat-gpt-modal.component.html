@@ -1,7 +1,25 @@
 <!--CHATGPT ICON-->
-<div *ngIf="isChatGptIconDisplayed && showIcon &&authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
+<!-- <div *ngIf="isChatGptIconDisplayed && showIcon &&authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
   <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
+</div> -->
+<div
+  *ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
+  class="chatgpt-card override" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal"
+  (click)="resetValues()">
+  <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver(); $event.stopPropagation()"
+    aria-hidden="true"></i>
+
+  <div class="oliver-wrapper" (mouseenter)="onMouseEnter()">
+    <ng-container *ngIf="!isMinimizeOliver; else minimized">
+      <object data="assets/images/homeOliverLogo-1.svg" type="image/svg+xml" class="icon-s-w"></object>
+    </ng-container>
+  
+    <ng-template #minimized>
+      <object data="assets/images/olivermsglogo.svg" type="image/svg+xml" class="icon-s-w mini"></object>
+    </ng-template>
+  </div>
 </div>
+
 <!--ICON END -->
 <link *ngIf="isWelcomePageUrl" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link  *ngIf="isWelcomePageUrl" rel='stylesheet' href='/assets/js/indexjscss/oliver-AI.css' type='text/css'>

@@ -28,6 +28,7 @@ export class PreviewContentComponent implements OnInit {
   pdfDoc: any = null;
   showTextViewer: boolean = false;
   showImageViewer: boolean = false;
+  showAudioPlayer: boolean = false;
 
   constructor(private sanitizer: DomSanitizer, private authenticationService: AuthenticationService, private http: HttpClient) { }
 
@@ -90,6 +91,7 @@ export class PreviewContentComponent implements OnInit {
   async displayFile(url: string, fileType: string) {
     this.showImageViewer = false;
     this.showTextViewer = false;
+    this.showAudioPlayer = false;
     $("#pdf-container, #image-viewer, #text-viewer, #html-viewer").hide();
   
     if (fileType.includes("pdf")) {
@@ -104,6 +106,9 @@ export class PreviewContentComponent implements OnInit {
     } else if (fileType.includes("csv")) {
       this.displayCSV(url);
       $("#csv-viewer").show();
+    } else if (fileType.includes("mp3")) {
+      $("#audio-viewer").attr("src", url).show();
+      this.showAudioPlayer = true;
     } else {
       console.error("Unsupported file type:", fileType);
     }

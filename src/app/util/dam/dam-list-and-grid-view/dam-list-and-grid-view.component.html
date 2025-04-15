@@ -238,7 +238,7 @@
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon mr5" *ngIf="authenticationService?.isLocalHost() && !isPartnerView && (authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596')" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+															<a class ="oliveIcon mr5" *ngIf="!isPartnerView && (authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596')" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
@@ -789,7 +789,7 @@
 </app-content-status-history-modal-popup>
 
 
-<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="previewAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat"
+<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="proxyAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
 	(notifyClose)="closePreview()"></app-preview-content>
 	<app-ai-chat-manager *ngIf="isOliverCalled" [asset]="SendAssetToOliver"
 	(notifyParent)="closeAskAi($event)"></app-ai-chat-manager>

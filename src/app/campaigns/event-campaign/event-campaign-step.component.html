@@ -937,13 +937,10 @@
 													</ng-container>
 												</div>
 												<!-- XNFR-929 -->
-												<div class="alert alert-danger text-center mbgrid"
-                                                    *ngIf="maxRecipientCountReached && parternUserListIds?.length>0">
-                                                    <strong>Selected Rows : {{parternUserListIds?.length}}</strong>
-                                                    <ng-container class="danger">
-                                                        <strong style="padding-left: 25px;">**Maximum recipient count has reached. Only {{maxRecipientCount}} active recipient are allowed at one time </strong>
-                                                    </ng-container>
-                                                </div>
+												<div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached && parternUserListIds?.length>0">
+													<strong>Selected Rows: {{parternUserListIds.length}}, Recipients Count: {{validUsersCount}}, Limit:
+														{{maxRecipientCount}} recipients per campaign.</strong>
+												</div>
 
 												<table class="table table-filter"
 													*ngIf="contactListsPagination.totalRecords==0"
@@ -1227,7 +1224,7 @@
 								<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage"
 									type="button" style="float: right;" class="button bgcolor-unset"
 									[disabled]="emailTemplatesTabClass === 'disableTemplateTab' || maxRecipientCountReached"
-									(click)="resetTabs('templates')" title="{{maxRecipientCountReached ? 'Maximum recipient limit has reached' : ''}}"><span
+									(click)="resetTabs('templates')" title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}"><span
 										class="btn Btn-Green transition txt_pd-top3">Next</span></button>
 							</div>
 						</fieldset>
@@ -2186,17 +2183,17 @@
 							<button type="submit" *ngIf="checkLaunchOption=='NOW'" class="btn btn-primary button-border"
 								style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'NOW')"
 								[disabled]="maxRecipientCountReached"
-								title="{{maxRecipientCountReached ? 'Maximum recipient limit has reached' : ''}}">Launch</button>
+								title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}">Launch</button>
 							<button type="submit" *ngIf="checkLaunchOption=='SCHEDULE'"
 								class="btn btn-warning button-border Sch-class" style="width: 10em;"
 								(click)="scheduleCampaign()"
 								[disabled]="maxRecipientCountReached"
-								title="{{maxRecipientCountReached ? 'Maximum recipient limit has reached' : ''}}">Schedule</button>
+								title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}">Schedule</button>
 							<button type="submit" *ngIf="checkLaunchOption=='SAVE'"
 								class="button bgcolor-unset button-border save_border" style="width: 10em;"
 								(click)="createEventCampaign(eventCampaign, 'SAVE')"
 								[disabled]="maxRecipientCountReached"
-								title="{{maxRecipientCountReached ? 'Maximum recipient limit has reached' : ''}}"><span
+								title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}"><span
 									class="btn Btn-Green transition txt_pd-top3">Save</span></button>
 							<button type="button" class="button bgcolor-unset neg_mrg_top4" (click)="spamCheck()"
 								style="width: 10em;"><span class="btn Btn-Green transition txt_pd-top3">Spam

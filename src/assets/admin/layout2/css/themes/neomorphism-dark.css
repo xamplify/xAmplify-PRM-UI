@@ -4535,3 +4535,26 @@ tbody>tr#uploaded-csv-tr>td {
 .form_controls:focus {
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
   outline: none !important;}
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  background: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border: 0px solid #2f4857 !important;
+}
+.toggle-label,.help-icon,.pill-toggle label,.signature-btn{
+  color: #fff!important;
+}
+input:checked + .toggle-slider {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+.toggle-slider{
+  background-color: #5f6168!important;
+}
+.pill-toggle{
+  background: #5f6168!important;
+  border: 1.2px solid #81888d!important;
+}
+.signature-btn{
+  background-color: #5f6168!important;
+    border: 1px solid #65676a!important;
+}
