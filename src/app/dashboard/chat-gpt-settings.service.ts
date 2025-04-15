@@ -72,4 +72,14 @@ export class ChatGptSettingsService {
     return this.authenticationService.callGetMethod(url);
   }
 
+  getThreadIdByDamId(chatGptIntegrationSettingsDto: any) {
+    let userId = this.authenticationService.getUserId();
+    let damIdRequestParameter = chatGptIntegrationSettingsDto.damId != undefined ? '&damId=' + chatGptIntegrationSettingsDto.damId : '';
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let isPartnerDamAssetRequestParm = chatGptIntegrationSettingsDto.partnerDam != undefined ? '&partnerDam=' + chatGptIntegrationSettingsDto.partnerDam : '';
+    let isVendorDamAssetRequestParm = chatGptIntegrationSettingsDto.vendorDam != undefined ? '&vendorDam=' + chatGptIntegrationSettingsDto.vendorDam : '';
+    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm;
+    return this.authenticationService.callGetMethod(url);
+  }
+
 }
