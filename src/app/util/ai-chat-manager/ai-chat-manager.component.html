@@ -61,7 +61,7 @@
             <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
           </div>
-          <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading"
+          <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
             (click)="submitdata()">Submit</button>
         </div>
       </div>
@@ -239,7 +239,7 @@
                 <button class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
                   Quotes</button>
               </div>
-              <button class="submit-btn" [disabled]="isLoading || isPdfUploading" (click)="AskAiTogetData()">
+              <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
                 Submit</button>
             </div>
           </div>

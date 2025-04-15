@@ -63,3 +63,11 @@
 .delete{
     background: #cb5a5e;
 }
+.oliverImgIcon{
+    width: 18px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+.gridIconCustomization a.oliverhover:hover {
+    background:none !important;
+}

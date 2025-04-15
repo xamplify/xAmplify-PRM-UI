@@ -961,3 +961,7 @@ object {
 .panel-group .panel {
   border-radius: 7px !important;
 }
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
