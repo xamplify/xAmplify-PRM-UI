@@ -259,7 +259,7 @@ export class ManageApprovalComponent implements OnInit {
       case 'Track':
         return 'Track';
       case 'PlayBook':
-        return 'Play Book';
+        return 'Playbook';
       default:
         return status;
     }
@@ -1036,6 +1036,21 @@ export class ManageApprovalComponent implements OnInit {
     } else {
       return false;
     }
+  }
+  /****** XNFR-897 *****/
+  setTooltipMessage(item): string {
+    if (!item.createdByAnyApprovalManagerOrApprover && item.approvalStatus !== 'APPROVED') {
+      return 'Requires approval for publishing.';
+    } else if (this.referenceService.isAccessToView(item.expireDate)) {
+      return `${item.type === 'Track' ? "Track" : "Playbook"} cannot be published as the end date has expired.`;
+    } else {
+      return  'Publish';
+    }
+  }
+  updateTooltip(event:any,item: any) {
+    const tooltipMessage = this.setTooltipMessage(item);
+    const element = $(event.target).closest('a');
+    element.attr('data-original-title', tooltipMessage).tooltip('fixTitle').tooltip('show');
   }
 
 }

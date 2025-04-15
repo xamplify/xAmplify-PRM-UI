@@ -169,7 +169,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     approvalRequired: boolean = false;
     storeAdd: boolean = false;
     activeAddSignatureToggle: boolean = false;
+    isPdfFileSelected: boolean = false;
 
+    deleteUploadedAsset = false;
+    showClearOption: boolean = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch, public signatureService:SignatureService){
@@ -363,6 +366,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.uploadedCloudAssetName = "";
         this.damUploadPostDto.source = "";
         this.fileType = file['type'];
+        if(this.fileType=="application/pdf"){
+            this.isPdfFileSelected=true;
+        }
         this.customResponse = new CustomResponse();
         this.formData.append("uploadedFile", file, file['name']);
         this.uploadedAssetName = file['name'];
@@ -533,7 +539,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     uploadOrUpdateAsset() {
         this.damUploadPostDto.draft = false;
         if (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus == 'APPROVED'
-            && this.approvalRequired && this.isAssetReplaced && this.damUploadPostDto.assetType != 'pdf') {
+            && this.approvalRequired && this.isAssetReplaced) {
             this.sendForReApproval();
         } else {
             this.uploadOrUpdate();
@@ -1567,6 +1573,8 @@ zoomOut() {
           this.setUploadedFileProperties(this.pdfUploadedFile);
         } else {
             this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+            this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
+            this.showClearOption = false;
         }
     }
 
@@ -1611,6 +1619,7 @@ zoomOut() {
             if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
                 this.isVendorSignatureAdded = true;
             }
+            this.showClearOption = true;
             this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
             this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
             this.damUploadPostDto.geoLocationDetails = geoLocationDetails;
@@ -1678,7 +1687,7 @@ zoomOut() {
                 this.submitButtonText = requiresApproval ? 'Send for Approval' : 'Update';
                 this.damUploadPostDto.sendForApproval = requiresApproval;
             } else if (isApproved && isAssetReplaced) {
-                const requiresApproval = !(assetApprover || !this.approvalRequired || this.damUploadPostDto.assetType === 'pdf');
+                const requiresApproval = !(assetApprover || !this.approvalRequired);
                 this.submitButtonText = requiresApproval ? 'Send for Re-Approval' : 'Update';
                 this.damUploadPostDto.sendForReApproval = requiresApproval;
             } else {
@@ -1716,7 +1725,7 @@ zoomOut() {
         }
         
         return ((!this.isAdd && this.isApprover && (this.damUploadPostDto.createdByAnyApprover || this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED])) ||
-            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && (!this.isAssetReplaced || this.damUploadPostDto.assetType == 'pdf')) ||
+            (!this.isAdd && !this.isApprover && this.damUploadPostDto.approvalStatus === ApprovalStatusType[ApprovalStatusType.APPROVED] && !this.isAssetReplaced) ||
             (this.isAdd && this.isApprover));
     }
 
@@ -1732,6 +1741,7 @@ zoomOut() {
         this.activeAddSignatureToggle = true;
       } else if (!event && !this.isVendorSignatureAdded) {
           this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+          this.showClearOption = false;
       } else if (!event){
         this.activeAddSignatureToggle = false;
       }
@@ -1740,6 +1750,8 @@ zoomOut() {
     clearSignature(){
         this.pdfUploadedFile =  this.pdfDefaultUploadedFile;
         this.isVendorSignatureAdded = false;
+        this.showClearOption = false;
+        this.validateAllFields();
     }
 
     confirmClear() {
@@ -1777,6 +1789,66 @@ zoomOut() {
             }
           });
       }
-          
+getFileIcon(): string {
+    if (!this.uploadedAssetName) return '../../../assets/images/asset-uploads/asset-uploads/Documents.svg';
+  
+    const extension = this.uploadedAssetName.split('.').pop();
+    
+    if (!extension) return '../../../assets/images/asset-uploads/asset-uploads/Documents.svg';
+  
+    const lowerExtension = extension.toLowerCase();
+  
+    switch (lowerExtension) {
+      case 'pdf':
+        return '../../../assets/images/asset-uploads/PDF.svg';
+      case 'csv':
+        return '../../../assets/images/asset-uploads/CSV.svg';
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+      case 'svg':
+        return '../../../assets/images/asset-uploads/Image.svg';
+      case 'doc':
+        return '../../../assets/images/asset-uploads/Documents.svg';
+      case 'docx':
+        return '../../../assets/images/asset-uploads/DOCX.svg';
+      case 'html':
+        return '../../../assets/images/asset-uploads/HTML.svg';
+      case 'xls':
+        return '../../../assets/images/asset-uploads/XLS.svg';
+      case 'xlsx':
+        return '../../../assets/images/asset-uploads/XLSX.svg';
+      case 'ppt':
+        return '../../../assets/images/asset-uploads/PPT.svg';
+      case 'pptx':
+        return '../../../assets/images/asset-uploads/PPTX.svg';
+      case 'mp3':
+        return '../../../assets/images/asset-uploads/Audio.svg';
+      case 'mp4':
+      case 'mpeg':
+      case 'mpg':
+        return '../../../assets/images/asset-uploads/Video.svg';
+      case 'avi':
+        return '../../../assets/images/asset-uploads/AVI.svg';
+      default:
+        return '../../../assets/images/asset-uploads/Documents.svg';
+    }
+  }
+  confirmDelete() {
+    this.clearPreviousSelectedAssetAndClearPdfToggles();
+    this.clearPreviousSelectedAsset();
+    this.isAssetReplaced = false;
+    this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
+  }
+  clearPreviousSelectedAssetAndClearPdfToggles(){
+    this.formData.delete("uploadedFile");
+    $('#uploadedAsset').val('');
+    this.uploadedAssetName  = "";
+    this.isPdfFileSelected = false;
+}
+setPartnerSignatureRequiredNow(){
+    this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature=false;
+    this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+}
 
 }

@@ -43,6 +43,7 @@ export class AddCompanyComponent implements OnInit {
   isCompanyWebsiteValid: boolean = false;
   websiteErrorMessage: any;
   isWebsiteError: boolean = false;
+  isValidMobileNumber: boolean = true;
   constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService, public referenceService: ReferenceService,) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -196,6 +197,14 @@ export class AddCompanyComponent implements OnInit {
       },
       () => { }
     );
+  }
+
+  mobileNumberEventEmitter(event: any) {
+    if (event) {
+      this.addCompany.phone = event.mobileNumber;
+      this.addCompany.countryCode = event.selectedCountry.code;
+      this.isValidMobileNumber = event.isValidMobileNumber;
+    }
   }
 
 }

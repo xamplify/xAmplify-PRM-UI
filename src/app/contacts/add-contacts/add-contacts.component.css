@@ -433,3 +433,15 @@ p.mb0.mt5 {
     bottom: -82px ;
   }
 }
+.image-background{
+  background: #fff;
+  border-radius: 10px;
+  object-fit: cover;
+  padding: 5px;
+}
+.button_blue.bgcolor-unset.neg_mrg_top4{
+  padding-top: 1px !important;
+}
+span.btn.btn-primary.transition.txt_pd-top3.pdt7{
+  padding-top: 7px !important;
+}

@@ -12,6 +12,7 @@ export class Properties {
 	xamplify_router = 'https://www.xamplify.com/';
 
 	NO_RESULTS_FOUND = "No results found.";
+	NO_DATA_FOUND = "No data found.";
 	EMAIL_SENT_SUCCESS = "Email sent successfully.";
 	NO_USERS_SELECT_ERROR = "You have not selected any user.";
 	//FOR CONTACTS
@@ -572,6 +573,9 @@ export class Properties {
 	/**XNFR-911**/
 	LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_MARKETING_COMPANY = "**This custom template will be used to notify team members when lead details are updated in Salesforce and synced back to xAmplify.";
 	LEAD_FIELD_UPDATE_NOTIFICATION_INFO_FOR_VENDOR_ORG_PRM_COMPANIES = "**This custom template will be used to notify partners when lead details are updated in Salesforce and synced back to xAmplify.";
+	/** XNFR-929 **/
+	CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE: number = 2021;
+	CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE = 'A maximum of {{maxRecipientCount}} recipients is allowed per campaign. Please modify your selection and try again.'
 
 }
 

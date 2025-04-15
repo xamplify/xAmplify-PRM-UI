@@ -1719,7 +1719,7 @@ errorMessage:any;
   
     return !tracksPlayBook.isValid || 
            (this.isAdd && approvalRequired && !canApprove) || 
-           (!this.isAdd && approvalRequired && tracksPlayBook.approvalStatus !== 'APPROVED');
+           (!this.isAdd && approvalRequired && tracksPlayBook.approvalStatus !== 'APPROVED') || this.isButtonDisabled;
   }
 
   getApprovalTooltipMessage(tracksPlayBook: any): string {
@@ -1801,8 +1801,9 @@ addTagsCondition(selectedTags:any[]) {
   clearEndDate() {
     //this.endDatePickr.clear();
     this.tracksPlayBook.expireDate = undefined;
+    this.isButtonDisabled = false;
   }
-
+  isButtonDisabled:boolean = false;
   expireDescription(expireDate: any): string {
     if(!expireDate) {
       return;
@@ -1814,8 +1815,10 @@ addTagsCondition(selectedTags:any[]) {
     const diffInHours = Math.floor(diffInMinutes / 60);
     const diffInDays = Math.floor(diffInHours / 24);
     let suffix = diffInMs < 0 ? 'ago' : 'left';
+    this.isButtonDisabled = false;
     if (suffix === 'ago') {
-      return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Play Book"} expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
+      this.isButtonDisabled = true;
+      return `The ${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} expired on ` + this.formatDate(givenDate, 'dd MMM yyyy');
     } else if (diffInDays < 1) {
       const hours = diffInHours;
       const minutes = diffInMinutes % 60;

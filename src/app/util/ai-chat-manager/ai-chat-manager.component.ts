@@ -15,7 +15,7 @@ declare var $: any;
   styleUrls: ['./ai-chat-manager.component.css']
 })
 export class AiChatManagerComponent implements OnInit {
-  // @Input() assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
+  @Input() asset: any;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -24,7 +24,7 @@ export class AiChatManagerComponent implements OnInit {
   chatGptGeneratedText: string = "";
   properties: any;
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
-  // @Output() notifyParent: EventEmitter<any> = new EventEmitter();
+  @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   // @Input() pdfFile: Blob;
   uploadedFileId: any;
   isLoading: boolean = false;
@@ -47,22 +47,35 @@ export class AiChatManagerComponent implements OnInit {
   socialContent: string;
   isSpeakingText: boolean;
   speakingIndex: number;
+  isOliverAiFromdam: boolean;
+  isEmailCopied: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef) { }
 
-    ngOnInit() {
-      this.assetId = parseInt(this.route.snapshot.params['assetId']);
-      if(this.assetId >0){
-        this.getSharedAssetDetailsById(this.assetId);
+  ngOnInit() {
+    this.assetId = parseInt(this.route.snapshot.params['assetId']);
+    if (this.assetId > 0) {
+      this.isOliverAiFromdam = false;
+      this.getSharedAssetDetailsById(this.assetId);
+    } else {
+      if (this.asset != undefined && this.asset != null) {
+        this.isOliverAiFromdam = true;
+        this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
+        this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
+        this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
+        this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
+        this.assetDetailsViewDtoOfPartner.displayName = this.asset.displayName;
+        this.assetType = this.asset.assetType;
+        this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
+        this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
+        this.getPdfByAssetPath();
       }
     }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
-      console.log('PDF file loaded:', this.pdfFile);
-      if (this.pdfFile) {
-        this.getUploadedFileId();
-      }
+    if (changes['asset'] && changes['asset'].currentValue) {
+      this.asset = changes['asset'].currentValue;
     }
   }
 
@@ -81,7 +94,9 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    // this.notifyParent.emit();
+    if(this.asset != undefined && this.asset != null){
+      this.notifyParent.emit();
+      }
   }
   
   validateInputText() {
@@ -137,19 +152,24 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if (this.router.url.includes('/shared/view/')) {
-      this.referenceService.goToRouter('/home/dam/shared/l');
-    } else {
-      this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
-    }
-    // this.notifyParent.emit();
+    if(this.asset != undefined && this.asset != null){
+      this.isOliverAiFromdam = false;
+      this.notifyParent.emit();
+      }else{
+        if (this.router.url.includes('/shared/view/')) {
+          this.referenceService.goToRouter('/home/dam/shared/l');
+        } else {
+          this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
+        }
+      }
   }
 
   copyAiText(element: HTMLElement) {
     this.copyToClipboard(element);
   }
 
-  copyToClipboard(element : any) {
+  copyToClipboard(element: any) {
+    this.isEmailCopied = true;
     this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
     textarea.value = this.copiedText;
@@ -157,6 +177,9 @@ export class AiChatManagerComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+    setTimeout(() => {
+      this.isEmailCopied = false;
+    }, 2000);
   }
 
   onFileSelected(event: any) {
@@ -281,6 +304,9 @@ export class AiChatManagerComponent implements OnInit {
     this.ngxLoading  = false;
     this.UploadedFile = false;
     this.showEmailModalPopup = false;
+    if (this.uploadedFileId != undefined) {
+      this.deleteUploadedFile();
+    }
   }
 
   toggleAction(){

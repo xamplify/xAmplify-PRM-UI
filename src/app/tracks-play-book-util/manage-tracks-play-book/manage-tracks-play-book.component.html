@@ -177,10 +177,10 @@
                                                 </span>
                                             </h6>
                                             <!-- XNFR-897 -->
-                                            <h6 class="moreipsis" *ngIf="expireDescription(learningTrack.expireDate)">
+                                            <h6 class="moreipsis" *ngIf="referenceService?.expireDescription(learningTrack.expireDate,tracksModule)">
                                                 <span class="text-danger" data-toggle="tooltip" data-placement="top"
-                                                title="{{expireDescription(learningTrack.expireDate)}}">
-                                                    {{expireDescription(learningTrack?.expireDate)}}
+                                                title="{{referenceService?.expireDescription(learningTrack.expireDate,tracksModule)}}">
+                                                    {{referenceService?.expireDescription(learningTrack?.expireDate,tracksModule)}}
                                                 </span>
                                             </h6>
                                             <!-- XNFR-824 -->
@@ -257,10 +257,13 @@
                                                 </a>
                                                 <a class="custom-icon"
                                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                                    data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
-                                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                                    data-toggle="tooltip" data-placement="top" 
+                                                    [attr.title]="setTooltipMessage(learningTrack)"
+                                                    [attr.data-original-title]="setTooltipMessage(learningTrack)"
+                                                    (mouseenter)="updateTooltip($event, learningTrack)"
+                                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-share IconCustomization" aria-hidden="true"
-                                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''"></i>
+                                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? 'disabled gray':''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -353,8 +356,8 @@
                                 <!-- XNFR-897 -->
                                 <h6 class="xamplify-ellipsis GridViewCotent">
                                     <span class="text-danger" data-toggle="tooltip" data-placement="top"
-                                        title="{{expireDescription(learningTrack.expireDate,learningTrack?.createdDateString)}}">
-                                        {{expireDescription(learningTrack?.expireDate, learningTrack?.createdDateString)}}
+                                        title="{{referenceService?.expireDescription(learningTrack.expireDate,tracksModule)}}">
+                                        {{referenceService?.expireDescription(learningTrack?.expireDate, tracksModule)}}
                                     </span>
                                 </h6>
                                 <!-- XNFR-824 -->
@@ -397,10 +400,13 @@
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                        data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : Publish}}"
-                                        (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
-                                        [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''">
-                                        <i class="fa fa-share" aria-hidden="true"></i>
+                                        data-toggle="tooltip" data-placement="top" 
+                                        [attr.title]="setTooltipMessage(learningTrack)"
+                                        [attr.data-original-title]="setTooltipMessage(learningTrack)"
+                                        (mouseenter)="updateTooltip($event, learningTrack)"
+                                        (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
+                                        [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? 'disabled-div gray':''">
+                                        <i class="fa fa-share" aria-hidden="true" [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? 'disabled':''"></i>
                                         <div class="clickicons"></div>
                                     </a>
                                 </div>

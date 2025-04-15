@@ -90,6 +90,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   deviceService: any;
   showPageSizeAndOrientation: boolean = false;
   isVendorSignatureAdded: boolean = false;
+  showClearOption: boolean = false;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -342,13 +343,18 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damUploadPostDto.assetName = this.damPostDto.name;
       this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
         (result: any) => {
-          this.hidePopup();
-          this.referenceService.isCreated = true;
-          this.referenceService.assetResponseMessage = result.message;
-          if (this.isFromApprovalModule) {
-            this.goBackToManageApproval();
-          } else {
-            this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+          if (result.statusCode == 200) {
+            this.hidePopup();
+            this.referenceService.isCreated = true;
+            this.referenceService.assetResponseMessage = result.message;
+            if (this.isFromApprovalModule) {
+              this.goBackToManageApproval();
+            } else {
+              this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+            }
+          } else if (result.statusCode == 401) {
+            this.nameErrorMessage = "Already exists";
+            this.formData.delete("damUploadPostDTO");
           }
           this.modalPopupLoader = false;
         },
@@ -739,6 +745,7 @@ setVendorSignatureRequired(event){
     this.setUploadedFileProperties(this.pdfUploadedFile);
   } else {
       this.setUploadedFileProperties(this.pdfFile);
+      this.showClearOption = false;
   }
 }
   notifySignatureSelection(event) {
@@ -747,6 +754,7 @@ setVendorSignatureRequired(event){
       if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
         this.isVendorSignatureAdded = true;
     }
+    this.showClearOption = true;
       this.validateFields();
       this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
       this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
@@ -824,6 +832,7 @@ setVendorSignatureRequired(event){
             this.setUploadedFileProperties(this.pdfUploadedFile);
           } else if (!event && !this.isVendorSignatureAdded)  {
               this.setUploadedFileProperties(this.pdfFile);
+              this.showClearOption = false;
           }
           }
 
@@ -849,6 +858,8 @@ setVendorSignatureRequired(event){
           clearSignature(){
             this.pdfUploadedFile =  this.pdfFile;
             this.isVendorSignatureAdded = false;
+            this.showClearOption = false;
+            this.validateFields();
         }
 
         confirmClear() {
@@ -867,4 +878,9 @@ setVendorSignatureRequired(event){
               console.log('You clicked on option: ' + dismiss);
             });
         }
+
+        setVendorSignatureRequiredNow(){
+          this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
+        }
+
 }

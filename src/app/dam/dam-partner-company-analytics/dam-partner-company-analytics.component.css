@@ -25,3 +25,6 @@
       height: auto !important;
     }
 }
+.justify-content-end{
+  justify-content: end;
+}
