@@ -39,6 +39,7 @@ import { UserListPaginationWrapper } from 'app/contacts/models/userlist-paginati
 import { ContactList } from 'app/contacts/models/contact-list';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Criteria } from 'app/contacts/models/criteria';
+import { PartnerModuleConfiguratorComponent } from '../partner-module-configurator/partner-module-configurator.component';
 declare var $: any, Papa: any, swal: any;
 
 @Component({
@@ -322,6 +323,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	currentIndex: any;
 	actionType: string = '';
 	hasVanityAccess:boolean = false;
+	/*** XNFR-938  ***/
+	isPartnerModulesExpand:boolean = false;
+	@ViewChild('childRef') partnerModuleConfig: PartnerModuleConfiguratorComponent;
+
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -4057,6 +4062,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		} else {
 			partner.expand = false;
 		}
+		if(partner.expand) {
+		this.isPartnerModulesExpand = false; //XNFR-938
+		}
+		this.getChildData(this.isPartnerModulesExpand); //XNFR-938
 	}
 
 
@@ -4844,7 +4853,10 @@ triggerUniversalSearch(){
 
 	openPartnerModuleConfiguratorModelPopup(partner:any, index:any) {
 		this.actionType = 'add';
+		this.isPartnerModulesExpand = !this.isPartnerModulesExpand;//XNFR-938
+		partner.expand = !this.isPartnerModulesExpand; //XNFR-938 
 		this.currentPartnerForModuleAccess = partner;
+		this.getChildData(this.isPartnerModulesExpand); //XNFR-938
 		this.currentIndex = index;
 		this.showPartnerModuleConfiguratorModelPopup = true;
 	}
@@ -4890,4 +4902,17 @@ triggerUniversalSearch(){
 		)
 	}
 
+	/** XNFR-938 */
+	getChildData(isExpand: boolean) {
+		// this.partnerModuleConfig.submit();
+		if (this.partnerModuleConfig) {
+			this.partnerModuleConfig.submit();  // Only call if it's defined
+		  } else {
+			console.error('partnerModuleConfig is undefined');
+		  }
+		if (isExpand) {
+			this.currentPartnerForModuleAccess = this.newPartnerUser;
+		}
+	}
+	/** XNFR-938 */
 }

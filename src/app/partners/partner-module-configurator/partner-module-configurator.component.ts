@@ -44,8 +44,9 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
     } else {
       this.isEdit = true;
       this.fetchModulesForEdit();
+      this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
     }
-    this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
+    // this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
   }
   
   ngOnDestroy(){
