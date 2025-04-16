@@ -819,6 +819,7 @@ private beforeAdd(tag: any) {
           this.authenticationService.approvalRequiredForAssets = data.approvalRequiredForAssets;
           this.authenticationService.approvalRequiredForTracks = data.approvalRequiredForTracks;
           this.authenticationService.approvalRequiredForPlaybooks = data.approvalRequiredForPlaybooks;
+          this.authenticationService.isOliverActive = data.oliverActive;
 
 					//XNFR-276
           this.menuItems = data.menuItems;
