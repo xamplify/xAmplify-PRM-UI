@@ -813,7 +813,7 @@ export class ManageApprovalComponent implements OnInit {
     if (item.type === 'Track') {
       this.trackOrPlayBookText = "Track";
     } else {
-      this.trackOrPlayBookText = "Play Book";
+      this.trackOrPlayBookText = "Playbook";
     }
     $('#unpublished-modal').modal('show');
   }
