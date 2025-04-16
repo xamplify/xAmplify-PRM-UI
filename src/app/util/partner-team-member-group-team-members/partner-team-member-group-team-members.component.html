@@ -35,13 +35,13 @@
             class="alert alert-success text-center">
             <strong>Selected Team Members : {{currentPartner?.selectedTeamMemberIds?.length}}</strong>
         </div>
-        <table *ngIf="teamMembersPagination.pagedItems?.length>0"
+        <table 
             class="table tgrid table-condensed  hash-table-color"
             id="{{partnerModuleTeamMembersTableId}}-{{currentPartner?.index}}"
             aria-describedby="teamMembersPreviewTable">
             <thead>
                 <tr>
-                    <th scope="row" class="text-center">
+                    <th scope="row" class="text-center" *ngIf="teamMembersPagination.pagedItems?.length>0">
                         <input type="checkbox" class="checkBox_shadow"
                             [(ngModel)]="currentPartner.isTeamMemberHeaderCheckBoxChecked"
                             id="{{partnerGroupTeamMemberheaderCheckBoxId}}-{{currentPartner?.index}}"

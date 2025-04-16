@@ -323,9 +323,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	currentIndex: any;
 	actionType: string = '';
 	hasVanityAccess:boolean = false;
-	/*** XNFR-938  ***/
-	isPartnerModulesExpand:boolean = false;
-	@ViewChild('childRef') partnerModuleConfig: PartnerModuleConfiguratorComponent;
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -2606,7 +2603,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 
-	ngAfterViewInit() { }
+	ngAfterViewInit() {}
 
 	ngAfterViewChecked() {
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
@@ -4062,10 +4059,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		} else {
 			partner.expand = false;
 		}
-		if(partner.expand) {
-		this.isPartnerModulesExpand = false; //XNFR-938
+		if (partner.expand) {
+			partner.popupExpand = false; //XNFR-938
 		}
-		this.getChildData(this.isPartnerModulesExpand); //XNFR-938
 	}
 
 
@@ -4853,12 +4849,20 @@ triggerUniversalSearch(){
 
 	openPartnerModuleConfiguratorModelPopup(partner:any, index:any) {
 		this.actionType = 'add';
-		this.isPartnerModulesExpand = !this.isPartnerModulesExpand;//XNFR-938
-		partner.expand = !this.isPartnerModulesExpand; //XNFR-938 
 		this.currentPartnerForModuleAccess = partner;
-		this.getChildData(this.isPartnerModulesExpand); //XNFR-938
+		//partner.popupExpand = !partner.popupExpand;
 		this.currentIndex = index;
 		this.showPartnerModuleConfiguratorModelPopup = true;
+		$.each(this.newPartnerUser, function (partnerUserIndex: number, partnerUser: any) {
+			if (index != partnerUserIndex) {
+				partnerUser.popupExpand = false;
+			}
+		}
+		);
+		partner.popupExpand = !partner.popupExpand;
+		if(partner.popupExpand) {
+			partner.expand = false;
+		}
 	}
 
 	closePartnerModuleConfiguratorModelPopup() {
@@ -4901,18 +4905,4 @@ triggerUniversalSearch(){
 			}
 		)
 	}
-
-	/** XNFR-938 */
-	getChildData(isExpand: boolean) {
-		// this.partnerModuleConfig.submit();
-		if (this.partnerModuleConfig) {
-			this.partnerModuleConfig.submit();  // Only call if it's defined
-		  } else {
-			console.error('partnerModuleConfig is undefined');
-		  }
-		if (isExpand) {
-			this.currentPartnerForModuleAccess = this.newPartnerUser;
-		}
-	}
-	/** XNFR-938 */
 }

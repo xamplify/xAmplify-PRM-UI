@@ -1786,6 +1786,8 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
+                <h4 class="modal-title popup-header-title-font float-left" translate>Add Partner{{ newPartnerUser.length > 1 ? '(s)' : '' }}</h4>
+                
             </div>
             <div class="modal-body" style="margin-bottom: -12px;">
                 <div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible">
@@ -1845,10 +1847,12 @@
                                         </switch>
                                     </td>
                                     <td *ngIf="authenticationService?.module?.adminOrSuperVisor && hasVanityAccess">
-                                        <button class="btn btn-info" type="button" tabindex="-1"
-                                            (click)="openPartnerModuleConfiguratorModelPopup(partner, i)">
-                                            <i title="Assign Modules to the Partner" data-toggle="tooltip" data-placement="top" class="fa " [ngClass]="isPartnerModulesExpand? 'fa-minus':'fa-plus'"
-                                                aria-hidden="true"></i>
+                                        <button class="button_blue bgcolor-unset p0 btn-transitions" type="button" tabindex="-1"
+                                            (click)="openPartnerModuleConfiguratorModelPopup(partner, i)" translate>
+                                            <span class="btn btn-primary transition d-inline"> Assign Modules
+                                                <i title="Assign Modules to the Partner" data-toggle="tooltip" data-placement="top" class="fa "
+                                                    [ngClass]="partner?.popupExpand? 'fa-minus':'fa-plus'" aria-hidden="true"></i>
+                                            </span>
                                         </button>
                                     </td>
                                     <!--- (XNFR-85) ----->
@@ -1861,16 +1865,20 @@
                                                     {{ teamMemberGroup?.name !== '--Please Select--' ? '(' + teamMemberGroup.teamMembersCount + ')' : '' }}
                                                 </option>
                                             </select> <span class="input-group-btn">
-                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
-                                                    (click)="previewModules(partner.teamMemberGroupId)">
-                                                    <i title="Preview Modules" data-toggle="tooltip" data-placement="top" class="fa fa-eye white"
-                                                        aria-hidden="true"></i>
+                                                <button [disabled]="partner.teamMemberGroupId==0" class="button_blue bgcolor-unset p0 btn-transitions" type="button"
+                                                    tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
+                                                    <span class="btn btn-primary transition d-inline">
+                                                        <i title="Preview Modules" data-toggle="tooltip" data-placement="top" class="fa fa-eye white"
+                                                            aria-hidden="true"></i>
+                                                    </span>
                                                 </button>
                                             </span> <span class="input-group-btn">
-                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
-                                                    (click)="getTeamMembers(partner,i)">
-                                                    <i title="Select Team Members" data-toggle="tooltip" data-placement="top" class="my-icon fa"
-                                                        [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
+                                                <button [disabled]="partner.teamMemberGroupId==0" class="button_blue bgcolor-unset p0 btn-transitions" type="button"
+                                                    tabindex="-1" (click)="getTeamMembers(partner,i)">
+                                                    <span class="btn btn-primary transition d-inline">
+                                                        <i title="Select Team Members" data-toggle="tooltip" data-placement="top" class="my-icon fa"
+                                                            [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
+                                                    </span>
                                                 </button>
                                             </span>
                                         </div> <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0"> <strong>Selected
@@ -1888,10 +1896,10 @@
                                         </td>
                                 </tr>
                                 <!-- XNFR-938-->
-                                <tr *ngIf="isPartnerModulesExpand">
+                                <tr *ngIf="partner?.popupExpand">
                                     <td colspan="5" class="bgc-lg"><ng-template *ngIf="actionType === 'add'"
                                             [ngTemplateOutlet]="partnerModuleConfigPopup"
-                                            [ngTemplateOutletContext]="{access:isPartnerModulesExpand}">
+                                            [ngTemplateOutletContext]="{access:partner?.popupExpand}">
                                         </ng-template>
                                     </td>
                                 </tr>
@@ -1948,7 +1956,7 @@
     [ngTemplateOutletContext]="{access:showPartnerModuleConfiguratorModelPopup}">
 </ng-template>
 <ng-template #partnerModuleConfigPopup let-access="access">
-    <app-partner-module-configurator #childRef *ngIf="access" [currentPartner]="currentPartnerForModuleAccess"
+    <app-partner-module-configurator *ngIf="access" [currentPartner]="currentPartnerForModuleAccess"
         [actionType]="actionType" (notifyClose)="closePartnerModuleConfiguratorModelPopup()"
         (notifyUpdateSuccess)="showUpdateSuccessStatus($event)"
         (notifySubmit)="submitModuleAccessesAndCloseModalPopup($event)"
