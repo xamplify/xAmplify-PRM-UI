@@ -4664,3 +4664,31 @@ input:checked + .toggle-slider {
   background-color: rgb(255 255 255 / 31%) !important;
   border: 1.4px solid rgb(255 255 255 / 35%);
 }
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card,.summarize-pdf-cards{
+  background: rgb(255 255 255 / 17%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(5px);
+}
+.pdf_card,.content-card,.fixed-card{
+  background-color: rgb(255 255 255 / 17%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.pdf_child{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  background-color: transparent !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+  background-color: rgb(255 234 234 / 51%) !important;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}

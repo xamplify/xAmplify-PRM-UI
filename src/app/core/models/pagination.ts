@@ -185,4 +185,7 @@ export class Pagination {
 	/**** XNFR-923 ****/
 	damId:number;
 	partners:any[]=[];
+
+	partnerSignatureType:string ="";
+	
 }

@@ -44,6 +44,7 @@ export class ChatGptModalComponent implements OnInit {
   speakingIndex: any;
   isEmailCopied: boolean;
   hasAcess: boolean = false;
+  isMinimizeOliver: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef) {
   }
@@ -275,4 +276,14 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
   
+  minimizeOliver() {
+    this.isMinimizeOliver = false;
+    setTimeout(() => {
+      this.isMinimizeOliver = true;
+    }, 50)
+  }
+
+  onMouseEnter() {
+    this.isMinimizeOliver = false;
+  }
 }

@@ -34,10 +34,16 @@ export class ChatGptSettingsService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  onUpload(pdfFile: Blob) {
-    const url = `${this.chatGptSettingsUrl}/upload/loggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
+  onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = `${this.chatGptSettingsUrl}/upload?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
     formData.append('file', pdfFile, 'file.pdf');
+    chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
+    formData.delete('chatGptSettingsDTO');
+    formData.append('chatGptSettingsDTO', new Blob([JSON.stringify(chatGptSettings)],
+      {
+        type: "application/json"
+      }));
     return this.authenticationService.callPostMethod(url, formData);
   }
 
@@ -45,6 +51,12 @@ export class ChatGptSettingsService {
     const url = this.chatGptSettingsUrl + '/getPromptResponse?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptSettings);;
   }
+
+  generateAssistantTextByAssistant(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = this.chatGptSettingsUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, chatGptSettings);
+  }
+
   getSharedAssetDetailsById(id: number) {
     const url = `${this.chatGptSettingsUrl}/getSharedAssetDetailsById/${id}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
     return this.http.get(url);
@@ -53,6 +65,21 @@ export class ChatGptSettingsService {
   deleteUploadedFileInOpenAI(uploadedFileId: any) {
     const url = this.chatGptSettingsUrl + '/deleteUploadedFile/' + uploadedFileId + '?access_token=' + this.authenticationService.access_token;
     return this.http.delete(url);
+  }
+
+  getChatHistoryByThreadId(threadId: string) {
+    const url = this.chatGptSettingsUrl + '/chatHistory/' + threadId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getThreadIdByDamId(chatGptIntegrationSettingsDto: any) {
+    let userId = this.authenticationService.getUserId();
+    let damIdRequestParameter = chatGptIntegrationSettingsDto.damId != undefined ? '&damId=' + chatGptIntegrationSettingsDto.damId : '';
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let isPartnerDamAssetRequestParm = chatGptIntegrationSettingsDto.partnerDam != undefined ? '&partnerDam=' + chatGptIntegrationSettingsDto.partnerDam : '';
+    let isVendorDamAssetRequestParm = chatGptIntegrationSettingsDto.vendorDam != undefined ? '&vendorDam=' + chatGptIntegrationSettingsDto.vendorDam : '';
+    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm;
+    return this.authenticationService.callGetMethod(url);
   }
 
 }

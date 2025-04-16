@@ -485,7 +485,8 @@
         [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId" [moduleName]="'lms'"
         [selectedPartnerGroupIds]="tracksPlayBook.groupIds" [selectedTeamMemberIds]="tracksPlayBook.userIds"
         [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
-        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification"
+        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification" 
+        [isButtonDisabled]="isButtonDisabled"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
