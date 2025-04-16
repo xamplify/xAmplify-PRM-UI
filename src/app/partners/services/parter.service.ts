@@ -707,5 +707,10 @@ export class ParterService {
         return this.httpClient.get(url)
             .catch(this.handleError);
     }
-    /*** XNFR-914 */
+
+    /*** XNFR-944 */
+    findAllPartnerRegionDetaiils(partnerJourneyRequestDTO: any) {
+        const url = this.URL + '/partner/allPartners/details/regionwise/count?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, partnerJourneyRequestDTO);
+    }
 }

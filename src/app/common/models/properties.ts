@@ -476,7 +476,7 @@ export class Properties {
 	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
 	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
 	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
-
+	totalPartnersDescription = "Total Onboarded Partners."
 	/** XNFR-745 **/
 	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders while viewing the Playbook";
 	disableOrderAssetsTooltipMessage = "Enabling 'Show Assets By Folders' will lock asset ordering since assets are organized by folders";
@@ -574,5 +574,6 @@ export class Properties {
 	CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE: number = 2021;
 	CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE = 'A maximum of {{maxRecipientCount}} recipients is allowed per campaign. Please modify your selection and try again.'
 
+	allPartnersDonutTooltipText = 'Region and NonRegion Wise Tracks';
 }
 

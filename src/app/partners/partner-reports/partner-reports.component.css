@@ -244,7 +244,7 @@ img.brand-logo-custom {
 .cardCustomStyle {
   height: 100px;
   padding-top: 5px;
-  cursor: not-allowed;
+  /* cursor: not-allowed; */
 }
 
 .visualCustom {

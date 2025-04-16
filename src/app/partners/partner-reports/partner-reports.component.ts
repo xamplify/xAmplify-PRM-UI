@@ -19,6 +19,7 @@ import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { Properties } from 'app/common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { error } from 'console';
 declare var $, swal, Highcharts, CKEDITOR: any;
 
 @Component({
@@ -112,6 +113,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     selectedPartnerIds: number[] = [];
     allItems: any[] = []; 
     selectedPartners : any;
+    isTotalPartnerDiv = false;
+    totalPartnersDiv: boolean = false;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -306,7 +309,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
-
+        this.totalPartnersDiv = false;
 
         this.getActivePartnerReports();
         this.loadCountryData();
@@ -315,10 +318,23 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
              this.reloadWithFilter = true;
              this.loadAllCharts = false;
         }, 500);
-        
+        this.totalPartnersDiv = false;
 
     }
-
+    goToAllPartnersDiv(){
+        this.totalPartnersDiv = true;
+         this.loadAllCharts = false;
+        this.selectedTabIndex = 8;
+         this.isThroughPartnerDiv = false;
+         this.isInactivePartnersDiv = false;
+         this.isActivePartnerDiv = false;
+         this.isRedistributePartnersDiv = false;
+         this.isApprovePartnersDiv = false;
+         this.isIncompleteCompanyProfileDiv = false;
+         this.isSingUpPendingDiv = false;
+      
+    }
+    
     /****************************Through Partner Analytics**************************/
     goToThroughPartnersDiv() {
         this.throughPartnerCampaignPagination = new Pagination();
@@ -333,7 +349,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
-
+        this.totalPartnersDiv = false;
         
         this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
@@ -352,6 +368,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
+        this.totalPartnersDiv = false;
 
     }
 
@@ -476,6 +493,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
+        this.totalPartnersDiv = false;
         this.inActivePartnersSearchKey = "";
 
         this.inActivePartnersPagination.pageIndex = 1;
@@ -498,7 +516,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = true;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
-
+        this.totalPartnersDiv = false;
         this.approvePartnersPagination.maxResults = 12;
         this.getApprovePartnerReports(this.approvePartnersPagination);
     }
@@ -1130,6 +1148,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = true;
         this.isSingUpPendingDiv = false;
+        this.totalPartnersDiv = false;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
 
@@ -1156,6 +1175,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = true;
+        this.totalPartnersDiv = false;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;

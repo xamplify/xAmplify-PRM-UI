@@ -251,21 +251,32 @@
             </div>
              <!--TotalPartner Count-->
              <app-box-loader [countLoader]=5 *ngIf="totalPartnersCountLoader"></app-box-loader>
-             <div *ngIf="!totalPartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth">
-               <a class="dashboard-stat dashboard-stat-lighter red-soft cardCustomStyle">
-                 <div class="visual pt0">
-                  <i class="fa fa-handshake-o dbiconscss" aria-hidden="true"></i>
+             <div *ngIf="!totalPartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth"
+             (click)="totalPartnersCount>0 ? goToAllPartnersDiv() : '' ">
+             <a [className]="totalPartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft greay' :'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
+                [class.greay]="8!=selectedTabIndex">
+                 <div class="visual">
+                  <i class="fa fa-check-circle fontCustom" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
+                  [ngStyle]="{'color': 8===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 8"
+                  aria-hidden="true"></i>
                  </div>
                  <div class="details">
-                   <div class="number NumberFontDecrease">{{totalPartnersCount}}</div>
-                   <div class="desc default-name-font TextFontDecrease" data-toggle="tooltip" data-placement="top"
+                   <div class="number">{{totalPartnersCount}}</div>
+                   <div class="desc" data-toggle="tooltip" data-placement="top"
                      title="All {{authenticationService?.partnerModule?.customName}}s" style="font-size: 13px">
                      All {{authenticationService?.partnerModule?.customName | slice:0:10}}s
                      <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                    </div>
                  </div>
+                 <span id="permhref" class="morePadding">
+                  <a [className]="totalPartnersCount>0 ? 'more' : 'more disable-tile-pj'"
+                    (click)="totalPartnersCount>0 ? goToAllPartnersDiv() : ''"> Detailed view
+                    <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
+                    <i class="fa fa-info-circle" aria-hidden="true" title="{{properties?.totalPartnersDescription}}"></i>
+                  </a>
+                </span>
                </a>
-             </div>
+              </div>
           </div>
         </div>
       </div>
@@ -909,7 +920,18 @@
       </div>
     </div>
   </div>
-  
+
+
+  <!-- XNFR-944 -->
+  <div *ngIf="totalPartnersDiv">
+    <div class="ml15m">
+        <app-donut-pie-chart [chartId]="'regionAndNonRegionDonut'" [isDetailedAnalytics]="false" [fromAllPartners]="totalPartnersDiv"
+        [applyFilter]="applyFilter"></app-donut-pie-chart>
+    </div>
+    <div class="ml15m">
+      <app-all-partners-list ></app-all-partners-list>
+    </div>
+  </div>
 
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
   <div class="row rowPaddingCustomization"
