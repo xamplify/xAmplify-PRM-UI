@@ -476,5 +476,10 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
       }
     );
   }
+
+  searchPartnerCompaniesByType(event){
+    this.pagination.partnerSignatureType = event;
+    this.searchPartnerCompanies()
+  }
 }
 
