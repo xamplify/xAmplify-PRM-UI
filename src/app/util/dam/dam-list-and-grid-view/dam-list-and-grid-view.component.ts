@@ -176,7 +176,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			const allowedUserIds = [813265, 812192, 37596, 39972, 962757, 1207651];
 			this.showOliver = allowedUserIds.includes(this.authenticationService.getUserId());
 		} else if (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()) {
-			const allowedUserIds = [325063, 37596, 325062, 325060, 348038];
+			const allowedUserIds = [325063,37596,348038];
 			this.showOliver = allowedUserIds.includes(this.authenticationService.getUserId());
 		}
 	}

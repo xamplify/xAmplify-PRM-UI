@@ -431,8 +431,10 @@
 														<app-custom-ui-switch [customSwitch]="campaignAccess.allowVendorToChangePartnerPrimaryAdmin" (customUiSwitchEventEmitter)="allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 													</td>
 												</tr>
-												<tr *ngIf="this.authenticationService.isLocalHost()">
-													<th scope="row">Enable Oliver</th>
+												<tr>
+													<th scope="row">Enable Oliver
+														<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" width="22px" height="22px">
+													</th>
 													<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverActive"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
