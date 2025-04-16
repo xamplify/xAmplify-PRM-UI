@@ -4692,3 +4692,25 @@ input:checked + .toggle-slider {
   background: rgb(255 255 255 / 31%) !important;
   border: 1px solid rgb(255 255 255 / 35%) !important;
 }
+.modal-body.oliver-header{
+  background: hsla(0, 0%, 100%, .35) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, .37);
+  backdrop-filter: blur(13.5px);
+  border: 1px solid hsla(0, 0%, 100%, .1) !important;
+}
+.side_bar{
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  background: hsl(0deg 0% 100% / 10%) !important;
+  backdrop-filter: blur(5px);
+}
+.writing-card,.phara-card,
+.oliver_input,.textarea-card {
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  background: rgb(255 255 255 / 27%) !important;
+}
+.oliver_input input {
+  color: #000;
+}
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
+}
