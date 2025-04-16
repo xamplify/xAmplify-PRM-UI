@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PartnerSignatureStatusAnalyticsDTO } from 'app/contacts/models/PartnerSignatureStatusAnalyticsDtO';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PartnerSignatureStatusAnalyticsDTO } from 'app/util/models/PartnerSignatureStatusAnalyticsDTO';
 import { DamService } from 'app/dam/services/dam.service';
 
 @Component({
