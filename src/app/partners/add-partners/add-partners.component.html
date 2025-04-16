@@ -1786,8 +1786,9 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
+                <!-- XNFR-938 -->
                 <h4 class="modal-title popup-header-title-font float-left" translate>Add Partner{{ newPartnerUser.length > 1 ? '(s)' : '' }}</h4>
-                
+                <!-- XNFR-938 -->
             </div>
             <div class="modal-body" style="margin-bottom: -12px;">
                 <div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible">

@@ -39,7 +39,6 @@ import { UserListPaginationWrapper } from 'app/contacts/models/userlist-paginati
 import { ContactList } from 'app/contacts/models/contact-list';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Criteria } from 'app/contacts/models/criteria';
-import { PartnerModuleConfiguratorComponent } from '../partner-module-configurator/partner-module-configurator.component';
 declare var $: any, Papa: any, swal: any;
 
 @Component({
@@ -4059,9 +4058,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		} else {
 			partner.expand = false;
 		}
+		/****XNFR-938****/
 		if (partner.expand) {
-			partner.popupExpand = false; //XNFR-938
+			partner.popupExpand = false;
 		}
+		/****XNFR-938****/
 	}
 
 
@@ -4850,9 +4851,9 @@ triggerUniversalSearch(){
 	openPartnerModuleConfiguratorModelPopup(partner:any, index:any) {
 		this.actionType = 'add';
 		this.currentPartnerForModuleAccess = partner;
-		//partner.popupExpand = !partner.popupExpand;
 		this.currentIndex = index;
 		this.showPartnerModuleConfiguratorModelPopup = true;
+		/****XNFR-938****/
 		$.each(this.newPartnerUser, function (partnerUserIndex: number, partnerUser: any) {
 			if (index != partnerUserIndex) {
 				partnerUser.popupExpand = false;
@@ -4863,6 +4864,7 @@ triggerUniversalSearch(){
 		if(partner.popupExpand) {
 			partner.expand = false;
 		}
+		/****XNFR-938****/
 	}
 
 	closePartnerModuleConfiguratorModelPopup() {
