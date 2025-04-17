@@ -24,7 +24,7 @@
 <script *ngIf="isWelcomePageUrl" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <!--ChatGPT Modal-->
-<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
+<div *ngIf="isChatGptIconDisplayed && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div  class="modal-dialog w85-per" role="document">
     <div class="modal-content">
       <!-- <div class="modal-header">
