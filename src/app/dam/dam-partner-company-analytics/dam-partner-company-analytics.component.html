@@ -140,7 +140,7 @@
                  </tbody>
                </table>
              </div>
-             <app-response-message *ngIf="customResponse.isVisible && !isPublished" [customResponse]="customResponse" [showCloseIcon]="false"></app-response-message>
+             <app-response-message *ngIf="customResponse.isVisible && !isPublished && !isPartnerSignatureRequired && toggleOnOff" [customResponse]="customResponse" ></app-response-message>
            </ng-container>
            <!--Pagination-->
            <div *ngIf="isPublished">
