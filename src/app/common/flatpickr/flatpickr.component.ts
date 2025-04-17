@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-declare var flatpickr: any;
+declare var flatpickr,$: any;
 
 @Component({
   selector: 'app-flatpickr',
@@ -65,6 +65,10 @@ export class FlatpickrComponent implements OnInit {
     if (!self.time_24hr) {
       this.customPlaceHolder = "MM/DD/YYYY";
     }
+  }
+
+  clearEndDate() {
+    $(".flatpickr-day").removeClass('selected');
   }
 
 }
