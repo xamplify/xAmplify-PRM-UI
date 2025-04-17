@@ -1,3 +1,8 @@
 .table tr.row-selected td{
     background-color: #eee;
 }
+.pr-ta-c-top-7 {
+    text-align: center;
+    position: relative;
+    top: 7px;
+}
