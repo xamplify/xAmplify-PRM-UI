@@ -37,8 +37,8 @@
   
   .chatgpt-card {
     position: fixed;
-    right: 15px;
-    bottom: 15px;
+    right: 5px;
+    bottom: -15px;
     padding:2px;
     /* background-color: #fff;
     border-radius: 50%;
