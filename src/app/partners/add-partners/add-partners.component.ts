@@ -322,6 +322,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	currentIndex: any;
 	actionType: string = '';
 	hasVanityAccess:boolean = false;
+
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2601,7 +2602,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 
-	ngAfterViewInit() { }
+	ngAfterViewInit() {}
 
 	ngAfterViewChecked() {
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
@@ -4057,6 +4058,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		} else {
 			partner.expand = false;
 		}
+		/****XNFR-938****/
+		if (partner.expand) {
+			partner.popupExpand = false;
+		}
+		/****XNFR-938****/
 	}
 
 
@@ -4847,6 +4853,18 @@ triggerUniversalSearch(){
 		this.currentPartnerForModuleAccess = partner;
 		this.currentIndex = index;
 		this.showPartnerModuleConfiguratorModelPopup = true;
+		/****XNFR-938****/
+		$.each(this.newPartnerUser, function (partnerUserIndex: number, partnerUser: any) {
+			if (index != partnerUserIndex) {
+				partnerUser.popupExpand = false;
+			}
+		}
+		);
+		partner.popupExpand = !partner.popupExpand;
+		if(partner.popupExpand) {
+			partner.expand = false;
+		}
+		/****XNFR-938****/
 	}
 
 	closePartnerModuleConfiguratorModelPopup() {
@@ -4889,5 +4907,4 @@ triggerUniversalSearch(){
 			}
 		)
 	}
-
 }

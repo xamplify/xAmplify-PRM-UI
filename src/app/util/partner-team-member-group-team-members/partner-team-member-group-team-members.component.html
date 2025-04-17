@@ -35,19 +35,31 @@
             class="alert alert-success text-center">
             <strong>Selected Team Members : {{currentPartner?.selectedTeamMemberIds?.length}}</strong>
         </div>
-        <table *ngIf="teamMembersPagination.pagedItems?.length>0"
-            class="table tgrid table-condensed table-bordered hash-table-color"
+        <table 
+            class="table tgrid table-condensed  hash-table-color"
             id="{{partnerModuleTeamMembersTableId}}-{{currentPartner?.index}}"
             aria-describedby="teamMembersPreviewTable">
             <thead>
                 <tr>
-                    <th scope="row" class="text-center">
+                    <th scope="row" class="text-center" *ngIf="teamMembersPagination.pagedItems?.length>0">
                         <input type="checkbox" class="checkBox_shadow"
                             [(ngModel)]="currentPartner.isTeamMemberHeaderCheckBoxChecked"
                             id="{{partnerGroupTeamMemberheaderCheckBoxId}}-{{currentPartner?.index}}"
                             (change)="selectOrUnselectAllTeamMembersOfTheCurrentPage($event,currentPartner)">
                     </th>
-                    <th scope="row">Entity Info</th>
+                    <th scope="row"><b class="pr-ta-c-top-7">Entity Info</b>
+                        <!-- XNFR-938 -->
+                        <div class="float-right input-icon right" *ngIf="!openInModalPopup">
+                            <input type="text" class="form-control" [(ngModel)]="teamMembersPagination.searchKey"
+                              [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                              (keypress)="searchKeyPress($event.keyCode)">
+                            <button *ngIf="teamMembersPagination.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
+                              (click)="teamMembersPagination.searchKey='';searchTeamMembers();"></button>
+                            <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()"><i
+                                class="fa fa-search" aria-hidden="true"></i></button>
+                          </div>
+                        <!-- XNFR-938 -->
+                    </th>
                 </tr>
             </thead>
             <tbody>
