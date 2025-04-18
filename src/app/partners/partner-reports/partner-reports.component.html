@@ -925,12 +925,16 @@
   <!-- XNFR-944 -->
   <div *ngIf="totalPartnersDiv">
     <div class="ml15m">
-        <app-donut-pie-chart [chartId]="'regionAndNonRegionDonut'" [isDetailedAnalytics]="false" [fromAllPartners]="totalPartnersDiv"
-        [applyFilter]="applyFilter"></app-donut-pie-chart>
+        <app-donut-pie-chart [chartId]="'regionAndNonRegionDonut'" [isDetailedAnalytics]="false" 
+        [fromAllPartners]="totalPartnersDiv"
+        [applyFilter]="applyFilter"
+        (notifySelectSlice)="interactionRegionDonutSliceSelected($event)"
+        (notifyUnSelectSlice)="interactionRegionDonutSliceUnSelected($event)"></app-donut-pie-chart>
     </div>
-    <!-- <div class="ml15m">
-      <app-all-partners-list ></app-all-partners-list>
-    </div> -->
+    <div class="ml15m">
+      <app-all-partners-list [regionName]="selectedRegionName" [isDetailedAnalytics]="false"
+      [applyFilter]="applyFilter" ></app-all-partners-list>
+    </div>
   </div>
 
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->

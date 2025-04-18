@@ -84,6 +84,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     showDetailedAnalytics = false;
     detailedAnalyticsPartnerCompany: any;
     selectedTrackType: any = "";
+    selectedRegionName : any ="";
     selectedCampaignType: any = "";
     selectedAssetType: any = "";
     //XBI-1975
@@ -1122,7 +1123,17 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           this.selectedAssetType = "";
         } 
       }
-
+    
+      interactionRegionDonutSliceSelected(type: any) {
+          this.selectedRegionName = type;
+        }
+      
+        interactionRegionDonutSliceUnSelected(type: any) {
+          if (this.selectedRegionName == type) {
+            this.selectedRegionName = "";
+          } 
+        }
+      
       getSelectedPartnerCompanyIds(partnerCompanyIds: any){
         this.selectedPartnerCompanyIds = partnerCompanyIds;
         this.getPartnersRedistributedCampaignsData();
