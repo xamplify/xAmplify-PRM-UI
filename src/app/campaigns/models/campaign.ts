@@ -121,5 +121,8 @@ export class Campaign {
 
     /**XNFR-664***/
     fromEmailUserId = 0;
+    /**XNFR-959***/
+    displayRedistributionCount:boolean = false;
+
 
 }
