@@ -4665,7 +4665,7 @@ input:checked + .toggle-slider {
   border: 1.4px solid rgb(255 255 255 / 35%);
 }
 /* oliver AI css*/
-.pdf_body,.summarize-pdf-card{
+.pdf_body,.summarize-pdf-card,.summarize-pdf-cards{
   background: rgb(255 255 255 / 17%) !important;
   border: 1px solid rgb(255 255 255 / 35%) !important;
   backdrop-filter: blur(5px);

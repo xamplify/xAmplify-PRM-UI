@@ -2592,7 +2592,7 @@ textarea.cke_source {
   color: #000;
 }
 /* oliver AI css*/
-.pdf_body,.summarize-pdf-card,.pdf_child{
+.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards{
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
 }

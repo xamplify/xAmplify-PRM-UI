@@ -1516,4 +1516,9 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    getRedistributedCountForAnalytics(campaign:any) {
+        const url = this.URL + 'campaign/getRedistributedCountForAnalytics/' + campaign.campaignId + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 }

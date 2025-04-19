@@ -213,6 +213,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         $.each(this.campaigns, function (_index: number, campaign) {
                             campaign.displayTime = new Date(campaign.utcTimeInString);
                             campaign.createdDate = new Date(campaign.createdDate);
+                            campaign.displayRedistributionCount = this.campaignAnalyticsSettingsOptionEnabled;
                         });
                         this.totalRecords = data.totalRecords;
                         pagination.totalRecords = data.totalRecords;
@@ -1740,6 +1741,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.getSoftBounceCount(campaign);
         this.getLeadsCount(campaign);
         this.getDealsCount(campaign);
+        this.getRedistributionCount(campaign);
     }
 
     getLeadOrDealAccess(campaign:any){
@@ -1965,5 +1967,20 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.campaignId = 0;
     }
     /**XNFR-832***/
+
+    /**XNFR-959***/
+    getRedistributionCount(campaign: any) {
+        if (campaign.channelCampaign) {
+            campaign.dealError = false;
+            this.campaignService.getRedistributedCountForAnalytics(campaign).subscribe(
+                response => {
+                    campaign.redistributedCount = response.data;
+                    campaign.displayRedistributionCount = true;
+                }, error => {
+                    campaign.displayRedistributionCount = false;
+                });
+        }
+
+    }
 
 }

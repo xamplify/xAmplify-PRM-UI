@@ -25,8 +25,7 @@ export class AiChatManagerComponent implements OnInit {
   chatGptGeneratedText: string = "";
   properties: any;
   chatGptIntegrationSettingsDto : ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
-  // @Output() notifyParent: EventEmitter<any> = new EventEmitter();
-  // @Input() pdfFile: Blob;
+  @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   uploadedFileId: any;
   isLoading: boolean = false;
   assetDetailsViewDtoOfPartner: AssetDetailsViewDto = new AssetDetailsViewDto();
@@ -54,34 +53,73 @@ export class AiChatManagerComponent implements OnInit {
   isEmailCopied: boolean;
   showPreview: boolean;
   assetUrl: SafeResourceUrl;
-  zoomLevel = 60;
+  zoomLevel = 50;
   baseWidth: number = 800;
   baseHeight: number = 1000;
   loadPreview :boolean = false
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
-    ngOnInit() {
-      this.assetId = parseInt(this.route.snapshot.params['assetId']);
-      if(this.assetId >0){
-        this.chatGptIntegrationSettingsDto.partnerDam = true;
-        this.isOliverAiFromdam = false;
-        this.getSharedAssetDetailsById(this.assetId);
-      }else{
-        if(this.asset != undefined && this.asset != null){
-          this.isOliverAiFromdam = true;
-          this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
-          this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
-          this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
-          this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
-          this.assetDetailsViewDtoOfPartner.displayName = this.asset.displayName;
-          this.assetType=this.asset.assetType;
-          this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
-          this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
-          this.assetDetailsViewDtoOfPartner.assetPath = this.asset.assetPath;
-          this.getPdfByAssetPath();
-          this.framePerviewPath();
+  ngOnInit() {
+    this.assetId = parseInt(this.route.snapshot.params['assetId']);
+    if (this.assetId > 0) {
+      this.isOliverAiFromdam = false;
+      this.chatGptIntegrationSettingsDto.partnerDam = true;
+      this.chatGptIntegrationSettingsDto.damId = this.assetId;
+      this.getThreadId(this.chatGptIntegrationSettingsDto);
+    } else {
+      if (this.asset != undefined && this.asset != null) {
+        this.isOliverAiFromdam = true;
+        this.chatGptIntegrationSettingsDto.vendorDam = true;
+        this.chatGptIntegrationSettingsDto.damId = this.asset.id;
+        this.getThreadId(this.chatGptIntegrationSettingsDto);
+      }
+    }
+  }
+
+  getThreadId(chatGptIntegrationSettingsDto: any) {
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.getThreadIdByDamId(chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        this.loading = false;
+        if (response.statusCode == 200) {
+          let self = this;
+          self.threadId = response.data.threadId;
+          self.vectorStoreId = response.data.vectorStoreId;
         }
+        this.getSharedAssetPath();
+      },
+      (error) => {
+        this.loading = false;
+        console.error('API Error:', error);
+      }, () => {
+        if (this.threadId != undefined && this.threadId != '') {
+          this.getChatHistory();
+        }
+      }
+    );
+  }
+
+  private getSharedAssetPath() {
+    if (this.assetId > 0) {
+      this.chatGptIntegrationSettingsDto.partnerDam = true;
+      this.getSharedAssetDetailsById(this.assetId);
+    } else {
+      if (this.asset != undefined && this.asset != null) {
+        this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
+        this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
+        this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
+        this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
+        this.assetDetailsViewDtoOfPartner.displayName = this.asset.displayName;
+        this.assetType = this.asset.assetType;
+        this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
+        this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
+        this.assetDetailsViewDtoOfPartner.assetPath = this.asset.assetPath;
+        if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
+          this.getPdfByAssetPath();
+        }
+        this.framePerviewPath();
+      }
     }
   }
 
@@ -214,7 +252,6 @@ export class AiChatManagerComponent implements OnInit {
 
   getUploadedFileId() {
     this.isPdfUploading = true;
-    this.chatGptIntegrationSettingsDto.damId = this.assetId;
     this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         this.isPdfUploading = false;
@@ -243,15 +280,10 @@ export class AiChatManagerComponent implements OnInit {
           self.assetDetailsViewDtoOfPartner = response.data;
           self.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
           self.assetType = self.assetDetailsViewDtoOfPartner.assetType;
-          self.threadId = response.data.threadId;
-          self.vectorStoreId = response.data.vectorStoreId;
           self.framePerviewPath();
           if (!(self.vectorStoreId != undefined && self.vectorStoreId != '')) {
             this.getPdfByAssetPath();
           }
-          if (self.threadId != undefined && self.threadId != '') {
-            this.getChatHistory();
-          }        
         }
       },
       (error) => {
@@ -272,12 +304,6 @@ export class AiChatManagerComponent implements OnInit {
       );
       this.loadPreview = true;
     }, 50); 
-  }
-  
-
-
-  errorHandler(event: any) {
-    event.target.src = 'assets/images/icon-user-default.png';
   }
 
   private getChatHistory() {
@@ -462,7 +488,7 @@ export class AiChatManagerComponent implements OnInit {
   }
   closePreview(){
     this.showPreview = false;
-    this.zoomLevel = 60;
+    this.zoomLevel = 50;
   }
   get scaledWidth(): string {
     return (this.baseWidth * (this.zoomLevel / 100)) + 'px';

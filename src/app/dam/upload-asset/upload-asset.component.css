@@ -700,3 +700,6 @@ margin-right: 10px;}
     opacity: 0.5;
     cursor: not-allowed;
   }
+  input[type="file"]:disabled {
+    cursor: not-allowed !important;
+  }
