@@ -145,7 +145,7 @@
                                 title="Share As White Labeled Content">
                               </i>
                             </div>
-                            <div class="toggle-item mr0">
+                            <div class="toggle-item mr0" *ngIf="!authenticationService?.module?.isMarketingCompany">
                               <div class="toggle-label">
                                 Partner Signature
                               </div>
@@ -219,7 +219,9 @@
                                        <div class="signature-buttons">
                                           <button *ngIf="damUploadPostDto.vendorSignatureRequired" (click)="openAddSignatureModalPopUp()"
                                              class="signature-btn mt7">
-                                             <i class="fa fa-pencil"></i> Signature Settings
+                                             <i class="fa fa-pencil"></i> {{ damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature 
+                                                ? 'Signature & Settings' 
+                                                : 'Signature Settings' }}
                                              <span class="required"
                                                 *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
                                           </button>
