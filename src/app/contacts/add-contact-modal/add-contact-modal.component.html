@@ -60,7 +60,7 @@
                   <ng-container *ngIf="checkingContactTypeName != 'Contact'">
                     <input type="company" style="border: none !important"
                       class="form-control padding-mobile placeholder-bg-color" id="company"
-                      [(ngModel)]="addContactuser.contactCompany"
+                      [(ngModel)]="addContactuser.contactCompany" 
                       (input)="contactCompanyChecking(addContactuser.contactCompany)"
                       [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
                   </ng-container>
@@ -68,7 +68,7 @@
                   <div class="textCss"></div>
                 </div>
               </div>
-
+              
               <!--First Name & Last Name-->
               <div class="form-group mrg0">
                 <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue"></label>
@@ -128,24 +128,29 @@
                   style="color: #00bcd4; right: 11px !important">
                 </label>
                 <div class="form-group col-xs-10 col-sm-10 mrg0">
-                  <ng-container *ngIf="checkingContactTypeName == 'Contact'">
+                  <ng-container>
                     <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto"
                       [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
-                      (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
-                  </ng-container>
-
+                      (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>              
+                    </ng-container>
+                    <button *ngIf="showAddButton" class="button bgcolor-unset p0 btn-transitions mrg10" id="addContactuser" (click)="openPopup(addContactuser)">
+                      <span class="btn Btn-Green transition d-inline"> Add a Company
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                      </span>
+                    </button>
 
                   <ng-container *ngIf="checkingContactTypeName != 'Contact'">
                     <input type="company" style="border: none !important"
-                      class="form-control padding-mobile placeholder-bg-color" id="company"
-                      [(ngModel)]="addContactuser.contactCompany"
+                      class="form-control padding-mobile placeholder-bg-color"
+                      [(ngModel)]="addContactuser.contactCompany" 
                       (input)="contactCompanyChecking(addContactuser.contactCompany)"
                       [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
                     <div class="textCss"></div>
-
+                    
                   </ng-container>
                 </div>
               </div>
+              
               <ng-container *ngIf="isPartner && isUpdateUser && !isAssignLeads">
                 <!---Contacts Limit------->
                 <div class="form-group mrg0" *ngIf="authenticationService.contactsCount">
@@ -407,3 +412,4 @@
 <app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="addContactuser"
   [openInModalPopup]="true"
   (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+  <app-add-company *ngIf="companyPop" [actionType]="actionType" (emitCompanyId)="onCompanyIdEmitted($event)" [contactId]="contactId" (notifyClose)="closeCompanyPopup()" (notifySubmitSuccess)="onCompanyAdded($event)"></app-add-company>

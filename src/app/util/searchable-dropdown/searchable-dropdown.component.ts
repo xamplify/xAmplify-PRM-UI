@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter, SimpleChanges } from '@angular/core';
 import { FilteringEventArgs } from '@syncfusion/ej2-dropdowns';
 import { EmitType } from '@syncfusion/ej2-base';
 import { Query } from '@syncfusion/ej2-data';
@@ -23,8 +23,13 @@ export class SearchableDropdownComponent implements OnInit {
 
   constructor() { }
 
-  
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['id'] && this.id) {    
+        this.value = this.id;
+        console.log('Updated value:', this.value);
+   
+    }
+  }
   ngOnInit() {
       this.value = this.id;
       if (this.account != undefined) {

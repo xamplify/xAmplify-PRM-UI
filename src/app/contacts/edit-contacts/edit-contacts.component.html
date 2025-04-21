@@ -1870,7 +1870,7 @@
 			[gdprInput]="parentInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
 			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId"
 			[isCompanyContact]="isCompanyContact" [flexiFieldsRequestAndResponseDto]="flexiFieldsRequestAndResponseDto"
-			(notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+			(notifyParent)="updateContactListUser($event)" [isEditMode]="isEditMode"></app-add-contact-modal>
 	</div>
 	<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"
 		[downloadListName]="logListName"> </app-export-csv>

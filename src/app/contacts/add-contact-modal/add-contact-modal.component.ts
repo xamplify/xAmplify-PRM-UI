@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { User } from '../../core/models/user';
 import { Router } from '@angular/router';
 import { CountryNames } from '../../common/models/country-names';
@@ -25,8 +25,6 @@ declare var $: any, swal: any;
     providers: [CountryNames, RegularExpressions,Properties]
 })
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
-    @Input() contactDetails: any;
-    @Input() isContactTypeEdit: boolean;
     @Input() mdfAccess: boolean;
     isPartner: boolean;
     isAssignLeads = false;
@@ -78,10 +76,20 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     isValidEmail : boolean = false;
     @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
     isValidMobileNumber: boolean = true;
-    
+
+    // XNFR-945
+    @Input() contactDetails: any;
+    @Input() isContactTypeEdit: boolean;
+    @Input() isEditMode: boolean = false; 
+    @Input() public actionType: any;
+    @Input() public contactId: number = 0;
+    @Output() emitCompanyId = new EventEmitter<any>(); 
+    companyPop: boolean = false;
+    showAddButton: boolean = true; 
+
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
-                 public logger: XtremandLogger,public authenticationService: AuthenticationService,public properties:Properties) {
+                 public logger: XtremandLogger,private cdRef: ChangeDetectorRef,public authenticationService: AuthenticationService,public properties:Properties) {
         this.notifyParent = new EventEmitter();
 
 
@@ -304,8 +312,12 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.validLimit = contactsLimit>0;
     }
 
-    
-
+    ngOnChanges(changes: SimpleChanges){       
+        if (changes['isEditMode']) {
+            console.log('isEditMode changed:', this.isEditMode);
+            this.showAddButton = !this.isEditMode;
+          } 
+    }
     ngOnInit() {
         try {
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -381,6 +393,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 this.isTeamMemberPartnerList = false;
             }
             $('#addContactModal').modal('show');
+            if (this.contactService.isEditMode !== undefined) {
+                this.isEditMode = this.contactService.isEditMode;
+              }
             //XNFR-697
             this.isSalesforceAsActiveCRM = this.isPartner && (this.activeCrmType == "salesforce");
             if (!(this.addContactuser.emailId !== undefined)) {
@@ -501,6 +516,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.loading= true;
         this.contactService.getCompaniesForDropdown().subscribe(result => {
             this.searchableDropDownDto.data = result.data;
+            setTimeout(() => {
+                this.addContactuser.contactCompanyId = this.selectedCompanyId;
+              }, 100);
             this.searchableDropDownDto.placeHolder = "Please Select Company";
             this.loading = false;
           }
@@ -613,4 +631,23 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
     }
 
+    openPopup(addContactuser: any){
+        this.companyPop = true;
+        this.actionType = "add";
+        this.contactId = addContactuser.contactCompanyId;      
+    }
+    closeCompanyPopup() {
+        this.companyPop = false;      
+      }
+
+    onCompanyAdded(company: any) {       
+        this.getActiveCompanies();     
+        this.addContactuser.contactCompany = company;             
+    }
+
+    onCompanyIdEmitted(company) {          
+        this.selectedCompanyId = company;
+            this.getActiveCompanies();
+          
+    }
 }
