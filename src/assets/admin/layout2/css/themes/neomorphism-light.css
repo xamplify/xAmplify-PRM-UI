@@ -4504,7 +4504,7 @@ a.Iconhover.custom-grid-icon.icon_margin{
     background: transparent !important;
     box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   }
-  .icon-btns,i.fa.fa-edit.ml_6{
+  .icon-btns,i.fa.fa-edit.ml_6,.oliver_input:hover{
         background-color: #ffffff!important;
   }
   .icon-btns:hover,i.fa.fa-edit.ml_6:hover{
@@ -4593,3 +4593,33 @@ input:checked + .toggle-slider {
 .panel-heading.accordion_card {
   border: none !important;
 }
+.modal-body.oliver-header{
+  background: linear-gradient(225deg, #d8dde1, #fff)!important;
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+  background: #f0f5fa !important;
+  box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff !important;
+  border: 1px solid #d0d5db;
+  border-radius: 8px!important;
+  }
+.side_bar{
+  background: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
+}
+.writing-card,.phara-card{
+  background: #f3f6f9 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;}
+  .oliver_input{
+    background: #fcfcfc!important;}
+  .textarea-card{
+    background: #ecf1f3 !important;
+    box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
+  }
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
+}
+  /* .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text{
+    color: #fff!important;
+  } */

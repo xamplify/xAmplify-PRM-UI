@@ -272,10 +272,10 @@
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
-                                                    data-placement="top" title="View Analytics"
-                                                    (click)="viewAnalytics(learningTrack)">
+                                                    data-placement="top" [title]=" ((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ? 'Not yet published' : 'View Analytics' "
+                                                    (click)="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED )? '':viewAnalytics(learningTrack)" [ngClass]="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ?'disabled-div' : ''">
                                                     <i class="fa fa-line-chart IconCustomization"
-                                                        aria-hidden="true"></i>
+                                                        aria-hidden="true" [ngClass]="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ?'disabled':''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <!-- XNFR-824 -->
@@ -420,9 +420,9 @@
 
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
-                                        data-placement="top" title="View Analytics"
-                                        (click)="viewAnalytics(learningTrack)">
-                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                        data-placement="top" [title]=" ((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ? 'Not yet published' : 'View Analytics' "
+                                        (click)="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED )? '':viewAnalytics(learningTrack)" [ngClass]="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ?'disabled-div' : ''">
+                                        <i class="fa fa-line-chart" aria-hidden="true" [ngClass]="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ?'disabled' : ''"></i>
                                         <div class="clickicons"></div>
                                     </a>
                                 </div>
