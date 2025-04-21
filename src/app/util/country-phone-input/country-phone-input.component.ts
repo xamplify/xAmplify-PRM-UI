@@ -59,6 +59,7 @@ export class CountryPhoneInputComponent implements OnInit {
           if (!numberWithoutCode) {
             this.isValidMobileNumber = true;
           }
+          this.mobileNumber = cleanDialCode + ' ' + numberWithoutCode;
           break;
         }
       }
@@ -208,7 +209,6 @@ export class CountryPhoneInputComponent implements OnInit {
         input.setSelectionRange(dialCode.length, dialCode.length);
       });
     }
-    this.validateMobileNumber();
   }
 
   scrollToSelectedCountry() {
