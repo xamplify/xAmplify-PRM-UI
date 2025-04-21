@@ -24,6 +24,7 @@ export class CountryPhoneInputComponent implements OnInit {
   isValidMobileNumber: boolean = true;
   @Output() clickOutside = new EventEmitter<void>();
   @Output() mobileNumberEventEmitter = new EventEmitter<any>();
+  errorMessage: string;
 
   constructor(public countryNames: CountryNames, private eRef: ElementRef) {
     this.filteredCountries = [...this.countryNames.countriesMobileCodes];
@@ -32,7 +33,6 @@ export class CountryPhoneInputComponent implements OnInit {
   ngOnInit() {
     if (this.mobileNumber) {
       this.autoDetectCountry();
-      this.validateMobileNumber();
     } else {
       this.setDefaultCountry();
     }
@@ -65,6 +65,10 @@ export class CountryPhoneInputComponent implements OnInit {
       }
     } else {
       this.isValidMobileNumber = true;
+    }
+
+    if (!this.isValidMobileNumber) {
+      this.errorMessage = 'Please enter a valid mobile number';
     }
     this.mobileNumberEventEmitter.emit({ isValidMobileNumber: this.isValidMobileNumber, mobileNumber: this.mobileNumber, selectedCountry: this.selectedCountry });
   }
@@ -123,6 +127,10 @@ export class CountryPhoneInputComponent implements OnInit {
       const cleanNumber = this.mobileNumber.replace(/[^\d+]/g, '');
       const userNumber = cleanNumber.substring(matchedCountry.dial_code.length);
       this.mobileNumber = matchedCountry.dial_code + ' ' + userNumber;
+      this.validateMobileNumber();
+    } else {
+      this.isValidMobileNumber = false;
+      this.errorMessage = 'Please select the country code';
     }
   }
 
