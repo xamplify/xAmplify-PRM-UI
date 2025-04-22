@@ -24,9 +24,9 @@
       </a>
    </div>
    <app-response-message class="pg8" [customResponse]="customResponse"
-   *ngIf="customResponse?.isVisible"></app-response-message>
-   <app-asset-signature-status-analytics *ngIf="isPartnerSignatureRequired" [damId]="damId" (filterContentByType) ="searchPartnerCompaniesByType($event)"></app-asset-signature-status-analytics>
-   <div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space">
+   *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
+   <app-asset-signature-status-analytics *ngIf="isPartnerSignatureRequired && isPublished && isPartnerSignatureRequired" [damId]="damId" (filterContentByType) ="searchPartnerCompaniesByType($event)"></app-asset-signature-status-analytics>
+   <div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space" *ngIf="isPublished && isPartnerSignatureRequired">
      <div class="row">
        <div class="col-md-12">
          <div class="clearfix">
@@ -74,7 +74,7 @@
            <ng-container *ngIf="!httpRequestLoader?.isLoading">
              <div class="table-responsive pos_pd_top6 mt10">
                <table class='table tgrid table-hover table-sm' id="dam-partner-companies">
-                <ng-template [ngTemplateOutlet]="partnerCompanyTable"></ng-template>
+                <ng-template  *ngIf="isPublished && isPartnerSignatureRequired" [ngTemplateOutlet]="partnerCompanyTable"></ng-template>
                  <tbody>
                   <ng-container *ngIf="isPublished">
                     <tr *ngFor="let company of pagination?.pagedItems ;let i =index">

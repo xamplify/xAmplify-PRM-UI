@@ -31,5 +31,5 @@
         [maxlength]="maxlength">
     </div>
   </div>
-  <span *ngIf="!isUploadCsv && !isValidMobileNumber" class="required" style="margin-left: 115px;">Please enter valid mobile number</span>
+  <span *ngIf="!isUploadCsv && !isValidMobileNumber" class="required" style="margin-left: 115px;">{{ errorMessage }}</span>
 </div>
