@@ -4,9 +4,15 @@
 </div> -->
 <div
 *ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
-  class="chatgpt-card override" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal"
+  [ngClass]="!isMinimizeOliver ? 'chatgpt-card override' : 'chatgpt-card minimize'" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal"
   (click)="resetValues()">
-  <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
+  <a class="javascript:void(0)">
+    <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver();$event.stopPropagation()"
+      aria-hidden="true"></i>
+    <img (mouseenter)="isMinimizeOliver = false"
+      [src]="!isMinimizeOliver ? 'assets/images/homeOliverLogo-1.svg' : 'assets/images/olivermsglogo.svg'"
+      [ngStyle]="{'width': !isMinimizeOliver ? '150px' : '30px', 'height': !isMinimizeOliver ? '150px' : '30px', 'transition': '0.3s ease-in-out'}">
+  </a>
   <!-- <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver(); $event.stopPropagation()"
     aria-hidden="true"></i>
   <div class="oliver-wrapper" (mouseenter)="onMouseEnter()">
