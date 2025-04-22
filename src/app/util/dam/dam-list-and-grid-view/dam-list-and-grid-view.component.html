@@ -360,7 +360,7 @@
 																				'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 																			{{getApprovalStatusText(asset.approvalStatus)}}
 																		</span>
-																		<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)" class="view-banner" style="margin-left: 3px;"
+																		<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"  class="view-banner" style="margin-left: 3px;"
 																			>Digital Sign Enabled</span>
 																		<ng-container
 																			*ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
