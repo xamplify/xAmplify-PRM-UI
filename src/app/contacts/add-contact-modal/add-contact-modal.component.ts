@@ -15,7 +15,6 @@ import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fie
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Properties } from 'app/common/models/properties';
 
-
 declare var $: any, swal: any;
 
 @Component( {
@@ -23,7 +22,8 @@ declare var $: any, swal: any;
     templateUrl: './add-contact-modal.component.html',
     styleUrls: ['./add-contact-modal.component.css', '../../../assets/css/phone-number-plugin.css'],
     providers: [CountryNames, RegularExpressions,Properties]
-})
+    
+  })
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
     @Input() mdfAccess: boolean;
     isPartner: boolean;
@@ -516,9 +516,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.loading= true;
         this.contactService.getCompaniesForDropdown().subscribe(result => {
             this.searchableDropDownDto.data = result.data;
-            setTimeout(() => {
-                this.addContactuser.contactCompanyId = this.selectedCompanyId;
-              }, 100);
+            this.addContactuser.contactCompanyId = this.selectedCompanyId;
             this.searchableDropDownDto.placeHolder = "Please Select Company";
             this.loading = false;
           }
@@ -645,9 +643,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.addContactuser.contactCompany = company;             
     }
 
-    onCompanyIdEmitted(company) {          
-        this.selectedCompanyId = company;
-            this.getActiveCompanies();
-          
+    onCompanyIdEmitted(company) {       
+        this.selectedCompanyId = company;        
+        this.getActiveCompanies(); 
     }
 }

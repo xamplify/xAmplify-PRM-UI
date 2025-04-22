@@ -142,6 +142,7 @@
 .custom-email {
   width: 89%;
 }
-.modal-dialog.accounts-modal{
-  width: 57% !important;
+.plus_align{
+  margin-right: -30px;
+  margin-top: -4px;
 }

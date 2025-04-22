@@ -127,18 +127,17 @@
                 <label class="control-label col-xs-2 col-sm-2" for="company"
                   style="color: #00bcd4; right: 11px !important">
                 </label>
-                <div class="form-group col-xs-10 col-sm-10 mrg0">
+                <div class="form-group col-xs-10 col-sm-9 mrg0">
                   <ng-container>
                     <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto"
-                      [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
+                      [id]="addContactuser.contactCompanyId" [disableDropDown]="false" [isFromContacts]="'true'"
                       (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>              
                     </ng-container>
-                    <button *ngIf="showAddButton" class="button bgcolor-unset p0 btn-transitions mrg10" id="addContactuser" (click)="openPopup(addContactuser)">
-                      <span class="btn Btn-Green transition d-inline"> Add a Company
+                    <button *ngIf="showAddButton" class="btn btn-primary customAlign plus_align" id="addContactuser" (click)="openPopup(addContactuser)"
+                     data-toggle="tooltip"  data-placement="bottom" title="Add a Company" data-toggle="tooltip">    
                         <i class="fa fa-plus" aria-hidden="true"></i>
-                      </span>
                     </button>
-
+                   
                   <ng-container *ngIf="checkingContactTypeName != 'Contact'">
                     <input type="company" style="border: none !important"
                       class="form-control padding-mobile placeholder-bg-color"

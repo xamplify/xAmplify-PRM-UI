@@ -218,12 +218,13 @@ import { PreviewContentComponent } from 'app/util/preview-content/preview-conten
 import { CustomBlocksModalPopupComponent } from './custom-blocks-modal-popup/custom-blocks-modal-popup.component';
 import { CountryPhoneInputComponent } from 'app/util/country-phone-input/country-phone-input.component';
 import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
+import { AddCompanyComponent } from '../company/add-company/add-company.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,
 		 ScrollToModule.forRoot(),AngularMultiSelectModule,MarkdownModule.forRoot()],
-	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
+	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,AddCompanyComponent,
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
 		PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
@@ -265,7 +266,7 @@ import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature
 	],
 
 
-	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
+	exports: [InternationalPhoneModule,AddCompanyComponent, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
 		ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
 		ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, TimestampComponent,
