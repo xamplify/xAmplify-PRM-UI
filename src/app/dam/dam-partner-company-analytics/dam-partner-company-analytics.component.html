@@ -25,7 +25,7 @@
    </div>
    <app-response-message class="pg8" [customResponse]="customResponse"
    *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
-   <app-asset-signature-status-analytics *ngIf="isPartnerSignatureRequired && isPublished" [damId]="damId" (filterContentByType) ="searchPartnerCompaniesByType($event)"></app-asset-signature-status-analytics>
+   <app-asset-signature-status-analytics #assetSignatureStatusAnalyticsComponent *ngIf="isPartnerSignatureRequired && isPublished" [damId]="damId" (filterContentByType) ="searchPartnerCompaniesByType($event)"></app-asset-signature-status-analytics>
    <div class="portlet light remove_cardBgcolor padding_0 light_bg_removal remove_space" *ngIf="isPublished">
      <div class="row">
        <div class="col-md-12">

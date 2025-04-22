@@ -1,4 +1,4 @@
-import { Component, OnInit,Renderer } from '@angular/core';
+import { Component, OnInit,Renderer, ViewChild } from '@angular/core';
 import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from './../../core/models/http-request-loader';
 import { SortOption } from 'app/core/models/sort-option';
@@ -20,6 +20,7 @@ import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { User } from 'app/core/models/user';
 import { ParterService } from 'app/partners/services/parter.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature-status-analytics/asset-signature-status-analytics.component';
 
 @Component({
   selector: 'app-dam-partner-company-analytics',
@@ -66,6 +67,9 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   vanityTemplates : boolean = false;
   selectedPartners:any[]=[];
   isAllPartnerSignesCompleted:boolean =false;
+
+  @ViewChild('assetSignatureStatusAnalyticsComponent') assetSignatureStatusAnalyticsComponent: AssetSignatureStatusAnalyticsComponent;
+  
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,public router: Router,
     public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService,public renderer:Renderer, public deviceService: Ng2DeviceService, 
@@ -131,6 +135,9 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.isSendReminderEnabled = false;
     this.isHeaderCheckBoxChecked = false;
     this.referenceService.loading(this.httpRequestLoader, true);
+    if(this.isPublished && this.isPartnerSignatureRequired){
+      this.assetSignatureStatusAnalyticsComponent.getTileCounts();
+    }
 		this.damService.findPartnerCompanies(pagination,this.damId).
     	subscribe((result: any) => {
 			let data = result.data;
