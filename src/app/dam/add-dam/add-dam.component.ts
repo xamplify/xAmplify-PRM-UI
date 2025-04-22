@@ -735,6 +735,9 @@ openAddSignatureModalPopUp() {
 }
 setPartnerSignatureRequired(event){
   this.damUploadPostDto.partnerSignatureRequired = event;
+  if(!event){
+    this.setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event);
+}
 }
 
 setVendorSignatureRequired(event){
