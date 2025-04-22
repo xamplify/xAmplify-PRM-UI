@@ -28,9 +28,12 @@
     </div>
     <div class="panel-body">
       <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+      </div>
       <div class="scroll table-responsive tableHeightScroll {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading"
         [ngClass]="isVendorVersion?'scrolladjustment':''">
-        <table class="table">
+        <table *ngIf="pagination.totalRecords!=0" class="table" >
           <thead>
             <tr>
               <th scope="col">Partner Name</th>
@@ -48,33 +51,46 @@
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>
               <td>{{item?.status}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp></td>
-              <!-- <td>
-                <div class="alert alert-info NaNAData" *ngIf="item?.primaryAdmin">
+            
+                <!-- <div class="alert alert-info NaNAData" *ngIf="item?.primaryAdmin">
                   <span><strong>N/A</strong></span>
                 </div>
-                <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                  <div class="actions-block override-actions custom-width-icon">
-                    <a *ngIf="item.status === 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
-                      title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'custom-icon':'custom-icon'"
-                      (click)="resendEmailInvitation(item.emailId,item.status)">
+                <ng-container> -->
+                  <!-- <td>
+                  <div class="actions-block float-none">
+                    <a *ngIf="item.status !== 'Active'" (click)="callParentMethod(item)" class="custom-icon" 
+                    data-toggle="tooltip" data-placement="left" title="Send reminder email">
                       <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
                       <div class="clickicons"></div>
                     </a>
-                    <a *ngIf="item.status !== 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
-                      title="Invitation cannot be sent as the account is created successfully" class="inactive custom-icon">
+                    <a *ngIf="item.status === 'Active'" data-toggle="tooltip" data-placement="bottom"
+                       title="Invitation cannot be sent as the account is created successfully"
+                       class="inactive custom-icon">
                       <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
                       <div class="clickicons"></div>
                     </a>
                   </div>
-                </ng-container>
-              </td> -->
+                </td>  -->
+                 <!-- <div class="actions-block override-actions custom-width-icon">
+                     <a data-toggle="tooltip" data-placement="bottom"
+                      title="Resend the invitation email" 
+                      (click)="resendEmailInvitation(item.emailId,item.status)">
+                      <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a> -->
+                    <!-- <a *ngIf="item.status !== 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
+                      title="Invitation cannot be sent as the account is created successfully" class="inactive custom-icon">
+                      <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                  </div>-->
+                <!-- </ng-container> -->
+             
             </tr>
           </tbody>
         </table>
       </div>
-      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-        <strong>No Data Found.</strong>
-      </div>
+      
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"

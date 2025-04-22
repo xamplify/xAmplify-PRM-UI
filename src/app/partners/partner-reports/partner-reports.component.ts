@@ -116,6 +116,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     selectedPartners : any;
     isTotalPartnerDiv = false;
     totalPartnersDiv: boolean = false;
+    isPendingStatus = false;
+    isActiveStatus = false;
+    isDormantStatus = false;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -1313,11 +1316,21 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
-
+    checkAllPartnersStatus(item:any){
+        if(this.totalPartnersDiv){
+            let status = item.status;
+            if(status=="Pending"){
+                this.isPendingStatus = true;
+            }else if(status=="Dormant"){
+                this.isDormantStatus =true;
+            }
+        }
+    }
     openSendTestEmailModalPopup(item: any) {
+        this.checkAllPartnersStatus(item);
         this.selectedItem = item;
         this.selectedEmailId = item.emailId;
-        if (this.isInactivePartnersDiv) {
+        if (this.isInactivePartnersDiv || this.goToAllPartnersDiv) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isInactivePartnersDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1336,7 +1349,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             );
         }
 
-        else if (this.isIncompleteCompanyProfileDiv) {
+        else if (this.isIncompleteCompanyProfileDiv || this.goToAllPartnersDiv) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isIncompleteCompanyProfileDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1354,7 +1367,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             );
         }
-        else if (this.isSingUpPendingDiv) {
+        else if (this.isSingUpPendingDiv || this.goToAllPartnersDiv) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isSingUpPendingDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1371,7 +1384,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     console.error("Error fetching template ID:", error);
                 }
             );
-        }
+         }
+        // else if(this.goToAllPartnersDiv){
+            
+        // }
     }
     
          
