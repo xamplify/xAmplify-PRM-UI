@@ -574,6 +574,6 @@ export class Properties {
 	CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE: number = 2021;
 	CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE = 'A maximum of {{maxRecipientCount}} recipients is allowed per campaign. Please modify your selection and try again.'
 
-	allPartnersDonutTooltipText = 'Region and NonRegion Wise Tracks';
+	allPartnersDonutTooltipText = 'REGION WISE PARTNERS';
 }
 

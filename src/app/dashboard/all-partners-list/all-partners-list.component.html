@@ -1,23 +1,20 @@
-<div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 ml15m">
+<div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 ml15m pr0">
   <div class="panel panel-info mh480 panel-bgMain panel-card">
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
-      <div style="display:flex;">
+      <span class="pull-right mt25m  mobilesearchdisplay">
         <!-- <button class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
         <div class="float-left">
           <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.teamMember"
             (ngModelChange)="sortPartnerTeamMembers($event)" id="select-dropdown">
             <option *ngFor="let option of sortOption.teamMemberDropDowns" [ngValue]="option">{{option.name}}</option>
           </select>
-        </div>
-        <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" style="margin: -1px 3px 0px 3px;"
-          *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember ||
-            authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember|| authenticationService. module.isPrm || authenticationService.module.isPrmTeamMember ||
-            authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService?.module?.isAnyAdminOrSupervisor" (click)="downloadTeamMemberListCsv()"
-          [disabled]="pagination.totalRecords==0">
-          <i aria-hidden="true" class="fas fa-file-export p10" data-toggle="tooltip"
-            title="Export Team Members List to Excel"></i>
-        </button> -->
+        </div> -->
+        <button class="pull-right  btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
+        (click)="downloadAllPartnerDetailsReport()" [disabled]="pagination.totalRecords==0">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
         <div></div>
         <div class="input-icon right" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
@@ -27,60 +24,50 @@
           <button type="submit" class="search-box-item-click" (click)="search()" [disabled]="pagination.totalRecords==0">
             <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
-      </div>
+      </span>
     </div>
     <div class="panel-body">
       <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
-      <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading"
+      <div class="scroll table-responsive tableHeightScroll {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading"
         [ngClass]="isVendorVersion?'scrolladjustment':''">
         <table class="table">
           <thead>
             <tr>
-              <!-- <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team
-                Member</th>
-              <th scope="col" *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><i class="fa fa-building"
-                  aria-hidden="true"></i> Company Name</th>
-              <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle"
-                  aria-hidden="true"></i> Vendor</th>
-              <th scope="col" *ngIf="isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Vendor Team
-                Member</th>
-              <th scope="col" *ngIf="isTeamMemberAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Partner Team
-                Member</th>
-              <th scope="col"><i class="fa fa-line-chart" aria-hidden="true"></i> Track</th>
-              <th scope="col"><i class="fa fa-tasks" aria-hidden="true"></i> Avg. Progress</th> -->
               <th scope="col">Partner Name</th>
               <th scope="col">Region</th>
               <th scope="col">Onboarded On</th>
               <th scope="col">Status</th>
               <th scope="col">Recent Login</th>
-              <th scope="col">Actions</th> 
+              <!-- <th scope="col">Actions</th>  -->
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td><app-user-info [isAllPartnersList]="true" [userInfo]="item"></app-user-info></td>
+              <td>{{item.region && item.region.trim() !== '' ? item.region : 'No Region' }}</td>
+              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>
+              <td>{{item?.status}}</td>
+              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp></td>
               <!-- <td>
-                <p *ngIf="item?.firstName && item?.firstName?.length>0" style="display: table;">
-                  <b>Name:</b> {{item?.firstName | slice:0:15}}
-                  <span *ngIf="item?.firstName?.length>15">..</span>
-                </p>
-                <p *ngIf="item?.emailId?.length>0" style="display: table;">
-                  <b>Email id:</b> {{item?.emailId | slice:0:30}}
-                  <span *ngIf="item?.emailId?.length>30">...</span>
-                </p>
-                <p *ngIf="item?.companyName?.length>0" style="display: table;">
-                  <span> <b>Company Name:</b> {{item?.companyName |slice:0:25}}</span>
-                  <span *ngIf="item?.companyName?.length>25">..</span>
-                </p>
+                <div class="alert alert-info NaNAData" *ngIf="item?.primaryAdmin">
+                  <span><strong>N/A</strong></span>
+                </div>
+                <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                  <div class="actions-block override-actions custom-width-icon">
+                    <a *ngIf="item.status === 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
+                      title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'custom-icon':'custom-icon'"
+                      (click)="resendEmailInvitation(item.emailId,item.status)">
+                      <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                    <a *ngIf="item.status !== 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
+                      title="Invitation cannot be sent as the account is created successfully" class="inactive custom-icon">
+                      <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                  </div>
+                </ng-container>
               </td> -->
-            <td><app-user-info [isAllPartnersList]="true" [userInfo]="item"></app-user-info></td>
-            <td>{{item.region && item.region.trim() !== '' ? item.region : 'No Region' }}</td>
-             <!-- <td>{{item.region}}</td> -->
-            <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn">
-            </app-timestamp></td>
-            <td>{{item.status}}</td>
-            <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin">
-            </app-timestamp></td>
-            <td>remainder button</td>
             </tr>
           </tbody>
         </table>
@@ -91,7 +78,7 @@
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="getInteractedNotInteractedTrackDetails($event)">
+          (notifyParentDropDown)="getAllPartnersDetails($event)">
         </app-pagination>
       </div>
     </div>

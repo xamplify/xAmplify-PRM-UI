@@ -101,9 +101,9 @@ export class DonutPieChartComponent implements OnInit {
       }
      } 
     else if (this.chartId == "regionAndNonRegionDonut") {
-      this.headerText = 'Region And Non-Region Wise TRACKS';
+      this.headerText = 'REGION WISE PARTNERS';
       this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a', '#8a8282c4','#5C9BD1', '#2bc2b5', '#90ed7d'];
-     this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-5";
+     this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-4 pl0";
      this.portletLightClass = "portlet light active-donut-pie-chart";
       this.findAllPartnerRegionDetaiils();
      }

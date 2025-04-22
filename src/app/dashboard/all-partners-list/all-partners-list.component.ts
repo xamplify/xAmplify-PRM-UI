@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
+import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { ParterService } from '../../partners/services/parter.service';
 import { UtilService } from 'app/core/services/util.service';
@@ -8,7 +9,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
-
+declare var $:any, swal: any;
 @Component({
   selector: 'app-all-partners-list',
   templateUrl: './all-partners-list.component.html',
@@ -31,12 +32,13 @@ export class AllPartnersListComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
-
-
+ 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
   pagination: Pagination = new Pagination();
+  customResponse: CustomResponse = new CustomResponse();
+  loading: boolean;
   heading: any = "All Partners Details";
   scrollClass: any;
 
@@ -141,7 +143,8 @@ export class AllPartnersListComponent implements OnInit {
 
   getAllPartnersDetails(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
-    this.setPaginationValuesForTeamMember();
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.regionFilter = this.regionName;
     this.parterService.getAllPartners(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -162,7 +165,17 @@ export class AllPartnersListComponent implements OnInit {
       }
     );
   }
-
+  downloadAllPartnerDetailsReport() {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let maxResults = this.pagination.maxResults;
+    this.pagination.searchKey = this.searchKey;
+    let regionFilter = this.regionName;
+    this.pagination.maxResults = this.pagination.totalRecords;
+    let pageableUrl = this.referenseService.getPagebleUrl(this.pagination);
+    this.pagination.maxResults = maxResults
+    window.location.href = this.authenticationService.REST_URL + '/partner/allPartners/downloadCsv?userId='
+      + loggedInUserId +"&regionFilter="+regionFilter+ "&access_token=" + this.authenticationService.access_token + pageableUrl;
+   }
   // getInteractedNotInteractedTrackDetails(pagination: Pagination) {
   //   if (!this.isTeamMemberAnalytics) {
   //     this.getInteractedNotInteractedTrackDetailsForPartnerJourney(this.pagination);
@@ -207,9 +220,9 @@ export class AllPartnersListComponent implements OnInit {
   //   this.referenseService.openWindowInNewTab(url);
   // }
 
-  setPaginationValuesForTeamMember() {
-    this.pagination.userId = this.loggedInUserId;
-   this.pagination.regionFilter = this.regionName;
+  //setPaginationValuesForTeamMember() {
+   // this.pagination.userId = this.loggedInUserId;
+  // this.pagination.regionFilter = this.regionName;
     //this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
    // this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     // if (!this.isVendorVersion) {
@@ -219,6 +232,50 @@ export class AllPartnersListComponent implements OnInit {
     // this.pagination.fromDateFilterString = this.fromDateFilter;
     // this.pagination.toDateFilterString = this.toDateFilter;
     // this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  //}
+ resendEmailInvitation(emailId: string,status: string) {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "An invitation email will be sent to team member",
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes, send it!'
+
+      }).then(function () {
+        self.sendEmail(emailId,status);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
   }
 
+  sendEmail(emailId: string,status:string) {
+    this.customResponse = new CustomResponse();
+    try {
+      this.loading = true;
+      let input = {};
+      input['userId'] = this.authenticationService.getUserId();
+      input['emailId'] = emailId;
+      input['status'] = status;
+      // this.teamMemberService.resendTeamMemberInvitation(input)
+      //   .subscribe(
+      //     data => {
+      //       if (data.statusCode == 200) {
+      //         this.customResponse = new CustomResponse('SUCCESS', "Invitation sent successfully.", true);
+      //       } else {
+      //         this.customResponse = new CustomResponse('ERROR', "Invitation cannot be sent as the account is already created for team member", true);
+      //       }
+      //       this.loading = false;
+      //     },
+      //     error => {
+      //       this.loading = false;
+      //       this.logger.errorPage(error);
+      //     }
+      //   );
+    } catch (error) {
+      this.loading = false;
+    }
+  }
 }
