@@ -6,8 +6,19 @@
 	   && (userInfo?.email |slice:0:1)==null && !hideEmptyBar">-
 	</span>
 	<span class="margin-left" *ngIf="!isPartnerEntityInfo">
-
-		<ng-container *ngIf="isFromAdminList">
+		
+		<ng-container *ngIf="isAllPartnersList">
+			<p *ngIf="userInfo?.firstName?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}} ">
+				<b>Name:</b> {{userInfo?.firstName | slice:0:15}} <span *ngIf="userInfo?.firstName?.length>15">...</span>
+			</p>
+			<p *ngIf="userInfo?.emailId?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.emailId}}">
+				<b>Email id:</b> {{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span>
+			</p>
+			<p *ngIf="userInfo?.companyName?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.companyName}}">
+				<b>Company Name:</b> {{userInfo?.companyName |slice:0:25}}<span *ngIf="userInfo?.companyName?.length>25">..</span>
+			</p>
+		</ng-container>
+		<ng-container *ngIf="isFromAdminList && !isAllPartnersList">
 			<h5 *ngIf="userInfo?.firstName || userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip"
 				data-placement="bottom" title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}}">
 				{{userInfo?.firstName | slice:0:15}}
@@ -26,16 +37,17 @@
 				<span *ngIf="userInfo?.lastName?.length>15">..</span>
 			</h5>
 		</ng-container>
-		<h5 *ngIf="!isFromAdminList && (userInfo?.firstName?.length>0 || userInfo?.lastName?.length>0)" class="m0">
+		<h5 *ngIf="!isFromAdminList && (userInfo?.firstName?.length>0 || userInfo?.lastName?.length>0) && !isAllPartnersList" class="m0">
 			<span data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}} ">
 				<b>Name:</b> {{userInfo?.firstName | slice:0:15}} <span *ngIf="userInfo?.firstName?.length>15">..</span>
 				&nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
 			</span>
 		</h5>
-		<h6 class='mb0 mt5'>
+		<h6 class='mb0 mt5' *ngIf="!isAllPartnersList">
 			<a *ngIf="userInfo?.emailId?.length>0" style="display: table;" class="whiteSpace" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.emailId}}">
 				<b>Email id:</b> {{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span>
 			</a>
+		
 			<ng-container *ngIf="!hideCompanyName">
 				<p class="user-company" *ngIf="isPartnerEntityTeamInfo && userInfo?.companyName?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.companyName}}">
 					<span> <b>Company Name:</b> {{userInfo?.companyName |slice:0:25}}</span><span *ngIf="userInfo?.companyName?.length>25">..</span>
@@ -70,6 +82,7 @@
 			</p>
 		</h6>
 	</span>
+	
 	<span class="margin-left" *ngIf="isPartnerEntityInfo">
 		<h6 class='m0' *ngIf="!hideCompanyName">
 			<p class="user-company" *ngIf="isPartnerEntityInfo && userInfo?.companyName?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.companyName}}">
