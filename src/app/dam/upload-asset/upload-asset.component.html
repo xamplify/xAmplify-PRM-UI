@@ -678,7 +678,7 @@
                                                          [title]="isAdd ? 'Share As White Labeled Content' : damUploadPostDto?.whiteLabeledToolTipMessage">
                                                       </i>
                                                     </div>
-                                                    <div class="toggle-item" *ngIf="isPdfFileSelected || damUploadPostDto.assetType === 'pdf'">
+                                                    <div class="toggle-item" *ngIf="!authenticationService?.module?.isMarketingCompany && (isPdfFileSelected || damUploadPostDto.assetType === 'pdf')">
                                                       <div class="toggle-label">
                                                         Partner Signature
                                                       </div>
@@ -752,7 +752,9 @@
                                                                   <button
                                                                      *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
                                                                      (click)="openAddSignatureModalPopUp()" class="signature-btn mt7">
-                                                                     <i class="fa fa-pencil"></i> Signature Settings
+                                                                     <i class="fa fa-pencil"></i> {{ damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature 
+                                                                        ? 'Signature & Settings' 
+                                                                        : 'Signature Settings' }}
                                                                      <span class="required"
                                                                         *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
                                                                   </button>

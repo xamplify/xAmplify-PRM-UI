@@ -296,3 +296,7 @@
   height: 24px;
   object-fit: contain;
 }
+
+.digital-sign-banner{
+  width: auto!important;
+}

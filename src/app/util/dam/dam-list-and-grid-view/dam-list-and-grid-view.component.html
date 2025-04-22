@@ -120,6 +120,9 @@
 
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
+												<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"
+												class="view-banner" style="margin-left: 3px;">Digital Sign Enabled
+											</span>
 												<!---XNFR-255-->
 												<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 													<span class="view-banner-white-labeled mb5 G ListLabelSpacings">White-Labeled</span>
@@ -357,6 +360,8 @@
 																				'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 																			{{getApprovalStatusText(asset.approvalStatus)}}
 																		</span>
+																		<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)" class="view-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
 																		<ng-container
 																			*ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 																			<span
@@ -563,7 +568,8 @@
 													'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 												{{getApprovalStatusText(asset.approvalStatus)}}
 											</span>
-
+											<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)" class="view-banner digital-sign-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
 										</div>
 										<h6 class="xamplify-ellipsis GridViewCotent pt10">
 											<span *ngIf="isPartnerView"> <b>Published On: </b></span>
