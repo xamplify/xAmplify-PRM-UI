@@ -1834,12 +1834,32 @@ getFileIcon(): string {
         return '../../../assets/images/asset-uploads/Documents.svg';
     }
   }
+  
   confirmDelete() {
+    let self = this;
+          swal({
+            title: 'Are you sure?',
+            text: 'The uploaded asset will be deleted',
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Clear it!'
+          }).then(function () {
+            self.deleteandClearUploadedAsset();
+          }, function (dismiss: any) {
+            console.log('You clicked on option: ' + dismiss);
+          });
+  }
+  
+
+  deleteandClearUploadedAsset(){
     this.clearPreviousSelectedAssetAndClearPdfToggles();
     this.clearPreviousSelectedAsset();
     this.isAssetReplaced = false;
     this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
   }
+
   clearPreviousSelectedAssetAndClearPdfToggles(){
     this.formData.delete("uploadedFile");
     $('#uploadedAsset').val('');
@@ -1851,6 +1871,23 @@ getFileIcon(): string {
 setPartnerSignatureRequiredNow(){
     this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature=false;
     this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+}
+
+confirmRemoveVideo(){
+    let self = this;
+          swal({
+            title: 'Are you sure?',
+            text: 'The uploaded video will be deleted',
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Clear it!'
+          }).then(function () {
+            self.removefileUploadVideo();
+          }, function (dismiss: any) {
+            console.log('You clicked on option: ' + dismiss);
+          });
 }
 
 }

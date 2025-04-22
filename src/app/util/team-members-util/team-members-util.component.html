@@ -992,7 +992,7 @@
           <app-mdf-detail-analytics [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
             [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [applyFilter]="applyFilter" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.mdfAccessGivenByVendor"></app-mdf-detail-analytics>
+            [applyFilter]="applyFilter" [fromDateFilter]="fromDateFilter" [toDateFilter]="toDateFilter" *ngIf="referenceService?.mdfAccessGivenByVendor && authenticationService?.mdfAccessAsPartner"></app-mdf-detail-analytics>
         </div>
       </div>
     </span>

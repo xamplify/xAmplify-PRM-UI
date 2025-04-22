@@ -223,6 +223,19 @@ a.social-stats {
   background: #e87e04;
   color: #fff;
 }
+.btn_cancel {
+  margin: 4px 4px;
+  border: 1px solid #9d9ba1;
+  color: #9d9ba1;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 15px;
+  background: transparent;
+}
+.btn_cancel:hover {
+  background: #9d9ba1;
+  color: #fff;
+}
 .margin_b0{
   margin-bottom: 0px!important;
 }

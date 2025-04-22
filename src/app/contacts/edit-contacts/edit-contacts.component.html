@@ -2001,12 +2001,15 @@
 <!-- END PAGE CONTENT -->
 <div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog"
 	aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog" [ngClass]="isEditContactPopupShow ? '' : 'custom-width-modal-popup'" role="document">
+	<div class="modal-dialog custom-width-modal-popup" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
 					<i class="fa fa-times" aria-hidden="true"></i>
 				</button>
+				<!-- XNFR-961 -->
+                <h4 class="modal-title popup-header-title-font float-left" translate>Add Partner{{ users.length > 1 ? '(s)' : '' }}</h4>
+                <!-- XNFR-961 -->
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible">

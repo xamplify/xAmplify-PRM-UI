@@ -57,7 +57,7 @@
 .asset-thumbnail-div-sm {
   display: block;
   height: 160px;
-  background: linear-gradient(45deg, #cdcdcd, transparent);
+  background: rgba(234, 242, 249, 1);
   padding: 1px;
   margin: 0 auto;
   border: 2px dotted #d3d3d3;

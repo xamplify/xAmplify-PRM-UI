@@ -6,7 +6,8 @@
 *ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
   class="chatgpt-card override" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal"
   (click)="resetValues()">
-  <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver(); $event.stopPropagation()"
+  <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
+  <!-- <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver(); $event.stopPropagation()"
     aria-hidden="true"></i>
   <div class="oliver-wrapper" (mouseenter)="onMouseEnter()">
     <ng-container *ngIf="!isMinimizeOliver; else minimized">
@@ -16,7 +17,7 @@
     <ng-template #minimized>
       <object data="assets/images/olivermsglogo.svg" type="image/svg+xml" class="icon-s-w mini"></object>
     </ng-template>
-  </div>
+  </div> -->
 </div>
 <!--ICON END -->
 <link *ngIf="isWelcomePageUrl" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -24,7 +25,7 @@
 <script *ngIf="isWelcomePageUrl" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <!--ChatGPT Modal-->
-<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
+<div *ngIf="isChatGptIconDisplayed && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div  class="modal-dialog w85-per" role="document">
     <div class="modal-content">
       <!-- <div class="modal-header">
@@ -172,7 +173,7 @@
                     <div class="form-group">
                       <input type="text" class="form-control input-lg oliver-input" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
                     </div>
-                    <div class="label-text">Text Length</div>
+                    <div class="oliver_text">Text Length</div>
                     <div class="input-group d-flex">
                       <select class="form-control oliver-focus" [(ngModel)]="selectedValueForWork"
                       (ngModelChange)="sortBy($event)" id="select-dropdown">

@@ -477,7 +477,11 @@ export class ParterService {
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
-
+    getAllPartners(pagination: Pagination) {
+        const url = this.URL + '/partner/allPartners/details/list?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+        .catch(this.handleError);
+    }
     getTeamMemberTypewiseTrackCounts(teamMemberAnalyticsRequest: TeamMemberAnalyticsRequest, isVendorVersion: boolean) {
         let urlSuffix = "";
         if (isVendorVersion) {
@@ -707,5 +711,10 @@ export class ParterService {
         return this.httpClient.get(url)
             .catch(this.handleError);
     }
-    /*** XNFR-914 */
+
+    /*** XNFR-944 */
+    findAllPartnerRegionDetaiils(partnerJourneyRequestDTO: any) {
+        const url = this.URL + '/partner/allPartners/details/regionwise/count?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPostMethod(url, partnerJourneyRequestDTO);
+    }
 }

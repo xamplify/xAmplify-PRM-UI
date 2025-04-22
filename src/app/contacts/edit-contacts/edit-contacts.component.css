@@ -211,7 +211,7 @@ a.disabled {
   cursor: not-allowed;
 }
 .custom-width-modal-popup {
-  width: 60% !important;
+  width: 85% !important; /*** XNFR-961 ***/
 }
 /* 20-06-2023 */
 .border-btn-small{

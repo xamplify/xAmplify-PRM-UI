@@ -124,6 +124,7 @@ import { SearchGuidesComponent } from 'app/guides/search-guides/search-guides.co
 import { GuideHelpIconComponent } from 'app/guides/guide-help-icon/guide-help-icon.component';
 import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xamplify-video-player.component';
 import { DonutPieChartComponent } from 'app/dashboard/dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
+import { AllPartnersListComponent } from 'app/dashboard/all-partners-list/all-partners-list.component';
 import { QueryBuilderModule } from "angular2-query-builder";
 import { SelectEmailTemplateComponent } from 'app/util/select-email-template/select-email-template.component';
 import { SendTestEmailComponent } from 'app/util/send-test-email/send-test-email.component';
@@ -247,7 +248,7 @@ import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature
 		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
-		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
+		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,AllPartnersListComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
@@ -289,7 +290,7 @@ import { AssetSignatureStatusAnalyticsComponent } from 'app/util/asset-signature
 		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
-		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
+		DonutPieChartComponent,AllPartnersListComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,AddCompanyComponent,
