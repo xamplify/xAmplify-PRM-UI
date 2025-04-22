@@ -1866,6 +1866,8 @@ getFileIcon(): string {
     this.uploadedAssetName  = "";
     this.isPdfFileSelected = false;
     this.showClearOption = false;
+    this.damUploadPostDto.partnerSignatureRequired = false;
+    this.damUploadPostDto.vendorSignatureRequired = false;
     this.validateAllFields();
 }
 setPartnerSignatureRequiredNow(){
