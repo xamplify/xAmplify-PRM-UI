@@ -10,7 +10,7 @@
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
       <div class="pdf_card">
         <div class="pdf_child">
-          <div class="file-info">
+          <div *ngIf="!isFromFolderView"  class="file-info">
             <div class="file-icon">
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
@@ -42,6 +42,28 @@
               <p *ngIf="!isOliverAiFromdam">From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
             </div>
           </div>
+          <div *ngIf="isFromFolderView" class="file-info">
+            <div class="file-icon">
+              <div class="d-flex document_flex">
+                <!-- <div class="pdf-text">PDF</div> -->
+                <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
+                <ng-container *ngIf="!isPdfUploading"><img class=" mr10" src="assets/images/fileIconOliver.svg" alt="PDF"
+                    width="28px" height="28px">
+                </ng-container>
+                <a title="{{ folderName }}" data-toggle="tooltip" data-placement="top">
+                  {{ folderName | slice:0:20 }}
+                  <span *ngIf="folderName?.length > 20">...</span>
+                </a>
+              </div>
+              <div class="published-on">Created On:{{ folderCreatedOn | date:'MMM d, yyyy, h:mm a' }}
+              </div>
+            </div>
+            <div class="file-details">
+              <h5>Created By: {{folderCreatedBy}}</h5>
+              <p>From:{{folderFrom}}</p>
+              <span class="Track-countbg">Digital Asset {{folderAssetCount}}</span>
+            </div>
+          </div>
 
           <div class="input-section">
             <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" class="form-control"
@@ -49,17 +71,21 @@
           </div>
         </div>
         <div class="action-buttons">
-          <div class="btn-group">
+          <div *ngIf="!isFromFolderView" class="btn-group">
             <button *ngIf="false" class="btn plus-btn" (click)="pdfInput.click()">
               <span class="fa fa-plus"></span>
-              <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
-                style="display: none;" />
+              <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput style="display: none;" />
             </button>
-
+        
             <button class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
             <button class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
             <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
+          </div>
+          <div *ngIf="isFromFolderView" class="btn-group">
+            <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
+            <button class="btn btn-pdf" (click)="setInputText('Compare documents')">Compare documents</button>
+            <button class="btn btn-pdf" (click)="setInputText('Give a overview of documents')">Give a overview of documents</button>
           </div>
           <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
             (click)="submitdata()">Submit</button>
@@ -169,14 +195,19 @@
               <div class="panel panel-default accordion_card">
                 <div class="panel-heading accordion_card">
                   <h4 class="panel-title">
-                    <a *ngIf="!isCollapsed" (click)="toggleAction()"><span>
+                    <a *ngIf="!isCollapsed && !isFromFolderView" (click)="toggleAction()"><span>
                         Asset Name:{{assetDetailsViewDtoOfPartner.assetName}} |
                         Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
                       <i class="fa fa-chevron-up toggle-icon"></i>
                     </a>
+                    <a *ngIf="!isCollapsed && isFromFolderView" (click)="toggleAction()"><span>
+                        Folder Name:{{folderName}} |
+                        Created By:{{folderCreatedBy}}</span>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
                     <a *ngIf="isCollapsed" (click)="toggleAction()">
                       <span>
-                        <div class="Ai_file">
+                        <div *ngIf="!isFromFolderView"  class="Ai_file">
                           <div class="Ai-icon" (click)="showAssetPreview()"[ngStyle]="showPreview ? {'width': '252px'} : {}">
                             <div class="d-flex document_flex">
                               <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
@@ -214,6 +245,30 @@
                             </span>
                           </div>
                         </div>
+                        <div *ngIf="isFromFolderView" class="Ai_file">
+                          <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                            <div class="d-flex document_flex">
+                              <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
+                              <ng-container *ngIf="!isPdfUploading">
+                                <img class="mr10" src="assets/images/fileIconOliver.svg" alt="PDF" width="28px" height="28px">
+                              </ng-container>
+                              <a title="{{ folderName }}">
+                                {{ folderName | slice:0:20 }}
+                                <span *ngIf="folderName?.length > 20">...</span>
+                              </a>
+                            </div>
+                            <div class="published-on">Created On:{{
+                              folderCreatedOn | date:'MMM d, yyyy, h:mm a' }}
+                            </div>
+                          </div>
+                          <div class="Ai-file-details">
+                            <h5>Created By: {{folderCreatedBy}}</h5>
+                            <span class="aligin-para">
+                              <p>From:{{folderFrom}}</p>
+                              <span class="Track-countbg">Digital Asset {{folderAssetCount}}</span>
+                            </span>
+                          </div>
+                        </div>
                       </span>
                       <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
@@ -228,20 +283,25 @@
               </div>
             </div>
             <div class="action-buttons">
-              <div>
+              <div *ngIf="!isFromFolderView">
                 <!-- <button class="history-plusicon" (click)="pdfInput.click()">
-              <span class="fa fa-plus"></span>
-              <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
-                style="display: none;" />
-            </button> -->
+                                          <span class="fa fa-plus"></span>
+                                          <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
+                                            style="display: none;" />
+                                        </button> -->
                 <button class="action-btn" (click)="setInputText('Analyze Asset')"> Analyze Asset</button>
                 <button class="action-btn" (click)="setInputText('Summarize in detail')"> Summarize in detail</button>
                 <button class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
                   Quotes</button>
               </div>
+              <div *ngIf="isFromFolderView">
+                <button class="action-btn" (click)="setInputText('Generate summaries')">Generate summaries</button>
+                <button class="action-btn" (click)="setInputText('Compare documents')">Compare documents</button>
+                <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a overview of documents</button>
+              </div>
               <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
                 Submit</button>
-            </div>
+              </div>
           </div>
         </div>
       </div>

@@ -74,12 +74,39 @@ export class ChatGptSettingsService {
 
   getThreadIdByDamId(chatGptIntegrationSettingsDto: any) {
     let userId = this.authenticationService.getUserId();
-    let damIdRequestParameter = chatGptIntegrationSettingsDto.damId != undefined ? '&damId=' + chatGptIntegrationSettingsDto.damId : '';
+    let damIdRequestParameter = chatGptIntegrationSettingsDto.id != undefined ? '&id=' + chatGptIntegrationSettingsDto.id : '';
     let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
     let isPartnerDamAssetRequestParm = chatGptIntegrationSettingsDto.partnerDam != undefined ? '&partnerDam=' + chatGptIntegrationSettingsDto.partnerDam : '';
     let isVendorDamAssetRequestParm = chatGptIntegrationSettingsDto.vendorDam != undefined ? '&vendorDam=' + chatGptIntegrationSettingsDto.vendorDam : '';
-    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm;
+    let isFolderDamAssetRequestParm = chatGptIntegrationSettingsDto.folderDam != undefined ? '&folderDam=' + chatGptIntegrationSettingsDto.folderDam : '';
+    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm + isFolderDamAssetRequestParm;
     return this.authenticationService.callGetMethod(url);
   }
+
+  getAssetDetailsByCategoryId(categoryId: number, isPartnerFolderView: boolean) {
+    let urlPrefix = "";
+    if (isPartnerFolderView) {
+      urlPrefix = 'getAssetDetailsByCategoryIdForPartner';
+    } else if (!isPartnerFolderView) {
+      urlPrefix = 'getAssetDetailsByCategoryId';
+    }
+    const url = `${this.chatGptSettingsUrl}/${urlPrefix}/${categoryId}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
+    return this.http.get(url);
+  }
+
+  onUploadFiles(pdfFiles: Blob[], chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = `${this.chatGptSettingsUrl}/uploadFiles?access_token=${this.authenticationService.access_token}`;
+    const formData = new FormData();
+    pdfFiles.forEach((file, index) => {
+      formData.append('files', file, `asset${index}.pdf`);
+    });
+    chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
+    formData.append('chatGptSettingsDTO', new Blob(
+      [JSON.stringify(chatGptSettings)],
+      { type: 'application/json' }
+    ));
+    return this.authenticationService.callPostMethod(url, formData);
+  }
+
 
 }

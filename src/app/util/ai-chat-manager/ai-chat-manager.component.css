@@ -965,3 +965,17 @@ object {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+span.Track-countbg {
+  background: #007bff !important;
+    color: #fff;
+    padding: 5px 11px;
+    border-radius: 5px !important;
+    font-size: 12px !important;
+    margin-top: 3px !important;
+    display: inline-block;
+}
+
+.mr2 {
+  margin-right: 3px;
+}

@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 declare var $: any;
 
 @Component({
@@ -57,21 +57,40 @@ export class AiChatManagerComponent implements OnInit {
   baseWidth: number = 800;
   baseHeight: number = 1000;
   loadPreview :boolean = false
+  pdfFiles: Blob[] = [];
+  categoryId: any;
+  isPartnerFolderView :boolean = false;
+  isFromFolderView:boolean = false;
+  folderName: any;
+  folderCreatedOn: Date;
+  folderCreatedBy: any;
+  folderFrom: any;
+  folderAssetCount: any;
+
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.isFromFolderView = false;
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
+    this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
     if (this.assetId > 0) {
       this.isOliverAiFromdam = false;
       this.chatGptIntegrationSettingsDto.partnerDam = true;
-      this.chatGptIntegrationSettingsDto.damId = this.assetId;
+      this.chatGptIntegrationSettingsDto.id = this.assetId;
       this.getThreadId(this.chatGptIntegrationSettingsDto);
     } else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
         this.chatGptIntegrationSettingsDto.vendorDam = true;
-        this.chatGptIntegrationSettingsDto.damId = this.asset.id;
+        this.chatGptIntegrationSettingsDto.id = this.asset.id;
+        this.getThreadId(this.chatGptIntegrationSettingsDto);
+      }
+      if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
+        this.chatGptIntegrationSettingsDto.folderDam = true;
+        this.isFromFolderView = true;
+        this.isPartnerFolderView = this.router.url.indexOf("/shared/view/fg/") > -1;
+        this.chatGptIntegrationSettingsDto.id = this.categoryId;
         this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
     }
@@ -120,6 +139,11 @@ export class AiChatManagerComponent implements OnInit {
         }
         this.framePerviewPath();
       }
+
+      if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
+        this.getSharedAssetsDetailsByFolderId(this.categoryId);
+      }
+
     }
   }
 
@@ -200,19 +224,24 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   closeAi() {
-    if (this.uploadedFileId != undefined) {
-      this.deleteUploadedFile();
-    }
-    if(this.asset != undefined && this.asset != null){
-      this.isOliverAiFromdam = false;
-      this.notifyParent.emit();
-      }else{
+    if (!this.isFromFolderView) {
+      if (this.asset != undefined && this.asset != null) {
+        this.isOliverAiFromdam = false;
+        this.notifyParent.emit();
+      } else {
         if (this.router.url.includes('/shared/view/')) {
           this.referenceService.goToRouter('/home/dam/shared/l');
         } else {
           this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
         }
       }
+    } else if (this.isFromFolderView) {
+      if (this.router.url.includes('/shared/view/fg')) {
+        this.referenceService.goToRouter('/home/dam/shared/fg');
+      } else {
+        this.referenceService.goToRouter('/home/dam/manage/fg');
+      }
+    }
   }
 
   copyAiText(element: HTMLElement) {
@@ -497,4 +526,68 @@ export class AiChatManagerComponent implements OnInit {
   get scaledHeight(): string {
     return (this.baseHeight * (this.zoomLevel / 100)) + 'px';
   }
+
+  getSharedAssetsDetailsByFolderId(categoryId: number) {
+    this.loading = true;
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.getAssetDetailsByCategoryId(categoryId,this.isPartnerFolderView).subscribe(
+      (response: any) => {
+        this.loading = false;
+        if (response.statusCode == 200) {
+          let data = response.data;
+          this.folderName = data[0].name;
+          this.folderCreatedOn = new Date(data[0].createdTimeInUTC);
+          this.folderCreatedBy = data[0].createdBy;
+          this.folderFrom = data[0].companyName;
+          this.folderAssetCount = data[0].count;
+          if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
+            this.getPdfByAssetPaths(data);
+          }
+        }
+      },
+      (error) => {
+        this.loading = false;
+        console.error('API Error:', error);
+      }
+    );
+  }
+
+  getPdfByAssetPaths(assetsPath: any[]) {
+    this.ngxLoading = true;
+    const requests = assetsPath.map(path =>
+      this.http.get(path.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), {
+        responseType: 'blob'
+      })
+    );
+    forkJoin(requests).subscribe({
+      next: (responses: Blob[]) => {
+        this.pdfFiles.push(...responses);
+        this.ngxLoading = false;
+        this.getUploadedFileIds();
+      },
+      error: (err) => {
+        console.error('Failed to load all PDFs', err);
+        this.ngxLoading = false;
+      }
+    });
+  }
+
+  getUploadedFileIds() {
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.onUploadFiles(this.pdfFiles, this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        this.isPdfUploading = false;
+        let data = response.data;
+        this.threadId = data.threadId;
+        this.isLoading = false;
+      },
+      (error: string) => {
+        this.isPdfUploading = false;
+        this.isLoading = false;
+        console.log('API Error:', error);
+      }
+    );
+  }
+
+  
 }
