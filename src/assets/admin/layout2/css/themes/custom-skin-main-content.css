@@ -1318,12 +1318,15 @@ h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
 /* 11-7-2023 sudha sri */
-.btn-primary,.add_partnerbtn,.submit-btn,.generate-btn,.btn-submit{
+.btn-primary,.add_partnerbtn,.submit-btn,.generate-btn,.btn-submit,.user_guide{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
 }
-.btn-primary:hover,.add_partnerbtn:hover,.submit-btn:hover,.generate-btn:hover,.btn-submit:hover{
+.helpcircle-cu,.guide_text{
+  color: var(--btn-primary-text-color) !important;
+}
+.btn-primary:hover,.add_partnerbtn:hover,.submit-btn:hover,.generate-btn:hover,.btn-submit:hover,.user_guide:hover{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
@@ -1399,10 +1402,6 @@ div#removeborder {
 .help-iconbgadd {
   border: 1px solid var(--top-button-border-color) !important;
 }
-.helpcircle-cu {
-  color: var(---text-color) !important;
-}
-
 /* end */
 
 /* Create Campaign Select Campaign bar bg */
