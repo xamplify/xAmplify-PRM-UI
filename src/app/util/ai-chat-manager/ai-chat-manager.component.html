@@ -1,14 +1,16 @@
 <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<app-add-email-modal-popup *ngIf="showEmailModalPopup"[actionType]="actionType" [subjectText]="subjectText" [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
-<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "socialContent" (notifyClose)="closeSocialShare($event)"></app-update-status>
-<div class="page-content">
+<app-add-email-modal-popup *ngIf="showEmailModalPopup" [actionType]="actionType" [subjectText]="subjectText"
+  [emailBody]="emailBody" (notifyClose)="closeEmailModalPopup($event)"></app-add-email-modal-popup>
+<app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
+  [isShowPageContent]="isOliverAiFromdam" (notifyClose)="closeSocialShare($event)"></app-update-status>
+<div [ngClass]="isOliverAiFromdam ? '' : 'page-content'">
   <div *ngIf="!openHistory && !openShareOption" class="pdf_body">
-    <button class="btn close_btn" (click)="closeAi()">×</button>
+    <button class="btn close_btn mt5" (click)="closeAi()">×</button>
     <div>
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
       <div class="pdf_card">
         <div class="pdf_child">
-          <div class="file-info">
+          <div *ngIf="!isFromFolderView && !isFromContactJourney"  class="file-info">
             <div class="file-icon">
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
@@ -16,25 +18,50 @@
                 <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
                   <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
                 </ng-container>
-                <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='csv' ||  assetType =='xlsx') ">
+                <ng-container
+                  *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx') ">
                   <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
                 </ng-container>
-                <ng-container *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
+                <ng-container
+                  *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
                   <img class="mr10" src="assets/images/oliverImagelogo.svg" alt="img" width="28px" height="28px">
                 </ng-container>
                 <a title="{{ assetDetailsViewDtoOfPartner?.assetName }}">
                   {{ assetDetailsViewDtoOfPartner?.assetName | slice:0:20 }}
-                  <span *ngIf="assetDetailsViewDtoOfPartner?.assetName?.length > 20">...</span>.{{assetDetailsViewDtoOfPartner?.assetType}}
-                </a>                
+                  <span
+                    *ngIf="assetDetailsViewDtoOfPartner?.assetName?.length > 20">...</span>.{{assetDetailsViewDtoOfPartner?.assetType}}
+                </a>
               </div>
-              <div class="published-on">{{UploadedFile ? 'Uploaded On' :'Published On'}}:{{ assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}
+              <div class="published-on">{{UploadedFile ? 'Uploaded On' :'Published On'}}:{{ assetDetailsViewDtoOfPartner?.displayTime | date:'MMM d, yyyy, h:mm a' }}
               </div>
             </div>
             <div class="file-details">
               <h5>Asset Name: {{assetDetailsViewDtoOfPartner?.assetName}}</h5>
               <p>Folder:{{assetDetailsViewDtoOfPartner?.categoryName}}</p>
               <p>Published By:{{assetDetailsViewDtoOfPartner?.displayName}}</p>
-              <p>From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
+              <p *ngIf="!isOliverAiFromdam">From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
+            </div>
+          </div>
+          <div *ngIf="isFromFolderView" class="file-info">
+            <div class="file-icon">
+              <div class="d-flex document_flex">
+                <!-- <div class="pdf-text">PDF</div> -->
+                <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
+                <ng-container *ngIf="!isPdfUploading"><img class=" mr10" src="assets/images/fileIconOliver.svg" alt="PDF"
+                    width="28px" height="28px">
+                </ng-container>
+                <a title="{{ folderName }}" data-toggle="tooltip" data-placement="top">
+                  {{ folderName | slice:0:20 }}
+                  <span *ngIf="folderName?.length > 20">...</span>
+                </a>
+              </div>
+              <div class="published-on">Created On:{{ folderCreatedOn | date:'MMM d, yyyy, h:mm a' }}
+              </div>
+            </div>
+            <div class="file-details">
+              <h5>Created By: {{folderCreatedBy}}</h5>
+              <p>From:{{folderFrom}}</p>
+              <span class="Track-countbg">Digital Asset {{folderAssetCount}}</span>
             </div>
           </div>
 
@@ -44,165 +71,294 @@
           </div>
         </div>
         <div class="action-buttons">
-          <div class="btn-group">
-            <button class="btn plus-btn" (click)="pdfInput.click()">
+          <div *ngIf="!isFromFolderView" class="btn-group">
+            <button *ngIf="false" class="btn plus-btn" (click)="pdfInput.click()">
               <span class="fa fa-plus"></span>
-              <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
-                style="display: none;" />
+              <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput style="display: none;" />
             </button>
-
-            <button class="btn btn-pdf" (click)="setInputText('Analyze PDF')">Analyze PDF</button>
-            <button class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+              Quotes</button>
+            <button *ngIf="isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Give me a summary of the conversations.')">Analyze Recording(s)</button>
+            <button *ngIf="isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
           </div>
-          <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading" (click)="submitdata()">Submit</button>
+          <div *ngIf="isFromFolderView" class="btn-group">
+            <button class="btn btn-pdf" (click)="setInputText('Generate summaries')">Generate summaries</button>
+            <button class="btn btn-pdf" (click)="setInputText('Compare documents')">Compare documents</button>
+            <button class="btn btn-pdf" (click)="setInputText('Give a overview of documents')">Give a overview of documents</button>
+          </div>
+          <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
+            (click)="submitdata()">Submit</button>
         </div>
       </div>
     </div>
   </div>
   <!-- chat history -->
-  <div *ngIf="openHistory && !openShareOption" class="summarize-pdf-card">
-    <button class="close_pdf" (click)="closeAi()">&times;</button>
-    <div class="scrollable-card">
-      <div *ngFor="let message of messages;let i = index">
-        <ng-container *ngIf="message.content?.trim()">
-          <div class="main-container">
+  <div *ngIf="openHistory && !openShareOption" [ngClass]="showPreview ? 'summarize-pdf-cards' : ''">
+    <div *ngIf="showPreview" class="pdf-viewer">
+      <div class="toolbar">
+        <select class="zoom" [(ngModel)]="zoomLevel">
+          <option value="50">50%</option>
+          <option value="60">60%</option>
+          <option value="100">100%</option>
+          <option value="125">125%</option>
+          <option value="150">150%</option>
+          <option value="200">200%</option>
+        </select>
+        <button class="closed" (click)="closePreview()">✕</button>
+      </div>
+      <div class="pdf-zoom-wrapper">
+        <div class="pdf-scaled">
+          <object *ngIf="loadPreview" [attr.data]="assetUrl" [style.width]="scaledWidth" [style.height]="scaledHeight"
+            style="border:none;">
+          </object>
+        </div>
+      </div>
+                 
+    </div>
+    <div class="resizer"></div>
+    <div [ngClass]="showPreview ? 'preview-summarize-pdf-card': 'summarize-pdf-card'">
+      <button *ngIf="!showPreview" class="close_pdf" (click)="closeAi()">&times;</button>
+      <div class="scrollable-card">
+        <div *ngFor="let message of messages;let i = index">
+          <ng-container *ngIf="message.content?.trim()">
+            <div class="main-container">
 
-            <!-- User Message -->
-            <div class="message user" *ngIf="message.role === 'user'">
-              <div class="summarize-card">
-                {{ message.content }}
+              <!-- User Message -->
+              <div class="message user" *ngIf="message.role === 'user'">
+                <div class="summarize-card">
+                  {{ message.content }}
+                </div>
+                <div class="avatar">
+                  <img src="{{authenticationService.MEDIA_URL+assetDetailsViewDtoOfPartner.loggedInUserProfileImage}}"
+                    alt="User" class="avatar" (error)="errorHandler($event)">
+                </div>
               </div>
-              <div class="avatar">
-                <img src="{{authenticationService.MEDIA_URL+assetDetailsViewDtoOfPartner.loggedInUserProfileImage}}"
-                  alt="User" class="avatar" (error)="errorHandler($event)">
-              </div>
-            </div>
 
-            <!-- Assistant Message -->
-            <div class="d-flex" *ngIf="message.role === 'assistant'">
-              <div class="avatar1 col-lg-1 col-sm-1">
-                <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
-              </div>
-              <div class="col-lg-11 col-sm-11">
-                <div class="content-card">
-                  <div class="chat-container">
-                    <div #markdownComponent class="chat-history">
-                      <markdown [data]="message.content"></markdown>
+              <!-- Assistant Message -->
+              <div class="d-flex" *ngIf="message.role === 'assistant'">
+                <div class="avatar1 col-lg-1 col-sm-1">
+                  <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
+                </div>
+                <div class="col-lg-11 col-sm-11">
+                  <div class="content-card">
+                    <div class="chat-container">
+                      <div #markdownComponent class="chat-history">
+                        <markdown [data]="message.content"></markdown>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="footer-icons mb10">
-                  <div class="footer-icon" title="{{!(isSpeakingText && speakingIndex === i) ? 'Read aloud' : 'stop'}}">
-                    <i [ngClass]="(isSpeakingText && speakingIndex === i) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
-                      aria-hidden="true" (click)="speakTextOn(i,markdownComponent)">
-                    </i>
-                  </div>
-                  <div class="footer-icon" title="Copy to Clipboard">
-                    <i class="fa fa-clone fs-12" aria-hidden="true" (click)="copyAiText(markdownComponent)"></i>
-                  </div>
-                  <div class="footer-icon" title="Reload/Refresh">
+                  <div class="footer-icons mb10">
+                    <div class="footer-icon"
+                      [ngStyle]="{'background-color': (isSpeakingText && speakingIndex === i) ? '#e40707' : '#0d6efd'}"
+                      data-toggle="tooltip"
+                      [attr.data-original-title]="!(isSpeakingText && speakingIndex === i) ? 'Read aloud' : 'stop'"
+                      data-placement="top">
+                      <i [ngClass]="(isSpeakingText && speakingIndex === i) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
+                        aria-hidden="true" (click)="speakTextOn(i, markdownComponent)"></i>
+                    </div>
+                    <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied ? '#00FF13' : '#0d6efd'}"
+                      data-toggle="tooltip" [attr.data-original-title]="isEmailCopied ? 'copied' : 'Copy to Clipboard'"
+                      data-placement="top">
+                      <i class="fs-12" [ngClass]="isEmailCopied ? 'fa fa-check' : 'fa fa-clone'"
+                        (click)="!isEmailCopied && copyAiText(markdownComponent)"></i>
+                    </div>
+                    <!-- <div class="footer-icon" title="Reload/Refresh">
                     <i class="fa fa-refresh fs-12"></i>
                   </div>
                   <button class="share-btn" >Design Template</button>
-                  <button class="share-btn">Design Page</button>
-                  <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-                  <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
+                  <button class="share-btn">Design Page</button> -->
+                    <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
+                    <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
+                  </div>
                 </div>
               </div>
             </div>
+          </ng-container>
+        </div>
+        <!-- Assistant Loader -->
+        <div class="d-flex main-container aligin-center" *ngIf="isLoading">
+          <div class="avatar1 col-lg-1 col-sm-1">
+            <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="assitant">
           </div>
-        </ng-container>
-      </div>
-      <!-- Assistant Loader -->
-      <div class="d-flex main-container aligin-center" *ngIf="isLoading">
-        <div class="avatar1 col-lg-1 col-sm-1">
-          <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="assitant">
-        </div>
-        <div class="col-lg-11 col-sm-11">
-          <div class="assitLoader"></div>
+          <div class="col-lg-11 col-sm-11">
+            <div class="assitLoader"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div>
-    <div class="d-flex main-container">
-      <div class="col-lg-1 col-sm-1 width_11"></div>
-      <div class="form-section fixed-card col-lg-11 col-sm-11 width_89" style="margin-right: 18px;">
-        <div class="panel-group" id="accordion">
-          <div class="panel panel-default accordion_card">
-            <div class="panel-heading accordion_card">
-              <h4 class="panel-title">
-                <a *ngIf="!isCollapsed" (click)="toggleAction()"><span>
-                    Asset Name:{{assetDetailsViewDtoOfPartner.assetName}} |
-                    Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
-                  <i class="fa fa-chevron-up toggle-icon"></i>
-                </a>
-                <a *ngIf="isCollapsed" (click)="toggleAction()">
-                  <span>
-                    <div class="Ai_file">
-                      <div class="Ai-icon">
-                        <div class="d-flex document_flex">
-                          <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
-                          <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
-                            <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
-                          </ng-container>
-                          <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='csv' ||  assetType =='xlsx') ">
-                            <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
-                          </ng-container>
-                          <ng-container
-                            *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
-                            <img class="mr10" src="assets/images/oliverImagelogo.svg" alt="img" width="28px" height="28px">
-                          </ng-container>
-                          <a title="{{ assetDetailsViewDtoOfPartner?.assetName }}">
-                            {{ assetDetailsViewDtoOfPartner?.assetName | slice:0:20 }}
-                            <span
-                              *ngIf="assetDetailsViewDtoOfPartner?.assetName?.length > 20">...</span>.{{assetDetailsViewDtoOfPartner?.assetType}}
-                          </a>
+      <div>
+        <div class="d-flex main-container">
+          <div class="col-lg-1 col-sm-1 width_11"></div>
+          <div class="form-section fixed-card col-lg-11 col-sm-11 width_89" style="margin-right: 18px;">
+            <div class="panel-group" id="accordion">
+              <div class="panel panel-default accordion_card">
+                <div class="panel-heading accordion_card">
+                  <h4 class="panel-title" *ngIf="!isFromContactJourney">
+                    <a *ngIf="!isCollapsed && !isFromFolderView" (click)="toggleAction()"><span>
+                        Asset Name:{{assetDetailsViewDtoOfPartner.assetName}} |
+                        Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
+                    <a *ngIf="!isCollapsed && isFromFolderView" (click)="toggleAction()"><span>
+                        Folder Name:{{folderName}} |
+                        Created By:{{folderCreatedBy}}</span>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed" (click)="toggleAction()">
+                      <span>
+                        <div *ngIf="!isFromFolderView"  class="Ai_file">
+                          <div class="Ai-icon" (click)="showAssetPreview()"[ngStyle]="showPreview ? {'width': '252px'} : {}">
+                            <div class="d-flex document_flex">
+                              <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
+                              <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
+                                <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px"
+                                  height="28px">
+                              </ng-container>
+                              <ng-container
+                                *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx') ">
+                                <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px"
+                                  height="28px">
+                              </ng-container>
+                              <ng-container
+                                *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
+                                <img class="mr10" src="assets/images/oliverImagelogo.svg" alt="img" width="28px"
+                                  height="28px">
+                              </ng-container>
+                              <a title="{{ assetDetailsViewDtoOfPartner?.assetName }}">
+                                {{ assetDetailsViewDtoOfPartner?.assetName | slice:0:20 }}
+                                <span
+                                  *ngIf="assetDetailsViewDtoOfPartner?.assetName?.length > 20">...</span>.{{assetDetailsViewDtoOfPartner?.assetType}}
+                              </a>
+                            </div>
+                            <div class="published-on">{{UploadedFile ? 'Uploaded On' :'Published On'}}:{{
+                              assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}
+                            </div>
+                          </div>
+                          <div class="Ai-file-details">
+                            <h5>Asset Name: {{assetDetailsViewDtoOfPartner?.assetName}}</h5>
+                            <span class="aligin-para">
+                              <p>Folder:{{assetDetailsViewDtoOfPartner?.categoryName}}</p>
+                              <p>Published By:{{assetDetailsViewDtoOfPartner?.displayName}}</p>
+                              <p *ngIf="!isOliverAiFromdam">From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}
+                              </p>
+                            </span>
+                          </div>
                         </div>
-                        <div class="published-on">{{UploadedFile ? 'Uploaded On' :'Published On'}}:{{
-                          assetDetailsViewDtoOfPartner.displayTime | date:'MMM d, yyyy, h:mm a' }}
+                        <div *ngIf="isFromFolderView" class="Ai_file">
+                          <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                            <div class="d-flex document_flex">
+                              <div *ngIf="isPdfUploading" class="fileloader mr10"></div>
+                              <ng-container *ngIf="!isPdfUploading">
+                                <img class="mr10" src="assets/images/fileIconOliver.svg" alt="PDF" width="28px" height="28px">
+                              </ng-container>
+                              <a title="{{ folderName }}">
+                                {{ folderName | slice:0:20 }}
+                                <span *ngIf="folderName?.length > 20">...</span>
+                              </a>
+                            </div>
+                            <div class="published-on">Created On:{{
+                              folderCreatedOn | date:'MMM d, yyyy, h:mm a' }}
+                            </div>
+                          </div>
+                          <div class="Ai-file-details">
+                            <h5>Created By: {{folderCreatedBy}}</h5>
+                            <span class="aligin-para">
+                              <p>From:{{folderFrom}}</p>
+                              <span class="Track-countbg">Digital Asset {{folderAssetCount}}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </span>
+                      <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
+                  </h4>
+                  <h4 class="panel-title" *ngIf="isFromContactJourney">
+                    <a *ngIf="!isCollapsed" (click)="toggleAction()">
+                      <div>
+                        <span *ngIf="selectedContact.contactName">
+                          Contact Name: {{selectedContact.contactName}} | </span><span>
+                          Email Id: {{selectedContact.emailId}} | Recordings: {{chatGptSettingDTO.totalRecords == 0 || chatGptSettingDTO.totalRecords == undefined ? '0' : chatGptSettingDTO.totalRecords}}</span>
+                      </div>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed" (click)="toggleAction()">
+                      <div class="Ai_file">
+                        <div class="Ai-icon" (click)="showAssetPreview()" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                          <div class="d-flex document_flex">
+                            <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                            <ng-container *ngIf="!ngxLoading">
+                              <img *ngIf="selectedContact.imageSourcePath != undefined" class="mr10"
+                                src="{{selectedContact.imageSourcePath}}" alt="CONTACT" width="28px" height="28px">
+                              <img *ngIf="selectedContact.imageSourcePath == undefined" class="mr10"
+                                src="assets/admin/pages/media/works/contacts2.png" alt="CONTACT" width="28px" height="28px">
+                            </ng-container>
+                            <a *ngIf="selectedContact?.contactName" title="{{ selectedContact?.contactName }}">
+                              {{ selectedContact?.contactName | slice:0:25 }}
+                              <span *ngIf="selectedContact?.contactName?.length > 25">...</span>
+                            </a>
+                            <a *ngIf="selectedContact?.contactName == undefined || selectedContact?.contactName?.length == 0"
+                              title="{{ selectedContact?.emailId }}">
+                              {{ selectedContact?.emailId | slice:0:25 }}
+                              <span *ngIf="selectedContact?.emailId?.length > 25">...</span>
+                            </a>
+                          </div>
+                          <div *ngIf="selectedContact?.contactName" class="published-on">Email Id: {{selectedContact.emailId }}
+                          </div>
+                        </div>
+                        <div class="Ai-file-details">
+                          <span class="aligin-para">
+                            <p *ngIf="selectedContact?.mobileNumber"><b>Mobile Number:</b> {{selectedContact.mobileNumber}}</p>
+                          </span>
+                          <span class="Track-countbg">
+                            <p *ngIf="chatGptSettingDTO.totalRecords == undefined || chatGptSettingDTO.totalRecords == 0">Recordings: 0
+                            </p>
+                            <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
+                          </span>
                         </div>
                       </div>
-                      <div class="Ai-file-details">
-                        <h5>Asset Name: {{assetDetailsViewDtoOfPartner?.assetName}}</h5>
-                        <span class="aligin-para">
-                          <p>Folder:{{assetDetailsViewDtoOfPartner?.categoryName}}</p>
-                          <p>Published By:{{assetDetailsViewDtoOfPartner?.displayName}}</p>
-                          <p>From: {{assetDetailsViewDtoOfPartner?.vendorCompanyName}}</p>
-                        </span>
-                      </div>
-                    </div>
-                  </span>
-                  <i class="fa fa-chevron-down toggle-icon"></i>
-                </a>
-              </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse in">
-              <div class="panel-body">
-                <input type="text" class="form-control" (keypress)="searchDataOnKeyPress($event.keyCode)"
-                  [(ngModel)]="inputText" (input)="validateInputText()" placeholder="Ask me!">
+                      <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                  <div class="panel-body">
+                    <input type="text" class="form-control" (keypress)="searchDataOnKeyPress($event.keyCode)"
+                      [(ngModel)]="inputText" (input)="validateInputText()" placeholder="Ask me!">
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="action-buttons">
-          <div>
-            <button class="history-plusicon" (click)="pdfInput.click()">
+            <div class="action-buttons">
+              <div *ngIf="!isFromFolderView">
+                <!-- <button class="history-plusicon" (click)="pdfInput.click()">
               <span class="fa fa-plus"></span>
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
-            </button>
-            <button class="action-btn" (click)="setInputText('Analyze PDF')"> Analyze PDF</button>
-            <button class="action-btn" (click)="setInputText('Summarize in detail')"> Summarize in detail</button>
-            <button class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            </button> -->
+            <button *ngIf="!isFromContactJourney" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
+            <button *ngIf="isFromContactJourney" class="action-btn" (click)="setInputText('Analyze the files.')">Analyze the files</button>
+            <button *ngIf="isFromContactJourney" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="isFromContactJourney" class="action-btn" (click)="setInputText('Summarize with Key Insights')">Summarize with Key
+              Insights</button>
+              </div>
+              <div *ngIf="isFromFolderView">
+                <button class="action-btn" (click)="setInputText('Generate summaries')">Generate summaries</button>
+                <button class="action-btn" (click)="setInputText('Compare documents')">Compare documents</button>
+                <button class="action-btn" (click)="setInputText('Give a overview of documents')">Give a overview of documents</button>
+              </div>
+              <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
+                Submit</button>
+              </div>
           </div>
-          <button class="submit-btn" [disabled]="isLoading || isPdfUploading" (click)="AskAiTogetData()"> Submit</button>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </div>

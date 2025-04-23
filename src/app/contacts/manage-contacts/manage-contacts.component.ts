@@ -2949,7 +2949,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	/***********XNFR-342*********/
 	openUnPublishedContentModalPopUp(contactList: any) {
-		this.shareUnPublishedComponent.openPopUp(contactList.id, undefined, this.checkingContactTypeName, contactList.name);
+		this.shareUnPublishedComponent.openPopUp(contactList.id, undefined, this.checkingContactTypeName, contactList.name, this.isContactModule);
 	}
 
 

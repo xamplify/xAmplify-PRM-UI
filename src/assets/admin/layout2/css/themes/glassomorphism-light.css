@@ -3030,7 +3030,7 @@ input.field-border-customization {
     backdrop-filter: blur(5px);
     border-radius: 10px;
 }
-.activeCRM{
+.activeCRM, .activeCalendar, .activeCall{
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.2) !important;
   border: 1px solid rgba(255, 255, 255, 0.2 )!important;
@@ -4564,7 +4564,7 @@ color: #fff!important;
   
     }
     .clip_mask{
-      bottom: -77px!important;
+      bottom: -86px!important;
     }
   }
 /* add a tag */
@@ -4607,9 +4607,110 @@ color: #fff!important;
 .modal-title{
   color: #000 !important;
 }
-
-@media only screen and (min-width: 600px) and (max-width: 1024px) {
-  .clip_mask{
-      bottom: -67px !important;
+@media only screen and (min-width: 600px) and (max-width:1024px) {
+  .clip_mask {
+    bottom: -81px !important;
   }
+}
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.asset_files{
+  background: rgb(209 170 170 / 15%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+}
+.file-name,.drag-text{
+  color: #000!important;
+}
+.dropdown-selected,.phone-input-field input,.search-box input{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(5px)
+}
+.dropdown-options-container,.search-box{
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(10px);
+  background-color: rgb(237 236 236 / 80%) !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.form_controls{
+  color: #000!important;
+}
+
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  background: rgb(255 255 255 / 37%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+  backdrop-filter: blur(5px);
+}
+.toggle-label,.help-icon,.pill-toggle label,.signature-btn{
+  color: #000!important;
+}
+input:checked + .toggle-slider {
+  background-color: #2196F3 !important;
+}
+.toggle-slider{
+  background: rgb(107 104 104 / 31%) !important;
+}
+.pill-toggle{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1.4px solid rgb(255 255 255 / 35%)!important;
+}
+.signature-btn{
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1.4px solid rgb(255 255 255 / 35%);
+}
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card,.summarize-pdf-cards{
+  background: rgb(255 255 255 / 17%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  backdrop-filter: blur(5px);
+}
+.pdf_card,.content-card,.fixed-card{
+  background-color: rgb(255 255 255 / 17%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.pdf_child{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  background-color: transparent !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+  background-color: rgb(255 234 234 / 51%) !important;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card{
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+}
+.modal-body.oliver-header{
+  background: hsla(0, 0%, 100%, .35) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, .37);
+  backdrop-filter: blur(13.5px);
+  border: 1px solid hsla(0, 0%, 100%, .1) !important;
+}
+.side_bar{
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  background: hsl(0deg 0% 100% / 10%) !important;
+  backdrop-filter: blur(5px);
+}
+.writing-card,.phara-card,
+.oliver_input,.textarea-card {
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  background: rgb(255 255 255 / 27%) !important;
+}
+.oliver_input input {
+  color: #000;
+}
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
 }

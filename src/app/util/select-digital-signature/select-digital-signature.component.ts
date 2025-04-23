@@ -902,14 +902,16 @@ placeLine(event: any) {
 
   loadSignatures() {
     if (!this.signatureResponseDto) return;
-
+  
+    const cacheBuster = new Date().getTime();
+  
     this.availableSignatures = [null, null, null];
-
+  
     if (this.signatureResponseDto.drawSignatureExits && this.signatureResponseDto.drawSignatureImagePath) {
-      this.availableSignatures[0] = this.signatureResponseDto.drawSignatureImagePath;
+      this.availableSignatures[0] = `${this.signatureResponseDto.drawSignatureImagePath}?t=${cacheBuster}`;
     }
     if (this.signatureResponseDto.typedSignatureExists && this.signatureResponseDto.typedSignatureImagePath) {
-      this.availableSignatures[1] = this.signatureResponseDto.typedSignatureImagePath;
+      this.availableSignatures[1] = `${this.signatureResponseDto.typedSignatureImagePath}?t=${cacheBuster}`;
     }
     if (this.signatureResponseDto.uploadedSignatureExits && this.signatureResponseDto.uploadedSignatureImagePath) {
       this.availableSignatures[2] = this.signatureResponseDto.uploadedSignatureImagePath;

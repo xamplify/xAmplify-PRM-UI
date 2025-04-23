@@ -140,5 +140,9 @@
 }
 
 .custom-email {
-  width: 90%;
+  width: 89%;
+}
+.plus_align{
+  margin-right: -30px;
+  margin-top: -4px;
 }

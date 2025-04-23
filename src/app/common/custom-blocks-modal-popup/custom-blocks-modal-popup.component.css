@@ -1,0 +1,23 @@
+.custom_preview{
+    border: 1px solid #c3c7d2d6;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+}
+.btn_custom {
+    border: 1px solid #026deb;
+    color: #0276ff;
+    padding: 4px 8px;
+    border-radius: 7px;
+    font-size: 13px;
+    background: transparent;
+    position: relative;
+    top: -6px;
+}
+.btn_custom:hover {
+    background: #026deb;
+    color: #fff;
+}
+textarea {
+    min-height: 150px;
+}

@@ -256,6 +256,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   isDealLayoutSelected:boolean = false;
   crmErrorMessage:CustomResponse = new CustomResponse();
   readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
+
+  maxRecipientCountReached: boolean = false;
+  maxRecipientCount: number = 0;
+  restrictRecipientCount: boolean = false;
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -646,6 +651,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             }
             this.campaignRecipientsPagination.maxResults = 4;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
+            if (this.isMarketingCompany || (this.isOrgAdminCompany && !this.campaign.channelCampaign)) {
+                this.restrictRecipientCount = true;
+                this.getMaximumContactCountForCampaignLaunch();
+            }
         });
     }
 
@@ -1212,12 +1221,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
            this.findCampaignRecipients(this.campaignRecipientsPagination);
+           this.restrictRecipientCount = this.isOrgAdminCompany ? false : this.restrictRecipientCount;
         } else {
             this.campaign.oneClickLaunch = false;
             this.campaign.configurePipelines = false;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
+            this.restrictRecipientCount = this.isOrgAdminCompany ? true : this.restrictRecipientCount;
         }
         this.updateLaunchTabClass();
 
@@ -1872,7 +1883,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     getValidUsersCount() {
-        if (this.selectedContactListIds.length > 0 && this.campaign.emailNotification) {
+        if (this.selectedContactListIds.length > 0) {
             this.ngxLoading = true;
             this.emailReceiversCountError = false;
             this.contactService.findAllAndValidUserCounts(this.selectedContactListIds)
@@ -1881,12 +1892,15 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                         this.validUsersCount = data['validUsersCount'];
                         this.allUsersCount = data['allUsersCount'];
                         this.emailReceiversCountError = false;
-                        this.ngxLoading = false;
+                        this.ngxLoading = false;               
+                        this.checkRecipientCountLimitReached();
                     },
                     (error: any) => {
                         this.ngxLoading = false;
                         this.emailReceiversCountError = true;
                     });
+        } else {
+            this.maxRecipientCountReached = false;
         }
     }
 
@@ -1904,7 +1918,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
             if (this.selectedContactListIds.length == 0) { this.isContactList = false; }
             this.userListDTOObj = this.referenceService.removeDuplicates(this.userListDTOObj);
-            this.getValidUsersCount();
         } else {
             $('[name="campaignContact[]"]').prop('checked', false);
             $('#campaignRecipientsTable tr').removeClass("contact-list-selected");
@@ -1923,6 +1936,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             }
 
         }
+        this.getValidUsersCount();
         ev.stopPropagation();
     }
 
@@ -2115,7 +2129,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                             this.anyLaunchButtonClicked = true;
                             this.reInitialize();
                             this.router.navigate(["/home/campaigns/manage"]);
-                       }else if(response.statusCode==2020){
+                        } else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
+                            const template = this.properties.CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE;
+                            const message = template.replace('{{maxRecipientCount}}', this.maxRecipientCount.toString());
+                            this.referenceService.showSweetAlertErrorMessage(message);
+                        } else if(response.statusCode==2020){
                             this.referenceService.goToDiv('campaign-work-flow');
                             this.selectedContactListIds = [];
                             this.selectedPartnershipId = 0;
@@ -2692,4 +2710,28 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         )
     }
 
+    /** XNFR-929 **/
+    getMaximumContactCountForCampaignLaunch() {
+        this.ngxLoading = true;
+        this.campaignService.getMaximumContactCountForCampaignLaunch(this.loggedInUserId).subscribe(
+        (result: any) => {
+            if (result.statusCode == 200) {
+                this.maxRecipientCount = result.data;
+            } else {
+                this.maxRecipientCount = 0;
+            }
+            this.ngxLoading = false;
+        },
+        (error: string) => {
+            this.ngxLoading = false;
+        })
+    }
+
+    checkRecipientCountLimitReached() {
+        if (this.restrictRecipientCount && this.validUsersCount > this.maxRecipientCount) {
+            this.maxRecipientCountReached = true;
+        } else {
+            this.maxRecipientCountReached = false;
+        }
+    }
 }

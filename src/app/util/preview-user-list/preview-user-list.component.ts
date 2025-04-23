@@ -31,6 +31,7 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   publishedPartnerIds:Array<Number> = new Array<Number>();
   @Input() vendorJourney:boolean = false;
   @Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
+  @Input() isButtonDisabled:boolean;//XBI-4309
   showTickMark = false;
   isAssetsModule = false;
   isLmsModule = false;
@@ -133,7 +134,7 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
 
  publish(user:any){
   let isPublishingCompleted = false;
-  let sweetAlertPrefixText = this.isAssetsModule ? "Asset" : this.isLmsModule ? "Track" : this.isPlayBooksModule ? "Play Book" : this.isDashboardButtonsModule ? "Dashboard Button":""; 
+  let sweetAlertPrefixText = this.isAssetsModule ? "Asset" : this.isLmsModule ? "Track" : this.isPlayBooksModule ? "Playbook" : this.isDashboardButtonsModule ? "Dashboard Button":""; 
   this.referenceService.showSweetAlertProcessingLoader(sweetAlertPrefixText+" publishing is in progress");
   this.authenticationService.publishContentToPartnerCompanyByModuleName(user.userListId,user.userId,this.inputId,this.moduleName).
   subscribe(

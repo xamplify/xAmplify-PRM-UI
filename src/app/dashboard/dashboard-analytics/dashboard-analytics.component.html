@@ -67,7 +67,10 @@
             </div>
             <!-- Btns -->
             <div class="d-flex">
-                <button class=" btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                <button class="btn mr5 btn_cancel" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                    title="Retrun to default dashboard" (click)="findCustomDashboardLayout(); isDraggingEnabled=false" *ngIf="isDraggingEnabled">
+                    <i class="fa fa-reply"></i>&nbsp;Cancel</button>
+                <button class="btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
                     title="Reset to default dashboard" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">
                     <i class="fa fa-refresh"></i>&nbsp;Reset</button>
                 <button class="btn hidden-xs" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}"
@@ -430,7 +433,23 @@
 </ng-template>
 
 <ng-template #dynamicTemplate let-template="template">
-    <div class="portlet light margin_17" [ngClass]="{'border_dashed': isDraggingEnabled}">
+    <div class="portlet light margin_17 position-relative custom_block"
+        [ngClass]="{'border_dashed': isDraggingEnabled}">
+        <div class="icon-ribbon"
+            *ngIf="isDraggingEnabled && ((authenticationService?.companyProfileName && authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor) 
+                || (!authenticationService?.companyProfileName && !authenticationService?.module?.isOnlyPartnerCompany && authenticationService?.module?.isAnyAdminOrSupervisor))">
+            <button class="btn btn-edit" (click)="edit(template)" data-placement="top" data-toggle="tooltip"
+                title="Edit Custom Block">
+                <i class="glyphicon glyphicon-pencil"></i></button>
+            <button class="btn btn-close" (click)="remove(template)" data-placement="top" data-toggle="tooltip"
+                title="Remove Custom Block from Dashboard">
+                <i class="glyphicon glyphicon-remove"></i></button>
+        </div>
+        <div class="portlet-title" style="min-height: 0px;" *ngIf="template?.titleVisible">
+            <div class="caption">
+                <span class="caption-subject" translate>{{ template?.title }}</span>
+            </div>
+        </div>
         <div class="portlet-body" *ngIf="template?.htmlBody">
             <div [innerHTML]="template?.htmlBody"></div>
         </div>
@@ -619,3 +638,5 @@
     <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
     <app-play-video *ngIf="playVideo"></app-play-video>
 </div>
+
+<app-custom-blocks-modal-popup *ngIf="customModalPopup" [customHtmlBlockId]="customHtmlBlockId" (notifyParent)="reLoadLayout($event)"></app-custom-blocks-modal-popup>

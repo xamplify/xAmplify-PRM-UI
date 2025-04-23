@@ -5,7 +5,6 @@ import { SortOption } from 'app/core/models/sort-option';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Pagination } from 'app/core/models/pagination';
 import { CustomResponse } from 'app/common/models/custom-response';
-import * as JSZip from 'jszip';
 import { PagerService } from 'app/core/services/pager.service';
 import { UtilService } from 'app/core/services/util.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -39,7 +38,9 @@ export class CustomHtmlBlockComponent implements OnInit {
   @ViewChild('leftFileInput') fileInput2: ElementRef;
   @ViewChild('rightFileInput') fileInput3: ElementRef;
   customResponse: CustomResponse = new CustomResponse();
-  customHtmlBlock: any = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '', rightHtmlBody: '', selected: false, layoutSize: 'SINGLE_COLUMN_LAYOUT' };
+  customHtmlBlock: any = {
+    id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '',
+    rightHtmlBody: '', selected: false, layoutSize: 'SINGLE_COLUMN_LAYOUT', titleVisible: false };
 
   constructor(private myProfileService: MyProfileService, public referenceService: ReferenceService,
     public sortOption: SortOption, public authenticationService: AuthenticationService, public pagerService: PagerService,
@@ -114,6 +115,10 @@ export class CustomHtmlBlockComponent implements OnInit {
     this.customHtmlBlock.selected = event;
   }
 
+  titleUiSwitchEventReceiver(event: any) {
+    this.customHtmlBlock.titleVisible = event;
+  }
+
   goToAddHtmlDiv() {
     this.isAdd = true;
     this.setUpCustomHtmlBlock();
@@ -145,7 +150,8 @@ export class CustomHtmlBlockComponent implements OnInit {
   }
 
   setUpCustomHtmlBlock() {
-    this.customHtmlBlock = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '', rightHtmlBody: '', selected: false, layoutSize: 'SINGLE_COLUMN_LAYOUT' };
+    this.customHtmlBlock = { id: 0, title: '', htmlBody: '', loggedInUserId: 0, leftHtmlBody: '',
+      rightHtmlBody: '', selected: false, layoutSize: 'SINGLE_COLUMN_LAYOUT', titleVisible: false };
   }
 
   copyAndSave(id: number) {
@@ -170,25 +176,22 @@ export class CustomHtmlBlockComponent implements OnInit {
   }
 
   onFileSelected(event: any, side: string) {
-    const file = event.target.files[0];
+    const fileInput = event.target;
+    const file = fileInput.files[0];
     $('[data-toggle="tooltip"]').tooltip('hide');
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const zip = new JSZip();
-        zip.loadAsync(e.target.result).then((zip) => {
-          const htmlFileName = Object.keys(zip.files).find(name => name.endsWith('.html') || name.endsWith('.htm'));
-          if (htmlFileName) {
-            zip.file(htmlFileName).async('text').then((html) => {
-              this.updateSanitizedHtml(html, side);
-            });
-          } else {
-            this.customResponse = new CustomResponse('ERROR', 'No HTML file found in the ZIP.', true);
-            console.error('No HTML file found in the ZIP.');
-          }
-        });
-      };
-      reader.readAsArrayBuffer(file);
+      if (file.type === 'text/html' || file.name.endsWith('.html') || file.name.endsWith('.htm')) {
+        reader.onload = (e: any) => {
+          const html = e.target.result;
+          this.updateSanitizedHtml(html, side);
+          fileInput.value = '';
+        };
+        reader.readAsText(file);
+      } else {
+        console.error('Unsupported file type. Please upload an HTML/HTM file.');
+        fileInput.value = '';
+      }
     } else {
       console.error('No file selected.');
     }
@@ -254,6 +257,7 @@ export class CustomHtmlBlockComponent implements OnInit {
           this.customHtmlBlock = response.data;
           if (this.isAdd) {
             this.customHtmlBlock.title = this.customHtmlBlock.title + '-copy';
+            this.customHtmlBlock.selected = false;
           } else {
             if (this.customHtmlBlock.htmlBody) {
               this.updateSanitizedHtml(this.customHtmlBlock.htmlBody, 'full');

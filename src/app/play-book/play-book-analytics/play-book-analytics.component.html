@@ -7,7 +7,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="!isFromApprovalModule" [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i *ngIf="!isFromApprovalModule" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isFromApprovalModule" (click)="goToManagePlayBooks()">Manage Play Books</a>
+                <a *ngIf="!isFromApprovalModule" (click)="goToManagePlayBooks()">Manage Playbooks</a>
                 <a *ngIf="isFromApprovalModule" [routerLink]="referenceService?.approvalModuleRouter" translate>Manage
                     Approval</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>

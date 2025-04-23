@@ -18,11 +18,13 @@ export class AssetGridViewActionsComponent implements OnInit {
   readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   @Input() isPartnerView:boolean = false;
   @Input() asset:any;
+  @Input() isFromTop4Assets: boolean = false;
   @Output() assetGridViewActionsEmitter = new EventEmitter();
   @Output()assetGridViewActionsPdfEmitter = new EventEmitter();
   @Output() assetGridViewActionsDeleteActionEmitter = new EventEmitter();
   @Output() assetGridViewRefreshListEmitter = new EventEmitter();
   @Output() assetGridViewCommentStatusHistoryEmitter = new EventEmitter();
+  @Output() assetGridViewAssetPreviewEmitter = new EventEmitter();
 
   hasCampaignRole = false;
   hasAllAccess = false;
@@ -75,7 +77,17 @@ export class AssetGridViewActionsComponent implements OnInit {
   } else if(asset.beeTemplate) {
     this.referenceService.previewAssetPdfInNewTab(asset.id);
   }else{
-    this.referenceService.preivewAssetOnNewHost(asset.id);
+     const nonImageFormats = ['pdf', 'pptx', 'doc', 'docx', 'ppt', 'xlsx'];
+     let isNonImageFormat = nonImageFormats.includes(asset.assetType);
+     if (asset.contentPreviewType || asset.imageFileType) {
+       if(this.isFromTop4Assets){
+        this.referenceService.preivewAssetOnNewHost(asset.id);
+       } else {
+        this.assetGridViewAssetPreviewEmitter.emit(asset);
+       }
+     } else {
+       this.referenceService.preivewAssetOnNewHost(asset.id);
+     }
   }
   }
 

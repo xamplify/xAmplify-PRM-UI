@@ -9,6 +9,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { SortOption } from 'app/core/models/sort-option';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { CallIntegrationService } from 'app/core/services/call-integration.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -26,8 +27,10 @@ export class CallActivityComponent implements OnInit {
   @Input() isReloadTab: boolean;
   @Input() isCompanyJourney: boolean = false;
   @Input() selectedUserListId: any;
+  @Input() mobileNumber: any;
 
   @Output() notifyClose = new EventEmitter();
+  @Output() notifyOliver = new EventEmitter();
 
   callActivities = [];
   ngxLoading: boolean = false;
@@ -53,7 +56,7 @@ export class CallActivityComponent implements OnInit {
   contactErrorResponse: CustomResponse = new CustomResponse();
   showAircallDialer: boolean = false;
 
-  constructor(public referenceService: ReferenceService, public pagerService: PagerService, private callIntegrationService:CallIntegrationService,
+  constructor(public referenceService: ReferenceService, public pagerService: PagerService, private callIntegrationService:CallIntegrationService, public authenticationService: AuthenticationService,
       public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public contactService: ContactService, public properties: Properties) { }
 
   ngOnInit() {
@@ -194,7 +197,7 @@ export class CallActivityComponent implements OnInit {
 
   fetchUsersForCompanyJourney() {
     this.referenceService.loading(this.userListUsersLoader, true);
-    this.contactService.fetchUsersForCompanyJourney(this.contactId).subscribe(
+    this.contactService.fetchUsersForCompanyJourney(this.contactId, true).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.companyUsersSearchableDropDownDto.data = response.data;
@@ -209,6 +212,7 @@ export class CallActivityComponent implements OnInit {
       }, () => {
         if (this.companyUsersSearchableDropDownDto.data != undefined && this.companyUsersSearchableDropDownDto.data.length > 0) {
           this.contactId = this.companyUsersSearchableDropDownDto.data[0].id;
+          this.mobileNumber = this.companyUsersSearchableDropDownDto.data[0].mobileNumber;
           this.showAllCallActivities();
         } else {
           this.contactErrorResponse = new CustomResponse('ERROR', 'No contact is available', true);
@@ -219,6 +223,7 @@ export class CallActivityComponent implements OnInit {
 
   getSelectedAssignedToUserId(event) {
     this.contactId = event != undefined ? event['id'] : 0;
+    this.mobileNumber = event != undefined ? event['mobileNumber'] : '';
     this.showAllCallActivities();
   }
 
@@ -239,9 +244,9 @@ export class CallActivityComponent implements OnInit {
     }
   }
 
-  openAircallDialer() {
-    this.showAircallDialer = true;
-  }
+  // openAircallDialer() {
+  //   this.showAircallDialer = true;
+  // }
 
   closeCallModalPopup(event) {
     this.isReloadTab = event;
@@ -254,6 +259,27 @@ export class CallActivityComponent implements OnInit {
       card.recordExpanded = false;
     }
     card.voiceMailExpanded = !card.voiceMailExpanded;
+  }
+
+  openAircallDialer() {
+    this.referenceService.openModalPopup("addCallModalPopup");
+  }
+
+  dialNumber() {
+    this.openAircallDialer();
+    const payload = {
+      phone_number: this.mobileNumber
+    };
+    this.referenceService.aircallPhone.send(
+      'dial_number',
+      payload,
+      (success, data) => {
+      }
+    );
+  }
+
+  askOliver() {
+    this.notifyOliver.emit();
   }
 
 }

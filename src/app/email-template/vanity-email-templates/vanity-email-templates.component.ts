@@ -35,26 +35,28 @@ export class VanityEmailTemplatesComponent implements OnInit {
   selectedType: boolean = false;
   isZeroDefaultsYourTemplates: boolean = false;
   isZeroDefaultsPartnerNotifications: boolean = false;
-;
+  cacheBuster = '?t=' + new Date().getTime();
   constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties,public utilService: UtilService) { }
 
   ngOnInit() {
     this.isZeroDefaultsYourTemplates = false;  
   this.isZeroDefaultsPartnerNotifications = false;
-    this.setActiveTab('templates');
+  this.selectedTypeIndex = this.vanityURLService.selectedTypeIndex;
+    this.setActiveTab(this.vanityURLService.activeTab);
     
   }
 
   
   showAllVanityTemplates(type: string, index: number) {
     this.selectedTypeIndex = index;
+    this.vanityURLService.selectedTypeIndex = index;
     this.pagination.filterKey = type;
     this.pagination.pageIndex = 1;
     this.vanityEmailSortOption.searchKey = "";
     this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
     this.pagination = this.utilService.sortOptionValues(this.vanityEmailSortOption.vanityEmailTemplates, this.pagination);
     if(index == 1){
-      this.pagination.sortcolumn ="subject";
+      this.pagination.sortcolumn ="name";
     }
     this.getVanityEmailTemplates(this.pagination);
 }
@@ -66,6 +68,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
       pagination.isAdmin = this.authenticationService.module.isAdmin;
       pagination.companyId = this.referenceService.companyId;
       this.pagination.selectedType = this.activeTab == 'templates' ? true : false;
+      this.cacheBuster = '?t=' + new Date().getTime();
       this.vanityURLService.getVanityEmailTemplates(pagination).subscribe(result => {
         const data = result.data;
         if (result.statusCode === 200) {
@@ -109,6 +112,8 @@ export class VanityEmailTemplatesComponent implements OnInit {
     })
   }
   designTemplate(emailTemplate:VanityEmailTempalte){
+    this.vanityURLService.activeTab = this.activeTab;
+    this.vanityURLService.selectedTypeIndex = this.selectedTypeIndex;
     this.editTemplate.emit(emailTemplate);
   }
 
@@ -121,7 +126,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
     this.pagination.pageIndex = 1;
 		this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
     this.getVanityEmailTemplates(this.pagination);  
-
+    
   }
 
 
@@ -135,7 +140,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
 	this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
 	this.pagination = this.utilService.sortOptionValues(this.vanityEmailSortOption.vanityEmailTemplates, this.pagination);
   if(this.selectedTypeIndex == 1){
-    this.pagination.sortcolumn = "subject";
+    this.pagination.sortcolumn = "name";
   }
 	this.getVanityEmailTemplates(this.pagination);
 }
@@ -145,15 +150,19 @@ setPage(event: any) {
 	this.getVanityEmailTemplates(this.pagination);
 }
   setActiveTab(tabName: string) {
+    
     this.activeTab = tabName;
+    this.vanityURLService.activeTab = this.activeTab;
+    this.vanityURLService.selectedTypeIndex = this.selectedTypeIndex;
+
     if (tabName === 'templates') {
       this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates; 
-      // this.isZeroDefaultsTemplates = true;
       this.showAllVanityTemplates('DEFAULT', 0);
+
     } else if (tabName === 'partnerNotifications') {
       this.isZeroDefaultsTemplates = this.isZeroDefaultsYourTemplates; 
-      // this.isZeroDefaultsTemplates = false;; 
       this.showAllVanityTemplates('DEFAULT', 0);
+
     }
   }
   

@@ -28,7 +28,7 @@
 		<div class="clickicons"></div>
 
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
-		data-placement="top" title="Preview" (click)="preview(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
+		data-placement="top" title="Preview" (click)="(asset.contentPreviewType || asset.imageFileType)? preview(asset) : ''"> <i class="fa fa-eye" [ngClass]="asset.contentPreviewType || asset.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a>
 	<a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
@@ -42,14 +42,24 @@
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
 		title="View Details" (click)="viewDetails(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
-	</a> <a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="isPartnerView && authenticationService?.isOliverActive"
+		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
+		<div class="clickicons"></div>
+	</a>
+	<a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView"
 		(click)="asset.approvalStatus !== 'DRAFT' ? showCommentsAndHistoryModalPopup(asset) : ''" 
 		[ngClass]="(asset?.approvalStatus !== 'DRAFT') ? '' : 'disabled gray'" data-toggle="tooltip" data-placement="top"
 		title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 		<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 
-	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete custom-icon" data-toggle="tooltip"
+	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="!isPartnerView && authenticationService?.isOliverActive"
+		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
+		<div class="clickicons"></div>
+	</a>
+	 <a *ngIf="!isPartnerView && asset?.delete" class="delete custom-icon" data-toggle="tooltip"
 		data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' : confirmDelete(asset)" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"> <i class="fa fa-trash-o"
 			aria-hidden="true"></i>
 		<div class="del-icon"></div>

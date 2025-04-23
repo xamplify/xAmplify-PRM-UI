@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 declare var $: any;
 
 @Component({
@@ -15,7 +18,9 @@ declare var $: any;
   styleUrls: ['./ai-chat-manager.component.css']
 })
 export class AiChatManagerComponent implements OnInit {
-  // @Input() assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
+  @Input() asset: any;
+  @Input() chatGptSettingDTO: any;
+  @Input() selectedContact: any;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -23,9 +28,8 @@ export class AiChatManagerComponent implements OnInit {
   trimmedText: string = "";
   chatGptGeneratedText: string = "";
   properties: any;
-  chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
-  // @Output() notifyParent: EventEmitter<any> = new EventEmitter();
-  // @Input() pdfFile: Blob;
+  chatGptIntegrationSettingsDto : ChatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
+  @Output() notifyParent: EventEmitter<any> = new EventEmitter();
   uploadedFileId: any;
   isLoading: boolean = false;
   assetDetailsViewDtoOfPartner: AssetDetailsViewDto = new AssetDetailsViewDto();
@@ -47,22 +51,119 @@ export class AiChatManagerComponent implements OnInit {
   socialContent: string;
   isSpeakingText: boolean;
   speakingIndex: number;
+  threadId: any = "";
+  vectorStoreId: any = "";
+  isOliverAiFromdam: boolean;
+  isEmailCopied: boolean;
+  showPreview: boolean;
+  assetUrl: SafeResourceUrl;
+  zoomLevel = 50;
+  baseWidth: number = 800;
+  baseHeight: number = 1000;
+  loadPreview :boolean = false
+  pdfFiles: Blob[] = [];
+  categoryId: any;
+  isPartnerFolderView :boolean = false;
+  isFromFolderView:boolean = false;
+  folderName: any;
+  folderCreatedOn: Date;
+  folderCreatedBy: any;
+  folderFrom: any;
+  folderAssetCount: any;
+  loadPreview :boolean = false;
+  isFromContactJourney: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
-    private router:Router, private cdr: ChangeDetectorRef) { }
+    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
-    ngOnInit() {
-      this.assetId = parseInt(this.route.snapshot.params['assetId']);
-      if(this.assetId >0){
-        this.getSharedAssetDetailsById(this.assetId);
+  ngOnInit() {
+    this.isFromFolderView = false;
+    this.assetId = parseInt(this.route.snapshot.params['assetId']);
+    this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
+    if (this.assetId > 0) {
+      this.isOliverAiFromdam = false;
+      this.chatGptIntegrationSettingsDto.partnerDam = true;
+      this.chatGptIntegrationSettingsDto.id = this.assetId;
+      this.getThreadId(this.chatGptIntegrationSettingsDto);
+    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined) {
+      this.isFromContactJourney = true;
+      if (this.chatGptSettingDTO.threadId != undefined) {
+        this.threadId = this.chatGptSettingDTO.threadId;
+      }
+      if (this.threadId != undefined && this.threadId != '') {
+        this.getChatHistory();
+      }
+      this.analyzeCallRecordings();
+    } else {
+      if (this.asset != undefined && this.asset != null) {
+        this.isOliverAiFromdam = true;
+        this.chatGptIntegrationSettingsDto.vendorDam = true;
+        this.chatGptIntegrationSettingsDto.id = this.asset.id;
+        this.getThreadId(this.chatGptIntegrationSettingsDto);
+      }
+      if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
+        this.chatGptIntegrationSettingsDto.folderDam = true;
+        this.isFromFolderView = true;
+        this.isPartnerFolderView = this.router.url.indexOf("/shared/view/fg/") > -1;
+        this.chatGptIntegrationSettingsDto.id = this.categoryId;
+        this.getThreadId(this.chatGptIntegrationSettingsDto);
       }
     }
+  }
+
+  getThreadId(chatGptIntegrationSettingsDto: any) {
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.getThreadIdByDamId(chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        this.loading = false;
+        if (response.statusCode == 200) {
+          let self = this;
+          self.threadId = response.data.threadId;
+          self.vectorStoreId = response.data.vectorStoreId;
+        }
+        this.getSharedAssetPath();
+      },
+      (error) => {
+        this.loading = false;
+        console.error('API Error:', error);
+      }, () => {
+        if (this.threadId != undefined && this.threadId != '') {
+          this.getChatHistory();
+        }
+      }
+    );
+  }
+
+  private getSharedAssetPath() {
+    if (this.assetId > 0) {
+      this.chatGptIntegrationSettingsDto.partnerDam = true;
+      this.getSharedAssetDetailsById(this.assetId);
+    } else {
+      if (this.asset != undefined && this.asset != null) {
+        this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
+        this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
+        this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
+        this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
+        this.assetDetailsViewDtoOfPartner.displayName = this.asset.displayName;
+        this.assetType = this.asset.assetType;
+        this.assetDetailsViewDtoOfPartner.assetType = this.asset.assetType;
+        this.assetDetailsViewDtoOfPartner.sharedAssetPath = this.asset.proxyUrlForOliver + this.asset.assetPath;
+        this.assetDetailsViewDtoOfPartner.assetPath = this.asset.assetPath;
+        if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
+          this.getPdfByAssetPath();
+        }
+        this.framePerviewPath();
+      }
+
+      if (this.categoryId != undefined && this.categoryId != null && this.categoryId > 0) {
+        this.getSharedAssetsDetailsByFolderId(this.categoryId);
+      }
+
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pdfFile'] && changes['pdfFile'].currentValue) {
-      console.log('PDF file loaded:', this.pdfFile);
-      if (this.pdfFile) {
-        this.getUploadedFileId();
-      }
+    if (changes['asset'] && changes['asset'].currentValue) {
+      this.asset = changes['asset'].currentValue;
     }
   }
 
@@ -81,7 +182,9 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    // this.notifyParent.emit();
+    if(this.asset != undefined && this.asset != null){
+      this.notifyParent.emit();
+      }
   }
   
   validateInputText() {
@@ -109,17 +212,18 @@ export class AiChatManagerComponent implements OnInit {
     var self = this;
     this.chatGptIntegrationSettingsDto.uploadedFileId = this.uploadedFileId;
     this.chatGptIntegrationSettingsDto.prompt = this.trimmedText;
-    this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
+    self.chatGptIntegrationSettingsDto.threadId = self.threadId;
+    this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         console.log('API Response:', response);
         self.isLoading = false;
-        var data = response.data;
+        var content = response.data;
         var reply = 'No response received from Oliver.';
 
-        if (data && data.apiResponse && data.apiResponse.choices && data.apiResponse.choices.length > 0) {
-          var content = data.apiResponse.choices[0].message.content;
-          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content);
+        if (content) {
+          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
           self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
+          self.threadId = content.threadId;
         } else {
           self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }
@@ -134,22 +238,32 @@ export class AiChatManagerComponent implements OnInit {
   }
 
   closeAi() {
-    if (this.uploadedFileId != undefined) {
-      this.deleteUploadedFile();
+    if (!this.isFromFolderView) {
+      if (this.asset != undefined && this.asset != null) {
+        this.isOliverAiFromdam = false;
+        this.notifyParent.emit();
+      } else {
+        if (this.router.url.includes('/shared/view/')) {
+          this.referenceService.goToRouter('/home/dam/shared/l');
+        } else {
+          this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
+        }
+      }
+    } else if (this.isFromFolderView) {
+      if (this.router.url.includes('/shared/view/fg')) {
+        this.referenceService.goToRouter('/home/dam/shared/fg');
+      } else {
+        this.referenceService.goToRouter('/home/dam/manage/fg');
+      }
     }
-    if (this.router.url.includes('/shared/view/')) {
-      this.referenceService.goToRouter('/home/dam/shared/l');
-    } else {
-      this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
-    }
-    // this.notifyParent.emit();
   }
 
   copyAiText(element: HTMLElement) {
     this.copyToClipboard(element);
   }
 
-  copyToClipboard(element : any) {
+  copyToClipboard(element: any) {
+    this.isEmailCopied = true;
     this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
     textarea.value = this.copiedText;
@@ -157,6 +271,9 @@ export class AiChatManagerComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+    setTimeout(() => {
+      this.isEmailCopied = false;
+    }, 2000);
   }
 
   onFileSelected(event: any) {
@@ -178,11 +295,12 @@ export class AiChatManagerComponent implements OnInit {
 
   getUploadedFileId() {
     this.isPdfUploading = true;
-    this.chatGptSettingsService.onUpload(this.pdfFile).subscribe(
+    this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
-        const responseObject = JSON.parse(response);
         this.isPdfUploading = false;
-        this.uploadedFileId = responseObject.id;
+        let data = response.data;
+        this.uploadedFileId = data.fileId;
+        this.threadId = data.threadId;
         console.log(this.uploadedFileId);
         this.isLoading = false;
       },
@@ -193,6 +311,7 @@ export class AiChatManagerComponent implements OnInit {
       }
     );
   }
+
   getSharedAssetDetailsById(id: number) {
     this.loading = true;
     this.isPdfUploading = true;
@@ -200,33 +319,83 @@ export class AiChatManagerComponent implements OnInit {
       (response: any) => {
         this.loading = false;
         if (response.statusCode == 200) {
-          this.assetDetailsViewDtoOfPartner = response.data;
-          this.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
-          this.assetType=this.assetDetailsViewDtoOfPartner.assetType;
-          console.log('API Response:', response);
+          let self = this;
+          self.assetDetailsViewDtoOfPartner = response.data;
+          self.assetDetailsViewDtoOfPartner.displayTime = new Date(response.data.publishedTime);
+          self.assetType = self.assetDetailsViewDtoOfPartner.assetType;
+          self.framePerviewPath();
+          if (!(self.vectorStoreId != undefined && self.vectorStoreId != '')) {
+            this.getPdfByAssetPath();
+          }
         }
       },
       (error) => {
         this.loading = false;
         console.error('API Error:', error);
-      }, () => {
-        this.getPdfByAssetPath();
       }
-
     );
   }
+
+  
+  private framePerviewPath() {
+    this.loadPreview = false;
+    setTimeout(() => {
+      const timestamp = new Date().getTime();
+      const dynamicUrl = encodeURIComponent(`${this.assetDetailsViewDtoOfPartner.assetPath}?v=${timestamp}`);
+      this.assetUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://docs.google.com/gview?url=${dynamicUrl}&embedded=true`
+      );
+      this.loadPreview = true;
+    }, 50); 
+  }
+
+  private getChatHistory() {
+    this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId).subscribe(
+      (response: any) => {
+        this.isPdfUploading = false;
+        this.openHistory = true;
+        this.isLoading = false;
+        if (response.statusCode == 200) {
+          let messages = response.data;
+          messages.forEach((message: any) => {
+            if (message.role === 'assistant') {
+              this.messages.push({ role: 'assistant', content: message.content });
+            }
+            if (message.role === 'user') {
+              this.messages.push({ role: 'user', content: message.content });
+            }
+          });
+          setTimeout(() => {
+            if ($('.scrollable-card').length) {
+              $('.scrollable-card').animate({
+                scrollTop: $('.scrollable-card')[0].scrollHeight
+              }, 500);
+            }
+          }, 500);
+
+        } else {
+          console.log('API Error:', response.errorMessage);
+        }
+      },
+      (error: string) => {
+        this.isPdfUploading = false;
+        console.log('API Error:', error);
+      }
+    );
+  }
+
   errorHandler(event: any) {
     event.target.src = 'assets/images/icon-user-default.png';
   }
 
   deleteUploadedFile() {
-    this.chatGptSettingsService.deleteUploadedFileInOpenAI(this.uploadedFileId).subscribe(
-      (response: any) => {
-      },
-      (error: string) => {
-        console.log('API Error:', error);
-      }
-    );
+    // this.chatGptSettingsService.deleteUploadedFileInOpenAI(this.uploadedFileId).subscribe(
+    //   (response: any) => {
+    //   },
+    //   (error: string) => {
+    //     console.log('API Error:', error);
+    //   }
+    // );
   }
   
   getPdfByAssetPath() {
@@ -281,6 +450,9 @@ export class AiChatManagerComponent implements OnInit {
     this.ngxLoading  = false;
     this.UploadedFile = false;
     this.showEmailModalPopup = false;
+    if (this.uploadedFileId != undefined) {
+      this.deleteUploadedFile();
+    }
   }
 
   toggleAction(){
@@ -293,9 +465,17 @@ export class AiChatManagerComponent implements OnInit {
     let plainText = tempDiv.innerHTML;
     let subject = "";
     let body = "";
-    let subjectStartIndex = plainText.indexOf("<p>Subject:");
+    let subjectStartIndex = -1;
+    let closingTag = "";
+    if (plainText.indexOf("<p>Subject:") !== -1) {
+      subjectStartIndex = plainText.indexOf("<p>Subject:");
+      closingTag = "</p>";
+    } else if (plainText.indexOf("<strong>Subject:") !== -1) {
+      subjectStartIndex = plainText.indexOf("<strong>Subject:");
+      closingTag = "</strong>";
+    }
     if (subjectStartIndex !== -1) {
-      let subjectEndIndex = plainText.indexOf("</p>", subjectStartIndex);
+      let subjectEndIndex = plainText.indexOf(closingTag, subjectStartIndex);
       if (subjectEndIndex !== -1) {
         this.subjectText = plainText.substring(subjectStartIndex + 3, subjectEndIndex)
           .replace("Subject:", "").trim();
@@ -345,7 +525,102 @@ export class AiChatManagerComponent implements OnInit {
       });
     }
   }
+  showAssetPreview(){
+    this.showPreview = true;
+    this.framePerviewPath();
+  }
+  closePreview(){
+    this.showPreview = false;
+    this.zoomLevel = 50;
+  }
+  get scaledWidth(): string {
+    return (this.baseWidth * (this.zoomLevel / 100)) + 'px';
+  }
+  
+  get scaledHeight(): string {
+    return (this.baseHeight * (this.zoomLevel / 100)) + 'px';
+  }
 
+  getSharedAssetsDetailsByFolderId(categoryId: number) {
+    this.loading = true;
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.getAssetDetailsByCategoryId(categoryId,this.isPartnerFolderView).subscribe(
+      (response: any) => {
+        this.loading = false;
+        if (response.statusCode == 200) {
+          let data = response.data;
+          this.folderName = data[0].name;
+          this.folderCreatedOn = new Date(data[0].createdTimeInUTC);
+          this.folderCreatedBy = data[0].createdBy;
+          this.folderFrom = data[0].companyName;
+          this.folderAssetCount = data[0].count;
+          if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
+            this.getPdfByAssetPaths(data);
+          }
+        }
+      },
+      (error) => {
+        this.loading = false;
+        console.error('API Error:', error);
+      }
+    );
+  }
 
+  getPdfByAssetPaths(assetsPath: any[]) {
+    this.ngxLoading = true;
+    const requests = assetsPath.map(path =>
+      this.http.get(path.sharedAssetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), {
+        responseType: 'blob'
+      })
+    );
+    forkJoin(requests).subscribe({
+      next: (responses: Blob[]) => {
+        this.pdfFiles.push(...responses);
+        this.ngxLoading = false;
+        this.getUploadedFileIds();
+      },
+      error: (err) => {
+        console.error('Failed to load all PDFs', err);
+        this.ngxLoading = false;
+      }
+    });
+  }
+
+  getUploadedFileIds() {
+    this.isPdfUploading = true;
+    this.chatGptSettingsService.onUploadFiles(this.pdfFiles, this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        this.isPdfUploading = false;
+        let data = response.data;
+        this.threadId = data.threadId;
+        this.isLoading = false;
+      },
+      (error: string) => {
+        this.isPdfUploading = false;
+        this.isLoading = false;
+        console.log('API Error:', error);
+      }
+    );
+  }
+
+  
+
+  analyzeCallRecordings() {
+    this.ngxLoading = true;
+    this.chatGptSettingsService.analyzeCallRecordings(this.chatGptSettingDTO).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptSettingDTO.threadId = data.threadId;
+          this.chatGptSettingDTO.vectorStoreId = data.vectorStoreId;
+          this.chatGptSettingDTO.totalRecords = data.totalRecords;
+          this.threadId = data.threadId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
 
 }

@@ -16,10 +16,14 @@ declare var $: any;
   providers: [CompanyService, RegularExpressions, CountryNames, HttpRequestLoader,],
 })
 export class AddCompanyComponent implements OnInit {
+  @Input() public contactId: number = 0;
+  @Output() notifyClose = new EventEmitter<string>();
   @Output() closeEvent = new EventEmitter<any>();
   @Input() public actionType: any;
   @Input() public companyId: any;
   @Output() notifySubmitSuccess = new EventEmitter();
+  @Output() emitCompanyId : EventEmitter<any> = new EventEmitter<any>();
+  @Input() id:any;
   customResponse: CustomResponse = new CustomResponse();
   companies: Company[] = [];
   addCompany: Company = new Company();
@@ -43,6 +47,7 @@ export class AddCompanyComponent implements OnInit {
   isCompanyWebsiteValid: boolean = false;
   websiteErrorMessage: any;
   isWebsiteError: boolean = false;
+  isValidMobileNumber: boolean = true;
   constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService, public referenceService: ReferenceService,) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -71,7 +76,7 @@ export class AddCompanyComponent implements OnInit {
       }
     }
   }
-  addCompanyModalClose() {
+  addCompanyModalClose() {  
     $('#addCompanyModal').modal('hide');
     this.closeEvent.emit("0");
   }
@@ -125,7 +130,8 @@ export class AddCompanyComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-          this.notifySubmitSuccess.emit();
+          this.notifySubmitSuccess.emit(response.data);       
+          this.emitCompanyId.emit(response.data);
           this.addCompanyModalClose();
         } else if (response.statusCode == 500) {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
@@ -196,6 +202,14 @@ export class AddCompanyComponent implements OnInit {
       },
       () => { }
     );
+  }
+
+  mobileNumberEventEmitter(event: any) {
+    if (event) {
+      this.addCompany.phone = event.mobileNumber;
+      this.addCompany.countryCode = event.selectedCountry.code;
+      this.isValidMobileNumber = event.isValidMobileNumber;
+    }
   }
 
 }

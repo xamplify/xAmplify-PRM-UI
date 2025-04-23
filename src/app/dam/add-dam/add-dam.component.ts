@@ -90,6 +90,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   deviceService: any;
   showPageSizeAndOrientation: boolean = false;
   isVendorSignatureAdded: boolean = false;
+  showClearOption: boolean = false;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -131,7 +132,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.isAdd = true;
         this.modalTitle = "Add Details";
         this.saveOrUpdateButtonText = "Save";
-        this.listCategories();
+        this.listCategories(false);
         this.httpClient
           .get("assets/config-files/bee-default-asset.json")
           .subscribe((data) => {
@@ -210,7 +211,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.goBack();
         this.referenceService.showSweetAlertServerErrorMessage();
       },()=>{
-        this.listCategories();
+        this.listCategories(true);
       }
     );
   }
@@ -340,19 +341,20 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damPostDto.saveAs = saveAs;
       this.setDampUploadPostData(saveAs);
       this.damUploadPostDto.assetName = this.damPostDto.name;
-      if (saveAs) {
-        this.damUploadPostDto.sendForApproval = false;
-        this.damUploadPostDto.sendForReApproval = false;
-      }
       this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
         (result: any) => {
-          this.hidePopup();
-          this.referenceService.isCreated = true;
-          this.referenceService.assetResponseMessage = result.message;
-          if (this.isFromApprovalModule) {
-            this.goBackToManageApproval();
-          } else {
-            this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+          if (result.statusCode == 200) {
+            this.hidePopup();
+            this.referenceService.isCreated = true;
+            this.referenceService.assetResponseMessage = result.message;
+            if (this.isFromApprovalModule) {
+              this.goBackToManageApproval();
+            } else {
+              this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
+            }
+          } else if (result.statusCode == 401) {
+            this.nameErrorMessage = "Already exists";
+            this.formData.delete("damUploadPostDTO");
           }
           this.modalPopupLoader = false;
         },
@@ -437,14 +439,14 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.modalPopupLoader = false;
     let statusCode = JSON.parse(error["status"]);
     if (statusCode == 409) {
-      this.nameErrorMessage = "Already exists";
-      this.formData.delete("damUploadPostDTO");
+      this.nameErrorMessage = "Already exists"; 
     }else if(statusCode == 400){
       let message = error['error']['message'];
       this.customResponse = new CustomResponse("ERROR",message,true);
     }else {
       this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
     }
+    this.formData.delete("damUploadPostDTO");
   }
 
   saveAs() {
@@ -594,14 +596,14 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
 
   /*****************List Categories*******************/
-  listCategories() {
+  listCategories(isHistoryTemplate: boolean) {
     this.ngxloading = true;
     this.authenticationService
       .getCategoryNamesByUserId(this.loggedInUserId)
       .subscribe(
         (data: any) => {
           this.categoryNames = data.data;
-          if (this.isAdd) {
+          if (this.isAdd && !isHistoryTemplate) {
             let category = this.categoryNames[0];
             this.damPostDto.categoryId = category["id"];
           }
@@ -625,7 +627,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
 showFolderCreatedSuccessMessage(message:any){
    this.showFolderDropDown = false; 
    this.customResponse = new CustomResponse('SUCCESS',message, true);
-   this.listCategories();
+   this.listCategories(false);
 }
 
 /********XNFR-255**********/
@@ -733,6 +735,9 @@ openAddSignatureModalPopUp() {
 }
 setPartnerSignatureRequired(event){
   this.damUploadPostDto.partnerSignatureRequired = event;
+  if(!event){
+    this.setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event);
+}
 }
 
 setVendorSignatureRequired(event){
@@ -743,6 +748,7 @@ setVendorSignatureRequired(event){
     this.setUploadedFileProperties(this.pdfUploadedFile);
   } else {
       this.setUploadedFileProperties(this.pdfFile);
+      this.showClearOption = false;
   }
 }
   notifySignatureSelection(event) {
@@ -751,6 +757,7 @@ setVendorSignatureRequired(event){
       if(!this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
         this.isVendorSignatureAdded = true;
     }
+    this.showClearOption = true;
       this.validateFields();
       this.damUploadPostDto.selectedSignatureImagePath = 'https://aravindu.com/vod/signatures/20268149/vishnu%20signature.png';
       this.getGeoLocationAnalytics((geoLocationDetails: GeoLocationAnalytics) => {
@@ -828,6 +835,7 @@ setVendorSignatureRequired(event){
             this.setUploadedFileProperties(this.pdfUploadedFile);
           } else if (!event && !this.isVendorSignatureAdded)  {
               this.setUploadedFileProperties(this.pdfFile);
+              this.showClearOption = false;
           }
           }
 
@@ -835,7 +843,7 @@ setVendorSignatureRequired(event){
             let self = this;
               swal({
                 title: 'Are you sure?',
-                text: 'The added signatures will be removed form the Pdf',
+                text: 'The added signatures will be removed from the Pdf',
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -853,13 +861,15 @@ setVendorSignatureRequired(event){
           clearSignature(){
             this.pdfUploadedFile =  this.pdfFile;
             this.isVendorSignatureAdded = false;
+            this.showClearOption = false;
+            this.validateFields();
         }
 
         confirmClear() {
           let self = this;
             swal({
               title: 'Are you sure?',
-              text: 'The Signatures will be removed form the Pdf',
+              text: 'The Signatures will be removed from the Pdf',
               type: 'warning',
               showCancelButton: true,
               swalConfirmButtonColor: '#54a7e9',
@@ -871,4 +881,9 @@ setVendorSignatureRequired(event){
               console.log('You clicked on option: ' + dismiss);
             });
         }
+
+        setVendorSignatureRequiredNow(){
+          this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
+        }
+
 }

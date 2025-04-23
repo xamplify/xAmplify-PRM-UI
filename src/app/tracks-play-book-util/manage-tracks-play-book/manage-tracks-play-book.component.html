@@ -123,7 +123,7 @@
                                             <span *ngIf="type == undefined || (type != undefined && type == 'TRACK')"
                                                 class="gridHeader">Track</span>
                                             <span *ngIf="type != undefined && type == 'PLAYBOOK'"
-                                                class="gridHeader">Play Book</span>
+                                                class="gridHeader">Playbook</span>
                                         </th>
                                         <th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
                                             <span class="ui-column-resizer gray"
@@ -131,7 +131,7 @@
                                             <span *ngIf="type == undefined || (type != undefined && type == 'TRACK')"
                                                 class="gridHeader" translate>Track</span>
                                             <span *ngIf="type != undefined && type == 'PLAYBOOK'"
-                                                class="gridHeader">Play Book</span>
+                                                class="gridHeader">Playbook</span>
                                         </th>
                                         <th class="hidden-xs text-center" style="width: 15%;" translate scope="col"
                                             id="border-bottom">Tags</th>
@@ -174,6 +174,13 @@
                                                 <span data-toggle="tooltip" data-placement="top"
                                                     title="{{learningTrack.createdByName}}"> <b>Created By: </b>
                                                     {{learningTrack.createdByName}}
+                                                </span>
+                                            </h6>
+                                            <!-- XNFR-897 -->
+                                            <h6 class="moreipsis" *ngIf="referenceService?.expireDescription(learningTrack.expireDate,tracksModule)">
+                                                <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                                                title="{{referenceService?.expireDescription(learningTrack.expireDate,tracksModule)}}">
+                                                    {{referenceService?.expireDescription(learningTrack?.expireDate,tracksModule)}}
                                                 </span>
                                             </h6>
                                             <!-- XNFR-824 -->
@@ -250,10 +257,13 @@
                                                 </a>
                                                 <a class="custom-icon"
                                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                                    data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : 'Publish'}}"
-                                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                                    data-toggle="tooltip" data-placement="top" 
+                                                    [attr.title]="setTooltipMessage(learningTrack)"
+                                                    [attr.data-original-title]="setTooltipMessage(learningTrack)"
+                                                    (mouseenter)="updateTooltip($event, learningTrack)"
+                                                    (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-share IconCustomization" aria-hidden="true"
-                                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''"></i>
+                                                    [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? 'disabled gray':''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -262,10 +272,10 @@
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
-                                                    data-placement="top" title="View Analytics"
-                                                    (click)="viewAnalytics(learningTrack)">
+                                                    data-placement="top" [title]=" ((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ? 'Not yet published' : 'View Analytics' "
+                                                    (click)="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED )? '':viewAnalytics(learningTrack)" [ngClass]="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ?'disabled-div' : ''">
                                                     <i class="fa fa-line-chart IconCustomization"
-                                                        aria-hidden="true"></i>
+                                                        aria-hidden="true" [ngClass]="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ?'disabled':''"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <!-- XNFR-824 -->
@@ -343,6 +353,13 @@
                                     <b> Created On: </b><app-timestamp [isOnlyDate]="true"
                                         [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
                                 </h6>
+                                <!-- XNFR-897 -->
+                                <h6 class="xamplify-ellipsis GridViewCotent">
+                                    <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                                        title="{{referenceService?.expireDescription(learningTrack.expireDate,tracksModule)}}">
+                                        {{referenceService?.expireDescription(learningTrack?.expireDate, tracksModule)}}
+                                    </span>
+                                </h6>
                                 <!-- XNFR-824 -->
                                 <span *ngIf="isApprovalRequiredForType() && !isPartnerView" class="view-banner" [ngClass]="{
                                     'bgc-green': learningTrack?.approvalStatus === approvalStatus.APPROVED,
@@ -383,10 +400,13 @@
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
-                                        data-toggle="tooltip" data-placement="top" title="{{(!learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') ? 'Requires approval for publishing.' : Publish}}"
-                                        (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
-                                        [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED')) ? 'disabled gray':''">
-                                        <i class="fa fa-share" aria-hidden="true"></i>
+                                        data-toggle="tooltip" data-placement="top" 
+                                        [attr.title]="setTooltipMessage(learningTrack)"
+                                        [attr.data-original-title]="setTooltipMessage(learningTrack)"
+                                        (mouseenter)="updateTooltip($event, learningTrack)"
+                                        (click)="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? '': confirmChangePublish(learningTrack.id, true, learningTrack)"
+                                        [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? 'disabled-div gray':''">
+                                        <i class="fa fa-share" aria-hidden="true" [ngClass]="((isApprovalRequiredForType() && !learningTrack?.createdByAnyApprovalManagerOrApprover && learningTrack?.approvalStatus != 'APPROVED') || (!isApprovalRequiredForType() && learningTrack?.approvalStatus != 'APPROVED') || referenceService?.isAccessToView(learningTrack?.expireDate)) ? 'disabled':''"></i>
                                         <div class="clickicons"></div>
                                     </a>
                                 </div>
@@ -400,9 +420,9 @@
 
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
-                                        data-placement="top" title="View Analytics"
-                                        (click)="viewAnalytics(learningTrack)">
-                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                        data-placement="top" [title]=" ((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ? 'Not yet published' : 'View Analytics' "
+                                        (click)="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED )? '':viewAnalytics(learningTrack)" [ngClass]="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ?'disabled-div' : ''">
+                                        <i class="fa fa-line-chart" aria-hidden="true" [ngClass]="((!learningTrack.published && !isPartnerView && referenceService.isAccessToView(learningTrack.expireDate)) || learningTrack?.approvalStatus === approvalStatus.REJECTED ) ?'disabled' : ''"></i>
                                         <div class="clickicons"></div>
                                     </a>
                                 </div>
@@ -449,7 +469,7 @@
                     <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
                         <strong *ngIf="type == undefined || type == 'TRACK'" translate>No Learning Tracks
                             Found.</strong>
-                        <strong *ngIf="type != undefined && type == 'PLAYBOOK'" translate>No Play Books Found.</strong>
+                        <strong *ngIf="type != undefined && type == 'PLAYBOOK'" translate>No Playbooks Found.</strong>
                     </div>
                 </ng-container>
             </div>

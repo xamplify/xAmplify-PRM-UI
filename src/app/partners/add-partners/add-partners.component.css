@@ -123,7 +123,7 @@ h5 {
   padding: 10px !important;
 }
 .custom-width-modal-popup {
-  width: 69% !important;
+  width: 85% !important; /*** XNFR-938 ****/
 }
 /* 20-06-2023 */
 button.hidden-xs {
@@ -352,4 +352,21 @@ background-color: unset!important;
 .fs-15{
   font-size: 15px;
   font-weight: 600;
+}
+.image-background{
+  background: #fff;
+  border-radius: 10px;
+  object-fit: cover;
+  padding: 5px;
+}
+.align-modal-header{
+  align-items: center;
+  display: flex;
+  justify-content: space-between
+}
+.button_blue.bgcolor-unset.neg_mrg_top4{
+  padding-top: 1px !important;
+}
+span.btn.btn-primary.transition.txt_pd-top3.pdt7{
+  padding-top: 7px !important;
 }

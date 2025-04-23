@@ -1,4 +1,4 @@
-<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !showCompanyCampaigns">
+<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !showCompanyCampaigns && !showAskOliverModalPopup">
   <div class="page-bar mb-height_auto" style="height:48px;">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i>
@@ -84,13 +84,14 @@
                 </p>
               </span> 
               <span *ngIf="selectedContact?.mobileNumber != undefined && selectedContact?.mobileNumber != ''" class="email-id">
-                <p data-toggle="tooltip" data-placement="bottom" title="{{selectedContact?.mobileNumber}}">
-                  <i class="fa fa-phone mr_6 icons_colors"></i>{{selectedContact.mobileNumber}}
-              
+                <p data-toggle="tooltip" data-placement="bottom"
+                  title="{{ validateMobileNumber(selectedContact?.mobileNumber) ? (selectedContact?.mobileNumber + ' - Invalid Mobile Number') : selectedContact?.mobileNumber }}">
+                  <i class="fa fa-phone mr_6 icons_colors"></i>
+                  <span [ngClass]="{'required': validateMobileNumber(selectedContact?.mobileNumber)}" style="font-size:12px;">{{selectedContact.mobileNumber}}</span>
                   <button class="copy-btn" #textMobile value="{{selectedContact?.mobileNumber}}"
                     (click)="copyMobileNumber(textMobile)">
-                    <i *ngIf="isMobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!isMobileNumberCopied"
-                      class="fa fa-clone ml_6" aria-hidden="true"></i></button>
+                    <i *ngIf="isMobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i>
+                    <i *ngIf="!isMobileNumberCopied" class="fa fa-clone ml_6" aria-hidden="true"></i></button>
                 </p>
               </span>
             </div>
@@ -159,7 +160,7 @@
               </div>
               <div class="icon-label">Meeting</div>
             </div>
-            <div class="icon-item" (click)="openAircallDialer()">
+            <div class="icon-item" (click)="openDialNumber()">
               <div class="icon-btns" data-toggle="tooltip" data-placement="top" title="Make a Call">
                 <i class="glyphicon glyphicon-phone"></i>
               </div>
@@ -327,8 +328,7 @@
                 </div>
                 <div *ngIf="showCallsTab" id="call" class="tab-pane fade pt-top">
                   <app-call-activity [contactId]="contactId" [isReloadTab]="isReloadCallTab" [activeCallDetails]="activeCallDetails"
-                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId"
-                    (notifyClose)="reloadCallTab($event)"></app-call-activity>
+                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber" (notifyOliver)="openOliver()"></app-call-activity>
                 </div>
               </div>
               <!-- END -->
@@ -512,6 +512,30 @@
   </div>
 </div>
 
+<div class="modal fade in" id="addSelectContactModalPopup" data-backdrop="static">
+  <div class="modal-dialog popup-width modal-copy mt_125" role="document">
+    <div class="modal-content mSweetalertWid popup-cu-widthalign">
+      <div class="modal-header alert-info modal_header_br">
+        <h4 class="modal-title f-w-600" id="" translate="">Select a Contact to dial</h4>
+      </div>
+      <div class="modal-body">
+        <div class="fc-content mb5">
+          <app-dropdown-loader *ngIf="userListUsersLoader?.isLoading" [text]="'contacts'"></app-dropdown-loader>
+          <app-searchable-dropdown
+            *ngIf="!userListUsersLoader?.isLoading && !customResponse?.isVisible"
+            [searchableDropDownDto]="companyUsersSearchableDropDownDto" [id]="contactId" [disableDropDown]="false"
+            (searchableDropdownEventEmitter)="getSelectedAssignedToUserId($event)">
+          </app-searchable-dropdown>
+        </div>
+      </div>
+      <div class="modal-footer p-10">
+        <button class="btn Btn-Green" type="button" name="Dial" (click)="dialNumber()" [disabled]="!enableDialButton">Dial</button>
+        <button class="btn Btn-Gray" type="button" name="cancel" (click)="closeSelectContactModalPopup()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="contactService.isContactModalPopup && updateContactUser">
   <app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [gdprInput]="gdprInput"
     [totalUsers]="contacts" [contactDetails]="contactAllDetails" [isUpdateUser]="isUpdateUser"
@@ -576,4 +600,5 @@
 <app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
   [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
 
-<app-aircall-dialer *ngIf="showAircallDialer" [isReloadTab]="isReloadCallTab" (notifyClose)="closeCallModalPopup($event)"></app-aircall-dialer>
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact"
+  (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

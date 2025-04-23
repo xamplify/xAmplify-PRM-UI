@@ -1318,12 +1318,15 @@ h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
 /* 11-7-2023 sudha sri */
-.btn-primary,.add_partnerbtn{
+.btn-primary,.add_partnerbtn,.submit-btn,.generate-btn,.btn-submit,.user_guide{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
 }
-.btn-primary:hover,.add_partnerbtn:hover{
+.helpcircle-cu,.guide_text{
+  color: var(--btn-primary-text-color) !important;
+}
+.btn-primary:hover,.add_partnerbtn:hover,.submit-btn:hover,.generate-btn:hover,.btn-submit:hover,.user_guide:hover{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
@@ -1399,10 +1402,6 @@ div#removeborder {
 .help-iconbgadd {
   border: 1px solid var(--top-button-border-color) !important;
 }
-.helpcircle-cu {
-  color: var(---text-color) !important;
-}
-
 /* end */
 
 /* Create Campaign Select Campaign bar bg */
@@ -2506,7 +2505,7 @@ span.filterActiveBg {background-color: #10ad39 !important;}
     border-bottom: 0px !important;
   }
   .clip_mask{
-    bottom: -79px!important;
+    bottom: -90px!important;
   }
 }
 
@@ -2538,12 +2537,109 @@ span.filterActiveBg {background-color: #10ad39 !important;}
 }
 @media only screen and (min-width: 600px) and (max-width: 1024px) {
   .clip_mask{
-      bottom: -68px !important;
+      bottom: -84px !important;
   }
 }
 .modal-header{
   background-color: var(--left-bg-color) !important;
 }
-.modal-title{
+.modal-title,.modal-title b,h4.modal-title[id]{
   color: var(--left-text-color) !important;
 } 
+/* upload asset */
+.files-div,.file-item,.delete_btn{
+  background-color: var(--page-content) !important;
+    border: 1px solid var(--border-color) !important;
+}
+.asset_files{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.drag-text{
+  color: var(---text-color) !important;
+}
+.dropdown-selected,.phone-input-field input,.search-box input{
+  color: var(---text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.dropdown-options-container,.search-box{
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.search-box{
+  border-radius: 10px 10px 0px 0px!important;
+}
+.dropdown-options li{
+  border: 1px solid var(--border-color) !important;
+}
+.dropdown-options li:hover,.dropdown-options li.selected {
+  background-color: var(--div-bg-color) !important;
+}
+/* vendor signature asset */
+.toggle-item,.toggle-items{
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.toggle-label,.help-icon,.pill-toggle label,.signature-btn{
+  color: var(---text-color) !important;
+}
+.pill-toggle,.signature-btn{
+  background-color: var(--div-bg-color) !important;
+  border: 1.3px solid var(--border-color) !important;
+}
+textarea.cke_source {
+  color: #000;
+}
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards{
+  background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.pdf_card,.content-card,.fixed-card{
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  color: var(---text-color) !important;
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+markdown,markdown h1,
+markdown h2,
+markdown h3,
+markdown h4,markdown strong,markdown em ,
+markdown pre,.aligin-para{
+  color: var(---text-color) !important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card,.accordion_card .panel-body{
+  background: var(--div-bg-color) !important;
+}
+.modal-body.oliver-header,.textarea-card,input.form-control.input-lg.oliver-input,select.form-control.oliver-focus{
+  background: var(--div-bg-color) !important;
+}
+.side_bar,.writing-card,.phara-card,
+.oliver_input{
+  background: var(--page-content) !important;
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+  background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(---text-color) !important;
+  border-radius: 8px!important;
+}
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text{
+  color: var(---text-color) !important;
+}
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
+}

@@ -223,6 +223,19 @@ a.social-stats {
   background: #e87e04;
   color: #fff;
 }
+.btn_cancel {
+  margin: 4px 4px;
+  border: 1px solid #9d9ba1;
+  color: #9d9ba1;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 15px;
+  background: transparent;
+}
+.btn_cancel:hover {
+  background: #9d9ba1;
+  color: #fff;
+}
 .margin_b0{
   margin-bottom: 0px!important;
 }
@@ -231,4 +244,43 @@ a.social-stats {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+}
+.icon-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 5px;
+  background: linear-gradient(to right, #007bff, #2068b9);
+  border-radius: 0 8px 0 8px;
+  padding: 7px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transform: translateY(-10px);
+  z-index: 999;
+}
+.custom_block:hover .icon-ribbon {
+  opacity: 1;
+  transform: translateY(0);
+}
+.glyphicon-pencil,.glyphicon-remove {
+font-size: 12px!important;
+color: #000;
+}
+.btn-edit:hover {
+background-color:rgba(255, 255, 255, 0.8) !important;
+transform: scale(1.1); 
+}
+.btn-close:hover {
+  background: #dc3545 !important;
+  color: white !important;
+  transform: scale(1.1); 
+}
+.btn-edit,.btn-close {
+  padding: 3px 8px!important;
+  border-radius: 4px!important;
+  background-color: #eee !important;
+}
+.glyphicon-remove:hover {
+  color: white !important;
 }

@@ -44,6 +44,9 @@ export class ViewDamComponent implements OnInit {
   formData: any = new FormData();
   askAiValue: boolean;
   pdfDoc: any = null;
+	previewContent: boolean = false;
+	assetPath: any;
+	fileType: string;
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
@@ -66,7 +69,17 @@ export class ViewDamComponent implements OnInit {
 
   viewContent(){
 	this.saveGeoLocationAnalytics(this.assetId);
-	this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
+	if (!this.assetDetailsViewDto.beeTemplate) {
+		this.previewContent = true;
+		if(this.assetDetailsViewDto.sharedAssetPath){
+			this.assetPath = this.assetDetailsViewDto.sharedAssetPath;
+		} else {
+			this.assetPath = this.assetDetailsViewDto.assetPath;
+		}
+		this.fileType = this.assetDetailsViewDto.assetType;
+	} else {
+		this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
+	}
   }
 
   closeAssetDetails(){
@@ -169,24 +182,6 @@ export class ViewDamComponent implements OnInit {
 
 	openModelpopup() {
 		this.openSelectDigitalSignatureModalPopUp = true;
-		// this.assetViewLoader = true;
-		// this.signatureService.getExistingSignatures().subscribe(
-		// 	response => {
-		// 		let data = response.data;
-		// 		this.assetViewLoader = false;
-		// 		if (data != undefined) {
-		// 			this.signatureResponseDto = data;
-		// 			if (this.signatureResponseDto.drawSignatureExits || this.signatureResponseDto.typedSignatureExists || this.signatureResponseDto.uploadedSignatureExits) {
-		// 				this.openSelectDigitalSignatureModalPopUp = true;
-		// 			} else {
-		// 				this.openDigitalSignatureModelPopup = true;
-		// 			}
-		// 		} else {
-		// 			this.openDigitalSignatureModelPopup = true;
-		// 		}
-		// 	}, error => {
-		// 		this.assetViewLoader = false;
-		// 	});
 	}
 
 	uploadSignature() {
@@ -295,6 +290,10 @@ export class ViewDamComponent implements OnInit {
 		}).catch(function (error) {
 		  console.error('Error extracting PDF text:', error);
 		});
+	  }
+
+	  closePreview() {
+		this.previewContent = false;
 	  }
 
 }

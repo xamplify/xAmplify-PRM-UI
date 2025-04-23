@@ -66,7 +66,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
     } else if (this.pagination.categoryType == "LEARNING_TRACK") {
       this.titleHeader = "Tracks";
     } else if (this.pagination.categoryType == "PLAY_BOOK") {
-      this.titleHeader = "Play Books";
+      this.titleHeader = "Playbooks";
     }else if(this.pagination.categoryType == "CAMPAIGN"){
       this.titleHeader = "Campaigns";
     }else if(this.pagination.categoryType == "EMAIL_TEMPLATE"){
@@ -274,4 +274,15 @@ getUpdatedItemsCount(event:any){
 onSelect(option: string) {
   this.selectedOption = option;
 }
+
+  AskOliver(categoryId: any) {
+    let url = "";
+    if (this.isPartnerView) {
+      url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+    } else {
+      url = "/home/dam/askAi/view/fg/" + categoryId;
+    }
+    this.referenceService.goToRouter(url)
+  }
+
 }

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomFieldsDto } from '../models/custom-fields-dto';
 import { PicklistValues } from 'app/forms/models/picklist-values';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 declare var $;
 @Component({
   selector: 'app-integration-settings-popup',
@@ -22,7 +23,9 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   canDisableSelect: boolean = false;
   canDisableType: boolean = false;
   selectedPicklistValue: any;
-  constructor() { }
+  leadFieldUpdateLableName: string;
+  leadFieldUpdateTooltip: string;
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     $("#integrationSettingsForm").modal('show');
@@ -58,6 +61,17 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     }
     this.customFields.controllerName = this.customField.controllerName;
     this.customFields.formLookUpDefaultFieldType = this.customField.formLookUpDefaultFieldType;
+    this.customFields.emailNotificationEnabledOnUpdate = this.customField.emailNotificationEnabledOnUpdate;
+    if (this.authenticationService.module.isVendor || this.authenticationService.module.isPrm || this.authenticationService.isVendorTeamMember) {
+      this.leadFieldUpdateLableName = "Notify Partners";
+      this.leadFieldUpdateTooltip = "Notify partners by email when field data is updated.";
+    } else if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminTeamMember) {
+      this.leadFieldUpdateLableName = "Notify Partners/Team Members";
+      this.leadFieldUpdateTooltip = "Notify partners/team members by email when field data is updated.";
+    } else if (this.authenticationService.isMarketingCompany()) {
+      this.leadFieldUpdateLableName = "Notify Team Members";
+      this.leadFieldUpdateTooltip = "Notify team members by email when field data is updated.";
+    }
   }
   ngOnDestroy(){
     $("#integrationSettingsForm").modal('hide');
@@ -147,6 +161,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       if (this.customFields.nonInteractive) {
         this.customField.private = this.customFields.private;
       }
+      this.customField.emailNotificationEnabledOnUpdate = this.customFields.emailNotificationEnabledOnUpdate;
       this.hideIntegrationSettingForm();
     }
   }
@@ -203,6 +218,10 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.canDisableSelect = false;
     }
    }
+
+  onChangeLeadFieldEmailNotificationStatus(event) {
+    this.customFields.emailNotificationEnabledOnUpdate = event;
+  }
 
 }
 

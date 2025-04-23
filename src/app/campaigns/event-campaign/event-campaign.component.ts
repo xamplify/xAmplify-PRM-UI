@@ -264,6 +264,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     isDealLayoutSelected:boolean = false;
     crmErrorMessage:CustomResponse = new CustomResponse();
     readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
+    maxRecipientCountReached: boolean = false;
+    maxRecipientCount: number = 0;
+    restrictRecipientCount: boolean = false;
+    isOrgAdminCompany: boolean = false;
+    
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
@@ -312,7 +317,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         let isVendor = roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.prmRole) > -1;
         this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
         this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
-
+        this.isOrgAdminCompany = (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminTeamMember);
         if (this.isEditCampaign) {
             let selectedListSortOption = {
                 'name': 'Selected Group', 'value': 'selectedList'
@@ -567,7 +572,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.eventCampaign.leadPipelineId = 0;
         this.eventCampaign.dealPipelineId = 0;
         //this.eventCampaign.configurePipelines = !this.eventCampaign.configurePipelines;
-
+        if (this.reDistributeEvent || this.reDistributeEventManage || this.authenticationService.module.isMarketingCompany || (this.isOrgAdminCompany && !this.eventCampaign.channelCampaign)) {
+            this.restrictRecipientCount = true;
+            this.getMaximumContactCountForCampaignLaunch();
+        }
     }
 
     configurePipelines() {
@@ -913,6 +921,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.loadEmailTemplates(this.emailTemplatesPagination);
             this.eventCampaign.configurePipelines = false;
             // this.isValidPipeline = true;
+            this.restrictRecipientCount = this.isOrgAdminCompany ? true : this.restrictRecipientCount;
         } else {
             this.emailTemplatesPagination.throughPartner = true;
             this.eventCampaign.enableCoBrandingLogo = true;
@@ -921,6 +930,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
             this.loadEmailTemplates(this.emailTemplatesPagination);
             // this.checkSalesforceIntegration();
+            this.restrictRecipientCount = this.isOrgAdminCompany ? false : this.restrictRecipientCount;
         }
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)) {
             if (!this.eventCampaign.channelCampaign) {
@@ -1627,6 +1637,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             this.router.navigate(["/home/campaigns/manage"]);
                             this.referenceService.campaignSuccessMessage = launchOption;
                             if (this.isEventUpdate) { this.referenceService.campaignSuccessMessage = "UPDATE"; }
+                        }  else if(response.statusCode == this.properties.CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE) {
+                            const template = this.properties.CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE;
+                            const message = template.replace('{{maxRecipientCount}}', this.maxRecipientCount.toString());
+                            this.referenceService.showSweetAlertErrorMessage(message);
                         } else {
 
                             if (response.statusCode === 1999) {
@@ -2791,12 +2805,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         data => {
                             this.validUsersCount = data['validContactsCount'];
                             this.allUsersCount = data['allContactsCount'];
+                            this.checkRecipientCountLimitReached();
                         },
                         (error: any) => {
                             console.log(error);
                         },
                         () => console.info("MangeContactsComponent ValidateInvalidContacts() finished")
                     )
+            } else {
+                this.maxRecipientCountReached = false;
             }
         } catch (error) {
             console.error(error, "ManageContactsComponent", "removingInvalidUsers()");
@@ -3388,6 +3405,35 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             (result: any) => {
                 self.getMappedDealLayoutIdByLeadLayoutId(result, this.eventCampaign.leadTicketTypeId);
             });
+    }
+
+    /** XNFR-929 **/
+    getMaximumContactCountForCampaignLaunch() {
+        this.loading = true;
+        this.campaignService.getMaximumContactCountForCampaignLaunch(this.loggedInUserId).subscribe(
+        (result: any) => {
+            if (result.statusCode == 200) {
+                this.maxRecipientCount = result.data;
+            } else {
+                this.maxRecipientCount = 0;
+            }
+            this.loading = false;
+        },
+        (error: string) => {
+            this.loading = false;
+        }, ()=>{
+            if (this.reDistributeEventManage && this.validUsersCount == undefined) {
+                this.getValidUsersCount();
+            }
+        })
+    }
+
+    checkRecipientCountLimitReached() {
+        if (this.restrictRecipientCount && this.validUsersCount > this.maxRecipientCount) {
+            this.maxRecipientCountReached = true;
+        } else {
+            this.maxRecipientCountReached = false;
+        }
     }
 
 }

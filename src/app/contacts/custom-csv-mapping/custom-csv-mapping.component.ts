@@ -822,4 +822,11 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  /***** XNFR-762 *****/
+  mobileNumberEventEmitter(event: any, user: User) {
+    user.mobileNumber = event.mobileNumber;
+    user.countryCode = event.selectedCountry.code;
+    user.isValidMobileNumber = event.isValidMobileNumber;
+  }
+
 }

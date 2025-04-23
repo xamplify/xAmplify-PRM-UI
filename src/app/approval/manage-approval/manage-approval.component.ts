@@ -102,6 +102,13 @@ export class ManageApprovalComponent implements OnInit {
   isSelectedAutoApprovalRecords: boolean = false;
   hasAllAuthorityAccess: boolean = false;
   approvalReferenceId: number;
+  assetPreviewProxyPath: any;
+  previewPath: any;
+  previewFileType: any;
+  previewContent: boolean = false;
+  isImageFormat: any;
+  isTextFormat: any;
+  isBeeTemplate: any;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public approveService: ApproveService, public utilService: UtilService, public xtremandLogger: XtremandLogger,
@@ -259,7 +266,7 @@ export class ManageApprovalComponent implements OnInit {
       case 'Track':
         return 'Track';
       case 'PlayBook':
-        return 'Play Book';
+        return 'Playbook';
       default:
         return status;
     }
@@ -279,9 +286,37 @@ export class ManageApprovalComponent implements OnInit {
       const videoUrl = `${prefixurl}/previewVideo/${item.videoId}/${item.id}`;
       this.referenceService.navigateToRouterByViewTypes(videoUrl, 0, undefined, undefined, undefined);
     } else if (item.beeTemplate) {
-      this.referenceService.previewAssetPdfInNewTab(item.id);
+      if ((item.contentPreviewType || item.imageFileType) && item.assetPath != undefined && item.assetPath != null && item.assetPath != '') {
+        if (item.assetProxyPath) {
+          this.assetPreviewProxyPath = item.assetProxyPath + item.assetPath;
+        } else {
+          this.assetPreviewProxyPath = item.assetPath;
+        }
+        this.previewPath = item.assetPath;
+        this.previewFileType = item.slug;
+        this.previewContent = true;
+        this.isImageFormat = item.imageFileType;
+        this.isTextFormat = item.textFileType;
+        this.isBeeTemplate = item.beeTemplate;
+      } else {
+        this.referenceService.previewAssetPdfInNewTab(item.id);
+      }
     } else {
-      this.referenceService.preivewAssetOnNewHost(item.id);
+      if ((item.contentPreviewType || item.imageFileType)) {
+        if (item.assetProxyPath) {
+          this.assetPreviewProxyPath = item.assetProxyPath + item.assetPath;
+        } else {
+          this.assetPreviewProxyPath = item.assetPath;
+        }
+        this.previewPath = item.assetPath;
+        this.previewFileType = item.slug;
+        this.previewContent = true;
+        this.isImageFormat = item.imageFileType;
+        this.isTextFormat = item.textFileType;
+        this.isBeeTemplate = item.beeTemplate;
+      } else {
+        this.referenceService.preivewAssetOnNewHost(item.id);
+      }
     }
   }
 
@@ -813,7 +848,7 @@ export class ManageApprovalComponent implements OnInit {
     if (item.type === 'Track') {
       this.trackOrPlayBookText = "Track";
     } else {
-      this.trackOrPlayBookText = "Play Book";
+      this.trackOrPlayBookText = "Playbook";
     }
     $('#unpublished-modal').modal('show');
   }
@@ -1035,6 +1070,30 @@ export class ManageApprovalComponent implements OnInit {
       return true;
     } else {
       return false;
+    }
+  }
+  /****** XNFR-897 *****/
+  setTooltipMessage(item): string {
+    if (!item.createdByAnyApprovalManagerOrApprover && item.approvalStatus !== 'APPROVED') {
+      return 'Requires approval for publishing.';
+    } else if (this.referenceService.isAccessToView(item.expireDate)) {
+      return `${item.type === 'Track' ? "Track" : "Playbook"} cannot be published as the end date has expired.`;
+    } else {
+      return  'Publish';
+    }
+  }
+  updateTooltip(event:any,item: any) {
+    const tooltipMessage = this.setTooltipMessage(item);
+    const element = $(event.target).closest('a');
+    element.attr('data-original-title', tooltipMessage).tooltip('fixTitle').tooltip('show');
+  }
+
+  closePreview() {
+    this.previewContent = false;
+    this.previewPath = null;
+    const objElement = document.getElementById('preview-object');
+    if (objElement) {
+      objElement.remove();
     }
   }
 

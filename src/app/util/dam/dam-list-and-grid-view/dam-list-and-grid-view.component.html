@@ -1,6 +1,6 @@
 <app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
 	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded 
-		&& !isEditVideo && !isPreviewVideo">
+		&& !isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled">
 </app-content-module-status-analytics>
 
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
@@ -10,7 +10,7 @@
 <div *ngIf="isEditVideo || isPreviewVideo">
 	<app-modal-popup-loader></app-modal-popup-loader>
 </div>
-<div class="row" *ngIf="!isEditVideo && !isPreviewVideo">
+<div class="row" *ngIf="!isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled">
 	<div class="col-md-12">
 		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0 light_bg_removal remove_space">
 			<!--List View / Grid View-->
@@ -120,6 +120,9 @@
 
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
+												<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"
+												class="view-banner" style="margin-left: 3px;">Digital Sign Enabled
+											</span>
 												<!---XNFR-255-->
 												<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 													<span class="view-banner-white-labeled mb5 G ListLabelSpacings">White-Labeled</span>
@@ -205,8 +208,8 @@
 																</a>
 															</ng-container>
 															<!--Preview-->
-															<a class="custom-icon"	*ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(asset)">
-																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview" (click)="(asset.contentPreviewType || asset.imageFileType)? preview(asset) : ''">
+																<i class="fa fa-eye IconCustomization" [ngClass]="asset.contentPreviewType || asset.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
 															<!--Popup-->
@@ -226,7 +229,7 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon" *ngIf="isPartnerView  && (authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596')" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+															<a class ="oliveIcon" *ngIf="isPartnerView  && authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
@@ -238,7 +241,11 @@
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
-															
+															<a class ="oliveIcon mr5" *ngIf="!isPartnerView && authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+																<div class="oliveBackground">
+																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+																</div>
+															</a>
 															<!--Delete-->
 															<a class="custom-icon" *ngIf="!isPartnerView && asset?.delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' :confirmDelete(asset)">
 																<i class="fa fa-trash-o trashIconCustomization" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''" aria-hidden="true"></i>
@@ -353,6 +360,8 @@
 																				'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 																			{{getApprovalStatusText(asset.approvalStatus)}}
 																		</span>
+																		<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"  class="view-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
 																		<ng-container
 																			*ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 																			<span
@@ -559,7 +568,8 @@
 													'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 												{{getApprovalStatusText(asset.approvalStatus)}}
 											</span>
-
+											<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)" class="view-banner digital-sign-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
 										</div>
 										<h6 class="xamplify-ellipsis GridViewCotent pt10">
 											<span *ngIf="isPartnerView"> <b>Published On: </b></span>
@@ -595,7 +605,7 @@
 											(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 											(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
 											(assetGridViewCommentStatusHistoryEmitter)="showCommentsAndHistoryModalPopup($event)"
-											(assetGridViewRefreshListEmitter)="refreshList()">
+											(assetGridViewRefreshListEmitter)="refreshList()" (assetGridViewAssetPreviewEmitter)="preview($event)">
 										</app-asset-grid-view-actions>
 									</div>
 								</div>
@@ -764,9 +774,9 @@
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
 	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'" [criteria] = "criteria"
-		[isWhiteLabeledAsset]="isWhiteLabeledAsset"
+		[isWhiteLabeledAsset]="isWhiteLabeledAsset" [criterias] = "existingCriterias" [fromDateFilter]="fromDateFilter"
 		[whiteLableContentSharedByVendorCompanies]="whiteLableContentSharedByVendorCompanies" [fileTypes]="fileTypes"
-		(filterConditionsEmitter)="assetsFilter($event)"
+		[toDateFilter]="toDateFilter" (filterConditionsEmitter)="assetsFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"
 		(cancelSegmentationRowEmitter)="cancelSegmentationRowEmitter($event)"></app-custom-ui-filter>
 </ng-template>
@@ -783,3 +793,10 @@
 	(closeModalPopup)="closeCommentsAndHistoryModalPopup()"
 	(closeModalPopupAndRefresh)="closeCommentsAndHistoryModalPopupAndRefreshList($event)">
 </app-content-status-history-modal-popup>
+
+
+<app-preview-content *ngIf="previewContent && !isOliverCalled" [previewPath]="proxyAssetPath" [fileType]="fileType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
+	(notifyClose)="closePreview()"></app-preview-content>
+	<app-ai-chat-manager *ngIf="isOliverCalled" [asset]="SendAssetToOliver"
+	(notifyParent)="closeAskAi($event)"></app-ai-chat-manager>
+

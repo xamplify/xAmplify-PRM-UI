@@ -29,12 +29,13 @@
                 <div class="flex">
                   <input type="email"
                     [ngClass]="isSalesforceAsActiveCRM ? 'form-control padding-mobile placeholder-bg-color custom-email':'form-control padding-mobile placeholder-bg-color email-input'"
-                    id="email1" (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)"
-                    [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Email"
-                    autocomplete="off" aria-autocomplete="none" maxlength="250">
+                    id="email1" (blur)="checkingEmailPattern(addContactuser.emailId)"
+                    (input)="validateEmail(addContactuser.emailId)" [(ngModel)]="addContactuser.emailId"
+                    [ngModelOptions]="{standalone: true}" placeholder="Email" autocomplete="off"
+                    aria-autocomplete="none" maxlength="250">
                   <button *ngIf="isSalesforceAsActiveCRM" class="btn btn-primary customAlign" [disabled]="!isValidEmail"
                     data-toggle="tooltip" data-placement="bottom" title="Click here to fetch details"
-                    (click)="fetchUserDetailsFromSalesForce(addContactuser.emailId)" type="button">Next<i
+                    (click)="fetchUserDetailsFromSalesForce(addContactuser.emailId)" type="button">Fetch<i
                       class="fa fa-arrow-right ml5" aria-hidden="true"></i></button>
                 </div>
                 <div *ngIf="!isSalesforceAsActiveCRM" class="textCss"></div>
@@ -43,7 +44,7 @@
                 <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
               </div>
             </div>
-            <div [ngClass]="canBlurDiv ? 'blur-content':''"  id="blur-content-div">
+            <div [ngClass]="canBlurDiv ? 'blur-content':''" id="blur-content-div">
               <div class="form-group mrg0" *ngIf="isPartner && !isAssignLeads">
                 <label class="control-label col-xs-2 col-sm-2" for="company"
                   style="color: #00bcd4; right: 11px !important">
@@ -59,7 +60,7 @@
                   <ng-container *ngIf="checkingContactTypeName != 'Contact'">
                     <input type="company" style="border: none !important"
                       class="form-control padding-mobile placeholder-bg-color" id="company"
-                      [(ngModel)]="addContactuser.contactCompany"
+                      [(ngModel)]="addContactuser.contactCompany" 
                       (input)="contactCompanyChecking(addContactuser.contactCompany)"
                       [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
                   </ng-container>
@@ -67,7 +68,7 @@
                   <div class="textCss"></div>
                 </div>
               </div>
-
+              
               <!--First Name & Last Name-->
               <div class="form-group mrg0">
                 <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue"></label>
@@ -126,32 +127,37 @@
                 <label class="control-label col-xs-2 col-sm-2" for="company"
                   style="color: #00bcd4; right: 11px !important">
                 </label>
-                <div class="form-group col-xs-10 col-sm-10 mrg0">
+                <div class="form-group col-xs-10 col-sm-9 mrg0">
                   <ng-container *ngIf="checkingContactTypeName == 'Contact'">
                     <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto"
-                      [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
-                      (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
-                  </ng-container>
-
-
+                      [id]="addContactuser.contactCompanyId" [disableDropDown]="false" [isFromContacts]="'true'"
+                      (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>              
+                      <button *ngIf="showAddButton" class="btn btn-primary customAlign plus_align" id="addContactuser" (click)="openPopup(addContactuser)"
+                      data-toggle="tooltip"  data-placement="bottom" title="Add a Company" data-toggle="tooltip">    
+                         <i class="fa fa-plus" aria-hidden="true"></i>
+                     </button>
+                    </ng-container>
+                    
+                   
                   <ng-container *ngIf="checkingContactTypeName != 'Contact'">
                     <input type="company" style="border: none !important"
-                      class="form-control padding-mobile placeholder-bg-color" id="company"
-                      [(ngModel)]="addContactuser.contactCompany"
+                      class="form-control padding-mobile placeholder-bg-color"
+                      [(ngModel)]="addContactuser.contactCompany" 
                       (input)="contactCompanyChecking(addContactuser.contactCompany)"
                       [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
                     <div class="textCss"></div>
-
+                    
                   </ng-container>
                 </div>
               </div>
+              
               <ng-container *ngIf="isPartner && isUpdateUser && !isAssignLeads">
                 <!---Contacts Limit------->
                 <div class="form-group mrg0" *ngIf="authenticationService.contactsCount">
                   <label class="control-label col-xs-2 col-sm-2" for="company"
                     style="color: #00bcd4; right: 11px !important">
-                    <span class="star">  </span>
-                  </label> 
+                    <span class="star"> </span>
+                  </label>
                   <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
                     <input type="number" min="0" style="border: none !important"
                       class="form-control padding-mobile placeholder-bg-color" id="contactsLimit"
@@ -174,7 +180,8 @@
                       [(ngModel)]="addContactuser.teamMemberGroupId" [ngModelOptions]="{standalone: true}"
                       placeholder="Select Team Member Group">
                       <option *ngFor="let teamMemberGroup of teamMemberGroups" [value]="teamMemberGroup.id">
-                        {{ teamMemberGroup.name !== '--Please Select--' ?  teamMemberGroup.name +'(' + teamMemberGroup?.teamMembersCount + ')' : teamMemberGroup.name }}</option>
+                        {{ teamMemberGroup.name !== '--Please Select--' ? teamMemberGroup.name +'(' +
+                        teamMemberGroup?.teamMembersCount + ')' : teamMemberGroup.name }}</option>
                       <!-- </option> -->
                     </select>
                     <p *ngIf="addContactuser?.selectedTeamMembersCount>0 && !isTeamMemberPartnerList"
@@ -345,12 +352,9 @@
               <div class="form-group mrg0">
                 <label class="control-label col-xs-2 col-sm-2" for="phone" style="color: green">
                 </label>
-                <div class="col-xs-10 col-sm-10 p0 px_0" id="mobile-field-width">
-                  <input type="email" style="border: none !important"
-                    class="form-control padding-mobile placeholder-bg-color" [(ngModel)]="addContactuser.mobileNumber"
-                    [ngModelOptions]="{standalone: true}" placeholder="Enter your mobile no" maxlength="20">
-                  <div class="textCss"></div>
-                </div>
+                <app-country-phone-input [mobileNumber]="addContactuser.mobileNumber" [countryCode]="addContactuser.countryCode"
+                  [placeholder]="'Enter your mobile no'" [maxlength]="15" (mobileNumberEventEmitter)="mobileNumberEventEmitter($event)">
+                </app-country-phone-input>
               </div>
             </div>
 
@@ -359,8 +363,9 @@
               <div class="form-group mrg0" *ngFor="let flexiField of flexiFieldsRequestAndResponseDto">
                 <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
                 <div class="col-xs-10 col-sm-10 p0 px_0" id="flexiFields">
-                  <input type="text" style="border: none !important; margin-top: 15px;" class="form-control placeholder-bg-color"
-                    [(ngModel)]="flexiField.fieldValue" [ngModelOptions]="{standalone: true}" [placeholder]="flexiField.fieldName" maxlength="55">
+                  <input type="text" style="border: none !important; margin-top: 15px;"
+                    class="form-control placeholder-bg-color" [(ngModel)]="flexiField.fieldValue"
+                    [ngModelOptions]="{standalone: true}" [placeholder]="flexiField.fieldName" maxlength="55">
                   <div class="textCss"></div>
                 </div>
               </div>
@@ -372,14 +377,14 @@
         <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addContactModalClose()"
           translate>Cancel</button>
         <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
-          [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()"
-          translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
+          [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0) || !isValidMobileNumber"
+          (click)="addRow()" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
         <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
-          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0) || !isValidMobileNumber"
           (click)="addEditContactRow()" translate><span
             class="btn Btn-Green transition txt_pd-top3">Save</span></button>
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
-          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0) || !isValidMobileNumber"
           (click)="updateUser()" data-dismiss="modal" translate><span
             class="btn Btn-Green transition txt_pd-top3">Update</span></button>
 
@@ -389,14 +394,14 @@
           translate>Cancel</button>
         <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
           [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''" (click)="addRow()" translate><span
+          ||addContactuser.contactCompany == '' || !isValidMobileNumber" (click)="addRow()" translate><span
             class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
           [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''" (click)="addEditContactRow()" translate><span
+          ||addContactuser.contactCompany == '' || !isValidMobileNumber" (click)="addEditContactRow()" translate><span
             class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset" [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''" (click)="updateUser()" translate><span
+          ||addContactuser.contactCompany == '' || !isValidMobileNumber" (click)="updateUser()" translate><span
             class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>
@@ -407,3 +412,4 @@
 <app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="addContactuser"
   [openInModalPopup]="true"
   (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+  <app-add-company *ngIf="companyPop" [actionType]="actionType" (emitCompanyId)="onCompanyIdEmitted($event)" [contactId]="contactId" (closeEvent)="closeCompanyPopup($event)" (notifySubmitSuccess)="onCompanyAdded($event)"></app-add-company>

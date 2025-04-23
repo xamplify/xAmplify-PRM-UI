@@ -12,6 +12,7 @@ import { UtilService } from 'app/core/services/util.service';
 import { ActivatedRoute } from '@angular/router';
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 
+declare var $: any;
 @Component({
     selector: 'app-email-stats-analytics',
     templateUrl: './email-stats-analytics.component.html',
@@ -40,7 +41,9 @@ export class EmailStatsAnalyticsComponent implements OnInit {
         this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.getCount();
     }
-
+    ngOnDestroy(){
+        $('#emailClickedModal').modal('hide');
+      }
     getCount() {
         this.referenceService.loading(this.emailStatsLoader, true);
         this.dashboardService.getEmailStats(this.dashboardAnalyticsDto)

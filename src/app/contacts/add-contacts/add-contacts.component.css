@@ -61,25 +61,6 @@
     text-align: center;
   }
 }
-/* @media screen and (max-width: 768px) {
-  .cloud-items{
-    position: relative;
-    font-size: 19px;
-    top: -82px !important;
-    left: 100px !important;
-  }
-}
-.cloud-items {
-  position: relative;
-  font-size: 19px;
-  top: -81px;
-  left: 68px;
-} */
-/* @media only screen and (max-width: 1024px) and (min-width: 601px) {
-  .cloud-css {
-    left: 100px !important;
-  } 
-}*/
 .csv-list-name {
   font-size: 15px;
   color: #565555;
@@ -139,44 +120,6 @@ i.fa.fa-file-excel-o.IconTopMargin {
 @media only screen and (min-width: 1079px) and (max-width: 1150px) {
   .scroll-top-abj {padding-top: 15px;}
 }
-/* gericon */
-/* @media only screen and (min-width: 800px) and (max-width: 969px) {
-  #SgearIcon{left: 106px !important;}
-  #GgearIcon{left: 106px !important;}
-  #ZgearIcon{left: 106px !important;}
-} 
-
- @media only screen and (min-width: 969px) and (max-width: 992px) {
-  #SgearIcon{left: 125px !important;}
-  #GgearIcon{left: 125px !important;}
-  #ZgearIcon{left: 125px !important;}
-} 
-@media only screen and (min-width: 992px) and (max-width: 1032px) {
-  #SgearIcon{left: 110px !important;}
-  #GgearIcon{left: 110px !important;}
-  #ZgearIcon{left: 110px !important;}
-} */
-/* @media only screen and (min-width: 1032px) and (max-width: 1072px) {.cloud-items{left: 110px !important;}}
-@media only screen and (min-width: 1072px) and (max-width: 1125px) {.cloud-items{left: 115px !important;}}
-@media only screen and (min-width: 1125px) and (max-width: 1170px) {.cloud-items{left: 124px !important;}}
-@media only screen and (min-width: 1170px) and (max-width: 1199px) {.cloud-items{left: 128px !important;}}
-@media only screen and (min-width: 1500px) and (max-width: 1550px) {.cloud-items{left: 74px !important;}}
-@media only screen and (min-width: 1550px) and (max-width: 1600px) {.cloud-items{left: 76px !important;}}
-@media only screen and (min-width: 1600px) and (max-width: 1650px) {.cloud-items{left: 78px !important;}}
-@media only screen and (min-width: 1650px) and (max-width: 1700px) {.cloud-items{left: 80px !important;}}
-@media only screen and (min-width: 1700px) and (max-width: 1750px) {.cloud-items{left: 82px !important;}}
-@media only screen and (min-width: 1750px) and (max-width: 1880px) {.cloud-items{left: 84px !important;}}
-@media only screen and (min-width: 1780px) and (max-width: 1830px) {.cloud-items{left: 86px !important;}}
-@media only screen and (min-width: 1830px) and (max-width: 1882px) {.cloud-items{left: 87px !important;}}
-@media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}} */
-
-
-@media only screen and (min-width: 992px) and (max-width: 1121px) {
-  h4.fontSizeDec {
-    font-size: 10px;
-    padding-top: 5px;
-  }
-}
 /* save btn */
 .ml-3{
  margin-left: 3px;
@@ -208,6 +151,9 @@ i.fa.fa-file-excel-o.IconTopMargin {
 .fs_16{
   font-size: 14px!important;
 }
+.partner_images{
+  font-size: 14px!important;
+}
 }
 .cards_align{
   padding: 5px 8px;
@@ -217,7 +163,7 @@ i.fa.fa-file-excel-o.IconTopMargin {
   background-color: #f2dede !important;
   border-radius: 3px !important;
   color: #a94442 !important;
-  
+ 
 }
 .alert {
   margin: 10px 0 !important;
@@ -296,10 +242,10 @@ background-color: unset!important;
 }
 
 .cloud_platforms_paddings {
-  margin-top: 23px;
+  margin-top: 19px;
   position: relative;
   background-color: #ffff;
-  padding: 18px;
+  padding: 20px 18px;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   z-index: 999;
@@ -332,13 +278,13 @@ background-color: unset!important;
   .cloud_platforms_paddings {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-  } 
+  }
 }
 @media only screen and (min-width: 600px) and (max-width: 959.98px){
   .cloud_platforms_paddings {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-  } 
+  }
 }
 @media only screen and (max-width: 599.98px){
   .cloud_platforms_paddings {
@@ -346,13 +292,13 @@ background-color: unset!important;
       grid-template-columns: repeat(3, 1fr);
       margin: 0px;
     }
-  
+ 
     .card_p0 {
       padding-right: 15px !important;
       padding-left: 15px !important;
       margin-top: 10px;
     }
-  
+ 
     .clip_mask {
       margin-top: 10px;
     }
@@ -360,10 +306,10 @@ background-color: unset!important;
 @media only screen and (min-width:760px){
 .clip_mask{
   position: absolute;
-  bottom: -77px;
+  bottom: -87px;
   border-bottom: 0 !important;
   border-radius: 10px 10px 0px 0px !important;
-  padding: 10px 10px !important;
+  padding: 18px 10px 14px 10px !important;
   z-index: 999;
 }
 .clip_mask::before{
@@ -386,8 +332,11 @@ background-color: unset!important;
     border-bottom-left-radius: 26%;
     box-shadow: -15px 15px 0 #fff;
 }
+.partner_images{
+  font-size: 18px;
 }
-@media only screen and (min-width: 601px) and (max-width: 1190px) { 
+}
+@media only screen and (min-width: 601px) and (max-width: 1190px) {
 .tab-view-img{
   width: 150px;
   height: 150px;
@@ -397,6 +346,7 @@ background-color: unset!important;
 .contact-card{
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .upload_bgcolor{
   display: flex;
@@ -415,16 +365,31 @@ p.mb0.mt5 {
   font-size: 18px;
   font-weight: 500;
 }
-@media only screen and (min-width: 600px) and (max-width:1024px){
-  .upload_bgcolor{
+@media only screen and (min-width: 600px) and (max-width:1024px) {
+  .upload_bgcolor {
     font-size: 12px;
   }
   p.mb0.mt5 {
     font-size: 8px;
   }
-}
-@media only screen and (min-width: 600px) and (max-width:1024px){
-  .clip_mask{
-    bottom: -68px!important;
+  .clip_mask {
+    bottom: -82px ;
   }
+}
+.image-background{
+  background: #fff;
+  border-radius: 10px;
+  object-fit: cover;
+  padding: 5px;
+}
+.button_blue.bgcolor-unset.neg_mrg_top4{
+  padding-top: 1px !important;
+}
+span.btn.btn-primary.transition.txt_pd-top3.pdt7{
+  padding-top: 7px !important;
+}
+.align-modal-header{
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
 }

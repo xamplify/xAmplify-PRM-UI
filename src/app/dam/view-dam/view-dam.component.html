@@ -18,7 +18,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="row">
+	<div class="row" *ngIf="!previewContent">
 		<div class="col-md-12">
 			<div class="portlet light clearfix minhsfp">
 				<div class="portlet-title bbnone" style="border-bottom: none;">
@@ -45,7 +45,7 @@
 								<div class="portlet-title port-heading">
 									<div class="caption">Overview</div>
 									<div
-										*ngIf="(authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596')">
+										*ngIf="authenticationService?.isOliverActive">
 										<button class="btn btn-pdf pull-right caption oliveButton" (click)="AskAi()">
 											<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveimgButton">
 											<span>Ask Oliver</span>
@@ -74,7 +74,7 @@
 								<div class="grid-box zero-margin" style="min-height: 200px;">
 									<img class="img-class mxv" src="{{assetDetailsViewDto?.thumbnailPath}}" alt="No Image Found"><br> 
 									<!--View-->
-									<button *ngIf="!loadVideoPlayer" class="button_blue bgcolor-unset"  (click)="viewContent()">
+									<button *ngIf="!loadVideoPlayer && (this.assetDetailsViewDto.contentPreviewType || this.assetDetailsViewDto.imageFileType)" class="button_blue bgcolor-unset"  (click)="viewContent()">
 										<span class="btn btn-primary transition txt_pd-top3">View</span>
 									</button>
 									<!-- <button *ngIf="!loadVideoPlayer" class="button_blue bgcolor-unset"  (click)="AskAi()">
@@ -104,6 +104,15 @@
 			</div>
 		</div>
 	</div>
+	<!-- <div *ngIf="previewContent">
+		<a (click)="previewContent = false" class="pull-right close-circle track_cross_align mb5">
+			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;position: relative;
+			top: 4px;" aria-hidden="true"></span></a>
+		<object [data]="assetPath" width="100%" height="600px" style="border:none;">
+		</object>
+	</div> -->
+	<app-preview-content *ngIf="previewContent" [previewPath]="assetPath" [fileType]="fileType"
+		(notifyClose)="closePreview()" [isImageFormat]="this.assetDetailsViewDto.imageFileType" [isTextFormat]="this.assetDetailsViewDto.textFileType"></app-preview-content>
 </div>
 <ng-container *ngIf="download">
 	<app-download-asset-popup [asset]="selectedAsset" [isPartnerView]="true"

@@ -221,6 +221,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     connectWiseCurrentUser: string;
     connectWiseLoading: boolean = false;
     contactsCompanyListSync: boolean = false;
+    connectWiseErrorMessage: boolean = false;
+    hideCSVInNotes: boolean =  false;
 
     haloPSAImageBlur: boolean = false;
     haloPSAImageNormal: boolean = false;
@@ -535,9 +537,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
 
-    validateEmailAddress(emailId: string) {
+    validateEmailAddress(emailId: string | null | undefined) {
+        if(!emailId || typeof emailId !== "string" || emailId.trim() === ""){
+            console.error("Invalid email ID:", emailId);
+            return false;
+        } else{
         return this.referenceService.validateEmailId(emailId);
     }
+}
     validateName(name: string) {
         return (name.trim().length > 0);
     }
@@ -608,6 +615,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     saveContactsWithPermission() {
+
         $('#tcModal').modal('hide');
         if (this.contactOption == 'oneAtTime') {
             this.oneAtTimeSaveAfterGotPermition();
@@ -1212,6 +1220,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     googleContacts() {
+        this.hideCSVInNotes = true;
         try {
             if (this.loggedInThroughVanityUrl) {
                 this.googleVanityAuthentication();
@@ -2142,6 +2151,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingPopupValues() {
+        this.hideCSVInNotes = true;
         this.contactType = $("select.opts:visible option:selected ").val();
         if (this.contactType != "") {
             $("button#salesforce_save_button").prop('disabled', false);
@@ -2154,6 +2164,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingZohoPopupValues() {
+        this.hideCSVInNotes = true;
         let self = this;
         self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
         if (this.selectedZohoDropDown == "DEFAULT") {
@@ -3302,6 +3313,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getMarketoContacts() {
+        this.hideCSVInNotes = true;
         this.loadingMarketo = true;
         const obj = {
             userId: this.authenticationService.getUserId(),
@@ -3529,6 +3541,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     //XNFR-230
     checkingPipedriveContactsAuthentication() {
+        this.hideCSVInNotes = true;
         if (this.selectedAddContactsOption == 8) {
             this.integrationService.checkConfigurationByType('pipedrive').subscribe(data => {
                 let response = data;
@@ -3557,8 +3570,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 let response = data;
                 if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                     this.xtremandLogger.info("isAuthorize true");
-                    this.getConnectWiseContacts();
-                    // this.showConnectWiseModal();
+                    // this.getConnectWiseContacts();
+                    this.showConnectWiseModal();
                 }
                 else {
                     this.showConnectWisePreSettingsForm();
@@ -3693,6 +3706,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getHubSpotData() {
+        this.hideCSVInNotes = true;
         $("button#salesforce_save_button").prop('disabled', true);
         if (this.contactType === "contacts") {
             this.getHubSpotContacts();
@@ -3788,7 +3802,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.socialContact.contacts = this.validateMarketoContacts(this.socialContactUsers);
             this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
             this.socialContact.listName = this.model.contactListName;
-            if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
+            this.socialContact.externalListId = this.connectWiseSelectContactListOption;
+            if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.connectWiseSelectContactListOption != '') {
                 if (this.socialContactUsers.length > 0) {
                     this.askForPermission(type + 'Contacts')
                 } else
@@ -4571,6 +4586,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getConnectWiseData() {
+        this.hideCSVInNotes = true;
         $("button#salesforce_save_button").prop('disabled', true);
         if (this.contactType === "contacts") {
             this.getConnectWiseContacts();
@@ -4627,10 +4643,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     frameConnectWisePreview(response: any) {
-        if (!response.contacts) {
-            this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+        this.connectWiseErrorMessage = false;
+        if (!response.contacts || response.contacts.length === 0) {
+            this.connectWiseErrorMessage = true;
+            this.customResponse = new CustomResponse('ERROR', this.properties.NO_DATA_FOUND, true);
         } else {
             this.socialContactUsers = [];
+            this.model.contactListName = this.hubSpotContactListName;
+            this.validateContactName(this.model.contactListName);
             for (var i = 0; i < response.contacts.length; i++) {
                 let socialContact = new SocialContact();
                 socialContact = response.contacts[i];
@@ -4701,7 +4721,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         if (this.assignLeads) {
             this.userUserListWrapper.userList.assignedLeadsList = true;
         }
-        this.userUserListWrapper.userList.externalListId = this.hubSpotSelectContactListOption;
+
+        if(type === 'HUBSPOT')
+        {
+            this.userUserListWrapper.userList.externalListId = this.hubSpotSelectContactListOption;
+        }else if(type === 'connectWise'){
+            this.userUserListWrapper.userList.externalListId = this.connectWiseSelectContactListOption;
+        }
         this.saveList(this.userUserListWrapper);
     }
 
@@ -4777,6 +4803,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingHaloPSAContactsAuthentication() {
+        this.hideCSVInNotes = true;
         if (this.selectedAddContactsOption == 8) {
             this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
                 let response = data;

@@ -73,11 +73,11 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.type = "track";
       this.moduleType = TracksPlayBookType[TracksPlayBookType.TRACK];
     }else{
-      this.headerTitle = this.isPartnerView ? 'Shared Play Books':'Play Books';
-      this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared play books' : 'Click here to manage play books'
-      this.addButtonText = "Add Play Books";
-      this.titleHeader = "Play Books";
-      this.type = "play book";
+      this.headerTitle = this.isPartnerView ? 'Shared Playbooks':'Playbooks';
+      this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared playbooks' : 'Click here to manage playbooks'
+      this.addButtonText = "Add Playbooks";
+      this.titleHeader = "Playbooks";
+      this.type = "playbook";
       this.moduleType = TracksPlayBookType[TracksPlayBookType.PLAYBOOK];
     }
     this.listLearningTracks(this.pagination);
@@ -302,7 +302,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       (response: any) => {
         if (response.statusCode == 200) {
           /****XBI-2589***/
-          let trackOrPlayBook =  this.tracks ? "Track":"Play Book";
+          let trackOrPlayBook =  this.tracks ? "Track":"Playbook";
           let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
           this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);
@@ -373,7 +373,20 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         : false;
     }
   }
-
-  
+  /*** XNFR-897 ***/
+  setTooltipMessage(learningTrack): string {
+    if (!learningTrack.createdByAnyApprovalManagerOrApprover && learningTrack.approvalStatus !== 'APPROVED') {
+      return 'Requires approval for publishing.';
+    } else if (this.referenceService.isAccessToView(learningTrack.expireDate)) {
+      return `${this.tracks ? "Track" : "Playbook"} cannot be published as the end date has expired.`;
+    } else {
+      return 'Publish';
+    }
+  }
+  updateTooltip(event: any, learningTrack: any) {
+    const tooltipMessage = this.setTooltipMessage(learningTrack);
+    const element = $(event.target).closest('a');
+    element.attr('data-original-title', tooltipMessage).tooltip('fixTitle').tooltip('show');
+  }  
 
 }

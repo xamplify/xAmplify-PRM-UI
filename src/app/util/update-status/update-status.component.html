@@ -1,6 +1,6 @@
 <!--XNFR-726-->
 <ng-container *ngIf="(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember)))">
-    <div class="page-content">
+    <div [ngClass]="isShowPageContent ? '' : 'page-content'">
         <ngx-loading [show]="loading"></ngx-loading>
         <div class="page-bar rounded-0 margin-bottom-10px">
             <ul class="page-breadcrumb">
@@ -34,8 +34,10 @@
                     </li>
                 </ng-container>
             </ul>
-            <button *ngIf="fromAi"class="close-circle mr5 mt5" (click)="backAi()">
-                <i aria-hidden="true" class="fa fa-times" style="margin-top: 0px;"></i></button>
+            <!-- <button *ngIf="fromAi"class="close-circle mr5 mt5" (click)="backAi()">
+                <i aria-hidden="true" class="fa fa-times" style="margin-top: 0px;"></i></button> -->
+                <button *ngIf="fromAi" aria-label="Close" class="close-circle close_social mr5 mb5 mt5" data-dismiss="modal" type="button" (click)="backAi()">
+                    <i  aria-hidden="true" class="fa fa-times" style="position: absolute;margin-top: -7px; padding-left: 2px;"></i></button>
             <div *ngIf="location.includes('/campaigns/social')" id="folder-margin-xamp">
                 <button class="button_blue bgcolor-unset pos_pd_top_rgt1 btn_for_only_themes" id="right" style="margin-top: 0px;"
                     (click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition">Create
@@ -662,11 +664,17 @@
                     <div class="col-xs-12 m0 p0" id="post-actions-button-group">
                         <div class="col-xs-12 col-sm-6 pr10 pull-right">
                             <div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
-                                <button type="button" class="btn btn-primary rounded-0"
-                                    (click)="shareNow()">{{buttonText}}</button>
+                                <button  type="button" class="btn btn-primary rounded-0"
+                                    (click)="shareNow()"
+                                    [disabled]="maxRecipientCountReached"
+								    title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}"
+                                >{{buttonText}}
+                                </button>
                                 <button type="button" style="min-width: 32px;"
                                     class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
+                                    aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign"
+                                    [disabled]="maxRecipientCountReached"
+								title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}">
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right">
@@ -706,12 +714,21 @@
                         </ng-container>
     
                         <div class="row">
-                            <div class="col-sm-4 col-xs-12">
+                            <div *ngIf="!maxRecipientCountReached" class="col-sm-4 col-xs-12">
                                 <h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Lists<span
                                         *ngIf="alias">(optional)</span></h6>
                                 <h6 *ngIf="socialCampaign?.userListIds?.length>0" class="success"><strong>Selected Rows :
                                         {{socialCampaign?.userListIds?.length}}</strong></h6>
                             </div>
+
+                            <div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached">
+                                <strong>Selected Rows: {{socialCampaign?.userListIds?.length}}, Recipients Count: {{validUsersCount}}</strong>
+                            </div>
+
+                            <div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached">
+                                <strong> Campaign cannot be launched as the recipient count exceeds the {{maxRecipientCount}} limit.</strong>
+                            </div>
+
                             <div class="col-sm-8 col-xs-12">
                                 <div class="social-campaign-search-css">
                                     <!--Sort-->

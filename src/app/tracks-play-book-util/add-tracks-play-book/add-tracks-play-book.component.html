@@ -185,6 +185,30 @@
                   <a *ngIf="savedTags.length>0" class="add_more-btn" (click)="addTag()">+ Add more tags</a>
                   </div>
                 </div>
+                <!-- XNFR-897-->
+                <div class="row form-group pb10">
+                  <label class="control-label col-sm-4" style="text-align: right;" translate>End Date</label>
+                  <div class="control-label col-sm-5 mt--10px">
+                    <div class="flex">
+                    <!-- <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="tracksPlayBook.expireDate" [ngModelOptions]="{standalone: true}" name="campaignEndDatePicker" [value]="tracksPlayBook.expireDate" /> -->
+                    <app-flatpickr #endDatePickr [type]="'dateTime'" [time_24hr]="false" [dateFormat]="'m/d/Y h:i K'" [enableTime]="true" [(dataField)]="tracksPlayBook.expireDate" (input)="expireDescription(tracksPlayBook.expireDate,null)">
+                  </app-flatpickr>
+                      <button class="btn btn-default" type="button"  (click)="clearEndDate();endDatePickr.clearEndDate()">
+                        <span class="input-group-btn flex" data-toggle="tooltip" data-placement="top" title="Clear">
+                          <i class="fa fa-refresh npcfs" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                      <span class="info-color-xampc" style="margin: 10px 0px 0px 0px;">
+                        <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
+                          data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                          title="Your partners will not be able to access the {{type === 'TRACK'? 'Track ': 'Playbook '}} after its end date."></i>
+                    </span>
+                    </div>
+                    <div class="col-sm-12 text-danger" style="padding:0" *ngIf="expireDescription(tracksPlayBook.expireDate)">
+                      {{expireDescription(tracksPlayBook.expireDate)}}</div>
+                  </div>
+                </div>
+                <!-- XNFR-897-->
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row" style="padding-top: 10px;">
                 <div class="portlet light mImageWid feature-img">
@@ -238,7 +262,6 @@
 
     <!-- step 2 -->
     <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo">
-      <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet bg-card-header" style="padding-bottom: 25px;border-radius: 5px;background-color:#fff;">
         <div class="portlet-title" style="padding-bottom: 5px;
         margin-right: 12px;
@@ -271,7 +294,7 @@
         padding-right: 12px;">
           <div *ngIf="isAdd || tracksPlayBook.description != undefined">
             <ckeditor [(ngModel)]="tracksPlayBook.description" #ckeditor [ngModelOptions]="{standalone: true}"
-              [config]="ckeConfig" (ready)="onReady($event)" debounce="500" 
+              [config]="ckeConfig" debounce="500" 
               (change)="validateDescription();validateAllSteps()"
               (input)="setDescription();validateDescription();validateAllSteps()">
             </ckeditor>
@@ -461,14 +484,15 @@
         [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId" [moduleName]="'lms'"
         [selectedPartnerGroupIds]="tracksPlayBook.groupIds" [selectedTeamMemberIds]="tracksPlayBook.userIds"
         [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
-        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification"
+        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification" 
+        [isButtonDisabled]="isButtonDisabled"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
-        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid"
-          (click)="save()"><span class="btn btn-primary transition txt_pd-top3">{{SubmitButtonValue}}</span></button>
+        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid || (SubmitButtonValue==='Save'? false: !tracksPlayBook.published ? false: isButtonDisabled)"
+          (click)="save()"  data-placement="top" data-toggle="tooltip" [title]="tooltipMessage(tracksPlayBook)"><span class="btn btn-primary transition txt_pd-top3">{{SubmitButtonValue}}</span></button>
         <button class="button_blue bgcolor-unset txt_pd-top3" type="submit"
           [disabled]="checkIfPublishingIsDisabled(tracksPlayBook)" *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()"
           data-placement="top" data-toggle="tooltip" [title]="getApprovalTooltipMessage(tracksPlayBook)"><span
@@ -1323,3 +1347,6 @@
     </ng-container>
   </div>
 </ng-template>
+
+<app-preview-content *ngIf="showPreviewContent" [previewPath]="assetPreviewProxyPath" [fileType]="assetType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
+    [isPreviewPopup]="showPreviewContent" (notifyClose)="closePreview()"></app-preview-content>

@@ -1274,7 +1274,14 @@
             <div class="modal-content">
                 <div>
                     <div class="modal-header">
-                        <a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i
+                        <div class="align-modal-header">
+                            <img src="assets/images/zoho.png" class="image-background" alt="Picture of a happy monkey" style="height: 65px"
+                            width="90px" />
+                            <h4 class="modal-title" id="myModalLabel" align="center" translate>Import From Zoho</h4>
+                            <a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i
+                                class="fa fa-times"></i></a>
+                        </div>
+                        <!-- <a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i
                                 class="fa fa-times"></i></a>
                         <div class="col-sm-3" style="margin-top:10px;">
                             <img src="assets/images/zoho.png" alt="Picture of a happy monkey" style="height: 65px"
@@ -1282,7 +1289,7 @@
                         </div>
                         <div class="col-sm-12 salesforce">
                             <h4 class="modal-title" id="myModalLabel" align="center" translate>Import From Zoho</h4>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-body">
                         <app-response-message class="pg8" [customResponse]="zohoErrorResponse"
@@ -1419,14 +1426,16 @@
     <div class="modal-dialog modal-css" role="document">
         <div class="modal-content rounded-0">
             <div class="modal-header">
-                <a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
-                <div class="col-sm-3" style="margin-top: 10px">
-                    <img src="assets/images/Salesforce-01.png" alt="Picture of a happy monkey" style="height: 65px"
+                <!-- <a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a> -->
+                <div class="align-modal-header">
+                    <img src="assets/images/Salesforce-01.png" class="image-background" alt="Picture of a happy monkey" style="height: 65px"
                         width="100px" />
+                        <h4 class="modal-title" translate>Import from salesforce:</h4>
+                     <a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
                 </div>
-                <div class="col-sm-12 salesforce">
+                <!-- <div class="col-sm-12 salesforce">
                     <h4 class="modal-title" translate>Import from salesforce:</h4>
-                </div>
+                </div> -->
             </div>
             <div class="modal-body">
                 <div class="clearfix">
@@ -1491,7 +1500,7 @@
                         integration with xAmplify</h4>
                     <div>
                         <div>
-                            <img src="assets/images/crm/Mark-amplify.png"
+                            <img class="image-background" src="assets/images/crm/Mark-amplify.png"
                                 style="margin: 30px 30% 0; width: 50%; text-align: center;">
                         </div>
 
@@ -1609,7 +1618,14 @@
     <div class="modal-dialog modal-css" role="document">
         <div class="modal-content rounded-0">
             <div class="modal-header">
-                <a class="close-circle" data-dismiss="modal" (click)="hideHuspotModal()" style="position: relative;"><i
+                <div class="align-modal-header">
+                    <img src="assets/images/crm/hubspot-logo.png" class="image-background" alt="Picture of a happy monkey" style="height: 60px"
+                        width="150px" />
+                        <h4 class="modal-title" translate>Import from HubSpot:</h4>
+                        <a class="close-circle" data-dismiss="modal" (click)="hideHuspotModal()" style="position: relative;"><i
+                            class="fa fa-times"></i></a>
+                </div>
+                <!-- <a class="close-circle" data-dismiss="modal" (click)="hideHuspotModal()" style="position: relative;"><i
                         class="fa fa-times"></i></a>
                 <div class="col-sm-3" style="margin-top: 25px">
                     <img src="assets/images/crm/hubspot-logo.png" alt="Picture of a happy monkey" style="height: 60px"
@@ -1617,7 +1633,7 @@
                 </div>
                 <div class="col-sm-12 salesforce">
                     <h4 class="modal-title" translate>Import from HubSpot:</h4>
-                </div>
+                </div> -->
             </div>
             <div class="modal-body">
                 <div class="clearfix">
@@ -1654,7 +1670,7 @@
                     translate>Close</button>
                 <button type="button" id="hubspot_save_button" class="button_blue bgcolor-unset neg_mrg_top4"
                     (click)="getHubSpotData()" data-dismiss="modal" translate><span
-                        class="btn btn-primary transition txt_pd-top3">Submit</span></button>
+                        class="btn btn-primary transition txt_pd-top3 pdt7">Submit</span></button>
             </div>
         </div>
     </div>
@@ -1770,6 +1786,9 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
+                <!-- XNFR-938 -->
+                <h4 class="modal-title popup-header-title-font float-left" translate>Add Partner{{ newPartnerUser.length > 1 ? '(s)' : '' }}</h4>
+                <!-- XNFR-938 -->
             </div>
             <div class="modal-body" style="margin-bottom: -12px;">
                 <div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible">
@@ -1829,10 +1848,12 @@
                                         </switch>
                                     </td>
                                     <td *ngIf="authenticationService?.module?.adminOrSuperVisor && hasVanityAccess">
-                                        <button class="btn btn-info" type="button" tabindex="-1"
-                                            (click)="openPartnerModuleConfiguratorModelPopup(partner, i)">
-                                            <i title="Assign Modules to the Partner" data-toggle="tooltip" data-placement="top" class="fa fa-plus white"
-                                                aria-hidden="true"></i>
+                                        <button class="button_blue bgcolor-unset p0 btn-transitions" type="button" tabindex="-1"
+                                            (click)="openPartnerModuleConfiguratorModelPopup(partner, i)" translate>
+                                            <span class="btn btn-primary transition d-inline"> Assign Modules
+                                                <i title="Assign Modules to the Partner" data-toggle="tooltip" data-placement="top" class="fa "
+                                                    [ngClass]="partner?.popupExpand? 'fa-minus':'fa-plus'" aria-hidden="true"></i>
+                                            </span>
                                         </button>
                                     </td>
                                     <!--- (XNFR-85) ----->
@@ -1845,16 +1866,20 @@
                                                     {{ teamMemberGroup?.name !== '--Please Select--' ? '(' + teamMemberGroup.teamMembersCount + ')' : '' }}
                                                 </option>
                                             </select> <span class="input-group-btn">
-                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
-                                                    (click)="previewModules(partner.teamMemberGroupId)">
-                                                    <i title="Preview Modules" data-toggle="tooltip" data-placement="top" class="fa fa-eye white"
-                                                        aria-hidden="true"></i>
+                                                <button [disabled]="partner.teamMemberGroupId==0" class="button_blue bgcolor-unset p0 btn-transitions" type="button"
+                                                    tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
+                                                    <span class="btn btn-primary transition d-inline">
+                                                        <i title="Preview Modules" data-toggle="tooltip" data-placement="top" class="fa fa-eye white"
+                                                            aria-hidden="true"></i>
+                                                    </span>
                                                 </button>
                                             </span> <span class="input-group-btn">
-                                                <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
-                                                    (click)="getTeamMembers(partner,i)">
-                                                    <i title="Select Team Members" data-toggle="tooltip" data-placement="top" class="my-icon fa"
-                                                        [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
+                                                <button [disabled]="partner.teamMemberGroupId==0" class="button_blue bgcolor-unset p0 btn-transitions" type="button"
+                                                    tabindex="-1" (click)="getTeamMembers(partner,i)">
+                                                    <span class="btn btn-primary transition d-inline">
+                                                        <i title="Select Team Members" data-toggle="tooltip" data-placement="top" class="my-icon fa"
+                                                            [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
+                                                    </span>
                                                 </button>
                                             </span>
                                         </div> <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0"> <strong>Selected
@@ -1871,6 +1896,15 @@
                                                 (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
                                         </td>
                                 </tr>
+                                <!-- XNFR-938-->
+                                <tr *ngIf="partner?.popupExpand">
+                                    <td colspan="5" class="bgc-lg"><ng-template *ngIf="actionType === 'add'"
+                                            [ngTemplateOutlet]="partnerModuleConfigPopup"
+                                            [ngTemplateOutletContext]="{access:partner?.popupExpand}">
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                                <!-- XNFR-938-->
                             </ng-container>
                         </tbody>
                     </table>
@@ -1918,8 +1952,15 @@
 		(filterConditionsEmitter)="partnersFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
-
-<app-partner-module-configurator *ngIf="showPartnerModuleConfiguratorModelPopup"
-    [currentPartner]="currentPartnerForModuleAccess" [actionType]="actionType"
-    (notifyClose)="closePartnerModuleConfiguratorModelPopup()" (notifyUpdateSuccess)="showUpdateSuccessStatus($event)"
-    (notifySubmit)="submitModuleAccessesAndCloseModalPopup($event)" (notifyUpdateFailed)="showUpdateFailedStatus($event)"></app-partner-module-configurator>
+<!-- XNFR-938 -->
+<ng-template *ngIf="actionType === 'edit'" [ngTemplateOutlet]="partnerModuleConfigPopup"
+    [ngTemplateOutletContext]="{access:showPartnerModuleConfiguratorModelPopup}">
+</ng-template>
+<ng-template #partnerModuleConfigPopup let-access="access">
+    <app-partner-module-configurator *ngIf="access" [currentPartner]="currentPartnerForModuleAccess"
+        [actionType]="actionType" (notifyClose)="closePartnerModuleConfiguratorModelPopup()"
+        (notifyUpdateSuccess)="showUpdateSuccessStatus($event)"
+        (notifySubmit)="submitModuleAccessesAndCloseModalPopup($event)"
+        (notifyUpdateFailed)="showUpdateFailedStatus($event)"></app-partner-module-configurator>
+</ng-template>
+<!-- XNFR-938 -->

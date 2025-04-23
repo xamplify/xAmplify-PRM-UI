@@ -69,6 +69,8 @@ export class AddEmailModalPopupComponent implements OnInit {
   testMailFormData: any = new FormData();
   OliveAi: boolean;
   sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
+  toEmailIds = [];
+  isValidToEmailId: boolean = true;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService) {}
@@ -95,6 +97,7 @@ export class AddEmailModalPopupComponent implements OnInit {
       if (this.subjectText != undefined && this.subjectText != "") {
         this.emailActivity.subject = this.subjectText;
         this.isValidEmail = true;
+        this.isValidToEmailId = false;
       }
       this.OliveAi = true;
     }
@@ -124,12 +127,18 @@ export class AddEmailModalPopupComponent implements OnInit {
   
   sendEmailToUser() {
     if (this.OliveAi) {
+      if(this.toEmailIds != undefined && this.toEmailIds.length > 0) {
+        this.isValidToEmailId = true;
       this.ngxLoading = true;
       this.sendTestEmailDto.body = this.emailActivity.body;
       this.sendTestEmailDto.toEmail = this.emailActivity.toEmailId;
       this.sendTestEmailDto.subject = this.emailActivity.subject;
       this.sendTestEmailDto.showAlert = false;
-      this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
+      this.sendTestEmailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
+      this.sendTestEmailDto.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+      this.sendTestEmailDto.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+      this.prepareFormData();
+      this.authenticationService.sendEmailToUser(this.sendTestEmailDto,this.formData).subscribe(
         response => {
           this.ngxLoading = false;
           this.notifyClose.emit("Email sent sucessfully");
@@ -137,6 +146,10 @@ export class AddEmailModalPopupComponent implements OnInit {
         }, error => {
           this.ngxLoading = false;
         });
+      }else{
+        this.isValidToEmailId = false;
+        this.referenceService.showSweetAlertErrorMessage("Please enter valid email id");
+      }
     } else {
       this.ngxLoading = true;
       this.prepareFormData();
@@ -190,6 +203,13 @@ export class AddEmailModalPopupComponent implements OnInit {
     } else {
       this.showCkEditorLimitErrorMessage = false;
     }
+    if(this.OliveAi){
+      if(this.toEmailIds != undefined && this.toEmailIds.length > 0) {
+        this.isValidToEmailId = true;
+      }else{
+        this.isValidToEmailId = false;
+      }
+    }
   }
 
   fetchEmailActivityById() {
@@ -231,7 +251,11 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.sendTestEmailDto.toEmail = this.testToEmailId;
       this.sendTestEmailDto.subject = this.emailActivity.subject;
       this.sendTestEmailDto.showAlert = false;
-      this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
+      this.prepareTestMailFormData();
+      this.sendTestEmailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
+      this.sendTestEmailDto.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
+      this.sendTestEmailDto.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
+      this.authenticationService.sendEmailToUser(this.sendTestEmailDto,this.formData).subscribe(
         response => {
           this.testEmailLoading = false;
           this.notifyClose.emit("Email sent sucessfully");
@@ -299,11 +323,26 @@ export class AddEmailModalPopupComponent implements OnInit {
         this.addFirstAttemptFailed = true;
         if (!isPaste) { this.tagInput.setInputValue(tag); }
       }
-      if (isPaste) { return Observable.throw(this.errorMessages['must_be_email']); }
-      else { return Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag)))); }
+      if (isPaste) { this.checkToEmailId(tag);
+        return Observable.throw(this.errorMessages['must_be_email']);  }
+      else { this.checkToEmailId(tag);
+        return Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag)))); }
     }
     this.addFirstAttemptFailed = false;
+    this.checkToEmailId(tag);
     return Observable.of(tag);
+  }
+
+  private checkToEmailId(tag: any) {
+    if (this.OliveAi) {
+      if (this.toEmailIds != undefined && this.toEmailIds.length > 0) {
+        this.isValidToEmailId = true;
+      } else if (this.validateCCorBCCEmail(tag)) {
+        this.isValidToEmailId = true;
+      } else {
+        this.isValidToEmailId = false;
+      }
+    }
   }
 
   onFileChange(event: any): void {
@@ -363,7 +402,7 @@ export class AddEmailModalPopupComponent implements OnInit {
 
   fetchUsersForCompanyJourney() {
     this.referenceService.loading(this.userListUsersLoader, true);
-    this.contactService.fetchUsersForCompanyJourney(this.userId).subscribe(
+    this.contactService.fetchUsersForCompanyJourney(this.userId, false).subscribe(
       response => {
         if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
           this.userListUsersData = response.data;

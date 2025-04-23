@@ -14,6 +14,7 @@ import { DamService } from '../../dam/services/dam.service';
 import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { SortOption } from 'app/core/models/sort-option';
+import { DatePipe } from '@angular/common';
 
 declare var $, swal: any;
 
@@ -67,11 +68,18 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   assetsSortOption: SortOption = new SortOption();
   groupByAssetsParam: boolean = false;
   isAssetGroupingEnabled: boolean = false;
+  previewContent: boolean = false;
+  previewPath: any;
+  isBeeTemplate:boolean = false;
+  previewFileType:string;
+  isImageFormat: boolean = false;
+  isTextFormat: boolean = false;
+  assetPreviewProxyPath: any;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
     private router: Router, public logger: XtremandLogger,
-    private damService: DamService, public sanitizer: DomSanitizer, public sortOption: SortOption) {
+    private damService: DamService, public sanitizer: DomSanitizer, public sortOption: SortOption,public datePipe:DatePipe) {
     this.notifyShowTracksPlayBook = new EventEmitter<any>();
     this.notifyShowAsset = new EventEmitter<any>();
     this.notifyCreatedUser = new EventEmitter<any>();
@@ -122,7 +130,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   getBySlug() {
     this.trackViewLoader = true;
-    this.tracksPlayBookUtilService.getBySlug(this.createdUserCompanyId, this.slug, this.type).subscribe(
+    this.tracksPlayBookUtilService.getBySlug(this.createdUserCompanyId, this.slug, this.type, true).subscribe(
       (result: any) => {
         if (result.statusCode == 200) {
           let tracksPlayBook: TracksPlayBook = result.data;
@@ -247,17 +255,62 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any) {
     let isNotVideoFile = assetDetails.assetType != 'mp4';
+    const nonImageFormats = ['pptx','doc','docx','ppt','xlsx','pdf', 'csv', 'html', 'txt'];
+    let isNonImageFormat = nonImageFormats.includes(assetDetails.assetType);
     if(isNotVideoFile){
       let isBeeTemplate = assetDetails.beeTemplate;
       let isVendorView = this.isCreatedUser;
+      this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '') {
+            if(assetDetails.assetProxyPath){
+              this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            } else {
+              this.assetPreviewProxyPath = assetDetails.assetPath;
+            }
+            this.previewPath = assetDetails.assetPath;
+            this.previewFileType = assetDetails.assetType;
+            this.previewContent = true;
+            this.isImageFormat = assetDetails.imageFileType;
+            this.isTextFormat = assetDetails.textFileType;
+            this.isBeeTemplate = isBeeTemplate;
+          } else {
+            this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+          }
         } else {
-          this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '') {
+            if(assetDetails.assetProxyPath){
+              this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+            } else {
+              this.assetPreviewProxyPath = assetDetails.assetPath;
+            }
+            this.previewPath = assetDetails.assetPath;
+            this.previewFileType = assetDetails.assetType;
+            this.previewContent = true;
+            this.isImageFormat = assetDetails.imageFileType;
+            this.isTextFormat = assetDetails.textFileType;
+            this.isBeeTemplate = isBeeTemplate;
+          } else {
+            this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+          }
         }
       }else{
-        this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+        if ((assetDetails.contentPreviewType || assetDetails.imageFileType)) {
+          if(assetDetails.assetProxyPath){
+            this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+          } else {
+            this.assetPreviewProxyPath = assetDetails.assetPath;
+          }
+          this.previewPath = assetDetails.assetPath;
+          this.previewFileType = assetDetails.assetType;
+          this.previewContent = true;
+          this.isImageFormat = assetDetails.imageFileType;
+          this.isTextFormat = assetDetails.textFileType;
+          this.isBeeTemplate = isBeeTemplate;
+        } else {
+          this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+        }
       }
     }
     this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED, false);
@@ -279,7 +332,14 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           window.open(assetDetails.assetPath, '_blank');
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else if (!assetDetails.beeTemplate) {
-          window.open(assetDetails.assetPath, '_blank');
+        let assetPath = assetDetails.assetPath;
+        // let fileFormats = ['pdf','html','txt','csv'];
+        // let isProxyFileFormat = fileFormats.includes(assetDetails.assetType);
+        // if (isProxyFileFormat || assetDetails.imageFileType) {
+        //   assetPath = assetPath.split("=")[1];
+        //   assetPath = decodeURIComponent(assetPath);
+        // }
+          window.open(assetPath, '_blank');
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else {
           this.downloadBeeTemplate(assetDetails);
@@ -331,7 +391,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.tracksPlayBookUtilService.saveAsPlayBook(tracksPlayBook).subscribe(
         (response: any) => {
           if (response.statusCode == 200) {
-            self.customResponse = new CustomResponse('SUCCESS', "Saved to play books successfully.", true);
+            self.customResponse = new CustomResponse('SUCCESS', "Saved to playbooks successfully.", true);
             this.referenceService.stopLoader(this.httpRequestLoader);
           } else {
             swal("Please Contact Admin!", response.message, "error");
@@ -471,6 +531,30 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.getGroupedAssetsBySlug();
   }
   /** XNFR-745 end **/
+  isAccessToView(expireDate:any):boolean{
+    if (expireDate) {
+      const currentDate = new Date();
+      const givenDate = new Date(expireDate);
+      const diffInMs = givenDate.getTime() - currentDate.getTime();
+      let suffix = diffInMs < 0 ? 'ago' : 'left';
+      if (this.isCreatedUser) {
+        return false;
+      } else {
+        return suffix === 'ago' ? true : false;
+      }
+    } else {
+      return false;
+    }
+  }
 
 
+  closePreview() {
+    this.previewContent = false;
+    this.previewPath = null;
+    const objElement = document.getElementById('preview-object');
+    if (objElement) {
+      objElement.remove();
+    }
+  }
+  
 }

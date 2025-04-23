@@ -293,7 +293,7 @@
                      <div class="table-responsive">
                         <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                            <legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
-                              'Lead(s)':'Contact(s)'}} list</legend>
+                              'Lead(s)':'Contact(s)'}} list</legend> 
                            <div class="row m0">
                               <div class="col-xs-4 p0">
                                  <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}"
@@ -313,8 +313,16 @@
                                  </button>
                                  <br>
                               </div>
-                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span success">This email will
-                                 be sent to {{validUsersCount}}({{allUsersCount}}) valid recipients.</span>
+                           </div>
+                           <div class="alert alert-success text-center mbgrid" style="margin-bottom: 10px;" *ngIf="selectedUserlistIds.length>0 && !maxRecipientCountReached">
+                                 <strong> This email will be sent to {{validUsersCount}}({{allUsersCount}}) valid recipients. </strong>
+                           </div>
+                           <div class="alert alert-success text-center mbgrid" style="margin-bottom: 10px;" *ngIf="maxRecipientCountReached && selectedUserlistIds?.length>0">
+                                 <strong>Selected Rows: {{selectedUserlistIds.length}}, Recipients Count: {{validUsersCount}}</strong>
+                           </div>
+                           <!-- XNFR-929 -->
+                           <div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached && selectedUserlistIds?.length>0">
+                              <strong> Campaign cannot be launched as the recipient count exceeds the {{maxRecipientCount}} limit.</strong>
                            </div>
                            <div id="campaign-contact-list" style="display: none;">
                               <div>
@@ -1009,8 +1017,9 @@
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
                                  >Send Test Email</button>
                                  <button type="button" class="btn btn-primary"
-                                    [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
-                                     (click)="campaignLaunchForm.valid && isCampaignDetailsFormValid && launchCampaign()">
+                                    [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid || maxRecipientCountReached"
+                                     (click)="campaignLaunchForm.valid && isCampaignDetailsFormValid && launchCampaign()"
+                                     title="{{maxRecipientCountReached ? 'Campaign cannot be launched as the recipient count exceeds the '+ maxRecipientCount + ' limit.' : ''}}">
                                     {{buttonName}}</button>
                               </div>
                            </div>

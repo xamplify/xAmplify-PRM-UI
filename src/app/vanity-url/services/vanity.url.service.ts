@@ -22,6 +22,9 @@ export class VanityURLService {
   CUSTOM_LINK_PREFIX_URL = this.authenticationService.REST_URL + "customLinks";
   DASHBOARD_BUTTON_PREFIX_URL = this.authenticationService.REST_URL + "dashboardButtons";
   CUSTOM_LINK_URL = this.CUSTOM_LINK_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
+  activeTab : any = "templates";
+  selectedTypeIndex = 0;
+
 
   constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title,
      @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router,public envService: EnvService,
@@ -422,6 +425,20 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     let url = this.authenticationService.REST_URL + 'dashboardButtons/findAlternateUrls/' +urlString+'&access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url);
 
+  }
+
+
+  getPartnerRemainderTemplate(){
+    const url = this.authenticationService.REST_URL + "v_url/getPartnerRemainderTemplate/"+this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+
+  sendPartnerSignatureReminder(pagination: Pagination) {
+    const url = this.authenticationService.REST_URL + "v_url/sendPartnerSignatureReminder" + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
 }

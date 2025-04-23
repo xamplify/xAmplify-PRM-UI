@@ -28,6 +28,8 @@ export class CampaignService {
     loading = false;
     archived: boolean = false;
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
+    campaignSchedulerUrl = this.authenticationService.SCHEDULER_URL;
+
     constructor(private http: Http, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, private utilService: UtilService, public referenceService: ReferenceService) { }
 
@@ -59,7 +61,7 @@ export class CampaignService {
         if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName) {
             data['companyProfileName'] = this.authenticationService.companyProfileName;
         }
-        return this.http.post(this.URL + "admin/createCampaign?access_token=" + this.authenticationService.access_token, data)
+        return this.http.post(this.campaignSchedulerUrl + "admin/createCampaign?access_token=" + this.authenticationService.access_token, data)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -820,7 +822,7 @@ export class CampaignService {
         if (eventUpdate) {
             eventUrl = this.URL + "campaign/update-event-campaign?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
         } else {
-            eventUrl = this.URL + "campaign/save-event-campaign?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
+            eventUrl = this.campaignSchedulerUrl + "campaign/save-event-campaign?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
         }
         return this.http.post(eventUrl, eventCampaign)
             .map(this.extractData)
@@ -1508,6 +1510,15 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
       }
 
-      
+      /** XNFR-929 **/
+      getMaximumContactCountForCampaignLaunch(loggedInUserId :number) {
+        const url = this.URL + 'campaign/getMaxContactCountForCampaignLaunch/' + loggedInUserId + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getRedistributedCountForAnalytics(campaign:any) {
+        const url = this.URL + 'campaign/getRedistributedCountForAnalytics/' + campaign.campaignId + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
 
 }
