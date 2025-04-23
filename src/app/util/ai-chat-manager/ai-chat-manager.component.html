@@ -10,7 +10,7 @@
       <h3 class="text-center mb15 assist_text mt0">How may I assist you?</h3>
       <div class="pdf_card">
         <div class="pdf_child">
-          <div class="file-info">
+          <div class="file-info" *ngIf="!isFromContactJourney">
             <div class="file-icon">
               <div class="d-flex document_flex">
                 <!-- <div class="pdf-text">PDF</div> -->
@@ -56,9 +56,13 @@
                 style="display: none;" />
             </button>
 
-            <button class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
-            <button class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
-            <button class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+            <button *ngIf="!isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+              Quotes</button>
+            <button *ngIf="isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Give me a summary of the conversations.')">Analyze Recording(s)</button>
+            <button *ngIf="isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="isFromContactJourney" class="btn btn-pdf" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
               Quotes</button>
           </div>
           <button class="btn btn-primary" [disabled]="isPdfUploading || isLoading || inputText == ''"
@@ -168,7 +172,7 @@
             <div class="panel-group" id="accordion">
               <div class="panel panel-default accordion_card">
                 <div class="panel-heading accordion_card">
-                  <h4 class="panel-title">
+                  <h4 class="panel-title" *ngIf="!isFromContactJourney">
                     <a *ngIf="!isCollapsed" (click)="toggleAction()"><span>
                         Asset Name:{{assetDetailsViewDtoOfPartner.assetName}} |
                         Folder:{{assetDetailsViewDtoOfPartner.categoryName}}</span>
@@ -218,6 +222,53 @@
                       <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                   </h4>
+                  <h4 class="panel-title" *ngIf="isFromContactJourney">
+                    <a *ngIf="!isCollapsed" (click)="toggleAction()">
+                      <div>
+                        <span *ngIf="selectedContact.contactName">
+                          Contact Name: {{selectedContact.contactName}} | </span><span>
+                          Email Id: {{selectedContact.emailId}} | Recordings: {{chatGptSettingDTO.totalRecords == 0 || chatGptSettingDTO.totalRecords == undefined ? '0' : chatGptSettingDTO.totalRecords}}</span>
+                      </div>
+                      <i class="fa fa-chevron-up toggle-icon"></i>
+                    </a>
+                    <a *ngIf="isCollapsed" (click)="toggleAction()">
+                      <div class="Ai_file">
+                        <div class="Ai-icon" (click)="showAssetPreview()" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                          <div class="d-flex document_flex">
+                            <div *ngIf="ngxLoading" class="fileloader mr10"></div>
+                            <ng-container *ngIf="!ngxLoading">
+                              <img *ngIf="selectedContact.imageSourcePath != undefined" class="mr10"
+                                src="{{selectedContact.imageSourcePath}}" alt="CONTACT" width="28px" height="28px">
+                              <img *ngIf="selectedContact.imageSourcePath == undefined" class="mr10"
+                                src="assets/admin/pages/media/works/contacts2.png" alt="CONTACT" width="28px" height="28px">
+                            </ng-container>
+                            <a *ngIf="selectedContact?.contactName" title="{{ selectedContact?.contactName }}">
+                              {{ selectedContact?.contactName | slice:0:25 }}
+                              <span *ngIf="selectedContact?.contactName?.length > 25">...</span>
+                            </a>
+                            <a *ngIf="selectedContact?.contactName == undefined || selectedContact?.contactName?.length == 0"
+                              title="{{ selectedContact?.emailId }}">
+                              {{ selectedContact?.emailId | slice:0:25 }}
+                              <span *ngIf="selectedContact?.emailId?.length > 25">...</span>
+                            </a>
+                          </div>
+                          <div *ngIf="selectedContact?.contactName" class="published-on">Email Id: {{selectedContact.emailId }}
+                          </div>
+                        </div>
+                        <div class="Ai-file-details">
+                          <span class="aligin-para">
+                            <p *ngIf="selectedContact?.mobileNumber"><b>Mobile Number:</b> {{selectedContact.mobileNumber}}</p>
+                          </span>
+                          <span class="Track-countbg">
+                            <p *ngIf="chatGptSettingDTO.totalRecords == undefined || chatGptSettingDTO.totalRecords == 0">Recordings: 0
+                            </p>
+                            <p *ngIf="chatGptSettingDTO.totalRecords > 0">Recordings: {{chatGptSettingDTO.totalRecords}}</p>
+                          </span>
+                        </div>
+                      </div>
+                      <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
+                  </h4>
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in">
                   <div class="panel-body">
@@ -234,10 +285,14 @@
               <input type="file" accept="application/pdf" (change)="onFileSelected($event)" #pdfInput
                 style="display: none;" />
             </button> -->
-                <button class="action-btn" (click)="setInputText('Analyze Asset')"> Analyze Asset</button>
-                <button class="action-btn" (click)="setInputText('Summarize in detail')"> Summarize in detail</button>
-                <button class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
-                  Quotes</button>
+            <button *ngIf="!isFromContactJourney" class="action-btn" (click)="setInputText('Analyze Asset')">Analyze Asset</button>
+            <button *ngIf="!isFromContactJourney" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="!isFromContactJourney" class="action-btn" (click)="setInputText('Summarize with Key Quotes')">Summarize with Key
+              Quotes</button>
+            <button *ngIf="isFromContactJourney" class="action-btn" (click)="setInputText('Analyze the files.')">Analyze the files</button>
+            <button *ngIf="isFromContactJourney" class="action-btn" (click)="setInputText('Summarize in detail')">Summarize in detail</button>
+            <button *ngIf="isFromContactJourney" class="action-btn" (click)="setInputText('Summarize with Key Insights')">Summarize with Key
+              Insights</button>
               </div>
               <button class="submit-btn" [disabled]="isLoading || isPdfUploading || inputText == ''" (click)="AskAiTogetData()">
                 Submit</button>

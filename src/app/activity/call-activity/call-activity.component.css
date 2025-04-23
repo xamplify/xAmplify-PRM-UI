@@ -129,3 +129,16 @@
 .fs_10px {
     font-size: 10px;
 }
+
+.oliver_call_icon {
+    border: 1px solid #ddd;
+    padding: 5px;
+    text-align: center;
+    color: #00a6e8;
+    background-color: #f1f3fa;
+    width: 34px;
+    height: 34px;
+    border-radius: 3px;
+    display: block;
+    float: right;
+  }
