@@ -821,7 +821,7 @@
                                              <!--XNFR-832-->
                                                 <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
                                                     <a class="custom-icon" *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-                                                     (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0"
+                                                     (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0 && campaign.displayRedistributionCount"
                                                         (click)="goToRedistributedCampaigns(campaign)"
                                                         data-toggle="tooltip" data-placement="top"
                                                         title="Show Redistributed Campaigns">
@@ -829,7 +829,7 @@
                                                             class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.redistributedCount}}</strong></i><div class="clickicons"></div>
                                                     </a>
                                                     <a class="custom-icon" *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-                                                     (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0"
+                                                     (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0 && campaign.displayRedistributionCount"
                                                         data-toggle="tooltip" data-placement="top"
                                                         title="No Redistributed Campaigns">
                                                         <i
