@@ -5,7 +5,7 @@
         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect" style="padding-left: 12px;">
            <button class="btn-block dashboard-stat blue"
               [class.grey]="partnerSignatureStatusAnalyticsDTO.selectedCategory && partnerSignatureStatusAnalyticsDTO.selectedCategory != 'ALL'"
-              (click)="loadCompaniesByType('ALL')" [disabled]="partnerSignatureStatusAnalyticsDTO.all == 0">
+              (click)="loadCompaniesByType('ALL')" [disabled]="partnerSignatureStatusAnalyticsDTO.allCount == 0">
               <div class="visual">
                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
                     [ngStyle]="{'color': partnerSignatureStatusAnalyticsDTO.selectedCategory == 'ALL' ? '#white' : '#ccc' }"
@@ -23,7 +23,7 @@
                  <a class="more" style="text-align: left; background: #3480b5; color: white" translate> Detailed view
                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
                     <i class="fa fa-info-circle" aria-hidden="true"
-                       title="{{'Total companies' }}"></i></a>
+                       title="{{'Total Partner Companies'}}"></i></a>
               </span>
            </button>
         </div>
@@ -48,14 +48,14 @@
                  <a class="more" style="text-align: left;background: #268c83; color:white" translate> Detailed view
                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
                     <i class="fa fa-info-circle" aria-hidden="true"
-                       title="{{'Total Signed Companies'}}"></i></a>
+                       title="{{'Total Signed Partner Companies'}}"></i></a>
               </span>
            </button>
         </div>
         <div class="new-width-col margin-top-10 pr0 pl tiles_hover_effect">
            <button class="btn-block dashboard-stat purple"
               [class.grey]="partnerSignatureStatusAnalyticsDTO.selectedCategory && partnerSignatureStatusAnalyticsDTO.selectedCategory != 'NOTSIGNED'"
-              (click)="loadCompaniesByType('NOTSIGNED')" [disabled]="partnerSignatureStatusAnalyticsDTO.pendingCount == 0">
+              (click)="loadCompaniesByType('NOTSIGNED')" [disabled]="partnerSignatureStatusAnalyticsDTO.notSignedCount == 0">
               <div class="visual">
                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
                     [ngStyle]="{'color': partnerSignatureStatusAnalyticsDTO.selectedCategory == 'NOTSIGNED' ? '#white' : '#ccc' }"
@@ -73,7 +73,7 @@
                  <a class="more" style="text-align: left;" translate> Detailed view
                     <i class="m-icon-swapright m-icon-white detailedarrow" aria-hidden="true"></i>
                     <i class="fa fa-info-circle" aria-hidden="true"
-                       title="{{'Total pending for Signature Companies'}}"></i></a>
+                       title="{{'Total Partner Companies Pending for Signature'}}"></i></a>
               </span>
            </button>
         </div>

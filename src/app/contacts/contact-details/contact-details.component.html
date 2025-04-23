@@ -1,4 +1,4 @@
-<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !showCompanyCampaigns">
+<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !showCompanyCampaigns && !showAskOliverModalPopup">
   <div class="page-bar mb-height_auto" style="height:48px;">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i>
@@ -328,7 +328,7 @@
                 </div>
                 <div *ngIf="showCallsTab" id="call" class="tab-pane fade pt-top">
                   <app-call-activity [contactId]="contactId" [isReloadTab]="isReloadCallTab" [activeCallDetails]="activeCallDetails"
-                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber"></app-call-activity>
+                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber" (notifyOliver)="openOliver()"></app-call-activity>
                 </div>
               </div>
               <!-- END -->
@@ -599,3 +599,6 @@
   
 <app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
   [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
+
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact"
+  (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

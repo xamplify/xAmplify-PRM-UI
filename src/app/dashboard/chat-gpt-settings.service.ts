@@ -108,5 +108,26 @@ export class ChatGptSettingsService {
     return this.authenticationService.callPostMethod(url, formData);
   }
 
+  analyzeCallRecordings(chatGptSettingDTO: any) {
+    let userId = this.authenticationService.getUserId();
+    let threadIdRequestParameter = chatGptSettingDTO.threadId != undefined ? '&threadId=' + chatGptSettingDTO.threadId : '';
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let vectorStoreIdRequestParameter = chatGptSettingDTO.vectorStoreId != undefined ? '&vectorStoreId=' + chatGptSettingDTO.vectorStoreId : '';
+    let contactIdRequestParameter = chatGptSettingDTO.contactId != undefined ? '&contactId=' + chatGptSettingDTO.contactId : '';
+    let userListIdRequestParameter = chatGptSettingDTO.userListId != undefined ? '&userListId=' + chatGptSettingDTO.userListId : '';
+    let chatHistoryIdRequestParameter = chatGptSettingDTO.chatHistoryId != undefined ? '&chatHistoryId=' + chatGptSettingDTO.chatHistoryId : '';
+    let contactJourneyRequestParameter = '&contactJourney='+true;
+    const url = this.chatGptSettingsUrl + "/analyzeCallRecordings?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + chatHistoryIdRequestParameter + contactJourneyRequestParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getThreadIdAndVectorStoreIdByContactIdAndUserListId(contactId: any, userListId: any) {
+    let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let contactIdRequestParameter = contactId != undefined ? '&contactId=' + contactId : '';
+    let userListIdRequestParameter = userListId != undefined ? '&userListId=' + userListId : '';
+    const url = this.chatGptSettingsUrl + "/getThreadIdNadVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
 
 }

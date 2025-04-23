@@ -53,7 +53,7 @@ img.CompanyLogoCu {
 }
 
 span.filterActiveBg {
-    background-color: #10ad39;
+    background-color: #10ad39!important;
   }
   span.filterActiveBg i {
     color: #fff;

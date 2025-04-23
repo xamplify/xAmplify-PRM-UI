@@ -4,9 +4,16 @@
 </div> -->
 <div
 *ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
-  class="chatgpt-card override" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal"
+  [ngClass]="!isMinimizeOliver ? 'chatgpt-card override' : 'chatgpt-card minimize'" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal"
   (click)="resetValues()">
-  <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver(); $event.stopPropagation()"
+  <a class="javascript:void(0)">
+    <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver();$event.stopPropagation()"
+      aria-hidden="true"></i>
+    <img (mouseenter)="isMinimizeOliver = false"
+      [src]="!isMinimizeOliver ? 'assets/images/homeOliverLogo-1.svg' : 'assets/images/olivermsglogo.svg'"
+      [ngStyle]="{'width': !isMinimizeOliver ? '150px' : '30px', 'height': !isMinimizeOliver ? '150px' : '30px', 'transition': '0.3s ease-in-out'}">
+  </a>
+  <!-- <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver(); $event.stopPropagation()"
     aria-hidden="true"></i>
   <div class="oliver-wrapper" (mouseenter)="onMouseEnter()">
     <ng-container *ngIf="!isMinimizeOliver; else minimized">
@@ -16,7 +23,7 @@
     <ng-template #minimized>
       <object data="assets/images/olivermsglogo.svg" type="image/svg+xml" class="icon-s-w mini"></object>
     </ng-template>
-  </div>
+  </div> -->
 </div>
 <!--ICON END -->
 <link *ngIf="isWelcomePageUrl" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -24,7 +31,7 @@
 <script *ngIf="isWelcomePageUrl" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <!--ChatGPT Modal-->
-<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
+<div *ngIf="isChatGptIconDisplayed && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div  class="modal-dialog w85-per" role="document">
     <div class="modal-content">
       <!-- <div class="modal-header">
@@ -91,7 +98,7 @@
               </div>
             </div>
           </div> -->
-          <div class="d-flex">
+          <div class="d-flex oliver_flex">
           <div class="side_bar">
             <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
             <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
@@ -117,8 +124,8 @@
               </li>
             </ul>            
           </div>
-          <div  [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing')? 'd-flex align-templateui' : 'd-flex align-center'">
-            <div class="tab-content">
+          <div  [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing')? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
+            <div class="tab-content oliver_content">
               <!-- Start New Chat -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}" id="New-Chat">
                 <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'new-chat'">
@@ -172,7 +179,7 @@
                     <div class="form-group">
                       <input type="text" class="form-control input-lg oliver-input" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
                     </div>
-                    <div class="label-text">Text Length</div>
+                    <div class="oliver_text">Text Length</div>
                     <div class="input-group d-flex">
                       <select class="form-control oliver-focus" [(ngModel)]="selectedValueForWork"
                       (ngModelChange)="sortBy($event)" id="select-dropdown">
@@ -214,7 +221,7 @@
                     <div class="textarea-card clip-path1">
                       <textarea class="textarea h-350" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()"  placeholder="Feed Me Your Thoughts"></textarea>
                     </div>
-                    <div class="oliver-container-img">
+                    <div class="oliver-container-img hidden-xs">
                       <img src="assets/images/olivere-dog.svg" width="50px" alt="Oliver">
                     </div>
                     <div class="textarea-card clip-path2 scrollable">
@@ -275,7 +282,7 @@
       </div>
     </div>
     <div class="d-flex" *ngIf="message.role === 'assistant'">
-      <div class="avatar1 col-lg-1 col-sm-1">
+      <div class="avatar1 col-lg-1 col-sm-1 mb_p0">
         <img src="assets/images/olivermsglogo.svg" alt="Assistant" class="avatar">
       </div>
       <div class="col-lg-11 col-sm-11">

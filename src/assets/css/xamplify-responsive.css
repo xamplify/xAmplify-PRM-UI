@@ -711,4 +711,32 @@ flex-wrap: wrap;
     overflow-wrap: anywhere;
   }
  }
+ @media only screen and (min-width: 320px) and (max-width: 1109px) { 
+  .side_bar {
+      width: 92%!important;
+      margin: 25px 20px;
+      height: auto!important;
+    }
+    .align_tab_view {
+      width: 100%!important;
+      align-items: start!important;
+    }
+    .tab-content.oliver_content,.align-templateui {
+      width: 100%!important;
+    }
+    .oliver_flex{
+      display: block!important;
+
+    }
+    .modal-body.oliver-header{
+      height: 100vh!important;
+    }
+    .templateui{
+      padding: 20px!important;
+      width: 89%!important;
+    }
+    .newChatlabel{
+      max-height: calc(100vh - 503px) !important;
+  }
+ }
 

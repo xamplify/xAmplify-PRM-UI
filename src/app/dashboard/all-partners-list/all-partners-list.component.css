@@ -1,0 +1,13 @@
+.mt25m {
+    margin-top: -25px !important;
+    display: flex;
+}
+.mh480{
+    min-height: 480px;
+    height: 480px;
+}
+.tableHeightScroll{
+    height: 343px !important;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}

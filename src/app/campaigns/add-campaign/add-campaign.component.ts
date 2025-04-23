@@ -1918,7 +1918,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
             if (this.selectedContactListIds.length == 0) { this.isContactList = false; }
             this.userListDTOObj = this.referenceService.removeDuplicates(this.userListDTOObj);
-            this.getValidUsersCount();
         } else {
             $('[name="campaignContact[]"]').prop('checked', false);
             $('#campaignRecipientsTable tr').removeClass("contact-list-selected");
@@ -1937,6 +1936,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             }
 
         }
+        this.getValidUsersCount();
         ev.stopPropagation();
     }
 

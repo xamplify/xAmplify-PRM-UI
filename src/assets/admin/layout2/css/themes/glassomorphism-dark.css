@@ -4423,3 +4423,26 @@ markdown pre,.aligin-para{
 .panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card,.accordion_card .panel-body{
   background: rgb(0 0 0 / 18%) !important;
 }
+.modal-body.oliver-header{
+  border: 1px solid hsla(0, 0%, 100%, .1) !important;
+  background: #8d8a8a00 !important;
+}
+.side_bar,.writing-card,.phara-card,
+.oliver_input,.textarea-card{
+  background: rgba(16 18 27 / 40%) !important;
+  border: 1px solid #ffffff33 !important;
+  backdrop-filter: blur(5px);
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+  background: rgb(146 151 179 / 39%) !important;
+  color: #fcfeff!important;
+  border-radius: 8px!important;
+}
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text{
+  color: #fff!important;
+}
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
+}

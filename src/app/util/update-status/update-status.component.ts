@@ -119,6 +119,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	@Input() fromAi :boolean = false;
 	@Input() OliverData : any;
 	@Input () isShowPageContent : boolean = false;
+
+	selectedUserListRowsLength: number = 0;
+	validUsersCount: number = 0;
+  	allUsersCount: number = 0;
+	maxRecipientCountReached: boolean = false;
+	maxRecipientCount: number = 0;
+	restrictRecipientCount: boolean = false;
+	isOrgAdminCompany: boolean = false;
+
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -153,6 +162,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.contactListsPagination.filterBy = 'ALL';
 		//this.socialCampaign.userListIds = [];//Write Logic For Only OrgAdmin & Marketing company
 		this.loadContactLists(this.contactListsPagination);
+		this.restrictRecipientCount = this.isOrgAdminCompany ? !event : this.restrictRecipientCount;
+		if (!event && this.isOrgAdminCompany && this.alias == undefined) {
+			this.restrictRecipientCount = true;
+			this.getMaximumContactCountForCampaignLaunch();
+		} else if (event && this.isOrgAdminCompany && this.alias == undefined) {
+			this.maxRecipientCountReached = false;
+			this.restrictRecipientCount = false;
+		}
 	}
 
 	setCustomResponse(type: ResponseType, statusText: string) {
@@ -1051,6 +1068,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						this.loadContactLists(this.contactListsPagination);
 					}
 				}
+				this.isOrgAdminCompany = (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminTeamMember); 
+				if (this.alias != undefined || this.marketingCompany  || (this.isOrgAdminCompany && !this.socialCampaign.channelCampaign)) {
+					this.restrictRecipientCount = true;
+					this.getMaximumContactCountForCampaignLaunch();
+				}
 			}
 		);
 		
@@ -1544,22 +1566,25 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
                 this.emptyContactsMessage = "Users are in progress";
             }
 
-        }
+        } 
 
     }
     contactsUtility() {
         var trLength = $('#social-contact-list-table tbody tr').length;
         var selectedRowsLength = $('[name="social-campaignContact[]"]:checked').length;
+		this.selectedUserListRowsLength = selectedRowsLength;
         if (selectedRowsLength > 0 || this.socialCampaign.userListIds.length > 0) {
             this.isContactList = true;
         } else {
             this.isContactList = false;
+			this.maxRecipientCountReached = false;
         }
         if (trLength != selectedRowsLength) {
             $('#checkAllExistingSocialContacts').prop("checked", false)
         } else if (trLength == selectedRowsLength) {
             $('#checkAllExistingSocialContacts').prop("checked", true);
         }
+		this.getValidUsersCount();
     }
 
     checkAll(ev: any) {
@@ -1574,6 +1599,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             });
             this.socialCampaign.userListIds = this.referenceService.removeDuplicates(this.socialCampaign.userListIds);
             if (this.socialCampaign.userListIds.length == 0) { this.isContactList = false; }
+			this.selectedUserListRowsLength = this.socialCampaign.userListIds.length;
+			this.getValidUsersCount();
         } else {
             $('[name="social-campaignContact[]"]').prop('checked', false);
             $('#social-contact-list-table tr').removeClass("contact-list-selected");
@@ -1588,7 +1615,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
                     this.isContactList = false;
                 }
             }
-
+			this.maxRecipientCountReached = false;
         }
         ev.stopPropagation();
     }
@@ -1710,6 +1737,53 @@ checkAliasAccess(socialCampaignAlias: string) {
 		backAi(){
 			this.notifyClose.emit();
 		}
+
+	/** XNFR-929 **/
+	getValidUsersCount() {
+		if (this.restrictRecipientCount && this.selectedUserListRowsLength > 0  && this.socialCampaign.userListIds.length > 0 ) {
+			this.loading = true;
+			this.contactService.findAllAndValidUserCounts(this.socialCampaign.userListIds)
+				.subscribe(
+					data => {
+						this.validUsersCount = data['validUsersCount'];
+						this.allUsersCount = data['allUsersCount'];
+						this.loading = false;             
+						this.checkRecipientCountLimitReached();
+					},
+					(error: any) => {
+						this.loading = false;
+					});
+		} else {
+			this.maxRecipientCountReached = false;
+		}
+	}
+
+	/** XNFR-929 **/
+	getMaximumContactCountForCampaignLaunch() {
+		this.loading = true;
+		this.campaignService.getMaximumContactCountForCampaignLaunch(this.loggedInUserId).subscribe(
+		(result: any) => {
+			if (result.statusCode == 200) {
+				this.maxRecipientCount = result.data;
+			} else {
+				this.maxRecipientCount = 0;
+			}
+			this.loading = false;
+		},
+		(error: string) => {
+			this.loading = false;
+		}, ()=>{
+			this.checkRecipientCountLimitReached();
+		})
+	}
+	
+	checkRecipientCountLimitReached() {
+		if (this.restrictRecipientCount && this.validUsersCount > this.maxRecipientCount) {
+			this.maxRecipientCountReached = true;
+		} else {
+			this.maxRecipientCountReached = false;
+		}
+	}
 }
 
 

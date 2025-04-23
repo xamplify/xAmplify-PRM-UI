@@ -1318,12 +1318,15 @@ h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
 /* 11-7-2023 sudha sri */
-.btn-primary,.add_partnerbtn,.submit-btn{
+.btn-primary,.add_partnerbtn,.submit-btn,.generate-btn,.btn-submit,.user_guide{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
 }
-.btn-primary:hover,.add_partnerbtn:hover,.submit-btn:hover{
+.helpcircle-cu,.guide_text{
+  color: var(--btn-primary-text-color) !important;
+}
+.btn-primary:hover,.add_partnerbtn:hover,.submit-btn:hover,.generate-btn:hover,.btn-submit:hover,.user_guide:hover{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
@@ -1399,10 +1402,6 @@ div#removeborder {
 .help-iconbgadd {
   border: 1px solid var(--top-button-border-color) !important;
 }
-.helpcircle-cu {
-  color: var(---text-color) !important;
-}
-
 /* end */
 
 /* Create Campaign Select Campaign bar bg */
@@ -2622,4 +2621,25 @@ markdown pre,.aligin-para{
   border: 1px solid var(--border-color) !important;}
 .panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card,.accordion_card .panel-body{
   background: var(--div-bg-color) !important;
+}
+.modal-body.oliver-header,.textarea-card,input.form-control.input-lg.oliver-input,select.form-control.oliver-focus{
+  background: var(--div-bg-color) !important;
+}
+.side_bar,.writing-card,.phara-card,
+.oliver_input{
+  background: var(--page-content) !important;
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+  background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(---text-color) !important;
+  border-radius: 8px!important;
+}
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text{
+  color: var(---text-color) !important;
+}
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
 }

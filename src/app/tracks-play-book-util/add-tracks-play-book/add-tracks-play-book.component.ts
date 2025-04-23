@@ -156,7 +156,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   tagsListSecondColumn: Array<Tag> = new Array<Tag>();
   tagSearchKey: string = "";
 
-  isCkeditorLoaded: boolean = false;
   mediaLinkDisplayText: string = "";
   selectedAssetForMedia: any;
   folderName: string = "";
@@ -275,10 +274,6 @@ errorMessage:any;
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
             this.ngxloading = false;
         });
-  }
-
-  onReady(event: any) {
-    this.isCkeditorLoaded = true;
   }
 
   ngOnDestroy() {
@@ -1737,6 +1732,8 @@ errorMessage:any;
       return this.type === TracksPlayBookType[TracksPlayBookType.TRACK] ? 
         "Unapproved tracks can't be published" : 
         "Unapproved playbooks can't be published";
+    } else if(this.isButtonDisabled) {
+      return `${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} cannot be published as the end date has expired.`;
     }
     return '';
   }
@@ -1844,5 +1841,12 @@ addTagsCondition(selectedTags:any[]) {
     if (format.includes('yyyy')) options.year = 'numeric';
 
     return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
+
+  tooltipMessage(tracksPlayBook):string {
+    if(this.SubmitButtonValue ==='Update' && tracksPlayBook.published && this.isButtonDisabled) {
+      return `${this.type == TracksPlayBookType[TracksPlayBookType.TRACK] ? "Track" : "Playbook"} cannot be published as the end date has expired.`;
+    } 
+    return '';
   }
 }

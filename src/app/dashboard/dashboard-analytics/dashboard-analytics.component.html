@@ -67,7 +67,10 @@
             </div>
             <!-- Btns -->
             <div class="d-flex">
-                <button class=" btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                <button class="btn mr5 btn_cancel" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
+                    title="Retrun to default dashboard" (click)="findCustomDashboardLayout(); isDraggingEnabled=false" *ngIf="isDraggingEnabled">
+                    <i class="fa fa-reply"></i>&nbsp;Cancel</button>
+                <button class="btn mr5 btn_reset" aria-hidden="true" data-placement="bottom" data-toggle="tooltip"
                     title="Reset to default dashboard" (click)="findCustomDashboardLayout()" *ngIf="isDraggingEnabled">
                     <i class="fa fa-refresh"></i>&nbsp;Reset</button>
                 <button class="btn hidden-xs" [ngClass]="{'btn_update': isDraggingEnabled, 'btn_custom': !isDraggingEnabled}"
