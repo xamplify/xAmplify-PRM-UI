@@ -8,8 +8,11 @@
 	<span class="margin-left" *ngIf="!isPartnerEntityInfo">
 		
 		<ng-container *ngIf="isAllPartnersList">
-			<p *ngIf="userInfo?.firstName?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}} ">
-				<b>Name:</b> {{userInfo?.firstName | slice:0:15}} <span *ngIf="userInfo?.firstName?.length>15">...</span>
+			<p *ngIf="userInfo?.firstName || userInfo?.lastName" data-toggle="tooltip" data-placement="bottom" 
+			title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}} ">
+				<b>Name:</b> {{userInfo?.firstName | slice:0:15}} 
+				<span *ngIf="userInfo?.firstName?.length>15">...</span>
+				&nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
 			</p>
 			<p *ngIf="userInfo?.emailId?.length>0" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.emailId}}">
 				<b>Email id:</b> {{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span>
