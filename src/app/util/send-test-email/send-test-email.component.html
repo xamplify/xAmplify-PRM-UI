@@ -4,6 +4,7 @@
       <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="modal-content">
          <div class="modal-header">
+            <h4  class="modal-title left" *ngIf="vanityTemplatesPartnerAnalytics"  translate>Send Reminder</h4>
             <a class="close-circle" (click)="callEventEmitter()" data-dismiss="modal"><i class="fa fa-times"></i></a>
             <a *ngIf="isSendMdfRequestOptionClicked" class="close-circle mr5" (click)="openCampaignMdfRequestHistoryModalPopup()"><i class="fa fa-history"></i></a>
             <h4 class="modal-title left" id="myModalLabel">{{headerTitle}}</h4>
@@ -15,21 +16,22 @@
                   <div *ngIf="!isPreviewEmailTemplate">       
                      <div class="scrollbar-x" *ngIf="vanityTemplatesPartnerAnalytics && tabsEnabled">
                         <ul class="nav nav-tabs hideBorder">
-                           
-                              <li [ngClass]="{'active': registerNowItems?.length > 0, 'disabled': registerNowItems?.length == 0}">
-
-                              <a data-toggle="tab" href="#Register"
-                                 (click)="registerNowItems?.length > 0 && activeTab('registerNow')">Register Now</a>
-                            </li>
-                            
-                            <li [ngClass]="{'active': activateNowItems?.length > 0 && registerNowItems?.length == 0, 'disabled': activateNowItems?.length == 0}">
-                              <a data-toggle="tab" href="#Activate"
-                                 (click)="activateNowItems?.length > 0 && activeTab('activateNow')">Activate Now</a>
-                            </li>
-                            
+                          <li [ngClass]="{'active': registerNowItems?.length > 0, 'disabled': registerNowItems?.length == 0}">
+                            <a data-toggle="tab" href="#Register"
+                               (click)="registerNowItems?.length > 0 && activeTab('registerNow')">
+                              Register Now <span *ngIf="registerNowItems?.length > 0">({{ registerNowItems.length }})</span>
+                            </a>
+                          </li>
+               
+                          <li [ngClass]="{'active': activateNowItems?.length > 0 && registerNowItems?.length == 0, 'disabled': activateNowItems?.length == 0}">
+                            <a data-toggle="tab" href="#Activate"
+                               (click)="activateNowItems?.length > 0 && activeTab('activateNow')">
+                              Activate Now <span *ngIf="activateNowItems?.length > 0">({{ activateNowItems.length }})</span>
+                            </a>
+                          </li>
+                      
                         </ul>
-                     </div>
-                     
+                      </div>
                      <div class="tab-content tab-bg">
                         <div id="Register" class="tab-pane fade in active pt-5 integration-profile">
                         </div>
