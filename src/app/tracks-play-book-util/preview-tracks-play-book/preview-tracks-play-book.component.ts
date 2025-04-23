@@ -263,7 +263,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '') {
             if(assetDetails.assetProxyPath){
               this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
             } else {
@@ -279,7 +279,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
             this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
           }
         } else {
-          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '') {
             if(assetDetails.assetProxyPath){
               this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
             } else {
@@ -296,7 +296,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           }
         }
       }else{
-        if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && !(this.type == undefined || this.type == 'TRACK')) {
+        if ((assetDetails.contentPreviewType || assetDetails.imageFileType)) {
           if(assetDetails.assetProxyPath){
             this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
           } else {
