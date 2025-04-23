@@ -114,11 +114,14 @@
 							</div>
 						</div>
 						<div class="bar barview full-width-folder gridIconCustomization">
-							<a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
-								title="View Items" (click)="viewItemsByCategoryId(category.id)"> <i class="fa fa-eye"
-									aria-hidden="true"></i>
+							<a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="View Items"
+								(click)="viewItemsByCategoryId(category.id)"> <i class="fa fa-eye" aria-hidden="true"></i>
 								<div class="clickicons"></div>
 								<!-- color-chnage -->
+							</a>
+							<a *ngIf="authenticationService?.isOliverActive" class="Iconhover custom-icon oliverhover" data-toggle="tooltip"
+								data-placement="top" title="Ask Oliver" (click)="AskOliver(category.id)">
+								<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg oliverStyle m0 ">
 							</a>
 						</div>
 					</div>
