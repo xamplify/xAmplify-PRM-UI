@@ -32,7 +32,8 @@ export class AllPartnersListComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
- 
+  @Output() triggerSendEmailPopup = new EventEmitter<any>();
+
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
@@ -63,6 +64,9 @@ export class AllPartnersListComponent implements OnInit {
       this.heading = "All Partners Details"
     }
 
+    callParentMethod(item: any) {
+      this.triggerSendEmailPopup.emit(item); // Send item data to parent
+    }
   //   // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
   //   //   this.isDetailedAnalytics = true;
   //   // } else {
