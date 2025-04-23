@@ -346,6 +346,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                     this.isAssetReplaced = true;
                     this.initialiseSubmitButtonText(this.isApprover, this.damUploadPostDto.approvalStatus, this.isAdd, this.isAssetReplaced);
                 } else {
+                    this.fileType = "";
                     this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
                 }
             }	
@@ -1569,12 +1570,14 @@ zoomOut() {
         this.isVendorSignatureToggleClicked = true;
         this.isVendorSignatureAdded = false;
         this.validateAllFields();
-        if(event === 'true'){
-          this.setUploadedFileProperties(this.pdfUploadedFile);
-        } else {
-            this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
-            this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
-            this.showClearOption = false;
+        if(this.fileType == "application/pdf"){
+            if(event === 'true'){
+                this.setUploadedFileProperties(this.pdfUploadedFile);
+              } else {
+                  this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+                  this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
+                  this.showClearOption = false;
+              }
         }
     }
 
