@@ -994,3 +994,7 @@ span.Track-countbg {
     margin-top: 3px !important;
     display: inline-block;
 }
+
+.mr2 {
+  margin-right: 3px;
+}
