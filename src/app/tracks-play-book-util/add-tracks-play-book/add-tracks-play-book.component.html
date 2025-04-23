@@ -1347,3 +1347,6 @@
     </ng-container>
   </div>
 </ng-template>
+
+<app-preview-content *ngIf="showPreviewContent" [previewPath]="assetPreviewProxyPath" [fileType]="assetType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
+    [isPreviewPopup]="showPreviewContent" (notifyClose)="closePreview()"></app-preview-content>
