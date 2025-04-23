@@ -76,8 +76,7 @@ export class AddCompanyComponent implements OnInit {
       }
     }
   }
-  addCompanyModalClose(companyName: string) {
-    this.notifyClose.emit(companyName);
+  addCompanyModalClose() {  
     $('#addCompanyModal').modal('hide');
     this.closeEvent.emit("0");
   }
@@ -133,7 +132,7 @@ export class AddCompanyComponent implements OnInit {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
           this.notifySubmitSuccess.emit(response.data);       
           this.emitCompanyId.emit(response.data);
-          this.addCompanyModalClose(response.data);
+          this.addCompanyModalClose();
         } else if (response.statusCode == 500) {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
         } else if (response.statusCode == 409) {
@@ -186,7 +185,7 @@ export class AddCompanyComponent implements OnInit {
         if (response.statusCode == 200) {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
           this.notifySubmitSuccess.emit();
-          this.addCompanyModalClose(response.data);
+          this.addCompanyModalClose();
           if (response.data.country == null || response.data.country == undefined || response.data.country == '') {
             this.addCompany.country = this.countryNames.countries[0];
           }
