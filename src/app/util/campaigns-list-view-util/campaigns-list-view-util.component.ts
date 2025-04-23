@@ -192,10 +192,14 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                     if (data.access) {
                         this.campaigns = data.campaigns;
                         this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
+                        let self = this;
                         $.each(this.campaigns, function (_index: number, campaign) {
                             campaign.displayTime = new Date(campaign.utcTimeInString);
                             campaign.createdDate = new Date(campaign.createdDate);
-                            campaign.displayRedistributionCount = this.campaignAnalyticsSettingsOptionEnabled;
+                            campaign.displayRedistributionCount = self.campaignAnalyticsSettingsOptionEnabled;
+                            if(campaign.campaignType=='LANDINGPAGE' || campaign.campaignType=='SOCIAL' || campaign.oneClickLaunchCondition){
+                                self.getRedistributionCount(campaign);
+                            }
                         });
                         this.totalRecords = data.totalRecords;
                         pagination.totalRecords = data.totalRecords;
@@ -1525,7 +1529,9 @@ validateCopyCampaignName(){
         this.getSoftBounceCount(campaign);
         this.getLeadsCount(campaign);
         this.getDealsCount(campaign);
-        this.getRedistributionCount(campaign);
+        if(campaign.campaignType !== 'LANDINGPAGE'){
+            this.getRedistributionCount(campaign);
+        }
     }
 
     getLeadOrDealAccess(campaign:any){
