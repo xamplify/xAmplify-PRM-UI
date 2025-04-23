@@ -24,6 +24,7 @@ export class MicrosoftAuthenticationPopupComponent implements OnInit {
   microsoftLoading: boolean = false;
   customResponse: CustomResponse = new CustomResponse();
   disableAuthorizeButton: boolean = false;
+  hideCSVInNotes: boolean =  false;
 
   constructor(public authenticationService: AuthenticationService, private dashBoardService: DashboardService,
     public referenceService: ReferenceService, private vanityUrlService: VanityURLService, public regularExpressions: RegularExpressions) { }
@@ -42,6 +43,7 @@ export class MicrosoftAuthenticationPopupComponent implements OnInit {
   }
 
   validateMicrosoftModelForm() {
+    this.hideCSVInNotes = true;
     let valid = true;
     let errorMessage = "";
     if (this.microsoftInstanceUrl == undefined || this.microsoftInstanceUrl == null || this.microsoftInstanceUrl.trim().length <= 0
