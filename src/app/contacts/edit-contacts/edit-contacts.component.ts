@@ -300,6 +300,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/**XNFR-848**/
 	isCompanyJourney: boolean = false;
 	companyJourneyId: any;
+
+	// XNFR-945
+	isEditMode: boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -2503,6 +2506,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.selectedCompanyContactId = this.selectedCompanyId;
 		this.mapFlexiFieldsForEditContact(contactDetails);
 		this.contactService.isContactModalPopup = true;
+	    this.isEditMode = true;
 	}
 
 	updateContactModalClose() {
