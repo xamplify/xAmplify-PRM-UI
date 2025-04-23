@@ -54,7 +54,7 @@
               <div>
                 <i *ngIf="!isCompanyJourney" class="fas fa-user mr_6 icons_colors" aria-hidden="true"></i>
                 <i *ngIf="isCompanyJourney" class="fas fa-building mr_6 icons_colors" aria-hidden="true"></i>
-                <span *ngIf="contactName != undefined && contactName != ''" data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
+                <span *ngIf="contactName != undefined && contactName != '' && !isLoading" data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
                   {{referenceService?.isHarizontalNavigationBar ? (contactName | slice:0:15) : (contactName | slice:0:9)}}<span *ngIf="contactName != undefined && (referenceService?.isHarizontalNavigationBar ? contactName?.length>15 : contactName?.length>9)">..</span>
                 </span>
                 <span *ngIf="contactName == undefined || contactName == ''" class="anonymous-text">Anonymous</span>
@@ -84,7 +84,7 @@
                 </p>
               </span> 
               <span *ngIf="selectedContact?.mobileNumber != undefined && selectedContact?.mobileNumber != ''" class="email-id">
-                <p data-toggle="tooltip" data-placement="bottom"
+                <p data-toggle="tooltip" data-placement="bottom" *ngIf="!isLoading"
                   title="{{ validateMobileNumber(selectedContact?.mobileNumber) ? (selectedContact?.mobileNumber + ' - Invalid Mobile Number') : selectedContact?.mobileNumber }}">
                   <i class="fa fa-phone mr_6 icons_colors"></i>
                   <span [ngClass]="{'required': validateMobileNumber(selectedContact?.mobileNumber)}" style="font-size:12px;">{{selectedContact.mobileNumber}}</span>
