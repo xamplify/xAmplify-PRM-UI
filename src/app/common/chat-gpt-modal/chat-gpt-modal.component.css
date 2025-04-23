@@ -1,14 +1,15 @@
 .icon-s-w {
   height: 150px;
   width: 150px;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
 }
 
 
 .customIcon {
   float: right;
   position: absolute;
-  top: -5px;
+  top: 8px;
   right: 30px;
 }
 

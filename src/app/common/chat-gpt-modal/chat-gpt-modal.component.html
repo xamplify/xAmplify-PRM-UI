@@ -3,28 +3,26 @@
   <a class="javascript:void(0)"><img src="assets/images/homeOliverLogo-1.svg" class="icon-s-w"></a>
 </div> -->
 <div
-*ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
-  [ngClass]="!isMinimizeOliver ? 'chatgpt-card override' : 'chatgpt-card minimize'" id="chatIconImage" data-toggle="modal" data-target="#xAmplifyChatGPTModal"
-  (click)="resetValues()">
-  <a class="javascript:void(0)">
-    <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver();$event.stopPropagation()"
-      aria-hidden="true"></i>
-    <img (mouseenter)="isMinimizeOliver = false"
-      [src]="!isMinimizeOliver ? 'assets/images/homeOliverLogo-1.svg' : 'assets/images/olivermsglogo.svg'"
-      [ngStyle]="{'width': !isMinimizeOliver ? '150px' : '30px', 'height': !isMinimizeOliver ? '150px' : '30px', 'transition': '0.3s ease-in-out'}">
-  </a>
-  <!-- <i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" (click)="minimizeOliver(); $event.stopPropagation()"
-    aria-hidden="true"></i>
-  <div class="oliver-wrapper" (mouseenter)="onMouseEnter()">
-    <ng-container *ngIf="!isMinimizeOliver; else minimized">
-      <object data="assets/images/homeOliverLogo-1.svg" type="image/svg+xml" class="icon-s-w"></object>
-    </ng-container>
+  *ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
+  [ngClass]="!isMinimizeOliver ? 'chatgpt-card override' : 'chatgpt-card minimize'" id="chatIconImage"
+  (click)="resetValues()" data-toggle="modal" data-target="#xAmplifyChatGPTModal">
 
-    <ng-template #minimized>
-      <object data="assets/images/olivermsglogo.svg" type="image/svg+xml" class="icon-s-w mini"></object>
-    </ng-template>
-  </div> -->
+  <!-- Close icon (minimize) -->
+  <a><i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" aria-hidden="true" (click)="onMinimizeClick($event)">
+    </i></a>
+
+  <div class="oliver-wrapper">
+    <div (mouseenter)="expandIfMinimized()">
+      <object data="assets/images/homeOliverLogo-1.svg" type="image/svg+xml" [ngStyle]="{
+          'width': !isMinimizeOliver ? '150px' : '60px',
+          'height': !isMinimizeOliver ? '150px' : '60px',
+          'transition': '0.3s ease-in-out'
+        }" class="icon-s-w">
+      </object>
+    </div>
+  </div>
 </div>
+
 <!--ICON END -->
 <link *ngIf="isWelcomePageUrl" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link  *ngIf="isWelcomePageUrl" rel='stylesheet' href='/assets/js/indexjscss/oliver-AI.css' type='text/css'>

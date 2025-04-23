@@ -1,14 +1,15 @@
 .icon-s-w {
   height: 150px;
   width: 150px;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
 }
 
 
 .customIcon {
   float: right;
   position: absolute;
-  top: -5px;
+  top: 8px;
   right: 30px;
 }
 
@@ -188,7 +189,6 @@
     .w85-per {
       width: 95% !important;
   }
-  
  .tab-content{
   padding: 20px 5px!important;
 }
@@ -213,7 +213,7 @@
 .textarea-card{width: 100%!important;height: 252px!important;margin-top: 10px!important;}
 .clip-path2,.clip-path1{mask: unset!important;}
 .modal-body.oliver-header{padding:12px!important;}
-}
+  }
   @media only screen and (min-width: 768px) and (max-width: 992px) { 
     .sample-text {
       width: 115px;
