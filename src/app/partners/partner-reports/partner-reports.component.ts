@@ -116,6 +116,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     selectedPartners : any;
     isTotalPartnerDiv = false;
     totalPartnersDiv: boolean = false;
+    isPendingStatus = false;
+    isActiveStatus = false;
+    isDormantStatus = false;
+    isIncompleteCompanyProfile = false;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -1313,11 +1317,26 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
-
+    checkAllPartnersStatus(item:any){
+        if(this.totalPartnersDiv){
+            this.isPendingStatus = false;
+            this.isDormantStatus= false;
+            this.isIncompleteCompanyProfile = false;
+            let status = item.status;
+            if(status == "Pending Signup"){
+                this.isPendingStatus = true;
+            }else if(status == "Dormant"){
+                this.isDormantStatus = true;
+            }else if(status == "IncompleteCompanyProfile"){
+                this.isIncompleteCompanyProfile = true;
+            }
+        }
+    }
     openSendTestEmailModalPopup(item: any) {
+        this.checkAllPartnersStatus(item);
         this.selectedItem = item;
         this.selectedEmailId = item.emailId;
-        if (this.isInactivePartnersDiv) {
+        if (this.isInactivePartnersDiv || this.isDormantStatus) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isInactivePartnersDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1336,7 +1355,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             );
         }
 
-        else if (this.isIncompleteCompanyProfileDiv) {
+        else if (this.isIncompleteCompanyProfileDiv || this.isIncompleteCompanyProfile) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isIncompleteCompanyProfileDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1354,7 +1373,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             );
         }
-        else if (this.isSingUpPendingDiv) {
+        else if (this.isSingUpPendingDiv || this.isPendingStatus) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isSingUpPendingDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1371,7 +1390,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     console.error("Error fetching template ID:", error);
                 }
             );
-        }
+         }
+        // else if(this.goToAllPartnersDiv){
+            
+        // }
     }
     
          
@@ -1502,7 +1524,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.vanityTemplates = false;
       }
     emittedMethod(event: any) {
-        if (this.isInactivePartnersDiv) {
+        if (this.isInactivePartnersDiv || this.isDormantStatus) {
             if (Array.isArray(event)) {
                 this.sendRemindersForAllSelectedPartners();
             } else {
@@ -1510,7 +1532,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             }
             this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
         }
-         else if (this.isIncompleteCompanyProfileDiv  || this.isSingUpPendingDiv) {
+         else if (this.isIncompleteCompanyProfileDiv  || this.isSingUpPendingDiv || this.isIncompleteCompanyProfile || this.isPendingStatus) {
             if (Array.isArray(event)) {
                 this.sendRemindersForAllSelectedPartnersOne();
             } else {

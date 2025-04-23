@@ -1761,7 +1761,7 @@ zoomOut() {
         let self = this;
           swal({
             title: 'Are you sure?',
-            text: 'The Signatures will be removed form the Pdf',
+            text: 'The Signatures will be removed from the Pdf',
             type: 'warning',
             showCancelButton: true,
             swalConfirmButtonColor: '#54a7e9',
@@ -1778,7 +1778,7 @@ zoomOut() {
         let self = this;
           swal({
             title: 'Are you sure?',
-            text: 'The added signatures will be removed form the Pdf',
+            text: 'The added signatures will be removed from the Pdf',
             type: 'warning',
             showCancelButton: true,
             swalConfirmButtonColor: '#54a7e9',

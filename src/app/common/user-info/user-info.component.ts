@@ -47,6 +47,7 @@ export class UserInfoComponent implements OnInit {
                 }
             } else if(this.isAllPartnersList){
                 this.userInfo.firstName = this.userInfo.firstName;
+                this.userInfo.lastName = this.userInfo.lastName;
                 this.userInfo.emailId = this.userInfo.emailId;
                 this.userInfo.companyName = this.userInfo.companyName;
             }
