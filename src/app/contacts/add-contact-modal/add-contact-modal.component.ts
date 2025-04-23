@@ -634,8 +634,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.actionType = "add";
         this.contactId = addContactuser.contactCompanyId;      
     }
-    closeCompanyPopup() {
-        this.companyPop = false;      
+    closeCompanyPopup(event:any) {
+        if(event == 0){
+            this.companyPop = false; 
+        }
+            
       }
 
     onCompanyAdded(company: any) {       
