@@ -140,6 +140,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     campaignId: number;
     /*XNFR-832*/
     
+    @Input()campaignAnalyticsSettingsOptionEnabled :boolean = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService, private route: ActivatedRoute, public renderer: Renderer,
@@ -320,6 +321,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 self.campaignAccess.landingPageCampaign = campaignAccess.page;
                 self.campaignAccess.formBuilder = campaignAccess.form;
                 self.campaignAccess.survey = campaignAccess.survey;
+                self.pagination.campaignAnalyticsSettingsOptionEnabled = self.campaignAnalyticsSettingsOptionEnabled;
             }, _error => {
                 self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 self.isloading = false;
