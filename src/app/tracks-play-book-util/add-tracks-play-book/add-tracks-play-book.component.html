@@ -262,7 +262,6 @@
 
     <!-- step 2 -->
     <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo">
-      <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet bg-card-header" style="padding-bottom: 25px;border-radius: 5px;background-color:#fff;">
         <div class="portlet-title" style="padding-bottom: 5px;
         margin-right: 12px;
@@ -295,7 +294,7 @@
         padding-right: 12px;">
           <div *ngIf="isAdd || tracksPlayBook.description != undefined">
             <ckeditor [(ngModel)]="tracksPlayBook.description" #ckeditor [ngModelOptions]="{standalone: true}"
-              [config]="ckeConfig" (ready)="onReady($event)" debounce="500" 
+              [config]="ckeConfig" debounce="500" 
               (change)="validateDescription();validateAllSteps()"
               (input)="setDescription();validateDescription();validateAllSteps()">
             </ckeditor>

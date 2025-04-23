@@ -156,7 +156,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   tagsListSecondColumn: Array<Tag> = new Array<Tag>();
   tagSearchKey: string = "";
 
-  isCkeditorLoaded: boolean = false;
   mediaLinkDisplayText: string = "";
   selectedAssetForMedia: any;
   folderName: string = "";
@@ -275,10 +274,6 @@ errorMessage:any;
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
             this.ngxloading = false;
         });
-  }
-
-  onReady(event: any) {
-    this.isCkeditorLoaded = true;
   }
 
   ngOnDestroy() {

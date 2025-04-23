@@ -140,6 +140,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     campaignId: number;
     /*XNFR-832*/
     
+    @Input()campaignAnalyticsSettingsOptionEnabled :boolean = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService, private route: ActivatedRoute, public renderer: Renderer,
@@ -194,6 +195,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                         $.each(this.campaigns, function (_index: number, campaign) {
                             campaign.displayTime = new Date(campaign.utcTimeInString);
                             campaign.createdDate = new Date(campaign.createdDate);
+                            campaign.displayRedistributionCount = this.campaignAnalyticsSettingsOptionEnabled;
                         });
                         this.totalRecords = data.totalRecords;
                         pagination.totalRecords = data.totalRecords;
@@ -320,6 +322,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 self.campaignAccess.landingPageCampaign = campaignAccess.page;
                 self.campaignAccess.formBuilder = campaignAccess.form;
                 self.campaignAccess.survey = campaignAccess.survey;
+                self.pagination.campaignAnalyticsSettingsOptionEnabled = self.campaignAnalyticsSettingsOptionEnabled;
             }, _error => {
                 self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 self.isloading = false;
@@ -1522,6 +1525,7 @@ validateCopyCampaignName(){
         this.getSoftBounceCount(campaign);
         this.getLeadsCount(campaign);
         this.getDealsCount(campaign);
+        this.getRedistributionCount(campaign);
     }
 
     getLeadOrDealAccess(campaign:any){
@@ -1748,5 +1752,19 @@ validateCopyCampaignName(){
     }
     /**XNFR-832***/
 
+    /**XNFR-959***/
+    getRedistributionCount(campaign: any) {
+        if (campaign.channelCampaign) {
+            campaign.dealError = false;
+            this.campaignService.getRedistributedCountForAnalytics(campaign).subscribe(
+                response => {
+                    campaign.redistributedCount = response.data;
+                    campaign.displayRedistributionCount = true;
+                }, error => {
+                    campaign.displayRedistributionCount = false;
+                });
+        }
+
+    }
 
  }

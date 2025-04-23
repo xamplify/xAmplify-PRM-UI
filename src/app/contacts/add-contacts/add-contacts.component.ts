@@ -615,6 +615,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     saveContactsWithPermission() {
+
         $('#tcModal').modal('hide');
         if (this.contactOption == 'oneAtTime') {
             this.oneAtTimeSaveAfterGotPermition();
@@ -1219,6 +1220,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     googleContacts() {
+        this.hideCSVInNotes = true;
         try {
             if (this.loggedInThroughVanityUrl) {
                 this.googleVanityAuthentication();
@@ -2149,6 +2151,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingPopupValues() {
+        this.hideCSVInNotes = true;
         this.contactType = $("select.opts:visible option:selected ").val();
         if (this.contactType != "") {
             $("button#salesforce_save_button").prop('disabled', false);
@@ -2161,6 +2164,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingZohoPopupValues() {
+        this.hideCSVInNotes = true;
         let self = this;
         self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
         if (this.selectedZohoDropDown == "DEFAULT") {
@@ -3309,6 +3313,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getMarketoContacts() {
+        this.hideCSVInNotes = true;
         this.loadingMarketo = true;
         const obj = {
             userId: this.authenticationService.getUserId(),
@@ -3536,6 +3541,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     //XNFR-230
     checkingPipedriveContactsAuthentication() {
+        this.hideCSVInNotes = true;
         if (this.selectedAddContactsOption == 8) {
             this.integrationService.checkConfigurationByType('pipedrive').subscribe(data => {
                 let response = data;
@@ -3700,6 +3706,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     getHubSpotData() {
+        this.hideCSVInNotes = true;
         $("button#salesforce_save_button").prop('disabled', true);
         if (this.contactType === "contacts") {
             this.getHubSpotContacts();
@@ -4796,6 +4803,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingHaloPSAContactsAuthentication() {
+        this.hideCSVInNotes = true;
         if (this.selectedAddContactsOption == 8) {
             this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
                 let response = data;

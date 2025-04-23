@@ -1173,6 +1173,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             this.exportObject['archived'] = this.archived;
+            this.exportObject['campaignAnalyticsSettingsOptionEnabled']= this.campaignAnalyticsSettingsOptionEnabled;
             this.closeFilterOption();
         }
     }
