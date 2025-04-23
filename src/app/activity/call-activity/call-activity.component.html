@@ -9,6 +9,11 @@
         data-original-title="Make a Call" (click)="dialNumber()">
         <i aria-hidden="true" class="glyphicon glyphicon-phone"></i>
       </a>
+      <a *ngIf="authenticationService?.isOliverActive && !isCompanyJourney && !showConfigureMessage" class ="oliver_call_icon ml3" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="askOliver()">
+        <div class="oliveBackground">
+          <img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+        </div>
+      </a>
       <div class="btn-group pull-right">
         <div class="inputs float-right" style="display: inline-flex;">
           <div class="float-left">

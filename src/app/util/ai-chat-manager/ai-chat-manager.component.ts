@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
@@ -17,6 +18,8 @@ declare var $: any;
 })
 export class AiChatManagerComponent implements OnInit {
   @Input() asset: any;
+  @Input() chatGptSettingDTO: any;
+  @Input() selectedContact: any;
   openHistory: boolean;
   messages: any[] = [];
   isValidInputText: boolean;
@@ -56,7 +59,8 @@ export class AiChatManagerComponent implements OnInit {
   zoomLevel = 50;
   baseWidth: number = 800;
   baseHeight: number = 1000;
-  loadPreview :boolean = false
+  loadPreview :boolean = false;
+  isFromContactJourney: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
@@ -67,6 +71,15 @@ export class AiChatManagerComponent implements OnInit {
       this.chatGptIntegrationSettingsDto.partnerDam = true;
       this.chatGptIntegrationSettingsDto.damId = this.assetId;
       this.getThreadId(this.chatGptIntegrationSettingsDto);
+    } else if (this.selectedContact != undefined && this.chatGptSettingDTO != undefined) {
+      this.isFromContactJourney = true;
+      if (this.chatGptSettingDTO.threadId != undefined) {
+        this.threadId = this.chatGptSettingDTO.threadId;
+      }
+      if (this.threadId != undefined && this.threadId != '') {
+        this.getChatHistory();
+      }
+      this.analyzeCallRecordings();
     } else {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = true;
@@ -203,16 +216,18 @@ export class AiChatManagerComponent implements OnInit {
     if (this.uploadedFileId != undefined) {
       this.deleteUploadedFile();
     }
-    if(this.asset != undefined && this.asset != null){
+    if (this.asset != undefined && this.asset != null) {
       this.isOliverAiFromdam = false;
       this.notifyParent.emit();
-      }else{
-        if (this.router.url.includes('/shared/view/')) {
-          this.referenceService.goToRouter('/home/dam/shared/l');
-        } else {
-          this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
-        }
+    } else if (this.isFromContactJourney) {
+      this.notifyParent.emit(this.chatGptSettingDTO);
+    } else {
+      if (this.router.url.includes('/shared/view/')) {
+        this.referenceService.goToRouter('/home/dam/shared/l');
+      } else {
+        this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
       }
+    }
   }
 
   copyAiText(element: HTMLElement) {
@@ -497,4 +512,23 @@ export class AiChatManagerComponent implements OnInit {
   get scaledHeight(): string {
     return (this.baseHeight * (this.zoomLevel / 100)) + 'px';
   }
+
+  analyzeCallRecordings() {
+    this.ngxLoading = true;
+    this.chatGptSettingsService.analyzeCallRecordings(this.chatGptSettingDTO).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          let data = response.data;
+          this.chatGptSettingDTO.threadId = data.threadId;
+          this.chatGptSettingDTO.vectorStoreId = data.vectorStoreId;
+          this.chatGptSettingDTO.totalRecords = data.totalRecords;
+          this.threadId = data.threadId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
 }
