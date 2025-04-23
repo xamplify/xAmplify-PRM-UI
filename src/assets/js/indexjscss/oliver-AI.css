@@ -1,8 +1,33 @@
 .icon-s-w {
   height: 150px;
   width: 150px;
+  transition: 0.3s ease-in-out;
+}
+
+
+.customIcon {
+  float: right;
+  position: absolute;
+  top: -5px;
+  right: 30px;
+}
+
+.minimize {
+  bottom: 1px !important;
+}
+
+.custom-icon-s-w {
+  height: 30px;
+  width: 30px;
+  transition: 0.3s ease-in-out;
+}
+
+.chatgpt-card {
   transition: all 0.3s ease-in-out;
-  pointer-events: none;
+}
+
+.icon-s-w, .custom-icon-s-w {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .svg-w-h{
@@ -37,8 +62,8 @@
   
   .chatgpt-card {
     position: fixed;
-    right: 15px;
-    bottom: 15px;
+    right: 5px;
+    bottom: -15px;
     padding:2px;
     /* background-color: #fff;
     border-radius: 50%;
@@ -727,11 +752,6 @@ max-height: calc(100vh - 220px);
   height: 30px;
 }
 
-.customIcon{
-  position: absolute;
-  top:0px;
-  right:10px;
-}
 input:focus,textarea.textarea:focus{
   outline: none!important;
 }

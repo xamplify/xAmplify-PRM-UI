@@ -1213,6 +1213,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl('/home/campaigns/manage');
             }
 
+        }else{
+            this.listCampaign(this.pagination);
         }
     }
 

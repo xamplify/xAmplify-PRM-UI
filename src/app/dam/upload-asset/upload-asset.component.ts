@@ -1866,11 +1866,30 @@ getFileIcon(): string {
     this.uploadedAssetName  = "";
     this.isPdfFileSelected = false;
     this.showClearOption = false;
+    this.damUploadPostDto.partnerSignatureRequired = false;
+    this.damUploadPostDto.vendorSignatureRequired = false;
     this.validateAllFields();
 }
 setPartnerSignatureRequiredNow(){
     this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature=false;
     this.setUploadedFileProperties(this.pdfDefaultUploadedFile);
+}
+
+confirmRemoveVideo(){
+    let self = this;
+          swal({
+            title: 'Are you sure?',
+            text: 'The uploaded video will be deleted',
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Clear it!'
+          }).then(function () {
+            self.removefileUploadVideo();
+          }, function (dismiss: any) {
+            console.log('You clicked on option: ' + dismiss);
+          });
 }
 
 }

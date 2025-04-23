@@ -277,13 +277,7 @@ export class ChatGptModalComponent implements OnInit {
   }
   
   minimizeOliver() {
-    this.isMinimizeOliver = false;
-    setTimeout(() => {
-      this.isMinimizeOliver = true;
-    }, 50)
+    this.isMinimizeOliver = true;
   }
-
-  onMouseEnter() {
-    this.isMinimizeOliver = false;
-  }
+  
 }
