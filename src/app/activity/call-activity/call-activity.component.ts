@@ -9,6 +9,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { SortOption } from 'app/core/models/sort-option';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { CallIntegrationService } from 'app/core/services/call-integration.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -29,6 +30,7 @@ export class CallActivityComponent implements OnInit {
   @Input() mobileNumber: any;
 
   @Output() notifyClose = new EventEmitter();
+  @Output() notifyOliver = new EventEmitter();
 
   callActivities = [];
   ngxLoading: boolean = false;
@@ -54,7 +56,7 @@ export class CallActivityComponent implements OnInit {
   contactErrorResponse: CustomResponse = new CustomResponse();
   showAircallDialer: boolean = false;
 
-  constructor(public referenceService: ReferenceService, public pagerService: PagerService, private callIntegrationService:CallIntegrationService,
+  constructor(public referenceService: ReferenceService, public pagerService: PagerService, private callIntegrationService:CallIntegrationService, public authenticationService: AuthenticationService,
       public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public contactService: ContactService, public properties: Properties) { }
 
   ngOnInit() {
@@ -274,6 +276,10 @@ export class CallActivityComponent implements OnInit {
       (success, data) => {
       }
     );
+  }
+
+  askOliver() {
+    this.notifyOliver.emit();
   }
 
 }

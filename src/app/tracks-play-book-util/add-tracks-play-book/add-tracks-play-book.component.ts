@@ -203,9 +203,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   approverControlSettingsDTO: ApprovalControlSettingsDTO = new ApprovalControlSettingsDTO();
   canApprove: boolean = false;
   savedTags: any[] = [];
-/*** XNFR-897 */
-endDatePickr:any;
-errorMessage:any;
+  /*** XNFR-897 */
+  endDatePickr: any;
+  errorMessage: any;
+  assetPreviewProxyPath: string;
+  showPreviewContent: boolean = false;
+  assetType: any;
+  isImageFormat: any;
+  isTextFormat: any;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties, private approveService: ApproveService,public datePipe: DatePipe) {
@@ -1398,17 +1403,53 @@ errorMessage:any;
     }
   }
 
-
   assetPreview(assetDetails: any, isFromPopup: boolean) {
     this.isPreviewFromAssetPopup = isFromPopup;
     let isBeeTemplate = assetDetails.beeTemplate;
-    if(isBeeTemplate){
-      this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
-    }else{
-      this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+    if (isBeeTemplate) {
+      if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath && assetDetails.assetType != 'mp4') {
+        if (assetDetails.assetProxyPath) {
+          this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+        } else {
+          this.assetPreviewProxyPath = assetDetails.assetPath;
+        }
+        this.showPreviewContent = true;
+        this.assetType = assetDetails.assetType;
+        this.isImageFormat = assetDetails.imageFileType;
+        this.isTextFormat = assetDetails.textFileType;
+      } else {
+        this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+      }
+    } else {
+      if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetType != 'mp4') {
+        if (assetDetails.assetProxyPath) {
+          this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+        } else {
+          this.assetPreviewProxyPath = assetDetails.assetPath;
+        }
+        this.showPreviewContent = true;
+        this.assetType = assetDetails.assetType;
+        this.isImageFormat = assetDetails.imageFileType;
+        this.isTextFormat = assetDetails.textFileType;
+      } else if (assetDetails.assetPath && assetDetails.assetType != 'mp4') {
+        if (assetDetails.assetProxyPath) {
+          this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
+        } else {
+          this.assetPreviewProxyPath = assetDetails.assetPath;
+        }
+        this.showPreviewContent = true;
+        this.assetType = assetDetails.assetType;
+        this.isImageFormat = assetDetails.imageFileType;
+        this.isTextFormat = assetDetails.textFileType;
+      } else {
+        this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+      }
     }
   }
 
+  closePreview() {
+    this.showPreviewContent = false;
+  }
 
   handleMediaAndOrdersPopup() {
     if (this.activeTabName == "step-2") {

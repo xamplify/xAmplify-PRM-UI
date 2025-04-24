@@ -305,3 +305,14 @@ h4.folder-name.align-titletext {
     padding: 0px 5px;
 }
 
+.oliveImg {
+    width: 18px;
+    height: 19px;
+    filter: brightness(0) invert(1);
+    top: -1px;
+    position: relative;
+}
+
+.gridIconCustomization a.Iconhover.oliverhover:hover {
+    background: none !important;
+}
