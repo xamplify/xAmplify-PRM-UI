@@ -81,5 +81,8 @@ export class ChatGptSettingsService {
     const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm;
     return this.authenticationService.callGetMethod(url);
   }
-
+insertTemplateData(chatGptIntegrationSettingsDto: any) {
+    const url = this.chatGptSettingsUrl + '/insertTemplateData?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url, chatGptIntegrationSettingsDto);
+}
 }

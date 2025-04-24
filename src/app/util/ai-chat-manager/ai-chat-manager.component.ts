@@ -57,6 +57,8 @@ export class AiChatManagerComponent implements OnInit {
   baseWidth: number = 800;
   baseHeight: number = 1000;
   loadPreview :boolean = false
+  isBeeTemplateComponentCalled: boolean;
+  beeContainerInput: { module: string; jsonBody: string; };
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
@@ -496,5 +498,29 @@ export class AiChatManagerComponent implements OnInit {
   
   get scaledHeight(): string {
     return (this.baseHeight * (this.zoomLevel / 100)) + 'px';
+  }
+  openDesignTemplate(markdown: any) {
+
+    let text = markdown && markdown.innerHTML ? markdown.innerHTML : '';
+    // text = text.replace(/<\/?markdown[^>]*>/g, '').replace(/<[^>]+>/g, '');
+    this.chatGptIntegrationSettingsDto.prompt = text;
+    this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
+        (response: any) => {
+          this.isBeeTemplateComponentCalled = true;
+          this.beeContainerInput = {
+            module: 'dam',
+            jsonBody: JSON.stringify(response.data)
+          };
+        },
+        (error: string) => {
+          console.log('API Error:', error);
+        }
+      );
+}
+  addRowsToJson(jsonBody: any) {
+    throw new Error('Method not implemented.');
+  }
+  closeBee(){
+    this.isBeeTemplateComponentCalled = false;
   }
 }
