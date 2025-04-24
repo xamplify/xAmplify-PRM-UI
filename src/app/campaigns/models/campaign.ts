@@ -124,5 +124,6 @@ export class Campaign {
     /**XNFR-959***/
     displayRedistributionCount:boolean = false;
 
+    totalRecipients: number = 0;
 
 }
