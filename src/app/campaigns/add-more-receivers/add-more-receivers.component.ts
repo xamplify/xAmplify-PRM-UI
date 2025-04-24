@@ -69,6 +69,15 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
 	showExpandButton = false;
     contactListObject: ContactList;
     userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+
+    maxRecipientCountReached: boolean = false;
+    maxRecipientCount: number = 0;
+    restrictRecipientCount: boolean = false;
+    validUsersCount: number = 0;
+    allUsersCount: number = 0;
+    totalRecipients: number = 0;
+    campaignTypeInString: string = '';
+
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
           public pagination: Pagination, private pagerService: PagerService,public authenticationService: AuthenticationService,public referenceService:ReferenceService,private contactService:ContactService,public properties:Properties,private renderer:Renderer) {
               this.referenceService.renderer = this.renderer;
@@ -128,6 +137,8 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
       }
       this.loadCampaignContacts(this.contactsPagination);
       this.filterContacts('ALL');
+      this.totalRecipients = campaign.totalRecipients;
+      this.campaignTypeInString = campaign.campaignTypeInString;
   }
   
   eventHandler(event, type:string){
@@ -177,6 +188,11 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
           },
           (error: any) => {
               this.referenceService.loading(this.contactListLoader, false);
+          },()=>{
+            if (this.campaignTypeInString == 'EVENT' && this.totalRecipients) {
+                this.restrictRecipientCount = true;
+                this.getMaximumContactCountForCampaignLaunch();
+            }
           });
   }
   
@@ -262,6 +278,7 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
       }else if(trLength==selectedRowsLength){
           $('#checkAllExistingContacts').prop("checked",true);
       }
+      this.getValidUsersCount();
   }
 
   checkAll(ev:any){
@@ -297,6 +314,7 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
           }
 
       }
+      this.getValidUsersCount();
       ev.stopPropagation();
   }
 
@@ -461,6 +479,52 @@ filterContacts(filterType:string){
     this.loadCampaignContacts(this.contactsPagination);
 }
 
+    /** XNFR-929  **/
+    getValidUsersCount() {
+        if (this.selectedContactListIds.length > 0) {
+            this.referenceService.loading(this.contactListLoader, true);
+            this.contactService.findAllAndValidUserCounts(this.selectedContactListIds)
+                .subscribe(
+                    data => {
+                        this.validUsersCount = data['validUsersCount'];
+                        this.allUsersCount = data['allUsersCount'];
+                        this.referenceService.loading(this.contactListLoader, false);          
+                        this.checkRecipientCountLimitReached();
+                    },
+                    (error: any) => {
+                        this.referenceService.loading(this.contactListLoader, false);
+                        this.maxRecipientCountReached = false;
+                    });
+        } else {
+            this.maxRecipientCountReached = false;
+        }
+    }
+
+    /** XNFR-929  **/
+    getMaximumContactCountForCampaignLaunch() {
+        this.referenceService.loading(this.contactListLoader, true);
+        this.campaignService.getMaximumContactCountForCampaignLaunch(this.loggedInUserId).subscribe(
+        (result: any) => {
+            if (result.statusCode == 200) {
+                this.maxRecipientCount = result.data;
+            } else {
+                this.maxRecipientCount = 0;
+            }
+            this.referenceService.loading(this.contactListLoader, false);
+        },
+        (error: string) => {
+            this.referenceService.loading(this.contactListLoader, false);
+            this.maxRecipientCountReached = false;
+        })
+    }
+
+    checkRecipientCountLimitReached() {
+        if (this.restrictRecipientCount && ((this.validUsersCount + this.totalRecipients) > this.maxRecipientCount)) {
+            this.maxRecipientCountReached = true;
+        } else {
+            this.maxRecipientCountReached = false;
+        }
+    }
 
 
 }
