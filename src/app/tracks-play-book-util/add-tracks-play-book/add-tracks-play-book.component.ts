@@ -1425,7 +1425,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         if (assetDetails.assetProxyPath) {
           this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
         } else {
-          this.assetPreviewProxyPath = assetDetails.assetPath;
+          this.assetPreviewProxyPath = this.authenticationService.REST_URL + 'api/pdf/proxy?pdfUrl=' + assetDetails.assetPath;
         }
         this.showPreviewContent = true;
         this.assetType = assetDetails.assetType;
@@ -1435,7 +1435,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         if (assetDetails.assetProxyPath) {
           this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
         } else {
-          this.assetPreviewProxyPath = assetDetails.assetPath;
+          this.assetPreviewProxyPath = this.authenticationService.REST_URL + 'api/pdf/proxy?pdfUrl=' + assetDetails.assetPath;
         }
         this.showPreviewContent = true;
         this.assetType = assetDetails.assetType;

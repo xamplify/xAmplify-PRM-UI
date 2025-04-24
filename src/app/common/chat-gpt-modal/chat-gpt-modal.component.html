@@ -4,8 +4,8 @@
 </div> -->
 <div
   *ngIf="isChatGptIconDisplayed && showIcon && authenticationService?.isOliverActive && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard"
-  [ngClass]="!isMinimizeOliver ? 'chatgpt-card override' : 'chatgpt-card minimize'" id="chatIconImage"
-  (click)="resetValues()" data-toggle="modal" data-target="#xAmplifyChatGPTModal">
+  [ngClass]="!isMinimizeOliver ? 'chatgpt-card override' : 'minimize'" id="chatIconImage" (click)="resetValues()"
+  data-toggle="modal" data-target="#xAmplifyChatGPTModal">
 
   <!-- Close icon (minimize) -->
   <a><i *ngIf="!isMinimizeOliver" class="fa fa-close customIcon" aria-hidden="true" (click)="onMinimizeClick($event)">
