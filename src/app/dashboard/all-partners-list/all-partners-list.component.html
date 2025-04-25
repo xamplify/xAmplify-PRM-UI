@@ -3,13 +3,19 @@
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
       <span class="pull-right mt25m  mobilesearchdisplay">
-        <!-- <button class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
-        <div class="float-left">
+        <!-- <span class="btn btn-xs hidden-xs l-g-view mr5" data-placement="bottom" data-toggle="tooltip" title="" data-original-title="Filter">
+          <i aria-hidden="true" class="fa fa-filter p10"></i>
+          <ul *ngIf="showFilterDropDown" class="dropdown-menu pull-right">
+            <li><a (click)="viewDropDownFilter()">View Filter</a></li>
+            <li><a (click)="clearFilter()">Clear Filter</a></li>
+          </ul>
+        </span> -->
+        <div class="float-left mr5">
           <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.teamMember"
             (ngModelChange)="sortPartnerTeamMembers($event)" id="select-dropdown">
             <option *ngFor="let option of sortOption.teamMemberDropDowns" [ngValue]="option">{{option.name}}</option>
           </select>
-        </div> -->
+        </div> 
         <button class="pull-right  btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
         (click)="downloadAllPartnerDetailsReport()" [disabled]="pagination.totalRecords==0">
         <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
@@ -33,6 +39,56 @@
       </div>
       <div class="scroll table-responsive tableHeightScroll {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading"
         [ngClass]="isVendorVersion?'scrolladjustment':''">
+         <!-- <div class="portlet light ht125">
+         <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+               Alert Message Box 
+              <app-response-message class="pg8" [customResponse]="customResponse"
+                *ngIf="customResponse?.isVisible"></app-response-message>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8 pl0">
+                <h4 translate>Apply Filter</h4>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
+                <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+                <ejs-multiselect [(ngModel)]='selectedCompanyIds' [ngModelOptions]="{standalone: true}" [allowFiltering]='true'
+                  [ignoreAccent]='true' id='multiselectelement' [dataSource]='companyNameFilters' [fields]='companyInfoFields'
+                  [placeholder]='companyInfoFilterPlaceHolder'>
+                </ejs-multiselect>
+                <div class="portlet box custom_fiter-asset mt10">
+                  <div class="row pl10 pr10 pb10">
+                    <div class="form-inline col-xs-12 createdOnRow">
+                      <div class="form-group" style="margin-right: 20px;">
+                        <label style="font-size:15px; margin-bottom: 0;">Select Date Filter
+                          <i class="fa fa-info-circle info_circle" data-toggle="tooltip" data-placement="top"
+                            title="Select the Date Range to View Analytics"></i>
+                        </label>
+                      </div>
+                
+                      <div class="form-group" style="margin-right: 20px;">
+                        <label style="display: block;">From Date</label>
+                        <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
+                      </div>
+                
+                      <div class="form-group">
+                        <label style="display: block;">To Date</label>
+                        <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <span class="btn-aligmntCu">
+                  <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                  <button class="btn btn-info" (click)="validateDateFilter()">Apply</button>
+                </span>
+              </div>
+            </div>
+          </div> 
+        </div>-->
         <table *ngIf="pagination.totalRecords!=0" class="table" >
           <thead>
             <tr>

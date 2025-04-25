@@ -67,6 +67,11 @@ export class AllPartnersListComponent implements OnInit {
     callParentMethod(item: any) {
       this.triggerSendEmailPopup.emit(item); 
     }
+    sortPartnerTeamMembers(text: any) {
+      this.sortOption.teamMember = text;
+      this.getAllFilteredResults(this.pagination);
+    }
+  
   //   // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
   //   //   this.isDetailedAnalytics = true;
   //   // } else {
@@ -120,7 +125,9 @@ export class AllPartnersListComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.searchKey;
-    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
+    pagination = this.utilService.sortOptionValues(this.sortOption.teamMember, pagination);
+   // let sortColumn = this.pagination.sortcolumn;
+   // pagination.sortcolumn = sortColumn;
     this.getAllPartnersDetails(this.pagination);
    // this.getInteractedNotInteractedTrackDetails(this.pagination);
   }
@@ -171,14 +178,19 @@ export class AllPartnersListComponent implements OnInit {
   }
   downloadAllPartnerDetailsReport() {
     let loggedInUserId = this.authenticationService.getUserId();
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.teamMember, this.pagination);
     let maxResults = this.pagination.maxResults;
     this.pagination.searchKey = this.searchKey;
     let regionFilter = this.regionName;
     this.pagination.maxResults = this.pagination.totalRecords;
     let pageableUrl = this.referenseService.getPagebleUrl(this.pagination);
+    let sortColumn = this.pagination.sortcolumn;
+    // if(this.pagination.sortcolumn){
+    //   pageableUrl += "&sortcolumn=${encodeURIComponent(this.pagination.sortcolumn)}";
+    // }
     this.pagination.maxResults = maxResults
     window.location.href = this.authenticationService.REST_URL + '/partner/allPartners/downloadCsv?userId='
-      + loggedInUserId +"&regionFilter="+regionFilter+ "&access_token=" + this.authenticationService.access_token + pageableUrl;
+      + loggedInUserId +"&regionFilter="+regionFilter+"&sortColumn="+sortColumn+ "&access_token=" + this.authenticationService.access_token + pageableUrl;
    }
   // getInteractedNotInteractedTrackDetails(pagination: Pagination) {
   //   if (!this.isTeamMemberAnalytics) {

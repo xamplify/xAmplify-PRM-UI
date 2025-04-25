@@ -11,3 +11,32 @@
     overflow-y: auto;
     margin-bottom: 20px;
 }
+.override-actions{
+    float: inherit!important;
+  }
+  
+  .custom_fiter-asset {
+    background-color: #f1f5f9;
+    padding: 10px 5px 10px 5px !important;
+  }
+  .createdOnRow{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  span.filterActiveBg {
+    background-color: #10ad39!important;
+  }
+  span.filterActiveBg i {
+    color: #fff;
+  }
+  .defaultFilterACtiveBg{
+    background-color: #f1f3fa;
+  }
+  span.btn-aligmntCu {
+    display: flex;
+    justify-content: flex-end;
+}
