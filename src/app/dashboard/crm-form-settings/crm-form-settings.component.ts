@@ -875,6 +875,7 @@ export class CrmFormSettingsComponent {
 		selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
 		selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
 		selectedFieldsResponseDto['integation'] = true;
+		selectedFieldsResponseDto['opportunityType'] = this.opportunityType;
 		this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
 			.subscribe(
 				data => {

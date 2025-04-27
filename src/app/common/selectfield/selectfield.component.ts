@@ -25,6 +25,7 @@ export class SelectfieldComponent implements OnInit {
   @Output() closeEmitter = new EventEmitter();
   @Input() isVendorVersion: boolean;
   @Input() customName: any;
+  @Input() opportunityType: any;
   ngxloading: boolean = false;
   selectedFieldsResponseDto: SelectedFieldsResponseDto = new SelectedFieldsResponseDto();
   companyProfileName: string = "";
@@ -84,6 +85,11 @@ export class SelectfieldComponent implements OnInit {
   }
   ngOnInit() {
     this.ngxloading = true;
+    if (this.opportunityType === 'LEAD') {
+      this.excludedLabels = ["Last Name", "Company", "Email"];
+    } else {
+      this.excludedLabels = ["Amount", "Close Date", "Name"];
+    }
     this.referenceService.openModalPopup(this.selectModalPopUp);
     this.pageNumber = this.paginationComponent.numberPerPage[0];
     if (this.isVendorVersion) {
@@ -106,22 +112,12 @@ export class SelectfieldComponent implements OnInit {
   }
   getMyPreferances() {
     this.resetPagination();
-    this.dashboardService.isMyPreferances()
+    this.dashboardService.isMyPreferances(this.opportunityType)
       .subscribe(
         result => {
-          let isMyPreferances = result.data;
-          if (this.isMyprofile) {
-            this.myPreferances = false;
-          } else {
-            this.myPreferances = result.data;
-          }
-          if (this.myPreferances) {
-            this.isSelectDivOpen = false;
-            this.fetchData(this.pagination);
-          } else {
-            this.isSelectDivOpen = true;
-            this.fetchData(this.pagination);
-          }
+          this.myPreferances = this.isMyprofile ? false : result.data;
+          this.isSelectDivOpen = this.myPreferances ? false : true;
+          this.getExportExcelHeader(this.pagination);
         },
         error => console.log(error),
         () => console.log('finished '));
@@ -147,44 +143,29 @@ export class SelectfieldComponent implements OnInit {
     } catch (error) {
     }
   }
-  toggleSelection(field: any) {
-    const isUnChecked = !field.selectedColumn;
-    if (isUnChecked) {
-      if (this.isMyprofile) {
-        field.defaultColumn = false
+  toggleSelection(event: any, field: any) {
+    this.fieldsPagedItems.some(updatedItem => {
+      if (updatedItem.labelId === field.labelId) {
+        updatedItem.selectedColumn = event.target.checked;
+        const index = this.allItems.findIndex(item => item.labelId === updatedItem.labelId);
+        if (index !== -1) {
+          this.allItems[index].selectedColumn = updatedItem.selectedColumn;
+        }
+        return true;
       }
-      this.unSelectedItems.push(field);
-    } else {
-      if (this.isMyprofile) {
-        field.defaultColumn = true;
-      }
-      this.unSelectedItems = this.unSelectedItems.filter(item => item.labelId !== field.labelId);
-    }
-    this.fieldsPagedItems.forEach(item => item.labelId === field.labelId && (item.selectedColumn = field.selectedColumn));
+      return false;
+    });
     this.updateHeaderCheckbox();
   }
-  toggleAllSelection() {
-    const isUncheckAll = this.isHeaderCheckBoxChecked;
-    if (isUncheckAll) {
-      this.unSelectedItems = this.unSelectedItems.filter(
-        unItem => !this.fieldsPagedItems.some(pItem => pItem.labelName === unItem.labelName)
-      );
-    } else {
-      this.fieldsPagedItems.forEach(item => {
-        if (!this.excludedLabels.includes(item.labelName)) {
-          item.selectedColumn = false;
-          if (!this.unSelectedItems.some(unItem => unItem.labelName === item.labelName)) {
-            this.unSelectedItems.push(item);
-          }
-        }
-      });
-    }
-    this.fieldsPagedItems.forEach((item, index) => {
-      if (!this.excludedLabels.includes(item.labelName)) {
-        item.selectedColumn = isUncheckAll;
-        if (isUncheckAll) {
-          this.unSelectedItems = this.unSelectedItems.filter(unItem => unItem.labelName !== item.labelName);
-        }
+  toggleAllSelection(event: any) {
+    this.isHeaderCheckBoxChecked = event.target.checked;
+    this.fieldsPagedItems.forEach(updatedItem => {
+      if (!this.excludedLabels.includes(updatedItem.labelName)) {
+        updatedItem.selectedColumn = event.target.checked;
+      }
+      const index = this.allItems.findIndex(item => item.labelId === updatedItem.labelId);
+      if (index !== -1 && !this.excludedLabels.includes(updatedItem.labelName)) {
+        this.allItems[index].selectedColumn = updatedItem.selectedColumn;
       }
     });
     this.updateHeaderCheckbox();
@@ -196,11 +177,11 @@ export class SelectfieldComponent implements OnInit {
       this.isHeaderCheckBoxChecked = this.fieldsPagedItems.every((item: any) => item.selectedColumn);
     }
   }
-  isCheked(labelId: any): boolean {
+  isCheked(field: any): boolean {
     if (this.isMyprofile) {
-      return this.fieldsPagedItems.some(item => item.defaultColumn === true && item.labelId === labelId);
+      return this.fieldsPagedItems.some(item => item.defaultColumn === true && item.labelId === field.labelId);
     } else {
-      return this.fieldsPagedItems.some(item => item.labelId === labelId);
+      return this.fieldsPagedItems.some(item => item.labelId === field.labelId);
     }
   }
   closeModalClose() {
@@ -213,16 +194,13 @@ export class SelectfieldComponent implements OnInit {
   }
   submit() {
     this.referenceService.closeModalPopup(this.selectModalPopUp);
-    let allItems = !this.isSelectDivOpen && this.selectFieldsDtos.length > 0 ? this.selectFieldsDtos : this.allItems.filter(item => item.selectedColumn === true);
-    this.selectedItems = allItems.filter(item =>
-      !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
-    );
+    this.selectedItems = this.isSelectDivOpen ? this.allItems.filter(item => item.selectedColumn === true) : this.selectFieldsDtos ;
     this.emitValues('submit');
   }
-  setMyPreferances(event: Event) {
-    const isChecked = (event.target as HTMLInputElement).checked;
-    this.selectedFieldsResponseDto['myPreferances'] = isChecked;
-    this.isDefault = isChecked;
+  setMyPreferances(event: any) {
+    //const isChecked = (event.target as HTMLInputElement).checked;
+    this.selectedFieldsResponseDto['myPreferances'] = event.target.checked;
+    this.isDefault = event.target.checked;
   }
   emitValues(value: string) {
     let input: any = { selectFields: this.selectedItems, myPreferances: this.isDefault };
@@ -241,8 +219,8 @@ export class SelectfieldComponent implements OnInit {
     this.closeEmitter.emit(input);
   }
 
-  isFieldDisabled(labelName: string): boolean {
-    return this.excludedLabels.includes(labelName);
+  isFieldDisabled(field: any): boolean {
+    return this.excludedLabels.includes(field.labelName) || (field.defaultColumn  && !this.isMyprofile);
   }
   searchKey: string = '';
   searchFieldsKeyPress(keyCode: any) {
@@ -258,59 +236,7 @@ export class SelectfieldComponent implements OnInit {
     this.pageSize = 12;
     this.setFieldsPage(1);
   }
-  getUniqueColumns(selectFieldsDtos: any[], allItems: any[]) {
-    if (!Array.isArray(allItems) || !Array.isArray(selectFieldsDtos)) {
-      return;
-    }
-    const selectFieldPriority = selectFieldsDtos.reduce((acc, item, index) => {
-      if (allItems.some(allItem => allItem.labelId === item.labelId)) {
-        acc[item.labelId] = index;
-      }
-      return acc;
-    }, {});
-
-    let totalFields = allItems.map(item => {
-      let match = selectFieldsDtos.find(x => x.labelId === item.labelId);
-      if (this.isMyprofile) {
-        let exist = selectFieldsDtos.length === 0 ? this.exstingDataDto.find(x => x.labelId === item.labelId) : [];
-        return {
-          ...item,
-          selectedColumn: match ? match.defaultColumn ? match.selectedColumn : selectFieldsDtos.length > 0 ? match.selectedColumn : true : selectFieldsDtos.length > 0 ? false : true,
-          id: match ? match.id : exist ? exist.id : item.id,
-          defaultColumn: match ? match.defaultColumn ? match.selectedColumn : selectFieldsDtos.length > 0 ? match.selectedColumn : true : selectFieldsDtos.length > 0 ? false : true,
-          columnOrder: match ? match.columnOrder : item.columnOrder,
-        };
-      } else {
-        return {
-          ...item,
-          selectedColumn: match ? true : selectFieldsDtos.length > 0 ? false : true, // Original logic when isMyprofile is false
-          id: match ? match.id : item.id,
-          defaultColumn: match ? match.defaultColumn : false,
-          columnOrder: match ? match.columnOrder : item.columnOrder,
-        };
-      }
-    });
-    if (this.selectFieldsDtos.length > 0) {
-      this.unSelectedItems = totalFields.filter(item =>
-        !selectFieldsDtos.some(unselected => unselected.labelId === item.labelId)
-      );
-    }
-    totalFields.sort((a, b) => {
-      const priorityA = selectFieldPriority[a.labelId] !== undefined ? selectFieldPriority[a.labelId] : Number.MAX_VALUE;
-      const priorityB = selectFieldPriority[b.labelId] !== undefined ? selectFieldPriority[b.labelId] : Number.MAX_VALUE;
-      if (priorityA !== priorityB) {
-        return priorityA - priorityB;
-      }
-      return a.columnOrder - b.columnOrder;
-    });
-    this.allItems = totalFields;
-    if (!this.isMyprofile) {
-      this.updateExcludedLabels();
-    }
-    console.log("defaultFields :", this.defaultFields)
-  }
   defaultFields = [];
-
   updateExcludedLabels() {
     this.defaultFields = this.allItems
       .filter(item => item.defaultColumn === true)
@@ -319,67 +245,60 @@ export class SelectfieldComponent implements OnInit {
       ? Array.from(new Set([...this.excludedLabels, ...this.defaultFields])) // Merge & remove duplicates
       : [...this.defaultFields];
   }
-  exstingDataDto: Array<any> = new Array<any>();
-  fetchData(pagination: any) {
-    this.ngxloading = true;
-    let leadFormFields$ = this.dashboardService.getAllLeadFormFields(this.companyProfileName, this.loggedInUserType, this.customName);
-    let userFields$ = this.selectFieldsDtos.length === 0
-      ? this.dashboardService.getFieldsByUserId(this.customName) : of({ data: this.selectFieldsDtos })
-
-    forkJoin([leadFormFields$, userFields$]).subscribe(
-      ([usersData, ordersData]) => {
-        this.ngxloading = false;
-        if (!this.showBackButton) {
-          ordersData.data = ordersData.data.filter(item =>
-            usersData.data.some(unselected => unselected.labelId === item.labelId)
-          );
-        }
-        this.exstingDataDto = ordersData.data;
-        if (this.isMyprofile) {
-          this.selectFieldsDtos = ordersData.data.filter(item => item.defaultColumn === true) || [];
-        } else {
-          this.selectFieldsDtos = ordersData.data || [];
-        }
-        this.processData(this.selectFieldsDtos, pagination, usersData.data || []);
-      },
-      (error) => {
-        this.ngxloading = false;
-        console.error('Error fetching data:', error);
-      }
-    );
-  }
-
-  private processData(selectFields: any[], pagination: any, usersData: any[] = []) {
-    this.getUniqueColumns(selectFields, usersData);
-    pagination.totalRecords = usersData.length;
-    pagination = this.pagerService.getPagedItems(pagination, usersData);
-    this.updateHeaderCheckbox();
-    this.setFieldsPage(1);
-  }
   goToOrderDiv() {
     this.isSelectDivOpen = false;
     this.showBackButton = true;
-    this.selectFieldsDtos = this.allItems.filter(item =>
-      !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
-    );
+    this.selectFieldsDtos = this.allItems.filter(item => item.selectedColumn === true);
   }
   chooseYourFields() {
     this.showBackButton = true;
     this.isSelectDivOpen = true;
-    this.fetchData(this.pagination);
+    this.allItems = [
+      ...this.selectFieldsDtos,
+      ...this.allItems.filter(item => !this.selectFieldsDtos.some(selected => selected.labelId === item.labelId))
+    ];
+    this.setFieldsPage(1);
   }
   showBackButton: boolean = false;
   backToPreviousPage() {
     this.showBackButton = false
     this.isSelectDivOpen = !this.myPreferances;
     if (this.myPreferances) {
-      this.selectFieldsDtos = this.allItems.filter(item =>
-        !this.unSelectedItems.some(unselected => unselected.labelId === item.labelId)
-      );
+      this.selectFieldsDtos = this.allItems.filter(item => item.selectedColumn === true);
     }
-    this.fetchData(this.pagination);
+    this.allItems = [
+      ...this.selectFieldsDtos,
+      ...this.allItems.filter(item => !this.selectFieldsDtos.some(selected => selected.labelId === item.labelId))
+    ];
+    this.setFieldsPage(1);
   }
   isNonDraggable(fieldDto: any): boolean {
     return this.excludedLabels.includes(fieldDto.labelName) && fieldDto.defaultColumn && !this.isMyprofile;
   }
+  getExportExcelHeader(pagination: Pagination) {
+    this.ngxloading = true;
+    this.dashboardService.getExportExcelHeaders(this.companyProfileName, this.loggedInUserType, this.customName, this.opportunityType)
+      .subscribe(
+        (response: any) => {
+          if (response.statusCode == 200) {
+            this.allItems = response.data;
+            if (this.myPreferances) {
+              this.selectFieldsDtos = this.allItems.filter(field => field.selectedColumn);
+            }
+            if (!this.isMyprofile) {
+              this.allItems
+              this.updateExcludedLabels()
+            }
+            pagination.totalRecords = this.allItems.length;
+            pagination = this.pagerService.getPagedItems(pagination, this.allItems);
+            this.updateHeaderCheckbox();
+            this.setFieldsPage(1);
+          }
+          this.ngxloading = false;
+        },
+        error => console.log(error),
+        () => {
+        });
+  }
+
 }
