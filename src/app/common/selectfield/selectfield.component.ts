@@ -26,6 +26,7 @@ export class SelectfieldComponent implements OnInit {
   @Input() isVendorVersion: boolean;
   @Input() customName: any;
   @Input() opportunityType: any;
+
   ngxloading: boolean = false;
   selectedFieldsResponseDto: SelectedFieldsResponseDto = new SelectedFieldsResponseDto();
   companyProfileName: string = "";
@@ -88,7 +89,7 @@ export class SelectfieldComponent implements OnInit {
     if (this.opportunityType === 'LEAD') {
       this.excludedLabels = ["Last Name", "Company", "Email"];
     } else {
-      this.excludedLabels = ["Amount", "Close Date", "Name"];
+      this.excludedLabels = ["Amount", "Close Date", "Name","Deal Name"];
     }
     this.referenceService.openModalPopup(this.selectModalPopUp);
     this.pageNumber = this.paginationComponent.numberPerPage[0];
@@ -277,7 +278,7 @@ export class SelectfieldComponent implements OnInit {
   }
   getExportExcelHeader(pagination: Pagination) {
     this.ngxloading = true;
-    this.dashboardService.getExportExcelHeaders(this.companyProfileName, this.loggedInUserType, this.customName, this.opportunityType)
+    this.dashboardService.getExportExcelHeaders(this.companyProfileName, this.loggedInUserType, this.customName, this.opportunityType,this.isMyprofile)
       .subscribe(
         (response: any) => {
           if (response.statusCode == 200) {

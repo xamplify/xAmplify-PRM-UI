@@ -1551,8 +1551,8 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
           .map(this.extractData)
           .catch(this.handleError);
     }
-    getExportExcelHeaders(companyProfileName:string,userType:string, customFormName:string,opportunityType:string){
-        var url = this.REST_URL + "/selected/fields/export-excel/" + companyProfileName +'/'+userType+'/'+this.authenticationService.getUserId()+'/'+ customFormName+'/'+ opportunityType +"?access_token=" + this.authenticationService.access_token;
+    getExportExcelHeaders(companyProfileName:string,userType:string, customFormName:string,opportunityType:string,isMyprofile:boolean){
+        var url = this.REST_URL + "/selected/fields/export-excel/" + companyProfileName +'/'+userType+'/'+this.authenticationService.getUserId()+'/'+ customFormName+'/'+ opportunityType+'/'+ isMyprofile +"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
           .map(this.extractData)
           .catch(this.handleError);

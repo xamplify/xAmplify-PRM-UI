@@ -1632,6 +1632,7 @@ export class ManageDealsComponent implements OnInit {
 
   saveSelectedFields() {
     let selectedFieldsResponseDto = {};
+    console.log("this.selectedFields :",this.selectedFields)
     selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
     selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
     selectedFieldsResponseDto['defaultField'] = this.setDefaultFields;
