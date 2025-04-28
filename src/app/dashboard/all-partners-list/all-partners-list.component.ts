@@ -65,7 +65,7 @@ export class AllPartnersListComponent implements OnInit {
     }
 
     callParentMethod(item: any) {
-      this.triggerSendEmailPopup.emit(item); // Send item data to parent
+      this.triggerSendEmailPopup.emit(item); 
     }
   //   // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
   //   //   this.isDetailedAnalytics = true;

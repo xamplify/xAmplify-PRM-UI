@@ -117,7 +117,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     isTotalPartnerDiv = false;
     totalPartnersDiv: boolean = false;
     isPendingStatus = false;
-    isActiveStatus = false;
     isDormantStatus = false;
     isIncompleteCompanyProfile = false;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
@@ -324,6 +323,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
              this.loadAllCharts = false;
         }, 500);
         this.totalPartnersDiv = false;
+        this.allPartnersStatusForMail();
 
     }
     goToAllPartnersDiv(){
@@ -337,7 +337,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
          this.isApprovePartnersDiv = false;
          this.isIncompleteCompanyProfileDiv = false;
          this.isSingUpPendingDiv = false;
-      
+         this.allPartnersStatusForMail();
     }
     
     /****************************Through Partner Analytics**************************/
@@ -358,6 +358,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         
         this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+        this.allPartnersStatusForMail();
     }
 
     /***************************Re Distributed**************************/
@@ -374,7 +375,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
         this.totalPartnersDiv = false;
-
+        this.allPartnersStatusForMail();
     }
 
 
@@ -507,6 +508,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.inActivePartnersPagination.searchKey = "";
         this.getInActivePartnerReports(this.inActivePartnersPagination);
         this.selectedPartnerIds = [];
+        this.allPartnersStatusForMail();
     }
 
     goToApprovePartnersDiv() {
@@ -524,6 +526,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.totalPartnersDiv = false;
         this.approvePartnersPagination.maxResults = 12;
         this.getApprovePartnerReports(this.approvePartnersPagination);
+        this.allPartnersStatusForMail();
     }
 
     getApprovePartnerReports(pagination: Pagination) {
@@ -842,6 +845,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         if (filterPartner!=null && filterPartner != undefined &&  (!filterPartner || filterPartner === 'false')) {
             this.applyFilter = false;
         }
+        this.allPartnersStatusForMail();
         this.getCountOfTiles();
 
     }
@@ -1319,9 +1323,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
     checkAllPartnersStatus(item:any){
         if(this.totalPartnersDiv){
-            this.isPendingStatus = false;
-            this.isDormantStatus= false;
-            this.isIncompleteCompanyProfile = false;
+            this.allPartnersStatusForMail();
             let status = item.status;
             if(status == "Pending Signup"){
                 this.isPendingStatus = true;
@@ -1332,6 +1334,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             }
         }
     }
+    private allPartnersStatusForMail() {
+        this.isPendingStatus = false;
+        this.isDormantStatus = false;
+        this.isIncompleteCompanyProfile = false;
+    }
+
     openSendTestEmailModalPopup(item: any) {
         this.checkAllPartnersStatus(item);
         this.selectedItem = item;
