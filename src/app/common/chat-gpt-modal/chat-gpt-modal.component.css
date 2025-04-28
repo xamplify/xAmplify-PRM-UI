@@ -233,7 +233,7 @@
     padding: 15px 0px 15px 15px;
   }
     .side_bar {
-      width: 22%;
+      width: 25%;
       background: linear-gradient(to bottom, #cde5ff, #b0d4ff);
       height: 100vh;
       padding: 10px 13px;
@@ -789,4 +789,8 @@ input:focus,textarea.textarea:focus{
 }
 ul.nav.nav-pills.nav-stacked.oliver_tab {
   border-bottom: unset !important;
+}
+
+.oliver-text-color{
+  color: #002b87;
 }

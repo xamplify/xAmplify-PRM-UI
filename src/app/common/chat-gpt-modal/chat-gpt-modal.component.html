@@ -99,7 +99,7 @@
           <div class="d-flex oliver_flex">
           <div class="side_bar">
             <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
-            <h5>Your AI-powered creative and optimization Agents, built to accelerate your marketing, messaging, and content creation workflows.</h5>
+            <h5 class="oliver-heading-color">Your AI-powered creative and optimization Agents, built to accelerate your marketing, messaging, and content creation workflows.</h5>
             <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
               <li [ngClass]="{'active': activeTab === 'new-chat'}">
                 <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
@@ -144,7 +144,7 @@
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                     </div>
                   </div>
-                  <p>Generates key angles, ideas, and messaging directions for your solution and audience. Specializes in creative
+                  <p class="oliver-text-color">Generates key angles, ideas, and messaging directions for your solution and audience. Specializes in creative
                     brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored to
                     your goals.</p>
                   <!-- Input Section -->
@@ -176,7 +176,7 @@
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                     </div>
                   </div>
-                  <p>Crafts focused content concepts and core themes tailored to your goals. Specializes in persuasive writing, brand
+                  <p class="oliver-text-color">Crafts focused content concepts and core themes tailored to your goals. Specializes in persuasive writing, brand
                     voice adaptation, technical accuracy, and audience-specific messaging to transform ideas into impactful marketing
                     copy.</p>
                   <!-- Input Section -->
@@ -223,7 +223,7 @@
                 [ngClass]="{'tab-pane fade in active': activeTab === 'paraphraser', 'tab-pane fade': activeTab !== 'paraphraser'}"
                 id="paraphraser">
                 <div class="header-text fs-22">Paraphraser Agent</div>
-                <p>Refines and rephrases content to enhance clarity, tone, and impact. Specializes in preserving the original meaning
+                <p class="oliver-text-color">Refines and rephrases content to enhance clarity, tone, and impact. Specializes in preserving the original meaning
                   while improving flow, structure, and audience alignment for sharper, more effective communication.</p>
                 <div class="phara-card">
                   <div class="content-area">

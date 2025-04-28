@@ -2637,9 +2637,9 @@ markdown pre,.aligin-para{
   color: var(---text-color) !important;
   border-radius: 8px!important;
 }
-.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text{
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text,.oliver-text-color,h5.oliver-heading-color{
   color: var(---text-color) !important;
 }
-  textarea.textarea.h-350 {
+  textarea.textarea.h-350,.oliver_input,.writing-card,.phara-card{
     box-shadow: unset !important;
 }
