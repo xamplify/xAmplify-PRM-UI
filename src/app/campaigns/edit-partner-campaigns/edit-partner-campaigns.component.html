@@ -404,6 +404,7 @@
                                                       <ng-container *ngIf="!campaign?.oneClickLaunch">
                                                          <th scope="row" class="text-center">Type </th>
                                                          <th scope="row" class="text-center">Uploaded On </th>
+                                                         <th scope="row" class="text-center">Count</th>
                                                       </ng-container>
                                                       <th scope="row" class="text-center">Preview</th>
                                                    </tr>
@@ -461,6 +462,7 @@
                                                                   [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                                             </td>
                                                          </ng-container>
+                                                         <td class="text-center">{{contacts.countOfContactsLists}}</td>
                                                          <td class="text-center">
                                                             <div
                                                                [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
