@@ -1391,7 +1391,7 @@ div#removeborder {
 }
 
 /* user guides hover icon */
-.help-iconbgadd:hover {
+/* .help-iconbgadd:hover {
   background-color: none !important;
   border: 1px solid transparent !important;
   opacity: 0.8 !important;
@@ -1401,7 +1401,7 @@ div#removeborder {
 }
 .help-iconbgadd {
   border: 1px solid var(--top-button-border-color) !important;
-}
+} */
 /* end */
 
 /* Create Campaign Select Campaign bar bg */

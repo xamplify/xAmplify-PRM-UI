@@ -11,3 +11,10 @@
     overflow-y: auto;
     margin-bottom: 20px;
 }
+.panel-bgMain{
+  border-color: #ddd;
+}
+::-webkit-scrollbar {
+width: 7px;
+height: 7px;
+}

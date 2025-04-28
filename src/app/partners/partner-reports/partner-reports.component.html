@@ -924,7 +924,7 @@
 
   <!-- XNFR-944 -->
     <!--******************All Partners Donut and List Details******************-->
-  <div *ngIf="totalPartnersDiv">
+  <div class="row" *ngIf="totalPartnersDiv">
     <div class="ml15m">
         <app-donut-pie-chart [chartId]="'regionAndNonRegionDonut'" [isDetailedAnalytics]="false" 
         [fromAllPartners]="totalPartnersDiv"
