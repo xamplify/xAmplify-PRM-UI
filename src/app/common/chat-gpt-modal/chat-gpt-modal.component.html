@@ -102,12 +102,12 @@
             <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
               <li [ngClass]="{'active': activeTab === 'new-chat'}">
                 <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
-                  <i class="fa fa-plus-circle"></i> Start New Chat
+                  <i class="fa fa-plus-circle"></i> BrainStorm Agent
                 </a>
               </li>
               <li [ngClass]="{'active': activeTab === 'writing'}">
                 <a href="#writing" role="tab" data-toggle="tab" (click)="setActiveTab('writing')">
-                  <i class="fa fa-pencil"></i> Writing
+                  <i class="fa fa-pencil"></i> Spark Writer Agent
                 </a>
               </li>
               <li *ngIf="hasAcess" [ngClass]="{'active': activeTab === 'askpdf'}">
@@ -117,7 +117,7 @@
               </li>
               <li [ngClass]="{'active': activeTab === 'paraphraser'}">
                 <a href="#paraphraser" role="tab" data-toggle="tab" (click)="setActiveTab('paraphraser')">
-                  <i class="fa fa-align-left"></i> Paraphraser
+                  <i class="fa fa-align-left"></i> Paraphraser Agent
                 </a>
               </li>
             </ul>            

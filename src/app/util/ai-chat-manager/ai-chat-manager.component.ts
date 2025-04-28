@@ -61,7 +61,7 @@ export class AiChatManagerComponent implements OnInit {
   baseWidth: number = 800;
   baseHeight: number = 1000;
   loadPreview :boolean = false
-  pdfFiles: Blob[] = [];
+  pdfFiles: any[] = [];
   categoryId: any;
   isPartnerFolderView :boolean = false;
   isFromFolderView:boolean = false;
@@ -296,7 +296,7 @@ export class AiChatManagerComponent implements OnInit {
 
   getUploadedFileId() {
     this.isPdfUploading = true;
-    this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto).subscribe(
+    this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto, this.assetDetailsViewDtoOfPartner.assetName).subscribe(
       (response: any) => {
         this.isPdfUploading = false;
         let data = response.data;
@@ -576,7 +576,11 @@ export class AiChatManagerComponent implements OnInit {
     );
     forkJoin(requests).subscribe({
       next: (responses: Blob[]) => {
-        this.pdfFiles.push(...responses);
+        this.pdfFiles = responses.map((blob, index) => ({
+          file: blob,
+          assetName: assetsPath[index].assetName
+        }));
+
         this.ngxLoading = false;
         this.getUploadedFileIds();
       },
