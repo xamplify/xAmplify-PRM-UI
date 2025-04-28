@@ -888,7 +888,7 @@
                                                       </button>
                                                    </div>
                                                    <!--Leads -->
-                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.showLeadAndDealCounts">
+                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                                                       <button class="btn btn-default btn-xs re-distributed-high-level vlt-b-c TableDataBtn">
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
@@ -901,7 +901,7 @@
                                                       </button>
                                                    </div>
                                                    <!--Deals-->
-                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.showLeadAndDealCounts">
+                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                                                       <button class="btn btn-default btn-xs re-distributed-high-level lt-g-b-c TableDataBtn">
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
@@ -1374,7 +1374,7 @@
                                  *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                  <div *ngFor="let campaign of pagination.pagedItems; let i= index"
                                     class="col-xs-12 col-sm-4 col-lg-3 tab_grid GridviewSidePaddings">
-                                    <div class="grid-box" style="height:312px">
+                                    <div class="grid-box" style="height:353px">
                                        <div class="gridViewImgBg">
                                           <img *ngIf="!campaign?.campaignProcessing"
                                              src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"

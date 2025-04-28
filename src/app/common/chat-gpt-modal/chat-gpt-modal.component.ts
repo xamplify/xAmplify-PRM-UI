@@ -45,6 +45,7 @@ export class ChatGptModalComponent implements OnInit {
   isEmailCopied: boolean;
   hasAcess: boolean = false;
   isMinimizeOliver: boolean;
+  preventImmediateExpand: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef) {
   }
@@ -276,8 +277,27 @@ export class ChatGptModalComponent implements OnInit {
     }
   }
   
+  onMinimizeClick(event: MouseEvent) {
+    event.stopPropagation(); // prevent modal click
+    this.minimizeOliver();
+  }
+  
   minimizeOliver() {
     this.isMinimizeOliver = true;
+    this.preventImmediateExpand = true;
+    setTimeout(() => {
+      this.preventImmediateExpand = false;
+    }, 500);
+    console.log('Minimized');
+  }
+  
+  expandIfMinimized() {
+    if (this.preventImmediateExpand) return;
+
+    if (this.isMinimizeOliver) {
+      this.isMinimizeOliver = false;
+      console.log('Expanded on hover');
+    }
   }
   
 }

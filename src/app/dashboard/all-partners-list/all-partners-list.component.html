@@ -47,7 +47,7 @@
           <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td><app-user-info [isAllPartnersList]="true" [userInfo]="item"></app-user-info></td>
-              <td>{{item.region && item.region.trim() !== '' ? item.region : 'No Region' }}</td>
+              <td>{{item.region}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>
               <td>{{item?.status}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp></td>

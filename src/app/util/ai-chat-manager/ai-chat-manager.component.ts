@@ -70,7 +70,6 @@ export class AiChatManagerComponent implements OnInit {
   folderCreatedBy: any;
   folderFrom: any;
   folderAssetCount: any;
-  loadPreview :boolean = false;
   isFromContactJourney: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
@@ -242,6 +241,8 @@ export class AiChatManagerComponent implements OnInit {
       if (this.asset != undefined && this.asset != null) {
         this.isOliverAiFromdam = false;
         this.notifyParent.emit();
+      } else if (this.isFromContactJourney) {
+        this.notifyParent.emit(this.chatGptSettingDTO);
       } else {
         if (this.router.url.includes('/shared/view/')) {
           this.referenceService.goToRouter('/home/dam/shared/l');

@@ -3421,6 +3421,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         },
         (error: string) => {
             this.loading = false;
+        }, ()=>{
+            if (this.reDistributeEventManage && this.validUsersCount == undefined) {
+                this.getValidUsersCount();
+            }
         })
     }
 

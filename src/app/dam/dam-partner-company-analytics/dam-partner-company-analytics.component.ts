@@ -69,6 +69,9 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   isAllPartnerSignesCompleted:boolean =false;
 
   @ViewChild('assetSignatureStatusAnalyticsComponent') assetSignatureStatusAnalyticsComponent: AssetSignatureStatusAnalyticsComponent;
+  assetPreviewProxyPath: any;
+  previewContent: boolean = false;
+  previewFileType: string;
   
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,public router: Router,
@@ -246,9 +249,16 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     );
   }
 
-  viewAsset(company: any){
-    // this.saveGeoLocationAnalytics(this.assetId);
-    this.referenceService.preivewAssetForPartnerOnNewHost(company.damPartnerId);
+  viewAsset(company: any) {
+
+    if (company.assetProxyPath) {
+      this.assetPreviewProxyPath = company.assetProxyPath + company.sharedAssetPath;
+      this.previewContent = true;
+      this.previewFileType = 'pdf';
+    } else {
+      this.referenceService.preivewAssetForPartnerOnNewHost(company.damPartnerId);
+      // this.saveGeoLocationAnalytics(this.assetId);
+    }
   }
 
   getLocationDetails(response: any, alias: string, company: any) {
@@ -488,5 +498,14 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.pagination.partnerSignatureType = event;
     this.searchPartnerCompanies()
   }
+
+  closePreview() {
+    this.previewContent = false;
+    const objElement = document.getElementById('preview-object');
+    if (objElement) {
+      objElement.remove();
+    }
+  }
+
 }
 
