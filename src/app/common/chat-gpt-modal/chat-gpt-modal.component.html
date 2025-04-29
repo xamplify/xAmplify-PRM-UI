@@ -124,7 +124,7 @@
             </ul>
           </div>
           <div  [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing')? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
-            <div class="tab-content oliver_content">
+            <div class="tab-content oliver_content" [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '40px' }">
               <!-- Start New Chat -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}" id="New-Chat">
                 <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'new-chat'">
@@ -144,12 +144,12 @@
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                     </div>
                   </div>
-                  <p class="oliver-text-color">Generates key angles, ideas, and messaging directions for your solution and audience. Specializes in creative
+                  <p *ngIf="!showOpenHistory" class="oliver-text-color">Generates key angles, ideas, and messaging directions for your solution and audience. Specializes in creative
                     brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored to
                     your goals.</p>
                   <!-- Input Section -->
                   <div class="oliver_input mt10">
-                    <input type="text" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
+                    <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
                     <div class="btn-wrapper">
                       <button *ngIf="hasAcess" class="btn-plus">+</button>
                       <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Submit</button>
@@ -176,7 +176,7 @@
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                     </div>
                   </div>
-                  <p class="oliver-text-color">Crafts focused content concepts and core themes tailored to your goals. Specializes in persuasive writing, brand
+                  <p *ngIf="!showOpenHistory" class="oliver-text-color">Crafts focused content concepts and core themes tailored to your goals. Specializes in persuasive writing, brand
                     voice adaptation, technical accuracy, and audience-specific messaging to transform ideas into impactful marketing
                     copy.</p>
                   <!-- Input Section -->
@@ -223,7 +223,7 @@
                 [ngClass]="{'tab-pane fade in active': activeTab === 'paraphraser', 'tab-pane fade': activeTab !== 'paraphraser'}"
                 id="paraphraser">
                 <div class="header-text fs-22">Paraphraser Agent</div>
-                <p class="oliver-text-color">Refines and rephrases content to enhance clarity, tone, and impact. Specializes in preserving the original meaning
+                <p  class="oliver-text-color">Refines and rephrases content to enhance clarity, tone, and impact. Specializes in preserving the original meaning
                   while improving flow, structure, and audience alignment for sharper, more effective communication.</p>
                 <div class="phara-card">
                   <div class="content-area">

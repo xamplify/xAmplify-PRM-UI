@@ -289,7 +289,6 @@
     border-radius: 15px;
     margin: 0 auto;
     width: 95%;
-    margin-top: 40px;
 }
 .align-center{
  justify-self: center;
@@ -365,7 +364,7 @@
 
 /* Heading */
 .oliver_heading {
-  font-size: 23px;
+  font-size: 25px;
   font-weight: bold;
   color: #007bff;
   position: relative;
