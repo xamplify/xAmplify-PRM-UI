@@ -16,4 +16,5 @@ export class EmailActivity {
     isCompanyJourney:boolean;
     fullName:any;
     addedForEmailId:any;
+    templateId:number = 0;
 }

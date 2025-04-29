@@ -287,7 +287,7 @@
                     </a>
                     <a *ngIf="isCollapsed" (click)="toggleAction()">
                       <div class="Ai_file">
-                        <div class="Ai-icon" (click)="showAssetPreview()" [ngStyle]="showPreview ? {'width': '252px'} : {}">
+                        <div class="Ai-icon" [ngStyle]="showPreview ? {'width': '252px'} : {}">
                           <div class="d-flex document_flex">
                             <div *ngIf="ngxLoading" class="fileloader mr10"></div>
                             <ng-container *ngIf="!ngxLoading">
