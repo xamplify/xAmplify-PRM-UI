@@ -98,7 +98,7 @@
                      *ngIf="(authenticationService?.module?.socialShareOptionEnabled || (authenticationService?.module?.socialShareOptionEnabledAsPartner && (authenticationService.isCompanyPartner || authenticationService.isPartnerTeamMember))) &&  authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                      <button class="btn btn custom btn_custom_bg" [ngClass]="authenticationService?.isTop?'customskin':''"
                         [routerLink]="['/home/social/update-status']" style="border-radius: 7px;">
-                        <span class="hidden-xs hidden-tabview" translate>Update Status <sup>(Beta)</sup></span>
+                        <span class="hidden-xs hidden-tabview hidden-sm hidden-md" translate>Update Status <sup>(Beta)</sup></span>
                         <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''" button
                            data-toggle="tooltip" aria-hidden="true"></i>
                      </button>
