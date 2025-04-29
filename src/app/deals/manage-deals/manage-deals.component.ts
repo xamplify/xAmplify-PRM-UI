@@ -23,6 +23,7 @@ import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { DashboardService } from 'app/dashboard/dashboard.service';
 declare var swal, $, videojs: any;
 
 
@@ -129,7 +130,7 @@ export class ManageDealsComponent implements OnInit {
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
     private dealRegistrationService: DealRegistrationService, private dealsService: DealsService,public leadsService:LeadsService,
-    public integrationService: IntegrationService ) {
+    public integrationService: IntegrationService,public dashboardService:DashboardService ) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.statusSearchableDropDownDto.placeHolder = "Select Status";
       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -1597,5 +1598,57 @@ export class ManageDealsComponent implements OnInit {
         () => { }
       );
   }
+  /** XNFR-840 */
+  showSlectFieldComponent: boolean = false;
+  showOrderFieldComponent: boolean = false;
+  logginUserType: string;
+  enabledMyPreferances: boolean = false;
+  setDefaultFields:boolean = false;
+  selectedFields: any[] = [];
+  exportExcelSelection() {
+    if (this.authenticationService.companyProfileName) {
+        this.openSelectFieldPopup(); 
+    } else {
+      this.downloadDeals(this.dealsPagination)
+    }
+  }
+  openSelectFieldPopup() {
+    this.showSlectFieldComponent = true
+  }
+  closeEmitter(event: any) {
+    let input = event;
+    if (input['submit'] === 'submit') {
+      this.showSlectFieldComponent = input['close'];
+      this.enabledMyPreferances = input['myPreferances'];
+      this.selectedFields = input['selectFields'];
+      this.setDefaultFields = input['defaultField'];
+      this.saveSelectedFields();
+    }
+    else {
+      this.showSlectFieldComponent = false;
+    }
+  }
 
+
+  saveSelectedFields() {
+    let selectedFieldsResponseDto = {};
+    console.log("this.selectedFields :",this.selectedFields)
+    selectedFieldsResponseDto['propertiesList'] = this.selectedFields;
+    selectedFieldsResponseDto['myPreferances'] = this.enabledMyPreferances;
+    selectedFieldsResponseDto['defaultField'] = this.setDefaultFields;
+    selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
+    selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
+    selectedFieldsResponseDto['integation'] = true;
+    selectedFieldsResponseDto['opportunityType'] = "DEAL";
+    this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
+      .subscribe(
+        (data :any)=> {
+          this.dealsPagination.selectedExcelFormFields = this.selectedFields;
+          this.downloadDeals(this.dealsPagination)
+        },
+        error => console.log(error),
+        () => {
+        });
+  }
+  /** XNFR-840 */
 }
