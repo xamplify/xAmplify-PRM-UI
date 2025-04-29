@@ -138,7 +138,8 @@ export class AiChatManagerComponent implements OnInit {
       this.getSharedAssetDetailsById(this.assetId);
     } else {
       if (this.asset != undefined && this.asset != null) {
-        this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
+        const timeString = this.asset.publishedTimeInUTCString || this.asset.createdDateInUTCString;
+        this.assetDetailsViewDtoOfPartner.displayTime = timeString ? new Date(timeString) : null; 
         this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
         this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
         this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
@@ -244,7 +245,9 @@ export class AiChatManagerComponent implements OnInit {
       } else if (this.isFromContactJourney) {
         this.notifyParent.emit(this.chatGptSettingDTO);
       } else {
-        if (this.router.url.includes('/shared/view/')) {
+        if (this.router.url.includes('/shared/view/g')) {
+          this.referenceService.goToRouter('/home/dam/shared/g');
+        } else if( this.router.url.includes('/shared/view')) {
           this.referenceService.goToRouter('/home/dam/shared/l');
         } else {
           this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
