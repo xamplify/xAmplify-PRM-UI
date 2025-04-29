@@ -160,7 +160,7 @@
                       <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 4px;"
                         data-toggle="tooltip" title="Click here to email the report"
                         [disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView"
-                        (click)="downloadDeals(dealsPagination)">
+                        (click)="exportExcelSelection()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled &&  !this.authenticationService.module.isPrmTeamMember"
@@ -795,3 +795,8 @@
 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
   [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
+
+<!-- XNFR-840 -->
+<app-selectfield *ngIf="showSlectFieldComponent" [isVendorVersion]="isVendorVersion" [customName]="'manage'" [opportunityType]="'DEAL'"
+  (closeEmitter)="closeEmitter($event)"></app-selectfield>
+<!-- XNFR-840 -->
