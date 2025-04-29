@@ -98,12 +98,6 @@
   border-top: 1px solid #eee;
 }
 
-.action-buttons {
-  padding: 8px;
-  display: flex;
-  justify-content: space-between;
-}
-
 .btn-group {
   display: flex;
 }
@@ -372,6 +366,7 @@
 }
 
 .action-buttons {
+  padding: 7px 7px 0px 7px;
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -384,6 +379,7 @@
   color: #0d6efd;
   border-radius: 4px;
   padding: 3px 8px;
+  margin-bottom: 5px;
   font-size: 12px;
   transition: all 0.3s ease;
 }
@@ -997,4 +993,7 @@ span.Track-countbg {
 
 .mr2 {
   margin-right: 3px;
+}
+.action-btn-align{
+  padding: 10px;
 }

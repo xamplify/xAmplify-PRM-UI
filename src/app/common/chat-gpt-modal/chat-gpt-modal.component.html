@@ -99,15 +99,16 @@
           <div class="d-flex oliver_flex">
           <div class="side_bar">
             <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
+            <h5 class="oliver-heading-color">Your AI-powered creative and optimization Agents, built to accelerate your marketing, messaging, and content creation workflows.</h5>
             <ul class="nav nav-pills nav-stacked oliver_tab" role="tablist">
               <li [ngClass]="{'active': activeTab === 'new-chat'}">
                 <a href="#New-Chat" role="tab" data-toggle="tab" (click)="setActiveTab('new-chat')">
-                  <i class="fa fa-plus-circle"></i> Start New Chat
+                  <i class="fa fa-plus-circle"></i> BrainStorm Agent
                 </a>
               </li>
               <li [ngClass]="{'active': activeTab === 'writing'}">
                 <a href="#writing" role="tab" data-toggle="tab" (click)="setActiveTab('writing')">
-                  <i class="fa fa-pencil"></i> Writing
+                  <i class="fa fa-pencil"></i> Spark Writer Agent
                 </a>
               </li>
               <li *ngIf="hasAcess" [ngClass]="{'active': activeTab === 'askpdf'}">
@@ -117,13 +118,13 @@
               </li>
               <li [ngClass]="{'active': activeTab === 'paraphraser'}">
                 <a href="#paraphraser" role="tab" data-toggle="tab" (click)="setActiveTab('paraphraser')">
-                  <i class="fa fa-align-left"></i> Paraphraser
+                  <i class="fa fa-align-left"></i> Paraphraser Agent
                 </a>
               </li>
-            </ul>            
+            </ul>
           </div>
           <div  [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing')? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
-            <div class="tab-content oliver_content">
+            <div class="tab-content oliver_content" [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '40px' }">
               <!-- Start New Chat -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}" id="New-Chat">
                 <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'new-chat'">
@@ -136,16 +137,19 @@
                 </ng-container>                
                 <div  [ngClass]="showOpenHistory && activeTab === 'new-chat' ? 'templateui col-lg-9' : 'container-ui'">
                   <!-- Heading -->
-                  <div *ngIf= "!showOpenHistory" class="d-flex content-align">
-                    <span class="oliver_heading">Engage, Learn, Create, and Communicate with Oliver</span>
+                  <div *ngIf="!showOpenHistory" class="d-flex content-align">
+                    <span class="oliver_heading">Brainstorm Agent</span>
                     <!-- Oliver Image Positioned Correctly -->
                     <div class="oliver-container">
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                     </div>
                   </div>
+                  <p *ngIf="!showOpenHistory" class="oliver-text-color">Generates key angles, ideas, and messaging directions for your solution and audience. Specializes in creative
+                    brainstorming, strategic messaging, and fast ideation to craft focused content concepts and core themes tailored to
+                    your goals.</p>
                   <!-- Input Section -->
                   <div class="oliver_input mt10">
-                    <input type="text" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
+                    <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()" placeholder="Ask Me!">
                     <div class="btn-wrapper">
                       <button *ngIf="hasAcess" class="btn-plus">+</button>
                       <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Submit</button>
@@ -165,13 +169,16 @@
                     </div>
                   </ng-container> 
                   <div [ngClass]="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'writing' ? 'templateui col-lg-9' : ''">                 
-                  <div *ngIf= "!showOpenHistory" class="d-flex content-align">
-                    <span class="oliver_heading">Create Essays, Documents, Reports with Oliver</span>
+                  <div *ngIf="!showOpenHistory" class="d-flex content-align">
+                    <span class="oliver_heading">Spark Writer Agent</span>
                     <!-- Oliver Image Positioned Correctly -->
                     <div class="oliver-container">
                       <img src="assets/images/olivere-dog.svg" alt="Oliver" class="oliver-image">
                     </div>
                   </div>
+                  <p *ngIf="!showOpenHistory" class="oliver-text-color">Crafts focused content concepts and core themes tailored to your goals. Specializes in persuasive writing, brand
+                    voice adaptation, technical accuracy, and audience-specific messaging to transform ideas into impactful marketing
+                    copy.</p>
                   <!-- Input Section -->
                   <div class="writing-card mt10">
                     <div class="form-group">
@@ -212,12 +219,17 @@
                 </div>
               </div>
               <!-- Paraphraser Tab -->
-              <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'paraphraser', 'tab-pane fade': activeTab !== 'paraphraser'}" id="paraphraser">
-                <div class="header-text fs-22">Paraphraser – Rewrite Text Effortlessly With Oliver</div>
+              <div role="tabpanel"
+                [ngClass]="{'tab-pane fade in active': activeTab === 'paraphraser', 'tab-pane fade': activeTab !== 'paraphraser'}"
+                id="paraphraser">
+                <div class="header-text fs-22">Paraphraser Agent</div>
+                <p  class="oliver-text-color">Refines and rephrases content to enhance clarity, tone, and impact. Specializes in preserving the original meaning
+                  while improving flow, structure, and audience alignment for sharper, more effective communication.</p>
                 <div class="phara-card">
                   <div class="content-area">
                     <div class="textarea-card clip-path1">
-                      <textarea class="textarea h-350" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"  (input)="validateInputText()"  placeholder="Feed Me Your Thoughts"></textarea>
+                      <textarea class="textarea h-350" [(ngModel)]="inputText" [ngModelOptions]="{standalone: true}"
+                        (input)="validateInputText()" placeholder="Feed Me Your Thoughts"></textarea>
                     </div>
                     <div class="oliver-container-img hidden-xs">
                       <img src="assets/images/olivere-dog.svg" width="50px" alt="Oliver">
@@ -226,31 +238,37 @@
                       <div #markdownComponent class="padding-align">
                         <markdown [data]="chatGptGeneratedText"></markdown>
                       </div>
-                      <textarea class="form-control border_0" id="chatGptGeneratedTextArea"  style="position: absolute; left: -9999px;" [(ngModel)]="chatGptGeneratedText" [ngModelOptions]="{standalone: true}" rows="18" readonly #chatGptGeneratedTextInput></textarea>
+                      <textarea class="form-control border_0" id="chatGptGeneratedTextArea" style="position: absolute; left: -9999px;"
+                        [(ngModel)]="chatGptGeneratedText" [ngModelOptions]="{standalone: true}" rows="18" readonly
+                        #chatGptGeneratedTextInput></textarea>
                     </div>
                   </div>
                   <div class="content-area">
                     <div class="generate-div w-50per mt10">
-                      <button class="generate-btn" (click)="!isTextLoading && isValidInputText && generateChatGPTText()" [disabled]="isTextLoading || !isValidInputText">Generate</button>
+                      <button class="generate-btn" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                        [disabled]="isTextLoading || !isValidInputText">Generate</button>
                       <!-- <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button>
-                      <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
-                      <button *ngIf="false" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button> -->
+                                    <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
+                                    <button *ngIf="false" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button> -->
                     </div>
                     <div *ngIf="isCopyButtonDisplayed" class="w-50per mt10">
                       <div class="footer-icons phara-footer mt0">
-                        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}" [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
+                        <div class="footer-icon" title="{{!(isSpeakingText) ? 'Read aloud' : 'stop'}}"
+                          [ngStyle]="{'background-color': isSpeakingText  ? '#e40707' : '#0d6efd'}">
                           <i [ngClass]="(isSpeakingText) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'" aria-hidden="true"
                             (click)="speakTextForParaprasher(markdownComponent)">
                           </i>
                         </div>
                         <!-- <div class="footer-icon" title="Copy to Clipboard" (click)="copyChatGPTText(chatGptGeneratedTextInput)"><i class="fa fa-clone fs-12"></i></div> -->
                         <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied ? '#00FF13' : '#0d6efd'}">
-                          <i data-toggle="tooltip" data-placement="top" [title]="isEmailCopied ? 'Copied to Clipboard' : 'Copy to Clipboard'" class="fs-12" [ngClass]="isEmailCopied ? 'fa fa-check' : 'fa fa-clone'"
+                          <i data-toggle="tooltip" data-placement="top"
+                            [title]="isEmailCopied ? 'Copied to Clipboard' : 'Copy to Clipboard'" class="fs-12"
+                            [ngClass]="isEmailCopied ? 'fa fa-check' : 'fa fa-clone'"
                             (click)="!isEmailCopied && copyChatGPTText(chatGptGeneratedTextInput)" aria-hidden="true">
                           </i>
                         </div>
                         <!-- <div class="footer-icon" title=" Reload/Refresh"><i class="fa fa-refresh fs-12"></i></div> -->
-                        <button class="share-btn"  (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
+                        <button class="share-btn" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
                         <button class="share-btn" (click)="openSocialShare(markdownComponent)">Social Share</button>
                       </div>
                     </div>

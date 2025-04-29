@@ -4609,7 +4609,7 @@ markdown pre,.aligin-para{
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #404750 !important;
   border-radius: 8px!important;
   }
-  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text{
+  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color{
     color: #fff!important;
   }
 .side_bar{
