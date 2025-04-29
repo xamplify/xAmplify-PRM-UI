@@ -158,7 +158,7 @@
       </div>
     </ng-container>
     <div *ngIf="isCustomFieldsModelPopUp">
-      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField"
+      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [isXamplifyCustomField]="true"
         [customFieldsList]="customFieldsList" [opportunityType]="opportunityType"></app-integration-settings-popup>
     </div>
     <div *ngIf="isCustomFieldsOrderModelPopUp">
