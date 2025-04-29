@@ -13,6 +13,11 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
+import { SortOption } from 'app/core/models/sort-option';
+import { Pagination } from 'app/core/models/pagination';
+import { EmailTemplateType } from 'app/email-template/models/email-template-type';
+import { CampaignService } from 'app/campaigns/services/campaign.service';
+import { PagerService } from 'app/core/services/pager.service';
 declare var $:any, CKEDITOR:any;
 
 @Component({
@@ -71,9 +76,15 @@ export class AddEmailModalPopupComponent implements OnInit {
   sendTestEmailDto: SendTestEmailDto = new SendTestEmailDto();
   toEmailIds = [];
   isValidToEmailId: boolean = true;
+  isEmailTemplateActivated: boolean = false;
+  emailTemplatesSortOption:SortOption = new SortOption();
+  emailTemplatesPagination = new Pagination();
+  emailTemplateLoader: boolean;
+  selectedEmailTemplateRow = 0;
+  activationLoaderEnabled: boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
-    public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService) {}
+    public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService, private campaignService: CampaignService, private pagerService: PagerService) {}
 
   ngOnInit() {
     this.emailActivity.userId = this.userId;
@@ -83,6 +94,9 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.emailActivity.toEmailId = this.userEmailId;
       this.emailActivity.senderEmailId = this.authenticationService.getUserName();
       this.referenceService.openModalPopup('addEmailModalPopup');
+      this.emailTemplatesPagination.maxResults = 4;
+      this.emailTemplatesPagination.pageIndex = 1;
+      this.findEmailTemplates(this.emailTemplatesPagination);
     } else if (this.actionType == 'view') {
       this.isPreview = true;
       this.fetchEmailActivityById();
@@ -191,17 +205,21 @@ export class AddEmailModalPopupComponent implements OnInit {
   validateEmail() {
     let trimmedDescription = this.referenceService.getTrimmedCkEditorDescription(this.emailActivity.body);
     let isValidContactId = this.isCompanyJourney ? (this.userIds != undefined && this.userIds.length > 0) : true;
-    if (this.referenceService.validateCkEditorDescription(trimmedDescription) && isValidContactId &&
-      this.emailActivity.subject != undefined && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
+    let isValidDescription = this.referenceService.validateCkEditorDescription(trimmedDescription) || this.isEmailTemplateActivated;
+    let isValidSubject = this.emailActivity.subject != undefined && this.emailActivity.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ");
+    if (isValidDescription && isValidContactId && isValidSubject) {
       this.isValidEmail = true;
     } else {
       this.isValidEmail = false;
     }
 		let isInValidDescription = $.trim(trimmedDescription) != undefined && $.trim(trimmedDescription).length > 4999;
-    if (isInValidDescription) {
+    if (isInValidDescription && !this.isEmailTemplateActivated) {
       this.showCkEditorLimitErrorMessage = true;
     } else {
       this.showCkEditorLimitErrorMessage = false;
+    }
+    if (this.isEmailTemplateActivated) {
+      this.isValidEmail = this.isValidEmail && this.emailActivity.templateId != undefined && this.emailActivity.templateId > 0;
     }
     if(this.OliveAi){
       if(this.toEmailIds != undefined && this.toEmailIds.length > 0) {
@@ -442,6 +460,65 @@ export class AddEmailModalPopupComponent implements OnInit {
     this.files.forEach(file => {
       this.testMailFormData.append("uploadedFiles", file, file['name']);
     });
+  }
+
+  findEmailTemplates(emailTemplatesPagination: Pagination) {
+    this.activationLoaderEnabled = true;
+    emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
+    emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+    emailTemplatesPagination.isCompanyJourney = true;
+    this.campaignService.findCampaignEmailTemplates(emailTemplatesPagination).subscribe(
+      response => {
+        const data = response.data;
+        emailTemplatesPagination.totalRecords = data.totalRecords;
+        this.emailTemplatesSortOption.totalRecords = data.totalRecords;
+        emailTemplatesPagination = this.pagerService.getPagedItems(emailTemplatesPagination, data.list);
+        this.activationLoaderEnabled = false;
+      }, error => {
+        this.activationLoaderEnabled = false;
+      });
+
+  }
+
+  changeStatus(event) {
+    this.activationLoaderEnabled = true;
+    this.isEmailTemplateActivated = !this.isEmailTemplateActivated;
+    this.validateEmail();
+    this.activationLoaderEnabled = false;
+  }
+
+  searchEmailTemplates() {
+    this.setSearchForEmailTemplates(this.emailTemplatesPagination, this.emailTemplatesSortOption);
+  }
+
+  setSearchForEmailTemplates(pagination: Pagination, emailTemplatesSortOption: SortOption) {
+    pagination.pageIndex = 1;
+    pagination.searchKey = emailTemplatesSortOption.searchKey;
+    this.findEmailTemplates(pagination);
+  }
+
+  clearSearch() {
+
+  }
+
+  emailActivityEventHandler(eventKeyCode: number) {
+    if (eventKeyCode == 13) {
+      this.searchEmailTemplates();
+    }
+  }
+
+  paginateEmailTempaltes(event: any) {
+    this.emailTemplatesPagination.pageIndex = event.page;
+    this.findEmailTemplates(this.emailTemplatesPagination);
+  }
+
+  selectEmailTemplate(emailTemplate:any) {
+    this.emailActivity.templateId = emailTemplate.id;
+    this.validateEmail();
+  }
+
+  previewEmailTemplate(emailTemplate: any) {
+    this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id, this.authenticationService.getUserId());
   }
   
 }
