@@ -133,7 +133,7 @@
                       [id]="addContactuser.contactCompanyId" [disableDropDown]="false" [isFromContacts]="'true'"
                       (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>              
                       <button *ngIf="showAddButton" class="btn btn-primary customAlign plus_align" id="addContactuser" (click)="openPopup(addContactuser)"
-                      data-toggle="tooltip"  data-placement="bottom" title="Add a Company" data-toggle="tooltip">    
+                      data-toggle="tooltip" type="button"  data-placement="bottom" title="Add a Company" data-toggle="tooltip">    
                          <i class="fa fa-plus" aria-hidden="true"></i>
                      </button>
                     </ng-container>
