@@ -65,17 +65,12 @@
             <input type="text" id="subjectLine" [(ngModel)]="emailActivity.subject" [ngModelOptions]="{standalone: true}" [disabled]="isPreview"
              placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" (input)="validateEmail()" />
           </div>
-          <!-- <div *ngIf="!OliveAi" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 p0 display_flex">
-            <label class="display_flex pr7 pt10" for="subjectLine">Choose Template </label>
-            <app-custom-ui-switch [customSwitch]="isEmailTemplateActivated"
-              (customUiSwitchEventEmitter)="changeStatus($event)"></app-custom-ui-switch>
-          </div> -->
           <div class="form-group">
             <label *ngIf="!isEmailTemplateActivated" for="subjectLine" class="mt5">Message <span class="text-danger">*</span></label>
             <label *ngIf="isEmailTemplateActivated" for="subjectLine" class="mt5">Select an Email Template <span class="text-danger">*</span></label>
-            <span class="pull-right">
-              <label *ngIf="!OliveAi" for="subjectLine">Choose Template </label>
-              <app-custom-ui-switch *ngIf="!OliveAi" [customSwitch]="isEmailTemplateActivated"
+            <span class="pull-right" *ngIf="!OliveAi && isValidToShowChooseTemplate">
+              <label for="subjectLine">Choose Template </label>
+              <app-custom-ui-switch [customSwitch]="isEmailTemplateActivated"
                 (customUiSwitchEventEmitter)="changeStatus($event)"></app-custom-ui-switch>
             </span>
             <div *ngIf="isEmailTemplateActivated" class="btn-group pull-right mr5">

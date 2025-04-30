@@ -82,6 +82,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   emailTemplateLoader: boolean;
   selectedEmailTemplateRow = 0;
   activationLoaderEnabled: boolean = false;
+  isValidToShowChooseTemplate: boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService, private campaignService: CampaignService, private pagerService: PagerService) {}
@@ -89,6 +90,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   ngOnInit() {
     this.emailActivity.userId = this.userId;
     this.ckeConfig = this.properties.ckEditorConfig;
+    this.isValidToShowChooseTemplate = this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminTeamMember || this.authenticationService.module.isMarketingCompany || this.authenticationService.module.isVendor || this.authenticationService.module.isVendorTierTeamMember;
     if (this.actionType == 'add') {
       this.isPreview = false;
       this.emailActivity.toEmailId = this.userEmailId;
