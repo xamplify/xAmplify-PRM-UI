@@ -83,7 +83,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     @Input() public actionType: any;
     @Input() public contactId: number = 0;
     @Output() emitCompanyId = new EventEmitter<any>(); 
-    shouldAnimatePopup: boolean = false;
     companyPop: boolean = false;
     showAddButton: boolean = true; 
 
@@ -634,13 +633,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     openPopup(addContactuser: any){
         this.companyPop = true;
         this.actionType = "add";
-        this.contactId = addContactuser.contactCompanyId;   
-        this.shouldAnimatePopup = true;   
+        this.contactId = addContactuser.contactCompanyId;     
     }
     closeCompanyPopup(event:any) {
         if(event == 0){
             this.companyPop = false; 
-            this.shouldAnimatePopup = true;
         }
             
       }

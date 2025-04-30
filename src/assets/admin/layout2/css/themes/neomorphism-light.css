@@ -4623,3 +4623,9 @@ input:checked + .toggle-slider {
   /* .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text{
     color: #fff!important;
   } */
+/* Sudha Sri(XNFR-945) */
+.neo-plus_icon{
+  float: right;
+  margin-top: -40px !important;
+  margin-right: -50px !important;
+}
