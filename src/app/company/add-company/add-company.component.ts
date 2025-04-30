@@ -24,6 +24,7 @@ export class AddCompanyComponent implements OnInit {
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() emitCompanyId : EventEmitter<any> = new EventEmitter<any>();
   @Input() id:any;
+  @Input() shouldAnimatePopup: boolean = false;
   customResponse: CustomResponse = new CustomResponse();
   companies: Company[] = [];
   addCompany: Company = new Company();
