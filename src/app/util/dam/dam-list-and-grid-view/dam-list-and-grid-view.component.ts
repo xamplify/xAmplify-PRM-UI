@@ -263,7 +263,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				}
 			}
 		} else {
-			if (this.viewType != viewType) {
+			if (this.viewType != viewType && !this.FromOliverPopUp) {
 				if (this.folderListView) {
 					let gridView = "g" == viewType;
 					this.modulesDisplayType.isGridView = gridView;
@@ -275,6 +275,20 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 						this.referenceService.goToManageAssets(viewType, this.isPartnerView);
 					}
 					this.titleHeader = ' Assets';
+				}
+			} else {
+				if (viewType == "l") {
+					this.modulesDisplayType.isListView = true;
+					this.modulesDisplayType.isGridView = false;
+					this.modulesDisplayType.isFolderGridView = false;
+				} else if (viewType == "g") {
+					this.modulesDisplayType.isGridView = true;
+					this.modulesDisplayType.isListView = false;
+					this.modulesDisplayType.isFolderGridView = false;
+				} else if (viewType == "fg") {
+					this.modulesDisplayType.isFolderGridView = true;
+					this.modulesDisplayType.isListView = false;
+					this.modulesDisplayType.isGridView = false;
 				}
 			}
 		}

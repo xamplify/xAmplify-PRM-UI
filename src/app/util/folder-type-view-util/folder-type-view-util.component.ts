@@ -24,6 +24,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   @Input() moduleId:number;
   @Input()modulesDisplayType:ModulesDisplayType;
   @Output() folderViewTypeEventEmitter = new EventEmitter();
+  @Output() oliverfolderViewTypeEventEmitter = new EventEmitter();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse:CustomResponse = new CustomResponse();
   categorySortOption: SortOption = new SortOption();
@@ -35,6 +36,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   suffixHeader:string = "";
   options: string[] = ['Search Folder', 'Search In Folder'];
   selectedOption: string;
+  @Input() FromOliverPopUp: boolean = false;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -45,11 +47,14 @@ export class FolderTypeViewUtilComponent implements OnInit {
 
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
+    if (this.FromOliverPopUp) {
+      this.folderViewType = "fg";
+    }
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
     this.selectedOption = 'Search Folder';
     this.findAllCategories(this.pagination);
-    this.utilService.searchKey ="";
+    this.utilService.searchKey = "";
   }
 
   findAllCategories(pagination:Pagination){
@@ -228,22 +233,24 @@ export class FolderTypeViewUtilComponent implements OnInit {
     }
   }
 
-  setViewType(viewType:string){
+  setViewType(viewType: string) {
     this.utilService.folderListViewSelected = false;
-    if(this.folderViewType!=viewType){
-      if(this.moduleId==this.roles.damId){
-        this.referenceService.goToManageAssets(viewType,this.isPartnerView);
-      }else if(this.moduleId==this.roles.learningTrackId){
-        this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,true);
-      }else if(this.moduleId==this.roles.playbookId){
-        this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,false);
-      }else if(this.moduleId==this.roles.campaignId){
+    if (this.folderViewType != viewType && !this.FromOliverPopUp) {
+      if (this.moduleId == this.roles.damId) {
+        this.referenceService.goToManageAssets(viewType, this.isPartnerView);
+      } else if (this.moduleId == this.roles.learningTrackId) {
+        this.referenceService.goToManageTracksOrPlayBooks(viewType, this.isPartnerView, true);
+      } else if (this.moduleId == this.roles.playbookId) {
+        this.referenceService.goToManageTracksOrPlayBooks(viewType, this.isPartnerView, false);
+      } else if (this.moduleId == this.roles.campaignId) {
         this.referenceService.goToManageCampaigns(viewType);
-      }else if(this.moduleId==this.roles.emailTemplateId){
+      } else if (this.moduleId == this.roles.emailTemplateId) {
         this.referenceService.goToManageEmailTemplates(viewType);
-      }else if(this.moduleId==this.roles.landingPageId){
+      } else if (this.moduleId == this.roles.landingPageId) {
         this.referenceService.goToManageLandingPages(viewType);
       }
+    } else if (this.FromOliverPopUp) {
+      this.oliverfolderViewTypeEventEmitter.emit(viewType);
     }
   }
 
