@@ -146,3 +146,25 @@
   margin-right: -30px;
   margin-top: -4px;
 }
+/* .transition {
+  opacity: 0;
+  transform: scale(0.95);
+  animation: fadeScaleIn 0.3s forwards;
+}
+@keyframes fadeScaleIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+} */
+.popup-b {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1050;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
