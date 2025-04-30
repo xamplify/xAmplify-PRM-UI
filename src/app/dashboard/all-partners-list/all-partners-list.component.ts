@@ -9,6 +9,8 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
+import { PartnerJourneyRequest } from 'app/partners/models/partner-journey-request';
+
 declare var $:any, swal: any;
 @Component({
   selector: 'app-all-partners-list',
@@ -30,9 +32,19 @@ export class AllPartnersListComponent implements OnInit {
   @Input() isVendorVersion: boolean = false;
   @Input() vanityUrlFilter: boolean = false;
   @Input() vendorCompanyProfileName: string = '';
-  @Input() fromDateFilter: string = '';
-  @Input() toDateFilter: string = '';
+  // @Input() fromDateFilter: string = '';
+  // @Input() toDateFilter: string = '';
+
   @Output() triggerSendEmailPopup = new EventEmitter<any>();
+  dateFilterText = "Select Date Filter";
+  //filterApplied: boolean = false;
+ // public selectedRegionIds = [];
+ // public selectedStatusIds = [];
+  filterActiveBg: string;
+  showFilterDropDown: boolean = false;
+  isCollapsed: boolean = true;
+  public regionNameFilters: Array<any>;
+  public regionInfoFields: any;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -42,6 +54,16 @@ export class AllPartnersListComponent implements OnInit {
   loading: boolean;
   heading: any = "All Partners Details";
   scrollClass: any;
+  showFilterOption: boolean = false;
+  public multiSelectPlaceholderForRegion: string = "Select Region";
+  public multiSelectPlaceholderForStatus: string = "Select Status";
+
+  statusOptions = [
+    { text: 'IncompleteCompanyProfile', value: 'IncompleteCompanyProfile' },
+    { text: 'Active', value: 'Active' },
+    { text: 'Pending Signup', value: 'Pending Signup' },
+    { text: 'Dormant', value: 'Dormant' }
+  ];
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -59,6 +81,8 @@ export class AllPartnersListComponent implements OnInit {
     this.pagination.pageIndex = 1;
     //this.setHeading();
     this.getAllPartnersDetails(this.pagination);
+    this.findRegionNames();
+    this.setFilterColor();
   }
   setHeading() {
       this.heading = "All Partners Details"
@@ -71,13 +95,130 @@ export class AllPartnersListComponent implements OnInit {
       this.sortOption.teamMember = text;
       this.getAllFilteredResults(this.pagination);
     }
+    clickFilter() {
+      this.showFilterOption = !this.showFilterOption;
+      this.customResponse.isVisible = false;
+    }
+    viewDropDownFilter(){
+      this.showFilterOption = true;
+      this.showFilterDropDown = false;
+    }
   
-  //   // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
-  //   //   this.isDetailedAnalytics = true;
-  //   // } else {
-  //   //   this.isDetailedAnalytics = false;
-  //   // }
-  // }
+    closeFilterOption() {
+      this.showFilterOption = false;
+      this.clearFilter();
+  }
+  clearFilter() {
+    this.pagination.fromDateFilterString = '';
+    this.pagination.toDateFilterString = '';
+     this.pagination.selectedStatusIds = [];
+     this.pagination.selectedRegionIds = [];
+    // this.selectedStatusIds = [];
+    // this.selectedRegionIds = [];
+   // this.regionNameFilters = [];
+    this.isCollapsed = true;
+    //this.pagination.filterBy = [];
+    //this.filterApplied = false;
+   // this.showFilterOption = true;
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.getAllPartnersDetails(this.pagination);
+}
+setFilterColor() {
+  let isValidSelectedRegionAndStatus = this.pagination.selectedRegionIds != undefined && this.pagination.selectedRegionIds.length > 0 
+  && this.pagination.selectedStatusIds != undefined && this.pagination.selectedStatusIds.length > 0;
+  let isValidFromDateFilter = this.pagination.fromDateFilterString != undefined && this.pagination.fromDateFilterString.length > 0;
+  let isValidToDateFilter = this.pagination.toDateFilterString != undefined && this.pagination.toDateFilterString.length > 0;
+  if (isValidSelectedRegionAndStatus && isValidFromDateFilter && isValidToDateFilter) {
+    this.filterActiveBg = 'filterActiveBg';
+   // this.filterApplied = true;
+  }
+  if (isValidSelectedRegionAndStatus) {
+    this.filterActiveBg = 'filterActiveBg';
+    this.isCollapsed = false;
+  }
+}
+findRegionNames(){
+  this.pagination.userId = this.loggedInUserId;  
+  this.regionInfoFields = { text: 'region', value: 'region' };
+  this.parterService.getAllPartnerRegionNamesFilter(this.pagination).
+  subscribe(response => {
+    this.regionNameFilters = response.data;
+  }, error => {
+    this.regionNameFilters = [];
+  });
+}
+validateDateFilter() {
+  let isValidFromDateFilter = this.pagination.fromDateFilterString != undefined && this.pagination.fromDateFilterString != "";
+  let isEmptyFromDateFilter = this.pagination.fromDateFilterString == undefined || this.pagination.fromDateFilterString == "";
+  let isValidToDateFilter = this.pagination.toDateFilterString != undefined && this.pagination.toDateFilterString != "";
+  let isEmptyToDateFilter = this.pagination.toDateFilterString == undefined || this.pagination.toDateFilterString == "";
+  let isValidRegionAndStatus = this.pagination.selectedRegionIds.length > 0 && this.pagination.selectedStatusIds.length>0;
+  if (
+    this.pagination.selectedRegionIds.length === 0 &&
+    this.pagination.selectedStatusIds.length === 0 &&
+    isEmptyFromDateFilter &&
+    isEmptyToDateFilter
+  ) {
+    this.customResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    return;
+  }
+  let checkIfToDateIsEmpty = isValidFromDateFilter && isEmptyToDateFilter;
+  let checkIfFromDateIsEmpty = isValidToDateFilter && isEmptyFromDateFilter;
+  let showToDateError = (isValidRegionAndStatus && checkIfToDateIsEmpty) || (!isValidRegionAndStatus && checkIfToDateIsEmpty)
+  let showFromDateError = (isValidRegionAndStatus && checkIfFromDateIsEmpty) || (!isValidRegionAndStatus && checkIfFromDateIsEmpty)
+  if (!(this.pagination.selectedRegionIds.length > 0) && (this.pagination.selectedStatusIds.length>0) && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
+    this.customResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+  } else if (showToDateError) {
+    this.customResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+  } else if (showFromDateError) {
+    this.customResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+  } else if (isValidToDateFilter && isValidFromDateFilter) {
+    var toDate = Date.parse(this.pagination.toDateFilterString);
+    var fromDate = Date.parse(this.pagination.fromDateFilterString);
+    if (fromDate <= toDate) {
+      this.applyFilters(this.pagination);
+    } else {
+      this.customResponse = new CustomResponse('ERROR', "From Date should be less than To Date", true);
+    }
+  } else {
+    this.applyFilters(this.pagination);
+  }
+ // this.applyFilters(this.pagination);
+}
+applyFilters(pagination: Pagination) {
+  this.filterActiveBg = 'filterActiveBg';
+ // this.filterApplied = true;
+  this.clickFilter();
+  this.referenseService.loading(this.httpRequestLoader, true);
+  pagination.pageIndex = 1;
+  pagination.searchKey = this.searchKey;
+  pagination = this.utilService.sortOptionValues(this.sortOption.teamMember, pagination); 
+  this.pagination.userId = this.loggedInUserId;
+  this.pagination.regionFilter = this.regionName;  
+ // this.pagination.selectedRegionIds = this.selectedRegionIds;
+ // this.pagination.selectedStatusIds = this.selectedStatusIds;
+  this.parterService.getAllPartners(pagination).subscribe(
+    (response: any) => {
+      this.referenseService.loading(this.httpRequestLoader, false);
+      if (response.statusCode == 200) {
+      this.sortOption.totalRecords = response.data.totalRecords;
+        this.pagination.totalRecords = response.data.totalRecords;
+        if (this.pagination.totalRecords == 0) {
+          this.scrollClass = 'noData'
+        } else {
+          this.scrollClass = 'tableHeightScroll'
+        }
+        this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+      }
+    },
+    (_error: any) => {
+      this.httpRequestLoader.isServerError = true;
+      this.xtremandLogger.error(_error);
+    }
+  );
+
+}
+  
 
   // getInteractedNotInteractedTrackDetailsForPartnerJourney(pagination: Pagination) {
   //   this.referenseService.loading(this.httpRequestLoader, true);
@@ -132,12 +273,7 @@ export class AllPartnersListComponent implements OnInit {
    // this.getInteractedNotInteractedTrackDetails(this.pagination);
   }
 
-  // dropDownList(event) {
-  //   this.pagination = event;
-  //   this.getInteractedNotInteractedTrackDetails(this.pagination);
-  // }
-
-  setPage(event: any) {
+   setPage(event: any) {
     this.pagination.pageIndex = event.page;
     this.getAllPartnersDetails(this.pagination);
   }
@@ -185,12 +321,11 @@ export class AllPartnersListComponent implements OnInit {
     this.pagination.maxResults = this.pagination.totalRecords;
     let pageableUrl = this.referenseService.getPagebleUrl(this.pagination);
     let sortColumn = this.pagination.sortcolumn;
-    // if(this.pagination.sortcolumn){
-    //   pageableUrl += "&sortcolumn=${encodeURIComponent(this.pagination.sortcolumn)}";
-    // }
+    let selectedRegionIds = this.pagination.selectedRegionIds.join(',');
+    let selectedStatusIds = this.pagination.selectedStatusIds.join(',');
     this.pagination.maxResults = maxResults
     window.location.href = this.authenticationService.REST_URL + '/partner/allPartners/downloadCsv?userId='
-      + loggedInUserId +"&regionFilter="+regionFilter+"&sortColumn="+sortColumn+ "&access_token=" + this.authenticationService.access_token + pageableUrl;
+      + loggedInUserId +"&regionFilter="+regionFilter+"&sortColumn="+sortColumn+"&selectedRegionIds="+selectedRegionIds+"&selectedStatusIds="+selectedStatusIds+"&access_token=" + this.authenticationService.access_token + pageableUrl;
    }
   // getInteractedNotInteractedTrackDetails(pagination: Pagination) {
   //   if (!this.isTeamMemberAnalytics) {
