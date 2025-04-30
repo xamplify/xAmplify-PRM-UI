@@ -39,7 +39,7 @@ body,
 .div.thembgc,
 .div.thembg-color,
 .calendar-border,
-.img-circle {
+.img-circle,.template_box {
   border: 1px solid #191b1e !important;
 }
 .dashboard-stat.green-soft {

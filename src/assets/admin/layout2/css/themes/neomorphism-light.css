@@ -40,7 +40,7 @@ body,
 .calendar-border,
 .img-circle,
 .signature_card,
-.signature-preview {
+.signature-preview,.template_box {
   border: 1px solid #d0d5db !important;
 }
 .dashboard-stat.green-soft {
