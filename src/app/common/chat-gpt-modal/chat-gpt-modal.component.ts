@@ -8,28 +8,31 @@ import { SortOption } from 'app/core/models/sort-option';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
 import { ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-declare var $:any;
+import { DamService } from 'app/dam/services/dam.service';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { HttpClient } from '@angular/common/http';
+declare var $: any;
 @Component({
   selector: 'app-chat-gpt-modal',
   templateUrl: './chat-gpt-modal.component.html',
   styleUrls: ['./chat-gpt-modal.component.css'],
-  providers:[Properties,SortOption]
+  providers: [Properties, SortOption, DamService]
 })
 export class ChatGptModalComponent implements OnInit {
-  @Input() isChatGptIconDisplayed:boolean;
-  @Input() isShowingRouteLoadIndicator:boolean;
-  @Input() showLoaderForAuthGuard:boolean;
-  inputText="";
+  @Input() isChatGptIconDisplayed: boolean;
+  @Input() isShowingRouteLoadIndicator: boolean;
+  @Input() showLoaderForAuthGuard: boolean;
+  inputText = "";
   isValidInputText = false;
   chatGptGeneratedText = "";
   isTextLoading = false;
   isCopyButtonDisplayed = false;
-  customResponse:CustomResponse = new CustomResponse();
+  customResponse: CustomResponse = new CustomResponse();
   showIcon: boolean = true;
   activeTab: string = 'new-chat';
-  selectedValueForWork : any ={};
+  selectedValueForWork: any = {};
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
-  actionType: string ;
+  actionType: string;
   showEmailModalPopup: boolean;
   emailBody: any;
   subjectText: string;
@@ -46,8 +49,11 @@ export class ChatGptModalComponent implements OnInit {
   hasAcess: boolean = false;
   isMinimizeOliver: boolean;
   preventImmediateExpand: boolean = false;
+  showView: boolean = false;
+  pdfFiles: { file: Blob; assetName: any; }[];
+  threadId: any;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
-    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef) {
+    private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -57,16 +63,16 @@ export class ChatGptModalComponent implements OnInit {
 
 
 
-  validateInputText(){
+  validateInputText() {
     let trimmedText = this.referenceService.getTrimmedData(this.inputText);
-    this.isValidInputText = trimmedText!=undefined && trimmedText.length>0;
+    this.isValidInputText = trimmedText != undefined && trimmedText.length > 0;
   }
-  
+
   ngOnDestroy() {
     this.showIcon = true;
     this.isWelcomePageUrl = false;
   }
- 
+
   generateChatGPTText() {
     this.customResponse = new CustomResponse();
     this.isTextLoading = true;
@@ -113,8 +119,8 @@ export class ChatGptModalComponent implements OnInit {
       });
   }
 
- 
-  copyChatGPTText(chatGptGeneratedTextInput: any){
+
+  copyChatGPTText(chatGptGeneratedTextInput: any) {
     this.isEmailCopied = true;
     $('#copied-chat-gpt-text-message').hide();
     chatGptGeneratedTextInput.select();
@@ -137,16 +143,17 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     $('#copied-chat-gpt-text-message').hide();
     this.showIcon = false;
-    this.activeTab = 'new-chat';
+    this.activeTab = 'askpdf';
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
     this.messages = [];
     this.showOpenHistory = false;
     this.openShareOption = false;
     this.showEmailModalPopup = false;
+    this.showView = false;
   }
 
-  showOliverIcon(){
+  showOliverIcon() {
     this.showIcon = true;
   }
 
@@ -156,10 +163,10 @@ export class ChatGptModalComponent implements OnInit {
       option => option.value === selectedValue
     );
   }
-  
+
   setActiveTab(tab: string) {
     this.isValidInputText = false;
-    this.inputText ="";
+    this.inputText = "";
     this.isTextLoading = false;
     this.messages = [];
     this.chatGptGeneratedText = "";
@@ -207,7 +214,7 @@ export class ChatGptModalComponent implements OnInit {
     this.subjectText = "";
     this.emailBody = "";
     if (event) {
-    this.referenceService.showSweetAlertSuccessMessage(event);
+      this.referenceService.showSweetAlertSuccessMessage(event);
     }
   }
   openSocialShare(markdown: any) {
@@ -277,12 +284,12 @@ export class ChatGptModalComponent implements OnInit {
       });
     }
   }
-  
+
   onMinimizeClick(event: MouseEvent) {
     event.stopPropagation(); // prevent modal click
     this.minimizeOliver();
   }
-  
+
   minimizeOliver() {
     this.isMinimizeOliver = true;
     this.preventImmediateExpand = true;
@@ -291,7 +298,7 @@ export class ChatGptModalComponent implements OnInit {
     }, 500);
     console.log('Minimized');
   }
-  
+
   expandIfMinimized() {
     if (this.preventImmediateExpand) return;
 
@@ -306,6 +313,83 @@ export class ChatGptModalComponent implements OnInit {
       this.generateChatGPTText();
     }
   }
-  
-  
+
+  openAssetsPage() {
+    this.showView = true;
+  }
+
+  getSelectedAsset(event: any) {
+    this.getPdfByAssetPaths(event)
+    this.showView = false;
+  }
+
+  getPdfByAssetPaths(assetsPath: any[]) {
+    const requests = assetsPath.map(path =>
+      this.http.get(path.proxyUrlForOliver + path.assetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), {
+        responseType: 'blob'
+      })
+    );
+    forkJoin(requests).subscribe({
+      next: (responses: Blob[]) => {
+        this.pdfFiles = responses.map((blob, index) => ({
+          file: blob,
+          assetName: assetsPath[index].assetName
+        }));
+
+        this.getUploadedFileIds();
+      },
+      error: (err) => {
+        console.error('Failed to load all PDFs', err);
+      }
+    });
+  }
+
+  getUploadedFileIds() {
+    this.chatGptSettingsService.onUploadFiles(this.pdfFiles, this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        let data = response.data;
+        this.threadId = data.threadId;
+        this.AskAiTogetData();
+      },
+      (error: string) => {
+        console.log('API Error:', error);
+      }
+    );
+  }
+
+  AskAiTogetData() {
+    this.showOpenHistory = true;
+    this.isTextLoading = true;
+    if ($('.scrollable-card').length) {
+      $('.scrollable-card').animate({
+        scrollTop: $('.scrollable-card')[0].scrollHeight
+      }, 500);
+    }
+    this.messages.push({ role: 'user', content: 'Give a overview of files' });
+    this.inputText = '';
+    var self = this;
+    this.chatGptIntegrationSettingsDto.prompt = 'Give a overview of files';
+    self.chatGptIntegrationSettingsDto.threadId = self.threadId;
+    this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
+      function (response) {
+        this.isTextLoading = false;
+        console.log('API Response:', response);
+        var content = response.data;
+        if (content) {
+          self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
+          self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
+          self.threadId = content.threadId;
+        } else {
+          self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
+        }
+        this.trimmedText = '';
+      },
+      function (error) {
+        console.log('API Error:', error);
+        self.messages.push({ role: 'assistant', content: self.properties.serverErrorMessage });
+      }
+    );
+  }
+
+
 }

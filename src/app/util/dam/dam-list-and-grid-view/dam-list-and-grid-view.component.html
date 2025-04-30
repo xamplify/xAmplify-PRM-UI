@@ -32,6 +32,7 @@
 								*ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
 								<thead>
 									<tr>
+										<th *ngIf="FromOliverPopUp"></th>
 										<th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
 											<span class="ui-column-resizer gray"
 												(mousedown)="referenceService?.onMouseDown($event,'manage-assets-table',2)"></span>
@@ -51,6 +52,8 @@
 								<tbody>
 									<ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
 										<tr>
+											<td *ngIf="FromOliverPopUp" class="text-center"><input class="chk checkBox_shadow" type="checkbox"
+													[checked]="isSelected(item)" (change)="onCheckboxChange(asset, $event)"></td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
 												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
 													<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
@@ -671,6 +674,14 @@
 							[ngClass]="showFilterOption?'disabled':''">
 							<span data-placement="left" data-toggle="tooltip" title="Filter">
 								<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+							</span>
+						</div>
+						<div *ngIf="FromOliverPopUp && selectedItems.length>0" (click)="sendSelectedAssetsToOliver()"
+							class="btn btn-xs l-g-view margin-space mr5">
+							<span data-placement="left" data-toggle="tooltip" title="Ask Oliver">
+								<span class="oliveBackground">
+									<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+								</span>
 							</span>
 						</div>
 						<!-- End XNFR-409 -->

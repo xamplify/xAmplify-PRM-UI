@@ -39,6 +39,7 @@
       </div> -->
       <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData] = "socialContent" (notifyClose)="closeSocialShare($event)"></app-update-status>
       <div *ngIf="!openShareOption" class="modal-body oliver-header">
+        <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"(notifyasset)="getSelectedAsset($event)"></app-dam-list-and-grid-view>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
         <div classs="row">
           <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"
@@ -96,7 +97,7 @@
               </div>
             </div>
           </div> -->
-          <div class="d-flex oliver_flex">
+          <div *ngIf="!showView" class="d-flex oliver_flex">
           <div class="side_bar">
             <img src="assets/images/olivere-sidebar-img.svg" alt="Logo">
             <h5 class="oliver-heading-color">Your AI-powered creative and optimization Agents, built to accelerate your marketing, messaging, and content creation workflows.</h5>
@@ -111,7 +112,7 @@
                   <i class="fa fa-pencil"></i> Spark Writer Agent
                 </a>
               </li>
-              <li *ngIf="hasAcess" [ngClass]="{'active': activeTab === 'askpdf'}">
+              <li [ngClass]="{'active': activeTab === 'askpdf'}">
                 <a href="#askpdf" role="tab" data-toggle="tab" (click)="setActiveTab('askpdf')">
                   <i class="fa fa-file-text"></i> Ask Oliver
                 </a>
@@ -199,17 +200,25 @@
               </div>
               <!-- Ask PDF Tab -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'askpdf', 'tab-pane fade': activeTab !== 'askpdf'}" id="askpdf">
+                <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'askpdf'">
+                  <div class="main-container newChatlabel">
+                    <ng-container *ngFor="let msg of messages; let i = index">
+                      <ng-template [ngTemplateOutlet]="messageTemplate"
+                        [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                    </ng-container>
+                    <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
+                  </div>
+                </ng-container>
                 <!-- <div *ngIf="isCopyButtonDisplayed && activeTab === 'askpdf'" *ngFor="let msg of messages">
                   <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
                 </div>                 -->
-                <span class="oliver_heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
+                <span  class="oliver_heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
                 <div class="custom-card mt10">
-                  <div class="upload-box">
+                  <div class="upload-box" (click)="openAssetsPage()">
                     <label>
                       <!-- <i class="glyphicon glyphicon-upload"></i> -->
                       <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
                       Feed Me Digital Assets
-                      <input type="file">
                     </label>
                   </div>
                   <div class="submit-section">

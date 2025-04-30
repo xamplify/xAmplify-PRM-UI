@@ -141,6 +141,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	isTextFormat: boolean = false;
 	proxyAssetPath: any;
 	showOliver: boolean;
+	@Input() FromOliverPopUp : boolean = false;
+    selectedItems: any[] = []; 
+    @Output() notifyasset = new EventEmitter<any>();
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
@@ -220,7 +223,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', message, true);
 		}
 		this.triggerUniversalSearch(); //XNFR-574
-		if (this.viewType != "fl" && this.viewType != "fg") {
+		if (this.viewType != "fl" && this.viewType != "fg" || this.FromOliverPopUp) {
 			this.getCompanyId();
 		}
 		
@@ -1098,4 +1101,35 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.SendAssetToOliver = "";
 		this.referenceService.isOliverEnabled = false;
 	}
+	
+	onCheckboxChange(item: any, event: any) {
+        if (event.target.checked) {
+          this.selectedItems.push(item);
+        } else {
+          const index = this.selectedItems.indexOf(item);
+          if (index > -1) {
+            this.selectedItems.splice(index, 1);
+          }
+        }
+      }
+      
+      isSelected(item: any): boolean {
+        return this.selectedItems.indexOf(item) !== -1;
+      }
+    
+      isAllSelected(): boolean {
+        return this.pagination.pagedItems.length > 0 &&
+               this.selectedItems.length === this.pagination.pagedItems.length;
+      }
+      toggleAllSelection(event: any) {
+        if (event.target.checked) {
+          this.selectedItems = [...this.pagination.pagedItems];
+        } else {
+          this.selectedItems = [];
+        }
+      }
+    sendSelectedAssetsToOliver() {
+        this.notifyasset.emit(this.selectedItems);
+        this.selectedItems = [];
+    }
 }
