@@ -52,6 +52,7 @@ export class ChatGptModalComponent implements OnInit {
   showView: boolean = false;
   pdfFiles: { file: Blob; assetName: any; }[];
   threadId: any;
+  assetLoader: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
   }
@@ -319,6 +320,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   getSelectedAsset(event: any) {
+    this.assetLoader= true;
     this.getPdfByAssetPaths(event)
     this.showView = false;
   }
@@ -349,6 +351,7 @@ export class ChatGptModalComponent implements OnInit {
       (response: any) => {
         let data = response.data;
         this.threadId = data.threadId;
+        this.assetLoader = false;
         this.AskAiTogetData();
       },
       (error: string) => {
@@ -372,7 +375,7 @@ export class ChatGptModalComponent implements OnInit {
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
-        this.isTextLoading = false;
+        self.isTextLoading = false;
         console.log('API Response:', response);
         var content = response.data;
         if (content) {

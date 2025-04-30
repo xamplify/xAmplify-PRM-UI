@@ -124,7 +124,7 @@
               </li>
             </ul>
           </div>
-          <div  [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing')? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
+          <div  [ngClass]="(isCopyButtonDisplayed || showOpenHistory )&& (activeTab === 'new-chat' || activeTab === 'writing' || activeTab === 'askpdf' )? 'd-flex align-templateui' : 'd-flex align-center align_tab_view'">
             <div class="tab-content oliver_content" [ngStyle]="showOpenHistory && activeTab != 'paraphraser' ? { 'margin-top': '0px' } : { 'margin-top': '40px' }">
               <!-- Start New Chat -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'new-chat', 'tab-pane fade': activeTab !== 'new-chat'}" id="New-Chat">
@@ -200,30 +200,41 @@
               </div>
               <!-- Ask PDF Tab -->
               <div role="tabpanel" [ngClass]="{'tab-pane fade in active': activeTab === 'askpdf', 'tab-pane fade': activeTab !== 'askpdf'}" id="askpdf">
-                <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory)  && activeTab === 'askpdf'">
+                <ng-container *ngIf="(isCopyButtonDisplayed || showOpenHistory) && activeTab === 'askpdf'">
                   <div class="main-container newChatlabel">
                     <ng-container *ngFor="let msg of messages; let i = index">
-                      <ng-template [ngTemplateOutlet]="messageTemplate"
-                        [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
+                      <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg ,index: i}"></ng-template>
                     </ng-container>
                     <ng-container *ngIf="isTextLoading" [ngTemplateOutlet]="assistantLoader"></ng-container>
                   </div>
-                </ng-container>
+                </ng-container> 
                 <!-- <div *ngIf="isCopyButtonDisplayed && activeTab === 'askpdf'" *ngFor="let msg of messages">
                   <ng-template [ngTemplateOutlet]="messageTemplate" [ngTemplateOutletContext]="{ data: msg }"></ng-template>
                 </div>                 -->
-                <span  class="oliver_heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
-                <div class="custom-card mt10">
-                  <div class="upload-box" (click)="openAssetsPage()">
-                    <label>
-                      <!-- <i class="glyphicon glyphicon-upload"></i> -->
-                      <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
-                      Feed Me Digital Assets
-                    </label>
+                <span *ngIf="!showOpenHistory" class="oliver_heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
+                <div [ngClass]="showOpenHistory && activeTab === 'askpdf' ? 'templateui col-lg-9' : 'container-ui'">
+                  <div *ngIf="!showOpenHistory" class="custom-card mt10">
+                    <div class="upload-box" (click)="openAssetsPage()">
+                      <label *ngIf="!assetLoader">
+                        <!-- <i class="glyphicon glyphicon-upload"></i> -->
+                        <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
+                        Feed Me Digital Assets
+                      </label>
+                      <div *ngIf="assetLoader" class="fileloader"></div>
+                    </div>
+                    <div class="submit-section">
+                      <img src="assets/images/olivere-dog.svg" width="80px" alt="Robot">
+                      <button class="btn btn-submit">Submit</button>
+                    </div>
                   </div>
-                  <div class="submit-section">
-                    <img src="assets/images/olivere-dog.svg" width="80px" alt="Robot">
-                    <button class="btn btn-submit">Submit</button>
+                  <div *ngIf="showOpenHistory" class="oliver_input mt10">
+                    <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
+                      [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                    <div class="btn-wrapper">
+                      <button *ngIf="hasAcess" class="btn-plus">+</button>
+                      <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                        [disabled]="isTextLoading || !isValidInputText">Submit</button>
+                    </div>
                   </div>
                 </div>
               </div>
