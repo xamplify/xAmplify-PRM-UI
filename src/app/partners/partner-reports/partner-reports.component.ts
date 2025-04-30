@@ -19,6 +19,7 @@ import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { Properties } from 'app/common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { error } from 'console';
 declare var $, swal, Highcharts, CKEDITOR: any;
 
 @Component({
@@ -83,6 +84,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     showDetailedAnalytics = false;
     detailedAnalyticsPartnerCompany: any;
     selectedTrackType: any = "";
+    selectedRegionName : any ="";
     selectedCampaignType: any = "";
     selectedAssetType: any = "";
     //XBI-1975
@@ -112,6 +114,11 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     selectedPartnerIds: number[] = [];
     allItems: any[] = []; 
     selectedPartners : any;
+    isTotalPartnerDiv = false;
+    totalPartnersDiv: boolean = false;
+    isPendingStatus = false;
+    isDormantStatus = false;
+    isIncompleteCompanyProfile = false;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -306,7 +313,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
-
+        this.totalPartnersDiv = false;
 
         this.getActivePartnerReports();
         this.loadCountryData();
@@ -315,10 +322,24 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
              this.reloadWithFilter = true;
              this.loadAllCharts = false;
         }, 500);
-        
+        this.totalPartnersDiv = false;
+        this.allPartnersStatusForMail();
 
     }
-
+    goToAllPartnersDiv(){
+        this.totalPartnersDiv = true;
+         this.loadAllCharts = false;
+        this.selectedTabIndex = 8;
+         this.isThroughPartnerDiv = false;
+         this.isInactivePartnersDiv = false;
+         this.isActivePartnerDiv = false;
+         this.isRedistributePartnersDiv = false;
+         this.isApprovePartnersDiv = false;
+         this.isIncompleteCompanyProfileDiv = false;
+         this.isSingUpPendingDiv = false;
+         this.allPartnersStatusForMail();
+    }
+    
     /****************************Through Partner Analytics**************************/
     goToThroughPartnersDiv() {
         this.throughPartnerCampaignPagination = new Pagination();
@@ -333,10 +354,11 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
-
+        this.totalPartnersDiv = false;
         
         this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+        this.allPartnersStatusForMail();
     }
 
     /***************************Re Distributed**************************/
@@ -352,7 +374,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
-
+        this.totalPartnersDiv = false;
+        this.allPartnersStatusForMail();
     }
 
 
@@ -476,6 +499,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
+        this.totalPartnersDiv = false;
         this.inActivePartnersSearchKey = "";
 
         this.inActivePartnersPagination.pageIndex = 1;
@@ -484,6 +508,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.inActivePartnersPagination.searchKey = "";
         this.getInActivePartnerReports(this.inActivePartnersPagination);
         this.selectedPartnerIds = [];
+        this.allPartnersStatusForMail();
     }
 
     goToApprovePartnersDiv() {
@@ -498,9 +523,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = true;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = false;
-
+        this.totalPartnersDiv = false;
         this.approvePartnersPagination.maxResults = 12;
         this.getApprovePartnerReports(this.approvePartnersPagination);
+        this.allPartnersStatusForMail();
     }
 
     getApprovePartnerReports(pagination: Pagination) {
@@ -819,6 +845,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         if (filterPartner!=null && filterPartner != undefined &&  (!filterPartner || filterPartner === 'false')) {
             this.applyFilter = false;
         }
+        this.allPartnersStatusForMail();
         this.getCountOfTiles();
 
     }
@@ -1104,7 +1131,17 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           this.selectedAssetType = "";
         } 
       }
-
+    
+      interactionRegionDonutSliceSelected(type: any) {
+          this.selectedRegionName = type;
+        }
+      
+        interactionRegionDonutSliceUnSelected(type: any) {
+          if (this.selectedRegionName == type) {
+            this.selectedRegionName = "";
+          } 
+        }
+      
       getSelectedPartnerCompanyIds(partnerCompanyIds: any){
         this.selectedPartnerCompanyIds = partnerCompanyIds;
         this.getPartnersRedistributedCampaignsData();
@@ -1130,6 +1167,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = true;
         this.isSingUpPendingDiv = false;
+        this.totalPartnersDiv = false;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
 
@@ -1156,6 +1194,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.isApprovePartnersDiv = false;
         this.isIncompleteCompanyProfileDiv = false;
         this.isSingUpPendingDiv = true;
+        this.totalPartnersDiv = false;
         this.inActivePartnersSearchKey = "";
         this.incompleteCompanyProfileAndPendingSingupPagination.pagedItems = [];
         this.incompleteCompanyProfileAndPendingSingupPagination.pageIndex = 1;
@@ -1282,11 +1321,30 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     } catch(error) {
         this.xtremandLogger.error(error, "Partner-reports", "resending Partner email");
     }
+    checkAllPartnersStatus(item:any){
+        if(this.totalPartnersDiv){
+            this.allPartnersStatusForMail();
+            let status = item.status;
+            if(status == "Pending Signup"){
+                this.isPendingStatus = true;
+            }else if(status == "Dormant"){
+                this.isDormantStatus = true;
+            }else if(status == "IncompleteCompanyProfile"){
+                this.isIncompleteCompanyProfile = true;
+            }
+        }
+    }
+    private allPartnersStatusForMail() {
+        this.isPendingStatus = false;
+        this.isDormantStatus = false;
+        this.isIncompleteCompanyProfile = false;
+    }
 
     openSendTestEmailModalPopup(item: any) {
+        this.checkAllPartnersStatus(item);
         this.selectedItem = item;
         this.selectedEmailId = item.emailId;
-        if (this.isInactivePartnersDiv) {
+        if (this.isInactivePartnersDiv || this.isDormantStatus) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isInactivePartnersDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1305,7 +1363,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             );
         }
 
-        else if (this.isIncompleteCompanyProfileDiv) {
+        else if (this.isIncompleteCompanyProfileDiv || this.isIncompleteCompanyProfile) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isIncompleteCompanyProfileDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1323,7 +1381,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             );
         }
-        else if (this.isSingUpPendingDiv) {
+        else if (this.isSingUpPendingDiv || this.isPendingStatus) {
             this.vanityURLService.getTemplateId(this.selectedEmailId, "isSingUpPendingDiv").subscribe(
                 response => {
                     if (response.statusCode === 200) {
@@ -1340,7 +1398,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     console.error("Error fetching template ID:", error);
                 }
             );
-        }
+         }
+        // else if(this.goToAllPartnersDiv){
+            
+        // }
     }
     
          
@@ -1471,7 +1532,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.vanityTemplates = false;
       }
     emittedMethod(event: any) {
-        if (this.isInactivePartnersDiv) {
+        if (this.isInactivePartnersDiv || this.isDormantStatus) {
             if (Array.isArray(event)) {
                 this.sendRemindersForAllSelectedPartners();
             } else {
@@ -1479,7 +1540,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             }
             this.referenseService.showSweetAlertSuccessMessage('Email sent successfully.');
         }
-         else if (this.isIncompleteCompanyProfileDiv  || this.isSingUpPendingDiv) {
+         else if (this.isIncompleteCompanyProfileDiv  || this.isSingUpPendingDiv || this.isIncompleteCompanyProfile || this.isPendingStatus) {
             if (Array.isArray(event)) {
                 this.sendRemindersForAllSelectedPartnersOne();
             } else {

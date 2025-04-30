@@ -1795,14 +1795,16 @@
    <div class="modal-dialog modal-copy" role="document">
       <div class="modal-content">
          <div class="modal-header">
+            <div class="d-flex justify-content-between align-items-center">
             <h4 class="modal-title f-w-600" id="saveAsModalLabel">
                <span
                   *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} Group Name</span>
                <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}} List Name</span>
             </h4>
-            <button type="button" class="close-circle" data-dismiss="modal" style="position: relative; top: -24px;">
-               <i class="fa fa-times" aria-hidden="true"></i>
+            <button type="button" class="close-circle" data-dismiss="modal">
+               <i class="fa fa-times mt0" aria-hidden="true"></i>
             </button>
+         </div>
          </div>
          <div class="modal-body">
             <div class="form-group">

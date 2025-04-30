@@ -35,6 +35,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
   selectedType: boolean = false;
   isZeroDefaultsYourTemplates: boolean = false;
   isZeroDefaultsPartnerNotifications: boolean = false;
+  cacheBuster = '?t=' + new Date().getTime();
   constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties,public utilService: UtilService) { }
 
   ngOnInit() {
@@ -67,6 +68,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
       pagination.isAdmin = this.authenticationService.module.isAdmin;
       pagination.companyId = this.referenceService.companyId;
       this.pagination.selectedType = this.activeTab == 'templates' ? true : false;
+      this.cacheBuster = '?t=' + new Date().getTime();
       this.vanityURLService.getVanityEmailTemplates(pagination).subscribe(result => {
         const data = result.data;
         if (result.statusCode === 200) {
@@ -124,7 +126,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
     this.pagination.pageIndex = 1;
 		this.pagination.searchKey = this.vanityEmailSortOption.searchKey;
     this.getVanityEmailTemplates(this.pagination);  
-
+    
   }
 
 

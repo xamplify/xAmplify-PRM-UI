@@ -31,6 +31,7 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   publishedPartnerIds:Array<Number> = new Array<Number>();
   @Input() vendorJourney:boolean = false;
   @Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
+  @Input() isButtonDisabled:boolean;//XBI-4309
   showTickMark = false;
   isAssetsModule = false;
   isLmsModule = false;

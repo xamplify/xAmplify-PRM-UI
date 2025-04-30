@@ -70,6 +70,8 @@
 									'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}"	translate>
 									{{getApprovalStatusText(asset.approvalStatus)}}
 								</span>
+								<span *ngIf="asset.partnerSignatureRequired || asset.vendorSignatureRequired" class="view-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
 							</div>
 
 							<h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"
@@ -105,7 +107,7 @@
 								(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 								(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
 								(assetGridViewCommentStatusHistoryEmitter)="showCommentsAndHistoryModalPopup($event)"
-								(assetGridViewRefreshListEmitter)="refresh()">
+								(assetGridViewRefreshListEmitter)="refresh()" [isFromTop4Assets]="true">
 							</app-asset-grid-view-actions>
 						</div>
 					</div>

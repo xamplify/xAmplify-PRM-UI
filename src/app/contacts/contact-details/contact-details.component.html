@@ -1,4 +1,4 @@
-<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !showCompanyCampaigns">
+<div class="page-content row mr0" *ngIf="!viewLeads && !showLeadForm && !showDealForm && !viewDeals && !showCompanyCampaigns && !showAskOliverModalPopup">
   <div class="page-bar mb-height_auto" style="height:48px;">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i>
@@ -54,7 +54,7 @@
               <div>
                 <i *ngIf="!isCompanyJourney" class="fas fa-user mr_6 icons_colors" aria-hidden="true"></i>
                 <i *ngIf="isCompanyJourney" class="fas fa-building mr_6 icons_colors" aria-hidden="true"></i>
-                <span *ngIf="contactName != undefined && contactName != ''" data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
+                <span *ngIf="contactName != undefined && contactName != '' && !isLoading" data-toggle="tooltip" data-placement="bottom" title="{{contactName || ''}}">
                   {{referenceService?.isHarizontalNavigationBar ? (contactName | slice:0:15) : (contactName | slice:0:9)}}<span *ngIf="contactName != undefined && (referenceService?.isHarizontalNavigationBar ? contactName?.length>15 : contactName?.length>9)">..</span>
                 </span>
                 <span *ngIf="contactName == undefined || contactName == ''" class="anonymous-text">Anonymous</span>
@@ -84,7 +84,7 @@
                 </p>
               </span> 
               <span *ngIf="selectedContact?.mobileNumber != undefined && selectedContact?.mobileNumber != ''" class="email-id">
-                <p data-toggle="tooltip" data-placement="bottom"
+                <p data-toggle="tooltip" data-placement="bottom" *ngIf="!isLoading"
                   title="{{ validateMobileNumber(selectedContact?.mobileNumber) ? (selectedContact?.mobileNumber + ' - Invalid Mobile Number') : selectedContact?.mobileNumber }}">
                   <i class="fa fa-phone mr_6 icons_colors"></i>
                   <span [ngClass]="{'required': validateMobileNumber(selectedContact?.mobileNumber)}" style="font-size:12px;">{{selectedContact.mobileNumber}}</span>
@@ -328,7 +328,7 @@
                 </div>
                 <div *ngIf="showCallsTab" id="call" class="tab-pane fade pt-top">
                   <app-call-activity [contactId]="contactId" [isReloadTab]="isReloadCallTab" [activeCallDetails]="activeCallDetails"
-                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber"></app-call-activity>
+                    [isCompanyJourney]="isCompanyJourney" [selectedUserListId]="selectedContactListId" [mobileNumber]="mobileNumber" (notifyOliver)="openOliver()"></app-call-activity>
                 </div>
               </div>
               <!-- END -->
@@ -599,3 +599,6 @@
   
 <app-company-campaigns-list *ngIf="showCompanyCampaigns" [selectedCompany]="selectedContact"
   [companyListId]="selectedContact.companyUserListId" (notifyClose)="closeCompanyCampaigns()"></app-company-campaigns-list>
+
+<app-ai-chat-manager *ngIf="showAskOliverModalPopup" [chatGptSettingDTO]="chatGptSettingDTO" [selectedContact]="contact"
+  (notifyParent)="closeAskAI($event)"></app-ai-chat-manager>

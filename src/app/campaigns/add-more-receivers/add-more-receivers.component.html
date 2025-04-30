@@ -56,6 +56,17 @@
                                         </td>
                                      </tr>
                                   </table>
+
+                                 <!-- XNFR-929 -->
+                                 <div *ngIf="maxRecipientCountReached && selectedContactListIds?.length>0" class="alert alert-success text-center mbgrid"
+                                    style="margin-bottom: 10px;">
+                                    <strong>Selected Rows: {{selectedContactListIds.length}}, Existing Recipients Count: {{totalRecipients}}, Recipients
+                                       Count: {{validUsersCount}}</strong>
+                                 </div>
+                                 <div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached && selectedContactListIds?.length>0">
+                                    <strong> Campaign cannot be launched as the recipient count exceeds the {{maxRecipientCount}} limit.</strong>
+                                 </div>
+                                 
                                   <div class="table-responsive text-center">
                                      <table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
                                         <thead>
@@ -155,7 +166,8 @@
              </div>
           </div>
           <div class="modal-footer" *ngIf="!sendingRequest && !contactListLoader.isLoading">
-             <a class="btn btn-primary" (click)="send()" *ngIf="!sendSuccess">Send</a>
+             <a class="btn btn-primary" *ngIf="!sendSuccess" (click)="maxRecipientCountReached ? '' : send()"
+                [ngClass]="maxRecipientCountReached ? 'disabled gray' : ''">Send</a>
              <a (click)="closeMoreInvitesPopup()" class="btn Btn-Gray" style="float: right">Close</a>
           </div>
        </div>

@@ -120,6 +120,9 @@
 
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
+												<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"
+												class="view-banner" style="margin-left: 3px;">Digital Sign Enabled
+											</span>
 												<!---XNFR-255-->
 												<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 													<span class="view-banner-white-labeled mb5 G ListLabelSpacings">White-Labeled</span>
@@ -226,7 +229,7 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon" *ngIf="isPartnerView  && (showOliver || authenticationService.getUserId()=='37596' ||  authenticationService.getUserId()=='39972' || authenticationService.getUserId()=='1275449')" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+															<a class ="oliveIcon" *ngIf="isPartnerView  && authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
@@ -238,7 +241,7 @@
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon mr5" *ngIf="!isPartnerView && (authenticationService.getUserId()=='325063' || authenticationService.getUserId()=='37596'  || showOliver)" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+															<a class ="oliveIcon mr5" *ngIf="!isPartnerView && authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
@@ -357,6 +360,8 @@
 																				'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 																			{{getApprovalStatusText(asset.approvalStatus)}}
 																		</span>
+																		<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"  class="view-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
 																		<ng-container
 																			*ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 																			<span
@@ -563,7 +568,8 @@
 													'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 												{{getApprovalStatusText(asset.approvalStatus)}}
 											</span>
-
+											<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)" class="view-banner digital-sign-banner" style="margin-left: 3px;"
+																			>Digital Sign Enabled</span>
 										</div>
 										<h6 class="xamplify-ellipsis GridViewCotent pt10">
 											<span *ngIf="isPartnerView"> <b>Published On: </b></span>

@@ -203,9 +203,10 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.showAsset = true;
       this.notifyShowAsset.emit(this.showAsset);
       this.referenceService.goToTop();
-      this.setProgressAndUpdate(asset.id, ActivityType.OPENED, false);
+      this.setProgressAndUpdate(asset.damId, ActivityType.OPENED, false);
     } else if (asset.typeQuizId) {
       this.viewQuiz(asset);
+      this.setProgressAndUpdate(asset.quizId, ActivityType.OPENED, true);
     }
     if(this.isVideo){
       this.selectedVideoId = this.assetDetails.videoId;
@@ -263,7 +264,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.previewPath = '';
       if(isBeeTemplate){
         if (isVendorView) {
-          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '') {
             if(assetDetails.assetProxyPath){
               this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
             } else {
@@ -279,7 +280,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
             this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
           }
         } else {
-          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '' && !(this.type == undefined || this.type == 'TRACK')) {
+          if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && assetDetails.assetPath != undefined && assetDetails.assetPath != null && assetDetails.assetPath != '') {
             if(assetDetails.assetProxyPath){
               this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
             } else {
@@ -296,7 +297,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           }
         }
       }else{
-        if ((assetDetails.contentPreviewType || assetDetails.imageFileType) && !(this.type == undefined || this.type == 'TRACK')) {
+        if ((assetDetails.contentPreviewType || assetDetails.imageFileType)) {
           if(assetDetails.assetProxyPath){
             this.assetPreviewProxyPath = assetDetails.assetProxyPath + assetDetails.assetPath;
           } else {
@@ -532,14 +533,18 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
   /** XNFR-745 end **/
   isAccessToView(expireDate:any):boolean{
-    const currentDate = new Date();
-    const givenDate = new Date(expireDate);
-    const diffInMs = givenDate.getTime() - currentDate.getTime();
-    let suffix = diffInMs < 0 ? 'ago' : 'left';
-    if(this.isCreatedUser) {
-     return false;
+    if (expireDate) {
+      const currentDate = new Date();
+      const givenDate = new Date(expireDate);
+      const diffInMs = givenDate.getTime() - currentDate.getTime();
+      let suffix = diffInMs < 0 ? 'ago' : 'left';
+      if (this.isCreatedUser) {
+        return false;
+      } else {
+        return suffix === 'ago' ? true : false;
+      }
     } else {
-    return suffix === 'ago' ? true:false;
+      return false;
     }
   }
 

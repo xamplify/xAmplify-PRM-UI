@@ -1,0 +1,102 @@
+<div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 ml15m">
+  <div class="panel panel-info mh480 panel-bgMain panel-card">
+    <div class="panel-heading panel-heading-custom panel-bg">
+      <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
+      <span class="pull-right mt25m  mobilesearchdisplay">
+        <!-- <button class=" btn btn-primary mr10" [disabled]="!isSendReminderEnabled" (click)="sendReminder()">Send Reminder</button>
+        <div class="float-left">
+          <select class="form-control SeclectBoxPaddingsAbj" class="form-control" [(ngModel)]="sortOption.teamMember"
+            (ngModelChange)="sortPartnerTeamMembers($event)" id="select-dropdown">
+            <option *ngFor="let option of sortOption.teamMemberDropDowns" [ngValue]="option">{{option.name}}</option>
+          </select>
+        </div> -->
+        <button class="pull-right  btn btn-xs l-g-view pos_mar_rgt4 only_custom_mar_rgt4" data-placement="bottom"
+        (click)="downloadAllPartnerDetailsReport()" [disabled]="pagination.totalRecords==0">
+        <i aria-hidden=" true" class="fas fa-file-export p10" data-toggle="tooltip" title=""
+          data-original-title="Export to Excel"></i>
+      </button>
+        <div></div>
+        <div class="input-icon right" style="position: relative;width: 178px;top: -1px;">
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+            (click)="searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()" [disabled]="pagination.totalRecords==0">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </span>
+    </div>
+    <div class="panel-body">
+      <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [rowsCount]="4"></app-list-loader>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+      </div>
+      <div class="scroll table-responsive tableHeightScroll {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading"
+        [ngClass]="isVendorVersion?'scrolladjustment':''">
+        <table *ngIf="pagination.totalRecords!=0" class="table" >
+          <thead>
+            <tr>
+              <th scope="col">Partner Name</th>
+              <th scope="col">Region</th>
+              <th scope="col">Onboarded On</th>
+              <th scope="col">Status</th>
+              <th scope="col">Recent Login</th>
+              <th scope="col">Actions</th> 
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td><app-user-info [isAllPartnersList]="true" [userInfo]="item"></app-user-info></td>
+              <td>{{item.region}}</td>
+              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>
+              <td>{{item?.status}}</td>
+              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp></td>
+            
+                <!-- <div class="alert alert-info NaNAData" *ngIf="item?.primaryAdmin">
+                  <span><strong>N/A</strong></span>
+                </div>
+                <ng-container> -->
+                  <td>
+                  <div class="actions-block float-none">
+                    <a *ngIf="item.status !== 'Active'" (click)="callParentMethod(item)" class="custom-icon" 
+                    data-toggle="tooltip" data-placement="left" title="Send reminder email">
+                      <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                    <a *ngIf="item.status === 'Active'" data-toggle="tooltip" data-placement="bottom"
+                       title="Invitation cannot be sent as the account is created successfully"
+                       class="inactive custom-icon">
+                      <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                  </div>
+                </td> 
+                 <!-- <div class="actions-block override-actions custom-width-icon">
+                     <a data-toggle="tooltip" data-placement="bottom"
+                      title="Resend the invitation email" 
+                      (click)="resendEmailInvitation(item.emailId,item.status)">
+                      <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a> -->
+                    <!-- <a *ngIf="item.status !== 'UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
+                      title="Invitation cannot be sent as the account is created successfully" class="inactive custom-icon">
+                      <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                  </div>-->
+                <!-- </ng-container> -->
+             
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getAllPartnersDetails($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

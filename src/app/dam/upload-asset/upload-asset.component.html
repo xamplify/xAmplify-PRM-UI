@@ -131,7 +131,7 @@
                                                          </button>
                                                          <button [disabled]="processing==true || isDisableForm"
                                                             type="button" class="btn btn-danger btn-sm"
-                                                            (click)="removefileUploadVideo()" translate>
+                                                            (click)="confirmRemoveVideo()" translate>
                                                             <span class="glyphicon glyphicon-trash"></span> Remove
                                                          </button>
                                                       </div>
@@ -249,7 +249,7 @@
                                                 <div class="upload-asset-div">
                                                    <div [ngClass]="uploadedAssetName?.length > 0 ? 'files_asset' : 'files-div'">
                                                       <div class="asset_files" (click)="browse()" (drop)="chooseAsset($event)">
-                                                         <input type="file" (change)="chooseAsset($event)" style="opacity: 0.0; position: absolute;height: 76px;width: 414px;cursor: pointer;" id="uploadedAsset" (click)="$event.stopPropagation()">
+                                                         <input type="file" (change)="chooseAsset($event)" [disabled]="uploadedAssetName?.length > 0" style="opacity: 0.0; position: absolute;height: 76px;width: 414px;cursor: pointer;" id="uploadedAsset" (click)="$event.stopPropagation()">
                                                          <div class="text-center card-template">
                                                             <img class="img-templates" src="../../../assets/images/asset-uploads/file-upload.svg" height="39px" alt="">
                                                             <span [ngClass]="uploadedAssetName?.length > 0 ? 'mb0 drag-text mt10' : 'mb0 drag-text mt10 d_block'">{{ uploadedAssetName?.length > 0 ? 'Click to upload ' : 'Click to upload or Drag and drop files' }}</span>
@@ -678,7 +678,7 @@
                                                          [title]="isAdd ? 'Share As White Labeled Content' : damUploadPostDto?.whiteLabeledToolTipMessage">
                                                       </i>
                                                     </div>
-                                                    <div class="toggle-item" *ngIf="isPdfFileSelected || damUploadPostDto.assetType === 'pdf'">
+                                                    <div class="toggle-item" *ngIf="!authenticationService?.module?.isMarketingCompany && (isPdfFileSelected || damUploadPostDto.assetType === 'pdf')">
                                                       <div class="toggle-label">
                                                         Partner Signature
                                                       </div>
@@ -752,7 +752,9 @@
                                                                   <button
                                                                      *ngIf="(damUploadPostDto.vendorSignatureRequired && isAdd) || (damUploadPostDto.vendorSignatureRequired && !isAdd && !isPartnerCompanyOrGroupSelected && !this.isAssetPublished && !damUploadPostDto?.vendorSignatureCompleted && !damUploadPostDto?.disableVendorSignatuerOption)"
                                                                      (click)="openAddSignatureModalPopUp()" class="signature-btn mt7">
-                                                                     <i class="fa fa-pencil"></i> Signature Settings
+                                                                     <i class="fa fa-pencil"></i> {{ damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature 
+                                                                        ? 'Signature & Settings' 
+                                                                        : 'Signature Settings' }}  
                                                                      <span class="required"
                                                                         *ngIf="damUploadPostDto.vendorSignatureRequired && !damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature">*</span>
                                                                   </button>
@@ -943,8 +945,7 @@
                                           </table>
                                        </div>
                                        <!-- XNFR-885 -->
-                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'
-                                          && damUploadPostDto?.assetType != 'pdf'">
+                                       <div class="alert alert-info" *ngIf="approvalRequired && !isAdd && !isApprover && isAssetReplaced && damUploadPostDto?.approvalStatus == 'APPROVED'">
                                           <p><strong>{{properties.PARTNER_SELCTION_NOT_AVAILABLE_MESSAGE_FOR_RE_APPROVAL}}</strong></p>
                                        </div>
                                     </div>

@@ -455,6 +455,10 @@ getSharedAssetDetailsByIdForVendor(id: number) {
   const url = "getPartnersByDamIdAndCompanyIds";
   return this.utilPostSaveOrUpdateMethod(url, pagination)
 
-}
+  }
+  getPartnerSignatureCountDetails(id:number){
+    return this.utilGetMethod("getPartnerSignatureCountDetails/" + id);
+  }
+
 
 }

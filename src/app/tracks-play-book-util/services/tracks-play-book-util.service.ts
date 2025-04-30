@@ -97,12 +97,12 @@ export class TracksPlayBookUtilService {
 
   getBySlug(companyId: number,slug: string,type:string, isPlaybookPreview:boolean) {
     let url = "";
-    if(type == undefined || type == TracksPlayBookType[TracksPlayBookType.TRACK]){
+    if(type == undefined || type == TracksPlayBookType[TracksPlayBookType.TRACK] && !isPlaybookPreview){
       url = this.trackURL;
     } else if(type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK] && !isPlaybookPreview){
       url = this.playBookURL;
-    } else if (type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK] && isPlaybookPreview) {
-      url = this.playBookURL + "/preview";
+    } else if ((type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK] || type == TracksPlayBookType[TracksPlayBookType.TRACK]) && isPlaybookPreview) {
+      url = this.playBookURL + "/preview/" + type;
     }
     return this.http.get(url + "/" + companyId + "/" + slug + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)

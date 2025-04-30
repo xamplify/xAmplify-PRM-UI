@@ -256,9 +256,9 @@
                      <!-----List View--------->
                      <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt5 mrg_top10'
                         *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                        <div class="table-responsive">
+                        <div class="table-responsive mb10">
                            <table [class.bottomTableCss]="pagination.pagedItems.length<5"
-                              class='table tgrid table-hover table-sm hidden-xs responsive-scrool'
+                              class='table tgrid table-hover table-sm hidden-xs responsive-scrool mb10'
                               aria-describedby="campaignsListTable" *ngIf="modulesDisplayType.isListView"
                               id="manage-campaign-list" style="overflow: inherit;">
                               <thead>
@@ -468,7 +468,7 @@
                                     </ng-container>
                                     <!--Box Analytics-->
                                     <ng-container *ngIf="campaign?.campaignType!='LANDINGPAGE' && campaign?.campaignType!='SOCIAL' && !campaign?.oneClickLaunchCondition">
-                                       <ng-container *ngIf="campaignAnalyticsSettingsOptionEnabled">
+                                       <ng-container *ngIf="!campaignAnalyticsSettingsOptionEnabled && false">
                                           <td *ngIf="campaign?.emailNotification || campaign?.nurtrueCampaign">
                                              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
@@ -528,7 +528,7 @@
                                                    </button>
                                                 </div>
                                              </div>
-                                             <ng-template *ngIf="!pagination?.pagedItems[i]?.isExpand" [ngTemplateOutlet]="viewMoreOrLessButtonIcon" [ngTemplateOutletContext]="{pagination:pagination, i:i}"></ng-template>
+                                             <ng-template *ngIf="!pagination?.pagedItems[i]?.isExpand && false" [ngTemplateOutlet]="viewMoreOrLessButtonIconForTotalAnalytics" [ngTemplateOutletContext]="{pagination:pagination, i:i}"></ng-template>
                                              <div [@fadeInOut] class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 plusicon mt10" *ngIf="showAllAnalytics && selectedIndex==i" >
                                                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                    <button
@@ -691,14 +691,16 @@
                                           </td>
                                        </ng-container>
                                        <!---XNFR-609----->
-                                       <ng-container *ngIf="!campaignAnalyticsSettingsOptionEnabled">
+                                       <!-- *ngIf="!campaignAnalyticsSettingsOptionEnabled" -->
+                                       <ng-container >
                                           <td *ngIf="campaign?.emailNotification || campaign?.nurtrueCampaign">
                                              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 plusicon mt10">
-                                                <ng-template *ngIf="!campaign?.isExpand" [ngTemplateOutlet]="viewMoreOrLessButtonIconForTotalAnalytics" [ngTemplateOutletContext]="{campaign:campaign, i:i}"></ng-template>
-                                                <div [@fadeInOut] *ngIf="campaign?.isExpand">
+                                                <!-- <ng-template *ngIf="!campaign?.isExpand" [ngTemplateOutlet]="viewMoreOrLessButtonIconForTotalAnalytics" [ngTemplateOutletContext]="{campaign:campaign, i:i}"></ng-template> -->
+                                                <div [@fadeInOut] *ngIf="campaign?.isExpand || (campaignAnalyticsSettingsOptionEnabled && campaign.campaignType.indexOf('EVENT') < 0) ">
                                                    <app-modal-popup-loader *ngIf="campaign?.boxLoader" [height]="200"></app-modal-popup-loader>
                                                    <ng-container *ngIf="!campaign?.boxLoader">
                                                    <!--Total Recipients-->
+                                                <ng-container>
                                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                       <button class="btn btn-default btn-xs re-distributed-high-level lt-blue-c TableDataBtn">
                                                          <div class="portlet-body text-center">
@@ -726,18 +728,18 @@
                                                          </div>
                                                       </button>
                                                    </div>
-                                                   <!--Active Recipients-->
+                                                   <!--Soft Bounce-->
                                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                                                      <button
-                                                         class="btn btn-default btn-xs re-distributed-high-level vlt-blue-c TableDataBtn">
+                                                      <button class="btn btn-default btn-xs re-distributed-high-level h-r-c TableDataBtn">
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
-                                                               <img class="h-13" *ngIf="campaign?.activeRecipientsLoader" src="../../../assets/images/loader.gif">
-                                                               <img class="h-13" *ngIf="!campaign?.activeRecipientsLoader && campaign?.activeRecipientsError" src="../../../assets/images/error-icon.png">
-                                                               <strong *ngIf="!campaign?.activeRecipientsLoader && !campaign?.activeRecipientsError" class="custom-font-weight">{{campaign?.activeRecipients}}</strong>
+                                                               <img class="h-13" *ngIf="campaign?.softBounceLoader" src="../../../assets/images/loader.gif">
+                                                               <img class="h-13" *ngIf="!campaign?.softBounceLoader && campaign?.softBounceError"
+                                                                  src="../../../assets/images/error-icon.png">
+                                                               <strong *ngIf="!campaign?.softBounceLoader && !campaign?.softBounceError"
+                                                                  class="custom-font-weight">{{campaign?.softBounce}}</strong>
                                                             </h6>
-                                                            <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Opened</span>
-                                                            <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Active Recipients</span>
+                                                            <span class="custom-font-weight">Soft Bounce</span>
                                                          </div>
                                                       </button>
                                                    </div>
@@ -755,7 +757,27 @@
                                                          </div>
                                                       </button>
                                                    </div>
-                                                   <!--Deliverability-->
+                                                   </ng-container>
+                                                   <div [@fadeInOut] *ngIf="campaign?.isExpand ">
+                                                      <app-modal-popup-loader *ngIf="campaign?.boxLoader" [height]="200"></app-modal-popup-loader>
+                                                      <ng-container *ngIf="!campaign?.boxLoader">
+                                                      <!--Active Recipients-->
+                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
+                                                      <button
+                                                         class="btn btn-default btn-xs re-distributed-high-level vlt-blue-c TableDataBtn">
+                                                         <div class="portlet-body text-center">
+                                                            <h6 class="custom-font-size">
+                                                               <img class="h-13" *ngIf="campaign?.activeRecipientsLoader" src="../../../assets/images/loader.gif">
+                                                               <img class="h-13" *ngIf="!campaign?.activeRecipientsLoader && campaign?.activeRecipientsError" src="../../../assets/images/error-icon.png">
+                                                               <strong *ngIf="!campaign?.activeRecipientsLoader && !campaign?.activeRecipientsError" class="custom-font-weight">{{campaign?.activeRecipients}}</strong>
+                                                            </h6>
+                                                            <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Opened</span>
+                                                            <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Active Recipients</span>
+                                                         </div>
+                                                      </button>
+                                                   </div>
+
+                                                   <!--Deliverability-->   
                                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                       <button
                                                          class="btn btn-default btn-xs re-distributed-high-level tk-blue-c TableDataBtn">
@@ -865,21 +887,8 @@
                                                          </div>
                                                       </button>
                                                    </div>
-                                                   <!--Soft Bounce-->
-                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                                                      <button  class="btn btn-default btn-xs re-distributed-high-level h-r-c TableDataBtn">
-                                                         <div class="portlet-body text-center">
-                                                            <h6 class="custom-font-size">
-                                                               <img class="h-13" *ngIf="campaign?.softBounceLoader" src="../../../assets/images/loader.gif">
-                                                               <img class="h-13" *ngIf="!campaign?.softBounceLoader && campaign?.softBounceError" src="../../../assets/images/error-icon.png">
-                                                               <strong *ngIf="!campaign?.softBounceLoader && !campaign?.softBounceError" class="custom-font-weight">{{campaign?.softBounce}}</strong>
-                                                            </h6>
-                                                            <span class="custom-font-weight">Soft Bounce</span>
-                                                         </div>
-                                                      </button>
-                                                   </div>
                                                    <!--Leads -->
-                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.showLeadAndDealCounts">
+                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                                                       <button class="btn btn-default btn-xs re-distributed-high-level vlt-b-c TableDataBtn">
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
@@ -892,7 +901,7 @@
                                                       </button>
                                                    </div>
                                                    <!--Deals-->
-                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.showLeadAndDealCounts">
+                                                   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.showLeadAndDealCounts && (authenticationService?.enableLeads || authenticationService?.module?.opportunitiesAccessAsPartner)">
                                                       <button class="btn btn-default btn-xs re-distributed-high-level lt-g-b-c TableDataBtn">
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
@@ -907,8 +916,11 @@
                                                       </button>
                                                    </div>
                                                 </ng-container>
+                                                   </div>
+                                                </ng-container>
                                                 </div>
-                                                <ng-template *ngIf="campaign?.isExpand && !campaign?.boxLoader" [ngTemplateOutlet]="viewMoreOrLessButtonIconForTotalAnalytics" [ngTemplateOutletContext]="{campaign:campaign, i:i}"></ng-template>
+                                                <!-- *ngIf="campaign?.isExpand && !campaign?.boxLoader" -->
+                                                <ng-template  [ngTemplateOutlet]="viewMoreOrLessButtonIconForTotalAnalytics" [ngTemplateOutletContext]="{campaign:campaign, i:i}"></ng-template>
                                              </div>
                                           </td>
                                           <td *ngIf="!campaign?.emailNotification && !campaign?.nurtureCampaign">
@@ -930,7 +942,7 @@
                                              <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
                                                 <a class="custom-icon"
                                                    *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-                                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0"
+                                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0 && campaign.displayRedistributionCount"
                                                    (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip"
                                                    data-placement="top" title="Show Redistributed Campaigns">
                                                    <i [class.disablednew]="!campaign.hasAccess"
@@ -939,7 +951,7 @@
                                                 </a>
                                                 <a class="custom-icon"
                                                    *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-                                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0"
+                                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0 && campaign.displayRedistributionCount"
                                                    data-toggle="tooltip" data-placement="top"
                                                    title="No Redistributed Campaigns">
                                                    <i
@@ -1362,7 +1374,7 @@
                                  *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                  <div *ngFor="let campaign of pagination.pagedItems; let i= index"
                                     class="col-xs-12 col-sm-4 col-lg-3 tab_grid GridviewSidePaddings">
-                                    <div class="grid-box" style="height:312px">
+                                    <div class="grid-box" style="height:353px">
                                        <div class="gridViewImgBg">
                                           <img *ngIf="!campaign?.campaignProcessing"
                                              src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"
@@ -2088,7 +2100,8 @@
    <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
          <button class="btn btn view-more-css full-width-modal-popup">
-            <strong class="fs-13">{{campaign?.isExpand ? 'Hide Analytics' : 'View Analytics'}}</strong>
+            <strong  *ngIf = "!campaignAnalyticsSettingsOptionEnabled || campaign.campaignType.indexOf('EVENT') > -1" class="fs-13">{{campaign?.isExpand ? 'Hide Analytics' : 'View Analytics'}}</strong>
+            <strong *ngIf = "campaignAnalyticsSettingsOptionEnabled && campaign.campaignType.indexOf('EVENT') < 0" class="fs-13">{{campaign?.isExpand ? 'View Less' : 'View More'}}</strong>
             <span data-toggle="tooltip"   class="actions-block float-none">
                <a (click)="findDetailedAnalytics(campaign,i)">
                   <i class="down-arrow fa" [ngClass]="{'fa-angle-down': !campaign.isExpand,'fa-angle-up': campaign.isExpand}"></i>

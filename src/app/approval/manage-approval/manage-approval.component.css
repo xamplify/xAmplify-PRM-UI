@@ -73,7 +73,7 @@ p.warning-red-textcolor {
 }
 
 .filterActiveBg {
-  background-color: #10ad39;
+  background-color: #10ad39!important;
 }
 .filterActiveBg i {
   color: #fff;

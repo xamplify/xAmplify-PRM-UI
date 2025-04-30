@@ -90,7 +90,7 @@ import { CampaignMdfSearchComponent } from './util/campaign-mdf-search/campaign-
         , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
         VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent,
-        CampaignMdfAnalyticsComponent,CampaignMdfTemplatePreviewComponent, PublicTopNavigationBarComponent, CampaignMdfSearchComponent
+        CampaignMdfAnalyticsComponent,CampaignMdfTemplatePreviewComponent, PublicTopNavigationBarComponent, CampaignMdfSearchComponent,
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,

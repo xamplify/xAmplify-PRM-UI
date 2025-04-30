@@ -735,6 +735,9 @@ openAddSignatureModalPopUp() {
 }
 setPartnerSignatureRequired(event){
   this.damUploadPostDto.partnerSignatureRequired = event;
+  if(!event){
+    this.setPartnerSignatureRequiredAfterPartnerSignatureCompleted(event);
+}
 }
 
 setVendorSignatureRequired(event){
@@ -840,7 +843,7 @@ setVendorSignatureRequired(event){
             let self = this;
               swal({
                 title: 'Are you sure?',
-                text: 'The added signatures will be removed form the Pdf',
+                text: 'The added signatures will be removed from the Pdf',
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -866,7 +869,7 @@ setVendorSignatureRequired(event){
           let self = this;
             swal({
               title: 'Are you sure?',
-              text: 'The Signatures will be removed form the Pdf',
+              text: 'The Signatures will be removed from the Pdf',
               type: 'warning',
               showCancelButton: true,
               swalConfirmButtonColor: '#54a7e9',

@@ -17,6 +17,7 @@ export class PreviewContentComponent implements OnInit {
   @Input() fileType: any;
   @Input() isImageFormat: boolean = false;
   @Input() isTextFormat: boolean = false;
+  @Input() isPreviewPopup: boolean = false;
   
 
   @Output() notifyClose = new EventEmitter();
@@ -33,6 +34,9 @@ export class PreviewContentComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer, private authenticationService: AuthenticationService, private http: HttpClient) { }
 
   ngOnInit() {
+    if (this.isPreviewPopup) {
+      $('#preview_content_modal_popup').modal('show');
+    }
     if (this.documentFileTypes.includes(this.fileType)) {
       this.isPdf = false;
       this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -50,7 +54,12 @@ export class PreviewContentComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){
+    $('#preview_content_modal_popup').modal('hide');
+  }
+  
   closePreview() {
+    $('#preview_content_modal_popup').modal('hide');
     this.notifyClose.emit();
   }
 

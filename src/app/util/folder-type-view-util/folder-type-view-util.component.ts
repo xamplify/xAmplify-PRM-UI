@@ -274,4 +274,15 @@ getUpdatedItemsCount(event:any){
 onSelect(option: string) {
   this.selectedOption = option;
 }
+
+  AskOliver(categoryId: any) {
+    let url = "";
+    if (this.isPartnerView) {
+      url = "/home/dam/askAi/shared/view/fg/" + categoryId;
+    } else {
+      url = "/home/dam/askAi/view/fg/" + categoryId;
+    }
+    this.referenceService.goToRouter(url)
+  }
+
 }

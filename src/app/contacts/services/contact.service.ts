@@ -34,6 +34,7 @@ export class ContactService {
     salesforceContact: SalesforceContact;
     salesforceListViewContact: SalesforceListViewContact;
     isContactModalPopup = false;
+    isEditMode  = false;
     socialProviderName = "";
     vanitySocialProviderName: string;
     pagination: Pagination;

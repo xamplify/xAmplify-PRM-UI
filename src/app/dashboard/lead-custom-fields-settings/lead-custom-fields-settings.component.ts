@@ -560,6 +560,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 		selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
 		selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
 		selectedFieldsResponseDto['integation'] = false;
+		selectedFieldsResponseDto['opportunityType'] = this.opportunityType;
 		this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
 			.subscribe(
 				data => {

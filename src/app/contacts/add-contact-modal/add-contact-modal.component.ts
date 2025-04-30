@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { User } from '../../core/models/user';
 import { Router } from '@angular/router';
 import { CountryNames } from '../../common/models/country-names';
@@ -14,8 +14,7 @@ import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Properties } from 'app/common/models/properties';
-
-
+import { trigger, transition, style, animate } from '@angular/animations';
 declare var $: any, swal: any;
 
 @Component( {
@@ -23,10 +22,8 @@ declare var $: any, swal: any;
     templateUrl: './add-contact-modal.component.html',
     styleUrls: ['./add-contact-modal.component.css', '../../../assets/css/phone-number-plugin.css'],
     providers: [CountryNames, RegularExpressions,Properties]
-})
+  })
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
-    @Input() contactDetails: any;
-    @Input() isContactTypeEdit: boolean;
     @Input() mdfAccess: boolean;
     isPartner: boolean;
     isAssignLeads = false;
@@ -78,10 +75,21 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     isValidEmail : boolean = false;
     @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
     isValidMobileNumber: boolean = true;
+    @Input() isEditMode: boolean = false;
     
+    // XNFR-945
+    @Input() contactDetails: any;
+    @Input() isContactTypeEdit: boolean; 
+    @Input() public actionType: any;
+    @Input() public contactId: number = 0;
+    @Output() emitCompanyId = new EventEmitter<any>(); 
+    shouldAnimatePopup: boolean = false;
+    companyPop: boolean = false;
+    showAddButton: boolean = true; 
+
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
-                 public logger: XtremandLogger,public authenticationService: AuthenticationService,public properties:Properties) {
+                 public logger: XtremandLogger,private cdRef: ChangeDetectorRef,public authenticationService: AuthenticationService,public properties:Properties) {
         this.notifyParent = new EventEmitter();
 
 
@@ -304,8 +312,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.validLimit = contactsLimit>0;
     }
 
-    
-
+    ngOnChanges(changes: SimpleChanges){       
+        if (changes['isEditMode']) {
+            console.log('isEditMode changed:', this.isEditMode);
+            this.showAddButton = !this.isEditMode;
+            this.addContactuser.contactCompanyId = this.selectedCompanyId;
+          } 
+    }
     ngOnInit() {
         try {
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -381,6 +394,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 this.isTeamMemberPartnerList = false;
             }
             $('#addContactModal').modal('show');
+            if (this.contactService.isEditMode !== undefined) {
+                this.isEditMode = this.contactService.isEditMode;
+              }
+              
             //XNFR-697
             this.isSalesforceAsActiveCRM = this.isPartner && (this.activeCrmType == "salesforce");
             if (!(this.addContactuser.emailId !== undefined)) {
@@ -501,6 +518,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.loading= true;
         this.contactService.getCompaniesForDropdown().subscribe(result => {
             this.searchableDropDownDto.data = result.data;
+            this.addContactuser.contactCompanyId = this.selectedCompanyId;
             this.searchableDropDownDto.placeHolder = "Please Select Company";
             this.loading = false;
           }
@@ -595,7 +613,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.addContactuser.state = "";
         this.addContactuser.zipCode = "";
         this.addContactuser.country = this.countryNames.countries[0];
-        this.addContactuser.mobileNumber = "";
+        this.addContactuser.mobileNumber = "+1 ";
         this.addContactuser.legalBasis = [];
         this.addContactuser.accountName = "";
         this.addContactuser.accountSubType = "";
@@ -613,4 +631,27 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
     }
 
+    openPopup(addContactuser: any){
+        this.companyPop = true;
+        this.actionType = "add";
+        this.contactId = addContactuser.contactCompanyId;   
+        this.shouldAnimatePopup = true;   
+    }
+    closeCompanyPopup(event:any) {
+        if(event == 0){
+            this.companyPop = false; 
+            this.shouldAnimatePopup = true;
+        }
+            
+      }
+
+    onCompanyAdded(company: any) {       
+        this.getActiveCompanies();     
+        this.addContactuser.contactCompany = company;             
+    }
+
+    onCompanyIdEmitted(company) {       
+        this.selectedCompanyId = company;        
+        this.getActiveCompanies(); 
+    }
 }

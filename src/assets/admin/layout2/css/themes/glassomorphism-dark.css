@@ -4377,10 +4377,6 @@ color: #fff !important;
 .dropdown-options li:hover,.dropdown-options li.selected {
   background-color: #2c2f33 !important;
 }
-/* .form_controls{
-  color: #000!important;
-} */
-
 /* vendor signature asset */
 .toggle-item,.toggle-items,.signature-btn,.pill-toggle{
   background: rgb(0 0 0 / 18%) !important;
@@ -4395,4 +4391,58 @@ input:checked + .toggle-slider {
 .toggle-slider{
   background-color: #d1d1d170!important;
 }
-
+/* oliver AI css*/
+.pdf_body,.summarize-pdf-card,.pdf_child,.summarize-pdf-cards{
+  background: rgb(0 0 0 / 45%) !important;
+  border: 1px solid #ffffff33 !important;
+}
+.pdf_card,.content-card,.fixed-card{
+  background: rgb(0 0 0 / 18%) !important;
+  border: 1px solid #ffffff33;
+}
+.input-section{
+  border-top:none!important;
+}
+.btn-group button.btn-pdf,.share-btn,.action-btn{
+  background-color: hsla(0, 0%, 100%, .15) !important;
+  border: 1px solid #ffffff33!important;
+  color:#fff!important;
+}
+markdown,markdown h1,
+markdown h2,
+markdown h3,
+markdown h4,markdown strong,markdown em ,
+markdown pre,.aligin-para{
+  color: #fff!important;
+}
+.btn-group button.btn-pdf:hover,
+.share-btn:hover,
+.action-btn:hover{
+  backdrop-filter: blur(5px);
+  background-color: rgba(16 18 27 / 40%) !important;}
+.panel-default.accordion_card,.panel-default.accordion_card >.panel-heading.accordion_card,.accordion_card .panel-body{
+  background: rgb(0 0 0 / 18%) !important;
+}
+.modal-body.oliver-header{
+  border: 1px solid hsla(0, 0%, 100%, .1) !important;
+  background: #8d8a8a00 !important;
+}
+.side_bar,.writing-card,.phara-card,
+.oliver_input,.textarea-card{
+  background: rgba(16 18 27 / 40%) !important;
+  border: 1px solid #ffffff33 !important;
+  backdrop-filter: blur(5px);
+}
+.nav-pills.nav-stacked.oliver_tab>li.active>a,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+  background: rgb(146 151 179 / 39%) !important;
+  color: #fcfeff!important;
+  border-radius: 8px!important;
+}
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color{
+  color: #fff!important;
+}
+  textarea.textarea.h-350 {
+    box-shadow: unset !important;
+}

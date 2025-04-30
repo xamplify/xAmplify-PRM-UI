@@ -43,7 +43,7 @@ export class DonutPieChartComponent implements OnInit {
   @Input() vendorCompanyProfileName: string = '';
   @Input() fromDateFilter: string = '';
   @Input() toDateFilter: string = '';
-
+@Input() fromAllPartners : boolean =false;
  isOrgadminPartner : boolean = true; 
   headerText: string;
   chartColors: string[];
@@ -99,7 +99,15 @@ export class DonutPieChartComponent implements OnInit {
       } else {
         this.loadDonutChartForTypewiseTrackContentsForTeamMember();
       }
-    } else {
+     } 
+    else if (this.chartId == "regionAndNonRegionDonut") {
+      this.headerText = 'REGION WISE PARTNERS';
+      this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a', '#8a8282c4','#5C9BD1', '#2bc2b5', '#90ed7d'];
+     this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-4 pl0";
+     this.portletLightClass = "portlet light active-donut-pie-chart";
+      this.findAllPartnerRegionDetaiils();
+     }
+    else {
       this.headerText = "";
       this.chartId = 'activeInActivePartnersDonut';
       this.chartColors = ['#e87e04', '#8a8282c4'];
@@ -108,7 +116,16 @@ export class DonutPieChartComponent implements OnInit {
       this.loadDonutChartForActiveAndInActivePartners();
     }
   }
-
+findAllPartnerRegionDetaiils() {
+        let partnerJourneyRequest = new PartnerJourneyRequest();
+        partnerJourneyRequest.loggedInUserId = this.loggedInUserId;
+        this.partnerService.findAllPartnerRegionDetaiils(partnerJourneyRequest).subscribe(
+            response => {
+                this.processResponse(response);
+                } , error => {
+                this.setErrorResponse(error);
+            });
+    }
   loadDonutChartForTypewiseTrackContents() {
     let partnerJourneyRequest = new PartnerJourneyRequest();
     partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();

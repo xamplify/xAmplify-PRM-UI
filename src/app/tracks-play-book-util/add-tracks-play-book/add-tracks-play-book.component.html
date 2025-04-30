@@ -191,9 +191,9 @@
                   <div class="control-label col-sm-5 mt--10px">
                     <div class="flex">
                     <!-- <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="tracksPlayBook.expireDate" [ngModelOptions]="{standalone: true}" name="campaignEndDatePicker" [value]="tracksPlayBook.expireDate" /> -->
-                    <app-flatpickr [type]="'dateTime'" [time_24hr]="false" [dateFormat]="'m/d/Y h:i K'" [enableTime]="true" [(dataField)]="tracksPlayBook.expireDate" (input)="expireDescription(tracksPlayBook.expireDate,null)">
+                    <app-flatpickr #endDatePickr [type]="'dateTime'" [time_24hr]="false" [dateFormat]="'m/d/Y h:i K'" [enableTime]="true" [(dataField)]="tracksPlayBook.expireDate" (input)="expireDescription(tracksPlayBook.expireDate,null)">
                   </app-flatpickr>
-                      <button class="btn btn-default" type="button"  (click)="clearEndDate()">
+                      <button class="btn btn-default" type="button"  (click)="clearEndDate();endDatePickr.clearEndDate()">
                         <span class="input-group-btn flex" data-toggle="tooltip" data-placement="top" title="Clear">
                           <i class="fa fa-refresh npcfs" aria-hidden="true"></i>
                         </span>
@@ -262,7 +262,6 @@
 
     <!-- step 2 -->
     <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo">
-      <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet bg-card-header" style="padding-bottom: 25px;border-radius: 5px;background-color:#fff;">
         <div class="portlet-title" style="padding-bottom: 5px;
         margin-right: 12px;
@@ -295,7 +294,7 @@
         padding-right: 12px;">
           <div *ngIf="isAdd || tracksPlayBook.description != undefined">
             <ckeditor [(ngModel)]="tracksPlayBook.description" #ckeditor [ngModelOptions]="{standalone: true}"
-              [config]="ckeConfig" (ready)="onReady($event)" debounce="500" 
+              [config]="ckeConfig" debounce="500" 
               (change)="validateDescription();validateAllSteps()"
               (input)="setDescription();validateDescription();validateAllSteps()">
             </ckeditor>
@@ -428,8 +427,8 @@
                         </div>
                         <div class="item__actions moveLinkIcon">
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="Preview"
-                              (click)="$event.stopPropagation();assetPreview(file, false)" style="left: 10px;">
-                              <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
+                              (click)="(file.contentPreviewType || file.imageFileType)? assetPreview(file, false) : '' ; $event.stopPropagation()" style="left: 10px;">
+                              <i class="fa fa-external-link preview-edit-color" [ngClass]="file.contentPreviewType || file.imageFileType ? '' : 'disabled gray'" aria-hidden="true"
                                 style="font-size: 18px;"></i>
                             </a>
                           </span>
@@ -485,14 +484,15 @@
         [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId" [moduleName]="'lms'"
         [selectedPartnerGroupIds]="tracksPlayBook.groupIds" [selectedTeamMemberIds]="tracksPlayBook.userIds"
         [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
-        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification"
+        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification" 
+        [isButtonDisabled]="isButtonDisabled"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
         <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid || (SubmitButtonValue==='Save'? false: !tracksPlayBook.published ? false: isButtonDisabled)"
-          (click)="save()"><span class="btn btn-primary transition txt_pd-top3">{{SubmitButtonValue}}</span></button>
+          (click)="save()"  data-placement="top" data-toggle="tooltip" [title]="tooltipMessage(tracksPlayBook)"><span class="btn btn-primary transition txt_pd-top3">{{SubmitButtonValue}}</span></button>
         <button class="button_blue bgcolor-unset txt_pd-top3" type="submit"
           [disabled]="checkIfPublishingIsDisabled(tracksPlayBook)" *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()"
           data-placement="top" data-toggle="tooltip" [title]="getApprovalTooltipMessage(tracksPlayBook)"><span
@@ -815,8 +815,8 @@
                         <div class="actions-block override-actions custom-width-icon action_inline"
                           style="float: none;">
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
-                            (click)="assetPreview(asset.dam, true)">
-                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                            (click)="(asset.dam.contentPreviewType || asset.dam.imageFileType)? assetPreview(asset.dam, true) : ''">
+                            <i class="fa fa-eye IconCustomization" [ngClass]="asset.dam.contentPreviewType || asset.dam.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Remove"
@@ -1126,8 +1126,8 @@
                         <div class="actions-block override-actions custom-width-icon action_inline"
                           style="float: none;">
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
-                            (click)="$event.stopPropagation();assetPreview(asset, true)">
-                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                            (click)="(asset.contentPreviewType || asset.imageFileType)? assetPreview(asset, true) : '' ; $event.stopPropagation()">
+                            <i class="fa fa-eye IconCustomization"  [ngClass]="asset.contentPreviewType || asset.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
                         </div>
@@ -1347,3 +1347,6 @@
     </ng-container>
   </div>
 </ng-template>
+
+<app-preview-content *ngIf="showPreviewContent" [previewPath]="assetPreviewProxyPath" [fileType]="assetType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
+    [isPreviewPopup]="showPreviewContent" (notifyClose)="closePreview()"></app-preview-content>

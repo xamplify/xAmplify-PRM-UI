@@ -118,3 +118,20 @@
     -webkit-appearance: none;
      margin: 0;
 }
+.add-mode-width {
+  width: 53% !important;
+}
+.model-content-scroller{
+  overflow-x: hidden !important;
+}
+.animate-modal {
+  transform: translateX(100%);
+  opacity: 0;
+  animation: slideIn 1s ease-out forwards;
+}
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+} 

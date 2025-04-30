@@ -292,9 +292,9 @@
                   <div class="col-xs-12">
                      <div class="table-responsive">
                         <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-                           <legend  *ngIf="!maxRecipientCountReached" class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
-                              'Lead(s)':'Contact(s)'}} list</legend>
-                           <div *ngIf="!maxRecipientCountReached" class="row m0">
+                           <legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
+                              'Lead(s)':'Contact(s)'}} list</legend> 
+                           <div class="row m0">
                               <div class="col-xs-4 p0">
                                  <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}"
                                     aria-hidden="true"></i>
@@ -313,12 +313,16 @@
                                  </button>
                                  <br>
                               </div>
-                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span success">This email will
-                                 be sent to {{validUsersCount}}({{allUsersCount}}) valid recipients.</span>
+                           </div>
+                           <div class="alert alert-success text-center mbgrid" style="margin-bottom: 10px;" *ngIf="selectedUserlistIds.length>0 && !maxRecipientCountReached">
+                                 <strong> This email will be sent to {{validUsersCount}}({{allUsersCount}}) valid recipients. </strong>
+                           </div>
+                           <div class="alert alert-success text-center mbgrid" style="margin-bottom: 10px;" *ngIf="maxRecipientCountReached && selectedUserlistIds?.length>0">
+                                 <strong>Selected Rows: {{selectedUserlistIds.length}}, Recipients Count: {{validUsersCount}}</strong>
                            </div>
                            <!-- XNFR-929 -->
-                           <div class="alert alert-danger text-center mbgrid" style="margin-top: 20px;" *ngIf="maxRecipientCountReached && selectedUserlistIds?.length>0">
-                              <strong>Selected Rows: {{selectedUserlistIds.length}}, Recipients Count: {{validUsersCount}}, Limit: {{maxRecipientCount}} recipients per campaign.</strong>
+                           <div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached && selectedUserlistIds?.length>0">
+                              <strong> Campaign cannot be launched as the recipient count exceeds the {{maxRecipientCount}} limit.</strong>
                            </div>
                            <div id="campaign-contact-list" style="display: none;">
                               <div>
@@ -400,6 +404,7 @@
                                                       <ng-container *ngIf="!campaign?.oneClickLaunch">
                                                          <th scope="row" class="text-center">Type </th>
                                                          <th scope="row" class="text-center">Uploaded On </th>
+                                                         <th scope="row" class="text-center">Count</th>
                                                       </ng-container>
                                                       <th scope="row" class="text-center">Preview</th>
                                                    </tr>
@@ -457,6 +462,7 @@
                                                                   [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                                             </td>
                                                          </ng-container>
+                                                         <td class="text-center">{{contacts.countOfContactsLists}}</td>
                                                          <td class="text-center">
                                                             <div
                                                                [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">

@@ -44,6 +44,8 @@ export class ChatGptModalComponent implements OnInit {
   speakingIndex: any;
   isEmailCopied: boolean;
   hasAcess: boolean = false;
+  isMinimizeOliver: boolean;
+  preventImmediateExpand: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef) {
   }
@@ -79,6 +81,7 @@ export class ChatGptModalComponent implements OnInit {
     let askOliver = this.activeTab == 'writing'
       ? 'In ' + (this.sortOption.selectWordDropDownForOliver.name || '') + ' ' + this.inputText
       : this.inputText;
+    this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
     this.chatGptIntegrationSettingsDto.prompt = askOliver;
     this.showOpenHistory = true;
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
@@ -100,7 +103,7 @@ export class ChatGptModalComponent implements OnInit {
           this.messages.push({ role: 'assistant', content: errorMessage });
         }
         this.isTextLoading = false;
-        this.inputText = this.activeTab =='paraphraser' ? this.inputText : '';
+        this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
 
       }, error => {
         this.isTextLoading = false;
@@ -274,5 +277,35 @@ export class ChatGptModalComponent implements OnInit {
       });
     }
   }
+  
+  onMinimizeClick(event: MouseEvent) {
+    event.stopPropagation(); // prevent modal click
+    this.minimizeOliver();
+  }
+  
+  minimizeOliver() {
+    this.isMinimizeOliver = true;
+    this.preventImmediateExpand = true;
+    setTimeout(() => {
+      this.preventImmediateExpand = false;
+    }, 500);
+    console.log('Minimized');
+  }
+  
+  expandIfMinimized() {
+    if (this.preventImmediateExpand) return;
+
+    if (this.isMinimizeOliver) {
+      this.isMinimizeOliver = false;
+      console.log('Expanded on hover');
+    }
+  }
+
+  searchDataOnKeyPress(keyCode: any) {
+    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
+      this.generateChatGPTText();
+    }
+  }
+  
   
 }

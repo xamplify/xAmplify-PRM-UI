@@ -156,7 +156,15 @@
                 <option [ngValue]="'text'">String</option>
                 <option [ngValue]="'select'">PickList</option>
               </select>
-            </div>       
+            </div>   
+            <div class="col-sm-6 display_ruby pt10" *ngIf="opportunityType === 'LEAD' && !isXamplifyCustomField">
+              <label for="mapAs" style="float: left;">{{leadFieldUpdateLableName}}</label>
+              <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+              title="{{leadFieldUpdateTooltip}}"></i>
+              <app-custom-ui-switch [customSwitch]="customFields?.emailNotificationEnabledOnUpdate"
+                (customUiSwitchEventEmitter)="onChangeLeadFieldEmailNotificationStatus($event)">
+              </app-custom-ui-switch>
+            </div>
           </div>
           <div *ngIf="customFields.originalCRMType === 'select'" class="bg-color-for-card" style="margin-top: 20px;">
             <div class="form-group mb0">
