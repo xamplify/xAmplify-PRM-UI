@@ -73,8 +73,6 @@ export class AllPartnersListComponent implements OnInit {
   }
 
   ngOnInit() {
-   // this.pagination.pageIndex = 1;
-    //this.getAllPartnersDetails(this.pagination);
   }
 
   ngOnChanges() {
@@ -113,6 +111,8 @@ export class AllPartnersListComponent implements OnInit {
     this.pagination.toDateFilterString = '';
      this.pagination.selectedStatusIds = [];
      this.pagination.selectedRegionIds = [];
+     this.regionName =''
+     this.pagination.regionFilter = this.regionName;
     // this.selectedStatusIds = [];
     // this.selectedRegionIds = [];
    // this.regionNameFilters = [];
@@ -184,11 +184,17 @@ applyFilters(pagination: Pagination) {
   pagination.pageIndex = 1;
   pagination.searchKey = this.searchKey;
   pagination = this.utilService.sortOptionValues(this.sortOption.teamMember, pagination); 
+  this.pagination = pagination
   this.pagination.userId = this.loggedInUserId;
   this.pagination.regionFilter = this.regionName;  
+  this.pagination.selectedRegionIds = this.pagination.selectedRegionIds;
+  if (this.pagination.selectedRegionIds && this.pagination.selectedRegionIds.includes(this.regionName)) {
+    this.pagination.regionFilter = '';
+  }
+  this.getAllPartnersDetailsList(this.pagination);
  // this.pagination.selectedRegionIds = this.selectedRegionIds;
  // this.pagination.selectedStatusIds = this.selectedStatusIds;
-  this.parterService.getAllPartners(pagination).subscribe(
+ /* this.parterService.getAllPartners(pagination).subscribe(
     (response: any) => {
       this.referenseService.loading(this.httpRequestLoader, false);
       if (response.statusCode == 200) {
@@ -206,7 +212,7 @@ applyFilters(pagination: Pagination) {
       this.httpRequestLoader.isServerError = true;
       this.xtremandLogger.error(_error);
     }
-  );
+  );*/
 
 }
   
@@ -283,6 +289,17 @@ applyFilters(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.regionFilter = this.regionName;
+    if (this.pagination.regionFilter) {
+      this.pagination.selectedRegionIds = [];
+      this.pagination.selectedRegionIds.push(this.pagination.regionFilter);
+     
+    }else{
+      this.pagination.selectedRegionIds = [];
+    }
+    this.getAllPartnersDetailsList(this.pagination);
+    
+  }
+  getAllPartnersDetailsList(pagination: Pagination){
     this.parterService.getAllPartners(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -313,6 +330,9 @@ applyFilters(pagination: Pagination) {
     let pageableUrl = this.referenseService.getPagebleUrl(this.pagination);
     let sortColumn = this.pagination.sortcolumn;
     let selectedRegionIds = this.pagination.selectedRegionIds.join(',');
+    if (this.pagination.selectedRegionIds && this.pagination.selectedRegionIds.includes(this.regionName)) {
+      regionFilter = '';
+    }
     let selectedStatusIds = this.pagination.selectedStatusIds.join(',');
     this.pagination.maxResults = maxResults
     window.location.href = this.authenticationService.REST_URL + '/partner/allPartners/downloadCsv?userId='
