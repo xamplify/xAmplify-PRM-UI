@@ -153,20 +153,11 @@ validateDateFilter() {
   let isValidToDateFilter = this.pagination.toDateFilterString != undefined && this.pagination.toDateFilterString != "";
   let isEmptyToDateFilter = this.pagination.toDateFilterString == undefined || this.pagination.toDateFilterString == "";
   let isValidRegionAndStatus = this.pagination.selectedRegionIds.length > 0 && this.pagination.selectedStatusIds.length>0;
-  if (
-    this.pagination.selectedRegionIds.length === 0 &&
-    this.pagination.selectedStatusIds.length === 0 &&
-    isEmptyFromDateFilter &&
-    isEmptyToDateFilter
-  ) {
-    this.customResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
-    return;
-  }
   let checkIfToDateIsEmpty = isValidFromDateFilter && isEmptyToDateFilter;
   let checkIfFromDateIsEmpty = isValidToDateFilter && isEmptyFromDateFilter;
   let showToDateError = (isValidRegionAndStatus && checkIfToDateIsEmpty) || (!isValidRegionAndStatus && checkIfToDateIsEmpty)
   let showFromDateError = (isValidRegionAndStatus && checkIfFromDateIsEmpty) || (!isValidRegionAndStatus && checkIfFromDateIsEmpty)
-  if (!(this.pagination.selectedRegionIds.length > 0) && (this.pagination.selectedStatusIds.length>0) && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
+  if (!(this.pagination.selectedRegionIds.length > 0) && !(this.pagination.selectedStatusIds.length>0) && (isEmptyFromDateFilter && isEmptyToDateFilter)) {
     this.customResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
   } else if (showToDateError) {
     this.customResponse = new CustomResponse('ERROR', "Please pick To Date", true);
