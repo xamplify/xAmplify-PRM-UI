@@ -29,6 +29,7 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
 import { CustomUiFilterComponent } from '../../custom-ui-filter/custom-ui-filter.component';
 import { ContentModuleStatusAnalyticsComponent } from 'app/util/content-module-status-analytics/content-module-status-analytics.component';
+import { DamUploadPostDto } from 'app/dam/models/dam-upload-post-dto';
 
 declare var $: any, swal: any, flatpickr;
 @Component({
@@ -144,6 +145,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Input() FromOliverPopUp : boolean = false;
     selectedItems: any[] = []; 
     @Output() notifyasset = new EventEmitter<any>();
+	formData: any = new FormData();
+	dupliateNameErrorMessage: string;
+	damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
@@ -237,6 +241,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.assetResponseMessage = "";
 		this.referenceService.universalModuleType = "";//XNFR-574
 		this.referenceService.isOliverEnabled = false;
+		this.clearPreviousSelectedAsset();
 	}
 
 	/********XNFR-169******/
@@ -1146,4 +1151,103 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         this.notifyasset.emit(this.selectedItems);
         this.selectedItems = [];
     }
+	chooseAsset(event: any) {
+		let files: Array<File>;
+		if (event.target.files != undefined) {
+		  files = event.target.files;
+		} else if (event.dataTransfer.files) {
+		  files = event.dataTransfer.files;
+		}
+		if (files.length > 0) {
+		  let file = files[0];
+		  let sizeInKb = file.size / 1024;
+		  let maxFileSizeInKb = 1024 * 800;
+		  if (sizeInKb == 0) {
+			this.referenceService.showSweetAlertSuccessMessage('Invalid File');
+		  } else if (sizeInKb > maxFileSizeInKb) {
+			this.referenceService.showSweetAlertSuccessMessage('Max file size is 800 MB');
+		  } else if (file['name'].lastIndexOf(".") == -1) {
+			this.referenceService.showSweetAlertSuccessMessage("Selected asset does not have the proper extension. Please upload a valid asset.");
+		  }
+		  else {
+			this.setUploadedFileProperties(file);
+		  }
+		} else {
+		  this.clearPreviousSelectedAsset();
+		}
+	  }
+	clearPreviousSelectedAsset() {
+		this.damUploadPostDto = new DamUploadPostDto();
+		this.fileType = null;
+		this.dupliateNameErrorMessage = "";
+		this.formData.delete("damUploadPostDTO");
+		this.customResponse = new CustomResponse();
+		this.formData.delete("uploadedFile");
+		this.referenceService.assetResponseMessage = "";
+		this.referenceService.isAssetDetailsUpldated = false;
+		this.damService.uploadAssetInProgress = false;
+	}
+	  private setUploadedFileProperties(file: File) {
+		this.clearPreviousSelectedAsset();
+		this.fileType = file['type'];
+		if(this.fileType=="application/pdf"){
+			// this.isPdfFileSelected=true;
+		}
+		this.customResponse = new CustomResponse();
+		this.formData.append("uploadedFile", file, file['name']);
+		this.customResponse = new CustomResponse('SUCCESS', 'We are Uploading the assets', true);
+		this.uploadOrUpdate();
+	  }
+	uploadOrUpdate() {
+		this.damService.uploadAssetInProgress = true;
+		this.customResponse = new CustomResponse();
+		this.setAssetData();
+		this.referenceService.goToTop();
+		this.referenceService.showSweetAlertProcessingLoader('Upload is in progress...');
+		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
+		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto, true).subscribe(
+			(result: any) => {
+				swal.close();
+				this.referenceService.assetResponseMessage = result.message;
+				if (result.statusCode == 200) {
+					if (result.message == undefined) {
+						this.referenceService.assetResponseMessage = "Uploaded Successfully";
+						this.referenceService.isUploaded = true;
+					} else {
+						this.referenceService.isAssetDetailsUpldated = true;
+					}
+					if (this.damService.uploadAssetInProgress) {
+						this.damService.uploadAssetInProgress = false;
+					}
+					this.callInitMethods();
+				} else if (result.statusCode == 400) {
+					this.customResponse = new CustomResponse('ERROR', result.message, true);
+				} else if (result.statusCode == 404) {
+					this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+				} else if (result.statusCode == 401) {
+					this.dupliateNameErrorMessage = "Already exists";
+					this.formData.delete("damUploadPostDTO");
+				}
+			}, error => {
+				swal.close();
+				let statusCode = JSON.parse(error['status']);
+				if (statusCode == 409) {
+					this.dupliateNameErrorMessage = "Already exists";
+				} else if (statusCode == 400) {
+					let message = error['error']['message'];
+					this.customResponse = new CustomResponse('ERROR', message, true);
+				} else {
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				}
+				this.formData.delete("damUploadPostDTO");
+			});
+	}
+	private setAssetData() {
+		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
+		this.damUploadPostDto.assetName = this.formData.get("uploadedFile")['name'];
+		this.damUploadPostDto.assetType = this.fileType;
+		this.damUploadPostDto.description = this.formData.get("uploadedFile")['name'];
+		this.damUploadPostDto.draft = true;
+		this.damUploadPostDto.cloudContent = false;
+	}
 }

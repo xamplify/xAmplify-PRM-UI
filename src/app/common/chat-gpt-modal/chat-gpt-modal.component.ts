@@ -352,7 +352,7 @@ export class ChatGptModalComponent implements OnInit {
         let data = response.data;
         this.threadId = data.threadId;
         this.assetLoader = false;
-        this.inputText = 'summarize in detail';
+        this.inputText = 'Give a overview of the documents';
         this.AskAiTogetData();
       },
       (error: string) => {
@@ -370,10 +370,10 @@ export class ChatGptModalComponent implements OnInit {
       }, 500);
     }
     this.messages.push({ role: 'user', content: this.inputText });
-    this.inputText = '';
     var self = this;
     this.chatGptIntegrationSettingsDto.prompt = this.inputText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
+    self.inputText = '';
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
         self.isTextLoading = false;
@@ -400,5 +400,4 @@ export class ChatGptModalComponent implements OnInit {
       this.AskAiTogetData();
     }
   }
-
 }
