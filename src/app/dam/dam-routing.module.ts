@@ -70,6 +70,8 @@ export const routes: Routes = [
 	{ path: "sharedp/view/:assetId", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType/:categoryId/:folderViewType", component: ViewDamComponent },
+	{ path: "vapv/view/:damCompanyId/:slug", component: ViewDamComponent },
+	
 	/************XNFR-543*********/
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId", component: DamPartnerCompanyAnalyticsComponent },
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },

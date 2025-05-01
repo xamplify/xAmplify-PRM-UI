@@ -17,7 +17,7 @@ export class VideoUtilService {
     publishUtil = [{ id: 1, name: 'PRIVATE'}, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
     formErrors = {
         'title': '', 'viewBy': '', 'categoryId': '', 'tags': '', 'imageFile': '', 'gifImagePath': '',
-        'description': '', 'upperText': '', 'lowerText': '',
+        'description': '', 'upperText': '', 'lowerText': '',slug:'',
     };
     noSpaceMesg = 'No Space Left on the device Please Contact the admin.!!';
     maxSubscriptionMesg = 'Maximum Disk Space Reached for you subscription.!! Please Contact the admin.';
@@ -45,6 +45,12 @@ export class VideoUtilService {
         'title': {
             'required': 'Title is required.',
             'maxlength': 'Title cannot be more than 256 characters long.',
+        },
+
+        'slug': {
+            'required': 'Alias is required.',
+            'minlength': 'Alias must be at least 3 characters long.',
+            'duplicateAlias': 'Alias already exists'
         },
         'viewBy': { 'required': 'Publish is required' },
         'category': { 'required': 'Category is required' },

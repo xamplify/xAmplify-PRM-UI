@@ -48,6 +48,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   partnerCompanyLogoPath = "";
   isValidName = false;
   isValidDescription = true;
+  isValidSlug = false;
   beeContainerInput = {};
   tags: Array<Tag> = new Array<Tag>();
   tagFirstColumnEndIndex: number = 0;
@@ -91,6 +92,15 @@ export class AddDamComponent implements OnInit, OnDestroy {
   showPageSizeAndOrientation: boolean = false;
   isVendorSignatureAdded: boolean = false;
   showClearOption: boolean = false;
+
+  /**XNFR-955**/
+  slugErrorMessage="";
+  linkPrefix: string = "";
+  isEditSlug: boolean = false;
+  completeLink: string = "";
+  existingSlug = "";
+  loggedInUserCompanyId:number;
+  slug=""
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -116,6 +126,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.isFromApprovalModule = this.router.url.indexOf(RouterUrlConstants.approval) > -1;
       this.referenceService.assetResponseMessage = "";
       this.beeContainerInput["module"] = "dam";
+      this.getCompanyId();
       /*******XNFR-255***/
       this.findShareWhiteLabelContentAccess();
       if (this.router.url.indexOf("/edit") > -1) {
@@ -224,6 +235,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.beeContainerInput["jsonBody"] = dam.jsonBody;
       this.damPostDto.name = dam.assetName;
       this.damPostDto.description = dam.description;
+      this.damPostDto.slug = dam.slug
       if (dam.whiteLabeledAssetSharedWithPartners != undefined) {
         this.damPostDto.shareAsWhiteLabeledAsset = dam.whiteLabeledAssetSharedWithPartners;
       }
@@ -232,8 +244,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.validForm = true;
       this.isValidName = true;
       this.isValidDescription = true;
+      this.isValidSlug = true;
       this.nameErrorMessage = "";
       this.description = dam.description;
+      this.slug = dam.slug;
+      this.existingSlug = dam.slug;
       this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
       this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
       this.beeContainerInput["vendorCompanyLogoPath"] =
@@ -258,6 +273,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damPostDto.createdByAnyApprover = dam.createdByAnyApprover;
       this.damPostDto.draft = dam.draft;
       this.damPostDto.id = dam.id;
+      this.completeLink = this.linkPrefix+this.existingSlug;
+
       
     } else {
       this.goToManageSectionWithError();
@@ -291,8 +308,13 @@ export class AddDamComponent implements OnInit, OnDestroy {
       if ($.trim(this.damPostDto.description).length == 0) {
         this.damPostDto.description = this.description;
       }
+      if ($.trim(this.damPostDto.slug).length == 0) {
+        this.damPostDto.slug = this.slug;
+      }
+
       this.validateForm("name");
       this.validateForm("description");
+      this.validateForm("slug");
       this.validateFields();
     }
   }
@@ -304,12 +326,18 @@ export class AddDamComponent implements OnInit, OnDestroy {
         $.trim(this.damPostDto.name).length > 0;
     } else if (columnName == "description") {
       this.isValidDescription = true;
+    }else if(columnName == "slug"){
+      let slug = this.damUploadPostDto.slug;
+      this.isValidSlug = $.trim(slug) != undefined &&  $.trim(slug).length > 0
+  }
+  if (this.isAdd || (!this.isAdd && this.existingSlug !== this.damUploadPostDto.slug)) {
+      this.validateSlugForCompany();
     }
     this.validateFields();
   }
 
   validateFields() {
-    this.validForm = this.isValidName && this.isValidDescription;
+    this.validForm = this.isValidName && this.isValidDescription && this.isValidSlug;
     if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && !this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
       this.validForm = false;
       }
@@ -372,6 +400,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.damUploadPostDto.saveAs = this.damPostDto.saveAs;
     this.damUploadPostDto.assetName = this.damPostDto.name;
     this.damUploadPostDto.description = this.damPostDto.description;
+    this.damUploadPostDto.slug = this.damPostDto.slug;
     this.damUploadPostDto.loggedInUserId = this.loggedInUserId;
     this.damUploadPostDto.categoryId = this.damPostDto.categoryId;
     this.damUploadPostDto.tagIds = this.damPostDto.tagIds;
@@ -885,5 +914,105 @@ setVendorSignatureRequired(event){
         setVendorSignatureRequiredNow(){
           this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature = false;
         }
+
+
+  validateSlug() {
+    let slug = $.trim(this.damPostDto.slug);
+    if (slug == undefined || slug.length < 1) {
+      this.addErrorMessage("slug", "Alias can not be empty");
+    } else if (slug != undefined && slug.length < 3) {
+      this.addErrorMessage("slug", "Slug should have atleast 3 characters");
+    } else {
+      this.removeErrorMessage("slug");
+    }
+    this.validateAllFields();
+  }
+
+  addErrorMessage(type: string, message: string) {
+    if (type == "slug") {
+      this.damUploadPostDto.isSlugValid = false;
+      this.slugErrorMessage = message;
+    }
+  }
+
+  removeErrorMessage(type: string) {
+    if (type == "slug") {
+      this.damUploadPostDto.isSlugValid = true;
+      this.slugErrorMessage = ""
+    }
+  }
+
+  validateSlugForCompany() {
+    if (this.damUploadPostDto.slug != null && this.damUploadPostDto.slug != '') {
+      this.damService.validateSlug(this.damUploadPostDto.slug, this.loggedInUserCompanyId).subscribe(
+        (response: any) => {
+          let isValid = response.data;
+          if (!isValid) {
+            this.damUploadPostDto.isSlugValid = false;
+            this.addErrorMessage("slug", "Alias already exists");
+          } else {
+            this.removeErrorMessage("slug");
+          }
+        },
+        (error: string) => {
+          this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+        }, () => {
+          this.validateAllFields()
+        }
+      );
+    } else {
+      this.validateSlug();
+    }
+  }
+
+  getCompanyId() {
+    if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+      this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+        (result: any) => {
+          if (result !== "") {
+            this.loggedInUserCompanyId = result;
+            this.linkPrefix = this.authenticationService.DOMAIN_URL + "home/dam/vapv/view/" + this.loggedInUserCompanyId + "/";
+            this.completeLink = this.linkPrefix;
+          }
+        });
+    } else {
+      this.referenceService.showSweetAlertErrorMessage('UserId Not Found.Please try aftersometime');
+    }
+  }
+
+  updateSlug(type: string) {
+    if (type == "name") {
+      if (this.isAdd) {
+        this.damPostDto.slug = $.trim(this.damPostDto.name).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
+      }
+    } else if (type == "slug") {
+      this.damPostDto.slug = $.trim(this.damPostDto.slug).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
+    }
+    this.validateSlug();
+    if ((this.isAdd || (!this.isAdd && this.existingSlug !== this.damPostDto.slug)) && this.isValidSlug) {
+      this.validateSlugForCompany();
+    }
+    this.completeLink = this.linkPrefix + this.damPostDto.slug;
+  }
+
+  editSlug() {
+    this.isEditSlug = true;
+  }
+
+  editedSlug() {
+    this.isEditSlug = false;
+  }
+
+  copyInputMessage(inputElement: any) {
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    let message = 'Link copied to clipboard successfully.';
+    $("#copy-link").select();
+    this.customResponse = new CustomResponse('SUCCESS', message, true);
+  }
+
 
 }

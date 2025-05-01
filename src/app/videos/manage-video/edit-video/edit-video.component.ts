@@ -169,6 +169,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   disableSaveAsDraftButton: boolean = false;
   isApprover: boolean = false;
 
+  slugErrorMessage: string;
+  linkPrefix: string = "";
+  isEditSlug: boolean = false;
+  completeLink: string = "";
+  existingSlug = "";
+  loggedInUserCompanyId:number;
+  isValidSlug:boolean = false;
 
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -1036,6 +1043,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('#overlay-modal').hide();
       this.categories = this.referenceService.refcategories;
       this.saveVideoFile.categories = this.categories;
+      this.getCompanyId();
       this.settingImageGifPaths();
       this.buildForm();
       this.defaultImagePaths();
@@ -1289,6 +1297,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'imagePath': [this.saveVideoFile.imagePath],
           'gifImagePath': [this.saveVideoFile.gifImagePath, Validators.required],
           'description': [this.saveVideoFile.description, Validators.required],
+          'slug': [this.saveVideoFile.slug, [Validators.required, Validators.minLength(3)]],
           'enableVideoController': [this.saveVideoFile.enableVideoController, Validators.required],
           'allowSharing': [this.saveVideoFile.allowSharing, Validators.required],
           'enableSettings': [this.saveVideoFile.enableSettings, Validators.required],
@@ -1318,6 +1327,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'companyName': [this.saveVideoFile.companyName],
           'enableVideoCobrandingLogo':[this.saveVideoFile.enableVideoCobrandingLogo],
       });
+      this.completeLink = this.linkPrefix + this.saveVideoFile.slug;
       this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
       this.onValueChanged();
   }
@@ -1349,6 +1359,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.validVideoTitle(this.saveVideoFile.title);
                 const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
                 const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
+
                 let damId = this.saveVideoFile.damId;
                 if (this.isValidTitle === false && this.checkTagsValidation()) {
                     let saveAsDraft = this.saveVideoFile.draft;
@@ -1642,5 +1653,52 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.saveButtonTitle = 'Update';
             }
             });
+    }
+
+    editSlug() {
+        this.isEditSlug = true;
+      }
+    
+      editedSlug() {
+        this.isEditSlug = false;
+      }
+    
+      getCompanyId() {
+          this.referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(
+            (result: any) => {
+              if (result !== "") {
+                this.loggedInUserCompanyId = result;
+                  this.linkPrefix = this.authenticationService.DOMAIN_URL + "home/dam/vapv/view/" + this.loggedInUserCompanyId + "/";
+                this.completeLink = this.linkPrefix + this.saveVideoFile.slug;
+
+              }
+            });
+
+      }
+
+      validateSlugForCompany(slug) {
+        let linkControl = this.videoForm.get('slug')
+        this.completeLink = this.linkPrefix+linkControl.value;
+        if(slug != null && slug != '' ){
+      this.damService.validateSlug(slug, this.loggedInUserCompanyId).subscribe(
+        (response: any) => {
+          let isValid = response.data;
+          if (!isValid) {
+            if (linkControl) {
+                linkControl.markAsTouched();
+                linkControl.markAsDirty();
+                linkControl.setErrors({ duplicateAlias: true });
+              } 
+          } 
+        }, 
+        (error: string) => {
+          this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+        },()=>{
+            this.onValueChanged()
+        }
+      );
+    }else{
+        this.onValueChanged();
+    } 
     }
 }
