@@ -2316,6 +2316,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.showCallIntegrations = true;
 			this.activeTabHeader = this.properties.callIntegrations;
 		}
+		if (this.integrationTabIndex == 5) {
+			this.integrationTabIndex = 0;
+		}
 		this.referenceService.scrollSmoothToTop();
 	}
 
