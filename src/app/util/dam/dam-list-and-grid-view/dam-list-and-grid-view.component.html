@@ -178,7 +178,7 @@
 																<div class="clickicons"></div>
 															</a> -->
 															<!--Edit--->
-															<a class="custom-icon" *ngIf="!isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top" title="Edit"
+															<a class="custom-icon" *ngIf="(!isPartnerView && asset?.edit) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Edit"
 															 (click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
 																<i class="fa fa-edit IconCustomization"aria-hidden="true"
 																[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
@@ -221,7 +221,7 @@
 																<div class="clickicons"></div>
 															</a>
 															<!--View Analytics-->
-															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany"
+															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="(!authenticationService.module.isMarketingCompany) && !FromOliverPopUp"
 																(click)="asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId ? viewAnalytics(asset) : ''">
 																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
 																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
@@ -232,7 +232,7 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon" *ngIf="isPartnerView  && authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+															<a class ="oliveIcon" *ngIf="(isPartnerView  && authenticationService?.isOliverActive) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
@@ -244,7 +244,8 @@
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon mr5" *ngIf="!isPartnerView && authenticationService?.isOliverActive" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+															<a class="oliveIcon mr5" *ngIf="(!isPartnerView && authenticationService?.isOliverActive) && !FromOliverPopUp"
+																data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
@@ -670,6 +671,21 @@
 			<div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-9">
 				<div class="btn-group pull-right">
 					<div class="d-flex">
+						<div *ngIf="FromOliverPopUp && selectedItems.length>0" (click)="sendSelectedAssetsToOliver()"
+							class="btn btn-xs l-g-view margin-space mr5">
+							<span data-placement="bottom" data-toggle="tooltip" title="Ask Oliver">
+								<span class="oliveBackground">
+									<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
+								</span>
+							</span>
+						</div>
+						<!-- Custom Upload Button -->
+						<div *ngIf="FromOliverPopUp" class="btn btn-xs l-g-view margin-space mr5" style="padding: 7px !important;"
+							(click)="fileInput.click()">
+							<span data-placement="bottom" data-toggle="tooltip" title="Add New Asset">
+								<i class="fa fa-plus" aria-hidden="true"></i>
+							</span>
+						</div>
 						<!-- Start XNFR-409 -->
 						<div class="btn btn-xs l-g-view margin-space mr5" (click)="toggleFilterOption()"
 							[ngClass]="showFilterOption?'disabled':''">
@@ -680,20 +696,6 @@
 						<input type="file"  (change)="chooseAsset($event)"
 							style="opacity: 0; position: absolute; pointer-events: none;" #fileInput>
 						
-						<!-- Custom Upload Button -->
-						<div *ngIf="FromOliverPopUp" class="btn btn-xs l-g-view margin-space mr5" style="padding: 7px !important;" (click)="fileInput.click()">
-							<span data-placement="bottom" data-toggle="tooltip" title="Add New Asset">
-								<i class="fa fa-plus" aria-hidden="true"></i>
-							</span>
-						</div>
-						<div *ngIf="FromOliverPopUp && selectedItems.length>0" (click)="sendSelectedAssetsToOliver()"
-							class="btn btn-xs l-g-view margin-space mr5">
-							<span data-placement="bottom" data-toggle="tooltip" title="Ask Oliver">
-								<span class="oliveBackground">
-									<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
-								</span>
-							</span>
-						</div>
 						<!-- End XNFR-409 -->
 						<div class="group-dropdown">
 							<button

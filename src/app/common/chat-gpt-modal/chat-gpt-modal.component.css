@@ -868,3 +868,7 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   width: fit-content;
   padding-left: 20px;
 }
+
+.modal-body.oliver-asset {
+  max-height: calc(100vh - 77px);
+}

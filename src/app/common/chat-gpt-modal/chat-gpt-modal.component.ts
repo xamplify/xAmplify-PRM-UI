@@ -320,8 +320,8 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   getSelectedAsset(event: any) {
-    this.assetLoader= true;
-    this.getPdfByAssetPaths(event)
+    this.assetLoader = true;
+    this.getPdfByAssetPaths(event);
     this.showView = false;
   }
 
@@ -399,5 +399,9 @@ export class ChatGptModalComponent implements OnInit {
     if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
       this.AskAiTogetData();
     }
+  }
+
+  closeManageAssets() {
+    this.showView = false;
   }
 }
