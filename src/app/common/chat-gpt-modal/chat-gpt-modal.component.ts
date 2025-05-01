@@ -352,6 +352,7 @@ export class ChatGptModalComponent implements OnInit {
         let data = response.data;
         this.threadId = data.threadId;
         this.assetLoader = false;
+        this.inputText = 'summarize in detail';
         this.AskAiTogetData();
       },
       (error: string) => {
@@ -368,10 +369,10 @@ export class ChatGptModalComponent implements OnInit {
         scrollTop: $('.scrollable-card')[0].scrollHeight
       }, 500);
     }
-    this.messages.push({ role: 'user', content: 'Give a overview of files' });
+    this.messages.push({ role: 'user', content: this.inputText });
     this.inputText = '';
     var self = this;
-    this.chatGptIntegrationSettingsDto.prompt = 'Give a overview of files';
+    this.chatGptIntegrationSettingsDto.prompt = this.inputText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
@@ -394,5 +395,10 @@ export class ChatGptModalComponent implements OnInit {
     );
   }
 
+  onKeyPressForAsekOliver(keyCode: any) {
+    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
+      this.AskAiTogetData();
+    }
+  }
 
 }

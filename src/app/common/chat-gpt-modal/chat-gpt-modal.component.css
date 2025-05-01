@@ -857,3 +857,14 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
     transform: rotate(25deg)
   }
 }
+
+.custom-align-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-text-align {
+  width: fit-content;
+  padding-left: 20px;
+}

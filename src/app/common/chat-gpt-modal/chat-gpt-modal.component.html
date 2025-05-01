@@ -214,13 +214,14 @@
                 <span *ngIf="!showOpenHistory" class="oliver_heading">Explore Assets, Tracks, and PlayBooks with Oliver</span>
                 <div [ngClass]="showOpenHistory && activeTab === 'askpdf' ? 'templateui col-lg-9' : 'container-ui'">
                   <div *ngIf="!showOpenHistory" class="custom-card mt10">
-                    <div class="upload-box" (click)="openAssetsPage()">
+                    <div [ngClass]="assetLoader ? 'upload-box custom-align-center' : 'upload-box'" (click)="openAssetsPage()">
                       <label *ngIf="!assetLoader">
                         <!-- <i class="glyphicon glyphicon-upload"></i> -->
                         <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
                         Feed Me Digital Assets
                       </label>
                       <div *ngIf="assetLoader" class="fileloader"></div>
+                      <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
                     </div>
                     <div class="submit-section">
                       <img src="assets/images/olivere-dog.svg" width="80px" alt="Robot">
@@ -228,11 +229,11 @@
                     </div>
                   </div>
                   <div *ngIf="showOpenHistory" class="oliver_input mt10">
-                    <input type="text" (keypress)="searchDataOnKeyPress($event.keyCode)" [(ngModel)]="inputText"
+                    <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                       [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                     <div class="btn-wrapper">
                       <button *ngIf="hasAcess" class="btn-plus">+</button>
-                      <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                      <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                         [disabled]="isTextLoading || !isValidInputText">Submit</button>
                     </div>
                   </div>
