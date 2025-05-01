@@ -226,12 +226,12 @@
     margin-top: 10px;
   }
 
-  .modal-body.oliver-header{
-    background: linear-gradient(to bottom, #E6F0FF, #d0e4ffd1);
-    max-height: 100%;
-    overflow: hidden;
-    padding: 15px 0px 15px 15px;
-  }
+    .modal-body.oliver-header {
+      background: linear-gradient(to bottom, #E6F0FF, #d0e4ffd1);
+      overflow: hidden;
+      padding: 15px 0px 15px 15px;
+      max-height: 100%;
+    }
     .side_bar {
       width: 25%;
       background: linear-gradient(to bottom, #cde5ff, #b0d4ff);
@@ -867,8 +867,4 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
 .custom-text-align {
   width: fit-content;
   padding-left: 20px;
-}
-
-.modal-body.oliver-asset {
-  max-height: calc(100vh - 77px);
 }

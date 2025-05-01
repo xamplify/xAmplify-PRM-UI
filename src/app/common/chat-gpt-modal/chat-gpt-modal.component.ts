@@ -360,7 +360,7 @@ export class ChatGptModalComponent implements OnInit {
         let data = response.data;
         this.threadId = data.threadId;
         this.assetLoader = false;
-        this.inputText = 'Give a overview of the documents';
+        this.inputText = 'Summarize documents briefly';
         this.AskAiTogetData();
       },
       (error: string) => {

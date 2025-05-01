@@ -42,7 +42,8 @@
           </div> -->
       <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
         (notifyClose)="closeSocialShare($event)"></app-update-status>
-      <div *ngIf="!openShareOption" [ngClass]="showView ? 'modal-body oliver-asset': 'modal-body oliver-header'">
+      <div *ngIf="!openShareOption" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'" [ngStyle]="{ 
+                                'max-height': showView ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
           (notifyasset)="getSelectedAssets($event)"></app-dam-list-and-grid-view>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"

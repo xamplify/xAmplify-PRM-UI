@@ -53,7 +53,7 @@
 									<ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
 										<tr>
 											<td *ngIf="FromOliverPopUp" class="text-center"><input class="chk checkBox_shadow" type="checkbox"
-													[checked]="isSelected(item)" (change)="onCheckboxChange(asset, $event)"></td>
+													[checked]="isSelected(asset)" (change)="onCheckboxChange(asset, $event)"></td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
 												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
 													<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"

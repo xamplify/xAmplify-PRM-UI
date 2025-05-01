@@ -1134,14 +1134,18 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
       
 	isSelected(item: any): boolean {
-		return this.selectedItems.indexOf(item) !== -1;
+		if (!item || !this.selectedItems) {
+			return false;
+		}
+		return this.selectedItems.some(selected => selected.id === item.id);
 	}
-    
+
+
 	isAllSelected(): boolean {
 		return this.pagination.pagedItems.length > 0 &&
 			this.selectedItems.length === this.pagination.pagedItems.length;
 	}
-	
+
 	toggleAllSelection(event: any) {
 		if (event.target.checked) {
 			this.selectedItems = [...this.pagination.pagedItems];
