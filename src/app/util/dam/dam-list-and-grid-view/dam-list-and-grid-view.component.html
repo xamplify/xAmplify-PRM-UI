@@ -671,14 +671,6 @@
 			<div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-9">
 				<div class="btn-group pull-right">
 					<div class="d-flex">
-						<div *ngIf="FromOliverPopUp && selectedItems.length>0" (click)="sendSelectedAssetsToOliver()"
-							class="btn btn-xs l-g-view margin-space mr5">
-							<span data-placement="bottom" data-toggle="tooltip" title="Ask Oliver">
-								<span class="oliveBackground">
-									<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
-								</span>
-							</span>
-						</div>
 						<!-- Custom Upload Button -->
 						<div *ngIf="FromOliverPopUp" class="btn btn-xs l-g-view margin-space mr5" style="padding: 7px !important;"
 							(click)="fileInput.click()">

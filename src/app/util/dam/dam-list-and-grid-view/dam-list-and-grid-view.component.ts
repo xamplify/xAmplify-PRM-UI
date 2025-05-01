@@ -1122,31 +1122,33 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 	
 	onCheckboxChange(item: any, event: any) {
-        if (event.target.checked) {
-          this.selectedItems.push(item);
-        } else {
-          const index = this.selectedItems.indexOf(item);
-          if (index > -1) {
-            this.selectedItems.splice(index, 1);
-          }
-        }
-      }
+		if (event.target.checked) {
+			this.selectedItems.push(item);
+		} else {
+			const index = this.selectedItems.indexOf(item);
+			if (index > -1) {
+				this.selectedItems.splice(index, 1);
+			}
+		}
+		this.notifyasset.emit(this.selectedItems);
+	}
       
-      isSelected(item: any): boolean {
-        return this.selectedItems.indexOf(item) !== -1;
-      }
+	isSelected(item: any): boolean {
+		return this.selectedItems.indexOf(item) !== -1;
+	}
     
-      isAllSelected(): boolean {
-        return this.pagination.pagedItems.length > 0 &&
-               this.selectedItems.length === this.pagination.pagedItems.length;
-      }
-      toggleAllSelection(event: any) {
-        if (event.target.checked) {
-          this.selectedItems = [...this.pagination.pagedItems];
-        } else {
-          this.selectedItems = [];
-        }
-      }
+	isAllSelected(): boolean {
+		return this.pagination.pagedItems.length > 0 &&
+			this.selectedItems.length === this.pagination.pagedItems.length;
+	}
+	
+	toggleAllSelection(event: any) {
+		if (event.target.checked) {
+			this.selectedItems = [...this.pagination.pagedItems];
+		} else {
+			this.selectedItems = [];
+		}
+	}
     sendSelectedAssetsToOliver() {
         this.notifyasset.emit(this.selectedItems);
         this.selectedItems = [];

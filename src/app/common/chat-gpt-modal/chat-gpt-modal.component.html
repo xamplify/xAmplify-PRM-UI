@@ -44,7 +44,7 @@
         (notifyClose)="closeSocialShare($event)"></app-update-status>
       <div *ngIf="!openShareOption" [ngClass]="showView ? 'modal-body oliver-asset': 'modal-body oliver-header'">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
-          (notifyasset)="getSelectedAsset($event)"></app-dam-list-and-grid-view>
+          (notifyasset)="getSelectedAssets($event)"></app-dam-list-and-grid-view>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>
         <div classs="row">
@@ -342,7 +342,9 @@
       </div>
       <!--Footer-->
       <div *ngIf="showView" class="modal-footer">
-        <button class="btn btn-danger close-button" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary mr5" [disabled]="selectedAssets.length == 0"
+          (click)="submitSelectedAssetsToOliver()">Ask Oliver</button>
+        <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

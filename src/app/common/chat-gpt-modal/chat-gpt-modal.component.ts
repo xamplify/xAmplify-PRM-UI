@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { DamService } from 'app/dam/services/dam.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpClient } from '@angular/common/http';
+import { add } from 'ngx-bootstrap/chronos';
 declare var $: any;
 @Component({
   selector: 'app-chat-gpt-modal',
@@ -53,6 +54,7 @@ export class ChatGptModalComponent implements OnInit {
   pdfFiles: { file: Blob; assetName: any; }[];
   threadId: any;
   assetLoader: boolean;
+  selectedAssets: any[] = [];
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
   }
@@ -72,6 +74,7 @@ export class ChatGptModalComponent implements OnInit {
   ngOnDestroy() {
     this.showIcon = true;
     this.isWelcomePageUrl = false;
+    this.selectedAssets = [];
   }
 
   generateChatGPTText() {
@@ -319,10 +322,15 @@ export class ChatGptModalComponent implements OnInit {
     this.showView = true;
   }
 
-  getSelectedAsset(event: any) {
+  getSelectedAssets(event: any) {
+    this.selectedAssets = event;
+  }
+
+  submitSelectedAssetsToOliver() {
     this.assetLoader = true;
-    this.getPdfByAssetPaths(event);
+    this.getPdfByAssetPaths(this.selectedAssets);
     this.showView = false;
+    this.selectedAssets = [];
   }
 
   getPdfByAssetPaths(assetsPath: any[]) {
@@ -403,5 +411,6 @@ export class ChatGptModalComponent implements OnInit {
 
   closeManageAssets() {
     this.showView = false;
+    this.selectedAssets = [];
   }
 }
