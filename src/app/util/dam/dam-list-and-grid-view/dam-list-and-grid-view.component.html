@@ -163,12 +163,12 @@
 													<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 														<div class="mActionAlign ActionButtonPad">
 															<!--History-->
-															<a class="custom-icon" *ngIf="asset?.history &&!isPartnerView" data-toggle="tooltip" data-placement="top" title="History" (click)="expandHistory(asset,i)">
+															<a class="custom-icon" *ngIf="(asset?.history &&!isPartnerView) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="History" (click)="expandHistory(asset,i)">
 																<i class="fa IconCustomization"[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
 															<!--Design-->
-															<a class="custom-icon" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT'" data-toggle="tooltip" data-placement="top" title="Design" (click)="addOrEdit(asset.id)">
+															<a class="custom-icon" *ngIf="(asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT') && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Design" (click)="addOrEdit(asset.id)">
 																<i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
@@ -251,7 +251,7 @@
 																</div>
 															</a>
 															<!--Delete-->
-															<a class="custom-icon" *ngIf="!isPartnerView && asset?.delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' :confirmDelete(asset)">
+															<a class="custom-icon" *ngIf="(!isPartnerView && asset?.delete) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' :confirmDelete(asset)">
 																<i class="fa fa-trash-o trashIconCustomization" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''" aria-hidden="true"></i>
 																<div class="del-icon"></div>
 															</a>
