@@ -62,9 +62,11 @@ export class SelectfieldComponent implements OnInit {
     this.isMyprofile = this.router.url.includes('dashboard/myprofile');
 
     if (!this.isMyprofile) {
+      
       this.dragulaService.setOptions('fieldsDragula', {
         moves: (el, container, handle) => {
-          return !this.isDisabled(el);
+          // Check if the dragged element has the 'non-draggable' class
+          return !el.classList.contains('non-draggable');
         },
         accepts: (el, target, source, sibling) => {
           if (!sibling) return true;
@@ -171,12 +173,14 @@ export class SelectfieldComponent implements OnInit {
     });
     this.updateHeaderCheckbox();
   }
+  isHeaderCheckBoxCheckedDisable:boolean
   updateHeaderCheckbox() {
     if (!(this.pager.pages && this.pager.pages.length)) {
       this.isHeaderCheckBoxChecked = false;
     } else {
       this.isHeaderCheckBoxChecked = this.fieldsPagedItems.every((item: any) => item.selectedColumn);
     }
+     this.isHeaderCheckBoxCheckedDisable = this.fieldsPagedItems.every((item: any) => item.defaultColumn);
   }
   isCheked(field: any): boolean {
     if (this.isMyprofile) {
