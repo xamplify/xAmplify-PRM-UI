@@ -1,7 +1,7 @@
 <div class="modal fade right" id="addEmailModalPopup" role="dialog" aria-labelledby="myModalLabel"
   data-backdrop="static" data-keyboard="false">
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="!OliveAi && customResponse?.isVisible"></app-response-message>
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" [ngClass]="OliveAi ? '':'dymc_width'" role="document">
     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="modal-content">
       <div class="modal-header">
@@ -66,12 +66,76 @@
              placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" (input)="validateEmail()" />
           </div>
           <div class="form-group">
-            <label for="subjectLine">Message <span class="text-danger">*</span></label>
-            <ckeditor *ngIf="!isPreview" name="body" [(ngModel)]="emailActivity.body" (change)="validateEmail()"
+            <label *ngIf="!isEmailTemplateActivated" for="subjectLine" class="mt5">Message <span class="text-danger">*</span></label>
+            <label *ngIf="isEmailTemplateActivated" for="subjectLine" class="mt5">Select an Email Template <span class="text-danger">*</span></label>
+            <span class="pull-right" *ngIf="!OliveAi && isValidToShowChooseTemplate">
+              <label for="subjectLine">Choose Template </label>
+              <app-custom-ui-switch [customSwitch]="isEmailTemplateActivated"
+                (customUiSwitchEventEmitter)="changeStatus($event)"></app-custom-ui-switch>
+            </span>
+            <div *ngIf="isEmailTemplateActivated" class="btn-group pull-right mr5">
+              <div class="inputs float-right" style="display: inline-flex;">
+                <div class="ml5">
+                  <input type="text" autocomplete="off" id="sort-text" class="form-control"
+                    [(ngModel)]="emailTemplatesSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                    (keypress)="emailActivityEventHandler($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="emailTemplatesSortOption.searchKey"
+                    (click)="emailTemplatesSortOption.searchKey='';searchEmailTemplates()"></button>
+                  <button type="submit" class="search-box-item-click" (click)="searchEmailTemplates();"><i class="fa fa-search"
+                      aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <ngx-loading [show]="activationLoaderEnabled" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <ckeditor *ngIf="!isEmailTemplateActivated && !activationLoaderEnabled" name="body" [(ngModel)]="emailActivity.body" (change)="validateEmail()"
             [ngModelOptions]="{standalone: true}" [config]="ckeConfig"></ckeditor>
-            <div class="email-body" *ngIf="isPreview" [innerHTML]="emailActivity.body"></div>
+            
+            <div *ngIf="isEmailTemplateActivated && !activationLoaderEnabled" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 template_box">
+              <ng-template [ngTemplateOutlet]="emailTemplates" [ngTemplateOutletContext]="{emailTemplatesPagination:emailTemplatesPagination,selectedEmailTemplateRow:emailActivity.templateId}"></ng-template>
+              <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0 && !emailTemplateLoader && isEmailTemplateActivated && !activationLoaderEnabled" class="fc-content">
+                <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)"
+                  (notifyParentDropDown)="findEmailTemplates($event)" [customDropDown]="true">
+                </app-pagination>
+              </div>
+            </div>
+
             <p *ngIf="showCkEditorLimitErrorMessage" class="text-danger">You have reached the maximum character limit.</p>
           </div>
+
+
+          <!-- <div class="form-group" *ngIf="isEmailTemplateActivated">
+            <div class="mb10">
+              <label for="subjectLine">Select an Email Template <span class="text-danger">*</span></label>
+              <div class="btn-group pull-right">
+                <div class="inputs float-right" style="display: inline-flex;">
+                  <div class="ml5">
+                    <input type="text" autocomplete="off" id="sort-text" class="form-control"
+                      [(ngModel)]="emailTemplatesSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                      (keypress)="emailActivityEventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="emailTemplatesSortOption.searchKey"
+                      (click)="emailTemplatesSortOption.searchKey='';searchEmailTemplates()"></button>
+                    <button type="submit" class="search-box-item-click" (click)="searchEmailTemplates();"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
+              <ng-template [ngTemplateOutlet]="emailTemplates" [ngTemplateOutletContext]="{emailTemplatesPagination:emailTemplatesPagination,selectedEmailTemplateRow:emailActivity.templateId}"></ng-template>
+            </div>
+
+            <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0 && !emailTemplateLoader">
+              <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)"
+                (notifyParentDropDown)="findEmailTemplates($event)" [customDropDown]="true">
+              </app-pagination>
+            </div>
+          </div> -->
+
+
+
           <div class="form-group">
             <p *ngIf="showAttachmentErrorMessage" class="text-danger">The attachment exceeds the maximum allowed file size of 20MB. You can upload large files to a cloud storage service (e.g., Amazon S3, Google Drive) and share the download link.</p>
             <label for="attachments">Attachments:</label>
@@ -84,7 +148,7 @@
               <ul>
                 <li *ngFor="let file of files; let i = index">
                   {{ file.name }} ({{ file.size / 1024 | number: '1.0-0' }} KB)
-                  <button type="button" (click)="removeFile(i)"><i class="fa fa-times"></i></button>
+                  <button class="m5" type="button" (click)="removeFile(i)"><i class="fa fa-times"></i></button>
                 </li>
               </ul>
             </div>
@@ -140,3 +204,76 @@
     </div>
   </div>
 </div>
+
+<ng-template #emailTemplates let-emailTemplatesPagination="emailTemplatesPagination"
+  let-selectedEmailTemplateRow="selectedEmailTemplateRow">
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer template_padding"
+    *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index">
+    <div class="row">
+      <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+        <div class="grid-box imgage-paddings grid-email-card"
+          [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' "
+          (click)="selectEmailTemplate(emailTemplate)">
+          <span class="select-check-box" [class.hide]="emailTemplate?.draft">
+            <label>
+              <input type="radio" class="radio-custimization pointer radioButton_shadow"
+                [checked]="emailTemplate?.id === selectedEmailTemplateRow">
+            </label>
+          </span>
+          <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject"
+            alt="No Preview Found" />
+          <span class="icon-alignments">
+            <a data-toggle="tooltip" data-placement="bottom" title="Preview"
+              (click)="$event.stopPropagation();previewEmailTemplate(emailTemplate,false)"
+              data-original-title="Preview">
+              <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a>
+          </span>
+          <div class="bar hover-bar"
+            [class.white-labeled-custom-css]="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
+            <a data-placement="top" class="border-none-dark">
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                  <div class="content-hover-align fontsize-cls">
+                    <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom"
+                      [title]="emailTemplate?.name">
+                      <strong>{{emailTemplate?.name
+                        |slice:0:20}}</strong>
+                      <strong *ngIf="emailTemplate?.name?.length>20">..</strong>
+                    </span>
+                    <br>
+                    <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="Created On"
+                      style="float:left; margin: 3px;">
+                      <span>
+                        <app-display-date-and-time
+                          [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
+                      </span>
+                    </span>
+                    <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom"
+                      title="{{emailTemplate?.createdBy}}">
+                      <strong translate>Created
+                        By:</strong>
+                      <span>{{emailTemplate?.createdBy|slice:0:20}}
+                        <span *ngIf="emailTemplate?.createdBy?.length>20">..</span>
+                      </span>
+                    </p>
+                    <!-- <span *ngIf="emailTemplate?.category?.length>0"
+                      class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip"
+                      data-placement="bottom" title="{{emailTemplate?.category}}">
+                      <strong translate>Folder:</strong>
+                      <span>{{emailTemplate?.category|slice:0:20}}</span>
+                      <span *ngIf="emailTemplate?.category?.length>20">..</span>
+                    </span> -->
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="emailTemplatesPagination?.totalRecords==0 && !emailTemplatesOrLandingPagesLoader"
+    class="alert alert-info text-center">
+    <strong>No Data Found.</strong>
+  </div>
+</ng-template>

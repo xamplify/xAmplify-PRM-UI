@@ -594,6 +594,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		let campaign = input['campaign'];
 		let edit = input['edit'];
 		let analytics = input['analytics'];
+		let askOliverFromGridView= input['askOliver'];
+		let askAi = input['askAi'];
 		this.asset = input['asset'];
 		if (preview) {
 			this.preview(this.asset);
@@ -606,6 +608,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate, this.asset.videoId);
 		} else if (analytics) {
 			this.viewAnalytics(this.asset);
+		} else if(askOliverFromGridView){
+			this.AskOliver(this.asset);
+
+		}else if(askAi){
+			this.AskAi(this.asset);
 		}
 
 	}
@@ -1069,7 +1076,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	}
 	AskAi(asset: any){
-		let url = "/home/dam/askAi/shared/view/" + asset.id;
+		let url = "";
+		if(this.modulesDisplayType.isGridView){
+			 url = "/home/dam/askAi/shared/view/g/" + asset.id;
+		}else{
+			url = "/home/dam/askAi/shared/view/" + asset.id;
+		}
 		this.referenceService.goToRouter(url)
 	}
 	AskOliver(asset: any){

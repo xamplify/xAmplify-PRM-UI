@@ -1521,4 +1521,11 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
+
+    /** XNFR-929 **/
+    getRecipientsCountByCampaignId(campaignId :number) {
+        const url = this.URL + 'campaign/getRecipientsCountByCampaignId/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 }

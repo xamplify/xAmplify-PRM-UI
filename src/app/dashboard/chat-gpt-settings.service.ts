@@ -34,10 +34,10 @@ export class ChatGptSettingsService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto) {
+  onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto, assetName: string) {
     const url = `${this.chatGptSettingsUrl}/upload?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
-    formData.append('file', pdfFile, 'file.pdf');
+    formData.append('file', pdfFile, `${assetName}.pdf`);
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
     formData.delete('chatGptSettingsDTO');
     formData.append('chatGptSettingsDTO', new Blob([JSON.stringify(chatGptSettings)],
@@ -94,17 +94,20 @@ export class ChatGptSettingsService {
     return this.http.get(url);
   }
 
-  onUploadFiles(pdfFiles: Blob[], chatGptSettings: ChatGptIntegrationSettingsDto) {
+  onUploadFiles(pdfFiles: any[], chatGptSettings: ChatGptIntegrationSettingsDto) {
     const url = `${this.chatGptSettingsUrl}/uploadFiles?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
-    pdfFiles.forEach((file, index) => {
-      formData.append('files', file, `asset${index}.pdf`);
+
+    pdfFiles.forEach((pdfFile) => {
+      formData.append('files', pdfFile.file, `${pdfFile.assetName}.pdf`);
     });
+
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
     formData.append('chatGptSettingsDTO', new Blob(
       [JSON.stringify(chatGptSettings)],
       { type: 'application/json' }
     ));
+
     return this.authenticationService.callPostMethod(url, formData);
   }
 

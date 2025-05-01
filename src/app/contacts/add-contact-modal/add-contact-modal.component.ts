@@ -14,7 +14,7 @@ import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FlexiFieldsRequestAndResponseDto } from 'app/dashboard/models/flexi-fields-request-and-response-dto';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Properties } from 'app/common/models/properties';
-
+import { trigger, transition, style, animate } from '@angular/animations';
 declare var $: any, swal: any;
 
 @Component( {
@@ -22,7 +22,6 @@ declare var $: any, swal: any;
     templateUrl: './add-contact-modal.component.html',
     styleUrls: ['./add-contact-modal.component.css', '../../../assets/css/phone-number-plugin.css'],
     providers: [CountryNames, RegularExpressions,Properties]
-    
   })
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
     @Input() mdfAccess: boolean;
@@ -76,11 +75,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     isValidEmail : boolean = false;
     @Input() flexiFieldsRequestAndResponseDto : Array<FlexiFieldsRequestAndResponseDto>;
     isValidMobileNumber: boolean = true;
-
+    @Input() isEditMode: boolean = false;
+    
     // XNFR-945
     @Input() contactDetails: any;
-    @Input() isContactTypeEdit: boolean;
-    @Input() isEditMode: boolean = false; 
+    @Input() isContactTypeEdit: boolean; 
     @Input() public actionType: any;
     @Input() public contactId: number = 0;
     @Output() emitCompanyId = new EventEmitter<any>(); 
@@ -316,6 +315,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         if (changes['isEditMode']) {
             console.log('isEditMode changed:', this.isEditMode);
             this.showAddButton = !this.isEditMode;
+            this.addContactuser.contactCompanyId = this.selectedCompanyId;
           } 
     }
     ngOnInit() {
@@ -396,6 +396,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             if (this.contactService.isEditMode !== undefined) {
                 this.isEditMode = this.contactService.isEditMode;
               }
+              
             //XNFR-697
             this.isSalesforceAsActiveCRM = this.isPartner && (this.activeCrmType == "salesforce");
             if (!(this.addContactuser.emailId !== undefined)) {
@@ -632,7 +633,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     openPopup(addContactuser: any){
         this.companyPop = true;
         this.actionType = "add";
-        this.contactId = addContactuser.contactCompanyId;      
+        this.contactId = addContactuser.contactCompanyId;     
     }
     closeCompanyPopup(event:any) {
         if(event == 0){

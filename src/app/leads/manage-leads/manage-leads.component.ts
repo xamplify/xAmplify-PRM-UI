@@ -1629,12 +1629,10 @@ triggerUniversalSearch(){
     selectedFieldsResponseDto['companyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
     selectedFieldsResponseDto['loggedInUserId'] = this.vanityLoginDto.userId;
     selectedFieldsResponseDto['integation'] = true;
+    selectedFieldsResponseDto['opportunityType'] = "LEAD";
     this.dashboardService.saveSelectedFields(selectedFieldsResponseDto)
       .subscribe(
         data => {
-          if (data.statusCode === 200) {
-
-          }
           this.leadsPagination.selectedExcelFormFields = this.selectedFields;
           this.downloadLeads(this.leadsPagination)
         },

@@ -129,9 +129,9 @@
     </div>
 
     <!-----------------------Folder List View----------------------------------------->
-    <div class="table-responsive scroll-onoverflow no-scrollbar mscroll_x" *ngIf="folderViewType=='Folder-List'">
+    <div class="table-responsive scroll-onoverflow mscroll_x mb10" *ngIf="folderViewType=='Folder-List'">
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-        <table class='table tgrid table-hover table-sm' id="folder-list-view" *ngIf="pagination.pagedItems?.length>0"
+        <table class='table tgrid table-hover table-sm mb10' id="folder-list-view" *ngIf="pagination.pagedItems?.length>0"
             aria-describedby="">
             <thead>
                 <tr>

@@ -39,7 +39,7 @@
                   <tr>
                     <th scope="col" class="text-center" style="width: 10%">
                       <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
-                        (change)="toggleAllSelection()" />
+                        (change)="toggleAllSelection($event)" />
                     </th>
                     <th scope="col"><b>Field Label</b></th>
                     <th scope="col">
@@ -60,8 +60,8 @@
                     <tr class="pointer">
                       <td class="text-center">
                         <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="fieldDto.selectedColumn"
-                          (change)="toggleSelection(fieldDto)" [checked]="isCheked(fieldDto.labelId)"
-                          [disabled]="isFieldDisabled(fieldDto.labelName)" />
+                          (change)="toggleSelection($event,fieldDto)" [checked]="isCheked(fieldDto)"
+                          [disabled]="isFieldDisabled(fieldDto)" />
                       </td>
                       <td>
                         <span class="FieldName" data-toggle="tooltip" data-placement="top"

@@ -81,6 +81,7 @@ export class ChatGptModalComponent implements OnInit {
     let askOliver = this.activeTab == 'writing'
       ? 'In ' + (this.sortOption.selectWordDropDownForOliver.name || '') + ' ' + this.inputText
       : this.inputText;
+    this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
     this.chatGptIntegrationSettingsDto.prompt = askOliver;
     this.showOpenHistory = true;
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
@@ -102,7 +103,7 @@ export class ChatGptModalComponent implements OnInit {
           this.messages.push({ role: 'assistant', content: errorMessage });
         }
         this.isTextLoading = false;
-        this.inputText = this.activeTab =='paraphraser' ? this.inputText : '';
+        this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
 
       }, error => {
         this.isTextLoading = false;
@@ -299,5 +300,12 @@ export class ChatGptModalComponent implements OnInit {
       console.log('Expanded on hover');
     }
   }
+
+  searchDataOnKeyPress(keyCode: any) {
+    if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
+      this.generateChatGPTText();
+    }
+  }
+  
   
 }

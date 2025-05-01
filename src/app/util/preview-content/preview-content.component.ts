@@ -54,6 +54,10 @@ export class PreviewContentComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){
+    $('#preview_content_modal_popup').modal('hide');
+  }
+  
   closePreview() {
     $('#preview_content_modal_popup').modal('hide');
     this.notifyClose.emit();

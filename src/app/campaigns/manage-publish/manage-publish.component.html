@@ -256,9 +256,9 @@
                      <!-----List View--------->
                      <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt5 mrg_top10'
                         *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                        <div class="table-responsive">
+                        <div class="table-responsive mb10">
                            <table [class.bottomTableCss]="pagination.pagedItems.length<5"
-                              class='table tgrid table-hover table-sm hidden-xs responsive-scrool'
+                              class='table tgrid table-hover table-sm hidden-xs responsive-scrool mb10'
                               aria-describedby="campaignsListTable" *ngIf="modulesDisplayType.isListView"
                               id="manage-campaign-list" style="overflow: inherit;">
                               <thead>
@@ -1374,7 +1374,7 @@
                                  *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                  <div *ngFor="let campaign of pagination.pagedItems; let i= index"
                                     class="col-xs-12 col-sm-4 col-lg-3 tab_grid GridviewSidePaddings">
-                                    <div class="grid-box" style="height:312px">
+                                    <div class="grid-box" style="height:353px">
                                        <div class="gridViewImgBg">
                                           <img *ngIf="!campaign?.campaignProcessing"
                                              src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"

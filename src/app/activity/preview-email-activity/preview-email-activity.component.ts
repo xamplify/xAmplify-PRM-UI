@@ -3,6 +3,8 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { EmailActivityService } from '../services/email-activity-service';
 import { EmailActivity } from '../models/email-activity-dto';
 
+declare var $: any;
+
 @Component({
   selector: 'app-preview-email-activity',
   templateUrl: './preview-email-activity.component.html',
@@ -39,6 +41,8 @@ export class PreviewEmailActivityComponent implements OnInit {
           this.contactEmailId = this.emailActivity.addedForEmailId;
         }
         this.ngxLoading = false;
+        $('#sendTestEmailHtmlBody').html('');
+        $('#sendTestEmailHtmlBody').append(this.emailActivity.body);
       }, error => {
         this.ngxLoading = false;
       }, () => {
