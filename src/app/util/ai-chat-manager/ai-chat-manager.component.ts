@@ -71,6 +71,7 @@ export class AiChatManagerComponent implements OnInit {
   folderFrom: any;
   folderAssetCount: any;
   isFromContactJourney: boolean = false;
+  copiedIndex: number;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
@@ -262,11 +263,11 @@ export class AiChatManagerComponent implements OnInit {
     }
   }
 
-  copyAiText(element: HTMLElement) {
-    this.copyToClipboard(element);
+  copyAiText(element: HTMLElement, index: number) {
+    this.copyToClipboard(element, index);
   }
 
-  copyToClipboard(element: any) {
+  copyToClipboard(element: any, index: number) {
     this.isEmailCopied = true;
     this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
@@ -275,10 +276,13 @@ export class AiChatManagerComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+    this.copiedIndex = index;
     setTimeout(() => {
       this.isEmailCopied = false;
+      this.copiedIndex = null;
     }, 2000);
   }
+
 
   onFileSelected(event: any) {
     this.UploadedFile =true;

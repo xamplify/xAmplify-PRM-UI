@@ -194,11 +194,12 @@
                       <i [ngClass]="(isSpeakingText && speakingIndex === i) ? 'fas fa-volume-mute' : 'fa fa-volume-up fs-12'"
                         aria-hidden="true" (click)="speakTextOn(i, markdownComponent)"></i>
                     </div>
-                    <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied ? '#00FF13' : '#0d6efd'}"
-                      data-toggle="tooltip" [attr.data-original-title]="isEmailCopied ? 'copied' : 'Copy to Clipboard'"
+                    <div class="footer-icon" [ngStyle]="{'background-color': isEmailCopied && copiedIndex === i ? '#00FF13' : '#0d6efd'}"
+                      data-toggle="tooltip"
+                      [attr.data-original-title]="isEmailCopied && copiedIndex === i  ? 'copied' : 'Copy to Clipboard'"
                       data-placement="top">
-                      <i class="fs-12" [ngClass]="isEmailCopied ? 'fa fa-check' : 'fa fa-clone'"
-                        (click)="!isEmailCopied && copyAiText(markdownComponent)"></i>
+                      <i class="fs-12" [ngClass]="isEmailCopied && copiedIndex === i  ? 'fa fa-check' : 'fa fa-clone'"
+                        (click)="!isEmailCopied && copyAiText(markdownComponent,i)"></i>
                     </div>
                     <!-- <div class="footer-icon" title="Reload/Refresh">
                     <i class="fa fa-refresh fs-12"></i>

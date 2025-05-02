@@ -271,13 +271,14 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.sendTestEmailDto.toEmail = this.testToEmailId;
       this.sendTestEmailDto.subject = this.emailActivity.subject;
       this.sendTestEmailDto.showAlert = false;
-      this.prepareTestMailFormData();
+      this.prepareFormData();
       this.sendTestEmailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
       this.sendTestEmailDto.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
       this.sendTestEmailDto.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
       this.authenticationService.sendEmailToUser(this.sendTestEmailDto,this.formData).subscribe(
         response => {
           this.testEmailLoading = false;
+          this.formData.delete("uploadedFile");
           this.notifyClose.emit("Email sent sucessfully");
           this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
         }, error => {
@@ -309,6 +310,7 @@ export class AddEmailModalPopupComponent implements OnInit {
           this.testToEmailId = '';
           this.validateTestEmailId();
           this.testEmailLoading = false;
+          this.formData.delete("uploadedFile");
           this.testMailFormData.delete("uploadedFiles");
         }
       )
