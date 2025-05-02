@@ -72,10 +72,12 @@ export class AiChatManagerComponent implements OnInit {
   folderAssetCount: any;
   isFromContactJourney: boolean = false;
   copiedIndex: number;
+  socialShareOption: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.checkSocialAcess();
     this.isFromFolderView = false;
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
     this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
@@ -634,5 +636,13 @@ export class AiChatManagerComponent implements OnInit {
       }
     )
   }
-
+  checkSocialAcess() {
+    this.socialShareOption=(this.referenceService.hasAllAccess()
+      || this.authenticationService.module.hasSocialStatusRole
+      || this.authenticationService.module.isOrgAdmin
+      || this.authenticationService.module.isVendor
+      || this.authenticationService.module.isPrm
+      || this.authenticationService.module.isVendorTier
+      || this.authenticationService.module.isCompanyPartner) && this.authenticationService.user.hasCompany && (this.authenticationService.module.socialShareOptionEnabled || (this.authenticationService.module.socialShareOptionEnabledAsPartner && (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember)))
+  }
 }
