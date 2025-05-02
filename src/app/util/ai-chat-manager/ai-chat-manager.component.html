@@ -18,8 +18,8 @@
                 <ng-container *ngIf="!isPdfUploading && assetType =='pdf'">
                   <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px" height="28px">
                 </ng-container>
-                <ng-container
-                  *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx') ">
+                <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx' ||
+                                  assetType =='ppt' || assetType =='pptx') ">
                   <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
                 </ng-container>
                 <ng-container
@@ -253,10 +253,9 @@
                                 <img class="mr10" src="assets/images/pdficonAi.svg" alt="PDF" width="28px"
                                   height="28px">
                               </ng-container>
-                              <ng-container
-                                *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx') ">
-                                <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px"
-                                  height="28px">
+                              <ng-container *ngIf="!isPdfUploading && (assetType =='doc' || assetType =='docx' || assetType =='csv' ||  assetType =='xlsx' ||
+                                                              assetType =='ppt' || assetType =='pptx') ">
+                                <img class="mr10" src="assets/images/aidocslogo.svg" alt="file" width="28px" height="28px">
                               </ng-container>
                               <ng-container
                                 *ngIf="!isPdfUploading && (assetType =='jpg' || assetType =='png' || assetType =='jfif' || assetType =='ico' || assetType =='jpg') ">
