@@ -395,9 +395,19 @@
 												<!---XNFR-278-->
 												<li
 													*ngIf="isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
-													<a (click)="openMergePopup()" translate> Add To Groups</a>
+													<a (click)="openMergePopup()" translate>Add To Groups</a>
 												</li>
 												<!---XNFR-278-->
+												<!---XNFR-966-->
+												<li
+													*ngIf="!isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
+													<a (click)="openMergePopup()" translate>Copy To List</a>
+												</li>
+												<li
+													*ngIf="!isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
+													<a (click)="openRemovePopup()" translate>Move To List</a>
+												</li>
+												<!---XNFR-966-->
 											</ul>
 										</div>
 										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset dynamic_tbl_btn"
@@ -2139,12 +2149,16 @@
 <app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto"
 	(notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
 <!---XNFR-278-->
-<ng-container *ngIf="mergeOptionClicked">
+<ng-container *ngIf="mergeOptionClicked || moveOptionClicked">
 	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging"
-		[moduleName]="module" [selectedUsers] = "selectedContactForSave"
+		[moduleName]="module" [selectedUsers] = "selectedContactForSave"  [isMove]="moveOptionClicked" 
 		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
-
+<!-- <ng-container *ngIf="moveOptionClicked">
+	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMoving"
+		[moduleName]="module" [selectedUsers] = "selectedContactForSave"  [isMove]="moveOptionClicked" 
+		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
+</ng-container> -->
 <div *ngIf="contactService.isUnsubscribeContactModalPopup">
 	<app-unsubscribe-contact-modal [selectedUser]="selectedUser" (notifyParent)="unsubscribeUserResult($event)">
 	</app-unsubscribe-contact-modal>
