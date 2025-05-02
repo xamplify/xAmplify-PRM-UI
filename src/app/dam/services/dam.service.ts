@@ -460,5 +460,17 @@ getSharedAssetDetailsByIdForVendor(id: number) {
     return this.utilGetMethod("getPartnerSignatureCountDetails/" + id);
   }
 
+  validateSlug(slug:string ,companyId: number) {
+    let slugValue = (slug!= null && slug!= "") ? "&slug="+slug : "";
+    let url = this.DAM_PREFIX_URL+"/validateSlug/"+companyId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token + slugValue;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getAssetDetailBySlug(slug:string ,companyId: number) {
+    let slugValue = (slug!= null && slug!= "") ? "&slug="+slug : "";
+    let loggedInUserValue = "&loggedInUserId="+this.authenticationService.getUserId();
+    let url = this.DAM_PREFIX_URL+"/getAssetDetailBySlug/"+companyId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token + slugValue+loggedInUserValue;
+    return this.authenticationService.callGetMethod(url);
+  }
 
 }

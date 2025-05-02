@@ -71,4 +71,5 @@ export class SaveVideoFile {
     approvalStatus: string = "";
     createdByAnyApprover: boolean = false;
     sendForApproval: boolean = false;
+    slug = "";
  }
