@@ -14,6 +14,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { SignatureService } from 'app/dashboard/services/signature.service';
 import { SignatureResponseDto } from 'app/dashboard/models/signature-response-dto';
 import { HttpClient } from '@angular/common/http';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var $: any;
 declare var pdfjsLib: any;
@@ -47,7 +48,11 @@ export class ViewDamComponent implements OnInit {
 	previewContent: boolean = false;
 	assetPath: any;
 	fileType: string;
-
+  damCompanyId:number;
+  slug:any;
+  isImageFormat:any ;
+  isTextFormat:any;
+  isVendorLogin:boolean = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
     public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer, public signatureService:SignatureService,
@@ -60,11 +65,17 @@ export class ViewDamComponent implements OnInit {
 
   ngOnInit() {
     this.assetId = parseInt(this.activatedRoute.snapshot.params['assetId']);
-    if(this.assetId>0){
+	this.damCompanyId = parseInt(this.activatedRoute.snapshot.params['damCompanyId']);
+	this.slug = this.activatedRoute.snapshot.params['slug'];
+	if(this.slug != null){
+		this.viewDetailsBySlug(this.slug, this.damCompanyId);
+	}else if(this.assetId>0){
       this.viewDetails(this.assetId);
     }else{
       this.referenceService.goToPageNotFound();
     }
+
+
   }
 
   viewContent(){
@@ -77,6 +88,8 @@ export class ViewDamComponent implements OnInit {
 			this.assetPath = this.assetDetailsViewDto.assetPath;
 		}
 		this.fileType = this.assetDetailsViewDto.assetType;
+		this.isImageFormat = this.assetDetailsViewDto.imageFileType
+		this.isTextFormat = this.assetDetailsViewDto.textFileType
 	} else {
 		this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
 	}
@@ -294,6 +307,92 @@ export class ViewDamComponent implements OnInit {
 
 	  closePreview() {
 		this.previewContent = false;
+		if(this.isVendorLogin){
+			this.goToDam();
+		}
 	  }
 
+	    handleAssetPreview(item: any) {
+		  if (this.referenceService.isVideo(item.assetType)) {
+			let prefixurl = RouterUrlConstants['home'] + RouterUrlConstants['dam'] + RouterUrlConstants['approval']
+			const videoUrl = `${prefixurl}/previewVideo/${item.videoId}/${item.id}`;
+			this.referenceService.navigateToRouterByViewTypes(videoUrl, 0, undefined, undefined, undefined);
+		  } else if (item.beeTemplate) {
+			if ((item.contentPreviewType || item.imageFileType) && item.assetPath != undefined && item.assetPath != null && item.assetPath != '') {
+			  if (item.assetProxyPath) {
+				this.assetPath = item.assetProxyPath + item.assetPath;
+			  } else {
+				this.assetPath = item.assetPath;
+			  }
+			  //this.assetPath = item.assetPath;
+			  this.fileType = item.assetType;
+			  this.previewContent = true;
+			  this.isImageFormat = item.imageFileType;
+			  this.isTextFormat = item.textFileType;
+			} else {
+			  this.referenceService.previewAssetPdfInNewTab(item.id);
+			}
+		  } else {
+			if ((item.contentPreviewType || item.imageFileType)) {
+			  if (item.assetProxyPath) {
+				this.assetPath = item.assetProxyPath + item.assetPath;
+			  } else {
+				this.assetPath = item.assetPath;
+			  }
+			  //this.assetPath = item.assetPath;
+			  this.fileType = item.assetType;
+			  this.previewContent = true;
+			  this.isImageFormat = item.imageFileType;
+			  this.isTextFormat = item.textFileType;
+			} else {
+			  this.referenceService.preivewAssetOnNewHost(item.id);
+			}
+		  }
+		}
+
+	viewDetailsBySlug(slug: string, companyId: number) {
+		let damPartnerId = null;
+		this.damService.getAssetDetailBySlug(slug, companyId)
+			.subscribe(
+				(response: any) => {
+					this.damViewStatusCode = response.statusCode;
+					if (response.access) {
+						if (response.statusCode == 404) {
+							this.referenceService.goToAccessDeniedPage();
+						} else if (response.statusCode == 200) {
+							let map = response.map;
+							this.isVendorLogin = map.isVendor;
+							damPartnerId = map.damPartnerId;
+							if (this.isVendorLogin) {
+								this.handleAssetPreview(response.data);
+							} else {
+								this.assetDetailsViewDto = response.data;
+								this.selectedAsset = this.assetDetailsViewDto;
+								this.assetDetailsViewDto.displayTime = new Date(this.assetDetailsViewDto.publishedTimeInUTCString);
+								this.loadVideoPlayer = this.selectedAsset.videoId != null && this.selectedAsset.videoId > 0;
+								if (!this.loadVideoPlayer) {
+									this.assetViewLoader = false;
+								}
+							}
+						} 
+					}else {
+						this.authenticationService.forceToLogout();
+					}
+				},
+				(error: string) => {
+					this.xtremandLogger.errorPage(error);
+				},
+				() => {
+					if (!this.isVendorLogin && this.loadVideoPlayer && this.damViewStatusCode == 200) {
+						if (damPartnerId != null) {
+							this.saveGeoLocationAnalytics(damPartnerId);
+						}
+					}
+				}
+			);
+	}
+
+	goToDam(){
+		this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+	}
 }

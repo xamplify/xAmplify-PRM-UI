@@ -19,7 +19,7 @@ export class UrlAuthGuardService {
     const moduleInfo = this.getContentModuleInfo(routerUrl);
     const moduleId = moduleInfo.moduleId;
     const moduleName = moduleInfo.moduleName;
-    const contentModuleRouterUrlsForPartner = ["modules", "shared", "editp", "pda", "tb", "pb"];
+    const contentModuleRouterUrlsForPartner = ["modules", "shared", "editp", "pda", "tb", "pb", "vapv"];
     let componentUrlName = this.getComponentUrlName(routerUrl, contentModuleRouterUrlsForPartner, moduleName);
     let url = this.AUTH_URL + "url/modules/" + moduleId + "/users/" + this.userId + "/routerUrls/" + componentUrlName + this.ACCESS_TOKEN_PARAMETER + this.authenticationService.access_token;
     let subDomain = this.authenticationService.getSubDomain();

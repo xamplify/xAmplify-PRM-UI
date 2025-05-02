@@ -13,6 +13,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   @Input() customField = new CustomFieldsDto;
   @Input() customFieldsList: any;
   @Input() opportunityType :any;
+  @Input() isXamplifyCustomField: boolean = false;
   customFields = new CustomFieldsDto;
   defaultFields = ['Name','Last Name', 'Close Date']
   isDefaultField: boolean = false;

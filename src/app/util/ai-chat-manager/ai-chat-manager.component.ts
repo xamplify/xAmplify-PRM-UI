@@ -61,7 +61,7 @@ export class AiChatManagerComponent implements OnInit {
   baseWidth: number = 800;
   baseHeight: number = 1000;
   loadPreview :boolean = false
-  pdfFiles: Blob[] = [];
+  pdfFiles: any[] = [];
   categoryId: any;
   isPartnerFolderView :boolean = false;
   isFromFolderView:boolean = false;
@@ -71,6 +71,7 @@ export class AiChatManagerComponent implements OnInit {
   folderFrom: any;
   folderAssetCount: any;
   isFromContactJourney: boolean = false;
+  copiedIndex: number;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
@@ -138,7 +139,8 @@ export class AiChatManagerComponent implements OnInit {
       this.getSharedAssetDetailsById(this.assetId);
     } else {
       if (this.asset != undefined && this.asset != null) {
-        this.assetDetailsViewDtoOfPartner.displayTime = new Date(this.asset.createdDateInUTCString);
+        const timeString = this.asset.publishedTimeInUTCString || this.asset.createdDateInUTCString;
+        this.assetDetailsViewDtoOfPartner.displayTime = timeString ? new Date(timeString) : null; 
         this.assetDetailsViewDtoOfPartner.assetName = this.asset.assetName;
         this.assetDetailsViewDtoOfPartner.categoryName = this.asset.categoryName;
         this.assetDetailsViewDtoOfPartner.vendorCompanyName = this.asset.companyName;
@@ -244,7 +246,9 @@ export class AiChatManagerComponent implements OnInit {
       } else if (this.isFromContactJourney) {
         this.notifyParent.emit(this.chatGptSettingDTO);
       } else {
-        if (this.router.url.includes('/shared/view/')) {
+        if (this.router.url.includes('/shared/view/g')) {
+          this.referenceService.goToRouter('/home/dam/shared/g');
+        } else if( this.router.url.includes('/shared/view')) {
           this.referenceService.goToRouter('/home/dam/shared/l');
         } else {
           this.referenceService.goToRouter('/home/dam/sharedp/view/' + this.assetId + '/l');
@@ -259,11 +263,11 @@ export class AiChatManagerComponent implements OnInit {
     }
   }
 
-  copyAiText(element: HTMLElement) {
-    this.copyToClipboard(element);
+  copyAiText(element: HTMLElement, index: number) {
+    this.copyToClipboard(element, index);
   }
 
-  copyToClipboard(element: any) {
+  copyToClipboard(element: any, index: number) {
     this.isEmailCopied = true;
     this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
@@ -272,10 +276,13 @@ export class AiChatManagerComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+    this.copiedIndex = index;
     setTimeout(() => {
       this.isEmailCopied = false;
+      this.copiedIndex = null;
     }, 2000);
   }
+
 
   onFileSelected(event: any) {
     this.UploadedFile =true;
@@ -296,7 +303,7 @@ export class AiChatManagerComponent implements OnInit {
 
   getUploadedFileId() {
     this.isPdfUploading = true;
-    this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto).subscribe(
+    this.chatGptSettingsService.onUpload(this.pdfFile, this.chatGptIntegrationSettingsDto, this.assetDetailsViewDtoOfPartner.assetName).subscribe(
       (response: any) => {
         this.isPdfUploading = false;
         let data = response.data;
@@ -576,7 +583,11 @@ export class AiChatManagerComponent implements OnInit {
     );
     forkJoin(requests).subscribe({
       next: (responses: Blob[]) => {
-        this.pdfFiles.push(...responses);
+        this.pdfFiles = responses.map((blob, index) => ({
+          file: blob,
+          assetName: assetsPath[index].assetName
+        }));
+
         this.ngxLoading = false;
         this.getUploadedFileIds();
       },

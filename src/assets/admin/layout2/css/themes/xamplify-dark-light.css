@@ -2643,7 +2643,7 @@ tbody{background: transparent;}
     border: 1px solid #2f4857 !important;
   }
 /* ui enhacement changes in onboarding partner */
-.add_partnerbtn{
+.add_partnerbtn,.template_box{
   border: 1px solid #2f4857 !important;
 }
 .service-icon:hover {
@@ -2806,6 +2806,6 @@ markdown pre,.aligin-para{
   color: #fff!important;
   border-radius: 5px;
   }
-  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text{
+  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color{
     color: #fff!important;
   }

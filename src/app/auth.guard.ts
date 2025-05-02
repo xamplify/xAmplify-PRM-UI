@@ -137,6 +137,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     secureUrlByRole(url: string): boolean {
         try {
             const roles = this.authenticationService.user.roles.map(function (a) { return a.roleName; });
+            if (url.indexOf(this.damUrl) > -1 || url.indexOf('select-modules')>-1 || url.indexOf("/content/")>-1) {
+                return this.authorizeUrl(roles, url, this.damUrl);
+            }
+            if (url.indexOf(this.lmsUrl) > -1) {
+                return this.authorizeUrl(roles, url, this.lmsUrl);
+            }
+            if (url.indexOf(this.playbookUrl) > -1) {
+                return this.authorizeUrl(roles, url, this.playbookUrl);
+            }
             if (url.indexOf(this.emailTemplateBaseUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.emailTemplateBaseUrl);
             }
@@ -211,9 +220,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if (url.indexOf(this.mdfUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.mdfUrl);
             }
-            if (url.indexOf(this.damUrl) > -1 || url.indexOf('select-modules')>-1 || url.indexOf("/content/")>-1) {
-                return this.authorizeUrl(roles, url, this.damUrl);
-            }
             if (url.indexOf("/home/lead")>-1) {
                 return this.authorizeUrl(roles, url, this.leadsUrl);
             }
@@ -225,12 +231,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             if (url.indexOf(this.approvalHubUrl) > -1) {
                 return this.authorizeUrl(roles, url, this.approvalHubUrl);
-            }
-            if (url.indexOf(this.lmsUrl) > -1) {
-                return this.authorizeUrl(roles, url, this.lmsUrl);
-            }
-            if (url.indexOf(this.playbookUrl) > -1) {
-                return this.authorizeUrl(roles, url, this.playbookUrl);
             }
             /*******XNFR-83*******/
             if (url.indexOf(this.agencyUrl) > -1) {

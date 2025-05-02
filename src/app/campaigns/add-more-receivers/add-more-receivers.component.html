@@ -82,6 +82,7 @@
                                               <th style="text-align: center;" *ngIf="showContactType">Type</th>
                                               <th style="text-align: center;" >List Type</th>
                                               <th style="text-align: center;">Uploaded Date</th>
+                                              <th style="text-align: center;">Count</th>
                                               <th style="text-align: center;">Preview </th>
                                            </tr>
                                         </thead>
@@ -133,6 +134,7 @@
                                               <td class="text-center sorting_1">
                                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                               </td>
+                                              <td class="text-center">{{contacts.countOfContactsLists}}</td>
                                               <td class="text-center">
                                                  <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
                                                  <i class="fa fa-eye IconCustomization campaignViewIcon" aria-hidden="true" title="" data-original-title="Preview"></i>

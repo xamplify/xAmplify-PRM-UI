@@ -396,7 +396,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             if (this.contactService.isEditMode !== undefined) {
                 this.isEditMode = this.contactService.isEditMode;
               }
-             
+              
             //XNFR-697
             this.isSalesforceAsActiveCRM = this.isPartner && (this.activeCrmType == "salesforce");
             if (!(this.addContactuser.emailId !== undefined)) {
@@ -633,7 +633,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     openPopup(addContactuser: any){
         this.companyPop = true;
         this.actionType = "add";
-        this.contactId = addContactuser.contactCompanyId;      
+        this.contactId = addContactuser.contactCompanyId;     
     }
     closeCompanyPopup(event:any) {
         if(event == 0){
