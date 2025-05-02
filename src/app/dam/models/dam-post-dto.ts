@@ -38,4 +38,6 @@ export class DamPostDto {
     vendorSignatureCompleted = false;
 	vendorSignatureRequiredAfterPartnerSignature = false;
 
+	/** XNFR-884 **/
+	slug: string = "";
 }
