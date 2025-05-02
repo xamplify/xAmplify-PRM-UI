@@ -441,3 +441,5 @@ h6 {
 .text-line :hover{
   text-decoration-line: underline;
 }
+.close-circle {height: 29px;width: 29px;}
+

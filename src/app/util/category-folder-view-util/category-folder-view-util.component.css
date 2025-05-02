@@ -238,6 +238,10 @@ span.Track-countbg {
 
 
 }
+.mscroll_x::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
 
 
 

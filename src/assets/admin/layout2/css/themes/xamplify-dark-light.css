@@ -2643,7 +2643,7 @@ tbody{background: transparent;}
     border: 1px solid #2f4857 !important;
   }
 /* ui enhacement changes in onboarding partner */
-.add_partnerbtn{
+.add_partnerbtn,.template_box{
   border: 1px solid #2f4857 !important;
 }
 .service-icon:hover {

@@ -206,7 +206,6 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.setProgressAndUpdate(asset.damId, ActivityType.OPENED, false);
     } else if (asset.typeQuizId) {
       this.viewQuiz(asset);
-      this.setProgressAndUpdate(asset.quizId, ActivityType.OPENED, true);
     }
     if(this.isVideo){
       this.selectedVideoId = this.assetDetails.videoId;

@@ -163,7 +163,7 @@
             <section *ngIf="modulesDisplayType.isListView">
                 <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                     <div class="table-responsive">
-                        <table class='table tgrid table-hover table-sm' id="manage-campaign-list"
+                        <table class='table tgrid table-hover table-sm' style="overflow: inherit;" id="manage-campaign-list"
                             *ngIf="pagination.pagedItems?.length>0">
                             <thead>
                                 <tr>

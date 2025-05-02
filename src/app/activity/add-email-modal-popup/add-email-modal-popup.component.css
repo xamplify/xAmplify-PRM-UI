@@ -264,7 +264,12 @@ span.icon-alignments {
 
 .template_box {
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: 15px;
     padding: 0px 10px;
+}
+@media (min-width: 768px) and (max-width: 1120px) {
+    .dymc_width{
+        width: 85% !important;
+    }
 }

@@ -40,7 +40,7 @@ export class SelectfieldComponent implements OnInit {
   allItems: any[] = [];
   unSelectedItems: any[] = [];
   selectedItems: any[] = [];
-  excludedLabels = ["Last Name", "Company", "Email"];
+  excludedLabels = ["LastName","Last_Name", "Company", "Email"];
   selectModalPopUp = "exportExcelModalPopup";
   orderModalPopup = "orderFieldPopup";
   isOrderDivOpen = false;
@@ -62,9 +62,11 @@ export class SelectfieldComponent implements OnInit {
     this.isMyprofile = this.router.url.includes('dashboard/myprofile');
 
     if (!this.isMyprofile) {
+      
       this.dragulaService.setOptions('fieldsDragula', {
         moves: (el, container, handle) => {
-          return !this.isDisabled(el);
+          // Check if the dragged element has the 'non-draggable' class
+          return !el.classList.contains('non-draggable');
         },
         accepts: (el, target, source, sibling) => {
           if (!sibling) return true;
@@ -87,9 +89,9 @@ export class SelectfieldComponent implements OnInit {
   ngOnInit() {
     this.ngxloading = true;
     if (this.opportunityType === 'LEAD') {
-      this.excludedLabels = ["Last Name", "Company", "Email"];
+      this.excludedLabels = ["LastName","Last_Name", "Company", "Email"];
     } else {
-      this.excludedLabels = ["Amount", "Close Date", "Name","Deal Name"];
+      this.excludedLabels = ["Name","dealname","name","title","symptom","Account_Name","Deal_Name","CloseDate","closedate","expectedCloseDate","expected_close_date","FOppTargetDate","Closing_Date","Close_Date","Amount","amount","value","FOppValue"];
     }
     this.referenceService.openModalPopup(this.selectModalPopUp);
     this.pageNumber = this.paginationComponent.numberPerPage[0];
@@ -161,22 +163,24 @@ export class SelectfieldComponent implements OnInit {
   toggleAllSelection(event: any) {
     this.isHeaderCheckBoxChecked = event.target.checked;
     this.fieldsPagedItems.forEach(updatedItem => {
-      if (!this.excludedLabels.includes(updatedItem.labelName)) {
+      if (!this.excludedLabels.includes(updatedItem.labelId)) {
         updatedItem.selectedColumn = event.target.checked;
       }
       const index = this.allItems.findIndex(item => item.labelId === updatedItem.labelId);
-      if (index !== -1 && !this.excludedLabels.includes(updatedItem.labelName)) {
+      if (index !== -1 && !this.excludedLabels.includes(updatedItem.labelId)) {
         this.allItems[index].selectedColumn = updatedItem.selectedColumn;
       }
     });
     this.updateHeaderCheckbox();
   }
+  isHeaderCheckBoxCheckedDisable:boolean
   updateHeaderCheckbox() {
     if (!(this.pager.pages && this.pager.pages.length)) {
       this.isHeaderCheckBoxChecked = false;
     } else {
       this.isHeaderCheckBoxChecked = this.fieldsPagedItems.every((item: any) => item.selectedColumn);
     }
+     this.isHeaderCheckBoxCheckedDisable = this.fieldsPagedItems.every((item: any) => item.defaultColumn);
   }
   isCheked(field: any): boolean {
     if (this.isMyprofile) {
@@ -221,7 +225,7 @@ export class SelectfieldComponent implements OnInit {
   }
 
   isFieldDisabled(field: any): boolean {
-    return this.excludedLabels.includes(field.labelName) || (field.defaultColumn  && !this.isMyprofile);
+    return this.excludedLabels.includes(field.labelId) || (field.defaultColumn  && !this.isMyprofile);
   }
   searchKey: string = '';
   searchFieldsKeyPress(keyCode: any) {
@@ -241,7 +245,7 @@ export class SelectfieldComponent implements OnInit {
   updateExcludedLabels() {
     this.defaultFields = this.allItems
       .filter(item => item.defaultColumn === true)
-      .map(item => item.labelName)
+      .map(item => item.labelId)
     this.excludedLabels = this.excludedLabels
       ? Array.from(new Set([...this.excludedLabels, ...this.defaultFields])) // Merge & remove duplicates
       : [...this.defaultFields];
@@ -274,7 +278,7 @@ export class SelectfieldComponent implements OnInit {
     this.setFieldsPage(1);
   }
   isNonDraggable(fieldDto: any): boolean {
-    return this.excludedLabels.includes(fieldDto.labelName) && fieldDto.defaultColumn && !this.isMyprofile;
+    return this.excludedLabels.includes(fieldDto.labelId) && fieldDto.defaultColumn && !this.isMyprofile;
   }
   getExportExcelHeader(pagination: Pagination) {
     this.ngxloading = true;

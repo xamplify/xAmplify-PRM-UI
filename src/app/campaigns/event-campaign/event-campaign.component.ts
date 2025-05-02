@@ -542,7 +542,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     this.detailsTab = true;
                     this.resetTabClass();
                     this.eventStartTimeError()
-
+                    this.getValidUsersCount();
                 }
             );
         }
@@ -3422,7 +3422,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         (error: string) => {
             this.loading = false;
         }, ()=>{
-            if (this.reDistributeEventManage && this.validUsersCount == undefined) {
+            if (this.reDistributeEventManage) {
                 this.getValidUsersCount();
             }
         })
