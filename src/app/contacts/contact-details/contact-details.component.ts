@@ -439,14 +439,14 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   showEmailSubmitSuccessStatus(event) {
-    this.isReloadEmailActivityTab = event;
+    this.isReloadEmailActivityTab = !this.isReloadEmailActivityTab;
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
     this.closeEmailModalPopup();
   }
 
   showEmailFailedErrorStatus(event) {
-    this.isReloadEmailActivityTab = event;
+    this.isReloadEmailActivityTab = !this.isReloadEmailActivityTab;
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
     this.closeEmailModalPopup();
