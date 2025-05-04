@@ -122,6 +122,18 @@
                     </td>
                   </tr>
 
+                  <!----- XNFR-967 Contact Status ----->
+                  <tr>
+                    <td class='bold' style="width: 35%;">Contact Status</td>
+                    <td class="d-flex">
+                      <input type="text" class="form-control" [(ngModel)]="user.contactStatus" placeholder="Contact Status (optional)"
+                        [ngModelOptions]="{standalone: true}" [disabled]="isContactStatusPresent(user)">
+                      <select class="form-control" [(ngModel)]="user.contactStatus">
+                        <option *ngFor="let contactStatus of contactStatusStages" [value]="contactStatus">{{contactStatus}}</option>
+                      </select>
+                    </td>
+                  </tr>
+
                   <!----- XNFR-680 Flexi Fields ----->
                   <tr *ngFor="let flexiField of user.flexiFields">
                     <td class='bold'>{{flexiField.fieldName}}</td>

@@ -84,7 +84,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     @Input() public contactId: number = 0;
     @Output() emitCompanyId = new EventEmitter<any>(); 
     companyPop: boolean = false;
-    showAddButton: boolean = true; 
+    showAddButton: boolean = true;
+    contactStatusStages: any;
 
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
@@ -105,6 +106,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
           this.isPartner = true;
           this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
       }
+      this.findContactStatusStages();
       this.contactDetails
     }
 
@@ -651,4 +653,34 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.selectedCompanyId = company;        
         this.getActiveCompanies(); 
     }
+
+    findContactStatusStages() {
+        if (this.checkIsContactType()) {
+            this.loading = true;
+            this.contactService.findContactStatusStages().subscribe(
+                (response: any) => {
+                    if (response.statusCode === 200) {
+                        const stages = response.data;
+                        this.contactStatusStages = [];
+                        this.contactStatusStages = stages.map((stage: any) => stage.stageName);
+                        const defaultStage = stages.find((stage: any) => stage.defaultStage).stageName;
+                        if (this.isUpdateUser) {
+                            const existingStatus = this.contactDetails.contactStatus;
+                            if (this.contactStatusStages.includes(existingStatus)) {
+                                this.addContactuser.contactStatus = existingStatus;
+                            } else {
+                                this.addContactuser.contactStatus = defaultStage;
+                            }
+                        } else {
+                            this.addContactuser.contactStatus = defaultStage;
+                        }
+                    }
+                    this.loading = false;
+                }, (error: any) => {
+                    this.loading = false;
+                    console.error('Error occured in findContactStatusStages()' + error);
+                });
+        }
+    }
+
 }
