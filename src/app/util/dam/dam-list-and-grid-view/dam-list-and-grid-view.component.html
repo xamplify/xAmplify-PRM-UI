@@ -671,12 +671,14 @@
 				<div class="btn-group pull-right">
 					<div class="d-flex">
 						<!-- Custom Upload Button -->
-						<div *ngIf="FromOliverPopUp" class="btn btn-xs l-g-view margin-space mr5" style="padding: 7px !important;"
-							(click)="fileInput.click()">
-							<span data-placement="bottom" data-toggle="tooltip" title="Add New Asset">
-								<i class="fa fa-plus" aria-hidden="true"></i>
+						<button *ngIf="FromOliverPopUp" (click)="fileInput.click()" class="button_blue bgcolor-unset p0 btn-transitions" tabindex="-1" translate=""
+							type="button">
+							<span class="btn btn-primary transition d-inline"><span data-placement="bottom" data-toggle="tooltip"
+									title="Add New Asset">
+									<i class="fa fa-plus" aria-hidden="true"></i>
+								</span> Upload New Asset
 							</span>
-						</div>
+						</button>
 						<!-- Start XNFR-409 -->
 						<div class="btn btn-xs l-g-view margin-space mr5" (click)="toggleFilterOption()"
 							[ngClass]="showFilterOption?'disabled':''">
