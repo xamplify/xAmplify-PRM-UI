@@ -1134,8 +1134,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (event.target.checked) {
 			this.selectedItems.push(item);
 		} else {
-			const index = this.selectedItems.indexOf(item);
-			if (index > -1) {
+			const index = this.selectedItems.findIndex(selected => selected.id === item.id);
+			if (index !== -1) {
 				this.selectedItems.splice(index, 1);
 			}
 		}

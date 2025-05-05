@@ -57,6 +57,8 @@ export class ChatGptModalComponent implements OnInit {
   selectedAssets: any[] = [];
   isfileProcessed: boolean = false;
   isReUpload: boolean = false;
+  uploadedAssetIds: any[];
+  vectorStoreId: any;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
   }
@@ -337,18 +339,34 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   getPdfByAssetPaths(assetsPath: any[]) {
-    const requests = assetsPath.map(path =>
-      this.http.get(path.proxyUrlForOliver + path.assetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token), {
-        responseType: 'blob'
-      })
-    );
+    const oldAssets = [];
+    const requests = [];
+
+    assetsPath.forEach(path => {
+      if (path.openAIFileId == undefined || path.openAIFileId == null) {
+        const url = path.proxyUrlForOliver + path.assetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token);
+        const request = this.http.get(url, { responseType: 'blob' });
+        requests.push(request);
+      } else {
+        oldAssets.push(path);
+      }
+    });
+
     forkJoin(requests).subscribe({
       next: (responses: Blob[]) => {
         this.pdfFiles = responses.map((blob, index) => ({
           file: blob,
-          assetName: assetsPath[index].assetName
+          assetName: assetsPath[index].assetName,
+          assetId: assetsPath[index].id
         }));
 
+        if (oldAssets.length > 0) {
+          this.pdfFiles = oldAssets.map((path) => ({
+            file: path.openAIFileId,
+            assetName: path.assetName,
+            assetId: path.id
+          }));
+        }
         this.getUploadedFileIds();
       },
       error: (err) => {
@@ -358,10 +376,16 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   getUploadedFileIds() {
+    this.chatGptIntegrationSettingsDto.isFromInsightAI = true;
+    this.chatGptIntegrationSettingsDto.uploadedAssetIds = this.uploadedAssetIds;
+    this.chatGptIntegrationSettingsDto.threadId = this.threadId;
+    this.chatGptIntegrationSettingsDto.vectorStoreId = this.vectorStoreId;
     this.chatGptSettingsService.onUploadFiles(this.pdfFiles, this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         let data = response.data;
         this.threadId = data.threadId;
+        this.vectorStoreId = data.vectorStoreId;
+        this.uploadedAssetIds = response.map.uploadedAssestIds;
         this.assetLoader = false;
         if (!this.isReUpload) {
           this.isfileProcessed = true;
