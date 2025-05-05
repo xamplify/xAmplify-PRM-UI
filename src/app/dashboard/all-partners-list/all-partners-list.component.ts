@@ -36,7 +36,7 @@ export class AllPartnersListComponent implements OnInit {
   // @Input() toDateFilter: string = '';
 
   @Output() triggerSendEmailPopup = new EventEmitter<any>();
-  dateFilterText = "Select Date Filter";
+  dateFilterText = "Recent Login Date Filter";
   //filterApplied: boolean = false;
  // public selectedRegionIds = [];
  // public selectedStatusIds = [];
@@ -146,6 +146,7 @@ setFilterColor() {
 }
 findRegionNames(){
   this.pagination.userId = this.loggedInUserId;  
+  this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
   this.regionInfoFields = { text: 'region', value: 'region' };
   this.parterService.getAllPartnerRegionNamesFilter(this.pagination).
   subscribe(response => {
@@ -259,7 +260,7 @@ applyFilters(pagination: Pagination) {
     
   }
   getAllPartnersDetailsList(pagination: Pagination){
-   // pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+   pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.parterService.getAllPartners(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
