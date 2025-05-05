@@ -578,5 +578,8 @@ export class Properties {
 	CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE = 'A maximum of {{maxRecipientCount}} recipients is allowed per campaign. Please modify your selection and try again.'
 
 	allPartnersDonutTooltipText = 'REGION WISE PARTNERS';
+
+	/**XNFR-973**/
+	ACCESS_TO_ASK_OLIVER = "Enable this setting to restrict Ask Oliver's access to the asset."
 }
 

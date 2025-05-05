@@ -1895,4 +1895,9 @@ confirmRemoveVideo(){
           });
 }
 
+    /****XNFR-586****/
+    setOliverAccess(event) {
+        this.damUploadPostDto.disableAccessForOliver = event;
+    }
+
 }
