@@ -632,7 +632,7 @@
 			<div *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
 				<app-folder-type-view-util [moduleId]="roles.damId" [FromOliverPopUp]="FromOliverPopUp"
 					[modulesDisplayType]="modulesDisplayType" (folderViewAssetEventEmitter) ="viewAssets($event)"
-					(oliverfolderViewTypeEventEmitter)="setViewType($event)"></app-folder-type-view-util>
+					(oliverfolderViewTypeEventEmitter)="setViewTypeForOliver($event)"></app-folder-type-view-util>
 			</div>
 
 		</div>
