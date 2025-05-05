@@ -273,7 +273,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.damPostDto.createdByAnyApprover = dam.createdByAnyApprover;
       this.damPostDto.draft = dam.draft;
       this.damPostDto.id = dam.id;
-      this.completeLink = this.linkPrefix+this.existingSlug;
+      this.completeLink = this.linkPrefix+this.damPostDto.slug;
 
       
     } else {
@@ -381,8 +381,16 @@ export class AddDamComponent implements OnInit, OnDestroy {
               this.referenceService.navigateToManageAssetsByViewType(this.folderViewType, this.viewType, this.categoryId, false);
             }
           } else if (result.statusCode == 401) {
-            this.nameErrorMessage = "Already exists";
-            this.formData.delete("damUploadPostDTO");
+            let map = result.map;
+            if(map != undefined && map != null){
+              if(map.duplicateName){
+                this.nameErrorMessage = "Already exists";
+              }
+              if(map.duplicateSlug){
+                this.slugErrorMessage = "Alias already exists";
+              }
+              this.formData.delete("damUploadPostDTO");  
+            }
           }
           this.modalPopupLoader = false;
         },
@@ -919,10 +927,13 @@ setVendorSignatureRequired(event){
   validateSlug() {
     let slug = $.trim(this.damPostDto.slug);
     if (slug == undefined || slug.length < 1) {
+      this.isValidSlug = false;
       this.addErrorMessage("slug", "Alias can not be empty");
     } else if (slug != undefined && slug.length < 3) {
+      this.isValidSlug = false;
       this.addErrorMessage("slug", "Slug should have atleast 3 characters");
     } else {
+      this.isValidSlug = true;
       this.removeErrorMessage("slug");
     }
     this.validateAllFields();
@@ -943,25 +954,28 @@ setVendorSignatureRequired(event){
   }
 
   validateSlugForCompany() {
-    if (this.damUploadPostDto.slug != null && this.damUploadPostDto.slug != '') {
-      this.damService.validateSlug(this.damUploadPostDto.slug, this.loggedInUserCompanyId).subscribe(
+    if (this.damPostDto.slug != null && this.damPostDto.slug != '') {
+      this.damService.validateSlug(this.damPostDto.slug, this.loggedInUserCompanyId).subscribe(
         (response: any) => {
           let isValid = response.data;
           if (!isValid) {
-            this.damUploadPostDto.isSlugValid = false;
+            this.isValidSlug = false;
             this.addErrorMessage("slug", "Alias already exists");
           } else {
-            this.removeErrorMessage("slug");
+            this.validateSlug();
           }
         },
         (error: string) => {
           this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
         }, () => {
           this.validateAllFields()
+          this.validateFields();
         }
       );
     } else {
       this.validateSlug();
+      this.validateFields();
+
     }
   }
 
@@ -993,6 +1007,16 @@ setVendorSignatureRequired(event){
       this.validateSlugForCompany();
     }
     this.completeLink = this.linkPrefix + this.damPostDto.slug;
+    
+    if(this.isValidName){
+      this.nameErrorMessage = "";
+    }
+    if(this.isValidDescription){
+      this.descriptionErrorMessage = "";
+    }
+    if(this.isValidSlug){
+      this.slugErrorMessage= "";
+    }
   }
 
   editSlug() {

@@ -28,6 +28,7 @@ import { ActivatedRoute} from '@angular/router';
 import { VideoFileEventEmitter } from 'app/dam/models/video-file-event-emitter';
 import { DamService } from 'app/dam/services/dam.service';
 import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 declare var videojs, QuickSidebar,$: any;
 
@@ -176,6 +177,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   existingSlug = "";
   loggedInUserCompanyId:number;
   isValidSlug:boolean = false;
+  customResponse: CustomResponse = new CustomResponse();
 
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -1350,6 +1352,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
     saveVideoObject() {
         try {
+            this.customResponse = new CustomResponse();
             if (this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)) {
                 if (!this.colorControl) { this.colorControlChange() }
                 this.showError = true
@@ -1701,4 +1704,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onValueChanged();
     } 
     }
+
+      copyInputMessage(inputElement: any) {
+        this.referenceService.goToTop();
+        this.customResponse = new CustomResponse();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        let message = 'Link copied to clipboard successfully.';
+        $("#copy-link").select();
+        this.customResponse = new CustomResponse('SUCCESS', message, true);
+      }
 }

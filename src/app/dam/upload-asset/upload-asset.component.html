@@ -997,7 +997,7 @@
                               style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
                               type="button" (click)="isVideoAsset?uploadOrUpdateVideo():uploadOrUpdateAsset()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
-                           <!-- XNFR-884 -->
+                           <!-- XNFR-884 -->                            
                            <button *ngIf="isAdd || (!isAdd && (damUploadPostDto?.approvalStatus == 'DRAFT' || damUploadPostDto?.approvalStatus == 'REJECTED'))" class="button_blue bgcolor-unset pos_mar_rgt4"
                               [disabled]="isSaveAsDraftDisabled()" id="right" style="padding-top:1px;padding-right:0px;" type="button"
                               (click)="isVideoAsset?saveAsDraftVideo():saveAsDraftAndUpload()"
