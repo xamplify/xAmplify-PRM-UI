@@ -160,6 +160,8 @@ export class ChatGptModalComponent implements OnInit {
     this.showEmailModalPopup = false;
     this.showView = false;
     this.selectedAssets = [];
+    this.isReUpload = false;
+    this.isfileProcessed = false;
   }
 
   showOliverIcon() {
@@ -341,7 +343,7 @@ export class ChatGptModalComponent implements OnInit {
   getPdfByAssetPaths(assetsPath: any[]) {
     const oldAssets = [];
     const requests = [];
-
+    const emptyBlob = new Blob([], { type: 'application/pdf' });
     assetsPath.forEach(path => {
       if (path.openAIFileId == undefined || path.openAIFileId == null) {
         const url = path.proxyUrlForOliver + path.assetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token);
@@ -362,7 +364,7 @@ export class ChatGptModalComponent implements OnInit {
 
         if (oldAssets.length > 0) {
           this.pdfFiles = oldAssets.map((path) => ({
-            file: path.openAIFileId,
+            file: emptyBlob,
             assetName: path.assetName,
             assetId: path.id
           }));
@@ -370,6 +372,7 @@ export class ChatGptModalComponent implements OnInit {
         this.getUploadedFileIds();
       },
       error: (err) => {
+        this.assetLoader = false;
         console.error('Failed to load all PDFs', err);
       }
     });
@@ -387,26 +390,35 @@ export class ChatGptModalComponent implements OnInit {
         this.vectorStoreId = data.vectorStoreId;
         this.uploadedAssetIds = response.map.uploadedAssestIds;
         this.assetLoader = false;
-        if (!this.isReUpload) {
-          this.isfileProcessed = true;
+        let self = this
+        if (!self.isReUpload) {
+          self.isfileProcessed = true;
+        } else if (self.isReUpload) {
+          this.scrollToBottom();
+          self.showOpenHistory = true;
         }
       },
       (error: string) => {
+        this.assetLoader = false;
         console.log('API Error:', error);
       }
     );
+  }
+
+  scrollToBottom() {
+    if ($('.main-container').length) {
+      $('.main-container').animate({
+        scrollTop: $('.main-container')[0].scrollHeight
+      }, 500);
+    }
   }
 
   AskAiTogetData() {
     this.showOpenHistory = true;
     this.isfileProcessed = false;
     this.isTextLoading = true;
-    if ($('.main-container').length) {
-      $('.main-container').animate({
-        scrollTop: $('.main-container')[0].scrollHeight
-      }, 500);
-    }
     var self = this;
+    self.scrollToBottom();
     self.messages.push({ role: 'user', content: self.inputText });
     this.chatGptIntegrationSettingsDto.prompt = self.inputText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
@@ -440,10 +452,14 @@ export class ChatGptModalComponent implements OnInit {
 
   closeManageAssets() {
     this.showView = false;
+    if (!this.isReUpload && !this.isfileProcessed) {
+      this.selectedAssets = [];
+    }
   }
 
-  reUploadFiles(){
+  reUploadFiles() {
     this.openAssetsPage();
     this.isReUpload = true;
   }
+
 }

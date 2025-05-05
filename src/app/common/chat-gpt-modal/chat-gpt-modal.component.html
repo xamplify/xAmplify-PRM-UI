@@ -258,7 +258,7 @@
                           </label>
                           <div *ngIf="assetLoader" class="fileloader"></div>
                           <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
-                          <div *ngIf="isfileProcessed" class="file-info">
+                          <div *ngIf="isfileProcessed && !assetLoader" class="file-info">
                             <div class="flex">
                               <img class="file-icon mr5" src="assets/images/asset-uploads/PDF.svg" alt="Upload">
                               <div class="file-details">
@@ -271,24 +271,24 @@
                             </div>
                           </div>
                         </div>
-                        <div *ngIf="isfileProcessed" class="oliver_input mt10">
+                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input mt10">
                           <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                             [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                           <div class="btn-wrapper">
-                            <button (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
+                            <button (click)="!assetLoader && openAssetsPage()" class="btn-plus">+</button>
                           </div>
                         </div>
                       </div>
                       <div class="submit-section">
                         <img src="assets/images/olivere-dog.svg" width="80px" alt="Robot">
-                        <button class="btn btn-submit">Submit</button>
+                        <button (click)="!isTextLoading && isValidInputText && AskAiTogetData()" class="btn btn-submit">Submit</button>
                       </div>
                     </div>
                     <div *ngIf="showOpenHistory" class="oliver_input mt10">
                       <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
-                        <button  (click)="!assetLoader && openAssetsPage()"  class="btn-plus">+</button>
+                        <button  (click)="!assetLoader && reUploadFiles()"  class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
@@ -365,7 +365,8 @@
       <div *ngIf="showView" class="modal-footer">
         <button class="btn btn-primary mr5" [disabled]="selectedAssets.length == 0"
           (click)="submitSelectedAssetsToOliver()">Ask Oliver</button>
-        <button class="btn btn-danger mr10" (click)="closeManageAssets()" data-dismiss="modal">Close</button>
+        <button *ngIf="!isReUpload && !isfileProcessed" class="btn btn-danger mr10" (click)="closeManageAssets()"
+          data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
