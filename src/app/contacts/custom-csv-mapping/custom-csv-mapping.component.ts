@@ -11,6 +11,7 @@ import { User } from 'app/core/models/user';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { CountryNames } from 'app/common/models/country-names';
+import { ContactService } from '../services/contact.service';
 
 declare var swal: any, $: any;
 
@@ -28,7 +29,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   @Output() notifyParentCustomResponse : EventEmitter<any>;
 
   /***** XNFR-671 *****/
-  xAmplifyDefaultCsvHeaders = ['First Name', 'Last Name', 'Company', 'Job Title', 'Email Id', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Mobile Number'];
+  xAmplifyDefaultCsvHeaders = ['First Name', 'Last Name', 'Company', 'Job Title', 'Email Id', 'Address', 'City', 'State', 'Zip Code', 'Country', 'Mobile Number', 'Contact Status'];
   firstNames = ['FirstName', 'FName','GivenName', 'PersonalName', 'ForeName', 'Initial'];
   lastNames = ['LastName', 'LName', 'Name', 'FullName', 'SurName', 'FamilyName'];
   companies = ['Company', 'ContactCompany', 'CompanyName', 'Organisation', 'Organization', 'Institution'];
@@ -40,6 +41,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   zipCodes = ['ZipCode','PinCode', 'Zip', 'Postal', 'PostalCode', 'PostalIndex', 'AreaCode', 'Pin', 'PostCode', 'ZipPostal'];
   countries = ['Country', 'Nation', 'Kingdom', 'Territory'];
   mobileNumbers = ['MobileNumber','Number','ContactNumber','CellNumber','Mobile', 'PhoneNumber', 'PhNumber', 'Contact', 'CellPhone', 'Cell', 'Phone', 'HandPhone', 'TelePhone', 'MobilePhone'];
+  contactStatus = ['ContactStatus', 'Status', 'ContactStatusName', 'ContactStatusType', 'ContactState', 'ContactStage', 'StageName'];
   flexiFields = [];
   pager: any = {};
   pagedItems: any[];
@@ -68,13 +70,15 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   invalidUsers: User[];
   invalidPatternEmails = [];
   csvCustomResponse = new CustomResponse();
+  contactStatusStages = [];
 
   constructor(public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public properties: Properties,
-    public xtremandLogger: XtremandLogger, public countryNames: CountryNames) {
+    public xtremandLogger: XtremandLogger, public countryNames: CountryNames, public contactService: ContactService) {
     this.notifyParent = new EventEmitter();
     this.notifyParentCancel = new EventEmitter();
     this.notifyParentSave = new EventEmitter();
     this.notifyParentCustomResponse = new EventEmitter();
+    this.findContactStatusStages();
   }
 
   ngOnInit() {
@@ -82,6 +86,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.contactStatusStages = [];
     this.resetCustomUploadCsvFields();
     this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
   }
@@ -139,7 +144,8 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       { names: this.states, index: 7 },
       { names: this.zipCodes, index: 8 },
       { names: this.countries, index: 9 },
-      { names: this.mobileNumbers, index: 10 }
+      { names: this.mobileNumbers, index: 10 },
+      { names: this.contactStatus, index: 11 }
     ];
 
     for (let i = 0; i < this.customCsvHeaders.length; i++) {
@@ -304,6 +310,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
             let zipCodeRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[8]);
             let countryRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[9]);
             let mobileNumberRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[10]);
+            let contactStatusRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[11]);
             let flexiFieldRows = this.getMappedFlexiFields(filteredColumnHeaderDtos);
             let rowsLength = 0;
             if (emailIdRows != undefined) {
@@ -312,7 +319,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
               rowsLength = 0;
             }
             this.iterateAndAddToUsers(rowsLength, firstNameRows, lastNameRows, companyRows, jobTitleRows,
-              emailIdRows, addressRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, flexiFieldRows, this.contacts);
+              emailIdRows, addressRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, contactStatusRows, flexiFieldRows, this.contacts);
             let invalidEmailIds = this.contacts.filter(function (contact) {
               return contact.isValidEmailIdPattern == false
             }).map(function (dto) {
@@ -345,7 +352,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-671 *****/
   private getMappedFlexiFields(filteredColumnHeaderDtos: DefaultContactsCsvColumnHeaderDto[]) {
     let flexiFieldRows = [];
-    for (let i = 11; i < this.xAmplifyDefaultCsvHeaders.length; i++) {
+    for (let i = 12; i < this.xAmplifyDefaultCsvHeaders.length; i++) {
       let mappedRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[i]);
       flexiFieldRows.push({
         headerColumn: this.xAmplifyDefaultCsvHeaders[i],
@@ -396,7 +403,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
   /***** XNFR-671 *****/
   private iterateAndAddToUsers(rowsLength: number, firstNameRows: any[][], lastNameRows: any[][], companyRows: any[][], jobTitleRows: any[][],
     emailIdRows: any[][], addressRows: any[][], cityRows: any[][], stateRows: any[][], zipCodeRows: any[][], countryRows: any[][], mobileNumberRows: any[][],
-    flexiFieldRows: any[][], mappedContactUsers: User[]) {
+    contactStatusRows: any[][], flexiFieldRows: any[][], mappedContactUsers: User[]) {
     for (var i = 0; i < rowsLength; i++) {
       let user = new User();
       /***First Name****/
@@ -423,6 +430,8 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
       this.addMobileNumbers(mobileNumberRows, user, i);
       /***Territory***/
       this.addTerritory(user, i);
+      /*** Contact Status***/
+      this.addContactStatus(contactStatusRows, user, i);
       /****Flexi-Fields****/
       this.addFlexiFields(flexiFieldRows, user, i);
       user.id = i+1;
@@ -447,6 +456,13 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
         });
         user.flexiFields.push(flexiFieldsData);
       });
+    }
+  }
+
+  private addContactStatus(contactStatusRows: any[][], user: User, i: number) {
+    if (contactStatusRows != undefined && contactStatusRows.length > 0) {
+      let contactStatus = contactStatusRows[0];
+      user.contactStatus = contactStatus[i];
     }
   }
 
@@ -827,6 +843,26 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     user.mobileNumber = event.mobileNumber;
     user.countryCode = event.selectedCountry.code;
     user.isValidMobileNumber = event.isValidMobileNumber;
+  }
+
+  findContactStatusStages() {
+    this.isListLoader = true;
+    this.contactStatusStages = [];
+    this.contactService.findContactStatusStages().subscribe(
+      (response: any) => {
+        if (response.statusCode === 200) {
+          const stages = response.data;
+          this.contactStatusStages = stages.map((stage: any) => stage.stageName);
+        }
+        this.isListLoader = false;
+      }, (error: any) => {
+        this.isListLoader = false;
+        console.error('Error occured in findContactStatusStages()' + error);
+      });
+  }
+
+  isContactStatusPresent(user: User): boolean {
+    return this.contactStatusStages.some(stage => stage === user.contactStatus);
   }
 
 }

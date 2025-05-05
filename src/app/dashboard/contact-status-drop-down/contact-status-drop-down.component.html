@@ -1,0 +1,44 @@
+<app-list-loader *ngIf="contactStatusLoading"></app-list-loader>
+<app-response-message [customResponse]="contactStatusResponse" *ngIf="contactStatusResponse.isVisible">
+</app-response-message>
+<ng-container *ngIf="!contactStatusLoading">
+  <div class="form-group">
+    <label class="col-lg-8 col-md-8 col-sm-12 col-xs-12">Stages</label>
+    <label class="ml10">Option</label>
+    <ul class="list-group">
+      <ng-container *ngFor="let contactStatusStage of contactStatusStages; let x = index">
+        <li class="list-group-item" id="stage{{x}}">
+          <div class="row">
+            <span class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+              <input type="text" [(ngModel)]="contactStatusStage.stageName" placeholder="Enter Stage Name"
+                class="form-control" [value]="contactStatusStage.stageName">
+              <span class="required" *ngIf="contactStatusStage?.stageName?.length > 55">The maximum allowed characters limit is 55.</span>
+            </span>
+            <span class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="mb_mt7 alignEqualtoFields">
+                <input class="radioButton_shadow" type="radio" [value]="x" [checked]="selectedDefaultIndex === x" name="defaultStage"
+                  class="alignEqualtoText" (change)="defaultStageChange(x)">
+                <span>Default</span>
+                <button type="button" *ngIf="!contactStatusStage.defaultStage"
+                  class="btn-danger button-blue btn_add mr_4 spaceTopBottom pull-right" (click)="deleteStage(contactStatusStage)" data-toggle="tooltip"
+                  data-placement="top" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+                </button>
+              </div>
+            </span>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+  <div class="form-group">
+    <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px;" (click)="addStage()">
+      <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Stage
+    </a>
+  </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary pull-right" (click)="saveOrUpdate()" [disabled]="hasStageNameError()">Save Changes
+    </button>
+  </div>
+</ng-container>
+
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" (notifyComponent)="delete($event)"></app-confirm-sweet-alert-util>

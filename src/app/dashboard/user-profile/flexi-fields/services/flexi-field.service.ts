@@ -3,6 +3,7 @@ import { Pagination } from 'app/core/models/pagination';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { FlexiField } from '../models/flexi-field';
+import { PipelineStage } from 'app/dashboard/models/pipeline-stage';
 
 @Injectable()
 export class FlexiFieldService {
@@ -41,6 +42,23 @@ export class FlexiFieldService {
 
   deleteFlexiField(flexiFieldId: number) {
     return this.authenticationService.callDeleteMethod(this.FLEXI_FIELD_PREFIX_URL + '/id/' + flexiFieldId + "/loggedInUserId/" + this.authenticationService.getUserId() + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token);
+  }
+
+  findContactStatusStages() {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.FLEXI_FIELD_PREFIX_URL + '/contact-status-stages' + '/userId/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  saveOrUpdateContactStatusStages(contactStatusStages: Array<PipelineStage>) {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.FLEXI_FIELD_PREFIX_URL + '/contact-status-stages/save-update' + '/userId/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url, contactStatusStages);
+  }
+
+  deleteContactStatusStage(id: number) {
+    let url = this.FLEXI_FIELD_PREFIX_URL + '/contact-status-stages' + '/id/' + id + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+    return this.authenticationService.callDeleteMethod(url);
   }
 
 }
