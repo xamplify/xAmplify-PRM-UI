@@ -228,6 +228,49 @@
 									</div>
 
 
+
+<!-- 									<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12"> -->
+										<div class="form-group label-flex">
+											<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Link:</label>
+											<div class="col-xs-9 col-sm-9 col-md-9">
+											<div class="width-fit-content">
+											 <div *ngIf="isEditSlug">
+											   <div class="prefix inline-box">
+												 <span class="input-group-addon" style="min-width: auto;">
+												   {{linkPrefix}}
+												 </span>
+												 <div class="inline-box link" action="action_page.php">
+													<input type="text" minlength="1" maxlength="255"
+													(input)="validateSlugForCompany(videoslug.value)" class="form-control"
+													placeholder="Enter Title here" formControlName="slug" required
+													#videoslug>
+												   <button type="button" (click)="editedSlug()" style="width: auto;border-radius: 2px;"><i
+													   class="fa fa-angle-right" style="font-size: 19px;"></i></button>
+												 </div>
+											   </div>
+											 </div>
+											 <div *ngIf="!isEditSlug">
+											   <div class="inline-box link" action="action_page.php" style="width: 100%;">
+												 <input class="form-control" id="copy-link" type="text" readonly="readonly"
+												   [ngModel]="completeLink" [ngModelOptions]="{standalone: true}" #link>
+												 <button type="button" class="right-border widthauto" (click)="editSlug()" data-toggle="tooltip"
+												   data-placement="top" title="Edit" style="border-radius:0px !important;"><i
+													 class="fa fa-edit"></i></button>
+												 <button type="button" class="widthauto" (click)="copyInputMessage(link)" data-toggle="tooltip"
+												   data-placement="top" title="Copy" style="border-radius:0px !important;"><i
+													 class="fa fa-copy"></i></button>
+											   </div>
+											 </div>
+											 <div *ngIf="formErrors.slug" style="color: red; padding: 2px">
+												{{formErrors.slug}}</div>
+										   </div>
+											</div>
+										 </div>
+	
+
+
+
+
 									<input type="hidden" class="form-control" formControlName="id">
 									<div class="form-group" *ngIf="false">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Publish

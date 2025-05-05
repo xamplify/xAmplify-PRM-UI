@@ -72,4 +72,6 @@ export class DamUploadPostDto {
     /**XNFR-973**/
     disableAccessForOliver:boolean = false;
 
+    slug:string ="";
+    isSlugValid = false;
 }

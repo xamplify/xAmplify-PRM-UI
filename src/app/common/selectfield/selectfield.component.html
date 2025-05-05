@@ -39,7 +39,7 @@
                   <tr>
                     <th scope="col" class="text-center" style="width: 10%">
                       <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
-                        (change)="toggleAllSelection($event)" />
+                        (change)="toggleAllSelection($event)" [disabled]="isHeaderCheckBoxCheckedDisable" />
                     </th>
                     <th scope="col"><b>Field Label</b></th>
                     <th scope="col">

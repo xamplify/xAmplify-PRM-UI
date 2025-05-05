@@ -173,6 +173,13 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 
     deleteUploadedAsset = false;
     showClearOption: boolean = false;
+
+    slugErrorMessage: string;
+    linkPrefix: string = "";
+    isEditSlug: boolean = false;
+    completeLink: string = "";
+    existingSlug = "";
+    loggedInUserCompanyId:number;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch, public signatureService:SignatureService){
@@ -223,6 +230,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             this.uploadOrReplaceAssetText = "Replace Asset";
 		}
 		this.loggedInUserId = this.authenticationService.getUserId();
+        this.getCompanyId();
         /****XNFR-169*****/
         this.listCategories();
         /*******XNFR-255***/
@@ -300,8 +308,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                         let data = result.data;
                         this.isAssetPublished = data.published;
                         this.isBeeTemplatePdf = data.beeTemplate;
+                        this.existingSlug = this.damUploadPostDto.slug;
+                        this.completeLink = this.linkPrefix+this.existingSlug;
 						this.validateForm('assetName');
 						this.validateForm('description');
+                        this.validateForm('slug');
 						this.formLoader = false;
 						this.initLoader = false;
 					}else{
@@ -501,19 +512,25 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 $.trim(trimmedDescription).length > 0 &&
                 $.trim(trimmedDescription).length < 5000;
             this.updateDescriptionErrorMessage();
+        }else if(columnName == "slug"){
+            let slug = this.damUploadPostDto.slug;
+            this.damUploadPostDto.isSlugValid = $.trim(slug) != undefined &&  $.trim(slug).length > 0
         }
+        if (this.isAdd || (!this.isAdd && this.existingSlug !== this.damUploadPostDto.slug)) {
+            this.validateSlugForCompany();
+          }
         this.validateAllFields();
     }
 
 	validateAllFields() {
 		if(this.isAdd){
 			let uploadedAssetValue = $('#uploadedAsset').val();
-			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 );
+			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 ) && this.damUploadPostDto.isSlugValid;
             if(this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && this.fileType === 'application/pdf' && !this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
             this.isValidForm = false;
             }
 		}else{
-			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
+			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription && this.damUploadPostDto.isSlugValid;
             if(this.isVendorSignatureToggleClicked && this.damUploadPostDto.vendorSignatureRequired && !this.isVendorSignatureAdded && !this.damUploadPostDto.vendorSignatureCompleted && !this.damUploadPostDto.vendorSignatureRequiredAfterPartnerSignature){
                 this.isValidForm = false;
                 }
@@ -1900,4 +1917,102 @@ confirmRemoveVideo(){
         this.damUploadPostDto.disableAccessForOliver = event;
     }
 
+
+  updateSlug(type: string) {
+    if (type == "title") {
+      if (this.isAdd) {
+        this.damUploadPostDto.slug = $.trim(this.damUploadPostDto.assetName).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
+      }
+    } else if (type == "slug") {
+      this.damUploadPostDto.slug = $.trim(this.damUploadPostDto.slug).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
+    }
+    this.validateSlug();
+    if ((this.isAdd || (!this.isAdd && this.existingSlug !== this.damUploadPostDto.slug)) && this.damUploadPostDto.isSlugValid) {
+      this.validateSlugForCompany();
+    }
+    this.completeLink = this.linkPrefix + this.damUploadPostDto.slug;
+  }
+
+  editSlug() {
+    this.isEditSlug = true;
+  }
+
+  editedSlug() {
+    this.isEditSlug = false;
+  }
+
+  copyInputMessage(inputElement: any) {
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    let message = 'Link copied to clipboard successfully.';
+    $("#copy-link").select();
+    this.customResponse = new CustomResponse('SUCCESS', message, true);
+  }
+
+  validateSlug() {
+    let slug = $.trim(this.damUploadPostDto.slug);
+    if (slug == undefined || slug.length < 1) {
+        this.addErrorMessage("slug", "Alias can not be empty");
+    } else if (slug != undefined && slug.length < 3) {
+        this.addErrorMessage("slug", "Slug should have atleast 3 characters");
+    } else {
+      this.removeErrorMessage("slug");
+    }
+    this.validateAllFields();
+  }
+
+  addErrorMessage(type: string, message: string) {
+    if (type == "slug") {
+      this.damUploadPostDto.isSlugValid = false;
+      this.slugErrorMessage = message;
+    } 
+  }
+
+  removeErrorMessage(type: string) {
+    if (type == "slug") {
+      this.damUploadPostDto.isSlugValid = true;
+      this.slugErrorMessage = ""
+    }
+  }
+
+    validateSlugForCompany() {
+        if(this.damUploadPostDto.slug != null && this.damUploadPostDto.slug != '' ){
+      this.damService.validateSlug(this.damUploadPostDto.slug, this.loggedInUserCompanyId).subscribe(
+        (response: any) => {
+          let isValid = response.data;
+          if (!isValid) {
+            this.damUploadPostDto.isSlugValid = false;
+            this.addErrorMessage("slug", "Alias already exists");
+          } else {
+            this.removeErrorMessage("slug");
+          }
+        }, 
+        (error: string) => {
+          this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+        },()=>{
+            this.validateAllFields()
+        }
+      );
+    }else{
+        this.validateSlug();
+    } 
+    }
+
+      getCompanyId() {
+        if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+          this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+            (result: any) => {
+              if (result !== "") {
+                this.loggedInUserCompanyId = result;
+                  this.linkPrefix = this.authenticationService.DOMAIN_URL + "home/dam/vapv/view/" + this.loggedInUserCompanyId + "/";
+                this.completeLink = this.linkPrefix;
+              }
+            });
+        } else {
+          this.referenceService.showSweetAlertErrorMessage('UserId Not Found.Please try aftersometime');
+        }
+      }
 }
