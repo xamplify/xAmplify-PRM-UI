@@ -236,9 +236,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', message, true);
 		}
 		this.triggerUniversalSearch(); //XNFR-574
-		// if (this.viewType != "fl" && this.viewType != "fg" || this.FromOliverPopUp) {
+		if (this.viewType != "fl" && this.viewType != "fg" || this.FromOliverPopUp) {
 			this.getCompanyId();
-		// }
+		}
 		
 	}
 
@@ -1272,5 +1272,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.damUploadPostDto.description = file.name;
 		this.damUploadPostDto.draft = true;
 		this.damUploadPostDto.cloudContent = false;
+	}
+
+	viewAssets(event: any) {
+		this.categoryId = event;
+		this.showUpArrowButton = this.categoryId != undefined && this.categoryId != 0;
+		this.viewType = "l";
+		this.setViewType(this.viewType);
+		this.getCompanyId();
 	}
 }

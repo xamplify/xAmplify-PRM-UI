@@ -25,6 +25,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   @Input()modulesDisplayType:ModulesDisplayType;
   @Output() folderViewTypeEventEmitter = new EventEmitter();
   @Output() oliverfolderViewTypeEventEmitter = new EventEmitter();
+  @Output() folderViewAssetEventEmitter = new EventEmitter();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse:CustomResponse = new CustomResponse();
   categorySortOption: SortOption = new SortOption();
@@ -214,22 +215,27 @@ export class FolderTypeViewUtilComponent implements OnInit {
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
-  viewItemsByCategoryId(categoryId:number) {
+  viewItemsByCategoryId(categoryId: number) {
     this.utilService.folderListViewSelected = false;
-    if(this.moduleId==this.roles.damId){
-      this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,this.isPartnerView);
-    }else if(this.moduleId==this.roles.learningTrackId){
-      this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg","l",categoryId,this.isPartnerView,true);
-    }else if(this.moduleId==this.roles.playbookId){
-      this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg","l",categoryId,this.isPartnerView,false);
-    }else if(this.moduleId==this.roles.campaignId){
-      this.referenceService.goToManageCampaignsByCategoryId("fg","l",categoryId);
-    }else if(this.moduleId==this.roles.emailTemplateId){
-      this.referenceService.goToManageEmailTemplatesByCategoryId("fg","l",categoryId);
-    }else if(this.moduleId==this.roles.landingPageId){
-      this.referenceService.goToManageLandingPagesByCategoryId("fg","l",categoryId);
-    }else if(this.moduleId==this.roles.formId){
-      this.referenceService.goToManageFormsByCategoryId("fg","l",categoryId);
+    if (this.FromOliverPopUp) {
+      this.folderViewAssetEventEmitter.emit(categoryId);
+    }
+    if (!this.FromOliverPopUp) {
+      if (this.moduleId == this.roles.damId) {
+        this.referenceService.goToManageAssetsByCategoryId("fg", "l", categoryId, this.isPartnerView);
+      } else if (this.moduleId == this.roles.learningTrackId) {
+        this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", "l", categoryId, this.isPartnerView, true);
+      } else if (this.moduleId == this.roles.playbookId) {
+        this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", "l", categoryId, this.isPartnerView, false);
+      } else if (this.moduleId == this.roles.campaignId) {
+        this.referenceService.goToManageCampaignsByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.emailTemplateId) {
+        this.referenceService.goToManageEmailTemplatesByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.landingPageId) {
+        this.referenceService.goToManageLandingPagesByCategoryId("fg", "l", categoryId);
+      } else if (this.moduleId == this.roles.formId) {
+        this.referenceService.goToManageFormsByCategoryId("fg", "l", categoryId);
+      }
     }
   }
 
