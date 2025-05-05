@@ -42,9 +42,8 @@
           </div> -->
       <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
         (notifyClose)="closeSocialShare($event)"></app-update-status>
-      <div *ngIf="!openShareOption" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'" [ngStyle]="{ 
-                                'max-height': showView ? 'calc(100vh - 77px)' : '' }">
-        <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView"
+      <div *ngIf="!openShareOption" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'">
+        <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView" [selectedItemFromOliver]="selectedAssets"
           (notifyasset)="getSelectedAssets($event)"></app-dam-list-and-grid-view>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>
@@ -249,15 +248,36 @@
                     copy.</p>
                   <div [ngClass]="showOpenHistory && activeTab === 'askpdf' ? 'templateui col-lg-9' : 'container-ui'">
                     <div *ngIf="!showOpenHistory" class="custom-card mt10">
-                      <div [ngClass]="assetLoader ? 'upload-box custom-align-center' : 'upload-box'"
-                        (click)="!assetLoader && openAssetsPage()">
-                        <label *ngIf="!assetLoader">
-                          <!-- <i class="glyphicon glyphicon-upload"></i> -->
-                          <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
-                          Feed Me Digital Assets
-                        </label>
-                        <div *ngIf="assetLoader" class="fileloader"></div>
-                        <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
+                      <div class="col-lg-12">
+                        <div [ngClass]="assetLoader || isfileProcessed  ? 'upload-box custom-align-center' : 'upload-box'"
+                          (click)="!isfileProcessed &&!assetLoader && openAssetsPage()" [ngStyle]="{ 'display': assetLoader ? 'flex' : '' }">
+                          <label *ngIf="!assetLoader && !isfileProcessed">
+                            <!-- <i class="glyphicon glyphicon-upload"></i> -->
+                            <img src="assets/images/oliverUploadIcon.svg" width="40px" alt="pdficon">
+                            Feed Me Digital Assets
+                          </label>
+                          <div *ngIf="assetLoader" class="fileloader"></div>
+                          <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
+                          <div *ngIf="isfileProcessed" class="file-info">
+                            <div class="flex">
+                              <img class="file-icon mr5" src="assets/images/asset-uploads/PDF.svg" alt="Upload">
+                              <div class="file-details">
+                                <div class="file-name"> {{ selectedAssets?.length }} file(s) processed successfully</div>
+                                <div class="file-status">Processing complete</div>
+                              </div>
+                            </div>
+                            <div class="success-icon">
+                              <i class="fa fa-check"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="isfileProcessed" class="oliver_input mt10">
+                          <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
+                            [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
+                          <div class="btn-wrapper">
+                            <button (click)="!assetLoader && reUploadFiles()" class="btn-plus">+</button>
+                          </div>
+                        </div>
                       </div>
                       <div class="submit-section">
                         <img src="assets/images/olivere-dog.svg" width="80px" alt="Robot">
@@ -268,7 +288,7 @@
                       <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
-                        <button *ngIf="hasAcess" class="btn-plus">+</button>
+                        <button  (click)="!assetLoader && openAssetsPage()"  class="btn-plus">+</button>
                         <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>

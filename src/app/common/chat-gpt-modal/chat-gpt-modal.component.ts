@@ -55,6 +55,8 @@ export class ChatGptModalComponent implements OnInit {
   threadId: any;
   assetLoader: boolean;
   selectedAssets: any[] = [];
+  isfileProcessed: boolean = false;
+  isReUpload: boolean = false;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
   }
@@ -155,6 +157,7 @@ export class ChatGptModalComponent implements OnInit {
     this.openShareOption = false;
     this.showEmailModalPopup = false;
     this.showView = false;
+    this.selectedAssets = [];
   }
 
   showOliverIcon() {
@@ -328,9 +331,9 @@ export class ChatGptModalComponent implements OnInit {
 
   submitSelectedAssetsToOliver() {
     this.assetLoader = true;
+    this.showOpenHistory = false;
     this.getPdfByAssetPaths(this.selectedAssets);
     this.showView = false;
-    this.selectedAssets = [];
   }
 
   getPdfByAssetPaths(assetsPath: any[]) {
@@ -360,8 +363,9 @@ export class ChatGptModalComponent implements OnInit {
         let data = response.data;
         this.threadId = data.threadId;
         this.assetLoader = false;
-        this.inputText = 'Summarize documents briefly';
-        this.AskAiTogetData();
+        if (!this.isReUpload) {
+          this.isfileProcessed = true;
+        }
       },
       (error: string) => {
         console.log('API Error:', error);
@@ -371,15 +375,16 @@ export class ChatGptModalComponent implements OnInit {
 
   AskAiTogetData() {
     this.showOpenHistory = true;
+    this.isfileProcessed = false;
     this.isTextLoading = true;
-    if ($('.scrollable-card').length) {
-      $('.scrollable-card').animate({
-        scrollTop: $('.scrollable-card')[0].scrollHeight
+    if ($('.main-container').length) {
+      $('.main-container').animate({
+        scrollTop: $('.main-container')[0].scrollHeight
       }, 500);
     }
-    this.messages.push({ role: 'user', content: this.inputText });
     var self = this;
-    this.chatGptIntegrationSettingsDto.prompt = this.inputText;
+    self.messages.push({ role: 'user', content: self.inputText });
+    this.chatGptIntegrationSettingsDto.prompt = self.inputText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     self.inputText = '';
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
@@ -411,6 +416,10 @@ export class ChatGptModalComponent implements OnInit {
 
   closeManageAssets() {
     this.showView = false;
-    this.selectedAssets = [];
+  }
+
+  reUploadFiles(){
+    this.openAssetsPage();
+    this.isReUpload = true;
   }
 }

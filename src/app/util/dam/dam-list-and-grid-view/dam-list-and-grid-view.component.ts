@@ -142,7 +142,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	isTextFormat: boolean = false;
 	proxyAssetPath: any;
 	showOliver: boolean;
-	@Input() FromOliverPopUp : boolean = false;
+	@Input() FromOliverPopUp: boolean = false;
+	@Input() selectedItemFromOliver: any;
     selectedItems: any[] = []; 
     @Output() notifyasset = new EventEmitter<any>();
 	formData: any = new FormData();
@@ -168,8 +169,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.callInitMethods();
 			this.videoFileService.campaignReport = false;
 		}
-		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
+		if (this.FromOliverPopUp) {
+			this.SuffixHeading = 'Select ';
+			if (this.selectedItemFromOliver != undefined && this.selectedItemFromOliver != null && this.selectedItemFromOliver.length > 0) {
+				this.selectedItems = this.selectedItemFromOliver;
+			}
+		} else if (!this.FromOliverPopUp) {
+			this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
+		}
 	}
+
 	triggerUniversalSearch() {
 		if (this.referenceService.universalSearchKey != null && this.referenceService.universalSearchKey != "" && this.referenceService.universalModuleType == 'Asset') {
 			this.searchKeyValue = this.referenceService.universalSearchKey;
@@ -227,9 +236,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', message, true);
 		}
 		this.triggerUniversalSearch(); //XNFR-574
-		if (this.viewType != "fl" && this.viewType != "fg" || this.FromOliverPopUp) {
+		// if (this.viewType != "fl" && this.viewType != "fg" || this.FromOliverPopUp) {
 			this.getCompanyId();
-		}
+		// }
 		
 	}
 
@@ -1160,28 +1169,29 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	chooseAsset(event: any) {
 		let files: Array<File>;
 		if (event.target.files != undefined) {
-		  files = event.target.files;
+			files = event.target.files;
 		} else if (event.dataTransfer.files) {
-		  files = event.dataTransfer.files;
+			files = event.dataTransfer.files;
 		}
 		if (files.length > 0) {
-		  let file = files[0];
-		  let sizeInKb = file.size / 1024;
-		  let maxFileSizeInKb = 1024 * 800;
-		  if (sizeInKb == 0) {
-			this.referenceService.showSweetAlertSuccessMessage('Invalid File');
-		  } else if (sizeInKb > maxFileSizeInKb) {
-			this.referenceService.showSweetAlertSuccessMessage('Max file size is 800 MB');
-		  } else if (file['name'].lastIndexOf(".") == -1) {
-			this.referenceService.showSweetAlertSuccessMessage("Selected asset does not have the proper extension. Please upload a valid asset.");
-		  }
-		  else {
-			this.setUploadedFileProperties(file);
-		  }
+			let file = files[0];
+			let sizeInKb = file.size / 1024;
+			let maxFileSizeInKb = 1024 * 800;
+			if (sizeInKb == 0) {
+				this.referenceService.showSweetAlertSuccessMessage('Invalid File');
+			} else if (sizeInKb > maxFileSizeInKb) {
+				this.referenceService.showSweetAlertSuccessMessage('Max file size is 800 MB');
+			} else if (file['name'].lastIndexOf(".") == -1) {
+				this.referenceService.showSweetAlertSuccessMessage("Selected asset does not have the proper extension. Please upload a valid asset.");
+			}
+			else {
+				this.setUploadedFileProperties(file);
+			}
 		} else {
-		  this.clearPreviousSelectedAsset();
+			this.clearPreviousSelectedAsset();
 		}
-	  }
+	}
+
 	clearPreviousSelectedAsset() {
 		this.damUploadPostDto = new DamUploadPostDto();
 		this.fileType = null;
@@ -1193,17 +1203,19 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.isAssetDetailsUpldated = false;
 		this.damService.uploadAssetInProgress = false;
 	}
-	  private setUploadedFileProperties(file: File) {
+
+	private setUploadedFileProperties(file: File) {
 		this.clearPreviousSelectedAsset();
 		this.fileType = file['type'];
-		if(this.fileType=="application/pdf"){
+		if (this.fileType == "application/pdf") {
 			// this.isPdfFileSelected=true;
 		}
 		this.customResponse = new CustomResponse();
 		this.formData.append("uploadedFile", file, file['name']);
 		this.customResponse = new CustomResponse('SUCCESS', 'We are Uploading the assets', true);
 		this.uploadOrUpdate();
-	  }
+	}
+
 	uploadOrUpdate() {
 		this.damService.uploadAssetInProgress = true;
 		this.customResponse = new CustomResponse();
@@ -1248,11 +1260,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				this.formData.delete("damUploadPostDTO");
 			});
 	}
+
 	private setAssetData() {
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-		this.damUploadPostDto.assetName = this.formData.get("uploadedFile")['name'];
 		this.damUploadPostDto.assetType = this.fileType;
-		this.damUploadPostDto.description = this.formData.get("uploadedFile")['name'];
+		const file = this.formData.get("uploadedFile") as File;
+		const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+		const lastDotIndex = file.name.lastIndexOf('.');
+		const assetName = lastDotIndex !== -1 ? file.name.substring(0, lastDotIndex) : file.name;
+		this.damUploadPostDto.assetName = assetName + randomSuffix;
+		this.damUploadPostDto.description = file.name;
 		this.damUploadPostDto.draft = true;
 		this.damUploadPostDto.cloudContent = false;
 	}
