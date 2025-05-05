@@ -82,6 +82,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   emailTemplateLoader: boolean;
   selectedEmailTemplateRow = 0;
   activationLoaderEnabled: boolean = false;
+  isValidToShowChooseTemplate: boolean = false;
 
   constructor(public emailActivityService: EmailActivityService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public properties:Properties, public contactService: ContactService, private campaignService: CampaignService, private pagerService: PagerService) {}
@@ -89,6 +90,7 @@ export class AddEmailModalPopupComponent implements OnInit {
   ngOnInit() {
     this.emailActivity.userId = this.userId;
     this.ckeConfig = this.properties.ckEditorConfig;
+    this.isValidToShowChooseTemplate = this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminTeamMember || this.authenticationService.module.isMarketingCompany || this.authenticationService.module.isVendor || this.authenticationService.module.isVendorTierTeamMember;
     if (this.actionType == 'add') {
       this.isPreview = false;
       this.emailActivity.toEmailId = this.userEmailId;
@@ -269,13 +271,14 @@ export class AddEmailModalPopupComponent implements OnInit {
       this.sendTestEmailDto.toEmail = this.testToEmailId;
       this.sendTestEmailDto.subject = this.emailActivity.subject;
       this.sendTestEmailDto.showAlert = false;
-      this.prepareTestMailFormData();
+      this.prepareFormData();
       this.sendTestEmailDto.toEmailIds = this.extractEmailIds(this.toEmailIds);
       this.sendTestEmailDto.ccEmailIds = this.extractEmailIds(this.ccEmailIds);
       this.sendTestEmailDto.bccEmailIds = this.extractEmailIds(this.bccEmailIds);
       this.authenticationService.sendEmailToUser(this.sendTestEmailDto,this.formData).subscribe(
         response => {
           this.testEmailLoading = false;
+          this.formData.delete("uploadedFile");
           this.notifyClose.emit("Email sent sucessfully");
           this.customResponse = new CustomResponse('SUCCESS', "Email sent sucessfully", true);
         }, error => {
@@ -307,6 +310,7 @@ export class AddEmailModalPopupComponent implements OnInit {
           this.testToEmailId = '';
           this.validateTestEmailId();
           this.testEmailLoading = false;
+          this.formData.delete("uploadedFile");
           this.testMailFormData.delete("uploadedFiles");
         }
       )

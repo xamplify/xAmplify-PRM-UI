@@ -159,7 +159,7 @@ ul.alt-row-style1 li a,
 th,
 .div.thembgc,
 .signature_card,
-.signature-preview {
+.signature-preview,.template_box {
   border: 1px solid var(--border-color) !important;
 }
 .list-group-item,

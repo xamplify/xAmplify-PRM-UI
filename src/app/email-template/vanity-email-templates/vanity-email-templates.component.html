@@ -5,7 +5,7 @@
       <li [ngClass]="{'active': activeTab == 'templates' } " class="caption-subject font-blue-madison bold">
         <a data-toggle="tab" href="#YourTemplates" (click)="setActiveTab('templates')">Your Templates</a>
       </li>
-      <li *ngIf="!authenticationService.module.isOnlyPartnerCompany && (isLoggedInAsPartner || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || authenticationService.module.isPrm ||  authenticationService.module.isAnyAdminOrSupervisor)"
+      <li *ngIf="!authenticationService.module.isMarketing  &&  authenticationService.module.isPartner  && !isLoggedInAsPartner && ( authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || authenticationService.module.isPrm ||  authenticationService.module.isAnyAdminOrSupervisor)"
         [ngClass]="{'active': activeTab == 'partnerNotifications' } " class="caption-subject font-blue-madison bold">
         <a data-toggle="tab" href="#Partner" (click)="setActiveTab('partnerNotifications')">Partner Notification
           Templates</a>

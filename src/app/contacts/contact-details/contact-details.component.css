@@ -398,9 +398,12 @@ border-bottom:none;
   content: '';
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1198px) {
   .overflow_scroll {
     overflow-x: auto;
+  }
+  .profile-sidebar {
+    min-width: 291px!important;
   }
 }
 

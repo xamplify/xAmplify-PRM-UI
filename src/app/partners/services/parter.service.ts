@@ -366,6 +366,11 @@ export class ParterService {
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
+    getAllPartnerRegionNamesFilter(pagination: Pagination) {
+        const url = this.URL + 'partner/region/names/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
 
     getPartnerJourneyLeadDealCounts(chartId: string, partnerJourneyRequest: PartnerJourneyRequest) {
         let urlSuffix = "";
@@ -476,11 +481,6 @@ export class ParterService {
         const url = this.URL + 'teamMemberAnalytics' + urlSuffix + '/track/interaction?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
-    }
-    getAllPartners(pagination: Pagination) {
-        const url = this.URL + '/partner/allPartners/details/list?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.post(url, pagination)
-        .catch(this.handleError);
     }
     getTeamMemberTypewiseTrackCounts(teamMemberAnalyticsRequest: TeamMemberAnalyticsRequest, isVendorVersion: boolean) {
         let urlSuffix = "";
@@ -717,4 +717,15 @@ export class ParterService {
         const url = this.URL + '/partner/allPartners/details/regionwise/count?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url, partnerJourneyRequestDTO);
     }
+    getAllPartners(pagination: Pagination) {
+        const url = this.URL + '/partner/allPartners/details/list?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+        .catch(this.handleError);
+    }
+    // findAllPartnerListByFilters(pagination: Pagination) {
+    //     const url = this.URL + 'partner/region/and/status/filter?access_token=' + this.authenticationService.access_token;
+    //     return this.httpClient.post(url, pagination)
+    //         .catch(this.handleError);
+    // }
+
 }

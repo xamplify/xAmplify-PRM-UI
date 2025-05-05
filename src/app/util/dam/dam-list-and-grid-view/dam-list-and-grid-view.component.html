@@ -232,7 +232,7 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon" *ngIf="(isPartnerView  && authenticationService?.isOliverActive) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+															<a class ="oliveIcon" *ngIf="(isPartnerView  && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
@@ -244,7 +244,7 @@
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
-															<a class="oliveIcon mr5" *ngIf="(!isPartnerView && authenticationService?.isOliverActive) && !FromOliverPopUp"
+															<a class="oliveIcon mr5" *ngIf="(!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp"
 																data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">

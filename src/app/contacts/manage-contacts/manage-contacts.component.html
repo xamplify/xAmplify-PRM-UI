@@ -1688,6 +1688,10 @@
                                                          <td class='pt10 pb10 bold mr_10' translate>Country : </td>
                                                          <td class='pt10 pb10' title="{{contact.country}}">{{contact.country}}</td>
                                                       </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isContactModule">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Contact Status : </td>
+                                                         <td class='pt10 pb10' title="{{contact.contactStatus}}">{{contact.contactStatus}}</td>
+                                                      </tr>
                                                       <tr class="bg-unset flex-none" *ngFor="let flexiField of contact?.flexiFields">
                                                          <td class='pt10 pb10 bold mr_10' translate>{{flexiField.fieldName}} : </td>
                                                          <td class='pt10 pb10' title="{{flexiField.fieldValue}}">{{flexiField.fieldValue}}</td>
