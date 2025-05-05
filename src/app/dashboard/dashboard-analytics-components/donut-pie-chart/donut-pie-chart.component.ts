@@ -119,7 +119,7 @@ export class DonutPieChartComponent implements OnInit {
 findAllPartnerRegionDetaiils() {
         let partnerJourneyRequest = new PartnerJourneyRequest();
         partnerJourneyRequest.loggedInUserId = this.loggedInUserId;
-       // partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+        partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
         this.partnerService.findAllPartnerRegionDetaiils(partnerJourneyRequest).subscribe(
             response => {
                 this.processResponse(response);
