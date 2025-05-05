@@ -13,8 +13,15 @@
   right: 30px;
 }
 
-.minimize {
+/* .minimize {
   bottom: 1px !important;
+} */
+.minimize {
+  position: fixed;
+  right: -15px;
+  bottom: -15px;
+  padding: 2px;
+  z-index: 100001;
 }
 
 .custom-icon-s-w {
@@ -782,4 +789,7 @@ input:focus,textarea.textarea:focus{
 }
 ul.nav.nav-pills.nav-stacked.oliver_tab {
   border-bottom: unset !important;
+}
+.modal-z-index{
+  z-index: 1000000 !important;
 }
