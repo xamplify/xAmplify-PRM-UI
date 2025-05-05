@@ -10,4 +10,7 @@ export class ChatGptIntegrationSettingsDto {
     vendorDam: boolean = false;
     folderDam: boolean = false;
     isFolder = false;
+    file:any;
+    chatHistoryId:any;
+    vectorStoreId:any;
 }

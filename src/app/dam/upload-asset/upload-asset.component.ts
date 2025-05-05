@@ -1912,6 +1912,11 @@ confirmRemoveVideo(){
           });
 }
 
+    /****XNFR-586****/
+    setOliverAccess(event) {
+        this.damUploadPostDto.disableAccessForOliver = event;
+    }
+
 
   updateSlug(type: string) {
     if (type == "title") {
