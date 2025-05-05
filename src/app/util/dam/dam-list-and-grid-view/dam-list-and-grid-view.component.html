@@ -604,7 +604,7 @@
 									</div>
 									<div class="bar auto-height gridIconCustomization border_none">
 										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset"
-											[folderListView]="folderListView"
+											[folderListView]="folderListView" [FromOliverPopUp]="FromOliverPopUp"
 											(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 											(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 											(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
@@ -714,9 +714,8 @@
 											(click)="setViewType('fg')">
 											<i class="fa fa-folder p10" aria-hidden="true"></i>
 										</span>
-										<span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
-											data-toggle="tooltip" data-placement="bottom" title="Folder List View"
-											(click)="setViewType('fl')">
+										<span *ngIf="!FromOliverPopUp" class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
+											data-toggle="tooltip" data-placement="bottom" title="Folder List View" (click)="setViewType('fl')">
 											<i class="fa fa-th p10" aria-hidden="true"></i>
 										</span>
 									</ng-container>

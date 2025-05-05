@@ -17,14 +17,15 @@ declare var $:any,swal:any;
 export class AssetGridViewActionsComponent implements OnInit {
   readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   @Input() isPartnerView:boolean = false;
-  @Input() asset:any;
+  @Input() asset: any;
   @Input() isFromTop4Assets: boolean = false;
   @Output() assetGridViewActionsEmitter = new EventEmitter();
-  @Output()assetGridViewActionsPdfEmitter = new EventEmitter();
+  @Output() assetGridViewActionsPdfEmitter = new EventEmitter();
   @Output() assetGridViewActionsDeleteActionEmitter = new EventEmitter();
   @Output() assetGridViewRefreshListEmitter = new EventEmitter();
   @Output() assetGridViewCommentStatusHistoryEmitter = new EventEmitter();
   @Output() assetGridViewAssetPreviewEmitter = new EventEmitter();
+  @Input() FromOliverPopUp: boolean = false;
 
   hasCampaignRole = false;
   hasAllAccess = false;
