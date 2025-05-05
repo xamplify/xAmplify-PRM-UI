@@ -185,4 +185,7 @@
 	<app-select-digital-signature (notifySignatureSelection)="notifySignatureSelection($event)" (notifyCloseModalPopUp)="notifySelectDigitalSignatureCloseModalPopUp($event)" [sharedAssetPath]="sharedAssetPath"></app-select-digital-signature>
 </div>
 
+<app-preview-content *ngIf="previewContent" [isPreviewPopup]="true" [previewPath]="assetPreviewProxyPath" [fileType]="previewFileType"
+(notifyClose)="closePreview()"></app-preview-content>
+
 <app-send-test-email *ngIf="sendTestEmailIconClicked && isPartnerSignatureRequired" [selectedPartners]="selectedPartners" [sendSignatureRemainder]="true" (sendmailNotify)= "sendPartnerSignatureReminder()"  [selectedItem]="selectedItem"  [toEmailId]="selectedEmailId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>

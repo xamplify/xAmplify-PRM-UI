@@ -2033,7 +2033,8 @@
                                                 </ng-container>
                                                 <ng-container *ngIf="timezones?.length>1">
                                                     <option *ngFor="let timeZone of timezones"
-                                                        [value]="timeZone.timezoneId">
+                                                        [value]="timeZone.timezoneId"
+                                                        [selected]="campaign.timeZoneId === timeZone.timezoneId">
                                                         {{timeZone.cityName}}
                                                     </option>
                                                 </ng-container>

@@ -121,6 +121,7 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
       this.responseImage = "";
       this.responseClass = "";
   }
+
   showPopup(campaign:Campaign){
       this.resetAllFields();
       let modalId = "#new-list-modal";
@@ -189,9 +190,12 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
           (error: any) => {
               this.referenceService.loading(this.contactListLoader, false);
           },()=>{
-            if (this.campaignTypeInString == 'EVENT' && this.totalRecipients) {
+            if (this.campaignTypeInString == 'EVENT') {
                 this.restrictRecipientCount = true;
                 this.getMaximumContactCountForCampaignLaunch();
+                if (!this.totalRecipients) {
+                    this.getRecipientsCountByCampaignId(this.campaign.campaignId);
+                }
             }
           });
   }
@@ -526,5 +530,21 @@ filterContacts(filterType:string){
         }
     }
 
+    getRecipientsCountByCampaignId(campaignId: number){
+        this.referenceService.loading(this.contactListLoader, true);
+        this.campaignService.getRecipientsCountByCampaignId(campaignId).subscribe(
+          (response) => {
+            if (response.statusCode == 200) {
+                this.totalRecipients = response.data;
+            }
+            this.referenceService.loading(this.contactListLoader, false);
+          },
+          (error) => {
+            this.referenceService.loading(this.contactListLoader, false);
+          },()=>{
+
+          }
+        );
+      }
 
 }

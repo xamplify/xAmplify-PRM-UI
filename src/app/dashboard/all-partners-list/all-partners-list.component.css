@@ -11,6 +11,7 @@
     overflow-y: auto;
     margin-bottom: 20px;
 }
+
 .override-actions{
     float: inherit!important;
   }
@@ -39,4 +40,12 @@
   span.btn-aligmntCu {
     display: flex;
     justify-content: flex-end;
+}
+ .panel-bgMain{
+  border-color: #ddd;
+}
+
+::-webkit-scrollbar {
+width: 7px;
+height: 7px;
 }

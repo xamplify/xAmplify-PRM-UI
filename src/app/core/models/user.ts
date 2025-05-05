@@ -84,4 +84,5 @@ export class User {
     userStatus : string;
     isValidMobileNumber = false;
     countryCode: string;
+    contactStatus: string;
 }

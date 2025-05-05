@@ -70,4 +70,6 @@ export class DamUploadPostDto {
     vendorSignatureRequiredAfterPartnerSignatureToolTipMessage = "";
     sendForApproval: boolean = false;
 
+    slug:string ="";
+    isSlugValid = false;
 }

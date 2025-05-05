@@ -39,7 +39,7 @@ body,
 .div.thembgc,
 .div.thembg-color,
 .calendar-border,
-.img-circle {
+.img-circle,.template_box {
   border: 1px solid #191b1e !important;
 }
 .dashboard-stat.green-soft {
@@ -4609,7 +4609,7 @@ markdown pre,.aligin-para{
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #404750 !important;
   border-radius: 8px!important;
   }
-  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text{
+  .nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver-text-color,h5.oliver-heading-color{
     color: #fff!important;
   }
 .side_bar{
@@ -4626,4 +4626,10 @@ background: #303337 !important;
 box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;}
   textarea.textarea.h-350 {
     box-shadow: unset !important;
+}
+/* Sudha Sri(XNFR-945) */
+.neo-plus_icon{
+  float: right;
+  margin-top: -40px !important;
+  margin-right: -50px !important;
 }

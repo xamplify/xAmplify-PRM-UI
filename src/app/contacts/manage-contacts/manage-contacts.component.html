@@ -1688,6 +1688,10 @@
                                                          <td class='pt10 pb10 bold mr_10' translate>Country : </td>
                                                          <td class='pt10 pb10' title="{{contact.country}}">{{contact.country}}</td>
                                                       </tr>
+                                                      <tr class="bg-unset flex-none" *ngIf="isContactModule">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Contact Status : </td>
+                                                         <td class='pt10 pb10' title="{{contact.contactStatus}}">{{contact.contactStatus}}</td>
+                                                      </tr>
                                                       <tr class="bg-unset flex-none" *ngFor="let flexiField of contact?.flexiFields">
                                                          <td class='pt10 pb10 bold mr_10' translate>{{flexiField.fieldName}} : </td>
                                                          <td class='pt10 pb10' title="{{flexiField.fieldValue}}">{{flexiField.fieldValue}}</td>
@@ -1795,14 +1799,16 @@
    <div class="modal-dialog modal-copy" role="document">
       <div class="modal-content">
          <div class="modal-header">
+            <div class="d-flex justify-content-between align-items-center">
             <h4 class="modal-title f-w-600" id="saveAsModalLabel">
                <span
                   *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} Group Name</span>
                <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}} List Name</span>
             </h4>
-            <button type="button" class="close-circle" data-dismiss="modal" style="position: relative; top: -24px;">
-               <i class="fa fa-times" aria-hidden="true"></i>
+            <button type="button" class="close-circle" data-dismiss="modal">
+               <i class="fa fa-times mt0" aria-hidden="true"></i>
             </button>
+         </div>
          </div>
          <div class="modal-body">
             <div class="form-group">

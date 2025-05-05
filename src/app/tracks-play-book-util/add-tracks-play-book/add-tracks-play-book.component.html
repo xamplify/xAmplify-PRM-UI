@@ -427,8 +427,8 @@
                         </div>
                         <div class="item__actions moveLinkIcon">
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="Preview"
-                              (click)="$event.stopPropagation();assetPreview(file, false)" style="left: 10px;">
-                              <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
+                              (click)="(file.contentPreviewType || file.imageFileType)? assetPreview(file, false) : '' ; $event.stopPropagation()" style="left: 10px;">
+                              <i class="fa fa-external-link preview-edit-color" [ngClass]="file.contentPreviewType || file.imageFileType ? '' : 'disabled gray'" aria-hidden="true"
                                 style="font-size: 18px;"></i>
                             </a>
                           </span>
@@ -658,6 +658,9 @@
                         <h6>
                           From <strong>{{form.companyName}}</strong>
                         </h6>
+                        <h6>
+                          Folder Name <strong>{{form.categoryName}}</strong>
+                        </h6>
                       </td>
                       <td class="hidden-xs text-center">
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
@@ -763,6 +766,11 @@
                             Created By
                             <strong>{{asset.quiz.createdName}}</strong></span>
                         </h6>
+                        <h6 class="">
+                          <span data-toggle="tooltip" data-placement="bottom" title="{{asset.categoryName}}" translate>
+                            Folder Name
+                            <strong>{{asset.quiz.categoryName}}</strong></span>
+                        </h6>
                       </td>
                       <td class="text-center">
                         Quiz
@@ -803,6 +811,11 @@
                             translate> Created By
                             <strong>{{asset.dam.displayName}}</strong></span>
                         </h6>
+                        <h6 class="">
+                          <span data-toggle="tooltip" data-placement="bottom" title="{{asset.dam.categoryName}}" translate>
+                            Folder Name
+                            <strong>{{asset.dam.categoryName}}</strong></span>
+                        </h6>
                       </td>
                       <td class="text-center">
                         {{asset.dam.assetType}}
@@ -815,8 +828,8 @@
                         <div class="actions-block override-actions custom-width-icon action_inline"
                           style="float: none;">
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
-                            (click)="assetPreview(asset.dam, true)">
-                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                            (click)="(asset.dam.contentPreviewType || asset.dam.imageFileType)? assetPreview(asset.dam, true) : ''">
+                            <i class="fa fa-eye IconCustomization" [ngClass]="asset.dam.contentPreviewType || asset.dam.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Remove"
@@ -910,6 +923,9 @@
                         </h6>
                         <h6>
                           From <strong>{{form.companyName}}</strong>
+                        </h6>
+                        <h6>
+                          Folder Name <strong>{{form.categoryName}}</strong>
                         </h6>
                       </td>
                       <td class="hidden-xs text-center">
@@ -1114,6 +1130,11 @@
                             Created By
                             <strong>{{asset.displayName}}</strong></span>
                         </h6>
+                        <h6 class="">
+                          <span data-toggle="tooltip" data-placement="bottom" title="{{asset.categoryName}}" translate>
+                            Folder Name
+                            <strong>{{asset.categoryName}}</strong></span>
+                        </h6>
                       </td>
                       <td class=" text-center">
                         {{asset.assetType}}
@@ -1126,8 +1147,8 @@
                         <div class="actions-block override-actions custom-width-icon action_inline"
                           style="float: none;">
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
-                            (click)="$event.stopPropagation();assetPreview(asset, true)">
-                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                            (click)="(asset.contentPreviewType || asset.imageFileType)? assetPreview(asset, true) : '' ; $event.stopPropagation()">
+                            <i class="fa fa-eye IconCustomization"  [ngClass]="asset.contentPreviewType || asset.imageFileType ? '' : 'disabled gray'" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
                         </div>
