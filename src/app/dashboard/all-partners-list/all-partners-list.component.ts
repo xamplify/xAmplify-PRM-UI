@@ -45,6 +45,8 @@ export class AllPartnersListComponent implements OnInit {
   isCollapsed: boolean = true;
   public regionNameFilters: Array<any>;
   public regionInfoFields: any;
+  partnerModuleName: string;
+  infoName: string;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -73,6 +75,19 @@ export class AllPartnersListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getInfoname();
+  }
+  private getInfoname() {
+    const customName = this.authenticationService.partnerModule.customName;
+    const isCustomNameDefined = customName != null && customName.length > 0;
+
+    this.partnerModuleName = isCustomNameDefined ? customName : " Partner";
+
+    if (!this.isDetailedAnalytics) {
+      this.infoName = `${this.applyFilter && (this.authenticationService.isTeamMember() || this.authenticationService.module.isTeamMember)? " My " : " All "}${this.partnerModuleName}s`;
+    } else {
+      this.infoName = ` the ${this.partnerModuleName}`;
+    }
   }
 
   ngOnChanges() {
@@ -244,6 +259,7 @@ applyFilters(pagination: Pagination) {
     
   }
   getAllPartnersDetailsList(pagination: Pagination){
+   // pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.parterService.getAllPartners(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
