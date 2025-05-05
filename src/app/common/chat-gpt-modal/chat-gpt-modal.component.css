@@ -226,12 +226,12 @@
     margin-top: 10px;
   }
 
-  .modal-body.oliver-header{
-    background: linear-gradient(to bottom, #E6F0FF, #d0e4ffd1);
-    max-height: 100%;
-    overflow: hidden;
-    padding: 15px 0px 15px 15px;
-  }
+    .modal-body.oliver-header {
+      background: linear-gradient(to bottom, #E6F0FF, #d0e4ffd1);
+      overflow: hidden;
+      padding: 15px 0px 15px 15px;
+      max-height: 100%;
+    }
     .side_bar {
       width: 25%;
       background: linear-gradient(to bottom, #cde5ff, #b0d4ff);
@@ -792,4 +792,79 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
 
 .oliver-text-color{
   color: #002b87;
+}
+/* From Uiverse.io by adamgiebl */ 
+.fileloader {
+  width: 64px;
+  height: 64px;
+  position: relative;
+  background: #f4f4f4;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fileloader:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  transform: rotate(45deg) translate(30%, 40%);
+  background: #2e86de;
+  box-shadow: 32px -34px 0 5px #0097e6;
+  animation: slide 2s infinite ease-in-out alternate;
+}
+
+.fileloader:after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0097e6;
+  transform: rotate(0deg);
+  transform-origin: 35px 145px;
+  animation: rotate 2s infinite ease-in-out;
+}
+
+@keyframes slide {
+  0% , 100% {
+    bottom: -35px
+  }
+
+  25% , 75% {
+    bottom: -2px
+  }
+
+  20% , 80% {
+    bottom: 2px
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(-15deg)
+  }
+
+  25% , 75% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(25deg)
+  }
+}
+
+.custom-align-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-text-align {
+  width: fit-content;
+  padding-left: 20px;
 }
