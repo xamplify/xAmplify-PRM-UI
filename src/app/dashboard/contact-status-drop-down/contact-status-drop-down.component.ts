@@ -39,7 +39,6 @@ export class ContactStatusDropDownComponent implements OnInit {
   findContactStatusStages() {
     this.contactStatusLoading = true;
     this.referenceService.scrollSmoothToTop();
-    this.contactStatusResponse = new CustomResponse();
     this.flexiFieldService.findContactStatusStages().subscribe(
       (response: any) => {
         if (response.statusCode === 200) {
