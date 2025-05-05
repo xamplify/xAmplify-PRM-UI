@@ -3,18 +3,18 @@
 </app-response-message>
 <ng-container *ngIf="!contactStatusLoading">
   <div class="form-group">
-    <label class="col-lg-8 col-md-8 col-sm-12 col-xs-12">Stages</label>
+    <label class="col-lg-8 col-md-8 col-sm-8 col-xs-12">Stages</label>
     <label class="ml10">Option</label>
     <ul class="list-group">
       <ng-container *ngFor="let contactStatusStage of contactStatusStages; let x = index">
         <li class="list-group-item" id="stage{{x}}">
           <div class="row">
-            <span class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <span class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
               <input type="text" [(ngModel)]="contactStatusStage.stageName" placeholder="Enter Stage Name"
                 class="form-control" [value]="contactStatusStage.stageName">
               <span class="required" *ngIf="contactStatusStage?.stageName?.length > 55">The maximum allowed characters limit is 55.</span>
             </span>
-            <span class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <span class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
               <div class="mb_mt7 alignEqualtoFields">
                 <input class="radioButton_shadow" type="radio" [value]="x" [checked]="selectedDefaultIndex === x" name="defaultStage"
                   class="alignEqualtoText" (change)="defaultStageChange(x)">
@@ -31,7 +31,7 @@
     </ul>
   </div>
   <div class="form-group">
-    <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px;" (click)="addStage()">
+    <a class="" style="padding: 9px 0;margin-top: 10px;" (click)="addStage()">
       <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Stage
     </a>
   </div>
