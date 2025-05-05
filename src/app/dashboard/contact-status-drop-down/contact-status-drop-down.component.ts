@@ -5,6 +5,8 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { PipelineStage } from 'app/dashboard/models/pipeline-stage';
 import { FlexiFieldService } from 'app/dashboard/user-profile/flexi-fields/services/flexi-field.service';
 
+declare var $: any;
+
 @Component({
   selector: 'app-contact-status-drop-down',
   templateUrl: './contact-status-drop-down.component.html',
@@ -128,7 +130,10 @@ export class ContactStatusDropDownComponent implements OnInit {
   }
 
   hasStageNameError(): boolean {
-    return this.contactStatusStages.some(stage => !stage.stageName || stage.stageName && stage.stageName.length > 55);
+    return this.contactStatusStages.some(stage => {
+      const stageName = $.trim(stage.stageName || '');
+      return !stageName || stageName.length > 55;
+    });
   }
 
 }

@@ -57,7 +57,8 @@ export class FlexiFieldService {
   }
 
   deleteContactStatusStage(id: number) {
-    let url = this.FLEXI_FIELD_PREFIX_URL + '/contact-status-stages' + '/id/' + id + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = this.FLEXI_FIELD_PREFIX_URL + '/contact-status-stages' + '/id/' + id + '/userId/' + loggedInUserId + this.ACCESS_TOKEN_SUFFIX_URL + this.authenticationService.access_token;
     return this.authenticationService.callDeleteMethod(url);
   }
 

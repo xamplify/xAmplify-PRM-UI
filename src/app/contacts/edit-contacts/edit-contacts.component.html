@@ -890,8 +890,9 @@
 															<th scope="col" *ngIf="isPartner" translate>REGION</th>
 															<!-- <th scope="col" *ngIf="isPartner" translate>TYPE</th>
 															<th scope="col" *ngIf="isPartner" translate>CATEGORY</th> -->
-															<th scope="col" class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
+															<th scope="col" class="text-center hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
 															<th scope="col" class="text-center hidden-xs" translate>ADDRESS</th>
+															<th scope="col" class="text-center hidden-xs" translate *ngIf="isContactModule">CONTACT STATUS</th>
 															<th scope="col" class="text-center " *ngIf="gdprStatus || isPartner"></th>
 															<th scope="col" *ngIf="isPartner" translate>SIGNUP STATUS</th>
 															<th scope="col" *ngIf="isPartner" translate>COMPANY PROFILE</th>
@@ -1056,6 +1057,12 @@
 																	<h5 *ngIf="contact?.zipCode || contact.country"
 																		class='mt0'>{{contact.zipCode}}<span
 																			*ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
+																	</h5>
+																</td>
+																<!----- XNFR-967 ----->
+																<td class="hidden-xs text-line center" *ngIf="isContactModule" (click)="showContactDetails(contact)">
+																	<h5 class='mb0 ellipsis'>{{contact.contactStatus | slice:0:15}}
+																		<span *ngIf="contact.contactStatus?.length>15">...</span>
 																	</h5>
 																</td>
 																<td align="center" *ngIf="gdprStatus || isPartner">
@@ -1237,12 +1244,6 @@
 																					translate>Contacts Limit : </td>
 																				<td align="center" class="pt10 pb10">
 																					{{contact.contactsLimit}}
-																			</tr>
-
-																			<!----- XNFR-967 ----->
-																			<tr *ngIf="isContactModuleType()" class="bg-unset flex-none">
-																				<td class='pt10 pb10 bold mr_10' translate>Contact Status : </td>
-																				<td align="center" class="pt10 pb10">{{contact.contactStatus}}</td>
 																			</tr>
 
 																			<!----- XNFR-680 Flexi Fields ----->
@@ -1466,6 +1467,7 @@
 												<th *ngIf="isPartner" translate scope="col">CATEGORY</th> -->
 												<th class="hidden-xs" *ngIf="!isPartner" translate scope="col">Job Title</th>
 												<th class="text-center hidden-xs" *ngIf="!isPartner" translate scope="col">ADDRESS</th>
+												<th class="text-center hidden-xs" *ngIf="isContactModule" translate scope="col">CONTACT STATUS</th>
 												<th class="text-center hidden-xs"
 													*ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !== 'excluded' && (gdprStatus || isPartner)"
 													scope="col"></th>
@@ -1585,6 +1587,12 @@
 														<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
 															class='mt0'>{{allcontacts.zipCode}}<span
 																*ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}
+														</h5>
+													</td>
+													<!----- XNFR-967 ----->
+													<td class="hidden-xs text-line center" *ngIf="isContactModule" (click)="showContactDetails(allcontacts)">
+														<h5 class='mb0 ellipsis'>{{allcontacts.contactStatus | slice:0:15}}
+															<span *ngIf="allcontacts.contactStatus?.length>15">...</span>
 														</h5>
 													</td>
 													<td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
@@ -1830,14 +1838,6 @@
 																			Country:</td>
 																		<td class='pt10 pb10'>
 																			{{allcontacts.country}}</td>
-																	</tr>
-																</ng-container>
-
-																<!----- XNFR-967 ----->
-																<ng-container *ngIf="isContactModuleType()">
-																	<tr class="bg-unset flex-none">
-																		<td class='pt10 pb10 bold' translate>Contact Status:</td>
-																		<td class='pt10 pb10'>{{allcontacts.contactStatus}}</td>
 																	</tr>
 																</ng-container>
 
