@@ -82,7 +82,7 @@ export class User {
     flexiFields : Array<FlexiFieldsRequestAndResponseDto>= new Array<FlexiFieldsRequestAndResponseDto>();
     accountId : string;
     userStatus : string;
-    isValidMobileNumber = false;
+    isValidMobileNumber = true;
     countryCode: string;
     contactStatus: string;
     contactStatusId: number;
