@@ -362,20 +362,27 @@ export class ChatGptModalComponent implements OnInit {
           assetId: assetsPath[index].id
         }));
 
-        if (oldAssets.length > 0) {
-          this.pdfFiles = oldAssets.map((path) => ({
-            file: emptyBlob,
-            assetName: path.assetName,
-            assetId: path.id
-          }));
-        }
-        this.getUploadedFileIds();
+        this.handleOldAssets(oldAssets, emptyBlob);
       },
       error: (err) => {
         this.assetLoader = false;
         console.error('Failed to load all PDFs', err);
       }
     });
+    if (requests == undefined || requests.length == 0) {
+      this.handleOldAssets(oldAssets, emptyBlob);
+    }
+  }
+
+  private handleOldAssets(oldAssets: any[], emptyBlob: Blob) {
+    if (oldAssets.length > 0) {
+      this.pdfFiles = oldAssets.map((path) => ({
+        file: emptyBlob,
+        assetName: path.assetName,
+        assetId: path.id
+      }));
+    }
+    this.getUploadedFileIds();
   }
 
   getUploadedFileIds() {
