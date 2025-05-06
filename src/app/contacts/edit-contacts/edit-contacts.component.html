@@ -1061,7 +1061,7 @@
 																</td>
 																<!----- XNFR-967 ----->
 																<td class="hidden-xs text-line center" *ngIf="isContactModule" (click)="showContactDetails(contact)">
-																	<h5 class='mb0 ellipsis'>{{contact.contactStatus | slice:0:15}}
+																	<h5 class='mb0'>{{contact.contactStatus | slice:0:15}}
 																		<span *ngIf="contact.contactStatus?.length>15">...</span>
 																	</h5>
 																</td>
@@ -1591,7 +1591,7 @@
 													</td>
 													<!----- XNFR-967 ----->
 													<td class="hidden-xs text-line center" *ngIf="isContactModule" (click)="showContactDetails(allcontacts)">
-														<h5 class='mb0 ellipsis'>{{allcontacts.contactStatus | slice:0:15}}
+														<h5 class='mb0'>{{allcontacts.contactStatus | slice:0:15}}
 															<span *ngIf="allcontacts.contactStatus?.length>15">...</span>
 														</h5>
 													</td>
