@@ -400,11 +400,11 @@
 												<!---XNFR-278-->
 												<!---XNFR-966-->
 												<li
-													*ngIf="!isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
+													*ngIf="selectedContactListIds.length > 0 && isContactModule">
 													<a (click)="openMergePopup()" translate>Copy To List</a>
 												</li>
 												<li
-													*ngIf="!isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
+													*ngIf="selectedContactListIds.length > 0 && isContactModule && !isSynchronizationList && !isFormList && !isDefaultContactList && !manageCompanies">
 													<a (click)="openRemovePopup()" translate>Move To List</a>
 												</li>
 												<!---XNFR-966-->

@@ -15,7 +15,7 @@
   <app-modal-popup-loader *ngIf="pdfLoader"></app-modal-popup-loader>
 
   <object *ngIf="!isPdf && !pdfLoader" id="preview-object" [data]="url" width="100%" height="600px"
-    style="border: 1px solid #ddd;"></object>
+   class="preview-border"></object>
 
   <div id="pdf-container" style="display: none;"></div>
 

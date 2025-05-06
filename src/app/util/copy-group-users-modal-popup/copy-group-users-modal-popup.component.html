@@ -6,13 +6,13 @@
                 <button type="button" class="close-circle" (click)="closePopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 *ngIf="!copySuccess" class="modal-title text-center">Select Groups</h4>
+                <h4 *ngIf="!copySuccess" class="modal-title text-center">{{isContactModule ? 'Select Lists' : 'Select Groups'}}</h4>
             </div>
             <div class="modal-body">
                 <div class="thank-you-pop" *ngIf="copySuccess">
                     <ng-container *ngIf="statusCode==200">
                         <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
-                        <h4 class="event-success"> {{ messageType === 'contacts' ? 'Contact(s) successfully copied to ' + selectedGroupNames.join(', ') + '.' : responseMessage }}</h4>
+                        <h4 class="event-success"> {{ isContactModule ? isMove ? 'Moved successfully' : 'Copied successfully' : responseMessage }}</h4>
                     </ng-container>
                     <ng-container *ngIf="statusCode!=200">
                         <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
