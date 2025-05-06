@@ -149,6 +149,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	formData: any = new FormData();
 	dupliateNameErrorMessage: string;
 	damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
+	@Output() notifyFolders = new EventEmitter();
+	@Input() selectedFoldersForOliver: any[] = [];
+	isFromOliverFolderView: boolean = false;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
@@ -176,6 +179,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			}
 		} else if (!this.FromOliverPopUp) {
 			this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
+		}
+		if (this.selectedFoldersForOliver.length > 0) {
+			this.setViewType('fg');
 		}
 	}
 
@@ -299,10 +305,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					this.modulesDisplayType.isGridView = true;
 					this.modulesDisplayType.isListView = false;
 					this.modulesDisplayType.isFolderGridView = false;
+					this.isFromOliverFolderView = false;
 				} else if (viewType == "fg") {
 					this.modulesDisplayType.isFolderGridView = true;
 					this.modulesDisplayType.isListView = false;
 					this.modulesDisplayType.isGridView = false;
+					this.isFromOliverFolderView = false;
 				}
 			}
 		}
@@ -1278,6 +1286,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.categoryId = event;
 		this.showUpArrowButton = this.categoryId != undefined && this.categoryId != 0;
 		this.viewType = "l";
+		this.isFromOliverFolderView = true;
 		this.setViewType(this.viewType);
 		this.getCompanyId();
 	}
@@ -1287,5 +1296,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.viewType = event;
 		this.setViewType(this.viewType);
 		this.getCompanyId();
+	}
+
+	handleFolders(event) {
+		this.notifyFolders.emit(event);
 	}
 }

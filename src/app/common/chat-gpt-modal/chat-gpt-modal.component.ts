@@ -59,6 +59,7 @@ export class ChatGptModalComponent implements OnInit {
   isReUpload: boolean = false;
   uploadedAssetIds: any[];
   vectorStoreId: any;
+  selectedFolders: any[] = [];
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
   }
@@ -336,7 +337,11 @@ export class ChatGptModalComponent implements OnInit {
   submitSelectedAssetsToOliver() {
     this.assetLoader = true;
     this.showOpenHistory = false;
-    this.getPdfByAssetPaths(this.selectedAssets);
+    if (this.selectedFolders.length == 0) {
+      this.getPdfByAssetPaths(this.selectedAssets);
+    } else {
+      this.assetLoader = false;
+    }
     this.showView = false;
   }
 
@@ -474,6 +479,10 @@ export class ChatGptModalComponent implements OnInit {
   setInputText(text: string) {
     this.inputText = text;
     this.isValidInputText = true;
+  }
+
+  handleFolders(event) {
+    this.selectedFolders = event;
   }
 
 }

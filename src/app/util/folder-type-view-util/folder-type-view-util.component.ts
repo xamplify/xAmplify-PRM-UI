@@ -26,6 +26,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   @Output() folderViewTypeEventEmitter = new EventEmitter();
   @Output() oliverfolderViewTypeEventEmitter = new EventEmitter();
   @Output() folderViewAssetEventEmitter = new EventEmitter();
+  @Output() notifyFolders = new EventEmitter();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse:CustomResponse = new CustomResponse();
   categorySortOption: SortOption = new SortOption();
@@ -38,6 +39,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   options: string[] = ['Search Folder', 'Search In Folder'];
   selectedOption: string;
   @Input() FromOliverPopUp: boolean = false;
+  @Input() selectedFoldersForOliver: any[] = [];
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -297,5 +299,24 @@ onSelect(option: string) {
     }
     this.referenceService.goToRouter(url)
   }
+
+  onCheckboxChange(item: any, event: any) {
+		if (event.target.checked) {
+			this.selectedFoldersForOliver.push(item);
+		} else {
+			const index = this.selectedFoldersForOliver.findIndex(selected => selected.id === item.id);
+			if (index !== -1) {
+				this.selectedFoldersForOliver.splice(index, 1);
+			}
+		}
+		this.notifyFolders.emit(this.selectedFoldersForOliver);
+	}
+
+  isSelected(item: any): boolean {
+		if (!item || !this.selectedFoldersForOliver) {
+			return false;
+		}
+		return this.selectedFoldersForOliver.some(selected => selected.id === item.id);
+	}
 
 }
