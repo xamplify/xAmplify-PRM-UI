@@ -112,8 +112,11 @@
               <td>{{item.region}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardedOn"></app-timestamp></td>
               <td>{{item?.status}}</td>
-              <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp></td>
-                <td>
+              <td>
+                <span *ngIf="item.status === 'Pending Signup'">-</span>
+                <app-timestamp  *ngIf="item.status !== 'Pending Signup'" [isOnlyDate]="false" [dateAndTime]="item?.dateLastLogin"></app-timestamp>
+              </td>
+               <td>
                   <div class="actions-block float-none">
                     <a *ngIf="item.status !== 'Active'" (click)="callParentMethod(item)" class="custom-icon" 
                     data-toggle="tooltip" data-placement="left" title="Send reminder email">
