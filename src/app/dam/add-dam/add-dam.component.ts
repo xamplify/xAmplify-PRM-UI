@@ -1007,16 +1007,6 @@ setVendorSignatureRequired(event){
       this.validateSlugForCompany();
     }
     this.completeLink = this.linkPrefix + this.damPostDto.slug;
-    
-    if(this.isValidName){
-      this.nameErrorMessage = "";
-    }
-    if(this.isValidDescription){
-      this.descriptionErrorMessage = "";
-    }
-    if(this.isValidSlug){
-      this.slugErrorMessage= "";
-    }
   }
 
   editSlug() {

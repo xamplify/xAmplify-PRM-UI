@@ -1992,7 +1992,7 @@ confirmRemoveVideo(){
             this.damUploadPostDto.isSlugValid = false;
             this.addErrorMessage("slug", "Alias already exists");
           } else {
-            this.removeErrorMessage("slug");
+            this.validateSlug();
           }
         }, 
         (error: string) => {
