@@ -254,18 +254,6 @@
                                                          <div class="text-center card-template">
                                                             <img class="img-templates" src="../../../assets/images/asset-uploads/file-upload.svg" height="39px" alt="">
                                                             <span [ngClass]="uploadedAssetName?.length > 0 ? 'mb0 drag-text mt10' : 'mb0 drag-text mt10 d_block'">{{ uploadedAssetName?.length > 0 ? 'Click to upload ' : 'Click to upload or Drag and drop files' }}</span>
-                                                            <!-- <h2 class="upload-video" style="margin:-5px;padding-top: 5px;">{{uploadOrReplaceAssetText}}</h2>
-                                                                                                                                                         <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6> -->
-                                                            <!-- <button class="button_blue bgcolor-unset" style="color:#fff"><span
-                                                                                                                                                               class="btn btn-primary transition txt_pd-top3">Browse</span></button> -->
-                                                            <!-- <br><br>
-                                                                                                                                                         <span *ngIf="uploadedAssetName?.length>0">
-                                                                                                                                                            <strong>File Name : {{uploadedAssetName | slice: 0:
-                                                                                                                                                               23}}</strong>
-                                                                                                                                                         </span>
-                                                                                                                                                         <span *ngIf="uploadedAssetName?.length==0">
-                                                                                                                                                            <strong>No File Selected</strong>
-                                                                                                                                                   </span> -->
                                                          </div>
                                                       </div>
                                                       <p class="mt8 mb0" *ngIf="uploadedAssetName?.length==0">Maximum file size is 800 MB.</p>
