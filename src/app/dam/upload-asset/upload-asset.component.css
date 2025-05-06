@@ -729,3 +729,7 @@ margin-right: 10px;}
   width: auto;
   padding: 10px 5px 10px 5px;
 }
+.asset_files.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
