@@ -401,7 +401,9 @@ export class ChatGptModalComponent implements OnInit {
         if (!self.isReUpload) {
           self.isfileProcessed = true;
         } else if (self.isReUpload) {
-          this.scrollToBottom();
+          setTimeout(function () {
+            self.scrollToBottom();
+          }, 1000);
           self.showOpenHistory = true;
         }
       },
@@ -467,6 +469,11 @@ export class ChatGptModalComponent implements OnInit {
   reUploadFiles() {
     this.openAssetsPage();
     this.isReUpload = true;
+  }
+
+  setInputText(text: string) {
+    this.inputText = text;
+    this.isValidInputText = true;
   }
 
 }

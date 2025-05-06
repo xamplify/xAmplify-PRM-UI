@@ -947,3 +947,35 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   bottom: 8px;
   width: 100%;
 }
+
+
+.action-buttons {
+  padding: 7px 7px 0px 7px;
+  gap: 10px;
+  align-items: center;
+}
+
+.action-btn {
+  border: 1px solid #0d6efd;
+  background-color: transparent;
+  color: #0d6efd;
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.action-btn, .fa-plus{
+  font-size: 12px;
+}
+
+.action-btn:hover,
+.share-btn:hover {
+  background-color: #f0f7ff;
+  box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2);
+}
+
+.override-margin {
+  margin-bottom: -15px;
+}
