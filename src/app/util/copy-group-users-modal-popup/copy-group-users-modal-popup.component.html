@@ -12,7 +12,7 @@
                 <div class="thank-you-pop" *ngIf="copySuccess">
                     <ng-container *ngIf="statusCode==200">
                         <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
-                        <h4 class="event-success">{{responseMessage}}</h4>
+                        <h4 class="event-success"> {{ messageType === 'contacts' ? 'Contact(s) successfully copied to ' + selectedGroupNames.join(', ') + '.' : responseMessage }}</h4>
                     </ng-container>
                     <ng-container *ngIf="statusCode!=200">
                         <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
