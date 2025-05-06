@@ -588,7 +588,7 @@
                                                          <div class="inline-box link" action="action_page.php">
                                                            <input class="select-box inline-box form-control" [(ngModel)]="damUploadPostDto.slug"
                                                              maxlength="100" (input)="updateSlug('slug');">
-                                                           <button type="button" (click)="editedSlug()" style="width: auto;border-radius: 2px;"><i
+                                                           <button type="button" (click)="editedSlug()" style="width: auto;border-radius:0px 3px 3px 0px;"><i
                                                                class="fa fa-angle-right" style="font-size: 19px;"></i></button>
                                                          </div>
                                                        </div>
@@ -601,12 +601,11 @@
                                                            data-placement="top" title="Edit" style="border-radius:0px !important;"><i
                                                              class="fa fa-edit"></i></button>
                                                          <button type="button" class="widthauto" (click)="copyInputMessage(link)" data-toggle="tooltip"
-                                                           data-placement="top" title="Copy" style="border-radius:0px !important;"><i
+                                                           data-placement="top" title="Copy" style="border-radius:0px 3px 3px 0px!important;"><i
                                                              class="fa fa-copy"></i></button>
                                                        </div>
                                                      </div>
-                                                     <span *ngIf="!damUploadPostDto.isSlugValid" class="required pull-left"
-                                                       style="position: absolute;">{{slugErrorMessage}}</span>
+                                                     <span *ngIf="!damUploadPostDto.isSlugValid" class="required pull-left">{{slugErrorMessage}}</span>
                                                    </div>
                                                  </div>
                                              </div>
