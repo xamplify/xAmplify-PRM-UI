@@ -42,7 +42,7 @@
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
 		title="View Details" (click)="viewDetails(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
-	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="isPartnerView && authenticationService?.isOliverActive"
+	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver"
 		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
 		<div class="clickicons"></div>
@@ -54,7 +54,7 @@
 		<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 
-	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="!isPartnerView && authenticationService?.isOliverActive"
+	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver"
 		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
 		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
 		<div class="clickicons"></div>

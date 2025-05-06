@@ -801,6 +801,18 @@
                                                          </div>
                                                       </div>
                                                    </div>
+                                                   <!--XNFR-973-->
+                                                   <div class="toggle-item">
+                                                      <div class="toggle-label">Disable Access for Oliver</div>
+                                                      <label class="toggle-switch">
+                                                         <input type="checkbox" [checked]="damUploadPostDto?.disableAccessForOliver"
+                                                            (change)="setOliverAccess($event.target.checked)">
+                                                         <span class="toggle-slider"></span>
+                                                      </label>
+                                                      <i class="fa fa-question-circle help-icon" data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                         [title]="properties?.ACCESS_TO_ASK_OLIVER">
+                                                      </i>
+                                                   </div>
                                                 </div>
                                                 <!-- <div class="row grid-container m0">
                                                                                      <div class="grid-item">

@@ -275,7 +275,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/****XNFR-278****/
 	mergeOptionClicked = false;
+	moveOptionClicked = false;
 	selectedUserIdsForMerging: any[];
+	selectedUserIdsForMoving: any[];
 	/****XNFR-278****/
 	@Input() showEdit: boolean;
 	/*****XNFR-342*****/
@@ -3349,9 +3351,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.selectedUserIdsForMerging = this.selectedContactListIds;
 	}
 
+	openRemovePopup(){
+		this.moveOptionClicked = true;
+        this.selectedUserIdsForMerging = this.selectedContactListIds;
+	}
+	
 	copyGroupUsersModalPopupEventReceiver() {
 		this.mergeOptionClicked = false;
 		this.selectedUserIdsForMerging = [];
+		if(this.moveOptionClicked){
+			this.moveOptionClicked = false;
+			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+			this.contactsCount(this.selectedContactListId);
+		}		
 	}
 
 	unsubscribeUser(selectedUserForUnsubscribed: any) {

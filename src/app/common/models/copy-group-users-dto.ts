@@ -6,4 +6,6 @@ export class CopyGroupUsersDto {
     userGroupId = 0;
     moduleName = '';
     users = [];
+     // XNFR-966
+    move: boolean = false;
 }

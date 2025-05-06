@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter,OnDestroy } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter,OnDestroy, SimpleChanges } from '@angular/core';
 import { Properties } from 'app/common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -24,6 +24,7 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
   @Input() selectedUserIds = [];
   @Input() moduleName = '';
   @Input() selectedUsers = [];
+  @Input() isMove: boolean = false;
   @Output() copyGroupUsersModalPopupEventEmitter = new EventEmitter();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   customResponse: CustomResponse = new CustomResponse();
@@ -40,6 +41,11 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
   showUsersPreview = false;
   selectedGroupName = "";
   selectedUserListId = 0;
+
+  // XNFR-966
+  messageType = 'contacts';
+  selectedGroupNames: string[] = [];
+   // XNFR-966
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
     public utilService:UtilService,public logger:XtremandLogger,public pagerService:PagerService) { }
   
@@ -53,6 +59,12 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
   ngOnDestroy(){
     $('#copyGroupUsersModalPopup').modal('hide');
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.isMove) {
+      console.log('isMove changed:', this.isMove); // To track the value of isMove
+    }
+  }
+
   private addLoader() {
     this.referenceService.startLoader(this.httpRequestLoader);
   }
@@ -115,8 +127,17 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
 
   highlightSelectedPartnerGroupOnCheckBoxClick(selectedPartnerGroupId: any, event: any) {
     this.referenceService.highlightRowByCheckBox('copy-group-users-tr', 'copy-group-users-list-table', 'copyGroupUsersCheckBoxName', this.selectedPartnerGroupIds, 'copy-group-users-header-checkbox-id', selectedPartnerGroupId, event);
+    const selectedGroup = this.pagination.pagedItems.find(group => group.id === selectedPartnerGroupId);
+    if (selectedGroup){
+      const index = this.selectedGroupNames.indexOf(selectedGroup.groupName);
+      if (event.target.checked && index === -1){
+        this.selectedGroupNames.push(selectedGroup.groupName);
+      }else if (!event.target.checked && index !== -1) {
+        this.selectedGroupNames.splice(index, 1);
+    }
   }
-
+  }
+  
   selectOrUnselectAllRowsOfTheCurrentPage(event: any) {
     this.selectedPartnerGroupIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('copy-group-users-tr', 'copy-group-users-list-table', 'copyGroupUsersCheckBoxName', this.selectedPartnerGroupIds, this.pagination, event);
   }
@@ -143,6 +164,12 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
           user.createdTime = null;
         });
       }
+      console.log('Move option clicked:', this.isMove);
+      if (this.isMove) {      
+        this.copyGroupUsersDto.move = true;
+    } else {
+        this.copyGroupUsersDto.move = false;
+    }
       this.authenticationService.copyUsersToUserGroups(this.copyGroupUsersDto).subscribe(
         response=>{
           this.copySuccess = true;
