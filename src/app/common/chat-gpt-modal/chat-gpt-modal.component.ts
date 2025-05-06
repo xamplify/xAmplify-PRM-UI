@@ -12,7 +12,8 @@ import { DamService } from 'app/dam/services/dam.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpClient } from '@angular/common/http';
 import { add } from 'ngx-bootstrap/chronos';
-declare var $: any;
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+declare var $: any, swal:any;
 @Component({
   selector: 'app-chat-gpt-modal',
   templateUrl: './chat-gpt-modal.component.html',
@@ -51,7 +52,7 @@ export class ChatGptModalComponent implements OnInit {
   isMinimizeOliver: boolean;
   preventImmediateExpand: boolean = false;
   showView: boolean = false;
-  pdfFiles: { file: Blob; assetName: any; }[];
+  pdfFiles: { file: Blob; assetName: any; }[] = [];
   threadId: any;
   assetLoader: boolean;
   selectedAssets: any[] = [];
@@ -60,6 +61,7 @@ export class ChatGptModalComponent implements OnInit {
   uploadedAssetIds: any[];
   vectorStoreId: any;
   selectedFolders: any[] = [];
+  chatHistoryId: any;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
   }
@@ -163,6 +165,9 @@ export class ChatGptModalComponent implements OnInit {
     this.selectedAssets = [];
     this.isReUpload = false;
     this.isfileProcessed = false;
+    this.threadId = 0;
+    this.vectorStoreId = 0;
+    this.chatHistoryId = 0;
   }
 
   showOliverIcon() {
@@ -179,6 +184,11 @@ export class ChatGptModalComponent implements OnInit {
   setActiveTab(tab: string) {
     this.isValidInputText = false;
     this.inputText = "";
+    if (this.chatHistoryId != undefined && this.chatHistoryId > 0) {
+      this.showSweetAlert(tab,this.threadId, this.vectorStoreId, this.chatHistoryId);
+    } else {
+      this.activeTab = tab;
+    }
     this.isTextLoading = false;
     this.messages = [];
     this.chatGptGeneratedText = "";
@@ -188,8 +198,46 @@ export class ChatGptModalComponent implements OnInit {
     this.showOpenHistory = false;
     this.openShareOption = false;
     this.showEmailModalPopup = false;
-    this.activeTab = tab;
+    this.threadId = 0;
+    this.vectorStoreId = 0;
+    this.chatHistoryId = 0;
+    this.selectedAssets = [];
+    this.selectedFolders = [];
   }
+
+  showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any) {
+    let self = this;
+    swal({
+      title: 'Do you want to save the Chat?',
+      text: 'If not the chat will be deleted permanently',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(function () {
+      self.referenceService.showSweetAlertSuccessMessage('Chat saved successfully.');
+    }, function (dismiss: any) {
+      self.deleteChatHistory(threadId,vectorStoreId,chatHistoryId);
+    })
+    self.activeTab = tab;
+  }
+
+  deleteChatHistory(threadId:any,vectorStoreId:any,chatHistoryId:any) {
+    this.referenceService.showSweetAlertProcessingLoader("Loading");
+    this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId).subscribe(
+      response => {
+        swal.close();
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.referenceService.showSweetAlertSuccessMessage('Chat deleted.');
+        }
+      }, error => {
+        swal.close();
+      }
+    )
+  }
+
   openEmailModalPopup(markdown: any) {
     let text = markdown.innerHTML;
     if (text != undefined) {
@@ -322,7 +370,7 @@ export class ChatGptModalComponent implements OnInit {
 
   searchDataOnKeyPress(keyCode: any) {
     if (keyCode === 13 && this.inputText != undefined && this.inputText.length > 0) {
-      this.generateChatGPTText();
+      this.AskAiTogetData();
     }
   }
 
@@ -350,7 +398,7 @@ export class ChatGptModalComponent implements OnInit {
     const requests = [];
     const emptyBlob = new Blob([], { type: 'application/pdf' });
     assetsPath.forEach(path => {
-      if (path.openAIFileId == undefined || path.openAIFileId == null) {
+      if (path.openAIFileId == undefined || path.openAIFileId == null || path.openAIFileId == '' || path.openAIFileId == ' ') {
         const url = path.proxyUrlForOliver + path.assetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token);
         const request = this.http.get(url, { responseType: 'blob' });
         requests.push(request);
@@ -381,26 +429,38 @@ export class ChatGptModalComponent implements OnInit {
 
   private handleOldAssets(oldAssets: any[], emptyBlob: Blob) {
     if (oldAssets.length > 0) {
-      this.pdfFiles = oldAssets.map((path) => ({
+      let uploadedAssets = oldAssets.map((path) => ({
         file: emptyBlob,
         assetName: path.assetName,
         assetId: path.id
       }));
+      uploadedAssets.forEach((uploadedAsset) => {
+        this.pdfFiles.push(uploadedAsset);
+      })
     }
     this.getUploadedFileIds();
   }
 
   getUploadedFileIds() {
-    this.chatGptIntegrationSettingsDto.isFromInsightAI = true;
-    this.chatGptIntegrationSettingsDto.uploadedAssetIds = this.uploadedAssetIds;
+    this.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
+    // this.chatGptIntegrationSettingsDto.uploadedAssetIds = this.uploadedAssetIds;
     this.chatGptIntegrationSettingsDto.threadId = this.threadId;
     this.chatGptIntegrationSettingsDto.vectorStoreId = this.vectorStoreId;
+    this.chatGptIntegrationSettingsDto.chatHistoryId = this.chatHistoryId;
+    if (this.activeTab == 'askpdf') {
+      this.chatGptIntegrationSettingsDto.agentType = "INSIGHTAGENT";
+    } else if (this.activeTab == 'new-chat') {
+      this.chatGptIntegrationSettingsDto.agentType = "BRAINSTORMAGENT";
+    } else if (this.activeTab === 'writing') {
+      this.chatGptIntegrationSettingsDto.agentType = "SPARKWRITERAGENT";
+    }
     this.chatGptSettingsService.onUploadFiles(this.pdfFiles, this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         let data = response.data;
         this.threadId = data.threadId;
         this.vectorStoreId = data.vectorStoreId;
-        this.uploadedAssetIds = response.map.uploadedAssestIds;
+        this.chatHistoryId = data.chatHistoryId;
+        // this.uploadedAssetIds = response.map.uploadedAssestIds;
         this.assetLoader = false;
         let self = this
         if (!self.isReUpload) {
@@ -436,6 +496,18 @@ export class ChatGptModalComponent implements OnInit {
     self.messages.push({ role: 'user', content: self.inputText });
     this.chatGptIntegrationSettingsDto.prompt = self.inputText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
+    if (this.activeTab == 'askpdf') {
+      this.chatGptIntegrationSettingsDto.agentType = "INSIGHTAGENT";
+    } else if (this.activeTab == 'new-chat') {
+      this.chatGptIntegrationSettingsDto.agentType = "BRAINSTORMAGENT";
+    } else if (this.activeTab === 'writing') {
+      this.chatGptIntegrationSettingsDto.agentType = "SPARKWRITERAGENT";
+    } else if (this.activeTab === 'paraphraser') {
+      this.chatGptIntegrationSettingsDto.agentType = "PARAPHRASERAGENT";
+    }
+    self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
+    self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
+    self.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
     self.inputText = '';
     this.chatGptSettingsService.generateAssistantTextByAssistant(this.chatGptIntegrationSettingsDto).subscribe(
       function (response) {
@@ -446,6 +518,8 @@ export class ChatGptModalComponent implements OnInit {
           self.chatGptGeneratedText = self.referenceService.getTrimmedData(content.message);
           self.messages.push({ role: 'assistant', content: self.chatGptGeneratedText });
           self.threadId = content.threadId;
+          self.vectorStoreId = content.vectorStoreId;
+          self.chatHistoryId = content.chatHistoryId;
         } else {
           self.messages.push({ role: 'assistant', content: 'Invalid response from Oliver.' });
         }

@@ -168,7 +168,7 @@
                         [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                       <div class="btn-wrapper">
                         <button *ngIf="hasAcess" class="btn-plus">+</button>
-                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                        <button class="btn-submit" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
                     </div>
@@ -217,7 +217,7 @@
                           </option>
                         </select>
                         <button class="btn btn-submit ml10" type="button"
-                          (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                          (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Submit</button>
                       </div>
                     </div>
@@ -337,7 +337,7 @@
                     </div>
                     <div class="content-area">
                       <div class="generate-div w-50per mt10">
-                        <button class="generate-btn" (click)="!isTextLoading && isValidInputText && generateChatGPTText()"
+                        <button class="generate-btn" (click)="!isTextLoading && isValidInputText && AskAiTogetData()"
                           [disabled]="isTextLoading || !isValidInputText">Generate</button>
                         <!-- <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="copyChatGPTText(chatGptGeneratedTextInput)">Copy</button>
                                         <button *ngIf="isCopyButtonDisplayed" class="generate-btn ml10" (click)="openEmailModalPopup(markdownComponent)">Send Email</button>
