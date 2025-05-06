@@ -21,7 +21,7 @@
                 <span>Default</span>
                 <button type="button" *ngIf="!contactStatusStage.defaultStage"
                   class="btn-danger button-blue btn_add mr_4 spaceTopBottom pull-right" (click)="deleteStage(contactStatusStage)" data-toggle="tooltip"
-                  data-placement="top" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+                  data-placement="top" [attr.data-original-title]="contactStatusStage.companyId === 1 ? 'Default stage can not be deleted' : 'Delete'"  [disabled]="contactStatusStage.companyId === 1"><span class="glyphicon glyphicon-trash"></span>
                 </button>
               </div>
             </span>

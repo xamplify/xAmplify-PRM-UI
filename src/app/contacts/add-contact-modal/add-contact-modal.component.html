@@ -363,8 +363,12 @@
               <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
               <div class="col-xs-10 col-sm-10 p0 px_0" id="contactStatus">
                 <select class="form-control same-bgcolor-for-select mt10" style="border: none !important;width: 91%;"
-                  [(ngModel)]="addContactuser.contactStatus" [ngModelOptions]="{standalone: true}" placeholder="Country">
-                  <option *ngFor="let contactStatus of contactStatusStages" [value]="contactStatus">{{contactStatus}}</option>
+                  [(ngModel)]="selectedContactStatus" (ngModelChange)="onContactStatusChange($event)"
+                  [ngModelOptions]="{ standalone: true }">
+                  <option [ngValue]="null">Select Contact Status</option>
+                  <option *ngFor="let stage of contactStatusStages" [ngValue]="stage">
+                    {{ stage.stageName }}
+                  </option>
                 </select>
                 <div class="textCss"></div>
               </div>

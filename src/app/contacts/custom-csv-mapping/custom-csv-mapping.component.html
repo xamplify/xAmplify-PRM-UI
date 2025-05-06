@@ -50,7 +50,7 @@
             </td>
             <td class="text-center">
               <div class="actions-block override-actions">
-                <a class="custom-icon" data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="removeContact(i)">
+                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="removeContact(i)">
                   <i class="fa fa-trash-o trashIconCustomization"></i></a>
               </div>
             </td>
@@ -128,8 +128,9 @@
                     <td class="d-flex">
                       <input type="text" class="form-control" [(ngModel)]="user.contactStatus" placeholder="Contact Status (optional)"
                         [ngModelOptions]="{standalone: true}" [disabled]="isContactStatusPresent(user)">
-                      <select class="form-control" [(ngModel)]="user.contactStatus">
-                        <option *ngFor="let contactStatus of contactStatusStages" [value]="contactStatus">{{contactStatus}}</option>
+                      <select class="form-control" [(ngModel)]="user.userStatus" (ngModelChange)="onContactStatusChange($event, user)">
+                        <option [ngValue]="null">Select Contact Status</option>
+                        <option *ngFor="let contactStatus of contactStatusStages" [ngValue]="contactStatus">{{contactStatus.stageName}}</option>
                       </select>
                     </td>
                   </tr>
@@ -356,7 +357,7 @@
                     [ngModelOptions]="{standalone: true}" (input)="validateEmailAddressPattern(user)">
                 </td>
                 <td class="text-center">
-                  <a class="custom-icon actions-block override-actions" data-toggle="tooltip" data-placement="bottom" title="Delete"
+                  <a class="custom-icon actions-block override-actions" data-toggle="tooltip" data-placement="top" title="Delete"
                     (click)="removeInvalidUser(i, user)"><i class="fa fa-trash-o trashIconCustomization"></i></a>
                 </td>
               </tr>

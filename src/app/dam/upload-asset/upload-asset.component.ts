@@ -535,6 +535,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 this.isValidForm = false;
                 }
 		}
+        this.updateButtonStatus();
 	}
 
     updateDescriptionErrorMessage() {
@@ -1399,27 +1400,31 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     this.damUploadPostDto.partnerIds = event['partnerIds'];
     this.damUploadPostDto.partnerGroupSelected = event['partnerGroupSelected'];
     /****XNFR-342****/
-    let isPartnerCompanyOrGroupSelected = this.damUploadPostDto.partnerGroupIds.length>0 || this.damUploadPostDto.partnerIds.length>0;
-    if(this.isAdd){
-        if(isPartnerCompanyOrGroupSelected){
-            this.submitButtonText = "Save & Publish";
-            this.disableSaveAsDraftButton = true;
-        }else{
-            this.submitButtonText = "Save";
-            this.disableSaveAsDraftButton = false;
-        }
-    }else{
-        if(isPartnerCompanyOrGroupSelected && !this.isAssetPublished){
-            this.submitButtonText = "Update & Publish";
-            this.disableSaveAsDraftButton = true;
-        }else{
-            this.submitButtonText = "Update";
-            this.disableSaveAsDraftButton = false;
-        }
-    }
+    this.updateButtonStatus();
     /****XNFR-342****/
    
 }
+
+    private updateButtonStatus() {
+        let isPartnerCompanyOrGroupSelected = this.damUploadPostDto.partnerGroupIds.length > 0 || this.damUploadPostDto.partnerIds.length > 0;
+        if (this.isAdd) {
+            if (isPartnerCompanyOrGroupSelected) {
+                this.submitButtonText = "Save & Publish";
+                this.disableSaveAsDraftButton = true;
+            } else {
+                this.submitButtonText = "Save";
+                this.disableSaveAsDraftButton = false;
+            }
+        } else {
+            if (isPartnerCompanyOrGroupSelected && !this.isAssetPublished) {
+                this.submitButtonText = "Update & Publish";
+                this.disableSaveAsDraftButton = true;
+            } else {
+                this.submitButtonText = "Update";
+                this.disableSaveAsDraftButton = false;
+            }
+        }
+    }
 
 toggleContainWithinAspectRatio() {
     if(this.croppedImage!=''){

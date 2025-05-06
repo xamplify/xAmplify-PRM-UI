@@ -357,8 +357,10 @@ export class ViewDamComponent implements OnInit {
 				(response: any) => {
 					this.damViewStatusCode = response.statusCode;
 					if (response.access) {
-						if (response.statusCode == 404) {
+						if (response.statusCode == 403) {
 							this.referenceService.goToAccessDeniedPage();
+						} else if (response.statusCode == 404) {
+							this.referenceService.goToPageNotFound();
 						} else if (response.statusCode == 200) {
 							let map = response.map;
 							this.isVendorLogin = map.isVendor;

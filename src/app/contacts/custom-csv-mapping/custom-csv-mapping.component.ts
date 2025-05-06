@@ -78,11 +78,11 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.notifyParentCancel = new EventEmitter();
     this.notifyParentSave = new EventEmitter();
     this.notifyParentCustomResponse = new EventEmitter();
-    this.findContactStatusStages();
   }
 
   ngOnInit() {
     this.loadParsedCsvDtoPagination();
+    this.findContactStatusStages();
   }
 
   ngOnDestroy() {
@@ -851,8 +851,7 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
     this.contactService.findContactStatusStages().subscribe(
       (response: any) => {
         if (response.statusCode === 200) {
-          const stages = response.data;
-          this.contactStatusStages = stages.map((stage: any) => stage.stageName);
+          this.contactStatusStages = response.data;
         }
         this.isListLoader = false;
       }, (error: any) => {
@@ -863,6 +862,16 @@ export class CustomCsvMappingComponent implements OnInit, OnDestroy {
 
   isContactStatusPresent(user: User): boolean {
     return this.contactStatusStages.some(stage => stage === user.contactStatus);
+  }
+
+  onContactStatusChange(status: any, user: User) {
+    if (!status) {
+      user.contactStatusId = null;
+      user.contactStatus = '';
+    } else {
+      user.contactStatusId = status.id;
+      user.contactStatus = status.stageName;
+    }
   }
 
 }
