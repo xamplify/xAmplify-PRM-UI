@@ -8,6 +8,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 import { ChatGptIntegrationSettingsDto } from 'app/dashboard/models/chat-gpt-integration-settings-dto';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 declare var $: any;
 
 @Component({
@@ -59,10 +60,13 @@ export class AiChatManagerComponent implements OnInit {
   loadPreview :boolean = false
   isBeeTemplateComponentCalled: boolean;
   beeContainerInput: { module: string; jsonBody: string; };
+  selectedTemplateList: any[] = [];
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
-    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
+    private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService) { }
 
   ngOnInit() {
+    this.showTemplateById();
+    this.referenceService.asset = '';
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
     if (this.assetId > 0) {
       this.isOliverAiFromdam = false;
@@ -506,11 +510,14 @@ export class AiChatManagerComponent implements OnInit {
     this.chatGptIntegrationSettingsDto.prompt = text;
     this.chatGptSettingsService.insertTemplateData(this.chatGptIntegrationSettingsDto).subscribe(
         (response: any) => {
-          this.isBeeTemplateComponentCalled = true;
-          this.beeContainerInput = {
-            module: 'dam',
-            jsonBody: JSON.stringify(response.data)
-          };
+          // this.isBeeTemplateComponentCalled = true;
+          // this.beeContainerInput = {
+          //   module: 'dam',
+          //   jsonBody: JSON.stringify(response.data)
+          // };
+          this.emailTemplateService.emailTemplate.jsonBody = JSON.stringify(response.data);
+          this.referenceService.asset = this.asset;
+          this.router.navigate(["/home/emailtemplates/create/Oliver"]);
         },
         (error: string) => {
           console.log('API Error:', error);
@@ -523,4 +530,18 @@ export class AiChatManagerComponent implements OnInit {
   closeBee(){
     this.isBeeTemplateComponentCalled = false;
   }
+
+showTemplateById(): void {
+    this.emailTemplateService.getById(344172).subscribe(
+        (data: any) => {
+            this.emailTemplateService.isEditingDefaultTemplate = false;
+            this.emailTemplateService.isNewTemplate = true;
+            this.emailTemplateService.emailTemplate = data;
+            this.selectedTemplateList = [data]; 
+        },
+        (error: any) => {
+            console.error("Error in showTemplateById():", error);
+        }
+    );
+}
 }

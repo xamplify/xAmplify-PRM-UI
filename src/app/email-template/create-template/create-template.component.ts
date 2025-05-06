@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy,HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -66,6 +66,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     isSaveAsButtonDisabled = true;
     invalidTemplateName = false;
     properties:Properties = new Properties();
+    @Input() isFromOliver: boolean = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -356,11 +357,18 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         emailTemplateService.save(emailTemplate).subscribe(
             data => {
                 if (data.access) {
-                    if (data.statusCode == 702) {   
+                    if (data.statusCode == 702) { 
+                        let url = this.refService.getCurrentRouteUrl();
+                        let isOliverCreateUrl = url.indexOf("create/Oliver") > -1;  
                         if(saveAsOrSaveAndRedirectClicked){
                             this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
                             this.closeModalPopup();
-                            this.navigateToManageSection();
+                            if (isOliverCreateUrl) {
+                                this.router.navigate(["/home/dam/manage"]);
+                                this.refService.isOliverEnabled = true;
+                            } else {
+                                this.navigateToManageSection();
+                            }
                         }else{
                             this.closeModalPopup();
                             let createdEmailTemplateId = data.data;
@@ -370,7 +378,12 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                                     this.emailTemplateService.emailTemplate = data;
                                     this.emailTemplateService.isTemplateSaved = true;
                                     this.skipConfirmAlert = true;
-                                    this.router.navigate(["/home/emailtemplates/edit"]);
+                                    if (isOliverCreateUrl) {
+                                        // this.router.navigate(["/home/dam/manage"]);
+                                        this.refService.isOliverEnabled = true;
+                                    } else {
+                                        this.router.navigate(["/home/emailtemplates/edit"]);
+                                    }
                                 },error=>{
                                     this.skipConfirmAlert = true;
                                     this.ngxLoading = false;
@@ -485,10 +498,16 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     navigateBack(){
         let url = this.refService.getCurrentRouteUrl();
         let isCreateUrl = url.indexOf("create")>-1;
-        if(isCreateUrl){
-            this.router.navigate(["/home/emailtemplates/select"]);
+        let isOliverCreateUrl = url.indexOf("create/Oliver")>-1;
+        if(isOliverCreateUrl){
+            this.router.navigate(["/home/dam/manage"]);
+            this.refService.isOliverEnabled = true;
         }else{
-            this.navigateToManageSection();
+            if(isCreateUrl){
+                this.router.navigate(["/home/emailtemplates/select"]);
+            }else{
+                this.navigateToManageSection();
+            }
         }
     }
 
