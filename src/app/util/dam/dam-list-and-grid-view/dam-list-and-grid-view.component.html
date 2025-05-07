@@ -671,8 +671,8 @@
 				<div class="btn-group pull-right">
 					<div class="d-flex">
 						<!-- Custom Upload Button -->
-						<button *ngIf="FromOliverPopUp" (click)="fileInput.click()" class="button_blue bgcolor-unset p0 btn-transitions" tabindex="-1" translate=""
-							type="button">
+						<button *ngIf="FromOliverPopUp && !isFromOliverFolderView" (click)="fileInput.click()"
+							class="button_blue bgcolor-unset p0 btn-transitions" tabindex="-1" translate="" type="button">
 							<span class="btn btn-primary transition d-inline"><span data-placement="bottom" data-toggle="tooltip"
 									title="Add New Asset">
 									<i class="fa fa-plus" aria-hidden="true"></i>

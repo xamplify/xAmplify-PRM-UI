@@ -144,4 +144,10 @@ export class ChatGptSettingsService {
     return this.authenticationService.callDeleteMethod(url);
   }
 
+  getAssetDetailsByCategoryIds(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + 'getAssetDetailsByCategoryIds/' + userId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url, chatGptIntegrationSettingsDto);
+  }
+
 }

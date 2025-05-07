@@ -82,6 +82,7 @@ export class ChatGptModalComponent implements OnInit {
     this.showIcon = true;
     this.isWelcomePageUrl = false;
     this.selectedAssets = [];
+    this.selectedFolders = [];
   }
 
   generateChatGPTText() {
@@ -163,6 +164,7 @@ export class ChatGptModalComponent implements OnInit {
     this.showEmailModalPopup = false;
     this.showView = false;
     this.selectedAssets = [];
+    this.selectedFolders = [];
     this.isReUpload = false;
     this.isfileProcessed = false;
     this.threadId = 0;
@@ -388,7 +390,7 @@ export class ChatGptModalComponent implements OnInit {
     if (this.selectedFolders.length == 0) {
       this.getPdfByAssetPaths(this.selectedAssets);
     } else {
-      this.assetLoader = false;
+      this.getAssetPathsByCategoryIds();
     }
     this.showView = false;
   }
@@ -399,7 +401,12 @@ export class ChatGptModalComponent implements OnInit {
     const emptyBlob = new Blob([], { type: 'application/pdf' });
     assetsPath.forEach(path => {
       if (path.openAIFileId == undefined || path.openAIFileId == null || path.openAIFileId == '' || path.openAIFileId == ' ') {
-        const url = path.proxyUrlForOliver + path.assetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token);
+        let url = "";
+        if (path.proxyUrlForOliver != undefined || path.proxyUrlForOliver != null) {
+          url = path.proxyUrlForOliver + path.assetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token);
+        } else {
+          url = path.assetPath + '&access_token=' + encodeURIComponent(this.authenticationService.access_token);
+        }
         const request = this.http.get(url, { responseType: 'blob' });
         requests.push(request);
       } else {
@@ -542,6 +549,7 @@ export class ChatGptModalComponent implements OnInit {
     this.showView = false;
     if (!this.isReUpload && !this.isfileProcessed) {
       this.selectedAssets = [];
+      this.selectedFolders = [];
     }
   }
 
@@ -557,6 +565,22 @@ export class ChatGptModalComponent implements OnInit {
 
   handleFolders(event) {
     this.selectedFolders = event;
+  }
+
+  getAssetPathsByCategoryIds() {
+    const selectedFolderIds = this.selectedFolders.map(folder => folder.id);
+    this.chatGptIntegrationSettingsDto.categoryIds = selectedFolderIds;
+    this.chatGptSettingsService.getAssetDetailsByCategoryIds(this.chatGptIntegrationSettingsDto).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let data = response.data;
+          this.getPdfByAssetPaths(data);
+        }
+      },
+      (error) => {
+        console.error('API Error:', error);
+      }
+    );
   }
 
 }

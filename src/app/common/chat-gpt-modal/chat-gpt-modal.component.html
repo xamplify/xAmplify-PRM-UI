@@ -261,9 +261,12 @@
                           <h4 class="custom-text-align" *ngIf="assetLoader">Analyzing your assets</h4>
                           <div *ngIf="isfileProcessed && !assetLoader" class="file-info">
                             <div class="flex">
-                              <img class="file-icon mr5" src="assets/images/asset-uploads/PDF.svg" alt="Upload">
+                              <img *ngIf="selectedAssets?.length > 0" class="file-icon mr5" src="assets/images/asset-uploads/PDF.svg" alt="Upload">
+                              <img *ngIf="!(selectedAssets?.length > 0)" class="file-icon mr10" src="assets/images/fileIconOliver.svg"
+                                alt="Upload">
                               <div class="file-details">
-                                <div class="file-name"> {{ selectedAssets?.length }} file(s) processed successfully</div>
+                                <div *ngIf="selectedAssets?.length > 0" class="file-name"> {{ selectedAssets?.length }} file(s) processed successfully</div>
+                                <div *ngIf="!(selectedAssets?.length > 0)" class="file-name"> {{ selectedFolders?.length }} folder(s) processed successfully</div>
                                 <div class="file-status">Processing complete</div>
                               </div>
                             </div>

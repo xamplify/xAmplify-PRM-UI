@@ -16,4 +16,5 @@ export class ChatGptIntegrationSettingsDto {
     isFromChatGptModal: boolean = false;
     uploadedAssetIds = [];
     agentType = "";
+    categoryIds = [];
 }
