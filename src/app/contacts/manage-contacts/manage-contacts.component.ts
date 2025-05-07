@@ -1835,6 +1835,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	modelForSeg() {
 		this.criteria.property = this.filterOptions[0].value;
 		this.criteria.operation = this.filterConditions[0].value;
+		if (this.isContactModule) {
+			this.filterOptions.push({ 'name': 'Contact Status', 'value': 'Contact Status' },);
+		}
 		this.addNewRow();
 	}
 
@@ -1946,6 +1949,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 						}
 					}
+					if (this.isContactModule) {
+						object["Contact Status"] = this.contactsByType.listOfAllContacts[i].contactStatus;
+					}
 					if (this.authenticationService.module.isCampaign && ((!this.authenticationService.module.isPrmAndPartner
 						&& !this.authenticationService.module.isPrmAndPartnerTeamMember) || !this.isPartner)
 						&& this.contactsByType.selectedCategory != 'invalid'
@@ -2020,6 +2026,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							"Country": this.contactsByType.listOfAllContacts[i].country,
 							"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 							"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+						}
+						if (this.isContactModule) {
+							object["Contact Status"] = this.contactsByType.listOfAllContacts[i].contactStatus;
 						}
 					}
 					if (this.contactsByType.selectedCategory === 'excluded') {

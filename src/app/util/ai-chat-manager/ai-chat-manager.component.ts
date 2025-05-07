@@ -71,10 +71,15 @@ export class AiChatManagerComponent implements OnInit {
   folderFrom: any;
   folderAssetCount: any;
   isFromContactJourney: boolean = false;
+  chatHistoryId: any;
+  copiedIndex: number;
+  socialShareOption: boolean;
+
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.checkSocialAcess();
     this.isFromFolderView = false;
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
     this.categoryId = parseInt(this.route.snapshot.params['categoryId']);
@@ -116,8 +121,10 @@ export class AiChatManagerComponent implements OnInit {
         this.loading = false;
         if (response.statusCode == 200) {
           let self = this;
-          self.threadId = response.data.threadId;
-          self.vectorStoreId = response.data.vectorStoreId;
+          let data = response.data;
+          self.threadId = data.threadId;
+          self.vectorStoreId = data.vectorStoreId;
+          self.chatHistoryId = data.chatHistoryId;
         }
         this.getSharedAssetPath();
       },
@@ -262,11 +269,11 @@ export class AiChatManagerComponent implements OnInit {
     }
   }
 
-  copyAiText(element: HTMLElement) {
-    this.copyToClipboard(element);
+  copyAiText(element: HTMLElement, index: number) {
+    this.copyToClipboard(element, index);
   }
 
-  copyToClipboard(element: any) {
+  copyToClipboard(element: any, index: number) {
     this.isEmailCopied = true;
     this.copiedText = element.innerText || element.textContent;
     const textarea = document.createElement('textarea');
@@ -275,10 +282,13 @@ export class AiChatManagerComponent implements OnInit {
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
+    this.copiedIndex = index;
     setTimeout(() => {
       this.isEmailCopied = false;
+      this.copiedIndex = null;
     }, 2000);
   }
+
 
   onFileSelected(event: any) {
     this.UploadedFile =true;
@@ -558,9 +568,9 @@ export class AiChatManagerComponent implements OnInit {
           this.folderCreatedBy = data[0].createdBy;
           this.folderFrom = data[0].companyName;
           this.folderAssetCount = data[0].count;
-          if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
+          // if (!(this.vectorStoreId != undefined && this.vectorStoreId != '')) {
             this.getPdfByAssetPaths(data);
-          }
+          // }
         }
       },
       (error) => {
@@ -581,7 +591,8 @@ export class AiChatManagerComponent implements OnInit {
       next: (responses: Blob[]) => {
         this.pdfFiles = responses.map((blob, index) => ({
           file: blob,
-          assetName: assetsPath[index].assetName
+          assetName: assetsPath[index].assetName,
+          assetId: assetsPath[index].id
         }));
 
         this.ngxLoading = false;
@@ -596,6 +607,9 @@ export class AiChatManagerComponent implements OnInit {
 
   getUploadedFileIds() {
     this.isPdfUploading = true;
+    this.chatGptIntegrationSettingsDto.threadId = this.threadId;
+    this.chatGptIntegrationSettingsDto.chatHistoryId = this.chatHistoryId;
+    this.chatGptIntegrationSettingsDto.vectorStoreId = this.vectorStoreId;
     this.chatGptSettingsService.onUploadFiles(this.pdfFiles, this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         this.isPdfUploading = false;
@@ -630,5 +644,13 @@ export class AiChatManagerComponent implements OnInit {
       }
     )
   }
-
+  checkSocialAcess() {
+    this.socialShareOption=(this.referenceService.hasAllAccess()
+      || this.authenticationService.module.hasSocialStatusRole
+      || this.authenticationService.module.isOrgAdmin
+      || this.authenticationService.module.isVendor
+      || this.authenticationService.module.isPrm
+      || this.authenticationService.module.isVendorTier
+      || this.authenticationService.module.isCompanyPartner) && this.authenticationService.user.hasCompany && (this.authenticationService.module.socialShareOptionEnabled || (this.authenticationService.module.socialShareOptionEnabledAsPartner && (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember)))
+  }
 }

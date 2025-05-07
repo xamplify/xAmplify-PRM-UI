@@ -689,7 +689,7 @@
                                         </li>
                                         <!--XNFR-679 Flexi Fields-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
-                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}" style="border-bottom: none !important;">
+                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
                                                 (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':flexiFieldsMenuHeader}"></ng-template>
@@ -702,7 +702,19 @@
                                                 {{updateModulesMenuHeader | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':updateModulesMenuHeader}"></ng-template>
                                             </a>
-                                         </li>
+                                        </li>
+
+                                        <!--- XNFR-967 Contact Status --->
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
+                                            [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"
+                                            style="border-bottom: none !important;">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"
+                                                (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER);clearCustomResponse()">{{MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER
+                                                | translate}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"></ng-template>
+                                            </a>
+                                        </li>
 
                                          <!-- XNFR-952 -->
                                          <ng-container *ngIf="authenticationService.contactSubscriptionLimitEnabled">
@@ -3458,6 +3470,8 @@
                                         <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
                                         <!--XNFR-679 Flexi Fields-->
                                         <app-flexi-field *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-flexi-field>
+                                        <!--- XNFR-967 Contact Status--->
+                                        <app-contact-status-drop-down *ngIf="isContactStatusOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"></app-contact-status-drop-down>
                                         <app-module-access *ngIf="isUpdateModuleOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == updateModulesMenuHeader}" [isNavigatedFromMyProfileSection]="true"></app-module-access>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
                                         <!--Signature (XNFR-812)-->

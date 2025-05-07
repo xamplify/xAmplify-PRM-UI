@@ -132,7 +132,7 @@
                     <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto"
                       [id]="addContactuser.contactCompanyId" [disableDropDown]="false" [isFromContacts]="'true'"
                       (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>              
-                      <button *ngIf="showAddButton" class="btn btn-primary customAlign plus_align" id="addContactuser" (click)="openPopup(addContactuser)"
+                      <button *ngIf="showAddButton" class="btn btn-primary customAlign plus_align neo-plus_icon" id="addContactuser" (click)="openPopup(addContactuser)"
                       data-toggle="tooltip" type="button"  data-placement="bottom" title="Add a Company" data-toggle="tooltip">    
                          <i class="fa fa-plus" aria-hidden="true"></i>
                      </button>
@@ -358,6 +358,22 @@
               </div>
             </div>
 
+            <!----- XNFR-967 Contact Status ----->
+            <div class="form-group mrg0" *ngIf="checkIsContactType()">
+              <label class="control-label col-xs-2 col-sm-2" for="" style="color: green"></label>
+              <div class="col-xs-10 col-sm-10 p0 px_0" id="contactStatus">
+                <select class="form-control same-bgcolor-for-select mt10" style="border: none !important;width: 91%;"
+                  [(ngModel)]="selectedContactStatus" (ngModelChange)="onContactStatusChange($event)"
+                  [ngModelOptions]="{ standalone: true }">
+                  <option [ngValue]="null">Select Contact Status</option>
+                  <option *ngFor="let stage of contactStatusStages" [ngValue]="stage">
+                    {{ stage.stageName }}
+                  </option>
+                </select>
+                <div class="textCss"></div>
+              </div>
+            </div>
+
             <!-- ------------XNFR-680 Flexi Fields------------ -->
             <ng-container *ngIf="checkIsContactType() && flexiFieldsRequestAndResponseDto?.length > 0">
               <div class="form-group mrg0" *ngFor="let flexiField of flexiFieldsRequestAndResponseDto">
@@ -412,4 +428,4 @@
 <app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="addContactuser"
   [openInModalPopup]="true"
   (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
-  <app-add-company *ngIf="companyPop" [actionType]="actionType"  [shouldAnimatePopup]="shouldAnimatePopup" (emitCompanyId)="onCompanyIdEmitted($event)" [contactId]="contactId" (closeEvent)="closeCompanyPopup($event)" (notifySubmitSuccess)="onCompanyAdded($event)"></app-add-company>
+  <app-add-company *ngIf="companyPop" [actionType]="actionType" (emitCompanyId)="onCompanyIdEmitted($event)" [contactId]="contactId" (closeEvent)="closeCompanyPopup($event)" (notifySubmitSuccess)="onCompanyAdded($event)"></app-add-company>

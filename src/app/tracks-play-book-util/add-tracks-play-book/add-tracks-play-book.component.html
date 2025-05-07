@@ -658,6 +658,9 @@
                         <h6>
                           From <strong>{{form.companyName}}</strong>
                         </h6>
+                        <h6>
+                          Folder Name <strong>{{form.categoryName}}</strong>
+                        </h6>
                       </td>
                       <td class="hidden-xs text-center">
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
@@ -763,6 +766,11 @@
                             Created By
                             <strong>{{asset.quiz.createdName}}</strong></span>
                         </h6>
+                        <h6 class="">
+                          <span data-toggle="tooltip" data-placement="bottom" title="{{asset.categoryName}}" translate>
+                            Folder Name
+                            <strong>{{asset.quiz.categoryName}}</strong></span>
+                        </h6>
                       </td>
                       <td class="text-center">
                         Quiz
@@ -802,6 +810,11 @@
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.dam.displayName}}"
                             translate> Created By
                             <strong>{{asset.dam.displayName}}</strong></span>
+                        </h6>
+                        <h6 class="">
+                          <span data-toggle="tooltip" data-placement="bottom" title="{{asset.dam.categoryName}}" translate>
+                            Folder Name
+                            <strong>{{asset.dam.categoryName}}</strong></span>
                         </h6>
                       </td>
                       <td class="text-center">
@@ -910,6 +923,9 @@
                         </h6>
                         <h6>
                           From <strong>{{form.companyName}}</strong>
+                        </h6>
+                        <h6>
+                          Folder Name <strong>{{form.categoryName}}</strong>
                         </h6>
                       </td>
                       <td class="hidden-xs text-center">
@@ -1113,6 +1129,11 @@
                           <span data-toggle="tooltip" data-placement="bottom" title="{{asset.displayName}}" translate>
                             Created By
                             <strong>{{asset.displayName}}</strong></span>
+                        </h6>
+                        <h6 class="">
+                          <span data-toggle="tooltip" data-placement="bottom" title="{{asset.categoryName}}" translate>
+                            Folder Name
+                            <strong>{{asset.categoryName}}</strong></span>
                         </h6>
                       </td>
                       <td class=" text-center">

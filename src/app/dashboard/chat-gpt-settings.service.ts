@@ -97,9 +97,9 @@ export class ChatGptSettingsService {
   onUploadFiles(pdfFiles: any[], chatGptSettings: ChatGptIntegrationSettingsDto) {
     const url = `${this.chatGptSettingsUrl}/uploadFiles?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
-
-    pdfFiles.forEach((pdfFile) => {
-      formData.append('files', pdfFile.file, `${pdfFile.assetName}.pdf`);
+    pdfFiles.forEach((pdfFile, index) => {
+      formData.append(`fileDTOs[${index}].id`, pdfFile.assetId);
+      formData.append(`fileDTOs[${index}].file`, pdfFile.file, `${pdfFile.assetName}.pdf`);
     });
 
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
@@ -129,7 +129,7 @@ export class ChatGptSettingsService {
     let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
     let contactIdRequestParameter = contactId != undefined ? '&contactId=' + contactId : '';
     let userListIdRequestParameter = userListId != undefined ? '&userListId=' + userListId : '';
-    const url = this.chatGptSettingsUrl + "/getThreadIdNadVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    const url = this.chatGptSettingsUrl + "/getThreadIdAndVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
     return this.authenticationService.callGetMethod(url);
   }
 

@@ -244,10 +244,13 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip"
-                                                        data-placement="bottom" title="{{content?.dam?.assetName}}">
-                                                        <span><strong>{{content?.dam?.assetName}}</strong></span>
-                                                    </h4>
+                                                <h4 class="asset-title" data-toggle="tooltip" data-placement="bottom" [title]="content?.dam?.assetName">
+                                                    <strong>
+                                                        {{ content?.dam?.assetName?.length > 40
+                                                        ? (content?.dam?.assetName | slice:0:40) + '...'
+                                                        : content?.dam?.assetName }}
+                                                    </strong>
+                                                </h4>
                                                     <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
                                                         style="padding-top: 5px;">
                                                         <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner">Finished</h6>

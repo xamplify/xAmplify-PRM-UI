@@ -69,5 +69,9 @@ export class DamUploadPostDto {
     disablevendorSignatureRequiredAfterPartnerSignatureOption = false;
     vendorSignatureRequiredAfterPartnerSignatureToolTipMessage = "";
     sendForApproval: boolean = false;
+    /**XNFR-973**/
+    disableAccessForOliver:boolean = false;
 
+    slug:string ="";
+    isSlugValid = false;
 }

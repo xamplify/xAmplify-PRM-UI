@@ -399,6 +399,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isCustomDashboardOptionClicked = false;
 	isCustomHtmlBlockOptionClicked = false;
 	showCallIntegrations: boolean = false;
+	isContactStatusOptionClicked: boolean = false;
 
 	contactUploadManagementSettings: boolean = false;
 
@@ -2320,6 +2321,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "contactUploadManagementSettings") {
 			this.contactUploadManagementSettings = true;
 			this.activeTabHeader = this.properties.contactUploadManagementSettings;
+		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CONTACT_STATUS_MENU_HEADER) {
+			// XNFR-967 Contact Status
+			this.activateContactStatusMenuHeader();
+		}
+		if (this.integrationTabIndex == 5) {
+			this.integrationTabIndex = 0;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
@@ -5191,6 +5198,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			self.stopNgxLoader();
 		}, 500);
 		this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CUSTOM_HTML_BLOCK_MENU_HEADER;
+	}
+
+	private activateContactStatusMenuHeader() {
+		this.startNgxLoader();
+		this.isContactStatusOptionClicked = false;
+		let self = this;
+		setTimeout(() => {
+			self.isContactStatusOptionClicked = true;
+			self.stopNgxLoader();
+		}, 500);
+		this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CONTACT_STATUS_MENU_HEADER;
 	}
 
 }

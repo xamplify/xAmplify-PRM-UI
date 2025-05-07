@@ -75,7 +75,7 @@
                      <div class="col-lg-12 col-md-12 p0">
                         <div class="form-group col-md-6 col-lg-6">
                            <label>Name <span class="required">*</span></label>
-                           <input class="form-control" type="text" placeholder="Name" (input)="validateForm('name')"
+                           <input class="form-control" type="text" placeholder="Name" (input)="validateForm('name'); updateSlug('name');"
                               [(ngModel)]="damPostDto.name" [ngModelOptions]="{standalone: true}">
                            <span class="required" *ngIf="nameErrorMessage?.length>0">{{nameErrorMessage}}</span>
                         </div>
@@ -85,6 +85,45 @@
                               (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
                         </div>
                      </div>
+
+                     <div class="col-lg-12 col-md-12 p0">
+                        <div class="form-group label-flex">
+                           <label class="control-label form_label"  translate>Link
+                             <span class="required">*</span>
+                           </label>
+                           <div class="width-fit-content">
+                             <div *ngIf="isEditSlug">
+                               <div class="prefix inline-box" style="width: 100%;">
+                                 <span class="input-group-addon" style="min-width: auto;">
+                                   {{linkPrefix}}
+                                 </span>
+                                 <div class="inline-box link" action="action_page.php">
+                                   <input class="select-box inline-box form-control" [(ngModel)]="damPostDto.slug"
+                                     maxlength="100" (input)="updateSlug('slug');">
+                                   <button type="button" (click)="editedSlug()" style="width: auto;border-radius: 2px;"><i
+                                       class="fa fa-angle-right" style="font-size: 19px;"></i></button>
+                                 </div>
+                               </div>
+                             </div>
+                             <div *ngIf="!isEditSlug">
+                               <div class="inline-box link" action="action_page.php" style="width: 100%;">
+                                 <input class="form-control" id="copy-link" type="text" readonly="readonly"
+                                   [ngModel]="completeLink" #link>
+                                 <button type="button" class="right-border widthauto" (click)="editSlug()" data-toggle="tooltip"
+                                   data-placement="top" title="Edit" style="border-radius:0px !important;"><i
+                                     class="fa fa-edit"></i></button>
+                                 <button type="button" class="widthauto" (click)="copyInputMessage(link)" data-toggle="tooltip"
+                                   data-placement="top" title="Copy" style="border-radius:0px !important;"><i
+                                     class="fa fa-copy"></i></button>
+                               </div>
+                             </div>
+                             <span class="required" *ngIf="slugErrorMessage.length>0">{{slugErrorMessage}}</span>
+                           </div>
+                         </div>
+                     </div>
+
+
+
                      <!--Page Size & Page Orientation-->
                      <div class="col-lg-12 col-md-12" *ngIf="showPageSizeAndOrientation">
                         <div class="form-group  col-md-6 col-lg-6">

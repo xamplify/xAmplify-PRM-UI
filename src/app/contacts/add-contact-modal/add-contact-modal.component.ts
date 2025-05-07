@@ -83,9 +83,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     @Input() public actionType: any;
     @Input() public contactId: number = 0;
     @Output() emitCompanyId = new EventEmitter<any>(); 
-    shouldAnimatePopup: boolean = false;
     companyPop: boolean = false;
-    showAddButton: boolean = true; 
+    showAddButton: boolean = true;
+    contactStatusStages: any;
+    selectedContactStatus: any;
 
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,
@@ -106,6 +107,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
           this.isPartner = true;
           this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
       }
+      this.findContactStatusStages();
       this.contactDetails
     }
 
@@ -634,24 +636,77 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     openPopup(addContactuser: any){
         this.companyPop = true;
         this.actionType = "add";
-        this.contactId = addContactuser.contactCompanyId;   
-        this.shouldAnimatePopup = true;   
+        this.contactId = addContactuser.contactCompanyId;     
     }
     closeCompanyPopup(event:any) {
         if(event == 0){
             this.companyPop = false; 
-            this.shouldAnimatePopup = true;
         }
             
-      }
+    }
 
     onCompanyAdded(company: any) {       
         this.getActiveCompanies();     
         this.addContactuser.contactCompany = company;             
     }
 
-    onCompanyIdEmitted(company) {       
-        this.selectedCompanyId = company;        
-        this.getActiveCompanies(); 
+    onCompanyIdEmitted(company) {
+        this.selectedCompanyId = company;
+        this.getActiveCompanies();
     }
+
+    findContactStatusStages() {
+        if (this.checkIsContactType()) {
+            this.loading = true;
+            this.contactService.findContactStatusStages().subscribe(
+                (response: any) => {
+                    if (response.statusCode === 200) {
+                        this.contactStatusStages = response.data;
+                        const defaultStage = this.contactStatusStages.find((stage: any) => stage.defaultStage);
+                        if (this.isUpdateUser) {
+                            const existingStatus = this.contactStatusStages.find((stage: any) => stage.stageName === this.contactDetails.contactStatus);
+                            if (existingStatus) {
+                                this.selectedContactStatus = existingStatus;
+                                this.addContactuser.contactStatusId = existingStatus.id;
+                                this.addContactuser.contactStatus = existingStatus.stageName;
+                            } else {
+                                if (this.contactStatusStages.length === 1) {
+                                    this.setDefaultStage(this.contactStatusStages[0]);
+                                } else {
+                                    this.setDefaultStage(defaultStage);
+                                }
+                            }
+                        } else {
+                            if (this.contactStatusStages.length === 1) {
+                                this.setDefaultStage(this.contactStatusStages[0]);
+                            } else {
+                                this.setDefaultStage(defaultStage);
+                            }
+                        }
+                    }
+                    this.loading = false;
+                }, (error: any) => {
+                    this.loading = false;
+                    console.error('Error occurred in findContactStatusStages()', error);
+                }
+            );
+        }
+    }
+
+    setDefaultStage(stage: any) {
+        this.selectedContactStatus = stage;
+        this.addContactuser.contactStatusId = stage.id;
+        this.addContactuser.contactStatus = stage.stageName;
+    }
+
+    onContactStatusChange(status: any) {
+        if (!status) {
+            this.addContactuser.contactStatusId = null;
+            this.addContactuser.contactStatus = '';
+        } else {
+            this.addContactuser.contactStatusId = status.id;
+            this.addContactuser.contactStatus = status.stageName;
+        }
+    }
+
 }

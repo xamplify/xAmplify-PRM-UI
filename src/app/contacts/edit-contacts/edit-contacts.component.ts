@@ -275,7 +275,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/****XNFR-278****/
 	mergeOptionClicked = false;
+	moveOptionClicked = false;
 	selectedUserIdsForMerging: any[];
+	selectedUserIdsForMoving: any[];
 	/****XNFR-278****/
 	@Input() showEdit: boolean;
 	/*****XNFR-342*****/
@@ -2327,17 +2329,20 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	modelForSeg() {
-        this.resetResponse(); 
-        this.filterOptions=[];
-        this.addNewRow();
-        if(this.isPartner){
-            this.filterOptions = [...this.commonFilterOptions, ...this.partnerFilterOptions];
-        }else{
-        this.filterOptions=this.commonFilterOptions;
-        }
-        this.criteria.property = this.filterOptions[0].value;
-        this.criteria.operation = this.filterConditions[0].value;
-    }
+		this.resetResponse();
+		this.filterOptions = [];
+		this.addNewRow();
+		if (this.isPartner) {
+			this.filterOptions = [...this.commonFilterOptions, ...this.partnerFilterOptions];
+		} else {
+			this.filterOptions = this.commonFilterOptions;
+			if (this.isContactModule) {
+				this.filterOptions.push({ 'name': 'Contact Status', 'value': 'Contact Status' },);
+			}
+		}
+		this.criteria.property = this.filterOptions[0].value;
+		this.criteria.operation = this.filterConditions[0].value;
+	}
 
 	removeSegmentation() {
 		this.isSegmentation = false;
@@ -3346,9 +3351,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.selectedUserIdsForMerging = this.selectedContactListIds;
 	}
 
+	openRemovePopup(){
+		this.moveOptionClicked = true;
+        this.selectedUserIdsForMerging = this.selectedContactListIds;
+	}
+	
 	copyGroupUsersModalPopupEventReceiver() {
 		this.mergeOptionClicked = false;
 		this.selectedUserIdsForMerging = [];
+		if(this.moveOptionClicked){
+			this.moveOptionClicked = false;
+			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+			this.contactsCount(this.selectedContactListId);
+		}		
 	}
 
 	unsubscribeUser(selectedUserForUnsubscribed: any) {

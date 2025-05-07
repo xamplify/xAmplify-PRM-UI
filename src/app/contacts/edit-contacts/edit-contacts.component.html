@@ -395,9 +395,19 @@
 												<!---XNFR-278-->
 												<li
 													*ngIf="isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
-													<a (click)="openMergePopup()" translate> Add To Groups</a>
+													<a (click)="openMergePopup()" translate>Add To Groups</a>
 												</li>
 												<!---XNFR-278-->
+												<!---XNFR-966-->
+												<li
+													*ngIf="!isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
+													<a (click)="openMergePopup()" translate>Copy To List</a>
+												</li>
+												<li
+													*ngIf="!isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
+													<a (click)="openRemovePopup()" translate>Move To List</a>
+												</li>
+												<!---XNFR-966-->
 											</ul>
 										</div>
 										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset dynamic_tbl_btn"
@@ -890,8 +900,9 @@
 															<th scope="col" *ngIf="isPartner" translate>REGION</th>
 															<!-- <th scope="col" *ngIf="isPartner" translate>TYPE</th>
 															<th scope="col" *ngIf="isPartner" translate>CATEGORY</th> -->
-															<th scope="col" class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
+															<th scope="col" class="text-center hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
 															<th scope="col" class="text-center hidden-xs" translate>ADDRESS</th>
+															<th scope="col" class="text-center hidden-xs" translate *ngIf="isContactModule">CONTACT STATUS</th>
 															<th scope="col" class="text-center " *ngIf="gdprStatus || isPartner"></th>
 															<th scope="col" *ngIf="isPartner" translate>SIGNUP STATUS</th>
 															<th scope="col" *ngIf="isPartner" translate>COMPANY PROFILE</th>
@@ -1056,6 +1067,12 @@
 																	<h5 *ngIf="contact?.zipCode || contact.country"
 																		class='mt0'>{{contact.zipCode}}<span
 																			*ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
+																	</h5>
+																</td>
+																<!----- XNFR-967 ----->
+																<td class="hidden-xs text-line center" *ngIf="isContactModule" (click)="showContactDetails(contact)">
+																	<h5 class='mb0'>{{contact.contactStatus | slice:0:15}}
+																		<span *ngIf="contact.contactStatus?.length>15">...</span>
 																	</h5>
 																</td>
 																<td align="center" *ngIf="gdprStatus || isPartner">
@@ -1460,6 +1477,7 @@
 												<th *ngIf="isPartner" translate scope="col">CATEGORY</th> -->
 												<th class="hidden-xs" *ngIf="!isPartner" translate scope="col">Job Title</th>
 												<th class="text-center hidden-xs" *ngIf="!isPartner" translate scope="col">ADDRESS</th>
+												<th class="text-center hidden-xs" *ngIf="isContactModule" translate scope="col">CONTACT STATUS</th>
 												<th class="text-center hidden-xs"
 													*ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !== 'excluded' && (gdprStatus || isPartner)"
 													scope="col"></th>
@@ -1579,6 +1597,12 @@
 														<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
 															class='mt0'>{{allcontacts.zipCode}}<span
 																*ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}
+														</h5>
+													</td>
+													<!----- XNFR-967 ----->
+													<td class="hidden-xs text-line center" *ngIf="isContactModule" (click)="showContactDetails(allcontacts)">
+														<h5 class='mb0'>{{allcontacts.contactStatus | slice:0:15}}
+															<span *ngIf="allcontacts.contactStatus?.length>15">...</span>
 														</h5>
 													</td>
 													<td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
@@ -2139,12 +2163,16 @@
 <app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto"
 	(notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
 <!---XNFR-278-->
-<ng-container *ngIf="mergeOptionClicked">
+<ng-container *ngIf="mergeOptionClicked || moveOptionClicked">
 	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging"
-		[moduleName]="module" [selectedUsers] = "selectedContactForSave"
+		[moduleName]="module" [selectedUsers] = "selectedContactForSave"  [isMove]="moveOptionClicked" 
 		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
-
+<!-- <ng-container *ngIf="moveOptionClicked">
+	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMoving"
+		[moduleName]="module" [selectedUsers] = "selectedContactForSave"  [isMove]="moveOptionClicked" 
+		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
+</ng-container> -->
 <div *ngIf="contactService.isUnsubscribeContactModalPopup">
 	<app-unsubscribe-contact-modal [selectedUser]="selectedUser" (notifyParent)="unsubscribeUserResult($event)">
 	</app-unsubscribe-contact-modal>
