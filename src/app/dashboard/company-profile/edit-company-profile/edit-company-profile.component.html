@@ -438,10 +438,28 @@
 													<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.oliverActive"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
+												<!-- XNFR-952 -->
+												<tr *ngIf="!prm">
+													<th scope="row"> Contact Limit </th>
+													<td class="pt0">
+														<app-custom-ui-switch [customSwitch]="campaignAccess.contactSubscriptionLimitEnabled"
+															(customUiSwitchEventEmitter)="contactUploadQuotaEnabledUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+														<div style="padding-left: 5px;">
+															<span class="required"><Strong>*</Strong></span>
+															<strong>Contact Limit: </strong>
+															<input [disabled]="disableContactSubscriptionLimitField" type="number"
+																[(ngModel)]="campaignAccess.contactSubscriptionLimit" [ngModelOptions]="{standalone: true}"
+																class="form-control" name="contactSubscriptionLimit" placeholder="Enter Limit Here" min="1"
+																oninput="validity.valid||(value='');"
+																(input)="contactUploadQuotaLimitChange(campaignAccess.contactSubscriptionLimit)">
+														</div>
+													</td>
+												</tr>
 											</table>
 										</div>
 										<div class="modal-footer">
-											<button type="button" id="module-access-button" (click)="updateAccess()"disabled="disabled" class="button bgcolor-unset">
+											<button type="button" id="module-access-button" (click)="updateAccess()"disabled="disabled" class="button bgcolor-unset"
+												data-toggle="tooltip" data-placement="top" title="{{contactSubscriptionLimitErrorMessage.length > 0 ? contactSubscriptionLimitErrorMessage : ''}}">
 												<span class="btn Btn-Green transition">Save</span>
 											</button>
 										</div>

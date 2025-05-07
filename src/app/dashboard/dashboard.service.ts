@@ -1587,5 +1587,11 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         let url = this.authenticationService.REST_URL + 'custom/html/update/selection?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callPutMethod(url, customHtmlBlock);
     }
+
+    /** XNFR-952 **/
+    loadTotalContactSubscriptionUsedByCompanyAndPartners(companyId: number) {
+        let url = this.moduleUrl + 'loadTotalContactSubscriptionUsedByCompanyAndPartners/'+companyId+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
     
 }

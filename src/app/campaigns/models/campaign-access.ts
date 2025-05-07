@@ -63,5 +63,7 @@ export class CampaignAccess {
   allowVendorToChangePartnerPrimaryAdmin = false;
   oliverActive = false;
 
+  contactSubscriptionLimitEnabled: boolean = false;
+  contactSubscriptionLimit: number = 0;
 
 }

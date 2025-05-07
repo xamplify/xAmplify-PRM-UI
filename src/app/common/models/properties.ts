@@ -578,5 +578,9 @@ export class Properties {
 	CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE = 'A maximum of {{maxRecipientCount}} recipients is allowed per campaign. Please modify your selection and try again.'
 
 	allPartnersDonutTooltipText = 'REGION WISE PARTNERS';
+
+	contactUploadManagementSettings = 'Contacts Usage Analytics';
+	CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN = "Please assign value to contact upload quota.";
+
 }
 
