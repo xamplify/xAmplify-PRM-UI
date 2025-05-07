@@ -40,18 +40,19 @@ export class FolderTypeViewUtilComponent implements OnInit {
   selectedOption: string;
   @Input() FromOliverPopUp: boolean = false;
   @Input() selectedFoldersForOliver: any[] = [];
+  @Input() isPartnerViewFromOliver: boolean = false;;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
-    public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) { 
-      this.isPartnerView = this.router.url.indexOf("/shared")>-1 || this.router.url.indexOf("/pages/partner")>-1; 
-
-    }
+    public userService: UserService, public utilService: UtilService, private route: ActivatedRoute) {
+    this.isPartnerView = this.router.url.indexOf("/shared") > -1 || this.router.url.indexOf("/pages/partner") > -1;
+  }
 
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
     if (this.FromOliverPopUp) {
       this.folderViewType = "fg";
+      this.isPartnerView = this.isPartnerViewFromOliver;
     }
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);

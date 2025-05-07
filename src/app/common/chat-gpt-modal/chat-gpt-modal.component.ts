@@ -71,6 +71,9 @@ export class ChatGptModalComponent implements OnInit {
   previousTitle: any;
   index: any;
   searchKey:string;
+  isPartnerLoggedIn: boolean = false;
+  vanityUrlFilter: boolean = false;
+
 
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
@@ -181,6 +184,7 @@ export class ChatGptModalComponent implements OnInit {
     this.showView = false;
     this.selectedAssets = [];
     this.selectedFolders = [];
+    this.pdfFiles = [];
     this.isReUpload = false;
     this.isfileProcessed = false;
     this.threadId = 0;
@@ -413,7 +417,12 @@ export class ChatGptModalComponent implements OnInit {
 
   openAssetsPage() {
     this.showView = true;
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityUrlFilter = true;
+    }
+    this.isPartnerLoggedIn = this.authenticationService.module.damAccessAsPartner && this.vanityUrlFilter;
   }
+
 
   getSelectedAssets(event: any) {
     this.selectedAssets = event;
@@ -454,7 +463,9 @@ export class ChatGptModalComponent implements OnInit {
         this.pdfFiles = responses.map((blob, index) => ({
           file: blob,
           assetName: assetsPath[index].assetName,
-          assetId: assetsPath[index].id
+          assetId: this.isPartnerLoggedIn
+            ? assetsPath[index].damId
+            : assetsPath[index].id
         }));
 
         this.handleOldAssets(oldAssets, emptyBlob);
@@ -474,7 +485,9 @@ export class ChatGptModalComponent implements OnInit {
       let uploadedAssets = oldAssets.map((path) => ({
         file: emptyBlob,
         assetName: path.assetName,
-        assetId: path.id
+        assetId: this.isPartnerLoggedIn
+          ? path.damId
+          : path.id
       }));
       uploadedAssets.forEach((uploadedAsset) => {
         this.pdfFiles.push(uploadedAsset);
@@ -482,6 +495,7 @@ export class ChatGptModalComponent implements OnInit {
     }
     this.getUploadedFileIds();
   }
+
 
   getUploadedFileIds() {
     this.chatGptIntegrationSettingsDto.isFromChatGptModal = true;
@@ -605,6 +619,7 @@ export class ChatGptModalComponent implements OnInit {
   getAssetPathsByCategoryIds() {
     const selectedFolderIds = this.selectedFolders.map(folder => folder.id);
     this.chatGptIntegrationSettingsDto.categoryIds = selectedFolderIds;
+    this.chatGptIntegrationSettingsDto.partnerInsightAgent = this.isPartnerLoggedIn;
     this.chatGptSettingsService.getAssetDetailsByCategoryIds(this.chatGptIntegrationSettingsDto).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {

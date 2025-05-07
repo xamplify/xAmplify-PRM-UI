@@ -1082,3 +1082,7 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   border-radius: 8px; font-weight: 600;
   margin: 0 5px 10px 5px;
 }
+
+.modal-content.oliver-modal-content {
+  height: auto;
+}

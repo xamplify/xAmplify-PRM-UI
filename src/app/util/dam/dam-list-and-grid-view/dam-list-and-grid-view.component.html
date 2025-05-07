@@ -630,9 +630,11 @@
 
 			<!--Folder List View / Folder Grid View -->
 			<div *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
-				<app-folder-type-view-util [moduleId]="roles.damId" [FromOliverPopUp]="FromOliverPopUp" [selectedFoldersForOliver]="selectedFoldersForOliver"
-					[modulesDisplayType]="modulesDisplayType" (folderViewAssetEventEmitter) ="viewAssets($event)"
-					(oliverfolderViewTypeEventEmitter)="setViewTypeForOliver($event)" (notifyFolders)="handleFolders($event)"></app-folder-type-view-util>
+				<app-folder-type-view-util [moduleId]="roles.damId" [FromOliverPopUp]="FromOliverPopUp"
+					[selectedFoldersForOliver]="selectedFoldersForOliver" [modulesDisplayType]="modulesDisplayType"
+					(folderViewAssetEventEmitter)="viewAssets($event)" [isPartnerViewFromOliver]="isPartnerViewFromOliver"
+					(oliverfolderViewTypeEventEmitter)="setViewTypeForOliver($event)"
+					(notifyFolders)="handleFolders($event)"></app-folder-type-view-util>
 			</div>
 
 		</div>
@@ -672,7 +674,7 @@
 				<div class="btn-group pull-right">
 					<div class="d-flex">
 						<!-- Custom Upload Button -->
-						<button *ngIf="FromOliverPopUp && !isFromOliverFolderView" (click)="fileInput.click()"
+						<button *ngIf="FromOliverPopUp && !isFromOliverFolderView && !isPartnerView" (click)="fileInput.click()"
 							class="button_blue bgcolor-unset p0 btn-transitions" tabindex="-1" translate="" type="button">
 							<span class="btn btn-primary transition d-inline"><span data-placement="bottom" data-toggle="tooltip"
 									title="Add New Asset">

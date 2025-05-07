@@ -34,7 +34,7 @@
   class="modal fade right modal-z-index" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" data-backdrop="static"
   data-keyboard="false" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
-    <div class="modal-content">
+    <div [ngClass]="showView ? 'modal-content': 'modal-content oliver-modal-content'">
       <!-- <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
               <i class="fa fa-times"></i></button>
@@ -42,9 +42,10 @@
           </div> -->
       <app-update-status *ngIf="openShareOption" [fromAi]="true" [OliverData]="socialContent"
         (notifyClose)="closeSocialShare($event)"></app-update-status>
-      <div *ngIf="!openShareOption" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'">
+      <div *ngIf="!openShareOption" [ngClass]="showView ? 'modal-body': 'modal-body oliver-header'" [ngStyle]="{ 'max-height': showView ? 'calc(100vh - 77px)' : '' }">
         <app-dam-list-and-grid-view *ngIf="showView" [FromOliverPopUp]="showView" [selectedItemFromOliver]="selectedAssets"
-        [selectedFoldersForOliver]="selectedFolders" (notifyasset)="getSelectedAssets($event)" (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
+        [selectedFoldersForOliver]="selectedFolders" [isPartnerViewFromOliver]="isPartnerLoggedIn"
+        (notifyasset)="getSelectedAssets($event)" (notifyFolders)="handleFolders($event)"></app-dam-list-and-grid-view>
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"
           [showCloseIcon]="false"></app-response-message>
         <div classs="row">

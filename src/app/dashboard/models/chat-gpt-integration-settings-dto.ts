@@ -18,4 +18,5 @@ export class ChatGptIntegrationSettingsDto {
     agentType = "";
     categoryIds = [];
     contents:any[] = [];
+    partnerInsightAgent: boolean = false;
 }

@@ -152,6 +152,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Output() notifyFolders = new EventEmitter();
 	@Input() selectedFoldersForOliver: any[] = [];
 	isFromOliverFolderView: boolean = false;
+	@Input() isPartnerViewFromOliver: boolean = false;
 
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription, public renderer: Renderer) {
@@ -210,7 +211,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
 		this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
 		this.hasAllAccess = this.referenceService.hasAllAccess();
-		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
+		if (this.FromOliverPopUp) {
+			this.isPartnerView = this.isPartnerViewFromOliver;
+		} else {
+			this.isPartnerView = this.router.url.indexOf('/shared') > -1;
+		}
 		this.startLoaders();
 		if (this.folderListViewCategoryId != undefined) {
 			this.categoryId = this.folderListViewCategoryId;
