@@ -127,9 +127,8 @@
                     <td class='bold' style="width: 35%;">Contact Status</td>
                     <td class="d-flex">
                       <input type="text" class="form-control" [(ngModel)]="user.contactStatus" placeholder="Contact Status (optional)"
-                        [ngModelOptions]="{standalone: true}" [disabled]="isContactStatusPresent(user)">
+                        [ngModelOptions]="{standalone: true}" [disabled]="isContactStatusPresent(user)" (input)="updateContactStatus(user)">
                       <select class="form-control" [(ngModel)]="user.userStatus" (ngModelChange)="onContactStatusChange($event, user)">
-                        <option [ngValue]="null">Select Contact Status</option>
                         <option *ngFor="let contactStatus of contactStatusStages" [ngValue]="contactStatus">{{contactStatus.stageName}}</option>
                       </select>
                     </td>
