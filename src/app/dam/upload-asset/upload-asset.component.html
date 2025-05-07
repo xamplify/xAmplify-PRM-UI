@@ -790,7 +790,7 @@
                                                       </div>
                                                    </div>
                                                    <!--XNFR-973-->
-                                                   <div class="toggle-item">
+                                                   <div class="toggle-item" *ngIf="authenticationService?.isOliverActive">
                                                       <div class="toggle-label">Disable Access for Oliver</div>
                                                       <label class="toggle-switch">
                                                          <input type="checkbox" [checked]="damUploadPostDto?.disableAccessForOliver"
