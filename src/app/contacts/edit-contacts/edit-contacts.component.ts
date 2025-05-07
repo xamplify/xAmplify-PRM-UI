@@ -2336,8 +2336,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.filterOptions = [...this.commonFilterOptions, ...this.partnerFilterOptions];
 		} else {
 			this.filterOptions = this.commonFilterOptions;
-			if (this.isContactModule) {
-				this.filterOptions.push({ 'name': 'Contact Status', 'value': 'Contact Status' },);
+			const exists = this.filterOptions.some(option => option.value === 'Contact Status');
+			if (!exists) {
+				this.filterOptions.push({ name: 'Contact Status', value: 'Contact Status' });
 			}
 		}
 		this.criteria.property = this.filterOptions[0].value;

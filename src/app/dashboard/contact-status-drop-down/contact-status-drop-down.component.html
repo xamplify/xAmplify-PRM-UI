@@ -18,12 +18,14 @@
               <div class="mb_mt7">
                 <input type="radio" [value]="x" [checked]="selectedDefaultIndex === x" name="defaultStage"
                   (change)="defaultStageChange(x)">
-                <span>Default</span>
+                <span>Default</span>&nbsp;
+                <span *ngIf="contactStatusStage?.defaultStage" class="fa fa-info-circle" data-placement="top" data-toggle="tooltip"
+                  aria-hidden="true" data-original-title="Default status assigned to all new contacts."></span>
                 <button type="button" *ngIf="!contactStatusStage.defaultStage"
                   [ngStyle]="{'cursor': contactStatusStage.companyId === 1 ? 'not-allowed' : 'pointer'}"
                   class="btn-danger button-blue btn_add mr_4 spaceTopBottom pull-right" (click)="deleteStage(contactStatusStage)"
                   data-toggle="tooltip" data-placement="top" [disabled]="contactStatusStage.companyId === 1"
-                  [attr.data-original-title]="contactStatusStage.companyId === 1 ? 'Default stage can not be deleted' : 'Delete'">
+                  [attr.data-original-title]="contactStatusStage.companyId === 1 ? 'Save changes to delete this status.' : 'Delete'">
                   <span class="glyphicon glyphicon-trash"></span>
                 </button>
               </div>
