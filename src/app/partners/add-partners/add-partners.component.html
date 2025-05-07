@@ -1808,16 +1808,18 @@
                                             title="Assign contacts to partners (Minimum 1)">
                                         </i>
                                     </span>
-                                    <h5 class="bold-font-weight">
-                                        Limit exceeded by:
+                                    <!-- XNFR-952 -->
+                                    <h5>
                                         <span *ngIf="!contactSubscriptionLimitLoader?.isLoading" [ngStyle]="{'color': (contactSubscriptionCountUsed > contactSubscriptionLimit
                                             ? contactSubscriptionCountUsed - contactSubscriptionLimit
                                             : 0) ? 'red' : 'inherit'}">
                                             <strong>
-                                                {{ contactSubscriptionCountUsed > contactSubscriptionLimit
-                                                ? contactSubscriptionCountUsed - contactSubscriptionLimit : 0 }}
+                                                {{ contactSubscriptionCountUsed > contactSubscriptionLimit 
+                                                    ? 'Limit Exceeded by: ' + (contactSubscriptionCountUsed - contactSubscriptionLimit)
+                                                    : 'Available Limit: ' + (contactSubscriptionLimit - contactSubscriptionCountUsed) }}
                                             </strong>
                                         </span>
+                                        <span *ngIf="contactSubscriptionLimitLoader?.isLoading" >Limit exceeded by: </span>
                                         <img *ngIf="contactSubscriptionLimitLoader?.isLoading" style="height: 25px; padding-left: 0px;"
                                             src="../../../assets/images/Spinner.gif" alt="">
                                     </h5>

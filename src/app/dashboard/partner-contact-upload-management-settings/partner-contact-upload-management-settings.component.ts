@@ -28,14 +28,14 @@ export class PartnerContactUploadManagementSettingsComponent implements OnInit {
 
   sortOptions = [
     { 'name': 'Sort By', 'value': '' },
-    { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
-    { 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
-    { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
-    { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
-    { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
-    { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
-    { 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
-    { 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+    { 'name': 'Email A-Z)', 'value': 'emailId-ASC' },
+    { 'name': 'Email (Z-A)', 'value': 'emailId-DESC' },
+    { 'name': 'Company Name (ASC)', 'value': 'contactCompany-ASC' },
+    { 'name': 'Company Name (DESC)', 'value': 'contactCompany-DESC' },
+    { 'name': 'Assigned (ASC)', 'value': 'assigned-ASC' }, 
+    { 'name': 'Assigned (DESC)', 'value': 'assigned-DESC' },
+    { 'name': 'Exceeded (ASC)', 'value': 'exceeded-ASC' },
+    { 'name': 'Exceeded (DESC)', 'value': 'exceeded-DESC' }
   ];
 
   sortOption: any = this.sortOptions[0];
@@ -54,6 +54,7 @@ export class PartnerContactUploadManagementSettingsComponent implements OnInit {
   totalPartnerContactUploadCountLoader: HttpRequestLoader = new HttpRequestLoader();
   selfContactsCountLoader: HttpRequestLoader = new HttpRequestLoader();
   contactSubscriptionLimitLoader: HttpRequestLoader = new HttpRequestLoader();
+  contactSubscriptionLimitUsedLoader: HttpRequestLoader = new HttpRequestLoader();
   contactSubscriptionCountUsed: number = 0;
   isMarketing: boolean= false;
 
@@ -207,7 +208,7 @@ export class PartnerContactUploadManagementSettingsComponent implements OnInit {
       },
       error => {
         this.referenceService.loading(this.selfContactsCountLoader, false);
-        this.customResponse = new CustomResponse('ERROR', "Unable to load the your contact count", true);
+        this.customResponse = new CustomResponse('ERROR', this.properties.LOAD_SELF_CONTACTS_COUNT_ERROR_MESSAGE, true);
       });
   }
 
@@ -222,22 +223,22 @@ export class PartnerContactUploadManagementSettingsComponent implements OnInit {
       },
       error => {
         this.referenceService.loading(this.totalPartnerContactUploadCountLoader, false);
-        this.customResponse = new CustomResponse('ERROR', "Unable to load the total partners contact count", true);
+        this.customResponse = new CustomResponse('ERROR', this.properties.LOAD_PARTNER_CONTACTS_COUNT_ERROR_MESSAGE, true);
       });
   }
 
   getTotalContactSubscriptionLimitUsedByCompany() {
-    this.referenceService.loading(this.contactSubscriptionLimitLoader, true);
+    this.referenceService.loading(this.contactSubscriptionLimitUsedLoader, true);
     this.parterService.getTotalContactSubscriptionLimitUsedByCompany(this.loggedInUserId).subscribe(
       response => {
         if (response.statusCode === XAMPLIFY_CONSTANTS.HTTP_OK && response.data) {
           this.contactSubscriptionCountUsed = response.data;
         }
-        this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
+        this.referenceService.loading(this.contactSubscriptionLimitUsedLoader, false);
       },
       error => {
-        this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
-        this.customResponse = new CustomResponse('ERROR', "Unable to load the contact Subscription Count Used count", true);
+        this.referenceService.loading(this.contactSubscriptionLimitUsedLoader, false);
+        this.customResponse = new CustomResponse('ERROR', this.properties.LOAD_SUBSCRIPTION_LIMIT_USED_ERROR_MESSAGE, true);
       });
   }
 
@@ -252,7 +253,7 @@ export class PartnerContactUploadManagementSettingsComponent implements OnInit {
       },
       error => {
         this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
-        this.customResponse = new CustomResponse('ERROR', "Unable to load the assigned Contact limit count", true);
+        this.customResponse = new CustomResponse('ERROR', this.properties.LOAD_SUBSCRIPTION_LIMIT_ERROR_MESSAGE, true);
       });
   }
   

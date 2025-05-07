@@ -8,45 +8,42 @@
               You have the authority to set contact limits for your partners and view contact usage analytics.
             </strong></label>
 
-          <h5 *ngIf="showSelfContactsCount" class="bold-font-weight">Contacts Added By You:
+          <div class="contact-analytics-counts-info" *ngIf="showSelfContactsCount" >Contacts Added By You:
             <span *ngIf="!selfContactsCountLoader?.isLoading"><strong>{{selfContactCount}}</strong></span>
             <img *ngIf="selfContactsCountLoader?.isLoading" style="height: 25px; padding-left: 0px;"
               src="../../../assets/images/Spinner.gif" alt="">
-          </h5>
-          <h5 class="bold-font-weight">Contacts Added By Partners:
+          </div>
+          <div class="contact-analytics-counts-info">Contacts Added By Partners:
             <span
               *ngIf="!totalPartnerContactUploadCountLoader?.isLoading"><strong>{{contactsUploadedCountByAllPartners}}</strong></span>
             <img *ngIf="totalPartnerContactUploadCountLoader?.isLoading" style="height: 25px; padding-left: 0px;"
               src="../../../assets/images/Spinner.gif" alt="">
-          </h5>
-          <h5 class="bold-font-weight">Contact Subscription Limit:
+          </div>
+          <div class="contact-analytics-counts-info">Contact Subscription Limit:
             <span
               *ngIf="!contactSubscriptionLimitLoader?.isLoading"><strong>{{contactSubscriptionLimit}}</strong></span>
             <img *ngIf="contactSubscriptionLimitLoader?.isLoading" style="height: 25px; padding-left: 0px;"
               src="../../../assets/images/Spinner.gif" alt="">
-          </h5>
-          <h5 class="bold-font-weight">Contact Subscription Limit Used:
+          </div>
+          <div class="contact-analytics-counts-info" >Contact Subscription Limit Used:
             <span
-              *ngIf="!contactSubscriptionLimitLoader?.isLoading"><strong>{{contactSubscriptionCountUsed}}</strong></span>
-            <img *ngIf="contactSubscriptionLimitLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+              *ngIf="!contactSubscriptionLimitUsedLoader?.isLoading"><strong>{{contactSubscriptionCountUsed}}</strong></span>
+            <img *ngIf="contactSubscriptionLimitUsedLoader?.isLoading" style="height: 25px; padding-left: 0px;"
               src="../../../assets/images/Spinner.gif" alt="">
-          </h5>
-          <h5 class="bold-font-weight">
+          </div>
+          <div class="contact-analytics-counts-info" >
             Contacts exceeded by:
-            <span *ngIf="!contactSubscriptionLimitLoader?.isLoading" [ngStyle]="{'color': (contactSubscriptionCountUsed > contactSubscriptionLimit
+            <span *ngIf="!contactSubscriptionLimitUsedLoader?.isLoading"
+             [ngStyle]="{'color': (contactSubscriptionCountUsed > contactSubscriptionLimit
             ? contactSubscriptionCountUsed - contactSubscriptionLimit
             : 0) ? 'red' : 'inherit'}">
-              <strong>
-                {{
-                contactSubscriptionCountUsed > contactSubscriptionLimit
-                ? contactSubscriptionCountUsed - contactSubscriptionLimit
-                : 0
-                }}
+              <strong> {{contactSubscriptionCountUsed > contactSubscriptionLimit
+                ? contactSubscriptionCountUsed - contactSubscriptionLimit : 0 }}
               </strong>
             </span>
-            <img *ngIf="contactSubscriptionLimitLoader?.isLoading" style="height: 25px; padding-left: 0px;"
+            <img *ngIf="contactSubscriptionLimitUsedLoader?.isLoading" style="height: 25px; padding-left: 0px;"
               src="../../../assets/images/Spinner.gif" alt="">
-          </h5>
+          </div>
         </div>
       </div>
 
@@ -82,7 +79,7 @@
                   <th scope="col" style="width: 50%;">Partner Details</th>
                   <th scope="col" class="contact-limit-row-width text-center">Assigned</th>
                   <th scope="col" class="contact-limit-row-width text-center">Used</th>
-                  <th scope="col" class="contact-limit-row-width text-center">Remining</th>
+                  <th scope="col" class="contact-limit-row-width text-center">Remaining</th>
                   <th scope="col" class="contact-limit-row-width text-center">Exceeded</th>
                 </tr>
               </thead>
