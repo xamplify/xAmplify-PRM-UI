@@ -994,8 +994,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             self.loadAllCharts = false;
         }else if(self.selectedTabIndex==2){
             self.reloadRedistributeCampaigns = true;
-        }else if(self.selectedTabIndex = 1){
+        }else if(self.selectedTabIndex == 1){
         	self.goToInActivePartnersDiv();
+        } else{
+            self.goToActivePartnersDiv();
         }
         self.throughPartnerCampaignsCountLoader = false;
         }, 500);
