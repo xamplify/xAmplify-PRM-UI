@@ -401,6 +401,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showCallIntegrations: boolean = false;
 	isContactStatusOptionClicked: boolean = false;
 
+	contactUploadManagementSettings: boolean = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2316,6 +2318,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == 'callIntegrations') {
 			this.showCallIntegrations = true;
 			this.activeTabHeader = this.properties.callIntegrations;
+		} else if (this.activeTabName == "contactUploadManagementSettings") {
+			this.contactUploadManagementSettings = true;
+			this.activeTabHeader = this.properties.contactUploadManagementSettings;
 		} else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CONTACT_STATUS_MENU_HEADER) {
 			// XNFR-967 Contact Status
 			this.activateContactStatusMenuHeader();

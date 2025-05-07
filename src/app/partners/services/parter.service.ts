@@ -9,6 +9,7 @@ import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { TeamMemberAnalyticsRequest } from 'app/team/models/team-member-analytics-request';
+import { PartnerCompanyMetricsDto } from 'app/dashboard/models/partner-company-metrics-dto';
 
 @Injectable()
 export class ParterService {
@@ -17,6 +18,9 @@ export class ParterService {
     ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
     WORK_FLOW_PREFIX_URL = this.authenticationService.REST_URL + "workflow";
     WORK_FLOW_URL = this.WORK_FLOW_PREFIX_URL + this.ACCESS_TOKEN_SUFFIX_URL;
+    
+    PARTNER_URL = this.authenticationService.REST_URL + "partner";
+    ACCESS_TOKEN_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
 
     constructor(private http: Http, public authenticationService: AuthenticationService, public httpClient: HttpClient, private referenceService: ReferenceService) { }
     partnerReports(userId: number, applyFilter: boolean): Observable<any> {
@@ -717,6 +721,44 @@ export class ParterService {
         const url = this.URL + '/partner/allPartners/details/regionwise/count?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url, partnerJourneyRequestDTO);
     }
+
+    /** XNFR-952 start **/
+    listAllPartnersForContactUploadManagementSettings(pagination: Pagination) {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let filterKeyRequestParam = pagination.filterKey != undefined && pagination.filterKey != null ?
+            "&filterKey=" + pagination.filterKey : "";
+        let findAllUrl = this.PARTNER_URL + "/listAllPartnersForContactUploadManagementSettings/" + loggedInUserId + this.ACCESS_TOKEN_PARAMETERS + pageableUrl + filterKeyRequestParam;
+        return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
+    saveOrUpdateContactUploadSettings(partnerCompanyMetricsDTOs: Array<PartnerCompanyMetricsDto>) {
+        let userId = this.authenticationService.getUserId();
+        let url = this.PARTNER_URL + `/saveOrUpdateContactUploadSettings` + `/` + userId + `?access_token=${this.authenticationService.access_token}`;
+        return this.authenticationService.callPostMethod(url, partnerCompanyMetricsDTOs);
+    }
+
+    fetchTotalNumberOfContactsAddedForCompany(loggedInUserId: number) {
+        let url = this.PARTNER_URL + "/fetchTotalNumberOfContactsAddedForCompany/" + loggedInUserId + this.ACCESS_TOKEN_PARAMETERS;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    loadContactsUploadedCountByAllPartners(loggedInUserId: number) {
+        let url = this.PARTNER_URL + "/loadContactsUploadedCountByAllPartners/" + loggedInUserId + this.ACCESS_TOKEN_PARAMETERS;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    loadContactUploadSubscriptionLimitForCompany(loggedInUserId: number) {
+        let url = this.PARTNER_URL + "/loadContactUploadSubscriptionLimitForCompany/" + loggedInUserId + this.ACCESS_TOKEN_PARAMETERS;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getTotalContactSubscriptionLimitUsedByCompany(loggedInUserId: number) {
+        let url = this.PARTNER_URL + "/getTotalContactSubscriptionLimitUsedByCompany/" + loggedInUserId + this.ACCESS_TOKEN_PARAMETERS;
+        return this.authenticationService.callGetMethod(url);
+    }
+    /** XNFR-952 end **/
+
     getAllPartners(pagination: Pagination) {
         const url = this.URL + '/partner/allPartners/details/list?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
@@ -729,3 +771,4 @@ export class ParterService {
     // }
 
 }
+
