@@ -579,7 +579,12 @@ export class Properties {
 
 	allPartnersDonutTooltipText = 'REGION WISE PARTNERS';
 
+
+	contactUploadManagementSettings = 'Contacts Usage Analytics';
+	CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN = "Please assign value to contact upload quota.";
+
 	/**XNFR-973**/
 	ACCESS_TO_ASK_OLIVER = "Enable this setting to restrict Ask Oliver's access to the asset."
+
 }
 

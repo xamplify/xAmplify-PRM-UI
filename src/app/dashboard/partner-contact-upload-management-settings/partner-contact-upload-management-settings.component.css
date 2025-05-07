@@ -1,0 +1,26 @@
+.contact-limit-row-width {
+    position: relative;
+}
+
+.maualSPFCardbg {
+    background-color: #f1f5f9;
+    padding: 0px 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.tenpixelspaddig {
+    padding: 10px
+}
+
+.green-text {
+    color: green;
+}
+
+.red-text {
+    color: red;
+}
+
+.justify-content-end {
+    justify-content: end;
+}
