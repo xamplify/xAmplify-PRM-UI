@@ -17,4 +17,5 @@ export class ChatGptIntegrationSettingsDto {
     uploadedAssetIds = [];
     agentType = "";
     categoryIds = [];
+    contents:any[] = [];
 }

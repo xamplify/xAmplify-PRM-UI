@@ -979,3 +979,106 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
 .override-margin {
   margin-bottom: -15px;
 }
+
+/* History css */
+.history-header {
+  font-size: 22px;
+  font-weight: bold;
+  color: rgba(2, 118, 255, 1);
+  margin-bottom: 25px;
+  margin-right: 70px;
+}
+.history-section {
+  margin-bottom: 15px;
+}
+.history-section h5 {
+  color: rgba(2, 118, 255, 1)!important;
+  font-weight: 600;
+  margin-bottom: 10px;
+  margin-top:3px!important;
+  font-size: 14px!important;
+}
+.history-entry {
+  background-color: #ffffff;
+  border: 1px solid #cce0f5;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.history-entry:hover {
+  background-color: #f0f8ff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+}
+.history-entry .actions {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+}
+.history-entry .actions i {
+  color: #007acc;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 5px 6px;
+  transition: background-color 0.2s, color 0.2s;
+}
+.history-entry .actions i:hover {
+  background-color: #e0f0ff;
+  color: #005f99;
+}
+.history-entry .actions i.fa-trash{
+  color: #c9302c;
+}
+.history-entry .actions i.fa-trash:hover {
+  background-color: #fce3e3;
+  color: #c9302c;
+}
+.history-entry .edit-input {
+  width: calc(100% - 60px);
+}
+/*  */
+.history-header-row {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.search-wrapper {
+  position: relative;
+  width: 220px;
+}
+.search-input {
+  padding-right: 28px;
+  border-radius: 6px !important;
+  font-size: 13px;
+  height: 36px;
+}
+.search-icon {
+  position: absolute;
+  right: 8px;
+  top: 10px;
+  color: #797b7e;
+  font-size: 14px;
+}
+.oliver-history-scroll{
+  height: 70vh;
+  overflow-y: auto;
+  padding-right: 10px; 
+}
+.oliver-history-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.history-divider{
+  border-top: 1px solid rgba(255, 255, 255, 1);
+  margin: 25px 10px;
+}
+.oliver-history-btn{
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  /* background-color: #2f80ed;  */
+  color: white; padding: 10px 14px; 
+  border-radius: 8px; font-weight: 600;
+  margin: 0 5px 10px 5px;
+}

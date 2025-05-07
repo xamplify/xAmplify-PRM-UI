@@ -62,6 +62,16 @@ export class ChatGptModalComponent implements OnInit {
   vectorStoreId: any;
   selectedFolders: any[] = [];
   chatHistoryId: any;
+  chatHistories: any[] = [];
+  isSaveHistoryPopUpVisible: boolean = true;
+  private readonly INSIGHTAGENT = "INSIGHTAGENT";
+  private readonly BRAINSTORMAGENT = "BRAINSTORMAGENT";
+  private readonly SPARKWRITERAGENT = "SPARKWRITERAGENT";
+  private readonly PARAPHRASERAGENT = "PARAPHRASERAGENT";
+  previousTitle: any;
+  index: any;
+  searchKey:string;
+
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService,
     private referenceService: ReferenceService, public properties: Properties, public sortOption: SortOption, public router: Router, private cdr: ChangeDetectorRef, private http: HttpClient) {
   }
@@ -85,49 +95,55 @@ export class ChatGptModalComponent implements OnInit {
     this.selectedFolders = [];
   }
 
-  generateChatGPTText() {
+  generateChatGPTText(chatHistoryId:any) {
+    this.referenceService.showSweetAlertProceesor("Saving...");
     this.customResponse = new CustomResponse();
-    this.isTextLoading = true;
-    this.chatGptGeneratedText = '';
-    if ($('.main-container').length) {
-      $('.main-container').animate({
-        scrollTop: $('.main-container')[0].scrollHeight
-      }, 500);
-    }
+    // this.isTextLoading = true;
+    // this.chatGptGeneratedText = '';
+    // if ($('.main-container').length) {
+    //   $('.main-container').animate({
+    //     scrollTop: $('.main-container')[0].scrollHeight
+    //   }, 500);
+    // }
     // let askOliver = 'Paraphrase this:' + this.inputText
-    this.messages.push({ role: 'user', content: this.inputText });
-    let askOliver = this.activeTab == 'writing'
-      ? 'In ' + (this.sortOption.selectWordDropDownForOliver.name || '') + ' ' + this.inputText
-      : this.inputText;
-    this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
-    this.chatGptIntegrationSettingsDto.prompt = askOliver;
-    this.showOpenHistory = true;
+    // this.messages.push({ role: 'user', content: this.inputText });
+    // let askOliver = this.activeTab == 'writing'
+    //   ? 'In ' + (this.sortOption.selectWordDropDownForOliver.name || '') + ' ' + this.inputText
+    //   : this.inputText;
+    // this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
+    // this.chatGptIntegrationSettingsDto.prompt = askOliver;
+    // this.showOpenHistory = true;
+    this.chatGptIntegrationSettingsDto.contents = this.messages;
+    this.chatGptIntegrationSettingsDto.chatHistoryId = chatHistoryId;
+    this.messages = [];
     this.chatGptSettingsService.generateAssistantText(this.chatGptIntegrationSettingsDto).subscribe(
       response => {
         let statusCode = response.statusCode;
         let data = response.data;
-
+        swal.close();
         if (statusCode === 200) {
           let chatGptGeneratedText = data['apiResponse']['choices'][0]['message']['content'];
-          this.chatGptGeneratedText = this.referenceService.getTrimmedData(chatGptGeneratedText);
-          this.messages.push({ role: 'assistant', content: this.chatGptGeneratedText });
-          this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
+          // this.chatGptGeneratedText = this.referenceService.getTrimmedData(chatGptGeneratedText);
+          // this.messages.push({ role: 'assistant', content: this.chatGptGeneratedText });
+          // this.isCopyButtonDisplayed = this.chatGptGeneratedText.length > 0;
+          this.referenceService.showSweetAlertSuccessMessage('History saved successfully.');
         } else if (statusCode === 400) {
-          this.chatGptGeneratedText = response.message;
-          this.messages.push({ role: 'assistant', content: response.message });
+          // this.chatGptGeneratedText = response.message;
+          // this.messages.push({ role: 'assistant', content: response.message });
         } else {
-          let errorMessage = data['apiResponse']['error']['message'];
-          this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-          this.messages.push({ role: 'assistant', content: errorMessage });
+          // let errorMessage = data['apiResponse']['error']['message'];
+          // this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+          // this.messages.push({ role: 'assistant', content: errorMessage });
         }
-        this.isTextLoading = false;
-        this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
+        // this.isTextLoading = false;
+        // this.inputText = this.activeTab == 'paraphraser' ? this.inputText : '';
 
       }, error => {
-        this.isTextLoading = false;
-        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-        this.messages.push({ role: 'assistant', content: this.properties.serverErrorMessage });
-        this.inputText = '';
+        swal.close();
+        // this.isTextLoading = false;
+        // this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        // this.messages.push({ role: 'assistant', content: this.properties.serverErrorMessage });
+        // this.inputText = '';
       });
   }
 
@@ -173,8 +189,8 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   showOliverIcon() {
-    if (this.threadId != undefined && this.threadId != 0 && this.vectorStoreId != undefined && this.vectorStoreId != 0 && this.chatHistoryId != undefined && this.chatHistoryId != 0) {
-      this.showSweetAlert(this.activeTab,this.threadId, this.vectorStoreId, this.chatHistoryId);
+    if (this.threadId != undefined && this.threadId != 0 && this.vectorStoreId != undefined && this.vectorStoreId != 0 && this.chatHistoryId != undefined && this.chatHistoryId != 0 && this.isSaveHistoryPopUpVisible) {
+      this.showSweetAlert(this.activeTab,this.threadId, this.vectorStoreId, this.chatHistoryId, true);
     } else {
       this.showIcon = true;
     }
@@ -190,13 +206,13 @@ export class ChatGptModalComponent implements OnInit {
   setActiveTab(tab: string) {
     this.isValidInputText = false;
     this.inputText = "";
-    if (this.chatHistoryId != undefined && this.chatHistoryId > 0) {
-      this.showSweetAlert(tab,this.threadId, this.vectorStoreId, this.chatHistoryId);
+    if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible) {
+      this.showSweetAlert(tab,this.threadId, this.vectorStoreId, this.chatHistoryId,false);
     } else {
       this.activeTab = tab;
+      this.messages = [];
     }
     this.isTextLoading = false;
-    this.messages = [];
     this.chatGptGeneratedText = "";
     this.isCopyButtonDisplayed = false;
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
@@ -209,13 +225,17 @@ export class ChatGptModalComponent implements OnInit {
     this.chatHistoryId = 0;
     this.selectedAssets = [];
     this.selectedFolders = [];
+    this.isSaveHistoryPopUpVisible = true;
+    if (tab == 'history') {
+      this.fetchHistories();
+    }
   }
 
-  showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any) {
+  showSweetAlert(tab:string,threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
     let self = this;
     swal({
-      title: 'Do you want to save the Chat?',
-      text: 'If not the chat will be deleted permanently',
+      title: 'Do you want to save the History?',
+      text: 'If not the history will be deleted permanently',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#54a7e9',
@@ -223,23 +243,34 @@ export class ChatGptModalComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
     }).then(function () {
-      self.referenceService.showSweetAlertSuccessMessage('Chat saved successfully.');
-      self.showIcon = true;
+      self.saveChatHistoryTitle(chatHistoryId);
+      // self.referenceService.showSweetAlertSuccessMessage('Chat saved successfully.');
+      if (isClosingModelPopup) {
+        self.showIcon = true;
+      }
     }, function (dismiss: any) {
-      self.deleteChatHistory(threadId,vectorStoreId,chatHistoryId);
+      self.deleteChatHistory(threadId,vectorStoreId,chatHistoryId,isClosingModelPopup);
     })
     self.activeTab = tab;
   }
 
-  deleteChatHistory(threadId:any,vectorStoreId:any,chatHistoryId:any) {
+  saveChatHistoryTitle(chatHistoryId:any) {
+    this.generateChatGPTText(chatHistoryId);
+  }
+
+  deleteChatHistory(threadId:any,vectorStoreId:any,chatHistoryId:any,isClosingModelPopup:boolean) {
     this.referenceService.showSweetAlertProcessingLoader("Loading");
     this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId).subscribe(
       response => {
         swal.close();
-        this.showIcon = true;
+        if (isClosingModelPopup) {
+          this.showIcon = true;
+        }
       }, error => {
         swal.close();
-        this.showIcon = true;
+        if (isClosingModelPopup) {
+          this.showIcon = true;
+        }
       }
     )
   }
@@ -508,13 +539,13 @@ export class ChatGptModalComponent implements OnInit {
     this.chatGptIntegrationSettingsDto.prompt = self.inputText;
     self.chatGptIntegrationSettingsDto.threadId = self.threadId;
     if (this.activeTab == 'askpdf') {
-      this.chatGptIntegrationSettingsDto.agentType = "INSIGHTAGENT";
+      this.chatGptIntegrationSettingsDto.agentType = this.INSIGHTAGENT;
     } else if (this.activeTab == 'new-chat') {
-      this.chatGptIntegrationSettingsDto.agentType = "BRAINSTORMAGENT";
+      this.chatGptIntegrationSettingsDto.agentType = this.BRAINSTORMAGENT;
     } else if (this.activeTab === 'writing') {
-      this.chatGptIntegrationSettingsDto.agentType = "SPARKWRITERAGENT";
+      this.chatGptIntegrationSettingsDto.agentType = this.SPARKWRITERAGENT;
     } else if (this.activeTab === 'paraphraser') {
-      this.chatGptIntegrationSettingsDto.agentType = "PARAPHRASERAGENT";
+      this.chatGptIntegrationSettingsDto.agentType = this.PARAPHRASERAGENT;
     }
     self.chatGptIntegrationSettingsDto.chatHistoryId = self.chatHistoryId;
     self.chatGptIntegrationSettingsDto.vectorStoreId = self.vectorStoreId;
@@ -585,6 +616,133 @@ export class ChatGptModalComponent implements OnInit {
         console.error('API Error:', error);
       }
     );
+  }
+
+  fetchHistories() {
+    this.chatGptSettingsService.fetchHistories(this.searchKey).subscribe(
+      (response) => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.chatHistories = response.data;
+        }
+      }, error => {
+
+      }
+    )
+  }
+
+  showHistory(history:any) {
+    let tab = this.getTabName(history.oliverChatHistoryType);
+    this.setActiveTab(tab);
+    this.threadId = history.threadId;
+    this.vectorStoreId = history.vectorStoreId;
+    this.chatHistoryId = history.chatHistoryId;
+    this.showOpenHistory = true;
+    this.isSaveHistoryPopUpVisible = false;
+    this.getChatHistory();
+  }
+
+  getTabName(tab): string {
+    switch (tab) {
+      case this.BRAINSTORMAGENT:
+        return "new-chat";
+      case this.INSIGHTAGENT:
+        return "askpdf";
+      case this.SPARKWRITERAGENT:
+        return "writing";
+      case this.PARAPHRASERAGENT:
+        return "paraphraser";
+    }
+  }
+
+  getChatHistory() {
+    this.chatGptSettingsService.getChatHistoryByThreadId(this.threadId).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let messages = response.data;
+          messages.forEach((message: any) => {
+            if (message.role === 'assistant') {
+              this.messages.push({ role: 'assistant', content: message.content });
+            }
+            if (message.role === 'user') {
+              this.messages.push({ role: 'user', content: message.content });
+            }
+          });
+          setTimeout(() => {
+            if ($('.scrollable-card').length) {
+              $('.scrollable-card').animate({
+                scrollTop: $('.scrollable-card')[0].scrollHeight
+              }, 500);
+            }
+          }, 500);
+
+        } else {
+          console.log('API Error:', response.errorMessage);
+        }
+      },
+      (error: string) => {
+        console.log('API Error:', error);
+      }
+    );
+  }
+
+  openEdit(history:any,index:any) {
+    if (this.index != undefined && this.index > 0 && this.index != index) {
+      this.chatHistories[this.index].title = this.previousTitle;
+      this.chatHistories[this.index].showInputField = false;
+      this.index = index;
+      this.previousTitle = history.title;
+      history.showInputField = true;
+    } else {
+      this.index = index;
+      this.previousTitle = history.title;
+      history.showInputField = true;
+    }
+  }
+
+  closeEdit(history:any,index:any) {
+    history.title = this.previousTitle;
+    history.showInputField = false;
+  }
+
+  updateTitle(history:any,index:any) {
+    if (this.referenceService.isValidString(history.title)) {
+      this.previousTitle = history.title;
+      this.referenceService.showSweetAlertProcessingLoader("Updating...");
+      this.chatGptSettingsService.updateHistoryTitle(history.title,history.chatHistoryId).subscribe(
+        (response) => {
+          swal.close();
+          if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+            history.showInputField = false;
+            this.referenceService.showSweetAlertSuccessMessage("Updated successfully.");
+          } else {
+            this.referenceService.showSweetAlertFailureMessage("Updation failed.");
+          }
+        }, error => {
+          swal.close();
+          this.referenceService.showSweetAlertFailureMessage("Updation failed.");
+        }
+      )
+    }
+    
+  }
+
+  deleteHistory(history:any,index:any) {
+    this.referenceService.showSweetAlertProcessingLoader("Loading...");
+    this.chatGptSettingsService.deleteChatHistory(history.chatHistoryId,history.threadId,history.vectorStoreId).subscribe(
+      response => {
+        this.index = 0;
+        this.chatHistories.splice(index, 1);
+        swal.close();
+      }, error => {
+        swal.close();
+      }
+    )
+  }
+
+  searchHistoryOnKeyPress(keyCode:any) {
+    if (keyCode === 13 && this.searchKey != undefined && this.searchKey.length > 0) {
+      this.fetchHistories();
+    }
   }
 
 }

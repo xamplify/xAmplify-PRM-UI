@@ -150,4 +150,21 @@ export class ChatGptSettingsService {
     return this.authenticationService.callPostMethod(url, chatGptIntegrationSettingsDto);
   }
 
+  fetchHistories(searchKey:any) {
+    let userId = this.authenticationService.getUserId();
+    let loggedInUserIdParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let searchKeyParameter = searchKey != undefined && searchKey.length > 0 ? '&searchKey=' + searchKey : '';
+    const url = this.chatGptSettingsUrl + "fetchChatHistories?access_token=" + this.authenticationService.access_token + loggedInUserIdParameter + searchKeyParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  updateHistoryTitle(title:any, chatHistoryId:any) {
+    let data = {
+      'chatHistoryId':chatHistoryId,
+      'title':title
+    }
+    const url = this.chatGptSettingsUrl + "updateHistoryTitle?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url,data);
+  }
+
 }
