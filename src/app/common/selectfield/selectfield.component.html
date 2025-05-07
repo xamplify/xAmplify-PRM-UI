@@ -61,7 +61,7 @@
                       <td class="text-center">
                         <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="fieldDto.selectedColumn"
                           (change)="toggleSelection($event,fieldDto)" [checked]="isCheked(fieldDto)"
-                          [disabled]="isFieldDisabled(fieldDto)" />
+                          [disabled]="isFieldDisabled(fieldDto) || isDefaultFields(fieldDto)" />
                       </td>
                       <td>
                         <span class="FieldName" data-toggle="tooltip" data-placement="top"

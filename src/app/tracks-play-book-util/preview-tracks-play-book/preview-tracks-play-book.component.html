@@ -124,12 +124,14 @@
                                                             </h4>
                                                         </div>
                                                         <div
-                                                            class="col-sm-12 col-lg-12 col-md-12 col-xs-12 asset-name-class">
+                                                            class="col-sm-12 col-lg-12 col-md-12 col-xs-12 asset-name-class  table_asset_visible">
                                                             <h4 class="name-wrap title-height"
                                                                 style="font-size: 15px;font-weight: bold;">
                                                                 <div class="Asset-title-class">Asset Title:</div>
-                                                                <strong data-toggle="tooltip" data-placement="bottom"
-                                                                    title="{{assetDetails?.assetName}}">{{assetDetails?.assetName}}</strong>
+                                                                    <strong data-toggle="tooltip" data-placement="bottom" class="name-wrapperone"
+                                                                    title="{{assetDetails?.assetName}}">{{assetDetails?.assetName?.length > 70
+                                                                        ? (assetDetails?.assetName | slice:0:70) + '...'
+                                                                        : assetDetails?.assetName}}</strong>
                                                             </h4>
                                                         </div>
                                                     </div>
@@ -197,8 +199,8 @@
                     <app-list-loader *ngIf="trackViewLoader && (modulesDisplayType.isListView || modulesDisplayType.isFolderListView)">
                     </app-list-loader>
                     <!---List View----->
-                    <section *ngIf="modulesDisplayType.isListView && !trackViewLoader">
-                        <div class="table-responsive tab_float_unset" style="float: left;">
+                    <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="modulesDisplayType.isListView && !trackViewLoader">
+                        <div class="table-responsive tab_float_unset">
                             <table class='table tgrid-list tgrid table-hover table-sm' id="manage-assets-table"
                                 *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
                                 <thead>
@@ -244,10 +246,10 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                <h4 class="asset-title" data-toggle="tooltip" data-placement="bottom" [title]="content?.dam?.assetName">
+                                                <h4  class="asset-title" data-toggle="tooltip" data-placement="bottom" [title]="content?.dam?.assetName">
                                                     <strong>
-                                                        {{ content?.dam?.assetName?.length > 40
-                                                        ? (content?.dam?.assetName | slice:0:40) + '...'
+                                                        {{ content?.dam?.assetName?.length > 70
+                                                        ? (content?.dam?.assetName | slice:0:70) + '...'
                                                         : content?.dam?.assetName }}
                                                     </strong>
                                                 </h4>
@@ -315,7 +317,7 @@
                     <!-- XNFR-745 -->
                     <section *ngIf="modulesDisplayType.isFolderListView && !trackViewLoader">
                         <div class="table-responsive" style="display: inline;">
-                            <table class='table tgrid table-hover table-sm border_collapse' id="manage-assets-table"
+                            <table class='table tgrid  table_asset_visible table-hover table-sm border_collapse' id="manage-assets-table"
                                 *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
                                 <tbody class="pointer"  [ngClass]="isAccessToView(tracksPlayBook?.expireDate,tracksPlayBook?.createdTime)? 'disable-click':''">
                                     <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
@@ -341,7 +343,7 @@
                                                     <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="leadDetails">
                                                         <div class="br-unset pt0 pb0">
                                                             <div class="card-bgcolors h-260 pl0 pr0">
-                                                                <table class='table tgrid table-hover table-sm border_collapse' id="manage-assets-table"
+                                                                <table class='table tgrid  table_asset_visible table-hover table-sm border_collapse' id="manage-assets-table"
                                                                     aria-describedby="manageAssetTables">
                                                                     <thead [hidden]="content.isCollapsed">
                                                                         <tr>
@@ -392,10 +394,10 @@
                                                                                     </div>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <h4 class="moreipsis mt5 mb5 f-w-600"
-                                                                                        data-toggle="tooltip" data-placement="bottom"
-                                                                                        title="{{dam?.assetName}}">
-                                                                                        <span><strong>{{dam?.assetName}}</strong></span>
+                                                                                    <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{ dam?.assetName }}">
+                                                                                        <strong class="name-wrapper ">
+                                                                                            {{ dam?.assetName?.length > 70 ? (dam?.assetName | slice:0:70) + '...' : dam?.assetName }}
+                                                                                        </strong>
                                                                                     </h4>
                                                                                     <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
                                                                                         style="padding-top: 5px;">
