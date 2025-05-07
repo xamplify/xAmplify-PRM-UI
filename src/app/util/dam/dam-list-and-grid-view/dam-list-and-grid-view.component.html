@@ -52,7 +52,7 @@
 									<ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
 										<tr>
 											<td *ngIf="FromOliverPopUp && !isFromOliverFolderView" class="text-center"><input class="chk checkBox_shadow" type="checkbox"
-													[checked]="isSelected(asset)" (change)="onCheckboxChange(asset, $event)"></td>
+													[checked]="isSelected(asset)" (change)="onCheckboxChange(asset, $event)" [disabled]="asset.disableAccessForOliver"></td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
 												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
 													<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
@@ -104,7 +104,7 @@
 													class="view-banner published" style="margin-right: 5px;">Published
 												</span>
 												<!-- XNFR-781 -->
-												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner"
+												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner mr5"
 													[ngClass]="{
 														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
@@ -114,7 +114,7 @@
 												</span>
 												<span
 													*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
-													class="view-banner asset-approval-labele-spacing" 
+													class="view-banner asset-approval-labele-spacing mr5" 
 													[ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
 														'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 													{{getApprovalStatusText(asset.approvalStatus)}}
@@ -125,6 +125,7 @@
 												<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"
 												class="view-banner" style="margin-left: 3px;">Digital Sign Enabled
 											</span>
+												<span *ngIf="authenticationService?.isOliverActive && asset.disableAccessForOliver && FromOliverPopUp" class="view-banner bgc-red">Access Disabled</span>
 												<!---XNFR-255-->
 												<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 													<span class="view-banner-white-labeled mb5 G ListLabelSpacings">White-Labeled</span>

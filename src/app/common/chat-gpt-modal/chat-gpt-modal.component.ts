@@ -173,7 +173,11 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   showOliverIcon() {
-    this.showIcon = true;
+    if (this.threadId != undefined && this.threadId != 0 && this.vectorStoreId != undefined && this.vectorStoreId != 0 && this.chatHistoryId != undefined && this.chatHistoryId != 0) {
+      this.showSweetAlert(this.activeTab,this.threadId, this.vectorStoreId, this.chatHistoryId);
+    } else {
+      this.showIcon = true;
+    }
   }
 
   sortBy(selectedValue: string) {
@@ -220,6 +224,7 @@ export class ChatGptModalComponent implements OnInit {
       cancelButtonText: 'No'
     }).then(function () {
       self.referenceService.showSweetAlertSuccessMessage('Chat saved successfully.');
+      self.showIcon = true;
     }, function (dismiss: any) {
       self.deleteChatHistory(threadId,vectorStoreId,chatHistoryId);
     })
@@ -231,11 +236,10 @@ export class ChatGptModalComponent implements OnInit {
     this.chatGptSettingsService.deleteChatHistory(chatHistoryId,threadId,vectorStoreId).subscribe(
       response => {
         swal.close();
-        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
-          this.referenceService.showSweetAlertSuccessMessage('Chat deleted.');
-        }
+        this.showIcon = true;
       }, error => {
         swal.close();
+        this.showIcon = true;
       }
     )
   }

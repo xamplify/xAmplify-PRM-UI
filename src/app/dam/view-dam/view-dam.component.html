@@ -61,7 +61,7 @@
 								<div class="portlet-title port-heading">
 									<div class="caption">Overview</div>
 									<div
-										*ngIf="authenticationService?.isOliverActive">
+										*ngIf="authenticationService?.isOliverActive && !assetDetailsViewDto.disableAccessForOliver">
 										<button class="btn btn-pdf pull-right caption oliveButton" (click)="AskAi()">
 											<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveimgButton">
 											<span>Ask Oliver</span>
