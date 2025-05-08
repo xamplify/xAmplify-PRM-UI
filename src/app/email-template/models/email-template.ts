@@ -50,5 +50,6 @@ export class EmailTemplate {
 	autoResponseId = 0;
 	selectedAutoResponseCustomEmailTemplateId = 0;
 	autoResponseType = "";
+	oliverTemplate: boolean;
 	/*******XNFR-330*****/
 }

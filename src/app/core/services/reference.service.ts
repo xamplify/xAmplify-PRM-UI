@@ -179,6 +179,7 @@ export class ReferenceService {
   showAnalytics = true;
   aircallPhone:any;
   isOliverEnabled = false;
+  asset:any;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
