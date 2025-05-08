@@ -34,6 +34,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     archived: any = false;
     titleHeader ="";
     moduleName = "";
+    campaignAnalyticsSettingsOptionEnabled:boolean = false;
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -57,6 +58,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.folderViewType = this.moduleType['folderType'];
         this.selectedModuleType = this.moduleType['type'];
         this.archived = this.moduleType['archived'];
+        this.campaignAnalyticsSettingsOptionEnabled = this.moduleType['campaignAnalyticsSettingsOptionEnabled'];
         this.pagination.archived = this.archived;
         this.listCategories(this.pagination);
     }

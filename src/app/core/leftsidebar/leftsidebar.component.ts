@@ -206,6 +206,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.approvalRequiredForTracks = data.approvalRequiredForTracks;
           			this.authenticationService.approvalRequiredForPlaybooks = data.approvalRequiredForPlaybooks;
 					this.authenticationService.isOliverActive = data.oliverActive;
+					this.authenticationService.contactSubscriptionLimitEnabled = data.contactSubscriptionLimitEnabled;
 					//XNFR-276
 					this.menuItems = data.menuItems;
 					module.sharedLeads = data.sharedLeads;

@@ -554,7 +554,8 @@
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
                                             activeTabName == properties?.addDomainsText ? 'show':'',
                                             activeTabName == 'masterLandingPageCategories' ? 'show':'',
-                                            activeTabName == flexiFieldsMenuHeader ? 'show':'' ]">
+                                            activeTabName == flexiFieldsMenuHeader ? 'show':'',
+                                            activeTabName == 'contactUploadManagementSettings' ? 'show':'']">
                                         <span translate>Admin</span>
                                         <a data-toggle="collapse" style="float: right;" href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
                                             <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
@@ -688,7 +689,7 @@
                                         </li>
                                         <!--XNFR-679 Flexi Fields-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
-                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}" style="border-bottom: none !important;">
+                                            [ngClass]="{'active-tab': activeTabName == flexiFieldsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == flexiFieldsMenuHeader}"
                                                 (click)="activateTab(flexiFieldsMenuHeader);clearCustomResponse()">{{flexiFieldsMenuHeader | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':flexiFieldsMenuHeader}"></ng-template>
@@ -701,7 +702,31 @@
                                                 {{updateModulesMenuHeader | translate}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':updateModulesMenuHeader}"></ng-template>
                                             </a>
-                                         </li>
+                                        </li>
+
+                                        <!--- XNFR-967 Contact Status --->
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService?.module?.isContact"
+                                            [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"
+                                            style="border-bottom: none !important;">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"
+                                                (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER);clearCustomResponse()">{{MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER
+                                                | translate}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"></ng-template>
+                                            </a>
+                                        </li>
+
+                                         <!-- XNFR-952 -->
+                                         <ng-container *ngIf="authenticationService.contactSubscriptionLimitEnabled">
+                                            <li [ngClass]="{'active-tab': activeTabName == 'contactUploadManagementSettings'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'contactUploadManagementSettings'}"
+                                                    (click)="activateTab('contactUploadManagementSettings');clearCustomResponse()">{{properties.contactUploadManagementSettings
+                                                    | translate}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'contactUploadManagementSettings'}"></ng-template>
+                                                </a>
+                                            </li>
+                                        </ng-container>
 
                                     </ul>
                                 </ng-container>
@@ -3398,6 +3423,12 @@
                                                 (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
                                                 (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
                                         </div>
+
+                                        <div class="tab-pane" *ngIf="activeTabName == 'contactUploadManagementSettings'" 
+                                            [ngClass]="{'active': activeTabName == 'contactUploadManagementSettings'}">
+                                            <app-partner-contact-upload-management-settings></app-partner-contact-upload-management-settings>
+                                        </div>
+
                                         <!-- Partner Journey Pages -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'partnerJourneyPages'}">
                                             <app-vendor-journey *ngIf="isPartnerJourneyPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
@@ -3439,6 +3470,8 @@
                                         <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
                                         <!--XNFR-679 Flexi Fields-->
                                         <app-flexi-field *ngIf="isFlexiFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == flexiFieldsMenuHeader}"></app-flexi-field>
+                                        <!--- XNFR-967 Contact Status--->
+                                        <app-contact-status-drop-down *ngIf="isContactStatusOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CONTACT_STATUS_MENU_HEADER}"></app-contact-status-drop-down>
                                         <app-module-access *ngIf="isUpdateModuleOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == updateModulesMenuHeader}" [isNavigatedFromMyProfileSection]="true"></app-module-access>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
                                         <!--Signature (XNFR-812)-->

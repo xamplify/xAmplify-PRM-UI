@@ -159,7 +159,7 @@ ul.alt-row-style1 li a,
 th,
 .div.thembgc,
 .signature_card,
-.signature-preview {
+.signature-preview,.template_box {
   border: 1px solid var(--border-color) !important;
 }
 .list-group-item,
@@ -1318,12 +1318,15 @@ h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
 /* 11-7-2023 sudha sri */
-.btn-primary,.add_partnerbtn,.submit-btn,.generate-btn,.btn-submit{
+.btn-primary,.add_partnerbtn,.submit-btn,.generate-btn,.btn-submit,.user_guide{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
 }
-.btn-primary:hover,.add_partnerbtn:hover,.submit-btn:hover,.generate-btn:hover,.btn-submit:hover{
+.helpcircle-cu,.guide_text{
+  color: var(--btn-primary-text-color) !important;
+}
+.btn-primary:hover,.add_partnerbtn:hover,.submit-btn:hover,.generate-btn:hover,.btn-submit:hover,.user_guide:hover{
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
@@ -1388,7 +1391,7 @@ div#removeborder {
 }
 
 /* user guides hover icon */
-.help-iconbgadd:hover {
+/* .help-iconbgadd:hover {
   background-color: none !important;
   border: 1px solid transparent !important;
   opacity: 0.8 !important;
@@ -1398,11 +1401,7 @@ div#removeborder {
 }
 .help-iconbgadd {
   border: 1px solid var(--top-button-border-color) !important;
-}
-.helpcircle-cu {
-  color: var(---text-color) !important;
-}
-
+} */
 /* end */
 
 /* Create Campaign Select Campaign bar bg */
@@ -2627,20 +2626,28 @@ markdown pre,.aligin-para{
   background: var(--div-bg-color) !important;
 }
 .side_bar,.writing-card,.phara-card,
-.oliver_input{
+.oliver_input,.custom-card,.history-entry{
   background: var(--page-content) !important;
 }
 .nav-pills.nav-stacked.oliver_tab>li.active>a,
 .nav-pills.nav-stacked.oliver_tab>li.active>a:hover,
-.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover {
+.nav-pills.nav-stacked.oliver_tab>li.active>a:focus,.nav-pills.nav-stacked.oliver_tab > li > a:hover,.upload-box {
   background: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
   border-radius: 8px!important;
 }
-.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text{
+.nav-pills.nav-stacked.oliver_tab > li > a,.oliver_heading,.header-text,.oliver_text,.oliver-text-color,h5.oliver-heading-color,.entry-text,.entry-date,.search-icon,.history-entry .actions i{
   color: var(---text-color) !important;
 }
-  textarea.textarea.h-350 {
+  textarea.textarea.h-350,.oliver_input,.writing-card,.phara-card,.history-entry:hover{
     box-shadow: unset !important;
 }
+.btn-plus,.history-entry .actions i:hover{background: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(---text-color) !important;}
+.history-divider{
+  border-top: 1px solid var(--border-color)  !important;
+}
+.history-entry{border: none!important;}
+.oliver_input.custom_oliver_input.mt10{ border: 1px solid var(--border-color) !important;border-radius: 8px!important;}

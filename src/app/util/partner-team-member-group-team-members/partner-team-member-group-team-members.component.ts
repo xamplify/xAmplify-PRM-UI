@@ -125,7 +125,17 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     $('#'+this.partnerGroupTeamMemberheaderCheckBoxId+"-"+this.currentPartner['index']).prop('checked', false);
   }
 
+  /** XNFR-938 **/
+  searchKeyPress(keyCode: any) {
+    if (keyCode === 13) {
+      this.searchTeamMembers();
+    }
+  }
+  searchTeamMembers() {
+    this.referenceService.setTeamMemberFilterForPagination(this.teamMembersPagination, 0);
+    this.findPartnerModuleTeamMembers(this.teamMembersPagination, this.currentPartner);
 
-
+  }
+  /**** XNFR-938 */
   
 }

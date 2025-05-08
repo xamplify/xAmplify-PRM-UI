@@ -9,4 +9,15 @@ export class PartnerCompanyMetricsDto {
     error = false;
     apiLoading = false;
     errorMessage = "";
+
+    id: number = 0;
+    firstName: string = '';
+    lastName: string = '';
+    companyName: string = '';
+    emailId: string = '';
+    contactUploadLimit: number = 0;
+    uploadedContactCount: number = 0 ;
+    exceeededContactCount: number = 0;
+    companyId: number = 0;
+    
 }

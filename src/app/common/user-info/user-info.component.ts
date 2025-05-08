@@ -21,6 +21,7 @@ export class UserInfoComponent implements OnInit {
     @Input() hideCompanyName:boolean;
     @Input() hideEmptyBar:boolean = false;
     @Input() isPartnerEntityTeamInfo: boolean = false;
+    @Input() isAllPartnersList: boolean = false;
     backgroudColor: any;
     highlightLetter: string = "*";
     constructor() { }
@@ -44,7 +45,12 @@ export class UserInfoComponent implements OnInit {
                 } else if(this.userInfo.fullName != null && this.userInfo.fullName != ' '){
                     this.userInfo.firstName = this.userInfo.fullName;
                 }
-            } 
+            } else if(this.isAllPartnersList){
+                this.userInfo.firstName = this.userInfo.firstName;
+                this.userInfo.lastName = this.userInfo.lastName;
+                this.userInfo.emailId = this.userInfo.emailId;
+                this.userInfo.companyName = this.userInfo.companyName;
+            }
             this.setBackgroundColor();
             this.setHighlightLetter();
         }

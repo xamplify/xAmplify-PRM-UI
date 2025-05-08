@@ -305,3 +305,31 @@ h4.folder-name.align-titletext {
     padding: 0px 5px;
 }
 
+.oliveImg {
+    width: 18px;
+    height: 19px;
+    filter: brightness(0) invert(1);
+    top: -1px;
+    position: relative;
+}
+
+.gridIconCustomization a.Iconhover.oliverhover:hover {
+    background: none !important;
+}
+
+span.select-check-box {
+    position: absolute;
+    background: #fff;
+    padding-right: 3px;
+    padding-left: 3px;
+    border-radius: 3px;
+    left: 0;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 1px;
+    height: 23px;
+}
+
+.folder_check_box {
+    margin-top: 35px !important;
+}

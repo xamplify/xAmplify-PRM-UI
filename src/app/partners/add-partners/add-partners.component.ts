@@ -39,6 +39,8 @@ import { UserListPaginationWrapper } from 'app/contacts/models/userlist-paginati
 import { ContactList } from 'app/contacts/models/contact-list';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Criteria } from 'app/contacts/models/criteria';
+import { ParterService } from 'app/partners/services/parter.service';
+
 declare var $: any, Papa: any, swal: any;
 
 @Component({
@@ -322,6 +324,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	currentIndex: any;
 	actionType: string = '';
 	hasVanityAccess:boolean = false;
+
+	totalPartnerContactUploadCountLoader: HttpRequestLoader = new HttpRequestLoader();
+	selfContactsCountLoader: HttpRequestLoader = new HttpRequestLoader();
+	contactSubscriptionLimitLoader: HttpRequestLoader = new HttpRequestLoader();
+	contactSubscriptionCountUsed: number = 0;
+	isMarketing: boolean = false;
+	contactsUploadedCountByAllPartners: number = 0;
+	contactSubscriptionLimit: number = 0;
+	selfContactCount: number = 0;
+
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -329,7 +341,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
 		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public campaignService: CampaignService, public integrationService: IntegrationService,
-		private utilService: UtilService) {
+		private utilService: UtilService,
+		public parterService: ParterService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		//Added for Vanity URL
@@ -765,7 +778,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			}, error => {
 				this.iteratePartnersAndAssignContactsCount(false);
 			});
-
+		this.loadContactUploadSubscriptionLimitForCompany();
 	}
 	iteratePartnersAndAssignContactsCount(notifyPartners: boolean) {
 		if (this.allselectedUsers.length > 0) {
@@ -2601,7 +2614,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 
-	ngAfterViewInit() { }
+	ngAfterViewInit() {}
 
 	ngAfterViewChecked() {
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
@@ -4057,6 +4070,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		} else {
 			partner.expand = false;
 		}
+		/****XNFR-938****/
+		if (partner.expand) {
+			partner.popupExpand = false;
+		}
+		/****XNFR-938****/
 	}
 
 
@@ -4847,6 +4865,18 @@ triggerUniversalSearch(){
 		this.currentPartnerForModuleAccess = partner;
 		this.currentIndex = index;
 		this.showPartnerModuleConfiguratorModelPopup = true;
+		/****XNFR-938****/
+		$.each(this.newPartnerUser, function (partnerUserIndex: number, partnerUser: any) {
+			if (index != partnerUserIndex) {
+				partnerUser.popupExpand = false;
+			}
+		}
+		);
+		partner.popupExpand = !partner.popupExpand;
+		if(partner.popupExpand) {
+			partner.expand = false;
+		}
+		/****XNFR-938****/
 	}
 
 	closePartnerModuleConfiguratorModelPopup() {
@@ -4889,5 +4919,38 @@ triggerUniversalSearch(){
 			}
 		)
 	}
+	
+	/** XNFR-952 start */
+	getTotalContactSubscriptionLimitUsedByCompany() {
+		this.referenceService.loading(this.contactSubscriptionLimitLoader, true);
+		this.parterService.getTotalContactSubscriptionLimitUsedByCompany(this.loggedInUserId).subscribe(
+			response => {
+				if (response.statusCode === XAMPLIFY_CONSTANTS.HTTP_OK && response.data) {
+					this.contactSubscriptionCountUsed = response.data;
+				}
+				this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
+			},
+			error => {
+				this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
+				this.customResponse = new CustomResponse('ERROR', this.properties.LOAD_SUBSCRIPTION_LIMIT_USED_ERROR_MESSAGE, true);
+			});
+	}
 
+	loadContactUploadSubscriptionLimitForCompany() {
+		this.referenceService.loading(this.contactSubscriptionLimitLoader, true);
+		this.parterService.loadContactUploadSubscriptionLimitForCompany(this.loggedInUserId).subscribe(
+			response => {
+				if (response.statusCode === XAMPLIFY_CONSTANTS.HTTP_OK && response.data) {
+					this.contactSubscriptionLimit = response.data;
+				}
+				this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
+			},
+			error => {
+				this.referenceService.loading(this.contactSubscriptionLimitLoader, false);
+				this.customResponse = new CustomResponse('ERROR', this.properties.LOAD_SUBSCRIPTION_LIMIT_ERROR_MESSAGE, true);
+			}, ()=> {
+				this.getTotalContactSubscriptionLimitUsedByCompany();
+			});
+	}
+	/** XNFR-952 end */
 }

@@ -118,3 +118,10 @@
     -webkit-appearance: none;
      margin: 0;
 }
+.add-mode-width {
+  width: 53% !important;
+}
+.model-content-scroller{
+  overflow-x: hidden !important;
+}
+

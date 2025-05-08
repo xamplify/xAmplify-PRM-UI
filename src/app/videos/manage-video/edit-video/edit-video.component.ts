@@ -28,6 +28,7 @@ import { ActivatedRoute} from '@angular/router';
 import { VideoFileEventEmitter } from 'app/dam/models/video-file-event-emitter';
 import { DamService } from 'app/dam/services/dam.service';
 import { ApprovalStatusType } from 'app/approval/models/approval-status-enum-type';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 declare var videojs, QuickSidebar,$: any;
 
@@ -169,6 +170,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   disableSaveAsDraftButton: boolean = false;
   isApprover: boolean = false;
 
+  slugErrorMessage: string;
+  linkPrefix: string = "";
+  isEditSlug: boolean = false;
+  completeLink: string = "";
+  existingSlug = "";
+  loggedInUserCompanyId:number;
+  isValidSlug:boolean = false;
+  customResponse: CustomResponse = new CustomResponse();
 
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -1036,6 +1045,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('#overlay-modal').hide();
       this.categories = this.referenceService.refcategories;
       this.saveVideoFile.categories = this.categories;
+      this.getCompanyId();
       this.settingImageGifPaths();
       this.buildForm();
       this.defaultImagePaths();
@@ -1289,6 +1299,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'imagePath': [this.saveVideoFile.imagePath],
           'gifImagePath': [this.saveVideoFile.gifImagePath, Validators.required],
           'description': [this.saveVideoFile.description, Validators.required],
+          'slug': [this.saveVideoFile.slug, [Validators.required, Validators.minLength(3)]],
           'enableVideoController': [this.saveVideoFile.enableVideoController, Validators.required],
           'allowSharing': [this.saveVideoFile.allowSharing, Validators.required],
           'enableSettings': [this.saveVideoFile.enableSettings, Validators.required],
@@ -1318,6 +1329,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'companyName': [this.saveVideoFile.companyName],
           'enableVideoCobrandingLogo':[this.saveVideoFile.enableVideoCobrandingLogo],
       });
+      this.completeLink = this.linkPrefix + this.saveVideoFile.slug;
+      this.existingSlug = this.saveVideoFile.slug;
       this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
       this.onValueChanged();
   }
@@ -1340,6 +1353,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
     saveVideoObject() {
         try {
+            this.customResponse = new CustomResponse();
             if (this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)) {
                 if (!this.colorControl) { this.colorControlChange() }
                 this.showError = true
@@ -1349,6 +1363,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.validVideoTitle(this.saveVideoFile.title);
                 const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
                 const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
+
                 let damId = this.saveVideoFile.damId;
                 if (this.isValidTitle === false && this.checkTagsValidation()) {
                     let saveAsDraft = this.saveVideoFile.draft;
@@ -1643,4 +1658,64 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             });
     }
+
+    editSlug() {
+        this.isEditSlug = true;
+      }
+    
+      editedSlug() {
+        this.isEditSlug = false;
+      }
+    
+      getCompanyId() {
+          this.referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(
+            (result: any) => {
+              if (result !== "") {
+                this.loggedInUserCompanyId = result;
+                  this.linkPrefix = this.authenticationService.DOMAIN_URL + "home/dam/vapv/view/" + this.loggedInUserCompanyId + "/";
+                this.completeLink = this.linkPrefix + this.saveVideoFile.slug;
+
+              }
+            });
+      }
+
+      validateSlugForCompany(slug) {
+        let linkControl = this.videoForm.get('slug')
+        slug = slug.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_')
+        this.videoForm.get('slug').setValue(slug);
+        this.completeLink = this.linkPrefix+slug;
+        this.saveVideoFile.slug = slug
+        if(slug != null && slug != '' && this.existingSlug !== slug ){
+      this.damService.validateSlug(slug, this.loggedInUserCompanyId).subscribe(
+        (response: any) => {
+          let isValid = response.data;
+          if (!isValid) {
+            if (linkControl) {
+                linkControl.markAsTouched();
+                linkControl.markAsDirty();
+                linkControl.setErrors({ duplicateAlias: true });
+              } 
+          } 
+        }, 
+        (error: string) => {
+          this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+        },()=>{
+            this.onValueChanged()
+        }
+      );
+    }else{
+        this.onValueChanged();
+    } 
+    }
+
+      copyInputMessage(inputElement: any) {
+        this.referenceService.goToTop();
+        this.customResponse = new CustomResponse();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        let message = 'Link copied to clipboard successfully.';
+        $("#copy-link").select();
+        this.customResponse = new CustomResponse('SUCCESS', message, true);
+      }
 }

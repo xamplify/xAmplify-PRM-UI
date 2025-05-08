@@ -210,9 +210,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         this.campaigns = data.campaigns;
                         this.showAllAnalytics = false;
                         this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
+                        let self = this;
                         $.each(this.campaigns, function (_index: number, campaign) {
                             campaign.displayTime = new Date(campaign.utcTimeInString);
                             campaign.createdDate = new Date(campaign.createdDate);
+                            campaign.displayRedistributionCount = self.campaignAnalyticsSettingsOptionEnabled;
+                            if(campaign.campaignType=='LANDINGPAGE' || campaign.campaignType=='SOCIAL' || campaign.oneClickLaunchCondition){
+                                self.getRedistributionCount(campaign);
+                            }
                         });
                         this.totalRecords = data.totalRecords;
                         pagination.totalRecords = data.totalRecords;
@@ -1172,6 +1177,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             this.exportObject['archived'] = this.archived;
+            this.exportObject['campaignAnalyticsSettingsOptionEnabled']= this.campaignAnalyticsSettingsOptionEnabled;
             this.closeFilterOption();
         }
     }
@@ -1212,6 +1218,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl('/home/campaigns/manage');
             }
 
+        }else{
+            this.listCampaign(this.pagination);
         }
     }
 
@@ -1740,6 +1748,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.getSoftBounceCount(campaign);
         this.getLeadsCount(campaign);
         this.getDealsCount(campaign);
+        if(campaign.campaignType !=='LANDINGPAGE'){
+            this.getRedistributionCount(campaign);
+        }
     }
 
     getLeadOrDealAccess(campaign:any){
@@ -1965,5 +1976,20 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.campaignId = 0;
     }
     /**XNFR-832***/
+
+    /**XNFR-959***/
+    getRedistributionCount(campaign: any) {
+        if (campaign.channelCampaign) {
+            campaign.dealError = false;
+            this.campaignService.getRedistributedCountForAnalytics(campaign).subscribe(
+                response => {
+                    campaign.redistributedCount = response.data;
+                    campaign.displayRedistributionCount = true;
+                }, error => {
+                    campaign.displayRedistributionCount = false;
+                });
+        }
+
+    }
 
 }

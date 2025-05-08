@@ -44,8 +44,9 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
     } else {
       this.isEdit = true;
       this.fetchModulesForEdit();
+      this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
     }
-    this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
+    // this.referenceService.openModalPopup('partnerModuleConfiguratorModalPopup');
   }
   
   ngOnDestroy(){
@@ -86,14 +87,19 @@ export class PartnerModuleConfiguratorComponent implements OnInit {
       this.isContactsModuleToggleDisabled = module.partnerAccessModule;
     } else {
       module.partnerAccessModule = event;
-      let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
-      let enabledModulesLength = modulesWithoutAll.filter((item) => item.partnerAccessModule).length;
-      let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
-      allModule.partnerAccessModule = (modulesWithoutAll.length == enabledModulesLength);
+      // let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
+      // let enabledModulesLength = modulesWithoutAll.filter((item) => item.partnerAccessModule).length;
+      // let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
+      // allModule.partnerAccessModule = (modulesWithoutAll.length == enabledModulesLength);
     }
     let enabledModules = this.defaultModules.filter((item) => item.partnerAccessModule);
     let roleIds = enabledModules.map(function (a) { return a.roleId; });
     this.groupDto.roleIds = roleIds;
+    /*** XNFR-938 */
+    if (this.isAdd) {
+      this.currentPartner.defaultModules = this.defaultModules;
+      this.notifySubmit.emit(this.currentPartner);
+    }
   }
 
   enableOrDisableAllModules(event: any) {

@@ -131,6 +131,8 @@ import { PendingChangesGuard } from "app/component-can-deactivate";
 import { CustomHtmlBlockComponent } from './custom-html-block/custom-html-block.component';
 import { CallIntegrationsComponent } from './call-integrations/call-integrations.component';
 import { CallIntegrationSettingsComponent } from './call-integration-settings/call-integration-settings.component';
+import { PartnerContactUploadManagementSettingsComponent } from './partner-contact-upload-management-settings/partner-contact-upload-management-settings.component';
+import { ContactStatusDropDownComponent } from './contact-status-drop-down/contact-status-drop-down.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule, MultiSelectAllModule ],
@@ -228,6 +230,8 @@ import { CallIntegrationSettingsComponent } from './call-integration-settings/ca
         CustomHtmlBlockComponent,
         CallIntegrationsComponent,
         CallIntegrationSettingsComponent,
+        PartnerContactUploadManagementSettingsComponent,
+        ContactStatusDropDownComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,

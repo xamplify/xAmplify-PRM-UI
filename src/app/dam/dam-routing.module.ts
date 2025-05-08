@@ -70,6 +70,8 @@ export const routes: Routes = [
 	{ path: "sharedp/view/:assetId", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType/:categoryId/:folderViewType", component: ViewDamComponent },
+	{ path: "vapv/view/:damCompanyId/:slug", component: ViewDamComponent },
+	
 	/************XNFR-543*********/
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId", component: DamPartnerCompanyAnalyticsComponent },
 	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
@@ -80,11 +82,14 @@ export const routes: Routes = [
 	{ path: approvalRouterUrl + "previewVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
 	{ path: approvalRouterUrl + "previewVideo/:videoId/:damId", component: ManageDamComponent },
 	{ path: approvalRouterUrl + "edit/:id/:viewType", component: AddDamComponent },
-	{ path: approvalRouterUrl + damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
-	{ path: approvalRouterUrl + damPartnerAnalyticsRouterUrl+":damId/:damPartnerId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
+	{ path: approvalRouterUrl + damPartnerCompanyAnalyticsRouterUrl + ":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
+	{ path: approvalRouterUrl + damPartnerAnalyticsRouterUrl + ":damId/:damPartnerId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
 	{ path: approvalRouterUrl + "vda/:damId/:damPartnerId/:partnerId/:viewType", component: DamAnalyticsComponent },
 	{ path: "askAi/view/:assetId", component: AiChatManagerComponent },
-	{ path: "askAi/shared/view/:assetId", component: AiChatManagerComponent }
+	{ path: "askAi/shared/view/:assetId", component: AiChatManagerComponent },
+	{ path: "askAi/shared/view/fg/:categoryId", component: AiChatManagerComponent },
+	{ path: "askAi/view/fg/:categoryId", component: AiChatManagerComponent },
+	{ path: "askAi/shared/view/g/:assetId", component: AiChatManagerComponent }
 ];
 
 @NgModule({

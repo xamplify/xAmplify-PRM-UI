@@ -37,6 +37,8 @@
             </div>
             <!--  XNFR-906 -->
             <button type="button" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && integrationType === 'SALESFORCE' && authenticationService?.module?.isAnyAdminOrSupervisor && opportunityType === 'LEAD'" class="btn btn-primary ml5 my-10 reportButton" (click)="openSetDefaultFieldsPopUp()">Default Lead Report</button>
+            <button type="button" *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.isAnyAdminOrSupervisor && opportunityType === 'DEAL'" class="btn btn-primary ml5 my-10 reportButton" (click)="openSetDefaultFieldsPopUp()">Default Deal Report</button>
+
             <!--  XNFR-906 -->
             <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="btn btn-primary ml5 my-10 reportButton"
               (click)="addCustomFielsdOrderModalOpen()">Order Custom Fields</button>
@@ -286,7 +288,7 @@
   </div>
    <!-- XNFR-906 -->
    <div *ngIf="openDefaultFieldsPopup">
-    <app-selectfield [isVendorVersion]="true"  [customName]="'manage'"  (closeEmitter)="closeEmitter($event)"></app-selectfield>
+    <app-selectfield [isVendorVersion]="true"  [customName]="integrationType" [opportunityType]="opportunityType" (closeEmitter)="closeEmitter($event)"></app-selectfield>
   </div>
   <!-- XNFR-906 -->
 </div>

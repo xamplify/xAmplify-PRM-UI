@@ -8,33 +8,8 @@
         <h4 class="modal-title left" id="myModalLabel">Partner Modules</h4>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info mb5">
-          <p>Note: You can enable or disable modules for the partner using the toggle option.</p>
-        </div>
-        <div class="table-responsive">
-          <table class='table tgrid table-hover full-width' aria-describedby="">
-            <tr *ngFor="let defaultModule of defaultModules;let i = index">
-              <th scope="row" class="fstcw-tm">
-                <i *ngIf="defaultModule.moduleId != 5 && defaultModule.moduleId != 12 && defaultModule.moduleId != 18"
-                  class="{{defaultModule?.angularIcon}} mrfpx" aria-hidden="true"></i>
-                <i *ngIf="defaultModule.moduleId == 5 || defaultModule.moduleId == 12 || defaultModule.moduleId == 18"
-                  [ngClass]="defaultModule.moduleId == 5 ? 'fa fa-file-pdf-o mrfpx': defaultModule.moduleId == 12 ? 'fa fa-book mrfpx' : 'fa fa-graduation-cap mrfpx'"
-                  aria-hidden="true"></i>
-                {{defaultModule?.moduleName}}<sup
-                  *ngIf="defaultModule?.moduleId == 26 || defaultModule?.moduleId == 10">(Beta)</sup>
-                <br>
-              </th>
-              <td>
-                <app-custom-ui-switch *ngIf="defaultModule.moduleName != 'Contacts'"
-                  [customSwitch]="defaultModule.partnerAccessModule"
-                  (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
-                <app-custom-ui-switch *ngIf="defaultModule.moduleName == 'Contacts'"
-                  [isSwitchOptionDisabled]="isContactsModuleToggleDisabled" [customSwitch]="defaultModule.partnerAccessModule"
-                  (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
-              </td>
-            </tr>
-          </table>
-        </div>
+       <!-- XNFR-938 (avoid deplicate code)-->
+      <ng-template *ngIf="isEdit" [ngTemplateOutlet]="showPartnerModulesWithToggle"></ng-template>
       </div>
       <div class="modal-footer">
         <button class="btn Btn-Gray neg_mrg_top4" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
@@ -46,3 +21,38 @@
     </div>
   </div>
 </div>
+<!-- XNFR-938-->
+<div *ngIf="isAdd">
+  <ng-template *ngIf="isAdd" [ngTemplateOutlet]="showPartnerModulesWithToggle"></ng-template>
+</div>
+
+<ng-template #showPartnerModulesWithToggle>
+  <div class="alert alert-info mb5">
+    <p>Note: You can enable or disable modules for the partner using the toggle option.</p>
+  </div>
+  <div class="table-responsive">
+    <table class='table tgrid table-hover full-width' aria-describedby="">
+      <tr *ngFor="let defaultModule of defaultModules;let i = index">
+        <td scope="row" class="fstcw-tm" style="font-weight: 700;">
+          <i *ngIf="defaultModule.moduleId != 5 && defaultModule.moduleId != 12 && defaultModule.moduleId != 18"
+            class="{{defaultModule?.angularIcon}} mrfpx" aria-hidden="true"></i>
+          <i *ngIf="defaultModule.moduleId == 5 || defaultModule.moduleId == 12 || defaultModule.moduleId == 18"
+            [ngClass]="defaultModule.moduleId == 5 ? 'fa fa-file-pdf-o mrfpx': defaultModule.moduleId == 12 ? 'fa fa-book mrfpx' : 'fa fa-graduation-cap mrfpx'"
+            aria-hidden="true"></i>
+          {{defaultModule?.moduleName}}<sup
+            *ngIf="defaultModule?.moduleId == 26 || defaultModule?.moduleId == 10">(Beta)</sup>
+          <br>
+        </td>
+        <td class="override-actions">
+          <app-custom-ui-switch *ngIf="defaultModule.moduleName != 'Contacts'"
+            [customSwitch]="defaultModule.partnerAccessModule"
+            (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+          <app-custom-ui-switch *ngIf="defaultModule.moduleName == 'Contacts'"
+            [isSwitchOptionDisabled]="isContactsModuleToggleDisabled" [customSwitch]="defaultModule.partnerAccessModule"
+            (customUiSwitchEventEmitter)="changeStatus($event,defaultModule)"></app-custom-ui-switch>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ng-template>
+<!-- XNFR-938-->

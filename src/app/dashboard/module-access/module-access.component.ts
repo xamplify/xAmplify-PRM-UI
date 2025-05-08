@@ -73,6 +73,14 @@ export class ModuleAccessComponent implements OnInit {
   prm: boolean;
   marketing: boolean;
   orgAdmin:boolean;
+ 
+  /** XNFR-952  **/
+  disableContactSubscriptionLimitField: boolean = false;
+  totalContactSubscriptionUsed: any;
+  contactSubscriptionLoader: HttpRequestLoader = new HttpRequestLoader();
+  disableUpdateModulesButton: boolean = false;
+  contactSubscriptionLimitErrorMessage: string = "";
+  
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
     public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,
     public properties:Properties,public xtremandLogger:XtremandLogger,private superAdminService:SuperAdminService) { }
@@ -321,6 +329,10 @@ export class ModuleAccessComponent implements OnInit {
     }, error => {
       this.companyLoader = false;
       this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
+    }, ()=>{
+      if (!this.prm) {
+        this.getTotalContactsUploadedCountByCompanyId();
+      }
     });
 
   }
@@ -333,6 +345,8 @@ export class ModuleAccessComponent implements OnInit {
       }, _error => {
         this.moduleLoader = false;
         this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
+      },() => {
+        this.disableContactSubscriptionLimitField = !this.campaignAccess.contactSubscriptionLimitEnabled;
       });
     }
   }
@@ -588,5 +602,34 @@ allowVendorToChangePartnerPrimaryAdminUiSwitchEventReceiver(event:any){
   this.campaignAccess.allowVendorToChangePartnerPrimaryAdmin = event;
 }
 
+  /** XNFR-952  start **/
+ contactUploadQuotaEnabledUiSwitchEventReceiver(event: boolean) {
+    this.disableContactSubscriptionLimitField = !event;
+    this.campaignAccess.contactSubscriptionLimitEnabled = event;
+    const contactSubscriptionLimit = this.campaignAccess.contactSubscriptionLimit;
+    this.disableUpdateModulesButton = event && (!contactSubscriptionLimit || contactSubscriptionLimit == 0);
+    this.contactSubscriptionLimitErrorMessage = this.disableUpdateModulesButton ? this.properties.CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN  : "";
+  }
+  
+  contactUploadQuotaLimitChange(contactSubscriptionLimit: number): void {
+    this.campaignAccess.contactSubscriptionLimit = contactSubscriptionLimit;
+    const isQuotaInvalid = contactSubscriptionLimit == 0 || !contactSubscriptionLimit;
+    this.disableUpdateModulesButton = this.campaignAccess.contactSubscriptionLimitEnabled && isQuotaInvalid;
+    this.contactSubscriptionLimitErrorMessage = this.disableUpdateModulesButton ? this.properties.CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN  : "";
+  }
+
+  getTotalContactsUploadedCountByCompanyId() {
+    if (this.companyId) {
+      this.referenceService.loading(this.contactSubscriptionLoader, true);
+      this.dashboardService.loadTotalContactSubscriptionUsedByCompanyAndPartners(this.companyId).subscribe(result => {
+        this.totalContactSubscriptionUsed = result.data;
+        this.referenceService.loading(this.contactSubscriptionLoader, false);
+      }, error => {
+        this.referenceService.loading(this.contactSubscriptionLoader, false);
+        this.customResponse = new CustomResponse('ERROR', 'Something went wrong while laoding contact uploaded count.', true);
+      });
+    }
+  }
+  /** XNFR-952 end **/
 
 }

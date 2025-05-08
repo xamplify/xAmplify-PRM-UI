@@ -1539,14 +1539,20 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
           .map(this.extractData)
           .catch(this.handleError);
     }
-    isMyPreferances() {
-        var url = this.REST_URL + "/selected/fields/isMyPreferances/" + this.authenticationService.getUserId()+'/' +this.authenticationService.companyProfileName+ "?access_token=" + this.authenticationService.access_token;
+    isMyPreferances(opportunityType:string) {
+        var url = this.REST_URL + "/selected/fields/isMyPreferances/" + this.authenticationService.getUserId()+'/' +this.authenticationService.companyProfileName+'/'+ opportunityType +"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
           .map(this.extractData)
           .catch(this.handleError);
     }
     getFieldsByUserId(customFormName:string){
         var url = this.REST_URL + "/selected/fields/getByUserId/" + this.authenticationService.getUserId()+ '/' +this.authenticationService.companyProfileName +'/'+ customFormName+ "?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    getExportExcelHeaders(companyProfileName:string,userType:string, customFormName:string,opportunityType:string,isMyprofile:boolean){
+        var url = this.REST_URL + "/selected/fields/export-excel/" + companyProfileName +'/'+userType+'/'+this.authenticationService.getUserId()+'/'+ customFormName+'/'+ opportunityType+'/'+ isMyprofile +"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
           .map(this.extractData)
           .catch(this.handleError);
@@ -1580,6 +1586,12 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         customHtmlBlock.loggedInUserId = this.authenticationService.getUserId();
         let url = this.authenticationService.REST_URL + 'custom/html/update/selection?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callPutMethod(url, customHtmlBlock);
+    }
+
+    /** XNFR-952 **/
+    loadTotalContactSubscriptionUsedByCompanyAndPartners(companyId: number) {
+        let url = this.moduleUrl + 'loadTotalContactSubscriptionUsedByCompanyAndPartners/'+companyId+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
     }
     
 }

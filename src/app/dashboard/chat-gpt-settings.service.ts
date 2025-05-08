@@ -34,10 +34,10 @@ export class ChatGptSettingsService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto) {
+  onUpload(pdfFile: Blob, chatGptSettings: ChatGptIntegrationSettingsDto, assetName: string) {
     const url = `${this.chatGptSettingsUrl}/upload?access_token=${this.authenticationService.access_token}`;
     const formData = new FormData();
-    formData.append('file', pdfFile, 'file.pdf');
+    formData.append('file', pdfFile, `${assetName}.pdf`);
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
     formData.delete('chatGptSettingsDTO');
     formData.append('chatGptSettingsDTO', new Blob([JSON.stringify(chatGptSettings)],
@@ -53,6 +53,7 @@ export class ChatGptSettingsService {
   }
 
   generateAssistantTextByAssistant(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
     const url = this.chatGptSettingsUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptSettings);
   }
@@ -74,11 +75,12 @@ export class ChatGptSettingsService {
 
   getThreadIdByDamId(chatGptIntegrationSettingsDto: any) {
     let userId = this.authenticationService.getUserId();
-    let damIdRequestParameter = chatGptIntegrationSettingsDto.damId != undefined ? '&damId=' + chatGptIntegrationSettingsDto.damId : '';
+    let damIdRequestParameter = chatGptIntegrationSettingsDto.id != undefined ? '&id=' + chatGptIntegrationSettingsDto.id : '';
     let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
     let isPartnerDamAssetRequestParm = chatGptIntegrationSettingsDto.partnerDam != undefined ? '&partnerDam=' + chatGptIntegrationSettingsDto.partnerDam : '';
     let isVendorDamAssetRequestParm = chatGptIntegrationSettingsDto.vendorDam != undefined ? '&vendorDam=' + chatGptIntegrationSettingsDto.vendorDam : '';
-    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm;
+    let isFolderDamAssetRequestParm = chatGptIntegrationSettingsDto.folderDam != undefined ? '&folderDam=' + chatGptIntegrationSettingsDto.folderDam : '';
+    const url = this.chatGptSettingsUrl + '/getThreadId?access_token=' + this.authenticationService.access_token + damIdRequestParameter + userIdRequestParameter + isPartnerDamAssetRequestParm + isVendorDamAssetRequestParm + isFolderDamAssetRequestParm;
     return this.authenticationService.callGetMethod(url);
   }
 insertTemplateData(chatGptIntegrationSettingsDto: any) {
@@ -90,5 +92,88 @@ listDefaultTemplates(userId:any){
   const url = this.chatGptSettingsUrl+"/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token;
   return  this.authenticationService.callGetMethod(url);
 }
+
+  getAssetDetailsByCategoryId(categoryId: number, isPartnerFolderView: boolean) {
+    let urlPrefix = "";
+    if (isPartnerFolderView) {
+      urlPrefix = 'getAssetDetailsByCategoryIdForPartner';
+    } else if (!isPartnerFolderView) {
+      urlPrefix = 'getAssetDetailsByCategoryId';
+    }
+    const url = `${this.chatGptSettingsUrl}/${urlPrefix}/${categoryId}/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`;
+    return this.http.get(url);
+  }
+
+  onUploadFiles(pdfFiles: any[], chatGptSettings: ChatGptIntegrationSettingsDto) {
+    const url = `${this.chatGptSettingsUrl}/uploadFiles?access_token=${this.authenticationService.access_token}`;
+    const formData = new FormData();
+    pdfFiles.forEach((pdfFile, index) => {
+      formData.append(`fileDTOs[${index}].id`, pdfFile.assetId);
+      formData.append(`fileDTOs[${index}].file`, pdfFile.file, `${pdfFile.assetName}.pdf`);
+    });
+
+    chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
+    formData.append('chatGptSettingsDTO', new Blob(
+      [JSON.stringify(chatGptSettings)],
+      { type: 'application/json' }
+    ));
+
+    return this.authenticationService.callPostMethod(url, formData);
+  }
+
+  analyzeCallRecordings(chatGptSettingDTO: any) {
+    let userId = this.authenticationService.getUserId();
+    let threadIdRequestParameter = chatGptSettingDTO.threadId != undefined ? '&threadId=' + chatGptSettingDTO.threadId : '';
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let vectorStoreIdRequestParameter = chatGptSettingDTO.vectorStoreId != undefined ? '&vectorStoreId=' + chatGptSettingDTO.vectorStoreId : '';
+    let contactIdRequestParameter = chatGptSettingDTO.contactId != undefined ? '&contactId=' + chatGptSettingDTO.contactId : '';
+    let userListIdRequestParameter = chatGptSettingDTO.userListId != undefined ? '&userListId=' + chatGptSettingDTO.userListId : '';
+    let chatHistoryIdRequestParameter = chatGptSettingDTO.chatHistoryId != undefined ? '&chatHistoryId=' + chatGptSettingDTO.chatHistoryId : '';
+    let contactJourneyRequestParameter = '&contactJourney='+true;
+    const url = this.chatGptSettingsUrl + "/analyzeCallRecordings?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter + chatHistoryIdRequestParameter + contactJourneyRequestParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  getThreadIdAndVectorStoreIdByContactIdAndUserListId(contactId: any, userListId: any) {
+    let userId = this.authenticationService.getUserId();
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let contactIdRequestParameter = contactId != undefined ? '&contactId=' + contactId : '';
+    let userListIdRequestParameter = userListId != undefined ? '&userListId=' + userListId : '';
+    const url = this.chatGptSettingsUrl + "/getThreadIdAndVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  deleteChatHistory(chatHistoryId:any, threadId:any, vectorStoreId:any) {
+    let userId = this.authenticationService.getUserId();
+    let threadIdRequestParameter = threadId != undefined ? '&threadId=' + threadId : '';
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let vectorStoreIdRequestParameter = vectorStoreId != undefined ? '&vectorStoreId=' + vectorStoreId : '';
+    let chatHistoryIdRequestParameter = chatHistoryId != undefined ? '&chatHistoryId=' + chatHistoryId : '';
+    const url = this.chatGptSettingsUrl + "/deleteChatHistory?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + chatHistoryIdRequestParameter;
+    return this.authenticationService.callDeleteMethod(url);
+  }
+
+  getAssetDetailsByCategoryIds(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + 'getAssetDetailsByCategoryIds/' + userId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url, chatGptIntegrationSettingsDto);
+  }
+
+  fetchHistories(searchKey:any) {
+    let userId = this.authenticationService.getUserId();
+    let loggedInUserIdParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let searchKeyParameter = searchKey != undefined && searchKey.length > 0 ? '&searchKey=' + searchKey : '';
+    const url = this.chatGptSettingsUrl + "fetchChatHistories?access_token=" + this.authenticationService.access_token + loggedInUserIdParameter + searchKeyParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  updateHistoryTitle(title:any, chatHistoryId:any) {
+    let data = {
+      'chatHistoryId':chatHistoryId,
+      'title':title
+    }
+    const url = this.chatGptSettingsUrl + "updateHistoryTitle?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url,data);
+  }
 
 }

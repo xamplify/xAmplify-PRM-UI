@@ -44,13 +44,12 @@ export class EmailActivityComponent implements OnInit {
     public pagerService: PagerService, public sortOption:SortOption, public referenceService:ReferenceService,public utilService:UtilService) {}
 
   ngOnInit() {
+    this.isFirstChange = this.reloadTab;
     this.showAllEmailActivities();
   }
 
   ngOnChanges() {
-    if (this.isFirstChange) {
-      this.isFirstChange = false;
-    } else {
+    if (this.isFirstChange != this.reloadTab) {
       this.showAllEmailActivities();
     }
   }

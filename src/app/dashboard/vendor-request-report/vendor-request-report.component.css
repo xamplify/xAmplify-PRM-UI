@@ -11,6 +11,9 @@
   pointer-events: none;
   opacity: 0.7;
 }
+.disable-tile-pj{
+  cursor: not-allowed;
+}
 @media screen and (max-width:578px){
   .dashboard-stat {
     margin-bottom: 20px!important;
@@ -26,7 +29,7 @@
   background-color: #447dad;
 }
 span.filterActiveBg {
-  background-color: #10ad39;
+  background-color: #10ad39!important;
 }
 span.filterActiveBg i {
   color: #fff;

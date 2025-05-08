@@ -11,10 +11,10 @@
       </li>
     </ul>
   </div>
-  <app-content-module-status-analytics [moduleType]="'APPROVE'" (filterContentByType)="filterByStatus($event)"
+  <app-content-module-status-analytics *ngIf="!previewContent" [moduleType]="'APPROVE'" (filterContentByType)="filterByStatus($event)"
     [filterType]="selectedFilterType" [toDateFilter]="toDateFilter" [fromDateFilter]="fromDateFilter">
   </app-content-module-status-analytics>
-  <div class="row">
+  <div class="row" *ngIf="!previewContent">
     <div class="col-md-12">
       <div class="portlet light remove_cardBgcolor padding_0 clearfix mt0 light_bg_removal remove_space">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -106,7 +106,8 @@
     </div>
   </div>
   <!-- Add Comment Modal Popup-->
-
+  <app-preview-content *ngIf="previewContent" [previewPath]="assetPreviewProxyPath" [fileType]="previewFileType" [isImageFormat]= "isImageFormat" [isTextFormat]="isTextFormat"
+  (notifyClose)="closePreview()"></app-preview-content>
 </div>
 
 <!--Page Bar Option-->
@@ -221,6 +222,8 @@
         'bgc-blue': item.status === 'DRAFT'}" translate>
         {{getApprovalStatusText(item.status)}}
       </span>
+      <span *ngIf="item?.partnerSignatureRequired || item?.vendorSignatureRequired"
+        class="view-banner" style="margin-left: 3px;">Digital Sign Enabled</span>
     </td>
     <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdDateInUTC">
       </app-timestamp></td>
@@ -257,8 +260,8 @@
           <div class="clickicons"></div>
         </a>
         <!-- Preview Icon -->
-        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(item)">
-          <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="(item.contentPreviewType || item.imageFileType || item.type == 'Track' || item.type == 'PlayBook' || item.videoId) ? preview(item) : ''">
+          <i class="fa fa-eye IconCustomization" [ngClass]="item.contentPreviewType || item.imageFileType || item.type == 'Track' || item.type == 'PlayBook' || item.videoId ? '' : 'disabled gray'" aria-hidden="true"></i>
           <div class="clickicons"></div>
         </a>
         <ng-container

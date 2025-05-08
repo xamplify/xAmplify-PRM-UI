@@ -120,6 +120,9 @@ export class Pagination {
 	/*** XNFR-409 *****/
 
 	userType:string = "";
+	/*** XNFR-944 *****/
+	regionFilter: any = "";
+	
 	/*** XNFR-427 *****/
 	ignoreSelfLeadsOrDeals:boolean = true;
 	source:string;
@@ -187,5 +190,6 @@ export class Pagination {
 	partners:any[]=[];
 
 	partnerSignatureType:string ="";
-	
+	selectedRegionIds: any[] = [];
+	selectedStatusIds: any[] = [];
 }

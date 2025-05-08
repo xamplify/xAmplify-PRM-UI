@@ -275,7 +275,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	/****XNFR-278****/
 	mergeOptionClicked = false;
+	moveOptionClicked = false;
 	selectedUserIdsForMerging: any[];
+	selectedUserIdsForMoving: any[];
 	/****XNFR-278****/
 	@Input() showEdit: boolean;
 	/*****XNFR-342*****/
@@ -300,6 +302,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/**XNFR-848**/
 	isCompanyJourney: boolean = false;
 	companyJourneyId: any;
+
+	// XNFR-945
+	isEditMode: boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -1596,6 +1601,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.noOfContactsDropdown = false;
 						this.pagedItems = null;
 					}
+					if(this.moveOptionClicked && this.contacts.length === 0){
+						this.moveOptionClicked = false;
+						this.goBackToManageList();
+					}
 					// this.refService.loading( this.httpRequestLoader, false );
 					this.refService.loading(this.httpRequestLoader, false);
 					pagination.totalRecords = this.totalRecords;
@@ -2324,17 +2333,23 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	modelForSeg() {
-        this.resetResponse(); 
-        this.filterOptions=[];
-        this.addNewRow();
-        if(this.isPartner){
-            this.filterOptions = [...this.commonFilterOptions, ...this.partnerFilterOptions];
-        }else{
-        this.filterOptions=this.commonFilterOptions;
-        }
-        this.criteria.property = this.filterOptions[0].value;
-        this.criteria.operation = this.filterConditions[0].value;
-    }
+		this.resetResponse();
+		this.filterOptions = [];
+		this.addNewRow();
+		if (this.isPartner) {
+			this.filterOptions = [...this.commonFilterOptions, ...this.partnerFilterOptions];
+		} else {
+			this.filterOptions = this.commonFilterOptions;
+			if (this.isContactModule) {
+				const exists = this.filterOptions.some(option => option.value === 'Contact Status');
+				if (!exists) {
+					this.filterOptions.push({ name: 'Contact Status', value: 'Contact Status' });
+				}
+			}
+		}
+		this.criteria.property = this.filterOptions[0].value;
+		this.criteria.operation = this.filterConditions[0].value;
+	}
 
 	removeSegmentation() {
 		this.isSegmentation = false;
@@ -2503,6 +2518,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.selectedCompanyContactId = this.selectedCompanyId;
 		this.mapFlexiFieldsForEditContact(contactDetails);
 		this.contactService.isContactModalPopup = true;
+	    this.isEditMode = true;
 	}
 
 	updateContactModalClose() {
@@ -3342,9 +3358,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.selectedUserIdsForMerging = this.selectedContactListIds;
 	}
 
+	openRemovePopup(){
+		this.moveOptionClicked = true;
+        this.selectedUserIdsForMerging = this.selectedContactListIds;
+	}
+	
 	copyGroupUsersModalPopupEventReceiver() {
 		this.mergeOptionClicked = false;
 		this.selectedUserIdsForMerging = [];
+		if(this.moveOptionClicked){
+			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+			this.contactsCount(this.selectedContactListId);
+		}		
 	}
 
 	unsubscribeUser(selectedUserForUnsubscribed: any) {

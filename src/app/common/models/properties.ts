@@ -476,7 +476,7 @@ export class Properties {
 	dormantPartnertileDescriptionForPrm = "Partners who have not yet interacted with the Content, Created Leads or Deals.";
 	approvePartnerDescription = "Total Invited, Approved, Declined Partners.";
 	customLeftMenuText = "Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu."
-
+	totalPartnersDescription = "Total Onboarded Partners."
 	/** XNFR-745 **/
 	groupByAssetsTooltipMessage = "Turn on the 'Show Assets By Folders' toggle to view assets categorized within their respective folders while viewing the Playbook";
 	disableOrderAssetsTooltipMessage = "Enabling 'Show Assets By Folders' will lock asset ordering since assets are organized by folders";
@@ -576,6 +576,19 @@ export class Properties {
 	/** XNFR-929 **/
 	CAMPAIGN_MAX_RECIPIENT_COUNT_REACHED_STATUS_CODE: number = 2021;
 	CAMPAIGN_MAX_RECIPIENT_REACHED_MESSAGE = 'A maximum of {{maxRecipientCount}} recipients is allowed per campaign. Please modify your selection and try again.'
+
+	allPartnersDonutTooltipText = 'REGION WISE PARTNERS';
+
+	/** XNFR-952 **/
+	contactUploadManagementSettings = 'Contacts Usage Analytics';
+	CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN = "Please assign value to contact upload quota.";
+	LOAD_SELF_CONTACTS_COUNT_ERROR_MESSAGE: "Unable to load self contacts count. Please try again later.";
+	LOAD_PARTNER_CONTACTS_COUNT_ERROR_MESSAGE: "Unable to load contacts uploaded by partners. Please try again later.";
+	LOAD_SUBSCRIPTION_LIMIT_USED_ERROR_MESSAGE: "Unable to load subscription limit usage count. Please try again later.";
+	LOAD_SUBSCRIPTION_LIMIT_ERROR_MESSAGE: "Unable to load subscription limit count. Please try again later.";
+
+	/**XNFR-973**/
+	ACCESS_TO_ASK_OLIVER = "Enable this setting to restrict Ask Oliver's access to the asset."
 
 }
 

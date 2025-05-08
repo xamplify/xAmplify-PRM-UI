@@ -123,7 +123,7 @@ h5 {
   padding: 10px !important;
 }
 .custom-width-modal-popup {
-  width: 69% !important;
+  width: 85% !important; /*** XNFR-938 ****/
 }
 /* 20-06-2023 */
 button.hidden-xs {

@@ -26,6 +26,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { CallIntegrationService } from 'app/core/services/call-integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
+import { ChatGptSettingsService } from 'app/dashboard/chat-gpt-settings.service';
 declare var $: any, swal: any;
 
 @Component({
@@ -150,13 +151,16 @@ export class ContactDetailsComponent implements OnInit {
   companyUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   mobileNumber: any;
   enableDialButton: boolean = false;
+  showAskOliverModalPopup: boolean;
+  chatGptSettingDTO: any;
+  contact: any;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
     public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService, public router: Router, 
     public emailActivityService: EmailActivityService, public campaignService: CampaignService, public activityService:ActivityService,
     public calendarIntegratonService: CalendarIntegrationService, public companyService: CompanyService, public integrationService: IntegrationService,
-    public callIntegratonService: CallIntegrationService ) {
+    public callIntegratonService: CallIntegrationService, public chatgptSettingsService: ChatGptSettingsService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -194,6 +198,7 @@ export class ContactDetailsComponent implements OnInit {
       this.checkTermsAndConditionStatus();
       this.getLegalBasisOptions();
       this.getVendorRegisterDealValue();
+      this.fetchThreadIdAndVectorStoreId();
     }
     this.referenceService.goToTop();
     this.getActiveCalendarDetails();
@@ -434,14 +439,14 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   showEmailSubmitSuccessStatus(event) {
-    this.isReloadEmailActivityTab = event;
+    this.isReloadEmailActivityTab = !this.isReloadEmailActivityTab;
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('SUCCESS', this.properties.emailSendSuccessResponseMessage, true);
     this.closeEmailModalPopup();
   }
 
   showEmailFailedErrorStatus(event) {
-    this.isReloadEmailActivityTab = event;
+    this.isReloadEmailActivityTab = !this.isReloadEmailActivityTab;
     this.isReloadActivityTab = !this.isReloadActivityTab;
     this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
     this.closeEmailModalPopup();
@@ -1002,6 +1007,41 @@ export class ContactDetailsComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  askOliver() {
+    this.contact = this.selectedContact;
+    this.contact.contactName = this.contactName;
+    this.contact.imageSourcePath = this.imageSourcePath;
+    this.showAskOliverModalPopup = true;
+  }
+
+  closeAskAI(event) {
+    this.chatGptSettingDTO = event;
+    this.showAskOliverModalPopup = false;
+  }
+
+  openOliver() {
+    this.contact = this.selectedContact;
+    this.contact.contactName = this.contactName;
+    this.contact.imageSourcePath = this.imageSourcePath;
+    this.showAskOliverModalPopup = true;
+  }
+
+  fetchThreadIdAndVectorStoreId() {
+    this.ngxLoading = true;
+    this.chatgptSettingsService.getThreadIdAndVectorStoreIdByContactIdAndUserListId(this.contactId, this.selectedContactListId).subscribe(
+      response => {
+        if (response.statusCode == XAMPLIFY_CONSTANTS.HTTP_OK) {
+          this.chatGptSettingDTO = response.data;
+          this.chatGptSettingDTO.contactId = this.contactId;
+          this.chatGptSettingDTO.userListId = this.selectedContactListId;
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
   }
   
 }

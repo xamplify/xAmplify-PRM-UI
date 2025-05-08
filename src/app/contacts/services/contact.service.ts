@@ -34,6 +34,7 @@ export class ContactService {
     salesforceContact: SalesforceContact;
     salesforceListViewContact: SalesforceListViewContact;
     isContactModalPopup = false;
+    isEditMode  = false;
     socialProviderName = "";
     vanitySocialProviderName: string;
     pagination: Pagination;
@@ -1003,6 +1004,13 @@ export class ContactService {
     /**XNFR-867**/
     fetchUsersForCompanyJourney(userListId:any, isForCallIntegration:boolean) {
         let url = this.contactsUrl + "fetchUsersByUserListId/" + userListId + "/" + isForCallIntegration + "?access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /*** XNFR-967 ***/
+    findContactStatusStages() {
+        let loggedInUserId = this.authenticationService.getUserId();
+        let url = this.authenticationService.REST_URL + "flexi-fields" + '/contact-status-stages' + '/userId/' + loggedInUserId + "?access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

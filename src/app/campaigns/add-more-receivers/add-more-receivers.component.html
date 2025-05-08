@@ -56,6 +56,17 @@
                                         </td>
                                      </tr>
                                   </table>
+
+                                 <!-- XNFR-929 -->
+                                 <div *ngIf="maxRecipientCountReached && selectedContactListIds?.length>0" class="alert alert-success text-center mbgrid"
+                                    style="margin-bottom: 10px;">
+                                    <strong>Selected Rows: {{selectedContactListIds.length}}, Existing Recipients Count: {{totalRecipients}}, Recipients
+                                       Count: {{validUsersCount}}</strong>
+                                 </div>
+                                 <div class="alert alert-danger text-center mbgrid" *ngIf="maxRecipientCountReached && selectedContactListIds?.length>0">
+                                    <strong> Campaign cannot be launched as the recipient count exceeds the {{maxRecipientCount}} limit.</strong>
+                                 </div>
+                                 
                                   <div class="table-responsive text-center">
                                      <table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
                                         <thead>
@@ -71,6 +82,7 @@
                                               <th style="text-align: center;" *ngIf="showContactType">Type</th>
                                               <th style="text-align: center;" >List Type</th>
                                               <th style="text-align: center;">Uploaded Date</th>
+                                              <th style="text-align: center;">Count</th>
                                               <th style="text-align: center;">Preview </th>
                                            </tr>
                                         </thead>
@@ -122,6 +134,7 @@
                                               <td class="text-center sorting_1">
                                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                               </td>
+                                              <td class="text-center">{{contacts.countOfContactsLists}}</td>
                                               <td class="text-center">
                                                  <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
                                                  <i class="fa fa-eye IconCustomization campaignViewIcon" aria-hidden="true" title="" data-original-title="Preview"></i>
@@ -155,7 +168,8 @@
              </div>
           </div>
           <div class="modal-footer" *ngIf="!sendingRequest && !contactListLoader.isLoading">
-             <a class="btn btn-primary" (click)="send()" *ngIf="!sendSuccess">Send</a>
+             <a class="btn btn-primary" *ngIf="!sendSuccess" (click)="maxRecipientCountReached ? '' : send()"
+                [ngClass]="maxRecipientCountReached ? 'disabled gray' : ''">Send</a>
              <a (click)="closeMoreInvitesPopup()" class="btn Btn-Gray" style="float: right">Close</a>
           </div>
        </div>

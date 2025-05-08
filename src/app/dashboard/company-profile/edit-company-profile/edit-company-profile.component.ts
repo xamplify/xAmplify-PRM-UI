@@ -37,6 +37,7 @@ import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { unescape } from 'querystring';
 import { HttpClient } from '@angular/common/http';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 
 
 declare var $,swal: any;
@@ -226,6 +227,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     autoSaveLoader: boolean = false;
 
+
+    /** XNFR-952  **/
+    disableContactSubscriptionLimitField: boolean = false;
+    contactSubscriptionLimitErrorMessage: string = "";
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -2166,4 +2171,36 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.campaignAccess.allowVendorToChangePartnerPrimaryAdmin = event;
     }
   
+    contactUploadQuotaEnabledUiSwitchEventReceiver(event: boolean) {
+        this.disableContactSubscriptionLimitField = !event;
+        this.campaignAccess.contactSubscriptionLimitEnabled = event;
+        const contactSubscriptionLimit = this.campaignAccess.contactSubscriptionLimit;
+        if (event && (!contactSubscriptionLimit || contactSubscriptionLimit == 0)) {
+            this.disableModuleAccessButton();
+            this.contactSubscriptionLimitErrorMessage = this.properties.CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN;
+        } else {
+            this.enableModuleAccessButton();
+            this.contactSubscriptionLimitErrorMessage = "";
+        }
+    }
+
+    contactUploadQuotaLimitChange(contactSubscriptionLimit: number) {
+        this.campaignAccess.contactSubscriptionLimit = contactSubscriptionLimit;
+        const isQuotaInvalid = contactSubscriptionLimit == 0 || !contactSubscriptionLimit;
+        if (this.campaignAccess.contactSubscriptionLimitEnabled && isQuotaInvalid) {
+            this.disableModuleAccessButton();
+            this.contactSubscriptionLimitErrorMessage = this.properties.CONTACT_SUBSCRIPTION_ERROR_TOOLTIP_FOR_SUPER_ADMIN;
+        } else {
+            this.enableModuleAccessButton();
+            this.contactSubscriptionLimitErrorMessage = "";
+        }
+    }
+
+    enableModuleAccessButton() {
+        $('#module-access-button').prop('disabled', false);
+    }
+
+    disableModuleAccessButton() {
+        $('#module-access-button').prop('disabled', true);
+    }
 }
