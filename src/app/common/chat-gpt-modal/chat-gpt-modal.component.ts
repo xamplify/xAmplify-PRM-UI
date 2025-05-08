@@ -147,6 +147,10 @@ export class ChatGptModalComponent implements OnInit {
         // this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         // this.messages.push({ role: 'assistant', content: this.properties.serverErrorMessage });
         // this.inputText = '';
+      }, () => {
+        if (this.activeTab == 'history') {
+          this.fetchHistories();
+        }
       });
   }
 
@@ -193,7 +197,7 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   showOliverIcon() {
-    if (this.threadId != undefined && this.threadId != 0 && this.vectorStoreId != undefined && this.vectorStoreId != 0 && this.chatHistoryId != undefined && this.chatHistoryId != 0 && this.isSaveHistoryPopUpVisible) {
+    if (this.threadId != undefined && this.threadId != 0 && this.vectorStoreId != undefined && this.vectorStoreId != 0 && this.chatHistoryId != undefined && this.chatHistoryId != 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
       this.showSweetAlert(this.activeTab,this.threadId, this.vectorStoreId, this.chatHistoryId, true);
     } else {
       this.showIcon = true;
@@ -210,7 +214,7 @@ export class ChatGptModalComponent implements OnInit {
   setActiveTab(tab: string) {
     this.isValidInputText = false;
     this.inputText = "";
-    if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible) {
+    if (this.chatHistoryId != undefined && this.chatHistoryId > 0 && this.isSaveHistoryPopUpVisible && this.activeTab != 'paraphraser') {
       this.showSweetAlert(tab,this.threadId, this.vectorStoreId, this.chatHistoryId,false);
     } else {
       this.activeTab = tab;
@@ -274,6 +278,10 @@ export class ChatGptModalComponent implements OnInit {
         swal.close();
         if (isClosingModelPopup) {
           this.showIcon = true;
+        }
+      }, () => {
+        if (this.activeTab == 'history') {
+          this.fetchHistories();
         }
       }
     )
@@ -742,16 +750,29 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   deleteHistory(history:any,index:any) {
-    this.referenceService.showSweetAlertProcessingLoader("Loading...");
-    this.chatGptSettingsService.deleteChatHistory(history.chatHistoryId,history.threadId,history.vectorStoreId).subscribe(
-      response => {
-        this.index = 0;
-        this.chatHistories.splice(index, 1);
-        swal.close();
-      }, error => {
-        swal.close();
-      }
-    )
+    let self = this;
+    swal({
+      title: 'Do you want to delete the History?',
+      text: 'Once deleted, the history cannot be recovered.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(function () {
+      self.referenceService.showSweetAlertProcessingLoader("Loading...");
+      self.chatGptSettingsService.deleteChatHistory(history.chatHistoryId,history.threadId,history.vectorStoreId).subscribe(
+        response => {
+          self.index = 0;
+          self.chatHistories.splice(index, 1);
+          swal.close();
+        }, error => {
+          swal.close();
+        }
+      )
+    }, function (dismiss: any) {
+    })
   }
 
   searchHistoryOnKeyPress(keyCode:any) {
