@@ -1285,6 +1285,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.damUploadPostDto.description = file.name;
 		this.damUploadPostDto.draft = true;
 		this.damUploadPostDto.cloudContent = false;
+		this.damUploadPostDto.slug = $.trim(assetName).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
+
 	}
 
 	viewAssets(event: any) {
