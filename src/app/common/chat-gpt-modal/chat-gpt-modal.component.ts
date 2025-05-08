@@ -178,7 +178,11 @@ export class ChatGptModalComponent implements OnInit {
     this.customResponse = new CustomResponse();
     $('#copied-chat-gpt-text-message').hide();
     this.showIcon = false;
-    this.activeTab = 'askpdf';
+    if (this.isWelcomePageUrl) {
+      this.activeTab = 'new-chat';
+    } else {
+      this.activeTab = 'askpdf';
+    }
     this.selectedValueForWork = this.sortOption.wordOptionsForOliver[0].value;
     this.sortBy(this.selectedValueForWork);
     this.messages = [];

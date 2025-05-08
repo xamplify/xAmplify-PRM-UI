@@ -1122,8 +1122,8 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   margin: 0 5px 10px 5px;
 }
 
-.modal-content.oliver-modal-content {
-  height: auto;
+.modal-content.oliver-content {
+  height: auto !important;
 }
 
 .top_15 {
