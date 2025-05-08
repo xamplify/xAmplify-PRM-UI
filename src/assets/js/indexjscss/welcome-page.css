@@ -1308,5 +1308,5 @@ top: opx;
 }
 
 .swal2-container{
-  z-index: 7000000;
+  z-index: 7000000 !important;
 }
