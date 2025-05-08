@@ -62,6 +62,7 @@ export class AiChatManagerComponent implements OnInit {
   isBeeTemplateComponentCalled: boolean;
   beeContainerInput: { module: string; jsonBody: string; };
   selectedTemplateList: any[] = [];
+  isPartnerView: boolean;
   constructor(public authenticationService: AuthenticationService, private chatGptSettingsService: ChatGptSettingsService, private referenceService: ReferenceService,private http: HttpClient,private route: ActivatedRoute,
     private router:Router, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,private emailTemplateService: EmailTemplateService) { }
 
@@ -69,6 +70,7 @@ export class AiChatManagerComponent implements OnInit {
     this.showDefaultTemplates();
     this.referenceService.asset = '';
     this.assetId = parseInt(this.route.snapshot.params['assetId']);
+    this.isPartnerView = this.router.url.indexOf("/sharedp/view/") > -1 || this.router.url.indexOf("/shared/view/") > -1;
     if (this.assetId > 0) {
       this.isOliverAiFromdam = false;
       this.chatGptIntegrationSettingsDto.partnerDam = true;
