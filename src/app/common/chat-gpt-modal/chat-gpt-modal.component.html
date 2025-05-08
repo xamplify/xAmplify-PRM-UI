@@ -297,7 +297,7 @@
                             </div>
                           </div>
                         </div>
-                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input mt10">
+                        <div *ngIf="isfileProcessed && !assetLoader" class="oliver_input custom_oliver_input mt10">
                           <input type="text" (keypress)="onKeyPressForAsekOliver($event.keyCode)" [(ngModel)]="inputText"
                             [ngModelOptions]="{standalone: true}" (input)="validateInputText()" placeholder="Ask Me!">
                           <div class="btn-wrapper">

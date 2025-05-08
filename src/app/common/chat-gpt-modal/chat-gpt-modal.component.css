@@ -1057,11 +1057,11 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   color: #005f99;
 }
 .history-entry .actions i.fa-trash {
-  color: #c9302c;
+  color: #c9302c!important;
 }
 .history-entry .actions i.fa-trash:hover {
-  background-color: #fce3e3;
-  color: #c9302c;
+  background-color: #fce3e3!important;
+  color: #c9302c!important;
 }
 .history-entry .edit-input {
   width: calc(100% - 60px);

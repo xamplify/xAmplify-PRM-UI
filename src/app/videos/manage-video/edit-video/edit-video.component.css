@@ -305,6 +305,7 @@ textarea {
 
 .inline-box{
   display: inline-flex;
+  width: 100%;
 }
 .link button{
 float: left;
@@ -318,7 +319,6 @@ cursor: pointer;
 border-right: 1px solid #eee;
 }
 .select-box{
-width: 60%;
 height: 36px;
 padding: 6px 12px;
 border-radius: 0px !important;
@@ -326,6 +326,6 @@ border-radius: 0px !important;
 .input-group-addon {
 white-space: nowrap;
 vertical-align: middle;
-width: auto;
+width:56%;
 padding: 10px 5px 10px 5px;
 }
