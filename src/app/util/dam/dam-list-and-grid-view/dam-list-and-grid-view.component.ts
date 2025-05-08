@@ -155,6 +155,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		if(this.referenceService.isOliverEnabled){
+			this.referenceService.isOliverEnabled = false;
+			this.AskOliver(this.referenceService.asset)
+		}
 		this.isEditVideo = this.router.url.indexOf('/editVideo') > -1;
 		this.isPreviewVideo = this.router.url.indexOf('/previewVideo') > -1;
 		if (!this.isEditVideo && !this.isPreviewVideo) {

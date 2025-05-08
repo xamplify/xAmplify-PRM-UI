@@ -85,4 +85,10 @@ insertTemplateData(chatGptIntegrationSettingsDto: any) {
     const url = this.chatGptSettingsUrl + '/insertTemplateData?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptIntegrationSettingsDto);
 }
+
+listDefaultTemplates(userId:any){
+  const url = this.chatGptSettingsUrl+"/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token;
+  return  this.authenticationService.callGetMethod(url);
+}
+
 }

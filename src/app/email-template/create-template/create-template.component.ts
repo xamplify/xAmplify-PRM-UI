@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,HostListener, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy,HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -66,7 +66,9 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     isSaveAsButtonDisabled = true;
     invalidTemplateName = false;
     properties:Properties = new Properties();
-    @Input() isFromOliver: boolean = false;
+    emailTemplateTypeLabels = ['Email', 'Regular Co-Branding', 'Event', 'Event Co-Branding'];
+    isOliverCreateUrl: boolean;
+    selectedEmailType: any = this.emailTemplateTypeLabels[0];
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -336,6 +338,9 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
         emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
         emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
+        if(this.isOliverCreateUrl){
+            this.selecttemplatetype(emailTemplate);
+        }
         let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate
             || emailTemplate.beeEventCoBrandingTemplate || emailTemplate.surveyCoBrandingTemplate;
         if (emailTemplateService.emailTemplate.subject.indexOf('basic') > -1 && !isCoBrandingTemplate) {
@@ -358,12 +363,10 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             data => {
                 if (data.access) {
                     if (data.statusCode == 702) { 
-                        let url = this.refService.getCurrentRouteUrl();
-                        let isOliverCreateUrl = url.indexOf("create/Oliver") > -1;  
                         if(saveAsOrSaveAndRedirectClicked){
                             this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
                             this.closeModalPopup();
-                            if (isOliverCreateUrl) {
+                            if (this.isOliverCreateUrl) {
                                 this.router.navigate(["/home/dam/manage"]);
                                 this.refService.isOliverEnabled = true;
                             } else {
@@ -378,7 +381,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                                     this.emailTemplateService.emailTemplate = data;
                                     this.emailTemplateService.isTemplateSaved = true;
                                     this.skipConfirmAlert = true;
-                                    if (isOliverCreateUrl) {
+                                    if (this.isOliverCreateUrl) {
                                         // this.router.navigate(["/home/dam/manage"]);
                                         this.refService.isOliverEnabled = true;
                                     } else {
@@ -483,7 +486,10 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         }
     }
 
-    ngOnInit() {  }
+    ngOnInit() {
+        let url = this.refService.getCurrentRouteUrl();
+         this.isOliverCreateUrl = url.indexOf("create/Oliver") > -1;  
+      }
     ngOnDestroy() {
         this.emailTemplateService.isNewTemplate = false;
     }
@@ -542,5 +548,21 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     closeModalPopup(){
         this.saveLoader = false;
         this.refService.closeModalPopup("save-template-popup");
+    }
+    selecttemplatetype(emailTemplate: EmailTemplate){
+        emailTemplate.beeRegularTemplate = false;
+        if(this.selectedEmailType == 'Email'){
+            emailTemplate.regularTemplate = true;
+        } else if(this.selectedEmailType == 'Regular Co-Branding'){
+            emailTemplate.regularCoBrandingTemplate = true;
+        } else if(this.selectedEmailType == 'Event'){
+            emailTemplate.beeEventTemplate = true;
+        } else if(this.selectedEmailType == 'Event Co-Branding'){
+            emailTemplate.beeEventCoBrandingTemplate = true;
+        } else if(this.selectedEmailType == 'Survey'){
+            emailTemplate.surveyTemplate = true;
+        } else if(this.selectedEmailType == 'Survey Co-Branding'){
+            emailTemplate.surveyCoBrandingTemplate = true;
+        }
     }
 }
