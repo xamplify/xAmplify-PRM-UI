@@ -5,15 +5,14 @@
       <div class="maualSPFCardbg">
         <div class="tenpixelspaddig">
           <label class="bold-font"><strong>
-              You have the authority to set contact limits for your partners and view contact usage analytics.
+            {{isMarketing ? 'You have access to view your contact usage analytics.' : ' You have the authority to set contact limits for your partners and view contact usage analytics.'}}              
             </strong></label>
-
           <div class="contact-analytics-counts-info" *ngIf="showSelfContactsCount" >Contacts Added By You:
             <span *ngIf="!selfContactsCountLoader?.isLoading"><strong>{{selfContactCount}}</strong></span>
             <img *ngIf="selfContactsCountLoader?.isLoading" style="height: 25px; padding-left: 0px;"
               src="../../../assets/images/Spinner.gif" alt="">
           </div>
-          <div class="contact-analytics-counts-info">Contacts Added By Partners:
+          <div *ngIf="!isMarketing" class="contact-analytics-counts-info">Contacts Added By Partners:
             <span
               *ngIf="!totalPartnerContactUploadCountLoader?.isLoading"><strong>{{contactsUploadedCountByAllPartners}}</strong></span>
             <img *ngIf="totalPartnerContactUploadCountLoader?.isLoading" style="height: 25px; padding-left: 0px;"

@@ -74,8 +74,8 @@ export class PartnerContactUploadManagementSettingsComponent implements OnInit {
   ngOnInit() {
     if (!this.isMarketing) {
       this.listAllPartnersForContactUploadManagementSettings(this.pagination);
+      this.loadContactsUploadedCountByAllPartners();
     }
-    this.loadContactsUploadedCountByAllPartners();
     this.loadContactUploadSubscriptionLimitForCompany();
     this.getTotalContactSubscriptionLimitUsedByCompany();
     if (this.isMarketing || this.authenticationService.isOrgAdmin()) {
