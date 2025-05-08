@@ -1229,10 +1229,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
             this.restrictRecipientCount = this.isOrgAdminCompany ? true : this.restrictRecipientCount;
+            if (this.restrictRecipientCount) {
+                this.getMaximumContactCountForCampaignLaunch();
+            }
         }
         this.updateLaunchTabClass();
 
     }
+    
     private updateLaunchTabClass() {
         this.isValidVideoSelected();
         if (this.isEmailTemplateOrPageSelected && this.isContactList && this.isValidCampaignDetailsTab && this.isVideoSelected) {
@@ -2724,6 +2728,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         },
         (error: string) => {
             this.ngxLoading = false;
+        }, ()=>{
+            this.checkRecipientCountLimitReached();
         })
     }
 
