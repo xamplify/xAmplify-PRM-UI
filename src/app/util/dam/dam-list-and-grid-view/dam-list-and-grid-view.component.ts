@@ -657,6 +657,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (analytics) {
 			this.viewAnalytics(this.asset);
 		} else if(askOliverFromGridView){
+			this.referenceService.OliverViewType = this.viewType;
 			this.AskOliver(this.asset);
 
 		}else if(askAi){

@@ -180,6 +180,8 @@ export class ReferenceService {
   aircallPhone:any;
   isOliverEnabled = false;
   asset:any;
+  OliverViewType = "";
+  OliverCategoryId = 0;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

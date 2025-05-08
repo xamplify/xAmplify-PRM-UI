@@ -367,8 +367,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
                             this.closeModalPopup();
                             if (this.isOliverCreateUrl) {
-                                this.router.navigate(["/home/dam/manage"]);
-                                this.refService.isOliverEnabled = true;
+                                this.redirectToOliver();
                             } else {
                                 this.navigateToManageSection();
                             }
@@ -506,14 +505,29 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         let isCreateUrl = url.indexOf("create")>-1;
         let isOliverCreateUrl = url.indexOf("create/Oliver")>-1;
         if(isOliverCreateUrl){
-            this.router.navigate(["/home/dam/manage"]);
-            this.refService.isOliverEnabled = true;
+            this.redirectToOliver();
         }else{
             if(isCreateUrl){
                 this.router.navigate(["/home/emailtemplates/select"]);
             }else{
                 this.navigateToManageSection();
             }
+        }
+    }
+
+    private redirectToOliver() {
+        if (this.refService.OliverCategoryId > 0) {
+            let categoryId = this.refService.OliverCategoryId;
+            let url = "/home/dam/askAi/view/fg/" + categoryId;
+            this.refService.OliverCategoryId = 0;
+            this.refService.goToRouter(url);
+        } else {
+            if (this.refService.OliverViewType == 'g') {
+                this.router.navigate(["/home/dam/manage/g"]);
+            } else {
+                this.router.navigate(["/home/dam/manage"]);
+            }
+            this.refService.isOliverEnabled = true;
         }
     }
 

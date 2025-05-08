@@ -275,6 +275,7 @@ export class AiChatManagerComponent implements OnInit {
         this.referenceService.goToRouter('/home/dam/manage/fg');
       }
     }
+    this.referenceService.OliverViewType = '';
   }
 
   copyAiText(element: HTMLElement, index: number) {
