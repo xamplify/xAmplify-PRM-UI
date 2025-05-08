@@ -981,6 +981,11 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
 }
 
 /* History css */
+.oliver_history_content{
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
 .history-header {
   font-size: 22px;
   font-weight: bold;
@@ -1072,6 +1077,7 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   align-items: end;
   border-radius: 8px;
   margin-bottom: 10px;
+  padding-right: 5px;
 }
 
 /* Search styles */
@@ -1096,9 +1102,9 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   cursor: pointer;
 }
 .oliver-history-scroll {
-  height: 70vh;
   overflow-y: auto;
-  padding-right: 10px;
+  flex-grow: 1;
+  padding-right: 5px;
 }
 
 .oliver-history-scroll::-webkit-scrollbar {

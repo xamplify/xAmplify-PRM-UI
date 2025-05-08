@@ -1004,6 +1004,11 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   font-size: 14px!important;
 }
 /* History Entry */
+.oliver_history_content{
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
 .history-entry {
   background-color: #ffffff;
   border: 1px solid #cce0f5;
@@ -1062,11 +1067,11 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   color: #005f99;
 }
 .history-entry .actions i.fa-trash {
-  color: #c9302c;
+  color: #c9302c!important;
 }
 .history-entry .actions i.fa-trash:hover {
-  background-color: #fce3e3;
-  color: #c9302c;
+  background-color: #fce3e3!important;
+  color: #c9302c!important;
 }
 .history-entry .edit-input {
   width: calc(100% - 60px);
@@ -1077,6 +1082,7 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   align-items: end;
   border-radius: 8px;
   margin-bottom: 10px;
+  padding-right: 5px;
 }
 
 /* Search styles */
@@ -1101,9 +1107,9 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   cursor: pointer;
 }
 .oliver-history-scroll {
-  height: 70vh;
   overflow-y: auto;
-  padding-right: 10px;
+  flex-grow: 1;
+  padding-right: 5px;
 }
 
 .oliver-history-scroll::-webkit-scrollbar {
@@ -1115,7 +1121,8 @@ ul.nav.nav-pills.nav-stacked.oliver_tab {
   margin: 25px 10px;
 }
 
-/* Oliver history button */ .oliver-history-btn {
+/* Oliver history button */ 
+.oliver-history-btn {
   display: flex !important;
   align-items: center;
   justify-content: space-between;

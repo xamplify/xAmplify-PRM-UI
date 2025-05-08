@@ -401,18 +401,18 @@
                     </svg>
                     <span>History</span>
                   </div>
+                   <!--  -->
+                   <div class="history-header-row">
+                    <!-- <h5 class="history-title mb0">Today</h5> -->
+                    <div class="search-wrapper">
+                      <input type="text" class="form-control input-sm search-input" [(ngModel)]="searchKey" (keypress)="searchHistoryOnKeyPress($event.keyCode)" placeholder="Search">
+                      <i class="fa fa-search search-icon" (click)="fetchHistories()"></i>
+                    </div>
+                  </div>
+                  <!--  -->
                   <!-- History Sections -->
                   <div class="oliver-history-scroll">
                   <div class="history-section">
-                    <!--  -->
-                    <div class="history-header-row">
-                      <!-- <h5 class="history-title mb0">Today</h5> -->
-                      <div class="search-wrapper">
-                        <input type="text" class="form-control input-sm search-input" [(ngModel)]="searchKey" (keypress)="searchHistoryOnKeyPress($event.keyCode)" placeholder="Search">
-                        <i class="fa fa-search search-icon" (click)="fetchHistories()"></i>
-                      </div>
-                    </div>
-                    <!--  -->
                     <div *ngFor="let history of chatHistories;let i =index">
                       <div class="history-entry">
                         <div class="text-date" *ngIf="!history.showInputField" (click)="showHistory(history)">
