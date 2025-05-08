@@ -14,14 +14,14 @@
 	</a>
 	<!--XNFR-381-->
 	<a class="Iconhover custom-grid-icon"
-		*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT'" data-toggle="tooltip" data-placement="top"
+		*ngIf="(asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT') && !FromOliverPopUp" data-toggle="tooltip" data-placement="top"
 		title="Design" (click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="asset?.beeTemplate && isPartnerView"
 		data-toggle="tooltip" data-placement="top" title="Edit" (click)="addOrEdit(asset.id)"> <i
 			class="fa fa-edit" aria-hidden="true"></i>
 		<div class="clickicons"></div>
-	</a> <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView && asset?.edit"
+	</a> <a class="Iconhover custom-grid-icon" *ngIf="(!isPartnerView && asset?.edit) && !FromOliverPopUp"
 		data-toggle="tooltip" data-placement="top" title="Edit" (click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset)"
 		[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"> <i
 			class="fa fa-edit" aria-hidden="true"></i>
@@ -34,7 +34,7 @@
 	<a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
 		title="Download" (click)="openDownloadPopup(asset)"> <i class="fa fa-download" aria-hidden="true"></i>
 		<div class="clickicons"></div>
-	</a> <a class="Iconhover custom-grid-icon" *ngIf="!authenticationService.module.isMarketingCompany"
+	</a> <a class="Iconhover custom-grid-icon" *ngIf="(!authenticationService.module.isMarketingCompany) && !FromOliverPopUp"
 		data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="(asset.approvalStatus !== 'DRAFT' && !asset?.approvalReferenceId) ? viewAnalytics(asset) : ''"
 		[ngClass]="(asset?.approvalStatus !== 'DRAFT' && !asset?.approvalReferenceId) ? '' : 'disabled gray'"> <i
 			class="fa fa-line-chart" aria-hidden="true"></i>
@@ -47,25 +47,25 @@
 		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
 		<div class="clickicons"></div>
 	</a>
-	<a class="Iconhover custom-grid-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView"
+	<a class="Iconhover custom-grid-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp"
 		(click)="asset.approvalStatus !== 'DRAFT' ? showCommentsAndHistoryModalPopup(asset) : ''" 
 		[ngClass]="(asset?.approvalStatus !== 'DRAFT') ? '' : 'disabled gray'" data-toggle="tooltip" data-placement="top"
 		title="{{(!authenticationService?.module?.isAdmin || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 		<i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
 		<div class="clickicons"></div>
 
-	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver"
+	</a> <a class="Iconhover custom-grid-icon oliverhover" *ngIf="(!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp"
 		data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
 		<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="m0 mb5 oliverImgIcon">
 		<div class="clickicons"></div>
 	</a>
-	 <a *ngIf="!isPartnerView && asset?.delete" class="delete custom-icon" data-toggle="tooltip"
+	 <a *ngIf="(!isPartnerView && asset?.delete) && !FromOliverPopUp" class="delete custom-icon" data-toggle="tooltip"
 		data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' : confirmDelete(asset)" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"> <i class="fa fa-trash-o"
 			aria-hidden="true"></i>
 		<div class="del-icon"></div>
 	</a>
 	<ng-container
-		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
+		*ngIf="(!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)) && !FromOliverPopUp">
 		<a class="Iconhover custom-grid-icon"
 			*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 			(click)="(asset?.approvalStatus == 'APPROVED') ? campaignRouter(asset) : ''" data-toggle="tooltip" data-placement="top" 
@@ -75,12 +75,12 @@
 			<div class="clickicons"></div>
 		</a>
 		<a class="disabled Iconhover custom-grid-icon"
-			*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
+			*ngIf="(asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos) && !FromOliverPopUp"
 			data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft"> <i
 				class="fa fa-bullhorn" aria-hidden="true"></i>
 			<div class="clickicons"></div>
 		</a> <a class="disabled Iconhover custom-grid-icon"
-			*ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo"
+			*ngIf="(!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo) && !FromOliverPopUp"
 			data-toggle="tooltip" data-placement="top" title="Unavailable for processing"> <i class="fa fa-bullhorn"
 				aria-hidden="true"></i>
 			<div class="clickicons"></div>

@@ -316,3 +316,20 @@ h4.folder-name.align-titletext {
 .gridIconCustomization a.Iconhover.oliverhover:hover {
     background: none !important;
 }
+
+span.select-check-box {
+    position: absolute;
+    background: #fff;
+    padding-right: 3px;
+    padding-left: 3px;
+    border-radius: 3px;
+    left: 0;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 1px;
+    height: 23px;
+}
+
+.folder_check_box {
+    margin-top: 35px !important;
+}

@@ -1,6 +1,5 @@
-<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)"
-	*ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded 
-		&& !isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled">
+<app-content-module-status-analytics [moduleType]="'DAM'" (filterContentByType)="filterContentByType($event)" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView && !folderListViewExpanded 
+		&& !isEditVideo && !isPreviewVideo && !previewContent && !isOliverCalled) && !FromOliverPopUp">
 </app-content-module-status-analytics>
 
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
@@ -32,6 +31,7 @@
 								*ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
 								<thead>
 									<tr>
+										<th *ngIf="FromOliverPopUp && !isFromOliverFolderView"></th>
 										<th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
 											<span class="ui-column-resizer gray"
 												(mousedown)="referenceService?.onMouseDown($event,'manage-assets-table',2)"></span>
@@ -51,6 +51,8 @@
 								<tbody>
 									<ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
 										<tr>
+											<td *ngIf="FromOliverPopUp && !isFromOliverFolderView" class="text-center"><input class="chk checkBox_shadow" type="checkbox"
+													[checked]="isSelected(asset)" (change)="onCheckboxChange(asset, $event)" [disabled]="asset.disableAccessForOliver"></td>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center" style="width: 10%;">
 												<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
 													<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
@@ -102,7 +104,7 @@
 													class="view-banner published" style="margin-right: 5px;">Published
 												</span>
 												<!-- XNFR-781 -->
-												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner"
+												<span *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" class="view-banner mr5"
 													[ngClass]="{
 														'bgc-green': asset.approvalStatus === approvalStatus.APPROVED,
 														'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
@@ -112,7 +114,7 @@
 												</span>
 												<span
 													*ngIf="!authenticationService?.approvalRequiredForAssets && !isPartnerView && (asset.approvalStatus == approvalStatus.REJECTED || asset.approvalStatus == approvalStatus.DRAFT)"
-													class="view-banner asset-approval-labele-spacing" 
+													class="view-banner asset-approval-labele-spacing mr5" 
 													[ngClass]="{'bgc-red': asset.approvalStatus === approvalStatus.REJECTED,
 														'bgc-blue': asset.approvalStatus === approvalStatus.DRAFT}" translate>
 													{{getApprovalStatusText(asset.approvalStatus)}}
@@ -123,6 +125,7 @@
 												<span *ngIf="asset?.partnerSignatureRequired || (asset?.vendorSignatureRequired && !isPartnerView)"
 												class="view-banner" style="margin-left: 3px;">Digital Sign Enabled
 											</span>
+												<span *ngIf="authenticationService?.isOliverActive && asset.disableAccessForOliver && FromOliverPopUp" class="view-banner bgc-red">Access Disabled</span>
 												<!---XNFR-255-->
 												<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 													<span class="view-banner-white-labeled mb5 G ListLabelSpacings">White-Labeled</span>
@@ -160,12 +163,12 @@
 													<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 														<div class="mActionAlign ActionButtonPad">
 															<!--History-->
-															<a class="custom-icon" *ngIf="asset?.history &&!isPartnerView" data-toggle="tooltip" data-placement="top" title="History" (click)="expandHistory(asset,i)">
+															<a class="custom-icon" *ngIf="(asset?.history &&!isPartnerView) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="History" (click)="expandHistory(asset,i)">
 																<i class="fa IconCustomization"[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
 															<!--Design-->
-															<a class="custom-icon" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT'" data-toggle="tooltip" data-placement="top" title="Design" (click)="addOrEdit(asset.id)">
+															<a class="custom-icon" *ngIf="(asset?.beeTemplate && !isPartnerView && asset?.edit && asset?.approvalStatus !== 'DRAFT') && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Design" (click)="addOrEdit(asset.id)">
 																<i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
@@ -175,7 +178,7 @@
 																<div class="clickicons"></div>
 															</a> -->
 															<!--Edit--->
-															<a class="custom-icon" *ngIf="!isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top" title="Edit"
+															<a class="custom-icon" *ngIf="(!isPartnerView && asset?.edit) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Edit"
 															 (click)="asset?.hasAnyReApprovalVersion ? '' : editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
 																<i class="fa fa-edit IconCustomization"aria-hidden="true"
 																[ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''"></i>
@@ -218,7 +221,7 @@
 																<div class="clickicons"></div>
 															</a>
 															<!--View Analytics-->
-															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany"
+															<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="(!authenticationService.module.isMarketingCompany) && !FromOliverPopUp"
 																(click)="asset.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId ? viewAnalytics(asset) : ''">
 																<i class="fa fa-line-chart IconCustomization" aria-hidden="true"
 																	[ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT && !asset?.approvalReferenceId) ? '' : 'disabled gray'"></i>
@@ -229,25 +232,26 @@
 																<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon" *ngIf="isPartnerView  && authenticationService?.isOliverActive && !asset?.disableAccessForOliver" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
+															<a class ="oliveIcon" *ngIf="(isPartnerView  && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskAi(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
 															</a>
 
 															<!-- comment/history -->
-															<a class="custom-icon" *ngIf="authenticationService?.approvalRequiredForAssets && !isPartnerView" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
+															<a class="custom-icon" *ngIf="(authenticationService?.approvalRequiredForAssets && !isPartnerView) && !FromOliverPopUp" (click)="asset.approvalStatus !== approvalStatus.DRAFT ? showCommentsAndHistoryModalPopup(asset) : ''"
 																data-toggle="tooltip" data-placement="top" title="{{(!authenticationService?.module?.isAnyAdminOrSupervisor || asset?.createdByAnyApprovalManagerOrApprover) ? 'Comments/History' : 'Approve/Reject'}}">
 																	<i class="{{fontAwesomeClassName.comments}} IconCustomization" [ngClass]="(asset?.approvalStatus !== approvalStatus.DRAFT) ? '' : 'disabled gray'" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 															</a>
-															<a class ="oliveIcon mr5" *ngIf="!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver" data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
+															<a class="oliveIcon mr5" *ngIf="(!isPartnerView && authenticationService?.isOliverActive && !asset?.disableAccessForOliver) && !FromOliverPopUp"
+																data-toggle="tooltip" data-placement="top" title="Ask Oliver" (click)="AskOliver(asset)">
 																<div class="oliveBackground">
 																	<img src="assets/images/oliverAiLogo.svg" alt="Oliver Icon" class="oliveImg">
 																</div>
 															</a>
 															<!--Delete-->
-															<a class="custom-icon" *ngIf="!isPartnerView && asset?.delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' :confirmDelete(asset)">
+															<a class="custom-icon" *ngIf="(!isPartnerView && asset?.delete) && !FromOliverPopUp" data-toggle="tooltip" data-placement="top" title="Delete" (click)="asset?.hasAnyReApprovalVersion ? '' :confirmDelete(asset)">
 																<i class="fa fa-trash-o trashIconCustomization" [ngClass]="asset?.hasAnyReApprovalVersion ? 'disabled gray' : ''" aria-hidden="true"></i>
 																<div class="del-icon"></div>
 															</a>
@@ -600,7 +604,7 @@
 									</div>
 									<div class="bar auto-height gridIconCustomization border_none">
 										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset"
-											[folderListView]="folderListView"
+											[folderListView]="folderListView" [FromOliverPopUp]="FromOliverPopUp"
 											(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 											(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 											(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
@@ -626,8 +630,11 @@
 
 			<!--Folder List View / Folder Grid View -->
 			<div *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
-				<app-folder-type-view-util [moduleId]="roles.damId"
-					[modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
+				<app-folder-type-view-util [moduleId]="roles.damId" [FromOliverPopUp]="FromOliverPopUp"
+					[selectedFoldersForOliver]="selectedFoldersForOliver" [modulesDisplayType]="modulesDisplayType"
+					(folderViewAssetEventEmitter)="viewAssets($event)" [isPartnerViewFromOliver]="isPartnerViewFromOliver"
+					(oliverfolderViewTypeEventEmitter)="setViewTypeForOliver($event)"
+					(notifyFolders)="handleFolders($event)"></app-folder-type-view-util>
 			</div>
 
 		</div>
@@ -666,6 +673,15 @@
 			<div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-9">
 				<div class="btn-group pull-right">
 					<div class="d-flex">
+						<!-- Custom Upload Button -->
+						<button *ngIf="FromOliverPopUp && !isFromOliverFolderView && !isPartnerView" (click)="fileInput.click()"
+							class="button_blue bgcolor-unset p0 btn-transitions" tabindex="-1" translate="" type="button">
+							<span class="btn btn-primary transition d-inline"><span data-placement="bottom" data-toggle="tooltip"
+									title="Add New Asset">
+									<i class="fa fa-plus" aria-hidden="true"></i>
+								</span> Upload New Asset
+							</span>
+						</button>
 						<!-- Start XNFR-409 -->
 						<div class="btn btn-xs l-g-view margin-space mr5" (click)="toggleFilterOption()"
 							[ngClass]="showFilterOption?'disabled':''">
@@ -673,6 +689,9 @@
 								<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
 							</span>
 						</div>
+						<input type="file"  (change)="chooseAsset($event)"
+							style="opacity: 0; position: absolute; pointer-events: none;" #fileInput>
+						
 						<!-- End XNFR-409 -->
 						<div class="group-dropdown">
 							<button
@@ -699,9 +718,8 @@
 											(click)="setViewType('fg')">
 											<i class="fa fa-folder p10" aria-hidden="true"></i>
 										</span>
-										<span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
-											data-toggle="tooltip" data-placement="bottom" title="Folder List View"
-											(click)="setViewType('fl')">
+										<span *ngIf="!FromOliverPopUp" class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
+											data-toggle="tooltip" data-placement="bottom" title="Folder List View" (click)="setViewType('fl')">
 											<i class="fa fa-th p10" aria-hidden="true"></i>
 										</span>
 									</ng-container>

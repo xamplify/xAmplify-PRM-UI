@@ -53,6 +53,7 @@ export class ChatGptSettingsService {
   }
 
   generateAssistantTextByAssistant(chatGptSettings: ChatGptIntegrationSettingsDto) {
+    chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
     const url = this.chatGptSettingsUrl + '/getOliverResponse?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url, chatGptSettings);
   }
@@ -131,6 +132,39 @@ export class ChatGptSettingsService {
     let userListIdRequestParameter = userListId != undefined ? '&userListId=' + userListId : '';
     const url = this.chatGptSettingsUrl + "/getThreadIdAndVectorStoreIdByContactIdAndUserListId?access_token=" + this.authenticationService.access_token + userIdRequestParameter + contactIdRequestParameter + userListIdRequestParameter;
     return this.authenticationService.callGetMethod(url);
+  }
+
+  deleteChatHistory(chatHistoryId:any, threadId:any, vectorStoreId:any) {
+    let userId = this.authenticationService.getUserId();
+    let threadIdRequestParameter = threadId != undefined ? '&threadId=' + threadId : '';
+    let userIdRequestParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let vectorStoreIdRequestParameter = vectorStoreId != undefined ? '&vectorStoreId=' + vectorStoreId : '';
+    let chatHistoryIdRequestParameter = chatHistoryId != undefined ? '&chatHistoryId=' + chatHistoryId : '';
+    const url = this.chatGptSettingsUrl + "/deleteChatHistory?access_token=" + this.authenticationService.access_token + threadIdRequestParameter + userIdRequestParameter + vectorStoreIdRequestParameter + chatHistoryIdRequestParameter;
+    return this.authenticationService.callDeleteMethod(url);
+  }
+
+  getAssetDetailsByCategoryIds(chatGptIntegrationSettingsDto: ChatGptIntegrationSettingsDto) {
+    let userId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + 'getAssetDetailsByCategoryIds/' + userId + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPostMethod(url, chatGptIntegrationSettingsDto);
+  }
+
+  fetchHistories(searchKey:any) {
+    let userId = this.authenticationService.getUserId();
+    let loggedInUserIdParameter = userId != undefined ? '&loggedInUserId=' + userId : '';
+    let searchKeyParameter = searchKey != undefined && searchKey.length > 0 ? '&searchKey=' + searchKey : '';
+    const url = this.chatGptSettingsUrl + "fetchChatHistories?access_token=" + this.authenticationService.access_token + loggedInUserIdParameter + searchKeyParameter;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  updateHistoryTitle(title:any, chatHistoryId:any) {
+    let data = {
+      'chatHistoryId':chatHistoryId,
+      'title':title
+    }
+    const url = this.chatGptSettingsUrl + "updateHistoryTitle?access_token=" + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url,data);
   }
 
 }
