@@ -28,7 +28,7 @@ export class PartnerContactUploadManagementSettingsComponent implements OnInit {
 
   sortOptions = [
     { 'name': 'Sort By', 'value': '' },
-    { 'name': 'Email A-Z)', 'value': 'emailId-ASC' },
+    { 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
     { 'name': 'Email (Z-A)', 'value': 'emailId-DESC' },
     { 'name': 'Company Name (ASC)', 'value': 'contactCompany-ASC' },
     { 'name': 'Company Name (DESC)', 'value': 'contactCompany-DESC' },
